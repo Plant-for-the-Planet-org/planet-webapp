@@ -72,7 +72,7 @@ handler.post(async (req, response) => {
 
     response.status(200).json({ data: plantLocations });
   } catch (err) {
-    console.log(err);
+    console.error('Error fetching plant location data:', err);
     response.status(500).json({ error: 'Internal Server Error' });
   } finally {
     db.quit();

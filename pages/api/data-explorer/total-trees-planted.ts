@@ -53,7 +53,7 @@ handler.post(async (req, response) => {
 
     response.status(200).json({ data: res[0] });
   } catch (err) {
-    console.log(err);
+    console.error('Error fetching total trees planted:', err);
   } finally {
     await db.quit();
   }

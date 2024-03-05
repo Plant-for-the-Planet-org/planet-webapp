@@ -65,7 +65,7 @@ handler.get(async (req, response) => {
 
     response.status(200).json({ data: featureCollection });
   } catch (err) {
-    console.log(err);
+    console.error(`Error fetching sites for ${projectId}:`, err);
   } finally {
     db.quit();
   }

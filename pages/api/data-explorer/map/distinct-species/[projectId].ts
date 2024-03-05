@@ -56,7 +56,7 @@ handler.get(async (req, response) => {
 
     response.status(200).json({ data: disctinctSpecies });
   } catch (err) {
-    console.log(err);
+    console.error(`Error fetching distinct species for ${projectId}`, err);
   } finally {
     db.quit();
   }
