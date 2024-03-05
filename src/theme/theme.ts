@@ -14,6 +14,7 @@ const {
   topProjectBackgroundColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
+  secondaryColorNew,
 } = theme;
 
 const globalStyles = css.global`
@@ -23,6 +24,7 @@ const globalStyles = css.global`
     --secondary-font-family: ${config.font.secondaryFontFamily ||
     defaultFontFamily};
     --font-xxx-extra-small-new: ${fontSizes.fontXXXSmallNew};
+    --font-xx-extra-small-new: ${fontSizes.fontXXSmallNew};
     --font-xx-extra-small: ${fontSizes.fontXXSmall};
     --font-x-extra-small: ${fontSizes.fontXSmall};
     --font-small: ${fontSizes.fontSmall};
@@ -38,6 +40,7 @@ const globalStyles = css.global`
     --top-project-background-color: ${topProjectBackgroundColor};
     --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
     --primary-color-new: ${primaryColorNew};
+    --secondary-color-new: ${secondaryColorNew};
   }
   .theme-light {
     --primary-font-color: ${light.primaryFontColor};
