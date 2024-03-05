@@ -54,6 +54,12 @@ const globalStyles = css.global`
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
     --disabled-font-color: ${light.disabledFontColor};
+    --abandonment-background-color-new: ${light.abandonmentBackgroundColorNew};
+    --more-info-background-color-new: ${light.moreInfoBackgroundColorNew};
+    --certification-background-color-new: ${light.certificationBackgroundColorNew};
+    --contactDetail-background-color-new: ${light.contactDetailBackgroundColorNew};
+    --certification-link-color-new: ${light.certificationLinkColorNew};
+    --secondary-divider-color-new: ${light.secondaryDividerColor};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};

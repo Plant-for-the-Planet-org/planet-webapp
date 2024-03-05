@@ -6,25 +6,25 @@
     max-width: 258px;
     flex-wrap: wrap;
     padding: 24px;
-    background: rgba(242, 201, 76, 0.10);
+    background: rgba(var(--abandonment-background-color-new), 0.1);
     border-radius: 14px;
     flex-direction: column;
-    color: #2F3336;
-    font-size: 10px;
+    color: #2F3336; //to be replaced
+    font-size: $fontXXSmall;
 }
 .moreInfoContainer {
-    background-color: rgba(81, 198, 205, 0.10);
+    background: rgba(var(--more-info-background-color-new), 0.1);
     gap: 16px;
 }
 
 .certificationContainer {
-    background-color: rgba(108, 99, 255, 0.10);
+    background-color: rgba(var(--certification-background-color-new), 0.1);
     gap: 12px;
     height: auto;
 }
 
 .contactDetailsContainer {
-    background-color: rgba(232, 111, 86, 0.10);
+    background-color: rgba(var(--contactDetail-background-color-new), 0.1);
 }
 
 .halfInfo {
@@ -42,13 +42,9 @@
     display: flex;
     justify-content: space-between;
     a {
-        color: #3AB6BD;
+        color: $certificationLinkColorNew;
         font-weight: 700;   
     }
-}
-
-.ownershipLabel {
-    background-color: rgba(81, 198, 205, 0.20);
 }
 
 .singleInfo {
@@ -59,13 +55,13 @@
 
 .seperator {
     height: 0.5px;
-    background: rgba(242, 153, 74, 0.20);
+    background-color: rgba(var(--secondary-divider-color-new), 0.2);
     margin: 12px 0;
 }
 
 .infoIconPopupContainer {
     padding: 12px 16px;
-    font-size: 10px;
+    font-size: $fontXXSmall;
     max-width: 200px !important;
 }
 
@@ -88,10 +84,10 @@
     max-width: 258px;
     span {
         padding: 2px 6px;
-        background-color: rgba(81, 198, 205, 0.20);
+        background-color: rgba(var(--more-info-background-color-new), 0.2); //
         border-radius: 4px;
         font-weight: 400;
-        font-size: 8px;
+        font-size: $fontXXXSmallNew;
         min-width: 105px;
         white-space: nowrap;
         text-transform: capitalize;
@@ -105,9 +101,9 @@
 .certificationLabel {
     padding: 2px 9px;
     border-radius: 24px;
-    border: 0.4px solid rgba(108, 99, 255, 0.20);
-    background: rgba(108, 99, 255, 0.15);
-    color: #6C63FF;
+    border: 0.4px solid  rgba(var(--certification-background-color-new), 0.2); 
+    background:  rgba(var(--certification-background-color-new), 0.15);
+    color:  rgb(var(--certification-background-color-new));
     font-weight: 700;
     width: fit-content;
 }
@@ -137,7 +133,7 @@
 
 .singleContact {
     display: flex;
-    background-color: rgba(242, 153, 74, 0.12);
+    background-color: rgba(var(--secondary-divider-color-new), 0.12);
     border-radius: 8px;
     padding: 0 10.5px;
     min-height: 41px;
@@ -153,13 +149,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #fff;
+        background-color: $backgroundColor;
         flex-shrink: 0;
     }
     .title {
-        font-size: 10px;
+        font-size: $fontXXSmall;
         font-weight: 600;
-        color: #2F3336;
+        color: #2F3336; //to be replaced
     }
     .rightArrow {
         margin-left: auto;

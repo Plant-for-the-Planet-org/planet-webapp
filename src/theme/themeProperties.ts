@@ -40,6 +40,12 @@ const themeProperties = {
     backgroundBase: '#FaFaFf',
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
+    abandonmentBackgroundColorNew: '242, 201, 76',
+    moreInfoBackgroundColorNew: '81, 198, 205',
+    certificationBackgroundColorNew: '108, 99, 255',
+    contactDetailBackgroundColorNew: '232, 111, 86',
+    certificationLinkColorNew: '#3AB6BD',
+    secondaryDividerColor: '242, 153, 74',
   },
   dark: {
     primaryFontColor: '#ffffff',
