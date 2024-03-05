@@ -1,6 +1,7 @@
+@import '../../theme/theme';
 .exploreMainContainer {
   max-width: 182px;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: $backgroundColor;
   border-radius: 12px;
   margin-top: 10px;
   margin-left: 3px;
@@ -22,7 +23,7 @@
 
 .ecosystemContainer {
   display: flex;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 400;
   align-items: center;
   gap: 4px;
@@ -41,7 +42,7 @@
 .rangeMainContainer {
   width: 150px;
   height: 30px;
-  background-color: rgba(235, 87, 87, 0.1);
+  background-color: $exploreRangeBackgroundColor;
   margin-top: 6px;
   border-radius: 6px;
   position: relative;
@@ -68,7 +69,7 @@
 .endYear,
 .startYear {
   position: absolute;
-  font-size: 6px;
+  font-size: $fontXXXXSmallNew;
   font-weight: 400;
   top: 17px;
 }
@@ -83,9 +84,9 @@
   padding: 8px;
   height: fit-content;
   margin-top: 14px;
-  background-color: rgba(242, 242, 242, 1);
+  background-color: $light;
   border-radius: 6px;
-  font-size: 8px;
+  font-size: $fontXXXSmallNew;
 }
 
 .hrLine {
@@ -93,5 +94,5 @@
   height: 0.4px;
   margin-top: 6px;
   margin-bottom: 6px;
-  background: #bdbdbd;
+  background: $horizontalLineColor;
 }

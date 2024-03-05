@@ -1,5 +1,13 @@
 import { Switch, styled } from '@mui/material';
-
+import theme from '../../theme/themeProperties';
+const {
+  primaryColorNew,
+  restorationToggleColorNew,
+  exploreRangeSliderColorNew,
+  currentForestSwitchTrackColorNew,
+  restorationSwitchTrackColorNew,
+  deforestrationSwitchTrackColorNew,
+} = theme;
 interface SwitchProps {
   currentForestSwitch?: boolean;
   restorationSwitch?: boolean;
@@ -36,15 +44,15 @@ export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
   ({ currentForestSwitch, restorationSwitch, deforestrationSwitch }) => ({
     '.MuiSwitch-switchBase.Mui-checked': {
       color:
-        (currentForestSwitch && 'rgba(33, 150, 83, 1)') ||
-        (restorationSwitch && 'rgba(47, 128, 237, 1)') ||
-        (deforestrationSwitch && 'rgba(235, 87, 87, 1)'),
+        (currentForestSwitch && `${primaryColorNew}`) ||
+        (restorationSwitch && `${restorationToggleColorNew}`) ||
+        (deforestrationSwitch && `${exploreRangeSliderColorNew}`),
     },
     '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
       backgroundColor:
-        (currentForestSwitch && 'rgb(202, 230, 214)') ||
-        (restorationSwitch && 'rgb(205, 225, 251)') ||
-        (deforestrationSwitch && 'rgb(250, 215, 215)'),
+        (currentForestSwitch && `${currentForestSwitchTrackColorNew}`) ||
+        (restorationSwitch && `${restorationSwitchTrackColorNew}`) ||
+        (deforestrationSwitch && `${deforestrationSwitchTrackColorNew}`),
     },
   })
 );
