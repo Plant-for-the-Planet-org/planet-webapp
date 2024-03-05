@@ -226,7 +226,22 @@ export const MapContainer = () => {
 
   // Progamatically navigate to another location on the map
   const _setViewport = (feature: Feature, zoom = 16) => {
-    const centeroid = turf.center(feature);
+    let centeroid;
+
+    if (feature.geometry === null) {
+      centeroid = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: defaultMapCenter,
+        },
+      };
+      zoom = 0;
+    } else {
+      centeroid = turf.center(feature);
+    }
+
     if (centeroid?.geometry) {
       const [longitude, latitude] = centeroid.geometry.coordinates;
       setViewport({
@@ -398,7 +413,7 @@ export const MapContainer = () => {
       overrideBodyStyles={styles.body}
     >
       <div className={styles.mapContainer}>
-        {plantLocations && projectSites && selectedLayer ? (
+        {plantLocations && projectSites ? (
           <MapGL
             ref={mapRef}
             {...mapState}
