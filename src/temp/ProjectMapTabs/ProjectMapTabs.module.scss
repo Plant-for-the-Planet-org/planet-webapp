@@ -4,7 +4,7 @@ display: flex;
 width: fit-content;
 height: 48px;
 border-radius: 12px;
-background: #fff;
+background: $backgroundColor;
 align-items: center;
 justify-content: center;
 padding: 0px 5px;
@@ -15,7 +15,7 @@ right: auto;
 margin: 0 auto;
 top: 100px;;
 z-index: 10;
-color: #000;
+color: $dark;
 }
 .option { 
     display: flex;
@@ -39,17 +39,17 @@ color: #000;
 
   .selected {
     width: 66px;
-    color: #fff;
-    background-color: #219653;
+    color: $backgroundColor;
+    background-color: $primaryColorNew;
   }
 
   .showSeparator1, .showSeparator2 {
-    background: black;
+    background: $dark;
     width: 0.5px;
     height: 30px;
     position: absolute;
     top: 20%;
-    background: rgba(0, 0, 0, 0.30);
+    background: #0000004d;
   }
 
   .showSeparator1{
@@ -94,7 +94,7 @@ color: #000;
      width: 150px;
       p {
         display: block;
-        font-size: 12px;
+        font-size: $fontXSmall;
         font-weight: 700;
       }
     }
