@@ -1,3 +1,4 @@
+@import '../../theme/theme';
 .diveIntoMapMainContainer {
   width: 306px;
   height: 341px;
@@ -14,14 +15,14 @@
   position: absolute;
   width: 274px;
   height: 40px;
-  background: #219653;
+  background: $primaryColorNew;
   border-radius: 8px;
   bottom: 16px;
   left: 16px;
   .label {
-    font-size: 12px;
+    font-size: $fontXSmall;
     font-weight: 700;
-    color: #fff;
+    color: $light;
   }
 }
 
