@@ -2,7 +2,6 @@ import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import deepmerge from 'deepmerge';
 import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
 import {
   GetStaticProps,

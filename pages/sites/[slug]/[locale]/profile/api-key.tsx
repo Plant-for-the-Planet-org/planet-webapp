@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import deepmerge from 'deepmerge';
 import ApiKey from '../../../../../src/features/user/Settings/ApiKey';
 import {
   GetStaticProps,
