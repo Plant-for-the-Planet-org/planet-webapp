@@ -114,19 +114,19 @@ const ExploreButton = ({
               <EcosystemOption
                 infoIcon={<InfoIcon width={'10px'} />}
                 label={t('allProjects:currentForests')}
-                switchComponent={<StyledSwitch currentForestSwitch />}
+                switchComponent={<StyledSwitch currentforestswitch="true" />}
               />
               <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={<InfoIcon width={'10px'} />}
                 label={t('allProjects:restorationPotential')}
-                switchComponent={<StyledSwitch restorationSwitch />}
+                switchComponent={<StyledSwitch restorationswitch="true" />}
               />
               <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={<InfoIcon width={'10px'} />}
                 label={t('allProjects:deforestation')}
-                switchComponent={<StyledSwitch deforestrationSwitch />}
+                switchComponent={<StyledSwitch deforestrationswitch="true" />}
               />
               <YearRangeSlider startYear={startYear} endYear={endYear} />
               <div className={style.hrLine} />
