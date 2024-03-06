@@ -4,7 +4,7 @@
 }
 .menuButton {
     border-radius: 8px;
-    width: 150px;
+    min-width: 150px;
     background: $light;
     height: 36px;
     display: flex;
@@ -38,7 +38,7 @@
     padding:16px;
     display: flex;
     flex-direction: column;
-    time {
+    .unselectedMenuItem, .selectedMenuItem {
         opacity: 5;
         margin-top: 6px;
         cursor: pointer;
@@ -48,10 +48,16 @@
     background: $light;
     padding: 16px;
     border-radius: 0px 8px 8px 0;
-    li {
+    .unselectedMenuItem, .selectedMenuItem {
         list-style: none;
         margin-top: 6px;
-        width: 67px;    
+        min-width: 67px;  
         cursor: pointer;
     }
+}
+
+
+.selectedMenuItem {
+    font-weight: 700;
+    color: #333; //to be replaced
 }

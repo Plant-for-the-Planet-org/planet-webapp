@@ -34,12 +34,9 @@ const TimeTravelDropdown = ({
     labelValue: string
   ) => {
     if (selectedOption.toLowerCase() === labelValue.toLowerCase()) {
-      return {
-        fontWeight: 700,
-        color: `${'var(--selected-menu-item-color-new)'}`,
-      };
+      return true;
     } else {
-      return undefined;
+      return false;
     }
   };
 
@@ -64,7 +61,11 @@ const TimeTravelDropdown = ({
               <time
                 key={index}
                 onClick={() => handleChangeYear(year)}
-                style={styleForSelectedOption(year, selectedYear)}
+                className={`${
+                  styleForSelectedOption(year, selectedYear)
+                    ? styles.selectedMenuItem
+                    : styles.unselectedMenuItem
+                }`}
               >
                 {year}
               </time>
@@ -75,7 +76,11 @@ const TimeTravelDropdown = ({
               <li
                 key={index}
                 onClick={() => handleChangeSource(source)}
-                style={styleForSelectedOption(source, selectedSource)}
+                className={`${
+                  styleForSelectedOption(source, selectedSource)
+                    ? styles.selectedMenuItem
+                    : styles.unselectedMenuItem
+                }`}
               >
                 {source}
               </li>
