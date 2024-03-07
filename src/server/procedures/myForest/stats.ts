@@ -5,6 +5,7 @@ import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
 import {
   ContributionStatsQueryResult,
+  CountryProjectStatsResult,
   GiftStatsQueryResult,
   StatsResult,
 } from '../../../features/common/types/myForest';
@@ -36,8 +37,6 @@ export const stats = procedure
         SUM(CASE WHEN (pp.purpose = 'trees' AND pp.unit_type = 'tree') OR c.contribution_type = 'planting' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
         SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit_type = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
         SUM(CASE WHEN pp.purpose = 'conservation' THEN c.quantity ELSE 0 END) AS conserved,
-        COUNT(DISTINCT pp.id) AS projects,
-        COUNT(DISTINCT pp.country) AS countries,
         SUM(CASE WHEN c.contribution_type = 'donation' THEN 1 ELSE 0 END) AS donations
       FROM
         contribution c
@@ -58,6 +57,7 @@ export const stats = procedure
           )
         )
       `;
+    // console.log('contributionData:', contributionData);
 
     const giftData = await prisma.$queryRaw<GiftStatsQueryResult[]>`
         SELECT 
@@ -67,13 +67,62 @@ export const stats = procedure
         JOIN profile p ON g.recipient_id = p.id
         WHERE p.guid = ${profileId}
       `;
+    // console.log('giftData:', giftData);
+
+    const giftMetadata = await prisma.$queryRaw<CountryProjectStatsResult[]>`
+			SELECT (metadata->>'$.project.id') AS projectId, (metadata->>'$.project.country') AS country
+			FROM gift g 
+			JOIN profile p ON g.recipient_id = p.id
+			WHERE p.guid = ${profileId} AND g.purpose IN ('trees', 'conservation')
+		`;
+    // console.log('giftMetadata:', giftMetadata);
+
+    const contributionCountryProjectStats = await prisma.$queryRaw<
+      CountryProjectStatsResult[]
+    >`
+			SELECT
+        pp.guid AS projectId,
+        pp.country AS country
+      FROM
+        contribution c
+        LEFT JOIN project pp ON c.plant_project_id = pp.id
+        JOIN profile p ON p.id = c.profile_id
+      WHERE
+        p.guid = ${profileId}
+        AND c.deleted_at IS NULL
+        AND (
+          (
+            c.contribution_type = 'donation'
+            AND c.payment_status = 'paid'
+            AND pp.purpose IN ('trees', 'conservation')
+          )
+          OR (
+            c.contribution_type = 'planting'
+            AND c.is_verified = 1
+          )
+        )
+		`;
+    /* console.log(
+      'contributionCountryProjectStats:',
+      contributionCountryProjectStats
+    ); */
+
+    const uniqueCountries = [
+      ...giftMetadata.map(({ country }) => country),
+      ...contributionCountryProjectStats.map(({ country }) => country),
+    ].filter((value, index, array) => array.indexOf(value) === index);
+
+    const uniqueProjects = [
+      ...giftMetadata.map(({ projectId }) => projectId),
+      ...contributionCountryProjectStats.map(({ projectId }) => projectId),
+    ].filter((value, index, array) => array.indexOf(value) === index);
 
     const constributionsStats = contributionData[0];
     const giftStats = giftData[0];
 
     const finalStats: StatsResult = {
-      projects: constributionsStats.projects ?? 0,
-      countries: constributionsStats.countries ?? 0,
+      projects: uniqueProjects.length ?? 0,
+      countries: uniqueCountries.length ?? 0,
       donations: constributionsStats.donations ?? 0,
       squareMeters: constributionsStats.squareMeters ?? 0,
       treeCount:
