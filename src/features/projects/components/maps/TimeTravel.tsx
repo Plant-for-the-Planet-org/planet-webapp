@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import mapboxgl, { Map } from 'mapbox-gl';
+import maplibregl, { Map } from 'maplibre-gl';
+//@ts-ignore
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
@@ -29,7 +30,7 @@ export default function TimeTravel(): ReactElement {
     if (typeof window !== 'undefined' && mapRef.current) {
       const center = mapRef.current.getMap().getCenter();
       const zoom = mapRef.current.getMap().getZoom();
-      const before = new mapboxgl.Map({
+      const before = new maplibregl.Map({
         container: 'before', // Container ID
         style: EMPTY_STYLE,
         center: center,
@@ -42,7 +43,7 @@ export default function TimeTravel(): ReactElement {
         setBefore(before);
       });
 
-      const after = new mapboxgl.Map({
+      const after = new maplibregl.Map({
         container: 'after', // Container ID
         style: EMPTY_STYLE,
         center: center,
@@ -68,14 +69,15 @@ export default function TimeTravel(): ReactElement {
       // A selector or reference to HTML element
       const container = '#comparison-container';
 
-      const _compare = new MapboxCompare(before, after, container, {
-        mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
+      const compare = new MapboxCompare(before, after, container, {
+        mousemove: true, // Optional. Set to true to enable swiping during cursor movement.
         orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
       });
 
+      compare.currentPosition;
       // syncMove(before, mapRef?.current?.getMap());
     }
-  }, []);
+  }, [selectedMode]);
 
   React.useEffect(() => {
     if (before && siteViewPort) {
