@@ -11,13 +11,12 @@ export default function Landing({ tenantScore }: Props) {
       <div className={styles.landingOverlay}></div>
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
-          <h3>Planting Hope & Growing Resilience with Mangroves</h3>
+          <h3>Mangroves We Helped To Conserve Restore And Grow</h3>
           <TreeCounter
             planted={tenantScoreData || 0}
             isLight={true}
-            shouldShowMillions={true}
+            // shouldShowMillions={true}
           />
-          <p>Mangroves Planted</p>
         </div>
       </div>
     </section>

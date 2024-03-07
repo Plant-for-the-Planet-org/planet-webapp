@@ -9,11 +9,16 @@ export default function ContentSection() {
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <h2>Protecting Mangrove Forests</h2>
+            <h2>
+              Mangroves - the ultimate champions for climate, nature and people.
+            </h2>
             <p className={styles.contentSectionSubhead}>
-              Mangroves are critically important for climate, nature, and
-              people, and Salesforce has placed a strategic priority on
-              mangroves this year.
+              Mangrove ecosystems store up to 10X more carbon per hectare than
+              terrestrial forests. They support biodiversity by providing
+              critical habitat for terrestrial and marine species while serving
+              as a nursery for juvenile fish. And they function as a coastal
+              barrier for climate vulnerable communities. In short - mangroves
+              are one of nature’s “superheroes”.
             </p>
           </div>
         </div>
@@ -23,38 +28,139 @@ export default function ContentSection() {
           <div
             className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
           >
-            <img
-              src="/tenants/salesforce/images/oceanforce_1.png"
-              className={gridStyles.illustration}
-              alt=""
-            />
+            <div
+              className={`${gridStyles.circularContainer} ${styles.imageContainer}`}
+            >
+              <img
+                src="/tenants/salesforce/images/mangroves/mangroves-indonesia.jpg"
+                alt=""
+              />
+            </div>
           </div>
           <div
             className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
           >
+            <h3>Salesforce supports the Mangrove Breakthrough</h3>
             <p>
-              Mangrove forests are the ultimate climate champion and a bedrock
-              for biodiversity: they provide food, shelter, and livelihoods;
-              support biodiversity; build coastal resilience; and are among the
-              world&apos;s most productive carbon sinks. Put simply, mangroves
-              are critically important for climate, nature, and people,
-              including many of the world&apos;s most vulnerable communities,
-              which is why Salesforce has placed a strategic priority on
-              mangroves this year.
+              <em>
+                This is part of our commitment to{' '}
+                <a href="https://www.1t.org/" target="_blank" rel="noreferrer">
+                  1t.org
+                </a>{' '}
+                and delivers on our{' '}
+                <a
+                  href="https://www.salesforce.com/content/dam/web/en_us/www/assets/pdf/reports/salesforce-climate-action-plan.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  climate
+                </a>{' '}
+                and{' '}
+                <a
+                  href="https://www.salesforce.com/content/dam/web/en_us/www/documents/white-papers/nature-positive-strategy.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  nature
+                </a>{' '}
+                strategies.
+              </em>
+            </p>
+            <p>
+              Salesforce supported the establishment of the{' '}
+              <a
+                href="https://www.salesforce.com/news/stories/climate-week-investments-climate-finance-playbook/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Mangrove Breakthrough Secretariat{' '}
+              </a>{' '}
+              and the development of the recently launched{' '}
+              <a
+                href="https://climatechampions.unfccc.int/wp-content/uploads/2023/11/SY031_MangroveBreakthrough_2023_v7_JG.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Financial Roadmap
+              </a>
+              .
+            </p>
+            <p>
+              In 2023, Salesforce provided funding to conserve, restore, and
+              grow over 8 M trees across 7 high quality mangrove projects [TODO
+              - LINK to April philanthropy rollup].
+            </p>
+            <p>
+              As of April 2024, Salesforce has invested in the conservation and
+              restoration of mangroves across [16] countries and over [50,000]
+              hectares. (TODO - link to map of project investments).
             </p>
           </div>
         </div>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <p className={`${styles.contentSectionQuote}`}>
-              <em>
-                “Mangroves are unparalleled in their role as a powerful climate
-                solution, a bedrock of biodiversity, and a source of livelihood
-                for millions of people around the world”{' '}
-              </em>{' '}
-              - Suzanne DiBianca, EVP and Chief Impact Officer at Salesforce
+          <div
+            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+          >
+            <div className={styles.callOut}>
+              <p>
+                <em>
+                  “Mangroves are unparalleled in their role as a powerful
+                  climate solution, a bedrock of biodiversity, and a source of
+                  livelihood for millions of people around the world”
+                </em>{' '}
+                - Suzanne DiBianca, EVP and Chief Impact Officer at Salesforce
+              </p>
+            </div>
+          </div>
+          <div
+            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+          >
+            <h3>The Mangrove Breakthrough</h3>
+            <p>
+              The Mangrove Breakthrough is a collective initiative to secure the
+              future of the world’s entire mangrove ecosystem.{' '}
+            </p>
+            <ul>
+              The Breakthrough has four key science-based goals to:
+              <li>
+                <strong>Halt mangrove loss</strong>
+              </li>
+              <li>
+                <strong>Restore half of recent losses</strong>
+              </li>
+              <li>
+                <strong>Double the protection</strong> of mangroves globally
+              </li>
+              <li>
+                <strong>Mobilize long-term, sustainable finance</strong> for
+                mangroves
+              </li>
+            </ul>
+            <p>
+              These goals are bold, but they’re also within reach. Together, we
+              can unlock the $4 billion investment needed to secure the future
+              of this{' '}
+              <a
+                href="https://www.weforum.org/agenda/2023/11/mangrove-breakthrough-climate-targets-cop28/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                crucial global ecosystem
+              </a>{' '}
+              by 2030. As of April, 2024, over 50 governments, corporations, non
+              profits and civil society representatives have{' '}
+              <a
+                href="https://www.wetlands.org/a-breakthrough-moment-for-mangroves-delivering-global-action-on-mangrove-restoration-and-protection/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                endorsed
+              </a>{' '}
+              the Mangrove Breakthrough. Everyone has a role to play in this
+              collaborative quest. Learn more about the Mangrove Breakthrough
+              and how you can get involved here [Todo: LINK].
             </p>
           </div>
         </div>

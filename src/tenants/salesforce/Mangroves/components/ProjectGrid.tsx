@@ -73,7 +73,7 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div className={`${styles.projectGridContainer}`}>
+    <div className={`${styles.projectGridContainer}`} id="project-grid">
       <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}

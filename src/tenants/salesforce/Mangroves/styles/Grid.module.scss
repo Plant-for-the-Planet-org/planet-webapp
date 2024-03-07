@@ -21,6 +21,10 @@
   text-align: center;
 }
 
+.textLeft {
+  text-align: left;
+}
+
 .imgFluid {
   max-width: 100%;
   height: auto;
@@ -31,6 +35,14 @@
   max-width: 100%;
   border-radius: 50%;
   height: auto;
+}
+
+.circularContainer {
+  clip-path: circle();
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mb65100 {

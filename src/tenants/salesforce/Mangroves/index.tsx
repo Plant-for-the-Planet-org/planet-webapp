@@ -7,6 +7,7 @@ import LeaderBoard from './components/LeaderBoardSection';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import AdditionalContent from './components/AdditionalContent';
+import BlueCarbon from './components/BlueCarbon';
 
 const config = tenantConfig();
 
@@ -27,6 +28,7 @@ export default function Campaign({ tenantScore, leaderboard }: Props) {
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} />
         <ContentSection />
+        <BlueCarbon />
         <ProjectGrid />
         <LeaderBoard leaderboard={leaderboard} />
         <AdditionalContent />

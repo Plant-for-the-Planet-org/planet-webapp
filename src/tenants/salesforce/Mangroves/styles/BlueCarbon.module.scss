@@ -1,15 +1,36 @@
 @import '../../../../theme/theme';
 
-.contentSectionContainer {
+.blueCarbonContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
   background-size: 1440px 100%;
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
   z-index: 999;
-  margin-top: -292px;
-  padding-top: 124px;
-  .contentSection {
+  padding-top: 84px;
+  text-align: center;
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+  hr {
+    border: none;
+    background-color: #0b827c;
+    height: 1px;
+    margin-bottom: 30px;
+  }
+
+  .blueCarbon {
     padding-bottom: 150px;
     h2 {
       font-family: $secondaryFontFamily;
@@ -19,10 +40,11 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
+      // color: #ffffff;
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
-        font-size: $fontXXXLarge;
+        font-size: 52px;
         line-height: 100%;
         letter-spacing: -0.006em;
       }
@@ -34,6 +56,7 @@
       font-size: 24px;
       line-height: 28px;
       letter-spacing: -0.004em;
+      // color: #ffffff;
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
@@ -49,97 +72,64 @@
       font-weight: normal;
       font-size: 15px;
       line-height: 24px;
+      // color: #ffffff;
       color: #032d60;
       margin-bottom: 30px;
       a {
         text-decoration: underline;
         color: #0b5cab;
       }
-      em {
-        font-style: italic;
-      }
       li {
         margin-left: 20px;
       }
     }
-
     img {
-      margin: 0 auto;
+      margin: 0 auto 30px;
       display: block;
+      width: 100%;
+      @include lgLaptopView {
+        margin: 0;
+      }
     }
-
-    .imageContainer {
+    .blueCarbonImagesContainer {
       margin-bottom: 30px;
     }
-
-    .justifyContentCenter {
+    .callOut {
       display: flex;
       flex-direction: column;
+      margin-bottom: 30px;
       justify-content: center;
+      align-items: center;
+      gap: 20px;
+      font-size: $fontMedium;
+      a {
+        width: 100%;
+      }
+      button {
+        width: 100%;
+      }
+      @include lgLaptopView {
+        margin: 10px 10px 30px;
+      }
+    }
+    .moreInfo {
+      text-align: left;
     }
   }
 
   p.contentSectionSubhead {
     font-family: $primaryFontFamily;
     font-style: normal;
+    font-weight: 300;
     font-size: $fontMedium;
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
+    // color: #ffffff;
     color: #032d60;
-
-    &.bold {
-      font-weight: 500;
-    }
-
     @include lgLaptopView {
       font-size: 20px;
       line-height: 30px;
     }
-  }
-
-  .callOut {
-    background-color: $backgroundBase;
-    display: flex;
-    margin-bottom: 30px;
-    justify-content: center;
-    align-items: center;
-    font-size: $fontMedium;
-    p {
-      margin: 10px;
-    }
-    em {
-      font-style: italic;
-    }
-    @include lgLaptopView {
-      margin: 10px 10px 30px;
-    }
-  }
-
-  .projectItem {
-    background-color: #ffffff;
-    padding: 10px;
-    width: 320px;
-    max-width: 100%;
-
-    p {
-      margin-bottom: 0;
-      font-size: 18px;
-      color: #ffffff;
-    }
-  }
-
-  button {
-    background: #0176d3;
-    border-radius: 4px;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: normal;
-    font-size: $fontSmall;
-    line-height: 130%;
-    text-transform: uppercase;
-    color: #ffffff;
-    padding: 13px 24px;
-    cursor: pointer;
   }
 }
