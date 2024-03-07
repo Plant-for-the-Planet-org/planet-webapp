@@ -107,22 +107,22 @@ export const stats = procedure
       contributionCountryProjectStats
     ); */
 
-    const uniqueCountries = [
+    const uniqueCountries = new Set([
       ...giftMetadata.map(({ country }) => country),
       ...contributionCountryProjectStats.map(({ country }) => country),
-    ].filter((value, index, array) => array.indexOf(value) === index);
+    ]);
 
-    const uniqueProjects = [
+    const uniqueProjects = new Set([
       ...giftMetadata.map(({ projectId }) => projectId),
       ...contributionCountryProjectStats.map(({ projectId }) => projectId),
-    ].filter((value, index, array) => array.indexOf(value) === index);
+    ]);
 
     const constributionsStats = contributionData[0];
     const giftStats = giftData[0];
 
     const finalStats: StatsResult = {
-      projects: uniqueProjects.length ?? 0,
-      countries: uniqueCountries.length ?? 0,
+      projects: uniqueProjects.size ?? 0,
+      countries: uniqueCountries.size ?? 0,
       donations: constributionsStats.donations ?? 0,
       squareMeters: constributionsStats.squareMeters ?? 0,
       treeCount:
