@@ -5,9 +5,11 @@ import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
+//@ts-ignore
 import tj from '@mapbox/togeojson';
 import { useTranslation } from 'next-i18next';
 import WebMercatorViewport from '@math.gl/web-mercator';
+//@ts-ignore
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 
