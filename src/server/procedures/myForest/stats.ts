@@ -69,59 +69,70 @@ export const stats = procedure
       `;
     // console.log('giftData:', giftData);
 
-    const giftMetadata = await prisma.$queryRaw<CountryProjectStatsResult[]>`
-			SELECT (metadata->>'$.project.id') AS projectId, (metadata->>'$.project.country') AS country
-			FROM gift g 
-			JOIN profile p ON g.recipient_id = p.id
-			WHERE p.guid = ${profileId} AND g.purpose IN ('trees', 'conservation')
-		`;
-    // console.log('giftMetadata:', giftMetadata);
-
-    const contributionCountryProjectStats = await prisma.$queryRaw<
+    const countryProjectStats = await prisma.$queryRaw<
       CountryProjectStatsResult[]
     >`
 			SELECT
-        pp.guid AS projectId,
-        pp.country AS country
-      FROM
-        contribution c
-        LEFT JOIN project pp ON c.plant_project_id = pp.id
-        JOIN profile p ON p.id = c.profile_id
-      WHERE
-        p.guid = ${profileId}
-        AND c.deleted_at IS NULL
-        AND (
-          (
-            c.contribution_type = 'donation'
-            AND c.payment_status = 'paid'
-            AND pp.purpose IN ('trees', 'conservation')
-          )
-          OR (
-            c.contribution_type = 'planting'
-            AND c.is_verified = 1
-          )
-        )
+				sub.projectid,
+				sub.country
+			FROM
+				(
+					SELECT
+						pp.guid AS projectId,
+						pp.country AS country
+					FROM
+						contribution c
+						LEFT JOIN project pp ON c.plant_project_id = pp.id
+						JOIN profile p ON p.id = c.profile_id
+					WHERE
+						p.guid = ${profileId}
+						AND c.deleted_at IS NULL
+						AND pp.guid IS NOT NULL
+						AND pp.country IS NOT NULL
+						AND (
+							(
+								c.contribution_type = 'donation'
+								AND c.payment_status = 'paid'
+								AND pp.purpose IN ('trees', 'conservation')
+							)
+							OR (
+								c.contribution_type = 'planting'
+								AND c.is_verified = 1
+							)
+						)
+					UNION
+					SELECT
+						(metadata ->> '$.project.id') AS projectId,
+						(metadata ->> '$.project.country') AS country
+					FROM
+						gift g
+						JOIN profile p ON g.recipient_id = p.id
+					WHERE
+						p.guid = ${profileId}
+						AND g.deleted_at IS NULL
+						AND g.purpose IN ('trees', 'conservation')
+						AND (metadata ->> '$.project.id') IS NOT NULL
+						AND (metadata ->> '$.project.country') IS NOT NULL
+				) AS sub
+			GROUP BY
+				sub.projectid,
+				sub.country;
 		`;
-    /* console.log(
-      'contributionCountryProjectStats:',
-      contributionCountryProjectStats
-    ); */
+    // console.log('countryProjectStats:', countryProjectStats);
 
     const uniqueCountries = new Set([
-      ...giftMetadata.map(({ country }) => country),
-      ...contributionCountryProjectStats.map(({ country }) => country),
+      ...countryProjectStats.map(({ country }) => country),
     ]);
 
-    const uniqueProjects = new Set([
-      ...giftMetadata.map(({ projectId }) => projectId),
-      ...contributionCountryProjectStats.map(({ projectId }) => projectId),
-    ]);
+    const uniqueProjects = countryProjectStats.map(
+      ({ projectId }) => projectId
+    );
 
     const constributionsStats = contributionData[0];
     const giftStats = giftData[0];
 
     const finalStats: StatsResult = {
-      projects: uniqueProjects.size ?? 0,
+      projects: uniqueProjects.length ?? 0,
       countries: uniqueCountries.size ?? 0,
       donations: constributionsStats.donations ?? 0,
       squareMeters: constributionsStats.squareMeters ?? 0,
