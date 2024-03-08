@@ -1,9 +1,9 @@
 {
   "Login": {
-    "loginTitle": "{{log}} - Ingresa en",
+    "loginTitle": "{log} - Ingresa en",
     "signUpText": "Inscripción completa",
-    "profileTypes": "{{item.title}}",
-    "profileName": "Nombre de {{type}}",
+    "profileTypes": "{item.title}",
+    "profileName": "Nombre de {type}",
     "createAccount": "Crear una cuenta"
   }
 }

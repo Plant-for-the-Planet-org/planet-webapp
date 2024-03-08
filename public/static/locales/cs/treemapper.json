@@ -24,7 +24,7 @@
     "m": "m",
     "plantingLocation": "Místo výsadby",
     "reviewAndSubmit": "Zkontrolovat a odeslat",
-    "sampleTree": "Vzorek stromu # {{number}}",
+    "sampleTree": "Vzorek stromu # {number}",
     "import": "Importovat",
     "editor": "Editor",
     "draw": "Kreslit",

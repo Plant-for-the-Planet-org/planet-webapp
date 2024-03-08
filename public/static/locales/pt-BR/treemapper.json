@@ -24,7 +24,7 @@
     "m": "m",
     "plantingLocation": "Local de plantio",
     "reviewAndSubmit": "Rever e Submeter",
-    "sampleTree": "Amostra da árvore #{{number}}",
+    "sampleTree": "Amostra da árvore #{number}",
     "import": "Importar",
     "editor": "Editor",
     "draw": "Desenhar",

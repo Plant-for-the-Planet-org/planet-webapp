@@ -1,9 +1,10 @@
 {
   "Common": {
+    "tree": "{count, plural, =0 {Alberi} =1 {Albero} other {Alberi}}",
     "tree_one": "Albero",
     "tree_other": "Alberi",
-    "by": "Di {{tpoName}}",
-    "to_project_by_tpo": "A {{projectName}} di {{tpoName}}",
+    "by": "Di {tpoName}",
+    "to_project_by_tpo": "A {projectName} di {tpoName}",
     "for": "per",
     "trees": "Alberi",
     "planted": "piantato",
@@ -67,10 +68,10 @@
     "aboutUs": "Chi siamo",
     "alternativelyEditProfile": "In alternativa puoi marcare il tuo profilo come privato visitando Modifica profilo.",
     "deleteAccountConsent": "Cliccando su cancella, chiedo a Plant-for-the-Planet di cancellare tutti i dati associati al mio account Plant-for-the-Planet. I dati delle donazioni possono essere conservati per un massimo di otto anni. Gli alberi che ho registrato non saranno rimossi, ma saranno resi anonimi e non potranno essere reclamati nuovamente.",
-    "deleteIrreversible": "Capisco anche che la cancellazione dell'account di {{email}} è irreversibile.",
+    "deleteIrreversible": "Capisco anche che la cancellazione dell'account di {email} è irreversibile.",
     "goBack": "Torna indietro",
-    "deleteAccountMessage": "Per continuare la cancellazione, digita `{{delete}}`",
-    "deleteAccountLabel": "Tipo: {{delete}}",
+    "deleteAccountMessage": "Per continuare la cancellazione, digita `{delete}`",
+    "deleteAccountLabel": "Tipo: {delete}",
     "howDoesThisWork": "Come funziona?",
     "reviewInfo": "Il progetto è stato ispezionato nel corso di una revisione sul campo di più giorni nel <2>mese</2> e soddisfa i nostri <5>standard</5>."
   }

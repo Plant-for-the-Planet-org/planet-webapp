@@ -1,9 +1,9 @@
 {
   "Login": {
-    "loginTitle": "{{log}} - Connexion",
+    "loginTitle": "{log} - Connexion",
     "signUpText": "Inscription complète",
-    "profileTypes": "{{item.title}}",
-    "profileName": "Nom de {{type}}",
+    "profileTypes": "{item.title}",
+    "profileName": "Nom de {type}",
     "createAccount": "Créer un compte",
     "individual": "Individuel",
     "tpo": "Organisation de reboisement",

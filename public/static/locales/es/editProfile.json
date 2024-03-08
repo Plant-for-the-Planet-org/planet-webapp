@@ -1,8 +1,8 @@
 {
   "EditProfile": {
-    "loginTitle": "{{log}} - Ingresa en",
+    "loginTitle": "{log} - Ingresa en",
     "signUpText": "Inscripción completa",
-    "profileTypes": "{{item.title}}",
+    "profileTypes": "{item.title}",
     "createAccount": "Crear una cuenta",
     "individual": "Individuo",
     "tpo": "Organización de plantación",
@@ -24,7 +24,7 @@
     "cancel": "Cancelar",
     "fieldLabels": {
       "profileType": "Soy un",
-      "name": "Nombre de {{type}}",
+      "name": "Nombre de {type}",
       "website": "Página web",
       "privateAccount": "Cuenta privada",
       "subscribe": "Suscríbete a las noticias por correo electrónico"

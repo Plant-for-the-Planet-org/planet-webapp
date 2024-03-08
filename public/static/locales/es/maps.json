@@ -38,7 +38,7 @@
     "plantationDensityFormula": "Densidad de plantación = Número de árboles / Superficie de plantación",
     "unknown": "Desconocido",
     "showWholeArea": "Mostrar toda la zona",
-    "daysAgo": "{{days}} días atrás",
+    "daysAgo": "{days} días atrás",
     "today": "Hoy",
     "yesterday": "Ayer",
     "clickForDetails": "Haga clic para más detalles"

@@ -1,7 +1,7 @@
 {
   "Planet": {
     "treesDonated": "Darované stromy od spuštění platformy (2019)",
-    "plantedByTPO": "Zasazeno {{projects}} + zúčastněnými projekty",
+    "plantedByTPO": "Zasazeno {projects} + zúčastněnými projekty",
     "plantedGlobally": "Od roku 2006 jsou nám hlášeny stromy",
     "forestLoss": "Čistá ztráta stromu za rok",
     "estimateOf": "Odhad roční ztráty stromů",

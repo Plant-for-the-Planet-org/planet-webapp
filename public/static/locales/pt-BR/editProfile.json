@@ -1,8 +1,8 @@
 {
   "EditProfile": {
-    "loginTitle": "{{log}} - Login",
+    "loginTitle": "{log} - Login",
     "signUpText": "Inscrição completa",
-    "profileTypes": "{{item.title}}",
+    "profileTypes": "{item.title}",
     "createAccount": "Criar Conta",
     "individual": "Pessoa",
     "tpo": "Organização de restauração",
@@ -26,7 +26,7 @@
     "termAndConditionError": "Por favor Aceite os Termos e Condições",
     "fieldLabels": {
       "profileType": "Eu sou um(a)",
-      "name": "Nome do {{type}}",
+      "name": "Nome do {type}",
       "website": "Website",
       "privateAccount": "Conta Privada",
       "subscribe": "Inscreva-se para receber notícias por e-mail"

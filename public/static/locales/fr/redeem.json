@@ -1,7 +1,7 @@
 {
   "Redeem": {
-    "myPlantedTreesByOrg": "Mon {{formattedNumber}} arbre sera planté par {{tpoName}}",
-    "myPlantedTreesByOrg_plural": "Mes {{formattedNumber}} arbres seront plantés par {{tpoName}}",
+    "myPlantedTreesByOrg": "Mon {formattedNumber} arbre sera planté par {tpoName}",
+    "myPlantedTreesByOrg_plural": "Mes {formattedNumber} arbres seront plantés par {tpoName}",
     "congratulations": "Félicitations !",
     "addToMyTrees": "Ajouter à mes arbres",
     "validateCode": "Valider le code",

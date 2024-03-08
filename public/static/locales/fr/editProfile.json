@@ -1,8 +1,8 @@
 {
   "EditProfile": {
-    "loginTitle": "{{log}} - Connexion",
+    "loginTitle": "{log} - Connexion",
     "signUpText": "Inscription complète",
-    "profileTypes": "{{item.title}}",
+    "profileTypes": "{item.title}",
     "createAccount": "Créer un compte",
     "individual": "Individu",
     "tpo": "Organisation de reboisement",
@@ -24,7 +24,7 @@
     "cancel": "Annuler",
     "fieldLabels": {
       "profileType": "Je suis un",
-      "name": "Nom de {{type}}",
+      "name": "Nom de {type}",
       "website": "Site web",
       "privateAccount": "Compte privé",
       "subscribe": "S'abonner aux actualités par email"

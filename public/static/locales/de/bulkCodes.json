@@ -12,20 +12,20 @@
     "importMethodText": {
       "title": "Erstelle personalisierte Baumurkunden",
       "subtitle": "Verwende diese Methode (maximal 1000 Empfänger in einer Operation), wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
-      "details": [
-        "Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.",
-        "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).",
-        "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."
-      ]
+      "details": {
+        "line1": "Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.",
+        "line2": "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).",
+        "line3": "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."
+      }
     },
     "genericMethodText": {
       "title": "Generische Codes erstellen",
       "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
-      "details": [
-        "Alle Codes werden den gleichen Wert haben.",
-        "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.",
-        "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
-      ]
+      "details": {
+        "line1": "Alle Codes werden den gleichen Wert haben.",
+        "line2": "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.",
+        "line3": "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
+      }
     },
     "projectName": "Projektname",
     "costPerUnit": "Kosten pro Einheit",

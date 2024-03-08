@@ -8,7 +8,7 @@
     "tabAccounts": "Účty",
     "tabCreateAccount": "Vytvořit účet",
     "tabTransactions": "Transakce",
-    "accountTitleText": "{{currency}} PlanetCash účet ({{country}})",
+    "accountTitleText": "{currency} PlanetCash účet ({country})",
     "createAccountTitleText": "Zaregistrujte se do PlanetCash",
     "addBalanceButton": "Přidat zůstatek",
     "labelAccountHolder": "Držitel účtu",
@@ -27,7 +27,7 @@
     "planetCashTerms3": "Dary na účet PlanetCash z osobních důvodů jsou obecně odečitatelné z daní v zemi vybrané v tomto kroku. Komerční využití PlanetCash nemusí být způsobilé pro daňové odpočty. Máte-li dotazy, kontaktujte prosím support@plant-for-the-planet.org nebo svého daňového poradce.",
     "accountError": {
       "active_account_exists": "Aktivní účet již existuje. Deaktivujte tento účet před aktivací jiného účtu.",
-      "duplicate_account": "Již jste vytvořili účet pro {{country}}",
+      "duplicate_account": "Již jste vytvořili účet pro {country}",
       "default": "Při vytváření účtu se něco pokazilo. Zkuste to prosím o chvíli."
     }
   }

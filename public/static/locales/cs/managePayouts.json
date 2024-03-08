@@ -34,7 +34,7 @@
     "errors": {
       "scheduleFrequencyRequired": "Frekvence plateb je povinná",
       "payoutMinAmountRequired": "Minimální částka výplaty je povinná",
-      "payoutMinAmountTooLow": "Minimální částka výplaty by měla být alespoň {{currency}} {{minAmount}}",
+      "payoutMinAmountTooLow": "Minimální částka výplaty by měla být alespoň {currency} {minAmount}",
       "bankNameRequired": "Název banky je povinný.",
       "bankAddressRequired": "Adresa banky je povinná.",
       "holderNameRequired": "Jméno držitele je povinné.",
@@ -44,7 +44,7 @@
       "noAccountFound": "Nebyl načten žádný účet"
     },
     "placeholders": {
-      "payoutMinAmount": "Mělo by být alespoň {{currency}} {{minAmount}}",
+      "payoutMinAmount": "Mělo by být alespoň {currency} {minAmount}",
       "bankName": "např. Century Bank LLC",
       "bankAddress": "např. 1 West St, Hamington Way, MA, 10311, USA",
       "holderName": "např. John Doe",
@@ -57,19 +57,19 @@
     },
     "saveButton": "Uložit",
     "accountError": {
-      "min_amount_range": "Minimální částka výplaty musí být alespoň {{currency}} {{min}}.",
+      "min_amount_range": "Minimální částka výplaty musí být alespoň {currency} {min}.",
       "min_amount_forbidden": "Pro výchozí účet nemůžete zadat minimální výši výplaty.",
-      "account_duplicate": "Již existuje {{currency}} účet.",
+      "account_duplicate": "Již existuje {currency} účet.",
       "default": "Při vytváření účtu se něco pokazilo. Zkuste to prosím po chvíli."
     },
     "accountCreationSuccess": "Údaje o vašem účtu byly úspěšně uloženy.",
     "accountUpdationSuccess": "Údaje o vašem účtu byly úspěšně aktualizovány.",
     "scheduleSaveSuccess": "Váš plán výplaty byl úspěšně uložen.",
     "editAccountButton": "Upravit účet",
-    "accountTitleText": "Převod pro {{currency}}",
+    "accountTitleText": "Převod pro {currency}",
     "addBankDetailsButton": "Přidat bankovní údaje",
     "noBankAccountText": "Zatím jste nepřidali žádné bankovní údaje.",
     "editBankAccountTitle": "Upravit účet",
-    "minPayoutText": "Min. Výplata: {{amount}}"
+    "minPayoutText": "Min. Výplata: {amount}"
   }
 }

@@ -38,7 +38,7 @@
     "plantationDensityFormula": "Hustota výsadby = počet stromů/Oblast výsadby",
     "unknown": "Neznámý",
     "showWholeArea": "Zobrazit celou oblast",
-    "daysAgo": "{{days}} dní zpět",
+    "daysAgo": "{days} dní zpět",
     "today": "Dnes",
     "yesterday": "Včera",
     "clickForDetails": "Kliknutím zobrazíte podrobnosti",

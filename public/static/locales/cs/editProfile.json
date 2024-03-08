@@ -1,8 +1,8 @@
 {
   "EditProfile": {
-    "loginTitle": "{{log}} - Přihlášení",
+    "loginTitle": "{log} - Přihlášení",
     "signUpText": "Dokončení registrace",
-    "profileTypes": "{{item.title}}",
+    "profileTypes": "{item.title}",
     "createAccount": "Vytvořit účet",
     "individual": "Osoba",
     "tpo": "Organizace pro obnovu lesů",
@@ -26,7 +26,7 @@
     "termAndConditionError": "Přijměte prosím Smluvní podmínky",
     "fieldLabels": {
       "profileType": "Já jsem",
-      "name": "Název {{type}}",
+      "name": "Název {type}",
       "website": "Webstránka",
       "privateAccount": "Soukromý účet",
       "subscribe": "Přihlášení k odběru novinek e-mailem"

@@ -1,7 +1,7 @@
 {
   "Planet": {
     "treesDonated": "Arbres donnés depuis 2019",
-    "plantedByTPO": "Planté par plus de {{projects}}+ projets participants",
+    "plantedByTPO": "Planté par plus de {projects}+ projets participants",
     "plantedGlobally": "Arbres qui nous sont signalés depuis 2006",
     "forestLoss": "Perte nette d'arbres par an",
     "estimateOf": "Estimation de la perte annuelle d'arbres par",
