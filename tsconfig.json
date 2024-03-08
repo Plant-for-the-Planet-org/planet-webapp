@@ -25,6 +25,7 @@
     "./src/**/*",
     "tenant.config.ts",
     "public/assets",
-    "folderCrawler.js"
+    "folderCrawler.js",
+    "modifyJson.js"
   ]
 }

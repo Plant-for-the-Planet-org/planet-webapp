@@ -1,35 +1,37 @@
 {
-  "loginTitle": "{{log}} - Connexion",
-  "signUpText": "Inscription complète",
-  "profileTypes": "{{item.title}}",
-  "createAccount": "Créer un compte",
-  "individual": "Individu",
-  "tpo": "Organisation de reboisement",
-  "education": "École",
-  "organization": "Société",
-  "profileCreated": "Profil Créé avec succès !",
-  "profileCreationFailed": "Erreur dans la création du profil. Veuillez réessayer.",
-  "profileCreationError": "Erreur dans la création du profil.",
-  "edit": "Modifier le profil",
-  "privateAccountTxt": "Votre profil est caché et seul votre prénom apparaît dans le classement",
-  "save": "Sauvegarder",
-  "profilePicUpdated": "La photo du profil est en cours d'actualisation...",
-  "profileSaved": "Sauvé avec succès !",
-  "profileSaveFailed": "Erreur dans la mise à jour du profil.",
-  "changeAccountToPublic": "Passer à un compte public",
-  "publicAccount": "Compte public",
-  "accountPrivacyChangeText": "Pour créer un widget de profil, vous devez avoir un compte public. En cliquant sur Continuer, vous changez vos paramètres de confidentialité en public.",
-  "continue": "Continuer",
-  "cancel": "Annuler",
-  "fieldLabels": {
-    "profileType": "Je suis un",
-    "name": "Nom de {{type}}",
-    "website": "Site web",
-    "privateAccount": "Compte privé",
-    "subscribe": "S'abonner aux actualités par email"
-  },
-  "validationErrors": {
-    "nameRequired": "Saisir un nom",
-    "websiteInvalid": "Veuillez entrer une URL de site web valide"
+  "EditProfile": {
+    "loginTitle": "{{log}} - Connexion",
+    "signUpText": "Inscription complète",
+    "profileTypes": "{{item.title}}",
+    "createAccount": "Créer un compte",
+    "individual": "Individu",
+    "tpo": "Organisation de reboisement",
+    "education": "École",
+    "organization": "Société",
+    "profileCreated": "Profil Créé avec succès !",
+    "profileCreationFailed": "Erreur dans la création du profil. Veuillez réessayer.",
+    "profileCreationError": "Erreur dans la création du profil.",
+    "edit": "Modifier le profil",
+    "privateAccountTxt": "Votre profil est caché et seul votre prénom apparaît dans le classement",
+    "save": "Sauvegarder",
+    "profilePicUpdated": "La photo du profil est en cours d'actualisation...",
+    "profileSaved": "Sauvé avec succès !",
+    "profileSaveFailed": "Erreur dans la mise à jour du profil.",
+    "changeAccountToPublic": "Passer à un compte public",
+    "publicAccount": "Compte public",
+    "accountPrivacyChangeText": "Pour créer un widget de profil, vous devez avoir un compte public. En cliquant sur Continuer, vous changez vos paramètres de confidentialité en public.",
+    "continue": "Continuer",
+    "cancel": "Annuler",
+    "fieldLabels": {
+      "profileType": "Je suis un",
+      "name": "Nom de {{type}}",
+      "website": "Site web",
+      "privateAccount": "Compte privé",
+      "subscribe": "S'abonner aux actualités par email"
+    },
+    "validationErrors": {
+      "nameRequired": "Saisir un nom",
+      "websiteInvalid": "Veuillez entrer une URL de site web valide"
+    }
   }
 }

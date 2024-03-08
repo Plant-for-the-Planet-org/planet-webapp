@@ -1,37 +1,39 @@
 {
-  "loginTitle": "{{log}} - Přihlášení",
-  "signUpText": "Dokončení registrace",
-  "profileTypes": "{{item.title}}",
-  "createAccount": "Vytvořit účet",
-  "individual": "Osoba",
-  "tpo": "Organizace pro obnovu lesů",
-  "education": "Škola",
-  "organization": "Společnost",
-  "profileCreated": "Profil úspěšně vytvořen!",
-  "profileCreationFailed": "Chyba při vytváření profilu. Zkuste to prosím znovu.",
-  "profileCreationError": "Chyba při vytváření profilu.",
-  "edit": "Editovat profil",
-  "privateAccountTxt": "Váš profil je skrytý a v žebříčku se zobrazuje pouze vaše křestní jméno",
-  "save": "Uložit",
-  "profilePicUpdated": "Profilový obrázek se aktualizuje...",
-  "profileSaved": "Úspěšně uloženo!",
-  "profileSaveFailed": "Chyba při aktualizaci profilu.",
-  "changeAccountToPublic": "Přechod na veřejný účet",
-  "publicAccount": "Veřejný účet",
-  "accountPrivacyChangeText": "Abyste mohli vytvořit widget profilu, musíte mít veřejný účet. Kliknutím na tlačítko pokračovat změníte nastavení soukromí na veřejné.",
-  "continue": "Pokračovat",
-  "cancel": "Zrušit",
-  "termAndCondition": "Souhlasím s <termsLink>podmínkami</termsLink> platformy Plant-for-the-Planet.",
-  "termAndConditionError": "Přijměte prosím Smluvní podmínky",
-  "fieldLabels": {
-    "profileType": "Já jsem",
-    "name": "Název {{type}}",
-    "website": "Webstránka",
-    "privateAccount": "Soukromý účet",
-    "subscribe": "Přihlášení k odběru novinek e-mailem"
-  },
-  "validationErrors": {
-    "nameRequired": "Zadejte prosím jméno",
-    "websiteInvalid": "Zadejte prosím platnou adresu URL"
+  "EditProfile": {
+    "loginTitle": "{{log}} - Přihlášení",
+    "signUpText": "Dokončení registrace",
+    "profileTypes": "{{item.title}}",
+    "createAccount": "Vytvořit účet",
+    "individual": "Osoba",
+    "tpo": "Organizace pro obnovu lesů",
+    "education": "Škola",
+    "organization": "Společnost",
+    "profileCreated": "Profil úspěšně vytvořen!",
+    "profileCreationFailed": "Chyba při vytváření profilu. Zkuste to prosím znovu.",
+    "profileCreationError": "Chyba při vytváření profilu.",
+    "edit": "Editovat profil",
+    "privateAccountTxt": "Váš profil je skrytý a v žebříčku se zobrazuje pouze vaše křestní jméno",
+    "save": "Uložit",
+    "profilePicUpdated": "Profilový obrázek se aktualizuje...",
+    "profileSaved": "Úspěšně uloženo!",
+    "profileSaveFailed": "Chyba při aktualizaci profilu.",
+    "changeAccountToPublic": "Přechod na veřejný účet",
+    "publicAccount": "Veřejný účet",
+    "accountPrivacyChangeText": "Abyste mohli vytvořit widget profilu, musíte mít veřejný účet. Kliknutím na tlačítko pokračovat změníte nastavení soukromí na veřejné.",
+    "continue": "Pokračovat",
+    "cancel": "Zrušit",
+    "termAndCondition": "Souhlasím s <termsLink>podmínkami</termsLink> platformy Plant-for-the-Planet.",
+    "termAndConditionError": "Přijměte prosím Smluvní podmínky",
+    "fieldLabels": {
+      "profileType": "Já jsem",
+      "name": "Název {{type}}",
+      "website": "Webstránka",
+      "privateAccount": "Soukromý účet",
+      "subscribe": "Přihlášení k odběru novinek e-mailem"
+    },
+    "validationErrors": {
+      "nameRequired": "Zadejte prosím jméno",
+      "websiteInvalid": "Zadejte prosím platnou adresu URL"
+    }
   }
 }

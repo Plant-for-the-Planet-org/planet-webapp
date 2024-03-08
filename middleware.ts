@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTenantSlug } from './src/utils/multiTenancy/helpers';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { i18nConfig } from './i18n-config';
+import { i18nConfig, Locale } from './i18n-config';
 // import createIntlMiddleware from 'next-intl/middleware';
 
 // TODO - update function to consider cookie
@@ -11,7 +11,7 @@ function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-  const locales = i18nConfig.locales as unknown as string[];
+  const locales = i18nConfig.locales as unknown as Locale[];
 
   // Use negotiator and intl-localematcher to get best locale
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages(

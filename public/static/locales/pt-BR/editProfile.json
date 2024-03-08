@@ -1,37 +1,39 @@
 {
-  "loginTitle": "{{log}} - Login",
-  "signUpText": "Inscrição completa",
-  "profileTypes": "{{item.title}}",
-  "createAccount": "Criar Conta",
-  "individual": "Pessoa",
-  "tpo": "Organização de restauração",
-  "education": "Escola",
-  "organization": "Empresa",
-  "profileCreated": "Perfil criado com sucesso!",
-  "profileCreationFailed": "Erro na criação do perfil. Por favor, tente novamente.",
-  "profileCreationError": "Erro na criação do perfil.",
-  "edit": "Editar Perfil",
-  "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
-  "save": "Salvar",
-  "profilePicUpdated": "A foto do perfil está sendo atualizada",
-  "profileSaved": "Salvo com sucesso!",
-  "profileSaveFailed": "Erro na atualização do perfil.",
-  "changeAccountToPublic": "Mudar para uma conta pública",
-  "publicAccount": "Conta Pública",
-  "accountPrivacyChangeText": "Para criar um widget de perfil, você precisa ter uma conta pública. Ao clicar em continuar, você muda suas configurações de privacidade para público.",
-  "continue": "Continuar",
-  "cancel": "Cancelar",
-  "termAndCondition": "Concordo com os <termsLink>Termos e Condições</termsLink> da plataforma Plant-for-the-Planet.",
-  "termAndConditionError": "Por favor Aceite os Termos e Condições",
-  "fieldLabels": {
-    "profileType": "Eu sou um(a)",
-    "name": "Nome do {{type}}",
-    "website": "Website",
-    "privateAccount": "Conta Privada",
-    "subscribe": "Inscreva-se para receber notícias por e-mail"
-  },
-  "validationErrors": {
-    "nameRequired": "Por favor, adicione um nome",
-    "websiteInvalid": "Por favor, digite o URL válido do site"
+  "EditProfile": {
+    "loginTitle": "{{log}} - Login",
+    "signUpText": "Inscrição completa",
+    "profileTypes": "{{item.title}}",
+    "createAccount": "Criar Conta",
+    "individual": "Pessoa",
+    "tpo": "Organização de restauração",
+    "education": "Escola",
+    "organization": "Empresa",
+    "profileCreated": "Perfil criado com sucesso!",
+    "profileCreationFailed": "Erro na criação do perfil. Por favor, tente novamente.",
+    "profileCreationError": "Erro na criação do perfil.",
+    "edit": "Editar Perfil",
+    "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
+    "save": "Salvar",
+    "profilePicUpdated": "A foto do perfil está sendo atualizada",
+    "profileSaved": "Salvo com sucesso!",
+    "profileSaveFailed": "Erro na atualização do perfil.",
+    "changeAccountToPublic": "Mudar para uma conta pública",
+    "publicAccount": "Conta Pública",
+    "accountPrivacyChangeText": "Para criar um widget de perfil, você precisa ter uma conta pública. Ao clicar em continuar, você muda suas configurações de privacidade para público.",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "termAndCondition": "Concordo com os <termsLink>Termos e Condições</termsLink> da plataforma Plant-for-the-Planet.",
+    "termAndConditionError": "Por favor Aceite os Termos e Condições",
+    "fieldLabels": {
+      "profileType": "Eu sou um(a)",
+      "name": "Nome do {{type}}",
+      "website": "Website",
+      "privateAccount": "Conta Privada",
+      "subscribe": "Inscreva-se para receber notícias por e-mail"
+    },
+    "validationErrors": {
+      "nameRequired": "Por favor, adicione um nome",
+      "websiteInvalid": "Por favor, digite o URL válido do site"
+    }
   }
 }

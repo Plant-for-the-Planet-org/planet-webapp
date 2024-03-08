@@ -1,35 +1,37 @@
 {
-  "loginTitle": "{{log}} - Login",
-  "signUpText": "Completa l'iscrizione",
-  "profileTypes": "{{item.title}}",
-  "createAccount": "Crea un conto",
-  "individual": "Individuale",
-  "tpo": "Organizzazione di riforestazione",
-  "education": "Scuola",
-  "organization": "Azienda",
-  "profileCreated": "Profilo creato con successo!",
-  "profileCreationFailed": "Errore nella creazione del profilo. Riprovare.",
-  "profileCreationError": "Errore nella creazione del profilo.",
-  "edit": "Modifica profilo",
-  "privateAccountTxt": "Il tuo profilo è nascosto e nella classifica appare solo il tuo nome di battesimo",
-  "save": "Salva",
-  "profilePicUpdated": "L'immagine del profilo è in fase di aggiornamento...",
-  "profileSaved": "Salvato con successo!",
-  "profileSaveFailed": "Errore nell'aggiornamento del profilo.",
-  "changeAccountToPublic": "Passare a un account pubblico",
-  "publicAccount": "Conto pubblico",
-  "accountPrivacyChangeText": "Per creare un widget di profilo devi avere un account pubblico. Cliccando su continua cambi le tue impostazioni di privacy in pubblico.",
-  "continue": "Continua",
-  "cancel": "Annulla",
-  "fieldLabels": {
-    "profileType": "Sono un",
-    "name": "Nome di {{type}}",
-    "website": "Sito web",
-    "privateAccount": "Conto privato",
-    "subscribe": "Iscriviti alle notizie via e-mail"
-  },
-  "validationErrors": {
-    "nameRequired": "Si prega di inserire un nome",
-    "websiteInvalid": "Inserire l'URL del sito web valido"
+  "EditProfile": {
+    "loginTitle": "{{log}} - Login",
+    "signUpText": "Completa l'iscrizione",
+    "profileTypes": "{{item.title}}",
+    "createAccount": "Crea un conto",
+    "individual": "Individuale",
+    "tpo": "Organizzazione di riforestazione",
+    "education": "Scuola",
+    "organization": "Azienda",
+    "profileCreated": "Profilo creato con successo!",
+    "profileCreationFailed": "Errore nella creazione del profilo. Riprovare.",
+    "profileCreationError": "Errore nella creazione del profilo.",
+    "edit": "Modifica profilo",
+    "privateAccountTxt": "Il tuo profilo è nascosto e nella classifica appare solo il tuo nome di battesimo",
+    "save": "Salva",
+    "profilePicUpdated": "L'immagine del profilo è in fase di aggiornamento...",
+    "profileSaved": "Salvato con successo!",
+    "profileSaveFailed": "Errore nell'aggiornamento del profilo.",
+    "changeAccountToPublic": "Passare a un account pubblico",
+    "publicAccount": "Conto pubblico",
+    "accountPrivacyChangeText": "Per creare un widget di profilo devi avere un account pubblico. Cliccando su continua cambi le tue impostazioni di privacy in pubblico.",
+    "continue": "Continua",
+    "cancel": "Annulla",
+    "fieldLabels": {
+      "profileType": "Sono un",
+      "name": "Nome di {{type}}",
+      "website": "Sito web",
+      "privateAccount": "Conto privato",
+      "subscribe": "Iscriviti alle notizie via e-mail"
+    },
+    "validationErrors": {
+      "nameRequired": "Si prega di inserire un nome",
+      "websiteInvalid": "Inserire l'URL del sito web valido"
+    }
   }
 }
