@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import maplibregl, { Map } from 'maplibre-gl';
-//@ts-ignore
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
