@@ -1,5 +1,6 @@
+@import '../../theme/theme';
 .searchBarMainConatiner {
-  background-color: #fff;
+  background-color: $light;
   width: 100%;
   height: 47px;
   border-radius: 12px;
@@ -11,13 +12,13 @@
 
 .searchBarContainer {
   width: 100%;
-  background-color: #fff;
+  background-color: $light;
   display: flex;
   border-radius: 12px;
   font-weight: 700;
-  color: #219653;
+  color: $primaryColorNew;
   p {
-    font-size: 14px;
+    font-size: $fontSmall;
     font-weight: 400;
   }
 }
@@ -66,26 +67,26 @@
   gap: 4px;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
-  border: 2px solid #219653;
+  border: 2px solid $primaryColorNew;
   > .starIconConatiner {
     margin-top: 4px;
   }
 }
 
 .activeTopProjectButton {
-  background: #219653;
-  color: #fff;
+  background: $primaryColorNew;
+  color: $light;
 }
 
 .topProjectButton {
-  background: #fff;
+  background: $light;
 }
 
 .activeTopProjectLabelConatiner,
 .topProjectLabelConatiner {
   display: flex;
   > .topProjectLable {
-    font-size: 8px;
+    font-size: $fontXXXSmallNew;
     font-weight: 700;
     display: flex;
     p {
@@ -94,7 +95,7 @@
     }
   }
   .noOfProject {
-    font-size: 8px;
+    font-size: $fontXXXSmallNew;
     font-weight: 400;
     margin-left: 2px;
   }
@@ -108,10 +109,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #219653;
+  border: 2px solid $primaryColorNew;
   > .allProjectLabel {
     font-weight: 700;
-    font-size: 8px;
+    font-size: $fontXXXSmallNew;
     display: flex;
     p {
       font-weight: 400;
@@ -120,18 +121,18 @@
   }
   .noOfProject {
     font-weight: 400;
-    font-size: 8px;
+    font-size: $fontXXXSmallNew;
     margin-left: 1px;
   }
 }
 
 .activeAllProjectButton {
-  background: #219653;
-  color: #fff;
+  background: $primaryColorNew;
+  color: $light;
 }
 
 .allProjectButton {
-  background: #fff;
+  background: $light;
 }
 
 .projectFeaturesMobile {
@@ -145,7 +146,7 @@
 .listAndLocationContainer {
   width: 102px;
   border-radius: 5px;
-  border: 2px solid #219653;
+  border: 2px solid $primaryColorNew;
   display: flex;
 }
 .activeListButton,
@@ -157,12 +158,12 @@
   width: 51px;
   > .listLable {
     font-weight: 800;
-    font-size: 8px;
+    font-size: $fontXXXSmallNew;
   }
 }
 .activeListButton {
-  background: #219653;
-  color: #fff;
+  background: $primaryColorNew;
+  color: $light;
 }
 
 .activeLocationButton,
@@ -174,14 +175,14 @@
   gap: 7px;
   width: 51px;
   > .mapLable {
-    font-size: 8px;
+    font-size: $fontXXXSmallNew;
     font-weight: 700;
   }
 }
 
 .activeLocationButton {
-  background: #219653;
-  color: #fff;
+  background: $primaryColorNew;
+  color: $light;
 }
 
 .iconsContainer {

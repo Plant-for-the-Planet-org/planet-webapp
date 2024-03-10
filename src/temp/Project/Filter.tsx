@@ -5,23 +5,26 @@ import { useTranslation } from 'next-i18next';
 
 interface FilterProps {
   activeFilter: boolean;
-  projectList: string[];
+  ecosystemType: string[];
 }
 
-export const FilterDropDown = ({ activeFilter, projectList }: FilterProps) => {
+export const FilterDropDown = ({
+  activeFilter,
+  ecosystemType,
+}: FilterProps) => {
   const { t } = useTranslation(['projectDetails']);
   return (
     <>
-      {activeFilter && projectList.length > 0 ? (
+      {activeFilter && ecosystemType.length > 0 ? (
         <div className={style.projectListMainContainer}>
           <div className={style.container}>
             <h1>{t('projectDetails:allProjects')}</h1>
 
-            {projectList.map((projectType) => {
+            {ecosystemType.map((singleEcosystem) => {
               return (
                 <>
                   <hr />
-                  <div className={style.projectName}>{projectType}</div>
+                  <div className={style.projectName}>{singleEcosystem}</div>
                 </>
               );
             })}
@@ -38,7 +41,7 @@ const Filter = ({ activeFilter, projectList }: FilterProps) => {
   return (
     <div>
       <Button>
-        <FilterIcon width={'16px'} height={'16px'} />
+        <FilterIcon width={'16px'} />
       </Button>
 
       <FilterDropDown activeFilter={activeFilter} projectList={projectList} />

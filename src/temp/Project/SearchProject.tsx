@@ -3,58 +3,12 @@ import CrossIcon from '../icons/CrossIcon';
 import FilterIcon from '../icons/FilterIcon';
 import SearchIcon from '../icons/SearchIcon';
 import StarIcon from '../icons/StarIcon';
-import TextField from '@mui/material/TextField';
 import Tabs from '@mui/material/Tabs';
-import {
-  createTheme,
-  ThemeProvider,
-  Theme,
-  useTheme,
-} from '@mui/material/styles';
 import { FilterDropDown } from './Filter';
 import style from './Search.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
 import CustomTab from './CustomTab';
-
-const customTheme = (outerTheme: Theme) =>
-  createTheme({
-    palette: {
-      mode: outerTheme.palette.mode,
-    },
-    components: {
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            '--TextField-brandBorderColor': '#fff',
-            '--TextField-brandBorderHoverColor': '#fff',
-            '--TextField-brandBorderFocusedColor': '#fff',
-            '& label.Mui-focused': {
-              color: 'var(--TextField-brandBorderFocusedColor)',
-            },
-          },
-        },
-      },
-      MuiInput: {
-        styleOverrides: {
-          root: {
-            '&': {
-              width: '240px',
-            },
-            '&::before': {
-              borderBottom: '2px solid var(--TextField-brandBorderColor)',
-            },
-            '&:hover:not(.Mui-disabled, .Mui-error):before': {
-              borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
-            },
-            '&.Mui-focused:after': {
-              borderBottom:
-                '2px solid var(--TextField-brandBorderFocusedColor)',
-            },
-          },
-        },
-      },
-    },
-  });
+import { SearchTextField } from './CustomSearchTextField';
 
 interface SearchProjectInterface {
   activeFilter: boolean;
@@ -69,12 +23,11 @@ const SearchProject = ({
   const [input, setInput] = useState('');
   const [activeSearch, setSearchActive] = useState(searchActive);
   const { t } = useTranslation(['projectDetails']);
-  const [value, setValue] = useState('1');
+  const [value, setValue] = useState('');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const outerTheme = useTheme();
 
   return (
     <>
@@ -87,24 +40,15 @@ const SearchProject = ({
             >
               <SearchIcon />
             </div>
-            <ThemeProvider theme={customTheme(outerTheme)}>
-              <TextField
-                sx={{
-                  '.MuiInput-input': {
-                    marginTop: '4px',
-                    marginLeft: '10px',
-                  },
-                }}
-                id="standard-search"
-                variant="standard"
-                placeholder={t('projectDetails:searchProject')}
-                value={input}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setInput(event.target.value);
-                }}
-                className={style.textField}
-              />
-            </ThemeProvider>
+            <SearchTextField
+              id="standard-search"
+              variant="standard"
+              placeholder={t('projectDetails:searchProject')}
+              value={input}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setInput(event.target.value);
+              }}
+            />
 
             <button
               onClick={() => {

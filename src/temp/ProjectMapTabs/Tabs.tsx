@@ -30,8 +30,11 @@ const Tabs = ({ selected }: TabsProps) => {
         <SingleTab
           icon={
             <SatelliteAnalysisIcon
-              width={'16px'}
-              color={selectedMode === 'satellite' ? '#fff' : '#000'}
+              color={
+                selectedMode === 'satellite'
+                  ? `${'var(--light)'}`
+                  : `${'var(--dark)'}`
+              }
             />
           }
           title={t('projectDetails:satelliteAnalysis')}
@@ -49,9 +52,11 @@ const Tabs = ({ selected }: TabsProps) => {
         <SingleTab
           icon={
             <FieldDataIcon
-              height={'11px'}
-              width={'16px'}
-              color={selectedMode === 'field' ? '#fff' : '#000'}
+              color={
+                selectedMode === 'field'
+                  ? `${'var(--light)'}`
+                  : `${'var(--dark)'}`
+              }
             />
           }
           title={t('maps:fieldData')}
@@ -69,7 +74,11 @@ const Tabs = ({ selected }: TabsProps) => {
         <SingleTab
           icon={
             <SatelliteIcon
-              color={selectedMode === 'timeTravel' ? '#fff' : '#000'}
+              color={
+                selectedMode === 'timeTravel'
+                  ? `${'var(--light)'}`
+                  : `${'var(--dark)'}`
+              }
             />
           }
           title={t('maps:timeTravel')}
