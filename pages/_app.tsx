@@ -134,28 +134,9 @@ const PlanetWeb = ({
     }
   }
 
-  // const [initialized, setInitialized] = React.useState(false);
-
   React.useEffect(() => {
     storeConfig(tenantConfig);
   }, []);
-
-  /* React.useEffect(() => {
-    if (i18n && i18n.isInitialized) {
-      setInitialized(true);
-    }
-  }, [i18n, i18n.isInitialized]);*/
-
-  /* React.useEffect(() => {
-    if (
-      localStorage.getItem('language') !== null &&
-      i18n &&
-      i18n.isInitialized
-    ) {
-      const languageFromLocalStorage: any = localStorage.getItem('language');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n, i18n.isInitialized]); */
 
   React.useEffect(() => {
     if (
@@ -184,7 +165,6 @@ const PlanetWeb = ({
 
   const ProjectProps = {
     pageProps,
-    // initialized,
     currencyCode,
     setCurrencyCode,
   };

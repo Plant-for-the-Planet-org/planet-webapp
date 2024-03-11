@@ -27,11 +27,10 @@ import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  initialized: Boolean;
   pageProps: PageProps;
 }
 
-export default function Home({ initialized, pageProps }: Props) {
+export default function Home({ pageProps }: Props) {
   const router = useRouter();
 
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
@@ -119,7 +118,7 @@ export default function Home({ initialized, pageProps }: Props) {
   return pageProps.tenantConfig ? (
     <>
       <GetHomeMeta />
-      {initialized ? getHomePage() : <></>}
+      {getHomePage()}
     </>
   ) : (
     <></>

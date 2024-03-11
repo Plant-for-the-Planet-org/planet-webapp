@@ -3,9 +3,7 @@ import { getTenantSlug } from './src/utils/multiTenancy/helpers';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { i18nConfig, Locale } from './i18n-config';
-// import createIntlMiddleware from 'next-intl/middleware';
 
-// TODO - update function to consider cookie
 function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {};
