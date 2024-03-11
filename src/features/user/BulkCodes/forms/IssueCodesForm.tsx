@@ -26,6 +26,7 @@ import {
   SerializedError,
   Donation,
 } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
@@ -38,7 +39,8 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, logoutUser } = useUserProps();
+  const { user, logoutUser, setRefetchUserData } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -46,7 +48,6 @@ const IssueCodesForm = (): ReactElement | null => {
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
   const [unitsPerCode, setUnitsPerCode] = useState('');
-
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
@@ -125,6 +126,7 @@ const IssueCodesForm = (): ReactElement | null => {
 
       try {
         const res = await postAuthenticatedRequest<Donation>(
+          tenantConfig?.id,
           `/app/donations`,
           cleanedData,
           token,
@@ -137,6 +139,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
+          setRefetchUserData(true);
           setTimeout(() => {
             router.push(`/profile/history?ref=${res.uid}`);
           }, 5000);

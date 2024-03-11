@@ -35,6 +35,7 @@ import {
   ProfileProjectConservation,
   ImagesScopeProjects,
 } from '../../../common/types/project';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function ProjectMedia({
   handleBack,
@@ -56,8 +57,8 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
-
-  const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
+  const { tenantConfig } = useTenant();
+  const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
@@ -67,6 +68,7 @@ export default function ProjectMedia({
       // Fetch images of the project
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest<ImagesScopeProjects>(
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -94,6 +96,7 @@ export default function ProjectMedia({
 
     try {
       const res = await postAuthenticatedRequest<UploadImage>(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
@@ -150,6 +153,7 @@ export default function ProjectMedia({
   const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         token,
         logoutUser
@@ -172,7 +176,13 @@ export default function ProjectMedia({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(
+        tenantConfig?.id,
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
@@ -191,6 +201,7 @@ export default function ProjectMedia({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
@@ -222,6 +233,7 @@ export default function ProjectMedia({
 
     try {
       const res = await putAuthenticatedRequest<UploadImage>(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,

@@ -3,15 +3,15 @@ import { useTranslation } from 'next-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import { ReactElement } from 'react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
-import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
+import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
 import React from 'react';
 import { SetState } from '../types/common';
 
 export interface EnterRedeemCodeProps {
   isLoading: boolean;
-  setInputCode: SetState<string | null>;
-  inputCode: string | null;
+  setInputCode: SetState<string | undefined>;
+  inputCode: string | undefined;
   redeemCode: () => void;
   closeRedeem: () => void;
 }
