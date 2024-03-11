@@ -4,35 +4,30 @@ import FilterIcon from '../icons/FilterIcon';
 import SearchIcon from '../icons/SearchIcon';
 import StarIcon from '../icons/StarIcon';
 import Tabs from '@mui/material/Tabs';
-import { FilterDropDown } from './Filter';
 import style from './Search.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
 import CustomTab from './CustomTab';
 import { SearchTextField } from './CustomSearchTextField';
+import themeProperties from '../../theme/themeProperties';
 
 interface SearchProjectInterface {
-  activeFilter: boolean;
-  projectList: string[];
-  searchActive: boolean;
+  isSearch: boolean;
 }
-const SearchProject = ({
-  activeFilter,
-  projectList,
-  searchActive,
-}: SearchProjectInterface) => {
+const SearchProject = ({ isSearch }: SearchProjectInterface) => {
   const [input, setInput] = useState('');
-  const [activeSearch, setSearchActive] = useState(searchActive);
+  const [activeSearch, setSearchActive] = useState(isSearch);
   const { t } = useTranslation(['projectDetails']);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(0);
+  const { primaryColorNew } = themeProperties;
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
     <>
       <div className={style.searchBarMainConatiner}>
-        {searchActive || activeSearch ? (
+        {isSearch || activeSearch ? (
           <>
             <div
               className={style.activeSearchIcon}
@@ -67,11 +62,11 @@ const SearchProject = ({
               onChange={handleChange}
               aria-label="icon position tabs example"
               TabIndicatorProps={{
-                sx: { backgroundColor: '#219653' },
+                sx: { backgroundColor: `${primaryColorNew}` },
               }}
             >
               <CustomTab
-                icon={<StarIcon width={'16px'} color={'#219653'} />}
+                icon={<StarIcon width={'16px'} color={`${primaryColorNew}`} />}
                 label={
                   <Trans i18nKey={'topProject'}>
                     <div className={style.projectLabel}>
@@ -99,18 +94,15 @@ const SearchProject = ({
               />
             </Tabs>
             <div className={style.iconsContainer}>
-              <div className={style.icon}>
+              <button className={style.icon}>
                 <SearchIcon />
-              </div>
-              <div className={style.icon}>
+              </button>
+              <button className={style.icon}>
                 <FilterIcon width={'16px'} />
-              </div>
+              </button>
             </div>
           </div>
         )}
-      </div>
-      <div className={style.filterContainer}>
-        <FilterDropDown activeFilter={activeFilter} projectList={projectList} />
       </div>
     </>
   );

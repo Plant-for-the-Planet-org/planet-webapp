@@ -10,23 +10,12 @@ type Story = StoryObj<typeof Filter>;
 
 export const inActive: Story = {
   args: {
-    activeFilter: false,
-    ecosystemType: [],
+    isFilter: false,
   },
 };
 
 export const active = {
   args: {
-    activeFilter: true,
-    ecosystemType: [
-      'Natural Regeneration',
-      'Mangroves',
-      'Managed Regeneration',
-      'Other Restoration',
-      'Tree Planting',
-      'Agroforestry',
-      'Urban Restoration',
-      'Conservation',
-    ],
+    isFilter: true,
   },
 };

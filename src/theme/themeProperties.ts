@@ -49,6 +49,7 @@ const themeProperties = {
     highlightBackground: '#f2f2f2',
     light: '#fff',
     dark: '#000',
+    darkNew: '#333333',
     dangerColor: '#00ef00',
     safeColor: '#2980b9',
     backgroundColorDark: '#101113',

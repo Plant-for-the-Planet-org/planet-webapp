@@ -6,6 +6,7 @@ import ListIcon from '../icons/ListIcon';
 import LocationIcon from '../icons/LocationIcon';
 import style from '../Project/Search.module.scss';
 import { Trans, useTranslation } from 'next-i18next';
+import themeProperties from '../../theme/themeProperties';
 
 interface SearchTabForMobileProps {
   numberOfProject: number;
@@ -15,6 +16,7 @@ export const SearchTabForMobile = ({
   numberOfProject,
 }: SearchTabForMobileProps) => {
   const { t } = useTranslation(['projectDetails']);
+  const { dark, light } = themeProperties;
   const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
     'topProjects'
   );
@@ -33,10 +35,14 @@ export const SearchTabForMobile = ({
           }
           onClick={() => setTabSelected('topProjects')}
         >
-          <div className={style.starIconConatiner}>
+          <div className={style.starIconContainer}>
             <StarIcon
               width={'12px'}
-              color={tabSelected === 'topProjects' ? '#FFF' : '#219653'}
+              color={
+                tabSelected === 'topProjects'
+                  ? `${light.light}`
+                  : `${dark.darkNew}`
+              }
             />
           </div>
           <div
@@ -88,7 +94,11 @@ export const SearchTabForMobile = ({
           <div style={{ marginTop: '3px' }}>
             <ListIcon
               width={'14px'}
-              color={secondTabSelected === 'list' ? '#fff' : '#333333'}
+              color={
+                secondTabSelected === 'list'
+                  ? `${light.light}`
+                  : `${dark.darkNew}`
+              }
             />
           </div>
           <div className={style.listLable}>{t('projectDetails:list')}</div>
@@ -103,7 +113,11 @@ export const SearchTabForMobile = ({
         >
           <div>
             <LocationIcon
-              color={secondTabSelected === 'map' ? '#fff' : '#333333'}
+              color={
+                secondTabSelected === 'map'
+                  ? `${light.light}`
+                  : `${dark.darkNew}`
+              }
               width={'9px'}
               height={'13px'}
             />

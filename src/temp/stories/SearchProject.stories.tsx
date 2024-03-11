@@ -8,27 +8,14 @@ const meta: Meta<typeof SearchProject> = {
 export default meta;
 type Story = StoryObj<typeof SearchProject>;
 
-export const SearchInActive: Story = {
+export const inActive: Story = {
   args: {
-    activeFilter: false,
-    projectList: [
-      'Natural Regeneration',
-      'Mangroves',
-      'Managed Regeneration',
-      'Other Restoration',
-      'Tree Planting',
-      'Agroforestry',
-      'Urban Restoration',
-      'Conservation',
-    ],
-    searchActive: false,
+    isSearch: false,
   },
 };
 
-export const SearchActive: Story = {
+export const active: Story = {
   args: {
-    activeFilter: false,
-    projectList: [],
-    searchActive: true,
+    isSearch: true,
   },
 };

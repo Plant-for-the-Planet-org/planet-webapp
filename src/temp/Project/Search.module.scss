@@ -45,7 +45,6 @@
 }
 
 .searchTabForMobile {
-  width: max-content;
   height: 26px;
   display: flex;
   gap: 14px;
@@ -68,7 +67,7 @@
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
   border: 2px solid $primaryColorNew;
-  > .starIconConatiner {
+  > .starIconContainer {
     margin-top: 4px;
   }
 }
