@@ -1,13 +1,1 @@
-{
-  "RegisterTrees": {
-    "selectLocationMap": "Vyberte lokaci na mapě",
-    "requiredNumberOfTrees": "Počet stromů je povinný",
-    "numberOfTrees": "Počet stromů",
-    "datePlanted": "Datum vysazení",
-    "treeSpecies": "Druhy stromů",
-    "speciesRequired": "Druh je povinný",
-    "drawPolygonMap": "Nakreslete polygon na mapě",
-    "clickMapMark": "Kliknutím na mapu označíte lokaci",
-    "next": "Další"
-  }
-}
+{ }

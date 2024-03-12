@@ -1,6 +1,5 @@
 {
   "Donate": {
-    "myTreesPlantedByOnLocation_0": "Můj {treeCount} strom se sází v {location}.",
     "topProjects": "Nejlepší projekty",
     "allCountProjects": "Všech [{projectCount}] projektů",
     "searchProjects": "Prohledat projekty ...",
@@ -104,7 +103,6 @@
     "projectPurpose": "Účel projektu",
     "type": "Typ",
     "projectType": "Typ projektu",
-    "conservation": "Ochrana přírody",
     "restoration": "Restorace",
     "filters": "Filtry",
     "perM2": "na m²"
