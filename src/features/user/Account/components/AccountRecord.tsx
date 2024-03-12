@@ -31,13 +31,16 @@ export function RecordHeader({
   const getRecordTitle = (): ReactElement => {
     let title: string;
     const BULLET_SEPARATOR = '\u2022';
+    let displayedUnit: string;
     switch (record.purpose) {
       case 'trees':
       case 'conservation':
+        displayedUnit =
+          record.unitType || (record.purpose === 'trees' ? 'tree' : 'm2');
         // Sample title 1 => 5 Tree Gift . Yucatan,
         // Sample title 2 => 2 m² Donation . Sumatra
         title = `${getFormattedNumber(locale, record.quantity)} ${tCommon(
-          record.unitType,
+          displayedUnit,
           { count: 1 }
         )} ${
           record.details.giftRecipient ? tMe('gift') : tMe('donation')
@@ -52,11 +55,10 @@ export function RecordHeader({
         title = tMe(record.type);
         break;
     }
-    const displayedTitle =
-      title.length > 42 ? `${title.substring(0, 42)}...` : title;
+
     return (
-      <p title={title} className={styles.top}>
-        {displayedTitle}
+      <p title={title} className={`${styles.top} ${styles.recordTitle}`}>
+        {title}
       </p>
     );
   };

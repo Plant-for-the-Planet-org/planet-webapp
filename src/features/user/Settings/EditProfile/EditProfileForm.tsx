@@ -277,6 +277,7 @@ export default function EditProfileForm() {
     if (contextLoaded && token) {
       try {
         const res: User = await putAuthenticatedRequest(
+          tenantConfig?.id,
           `/app/profile`,
           bodyToSend,
           token,

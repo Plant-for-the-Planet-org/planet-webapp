@@ -44,7 +44,7 @@ export default function Filters(): ReactElement {
       setFilteredProjects(filteredProjects);
     }
     if (projects) {
-      if (tenantConfig?.tenantName === 'salesforce') {
+      if (tenantConfig?.config.slug === 'salesforce') {
         filterProjects();
       } else {
         setFilteredProjects(projects);
@@ -72,7 +72,7 @@ export default function Filters(): ReactElement {
       const uniqueFilters = [...new Set(filters)];
       return uniqueFilters;
     }
-    if (projects && tenantConfig?.tenantName === 'salesforce') {
+    if (projects && tenantConfig?.config.slug === 'salesforce') {
       const filters = getFilters().filter((filter) => filter);
       setFilters(filters);
     }
@@ -82,7 +82,7 @@ export default function Filters(): ReactElement {
     setType({ ...type, [event.target.name]: event.target.checked });
   };
 
-  return tenantConfig?.tenantName === 'salesforce' ? (
+  return tenantConfig?.config.slug === 'salesforce' ? (
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
         <div
