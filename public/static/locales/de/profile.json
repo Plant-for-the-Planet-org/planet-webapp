@@ -15,8 +15,6 @@
     },
     "myForestMap": {
       "plantedTree": "{count, plural, =0 {Bäume} =1 {Baum} other {Bäume}}",
-      "plantedTree_one": "{count, number} Baum",
-      "plantedTree_other": "{count, number} Bäume",
       "treesPlanted": "Gepflanzte Bäume",
       "restored": "Wiederhergestellt",
       "registered": "Registriert",
@@ -27,11 +25,7 @@
       "area": "{areaConserved}  m²",
       "zoomIn": "Für weitere Details heranzoomen",
       "totalDonation": "{count, plural, =0 {Spenden} =1 {Spende} other {Spenden}} ",
-      "totalDonation_one": "{count, number} Spende ",
-      "totalDonation_other": "{count, number} Spenden ",
       "totalProject": "für {count, plural, =0 {Projekte} =1 {Projekt} other {Projekte}}",
-      "totalProject_one": "für {count, number} Projekt",
-      "totalProject_other": "für {count, number} Projekte",
       "tpoName": "By {tpo}"
     },
     "myTreeCounter": {
@@ -41,8 +35,6 @@
     "myContributions": {
       "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete wiederhergestellt",
       "treeRegistered": "{count, plural, =0 {Bäume registriert} =1 {Baum registriert} other {Bäume registriert}}",
-      "treeRegistered_one": "{count, number} Baum registriert",
-      "treeRegistered_other": "{count, number} Bäume registriert",
       "receivedFrom": "Empfangen von {name}",
       "loadMoreContribution": "Lade weitere Beiträge",
       "loadingContribution": "Lade Beiträge....",

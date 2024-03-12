@@ -1,8 +1,6 @@
 {
   "Common": {
     "tree": "{count, plural, =0 {Bäume} =1 {Baum} other {Bäume}}",
-    "tree_one": "Baum",
-    "tree_other": "Bäume",
     "m2": "m²",
     "by": "Von {tpoName}",
     "to_project_by_tpo": "An {projectName} von {tpoName}",

@@ -1,8 +1,6 @@
 {
   "Common": {
     "tree": "{count, plural, =0 {stromů} =1 {strom} other {stromů}}",
-    "tree_one": " strom",
-    "tree_other": "stromů",
     "by": "Od {tpoName}",
     "to_project_by_tpo": "Pro {projectName} od {tpoName}",
     "for": "pro",
