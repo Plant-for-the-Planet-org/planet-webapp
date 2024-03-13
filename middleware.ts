@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTenantSlug } from './src/utils/multiTenancy/helpers';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { i18nConfig, Locale } from './i18n-config';
+import { i18nConfig } from './i18n-config';
 
 function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-  const locales = i18nConfig.locales as unknown as Locale[];
+  const locales = i18nConfig.locales;
 
   // Use negotiator and intl-localematcher to get best locale
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
@@ -19,6 +19,7 @@ function getLocale(request: NextRequest): string | undefined {
   const previouslySelectedLanguage = request.cookies.get('NEXT_LOCALE')?.value;
   if (
     previouslySelectedLanguage !== undefined &&
+    locales.includes(previouslySelectedLanguage) &&
     languages[0] !== previouslySelectedLanguage
   ) {
     languages.unshift(previouslySelectedLanguage);
@@ -31,7 +32,6 @@ function getLocale(request: NextRequest): string | undefined {
 
 /** Identifies locale in relative url and removes it */
 function removeLocaleFromUrl(pathname: string): string {
-  let newPathname = '';
   const localeRegex = /^[a-z]{2}(-[a-z]{2})?$/i;
 
   const splitPathname = pathname.split('/');
@@ -41,8 +41,7 @@ function removeLocaleFromUrl(pathname: string): string {
   const splitFirstSegment = firstSegment.split('-');
 
   if (localeRegex.test(splitFirstSegment[0])) {
-    newPathname = splitPathname.slice(2).join('/');
-    return newPathname;
+    return splitPathname.slice(2).join('/'); //returns the new pathname without the locale
   }
 
   return pathname;
@@ -96,7 +95,10 @@ export default async function middleware(req: NextRequest) {
   // store NEXT_LOCALE cookie if available
   const localeFromPath = pathname.split('/')[1];
   const localeCookieValue = req.cookies.get('NEXT_LOCALE')?.value;
-  if (localeFromPath !== localeCookieValue) {
+  if (
+    i18nConfig.locales.includes(localeFromPath) &&
+    localeFromPath !== localeCookieValue
+  ) {
     res.cookies.set('NEXT_LOCALE', localeFromPath, {
       sameSite: 'strict',
       maxAge: 31536000, // 1 year
