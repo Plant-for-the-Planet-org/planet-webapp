@@ -24,6 +24,7 @@ import styles from './SelectLanguageAndCountry.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useRouter } from 'next/router';
+import { CountryCode } from '@planet-sdk/common';
 
 interface MapCountryProps {
   value: string;
@@ -44,7 +45,7 @@ interface TransitionsModalProps {
 
 interface countryInterface {
   countryName: string;
-  countryCode: string;
+  countryCode: CountryCode;
   currencyName: string;
   currencyCode: string;
   currencyCountryFlag: string;
@@ -109,18 +110,21 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country: countryInterface) => (
-          <FormControlLabel
-            key={country.countryCode}
-            value={country.countryCode}
-            control={<GreenRadio />}
-            label={
-              t(country.countryCode.toLowerCase()) +
-              ' · ' +
-              country.currencyCode
-            }
-          />
-        ))}
+        {sortedCountriesData.map((country: countryInterface) => {
+          console.log(country);
+          return (
+            <FormControlLabel
+              key={country.countryCode}
+              value={country.countryCode}
+              control={<GreenRadio />}
+              label={
+                t(country.countryCode.toLowerCase()) +
+                ' · ' +
+                country.currencyCode
+              }
+            />
+          );
+        })}
       </RadioGroup>
     </FormControl>
   );
