@@ -110,21 +110,18 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country: countryInterface) => {
-          console.log(country);
-          return (
-            <FormControlLabel
-              key={country.countryCode}
-              value={country.countryCode}
-              control={<GreenRadio />}
-              label={
-                t(country.countryCode.toLowerCase()) +
-                ' · ' +
-                country.currencyCode
-              }
-            />
-          );
-        })}
+        {sortedCountriesData.map((country: countryInterface) => (
+          <FormControlLabel
+            key={country.countryCode}
+            value={country.countryCode}
+            control={<GreenRadio />}
+            label={
+              t(country.countryCode.toLowerCase()) +
+              ' · ' +
+              country.currencyCode
+            }
+          />
+        ))}
       </RadioGroup>
     </FormControl>
   );
