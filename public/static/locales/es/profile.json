@@ -1,0 +1,7 @@
+{
+  "Profile": {
+    "myForestMap": {
+      "plantedTree": "{count, plural, =0 {Árboles} =1 {Árbol} other {Árboles}}"
+    }
+  }
+}

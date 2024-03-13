@@ -3,10 +3,10 @@
     "selectLocationMap": "Standort auf der Karte auswählen",
     "requiredNumberOfTrees": "Anzahl der Bäume ist erforderlich",
     "numberOfTrees": "Anzahl der Bäume",
-    "datePlanted": "Pflanzdatum",
+    "datePlanted": "Datum der Anpflanzung",
     "treeSpecies": "Baumarten",
     "speciesRequired": "Art ist erforderlich",
-    "drawPolygonMap": "Zeichne eines Polygons auf der Karte",
+    "drawPolygonMap": "Zeichne ein Polygons auf der Karte",
     "clickMapMark": "Klicke auf die Karte, um einen Ort zu markieren",
     "next": "Weiter"
   }
