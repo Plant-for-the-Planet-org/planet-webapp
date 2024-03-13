@@ -6,8 +6,6 @@ import { ThemeProvider } from '@storybook/theming';
 import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
 
-// import { ThemeProvider } from 'emotion-theming';
-
 /*
  * Global decorator to apply the styles to all stories
  * Read more about them at:
