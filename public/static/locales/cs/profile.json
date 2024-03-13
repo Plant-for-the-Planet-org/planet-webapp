@@ -1,7 +1,13 @@
 {
   "Profile": {
+    "myPublicProfile": {
+      "support": "Podpora"
+    },
     "myForestMap": {
       "plantedTree": "{count, plural, =0 {stromů} =1 {strom} other {stromů}}"
+    },
+    "myContributions": {
+      "receivedFrom": "Přijato od {name}"
     }
   }
 }
