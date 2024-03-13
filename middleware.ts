@@ -32,7 +32,7 @@ function getLocale(request: NextRequest): string | undefined {
 /** Identifies locale in relative url and removes it */
 function removeLocaleFromUrl(pathname: string): string {
   let newPathname = '';
-  const localeRegex = /^[a-z]{2}$/i;
+  const localeRegex = /^[a-z]{2}(-[a-z]{2})?$/i;
 
   const splitPathname = pathname.split('/');
   if (splitPathname.length < 2) return pathname;
