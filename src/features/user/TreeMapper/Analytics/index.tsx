@@ -10,10 +10,11 @@ import { APIError, handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import NoProjectsFound from './components/NoProjectsFound';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
-  const { setProjectList, setProject } = useAnalytics();
+  const { projectList, setProjectList, setProject } = useAnalytics();
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -48,8 +49,14 @@ const Analytics = () => {
 
   return ready ? (
     <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
-      <ProjectFilter />
-      <DataExplorerGridContainer />
+      {projectList && projectList.length > 0 ? (
+        <>
+          <ProjectFilter />
+          <DataExplorerGridContainer />
+        </>
+      ) : (
+        <NoProjectsFound />
+      )}
     </DashboardView>
   ) : null;
 };
