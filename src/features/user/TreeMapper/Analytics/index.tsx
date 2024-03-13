@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
 import ProjectFilter from './components/ProjectFilter';
@@ -11,10 +11,12 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import NoProjectsFound from './components/NoProjectsFound';
+import { tr } from 'date-fns/locale';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { projectList, setProjectList, setProject } = useAnalytics();
+  const [isLoaded, setIsLoaded] = useState(false);
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -37,6 +39,7 @@ const Analytics = () => {
       });
 
       setProjectList(projects);
+      setIsLoaded(true);
       if (projects.length > 0) setProject(projects[0]);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -47,7 +50,7 @@ const Analytics = () => {
     fetchProjects();
   }, []);
 
-  return ready ? (
+  return ready && isLoaded ? (
     <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
       {projectList && projectList.length > 0 ? (
         <>
