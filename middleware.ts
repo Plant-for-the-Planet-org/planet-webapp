@@ -5,29 +5,35 @@ import Negotiator from 'negotiator';
 import { i18nConfig } from './i18n-config';
 
 function getLocale(request: NextRequest): string | undefined {
-  // Negotiator expects plain object so we need to transform headers
-  const negotiatorHeaders: Record<string, string> = {};
-  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
+  try {
+    // Negotiator expects plain object so we need to transform headers
+    const negotiatorHeaders: Record<string, string> = {};
+    request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-  const locales = i18nConfig.locales;
+    const locales = i18nConfig.locales;
 
-  // Use negotiator and intl-localematcher to get best locale
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
-    locales
-  );
+    // Use negotiator and intl-localematcher to get best locale
+    const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
+      locales
+    );
 
-  const previouslySelectedLanguage = request.cookies.get('NEXT_LOCALE')?.value;
-  if (
-    previouslySelectedLanguage !== undefined &&
-    locales.includes(previouslySelectedLanguage) &&
-    languages[0] !== previouslySelectedLanguage
-  ) {
-    languages.unshift(previouslySelectedLanguage);
+    const previouslySelectedLanguage =
+      request.cookies.get('NEXT_LOCALE')?.value;
+    if (
+      previouslySelectedLanguage !== undefined &&
+      locales.includes(previouslySelectedLanguage) &&
+      languages[0] !== previouslySelectedLanguage
+    ) {
+      languages.unshift(previouslySelectedLanguage);
+    }
+
+    const locale = matchLocale(languages, locales, i18nConfig.defaultLocale);
+
+    return locale;
+  } catch (error) {
+    console.error('Error occurred while determining the locale:', error);
+    return i18nConfig.defaultLocale;
   }
-
-  const locale = matchLocale(languages, locales, i18nConfig.defaultLocale);
-
-  return locale;
 }
 
 /** Identifies locale in relative url and removes it */
