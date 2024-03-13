@@ -1,5 +1,5 @@
 import myForestStyles from '../../../styles/MyForest.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { getDonationUrl } from '../../../../../../utils/getDonationUrl';
 import { ParamsContext } from '../../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
@@ -34,6 +34,7 @@ const TreesOrUnitAreaAndDonateOption = ({
   tpoName,
 }: TreesOrUnitAreaAndDonateOptionProps) => {
   const t = useTranslations('Profile');
+  const locale = useLocale();
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const router = useRouter();
@@ -45,7 +46,7 @@ const TreesOrUnitAreaAndDonateOption = ({
       token,
       undefined,
       undefined,
-      asPath !== '/profile' ? publicProfileSlug : undefined
+      asPath !== `/${locale}/profile` ? publicProfileSlug : undefined
     );
     embed === 'true'
       ? window.open(encodeURI(url), '_blank')
@@ -53,10 +54,10 @@ const TreesOrUnitAreaAndDonateOption = ({
   };
 
   const _checkConditions = () => {
-    if (gift && asPath === '/profile') {
+    if (gift && asPath === `/${locale}/profile`) {
       const _label = t('myContributions.donate');
       return _label;
-    } else if (asPath !== '/profile') {
+    } else if (asPath !== `/${locale}/profile`) {
       const _label = t('myContributions.donate');
       return _label;
     } else {

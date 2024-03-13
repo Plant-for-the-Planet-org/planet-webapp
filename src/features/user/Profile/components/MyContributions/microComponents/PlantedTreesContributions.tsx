@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import myForestStyles from '../../../styles/MyForest.module.scss';
@@ -18,6 +18,7 @@ const PlantedTreesContributions = ({
 }: TreeContributedProjectListProps): ReactElement => {
   const { asPath } = useRouter();
   const t = useTranslations('Profile');
+  const locale = useLocale();
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const { treePlantationContribution, additionalInfoRelatedToContributions } =
     useMyForest();
@@ -30,13 +31,13 @@ const PlantedTreesContributions = ({
 
   const _checkConditions = () => {
     switch (true) {
-      case userProfile?.type === 'tpo' && asPath === '/profile': // tpo private profile
+      case userProfile?.type === 'tpo' && asPath === `/${locale}/profile`: // tpo private profile
         return true;
-      case userProfile?.type !== 'tpo' && asPath === '/profile': // normal user private profile
+      case userProfile?.type !== 'tpo' && asPath === `/${locale}/profile`: // normal user private profile
         return true;
-      case userProfile?.type === 'tpo' && asPath !== '/profile': // tpo public profile
+      case userProfile?.type === 'tpo' && asPath !== `/${locale}/profile`: // tpo public profile
         return false;
-      case userProfile?.type !== 'tpo' && asPath !== '/profile': //  normal user public profile
+      case userProfile?.type !== 'tpo' && asPath !== `/${locale}/profile`: //  normal user public profile
         return true;
       default:
         return null;
@@ -85,7 +86,7 @@ const PlantedTreesContributions = ({
       >
         {_checkConditions() && (
           <div className={myForestStyles.donationList}>
-            {asPath === '/profile' ? (
+            {asPath === `/${locale}/profile` ? (
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"

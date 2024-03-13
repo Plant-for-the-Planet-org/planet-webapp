@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import Share from './Share';
 import { UserFeaturesProps } from '../../../../../common/types/profile';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
 import RedeemModal from './RedeemModal';
 import {
@@ -23,6 +23,7 @@ const UserFeatures = ({
   const { light } = theme;
   const router = useRouter();
   const t = useTranslations('Profile');
+  const locale = useLocale();
   const { setRefetchUserData, user: verifiedUser } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
@@ -40,13 +41,13 @@ const UserFeatures = ({
   };
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {router.asPath !== '/profile' && !userProfile.isPrivate && (
+      {router.asPath !== `/${locale}/profile` && !userProfile.isPrivate && (
         <div className={myProfileStyle.publicProfileContainer}>
           <PublicProfileFeature profile={userProfile} />
         </div>
       )}
       <div className={myProfileStyle.privateFeatureContainer}>
-        {router.asPath === '/profile' &&
+        {router.asPath === `/${locale}/profile` &&
           userProfile?.id === verifiedUser?.id && (
             <>
               <Button

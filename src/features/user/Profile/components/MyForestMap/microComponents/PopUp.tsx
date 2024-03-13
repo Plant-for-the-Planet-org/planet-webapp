@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../../common/types/map';
@@ -179,6 +179,7 @@ export const DonationPopUp = ({
   const router = useRouter();
   const { asPath } = router;
   const t = useTranslations('Profile');
+  const locale = useLocale();
   const tCountry = useTranslations('Country');
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
@@ -191,7 +192,7 @@ export const DonationPopUp = ({
         token,
         undefined,
         undefined,
-        asPath !== '/profile' ? profile.slug : undefined
+        asPath !== `/${locale}/profile` ? profile.slug : undefined
       );
       embed === 'true'
         ? window.open(encodeURI(url), '_blank')
