@@ -12,6 +12,7 @@
     "coordinates": "Koordinaten",
     "guid": "GUID",
     "height": "Höhe",
+    "invalidHeight": "Ungültige Höhe",
     "width": "Breite",
     "plantDate": "Pflanzdatum",
     "registrationDate": "Registrierungsdatum",
@@ -25,6 +26,7 @@
     "plantingLocation": "Standort der Pflanzung",
     "reviewAndSubmit": "Überprüfen und Einreichen",
     "sampleTree": "Musterbaum #{number}",
+    "tag": "Tag",
     "import": "Importieren",
     "editor": "Editor",
     "draw": "Zeichnen",
@@ -33,8 +35,11 @@
     "downloadCSVTemplate": "CSV-Vorlage herunterladen",
     "treeTag": "Baum-Tag",
     "diameter": "Durchmesser",
+    "invalidDiameter": "Ungültiger Durchmesser",
     "latitude": "Breitengrad",
+    "invalidLatitude": "Ungültiger Breitengrad",
     "longitude": "Längengrad",
+    "invalidLongitude": "Ungültiger Längengrad",
     "addAnotherSampleTree": "Weiteren Musterbaum hinzufügen",
     "skip": "Überspringen",
     "treeSpecies": "Baumarten",
@@ -63,6 +68,10 @@
     "speciesValidation": "Bitte gib eine Art ein",
     "external": "Extern",
     "date": "Datum",
-    "measurements": "Messwerte"
+    "datePlantedRequired": "Datum der Anpflanzung erforderlich",
+    "measurements": "Messwerte",
+    "ignoredColumnsWarning": "Die zusätzlichen Spalten wurden ignoriert",
+    "back": "Zurück",
+    "submit": "Einreichen"
   }
 }
