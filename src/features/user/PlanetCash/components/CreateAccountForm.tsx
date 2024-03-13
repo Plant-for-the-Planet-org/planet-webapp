@@ -26,7 +26,7 @@ const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
-  const tPlanetCash = useTranslations('PlanetCash');
+  const tPlanetCash = useTranslations('Planetcash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
