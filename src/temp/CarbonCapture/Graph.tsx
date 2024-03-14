@@ -207,7 +207,7 @@ const Graph = ({
         <h5 className={styles.graphHeading}>
           {title === 'co2CapturePerHa' ? (
             <Trans i18nKey="co2CapturePerHa">
-              CO2 Captured<p>(per ha.)</p>
+              CO₂ Captured<p>(per ha.)</p>
             </Trans>
           ) : (
             t(`${title}`)
