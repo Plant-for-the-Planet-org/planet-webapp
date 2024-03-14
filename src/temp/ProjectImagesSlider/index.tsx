@@ -1,8 +1,8 @@
 import React, { ReactElement, useEffect } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../utils/getImageURL';
-import styles from './Slider.module.scss';
 import { SliderImage } from '../../features/projects/components/PlantLocation/ImageSlider';
+import { ProjectSingleImage } from './ProjectSingleImage';
 
 interface Props {
   images: SliderImage[];
@@ -22,20 +22,11 @@ const ProjectImagesSlider = ({ images, height, imageSize, type }: Props) => {
 
         projectImages.push({
           content: () => (
-            <div
-              className={styles.sliderContent}
-              style={
-                type === 'coordinate'
-                  ? { background: `url(${imageURL})` }
-                  : {
-                      background: `linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.49) 100%),url(${imageURL})`,
-                    }
-              }
-            >
-              <p className={styles.sliderContentText}>
-                {sliderImage.description}
-              </p>
-            </div>
+            <ProjectSingleImage
+              type={type}
+              imageURL={imageURL}
+              sliderImage={sliderImage}
+            />
           ),
         });
       }
