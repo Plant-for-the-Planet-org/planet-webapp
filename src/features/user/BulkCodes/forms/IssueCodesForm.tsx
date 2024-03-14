@@ -1,6 +1,14 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { Button, TextField } from '@mui/material';
+import {
+  Button,
+  TextField,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
@@ -52,7 +60,11 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
+  const [notificationLang, setNotificationLang] = React.useState('en');
 
+  const handleLocale = (event: SelectChangeEvent) => {
+    setNotificationLang(event.target.value as string);
+  };
   const resetBulkContext = (): void => {
     setProject(null);
     setBulkMethod(null);
@@ -79,7 +91,7 @@ const IssueCodesForm = (): ReactElement | null => {
         message: recipient.recipient_message,
         notifyRecipient: recipient.recipient_notify === 'yes',
         units: parseInt(recipient.units),
-        // occasion: recipient.recipient_occasion,
+        // notificationLocale: notificationLang,
       };
       recipients.push(temp);
     });
@@ -115,6 +127,7 @@ const IssueCodesForm = (): ReactElement | null => {
           break;
         case BulkCodeMethods.IMPORT:
           donationData.gift = {
+            notificationLocale: notificationLang,
             type: 'discrete-bulk',
             occasion,
             recipients: getProcessedRecipients(),
@@ -242,6 +255,23 @@ const IssueCodesForm = (): ReactElement | null => {
                 value={occasion}
                 label={t('bulkCodes:occasion')}
               />
+              {bulkMethod === 'import' && (
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Notification language
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={notificationLang}
+                    label="Notification language"
+                    onChange={handleLocale}
+                  >
+                    <MenuItem value={'en'}>English</MenuItem>
+                    <MenuItem value={'de'}>Deutsch</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
               {bulkMethod === 'generic' && (
                 <GenericCodesPartial
                   codeQuantity={codeQuantity}
