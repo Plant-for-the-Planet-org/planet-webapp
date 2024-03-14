@@ -17,21 +17,23 @@ interface Props {
 
 const VideoPlayer = ({ videoUrl }: Props) => {
   return ReactPlayer.canPlay(videoUrl) ? (
-    <ReactPlayer
-      className={styles.video}
-      height={153}
-      width={306} //to be replaced with 100%
-      loop={true}
-      light={true}
-      controls={true}
-      playIcon={<PlayButton />}
-      config={{
-        youtube: {
-          playerVars: { autoPlay: 1 },
-        },
-      }}
-      url={videoUrl}
-    />
+    <div className={styles.videoContainer}>
+      <ReactPlayer
+        className={styles.video}
+        height={153}
+        width={'100%'} //to be replaced with 100%
+        loop={true}
+        light={true}
+        controls={true}
+        playIcon={<PlayButton />}
+        config={{
+          youtube: {
+            playerVars: { autoPlay: 1 },
+          },
+        }}
+        url={videoUrl}
+      />
+    </div>
   ) : null;
 };
 
