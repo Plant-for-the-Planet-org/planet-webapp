@@ -3,6 +3,7 @@ import Stories from 'react-insta-stories';
 import getImageUrl from '../../utils/getImageURL';
 import { SliderImage } from '../../features/projects/components/PlantLocation/ImageSlider';
 import { ProjectSingleImage } from './ProjectSingleImage';
+import styles from './Slider.module.scss';
 
 interface Props {
   images: SliderImage[];
@@ -35,7 +36,7 @@ const ProjectImagesSlider = ({ images, height, imageSize, type }: Props) => {
       <Stories
         stories={projectImages}
         defaultInterval={7000}
-        width={306} //to be replaced with 100%
+        width={'100%'}
         height={height}
         loop={true}
         progressContainerStyles={{
@@ -44,7 +45,7 @@ const ProjectImagesSlider = ({ images, height, imageSize, type }: Props) => {
           right: 18,
           left: 18,
           padding: '7px 0 5px 0',
-          maxWidth: 270,
+          maxWidth: 250,
         }}
         progressStyles={{ background: '#27AE60', height: 3.35 }}
         progressWrapperStyles={{
@@ -56,7 +57,7 @@ const ProjectImagesSlider = ({ images, height, imageSize, type }: Props) => {
     );
   }, [images]);
 
-  return <>{slider}</>;
+  return <div className={styles.imageSliderContainer}>{slider}</div>;
 };
 
 export default ProjectImagesSlider;

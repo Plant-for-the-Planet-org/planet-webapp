@@ -21,7 +21,7 @@ const VideoPlayer = ({ videoUrl }: Props) => {
       <ReactPlayer
         className={styles.video}
         height={153}
-        width={'100%'} //to be replaced with 100%
+        width={'100%'}
         loop={true}
         light={true}
         controls={true}
