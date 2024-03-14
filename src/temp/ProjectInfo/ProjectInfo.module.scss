@@ -163,6 +163,9 @@
 }
 
 @include xsPhoneView {
+    .contactDetailsContainer, .moreInfoContainer, .certificationContainer, .projectInfoContainer {
+        max-width: 240px;
+    }
     .certificationLabel {
         background-color: transparent;
         border: 0px;
