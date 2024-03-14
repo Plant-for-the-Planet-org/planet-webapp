@@ -23,7 +23,7 @@ const AboutProject = ({ description, amountOfWords }: Props) => {
     <div className={styles.projectDescription}>
       <div className={styles.infoTitle}>{t('donate:aboutProject')}</div>
       <div className={styles.infoText}>
-        {beginText}
+        {beginText}{' '}
         {itCanOverflow && (
           <span
             className={`${!isExpanded ? styles.hideText : styles.showText}`}
