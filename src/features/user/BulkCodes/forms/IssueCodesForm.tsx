@@ -91,7 +91,6 @@ const IssueCodesForm = (): ReactElement | null => {
         message: recipient.recipient_message,
         notifyRecipient: recipient.recipient_notify === 'yes',
         units: parseInt(recipient.units),
-        // notificationLocale: notificationLang,
       };
       recipients.push(temp);
     });
