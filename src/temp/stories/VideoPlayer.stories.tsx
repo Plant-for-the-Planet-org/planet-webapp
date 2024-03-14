@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import VideoPlayer from '../ProjectDetailVideoPlayer/VideoPlayer';
+import VideoPlayer from '../ProjectDetailVideoPlayer';
 const meta: Meta<typeof VideoPlayer> = {
   component: VideoPlayer,
 };

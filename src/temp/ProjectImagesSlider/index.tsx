@@ -11,7 +11,7 @@ interface Props {
   type: string;
 }
 
-const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
+const ProjectImagesSlider = ({ images, height, imageSize, type }: Props) => {
   const [slider, setSlider] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
 
@@ -68,4 +68,4 @@ const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
   return <>{slider}</>;
 };
 
-export default ImagesSlider;
+export default ProjectImagesSlider;
