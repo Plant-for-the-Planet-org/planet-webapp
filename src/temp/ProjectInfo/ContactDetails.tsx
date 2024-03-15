@@ -16,6 +16,15 @@ interface Props {
 const ContactDetails = ({ websiteURL, location, email }: Props) => {
   const { t } = useTranslation(['donate']);
 
+  const extractWebsiteURLTitle = () => {
+    return websiteURL
+      .replace('https://www.', '')
+      .replace('http://', '')
+      .replace('https://', '')
+      .replace('https://www.', '')
+      .split(/[/?#]/)[0];
+  };
+
   const contactDetails = [
     {
       icon: (
@@ -34,12 +43,7 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
           color={`${'var(--primary-font-color)'}`}
         />
       ),
-      title: websiteURL
-        .replace('https://www.', '')
-        .replace('http://', '')
-        .replace('https://', '')
-        .replace('https://www.', '')
-        .split(/[/?#]/)[0],
+      title: extractWebsiteURLTitle(),
       link: websiteURL,
     },
     {

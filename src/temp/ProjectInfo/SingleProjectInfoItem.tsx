@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from './ProjectInfo.module.scss';
 
 interface Props {
-  title: string;
+  title: ReactElement | string;
   itemContent: ReactElement;
 }
 

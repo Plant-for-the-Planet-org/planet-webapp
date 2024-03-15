@@ -59,8 +59,8 @@ const ExternalCertification = ({
       title: `${t('projectDetails:progressReports')}`,
       content: (
         <div className={styles.reportsContainer}>
-          {progressReports.map((report, index) => (
-            <div key={index}>
+          {progressReports.map((report) => (
+            <div key={report}>
               <div className={styles.certificationLabel}>{report}</div>
               <div className={styles.downloadIcon}>
                 <DownloadIcon
