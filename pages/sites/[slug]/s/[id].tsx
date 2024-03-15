@@ -54,9 +54,7 @@ export default function DirectGift({
           })
         );
       }
-      router.push('/', undefined, {
-        shallow: true,
-      });
+      router.push('/');
     } catch (err) {
       setErrors(handleError(err as APIError));
       redirect('/');
