@@ -92,7 +92,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         // if 303 -> user doesn not exist in db
         setUser(null);
         if (typeof window !== 'undefined') {
-          router.push('/complete-signup', undefined, { shallow: true });
+          router.push('/complete-signup');
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
