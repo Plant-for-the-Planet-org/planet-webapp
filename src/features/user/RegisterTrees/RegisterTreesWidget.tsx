@@ -439,7 +439,7 @@ type FormData = {
 };
 
 export default function RegisterTreesWidget() {
-  const { user, token } = useUserProps();
+  const { token } = useUserProps();
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] =
     React.useState<ContributionProperties | null>(null);
@@ -449,7 +449,6 @@ export default function RegisterTreesWidget() {
     token,
     contribution: contributionDetails !== null ? contributionDetails : null,
     contributionGUID,
-    slug: user !== null ? user.slug : null,
   };
 
   return (
