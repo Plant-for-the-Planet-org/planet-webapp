@@ -17,19 +17,35 @@ const ExternalCertification = ({
   progressReports,
 }: Props) => {
   const { t, i18n } = useTranslation(['manageProjects', 'projectDetails']);
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 481;
+
+  const renderDownloadIcon = () => {
+    return (
+      <div className={styles.downloadIcon}>
+        <DownloadIcon
+          width={10}
+          color={`${'rgba(var(--certification-background-color-new))'}`}
+        />
+      </div>
+    );
+  };
 
   const certificationContent = [
     {
       title: `${t('manageProjects:externalCertifications')}`,
       content: (
         <div className={styles.infoDetail}>
-          <div className={styles.certificationLabel}>{certification}</div>
-          <div className={styles.downloadIcon}>
-            <DownloadIcon
-              width={10}
-              color={`${'rgba(var(--certification-background-color-new))'}`}
-            />
-          </div>
+          {isMobile ? (
+            <div className={styles.certificationLabel}>{certification}</div>
+          ) : (
+            <div className={styles.certificationLabel}>
+              <a href="#" target="_blank" rel="noreferrer">
+                {certification}
+              </a>
+            </div>
+          )}
+          {renderDownloadIcon()}
         </div>
       ),
     },
@@ -39,17 +55,23 @@ const ExternalCertification = ({
         <div className={styles.spendingsContainer}>
           {spendings.map((expense) => (
             <div className={styles.spendingDetail} key={expense.id}>
-              <time className={styles.certificationLabel}>{expense.year}</time>
+              {isMobile ? (
+                <time className={styles.certificationLabel}>
+                  {expense.year}
+                </time>
+              ) : (
+                <div className={styles.certificationLabel}>
+                  <a href="#" target="_blank" rel="noreferrer">
+                    {expense.year}
+                  </a>
+                </div>
+              )}
+
               <div>
                 {getFormatedCurrency(i18n.language, 'EUR', expense.amount)}
               </div>
 
-              <div className={styles.downloadIcon}>
-                <DownloadIcon
-                  width={10}
-                  color={`${'rgba(var(--certification-background-color-new))'}`}
-                />
-              </div>
+              {renderDownloadIcon()}
             </div>
           ))}
         </div>
@@ -61,13 +83,16 @@ const ExternalCertification = ({
         <div className={styles.reportsContainer}>
           {progressReports.map((report) => (
             <div key={report}>
-              <div className={styles.certificationLabel}>{report}</div>
-              <div className={styles.downloadIcon}>
-                <DownloadIcon
-                  width={10}
-                  color={`${'rgba(var(--certification-background-color-new))'}`}
-                />
-              </div>
+              {isMobile ? (
+                <div className={styles.certificationLabel}>{report}</div>
+              ) : (
+                <div className={styles.certificationLabel}>
+                  <a href="#" target="_blank" rel="noreferrer">
+                    {report}
+                  </a>
+                </div>
+              )}
+              {renderDownloadIcon()}
             </div>
           ))}
         </div>

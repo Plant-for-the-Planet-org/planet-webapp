@@ -103,9 +103,12 @@
     border-radius: 24px;
     border: 0.4px solid  rgba(var(--certification-background-color-new), 0.2); 
     background:  rgba(var(--certification-background-color-new), 0.15);
-    color:  rgb(var(--certification-background-color-new));
     font-weight: 700;
     width: fit-content;
+    cursor: pointer;
+    a {
+        color:  rgb(var(--certification-background-color-new));
+    }
 }
 .spendingsContainer {
     display: flex;
@@ -172,6 +175,7 @@
         font-weight: 400;
         color: inherit;
         padding: 0;
+        cursor: none;
     }
     .spendingDetail {
         width: 100%;

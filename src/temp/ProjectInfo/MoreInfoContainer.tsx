@@ -105,17 +105,6 @@ const MoreInfoContainer = ({
         <div className={styles.infoDetail}>{longTermProtectionText}</div>
       ),
     },
-    {
-      title: `${t('manageProjects:externalCertifications')}`,
-      content: (
-        <div className={styles.infoDetail}>
-          <div>{externalCertifications} </div>
-          <a href="#" target="_blank" rel="noreferrer">
-            {t('common:view')}
-          </a>
-        </div>
-      ),
-    },
   ];
 
   return (
