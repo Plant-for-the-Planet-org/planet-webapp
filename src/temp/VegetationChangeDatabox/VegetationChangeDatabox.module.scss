@@ -65,6 +65,15 @@
         align-items: center;
         justify-content: center;
     }
+    .optionLabel {
+        display: flex;
+        flex-direction: column;
+        span {
+            font-size: 4px;
+            letter-spacing: 1.48px;
+            text-transform: uppercase;
+        }
+    }
 }
 .selected {
     border-radius: 4px;

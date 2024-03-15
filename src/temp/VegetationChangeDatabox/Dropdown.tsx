@@ -21,26 +21,32 @@ const Dropdown = ({ labelIcon, labelTitle, isOpen }: Props) => {
     {
       icon: <BiomassChangeIcon />,
       title: t('biomassChange'),
-    },
-    {
-      icon: <PotentialBiomassIcon />,
-      title: t('potentialBiomass'),
+      isFeaturePending: false,
     },
     {
       icon: <TreeCoverIcon />,
       title: t('treeCover'),
+      isFeaturePending: false,
+    },
+    {
+      icon: <PotentialBiomassIcon />,
+      title: t('potentialBiomass'),
+      isFeaturePending: true,
     },
     {
       icon: <FireIcon />,
       title: t('fireRisk'),
+      isFeaturePending: true,
     },
     {
       icon: <FloodingRiskIcon />,
       title: t('floodingRisk'),
+      isFeaturePending: true,
     },
     {
       icon: <SpeciesDensityIcon />,
       title: t('speciesDensity'),
+      isFeaturePending: true,
     },
   ];
   const [selectedOption, setSelectedOption] = useState({
@@ -63,7 +69,10 @@ const Dropdown = ({ labelIcon, labelTitle, isOpen }: Props) => {
                 }`}
               >
                 <div className={styles.optionIcon}>{option.icon}</div>
-                <p>{option.title}</p>
+                <div className={styles.optionLabel}>
+                  <p>{option.title}</p>
+                  {option.isFeaturePending && <span>{t('comingSoon')}</span>}
+                </div>
               </li>
             ))}
           </ul>
