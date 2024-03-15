@@ -1,4 +1,4 @@
-import React from 'react';
+import { Trans, useTranslation } from 'next-i18next';
 import styles from './ReviewReports.module.scss';
 import DownloadReportIcon from '../icons/DownloadReportIcon';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -6,15 +6,13 @@ import { getPDFFile } from '../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../utils/language/getLanguageName';
-import { Trans } from 'next-i18next';
-import { useTranslation } from 'next-i18next';
+import { Review } from '@planet-sdk/common';
 
 interface Props {
-  pdf: string;
-  issueMonth: string;
+  singleReview: Review;
 }
 
-const ProjectReview = ({ issueMonth, pdf }: Props) => {
+const SingleReview = ({ singleReview }: Props) => {
   const { t } = useTranslation(['common', 'manageProjects', 'projectDetails']);
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
@@ -22,24 +20,7 @@ const ProjectReview = ({ issueMonth, pdf }: Props) => {
     });
   };
   return (
-    <div className={styles.reviewReportsContainer}>
-      <div className={styles.titleContainer}>
-        <h6>{t('manageProjects:review')}</h6>
-        <div className={styles.downloadReportContainer}>
-          {' '}
-          <p>{t('projectDetails:report')}</p>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={getPDFFile('projectReview', pdf)}
-          >
-            <DownloadReportIcon
-              width={10}
-              color={`${'var(--review-font-color-new)'}`}
-            />
-          </a>
-        </div>
-      </div>
+    <div className={styles.singleReviewContainer}>
       <div className={styles.reviewInfoContainer}>
         <div className={styles.verifiedIcon}>
           <VerifiedIcon
@@ -53,7 +34,7 @@ const ProjectReview = ({ issueMonth, pdf }: Props) => {
         <p>
           <Trans i18nKey="common:reviewInfo">
             The project was inspected in a multiday field review in{' '}
-            {displayDate(issueMonth)} and fullfills our{' '}
+            {displayDate(singleReview.issueMonth)} and fullfills our{' '}
             <a
               target="_blank"
               href="https://www.plant-for-the-planet.org/standards/"
@@ -64,8 +45,21 @@ const ProjectReview = ({ issueMonth, pdf }: Props) => {
           </Trans>
         </p>
       </div>
+      <div className={styles.downloadReportContainer}>
+        <p>{t('projectDetails:report')}</p>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={getPDFFile('projectReview', singleReview.pdf)}
+        >
+          <DownloadReportIcon
+            width={10}
+            color={`${'var(--review-font-color-new)'}`}
+          />
+        </a>
+      </div>
     </div>
   );
 };
 
-export default ProjectReview;
+export default SingleReview;
