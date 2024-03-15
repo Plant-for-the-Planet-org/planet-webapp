@@ -9,7 +9,6 @@
     position: relative;
     margin-top: 60vh; //to be removed
     gap: 24px;
-
 }
 
 .startYearText {
@@ -101,14 +100,17 @@
     top: 1px;
 }
 @include xsPhoneView {
+    .databoxContainer {
+       max-width: 278px;
+    }
     .menuButton {
-        width: 126.5px;
+        width: 118.5px;
         height: 21px;
         font-size: 8px;
         padding: 5px 8px;
     }
     .divider {
-        left: 159px;
+        left: 154px;
     }
     .sliderInfoContainer {
         padding: 6px 6px 7px 0px;

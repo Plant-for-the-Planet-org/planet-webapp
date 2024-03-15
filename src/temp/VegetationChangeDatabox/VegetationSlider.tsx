@@ -51,7 +51,7 @@ const StyledSlider = styled(Slider)(() => {
       padding: 0, // Reset the styles for the @media (pointer: coarse)
     },
     '@media screen and (max-width: 481px)': {
-      width: 154.3,
+      width: 120,
     },
   };
 });
