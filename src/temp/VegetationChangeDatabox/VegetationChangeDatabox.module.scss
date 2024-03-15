@@ -28,6 +28,7 @@
     font-weight: 700;
     gap: 22px;
     width: 140px;
+    cursor: pointer;
     .label {
         display: flex;
         gap: 7px;
@@ -56,6 +57,7 @@
     padding: 6px 7px;
     gap: 10px;
     white-space: nowrap;
+    cursor: pointer;
     .optionIcon {
         height: 14px;
         width: 14px;
