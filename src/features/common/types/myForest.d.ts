@@ -149,6 +149,11 @@ export interface GiftStatsQueryResult {
   conserved: number | null;
 }
 
+export interface CountryProjectStatsResult {
+  projectId: string;
+  country: string;
+}
+
 export interface StatsResult {
   treeCount: number;
   squareMeters: number;
