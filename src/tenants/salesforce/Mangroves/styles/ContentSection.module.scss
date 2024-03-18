@@ -98,21 +98,48 @@
     }
   }
 
-  .callOut {
+  .calloutContainer {
+    margin: 0;
+  }
+
+  .mbCallout {
     background-color: $backgroundBase;
-    display: flex;
-    margin-bottom: 30px;
-    justify-content: center;
-    align-items: center;
-    font-size: $fontMedium;
-    p {
-      margin: 10px;
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 0;
+
+    .calloutContentContainer {
+      background: url('/tenants/salesforce/images/mangroves/madagascar-ambanja-mangrove-seedling_2018_credit_Louise Jasper.jpg');
+      padding: 0;
+      display: flex;
     }
-    em {
-      font-style: italic;
+
+    .calloutContentOverlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        264.03deg,
+        rgba(255, 255, 255, 0.7125) 13.14%,
+        rgba(255, 255, 255, 0.9) 65.48%
+      );
     }
-    @include lgLaptopView {
-      margin: 10px 10px 30px;
+
+    .calloutContent {
+      padding: 20px;
+      z-index: 1;
+
+      :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .calloutQuote {
+      padding: 20px;
+      z-index: 1;
+      p {
+        margin-bottom: 0;
+      }
     }
   }
 

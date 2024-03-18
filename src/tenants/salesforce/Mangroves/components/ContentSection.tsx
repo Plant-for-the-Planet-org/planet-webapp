@@ -99,12 +99,62 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.calloutContainer}`}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            className={`${gridStyles.col12} ${gridStyles.colMd8} ${styles.justifyContentCenter} ${styles.mbCallout}`}
           >
-            <div className={styles.callOut}>
+            <div className={`${styles.calloutContentContainer}`}>
+              <div className={styles.calloutContentOverlay}></div>
+              <div className={styles.calloutContent}>
+                <h3>The Mangrove Breakthrough</h3>
+                <p>
+                  The Mangrove Breakthrough is a collective initiative to secure
+                  the future of the world’s entire mangrove ecosystem.{' '}
+                </p>
+                <ul>
+                  The Breakthrough has four key science-based goals to:
+                  <li>
+                    <strong>Halt mangrove loss</strong>
+                  </li>
+                  <li>
+                    <strong>Restore half of recent losses</strong>
+                  </li>
+                  <li>
+                    <strong>Double the protection</strong> of mangroves globally
+                  </li>
+                  <li>
+                    <strong>Mobilize long-term, sustainable finance</strong> for
+                    mangroves
+                  </li>
+                </ul>
+                <p>
+                  These goals are bold, but they’re also within reach. Together,
+                  we can unlock the $4 billion investment needed to secure the
+                  future of this{' '}
+                  <a
+                    href="https://www.weforum.org/agenda/2023/11/mangrove-breakthrough-climate-targets-cop28/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    crucial global ecosystem
+                  </a>{' '}
+                  by 2030. As of April, 2024, over 50 governments, corporations,
+                  non profits and civil society representatives have{' '}
+                  <a
+                    href="https://www.wetlands.org/a-breakthrough-moment-for-mangroves-delivering-global-action-on-mangrove-restoration-and-protection/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    endorsed
+                  </a>{' '}
+                  the Mangrove Breakthrough. Everyone has a role to play in this
+                  collaborative quest. Learn more about the Mangrove
+                  Breakthrough and how you can get involved here [Todo: LINK].
+                </p>
+              </div>
+            </div>
+            <div className={`${styles.calloutQuote}`}>
               <p>
                 <em>
                   “Mangroves are unparalleled in their role as a powerful
@@ -114,55 +164,6 @@ export default function ContentSection() {
                 - Suzanne DiBianca, EVP and Chief Impact Officer at Salesforce
               </p>
             </div>
-          </div>
-          <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
-          >
-            <h3>The Mangrove Breakthrough</h3>
-            <p>
-              The Mangrove Breakthrough is a collective initiative to secure the
-              future of the world’s entire mangrove ecosystem.{' '}
-            </p>
-            <ul>
-              The Breakthrough has four key science-based goals to:
-              <li>
-                <strong>Halt mangrove loss</strong>
-              </li>
-              <li>
-                <strong>Restore half of recent losses</strong>
-              </li>
-              <li>
-                <strong>Double the protection</strong> of mangroves globally
-              </li>
-              <li>
-                <strong>Mobilize long-term, sustainable finance</strong> for
-                mangroves
-              </li>
-            </ul>
-            <p>
-              These goals are bold, but they’re also within reach. Together, we
-              can unlock the $4 billion investment needed to secure the future
-              of this{' '}
-              <a
-                href="https://www.weforum.org/agenda/2023/11/mangrove-breakthrough-climate-targets-cop28/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                crucial global ecosystem
-              </a>{' '}
-              by 2030. As of April, 2024, over 50 governments, corporations, non
-              profits and civil society representatives have{' '}
-              <a
-                href="https://www.wetlands.org/a-breakthrough-moment-for-mangroves-delivering-global-action-on-mangrove-restoration-and-protection/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                endorsed
-              </a>{' '}
-              the Mangrove Breakthrough. Everyone has a role to play in this
-              collaborative quest. Learn more about the Mangrove Breakthrough
-              and how you can get involved here [Todo: LINK].
-            </p>
           </div>
         </div>
       </div>
