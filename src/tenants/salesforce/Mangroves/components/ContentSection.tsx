@@ -8,10 +8,11 @@ export default function ContentSection() {
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <h2>
-              Mangroves - the ultimate champions for climate, nature and people.
-            </h2>
+          <div
+            className={`${gridStyles.colMd8} ${gridStyles.col12} ${gridStyles.textCenter}`}
+          >
+            <h2>Mangroves.</h2>
+            <h3>The ultimate champions for climate, nature and people.</h3>
             <p className={styles.contentSectionSubhead}>
               Mangrove ecosystems store up to 10X more carbon per hectare than
               terrestrial forests. They support biodiversity by providing
