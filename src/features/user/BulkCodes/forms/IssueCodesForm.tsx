@@ -1,4 +1,10 @@
-import React, { FormEvent, ReactElement, useContext, useState } from 'react';
+import React, {
+  FormEvent,
+  ReactElement,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
@@ -52,9 +58,7 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
-  const [notificationLocale, setNotificationLocale] = useState(
-    i18n.language === 'de' ? 'de' : 'en'
-  );
+  const [notificationLocale, setNotificationLocale] = useState('');
 
   const notificationLocales = [
     {
@@ -96,7 +100,11 @@ const IssueCodesForm = (): ReactElement | null => {
     });
     return recipients;
   };
-
+  useEffect(() => {
+    if (i18n.language) {
+      setNotificationLocale(i18n.language === 'de' ? 'de' : 'en');
+    }
+  }, []);
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (isAddingRecipient || isEditingRecipient) {
