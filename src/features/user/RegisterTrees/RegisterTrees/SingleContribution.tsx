@@ -38,7 +38,6 @@ export default function SingleContribution({
   token,
   contribution,
   contributionGUID,
-  slug,
 }: SingleContributionProps): ReactElement {
   const router = useRouter();
   const UploadProps = {
@@ -75,7 +74,7 @@ export default function SingleContribution({
       </div>
       <Button
         id={'singleControCont'}
-        onClick={() => router.push(`/t/${slug}`, undefined, { shallow: true })}
+        onClick={() => router.push('/profile')}
         variant="contained"
         color="primary"
         style={{ maxWidth: '100px', marginTop: '24px' }}
