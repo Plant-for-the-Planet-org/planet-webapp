@@ -15,7 +15,7 @@ export default function Landing({ tenantScore }: Props) {
           <TreeCounter
             planted={tenantScoreData || 0}
             isLight={true}
-            // shouldShowMillions={true}
+            shouldShowMillions={true}
           />
         </div>
       </div>
