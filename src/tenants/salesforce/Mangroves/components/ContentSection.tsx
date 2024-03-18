@@ -1,5 +1,7 @@
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
+import Link from 'next/link';
+import MangroveMapIcon from '../../../../../public/assets/images/icons/MangroveMapIcon';
 
 export default function ContentSection() {
   return (
@@ -24,10 +26,10 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.mbIntro}`}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12} ${styles.introCTA}`}
           >
             <div
               className={`${gridStyles.circularContainer} ${styles.imageContainer}`}
@@ -37,6 +39,11 @@ export default function ContentSection() {
                 alt=""
               />
             </div>
+            <Link href="/?filter=mangroves">
+              <button className={styles.projectMapButton}>
+                <MangroveMapIcon /> View Project Map
+              </button>
+            </Link>
           </div>
           <div
             className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
@@ -94,7 +101,7 @@ export default function ContentSection() {
             <p>
               As of April 2024, Salesforce has invested in the conservation and
               restoration of mangroves across [16] countries and over [50,000]
-              hectares. (TODO - link to map of project investments).
+              hectares.
             </p>
           </div>
         </div>

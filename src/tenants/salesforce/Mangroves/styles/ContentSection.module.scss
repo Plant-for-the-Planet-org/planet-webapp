@@ -98,6 +98,33 @@
     }
   }
 
+  .mbIntro {
+    .introCTA {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .projectMapButton {
+      background-color: #fff;
+      border-radius: 35px;
+      color: #032d60;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      height: 70px;
+      padding: 4px 20px 4px 4px;
+      box-sizing: border-box;
+      gap: 10px;
+      text-transform: none;
+
+      svg {
+        height: 100%;
+      }
+    }
+  }
+
   .calloutContainer {
     margin: 0;
   }

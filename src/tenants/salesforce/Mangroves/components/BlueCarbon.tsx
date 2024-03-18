@@ -61,7 +61,7 @@ export default function BlueCarbon() {
                 <Link href="#project-grid">
                   <button>View Projects</button>
                 </Link>
-                <Link href="/?filter=map">
+                <Link href="/?filter=mangroves">
                   <button>Visit Project Map</button>
                 </Link>
               </div>
