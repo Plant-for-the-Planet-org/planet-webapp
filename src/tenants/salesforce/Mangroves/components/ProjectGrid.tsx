@@ -51,7 +51,22 @@ export default function ProjectGrid() {
 
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
-      .filter((project) => project.properties.allowDonations === true)
+      .filter((project) => project.properties.ecosystem === 'mangroves')
+      .sort((projectA, projectB) => {
+        if (
+          projectA.properties.allowDonations ===
+          projectB.properties.allowDonations
+        ) {
+          return 0;
+        } else if (
+          projectA.properties.allowDonations &&
+          !projectB.properties.allowDonations
+        ) {
+          return -1;
+        } else {
+          return 1;
+        }
+      })
       // .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id)) // To be uncommented and updated when projects are live and finalized
       .map((allowedProject) => {
         return (
