@@ -15,7 +15,9 @@ export default function TpoProfile({
   const estMillionTreesPlanted = Math.floor(planted / 1000000);
   const treeCounterValue = shouldShowMillions
     ? `${estMillionTreesPlanted} Million`
-    : planted.toString();
+    : planted > 999999
+    ? Math.floor(planted).toLocaleString()
+    : Math.floor(planted).toString();
   return (
     <div
       className={`${treeCounterStyles.treeCounter} ${

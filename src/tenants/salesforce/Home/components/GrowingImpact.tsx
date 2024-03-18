@@ -49,6 +49,15 @@ export default function GrowingImpact() {
       linkCopy: 'Click here to learn more about the cause',
       bgColor: '#0B827C',
     },
+    {
+      id: 6,
+      copy: '2023 Oceanforce Challenge: Over 3,000 Mangroves planted!',
+      image: '/tenants/salesforce/images/bkgd-guatemala-2.png',
+      foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
+      link: '/mangrove-challenge',
+      linkCopy: 'Click here to learn more about the cause',
+      bgColor: '#396547',
+    },
   ];
 
   return (
