@@ -1,14 +1,6 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import {
-  Button,
-  TextField,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
@@ -60,16 +52,24 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
-  const [notificationLang, setNotificationLang] = React.useState('en');
+  const [notificationLocale, setNotificationLocale] = useState(
+    i18n.language === 'de' ? 'de' : 'en'
+  );
 
-  const handleLocale = (event: SelectChangeEvent) => {
-    setNotificationLang(event.target.value as string);
-  };
+  const notificationLocales = [
+    {
+      langCode: 'en',
+      languageName: 'English',
+    },
+    {
+      langCode: 'de',
+      languageName: 'Deutsch',
+    },
+  ];
   const resetBulkContext = (): void => {
     setProject(null);
     setBulkMethod(null);
   };
-
   const getTotalUnits = (): number => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
@@ -126,7 +126,7 @@ const IssueCodesForm = (): ReactElement | null => {
           break;
         case BulkCodeMethods.IMPORT:
           donationData.gift = {
-            notificationLocale: notificationLang,
+            notificationLocale: notificationLocale,
             type: 'discrete-bulk',
             occasion,
             recipients: getProcessedRecipients(),
@@ -231,7 +231,6 @@ const IssueCodesForm = (): ReactElement | null => {
         : undefined;
     }
   };
-
   if (ready) {
     if (!isSubmitted) {
       return (
@@ -255,21 +254,21 @@ const IssueCodesForm = (): ReactElement | null => {
                 label={t('bulkCodes:occasion')}
               />
               {bulkMethod === 'import' && (
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Notification language
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={notificationLang}
-                    label="Notification language"
-                    onChange={handleLocale}
-                  >
-                    <MenuItem value={'en'}>English</MenuItem>
-                    <MenuItem value={'de'}>Deutsch</MenuItem>
-                  </Select>
-                </FormControl>
+                <TextField
+                  label={t('bulkCodes:notificationLanguage')}
+                  variant="outlined"
+                  select
+                  value={notificationLocale}
+                  onChange={(event) =>
+                    setNotificationLocale(event.target.value as string)
+                  }
+                >
+                  {notificationLocales.map((locale) => (
+                    <MenuItem key={locale.langCode} value={locale.langCode}>
+                      {locale.languageName}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
               {bulkMethod === 'generic' && (
                 <GenericCodesPartial
