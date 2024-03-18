@@ -100,11 +100,12 @@ const IssueCodesForm = (): ReactElement | null => {
     });
     return recipients;
   };
+
   useEffect(() => {
     if (i18n.language) {
       setNotificationLocale(i18n.language === 'de' ? 'de' : 'en');
     }
-  }, []);
+  }, [i18n.language]);
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (isAddingRecipient || isEditingRecipient) {
