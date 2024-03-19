@@ -59,6 +59,21 @@ const InfoContainer = ({
     { id: 11, title: ready ? t('common:december') : '' },
   ];
 
+  const renderPlantingSeasons = () => {
+    return plantingSeasons.map((season, index) => (
+      <Fragment key={seasons[season - 1].title}>
+        {seasons[season - 1].title}
+        {index === plantingSeasons.length - 2 ? (
+          <> {t('manageProjects:and')} </>
+        ) : index === plantingSeasons.length - 1 ? (
+          '.'
+        ) : (
+          ', '
+        )}
+      </Fragment>
+    ));
+  };
+
   return (
     <div className={styles.projectInfoContainer}>
       <div className={styles.singleInfo}>
@@ -87,12 +102,13 @@ const InfoContainer = ({
           title={t('projectDetails:firstTreePlanted')}
           itemContent={
             <time>
-              {formatDate(
-                firstTree.split('-')[1].length === 1 ||
-                  firstTree.split('-')[2].length === 1
-                  ? addZeroToDate(firstTree)
-                  : firstTree
-              )}
+              {firstTree.length > 0 &&
+                formatDate(
+                  firstTree.split('-')[1].length === 1 ||
+                    firstTree.split('-')[2].length === 1
+                    ? addZeroToDate(firstTree)
+                    : firstTree
+                )}
             </time>
           }
         />
@@ -118,22 +134,7 @@ const InfoContainer = ({
       <div className={styles.seperator}></div>
       <SingleProjectInfoItem
         title={t('projectDetails:plantingSeasons')}
-        itemContent={
-          <>
-            {plantingSeasons.map((season, index) => (
-              <Fragment key={seasons[season - 1].title}>
-                {seasons[season - 1].title}
-                {index === plantingSeasons.length - 2 ? (
-                  <> {t('manageProjects:and')} </>
-                ) : index === plantingSeasons.length - 1 ? (
-                  '.'
-                ) : (
-                  ', '
-                )}
-              </Fragment>
-            ))}
-          </>
-        }
+        itemContent={<>{renderPlantingSeasons()}</>}
       />
     </div>
   );
