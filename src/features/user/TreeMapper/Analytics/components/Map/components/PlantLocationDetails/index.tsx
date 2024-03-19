@@ -13,12 +13,128 @@ interface Props {
   loading: boolean;
 }
 
+type PlantationUnitInfoProp = Omit<Props, 'plantLocationDetails' | 'loading'>;
+type ListOfSpeciesPlantedProp = Omit<Props, 'selectedLayer' | 'loading'>;
+
+const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
+  const { t } = useTranslation(['treemapperAnalytics']);
+  return (
+    <div className={styles.topContainer}>
+      {selectedLayer.treeCount && (
+        <div className={styles.leftContainer}>
+          <p className={styles.title}>{t('speciesPlanted')}</p>
+          <p>
+            {selectedLayer.treeCount}&nbsp;{t('trees')}
+          </p>
+        </div>
+      )}
+      {selectedLayer?.density && (
+        <div className={styles.rightContainer}>
+          <div className={styles.title}>
+            <p>{t('plantingDensity')}</p>
+          </div>
+          <p>
+            {selectedLayer?.density?.toFixed(4)}&nbsp;
+            {t('treesPerHa')}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ListOfSpeciesPlanted = ({
+  plantLocationDetails,
+}: ListOfSpeciesPlantedProp) => {
+  const { t } = useTranslation(['treemapperAnalytics']);
+  return plantLocationDetails?.plantedSpecies !== null ? (
+    <div className={styles.midContainer}>
+      <div className={styles.title}>
+        {t('speciesPlanted')}&nbsp;(
+        {plantLocationDetails?.plantedSpecies.length})
+      </div>
+      <div className={styles.speciesContainer}>
+        {plantLocationDetails?.plantedSpecies.map((species) => {
+          return (
+            <div
+              key={species.scientificName}
+              className={styles.individualSpeciesContainer}
+            >
+              <div className={styles.speciesName}>{species.scientificName}</div>
+              <div className={styles.count}>{species.treeCount}</div>
+              <div className={styles.totalPercentage}>
+                {(
+                  (species.treeCount / plantLocationDetails.totalPlantedTrees) *
+                  100
+                ).toFixed(2)}
+                %
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  ) : (
+    <></>
+  );
+};
+
+const SampleTreesInfo = ({
+  plantLocationDetails,
+}: ListOfSpeciesPlantedProp) => {
+  const { t } = useTranslation(['treemapperAnalytics']);
+  return plantLocationDetails?.samplePlantLocations ? (
+    <>
+      {' '}
+      <div className={styles.bottomContainer}>
+        <div className={styles.title}>
+          {t('sampleTrees')}&nbsp;(
+          {plantLocationDetails?.totalSamplePlantLocations})
+        </div>
+        {plantLocationDetails?.samplePlantLocations?.map(
+          (samplePlantLocation, index) => {
+            return (
+              <div
+                key={samplePlantLocation.guid}
+                className={styles.sampleTreeContainer}
+              >
+                <p className={styles.title}>
+                  {index + 1}.&nbsp;
+                  {samplePlantLocation.species}
+                </p>
+                <p>
+                  {t('tag')} #{samplePlantLocation.tag} •{' '}
+                  {samplePlantLocation.measurements.height}m high •{' '}
+                  {samplePlantLocation.measurements.width}cm wide
+                </p>
+              </div>
+            );
+          }
+        )}
+      </div>
+    </>
+  ) : (
+    <></>
+  );
+};
+
 const PlantLocationDetails = ({
   plantLocationDetails,
   selectedLayer,
   loading,
 }: Props) => {
-  const { t } = useTranslation(['treemapperAnalytics']);
+  const checkCondition = () => {
+    if (
+      selectedLayer.treeCount ||
+      selectedLayer?.density ||
+      plantLocationDetails?.plantedSpecies !== null ||
+      plantLocationDetails?.samplePlantLocations
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <div className={styles.plantLocationDetailsContainer}>
@@ -28,81 +144,11 @@ const PlantLocationDetails = ({
             <div></div>
             <div className={styles.spinner}></div>
           </>
-        ) : plantLocationDetails ? (
+        ) : checkCondition() ? (
           <div className={styles.contentTop}>
-            <div className={styles.topContainer}>
-              <div className={styles.leftContainer}>
-                <p className={styles.title}>{t('speciesPlanted')}</p>
-                <p>
-                  {selectedLayer.treeCount}&nbsp;{t('trees')}
-                </p>
-              </div>
-              <div className={styles.rightContainer}>
-                <div className={styles.title}>
-                  <p>{t('plantingDensity')}</p>
-                </div>
-                <p>
-                  {selectedLayer?.density?.toFixed(4)}&nbsp;
-                  {t('treesPerHa')}
-                </p>
-              </div>
-            </div>
-            <div className={styles.midContainer}>
-              <div className={styles.title}>
-                {t('speciesPlanted')}&nbsp;(
-                {plantLocationDetails.plantedSpecies.length})
-              </div>
-              <div className={styles.speciesContainer}>
-                {plantLocationDetails &&
-                  plantLocationDetails.plantedSpecies.map((species) => {
-                    return (
-                      <div
-                        key={species.scientificName}
-                        className={styles.individualSpeciesContainer}
-                      >
-                        <div className={styles.speciesName}>
-                          {species.scientificName}
-                        </div>
-                        <div className={styles.count}>{species.treeCount}</div>
-                        <div className={styles.totalPercentage}>
-                          {(
-                            (species.treeCount /
-                              plantLocationDetails.totalPlantedTrees) *
-                            100
-                          ).toFixed(2)}
-                          %
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-            <div className={styles.bottomContainer}>
-              <div className={styles.title}>
-                {t('sampleTrees')}&nbsp;(
-                {plantLocationDetails?.totalSamplePlantLocations})
-              </div>
-              {plantLocationDetails?.samplePlantLocations?.map(
-                (samplePlantLocation, index) => {
-                  return (
-                    <div
-                      key={samplePlantLocation.guid}
-                      className={styles.sampleTreeContainer}
-                    >
-                      <p className={styles.title}>
-                        {index + 1}.&nbsp;
-                        {samplePlantLocation.species}
-                      </p>
-                      <p>
-                        {t('tag')} #{samplePlantLocation.tag} •{' '}
-                        {samplePlantLocation.measurements.height}m high •{' '}
-                        {samplePlantLocation.measurements.width}cm wide
-                      </p>
-                    </div>
-                  );
-                }
-              )}
-            </div>
+            <PlantationUnitInfo selectedLayer={selectedLayer} />
+            <ListOfSpeciesPlanted plantLocationDetails={plantLocationDetails} />
+            <SampleTreesInfo plantLocationDetails={plantLocationDetails} />
           </div>
         ) : (
           <>

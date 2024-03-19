@@ -11,7 +11,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import NoProjectsFound from './components/NoProjectsFound';
-import { tr } from 'date-fns/locale';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
