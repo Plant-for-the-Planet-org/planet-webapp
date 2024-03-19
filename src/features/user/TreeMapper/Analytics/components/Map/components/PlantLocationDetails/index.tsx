@@ -123,18 +123,11 @@ const PlantLocationDetails = ({
   selectedLayer,
   loading,
 }: Props) => {
-  const checkCondition = () => {
-    if (
-      selectedLayer.treeCount ||
-      selectedLayer?.density ||
-      plantLocationDetails?.plantedSpecies !== null ||
-      plantLocationDetails?.samplePlantLocations
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const hasData =
+    selectedLayer.treeCount ||
+    selectedLayer?.density ||
+    (plantLocationDetails?.plantedSpecies?.length || 0) > 0 ||
+    (plantLocationDetails?.samplePlantLocations?.length || 0) > 0;
 
   return (
     <div className={styles.plantLocationDetailsContainer}>
@@ -144,7 +137,7 @@ const PlantLocationDetails = ({
             <div></div>
             <div className={styles.spinner}></div>
           </>
-        ) : checkCondition() ? (
+        ) : hasData ? (
           <div className={styles.contentTop}>
             <PlantationUnitInfo selectedLayer={selectedLayer} />
             <ListOfSpeciesPlanted plantLocationDetails={plantLocationDetails} />
