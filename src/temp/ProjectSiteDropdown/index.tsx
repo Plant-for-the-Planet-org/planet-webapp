@@ -13,7 +13,7 @@ interface Props {
   isOpen: boolean;
 }
 
-const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
+const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
   const [selectedSite, setSelectedSite] = useState(selectedOption);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
 
@@ -46,7 +46,7 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
           </div>
         </div>
         <div className={styles.downArrow}>
-          <DropdownArrow width={12} height={7} />
+          <DropdownArrow width={12} />
         </div>
       </div>
       {isMenuOpen && (
@@ -77,4 +77,4 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
   );
 };
 
-export default SiteDropdown;
+export default ProjectSiteDropdown;

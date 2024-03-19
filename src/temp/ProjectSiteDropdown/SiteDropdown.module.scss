@@ -8,6 +8,7 @@
     padding: 12px 0px 9px 12px;
     max-width: 290px;
     justify-content: space-between;
+    cursor: pointer;
 }
 .siteIconAndTextContainer {
     display: flex;
@@ -53,6 +54,8 @@
     justify-content: space-between;
     gap:30px;
     padding: 8px 0px; 
+    color: #4F4F4F; //to be replaced
+    cursor: pointer;
 }
 .hideDivider {
     display: none;
@@ -67,9 +70,19 @@
 }
 
 @include xsPhoneView {
+    .dropdownButton {
+        border-radius: 10px;
+    }
     .siteIconAndTextContainer {
         >svg {
             width: 16px;
+        }
+    }
+    .downArrow {
+        margin-right: 5.13px;
+        svg {
+            width: 6.37px;
+            height: 4.183px;
         }
     }
     .dropdownButton {
@@ -101,6 +114,7 @@
             gap: 0;
             font-size: $fontXXXSmallNew;
             padding: 4px 0;
+            color:#333; //to be replaced
             .siteArea {
                 font-size: $fontXXSmall;
             }

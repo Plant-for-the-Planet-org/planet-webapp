@@ -1,13 +1,12 @@
 import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const DropdownArrow = ({ width, height }: IconProps) => {
+const DropdownArrow = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width}
-      height={height}
-      viewBox="0 0 8 5"
+      viewBox="0 0 9 5"
       fill="none"
     >
       <path
