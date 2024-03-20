@@ -34,7 +34,7 @@ const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
             <p>{t('plantingDensity')}</p>
           </div>
           <p>
-            {selectedLayer?.density?.toFixed(4)}&nbsp;
+            {(selectedLayer?.density * 1000).toFixed(1)}&nbsp;
             {t('treesPerHa')}
           </p>
         </div>
@@ -100,8 +100,11 @@ const SampleTreesInfo = ({
               >
                 <p className={styles.title}>
                   {index + 1}.&nbsp;
-                  {samplePlantLocation.species}
+                  <p className={styles.species}>
+                    {samplePlantLocation.species}
+                  </p>
                 </p>
+
                 <p>
                   {t('tag')} #{samplePlantLocation.tag} •{' '}
                   {samplePlantLocation.measurements.height}m high •{' '}
@@ -156,7 +159,14 @@ const PlantLocationDetails = ({
           <span>
             <TreeMapperIcon />
           </span>
-          <p className={styles.treemapper}>TreeMapper</p>
+          <a
+            href="https://treemapper.app"
+            rel="noopener noreferrer"
+            target="_blank"
+            className={styles.treemapper}
+          >
+            TreeMapper
+          </a>
         </div>
       </div>
     </div>

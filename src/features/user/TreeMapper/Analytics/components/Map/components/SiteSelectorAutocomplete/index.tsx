@@ -50,17 +50,20 @@ const SitesSelectorAutocomplete = ({
         options={sitesList}
         getOptionLabel={(option) => (option as Feature).properties.name}
         isOptionEqualToValue={(option, value) =>
-          (option as Feature).properties.name === (value as Feature).properties.name
+          (option as Feature).properties.name ===
+          (value as Feature).properties.name
         }
         value={localSite}
-        onChange={(_event, newValue) => setLocalSite(newValue as Feature | null)}
+        onChange={(_event, newValue) =>
+          setLocalSite(newValue as Feature | null)
+        }
         renderOption={(props, option) => (
           <span {...props} key={(option as Feature).properties.name}>
             {(option as Feature).properties.name}
           </span>
         )}
         renderInput={(params) => (
-          <TextField {...params} label={t('groups')} color="primary" />
+          <TextField {...params} label={t('sites')} color="primary" />
         )}
       />
     );

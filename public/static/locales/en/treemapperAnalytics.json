@@ -65,6 +65,7 @@
   "plantingDensity": "Planting Density",
   "sampleTrees": "Sample Trees",
   "tag": "Tag",
+  "sites": "Sites",
   "searchDateError": "Search date is not between the selected date range.",
   "noProjectsText": "No projects are available.",
   "addProjectsButton": "Add A Project"
