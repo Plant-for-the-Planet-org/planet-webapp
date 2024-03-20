@@ -128,7 +128,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     if (contextLoaded && !user) {
       // store the claim link in localstorage
       if (typeof window !== 'undefined') {
-        localStorage.setItem('redirectLink', window.location.href);
+        localStorage.setItem('redirectLink', router.asPath);
         loginWithRedirect({
           redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',

@@ -54,10 +54,7 @@ const ReedemCode = ({ pageProps: { tenantConfig } }: Props) => {
   useEffect(() => {
     if (contextLoaded) {
       if (!user) {
-        localStorage.setItem(
-          'redirectLink',
-          `profile/redeem/${router.query.code}`
-        );
+        localStorage.setItem('redirectLink', router.asPath);
         router.push(`/login`);
       }
     }

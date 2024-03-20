@@ -89,9 +89,7 @@ export default function Donate({
   // Deprecation Notice: This route will be removed in next major version
   React.useEffect(() => {
     if (router.query.p) {
-      router.push('/[p]', `/${router.query.p}`, {
-        shallow: true,
-      });
+      router.push(`/${router.query.p}`);
     }
   }, [router]);
 

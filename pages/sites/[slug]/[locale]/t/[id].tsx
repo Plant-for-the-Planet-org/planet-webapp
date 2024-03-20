@@ -68,7 +68,7 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
       setProfile(null);
       // Check if the user is authenticated and trying to access their own profile
       if (user && user.slug === router.query.id) {
-        router.replace('/profile');
+        router.replace(`/${router.query.locale}/profile`);
       }
       // If user is not access their own profile, load the public profile
       else {
