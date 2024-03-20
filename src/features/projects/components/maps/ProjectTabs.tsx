@@ -10,14 +10,14 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 export default function ProjectTabs(): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
-  const { pathname } = useRouter();
+  const router = useRouter();
   const t = useTranslations('Maps');
   const { selectedMode, setSelectedMode, rasterData } = useProjectProps();
 
   const containerClasses =
     embed !== 'true'
       ? styles.VegetationChangeContainer
-      : pathname === '/[p]' && showProjectDetails === 'false'
+      : router.pathname.includes('/[p]') && showProjectDetails === 'false'
       ? `${styles.embed_VegetationChangeContainer} ${styles['no-project-details']}`
       : styles.embed_VegetationChangeContainer;
 

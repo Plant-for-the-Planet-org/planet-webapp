@@ -35,7 +35,6 @@ export default function BulkCodeIssueCodesPage({
   pageProps,
 }: Props): ReactElement {
   const router = useRouter();
-  const { isReady, query } = useRouter();
   const t = useTranslations('Me');
   const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
@@ -47,11 +46,11 @@ export default function BulkCodeIssueCodesPage({
   const checkContext = useCallback(async () => {
     if (planetCashAccount) {
       if (!project) {
-        if (isReady) {
+        if (router.isReady) {
           try {
             const paymentOptions = await getRequest<PaymentOptions>(
               pageProps.tenantConfig.id,
-              `/app/paymentOptions/${query.id}`,
+              `/app/paymentOptions/${router.query.id}`,
               {
                 currency: planetCashAccount.country,
               }
@@ -80,8 +79,8 @@ export default function BulkCodeIssueCodesPage({
       }
 
       if (!bulkMethod) {
-        if (isReady) {
-          const _bulkMethod = query.method;
+        if (router.isReady) {
+          const _bulkMethod = router.query.method;
           if (
             _bulkMethod === BulkCodeMethods.GENERIC ||
             _bulkMethod === BulkCodeMethods.IMPORT
@@ -93,7 +92,7 @@ export default function BulkCodeIssueCodesPage({
         }
       }
     }
-  }, [isReady, planetCashAccount]);
+  }, [router.isReady, planetCashAccount]);
 
   React.useEffect(() => {
     if (router.isReady) {

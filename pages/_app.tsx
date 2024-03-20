@@ -179,7 +179,11 @@ const PlanetWeb = ({
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
   React.useEffect(() => {
-    if (router.pathname === '/' || router.pathname === '/sites/[slug]') {
+    if (
+      router.pathname === '/' ||
+      router.pathname === '/sites/[slug]' ||
+      router.pathname === '/sites/[slug]/[locale]'
+    ) {
       if (typeof window !== 'undefined') {
         if (localStorage.getItem('showVideo')) {
           if (localStorage.getItem('showVideo') === 'true') {

@@ -9,12 +9,12 @@ const ImpersonationActivated = () => {
   const { user, isImpersonationModeOn, setIsImpersonationModeOn, loadUser } =
     useUserProps();
 
-  const { push } = useRouter();
+  const router = useRouter();
 
   const exitImpersonation = () => {
     setIsImpersonationModeOn(false);
     localStorage.removeItem('impersonationData');
-    push(`/profile/impersonate-user`);
+    router.push(`/profile/impersonate-user`);
     loadUser();
   };
 

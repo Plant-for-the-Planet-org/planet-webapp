@@ -16,7 +16,7 @@ const PlantedTreesContributions = ({
   handleFetchNextPage,
   hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
-  const { asPath } = useRouter();
+  const router = useRouter();
   const t = useTranslations('Profile');
   const locale = useLocale();
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
@@ -31,13 +31,17 @@ const PlantedTreesContributions = ({
 
   const _checkConditions = () => {
     switch (true) {
-      case userProfile?.type === 'tpo' && asPath === `/${locale}/profile`: // tpo private profile
+      case userProfile?.type === 'tpo' &&
+        router.asPath === `/${locale}/profile`: // tpo private profile
         return true;
-      case userProfile?.type !== 'tpo' && asPath === `/${locale}/profile`: // normal user private profile
+      case userProfile?.type !== 'tpo' &&
+        router.asPath === `/${locale}/profile`: // normal user private profile
         return true;
-      case userProfile?.type === 'tpo' && asPath !== `/${locale}/profile`: // tpo public profile
+      case userProfile?.type === 'tpo' &&
+        router.asPath !== `/${locale}/profile`: // tpo public profile
         return false;
-      case userProfile?.type !== 'tpo' && asPath !== `/${locale}/profile`: //  normal user public profile
+      case userProfile?.type !== 'tpo' &&
+        router.asPath !== `/${locale}/profile`: //  normal user public profile
         return true;
       default:
         return null;
@@ -86,7 +90,7 @@ const PlantedTreesContributions = ({
       >
         {_checkConditions() && (
           <div className={myForestStyles.donationList}>
-            {asPath === `/${locale}/profile` ? (
+            {router.asPath === `/${locale}/profile` ? (
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"

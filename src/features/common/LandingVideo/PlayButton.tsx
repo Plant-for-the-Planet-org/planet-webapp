@@ -16,11 +16,16 @@ export default function PlayButton({
   const { isImpersonationModeOn } = useUserProps();
   const { embed, enableIntro, isContextLoaded } = useContext(ParamsContext);
   const t = useTranslations('Common');
-  const { pathname } = useRouter();
+  const router = useRouter();
 
   const playButtonClasses = `${
     embed === 'true' ? styles.embed_playButton : styles.playButton
-  } ${pathname === '/[p]' ? styles['playButton--reduce-right-offset'] : ''}`;
+  } ${
+    router.pathname === '/[p]' ||
+    router.pathname === '/sites/[slug]/[locale]/[p]'
+      ? styles['playButton--reduce-right-offset']
+      : ''
+  }`;
 
   const canShowPlayButton = !(embed === 'true' && enableIntro !== 'true');
 

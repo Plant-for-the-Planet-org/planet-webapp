@@ -29,19 +29,19 @@ function TreeMapperAnalytics({
   const t = useTranslations('TreemapperAnalytics');
 
   const { user } = useUserProps();
-  const { push, isReady } = useRouter();
+  const router = useRouter();
   const { setTenantConfig } = useTenant();
 
   React.useEffect(() => {
-    if (isReady) {
+    if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
-  }, [isReady]);
+  }, [router.isReady]);
 
   useEffect(() => {
     if (user) {
       if (!(process.env.ENABLE_ANALYTICS && user.type === 'tpo')) {
-        push('/profile');
+        router.push('/profile');
       }
     }
   }, [user]);

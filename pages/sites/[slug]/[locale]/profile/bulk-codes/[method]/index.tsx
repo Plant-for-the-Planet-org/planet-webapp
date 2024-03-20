@@ -32,7 +32,6 @@ export default function BulkCodeSelectProjectPage({
 }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
-  const { isReady, query } = useRouter();
   const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
 
@@ -45,8 +44,8 @@ export default function BulkCodeSelectProjectPage({
   // Sets bulk method if not already set within context when page is loaded
   useEffect(() => {
     if (!bulkMethod) {
-      if (isReady) {
-        const _bulkMethod = query.method;
+      if (router.isReady) {
+        const _bulkMethod = router.query.method;
         if (
           _bulkMethod === BulkCodeMethods.GENERIC ||
           _bulkMethod === BulkCodeMethods.IMPORT
