@@ -45,6 +45,20 @@ export default function Markers({
       ? 'topUnapproved'
       : 'notDonatable';
   };
+  const goToProject = (projectSlug: string): void => {
+    router.push(
+      `/${projectSlug}/${
+        embed === 'true'
+          ? `${
+              callbackUrl != undefined
+                ? `?embed=true&callback=${callbackUrl}`
+                : '?embed=true'
+            }`
+          : ''
+      }`
+    );
+  };
+
   return (
     <>
       {searchedProject.map((projectMarker, index) => (
@@ -60,32 +74,8 @@ export default function Markers({
               className={`${styles.marker} ${
                 styles[markerBackgroundColor(projectMarker.properties)]
               }`}
-              onClick={() => {
-                router.push(
-                  `/${projectMarker.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`
-                );
-              }}
-              onKeyDown={() => {
-                router.push(
-                  `/${projectMarker.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`
-                );
-              }}
+              onClick={() => goToProject(projectMarker.properties.slug)}
+              onKeyDown={() => goToProject(projectMarker.properties.slug)}
               role="button"
               tabIndex={0}
               onMouseOver={() => {
@@ -131,32 +121,10 @@ export default function Markers({
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
-                router.push(
-                  `/${popupData.project.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`
-                );
+                goToProject(popupData.project.properties.slug);
               }
             }}
-            onKeyDown={() => {
-              router.push(
-                `/${popupData.project.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`
-              );
-            }}
+            onKeyDown={() => goToProject(popupData.project.properties.slug)}
             role="button"
             tabIndex={0}
             onMouseLeave={() => {
