@@ -2,8 +2,8 @@ import React from 'react';
 import styles from '../styles/DirectGift.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 import { SetState } from '../../common/types/common';
+import Link from 'next/link';
 
 export interface DirectGiftI {
   id: string;
@@ -17,11 +17,7 @@ interface Props {
 }
 
 export default function DirectGift({ directGift, setShowDirectGift }: Props) {
-  const router = useRouter();
   const t = useTranslations('Donate');
-  const handleProfileRedirect = () => {
-    router.push('/t/[id]', `/t/${directGift.id}`);
-  };
   return (
     <div className={styles.giftContainer}>
       <div className={styles.textContainer}>
@@ -29,7 +25,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
           {directGift.type === 'individual'
             ? t('giftToName')
             : t('plantTreesWith')}{' '}
-          <a onClick={handleProfileRedirect}>{directGift.displayName}</a>
+          <Link href={`/t/${directGift.id}`}>{directGift.displayName}</Link>
         </div>
         <div className={styles.selectProject}>{t('selectProject')}</div>
       </div>
