@@ -8,6 +8,7 @@
 
 .carbonCaptureInfoContainer {
   display: flex;
+  height: 111px;
   flex-direction: column;
   gap: 12px;
   padding-left: 15.5px;
@@ -50,40 +51,43 @@
 
   height: 70px;
   border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .carbonCaptureIndicator {
   width: 274px;
-  height: 60px;
+  height: 11px;
   display: flex;
   border-radius: 3px;
 
   .beforeIntervationIndicator {
     width: 100%;
-    height: 21px;
-    background: linear-gradient(
-        0deg,
-        rgba(33, 150, 83, 0.4) 0%,
-        rgba(33, 150, 83, 0.4) 100%
-      ),
-      $light;
+    height: 100%;
+    background: rgba(0, 122, 73, 1);
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
   }
   .byProjectIndicator {
     width: 100%;
-    background: linear-gradient(0deg, #219653 0%, #219653 100%), $light;
-    height: 21px;
+    background: rgba(104, 176, 48, 1);
+    height: 100%;
   }
   .projectPotential {
     width: 100%;
     background: $light;
-    height: 21px;
+    height: 100%;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
   }
 }
 
+.carbonCaptureDataContainerMain {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
 .carbonCaptureDataContainer {
   display: flex;
   padding-left: 16px;
@@ -97,20 +101,20 @@
 }
 .beforeIntervationLabel {
   font-size: $fontXXXSmallNew;
-  font-weight: 600;
+  font-weight: 400;
 }
 .beforeIntervationDate {
   font-size: 6px;
   color: $nonDonatableProjectBackgroundColor;
 }
 .byProjectData {
-  color: $primaryColorNew;
+  color: $primaryColor;
   font-size: $fontXXXSmallNew;
   font-weight: 700;
 }
 .byProjectLabel {
   font-size: $fontXXXSmallNew;
-  font-weight: 600;
+  font-weight: 400;
 }
 .byProjectDate {
   font-size: 6px;
@@ -121,13 +125,13 @@
   align-items: flex-end;
   flex-direction: column;
   .sitePotentialData {
-    color: $primaryColorNew;
+    color: #333;
     font-size: $fontXXXSmallNew;
     font-weight: bold;
   }
   .sitePotentialLabel {
     font-size: $fontXXXSmallNew;
-    font-weight: 600;
+    font-weight: 400;
   }
 }
 
@@ -168,10 +172,4 @@
 .horizontalLine {
   position: relative;
   top: -8px;
-}
-
-.indicatorMainContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }

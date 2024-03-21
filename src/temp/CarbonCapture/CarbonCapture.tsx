@@ -6,7 +6,7 @@ import InfoIcon from '../icons/InfoIcon';
 import DownArrow from '../icons/DownArrow';
 import { Trans, useTranslation } from 'next-i18next';
 import UpArrow from '../icons/UpArrow';
-import CO2BarGraph from './BarGraph';
+import { CO2BarGraph, CO2CaptureData } from './BarGraph';
 
 interface TabPanelProps {
   index: number;
@@ -16,7 +16,7 @@ interface TabPanelProps {
   sitePotential: number;
 }
 
-type carbonCapture = Omit<TabPanelProps, 'index' | 'value'>;
+type carbonCapture = Omit<TabPanelProps, 'value'>;
 
 function CustomTabPanel(props: TabPanelProps) {
   const {
@@ -31,6 +31,12 @@ function CustomTabPanel(props: TabPanelProps) {
   const { t } = useTranslation(['projectDetails']);
   const [isExtend, setIsExtend] = useState(false);
 
+  const carbonCaptureDataProps = {
+    beforeIntervation,
+    byProject,
+    sitePotential,
+  };
+
   return (
     <div
       role="tabpanel"
@@ -41,7 +47,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <>
           <div className={style.carbonCaptureInfoContainer}>
             <div className={style.carbonCaptureLabelMainContainer}>
               <div className={style.carbonCaptureLabelContainer}>
@@ -56,11 +62,8 @@ function CustomTabPanel(props: TabPanelProps) {
               </div>
             </div>
             <div className={style.carbonCaptureDetailContainer}>
-              <CO2BarGraph
-                beforeIntervation={beforeIntervation}
-                byProject={byProject}
-                sitePotential={sitePotential}
-              />
+              <CO2BarGraph {...carbonCaptureDataProps} />
+              <CO2CaptureData {...carbonCaptureDataProps} />
             </div>
           </div>
           <button
@@ -76,7 +79,7 @@ function CustomTabPanel(props: TabPanelProps) {
               {isExtend ? <UpArrow /> : <DownArrow />}
             </div>
           </button>
-        </div>
+        </>
       )}
     </div>
   );
@@ -116,34 +119,31 @@ const CarbonCapture = ({
   beforeIntervation,
   byProject,
   sitePotential,
+  index,
 }: carbonCapture) => {
-  const [value, setValue] = React.useState(0);
-  const { t } = useTranslation(['projectDetails']);
-  function a11yProps(index: number) {
+  const [value, setValue] = React.useState(index);
+
+  const TabProps = (index: number) => {
     return {
       id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
     };
-  }
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   return (
     <div className={style.carbonCaptureModal}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="basic tabs example"
-        sx={customStyle}
-      >
+      <Tabs value={value} onChange={handleChange} sx={customStyle}>
         <Tab
           label={
             <Trans i18nKey="site">
               Site <p>({{ area: '12hpa' }})</p>
             </Trans>
           }
-          {...a11yProps(0)}
+          {...TabProps(0)}
           className="tab"
         />
         <Tab
@@ -152,7 +152,7 @@ const CarbonCapture = ({
               Entire Project <p>({{ area: '625hpa' }})</p>
             </Trans>
           }
-          {...a11yProps(1)}
+          {...TabProps(1)}
           className="tab"
         />
       </Tabs>

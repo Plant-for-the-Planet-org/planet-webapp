@@ -14,13 +14,15 @@ export const siteSelected: Story = {
     beforeIntervation: 25,
     byProject: 25,
     sitePotential: 100,
+    index: 0,
   },
 };
 
 export const entireProjectSelected: Story = {
   args: {
-    beforeIntervation: 20,
-    byProject: 40,
+    beforeIntervation: 202,
+    byProject: 404,
     sitePotential: 100,
+    index: 1,
   },
 };

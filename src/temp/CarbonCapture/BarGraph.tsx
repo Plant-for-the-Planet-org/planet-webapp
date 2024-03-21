@@ -1,5 +1,6 @@
 import style from './CarbonCapture.module.scss';
 import { useTranslation } from 'next-i18next';
+import { getFormattedNumber } from '../../utils/getFormattedNumber';
 
 interface CO2BarGraphProps {
   beforeIntervation: number;
@@ -7,12 +8,11 @@ interface CO2BarGraphProps {
   sitePotential: number;
 }
 
-const CO2BarGraph = ({
+export const CO2BarGraph = ({
   beforeIntervation,
   byProject,
   sitePotential,
 }: CO2BarGraphProps) => {
-  const { t } = useTranslation(['projectDetails']);
   const beforeIntervationIndicator = (
     beforeIntervation: number,
     sitePotential: number
@@ -35,49 +35,16 @@ const CO2BarGraph = ({
             sitePotential
           )}%`,
         }}
-        className={style.indicatorMainContainer}
-      >
-        <div className={style.beforeIntervationIndicator} />
-        <div>
-          <p className={style.beforeIntervationData}>
-            {t('projectDetails:cO₂Quantity', {
-              quantity: `${beforeIntervation}`,
-            })}
-          </p>
-          <p className={style.beforeIntervationLabel}>
-            {t('projectDetails:beforeIntervention')}
-          </p>
-          <p className={style.beforeIntervationDate}>
-            {t('projectDetails:before', {
-              date: 2018,
-            })}
-          </p>
-        </div>
-      </div>
+        className={style.beforeIntervationIndicator}
+      />
+
       <div
         style={{
           width: `${byProjectIndicator(byProject, sitePotential)}%`,
-          alignItems: 'center',
         }}
-        className={style.indicatorMainContainer}
-      >
-        <div className={style.byProjectIndicator} />
-        <div>
-          <p className={style.byProjectData}>
-            {t('projectDetails:byProjectCO₂Quantity', {
-              quantity: `${byProject}`,
-            })}
-          </p>
-          <p className={style.byProjectLabel}>
-            {t('projectDetails:byProject')}
-          </p>
-          <p className={style.byProjectDate}>
-            {t('projectDetails:since', {
-              date: 2018,
-            })}
-          </p>
-        </div>
-      </div>
+        className={style.byProjectIndicator}
+      />
+
       <div
         style={{
           width: `${
@@ -85,23 +52,59 @@ const CO2BarGraph = ({
             (beforeIntervationIndicator(beforeIntervation, sitePotential) +
               byProjectIndicator(byProject, sitePotential))
           }%`,
-          alignItems: 'flex-end',
         }}
-        className={style.indicatorMainContainer}
-      >
-        <div className={style.projectPotential} />
-        <div className={style.sitePotentialDataContainer}>
-          <p className={style.sitePotentialData}>
-            {t('projectDetails:cO₂Quantity', {
-              quantity: `${sitePotential}`,
-            })}
-          </p>
-          <p className={style.sitePotentialLabel}>
-            {t('projectDetails:sitePotential')}
-          </p>
-        </div>
+        className={style.projectPotential}
+      />
+    </div>
+  );
+};
+
+export const CO2CaptureData = ({
+  beforeIntervation,
+  byProject,
+  sitePotential,
+}: CO2BarGraphProps) => {
+  const { t, i18n } = useTranslation(['projectDetails']);
+  return (
+    <div className={style.carbonCaptureDataContainerMain}>
+      <div>
+        <p className={style.beforeIntervationData}>
+          {t('projectDetails:cO₂Quantity', {
+            quantity: getFormattedNumber(i18n.language, beforeIntervation),
+          })}
+        </p>
+        <p className={style.beforeIntervationLabel}>
+          {t('projectDetails:beforeIntervention')}
+        </p>
+        <p className={style.beforeIntervationDate}>
+          {t('projectDetails:before', {
+            date: 2018,
+          })}
+        </p>
+      </div>
+      <div>
+        <p className={style.byProjectData}>
+          {t('projectDetails:byProjectCO₂Quantity', {
+            quantity: getFormattedNumber(i18n.language, byProject),
+          })}
+        </p>
+        <p className={style.byProjectLabel}>{t('projectDetails:byProject')}</p>
+        <p className={style.byProjectDate}>
+          {t('projectDetails:since', {
+            date: 2018,
+          })}
+        </p>
+      </div>
+      <div className={style.sitePotentialDataContainer}>
+        <p className={style.sitePotentialData}>
+          {t('projectDetails:cO₂Quantity', {
+            quantity: getFormattedNumber(i18n.language, sitePotential),
+          })}
+        </p>
+        <p className={style.sitePotentialLabel}>
+          {t('projectDetails:sitePotential')}
+        </p>
       </div>
     </div>
   );
 };
-export default CO2BarGraph;
