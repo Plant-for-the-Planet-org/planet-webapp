@@ -88,8 +88,9 @@ export default function Donate({
 
   // Deprecation Notice: This route will be removed in next major version
   React.useEffect(() => {
-    if (router.query.p) {
-      router.push(`/${router.query.p}`);
+    if (typeof router.query.p === 'string') {
+      const safePath = encodeURIComponent(router.query.p);
+      router.push(encodeURI(`/${safePath}`));
     }
   }, [router]);
 

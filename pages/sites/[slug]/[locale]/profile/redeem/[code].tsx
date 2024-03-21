@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect, useContext, FC } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';

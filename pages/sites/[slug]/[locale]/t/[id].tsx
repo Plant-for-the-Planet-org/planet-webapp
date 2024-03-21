@@ -27,15 +27,16 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import myProfileStyle from '../../../../../src/features/user/Profile/styles/MyProfile.module.scss';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { AbstractIntlMessages } from 'next-intl';
+import { AbstractIntlMessages, useLocale } from 'next-intl';
 interface Props {
   pageProps: PageProps;
 }
 
 function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   // External imports
+  const locale = useLocale();
   const router = useRouter();
-  const { user, contextLoaded, token } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
 
@@ -68,7 +69,7 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
       setProfile(null);
       // Check if the user is authenticated and trying to access their own profile
       if (user && user.slug === router.query.id) {
-        router.replace(`/${router.query.locale}/profile`);
+        router.replace(encodeURI(`/${locale}/profile`));
       }
       // If user is not access their own profile, load the public profile
       else {
