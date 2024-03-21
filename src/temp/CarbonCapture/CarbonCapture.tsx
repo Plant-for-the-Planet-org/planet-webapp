@@ -2,11 +2,11 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import React, { useState } from 'react';
 import style from './CarbonCapture.module.scss';
-import InfoIcon from '../icons/InfoIcon';
 import DownArrow from '../icons/DownArrow';
 import { Trans, useTranslation } from 'next-i18next';
 import UpArrow from '../icons/UpArrow';
 import { CO2BarGraph, CO2CaptureData } from './BarGraph';
+import NewInfoIcon from '../icons/NewInfoIcon';
 
 interface TabPanelProps {
   index: number;
@@ -58,7 +58,7 @@ function CustomTabPanel(props: TabPanelProps) {
                 </div>
               </div>
               <div className={style.infoIconContainer}>
-                <InfoIcon />
+                <NewInfoIcon width={'19px'} height={'19px'} color={'#BDBDBD'} />
               </div>
             </div>
             <div className={style.carbonCaptureDetailContainer}>
