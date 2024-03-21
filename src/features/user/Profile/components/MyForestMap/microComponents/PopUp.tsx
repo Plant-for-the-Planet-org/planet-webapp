@@ -177,7 +177,6 @@ export const DonationPopUp = ({
   onMouseLeave,
 }: DonationPopUpProps) => {
   const router = useRouter();
-  const { asPath } = router;
   const t = useTranslations('Profile');
   const locale = useLocale();
   const tCountry = useTranslations('Country');
@@ -192,7 +191,7 @@ export const DonationPopUp = ({
         token,
         undefined,
         undefined,
-        asPath !== `/${locale}/profile` ? profile.slug : undefined
+        router.asPath !== `/${locale}/profile` ? profile.slug : undefined
       );
       embed === 'true'
         ? window.open(encodeURI(url), '_blank')

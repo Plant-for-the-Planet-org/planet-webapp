@@ -38,7 +38,6 @@ const TreesOrUnitAreaAndDonateOption = ({
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const router = useRouter();
-  const { asPath } = router;
   const handleDonate = (id: string, tenant: string) => {
     const url = getDonationUrl(
       tenant,
@@ -46,7 +45,7 @@ const TreesOrUnitAreaAndDonateOption = ({
       token,
       undefined,
       undefined,
-      asPath !== `/${locale}/profile` ? publicProfileSlug : undefined
+      router.asPath !== `/${locale}/profile` ? publicProfileSlug : undefined
     );
     embed === 'true'
       ? window.open(encodeURI(url), '_blank')
@@ -54,10 +53,10 @@ const TreesOrUnitAreaAndDonateOption = ({
   };
 
   const _checkConditions = () => {
-    if (gift && asPath === `/${locale}/profile`) {
+    if (gift && router.asPath === `/${locale}/profile`) {
       const _label = t('myContributions.donate');
       return _label;
-    } else if (asPath !== `/${locale}/profile`) {
+    } else if (router.asPath !== `/${locale}/profile`) {
       const _label = t('myContributions.donate');
       return _label;
     } else {
