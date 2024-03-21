@@ -8,7 +8,6 @@ export interface ParamsContextType {
   embed: QueryParamType;
   showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
-  language: QueryParamType;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
   enableIntro: QueryParamType;
@@ -18,7 +17,6 @@ export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
   showBackIcon: undefined,
   callbackUrl: undefined,
-  language: undefined,
   showProjectDetails: undefined,
   showProjectList: undefined,
   enableIntro: undefined,
@@ -28,17 +26,12 @@ export const ParamsContext = createContext<ParamsContextType>({
 const QueryParamsProvider: FC = ({ children }) => {
   const locale = useLocale();
   const { tenantConfig } = useTenant();
-  // TODOO - use tenant supported locales
+  // TODOO - use tenant supported locales. This may not be needed any more as middleware takes care.
   const tenantSupportedLocale = tenantConfig.config.languages ?? ['en'];
   const [isContextLoaded, setIsContextLoaded] = useState(false);
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
-  const [language, setLanguage] = useState<QueryParamType>(
-    typeof window !== 'undefined' && localStorage.getItem('language')
-      ? localStorage.getItem('language')
-      : 'en'
-  );
 
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
@@ -74,7 +67,6 @@ const QueryParamsProvider: FC = ({ children }) => {
         embed,
         showBackIcon,
         callbackUrl,
-        language,
         showProjectDetails,
         showProjectList,
         enableIntro,
