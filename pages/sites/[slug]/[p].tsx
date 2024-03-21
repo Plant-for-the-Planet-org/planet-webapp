@@ -58,8 +58,10 @@ export default function Donate({
   const {
     geoJson,
     project,
+    selectedSite,
     setSelectedSite,
     setProject,
+    selectedPl,
     setSelectedPl,
     plantLocations,
     setShowSingleProject,
@@ -153,44 +155,43 @@ export default function Donate({
   }, [project]);
 
   React.useEffect(() => {
-    if (geoJson && !router.query.site && !router.query.ploc && project) {
+    console.log('project', project, 'geoJson', geoJson, 'plantLocations', plantLocations, router.query.site, router.query.ploc);
+    if (project && geoJson && !router.query.site && !router.query.ploc) {
       router.push(
-        `/${project.slug}?site=${geoJson.features[0].properties.id}`,
-        undefined,
-        { shallow: true }
+        `/${project.slug}?site=${geoJson.features[0].properties.id}`
       );
     }
-  }, [project, router]);
-
-  React.useEffect(() => {
-    //for selecting one of the site of project if user use link  to directly visit to site from home page
+    //for selecting one of the site of project if user use link to directly visit to site from home page
     if (project && geoJson && router.query.site) {
       const siteIndex: number = geoJson?.features.findIndex((singleSite) => {
         return router.query.site === singleSite?.properties.id;
       });
+      console.log('siteIndex', siteIndex);
       if (siteIndex === -1) {
         router.push(`/${project.slug}`);
       } else {
-        setSelectedSite(siteIndex);
+        if (!selectedSite || selectedSite !== siteIndex) {
+          setSelectedSite(siteIndex);
+        }
       }
     }
-  }, [setSelectedSite, geoJson, project]);
-
-  React.useEffect(() => {
-    //for selecting one of the plant location. if user use link  to directly visit to plantLocation from home page
-    if (geoJson && router.query.ploc && plantLocations && project) {
+    //for selecting one of the plant location. if user use link to directly visit to plantLocation from home page
+    if (project && plantLocations && router.query.ploc) {
       const singlePlantLocation: PlantLocation | undefined =
         plantLocations?.find((singlePlantLocation) => {
           return router.query.ploc === singlePlantLocation?.hid;
         });
 
-      if (singlePlantLocation === undefined) {
+      console.log('singlePlantLocation', singlePlantLocation);
+      if (!singlePlantLocation) {
         router.push(`/${project.slug}`);
       } else {
-        setSelectedPl(singlePlantLocation);
+        if (!selectedPl || selectedPl?.hid !== singlePlantLocation?.hid ) {
+          setSelectedPl(singlePlantLocation);
+        }
       }
     }
-  }, [router, router.query.ploc, plantLocations, setSelectedPl, project]);
+  }, [router, project, geoJson, plantLocations]);
 
   return pageProps.tenantConfig ? (
     <>
