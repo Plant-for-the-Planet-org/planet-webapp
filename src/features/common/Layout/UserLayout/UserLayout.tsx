@@ -218,7 +218,7 @@ function NavLink({
 
 const UserLayout: FC = ({ children }) => {
   const t = useTranslations('Me');
-  // const { asPath } = useRouter();
+  const locale = useLocale();
   const router = useRouter();
   const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
     useUserProps();
@@ -425,7 +425,7 @@ const UserLayout: FC = ({ children }) => {
     if (router) {
       for (const link of navLinks) {
         //checks whether the path belongs to menu or Submenu
-        if (router.asPath === link.path) {
+        if (link.path && router.asPath === `/${locale}${link.path}`) {
           setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find(

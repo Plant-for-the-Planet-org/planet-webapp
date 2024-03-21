@@ -79,8 +79,6 @@ export default function NavbarComponent() {
         router.push(`/profile`);
       }
     } else {
-      //----------------- To do - redirect to slug -----------------
-      // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect({
         redirectUri: `${window.location.origin}/login`,
         ui_locales: localStorage.getItem('language') || 'en',
@@ -132,8 +130,8 @@ export default function NavbarComponent() {
           style={{ borderRadius: '40px' }}
         />
       </div>
-    ) : router.pathname === '/complete-signup' ||
-      (user && router.pathname === `/t/${user.slug}`) ? (
+    ) : router.pathname.includes('/complete-signup') ||
+      (user && router.pathname.includes(`/profile`)) ? (
       <MeSelected color={themeProperties.primaryColor} />
     ) : (
       <Me color={themeProperties.light.primaryFontColor} />
@@ -165,7 +163,7 @@ export default function NavbarComponent() {
                   </div>
                   <p
                     className={
-                      router.pathname === SingleLink.onclick
+                      router.asPath === `/${locale}${SingleLink.onclick}`
                         ? 'active_icon'
                         : ''
                     }
@@ -222,7 +220,12 @@ export default function NavbarComponent() {
                     {link === 'donate' ? (
                       <p
                         className={
-                          router.pathname === '/' || router.pathname === '/[p]'
+                          router.pathname === '/' ||
+                          router.pathname === '/[p]' ||
+                          router.pathname === '/[p]/[id]' ||
+                          router.pathname === '/sites/[slug]/[locale]' ||
+                          router.pathname === '/sites/[slug]/[locale]/[p]' ||
+                          router.pathname === '/sites/[slug]/[locale]/[p]/[id]'
                             ? 'active_icon'
                             : ''
                         }
@@ -232,7 +235,7 @@ export default function NavbarComponent() {
                     ) : (
                       <p
                         className={
-                          router.pathname === SingleLink.onclick
+                          router.asPath === `/${locale}${SingleLink.onclick}`
                             ? 'active_icon'
                             : ''
                         }

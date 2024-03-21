@@ -179,7 +179,7 @@ export default function Explore(): ReactElement {
         }`,
         undefined,
         {
-          shallow: true,
+          shallow: true, //As Explore is only shown on the index route, we don't want to reload the page
         }
       );
     }

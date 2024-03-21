@@ -129,11 +129,11 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            router.push(`/t/${user.slug}`);
+            router.push('/profile');
           }
         }
       } else {
-        router.push('/', undefined, { shallow: true });
+        router.push('/');
       }
     }
     if (contextLoaded) {
