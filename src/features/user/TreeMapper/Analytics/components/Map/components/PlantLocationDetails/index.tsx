@@ -6,6 +6,7 @@ import {
 } from '../../../../../../../common/types/dataExplorer';
 import PlantLocationDetailsZeroState from '../PlantLocationDetailsZeroState';
 import TreeMapperIcon from '../TreeMapperIcon';
+import { getFormattedNumber } from '../../../../../../../../utils/getFormattedNumber';
 
 interface Props {
   plantLocationDetails: PlantLocationDetailsApiResponse['res'] | null;
@@ -17,14 +18,15 @@ type PlantationUnitInfoProp = Omit<Props, 'plantLocationDetails' | 'loading'>;
 type ListOfSpeciesPlantedProp = Omit<Props, 'selectedLayer' | 'loading'>;
 
 const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
-  const { t } = useTranslation(['treemapperAnalytics']);
+  const { t, i18n } = useTranslation(['treemapperAnalytics']);
   return (
     <div className={styles.topContainer}>
       {selectedLayer.treeCount && (
         <div className={styles.leftContainer}>
           <p className={styles.title}>{t('speciesPlanted')}</p>
           <p>
-            {selectedLayer.treeCount}&nbsp;{t('trees')}
+            {getFormattedNumber(i18n.language, selectedLayer.treeCount)}&nbsp;
+            {t('trees')}
           </p>
         </div>
       )}
@@ -34,7 +36,11 @@ const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
             <p>{t('plantingDensity')}</p>
           </div>
           <p>
-            {(selectedLayer?.density * 1000).toFixed(1)}&nbsp;
+            {getFormattedNumber(
+              i18n.language,
+              Number((selectedLayer?.density * 1000).toFixed(1))
+            )}
+            &nbsp;
             {t('treesPerHa')}
           </p>
         </div>
@@ -46,7 +52,7 @@ const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
 const ListOfSpeciesPlanted = ({
   plantLocationDetails,
 }: ListOfSpeciesPlantedProp) => {
-  const { t } = useTranslation(['treemapperAnalytics']);
+  const { t, i18n } = useTranslation(['treemapperAnalytics']);
   return plantLocationDetails?.plantedSpecies !== null ? (
     <div className={styles.midContainer}>
       <div className={styles.title}>
@@ -61,7 +67,9 @@ const ListOfSpeciesPlanted = ({
               className={styles.individualSpeciesContainer}
             >
               <div className={styles.speciesName}>{species.scientificName}</div>
-              <div className={styles.count}>{species.treeCount}</div>
+              <div className={styles.count}>
+                {getFormattedNumber(i18n.language, species.treeCount)}
+              </div>
               <div className={styles.totalPercentage}>
                 {(
                   (species.treeCount / plantLocationDetails.totalPlantedTrees) *

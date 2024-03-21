@@ -84,7 +84,7 @@
           flex-direction: column;
           border-radius: 16px;
           width: 130px;
-
+          min-width: 128px;
           .title {
             font-weight: 500;
           }
@@ -99,7 +99,7 @@
           align-items: flex-start;
           flex-direction: column;
           border-radius: 16px;
-
+          min-width: 128px;
           .title {
             font-weight: 500;
             display: flex;
@@ -128,6 +128,7 @@
               overflow: hidden;
               text-overflow: ellipsis;
               padding-right: 5px;
+              font-style: italic;
 
               //   &:hover {
               //     white-space: normal;
@@ -142,6 +143,7 @@
               justify-content: center;
               align-items: center;
               min-width: 50px;
+              font-weight: 600;
             }
 
             .totalPercentage {
@@ -149,6 +151,7 @@
               display: flex;
               justify-content: flex-end;
               align-items: center;
+              font-weight: 600;
             }
           }
         }
@@ -162,7 +165,7 @@
       .bottomContainer {
         background-color: #e86f561a;
         z-index: 2;
-        padding: 16px;
+        padding: 20px;
         border-radius: 16px;
 
         .sampleTreeContainer {
