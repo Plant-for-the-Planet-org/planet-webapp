@@ -1,6 +1,7 @@
 {
   "Common": {
     "tree": "{count, plural, =0 {stromů} =1 {strom} other {stromů}}",
+    "m2": "m²",
     "by": "Od {tpoName}",
     "to_project_by_tpo": "Pro {projectName} od {tpoName}",
     "for": "pro",
@@ -94,6 +95,7 @@
     "deleteCondition": "Před pokračováním se ujistěte, že jste zrušili všechny odběry.",
     "showSubscriptions": "Zobrazit mé odběry",
     "notFound": "Požadovaná stránka nebyla nalezena.",
+    "tooManyRequest": "Příliš mnoho požadavků. Počkejte prosím a zkuste to později nebo se obraťte na správce systému.",
     "unauthorized": "Něco se pokazilo. Zkuste se odhlásit a znovu přihlásit.",
     "validationError": "Chyba ověření",
     "internalServerError": "Interní chyba serveru - zkuste to prosím později!",
@@ -120,10 +122,15 @@
     "active_account_exists": "Aktivní účet PlanetCash již existuje",
     "duplicate_account": "Účet již existuje",
     "token_expired": "Platnost tokenu vypršela. Přihlaste se znovu.",
+    "project_not_available": "Podrobnosti o projektu nejsou v současné době k dispozici",
     "topProject": "Top projekt",
     "viewReport": "Zobrazit zprávu",
-    "reviewInfo": " Projekt byl zkontrolován v rámci vícedenního terénního přezkumu v <2>měsíci</2> a splňuje naše <5>standardy.</5>",
+    "reviewInfo": " Projekt byl zkontrolován v rámci vícedenního terénního přezkumu v {reviewMonth} a splňuje naše <standardsLink>standardy.</standardsLink>",
     "standardsLink": "https://www.plant-for-the-planet.org/standards/",
-    "project": "Projekt"
+    "project": "Projekt",
+    "top_project_standards_fulfilled": "Kontrola projektu ukázala, že tento projekt splňuje nejméně 12 z 19 <standardsLink>standardů</standardsLink> Top projektu .",
+    "disabledDonateButtonText": "Projekt v současné době nepřijímá dary. Důvodem může být to, že je plně financován, že ještě nebyl přezkoumán nebo že v současné době nesplňuje všechny naše projektové standardy, nebo že se rozhodl používat platformu výhradně pro své nástroje transparentnosti.",
+    "notDonatable": "Nelze darovat",
+    "salesforceDisabledDonateButtonText": "Projekt v současné době nepřijímá dary."
   }
 }

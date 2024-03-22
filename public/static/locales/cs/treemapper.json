@@ -12,6 +12,7 @@
     "coordinates": "Souřadnice",
     "guid": "GUID",
     "height": "Výška",
+    "invalidHeight": "Nesprávná výška",
     "width": "Šířka",
     "plantDate": "Datum rostlin",
     "registrationDate": "Datum registrace",
@@ -25,6 +26,7 @@
     "plantingLocation": "Místo výsadby",
     "reviewAndSubmit": "Zkontrolovat a odeslat",
     "sampleTree": "Vzorek stromu # {number}",
+    "tag": "Štítek",
     "import": "Importovat",
     "editor": "Editor",
     "draw": "Kreslit",
@@ -33,8 +35,11 @@
     "downloadCSVTemplate": "Stáhněte si šablonu CSV",
     "treeTag": "Tag stromu",
     "diameter": "Průměr",
+    "invalidDiameter": "Neplatný průměr",
     "latitude": "Zeměpisná šířka",
+    "invalidLatitude": "Nesprávná zeměpisná šířka",
     "longitude": "Zeměpisná délka",
+    "invalidLongitude": "Nesprávná zeměpisná délka",
     "addAnotherSampleTree": "Přidejte další vzorový strom",
     "skip": "Přeskočit",
     "treeSpecies": "Druhy stromů",
@@ -63,6 +68,10 @@
     "speciesValidation": "Zadejte prosím druh",
     "external": "Vnější",
     "date": "Datum",
-    "measurements": "Měření"
+    "datePlantedRequired": "Požadované datum výsadby",
+    "measurements": "Měření",
+    "ignoredColumnsWarning": "Další sloupce byly ignorovány",
+    "back": "Zpět",
+    "submit": "Odeslat"
   }
 }

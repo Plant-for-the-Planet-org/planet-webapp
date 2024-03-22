@@ -1,5 +1,6 @@
 {
   "Country": {
+    "auto": "Seleção automática",
     "ac": "Ilha de Ascensão",
     "af": "Afeganistão",
     "ax": "Ilhas Åland",
@@ -243,7 +244,7 @@
     "ug": "Uganda",
     "ua": "Ucrânia",
     "ae": "Emirados Árabes Unidos",
-    "gb": "Reino Unido da Grã-Bretanha e Irlanda do Norte",
+    "gb": "UK",
     "un": "Nações Unidas",
     "us": "Estados Unidos da América",
     "um": "Ilhas Menores Distantes dos Estados Unidos",

@@ -46,6 +46,7 @@
     "showProjectList": "Zobrazit seznam projektů",
     "showProjectDetails": "Zobrazit podrobnosti projektu",
     "hideProjectList": "Skrýt seznam projektů",
-    "hideProjectDetails": "Skrýt detaily projektu"
+    "hideProjectDetails": "Skrýt detaily projektu",
+    "countries": "Země"
   }
 }

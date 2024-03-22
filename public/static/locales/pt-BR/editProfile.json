@@ -26,14 +26,37 @@
     "termAndConditionError": "Por favor Aceite os Termos e Condições",
     "fieldLabels": {
       "profileType": "Eu sou um(a)",
+      "firstName": "Primeiro nome",
+      "lastName": "Sobrenome",
       "name": "Nome do {type}",
+      "email": "E-mail",
+      "address": "Endereço",
+      "city": "Cidade",
+      "zipCode": "Código postal",
+      "country": "País",
+      "bio": "Descrição do perfil",
       "website": "Website",
       "privateAccount": "Conta Privada",
       "subscribe": "Inscreva-se para receber notícias por e-mail"
     },
     "validationErrors": {
+      "maxChars": "Deve ter {max} caracteres ou menos",
+      "firstNameRequired": "O campo First Name é obrigatório",
+      "firstNameInvalid": "O primeiro nome é inválido. Ele não pode começar com um caractere especial, e somente estes caracteres especiais são permitidos: espaço ' . -",
+      "lastNameRequired": "O campo Sobrenome é obrigatório",
+      "lastNameInvalid": "O sobrenome é inválido. Ele não pode começar com um caractere especial, e somente estes caracteres especiais são permitidos: espaço ' -",
+      "emailRequired": "O e-mail é obrigatório",
       "nameRequired": "Por favor, adicione um nome",
-      "websiteInvalid": "Por favor, digite o URL válido do site"
+      "nameInvalid": "O nome é inválido. Somente estes caracteres especiais são permitidos: espaço . , ' &amp; ( ) ! -",
+      "addressRequired": "O endereço é obrigatório",
+      "addressInvalid": "O endereço é inválido. Somente estes caracteres especiais são permitidos: espaço . , # - /",
+      "cityRequired": "A cidade é necessária",
+      "cityInvalid": "Cidade é inválido. Somente letras e estes caracteres especiais são permitidos: espaço . , ( ) -",
+      "zipCodeRequired": "O CEP é obrigatório",
+      "zipCodeInvalid": "O CEP é inválido",
+      "websiteInvalid": "Por favor, digite o URL válido do site",
+      "countryRequired": "O país é obrigatório",
+      "companyRequired": "O nome da empresa é obrigatório"
     }
   }
 }

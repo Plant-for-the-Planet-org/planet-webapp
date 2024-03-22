@@ -39,6 +39,7 @@
     "unitsPerCode": "Jednotky za kód*",
     "totalNumberOfCodes": "Celkový počet kódů*",
     "occasion": "Příležitost",
+    "notificationLanguage": "Jazyk oznámení",
     "total": "Celkem",
     "chargeConsentText": "Kliknutím na Kódy vydání, souhlasíte s tím, že výše uvedená částka bude naúčtována na váš účet.",
     "invalidEmailWarningText": "Ujistěte se, že příjemce_email je platný e-mail. Používání fiktivních nebo neplatných e-mailů povede k pozastavení účtu v souladu s podmínkami Platformy.",
@@ -75,16 +76,42 @@
       "invalidEmails": "recipient_email obsahuje figuríny/neplatné e-maily v následujících řádcích: {rowList}. Odstraňte prosím neplatné e-maily nebo přidejte platné e-maily.",
       "generalError": "Něco se pokazilo. Zkuste to prosím o chvíli."
     },
+    "errorAddRecipient": {
+      "unitsNotProvided": "Povinné",
+      "requiredForNotifications": "Povinné (pro příjemce e-mailu)",
+      "emailInvalid": "Neplatný e-mail"
+    },
     "successUploadCSV": {
       "ignoredColumns": "Další sloupce byly ignorovány"
     },
     "importInstructions": "Přečtěte si <docsLink>dokumentaci zde</docsLink>, stáhněte si <excelLink>šablonu aplikace Excel zde</excelLink>, a <csvLink>šablonu CSV zde</csvLink>.",
+    "tableHeaders": {
+      "recipient_name": "Jméno příjemce",
+      "recipient_email": "E-mail příjemce",
+      "recipient_notify": "Odeslat e-mail?",
+      "units": "Jednotky",
+      "recipient_message": "Zpráva"
+    },
+    "tableHeaderHelpText": {
+      "recipient_name": "Volitelně. Jméno příjemce, které se zobrazí na certifikátu a v případě volby i v poště zaslané příjemci. Povinné, pokud chcete odesílat e-maily.",
+      "recipient_email": "Volitelně. Povinné pro zaslání certifikátu příjemci e-mailem.",
+      "recipient_notify": "Volitelně. Pokud chcete, aby Plant-for-the-Planet automaticky informoval příjemce e-mailem, vyberte možnost Ano.",
+      "units": "Povinné. Počet stromů, které jsou předány příjemci, např. 5 za 5 stromů",
+      "recipient_message": "Volitelně. Zpráva pro příjemce, která je zahrnuta do e-mailu, pokud je možnost notify yes. Pokud není uvedena, bude odeslána výchozí zpráva."
+    },
     "donationSuccess": "Váš dar byl úspěšný. Přesměrování na zobrazení podrobností o darování brzy...",
     "donationError": {
       "planet_cash_insufficient_credit": "Dostupný kredit = {availableBalance}. Chcete-li provést tento dar, nahrajte zůstatek na svém účtu PlanetCash.",
       "default": "Něco se pokazilo. Zkuste to prosím po chvíli.",
       "planet_cash_payment_failure": "Transakce selhala. {reason}",
       "planet_cash_invalid_project": "Nelze darovat vybranému projektu."
-    }
+    },
+    "titleAddRecipientButton": "Přidání příjemce do tabulky",
+    "notifyRecipientOptions": {
+      "yes": "Ano",
+      "no": "Ne"
+    },
+    "fileUploadWarning": "Tím se odstraní stávající údaje o příjemci, chcete pokračovat?",
+    "unsavedDataWarning": "Některá data příjemce nejsou uložena. Chcete pokračovat? Neuložená data budou ztracena"
   }
 }
