@@ -6,6 +6,7 @@
     "yourTreesPlantedByOnLocation_plural": "Vos {treeCount} arbres seront plantés par {projectName} à {location}.",
     "myTreesPlantedByOnLocation": "Mes {treeCount} arbres sont plantés à {location}.",
     "myTreesPlantedByOnLocation_plural": "Mes {treeCount} arbres sont plantés à {location}.",
+    "projects": "Projets",
     "topProjects": "Principaux projets",
     "allCountProjects": "Tous {projectCount} Projets",
     "searchProjects": "Recherche de projets",
@@ -67,7 +68,6 @@
     "thisDonationSupports": "Ce don soutient",
     "plantTreesWith": "Planter des arbres avec",
     "textToShare": "Rejoignez {name} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
-    "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
     "shareTextTitle": "Arrêtez de parler. Commencer à planter",
     "textToShareLinkedin": "Rejoignez  {name} et des milliers d'autres  pour planter un mille milliards d'arbres afin de lutter contre la crise climatique",
     "textToShareForMe": "Rejoignez-moi ainsi que des milliers d'autres personnes pour planter mille milliards d'arbres et lutter contre la crise climatique",
@@ -85,7 +85,6 @@
     "payWithGiroPay": "Payer avec GiroPay",
     "payWithSofort": "Payer avec SOFORT",
     "donationFailed": "Echec du don",
-    "donationFailedMessage": "Un problème est survenu lors de votre paiement. Si vous continuez à avoir des problèmes, veuillez nous contacter à l'adresse suivante : support@plant-for-the-planet.org",
     "donationPending": "Compléter votre don",
     "donationPendingMessage": "Nous attendons actuellement la confirmation de votre banque. Cela pourrait prendre un certain temps, alors n'hésitez pas à fermer cette page. Nous vous enverrons sous peu votre reçu par courrier électronique.",
     "sepaMessage": "En fournissant votre IBAN et en confirmant ce paiement, vous autorisez Plant-for-the-Planet and Stripe, notre fournisseur de services de paiement, à envoyer des instructions à votre banque pour débiter votre compte. Vous avez droit à un remboursement de votre banque selon les termes et conditions de votre accord avec votre banque. Si vous avez des problèmes concernant votre don, veuillez nous envoyer un courriel à support@plant-for-the-planet.org",
@@ -110,6 +109,7 @@
     "type": "Type",
     "projectType": "Type de projet",
     "restoration": "Restauration",
-    "filters": "Filtres"
+    "filters": "Filtres",
+    "perM2": "par m²"
   }
 }

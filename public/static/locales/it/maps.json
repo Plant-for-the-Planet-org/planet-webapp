@@ -41,6 +41,12 @@
     "daysAgo": "{days} giorni fa",
     "today": "Oggi",
     "yesterday": "Ieri",
-    "clickForDetails": "Clicca per i dettagli"
+    "clickForDetails": "Clicca per i dettagli",
+    "treeMapper": "TreeMapper",
+    "showProjectList": "Mostra elenco progetti",
+    "showProjectDetails": "Mostra i dettagli del progetto",
+    "hideProjectList": "Nascondere l'elenco dei progetti",
+    "hideProjectDetails": "Nascondi i dettagli del progetto",
+    "countries": "Paesi"
   }
 }

@@ -23,6 +23,7 @@
       "payoutMinAmount": "Minimální částka výplaty",
       "bankName": "Název banky",
       "bankAddress": "Adresa banky",
+      "bankCountry": "Banka Země",
       "holderName": "Jméno majitele účtu",
       "holderAddress": "Adresa majitele účtu",
       "remarks": "Další podrobnosti",

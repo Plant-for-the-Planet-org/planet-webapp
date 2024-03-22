@@ -12,6 +12,7 @@
     "coordinates": "Coordenadas",
     "guid": "GUID",
     "height": "Altura",
+    "invalidHeight": "Altura inválida",
     "width": "Largura",
     "plantDate": "Data do Plantio",
     "registrationDate": "Data de registro",
@@ -25,6 +26,7 @@
     "plantingLocation": "Local de plantio",
     "reviewAndSubmit": "Rever e Submeter",
     "sampleTree": "Amostra da árvore #{number}",
+    "tag": "Etiqueta",
     "import": "Importar",
     "editor": "Editor",
     "draw": "Desenhar",
@@ -33,8 +35,11 @@
     "downloadCSVTemplate": "Fazer download do modelo CSV",
     "treeTag": "Etiqueta da árvore",
     "diameter": "Diâmetro",
+    "invalidDiameter": "Diâmetro inválido",
     "latitude": "Latitude",
+    "invalidLatitude": "Latitude inválida",
     "longitude": "Longitude",
+    "invalidLongitude": "Longitude inválida",
     "addAnotherSampleTree": "Adicionar outra árvore de amostra",
     "skip": "Pular",
     "treeSpecies": "Espécies de Árvores",
@@ -59,6 +64,14 @@
     "importCSV": "Importar CSV",
     "fileFormatCSV": "Ficheiro (csv)",
     "aliases": "Apelidos",
-    "external": "Externo"
+    "aliasesValidation": "Digite os aliases",
+    "speciesValidation": "Digite uma espécie",
+    "external": "Externo",
+    "date": "Data",
+    "datePlantedRequired": "Data de plantio necessária",
+    "measurements": "Medidas",
+    "ignoredColumnsWarning": "As colunas extras foram ignoradas",
+    "back": "Voltar",
+    "submit": "Enviar"
   }
 }

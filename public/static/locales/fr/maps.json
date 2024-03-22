@@ -42,6 +42,11 @@
     "today": "Aujourd'hui",
     "yesterday": "Hier",
     "clickForDetails": "Cliquez pour plus de détails",
-    "treeMapper": "TreeMapper"
+    "treeMapper": "TreeMapper",
+    "showProjectList": "Afficher la liste des projets",
+    "showProjectDetails": "Afficher les détails du projet",
+    "hideProjectList": "Masquer la liste des projets",
+    "hideProjectDetails": "Cacher les détails du projet",
+    "countries": "Pays"
   }
 }

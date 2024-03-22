@@ -1,5 +1,7 @@
 {
   "Redeem": {
+    "myPlantedTreesByOrg": "Můj strom {formattedNumber} bude zasazen {tpoName}",
+    "myPlantedTreesByOrg_plural": "Moje stromy {formattedNumber} budou vysazeny {tpoName}",
     "congratulations": "Gratulujeme!",
     "addToMyTrees": "Přidat do mých stromů",
     "validateCode": "Ověřit kód",
@@ -10,6 +12,7 @@
     "invalidCode": "Tento kód je neplatný.",
     "alreadyRedeemed": "Kód již byl uplatněn",
     "redeemCode": "Použít kód",
+    "redeemingCode": "Uplatnění kódu...",
     "redeem": "Uplatnit",
     "redeemDescription": "Uplatněte svůj stromový poukaz a další kódy.",
     "successfullyRedeemed": "Úspěšně uplatněn",

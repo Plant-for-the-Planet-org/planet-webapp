@@ -22,16 +22,41 @@
     "accountPrivacyChangeText": "Para crear un widget de perfil necesitas tener una cuenta pública. Al hacer clic en continuar, cambias tu configuración de privacidad a pública.",
     "continue": "Continúa",
     "cancel": "Cancelar",
+    "termAndCondition": "Acepto los términos y condiciones <termsLink></termsLink> de la plataforma Plant-for-the-Planet.",
+    "termAndConditionError": "Acepte las condiciones generales",
     "fieldLabels": {
       "profileType": "Soy un",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
       "name": "Nombre de {type}",
+      "email": "Correo electrónico",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "zipCode": "Código postal",
+      "country": "País",
+      "bio": "Descripción del perfil",
       "website": "Página web",
       "privateAccount": "Cuenta privada",
       "subscribe": "Suscríbete a las noticias por correo electrónico"
     },
     "validationErrors": {
+      "maxChars": "Debe tener {max} caracteres o menos",
+      "firstNameRequired": "El campo Nombre es obligatorio",
+      "firstNameInvalid": "El nombre no es válido. No puede empezar por un carácter especial, y sólo se permiten estos caracteres especiales: espacio ' . -",
+      "lastNameRequired": "El campo Apellido es obligatorio",
+      "lastNameInvalid": "El apellido no es válido. No puede empezar por un carácter especial, y sólo se permiten estos caracteres especiales: espacio ' -",
+      "emailRequired": "Correo electrónico obligatorio",
       "nameRequired": "Por favor, introduce un nombre",
-      "websiteInvalid": "Por favor, introduzca una URL válida"
+      "nameInvalid": "El nombre no es válido. Sólo se permiten estos caracteres especiales: espacio . ¡, ' &amp; ( ) ! -",
+      "addressRequired": "Dirección obligatoria",
+      "addressInvalid": "La dirección no es válida. Sólo se permiten estos caracteres especiales: espacio . , # - /",
+      "cityRequired": "Se requiere la ciudad",
+      "cityInvalid": "Ciudad no es válido. Sólo se permiten letras y estos caracteres especiales: espacio . , ( ) -",
+      "zipCodeRequired": "Código postal obligatorio",
+      "zipCodeInvalid": "El código postal no es válido",
+      "websiteInvalid": "Por favor, introduzca una URL válida",
+      "countryRequired": "País obligatorio",
+      "companyRequired": "El nombre de la empresa es obligatorio"
     }
   }
 }
