@@ -48,6 +48,7 @@ import {
 } from 'date-fns';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import PlantLocationDetails from './components/PlantLocationDetails';
+import MyForestMapCredit from '../../../../Profile/components/MyForestMap/microComponents/MyForestMapCredit';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -414,60 +415,65 @@ export const MapContainer = () => {
     >
       <div className={styles.mapContainer}>
         {plantLocations && projectSites ? (
-          <MapGL
-            ref={mapRef}
-            {...mapState}
-            {...viewport}
-            onViewStateChange={_handleViewport}
-            onViewportChange={(viewport) => setViewport(viewport)}
-            onClick={handleMapClick}
-          >
-            <Source type="geojson" data={plantLocations}>
-              <Layer
-                id="plant-locations-fill"
-                type="fill"
-                paint={{
-                  'fill-color': '#007A49',
-                  'fill-opacity': ['get', 'opacity'],
-                }}
-              />
-              <Layer
-                id="plant-locations-line"
-                type="line"
-                paint={{
-                  'line-color': [
-                    'case',
-                    ['==', ['get', 'guid'], selectedLayer?.guid],
-                    '#007A49',
-                    'transparent',
-                  ],
-                  'line-width': 4,
-                }}
-              />
-            </Source>
+          <>
+            <MapGL
+              ref={mapRef}
+              {...mapState}
+              {...viewport}
+              onViewStateChange={_handleViewport}
+              onViewportChange={(viewport) => setViewport(viewport)}
+              onClick={handleMapClick}
+            >
+              <Source type="geojson" data={plantLocations}>
+                <Layer
+                  id="plant-locations-fill"
+                  type="fill"
+                  paint={{
+                    'fill-color': '#007A49',
+                    'fill-opacity': ['get', 'opacity'],
+                  }}
+                />
+                <Layer
+                  id="plant-locations-line"
+                  type="line"
+                  paint={{
+                    'line-color': [
+                      'case',
+                      ['==', ['get', 'guid'], selectedLayer?.guid],
+                      '#007A49',
+                      'transparent',
+                    ],
+                    'line-width': 4,
+                  }}
+                />
+              </Source>
 
-            <Source type="geojson" data={projectSites}>
-              <Layer
-                type="line"
-                paint={{
-                  'line-color': '#007A49',
-                  'line-width': 4,
-                }}
-              />
-            </Source>
-            <div className={styles.navigationControlContainer}>
-              <NavigationControl showCompass={false} />
+              <Source type="geojson" data={projectSites}>
+                <Layer
+                  type="line"
+                  paint={{
+                    'line-color': '#007A49',
+                    'line-width': 4,
+                  }}
+                />
+              </Source>
+              <div className={styles.navigationControlContainer}>
+                <NavigationControl showCompass={false} />
+              </div>
+              {selectedLayer && (
+                <PlantLocationDetails
+                  selectedLayer={selectedLayer}
+                  plantLocationDetails={plantLocationDetails}
+                  loading={loading}
+                />
+              )}
+            </MapGL>
+            <div className={styles.mapCreditContainer}>
+              <MyForestMapCredit />
             </div>
-            {selectedLayer && (
-              <PlantLocationDetails
-                selectedLayer={selectedLayer}
-                plantLocationDetails={plantLocationDetails}
-                loading={loading}
-              />
-            )}
-          </MapGL>
+          </>
         ) : (
-          <div className={styles.spinner}></div>
+          <div className={styles.spinner} />
         )}
       </div>
     </Container>

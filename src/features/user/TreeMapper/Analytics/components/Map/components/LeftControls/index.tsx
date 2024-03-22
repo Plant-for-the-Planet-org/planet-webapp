@@ -33,8 +33,10 @@ const LeftElements = ({
 }: Props) => {
   return (
     <div className={styles.container}>
-      <ProjectTypeSelector
-        handleProjectTypeChange={handleProjectTypeChange}
+      <SitesSelectorAutocomplete
+        sitesList={projectSites ? projectSites.features : []}
+        site={projectSite}
+        handleSiteChange={handleSiteChange}
         styles={{ minWidth: '200px' }}
       />
       <MuiAutoComplete
@@ -57,10 +59,8 @@ const LeftElements = ({
           />
         )}
       />
-      <SitesSelectorAutocomplete
-        sitesList={projectSites ? projectSites.features : []}
-        site={projectSite}
-        handleSiteChange={handleSiteChange}
+      <ProjectTypeSelector
+        handleProjectTypeChange={handleProjectTypeChange}
         styles={{ minWidth: '200px' }}
       />
     </div>
