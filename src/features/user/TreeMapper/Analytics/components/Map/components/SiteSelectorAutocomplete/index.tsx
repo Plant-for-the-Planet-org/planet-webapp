@@ -1,4 +1,10 @@
-import React, { ReactElement, useState, useEffect, CSSProperties } from 'react';
+import React, {
+  ReactElement,
+  useState,
+  useEffect,
+  CSSProperties,
+  useCallback,
+} from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import {
@@ -48,11 +54,16 @@ const SitesSelectorAutocomplete = ({
       <MuiAutocomplete
         style={styles ? styles : {}}
         options={sitesList}
-        getOptionLabel={(option) => (option as Feature).properties.name}
-        isOptionEqualToValue={(option, value) =>
-          (option as Feature).properties.name ===
-          (value as Feature).properties.name
-        }
+        getOptionLabel={useCallback(
+          (option) => (option as Feature).properties.name,
+          []
+        )}
+        isOptionEqualToValue={useCallback(
+          (option, value) =>
+            (option as Feature).properties.name ===
+            (value as Feature).properties.name,
+          []
+        )}
         value={localSite}
         onChange={(_event, newValue) =>
           setLocalSite(newValue as Feature | null)
