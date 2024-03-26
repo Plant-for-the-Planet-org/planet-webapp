@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Dropdown.module.scss';
 import CalendarIcon from '../icons/CalendarIcon';
-import DropdownArrow from '../icons/DropdownArrow';
 import DropdownDownArrow from '../icons/DropdownDownArrow';
 import DropdownUpArrow from '../icons/DropdownUpArrow';
 
@@ -55,9 +54,9 @@ const TimeTravelDropdown = ({
           </p>
         </div>
         {isMenuOpen ? (
-          <DropdownDownArrow width={10} />
-        ) : (
           <DropdownUpArrow width={8} />
+        ) : (
+          <DropdownDownArrow width={10} />
         )}
       </button>
       {isMenuOpen && (
