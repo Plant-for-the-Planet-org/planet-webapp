@@ -100,6 +100,14 @@
     right: 6px;
     top: 1px;
 }
+.labelContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #4F4F4F; 
+    font-size: 8px;
+    font-weight: 600;
+}
 @include xsPhoneView {
     .databoxContainer {
        max-width: 278px;

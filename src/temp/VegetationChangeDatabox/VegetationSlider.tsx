@@ -1,7 +1,8 @@
-import { Box, Typography, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import React from 'react';
 import { useTranslation } from 'next-i18next';
+import styles from './VegetationChangeDatabox.module.scss';
 
 interface Props {
   position: number;
@@ -75,18 +76,9 @@ const VegetationSlider = ({ position }: Props) => {
         valueLabelFormat={getLabelText}
         valueLabelDisplay="on"
       />
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          fontSize: 8,
-          color: '#4F4F4F',
-          fontWeight: 600,
-        }}
-      >
-        <Typography>-20 {t('tons')}</Typography>
-        <Typography>20 {t('tons')}</Typography>
+      <Box className={styles.labelContainer}>
+        <p>-20 {t('tons')}</p>
+        <p>20 {t('tons')}</p>
       </Box>
     </div>
   );
