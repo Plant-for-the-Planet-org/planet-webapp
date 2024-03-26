@@ -2,6 +2,8 @@ import { useState } from 'react';
 import SiteIcon from '../icons/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownArrow from '../icons/DropdownArrow';
+import DropdownUpArrow from '../icons/DropdownUpArrow';
+import DropdownDownArrow from '../icons/DropdownDownArrow';
 
 interface SiteType {
   name: string;
@@ -46,7 +48,11 @@ const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
           </div>
         </div>
         <div className={styles.downArrow}>
-          <DropdownArrow width={12} />
+          {isMenuOpen ? (
+            <DropdownUpArrow width={10} />
+          ) : (
+            <DropdownDownArrow width={12} />
+          )}
         </div>
       </div>
       {isMenuOpen && (
