@@ -21,6 +21,7 @@
     color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
+    align-items: center;
   }
 
   .projectGrid {
@@ -77,7 +78,7 @@
 
   .projectItem {
     background-color: #ffffff;
-    padding: 10px;
+    border-radius: 10px;
     width: 320px;
     max-width: 100%;
   }
