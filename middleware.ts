@@ -100,15 +100,20 @@ export default async function middleware(req: NextRequest) {
 
   // store NEXT_LOCALE cookie if available
   const localeFromPath = pathname.split('/')[1];
+  console.log('localeFromPath:', localeFromPath);
   const localeCookieValue = req.cookies.get('NEXT_LOCALE')?.value;
+  console.log('localeCookieValue:', localeCookieValue);
   if (
     i18nConfig.locales.includes(localeFromPath) &&
     localeFromPath !== localeCookieValue
   ) {
+    console.log('setting NEXT_LOCALE cookie:', localeFromPath);
     res.cookies.set('NEXT_LOCALE', localeFromPath, {
-      sameSite: 'strict',
       maxAge: 31536000, // 1 year
+      path: '/',
+      secure: process.env.NODE_ENV !== 'development',
     });
+    res.headers.set('x-middleware-cache', 'no-cache');
   }
 
   return res;
