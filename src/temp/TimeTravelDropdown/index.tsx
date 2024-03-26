@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styles from './Dropdown.module.scss';
 import CalendarIcon from '../icons/CalendarIcon';
 import DropdownArrow from '../icons/DropdownArrow';
+import DropdownDownArrow from '../icons/DropdownDownArrow';
+import DropdownUpArrow from '../icons/DropdownUpArrow';
 
 interface TimeTravelDropdownProps {
   labelYear: string;
@@ -52,7 +54,11 @@ const TimeTravelDropdown = ({
             <span>{selectedYear} </span>via {selectedSource}
           </p>
         </div>
-        <DropdownArrow width={8} color={`${'var(--bold-font-color-new)'}`} />
+        {isMenuOpen ? (
+          <DropdownDownArrow width={10} />
+        ) : (
+          <DropdownUpArrow width={8} />
+        )}
       </button>
       {isMenuOpen && (
         <div className={styles.menuItems}>
