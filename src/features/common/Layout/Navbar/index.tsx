@@ -209,7 +209,10 @@ export default function NavbarComponent() {
                 }
                 key={link}
               >
-                <Link href={isMobile && hasSubMenu ? '' : SingleLink.onclick}>
+                <Link
+                  prefetch={false}
+                  href={isMobile && hasSubMenu ? '' : SingleLink.onclick}
+                >
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
                       mainKey={link}

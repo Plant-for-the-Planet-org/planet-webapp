@@ -19,6 +19,7 @@ function getLocale(request: NextRequest): string | undefined {
 
     const previouslySelectedLanguage =
       request.cookies.get('NEXT_LOCALE')?.value;
+
     if (
       previouslySelectedLanguage !== undefined &&
       locales.includes(previouslySelectedLanguage) &&
@@ -38,6 +39,7 @@ function getLocale(request: NextRequest): string | undefined {
 
 /** Identifies locale in relative url and removes it */
 function removeLocaleFromUrl(pathname: string): string {
+  // For simplicity, we assume that locale will always be in the format of xx or xx-XX
   const localeRegex = /^[a-z]{2}(-[a-z]{2})?$/i;
 
   const splitPathname = pathname.split('/');
@@ -106,8 +108,10 @@ export default async function middleware(req: NextRequest) {
     localeFromPath !== localeCookieValue
   ) {
     res.cookies.set('NEXT_LOCALE', localeFromPath, {
-      sameSite: 'strict',
       maxAge: 31536000, // 1 year
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV !== 'development',
     });
   }
 
