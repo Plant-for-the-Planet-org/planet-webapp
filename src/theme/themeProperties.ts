@@ -3,6 +3,7 @@ const themeProperties = {
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
   fontSizes: {
     fontXXXSmallNew: '8px',
+    fontXXSmallNew: '9px',
     fontXXSmall: '10px',
     fontXSmall: '12px',
     fontSmall: '14px',
@@ -23,7 +24,8 @@ const themeProperties = {
   primaryLightColor: '#79AE4633',
   topProjectBackgroundColor: '#F3BB44',
   nonDonatableProjectBackgroundColor: '#828282',
-  primaryColorNew: '#219653',
+  primaryColorNew: '33, 150, 83',
+  secondaryColorNew: '#377E36',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
