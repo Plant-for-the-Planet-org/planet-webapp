@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const UpArrow = ({ width }: IconProps) => {
+const DropdownUpArrow = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,4 +17,4 @@ const UpArrow = ({ width }: IconProps) => {
   );
 };
 
-export default UpArrow;
+export default DropdownUpArrow;
