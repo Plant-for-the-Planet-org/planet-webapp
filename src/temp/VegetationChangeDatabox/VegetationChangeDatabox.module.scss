@@ -1,0 +1,134 @@
+@import '../../theme/theme';
+.databoxContainer {
+    display: flex;
+    width: fit-content;
+    padding: 12px 8px;
+    background-color: #fff;
+    align-items: center;
+    border-radius: 12px;
+    position: relative;
+    margin-top: 60vh; //to be removed
+    gap: 24px;
+}
+
+.startYearText {
+    font-size: 8px;
+    margin-top: 4px;
+    color: #828282;
+}
+
+.menuButton {
+    background-color: #F2F2F2;
+    border-radius: 4px;
+    padding: 7px 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 700;
+    gap: 22px;
+    width: 140px;
+    cursor: pointer;
+    .label {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+  
+}
+.dropdownIcon{
+    display: flex;
+    align-items: center;
+}
+.itemsContainer {
+    position: absolute;
+    bottom: 97px;
+    padding:12px;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 10px;
+    width: 134px;
+}
+.menuItem {
+    display: flex;
+    align-items: center;
+    padding: 6px 7px;
+    gap: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    .optionIcon {
+        height: 14px;
+        width: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .optionLabel {
+        display: flex;
+        flex-direction: column;
+        span {
+            font-size: 4px;
+            letter-spacing: 1.48px;
+            text-transform: uppercase;
+        }
+    }
+}
+.selected {
+    border-radius: 4px;
+    background-color: #F2F2F2;
+    font-weight: 700;
+    padding: 6px 7px;
+}
+
+.divider {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background-color: #E0E0E0;
+    top: 0;
+    left: 177px;
+
+}
+.sliderInfoContainer {
+    display: flex;
+    padding: 12px 10px 12px 0;
+}
+.infoIcon {
+    position: absolute;
+    right: 6px;
+    top: 1px;
+}
+.labelContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #4F4F4F; 
+    font-size: 8px;
+    font-weight: 600;
+}
+@include xsPhoneView {
+    .databoxContainer {
+       max-width: 278px;
+    }
+    .menuButton {
+        width: 118.5px;
+        height: 21px;
+        font-size: 8px;
+        padding: 5px 8px;
+    }
+    .divider {
+        left: 154px;
+    }
+    .sliderInfoContainer {
+        padding: 6px 6px 7px 0px;
+    }
+    .itemsContainer {
+        bottom: 85px;
+        width:118.5px;
+    }
+    .menuItem{
+        gap:4px;
+    }
+}
