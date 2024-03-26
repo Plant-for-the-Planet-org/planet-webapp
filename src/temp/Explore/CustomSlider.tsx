@@ -1,10 +1,6 @@
 import { Slider, styled } from '@mui/material';
 import theme from '../../theme/themeProperties';
-const {
-  light,
-  nonDonatableProjectBackgroundColor,
-  exploreRangeSliderColorNew,
-} = theme;
+const { light, nonDonatableProjectBackgroundColor } = theme;
 export const SmallSlider = styled(Slider)(() => ({
   '&.MuiSlider-root': {
     padding: '0px',
@@ -22,7 +18,7 @@ export const SmallSlider = styled(Slider)(() => ({
   },
   '.MuiSlider-track': {
     height: '2.5px',
-    color: `${exploreRangeSliderColorNew}`,
+    color: `rgba(235, 87, 87)`,
   },
   '.MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb:hover': {
     boxShadow: 'none',

@@ -46,7 +46,7 @@ export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
       color:
         (currentforestswitch && `${primaryColorNew}`) ||
         (restorationswitch && `${restorationToggleColorNew}`) ||
-        (deforestrationswitch && `${exploreRangeSliderColorNew}`),
+        (deforestrationswitch && `rgba(235, 87, 87)`),
     },
     '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
       backgroundColor:

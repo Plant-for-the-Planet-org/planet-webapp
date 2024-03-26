@@ -25,7 +25,7 @@ const themeProperties = {
   topProjectBackgroundColor: '#F3BB44',
   nonDonatableProjectBackgroundColor: '#828282',
   exploreRangeBackgroundColorNew: '#eb57571a',
-  exploreRangeSliderColorNew: '#eb5757',
+  exploreRangeSliderColorNew: '235, 87, 87',
   primaryColorNew: '#219653',
   horizontalLineColorNew: '#bdbdbd',
   restorationToggleColorNew: '#2f80ed',
