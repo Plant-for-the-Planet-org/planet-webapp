@@ -8,6 +8,8 @@ import SpeciesDensityIcon from '../icons/SpeciesDensityIcon';
 import FloodingRiskIcon from '../icons/FloodingRiskIcon';
 import DropdownArrow from '../icons/DropdownArrow';
 import { useTranslation } from 'next-i18next';
+import DropdownDownArrow from '../icons/DropdownDownArrow';
+import DropdownUpArrow from '../icons/DropdownUpArrow';
 
 interface Props {
   labelIcon: React.JSX.Element;
@@ -87,7 +89,11 @@ const Dropdown = ({ labelIcon, labelTitle, isOpen }: Props) => {
           <p>{selectedOption.title}</p>
         </div>
         <div className={styles.dropdownIcon}>
-          <DropdownArrow />
+          {isMenuOpen ? (
+            <DropdownUpArrow width={8} />
+          ) : (
+            <DropdownDownArrow width={10} />
+          )}
         </div>
       </div>
     </>
