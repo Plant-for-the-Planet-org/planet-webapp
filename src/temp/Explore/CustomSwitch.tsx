@@ -8,9 +8,9 @@ const {
   deforestrationSwitchTrackColorNew,
 } = theme;
 interface SwitchProps {
-  currentforestswitch?: string;
-  restorationswitch?: string;
-  deforestrationswitch?: string;
+  currentForestSwitch?: string;
+  restorationSwitch?: string;
+  deforestationSwitch?: string;
 }
 
 const baseSwitchStyle = {
@@ -39,19 +39,19 @@ const SmallSwitch = styled(Switch)(({}) => ({
   ...baseSwitchStyle,
 }));
 export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
-  ({ currentforestswitch, restorationswitch, deforestrationswitch }) => ({
+  ({ currentForestSwitch, restorationSwitch, deforestationSwitch }) => ({
     '.MuiSwitch-switchBase.Mui-checked': {
       color:
-        (currentforestswitch && `${primaryColorNew}`) ||
-        (restorationswitch && `${restorationToggleColorNew}`) ||
-        (deforestrationswitch &&
+        (currentForestSwitch && `${primaryColorNew}`) ||
+        (restorationSwitch && `${restorationToggleColorNew}`) ||
+        (deforestationSwitch &&
           `${'rgba(var(--deforestration-range-background-new))'}`),
     },
     '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
       backgroundColor:
-        (currentforestswitch && `${currentForestSwitchTrackColorNew}`) ||
-        (restorationswitch && `${restorationSwitchTrackColorNew}`) ||
-        (deforestrationswitch && `${deforestrationSwitchTrackColorNew}`),
+        (currentForestSwitch && `${currentForestSwitchTrackColorNew}`) ||
+        (restorationSwitch && `${restorationSwitchTrackColorNew}`) ||
+        (deforestationSwitch && `${deforestrationSwitchTrackColorNew}`),
     },
   })
 );

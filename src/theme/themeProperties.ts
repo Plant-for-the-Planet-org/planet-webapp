@@ -31,6 +31,7 @@ const themeProperties = {
   currentForestSwitchTrackColorNew: '#cae6d6',
   restorationSwitchTrackColorNew: '#cde1fb',
   deforestrationSwitchTrackColorNew: '#fad7d7',
+  exploreDescriptionBackground: '242, 242, 242',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',

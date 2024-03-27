@@ -16,6 +16,7 @@ const {
   primaryColorNew,
   deforestrationRangeBackgroundNew,
   horizontalLineColorNew,
+  exploreDescriptionBackground,
 } = theme;
 
 const globalStyles = css.global`
@@ -42,6 +43,7 @@ const globalStyles = css.global`
     --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
     --primary-color-new: ${primaryColorNew};
     --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
+    --explore-description-background-color-new: ${exploreDescriptionBackground};
     --horizontal-line-color: ${horizontalLineColorNew};
   }
   .theme-light {
