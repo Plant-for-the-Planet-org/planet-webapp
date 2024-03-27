@@ -61,7 +61,7 @@ export const CO2CaptureData = ({
     <div className={style.carbonCaptureDataContainerMain}>
       <div>
         <p className={style.beforeIntervationData}>
-          {t('projectDetails:cO₂Quantity', {
+          {t('projectDetails:co₂Quantity', {
             quantity: getFormattedNumber(i18n.language, beforeIntervation),
           })}
         </p>
@@ -89,7 +89,7 @@ export const CO2CaptureData = ({
       </div>
       <div className={style.sitePotentialDataContainer}>
         <p className={style.sitePotentialData}>
-          {t('projectDetails:cO₂Quantity', {
+          {t('projectDetails:co₂Quantity', {
             quantity: getFormattedNumber(i18n.language, sitePotential),
           })}
         </p>

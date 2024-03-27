@@ -1,7 +1,7 @@
 {
   "satelliteAnalysis": "Satellite Analysis",
   "beforeIntervention": "Before intervention",
-  "cO₂Quantity": "~{{quantity}}t",
+  "co₂Quantity": "~{{quantity}}t",
   "before": "before {{date}}",
   "byProject": "By Project",
   "byProjectCO₂Quantity": "v{{quantity}}t",
