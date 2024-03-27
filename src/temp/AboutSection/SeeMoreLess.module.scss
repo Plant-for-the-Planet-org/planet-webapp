@@ -1,0 +1,17 @@
+@import '../../theme/theme';
+
+.readMoreLessButton {
+    background-color: $primaryColorNew;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 14px 14px;
+    height: 27px;
+    color: $backgroundColor;
+    font-size: $fontXXXSmallNew;
+    gap: 3px;
+    text-transform: capitalize;
+    font-weight: 700;
+    cursor: pointer;
+}
