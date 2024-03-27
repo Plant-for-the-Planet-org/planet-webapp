@@ -67,6 +67,7 @@ export default function Timeline() {
       <div
         className={styles.timelineMoment}
         id={`desktop-timeline-moment-${slideIndex}`}
+        key={slideIndex}
       >
         <h3>We’re hitting important milestones.</h3>
         <div className={gridStyles.gridRow}>

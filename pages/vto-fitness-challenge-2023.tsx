@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign';
+import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign2023';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -57,7 +57,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
   try {
     const leaderboardRes = await fetch(
-      `${process.env.WEBHOOK_URL}/salesforce-vto-2024-leaderboard`
+      `${process.env.WEBHOOK_URL}/salesforce-earth-month-leaderboard`
     );
     const leaderBoardArr = await leaderboardRes.json();
     console.log('updated leaderboard');
@@ -68,7 +68,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
   try {
     const tenantscoreRes = await fetch(
-      `${process.env.WEBHOOK_URL}/salesforce-vto-2024-treecount`
+      `${process.env.WEBHOOK_URL}/salesforce-earth-month-count`
     );
     const tenantScoreArr = await tenantscoreRes.json();
     console.log('updated treecount');
