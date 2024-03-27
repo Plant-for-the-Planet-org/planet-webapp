@@ -57,7 +57,7 @@
 }
 
 .carbonCaptureIndicator {
-  width: 274px;
+  max-width: 274px;
   height: 11px;
   display: flex;
   border-radius: 3px;
@@ -136,7 +136,7 @@
 }
 
 .carbonCaptureModal {
-  width: max-content;
+  max-width: 338px;
   border-radius: 16px;
   overflow: hidden;
   background-color: $light;
@@ -172,4 +172,9 @@
 .horizontalLine {
   position: relative;
   top: -8px;
+}
+
+.carbonCaptureValue {
+  margin-left: 2px;
+  font-weight: 400;
 }

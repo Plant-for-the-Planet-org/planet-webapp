@@ -53,12 +53,13 @@ function CustomTabPanel(props: TabPanelProps) {
               <div className={style.carbonCaptureLabelContainer}>
                 <div className={style.carbonCapture}>
                   <Trans i18nKey="totalCO₂Captured">
-                    Total CO₂ Captured <p>(tons)</p>
+                    {t('projectDetails:totalCo2Captured')}
+                    <p>({t('projectDetails:tons')})</p>
                   </Trans>
                 </div>
               </div>
               <div className={style.infoIconContainer}>
-                <NewInfoIcon width={'19px'} height={'19px'} color={'#BDBDBD'} />
+                <NewInfoIcon width={'17.6px'} color={'#BDBDBD'} />
               </div>
             </div>
             <div className={style.carbonCaptureDetailContainer}>
@@ -97,13 +98,13 @@ const customStyle = {
     color: '#2F3336',
   },
   '.MuiButtonBase-root-MuiTab-root.Mui-selected': {
-    color: '#007A49',
+    color: `${`var(--primary-color-new)`}`,
   },
   '.MuiTabs-indicator': {
-    backgroundColor: '#007A49',
+    backgroundColor: `${`var(--primary-color-new)`}`,
   },
   '.MuiTab-root.Mui-selected': {
-    color: '#007A49',
+    color: `${`var(--primary-color-new)`}`,
     display: 'flex',
     flexDirection: 'row',
   },
@@ -140,7 +141,8 @@ const CarbonCapture = ({
         <Tab
           label={
             <Trans i18nKey="site">
-              Site <p>({{ area: '12hpa' }})</p>
+              Site{' '}
+              <p className={style.carbonCaptureValue}>({{ area: '12 ha' }})</p>
             </Trans>
           }
           {...TabProps(0)}
@@ -149,7 +151,11 @@ const CarbonCapture = ({
         <Tab
           label={
             <Trans i18nKey="entireProject">
-              Entire Project <p>({{ area: '625hpa' }})</p>
+              Entire Project{' '}
+              <p className={style.carbonCaptureValue}>
+                {' '}
+                ({{ area: '625 ha' }})
+              </p>
             </Trans>
           }
           {...TabProps(1)}

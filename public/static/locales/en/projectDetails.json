@@ -8,5 +8,7 @@
   "since": "since {{date}}",
   "sitePotential": "Site Potential",
   "seeMore": "See More",
-  "seeLess": "See Less"
+  "seeLess": "See Less",
+  "totalCo2Captured": "Total CO₂ Captured",
+  "tons": "tons"
 }

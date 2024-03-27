@@ -13,34 +13,28 @@ export const CO2BarGraph = ({
   byProject,
   sitePotential,
 }: CO2BarGraphProps) => {
-  const beforeIntervationIndicator = (
-    beforeIntervation: number,
-    sitePotential: number
-  ) => {
-    const beforeIntervationPercenatage =
-      (beforeIntervation / sitePotential) * 100;
+  const calculatePercentage = (value: number, sitePotential: number) => {
+    return (value / sitePotential) * 100;
+  };
 
-    return beforeIntervationPercenatage;
-  };
-  const byProjectIndicator = (byProject: number, sitePotential: number) => {
-    const byProjectPercentage = (byProject / sitePotential) * 100;
-    return byProjectPercentage;
-  };
+  const beforeIntervationPercentage = calculatePercentage(
+    beforeIntervation,
+    sitePotential
+  );
+  const byProjectPercentage = calculatePercentage(byProject, sitePotential);
+
   return (
     <div className={style.carbonCaptureIndicator}>
       <div
         style={{
-          width: `${beforeIntervationIndicator(
-            beforeIntervation,
-            sitePotential
-          )}%`,
+          width: `${beforeIntervationPercentage}%`,
         }}
         className={style.beforeIntervationIndicator}
       />
 
       <div
         style={{
-          width: `${byProjectIndicator(byProject, sitePotential)}%`,
+          width: `${byProjectPercentage}%`,
         }}
         className={style.byProjectIndicator}
       />
@@ -48,9 +42,7 @@ export const CO2BarGraph = ({
       <div
         style={{
           width: `${
-            100 -
-            (beforeIntervationIndicator(beforeIntervation, sitePotential) +
-              byProjectIndicator(byProject, sitePotential))
+            100 - (beforeIntervationPercentage + byProjectPercentage)
           }%`,
         }}
         className={style.projectPotential}
