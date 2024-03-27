@@ -39,6 +39,10 @@ const LeftElements = ({
         handleSiteChange={handleSiteChange}
         styles={{ minWidth: '200px' }}
       />
+      <ProjectTypeSelector
+        handleProjectTypeChange={handleProjectTypeChange}
+        styles={{ minWidth: '200px' }}
+      />
       <MuiAutoComplete
         style={{ minWidth: '200px' }}
         options={distinctSpeciesList}
@@ -58,10 +62,6 @@ const LeftElements = ({
             color="primary"
           />
         )}
-      />
-      <ProjectTypeSelector
-        handleProjectTypeChange={handleProjectTypeChange}
-        styles={{ minWidth: '200px' }}
       />
     </div>
   );
