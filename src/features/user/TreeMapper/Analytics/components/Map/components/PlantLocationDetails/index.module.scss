@@ -53,7 +53,8 @@
     flex-direction: column;
     justify-content: space-between;
     row-gap: 16px;
-    padding: 10px 0px;
+    padding: 10px 16px;
+    width: 100%;
     z-index: 2;
     overflow-y: scroll;
     scroll-behavior: smooth;
@@ -67,39 +68,39 @@
       align-items: center;
       flex-direction: column;
       row-gap: 16px;
+      width: 100%;
 
       .topContainer {
         display: flex;
         justify-content: space-between;
         z-index: 2;
         column-gap: 6px;
+        width: 100%;
 
         .leftContainer {
           background-color: #2f80ed1a;
-          padding: 15px;
+          padding: 16px;
           z-index: 2;
+          flex: 1;
           display: flex;
           justify-content: center;
           align-items: flex-start;
           flex-direction: column;
           border-radius: 16px;
-          width: 130px;
-          min-width: 128px;
           .title {
             font-weight: 500;
           }
         }
         .rightContainer {
           background-color: #f2c94c1a;
-          padding: 15px;
+          padding: 16px;
           z-index: 2;
           display: flex;
-          // flex: 1;
+          flex: 1;
           justify-content: center;
           align-items: flex-start;
           flex-direction: column;
           border-radius: 16px;
-          min-width: 128px;
           .title {
             font-weight: 500;
             display: flex;
@@ -114,6 +115,7 @@
         padding: 16px;
         border-radius: 16px;
         flex-grow: 1;
+        width: 100%;
 
         .speciesContainer {
           padding: 0 8px;
@@ -159,8 +161,9 @@
       .bottomContainer {
         background-color: #e86f561a;
         z-index: 2;
-        padding: 20px;
+        padding: 16px;
         border-radius: 16px;
+        width: 100%;
 
         .sampleTreeContainer {
           border-radius: 8px;
