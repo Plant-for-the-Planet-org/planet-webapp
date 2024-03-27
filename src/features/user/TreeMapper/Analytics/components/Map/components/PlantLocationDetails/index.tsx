@@ -15,7 +15,9 @@ interface Props {
 }
 
 type PlantationUnitInfoProp = Omit<Props, 'plantLocationDetails' | 'loading'>;
-type ListOfSpeciesPlantedProp = Omit<Props, 'selectedLayer' | 'loading'>;
+type ListOfSpeciesPlantedProp = {
+  plantLocationDetails: PlantLocationDetailsApiResponse['res'];
+};
 
 const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
   const { t, i18n } = useTranslation(['treemapperAnalytics']);
@@ -135,10 +137,13 @@ const PlantLocationDetails = ({
   loading,
 }: Props) => {
   const hasData =
-    selectedLayer.treeCount ||
-    selectedLayer?.density ||
-    (plantLocationDetails?.plantedSpecies?.length || 0) > 0 ||
-    (plantLocationDetails?.samplePlantLocations?.length || 0) > 0;
+    plantLocationDetails !== null &&
+    Boolean(
+      selectedLayer.treeCount ||
+        selectedLayer?.density ||
+        (plantLocationDetails?.plantedSpecies?.length || 0) > 0 ||
+        (plantLocationDetails?.samplePlantLocations?.length || 0) > 0
+    );
 
   return (
     <div className={styles.plantLocationDetailsContainer}>
