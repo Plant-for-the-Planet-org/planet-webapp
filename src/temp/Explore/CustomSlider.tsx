@@ -18,7 +18,7 @@ export const SmallSlider = styled(Slider)(() => ({
   },
   '.MuiSlider-track': {
     height: '2.5px',
-    color: `rgba(235, 87, 87)`,
+    color: `${'rgba(var(--deforestration-range-background-new))'}`,
   },
   '.MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb:hover': {
     boxShadow: 'none',

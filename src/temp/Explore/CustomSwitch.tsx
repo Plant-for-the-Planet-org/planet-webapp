@@ -3,7 +3,6 @@ import theme from '../../theme/themeProperties';
 const {
   primaryColorNew,
   restorationToggleColorNew,
-  exploreRangeSliderColorNew,
   currentForestSwitchTrackColorNew,
   restorationSwitchTrackColorNew,
   deforestrationSwitchTrackColorNew,
@@ -39,14 +38,14 @@ const baseSwitchStyle = {
 const SmallSwitch = styled(Switch)(({}) => ({
   ...baseSwitchStyle,
 }));
-
 export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
   ({ currentforestswitch, restorationswitch, deforestrationswitch }) => ({
     '.MuiSwitch-switchBase.Mui-checked': {
       color:
         (currentforestswitch && `${primaryColorNew}`) ||
         (restorationswitch && `${restorationToggleColorNew}`) ||
-        (deforestrationswitch && `rgba(235, 87, 87)`),
+        (deforestrationswitch &&
+          `${'rgba(var(--deforestration-range-background-new))'}`),
     },
     '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
       backgroundColor:
