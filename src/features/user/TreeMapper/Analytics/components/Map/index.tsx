@@ -324,7 +324,12 @@ export const MapContainer = () => {
     const clickedFeatures = event.features;
     if (clickedFeatures.length > 0) {
       const clickedLayerProperties = clickedFeatures[0].properties;
-      if (Object.keys(clickedLayerProperties).length !== 0) {
+      // Check if the clicked feature is a different plant location using guid
+      if (
+        Object.keys(clickedLayerProperties).length !== 0 &&
+        clickedLayerProperties.guid !== undefined &&
+        clickedLayerProperties.guid !== selectedLayer?.guid
+      ) {
         setSelectedLayer(clickedLayerProperties);
       }
     }
