@@ -66,7 +66,9 @@ export default function ContentSection() {
               Impact Hub and upload your receipt from Plant-for-the-Planet to
               request your match. Email screenshots of your donation AND match
               request to{' '}
-              <a href="mailto:vto.fitness@gmail.com">vto.fitness@gmail.com</a>{' '}
+              <a href="mailto:abilityforceATL@gmail.com">
+                abilityforceATL@gmail.com
+              </a>{' '}
               for verification. Once your donation and match request are
               verified, you will be added to the slack channel
               #vto-fitness-movetowards5miltrees-april24 to log your exercise
