@@ -28,7 +28,7 @@
 }
 .menuItems {
     display: flex;
-    width: 160px;
+    width: fit-content;
     margin-top: 16px;
     border-radius: 8px;
     color: $grayFontColorNew;
