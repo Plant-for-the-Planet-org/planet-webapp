@@ -15,19 +15,24 @@ interface Props {
     mostRecent: { created: string; donorName: string; treeCount: string }[];
   };
   tenantScore: { total: number };
+  isLoaded: boolean;
 }
 
-export default function Campaign({ tenantScore, leaderboard }: Props) {
+export default function Campaign({
+  tenantScore,
+  leaderboard,
+  isLoaded,
+}: Props) {
   return (
     <>
       <Head>
         <title>{`Mangrove Challenge | ${config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
-        <Landing tenantScore={tenantScore} />
+        <Landing tenantScore={tenantScore} isLoaded={isLoaded} />
         <ContentSection />
         <ParticipationSection />
-        <LeaderBoard leaderboard={leaderboard} />
+        <LeaderBoard leaderboard={leaderboard} isLoaded={isLoaded} />
         <AdditionalContent />
         <Footer />
       </main>

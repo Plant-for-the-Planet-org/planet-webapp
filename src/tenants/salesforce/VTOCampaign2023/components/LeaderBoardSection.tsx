@@ -8,11 +8,13 @@ interface Props {
     mostDonated: { created: string; donorName: string; treeCount: string }[];
     mostRecent: { created: string; donorName: string; treeCount: string }[];
   };
+  isLoaded: boolean;
 }
 
-export default function LeaderBoardSection({ leaderboard }: Props) {
+export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const isLeaderboardAvailable =
+    isLoaded &&
     leaderboard.mostDonated.length + leaderboard.mostRecent.length > 0 &&
     !(
       leaderboard.mostDonated.length === 1 &&

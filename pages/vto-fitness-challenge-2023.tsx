@@ -1,40 +1,66 @@
-import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign2023';
-import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import {
+  LeaderBoard,
+  TenantScore,
+} from '../src/features/common/types/campaign';
 
 interface Props {
   initialized: boolean;
-  pageProps: {
-    campaignLeaderBoard: {
-      mostDonated: { created: string; donorName: string; treeCount: string }[];
-      mostRecent: { created: string; donorName: string; treeCount: string }[];
-    };
-    campaignTenantScore: { total: number };
-  };
 }
 
-export default function VTOFitnessChallenge({ initialized, pageProps }: Props) {
-  const router = useRouter();
-  const config = tenantConfig();
+export default function VTOFitnessChallenge({ initialized }: Props) {
+  const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
+    mostDonated: [],
+    mostRecent: [],
+  });
+  const [tenantScore, setTenantScore] = useState<TenantScore>({
+    total: 0,
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  if (!config.header.items['home'].visible) {
-    if (typeof window !== 'undefined') {
-      router.push('/');
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const leaderboardRes = await fetch(
+          `${process.env.WEBHOOK_URL}/salesforce-earth-month-leaderboard`
+        );
+        const leaderBoardArr = await leaderboardRes.json();
+        setLeaderBoard(leaderBoardArr[0]);
+      } catch (err) {
+        console.error('Leaderboard could not be loaded:', err);
+      }
+
+      try {
+        const tenantscoreRes = await fetch(
+          `${process.env.WEBHOOK_URL}/salesforce-earth-month-count`
+        );
+        const tenantScoreArr = await tenantscoreRes.json();
+        setTenantScore(tenantScoreArr[0]);
+        setIsLoaded(true);
+      } catch (err) {
+        console.error('Treecount could not be loaded:', err);
+      }
+
+      setIsLoaded(true);
     }
-  }
+
+    loadData();
+  }, []);
 
   function getCampaignPage() {
+    if (leaderBoard === null || tenantScore === null) return <></>;
     let CampaignPage;
     switch (process.env.TENANT) {
       case 'salesforce':
         CampaignPage = SalesforceCampaign;
         return (
           <CampaignPage
-            leaderboard={pageProps.campaignLeaderBoard}
-            tenantScore={pageProps.campaignTenantScore}
+            leaderboard={leaderBoard}
+            tenantScore={tenantScore}
+            isLoaded={isLoaded}
           />
         );
       default:
@@ -46,37 +72,12 @@ export default function VTOFitnessChallenge({ initialized, pageProps }: Props) {
   return (
     <>
       <GetHomeMeta />
-      {initialized ? getCampaignPage() : <></>}
+      {initialized && isLoaded ? getCampaignPage() : <></>}
     </>
   );
 }
 
 export async function getStaticProps({ locale }: { locale: string }) {
-  let campaignLeaderBoard = { mostDonated: [], mostRecent: [] };
-  let campaignTenantScore = { total: 0 };
-
-  try {
-    const leaderboardRes = await fetch(
-      `${process.env.WEBHOOK_URL}/salesforce-earth-month-leaderboard`
-    );
-    const leaderBoardArr = await leaderboardRes.json();
-    console.log('updated leaderboard');
-    campaignLeaderBoard = leaderBoardArr[0];
-  } catch (err) {
-    console.log(err);
-  }
-
-  try {
-    const tenantscoreRes = await fetch(
-      `${process.env.WEBHOOK_URL}/salesforce-earth-month-count`
-    );
-    const tenantScoreArr = await tenantscoreRes.json();
-    console.log('updated treecount');
-    campaignTenantScore = tenantScoreArr[0];
-  } catch (err) {
-    console.log(err);
-  }
-
   return {
     props: {
       ...(await serverSideTranslations(
@@ -102,11 +103,8 @@ export async function getStaticProps({ locale }: { locale: string }) {
           'treemapper',
         ],
         null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+        ['en']
       )),
-      campaignLeaderBoard,
-      campaignTenantScore,
     },
-    revalidate: 60,
   };
 }
