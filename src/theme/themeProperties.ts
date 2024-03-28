@@ -40,6 +40,7 @@ const themeProperties = {
     backgroundBase: '#FaFaFf',
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
+    reviewFontColorNew: '45, 156, 219',
   },
   dark: {
     primaryFontColor: '#ffffff',
