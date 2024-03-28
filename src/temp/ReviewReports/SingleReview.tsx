@@ -25,7 +25,7 @@ const SingleReview = ({ singleReview }: Props) => {
         <div className={styles.verifiedIcon}>
           <VerifiedIcon
             sx={{
-              color: `${'var(--review-link-color-new)'}`,
+              color: `${'rgba(var(--review-font-color-new))'}`,
               width: 16,
               height: 16,
             }}
@@ -54,7 +54,7 @@ const SingleReview = ({ singleReview }: Props) => {
         >
           <DownloadReportIcon
             width={10}
-            color={`${'var(--review-font-color-new)'}`}
+            color={`${'rgb(var(--review-font-color-new))'}`}
           />
         </a>
       </div>

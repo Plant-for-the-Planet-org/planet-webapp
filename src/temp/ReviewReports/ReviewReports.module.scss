@@ -2,7 +2,7 @@
 
 .reviewReportsContainer {
     
-    background-color: $reviewBackgroundColorNew;
+    background-color: rgba(var(--review-font-color-new), 0.1);
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -39,7 +39,7 @@
     margin-top: 8px;
     p {
         font-size: $fontXXXSmallNew;
-        color: $reviewFontColorNew;
+        color: rgb(var(--review-font-color-new));
         font-weight: 700;
 
     }
@@ -58,7 +58,7 @@
     margin-top: 4px;
     
     a {
-        color: $reviewLinkColorNew;
+        color: rgb(var(--review-font-color-new));
         text-decoration: underline;
         font-weight: 700;
 

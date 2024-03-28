@@ -54,9 +54,7 @@ const globalStyles = css.global`
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
     --disabled-font-color: ${light.disabledFontColor};
-    --review-background-color-new: ${light.reviewBackgroundColorNew};
     --review-font-color-new: ${light.reviewFontColorNew};
-    --review-link-color-new: ${light.reviewLinkColorNew};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
