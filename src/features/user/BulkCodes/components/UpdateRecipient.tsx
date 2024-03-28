@@ -1,6 +1,6 @@
 import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import themeProperties from '../../../../theme/themeProperties';
 import { Recipient } from '../BulkCodesTypes';
 import AcceptIcon from '../../../../../public/assets/images/icons/AcceptIcon';
@@ -71,7 +71,7 @@ const UpdateRecipient = ({
         </TableCell>
         <RecipientFormFields control={control} errors={errors} />
       </TableRow>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 };
