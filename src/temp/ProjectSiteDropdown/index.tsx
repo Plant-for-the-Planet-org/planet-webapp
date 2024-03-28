@@ -68,13 +68,13 @@ const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
                 <p>{site.name}</p>
                 <p className={styles.siteArea}>{site.area}ha</p>
               </div>
-              <div
+              <hr
                 className={
                   index + 1 === siteList.length
                     ? styles.hideDivider
                     : styles.showDivider
                 }
-              ></div>
+              />
             </>
           ))}
         </div>

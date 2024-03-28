@@ -61,8 +61,11 @@
     display: none;
 }
 .showDivider {
-    background-color: $dividerColorNew;
-    height: 0.4px;
+        height:0px;
+        border:0px;
+        border-top:1px solid $dividerColorNew;
+        margin:0px;/*useful sometimes*/
+    
 }
 .selectedItem {
     font-weight: 700;
