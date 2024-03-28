@@ -16,19 +16,24 @@ interface Props {
     mostRecent: { created: string; donorName: string; treeCount: string }[];
   };
   tenantScore: { total: number };
+  isLoaded: boolean;
 }
 
-export default function Campaign({ tenantScore, leaderboard }: Props) {
+export default function Campaign({
+  tenantScore,
+  leaderboard,
+  isLoaded,
+}: Props) {
   return (
     <>
       <Head>
         <title>{`VTO Fitness Challenge | ${config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
-        <Landing tenantScore={tenantScore} />
+        <Landing tenantScore={tenantScore} isLoaded={isLoaded} />
         <ContentSection />
         <ProjectGrid />
-        <LeaderBoard leaderboard={leaderboard} />
+        <LeaderBoard leaderboard={leaderboard} isLoaded={isLoaded} />
         <AdditionalInfo />
         <Footer />
       </main>
