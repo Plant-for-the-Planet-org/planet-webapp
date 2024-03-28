@@ -38,7 +38,7 @@ import {
 } from 'geojson';
 import { Species } from '../../../../common/types/plantLocation';
 import { PlantLocation, PlantingLocationFormData } from '../../Treemapper';
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import { SetState } from '../../../../common/types/common';
 
 const dialogSx: SxProps = {
@@ -535,7 +535,7 @@ export default function PlantingLocation({
           )}
         </Button>
       </div>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 }
