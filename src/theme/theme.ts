@@ -54,6 +54,10 @@ const globalStyles = css.global`
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
     --disabled-font-color: ${light.disabledFontColor};
+    --gray-font-color-new: ${light.grayFontColorNew};
+    --light-gray-background-color-new: ${light.lightGrayBackgroundColorNew};
+    --bold-font-color-new: ${light.boldFontColorNew};
+    --selected-menu-item-color-new: ${light.selectedMenuItemColorNew};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
