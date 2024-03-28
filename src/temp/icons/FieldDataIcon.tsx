@@ -1,11 +1,11 @@
 import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const FieldDataIcon = ({ color }: IconProps) => {
+const FieldDataIcon = ({ color, width, height }: IconProps) => {
   return (
     <svg
-      width="16"
-      height="11"
+      width={width}
+      height={height}
       viewBox="0 0 16 11"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -25,7 +25,7 @@ const FieldDataIcon = ({ color }: IconProps) => {
       </g>
       <defs>
         <clipPath id="clip0_871_502">
-          <rect width="16" height="11" />
+          <rect width={width} height={height} />
         </clipPath>
       </defs>
     </svg>

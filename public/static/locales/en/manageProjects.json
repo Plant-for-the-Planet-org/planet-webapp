@@ -242,5 +242,7 @@
   "taxExemption": "Tax exemption documentation (if applicable in your country)",
   "annualReport": "Latest annual report",
   "financialReport": "Latest audited financial report",
-  "PlantingReport": "Project Progress Report"
+  "PlantingReport": "Project Progress Report",
+  "otherRestoration": "Other Restoration",
+  "treePlanting": "Tree Planting"
 }
