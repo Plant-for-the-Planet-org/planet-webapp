@@ -43,11 +43,15 @@ export function sortCountriesData(sortBy) {
 
 /**
  * Sorts the countries array for the translated country name
- * @param {Function} t - translation function
+ * @param {Function} tCountry - translation function
  * @param {String} language - language to get country names for
  * @param {Array} priorityCountries - country code to always show first in given order
  */
-export function sortCountriesByTranslation(t, language, priorityCountryCodes) {
+export function sortCountriesByTranslation(
+  tCountry,
+  language,
+  priorityCountryCodes
+) {
   const key = `${language}.${priorityCountryCodes}`;
   if (!sortedCountries[key]) {
     const priorityCountries = [];
@@ -63,8 +67,8 @@ export function sortCountriesByTranslation(t, language, priorityCountryCodes) {
     // sort array of countries
     sortedCountries[key] = priorityCountries.concat(
       filteredCountries.sort((a, b) => {
-        const nameA = t(`country:${a.countryCode.toLowerCase()}`);
-        const nameB = t(`country:${b.countryCode.toLowerCase()}`);
+        const nameA = tCountry(a.countryCode.toLowerCase());
+        const nameB = tCountry(b.countryCode.toLowerCase());
         if (nameA > nameB) {
           return 1;
         }

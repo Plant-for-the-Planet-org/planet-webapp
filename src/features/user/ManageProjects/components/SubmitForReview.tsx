@@ -3,7 +3,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
-import { useTranslation, Trans } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import router from 'next/router';
 import { Button, FormControlLabel, Switch } from '@mui/material';
@@ -18,12 +18,12 @@ function SubmitForReview({
   projectDetails,
   handlePublishChange,
 }: SubmitForReviewProps): ReactElement {
-  const { t, ready } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
   function UnderReviewComponent() {
     return (
       <CenteredContainer>
         <FormControlLabel
-          label={t('manageProjects:publishProject')}
+          label={t('publishProject')}
           labelPlacement="end"
           control={
             <Switch
@@ -38,9 +38,7 @@ function SubmitForReview({
         <div className={styles.reviewImageContainer}>
           <UnderReview />
         </div>
-        <p className={styles.reviewMessage}>
-          {t('manageProjects:projectUnderReview')}
-        </p>
+        <p className={styles.reviewMessage}>{t('projectUnderReview')}</p>
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
@@ -48,14 +46,14 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToSpending')}</p>
+            <p>{t('backToSpending')}</p>
           </Button>
 
           <Button
             variant="contained"
             onClick={() => router.push('/profile/projects')}
           >
-            <p>{t('manageProjects:exit')}</p>
+            <p>{t('exit')}</p>
           </Button>
         </div>
       </CenteredContainer>
@@ -67,21 +65,20 @@ function SubmitForReview({
       <CenteredContainer>
         <div>
           <div>
-            <Trans
-              i18nKey="manageProjects:reviewNote"
-              components={{ bold: <strong /> }}
-            />
+            {t.rich('reviewNote', {
+              bold: (chunks) => <strong>{chunks}</strong>,
+            })}
           </div>
           <ul className={styles.listOfReport}>
-            <li>{t('manageProjects:legalAccreditation')}</li>
-            <li>{t('manageProjects:taxExemption')}</li>
-            <li>{t('manageProjects:annualReport')}</li>
-            <li>{t('manageProjects:financialReport')}</li>
-            <li>{t('manageProjects:PlantingReport')}</li>
+            <li>{t('legalAccreditation')}</li>
+            <li>{t('taxExemption')}</li>
+            <li>{t('annualReport')}</li>
+            <li>{t('financialReport')}</li>
+            <li>{t('PlantingReport')}</li>
           </ul>
         </div>
         <FormControlLabel
-          label={t('manageProjects:publishProject')}
+          label={t('publishProject')}
           labelPlacement="end"
           control={
             <Switch
@@ -98,9 +95,7 @@ function SubmitForReview({
           <div className={styles.reviewImageContainer}>
             <NotReviewed />
           </div>
-          <p className={styles.reviewMessage}>
-            {t('manageProjects:projectForReview')}
-          </p>
+          <p className={styles.reviewMessage}>{t('projectForReview')}</p>
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
@@ -108,14 +103,14 @@ function SubmitForReview({
             onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToSpending')}</p>
+            <p>{t('backToSpending')}</p>
           </Button>
 
           <Button onClick={() => submitForReview()} variant="contained">
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('manageProjects:submitForReview')
+              t('submitForReview')
             )}
           </Button>
 
@@ -123,7 +118,7 @@ function SubmitForReview({
             variant="contained"
             onClick={() => router.push('/profile/projects')}
           >
-            <p>{t('manageProjects:exit')}</p>
+            <p>{t('exit')}</p>
           </Button>
         </div>
       </CenteredContainer>
@@ -137,9 +132,7 @@ function SubmitForReview({
           <div className={styles.reviewImageContainer}>
             <SubmitForReviewImage />
           </div>
-          <p className={styles.reviewMessage}>
-            {t('manageProjects:acceptedReview')}
-          </p>
+          <p className={styles.reviewMessage}>{t('acceptedReview')}</p>
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
@@ -147,13 +140,13 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToSpending')}</p>
+            <p>{t('backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
             onClick={() => router.push('/profile/projects')}
           >
-            <p>{t('manageProjects:exit')}</p>
+            <p>{t('exit')}</p>
           </Button>
         </div>
       </CenteredContainer>
@@ -167,9 +160,7 @@ function SubmitForReview({
           <div className={styles.reviewImageContainer}>
             <UnderReview />
           </div>
-          <p className={styles.reviewMessage}>
-            {t('manageProjects:deniedReview')}
-          </p>
+          <p className={styles.reviewMessage}>{t('deniedReview')}</p>
         </div>
 
         <div className={styles.buttonsForProjectCreationForm}>
@@ -178,13 +169,13 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToSpending')}</p>
+            <p>{t('backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
             onClick={() => router.push('/profile/projects')}
           >
-            <p>{t('manageProjects:exit')}</p>
+            <p>{t('exit')}</p>
           </Button>
         </div>
       </CenteredContainer>
@@ -193,17 +184,17 @@ function SubmitForReview({
 
   switch (projectDetails?.verificationStatus) {
     case 'incomplete':
-      return ready ? <NotSubmittedReview /> : <></>;
+      return <NotSubmittedReview />;
     case 'pending':
-      return ready ? <UnderReviewComponent /> : <></>;
+      return <UnderReviewComponent />;
     case 'processing':
-      return ready ? <UnderReviewComponent /> : <></>;
+      return <UnderReviewComponent />;
     case 'accepted':
-      return ready ? <AcceptedReview /> : <></>;
+      return <AcceptedReview />;
     case 'denied':
-      return ready ? <DeniedReview /> : <></>;
+      return <DeniedReview />;
     default:
-      return ready ? <UnderReviewComponent /> : <></>;
+      return <UnderReviewComponent />;
   }
 }
 

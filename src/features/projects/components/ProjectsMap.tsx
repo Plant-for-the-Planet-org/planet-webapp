@@ -9,7 +9,7 @@ import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import PlantLocations from './maps/PlantLocations';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { PopupData } from './maps/Markers';
 
@@ -47,7 +47,7 @@ export default function ProjectsMap(): ReactElement {
     setSamplePlantLocation,
   } = useProjectProps();
 
-  const { t } = useTranslation(['maps']);
+  const t = useTranslations('Maps');
   const { embed, showProjectList } = React.useContext(ParamsContext);
   //Map
   const _onStateChange = (state: any) => setMapState({ ...state });

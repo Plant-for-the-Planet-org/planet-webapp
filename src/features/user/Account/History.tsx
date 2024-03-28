@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import AccountRecord from './components/AccountRecord';
@@ -35,7 +35,7 @@ export default function History({
   paymentHistory,
   fetchPaymentHistory,
 }: Props): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(
     null
   );
@@ -221,7 +221,7 @@ export default function History({
           </div>
           <div className={styles.filterContent}>
             <div className={styles.filterContainer}>
-              <p className={styles.header}>{t('me:filters')}</p>
+              <p className={styles.header}>{t('filters')}</p>
               <div className={styles.filterGrid}>
                 {accountingFilters &&
                   Object.entries(accountingFilters).map((item) => {

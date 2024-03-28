@@ -1,7 +1,7 @@
 import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { DevTool } from '@hookform/devtools';
 import { SetState } from '../../../common/types/common';
 import themeProperties from '../../../../theme/themeProperties';
@@ -21,7 +21,7 @@ const AddRecipient = ({
   setIsAddingRecipient,
   afterSaveCallback,
 }: Props) => {
-  const { t } = useTranslation('bulkCodes');
+  const t = useTranslations('BulkCodes');
   const {
     control,
     handleSubmit,

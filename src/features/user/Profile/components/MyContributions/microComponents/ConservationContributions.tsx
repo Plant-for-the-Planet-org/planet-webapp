@@ -1,5 +1,5 @@
 import myForestStyles from '../../../styles/MyForest.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
 import { TreeContributedProjectListProps } from '../../../../../common/types/myForest';
@@ -15,14 +15,14 @@ const ConservationContributions = ({
   hasNextPage,
   handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
-  const { t, ready } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const { conservationContribution } = useMyForest();
 
-  return ready ? (
+  return (
     <div className={myForestStyles.areaConservedMainContainer}>
       <div className={myForestStyles.textContainer}>
         <div className={myForestStyles.conservedAreaText}>
-          <div>{t('profile:myContributions.areaConserved')}</div>
+          <div>{t('myContributions.areaConserved')}</div>
           <div className={myForestStyles.hrLine} />
         </div>
       </div>
@@ -35,8 +35,6 @@ const ConservationContributions = ({
         />
       </div>
     </div>
-  ) : (
-    <></>
   );
 };
 

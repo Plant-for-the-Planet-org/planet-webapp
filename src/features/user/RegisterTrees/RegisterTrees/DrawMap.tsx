@@ -3,7 +3,7 @@ import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ViewportProps } from '../../../common/types/map';
 
@@ -45,7 +45,7 @@ export default function MapComponent({
       }
     });
   }, []);
-  const { t, ready } = useTranslation(['me', 'common']);
+  const t = useTranslations('Me');
   const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef<DrawControl | null>(null);
 
@@ -85,52 +85,50 @@ export default function MapComponent({
   return (
     <>
       {' '}
-      {ready ? (
-        <div className={styles.mapContainer}>
-          {!drawing ? (
-            <div className={styles.overlayButton}>
-              <div
-                onClick={() => {
-                  setDrawing(true);
-                  if (drawControlRef.current?.draw)
-                    drawControlRef.current?.draw.changeMode('draw_polygon');
-                }}
-                className="primaryButton"
-                style={{ maxWidth: '150px' }}
-              >
-                {t('me:startDrawing')}
-              </div>
-            </div>
-          ) : null}
-          <Map
-            {...viewport}
-            style={style}
-            containerStyle={{
-              height: '100%',
-              width: '100%',
-            }}
-          >
-            {/* NOTE: this functionality does not seem to work locally using React 18. 
-						To test, a temporary fix is to set `reactStrictMode=false` in next.config.js */}
-            <DrawControl
-              ref={drawControlRef}
-              onDrawCreate={onDrawCreate}
-              onDrawUpdate={onDrawUpdate}
-              onDrawDelete={onDrawDelete}
-              on
-              controls={{
-                point: false,
-                line_string: false,
-                polygon: true,
-                trash: true,
-                combine_features: false,
-                uncombine_features: false,
+      <div className={styles.mapContainer}>
+        {!drawing ? (
+          <div className={styles.overlayButton}>
+            <div
+              onClick={() => {
+                setDrawing(true);
+                if (drawControlRef.current?.draw)
+                  drawControlRef.current?.draw.changeMode('draw_polygon');
               }}
-            />
-            <ZoomControl position="bottom-right" />
-          </Map>
-        </div>
-      ) : null}
+              className="primaryButton"
+              style={{ maxWidth: '150px' }}
+            >
+              {t('startDrawing')}
+            </div>
+          </div>
+        ) : null}
+        <Map
+          {...viewport}
+          style={style}
+          containerStyle={{
+            height: '100%',
+            width: '100%',
+          }}
+        >
+          {/* NOTE: this functionality does not seem to work locally using React 18. 
+						To test, a temporary fix is to set `reactStrictMode=false` in next.config.js */}
+          <DrawControl
+            ref={drawControlRef}
+            onDrawCreate={onDrawCreate}
+            onDrawUpdate={onDrawUpdate}
+            onDrawDelete={onDrawDelete}
+            on
+            controls={{
+              point: false,
+              line_string: false,
+              polygon: true,
+              trash: true,
+              combine_features: false,
+              uncombine_features: false,
+            }}
+          />
+          <ZoomControl position="bottom-right" />
+        </Map>
+      </div>
     </>
   );
 }

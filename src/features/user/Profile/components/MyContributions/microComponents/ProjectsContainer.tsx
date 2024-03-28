@@ -3,7 +3,7 @@ import React from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../../../common/ContentLoaders/Projects/ProjectLoader';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../../styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
@@ -24,7 +24,8 @@ interface Props {
 
 export default function ProjectsContainer({ profile }: Props) {
   const { tenantConfig } = useTenant();
-  const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
+  const t = useTranslations('Donate');
+  const locale = useLocale();
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -34,7 +35,7 @@ export default function ProjectsContainer({ profile }: Props) {
         `${tenantConfig?.id}`,
         `/app/profiles/${profile.id}/projects`,
         {
-          locale: i18n.language,
+          locale: locale,
         }
       );
       setProjects(projects);
@@ -46,9 +47,9 @@ export default function ProjectsContainer({ profile }: Props) {
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     loadProjects();
-  }, [i18n.language]);
+  }, [locale]);
 
-  return ready ? (
+  return (
     <div className={styles.tpoProjectsContainer}>
       {/* <div className={'profilePageTitle'}>{t('manageProjects:manageProjects')}</div> */}
       <div className={styles.projectsContainer} id="projectsContainer">
@@ -56,12 +57,12 @@ export default function ProjectsContainer({ profile }: Props) {
           <div className={styles.projectNotFound}>
             <LazyLoad>
               <NotFound className={styles.projectNotFoundImage} />
-              <h5>{t('donate:noProjectsFound')}</h5>
+              <h5>{t('noProjectsFound')}</h5>
             </LazyLoad>
           </div>
         ) : (
           <div className={styles.listProjects}>
-            <h6 className={styles.projectsTitleText}>{t('donate:projects')}</h6>
+            <h6 className={styles.projectsTitleText}>{t('projects')}</h6>
 
             {projects
               .filter(
@@ -100,5 +101,5 @@ export default function ProjectsContainer({ profile }: Props) {
         )}
       </div>
     </div>
-  ) : null;
+  );
 }

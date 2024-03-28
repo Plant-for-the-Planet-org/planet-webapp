@@ -8,7 +8,7 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import Grid from '@mui/material/Grid';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { SxProps } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
@@ -33,7 +33,7 @@ const dialogSx: SxProps = {
 };
 
 const ProjectFilter = () => {
-  const { t, ready } = useTranslation('treemapperAnalytics');
+  const t = useTranslations('TreemapperAnalytics');
   const {
     projectList,
     fromDate,
@@ -49,7 +49,7 @@ const ProjectFilter = () => {
     setProject(proj);
   };
 
-  return ready ? (
+  return (
     <Grid alignItems="top" container spacing={2}>
       <Grid item xs={12} md={6}>
         <ProjectSelectAutocomplete
@@ -69,7 +69,7 @@ const ProjectFilter = () => {
             }
           >
             <MuiDatePicker
-              label={t('treemapperAnalytics:from')}
+              label={t('from')}
               value={fromDate}
               onChange={setFromDate}
               renderInput={(props) => (
@@ -95,7 +95,7 @@ const ProjectFilter = () => {
             }
           >
             <MuiDatePicker
-              label={t('treemapperAnalytics:to')}
+              label={t('to')}
               value={toDate}
               onChange={setToDate}
               renderInput={(props) => (
@@ -112,7 +112,7 @@ const ProjectFilter = () => {
         </Grid>
       </Grid>
     </Grid>
-  ) : null;
+  );
 };
 
 export default ProjectFilter;

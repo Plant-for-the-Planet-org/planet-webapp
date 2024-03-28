@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import styles from '../AccountHistory.module.scss';
 import { BankAccount } from '../../../common/types/payments';
 
@@ -10,7 +10,7 @@ interface TransferDetailsProps {
 export default function TransferDetails({
   account,
 }: TransferDetailsProps): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   return (
     <>
       <div className={styles.title}>{t('transferDetails')}</div>

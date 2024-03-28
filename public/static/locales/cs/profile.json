@@ -1,0 +1,49 @@
+{
+  "Profile": {
+    "myProfile": {
+      "memberSince": "Členem od {date}",
+      "userDescription": "{bio}"
+    },
+    "feature": {
+      "redeem": "Vykoupit",
+      "registerTree": "Strom registrace",
+      "share": "Sdílet"
+    },
+    "myPublicProfile": {
+      "support": "Podpora",
+      "link": "Odkaz"
+    },
+    "myForestMap": {
+      "plantedTree": "{count, plural, =1 {# strom} other {# stromů}}",
+      "treesPlanted": "Vysazené stromy",
+      "restored": "Obnovené stránky",
+      "registered": "Registrováno",
+      "conservation": "Ochrana přírody",
+      "projects": "Projekty",
+      "countries": "Země",
+      "donations": "Dary",
+      "area": "{areaConserved} m²",
+      "zoomIn": "přiblížení pro více informací",
+      "totalDonation": "{count, plural, =1 {# dar} other {# darů}} ",
+      "totalProject": "na {count, plural, =1 {# projekt} other {# projektů}}",
+      "tpoName": "Podle {tpo}"
+    },
+    "myTreeCounter": {
+      "treesPlanted": "Vysazené stromy",
+      "editTarget": "Upravit cíl"
+    },
+    "myContributions": {
+      "treesPlantedAndAreaRestored": "Vysazené stromy a obnovené plochy",
+      "treeRegistered": "{count, plural, =1 {# Registrovaný strom} other {#  Registrovaných stromů}}",
+      "receivedFrom": "Přijato od {name}",
+      "loadMoreContribution": "Načíst další příspěvek",
+      "loadingContribution": "Načítání příspěvku....",
+      "donate": "Darovat",
+      "donateAgain": "Darujte znovu",
+      "conservedSmall": "konzervované",
+      "restoredSmall": "restaurováno",
+      "areaType": "{areaConserved} m² {type}",
+      "areaConserved": "Zachované oblasti"
+    }
+  }
+}

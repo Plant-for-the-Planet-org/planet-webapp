@@ -1958,13 +1958,5 @@
     "currencyCode": "RSD",
     "currencyCountryFlag": "RS",
     "languageCode": "en"
-  },
-  {
-    "countryName": "US Armed Forces",
-    "countryCode": "USAF",
-    "currencyName": "US Dollar",
-    "currencyCode": "USD",
-    "currencyCountryFlag": "US",
-    "languageCode": "en"
   }
 ]

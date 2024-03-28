@@ -1,7 +1,9 @@
 {
-  "title": "GiftFund",
-  "description1": "Pokud vidíte tuto stránku, pak máte zůstatek ve vašem GiftFund pro váš aktivní účet PlanetCash vlevo. Zkontrolujte níže uvedené informace.",
-  "description2": "V případě dotazů kontaktujte svého Key Account Managera.",
-  "project": "Projekt",
-  "units": "Dostupné jednotky"
+  "Giftfunds": {
+    "title": "GiftFund",
+    "description1": "Pokud vidíte tuto stránku, pak máte zůstatek ve vašem GiftFund pro váš aktivní účet PlanetCash vlevo. Zkontrolujte níže uvedené informace.",
+    "description2": "V případě dotazů kontaktujte svého Key Account Managera.",
+    "project": "Projekt",
+    "units": "Dostupné jednotky"
+  }
 }

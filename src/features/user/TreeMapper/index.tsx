@@ -8,7 +8,7 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 import {
@@ -27,7 +27,7 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 function TreeMapper(): ReactElement {
   const router = useRouter();
   const { token, contextLoaded, logoutUser } = useUserProps();
-  const { t } = useTranslation(['treemapper']);
+  const t = useTranslations('Treemapper');
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [plantLocations, setPlantLocations] = React.useState<
@@ -186,9 +186,7 @@ function TreeMapper(): ReactElement {
         ) : (
           <div className={styles.listContainer}>
             <div className={styles.titleContainer}>
-              <div className={styles.treeMapperTitle}>
-                {t('treemapper:treeMapper')}
-              </div>
+              <div className={styles.treeMapperTitle}>{t('treeMapper')}</div>
             </div>
             <TreeMapperList {...TreeMapperProps} />
           </div>

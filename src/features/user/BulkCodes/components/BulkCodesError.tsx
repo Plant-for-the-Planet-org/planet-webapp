@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
@@ -19,7 +19,7 @@ const ErrorMessage = styled('span')(({ theme }) => ({
 }));
 
 const BulkCodesError = (): ReactElement | null => {
-  const { t } = useTranslation(['bulkCodes']);
+  const t = useTranslations('BulkCodes');
   const { user, token } = useUserProps();
   const { tenantConfig } = useTenant();
 

@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
 import styles from './UnderMaintenance.module.scss';
 
 export default function UnderMaintenance(): ReactElement {
-  const { t } = useTranslation('common');
+  const t = useTranslations('Common');
   return (
     <div className={styles.underMaintenance}>
       <UnderMaintenanceImage />

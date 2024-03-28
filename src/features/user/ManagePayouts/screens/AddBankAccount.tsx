@@ -4,7 +4,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
@@ -14,7 +14,7 @@ import { BankAccount } from '../../../common/types/payouts';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const AddBankAccount = (): ReactElement | null => {
-  const { t } = useTranslation('managePayouts');
+  const t = useTranslations('ManagePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);

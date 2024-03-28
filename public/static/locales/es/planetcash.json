@@ -1,1 +1,26 @@
-{ }
+{
+  "Planetcash": {
+    "accountTitleText": "{currency} Cuenta PlanetCash ({country})",
+    "createAccountTitleText": "Registrarse en PlanetCash",
+    "addBalanceButton": "Añadir saldo",
+    "labelAccountHolder": "Titular de la cuenta",
+    "labelBalance": "Saldo",
+    "labelCreditLimit": "Límite",
+    "deactivateAccountButton": "Desactivar",
+    "activateAccountButton": "Activar",
+    "accountInactiveHelpText": "Esta cuenta está inactiva y no puede utilizarse para realizar contribuciones. Para activar esta cuenta, póngase en contacto con support@plant-for-the-planet.org.",
+    "noAccountsText": "Parece que aún no has creado una cuenta PlanetCash.",
+    "createPlanetCashButton": "Crear una cuenta Planet Cash",
+    "accountQuotaReachedText": "No puede crear más cuentas porque ha agotado su cuota de cuentas.",
+    "accountCreationSuccess": "Su cuenta PlanetCash ha sido creada con éxito",
+    "labelCountry": "País",
+    "planetCashTerms1": "Al hacer clic en \"Crear cuenta PlanetCash\", acepto los Términos y Condiciones de Plant-for-the-Planet y PlanetCash.",
+    "planetCashTerms2": "Entiendo que las donaciones PlanetCash no son reembolsables, y que los pagos no asignados serán autoasignados a proyectos en la Plataforma después de seis meses de un Pago.",
+    "planetCashTerms3": "Las donaciones a la Cuenta PlanetCash por motivos personales son generalmente deducibles de impuestos en el país seleccionado en este paso. El uso comercial de PlanetCash puede no ser elegible para deducciones fiscales. Si tiene alguna pregunta, póngase en contacto con support@plant-for-the-planet.org o con su asesor fiscal.",
+    "accountError": {
+      "active_account_exists": "Ya existe una cuenta activa. Desactive esa cuenta antes de activar otra.",
+      "duplicate_account": "Ya ha creado una cuenta para {country}",
+      "default": "Algo ha ido mal al crear una cuenta. Por favor, inténtelo después de un rato."
+    }
+  }
+}

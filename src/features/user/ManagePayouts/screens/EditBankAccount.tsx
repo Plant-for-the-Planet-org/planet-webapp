@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
@@ -25,7 +25,7 @@ const EditBankAccount = (): ReactElement | null => {
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
   const { token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
-  const { t, ready } = useTranslation('managePayouts');
+  const t = useTranslations('ManagePayouts');
 
   const closeSnackbar = (): void => {
     setIsAccountUpdated(false);
@@ -129,7 +129,7 @@ const EditBankAccount = (): ReactElement | null => {
     }
   }, [accounts, router.query.id]);
 
-  return accountToEdit !== null && payoutMinAmounts && ready ? (
+  return accountToEdit !== null && payoutMinAmounts ? (
     <CenteredContainer>
       <FormHeader>
         <Link href="/profile/payouts">

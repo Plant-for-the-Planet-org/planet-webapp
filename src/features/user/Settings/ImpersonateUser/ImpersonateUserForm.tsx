@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { TextField, Button } from '@mui/material';
 import { getAccountInfo } from '../../../../utils/apiRequests/api';
@@ -18,7 +18,7 @@ export type ImpersonationData = {
 const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { tenantConfig } = useTenant();
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const { token, setUser, setIsImpersonationModeOn } = useUserProps();
@@ -76,18 +76,16 @@ const ImpersonateUserForm = (): ReactElement => {
           rules={{
             required: {
               value: true,
-              message: t('me:enterTheEmail'),
+              message: t('enterTheEmail'),
             },
             validate: {
               emailInvalid: (value) =>
-                value.length === 0 ||
-                isEmailValid(value) ||
-                t('me:invalidEmail'),
+                value.length === 0 || isEmailValid(value) || t('invalidEmail'),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
-              label={t('me:profileEmail')}
+              label={t('profileEmail')}
               placeholder="xyz@email.com"
               onChange={onChange}
               onBlur={onBlur}
@@ -96,7 +94,7 @@ const ImpersonateUserForm = (): ReactElement => {
               helperText={
                 (errors.targetEmail !== undefined &&
                   errors.targetEmail.message) ||
-                (isInvalidEmail && t('me:wrongEntered'))
+                (isInvalidEmail && t('wrongEntered'))
               }
             />
           )}
@@ -105,12 +103,12 @@ const ImpersonateUserForm = (): ReactElement => {
           name="supportPin"
           control={control}
           rules={{
-            required: t('me:enterSupportPin'),
+            required: t('enterSupportPin'),
           }}
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
-              label={t('me:supportPin')}
-              placeholder={t('me:alphaNumeric')}
+              label={t('supportPin')}
+              placeholder={t('alphaNumeric')}
               onChange={onChange}
               onBlur={onBlur}
               value={value}
@@ -118,7 +116,7 @@ const ImpersonateUserForm = (): ReactElement => {
               helperText={
                 (errors.supportPin !== undefined &&
                   errors.supportPin.message) ||
-                (isInvalidEmail && t('me:wrongEntered'))
+                (isInvalidEmail && t('wrongEntered'))
               }
             />
           )}
@@ -131,7 +129,7 @@ const ImpersonateUserForm = (): ReactElement => {
         className="formButton"
         disabled={isProcessing}
       >
-        {isProcessing ? <div className={styles.spinner}></div> : t('me:switch')}
+        {isProcessing ? <div className={styles.spinner}></div> : t('switch')}
       </Button>
     </StyledForm>
   );

@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
@@ -6,9 +6,9 @@ import RegisterTreesWidget from './RegisterTreesWidget';
 import CenteredContainer from '../../common/Layout/CenteredContainer';
 
 export default function RegisterTrees(): ReactElement | null {
-  const { t, ready } = useTranslation('me');
+  const t = useTranslations('Me');
 
-  return ready ? (
+  return (
     <DashboardView title={t('registerTrees')} subtitle={null}>
       <SingleColumnView>
         <CenteredContainer>
@@ -16,5 +16,5 @@ export default function RegisterTrees(): ReactElement | null {
         </CenteredContainer>
       </SingleColumnView>
     </DashboardView>
-  ) : null;
+  );
 }

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './Stats.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 
@@ -15,41 +15,41 @@ function ExploreInfoModal({
   setInfoExpanded,
   setModalOpen,
 }: Props): ReactElement {
-  const { t, ready } = useTranslation(['planet']);
+  const t = useTranslations('Planet');
 
-  return ready ? (
+  return (
     <div className={styles.infoExpanded}>
       {infoExpanded === 'donated' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{t('planet:treesDonated')}</div>
+          <div className={styles.infoTitle}>{t('treesDonated')}</div>
           <div style={{ marginTop: '12px' }} className={styles.infoContent}>
-            {t('planet:treesDonatedDescription')}
+            {t('treesDonatedDescription')}
           </div>
         </div>
       ) : null}
       {infoExpanded === 'planted' ? (
         <div className={styles.infoContainer}>
           <div className={styles.infoTitle}>
-            {t('planet:plantedByTPO', { projects: 160 })}
+            {t('plantedByTPO', { projects: 160 })}
           </div>
           <div style={{ marginTop: '12px' }} className={styles.infoContent}>
-            {t('planet:treesPlantedDescription')}
+            {t('treesPlantedDescription')}
           </div>
         </div>
       ) : null}
       {infoExpanded === 'global' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{t('planet:plantedGlobally')}</div>
+          <div className={styles.infoTitle}>{t('plantedGlobally')}</div>
           <div style={{ marginTop: '12px' }} className={styles.infoContent}>
-            {t('planet:globallySince')}
+            {t('globallySince')}
           </div>
         </div>
       ) : null}
       {infoExpanded === 'loss' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{t('planet:forestLoss')}</div>
+          <div className={styles.infoTitle}>{t('forestLoss')}</div>
           <div style={{ marginTop: '12px' }} className={styles.infoContent}>
-            <p>{t('planet:estimateOf')} </p>
+            <p>{t('estimateOf')} </p>
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -76,8 +76,6 @@ function ExploreInfoModal({
         <CancelIcon color="#d5d5d5" />
       </button>
     </div>
-  ) : (
-    <></>
   );
 }
 

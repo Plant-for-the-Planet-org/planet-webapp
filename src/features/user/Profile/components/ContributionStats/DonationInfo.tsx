@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import {
   ProjectsSvg,
@@ -15,7 +15,7 @@ const DonationInfo = ({
   donations,
 }: DonationInfoProps): ReactElement => {
   const { darkBlackColor } = theme;
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   return (
     <div className={myForestStyles.donationDetailContainer}>
       <div className={myForestStyles.InfoContainer}>
@@ -24,7 +24,7 @@ const DonationInfo = ({
             <ProjectsSvg color={`${darkBlackColor}`} />
           </div>
           <div className={myForestStyles.label}>
-            {t('profile:myForestMap.projects')}
+            {t('myForestMap.projects')}
           </div>
         </div>
         <div className={myForestStyles.value}>{`${
@@ -37,7 +37,7 @@ const DonationInfo = ({
             <CountriesSvg color={`${darkBlackColor}`} />
           </div>
           <div className={myForestStyles.label}>
-            {t('profile:myForestMap.countries')}
+            {t('myForestMap.countries')}
           </div>
         </div>
         <div className={myForestStyles.value}>{`${
@@ -50,7 +50,7 @@ const DonationInfo = ({
             <DonationsSvg color={`${darkBlackColor}`} />
           </div>
           <div className={myForestStyles.label}>
-            {t('profile:myForestMap.donations')}
+            {t('myForestMap.donations')}
           </div>
         </div>
         <div className={myForestStyles.value}>{`${

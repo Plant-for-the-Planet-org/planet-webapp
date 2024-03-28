@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../../common/types/map';
@@ -48,10 +48,10 @@ interface RegisteredTreePopUpProps {
 }
 
 export const PopUpLabel = () => {
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   return (
     <div className={MyForestMapStyle.popUpLabel}>
-      {t('profile:myForestMap.registered')}
+      {t('myForestMap.registered')}
     </div>
   );
 };
@@ -82,7 +82,7 @@ export const ClusterPopUpLabel = ({
   geoJson,
   mapRef,
 }: ClusterPopUpLabelProps) => {
-  const { t, ready } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const {
     totalDonations,
     setTotalDonations,
@@ -143,25 +143,21 @@ export const ClusterPopUpLabel = ({
     }
   }, [geoJson, viewState, mapRef]);
 
-  return ready ? (
+  return (
     <div className={MyForestMapStyle.clusterPopUpContainer}>
       <div>
         <PopUpDonationIcon width={'21px'} height={'21px'} />
       </div>
       <div className={MyForestMapStyle.clusterPopUpInfo}>
-        {t('profile:myForestMap.totalDonation', {
+        {t('myForestMap.totalDonation', {
           count: Number(totalDonations),
         })}
-        {t('profile:myForestMap.totalProject', {
+        {t('myForestMap.totalProject', {
           count: totalProjects,
         })}
       </div>
-      <div className={MyForestMapStyle.zoomIn}>
-        {t('profile:myForestMap.zoomIn')}
-      </div>
+      <div className={MyForestMapStyle.zoomIn}>{t('myForestMap.zoomIn')}</div>
     </div>
-  ) : (
-    <></>
   );
 };
 //this popup will be appear at last zoom level (except registered tree contribution marker)
@@ -181,8 +177,9 @@ export const DonationPopUp = ({
   onMouseLeave,
 }: DonationPopUpProps) => {
   const router = useRouter();
-  const { asPath } = router;
-  const { t, ready } = useTranslation(['profile', 'country']);
+  const t = useTranslations('Profile');
+  const locale = useLocale();
+  const tCountry = useTranslations('Country');
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const { tenantConfig } = useTenant(); //default tenant
@@ -194,14 +191,14 @@ export const DonationPopUp = ({
         token,
         undefined,
         undefined,
-        asPath !== '/profile' ? profile.slug : undefined
+        router.asPath !== `/${locale}/profile` ? profile.slug : undefined
       );
       embed === 'true'
         ? window.open(encodeURI(url), '_blank')
         : (window.location.href = encodeURI(url));
     }
   };
-  return ready ? (
+  return (
     <div
       className={MyForestMapStyle.donationPopUpMainContainer}
       onMouseEnter={onMouseEnter}
@@ -219,16 +216,14 @@ export const DonationPopUp = ({
         <div className={MyForestMapStyle.donationPopUpInfoContainer}>
           <div className={MyForestMapStyle.countryAndTreeInfo}>
             <div>
-              {t('profile:myForestMap.plantedTree', {
+              {t('myForestMap.plantedTree', {
                 count: numberOfTrees,
               })}
             </div>
             <div className={MyForestMapStyle.separatorContainer}>
               <div className={MyForestMapStyle.seprator}>.</div>
             </div>
-            <div className={MyForestMapStyle.country}>
-              {t(`country:${country}`)}
-            </div>
+            <div className={MyForestMapStyle.country}>{tCountry(country)}</div>
           </div>
           <Button
             variant="contained"
@@ -236,11 +231,11 @@ export const DonationPopUp = ({
             onClick={() => handleDonation(projectId, tenantConfig.id)}
             disabled={!isDonatable}
           >
-            {t('profile:myContributions.donate')}
+            {t('myContributions.donate')}
           </Button>
         </div>
         <div className={MyForestMapStyle.tpoName}>
-          {t('profile:myForestMap.tpoName', {
+          {t('myForestMap.tpoName', {
             tpo: tpoName,
           })}
         </div>
@@ -268,7 +263,5 @@ export const DonationPopUp = ({
         </div>
       </div>
     </div>
-  ) : (
-    <></>
   );
 };

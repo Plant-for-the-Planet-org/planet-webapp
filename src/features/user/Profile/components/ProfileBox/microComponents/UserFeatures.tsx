@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import Share from './Share';
 import { UserFeaturesProps } from '../../../../../common/types/profile';
-import { useTranslation } from 'next-i18next';
+import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
 import RedeemModal from './RedeemModal';
 import {
@@ -22,7 +22,8 @@ const UserFeatures = ({
 }: UserFeaturesProps) => {
   const { light } = theme;
   const router = useRouter();
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
+  const locale = useLocale();
   const { setRefetchUserData, user: verifiedUser } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
@@ -40,13 +41,13 @@ const UserFeatures = ({
   };
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {router.asPath !== '/profile' && !userProfile.isPrivate && (
+      {router.asPath !== `/${locale}/profile` && !userProfile.isPrivate && (
         <div className={myProfileStyle.publicProfileContainer}>
           <PublicProfileFeature profile={userProfile} />
         </div>
       )}
       <div className={myProfileStyle.privateFeatureContainer}>
-        {router.asPath === '/profile' &&
+        {router.asPath === `/${locale}/profile` &&
           userProfile?.id === verifiedUser?.id && (
             <>
               <Button
@@ -55,7 +56,7 @@ const UserFeatures = ({
                 startIcon={<RedeemCodeSvg color={`${light.light}`} />}
                 onClick={handleRedeemModalOpen}
               >
-                {t('profile:feature.redeem')}
+                {t('feature.redeem')}
               </Button>
               <RedeemModal
                 redeemModalOpen={isRedeemModalOpen}
@@ -67,7 +68,7 @@ const UserFeatures = ({
                 startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
                 onClick={handleRegisterTree}
               >
-                {t('profile:feature.registerTree')}
+                {t('feature.registerTree')}
               </Button>
             </>
           )}

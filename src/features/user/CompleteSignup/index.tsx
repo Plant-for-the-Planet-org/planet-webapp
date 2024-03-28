@@ -22,7 +22,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useTranslation, Trans } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   handleError,
@@ -58,7 +58,8 @@ type FormData = Omit<
 
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
-  const { i18n, t, ready } = useTranslation('editProfile');
+  const t = useTranslations('EditProfile');
+  const locale = useLocale();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState<
     AddressSuggestionsType[]
@@ -128,11 +129,11 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            router.push(`/t/${user.slug}`);
+            router.push('/profile');
           }
         }
       } else {
-        router.push('/', undefined, { shallow: true });
+        router.push('/');
       }
     }
     if (contextLoaded) {
@@ -160,7 +161,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [severity, setSeverity] = useState<AlertColor>('info');
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-  
+
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
   );
@@ -175,11 +176,15 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest<User>(tenantConfig?.id, `/app/profile`, bodyToSend);
+      const res = await postRequest<User>(
+        tenantConfig?.id,
+        `/app/profile`,
+        bodyToSend
+      );
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
-      setSnackbarMessage(ready ? t('profileCreated') : '');
+      setSnackbarMessage(t('profileCreated'));
       setSeverity('success');
       handleSnackbarOpen();
 
@@ -202,18 +207,18 @@ export default function CompleteSignup(): ReactElement | null {
   const profileTypes = [
     {
       id: 1,
-      title: ready ? t('individual') : '',
+      title: t('individual'),
       value: 'individual',
     },
     {
       id: 2,
-      title: ready ? t('organization') : '',
+      title: t('organization'),
       value: 'organization',
     },
-    { id: 3, title: ready ? t('tpo') : '', value: 'tpo' },
+    { id: 3, title: t('tpo'), value: 'tpo' },
     {
       id: 4,
-      title: ready ? t('education') : '',
+      title: t('education'),
       value: 'education',
     },
   ] as const;
@@ -250,7 +255,7 @@ export default function CompleteSignup(): ReactElement | null {
     return null;
   }
   if (contextLoaded && token && user === null) {
-    return ready ? (
+    return (
       <div
         className={styles.signupPage}
         style={{
@@ -577,17 +582,18 @@ export default function CompleteSignup(): ReactElement | null {
               <div className={styles.inlineToggleGroup}>
                 <div className={styles.mainText}>
                   <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                    <Trans i18nKey="termAndCondition">
-                      <a
-                        className={styles.termsLink}
-                        rel="noopener noreferrer"
-                        href={`https://pp.eco/legal/${i18n.language}/terms`}
-                        target={'_blank'}
-                      >
-                        Terms and Conditions
-                      </a>{' '}
-                      of the Plant-for-the-Planet platform.
-                    </Trans>
+                    {t.rich('termAndCondition', {
+                      termsLink: (chunks) => (
+                        <a
+                          className={styles.termsLink}
+                          rel="noopener noreferrer"
+                          href={`https://pp.eco/legal/${locale}/terms`}
+                          target={'_blank'}
+                        >
+                          {chunks}
+                        </a>
+                      ),
+                    })}
                   </label>
                 </div>
                 <ToggleSwitch
@@ -639,7 +645,7 @@ export default function CompleteSignup(): ReactElement | null {
           </div>
         </Snackbar>
       </div>
-    ) : null;
+    );
   }
   return null;
 }

@@ -51,11 +51,14 @@ export async function constructPathsForTenantSlug() {
  */
 export const getTenantConfig = async (slug: string): Promise<Tenant> => {
   try {
+    console.log('VERCEL_ENV', process.env.VERCEL_ENV);
     const caching_key = `${
       process.env.VERCEL_ENV ? process.env.VERCEL_ENV : 'preview'
     }_TENANT_CONFIG_${slug}`;
+    console.log('caching_key', caching_key);
 
     const tenant = await redisClient.get<Tenant>(caching_key);
+    console.log('tenant', tenant);
 
     if (tenant) {
       return tenant;

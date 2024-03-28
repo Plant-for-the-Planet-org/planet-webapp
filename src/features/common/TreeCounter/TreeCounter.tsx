@@ -3,7 +3,7 @@ import MuiCircularProgress, {
 } from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
@@ -72,7 +72,8 @@ export default function TpoProfile(props: TpoProfileInterface) {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const { t, i18n, ready } = useTranslation(['me']);
+  const t = useTranslations('Me');
+  const locale = useLocale();
   const { tenantConfig } = useTenant();
 
   const _isTreeTarget = () => {
@@ -130,7 +131,7 @@ export default function TpoProfile(props: TpoProfileInterface) {
     });
     if (_tenantHasHomeTreeCounter) setIsHomeTreeCounter(true);
   }, [isHomeTreeCounter]);
-  return ready ? (
+  return (
     <div className={treeCounterStyles.treeCounter}>
       {isHomeTreeCounter ? (
         <ProfileCircularProgress value={progress} />
@@ -159,14 +160,14 @@ export default function TpoProfile(props: TpoProfileInterface) {
           </div>
           <div className={treeCounterStyles.dataContainer}>
             {_isTreeTarget() ? (
-              t('me:treesOfTrees', {
+              t('treesOfTrees', {
                 count1: localizedAbbreviatedNumber(
-                  i18n.language,
+                  locale,
                   Number(props.planted - props.restoredAreaUnit),
                   2
                 ),
                 count2: localizedAbbreviatedNumber(
-                  i18n.language,
+                  locale,
                   Number(props.target),
                   1
                 ),
@@ -174,7 +175,7 @@ export default function TpoProfile(props: TpoProfileInterface) {
             ) : (
               <div>
                 {localizedAbbreviatedNumber(
-                  i18n.language,
+                  locale,
                   Number(props.planted - props.restoredAreaUnit),
                   2
                 )}
@@ -182,10 +183,10 @@ export default function TpoProfile(props: TpoProfileInterface) {
             )}
           </div>
           <div className={treeCounterStyles.treesPlanted}>
-            {t('me:treesPlanted')}
+            {t('treesPlanted')}
           </div>
         </div>
       )}
     </div>
-  ) : null;
+  );
 }

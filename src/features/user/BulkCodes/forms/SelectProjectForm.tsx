@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
@@ -13,7 +13,7 @@ import { ProjectOption } from '../../../common/types/project';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
-  const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const tCommon = useTranslations('Common');
   const { method } = router.query;
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
   const { user } = useUserProps();
@@ -29,41 +29,37 @@ const SelectProjectForm = (): ReactElement | null => {
     }
   };
 
-  if (ready) {
-    return (
-      <CenteredContainer>
-        <StyledForm className="ProjectSelectorForm">
-          <div className="inputContainer">
-            <ProjectSelector
-              projectList={projectList || []}
-              project={localProject}
-              setProject={setLocalProject}
-              planetCashAccount={planetCashAccount}
-            />
-          </div>
+  return (
+    <CenteredContainer>
+      <StyledForm className="ProjectSelectorForm">
+        <div className="inputContainer">
+          <ProjectSelector
+            projectList={projectList || []}
+            project={localProject}
+            setProject={setLocalProject}
+            planetCashAccount={planetCashAccount}
+          />
+        </div>
 
-          <BulkCodesError />
+        <BulkCodesError />
 
-          <Button
-            variant="contained"
-            color="primary"
-            className="formButton"
-            disabled={
-              !(
-                user?.planetCash &&
-                !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-              ) || localProject === null
-            }
-            onClick={handleFormSubmit}
-          >
-            {t('common:continue')}
-          </Button>
-        </StyledForm>
-      </CenteredContainer>
-    );
-  }
-
-  return null;
+        <Button
+          variant="contained"
+          color="primary"
+          className="formButton"
+          disabled={
+            !(
+              user?.planetCash &&
+              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+            ) || localProject === null
+          }
+          onClick={handleFormSubmit}
+        >
+          {tCommon('continue')}
+        </Button>
+      </StyledForm>
+    </CenteredContainer>
+  );
 };
 
 export default SelectProjectForm;

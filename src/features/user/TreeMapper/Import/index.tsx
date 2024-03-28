@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import {
@@ -44,15 +44,16 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 export default function ImportData(): ReactElement {
   const router = useRouter();
   const { tenantConfig } = useTenant();
-  const { t, ready } = useTranslation(['treemapper']);
+  const tTreemapper = useTranslations('Treemapper');
+  const tCommon = useTranslations('Common');
   const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function getSteps() {
     return [
-      ready ? t('treemapper:plantingLocation') : '',
-      ready ? t('treemapper:sampleTrees') : '',
-      ready ? t('treemapper:submitted') : '',
+      tTreemapper('plantingLocation'),
+      tTreemapper('sampleTrees'),
+      tTreemapper('submitted'),
     ];
   }
   const [activeStep, setActiveStep] = React.useState(0);
@@ -123,7 +124,7 @@ export default function ImportData(): ReactElement {
             userLang={userLang}
           />
         ) : (
-          <p> {t('common:some_error')}</p>
+          <p> {tCommon('some_error')}</p>
         );
       case 2:
         return plantLocation ? (
@@ -134,7 +135,7 @@ export default function ImportData(): ReactElement {
             setErrorMessage={setErrorMessage}
           />
         ) : (
-          <p> {t('common:some_error')}</p>
+          <p> {tCommon('some_error')}</p>
         );
       default:
         return (
@@ -154,9 +155,9 @@ export default function ImportData(): ReactElement {
     <div className={styles.profilePage}>
       <div className={styles.pageContainer}>
         <div className={styles.listContainer}>
-          <div className={styles.pageTitle}>{t('treemapper:importData')}</div>
+          <div className={styles.pageTitle}>{tTreemapper('importData')}</div>
           <p className={styles.pageSubtitle}>
-            {t('treemapper:importExplanation')}
+            {tTreemapper('importExplanation')}
           </p>
           <div className={styles.stepperContainer}>
             <Stepper

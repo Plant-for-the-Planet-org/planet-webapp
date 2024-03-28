@@ -5,7 +5,7 @@ import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
 import React from 'react';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import {
   LeaderBoardList,
   TenantScore,
@@ -18,18 +18,18 @@ interface Props {
 
 export default function About({ leaderboard, tenantScore }: Props) {
   const { tenantConfig } = useTenant();
-  const { t, ready } = useTranslation(['tenants']);
+  const t = useTranslations('Tenants');
 
   const descriptionRef = React.useRef<HTMLParagraphElement>(null);
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
       descriptionRef.current.innerHTML = t(
-        `tenants:${tenantConfig.config.slug}.description`
+        `${tenantConfig.config.slug}.description`
       );
     }
-  }, [ready]);
+  }, []);
 
-  return ready ? (
+  return (
     <main>
       <LandingSection imageSrc={tenantConfig.config.meta.image}>
         <div style={{ marginTop: '120px' }} />
@@ -43,7 +43,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
           className={styles.publicUserDescription}
           style={{ fontWeight: 'bold', marginBottom: '0px' }}
         >
-          {t(`tenants:${tenantConfig.config.slug}.title`)}
+          {t(`${tenantConfig.config.slug}.title`)}
         </p>
         <p
           ref={descriptionRef}
@@ -59,5 +59,5 @@ export default function About({ leaderboard, tenantScore }: Props) {
         )}
       <Footer />
     </main>
-  ) : null;
+  );
 }

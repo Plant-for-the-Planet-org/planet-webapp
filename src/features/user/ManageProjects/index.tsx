@@ -12,7 +12,7 @@ import {
 } from '../../../utils/apiRequests/api';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -40,7 +40,8 @@ export default function ManageProjects({
   token,
   project,
 }: ManageProjectsProps) {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
+  const locale = useLocale();
   const { tenantConfig } = useTenant();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
@@ -105,7 +106,13 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(tenantConfig?.id, `/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(
+        tenantConfig?.id,
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -123,7 +130,13 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(tenantConfig?.id,`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(
+        tenantConfig?.id,
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -196,32 +209,32 @@ export default function ManageProjects({
     if (router.query.type && project) {
       setTabList([
         {
-          label: t('manageProjects:basicDetails'),
+          label: t('basicDetails'),
           link: `/profile/projects/${projectGUID}?type=basic-details`,
           step: ProjectCreationTabs.BASIC_DETAILS,
         },
         {
-          label: t('manageProjects:projectMedia'),
+          label: t('projectMedia'),
           link: `/profile/projects/${projectGUID}?type=media`,
           step: ProjectCreationTabs.PROJECT_MEDIA,
         },
         {
-          label: t('manageProjects:detailedAnalysis'),
+          label: t('detailedAnalysis'),
           link: `/profile/projects/${projectGUID}?type=detail-analysis`,
           step: ProjectCreationTabs.DETAILED_ANALYSIS,
         },
         {
-          label: t('manageProjects:projectSites'),
+          label: t('projectSites'),
           link: `/profile/projects/${projectGUID}?type=project-sites`,
           step: ProjectCreationTabs.PROJECT_SITES,
         },
         {
-          label: t('manageProjects:projectSpending'),
+          label: t('projectSpending'),
           link: `/profile/projects/${projectGUID}?type=project-spendings`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
         },
         {
-          label: t('manageProjects:review'),
+          label: t('review'),
           link: `/profile/projects/${projectGUID}?type=review`,
           step: ProjectCreationTabs.REVIEW,
         },
@@ -229,7 +242,7 @@ export default function ManageProjects({
     } else if (router.query.purpose === 'trees' && !project) {
       setTabList([
         {
-          label: t('manageProjects:basicDetails'),
+          label: t('basicDetails'),
           link: '/profile/projects/new-project?purpose=trees',
           step: ProjectCreationTabs.BASIC_DETAILS,
         },
@@ -237,7 +250,7 @@ export default function ManageProjects({
     } else if (router.query.purpose === 'conservation' && !project) {
       setTabList([
         {
-          label: t('manageProjects:basicDetails'),
+          label: t('basicDetails'),
           link: '/profile/projects/new-project?purpose=conservation',
           step: ProjectCreationTabs.BASIC_DETAILS,
         },
@@ -245,13 +258,13 @@ export default function ManageProjects({
     } else {
       setTabList([
         {
-          label: t('manageProjects:projectType'),
+          label: t('projectType'),
           link: '/profile/projects/new-project',
           step: ProjectCreationTabs.PROJECT_TYPE,
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, i18n?.language]);
+  }, [tabSelected, router.query.purpose, locale]);
 
   function getStepContent() {
     switch (tabSelected) {
@@ -340,25 +353,20 @@ export default function ManageProjects({
 
   return (
     <DashboardView
-      title={
-        project && projectGUID
-          ? project.name
-          : t('manageProjects:addNewProject')
-      }
+      title={project && projectGUID ? project.name : t('addNewProject')}
       subtitle={
         projectGUID ? (
-          t('manageProjects:onlyEnglish')
+          t('onlyEnglish')
         ) : (
           <div className={styles.addProjectTitle}>
-            <div>{t('manageProjects:addProjetDescription')}</div>
+            <div>{t('addProjetDescription')}</div>
             <div className={styles.editProjectInfo}>
-              <div className={styles.note}>{t('manageProjects:important')}</div>
-              <div>{t('manageProjects:englishOnly')}</div>
+              <div className={styles.note}>{t('important')}</div>
+              <div>{t('englishOnly')}</div>
             </div>
             <div>
               {' '}
-              {t('manageProjects:addProjetContact')}{' '}
-              <span>{t('manageProjects:supportLink')}</span>{' '}
+              {t('addProjetContact')} <span>{t('supportLink')}</span>{' '}
             </div>
           </div>
         )

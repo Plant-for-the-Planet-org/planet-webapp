@@ -1,14 +1,16 @@
 {
-  "treesDonated": "Árboles donados desde 2019",
-  "plantedByTPO": "Plantado por las {{projects}}+ organizaciones participantes",
-  "plantedGlobally": "Árboles que nos fueron notificados desde 2006",
-  "forestLoss": "Pérdida neta de bosques en los últimos 12 meses",
-  "estimateOf": "Estimación de la pérdida anual de árboles por",
-  "globallySince": "Número de árboles declarados por sí mismos a la Campaña de los Mil Millones de Árboles (posteriormente Campaña del Trillón de Árboles) desde su fundación por el PNUMA en 2006",
-  "restoreTrees": "¿Cómo restauramos un trillón de árboles?",
-  "watchVideo": "Ver Video",
-  "selectProjects": "Cómo seleccionamos los proyectos",
-  "learnMore": "Más información",
-  "treesDonatedDescription": "Todas las donaciones de árboles procesadas por Plant-for-the-Planet desde 2019. Incluye árboles donados directamente a través de nuestras apps, así como grandes donaciones privadas y de empresas. Estas donaciones no fueron todas a proyectos gestionados directamente por Plant-for-the-Planet, sino a todas las organizaciones de restauración participantes. Es posible que algunos árboles donados aún no se hayan plantado.",
-  "treesPlantedDescription": "Todos los árboles donados a través de Plant-for-the-Planet y otros árboles reportados como plantados por las organizaciones de restauración participantes"
+  "Planet": {
+    "treesDonated": "Árboles donados desde 2019",
+    "plantedByTPO": "Plantado por las {projects}+ organizaciones participantes",
+    "plantedGlobally": "Árboles que nos fueron notificados desde 2006",
+    "forestLoss": "Pérdida neta de bosques en los últimos 12 meses",
+    "estimateOf": "Estimación de la pérdida anual de árboles por",
+    "globallySince": "Número de árboles declarados por sí mismos a la Campaña de los Mil Millones de Árboles (posteriormente Campaña del Trillón de Árboles) desde su fundación por el PNUMA en 2006",
+    "restoreTrees": "¿Cómo restauramos un trillón de árboles?",
+    "watchVideo": "Ver Video",
+    "selectProjects": "Cómo seleccionamos los proyectos",
+    "learnMore": "Más información",
+    "treesDonatedDescription": "Todas las donaciones de árboles procesadas por Plant-for-the-Planet desde 2019. Incluye árboles donados directamente a través de nuestras apps, así como grandes donaciones privadas y de empresas. Estas donaciones no fueron todas a proyectos gestionados directamente por Plant-for-the-Planet, sino a todas las organizaciones de restauración participantes. Es posible que algunos árboles donados aún no se hayan plantado.",
+    "treesPlantedDescription": "Todos los árboles donados a través de Plant-for-the-Planet y otros árboles reportados como plantados por las organizaciones de restauración participantes"
+  }
 }

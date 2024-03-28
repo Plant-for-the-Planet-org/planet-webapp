@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -63,7 +63,8 @@ interface AccountDetailsProps {
 }
 
 const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
-  const { t, i18n } = useTranslation('planetcash');
+  const t = useTranslations('Planetcash');
+  const locale = useLocale();
   const { token } = useUserProps();
   const { tenantConfig } = useTenant();
 
@@ -93,7 +94,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
         <Grid container item xs={12} sm={4} className="accountHeaderRight">
           <Grid item className="balance">
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               account.currency,
               (account.balance + account.creditLimit) / 100
             )}
@@ -121,7 +122,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
           <h3 className="detailTitle">{t('labelBalance')}</h3>
           <div className="detailInfo">
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               account.currency,
               account.balance / 100
             )}
@@ -132,7 +133,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
             <h3 className="detailTitle">{t('labelCreditLimit')}</h3>
             <div className="detailInfo">
               {getFormatedCurrency(
-                i18n.language,
+                locale,
                 account.currency,
                 account.creditLimit / 100
               )}

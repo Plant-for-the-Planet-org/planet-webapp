@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { Controller, useForm } from 'react-hook-form';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
@@ -73,7 +73,8 @@ export const EditModal = ({
   const { tenantConfig } = useTenant();
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
-  const { t, i18n } = useTranslation(['me']);
+  const t = useTranslations('Me');
+  const locale = useLocale();
   const {
     handleSubmit,
     control,
@@ -172,7 +173,7 @@ export const EditModal = ({
               }}
             >
               <h4 style={{ marginRight: '64px' }}>
-                {t('me:editDonationConfirmation')}
+                {t('editDonationConfirmation')}
               </h4>
               <button
                 onClick={handleEditModalClose}
@@ -185,7 +186,7 @@ export const EditModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:editDonationDescription')}</p>
+              <p>{t('editDonationDescription')}</p>
             </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -210,7 +211,7 @@ export const EditModal = ({
                         startAdornment: (
                           <InputAdornment position="start">
                             {getCurrencySymbolByCode(
-                              i18n.language,
+                              locale,
                               record?.currency,
                               record?.amount
                             )}
@@ -245,7 +246,7 @@ export const EditModal = ({
                       value={value}
                       onBlur={onBlur}
                       getOptionLabel={(option) => {
-                        return t(`${option.toLowerCase()}`);
+                        return t(option.toLowerCase());
                       }}
                       renderInput={(params) => (
                         <MaterialTextField
@@ -284,7 +285,7 @@ export const EditModal = ({
                       }
                       render={({ field: { onChange, value } }) => (
                         <MuiDatePicker
-                          label={t('me:date')}
+                          label={t('date')}
                           value={value}
                           onChange={onChange}
                           renderInput={(props) => (
@@ -310,7 +311,7 @@ export const EditModal = ({
                   </LocalizationProvider>
                   {errors.currentPeriodEnd && (
                     <span className={styles.formErrors}>
-                      {t('donate:dateRequired')}
+                      {t('dateRequired')}
                     </span>
                   )}
                 </div>
@@ -320,7 +321,7 @@ export const EditModal = ({
             )}
           </form>
           <div className={styles.note}>
-            <p>{record?.method === 'paypal' ? t('me:noteToWait') : []}</p>
+            <p>{record?.method === 'paypal' ? t('noteToWait') : []}</p>
           </div>
           <button
             onClick={handleSubmit(onSubmit)}

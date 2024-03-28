@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useLocale } from 'next-intl';
 import { getFormattedNumber } from '../../../../../../../utils/getFormattedNumber';
 import styles from './index.module.scss';
 
@@ -9,9 +9,7 @@ interface Props {
 }
 
 export const Tooltip = ({ headerTitle, bodyTitle, value }: Props) => {
-  const {
-    i18n: { language },
-  } = useTranslation();
+  const locale = useLocale();
 
   return (
     <div className={styles.container}>
@@ -22,7 +20,7 @@ export const Tooltip = ({ headerTitle, bodyTitle, value }: Props) => {
         <span className={styles.circle}></span>
         <p className={styles.bodyTitle}>{bodyTitle}</p>
         <p className={styles.value}>
-          {getFormattedNumber(language, parseInt(value))}
+          {getFormattedNumber(locale, parseInt(value))}
         </p>
       </div>
     </div>

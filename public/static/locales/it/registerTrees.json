@@ -1,11 +1,13 @@
 {
-  "selectLocationMap": "Seleziona la posizione sulla mappa",
-  "requiredNumberOfTrees": "Numero di alberi è richiesto",
-  "numberOfTrees": "Numero di alberi",
-  "datePlanted": "Data prevista",
-  "treeSpecies": "Specie arboree",
-  "speciesRequired": "La specie è richiesta",
-  "drawPolygonMap": "Disegnare un poligono sulla mappa",
-  "clickMapMark": "Clicca sulla mappa per contrassegnare una posizione",
-  "next": "Avanti"
+  "RegisterTrees": {
+    "selectLocationMap": "Seleziona la posizione sulla mappa",
+    "requiredNumberOfTrees": "Numero di alberi è richiesto",
+    "numberOfTrees": "Numero di alberi",
+    "datePlanted": "Data prevista",
+    "treeSpecies": "Specie arboree",
+    "speciesRequired": "La specie è richiesta",
+    "drawPolygonMap": "Disegnare un poligono sulla mappa",
+    "clickMapMark": "Clicca sulla mappa per contrassegnare una posizione",
+    "next": "Avanti"
+  }
 }

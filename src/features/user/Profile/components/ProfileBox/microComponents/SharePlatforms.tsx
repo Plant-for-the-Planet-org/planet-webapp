@@ -3,7 +3,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTenant } from '../../../../../common/Layout/TenantContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import myProfilestyle from '../../../styles/MyProfile.module.scss';
 import { ReactElement } from 'react';
 import { SetState } from '../../../../../common/types/common';
@@ -23,14 +23,13 @@ const SharePlatforms = ({
 }: SharePlatformsProps): ReactElement => {
   const { tenantConfig } = useTenant();
   const { darkOliveGreen } = theme;
-  const { t, ready } = useTranslation(['donate']);
+  const t = useTranslations('Donate');
   const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;
-  const textToShare = ready
-    ? t('donate:textToShare', { name: userProfile?.displayName })
-    : '';
-  const textToShareLinkedin = ready
-    ? t('donate:textToShareLinkedin', { name: userProfile?.displayName })
-    : '';
+  const textToShare = t('textToShare', { name: userProfile?.displayName });
+  const textToShareLinkedin = t('textToShareLinkedin', {
+    name: userProfile?.displayName,
+  });
+
   const handleShare = (shareUrl: string) => {
     window.open(shareUrl, '_blank');
   };

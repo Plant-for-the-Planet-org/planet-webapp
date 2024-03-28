@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import DownloadCodes from './DownloadCodes';
 import { PaymentDetails } from '../../../common/types/payments';
 import styles from '../AccountHistory.module.scss';
@@ -31,7 +31,7 @@ export default function Certificates({
   purpose,
   unitType,
 }: CertificatesProps): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
 
   return (
     <>

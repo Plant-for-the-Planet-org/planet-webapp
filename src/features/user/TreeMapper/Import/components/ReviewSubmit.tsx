@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
@@ -18,7 +18,8 @@ export default function ReviewSubmit({
   handleBack,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t } = useTranslation(['treemapper', 'common']);
+  const tTreemapper = useTranslations('Treemapper');
+  const tMaps = useTranslations('Maps');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(true);
 
@@ -33,48 +34,52 @@ export default function ReviewSubmit({
       {submitted ? (
         <>
           <div className={styles.successContainer}>
-            <h2>{t('treemapper:submittedSuccess')}</h2>
-            <p>{t('treemapper:submittedSuccessDescription')}</p>
+            <h2>{tTreemapper('submittedSuccess')}</h2>
+            <p>{tTreemapper('submittedSuccessDescription')}</p>
             <Button
               onClick={() => router.push('/profile/treemapper')}
               variant="contained"
               color="primary"
             >
-              {t('myPlantLocations')}
+              {tTreemapper('myPlantLocations')}
             </Button>
           </div>
         </>
       ) : (
         <>
-          <div className={styles.stepTitle}>{t('summary')}</div>
+          <div className={styles.stepTitle}>{tTreemapper('summary')}</div>
           <div className={styles.stepDescription}>
-            {t('reviewSubmitDescription')}
+            {tTreemapper('reviewSubmitDescription')}
           </div>
           {plantLocation ? (
             <div className={styles.stepContent}>
               <div className={styles.grid}>
                 <div className={styles.gridItem}>
-                  <div className={styles.gridItemTitle}>{t('captureMode')}</div>
+                  <div className={styles.gridItemTitle}>
+                    {tTreemapper('captureMode')}
+                  </div>
                   <div className={styles.gridItemValue}>
                     {plantLocation.captureMode}
                   </div>
                 </div>
                 <div className={styles.gridItem}>
-                  <div className={styles.gridItemTitle}>{t('plantDate')}</div>
+                  <div className={styles.gridItemTitle}>
+                    {tTreemapper('plantDate')}
+                  </div>
                   <div className={styles.gridItemValue}>
                     {formatDate(plantLocation.plantDate)}
                   </div>
                 </div>
                 <div className={styles.gridItem}>
                   <div className={styles.gridItemTitle}>
-                    {t('registrationDate')}
+                    {tTreemapper('registrationDate')}
                   </div>
                   <div className={styles.gridItemValue}>
                     {formatDate(plantLocation.registrationDate)}
                   </div>
                 </div>
               </div>
-              <p className={styles.gridItemTitle}>{t('species')}</p>
+              <p className={styles.gridItemTitle}>{tTreemapper('species')}</p>
               <div className={styles.gridItemValue}>
                 <span>
                   {plantLocation.plantedSpecies
@@ -87,7 +92,7 @@ export default function ReviewSubmit({
                               : species.otherSpecies &&
                                 species.otherSpecies !== 'Unknown'
                               ? species.otherSpecies
-                              : t('maps:unknown')}
+                              : tMaps('unknown')}
                           </p>
                         );
                       })
@@ -97,7 +102,9 @@ export default function ReviewSubmit({
               {plantLocation.type === 'multi' &&
               plantLocation.captureMode === 'external' ? (
                 <>
-                  <p className={styles.gridItemTitle}>{t('sampleTrees')}</p>
+                  <p className={styles.gridItemTitle}>
+                    {tTreemapper('sampleTrees')}
+                  </p>
                   <div className={styles.gridItemValue}>
                     {plantLocation.samplePlantLocations &&
                       plantLocation.samplePlantLocations.map((spl, index) => {
@@ -108,10 +115,10 @@ export default function ReviewSubmit({
                               {'otherSpecies' in spl && spl.otherSpecies}
                             </span>
                             <br />
-                            {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
+                            {spl.tag ? `${tMaps('tag')} #${spl.tag} • ` : null}
                             {spl?.measurements?.height}
-                            {t('maps:meterHigh')} • {spl?.measurements?.width}
-                            {t('maps:cmWide')}
+                            {tMaps('meterHigh')} • {spl?.measurements?.width}
+                            {tMaps('cmWide')}
                           </div>
                         );
                       })}
@@ -130,7 +137,7 @@ export default function ReviewSubmit({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                      t('treemapper:back')
+                      tTreemapper('back')
                     )}
                   </Button>
                 </div>
@@ -143,7 +150,7 @@ export default function ReviewSubmit({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                      t('treemapper:submit')
+                      tTreemapper('submit')
                     )}
                   </Button>
                 </div>

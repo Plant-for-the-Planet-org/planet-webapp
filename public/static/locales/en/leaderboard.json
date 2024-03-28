@@ -1,7 +1,9 @@
 {
-  "forestFrontrunners": "Forest Frontrunners",
-  "mostRecent": "Most Recent",
-  "mostTrees": "Most Trees",
-  "videoTitle": "And finally, this",
-  "searchUser": "Search User"
+  "Leaderboard": {
+    "forestFrontrunners": "Forest Frontrunners",
+    "mostRecent": "Most Recent",
+    "mostTrees": "Most Trees",
+    "videoTitle": "And finally, this",
+    "searchUser": "Search User"
+  }
 }

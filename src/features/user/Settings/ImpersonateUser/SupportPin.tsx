@@ -1,5 +1,5 @@
 import styles from '../../../common/Layout/UserLayout/UserLayout.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { useTenant } from '../../../common/Layout/TenantContext';
@@ -11,7 +11,7 @@ interface SupportPin {
 
 const SupportPin = () => {
   const { token, user, setUser, logoutUser } = useUserProps();
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const { tenantConfig } = useTenant();
   const handleNewPin = async () => {
     try {
@@ -37,7 +37,7 @@ const SupportPin = () => {
   return (
     <>
       <div className={styles.supportPinContainer}>
-        <div className={styles.supportPin}>{t('me:supportPin')} :</div>
+        <div className={styles.supportPin}>{t('supportPin')} :</div>
         <div className={styles.pinValue}>{user?.supportPin}</div>
         <div>
           <button onClick={handleNewPin}>
@@ -45,7 +45,7 @@ const SupportPin = () => {
           </button>
         </div>
         <div className={styles.resetPin}>
-          <span>{t('me:resetPin')}</span>
+          <span>{t('resetPin')}</span>
         </div>
       </div>
     </>

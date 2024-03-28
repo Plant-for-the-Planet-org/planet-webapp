@@ -1,6 +1,6 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { getTimeFrames } from '.';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 
@@ -45,7 +45,7 @@ const TimeFrameSelector = ({
   const [localTimeFrame, setLocalTimeFrame] = useState<TIME_FRAME | null>(
     timeFrame
   );
-  const { t, ready } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
 
   const { toDate, fromDate } = useAnalytics();
 
@@ -63,35 +63,29 @@ const TimeFrameSelector = ({
     }
   }, [localTimeFrame]);
 
-  if (ready) {
-    return (
-      <MuiAutocomplete
-        options={TimeFrameList}
-        getOptionLabel={(option) => t(option as TIME_FRAME)}
-        isOptionEqualToValue={(option, value) =>
-          (option as TIME_FRAME) === (value as TIME_FRAME)
-        }
-        value={localTimeFrame}
-        onChange={(_event, newValue: unknown) =>
-          setLocalTimeFrame(newValue as TIME_FRAME | null)
-        }
-        getOptionDisabled={(option) =>
-          !timeFrames.includes(option as TIME_FRAME)
-        }
-        renderOption={(props, option) => (
-          <span {...props} key={option as TIME_FRAME}>
-            {t(option as TIME_FRAME)}
-          </span>
-        )}
-        style={{ width: 150 }}
-        renderInput={(params) => (
-          <TextField {...params} label={t('dataIntervals')} color="primary" />
-        )}
-      />
-    );
-  }
-
-  return null;
+  return (
+    <MuiAutocomplete
+      options={TimeFrameList}
+      getOptionLabel={(option) => t(option as TIME_FRAME)}
+      isOptionEqualToValue={(option, value) =>
+        (option as TIME_FRAME) === (value as TIME_FRAME)
+      }
+      value={localTimeFrame}
+      onChange={(_event, newValue: unknown) =>
+        setLocalTimeFrame(newValue as TIME_FRAME | null)
+      }
+      getOptionDisabled={(option) => !timeFrames.includes(option as TIME_FRAME)}
+      renderOption={(props, option) => (
+        <span {...props} key={option as TIME_FRAME}>
+          {t(option as TIME_FRAME)}
+        </span>
+      )}
+      style={{ width: 150 }}
+      renderInput={(params) => (
+        <TextField {...params} label={t('dataIntervals')} color="primary" />
+      )}
+    />
+  );
 };
 
 export default TimeFrameSelector;

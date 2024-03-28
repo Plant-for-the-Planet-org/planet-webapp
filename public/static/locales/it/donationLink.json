@@ -1,1 +1,25 @@
-{ }
+{
+  "DonationLink": {
+    "donationLinkTitle": "Creare il link per la donazione",
+    "donationLinkDescription": "Costruite il link per le donazioni in base alle vostre esigenze, per offrire ai vostri donatori un'esperienza senza problemi. Utilizzate l'anteprima per vedere come funzionerà il risultato finale.",
+    "qrCodeDiscription": "Invece del link, è possibile fornire il codice QR per raggiungere il progetto desiderato.",
+    "labelCountry": "Paese",
+    "labelLanguages": "Lingua",
+    "countryLanguageTitle": "Impostare il Paese e la lingua",
+    "projectTitle": "Impostare il progetto",
+    "treeCounterTitle": "Sostenere il mio TreeCounter",
+    "testingTitle": "Modalità di test",
+    "urlTitle": "L'URL del vostro link di donazione",
+    "qrCodeTitle": "Il codice QR della vostra donazione",
+    "languages": "Le lingue",
+    "preview": "Anteprima",
+    "copy": "Copia",
+    "treeCounterSubtitle": "Le donazioni di alberi tramite questo link sostengono direttamente il mio profilo",
+    "testingModeSubtitle1": "Per fare una prova, utilizzare il link visualizzato ora. Questo è solo a scopo di prova; per condividere il link corretto è necessario disattivare la modalità di prova.",
+    "testingModeSubtitle2": "È possibile testare il flusso di donazioni utilizzando le carte",
+    "linkAndQRCodeUpdatedMessage": "Il link e il codice QR sono stati aggiornati",
+    "treeCounterPrivateAccountSubtitle": "Per supportare il proprio profilo, è necessario impostarlo come pubblico nelle impostazioni dell'account.",
+    "automaticSelection": "Selezione automatica",
+    "qrCodeFileName": "Codice-QR per le donazioni"
+  }
+}

@@ -1,6 +1,6 @@
 import { useState, ReactElement, useMemo } from 'react';
 import { parse, ParseResult } from 'papaparse';
-import { useTranslation, Trans } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
 import {
@@ -39,21 +39,18 @@ const RecipientsUploadForm = ({
   setIsAddingRecipient,
   setIsEditingRecipient,
 }: RecipientsUploadFormProps): ReactElement => {
-  const { t, ready } = useTranslation(['bulkCodes']);
+  const t = useTranslations('BulkCodes');
 
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
   const headers = useMemo<TableHeader[]>(() => {
-    if (ready) {
-      return acceptedHeaders.map((header) => ({
-        key: header,
-        displayText: t(`bulkCodes:tableHeaders.${header}`),
-        helpText: t(`bulkCodes:tableHeaderHelpText.${header}`),
-      }));
-    }
-    return [];
-  }, [t, ready]);
+    return acceptedHeaders.map((header) => ({
+      key: header,
+      displayText: t(`tableHeaders.${header}`),
+      helpText: t(`tableHeaderHelpText.${header}`),
+    }));
+  }, [t]);
 
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
@@ -86,7 +83,7 @@ const RecipientsUploadForm = ({
     if (!recipients.length) {
       setParseError({
         type: 'noRecipientData',
-        message: ready ? t('bulkCodes:errorUploadCSV.noRecipientData') : '',
+        message: t('errorUploadCSV.noRecipientData'),
       });
       return false;
     }
@@ -95,7 +92,7 @@ const RecipientsUploadForm = ({
     if (recipients.length > MAX_RECIPIENTS) {
       setParseError({
         type: 'tooManyRecipients',
-        message: ready ? t('bulkCodes:errorUploadCSV.tooManyRecipients') : '',
+        message: t('errorUploadCSV.tooManyRecipients'),
       });
       return false;
     }
@@ -108,7 +105,7 @@ const RecipientsUploadForm = ({
     ) {
       setParseError({
         type: 'instructionRowError',
-        message: ready ? t('bulkCodes:errorUploadCSV.instructionRowError') : '',
+        message: t('errorUploadCSV.instructionRowError'),
       });
       return false;
     }
@@ -122,7 +119,7 @@ const RecipientsUploadForm = ({
     if (!hasUnits) {
       setParseError({
         type: 'unitsNotProvided',
-        message: ready ? t('bulkCodes:errorUploadCSV.unitsNotProvided') : '',
+        message: t('errorUploadCSV.unitsNotProvided'),
       });
       return false;
     }
@@ -141,7 +138,7 @@ const RecipientsUploadForm = ({
     if (!isNotifyPossible) {
       setParseError({
         type: 'notifyNotPossible',
-        message: ready ? t('bulkCodes:errorUploadCSV.notifyNotPossible') : '',
+        message: t('errorUploadCSV.notifyNotPossible'),
       });
       return false;
     }
@@ -158,11 +155,9 @@ const RecipientsUploadForm = ({
     if (invalidEmailIndexes.length > 0) {
       setParseError({
         type: 'invalidEmails',
-        message: ready
-          ? t('bulkCodes:errorUploadCSV.invalidEmails', {
-              rowList: invalidEmailIndexes.join(', '),
-            })
-          : '',
+        message: t('errorUploadCSV.invalidEmails', {
+          rowList: invalidEmailIndexes.join(', '),
+        }),
       });
       return false;
     }
@@ -206,11 +201,9 @@ const RecipientsUploadForm = ({
           } else {
             setParseError({
               type: 'missingColumns',
-              message: ready
-                ? `${t(
-                    'bulkCodes:errorUploadCSV.missingColumns'
-                  )} ${headerValidity.missingColumns.join(', ')}`
-                : '',
+              message: `${t(
+                'errorUploadCSV.missingColumns'
+              )} ${headerValidity.missingColumns.join(', ')}`,
             });
           }
         } else {
@@ -218,14 +211,12 @@ const RecipientsUploadForm = ({
           if (error.row === 0 && error.code === 'TooManyFields') {
             setParseError({
               type: 'instructionRowError',
-              message: ready
-                ? t('bulkCodes:errorUploadCSV.instructionRowError')
-                : '',
+              message: t('errorUploadCSV.instructionRowError'),
             });
           } else {
             setParseError({
               type: 'generalError',
-              message: ready ? t('bulkCodes:errorUploadCSV.generalError') : '',
+              message: t('errorUploadCSV.generalError'),
             });
           }
         }
@@ -244,20 +235,23 @@ const RecipientsUploadForm = ({
         shouldWarn={localRecipients.length > 0}
       />
       <p className={styles.uploadInstructions}>
-        <Trans i18nKey="bulkCodes:importInstructions">
-          Please refer to the{' '}
-          <a
-            target="_blank"
-            href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
-            rel="noreferrer"
-          >
-            documentation here
-          </a>
-          , download{' '}
-          <a href="/assets/recipient-upload-sample.xlsx">Excel template here</a>
-          , and{' '}
-          <a href="/assets/recipient-upload-sample.csv">CSV template here</a>
-        </Trans>
+        {t.rich('importInstructions', {
+          docsLink: (chunks) => (
+            <a
+              target="_blank"
+              href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
+              rel="noreferrer"
+            >
+              {chunks}
+            </a>
+          ),
+          excelLink: (chunks) => (
+            <a href="/assets/recipient-upload-sample.xlsx">{chunks}</a>
+          ),
+          csvLink: (chunks) => (
+            <a href="/assets/recipient-upload-sample.csv">{chunks}</a>
+          ),
+        })}
       </p>
       <RecipientsTable
         headers={headers}
