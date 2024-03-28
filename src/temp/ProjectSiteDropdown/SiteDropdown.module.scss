@@ -6,9 +6,11 @@
     background: $backgroundColor;
     align-items: center;
     padding: 12px 0px 9px 12px;
-    max-width: 290px;
+    min-width: 290px;
+    width: fit-content;
     justify-content: space-between;
     cursor: pointer;
+    gap: 18px;
 }
 .siteIconAndTextContainer {
     display: flex;
@@ -46,7 +48,7 @@
     padding: 6px 16px;
     border-radius: 12px;
     margin-top: 12px;
-    max-width: 270px;
+    width: fit-content;
     font-size: $fontXSmall;
 }
 .listItem {
@@ -64,12 +66,12 @@
         height:0px;
         border:0px;
         border-top:1px solid $dividerColorNew;
-        margin:0px;/*useful sometimes*/
+        margin:0px;
     
 }
 .selectedItem {
-    font-weight: 700;
     color: #333; //to be replaced
+    text-shadow: 0 0 0.01px;
 }
 
 @include xsPhoneView {
