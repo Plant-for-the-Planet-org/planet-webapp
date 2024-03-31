@@ -1,0 +1,9 @@
+.mapContainer {
+  width: 100vw;
+  margin-top: 105px;
+  height: calc(100vh - 125px);
+  border-radius: 16px;
+  > div > div > div {
+    border-radius: 12px;
+  }
+}
