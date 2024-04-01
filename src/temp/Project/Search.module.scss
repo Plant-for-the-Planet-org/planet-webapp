@@ -49,6 +49,9 @@
   display: flex;
   gap: 14px;
   justify-content: center;
+  @include xsPhoneView {
+    gap: 6px;
+  }
 }
 
 .projectListTabs {
@@ -199,6 +202,6 @@
   display: flex;
   margin-left: 7px;
   .noOfProjects {
-    margin-left: 2px;
+    margin-left: 4px;
   }
 }

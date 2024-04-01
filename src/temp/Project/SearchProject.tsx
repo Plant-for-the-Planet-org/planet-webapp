@@ -18,12 +18,12 @@ const SearchProject = ({ isSearch }: SearchProjectInterface) => {
   const [activeSearch, setSearchActive] = useState(isSearch);
   const { t } = useTranslation(['projectDetails']);
   const [value, setValue] = useState(0);
-  const { primaryColorNew } = themeProperties;
+  const { primaryColorNew, dark } = themeProperties;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
+  console.log(value, '==1');
   return (
     <>
       <div className={style.searchBarMainConatiner}>
@@ -66,7 +66,12 @@ const SearchProject = ({ isSearch }: SearchProjectInterface) => {
               }}
             >
               <CustomTab
-                icon={<StarIcon width={'16px'} color={`${primaryColorNew}`} />}
+                icon={
+                  <StarIcon
+                    width={'16px'}
+                    color={`${value === 1 ? dark.darkNew : primaryColorNew}`}
+                  />
+                }
                 label={
                   <Trans i18nKey={'topProject'}>
                     <div className={style.projectLabel}>
