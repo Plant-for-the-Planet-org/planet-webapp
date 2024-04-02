@@ -6,4 +6,11 @@
   > div > div > div {
     border-radius: 12px;
   }
+  position: relative;
+}
+
+.mapNavigationContainer {
+  position: absolute;
+  bottom: 75px;
+  right: 48px;
 }

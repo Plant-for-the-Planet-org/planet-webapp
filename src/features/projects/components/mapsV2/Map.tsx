@@ -1,4 +1,4 @@
-import MapGL from 'react-map-gl';
+import MapGL, { NavigationControl } from 'react-map-gl';
 import { useState, useContext, useRef, useEffect } from 'react';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import {
@@ -14,7 +14,6 @@ import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTranslation } from 'next-i18next';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import Home from './HomePage/Home';
-import { PopupData } from '../maps/Markers';
 
 const LandingPageMap = () => {
   const { embed, showProjectList } = useContext(ParamsContext);
@@ -109,6 +108,9 @@ const LandingPageMap = () => {
           setViewPort={setViewPort}
           defaultZoom={defaultZoom}
         />
+        <div className={styles.mapNavigationContainer}>
+          <NavigationControl showCompass={false} />
+        </div>
       </MapGL>
     </div>
   );
