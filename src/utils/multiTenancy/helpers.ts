@@ -110,6 +110,7 @@ export async function getTenantSlug(host: string) {
  */
 export async function getTenantConciseInfo(host: string) {
   const tenants = await getTenantConfigList();
+  console.log('Fetched tenants from API');
 
   const tenant =
     tenants?.find((tenant) => {

@@ -70,11 +70,14 @@ export const config = {
 };
 
 export default async function middleware(req: NextRequest) {
+  console.log('Starting middleware...');
+  const start = Date.now();
   const url = req.nextUrl;
   const pathname = url.pathname;
   const host = req.headers.get('host') as string;
   const { slug, supportedLanguages } = await getTenantConciseInfo(host);
 
+  console.log('Fetched tenant concise info');
   // Filters i18nConfig.locales to only include tenant supported languages
   const commonSupportedLocales =
     supportedLanguages?.filter((lang) => i18nConfig.locales.includes(lang)) ??
@@ -83,6 +86,8 @@ export default async function middleware(req: NextRequest) {
   const isLocaleMissing = commonSupportedLocales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
+
+  console.log('isLocaleMissing', isLocaleMissing);
 
   if (isLocaleMissing) {
     const locale = getLocale(req, commonSupportedLocales);
@@ -94,6 +99,7 @@ export default async function middleware(req: NextRequest) {
       }${cleanPathname}${searchParams}`,
       req.url
     );
+    console.log('Populated locale, redirecting to:', newUrl);
     return NextResponse.redirect(newUrl);
   }
 
@@ -108,6 +114,8 @@ export default async function middleware(req: NextRequest) {
 
   const res = NextResponse.rewrite(url);
 
+  console.log('Rewritten URL:', url.pathname);
+
   // store NEXT_LOCALE cookie if available
   const localeFromPath = pathname.split('/')[1];
   const localeCookieValue = req.cookies.get('NEXT_LOCALE')?.value;
@@ -121,7 +129,9 @@ export default async function middleware(req: NextRequest) {
       sameSite: 'lax',
       secure: process.env.NODE_ENV !== 'development',
     });
+    console.log('Set NEXT_LOCALE cookie:', localeFromPath);
   }
 
+  console.log('Running time:', Date.now() - start, 'ms');
   return res;
 }
