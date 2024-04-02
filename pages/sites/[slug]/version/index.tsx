@@ -1,4 +1,4 @@
-import LandingPageMap from '../../../../src/features/projects/components/mapsV2/LandingPageMap';
+import Map from '../../../../src/features/projects/components/mapsV2/Map';
 import ProjectList from '../../../../src/features/projects/components/projectListV2/ProjectList';
 
 const ProjectInfo = () => {
@@ -14,7 +14,7 @@ const ProjectInfo = () => {
       }}
     >
       <ProjectList />
-      <LandingPageMap />
+      <Map />
     </div>
   );
 };

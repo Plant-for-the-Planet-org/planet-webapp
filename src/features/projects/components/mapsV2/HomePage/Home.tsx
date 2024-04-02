@@ -1,12 +1,12 @@
 import { ReactElement, useEffect } from 'react';
 import { FlyToInterpolator } from 'react-map-gl';
-import Markers, { PopupData } from './Markers';
+import Markers, { PopupData } from './microComponent/Markers';
 import * as d3 from 'd3-ease';
 import {
   MapProject,
   ViewPort,
-} from '../../../common/types/ProjectPropsContextInterface';
-import { SetState } from '../../../common/types/common';
+} from '../../../../common/types/ProjectPropsContextInterface';
+import { SetState } from '../../../../common/types/common';
 
 interface Props {
   searchedProject: MapProject[];
@@ -21,8 +21,6 @@ interface Props {
 
 export default function Home({
   searchedProject,
-  setPopupData,
-  popupData,
   isMobile,
   defaultMapCenter,
   viewport,
@@ -59,12 +57,7 @@ export default function Home({
     setViewPort(newViewport);
   }, []);
   const renderMarkers = (projects: MapProject[]) => (
-    <Markers
-      searchedProject={projects}
-      setPopupData={setPopupData}
-      popupData={popupData}
-      isMobile={isMobile}
-    />
+    <Markers searchedProject={projects} isMobile={isMobile} />
   );
 
   return (

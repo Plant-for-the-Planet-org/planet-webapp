@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useState } from 'react';
 import { Marker, Popup } from 'react-map-gl';
-import PopupProject from '../PopupProject';
-import styles from '../../styles/ProjectsMap.module.scss';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import ProjectTypeIcon from '../ProjectTypeIcon';
-import { SetState } from '../../../common/types/common';
-import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import PopupProject from '../../../PopupProject';
+import styles from '../../../../styles/ProjectsMap.module.scss';
+import { ParamsContext } from '../../../../../common/Layout/QueryParamsContext';
+import ProjectTypeIcon from '../../../ProjectTypeIcon';
+import { SetState } from '../../../../../common/types/common';
+import { MapProject } from '../../../../../common/types/ProjectPropsContextInterface';
 
 type PopupClosedData = {
   show: false;
@@ -26,15 +26,13 @@ interface Props {
 }
 export default function Markers({
   searchedProject,
-  setPopupData,
-  popupData,
   isMobile,
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const [popupDataX, setPopupDataX] = useState({});
+  const [popupData, setPopupData] = useState({});
   const { embed, callbackUrl } = React.useContext(ParamsContext);
   const handleClose = () => {
     setOpen(false);
@@ -60,7 +58,7 @@ export default function Markers({
             className={styles.markerContainer}
             onMouseOver={() => {
               timer = setTimeout(() => {
-                setPopupDataX({
+                setPopupData({
                   show: true,
                   lat: projectMarker.geometry.coordinates[1],
                   long: projectMarker.geometry.coordinates[0],
@@ -118,14 +116,13 @@ export default function Markers({
           </div>
         </Marker>
       ))}
-      {console.log(popupDataX, '==')}
-      {popupDataX.show && !isMobile && (
+      {popupData.show && !isMobile && (
         <Popup
-          latitude={popupDataX.lat}
-          longitude={popupDataX.long}
+          latitude={popupData.lat}
+          longitude={popupData.long}
           closeButton={false}
           closeOnClick={false}
-          onClose={() => setPopupDataX({ show: false })}
+          onClose={() => setPopupData({ show: false })}
           anchor="bottom"
           dynamicPosition={false}
           offsetTop={-15}
@@ -136,7 +133,7 @@ export default function Markers({
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
                 router.push(
-                  `/${popupDataX.project.properties.slug}/${
+                  `/${popupData.project.properties.slug}/${
                     embed === 'true'
                       ? `${
                           callbackUrl != undefined
@@ -150,7 +147,7 @@ export default function Markers({
             }}
             onKeyDown={() => {
               router.push(
-                `/${popupDataX.project.properties.slug}/${
+                `/${popupData.project.properties.slug}/${
                   embed === 'true'
                     ? `${
                         callbackUrl != undefined
@@ -166,14 +163,14 @@ export default function Markers({
             onMouseLeave={() => {
               if (!open) {
                 setTimeout(() => {
-                  setPopupDataX({ show: false });
+                  setPopupData({ show: false });
                 }, 300);
                 handleClose();
               }
             }}
           >
             <PopupProject
-              project={popupDataX.project.properties}
+              project={popupData.project.properties}
               buttonRef={buttonRef}
             />
           </div>

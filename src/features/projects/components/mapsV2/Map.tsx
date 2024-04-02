@@ -7,12 +7,23 @@ import {
 } from '../../../common/types/ProjectPropsContextInterface';
 import { MapRef } from 'react-map-gl/src/components/static-map';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import styles from './Map.module.scss';
+import styles from './styles/Map.module.scss';
+import { getRequest } from '../../../../utils/apiRequests/api';
+import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import { useTranslation } from 'next-i18next';
+import { useTenant } from '../../../common/Layout/TenantContext';
+import Home from './HomePage/Home';
+import { PopupData } from '../maps/Markers';
 
 const LandingPageMap = () => {
   const { embed, showProjectList } = useContext(ParamsContext);
-  const [isMobile, setIsMobile] = useState(false);
+  const { tenantConfig } = useTenant();
   const mapRef = useRef<MapRef>(null);
+  const { i18n } = useTranslation();
+  const [isMobile, setIsMobile] = useState(false);
+  const [projects, setProjects] = useState<MapProject[]>([]);
+
   const isEmbed = embed === 'true' && showProjectList === 'false';
   const defaultMapCenter: [number, number] = isMobile
     ? isEmbed
@@ -56,6 +67,29 @@ const LandingPageMap = () => {
     loadMapStyle();
   }, []);
 
+  useEffect(() => {
+    const getAllProjects = async () => {
+      const currency = getStoredCurrency();
+      try {
+        const projects = await getRequest<MapProject[]>(
+          `${tenantConfig.id}`,
+          `/app/projects`,
+          {
+            _scope: 'map',
+            currency: currency,
+            tenant: `${tenantConfig.id}`,
+            'filter[purpose]': 'trees,conservation',
+            locale: i18n.language,
+          }
+        );
+        setProjects(projects);
+      } catch (error) {
+        console.log('error');
+      }
+    };
+    getAllProjects();
+  }, []);
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
@@ -66,7 +100,16 @@ const LandingPageMap = () => {
         onViewStateChange={_onStateChange}
         height={'100%'}
         width={'100%'}
-      ></MapGL>
+      >
+        <Home
+          searchedProject={projects}
+          isMobile={isMobile}
+          defaultMapCenter={defaultMapCenter}
+          viewport={viewport}
+          setViewPort={setViewPort}
+          defaultZoom={defaultZoom}
+        />
+      </MapGL>
     </div>
   );
 };
