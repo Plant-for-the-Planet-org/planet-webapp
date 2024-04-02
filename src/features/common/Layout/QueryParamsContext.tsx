@@ -25,9 +25,6 @@ export const ParamsContext = createContext<ParamsContextType>({
 
 const QueryParamsProvider: FC = ({ children }) => {
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
-  // TODOO - use tenant supported locales. This may not be needed any more as middleware takes care.
-  const tenantSupportedLocale = tenantConfig.config.languages ?? ['en'];
   const [isContextLoaded, setIsContextLoaded] = useState(false);
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);

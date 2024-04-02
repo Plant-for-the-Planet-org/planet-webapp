@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTenantSlug } from './src/utils/multiTenancy/helpers';
+import { getTenantConciseInfo } from './src/utils/multiTenancy/helpers';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { i18nConfig } from './i18n-config';
 
-function getLocale(request: NextRequest): string | undefined {
+function getLocale(
+  request: NextRequest,
+  supportedLocales: string[]
+): string | undefined {
   try {
     // Negotiator expects plain object so we need to transform headers
     const negotiatorHeaders: Record<string, string> = {};
     request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-    const locales = i18nConfig.locales;
-
     // Use negotiator and intl-localematcher to get best locale
     const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
-      locales
+      supportedLocales
     );
 
     const previouslySelectedLanguage =
@@ -22,13 +23,17 @@ function getLocale(request: NextRequest): string | undefined {
 
     if (
       previouslySelectedLanguage !== undefined &&
-      locales.includes(previouslySelectedLanguage) &&
+      supportedLocales.includes(previouslySelectedLanguage) &&
       languages[0] !== previouslySelectedLanguage
     ) {
       languages.unshift(previouslySelectedLanguage);
     }
 
-    const locale = matchLocale(languages, locales, i18nConfig.defaultLocale);
+    const locale = matchLocale(
+      languages,
+      supportedLocales,
+      i18nConfig.defaultLocale
+    );
 
     return locale;
   } catch (error) {
@@ -67,13 +72,20 @@ export const config = {
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const pathname = url.pathname;
+  const host = req.headers.get('host') as string;
+  const { slug, supportedLanguages } = await getTenantConciseInfo(host);
 
-  const isLocaleMissing = i18nConfig.locales.every(
+  // Filters i18nConfig.locales to only include tenant supported languages
+  const commonSupportedLocales =
+    supportedLanguages?.filter((lang) => i18nConfig.locales.includes(lang)) ??
+    i18nConfig.locales;
+
+  const isLocaleMissing = commonSupportedLocales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
 
   if (isLocaleMissing) {
-    const locale = getLocale(req);
+    const locale = getLocale(req, commonSupportedLocales);
     const cleanPathname = removeLocaleFromUrl(pathname);
     const searchParams = req.nextUrl.search;
     const newUrl = new URL(
@@ -84,10 +96,6 @@ export default async function middleware(req: NextRequest) {
     );
     return NextResponse.redirect(newUrl);
   }
-
-  const host = req.headers.get('host');
-
-  const slug = await getTenantSlug(host!);
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
