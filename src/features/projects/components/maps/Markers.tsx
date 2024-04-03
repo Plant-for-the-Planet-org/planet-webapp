@@ -70,11 +70,7 @@ export default function Markers({
                             : '?embed=true'
                         }`
                       : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
+                  }`
                 );
               }}
               onKeyDown={() => {
@@ -87,11 +83,7 @@ export default function Markers({
                             : '?embed=true'
                         }`
                       : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
+                  }`
                 );
               }}
               role="button"
@@ -148,11 +140,7 @@ export default function Markers({
                             : '?embed=true'
                         }`
                       : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
+                  }`
                 );
               }
             }}
@@ -166,11 +154,7 @@ export default function Markers({
                           : '?embed=true'
                       }`
                     : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
-                }
+                }`
               );
             }}
             role="button"
