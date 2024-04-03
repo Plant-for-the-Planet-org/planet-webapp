@@ -13,7 +13,7 @@ interface Props {
 
 export default function FirePopup({ isOpen }: Props) {
   const anchorRef = React.useRef(null);
-  const [arrowRef, setArrowRef] = React.useState(null);
+  const [arrowRef, setArrowRef] = React.useState<HTMLSpanElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
   const { t } = useTranslation('projectDetails');
 
