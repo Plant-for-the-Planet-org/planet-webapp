@@ -76,7 +76,7 @@ export default function FirePopup({ isOpen }: Props) {
         onMouseLeave={() => setShowPopup(false)}
         className={styles.fireIcon}
       >
-        <FireIcon />
+        <FireIcon width={36} />
       </div>
     </>
   );

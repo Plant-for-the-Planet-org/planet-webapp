@@ -1,11 +1,11 @@
 import React from 'react';
+import { IconProps } from '../../features/common/types/common';
 
-const FireIcon = () => {
+const FireIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="42"
+      width={width}
       viewBox="0 0 36 42"
       fill="none"
     >
