@@ -51,9 +51,11 @@ export async function constructPathsForTenantSlug() {
  */
 export const getTenantConfig = async (slug: string): Promise<Tenant> => {
   try {
-    const caching_key = `${
-      process.env.VERCEL_ENV ? process.env.VERCEL_ENV : 'preview'
-    }_TENANT_CONFIG_${slug}`;
+    // If the API_ENDPOINT is https://app-staging.planet.com, the cachingKeyPrefix will be 'staging'
+    const cachingKeyPrefix =
+      process.env.API_ENDPOINT?.replace('https://', '').split('.')[0] ||
+      'env_missing';
+    const caching_key = `${cachingKeyPrefix}_TENANT_CONFIG_${slug}`;
 
     const tenant = await redisClient.get<Tenant>(caching_key);
 
