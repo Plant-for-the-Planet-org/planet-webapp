@@ -67,6 +67,7 @@ const ListOfSpeciesPlanted = ({
             <div
               key={species.scientificName}
               className={styles.individualSpeciesContainer}
+              title={species.scientificName}
             >
               <div className={styles.speciesName}>{species.scientificName}</div>
               <div className={styles.count}>
