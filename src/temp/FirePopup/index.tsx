@@ -3,7 +3,9 @@ import React from 'react';
 import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
-import NewInfoIcon from '../icons/NewInfoIcon';
+import InfoIconPopup from '../components/InfoIconPopup';
+import { useTranslation } from 'react-i18next';
+import RightArrowIcon from '../icons/RightArrowIcon';
 
 interface Props {
   isOpen: boolean;
@@ -13,6 +15,7 @@ export default function FirePopup({ isOpen }: Props) {
   const anchorRef = React.useRef(null);
   const [arrowRef, setArrowRef] = React.useState(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
+  const { t } = useTranslation('projectDetails');
 
   return (
     <>
@@ -22,6 +25,8 @@ export default function FirePopup({ isOpen }: Props) {
         anchorEl={anchorRef.current}
         placement="top"
         disablePortal={false}
+        onMouseLeave={() => setShowPopup(false)}
+        onMouseEnter={() => setShowPopup(true)}
         modifiers={[
           {
             name: 'arrow',
@@ -43,7 +48,12 @@ export default function FirePopup({ isOpen }: Props) {
               <FirePopupIcon width={18} /> Forest Fire
             </div>
             <p className={styles.timeDuration}>
-              21h ago <NewInfoIcon width={9} color={'#828282'} />
+              21h ago
+              <InfoIconPopup width={9} height={9} color={'#828282'}>
+                <div className={styles.infoIconPopupContainer}>
+                  {t('firePopupText')}
+                </div>
+              </InfoIconPopup>
             </p>
           </div>
           <div className={styles.popupText}>
@@ -51,9 +61,12 @@ export default function FirePopup({ isOpen }: Props) {
             <p>
               <span>High</span> alert confidence
             </p>
-            <p className={styles.setUpText}>
-              Set up alerts with <span>FireAlert</span>
-            </p>
+            <div className={styles.setUpAlertsContainer}>
+              <p className={styles.setUpAlerts}>
+                Set up alerts with <span>FireAlert</span>
+              </p>
+              <RightArrowIcon width={5} height={8} color={'#4F4F4F'} />
+            </div>
           </div>
         </div>
       </Popper>

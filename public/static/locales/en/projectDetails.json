@@ -1,3 +1,4 @@
 {
-    "satelliteAnalysis": "Satellite Analysis"
+    "satelliteAnalysis": "Satellite Analysis",
+    "firePopupText": "We only display fires that occurred within the past 12 months."
 }

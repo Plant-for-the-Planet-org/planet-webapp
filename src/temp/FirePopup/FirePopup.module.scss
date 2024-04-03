@@ -18,6 +18,7 @@
    justify-content: center;
    margin-top: 20%; 
    padding-top:20px;
+   cursor: pointer;
 }
 
 .popupContainer {
@@ -57,11 +58,25 @@
     span {
         font-weight: 700;
     }
-    .setUpText {
+   
+}
+
+.setUpAlertsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 13px;
+    .setUpAlerts {
         span {
             color: #E86F56;
         }
     }
+}
+
+.infoIconPopupContainer {
+    padding: 10px;
+    max-width: 123px;
+    font-size: 10px;
+    border-radius: 8px;
 }
 
 .timeDuration {
@@ -69,7 +84,6 @@
     font-weight: 600;
     color: #E86F56;
     display: flex;
-    align-items: center;
     gap: 3px;
 }
 
