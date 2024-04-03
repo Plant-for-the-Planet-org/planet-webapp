@@ -1,10 +1,10 @@
 import React from 'react';
+import { IconProps } from '../../features/common/types/common';
 
-const FirePopupIcon = () => {
+const FirePopupIcon = ({ width }: IconProps) => {
   return (
     <svg
-      width="18"
-      height="19"
+      width={width}
       viewBox="0 0 18 19"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

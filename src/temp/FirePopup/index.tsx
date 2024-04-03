@@ -3,12 +3,13 @@ import React from 'react';
 import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
+import NewInfoIcon from '../icons/NewInfoIcon';
 
 interface Props {
   isOpen: boolean;
 }
 
-export default function Popup({ isOpen }: Props) {
+export default function FirePopup({ isOpen }: Props) {
   const anchorRef = React.useRef(null);
   const [arrowRef, setArrowRef] = React.useState(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
@@ -38,11 +39,15 @@ export default function Popup({ isOpen }: Props) {
         <span className={styles.arrow} ref={setArrowRef} />
         <div className={styles.popupContainer}>
           <div className={styles.popupTitle}>
-            <FirePopupIcon /> Forest Fire
+            <div className={styles.titleText}>
+              <FirePopupIcon width={18} /> Forest Fire
+            </div>
+            <p className={styles.timeDuration}>
+              21h ago <NewInfoIcon width={9} color={'#828282'} />
+            </p>
           </div>
           <div className={styles.popupText}>
-            <p>18.71122, -87.71138</p>
-            <p className={styles.timeDuration}>21h ago</p>
+            <p className={styles.coordinates}>18.71122, -87.71138</p>
             <p>
               <span>High</span> alert confidence
             </p>

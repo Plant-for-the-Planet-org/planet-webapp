@@ -7,7 +7,7 @@
     border: 10px solid transparent;
     border-top-color: #fff;
     position: absolute;
-    bottom: -20px;
+    bottom: -19px;
     left: calc(50% - 10px);
 }
     
@@ -26,14 +26,21 @@
 }
 
 .popupTitle {
+    display: flex;
+    justify-content: space-between;
     background: rgba(232, 111, 86, 0.2);
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px 8px 0 0;
+
+   .titleText {
     display: flex;
     align-items: center;
     gap: 7px;
-    padding: 10px 0 10px 14px;
     font-weight: 700;
     color: #333;
-    border-radius: 8px 8px 0 0;
+    font-size: 12px;
+   }
 }
 
 .popupText {
@@ -44,20 +51,26 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    .coordinates {
+        color: #828282;
+    }
     span {
         font-weight: 700;
-    }
-
-    .timeDuration {
-        font-size: 14px;
-        font-weight: 600;
-        color: #E86F56;
     }
     .setUpText {
         span {
             color: #E86F56;
         }
     }
+}
+
+.timeDuration {
+    font-size: 10px;
+    font-weight: 600;
+    color: #E86F56;
+    display: flex;
+    align-items: center;
+    gap: 3px;
 }
 
 //to be removed
