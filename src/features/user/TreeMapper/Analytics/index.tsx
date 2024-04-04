@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
@@ -10,10 +10,12 @@ import { APIError, handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import NoProjectsFound from './components/NoProjectsFound';
 
 const Analytics = () => {
   const t = useTranslations('TreemapperAnalytics');
-  const { setProjectList, setProject } = useAnalytics();
+  const { projectList, setProjectList, setProject } = useAnalytics();
+  const [isLoaded, setIsLoaded] = useState(false);
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -36,6 +38,7 @@ const Analytics = () => {
       });
 
       setProjectList(projects);
+      setIsLoaded(true);
       if (projects.length > 0) setProject(projects[0]);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -46,12 +49,18 @@ const Analytics = () => {
     fetchProjects();
   }, []);
 
-  return (
+  return isLoaded ? (
     <DashboardView title={t('title')} subtitle={null}>
-      <ProjectFilter />
-      <DataExplorerGridContainer />
+      {projectList && projectList.length > 0 ? (
+        <>
+          <ProjectFilter />
+          <DataExplorerGridContainer />
+        </>
+      ) : (
+        <NoProjectsFound />
+      )}
     </DashboardView>
-  );
+  ) : null;
 };
 
 export default Analytics;
