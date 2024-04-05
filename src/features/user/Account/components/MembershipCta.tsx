@@ -2,18 +2,13 @@ import MuiButton from '../../../common/InputTypes/MuiButton';
 import PlanetLogo from '../../../../../public/assets/images/PlanetLogo';
 import styles from '../AccountHistory.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
-import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   placement: 'top' | 'right';
 }
 
 const MembershipCta = ({ placement }: Props) => {
-  const { t } = useTranslation('me');
-  const { token } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { t, i18n } = useTranslation('me');
 
   return (
     <a
@@ -22,9 +17,11 @@ const MembershipCta = ({ placement }: Props) => {
           ? styles.membershipCtaTop
           : styles.membershipCtaRight
       }`}
-      href={encodeURI(
-        getDonationUrl(tenantConfig.id, 'proj_LOxkf5GYI054Fi0HcEUF3dKu', token)
-      )}
+      href={
+        i18n.language === 'de'
+          ? 'https://www.plant-for-the-planet.org/de/foerdermitgliedschaft/'
+          : 'https://www.plant-for-the-planet.org/donor-circle/'
+      }
     >
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
