@@ -11,7 +11,7 @@ interface Props {
 }
 
 const MembershipCta = ({ placement }: Props) => {
-  const { t } = useTranslation('me');
+  const { t, i18n } = useTranslation('me');
   const { token } = useUserProps();
   const { tenantConfig } = useTenant();
 
@@ -22,9 +22,11 @@ const MembershipCta = ({ placement }: Props) => {
           ? styles.membershipCtaTop
           : styles.membershipCtaRight
       }`}
-      href={encodeURI(
-        getDonationUrl(tenantConfig.id, 'proj_LOxkf5GYI054Fi0HcEUF3dKu', token)
-      )}
+      href={
+        i18n.language === 'de'
+          ? 'https://www.plant-for-the-planet.org/de/foerdermitgliedschaft/'
+          : 'https://www.plant-for-the-planet.org/donor-circle/'
+      }
     >
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
