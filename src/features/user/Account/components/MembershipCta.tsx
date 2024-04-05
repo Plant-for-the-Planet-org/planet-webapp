@@ -23,6 +23,7 @@ const MembershipCta = ({ placement }: Props) => {
           : 'https://www.plant-for-the-planet.org/donor-circle/'
       }
     >
+      <div className={styles.overlay}></div>
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
         <p className={styles.membershipCtaCopy}>
