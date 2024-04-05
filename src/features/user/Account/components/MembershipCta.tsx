@@ -2,9 +2,6 @@ import MuiButton from '../../../common/InputTypes/MuiButton';
 import PlanetLogo from '../../../../../public/assets/images/PlanetLogo';
 import styles from '../AccountHistory.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
-import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   placement: 'top' | 'right';
@@ -12,8 +9,6 @@ interface Props {
 
 const MembershipCta = ({ placement }: Props) => {
   const { t, i18n } = useTranslation('me');
-  const { token } = useUserProps();
-  const { tenantConfig } = useTenant();
 
   return (
     <a
