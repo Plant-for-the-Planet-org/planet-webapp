@@ -2,7 +2,7 @@ import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import { SetState } from '../../../common/types/common';
 import themeProperties from '../../../../theme/themeProperties';
 import { Recipient } from '../BulkCodesTypes';
@@ -80,7 +80,7 @@ const AddRecipient = ({
         </TableCell>
         <RecipientFormFields control={control} errors={errors} />
       </TableRow>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 };

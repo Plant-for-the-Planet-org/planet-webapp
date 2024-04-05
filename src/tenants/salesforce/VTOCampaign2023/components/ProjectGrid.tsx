@@ -5,14 +5,14 @@ import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurren
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
-import { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
+import { MapSingleProject } from '../../../../features/common/types/project';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState<MapProject[] | null>(null);
+  const [projects, setProjects] = useState<MapSingleProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
@@ -24,7 +24,7 @@ export default function ProjectGrid() {
           tenant: TENANT_ID,
           'filter[purpose]': 'trees,conservation',
         });
-        setProjects(projects as MapProject[]);
+        setProjects(projects as MapSingleProject[]);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');
@@ -33,7 +33,7 @@ export default function ProjectGrid() {
     loadProjects();
   }, []);
 
-  const renderAllowedProjects = (projects: MapProject[]) => {
+  const renderAllowedProjects = (projects: MapSingleProject[]) => {
     const allowedProjects = projects
       .filter((project) => project.properties.allowDonations === true)
       .map((allowedProject) => {
@@ -46,7 +46,8 @@ export default function ProjectGrid() {
               project={allowedProject.properties}
               editMode={false}
               displayPopup={false}
-              utmCampaign="243BY4FZ71"
+              utmCampaign="vto-fc-2023"
+              disableDonations={true}
             />
           </div>
         );

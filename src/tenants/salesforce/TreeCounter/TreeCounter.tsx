@@ -23,8 +23,8 @@ export default function TpoProfile({
       className={`${treeCounterStyles.treeCounter} ${
         isLight ? treeCounterStyles.treeCounterLight : ''
       } ${
-        (shouldShowMillions && estMillionTreesPlanted > 0) ||
-        (!shouldShowMillions && planted > 0)
+        (shouldShowMillions && estMillionTreesPlanted >= 0) ||
+        (!shouldShowMillions && planted >= 0)
           ? treeCounterStyles.treeCounterReady
           : ''
       }`}

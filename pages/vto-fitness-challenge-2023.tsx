@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign';
+import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign2023';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
@@ -25,7 +25,7 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
     async function loadData() {
       try {
         const leaderboardRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-leaderboard`
+          `${process.env.WEBHOOK_URL}/salesforce-earth-month-leaderboard`
         );
         const leaderBoardArr = await leaderboardRes.json();
         setLeaderBoard(leaderBoardArr[0]);
@@ -35,7 +35,7 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
 
       try {
         const tenantscoreRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-treecount`
+          `${process.env.WEBHOOK_URL}/salesforce-earth-month-count`
         );
         const tenantScoreArr = await tenantscoreRes.json();
         setTenantScore(tenantScoreArr[0]);

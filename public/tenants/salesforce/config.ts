@@ -22,8 +22,8 @@ const config = {
         visible: true,
       },
       campaign: {
-        title: 'mangroves',
-        onclick: '/mangroves',
+        title: 'vtoChallenge',
+        onclick: '/vto-fitness-challenge',
         visible: true,
       },
       donate: {

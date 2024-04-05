@@ -11,7 +11,7 @@ import HomeLogoSelected from '../../../../../public/assets/images/navigation/Hom
 import HomeLogo from '../../../../../public/assets/images/navigation/HomoLogo';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
-import OceanforceChallengeIcon from '../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
+import VTOChallengeIcon from '../../../../../public/assets/images/navigation/VTOChallengeIcon';
 import { NextRouter } from 'next/router';
 
 interface Props {
@@ -135,11 +135,9 @@ function GetNavBarIcon({
         }`}
       >
         {router.pathname === item.onclick ? (
-          <OceanforceChallengeIcon color={themeProperties.primaryColor} />
+          <VTOChallengeIcon color={themeProperties.primaryColor} />
         ) : (
-          <OceanforceChallengeIcon
-            color={themeProperties.light.primaryFontColor}
-          />
+          <VTOChallengeIcon color={themeProperties.light.primaryFontColor} />
         )}
       </button>
     );
