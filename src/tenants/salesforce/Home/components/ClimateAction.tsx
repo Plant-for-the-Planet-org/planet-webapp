@@ -47,7 +47,11 @@ export default function ClimateAction() {
                 key={`climate-action-${article.id}`}
                 className={`${gridStyles.col12} ${gridStyles.colMd4} ${styles.climateActionContent}`}
               >
-                <a href={article.link} target="_blank" rel="noreferrer">
+                <a
+                  href={article.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
                   <img src={article.image} alt="" />
                   <span>{article.category}</span>
                   <h4>{article.title}</h4>

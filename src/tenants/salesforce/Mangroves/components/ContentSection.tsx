@@ -60,14 +60,18 @@ export default function ContentSection() {
             <p>
               <em>
                 This is part of our commitment to{' '}
-                <a href="https://www.1t.org/" target="_blank" rel="noreferrer">
+                <a
+                  href="https://www.1t.org/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
                   1t.org
                 </a>{' '}
                 and delivers on our{' '}
                 <a
                   href="https://www.salesforce.com/content/dam/web/en_us/www/assets/pdf/reports/salesforce-climate-action-plan.pdf"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                 >
                   climate
                 </a>{' '}
@@ -75,7 +79,7 @@ export default function ContentSection() {
                 <a
                   href="https://www.salesforce.com/content/dam/web/en_us/www/documents/white-papers/nature-positive-strategy.pdf"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                 >
                   nature
                 </a>{' '}
@@ -87,7 +91,7 @@ export default function ContentSection() {
               <a
                 href="https://www.salesforce.com/news/stories/climate-week-investments-climate-finance-playbook/"
                 target="_blank"
-                rel="noreferrer"
+                rel="noreferrer noopener"
               >
                 Mangrove Breakthrough Secretariat{' '}
               </a>{' '}
@@ -95,7 +99,7 @@ export default function ContentSection() {
               <a
                 href="https://climatechampions.unfccc.int/wp-content/uploads/2023/11/SY031_MangroveBreakthrough_2023_v7_JG.pdf"
                 target="_blank"
-                rel="noreferrer"
+                rel="noreferrer noopener"
               >
                 Financial Roadmap
               </a>
@@ -163,7 +167,7 @@ export default function ContentSection() {
                   <a
                     href="https://climatechampions.unfccc.int/wp-content/uploads/2023/11/SY031_MangroveBreakthrough_2023_v7_JG.pdf"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                   >
                     $4 billion investment
                   </a>{' '}
@@ -171,7 +175,7 @@ export default function ContentSection() {
                   <a
                     href="https://www.weforum.org/agenda/2023/11/mangrove-breakthrough-climate-targets-cop28/"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                   >
                     crucial global ecosystem
                   </a>{' '}
@@ -180,7 +184,7 @@ export default function ContentSection() {
                   <a
                     href="https://www.wetlands.org/a-breakthrough-moment-for-mangroves-delivering-global-action-on-mangrove-restoration-and-protection/"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                   >
                     endorsed
                   </a>{' '}

@@ -32,7 +32,7 @@ export default function BlueCarbon() {
                       <a
                         href="https://www.weforum.org/friends-of-ocean-action/mangroves-working-group/"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noreferrer noopener"
                       >
                         Mangroves Working Group
                       </a>
@@ -42,7 +42,7 @@ export default function BlueCarbon() {
                       <a
                         href="https://airtable.com/appEmTx9RhMTdf6Ku/shrfWHk7Km8jiGoXD"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noreferrer noopener"
                       >
                         High Quality Blue Carbon Principles and Guidance
                       </a>
@@ -68,7 +68,7 @@ export default function BlueCarbon() {
                 <a
                   href="https://www.salesforce.com/news/stories/salesforce-accelerates-commitment-to-trees-oceans-and-youth-programs-to-fight-climate-change/"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                 >
                   endeavors to purchase
                 </a>{' '}
@@ -80,7 +80,7 @@ export default function BlueCarbon() {
                 <a
                   href="https://merid.org/wp-content/uploads/2022/11/HQBC-PG_FINAL_11.8.2022.pdf"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                 >
                   High Quality Blue Carbon Principles and Guidance
                 </a>{' '}
