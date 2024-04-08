@@ -10,18 +10,19 @@ import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
 
-// To be uncommented and updated when projects are live and finalized
-/* const MANGROVE_PROJECTS = [
-  'proj_StWEs2TGZFPf1WgfT6IJQoLC',
-  'proj_YPXJ9e9iiy4Ras0zknJkxyH6',
-  'proj_cVpKWdkq5nM31NfQ5Yn9pXMY',
-  'proj_FEvW3WIB0Vcq2far1ppJvgLs',
-  'proj_AzYMCCfmCnrwfS8nilKFng8z',
-  'proj_mgtS4XFpiL6RCieGK403qDG5',
-  'proj_70kDfWL50GRS79MHDaCXMwY1',
+const MANGROVE_PROJECTS = [
   'proj_4urzfQ47Xwv5SlNOurnXn2hU',
   'proj_7gmlF7Q8aL65V7j7AG9NW8Yy',
-]; */
+  'proj_StWEs2TGZFPf1WgfT6IJQoLC',
+  'proj_cVpKWdkq5nM31NfQ5Yn9pXMY',
+  'proj_mgtS4XFpiL6RCieGK403qDG5',
+  'proj_FEvW3WIB0Vcq2far1ppJvgLs',
+  'proj_AzYMCCfmCnrwfS8nilKFng8z',
+  'proj_70kDfWL50GRS79MHDaCXMwY1',
+  'proj_ekdaWSYWHRBdtAzncLVdclzP',
+  'proj_h27ErrwYmhAGB5jp6nyLGEkN',
+  'proj_sRvqi265caRiKyLaog760QsT',
+];
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
@@ -51,7 +52,7 @@ export default function ProjectGrid() {
 
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
-      .filter((project) => project.properties.ecosystem === 'mangroves')
+      .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id))
       .sort((projectA, projectB) => {
         if (
           projectA.properties.allowDonations ===
@@ -67,7 +68,6 @@ export default function ProjectGrid() {
           return 1;
         }
       })
-      // .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id)) // To be uncommented and updated when projects are live and finalized
       .map((allowedProject) => {
         return (
           <div
