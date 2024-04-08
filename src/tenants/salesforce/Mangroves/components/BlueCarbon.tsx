@@ -1,12 +1,57 @@
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/BlueCarbon.module.scss';
-import Link from 'next/link';
 
 export default function BlueCarbon() {
   return (
     <div>
       <div className={`${styles.blueCarbonContainer}`}>
         <div className={`${gridStyles.fluidContainer} ${styles.blueCarbon}`}>
+          <div
+            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.calloutContainer}`}
+          >
+            <div
+              className={`${gridStyles.col12} ${gridStyles.colMd8} ${styles.justifyContentCenter} ${styles.helpOutCallout}`}
+            >
+              <div className={`${styles.calloutContentContainer}`}>
+                <div className={styles.calloutContentOverlay}></div>
+                <div className={styles.calloutContent}>
+                  <h3>How you can help</h3>
+                  <ul>
+                    Join the global community working to protect and restore
+                    mangroves today:
+                    <li>
+                      Support the Mangrove Breakthrough with a{' '}
+                      <strong>mangrove-focused pledge to 1t.org</strong>
+                    </li>
+                    <li>
+                      <strong>Donate directly</strong> to one of the projects
+                      below
+                    </li>
+                    <li>
+                      Join the World Economic Forum{' '}
+                      <a
+                        href="https://www.weforum.org/friends-of-ocean-action/mangroves-working-group/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Mangroves Working Group
+                      </a>
+                    </li>
+                    <li>
+                      Become an early adopter of the{' '}
+                      <a
+                        href="https://airtable.com/appEmTx9RhMTdf6Ku/shrfWHk7Km8jiGoXD"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        High Quality Blue Carbon Principles and Guidance
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
           >
@@ -42,62 +87,6 @@ export default function BlueCarbon() {
                 which, together with the Mangrove Breakthrough Principles, guide
                 all of our mangrove-related work.
               </p>
-            </div>
-          </div>
-          <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
-          >
-            <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-              <hr />
-            </div>
-          </div>
-          <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
-          >
-            <div
-              className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
-            >
-              <div className={styles.callOut}>
-                <Link href="#project-grid">
-                  <button>View Projects</button>
-                </Link>
-                <Link href="/?filter=mangroves">
-                  <button>Visit Project Map</button>
-                </Link>
-              </div>
-            </div>
-            <div
-              className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${gridStyles.justifyContentCenter} ${styles.moreInfo}`}
-            >
-              <ul>
-                Join the global community working to protect and restore
-                mangroves today:
-                <li>
-                  Support the Mangrove Breakthrough with a mangrove-focused
-                  pledge to 1t.org
-                </li>
-                <li>Donate directly to one of the projects below</li>
-                <li>
-                  Join the World Economic Forum{' '}
-                  <a
-                    href="https://www.weforum.org/friends-of-ocean-action/mangroves-working-group/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Mangroves Working Group
-                  </a>
-                </li>
-                <li>
-                  Become an early adopter the{' '}
-                  <a
-                    href="https://airtable.com/appEmTx9RhMTdf6Ku/shrfWHk7Km8jiGoXD"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    High Quality Blue Carbon Principles and Guidance
-                  </a>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
