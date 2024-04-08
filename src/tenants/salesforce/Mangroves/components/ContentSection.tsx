@@ -2,6 +2,7 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
 import Link from 'next/link';
 import MangroveMapIcon from '../../../../../public/assets/images/icons/MangroveMapIcon';
+import ViewIcon from '../../../../../public/assets/images/icons/ViewIcon';
 
 export default function ContentSection() {
   return (
@@ -13,9 +14,11 @@ export default function ContentSection() {
           <div
             className={`${gridStyles.colMd8} ${gridStyles.col12} ${gridStyles.textCenter}`}
           >
-            <h2>Mangroves.</h2>
-            <h3>The ultimate champions for climate, nature and people.</h3>
-            <p className={styles.contentSectionSubhead}>
+            <h2>Mangroves</h2>
+            <h3 className={styles.contentSectionSubhead}>
+              The ultimate champions for climate, nature and people.
+            </h3>
+            <p className={styles.contentSectionBlurb}>
               Mangrove ecosystems store up to 10X more carbon per hectare than
               terrestrial forests. They support biodiversity by providing
               critical habitat for terrestrial and marine species while serving
@@ -42,6 +45,11 @@ export default function ContentSection() {
             <Link href="/?filter=mangroves">
               <button className={styles.projectMapButton}>
                 <MangroveMapIcon /> View Project Map
+              </button>
+            </Link>
+            <Link href="/mangroves#project-grid">
+              <button className={styles.projectListButton}>
+                <ViewIcon /> View Project List
               </button>
             </Link>
           </div>
@@ -106,6 +114,20 @@ export default function ContentSection() {
           </div>
         </div>
         <div
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+        >
+          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <p className={`${styles.contentSectionQuote}`}>
+              <em>
+                “Mangroves are unparalleled in their role as a powerful climate
+                solution, a bedrock of biodiversity, and a source of livelihood
+                for millions of people around the world”{' '}
+              </em>{' '}
+              - Suzanne DiBianca, EVP and Chief Impact Officer at Salesforce
+            </p>
+          </div>
+        </div>
+        <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.calloutContainer}`}
         >
           <div
@@ -137,8 +159,15 @@ export default function ContentSection() {
                 </ul>
                 <p>
                   These goals are bold, but they’re also within reach. Together,
-                  we can unlock the $4 billion investment needed to secure the
-                  future of this{' '}
+                  we can unlock the{' '}
+                  <a
+                    href="https://climatechampions.unfccc.int/wp-content/uploads/2023/11/SY031_MangroveBreakthrough_2023_v7_JG.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    $4 billion investment
+                  </a>{' '}
+                  needed to secure the future of this{' '}
                   <a
                     href="https://www.weforum.org/agenda/2023/11/mangrove-breakthrough-climate-targets-cop28/"
                     target="_blank"
@@ -160,16 +189,6 @@ export default function ContentSection() {
                   Breakthrough and how you can get involved here [Todo: LINK].
                 </p>
               </div>
-            </div>
-            <div className={`${styles.calloutQuote}`}>
-              <p>
-                <em>
-                  “Mangroves are unparalleled in their role as a powerful
-                  climate solution, a bedrock of biodiversity, and a source of
-                  livelihood for millions of people around the world”
-                </em>{' '}
-                - Suzanne DiBianca, EVP and Chief Impact Officer at Salesforce
-              </p>
             </div>
           </div>
         </div>
