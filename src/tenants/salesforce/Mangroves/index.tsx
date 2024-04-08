@@ -3,10 +3,9 @@ import Footer from '../../../features/common/Layout/Footer';
 import Landing from './components/Landing';
 import ContentSection from './components/ContentSection';
 import ProjectGrid from './components/ProjectGrid';
-import LeaderBoard from './components/LeaderBoardSection';
+import AboveFooter from './components/AboveFooter';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
-import AdditionalContent from './components/AdditionalContent';
 import BlueCarbon from './components/BlueCarbon';
 
 const config = tenantConfig();
@@ -19,7 +18,7 @@ interface Props {
   tenantScore: { total: number };
 }
 
-export default function Campaign({ tenantScore, leaderboard }: Props) {
+export default function Campaign({ tenantScore }: Props) {
   return (
     <>
       <Head>
@@ -30,8 +29,7 @@ export default function Campaign({ tenantScore, leaderboard }: Props) {
         <ContentSection />
         <BlueCarbon />
         <ProjectGrid />
-        <LeaderBoard leaderboard={leaderboard} />
-        <AdditionalContent />
+        <AboveFooter />
         <Footer />
       </main>
     </>
