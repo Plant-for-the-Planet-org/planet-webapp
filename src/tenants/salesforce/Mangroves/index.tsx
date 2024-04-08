@@ -11,21 +11,18 @@ import BlueCarbon from './components/BlueCarbon';
 const config = tenantConfig();
 
 interface Props {
-  leaderboard: {
-    mostDonated: { created: string; donorName: string; treeCount: string }[];
-    mostRecent: { created: string; donorName: string; treeCount: string }[];
-  };
   tenantScore: { total: number };
+  isLoaded: boolean;
 }
 
-export default function Campaign({ tenantScore }: Props) {
+export default function Campaign({ tenantScore, isLoaded }: Props) {
   return (
     <>
       <Head>
         <title>{`Restoring Mangroves | ${config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
-        <Landing tenantScore={tenantScore} />
+        <Landing tenantScore={tenantScore} isLoaded={isLoaded} />
         <ContentSection />
         <BlueCarbon />
         <ProjectGrid />

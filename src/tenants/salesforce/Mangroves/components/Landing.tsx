@@ -3,8 +3,9 @@ import TreeCounter from '../../TreeCounter/TreeCounter';
 
 interface Props {
   tenantScore?: { total: number };
+  isLoaded: boolean;
 }
-export default function Landing({ tenantScore }: Props) {
+export default function Landing({ tenantScore, isLoaded }: Props) {
   const tenantScoreData = tenantScore ? tenantScore.total : 0;
   return (
     <section className={styles.landingSection}>
@@ -12,11 +13,13 @@ export default function Landing({ tenantScore }: Props) {
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
           <h3>Mangroves We Helped To Conserve Restore And Grow</h3>
-          <TreeCounter
-            planted={tenantScoreData || 0}
-            isLight={true}
-            shouldShowMillions={true}
-          />
+          {isLoaded && (
+            <TreeCounter
+              planted={tenantScoreData || 0}
+              isLight={true}
+              shouldShowMillions={true}
+            />
+          )}
         </div>
       </div>
     </section>
