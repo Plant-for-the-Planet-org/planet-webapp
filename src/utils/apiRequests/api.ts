@@ -42,7 +42,7 @@ export function getRequest<T>(
   version?: string
 ) {
   const lang = localStorage.getItem('language') || 'en';
-  const query = { ...queryParams, locale: lang };
+  const query = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
   const fullUrl = isAbsoluteUrl(url)
@@ -57,7 +57,7 @@ export function getRequest<T>(
           headers: {
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
-            'x-locale': lang,
+            'x-locale': query.locale || lang,
             'x-accept-versions': version ? version : '1.0.3',
           },
         });
