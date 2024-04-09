@@ -47,23 +47,23 @@ export default function Footer(): ReactElement | null {
     },
     downloads: {
       title: ready ? t('common:downloads') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/download`,
+      link: `https://www.plant-for-the-planet.org/${i18n.language}/download`,
     },
     annualReports: {
       title: ready ? t('common:annualReports') : '',
-      link: `https://a.plant-for-the-planet.org/annual-reports`,
+      link: `https://www.plant-for-the-planet.org/annual-reports`,
     },
     team: {
       title: ready ? t('common:team') : '',
-      link: `https://a.plant-for-the-planet.org/team`,
+      link: `https://www.plant-for-the-planet.org/team`,
     },
     jobs: {
       title: ready ? t('common:jobs') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/careers`,
+      link: `https://www.plant-for-the-planet.org/${i18n.language}/careers`,
     },
     supportUs: {
       title: ready ? t('common:supportUs') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/donation`,
+      link: `https://www.plant-for-the-planet.org/${i18n.language}/donation`,
     },
     blogs: {
       title: ready ? t('common:blogs') : '',
@@ -71,7 +71,7 @@ export default function Footer(): ReactElement | null {
     },
     faqs: {
       title: ready ? t('common:faqs') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/faq`,
+      link: `https://www.plant-for-the-planet.org/${i18n.language}/faq`,
     },
   };
 
