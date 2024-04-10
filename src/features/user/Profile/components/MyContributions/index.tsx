@@ -76,6 +76,7 @@ export default function MyContributions({
   const _detailInfo = trpc.myForest.stats.useQuery(
     {
       profileId: `${profile.id}`,
+      slug: `${profile.slug}`,
     },
     {
       enabled: !!profile.id,
