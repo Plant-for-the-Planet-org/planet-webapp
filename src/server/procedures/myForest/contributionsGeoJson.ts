@@ -150,23 +150,20 @@ export const contributionsGeoJson = procedure
 
     const groupTreecounterData = await prisma.$queryRaw<
       {
-        profile_ids: string;
+        profile_id: string;
       }[]
     >`
-			SELECT 
-			  p.guid as profile_ids
-			FROM
-				treecounter_group gp
-				INNER JOIN treecounter_group gc ON gc.root_id = gp.id
-				INNER JOIN treecounter t ON gc.treecounter_id = t.id
-				INNER JOIN profile p ON p.treecounter_id = t.id
-			WHERE
-				gp.slug = ${slug};
+			SELECT p.guid as profile_id
+			FROM profile p
+				INNER JOIN treecounter t ON p.treecounter_id = t.id
+				INNER JOIN treecounter_group child ON child.treecounter_id = t.id
+				INNER JOIN treecounter_group parent ON child.root_id = parent.id
+			WHERE parent.slug = ${slug};
 		`;
 
     const profileIds = Prisma.join(
       groupTreecounterData.length > 0
-        ? groupTreecounterData.map(({ profile_ids }) => profile_ids)
+        ? groupTreecounterData.map(({ profile_id }) => profile_id)
         : [profileId]
     );
 
