@@ -9,14 +9,16 @@ import {
   GiftStatsQueryResult,
   StatsResult,
 } from '../../../features/common/types/myForest';
+import { Prisma } from '@prisma/client';
 
 export const stats = procedure
   .input(
     z.object({
       profileId: z.string(),
+      slug: z.string(),
     })
   )
-  .query(async ({ input: { profileId } }) => {
+  .query(async ({ input: { profileId, slug } }) => {
     const profile = await prisma.profile.findFirst({
       where: {
         guid: profileId,
@@ -29,6 +31,29 @@ export const stats = procedure
         message: 'Profile not found',
       });
     }
+
+    const groupTreecounterData = await prisma.$queryRaw<
+      {
+        profile_id: string;
+      }[]
+    >`
+			SELECT p.guid as profile_id
+			FROM profile p
+				INNER JOIN treecounter t ON p.treecounter_id = t.id
+				INNER JOIN treecounter_group child ON child.treecounter_id = t.id
+				INNER JOIN treecounter_group parent ON child.root_id = parent.id
+			WHERE parent.slug = ${slug};
+		`;
+
+    // console.log('groupTreecounterData:', groupTreecounterData);
+
+    const profileIds = Prisma.join(
+      groupTreecounterData.length > 0
+        ? groupTreecounterData.map(({ profile_id }) => profile_id)
+        : [profileId]
+    );
+
+    // console.log(profileIds);
 
     const contributionData = await prisma.$queryRaw<
       ContributionStatsQueryResult[]
@@ -43,7 +68,7 @@ export const stats = procedure
         LEFT JOIN project pp ON c.plant_project_id = pp.id
         JOIN profile p ON p.id = c.profile_id
       WHERE
-        p.guid = ${profileId}
+        p.guid IN (${profileIds})
         AND c.deleted_at IS NULL
         AND (
           (
@@ -65,7 +90,7 @@ export const stats = procedure
             SUM(CASE WHEN (g.purpose = 'conservation') THEN (value/100) ELSE 0 END) AS conserved
         FROM gift g 
         JOIN profile p ON g.recipient_id = p.id
-        WHERE p.guid = ${profileId}
+        WHERE p.guid IN (${profileIds})
       `;
     // console.log('giftData:', giftData);
 
@@ -85,7 +110,7 @@ export const stats = procedure
 						LEFT JOIN project pp ON c.plant_project_id = pp.id
 						JOIN profile p ON p.id = c.profile_id
 					WHERE
-						p.guid = ${profileId}
+						p.guid IN (${profileIds})
 						AND c.deleted_at IS NULL
 						AND pp.guid IS NOT NULL
 						AND pp.country IS NOT NULL
@@ -108,7 +133,7 @@ export const stats = procedure
 						gift g
 						JOIN profile p ON g.recipient_id = p.id
 					WHERE
-						p.guid = ${profileId}
+						p.guid IN (${profileIds})
 						AND g.deleted_at IS NULL
 						AND g.purpose IN ('trees', 'conservation')
 						AND (metadata ->> '$.project.id') IS NOT NULL
