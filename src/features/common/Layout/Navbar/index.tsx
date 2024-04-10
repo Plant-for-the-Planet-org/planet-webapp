@@ -253,7 +253,7 @@ export default function NavbarComponent() {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={`https://a.plant-for-the-planet.org/${
+                          href={`https://www.plant-for-the-planet.org/${
                             lang_path[i18n.language as keyof typeof lang_path]
                               ? lang_path[
                                   i18n.language as keyof typeof lang_path
@@ -338,7 +338,7 @@ export default function NavbarComponent() {
             )}
 
             {theme === 'theme-light' ? (
-              <a href="https://a.plant-for-the-planet.org">
+              <a href="https://www.plant-for-the-planet.org">
                 <img
                   className={'tenantLogo'}
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
@@ -346,7 +346,7 @@ export default function NavbarComponent() {
                 />
               </a>
             ) : (
-              <a href="https://a.plant-for-the-planet.org">
+              <a href="https://www.plant-for-the-planet.org">
                 <img
                   className={'tenantLogo'}
                   src={`/assets/images/PlanetDarkLogo.svg`}
