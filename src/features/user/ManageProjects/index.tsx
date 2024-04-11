@@ -24,6 +24,7 @@ import {
   ProfileProjectTrees,
   ProfileProjectConservation,
 } from '../../common/types/project';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -40,6 +41,7 @@ export default function ManageProjects({
   project,
 }: ManageProjectsProps) {
   const { t, i18n } = useTranslation(['manageProjects']);
+  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const router = useRouter();
@@ -103,7 +105,7 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(tenantConfig?.id, `/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -121,7 +123,7 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(tenantConfig?.id,`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -132,12 +134,16 @@ export default function ManageProjects({
 
   React.useEffect(() => {
     // Fetch details of the project
-
     const fetchProjectDetails = async () => {
       try {
         const res = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(`/app/profile/projects/${projectGUID}`, token, logoutUser);
+        >(
+          tenantConfig?.id,
+          `/app/profile/projects/${projectGUID}`,
+          token,
+          logoutUser
+        );
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));

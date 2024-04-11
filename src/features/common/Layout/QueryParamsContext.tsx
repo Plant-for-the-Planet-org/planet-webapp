@@ -1,10 +1,8 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from './TenantContext';
 
-const config = tenantConfig();
-const tenantSupportedLocale = config.languages;
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
   embed: QueryParamType;
@@ -29,6 +27,8 @@ export const ParamsContext = createContext<ParamsContextType>({
 
 const QueryParamsProvider: FC = ({ children }) => {
   const { i18n } = useTranslation();
+  const { tenantConfig } = useTenant();
+  const tenantSupportedLocale = tenantConfig.config.languages ?? ['en'];
   const [isContextLoaded, setIsContextLoaded] = useState(false);
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);

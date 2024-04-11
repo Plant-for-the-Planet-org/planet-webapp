@@ -9,6 +9,7 @@ import { Trans } from 'react-i18next';
 import { useTranslation } from 'next-i18next';
 import { Review } from '@planet-sdk/common/build/types/project/common';
 
+
 interface Props {
   projectReviews: Review[];
 }
@@ -16,7 +17,7 @@ interface Props {
 export default function TopProjectReports({ projectReviews }: Props) {
   const { t, ready } = useTranslation(['common']);
   const displayDate = (date: string) => {
-    return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
+    return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy',{
       locale: localeMapForDate[localStorage.getItem('language') || 'en'],
     });
   };
