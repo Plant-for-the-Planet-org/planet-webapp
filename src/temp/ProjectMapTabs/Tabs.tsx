@@ -7,7 +7,7 @@ import FieldDataIcon from '../icons/FieldDataIcon';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 
 interface TabsProps {
-  selected: string;
+  selected: 'satellite' | 'field' | 'timeTravel';
 }
 
 const Tabs = ({ selected }: TabsProps) => {
@@ -26,43 +26,41 @@ const Tabs = ({ selected }: TabsProps) => {
   const { t } = useTranslation(['maps', 'projectDetails']);
   return (
     <div className={styles.tabsContainer}>
-      <div onClick={() => setSelectedMode('satellite')}>
-        <SingleTab
-          icon={
-            <SatelliteAnalysisIcon
-              color={
-                selectedMode === 'satellite'
-                  ? `${'var(--light)'}`
-                  : `${'var(--dark)'}`
-              }
-            />
-          }
-          title={t('projectDetails:satelliteAnalysis')}
-          isSelected={selectedMode === 'satellite'}
-        />
-        <div
-          className={
-            setSeparatorVisibility(selectedMode, 0)
-              ? styles.showSeparator1
-              : styles.hideSeparator
-          }
-        ></div>
-      </div>
-      <div onClick={() => setSelectedMode('field')}>
-        <SingleTab
-          icon={
-            <FieldDataIcon
-              color={
-                selectedMode === 'field'
-                  ? `${'var(--light)'}`
-                  : `${'var(--dark)'}`
-              }
-            />
-          }
-          title={t('maps:fieldData')}
-          isSelected={selectedMode === 'field'}
-        />
-      </div>
+      <SingleTab
+        icon={
+          <SatelliteAnalysisIcon
+            color={
+              selectedMode === 'satellite'
+                ? `${'var(--light)'}`
+                : `${'var(--dark)'}`
+            }
+          />
+        }
+        title={t('projectDetails:satelliteAnalysis')}
+        isSelected={selectedMode === 'satellite'}
+        onClickHandler={() => setSelectedMode('satellite')}
+      />
+      <div
+        className={
+          setSeparatorVisibility(selectedMode, 0)
+            ? styles.showSeparator1
+            : styles.hideSeparator
+        }
+      ></div>
+      <SingleTab
+        icon={
+          <FieldDataIcon
+            color={
+              selectedMode === 'field'
+                ? `${'var(--light)'}`
+                : `${'var(--dark)'}`
+            }
+          />
+        }
+        title={t('maps:fieldData')}
+        isSelected={selectedMode === 'field'}
+        onClickHandler={() => setSelectedMode('field')}
+      />
       <div
         className={
           setSeparatorVisibility(selectedMode, 1)
@@ -70,21 +68,20 @@ const Tabs = ({ selected }: TabsProps) => {
             : styles.hideSeparator
         }
       ></div>
-      <div onClick={() => setSelectedMode('timeTravel')}>
-        <SingleTab
-          icon={
-            <SatelliteIcon
-              color={
-                selectedMode === 'timeTravel'
-                  ? `${'var(--light)'}`
-                  : `${'var(--dark)'}`
-              }
-            />
-          }
-          title={t('maps:timeTravel')}
-          isSelected={selectedMode === 'timeTravel'}
-        />
-      </div>
+      <SingleTab
+        icon={
+          <SatelliteIcon
+            color={
+              selectedMode === 'timeTravel'
+                ? `${'var(--light)'}`
+                : `${'var(--dark)'}`
+            }
+          />
+        }
+        title={t('maps:timeTravel')}
+        isSelected={selectedMode === 'timeTravel'}
+        onClickHandler={() => setSelectedMode('timeTravel')}
+      />
     </div>
   );
 };
