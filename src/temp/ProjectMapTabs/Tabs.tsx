@@ -6,16 +6,18 @@ import { useTranslation } from 'next-i18next';
 import FieldDataIcon from '../icons/FieldDataIcon';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 
+type SelectedMode = 'satellite' | 'field' | 'timeTravel';
+
 interface TabsProps {
-  selected: 'satellite' | 'field' | 'timeTravel';
+  selected: SelectedMode;
 }
 
 const Tabs = ({ selected }: TabsProps) => {
-  const [selectedMode, setSelectedMode] = useState(selected);
+  const [selectedMode, setSelectedMode] = useState<SelectedMode>(selected);
 
-  const allTabsList = ['satellite', 'field', 'timeTravel'];
+  const allTabsList: SelectedMode[] = ['satellite', 'field', 'timeTravel'];
   const setSeparatorVisibility = (
-    selectedMode: string,
+    selectedMode: SelectedMode,
     separatorId: number
   ) => {
     const index = allTabsList.indexOf(selectedMode);
