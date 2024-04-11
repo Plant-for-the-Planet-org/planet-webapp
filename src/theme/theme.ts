@@ -37,6 +37,7 @@ const getGlobalStyles = async () => {
       }
     } catch (err) {
       console.log('Error in fetchConfig for getGlobalStyles', err);
+      return null;
     }
   };
 
