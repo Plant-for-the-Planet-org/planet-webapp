@@ -13,6 +13,8 @@ import { handleError, APIError, Image } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
+import { useTenant } from '../../../common/Layout/TenantContext';
+
 interface Props {
   contributionGUID: string;
   token: string | null;
@@ -27,6 +29,7 @@ export default function UploadImages({
   const { t, ready } = useTranslation(['me', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
@@ -37,6 +40,7 @@ export default function UploadImages({
 
     try {
       const res = await postAuthenticatedRequest<Image>(
+        tenantConfig?.id,
         `/app/contributions/${contributionGUID}/images`,
         submitData,
         token,
@@ -79,6 +83,7 @@ export default function UploadImages({
   const deleteContributionImage = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/contributions/${contributionGUID}/images/${id}`,
         token,
         logoutUser

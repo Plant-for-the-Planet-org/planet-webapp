@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { SpeciesSuggestionType } from '../../../common/types/plantLocation';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -38,6 +39,7 @@ export default function SpeciesSelect<
     SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = React.useState('');
+  const { tenantConfig } = useTenant();
   const { t } = useTranslation(['treemapper']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -57,10 +59,14 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest<SpeciesSuggestionType[]>(`/suggest.php`, {
-          q: value,
-          t: 'species',
-        });
+        const res = await postRequest<SpeciesSuggestionType[]>(
+          tenantConfig?.id,
+          `/suggest.php`,
+          {
+            q: value,
+            t: 'species',
+          }
+        );
         if (res && res.length > 0) {
           const species = res.map((item) => ({
             id: item.id,

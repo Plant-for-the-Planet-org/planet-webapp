@@ -5,6 +5,7 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PlanetCashAccount } from '../../../common/types/planetcash';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -64,8 +65,9 @@ interface AccountDetailsProps {
 const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   const { t, i18n } = useTranslation('planetcash');
   const { token } = useUserProps();
+  const { tenantConfig } = useTenant();
 
-  const addBalanceLink = getDonationUrl('planetcash', token);
+  const addBalanceLink = getDonationUrl(tenantConfig.id, 'planetcash', token);
 
   return (
     <Grid
