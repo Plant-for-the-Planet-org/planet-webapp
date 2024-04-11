@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import styles from './ProjectInfo.module.scss';
-import InfoIconPopup from './InfoIconPopup';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
+import InfoIconPopup from '../components/InfoIconPopup';
 
 interface Props {
   abandonment: number;
