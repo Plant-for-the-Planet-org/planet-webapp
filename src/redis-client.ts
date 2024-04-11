@@ -1,6 +1,10 @@
 import { createClient } from '@vercel/kv';
 
 const getRedisClient = () => {
+  if (process.env.STORYBOOK_IS_STORYBOOK) {
+    return null;
+  }
+
   if (!process.env.REDIS_URL) {
     throw new Error('REDIS_URL is not defined');
   }

@@ -19,6 +19,9 @@ const getGlobalStyles = async () => {
   const fetchConfig = async () => {
     try {
       let tenantConfig;
+      if (process.env.STORYBOOK_IS_STORYBOOK) {
+        return null;
+      }
       if (typeof window !== 'undefined') {
         // Check if tenantConfig is stored in local storage
         const storedConfig = localStorage.getItem('tenantConfig');
