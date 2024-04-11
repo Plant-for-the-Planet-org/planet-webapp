@@ -71,7 +71,6 @@ export default function PopupProject({
     variant: 'popover',
     popupId: 'popupProjectInfoPopover',
   });
-
   return ready ? (
     <div className={'singleProject'}>
       <div className={'projectImage'}>
