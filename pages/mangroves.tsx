@@ -1,44 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Mangroves from '../src/tenants/salesforce/Mangroves';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { TenantScore } from '../src/features/common/types/campaign';
 
 interface Props {
   initialized: boolean;
 }
 
 export default function MangrovesLandingPage({ initialized }: Props) {
-  const [tenantScore, setTenantScore] = useState<TenantScore>({
-    total: 0,
-  });
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const tenantscoreRes = await fetch(
-          `${process.env.WEBHOOK_URL}/sf-mangroves-treecount`
-        );
-        const tenantScoreArr = await tenantscoreRes.json();
-        setTenantScore(tenantScoreArr[0]);
-        setIsLoaded(true);
-      } catch (err) {
-        console.error('Treecount could not be loaded:', err);
-      }
-
-      setIsLoaded(true);
-    }
-
-    loadData();
-  }, []);
+  const tenantScore = { total: 16000000 };
 
   function getCampaignPage() {
-    if (tenantScore === null) return <></>;
     let CampaignPage;
     switch (process.env.TENANT) {
       case 'salesforce':
-        return <Mangroves tenantScore={tenantScore} isLoaded={isLoaded} />;
+        return <Mangroves tenantScore={tenantScore} isLoaded={true} />;
       default:
         CampaignPage = null;
         return CampaignPage;
@@ -48,7 +24,7 @@ export default function MangrovesLandingPage({ initialized }: Props) {
   return (
     <>
       <GetHomeMeta />
-      {initialized && isLoaded ? getCampaignPage() : <></>}
+      {initialized ? getCampaignPage() : <></>}
     </>
   );
 }
