@@ -91,7 +91,7 @@
     color: #032d60;
 
     &.bold {
-      font-weight: 500;
+      font-weight: 600;
     }
 
     @include lgLaptopView {
@@ -100,11 +100,9 @@
     }
   }
 
-  .contentSectionQuote {
+  p.contentSectionQuote {
     border-left: 5px solid #032d60;
-    em {
-      background-color: white;
-    }
+    margin: 10px 0 34px 0;
   }
 
   .mbIntro {

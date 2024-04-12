@@ -19,12 +19,13 @@ export default function ContentSection() {
               The ultimate champions for climate, nature and people.
             </h3>
             <p className={styles.contentSectionBlurb}>
-              Mangrove ecosystems store up to 10X more carbon per hectare than
-              terrestrial forests. They support biodiversity by providing
-              critical habitat for terrestrial and marine species while serving
-              as a nursery for juvenile fish. And they function as a coastal
-              barrier for climate vulnerable communities. In short - mangroves
-              are one of nature’s “superheroes”.
+              While mangrove forests cover less than 1% of land, they store up
+              to 10 times more carbon per hectare than terrestrial forests. They
+              support biodiversity by providing critical habitat for terrestrial
+              and marine species while serving as a nursery for juvenile fish.
+              And they function as a coastal barrier for climate vulnerable
+              communities. In short - mangroves are one of nature’s
+              “superheroes”.
             </p>
           </div>
         </div>
@@ -34,9 +35,7 @@ export default function ContentSection() {
           <div
             className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12} ${styles.introCTA}`}
           >
-            <div
-              className={`${gridStyles.circularContainer} ${styles.imageContainer}`}
-            >
+            <div className={`${gridStyles.circularContainer}`}>
               <img
                 src="/tenants/salesforce/images/mangroves/mangroves-indonesia.jpg"
                 alt=""
@@ -107,13 +106,20 @@ export default function ContentSection() {
             </p>
             <p>
               In 2023, Salesforce provided funding to conserve, restore, and
-              grow over 8 M trees across 7 high quality mangrove projects [TODO
+              grow over 8 M trees across 8 high quality mangrove projects [TODO
               - LINK to April philanthropy rollup].
             </p>
             <p>
-              As of April 2024, Salesforce has invested in the conservation and
-              restoration of mangroves across [16] countries and over [50,000]
-              hectares.
+              In 2022, Salesforce included several mangrove projects in the{' '}
+              <a
+                href="https://www.salesforce.com/news/stories/salesforce-gives-11m-to-restore-ecosystems-and-advance-climate-justice/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                first cohort of grantees
+              </a>{' '}
+              receiving funds from Salesforce’s Ecosystem Restoration and
+              Climate Justice Fund.
             </p>
           </div>
         </div>
@@ -121,7 +127,7 @@ export default function ContentSection() {
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <p className={`${styles.contentSectionQuote}`}>
+            <p className={`${styles.contentSectionQuote} ${styles.bold}`}>
               <em>
                 “Mangroves are unparalleled in their role as a powerful climate
                 solution, a bedrock of biodiversity, and a source of livelihood
@@ -189,8 +195,15 @@ export default function ContentSection() {
                     endorsed
                   </a>{' '}
                   the Mangrove Breakthrough. Everyone has a role to play in this
-                  collaborative quest. Learn more about the Mangrove
-                  Breakthrough and how you can get involved here [Todo: LINK].
+                  collaborative quest.{' '}
+                  <a
+                    href="https://www.mangrovealliance.org/news/the-mangrove-breakthrough/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Learn more about the Mangrove Breakthrough and how you can
+                    get involved here.
+                  </a>
                 </p>
               </div>
             </div>

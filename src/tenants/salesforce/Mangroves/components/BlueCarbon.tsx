@@ -15,7 +15,7 @@ export default function BlueCarbon() {
               <div className={`${styles.calloutContentContainer}`}>
                 <div className={styles.calloutContentOverlay}></div>
                 <div className={styles.calloutContent}>
-                  <h3>How you can help</h3>
+                  <h3>Join us</h3>
                   <ul>
                     Join the global community working to protect and restore
                     mangroves today:
@@ -55,7 +55,19 @@ export default function BlueCarbon() {
           <div
             className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
           >
-            <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <div
+              className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            >
+              <div className={`${gridStyles.circularContainer}`}>
+                <img
+                  src="/tenants/salesforce/images/mangroves/bahamas-mangroves.jpg"
+                  alt="mangroves in the bahamas"
+                />
+              </div>
+            </div>
+            <div
+              className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+            >
               <h3>Blue Carbon</h3>
 
               <p>
