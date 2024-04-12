@@ -20,6 +20,7 @@ import {
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
+import styles from './index.module.scss';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -530,11 +531,7 @@ export const TreePlanted = () => {
 
     const isValidTimeFrame =
       timeFrame && getTimeFrames(toDate, fromDate).includes(timeFrame);
-    if (
-      process.env.ENABLE_ANALYTICS === 'true' &&
-      isValidTimeFrame &&
-      project
-    ) {
+    if (process.env.ENABLE_ANALYTICS && isValidTimeFrame && project) {
       fetchPlantedTrees();
     }
   }, [project, fromDate, toDate, timeFrame]);
@@ -545,8 +542,8 @@ export const TreePlanted = () => {
 
   return (
     <Container
-      title={t('treesPlanted')}
-      options={
+      leftElement={<h3 className={styles.title}>{t('treesPlanted')}</h3>}
+      rightElement={
         <TimeFrameSelector
           handleTimeFrameChange={handleTimeFrameChange}
           timeFrames={timeFrames}

@@ -6,12 +6,23 @@ import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
+import {
+  PlantLocation as PlantLocationType,
+  PlantLocationBase,
+  PlantLocationMulti,
+  PlantLocationSingle,
+} from '../../../common/types/plantLocation';
+import { SamplePlantLocation } from '../Treemapper';
 
 interface Props {
   location: Object;
   index: number;
   locations: Object;
-  selectedLocation: string;
+  selectedLocation:
+    | PlantLocationSingle
+    | PlantLocationMulti
+    | SamplePlantLocation
+    | null;
   setselectedLocation: Function;
 }
 
@@ -25,17 +36,25 @@ function PlantLocation({
   const { t, i18n } = useTranslation('treemapper');
   const router = useRouter();
   let treeCount = 0;
-  if (location?.plantedSpecies?.length !== 0) {
-    for (const key in location.plantedSpecies) {
-      if (Object.prototype.hasOwnProperty.call(location.plantedSpecies, key)) {
-        const species = location.plantedSpecies[key];
+  if ((location as PlantLocationMulti)?.plantedSpecies?.length !== 0) {
+    for (const key in (location as PlantLocationMulti).plantedSpecies) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          (location as PlantLocationMulti).plantedSpecies,
+          key
+        )
+      ) {
+        const species = (location as PlantLocationMulti).plantedSpecies[key];
         treeCount += species.treeCount;
       }
     }
   }
 
   function selectLocation(location: any) {
-    if (selectedLocation && selectedLocation.id === location.id) {
+    if (
+      selectedLocation &&
+      (selectedLocation as PlantLocationBase).id === location.id
+    ) {
       setselectedLocation(null);
     } else {
       router.replace(`/profile/treemapper/?l=${location.id}`);
@@ -45,8 +64,8 @@ function PlantLocation({
   const [plantationArea, setPlantationArea] = React.useState(0);
 
   React.useEffect(() => {
-    if (location && location.type === 'multi') {
-      const area = turf.area(location.geometry);
+    if (location && (location as PlantLocationMulti).type === 'multi') {
+      const area = turf.area((location as PlantLocationMulti).geometry);
       setPlantationArea(area / 10000);
     }
   }, [location]);
@@ -61,11 +80,13 @@ function PlantLocation({
         <div className={styles.left}>
           <p className={styles.treeCount}>
             {`${
-              location.hid
-                ? location.hid.substring(0, 3) + '-' + location.hid.substring(3)
+              (location as PlantLocationBase).hid
+                ? (location as PlantLocationBase).hid.substring(0, 3) +
+                  '-' +
+                  (location as PlantLocationBase).hid.substring(3)
                 : null
             } ${
-              location.type === 'multi'
+              (location as PlantLocationMulti).type === 'multi'
                 ? '• ' +
                   localizedAbbreviatedNumber(
                     i18n.language,
@@ -73,23 +94,31 @@ function PlantLocation({
                     2
                   ) +
                   'ha'
-                : location.tag
-                ? '• ' + location.tag
+                : (location as SamplePlantLocation).tag
+                ? '• ' + (location as SamplePlantLocation).tag
                 : ''
             }`}
           </p>
-          <p className={styles.date}>{formatDate(location.registrationDate)}</p>
+          <p className={styles.date}>
+            {formatDate((location as PlantLocationBase).registrationDate)}
+          </p>
         </div>
         <div className={styles.right}>
           <div className={styles.status}>
-            {location.type === 'multi' && treeCount ? `${treeCount}` : `1`}
-            <TreeIcon />
+            {(location as PlantLocationMulti).type === 'multi' && treeCount
+              ? `${treeCount}`
+              : `1`}
+            <TreeIcon  width={'19px'} height={'19.25px'} />
           </div>
-          <div className={styles.mode}>{t(location.captureStatus)}</div>
+          <div className={styles.mode}>
+            {t((location as PlantLocationBase).captureStatus)}
+          </div>
         </div>
       </div>
 
-      {index !== locations?.length - 1 && <div className={styles.divider} />}
+      {index !== (locations as PlantLocationType[])?.length - 1 && (
+        <div className={styles.divider} />
+      )}
     </div>
   );
 }

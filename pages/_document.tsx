@@ -25,7 +25,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="dns-prefetch" href="https://a.plant-for-the-planet.org/" />
+          <link rel="dns-prefetch" href="https://www.plant-for-the-planet.org/" />
           <link
             rel="preconnect"
             href="https://fonts.googleapis.com/"

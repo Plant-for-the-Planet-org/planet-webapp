@@ -5,18 +5,25 @@ interface SingleTabProps {
   icon: React.JSX.Element;
   title: string;
   isSelected: boolean;
+  onClickHandler: () => void;
 }
 
-const SingleTab = ({ icon, title, isSelected }: SingleTabProps) => {
+const SingleTab = ({
+  icon,
+  title,
+  isSelected,
+  onClickHandler,
+}: SingleTabProps) => {
   return (
-    <>
-      <button
-        className={`${styles.option} ${isSelected ? styles.selected : ''}`}
-      >
-        {icon}
-        <p>{title}</p>
-      </button>
-    </>
+    <button
+      className={`${styles.singleTabOption} ${
+        isSelected ? styles.selected : ''
+      }`}
+      onClick={onClickHandler}
+    >
+      {icon}
+      <p>{title}</p>
+    </button>
   );
 };
 
