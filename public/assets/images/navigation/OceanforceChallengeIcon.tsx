@@ -1,8 +1,12 @@
+import themeProperties from '../../../../src/theme/themeProperties';
+
 interface Props {
-  color: string;
+  color?: string;
 }
 
-const OceanforceChallengeIcon = ({ color }: Props) => {
+const OceanforceChallengeIcon = ({
+  color = themeProperties.light.primaryFontColor,
+}: Props) => {
   return (
     <svg
       width="100%"

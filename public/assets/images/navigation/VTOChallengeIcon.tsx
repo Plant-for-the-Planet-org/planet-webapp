@@ -1,8 +1,12 @@
+import themeProperties from '../../../../src/theme/themeProperties';
+
 interface Props {
-  color: string;
+  color?: string;
 }
 
-const VTOChallengeIcon = ({ color }: Props) => {
+const VTOChallengeIcon = ({
+  color = themeProperties.light.primaryFontColor,
+}: Props) => {
   return (
     <svg
       viewBox="0 0 512 565"

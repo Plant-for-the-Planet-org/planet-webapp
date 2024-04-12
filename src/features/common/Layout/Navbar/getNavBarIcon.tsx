@@ -11,7 +11,7 @@ import HomeLogoSelected from '../../../../../public/assets/images/navigation/Hom
 import HomeLogo from '../../../../../public/assets/images/navigation/HomoLogo';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
-import VTOChallengeIcon from '../../../../../public/assets/images/navigation/VTOChallengeIcon';
+import CampaignsIcon from '../../../../../public/assets/images/navigation/CampaignsIcon';
 import { NextRouter } from 'next/router';
 
 interface Props {
@@ -127,17 +127,19 @@ function GetNavBarIcon({
     );
   };
   const CampaignLink = () => {
+    const subMenuLinks = item.subMenu?.map((subItem) => subItem.onclick);
+    const isActive =
+      router.pathname === item.onclick ||
+      subMenuLinks?.includes(router.pathname);
     return (
       <button
         id={'campaignIcon'}
-        className={`link_icon ${
-          router.pathname === item.onclick ? 'active_icon' : ''
-        }`}
+        className={`link_icon ${isActive ? 'active_icon' : ''}`}
       >
-        {router.pathname === item.onclick ? (
-          <VTOChallengeIcon color={themeProperties.primaryColor} />
+        {isActive ? (
+          <CampaignsIcon color={themeProperties.primaryColor} />
         ) : (
-          <VTOChallengeIcon color={themeProperties.light.primaryFontColor} />
+          <CampaignsIcon color={themeProperties.light.primaryFontColor} />
         )}
       </button>
     );
