@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 import { PlanetCashAccount } from '../../common/types/planetcash';
 
 export enum PlanetCashTabs {
@@ -36,6 +37,7 @@ export default function PlanetCash({
   setProgress,
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
+  const { tenantConfig } = useTenant();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded, logoutUser } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
@@ -84,6 +86,7 @@ export default function PlanetCash({
         setIsDataLoading(true);
         setProgress && setProgress(70);
         const accounts = await getAuthenticatedRequest<PlanetCashAccount[]>(
+          tenantConfig?.id,
           `/app/planetCash`,
           token,
           logoutUser
