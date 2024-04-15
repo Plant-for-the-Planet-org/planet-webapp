@@ -5,9 +5,12 @@ import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function Filters(): ReactElement {
   const { t, ready } = useTranslation(['donate']);
+  const { tenantConfig } = useTenant();
+
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
 
@@ -41,7 +44,7 @@ export default function Filters(): ReactElement {
       setFilteredProjects(filteredProjects);
     }
     if (projects) {
-      if (process.env.TENANT === 'salesforce') {
+      if (tenantConfig?.config.slug === 'salesforce') {
         filterProjects();
       } else {
         setFilteredProjects(projects);
@@ -69,7 +72,7 @@ export default function Filters(): ReactElement {
       const uniqueFilters = [...new Set(filters)];
       return uniqueFilters;
     }
-    if (projects && process.env.TENANT === 'salesforce') {
+    if (projects && tenantConfig?.config.slug === 'salesforce') {
       const filters = getFilters().filter((filter) => filter);
       setFilters(filters);
     }
@@ -79,7 +82,7 @@ export default function Filters(): ReactElement {
     setType({ ...type, [event.target.name]: event.target.checked });
   };
 
-  return process.env.TENANT === 'salesforce' && ready ? (
+  return tenantConfig?.config.slug === 'salesforce' && ready ? (
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
         <div

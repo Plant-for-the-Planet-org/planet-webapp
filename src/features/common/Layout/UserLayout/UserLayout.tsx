@@ -19,7 +19,7 @@ import PlanetCashIcon from '../../../../../public/assets/images/icons/Sidebar/Pl
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
-import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
 import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
@@ -328,9 +328,7 @@ const UserLayout: FC = ({ children }) => {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !(
-            process.env.ENABLE_ANALYTICS === 'true' && user?.type === 'tpo'
-          ),
+          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
         },
       ],
     },
@@ -459,7 +457,7 @@ const UserLayout: FC = ({ children }) => {
       //checks whether user is login
       if (router.asPath) {
         if (router.query.slug) {
-          router.push(`${router.pathname}`);
+          // router.push(`${router.pathname.replace('/_sites/[slug]', '')}`);
         } else {
           localStorage.setItem('redirectLink', router.asPath);
         }
@@ -541,7 +539,7 @@ const UserLayout: FC = ({ children }) => {
             //logout user
             onClick={() => {
               localStorage.removeItem('impersonationData');
-              logoutUser(`${process.env.NEXTAUTH_URL}/`);
+              logoutUser(`${window.location.origin}/`);
             }}
           >
             <LogoutIcon />
