@@ -38,10 +38,14 @@
     font-weight: 700;
     color: #333 //to be replaced
 }
-.downArrow {
+.menuArrow {
     display: flex;
     align-items: center;
     margin-right: 13px;
+    svg {
+        width: 100%;
+        overflow: visible;
+    }
 }
 .siteListOptions{
     background-color: $backgroundColor;
@@ -85,7 +89,7 @@
             width: 16px;
         }
     }
-    .downArrow {
+    .menuArrow {
         margin-right: 5.13px;
         svg {
             width: 6.37px;

@@ -51,11 +51,11 @@ const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
             <p className={styles.siteName}>{selectedSite.name}</p>
           </div>
         </div>
-        <div className={styles.downArrow}>
+        <div className={styles.menuArrow}>
           {isMenuOpen ? (
             <DropdownUpArrow width={10} />
           ) : (
-            <DropdownDownArrow width={12} />
+            <DropdownDownArrow width={10} />
           )}
         </div>
       </div>
