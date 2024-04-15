@@ -52,7 +52,6 @@
     line-height: 170px;
   }
 }
-
 .treeCounterValue {
   display: block;
   position: relative;
@@ -76,14 +75,11 @@
 
 .treeCounterDataField {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  color: #4f4f4f;
 }
 
 .treeCounterDataField > .countNumber {
-  color: $light;
+  color: #4f4f4f;
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;
