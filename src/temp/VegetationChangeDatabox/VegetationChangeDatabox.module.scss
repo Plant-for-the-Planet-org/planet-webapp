@@ -7,7 +7,7 @@
     align-items: center;
     border-radius: 12px;
     position: relative;
-    margin-top: 60vh; //to be removed
+    margin-top: 80vh;
     gap: 24px;
 }
 
@@ -36,6 +36,10 @@
         justify-content: center;
         white-space: nowrap;
     }
+    svg {
+        width: 100%;
+        overflow: visible;
+    }
   
 }
 .dropdownIcon{
@@ -44,7 +48,7 @@
 }
 .itemsContainer {
     position: absolute;
-    bottom: 97px;
+    bottom: 90px;
     padding:12px;
     background-color: #fff;
     border-radius: 4px;
@@ -97,8 +101,11 @@
 }
 .infoIcon {
     position: absolute;
-    right: 6px;
+    left: calc(100% - 18px);
     top: 1px;
+    cursor: pointer;
+    overflow: visible;
+    width: 100%;
 }
 .labelContainer {
     display: flex;
@@ -107,6 +114,44 @@
     color: #4F4F4F; 
     font-size: 8px;
     font-weight: 600;
+}
+
+.databoxPopup {
+    border-radius: 8px;
+    border: 0.5px solid #FFF;
+    background: #FFF;
+    position: absolute;
+    bottom: 90px;
+    right:0px;
+    padding:18px;
+    min-width: 345px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    line-height: 1.5;
+    .popupHeading {
+        display: flex;
+        justify-content: space-between;
+        h6 {
+            font-size: 14px;
+            color: #333;
+            font-weight: 700;
+        }
+    }
+    h6 {
+        font-size: 8px;
+        color: #333;
+        font-weight: 700;
+    }
+    p {
+        font-size: 8px;
+        color: #4F4F4F;
+    }
+    button {
+        svg {
+            cursor: pointer;
+        }
+    }
 }
 @include xsPhoneView {
     .databoxContainer {
@@ -125,10 +170,13 @@
         padding: 6px 6px 7px 0px;
     }
     .itemsContainer {
-        bottom: 85px;
+        bottom: 80px;
         width:118.5px;
     }
     .menuItem{
         gap:4px;
+    }
+    .databoxPopup {
+        min-width: 248px;
     }
 }
