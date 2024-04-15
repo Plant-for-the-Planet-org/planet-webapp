@@ -258,7 +258,7 @@ export default function NavbarComponent() {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={`https://a.plant-for-the-planet.org/${
+                          href={`https://www.plant-for-the-planet.org/${
                             lang_path[locale as keyof typeof lang_path]
                               ? lang_path[locale as keyof typeof lang_path]
                               : 'en'

@@ -48,23 +48,23 @@ export default function Footer(): ReactElement | null {
     },
     downloads: {
       title: t('downloads'),
-      link: `https://a.plant-for-the-planet.org/${locale}/download`,
+      link: `https://www.plant-for-the-planet.org/${locale}/download`,
     },
     annualReports: {
       title: t('annualReports'),
-      link: `https://a.plant-for-the-planet.org/annual-reports`,
+      link: `https://www.plant-for-the-planet.org/annual-reports`,
     },
     team: {
       title: t('team'),
-      link: `https://a.plant-for-the-planet.org/team`,
+      link: `https://www.plant-for-the-planet.org/team`,
     },
     jobs: {
       title: t('jobs'),
-      link: `https://a.plant-for-the-planet.org/${locale}/careers`,
+      link: `https://www.plant-for-the-planet.org/${locale}/careers`,
     },
     supportUs: {
       title: t('supportUs'),
-      link: `https://a.plant-for-the-planet.org/${locale}/donation`,
+      link: `https://www.plant-for-the-planet.org/${locale}/donation`,
     },
     blogs: {
       title: t('blogs'),
@@ -72,7 +72,7 @@ export default function Footer(): ReactElement | null {
     },
     faqs: {
       title: t('faqs'),
-      link: `https://a.plant-for-the-planet.org/${locale}/faq`,
+      link: `https://www.plant-for-the-planet.org/${locale}/faq`,
     },
   };
 
