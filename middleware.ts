@@ -74,6 +74,7 @@ export default async function middleware(req: NextRequest) {
   const start = Date.now();
   const url = req.nextUrl;
   const pathname = url.pathname;
+  console.log('pathname', pathname);
   const host = req.headers.get('host') as string;
   const { slug, supportedLanguages } = await getTenantConciseInfo(host);
 

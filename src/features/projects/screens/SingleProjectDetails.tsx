@@ -97,18 +97,17 @@ function SingleProjectDetails(): ReactElement {
     } else {
       if (document.referrer) {
         window.history.go(-2);
+      } else {
+        router.replace({
+          pathname: '/',
+          query: {
+            ...(isEmbed ? { embed: 'true' } : {}),
+            ...(isEmbed && callbackUrl !== undefined
+              ? { callback: callbackUrl }
+              : {}),
+          },
+        });
       }
-      router.replace(
-        `/${
-          isEmbed
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ``
-        }`
-      );
     }
   };
 
