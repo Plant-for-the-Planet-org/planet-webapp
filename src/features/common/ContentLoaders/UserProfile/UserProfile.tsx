@@ -1,66 +1,39 @@
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import React from 'react';
-function UserProfileLoader() {
+import myProfileStyle from '../../../user/Profile/styles/MyProfile.module.scss';
+import myForestMapStyle from '../../../user/Profile/styles/MyForestMap.module.scss';
+import myForestStyle from '../../../user/Profile/styles/MyForest.module.scss';
+
+export const UserProfileLoader = () => {
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-      }}
-    >
-      <svg
-        width="320"
-        height="400"
-        //   ariaLabelledby="loading-aria"
-        preserveAspectRatio="none"
-        viewBox="0 0 320 400"
-      >
-        <rect
-          width="100%"
-          height="100%"
-          fill='url("#fill")'
-          clipPath="url(#clipPath)"
-        ></rect>
-        <defs>
-          <clipPath id="clipPath">
-            <circle cx="160" cy="150" r="150"></circle>
-            <rect width="300" height="40" x="10" y="340" rx="0" ry="0"></rect>
-          </clipPath>
-          <linearGradient id="fill">
-            <stop offset="0.6" stopColor="#f3f3f3">
-              <animate
-                attributeName="offset"
-                dur="2s"
-                keyTimes="0; 0.25; 1"
-                repeatCount="indefinite"
-                values="-2; -2; 1"
-              ></animate>
-            </stop>
-            <stop offset="1.6" stopColor="#ecebeb">
-              <animate
-                attributeName="offset"
-                dur="2s"
-                keyTimes="0; 0.25; 1"
-                repeatCount="indefinite"
-                values="-1; -1; 2"
-              ></animate>
-            </stop>
-            <stop offset="2.6" stopColor="#f3f3f3">
-              <animate
-                attributeName="offset"
-                dur="2s"
-                keyTimes="0; 0.25; 1"
-                repeatCount="indefinite"
-                values="0; 0; 3"
-              ></animate>
-            </stop>
-          </linearGradient>
-        </defs>
-      </svg>
+    <>
+      <div className={myProfileStyle.skeletonContainer}>
+        <Skeleton height={300} className={myProfileStyle.profileSkeleton} />
+        <Skeleton
+          height={700}
+          className={myForestMapStyle.myForestMapSkeleton}
+        />
+      </div>
+    </>
+  );
+};
+
+export const MyForestMapLoader = () => {
+  return (
+    <div className={myForestMapStyle.myForestMapSkeletonContainer}>
+      <Skeleton
+        height={700}
+        className={myForestMapStyle.myForestMapSkeletonX}
+      />
     </div>
   );
-}
+};
 
-export default UserProfileLoader;
+export const MyContributionLoader = () => {
+  return (
+    <div className={myForestStyle.myForestStyleContainer}>
+      <Skeleton height={700} className={myForestStyle.myContributionLoader} />
+    </div>
+  );
+};

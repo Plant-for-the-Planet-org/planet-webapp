@@ -1,9 +1,16 @@
-import { InputBase, styled } from '@mui/material';
-import tenantConfig from '../../../../tenant.config';
+import { InputBase, InputBaseProps, styled } from '@mui/material';
+import { useTenant } from '../Layout/TenantContext';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-const config = tenantConfig();
+interface StyledInputBaseType {
+  config: Tenant;
+}
 
-const BootstrapInput = styled(InputBase)({
+const StyledInputBase = styled(InputBase, {
+  shouldForwardProp: (prop) => {
+    return prop !== 'config';
+  },
+})(({ config }: StyledInputBaseType) => ({
   '& .MuiInputBase-input': {
     borderRadius: 9,
     position: 'relative',
@@ -13,12 +20,18 @@ const BootstrapInput = styled(InputBase)({
     fontSize: 14,
     padding: '10px 26px 10px 12px',
     // Use the system font instead of the default Roboto font.
-    fontFamily: [config?.font.primaryFontFamily].join(','),
+    fontFamily: [config.config.font.primaryFontFamily].join(','),
     '&:focus': {
       backgroundColor: 'var(--background-color)',
       borderRadius: 9,
     },
   },
-});
+}));
+
+const BootstrapInput = (props: InputBaseProps) => {
+  const { tenantConfig } = useTenant();
+
+  return <StyledInputBase {...props} config={tenantConfig} />;
+};
 
 export default BootstrapInput;
