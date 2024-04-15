@@ -20,11 +20,11 @@
     display: flex;
     flex-direction: column;
 }
-.siteAndAreaContainer {
+.sitesLabel {
     font-size: $fontXXXSmallNew;
     color: $nonDonatableProjectBackgroundColor;
     font-weight: 600;
-    p,span {
+    span {
         display: inline;
     }
 }
@@ -43,7 +43,7 @@
     align-items: center;
     margin-right: 13px;
 }
-.optionsContainer{
+.siteListOptions{
     background-color: $backgroundColor;
     padding: 6px 16px;
     border-radius: 12px;
@@ -58,6 +58,11 @@
     padding: 8px 0px; 
     color: #4F4F4F; //to be replaced
     cursor: pointer;
+    border-bottom: 1px solid $dividerColorNew;
+
+    &:last-of-type {
+        border-bottom: none;
+    }
 }
 .hideDivider {
     display: none;
@@ -75,9 +80,6 @@
 }
 
 @include xsPhoneView {
-    .dropdownButton {
-        border-radius: 10px;
-    }
     .siteIconAndTextContainer {
         >svg {
             width: 16px;
@@ -91,18 +93,19 @@
         }
     }
     .dropdownButton {
-        max-width: 93px;
+        border-radius: 10px;
+        min-width: 93px;
         padding: 7px;
     }
     .labelTextContainer {
         justify-content: center;
-        .siteAndAreaContainer {
+        .sitesLabel {
             display: flex;
             flex-direction: column;
             .siteId {
                 text-transform: none;
             }
-            span {
+            .separator {
                 display: none;
             }
         }
@@ -110,7 +113,7 @@
             display: none;
         }
     }
-    .optionsContainer{
+    .siteListOptions{
         max-width: 140px;
         padding: 8px 12px;
         .listItem {

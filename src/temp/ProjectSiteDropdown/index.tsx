@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import SiteIcon from '../icons/SiteIcon';
 import styles from './SiteDropdown.module.scss';
-import DropdownArrow from '../icons/DropdownArrow';
 import DropdownUpArrow from '../icons/DropdownUpArrow';
 import DropdownDownArrow from '../icons/DropdownDownArrow';
+import { useTranslation } from 'next-i18next';
 
 interface SiteType {
   name: string;
@@ -18,6 +18,7 @@ interface Props {
 const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
   const [selectedSite, setSelectedSite] = useState(selectedOption);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
+  const { t } = useTranslation('manageProjects');
 
   const getId = (selected: string) => {
     let id;
@@ -37,13 +38,16 @@ const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
           {/* to be replaced */}
           <SiteIcon width={27} color={'#333'} />
           <div className={styles.labelTextContainer}>
-            <div className={styles.siteAndAreaContainer}>
-              <p className={styles.siteId}>
-                Site {getId(selectedSite.name)} of {siteList.length}
-              </p>
-              <span> • </span>
-              <p>{selectedSite.area} ha</p>
-            </div>
+            <label className={styles.sitesLabel}>
+              <span className={styles.siteId}>
+                {t('siteCount', {
+                  siteId: getId(selectedSite.name),
+                  totalCount: siteList.length,
+                })}
+              </span>
+              <span className={styles.separator}> • </span>
+              <span>{selectedSite.area} ha</span>
+            </label>
             <p className={styles.siteName}>{selectedSite.name}</p>
           </div>
         </div>
@@ -56,26 +60,18 @@ const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
         </div>
       </div>
       {isMenuOpen && (
-        <div className={styles.optionsContainer}>
-          {siteList.map((site, index) => (
-            <>
-              <div
-                className={`${styles.listItem} ${
-                  site.name === selectedSite.name ? styles.selectedItem : ''
-                }`}
-                onClick={() => setSelectedSite(site)}
-              >
-                <p>{site.name}</p>
-                <p className={styles.siteArea}>{site.area}ha</p>
-              </div>
-              <hr
-                className={
-                  index + 1 === siteList.length
-                    ? styles.hideDivider
-                    : styles.showDivider
-                }
-              />
-            </>
+        <div className={styles.siteListOptions}>
+          {siteList.map((site) => (
+            <div
+              className={`${styles.listItem} ${
+                site.name === selectedSite.name ? styles.selectedItem : ''
+              }`}
+              onClick={() => setSelectedSite(site)}
+              key={site.name}
+            >
+              <p>{site.name}</p>
+              <p className={styles.siteArea}>{site.area}ha</p>
+            </div>
           ))}
         </div>
       )}
