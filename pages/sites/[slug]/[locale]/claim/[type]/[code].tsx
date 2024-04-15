@@ -104,6 +104,12 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
               });
               break;
 
+            case 'self_gift':
+              _serializedErrors.push({
+                message: t('redeem:selfGiftMessage'),
+              });
+              break;
+
             default:
               _serializedErrors.push(error);
               break;

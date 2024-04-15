@@ -31,43 +31,43 @@ export const defaultTenant: Tenant = {
         },
         about: {
           title: 'aboutUs',
-          onclick: 'https://a.plant-for-the-planet.org/',
+          onclick: 'https://www.plant-for-the-planet.org/',
           visible: true,
           subMenu: [
             {
               title: 'overview',
-              onclick: 'https://a.plant-for-the-planet.org/',
+              onclick: 'https://www.plant-for-the-planet.org/',
               visible: true,
             },
             {
               title: 'childrenAndYouth',
-              onclick: 'https://a.plant-for-the-planet.org/children-youth/',
+              onclick: 'https://www.plant-for-the-planet.org/children-youth/',
               visible: true,
             },
             {
               title: 'trillionTrees',
-              onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
+              onclick: 'https://www.plant-for-the-planet.org/trillion-trees/',
               visible: true,
             },
             {
               title: 'yucatan',
-              onclick: 'https://a.plant-for-the-planet.org/yucatan/',
+              onclick: 'https://www.plant-for-the-planet.org/yucatan/',
               visible: true,
             },
             {
               title: 'partners',
-              onclick: 'https://a.plant-for-the-planet.org/partners/',
+              onclick: 'https://www.plant-for-the-planet.org/partners/',
               visible: true,
             },
             {
               title: 'changeChocolate',
-              onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
+              onclick: 'https://www.plant-for-the-planet.org/chocolate/',
               visible: true,
             },
             {
               title: 'stopTalkingStartPlanting',
               onclick:
-                'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
+                'https://www.plant-for-the-planet.org/stop-talking-start-planting/',
               visible: true,
             },
           ],
