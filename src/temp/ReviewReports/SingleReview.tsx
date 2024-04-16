@@ -22,15 +22,13 @@ const SingleReview = ({ singleReview }: Props) => {
   return (
     <div className={styles.singleReviewContainer}>
       <div className={styles.reviewInfoContainer}>
-        <div className={styles.verifiedIcon}>
-          <VerifiedIcon
-            sx={{
-              color: `${'rgba(var(--review-font-color-new))'}`,
-              width: 16,
-              height: 16,
-            }}
-          />
-        </div>
+        <VerifiedIcon
+          sx={{
+            color: `${'rgba(var(--review-font-color-new))'}`,
+            width: 16,
+            height: 16,
+          }}
+        />
         <p>
           <Trans i18nKey="common:reviewInfo">
             The project was inspected in a multiday field review in{' '}

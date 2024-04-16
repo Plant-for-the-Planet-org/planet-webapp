@@ -56,6 +56,7 @@
     color: #2F3336; //to be replaced
     font-size: $fontXXSmall;
     margin-top: 4px;
+    align-items: center;
     
     a {
         color: rgb(var(--review-font-color-new));
@@ -63,10 +64,6 @@
         font-weight: 700;
 
     }
-}
-.verifiedIcon {
-    display: flex;
-    align-items: center;
 }
 
 @include xsPhoneView {
