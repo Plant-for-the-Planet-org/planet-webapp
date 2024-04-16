@@ -44,6 +44,7 @@ const themeProperties = {
     backgroundBase: '#FaFaFf',
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
+    aboutProjectBackgroundColorNew: '#27ae601a',
   },
   dark: {
     primaryFontColor: '#ffffff',
