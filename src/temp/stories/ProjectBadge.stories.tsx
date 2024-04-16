@@ -26,8 +26,8 @@ export const TopProjects: Story = {
 
 export const FieldReviewed: Story = {
   args: {
-    isTopProject: true,
-    isApproved: false,
+    isTopProject: false,
+    isApproved: true,
     allowDonations: true,
   },
 };
