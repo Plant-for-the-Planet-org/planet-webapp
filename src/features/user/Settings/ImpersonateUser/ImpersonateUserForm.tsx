@@ -6,6 +6,7 @@ import { TextField, Button } from '@mui/material';
 import { getAccountInfo } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
+import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 
@@ -16,6 +17,7 @@ export type ImpersonationData = {
 
 const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -38,7 +40,7 @@ const ImpersonateUserForm = (): ReactElement => {
     if (data.targetEmail && data.supportPin) {
       setIsProcessing(true);
       try {
-        const res = await getAccountInfo(token, data);
+        const res = await getAccountInfo(tenantConfig?.id, token, data);
         const resJson = await res.json();
         if (res.status === 200) {
           setIsInvalidEmail(false);

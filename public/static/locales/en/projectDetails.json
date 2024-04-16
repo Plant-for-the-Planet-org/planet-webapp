@@ -1,5 +1,8 @@
 {
-    "satelliteAnalysis": "Satellite Analysis",
-    "fieldReviewed": "Field Reviewed",
-    "offSiteReviewed":"Off-Site reviewed"
+  "satelliteAnalysis": "Satellite Analysis",
+  "fieldReviewed": "Field Reviewed",
+  "offSiteReviewed": "Off-Site reviewed",
+  "report": "Report",
+  "seeLess": "see less",
+  "seeMore": "see more"
 }

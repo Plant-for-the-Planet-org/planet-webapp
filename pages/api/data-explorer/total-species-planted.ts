@@ -5,14 +5,12 @@ import {
   rateLimiter,
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
-import NodeCache from 'node-cache';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
 import { TotalSpeciesPlanted } from '../../../src/features/common/types/dataExplorer';
+import redisClient from '../../../src/redis-client';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
-const ONE_DAY = ONE_HOUR_IN_SEC * 24;
-
-const cache = new NodeCache({ stdTTL: ONE_DAY, checkperiod: ONE_HOUR_IN_SEC });
+const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -20,6 +18,12 @@ handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {
+  if (!redisClient) {
+    throw new Error(
+      'Redis client not initialized. If this is not a Storybook environment, please ensure Redis is properly configured and connected.'
+    );
+  }
+
   const { projectId, startDate, endDate } = req.body;
 
   const CACHE_KEY = `TOTAL_SPECIES_PLANTED__${getCachedKey(
@@ -28,7 +32,7 @@ handler.post(async (req, response) => {
     endDate
   )}`;
 
-  const cacheHit = cache.get(CACHE_KEY);
+  const cacheHit = await redisClient.get(CACHE_KEY);
 
   if (cacheHit) {
     response.status(200).json({ data: cacheHit });
@@ -52,12 +56,13 @@ handler.post(async (req, response) => {
       `${endDate} 23:59:59.999`,
     ]);
 
-    await db.end();
+    await redisClient.set(CACHE_KEY, JSON.stringify(res[0]), {
+      ex: TWO_HOURS,
+    });
 
-    cache.set(CACHE_KEY, res[0]);
     response.status(200).json({ data: res[0] });
   } catch (err) {
-    console.log(err);
+    console.error('Error fetching total species planted:', err);
   } finally {
     await db.quit();
   }
