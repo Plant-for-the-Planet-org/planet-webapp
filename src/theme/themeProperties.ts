@@ -21,10 +21,10 @@ const themeProperties = {
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
   primaryLightColor: '#79AE4633',
-  primaryDarkColorX: "#219653",
-  lightBlueColor: "#48AADD",
-  darkBlackColor: "#4F4F4F",
-  darkOliveGreen: "#688816",
+  primaryDarkColorX: '#219653',
+  lightBlueColor: '#48AADD',
+  darkBlackColor: '#4F4F4F',
+  darkOliveGreen: '#688816',
   topProjectBackgroundColor: '#F3BB44',
   nonDonatableProjectBackgroundColor: '#828282',
   primaryColorNew: '#219653',
@@ -45,6 +45,8 @@ const themeProperties = {
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
     dividerColorNew: '#BDBDBD',
+    reviewFontColorNew: '45, 156, 219', //used across elements with different opacities, this enables consistency throughout
+    aboutProjectBackgroundColorNew: '#27ae601a',
   },
   dark: {
     primaryFontColor: '#ffffff',
