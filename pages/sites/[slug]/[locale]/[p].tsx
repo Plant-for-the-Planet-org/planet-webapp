@@ -149,12 +149,17 @@ export default function Donate({
   }, [project]);
 
   React.useEffect(() => {
-    if (geoJson && !router.query.site && !router.query.ploc && project) {
+    if (
+      geoJson?.features[0].properties.id &&
+      !router.query.site &&
+      !router.query.ploc &&
+      project
+    ) {
       router.push(
         `/${locale}/${project.slug}?site=${geoJson.features[0].properties.id}`
       );
     }
-  }, [project, router.query.site, router.query.ploc, locale]);
+  }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 
   React.useEffect(() => {
     //for selecting one of the site of project if user use link  to directly visit to site from home page
