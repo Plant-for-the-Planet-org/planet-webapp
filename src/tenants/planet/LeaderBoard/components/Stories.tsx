@@ -12,7 +12,7 @@ export default function Stories(): ReactElement {
           <div className={styles.container}>
             <a
               className={styles.storyCard}
-              href={`https://a.plant-for-the-planet.org/${
+              href={`https://www.plant-for-the-planet.org/${
                 lang_path[i18n.language] ? lang_path[i18n.language] : 'en'
               }/principles`}
             >
@@ -31,7 +31,7 @@ export default function Stories(): ReactElement {
             </a>
             <a
               className={styles.storyCard}
-              href={`https://a.plant-for-the-planet.org/${
+              href={`https://www.plant-for-the-planet.org/${
                 lang_path[i18n.language] ? lang_path[i18n.language] : 'en'
               }/standards`}
             >

@@ -14,6 +14,7 @@ export const Selected: Story = {
     icon: <SatelliteIcon color={'#fff'} />,
     title: 'Time Travel',
     isSelected: true,
+    onClickHandler: () => {},
   },
 };
 
@@ -22,5 +23,6 @@ export const Unselected: Story = {
     icon: <SatelliteIcon color={'#000'} />,
     title: 'Time Travel',
     isSelected: false,
+    onClickHandler: () => {},
   },
 };
