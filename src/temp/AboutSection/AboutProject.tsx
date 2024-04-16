@@ -1,30 +1,30 @@
 import styles from './AboutProject.module.scss';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import SeeMoreLessButton from './SeeMoreLessButton';
+import ToggleDescriptionButton from './ToggleDescriptionButton';
 
 interface Props {
   description: string;
-  amountOfWords: number;
+  wordCount: number;
 }
 
-const AboutProject = ({ description, amountOfWords }: Props) => {
+const AboutProject = ({ description, wordCount }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const splittedText = description.split(' ');
+  const descriptionWords = description.split(' ');
 
-  const itCanOverflow = splittedText.length > amountOfWords;
-  const beginText = itCanOverflow
-    ? splittedText.slice(0, amountOfWords - 1).join(' ')
+  const hasOverflow = descriptionWords.length > wordCount;
+  const startingText = hasOverflow
+    ? descriptionWords.slice(0, wordCount - 1).join(' ')
     : description;
-  const endText = splittedText.slice(amountOfWords - 1).join(' ');
+  const endText = descriptionWords.slice(wordCount - 1).join(' ');
   const { t } = useTranslation(['projectDetails', 'donate']);
 
   return (
     <div className={styles.projectDescription}>
       <div className={styles.infoTitle}>{t('donate:aboutProject')}</div>
       <div className={styles.infoText}>
-        {beginText}{' '}
-        {itCanOverflow && (
+        {startingText} {hasOverflow && !isExpanded && <span>...</span>}
+        {hasOverflow && (
           <span
             className={`${!isExpanded ? styles.hideText : styles.showText}`}
           >
@@ -32,8 +32,8 @@ const AboutProject = ({ description, amountOfWords }: Props) => {
           </span>
         )}
       </div>
-      {itCanOverflow && (
-        <SeeMoreLessButton
+      {hasOverflow && (
+        <ToggleDescriptionButton
           isContainerExpanded={isExpanded}
           onClickFunction={() => setIsExpanded(!isExpanded)}
         />

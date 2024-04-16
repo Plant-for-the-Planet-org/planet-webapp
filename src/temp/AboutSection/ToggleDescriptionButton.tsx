@@ -1,7 +1,7 @@
 import React from 'react';
 import DownArrow from '../icons/DownArrow';
 import UpArrow from '../icons/UpArrow';
-import styles from './SeeMoreLess.module.scss';
+import styles from './ToggleDescriptionButton.module.scss';
 import { useTranslation } from 'next-i18next';
 
 interface Props {
@@ -9,7 +9,10 @@ interface Props {
   onClickFunction: () => void;
 }
 
-const SeeMoreLessButton = ({ isContainerExpanded, onClickFunction }: Props) => {
+const ToggleDescriptionButton = ({
+  isContainerExpanded,
+  onClickFunction,
+}: Props) => {
   const { t } = useTranslation('projectDetails');
   return (
     <button onClick={onClickFunction} className={styles.readMoreLessButton}>
@@ -28,4 +31,4 @@ const SeeMoreLessButton = ({ isContainerExpanded, onClickFunction }: Props) => {
   );
 };
 
-export default SeeMoreLessButton;
+export default ToggleDescriptionButton;
