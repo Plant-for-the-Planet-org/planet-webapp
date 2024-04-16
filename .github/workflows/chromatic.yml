@@ -11,6 +11,7 @@ on:
       - develop
       - feature/redesign-explore-btn
       - feature/redesign-project-review-section
+      - feature/redesign-about-section
 # List of jobs
 jobs:
   chromatic-deployment:

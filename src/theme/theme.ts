@@ -87,6 +87,7 @@ const getGlobalStyles = async () => {
       --background-base: ${light.backgroundBase};
       --disabled-font-color: ${light.disabledFontColor};
       --review-font-color-new: ${light.reviewFontColorNew};
+      --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
     }
     .theme-dark {
       --primary-font-color: ${dark.primaryFontColor};

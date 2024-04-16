@@ -45,6 +45,7 @@ const themeProperties = {
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
     reviewFontColorNew: '45, 156, 219', //used across elements with different opacities, this enables consistency throughout
+    aboutProjectBackgroundColorNew: '#27ae601a',
   },
   dark: {
     primaryFontColor: '#ffffff',
