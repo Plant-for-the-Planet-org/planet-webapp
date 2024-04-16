@@ -125,6 +125,7 @@ function NavLink({
   user,
 }: NavLinkProps) {
   const [isSubMenuActive, setisSubMenuActive] = useState(false);
+  const locale = useLocale();
   useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
@@ -157,12 +158,12 @@ function NavLink({
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
-            router.push(link.path);
+            router.push(`/${locale}${link.path}`);
             setactiveLink(link.path);
             setActiveSubMenu('');
           } else {
             if (link.hideSubMenu && link.path) {
-              router.push(link.path);
+              router.push(`/${locale}${link.path}`);
             } else {
               setisSubMenuActive(!isSubMenuActive);
             }
@@ -203,7 +204,7 @@ function NavLink({
                   //this is to shift to the submenu pages
                   link.path && setactiveLink(link.path);
                   setActiveSubMenu(subLink.path);
-                  router.push(subLink.path);
+                  router.push(`/${locale}${subLink.path}`);
                 }}
               >
                 {subLink.title}
