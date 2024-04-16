@@ -86,6 +86,7 @@ const getGlobalStyles = async () => {
       --mapbox-icon: ${light.mapboxIcon};
       --background-base: ${light.backgroundBase};
       --disabled-font-color: ${light.disabledFontColor};
+      --divider-color-new: ${light.dividerColorNew};
       --review-font-color-new: ${light.reviewFontColorNew};
       --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
     }
