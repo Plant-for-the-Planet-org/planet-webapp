@@ -40,7 +40,7 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
         };
       }
 
-      if (isTopProject && !isApproved) {
+      if (!isTopProject && isApproved) {
         return {
           icon: <FieldReviewedIcon width={10} color={'var(--light)'} />,
           title: t('projectDetails:fieldReviewed'),
