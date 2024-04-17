@@ -171,14 +171,14 @@ export default function TransitionsModal({
     if (modalLanguage !== locale) {
       const { asPath, pathname } = router;
       if (pathname === '/sites/[slug]/[locale]') {
-        router.push(encodeURI(`/${modalLanguage}`));
+        router.replace(encodeURI(`/${modalLanguage}`));
       } else {
         const splitPathnames = asPath.split('/');
         if (splitPathnames.length > 2) {
           const newPathname = splitPathnames.slice(2).join('/');
-          router.push(encodeURI(`/${modalLanguage}/${newPathname}`));
+          router.replace(encodeURI(`/${modalLanguage}/${newPathname}`));
         } else {
-          router.push(encodeURI(`/${modalLanguage}`));
+          router.replace(encodeURI(`/${modalLanguage}`));
         }
       }
     }
