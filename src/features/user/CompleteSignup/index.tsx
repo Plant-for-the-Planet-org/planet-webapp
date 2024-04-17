@@ -37,6 +37,7 @@ import {
   AddressType,
 } from '../../common/types/geocoder';
 import { ExtendedCountryCode } from '../../common/types/country';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -64,6 +65,7 @@ export default function CompleteSignup(): ReactElement | null {
   >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
+  const { tenantConfig } = useTenant();
 
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -158,7 +160,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [severity, setSeverity] = useState<AlertColor>('info');
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-
+  
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
   );
@@ -173,7 +175,7 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest<User>(`/app/profile`, bodyToSend);
+      const res = await postRequest<User>(tenantConfig?.id, `/app/profile`, bodyToSend);
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
@@ -272,7 +274,7 @@ export default function CompleteSignup(): ReactElement | null {
             {/* header */}
             <div className={styles.header}>
               <div
-                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+                onClick={() => logoutUser(`${window.location.origin}/`)}
                 className={styles.headerBackIcon}
               >
                 <CancelIcon color={styles.primaryFontColor} />

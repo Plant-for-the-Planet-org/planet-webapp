@@ -26,12 +26,12 @@ import {
 import themeProperties from '../../../../theme/themeProperties';
 import { handleError, APIError, Certificate } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-
 import {
   CertificateScopeProjects,
   ProjectCertificatesProps,
 } from '../../../common/types/project';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -59,7 +59,7 @@ function ProjectCertificates({
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
-
+  const { tenantConfig } = useTenant();
   const {
     control,
     setValue,
@@ -88,6 +88,7 @@ function ProjectCertificates({
 
     try {
       const res = await postAuthenticatedRequest<Certificate>(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/certificates`,
         submitData,
         token,
@@ -133,6 +134,7 @@ function ProjectCertificates({
     const fetchCertificates = async () => {
       try {
         const result = await getAuthenticatedRequest<CertificateScopeProjects>(
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=certificates`,
           token,
           logoutUser
@@ -173,6 +175,7 @@ function ProjectCertificates({
   const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/certificates/${id}`,
         token,
         logoutUser

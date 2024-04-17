@@ -12,7 +12,7 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
+import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
@@ -34,6 +34,7 @@ export default function BulkCodes({
   step,
 }: BulkCodesProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('bulkCodes');
+  const { tenantConfig } = useTenant();
   const {
     planetCashAccount,
     setPlanetCashAccount,
@@ -74,11 +75,12 @@ export default function BulkCodes({
     if (planetCashAccount && !projectList) {
       try {
         const fetchedProjects = await getRequest<MapProject[]>(
+          `${tenantConfig?.id}`,
           `/app/projects`,
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
-            tenant: TENANT_ID,
+            tenant: tenantConfig?.id,
             'filter[purpose]': 'trees',
             locale: i18n.language,
           }
