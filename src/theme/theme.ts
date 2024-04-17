@@ -90,6 +90,9 @@ const getGlobalStyles = async () => {
       --light-gray-background-color-new: ${light.lightGrayBackgroundColorNew};
       --bold-font-color-new: ${light.boldFontColorNew};
       --selected-menu-item-color-new: ${light.selectedMenuItemColorNew};
+      --divider-color-new: ${light.dividerColorNew};
+      --review-font-color-new: ${light.reviewFontColorNew};
+      --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
     }
     .theme-dark {
       --primary-font-color: ${dark.primaryFontColor};
