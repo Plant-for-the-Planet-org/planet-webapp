@@ -44,6 +44,10 @@ const themeProperties = {
     backgroundBase: '#FaFaFf',
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
+    grayFontColorNew: '#4F4F4F',
+    lightGrayBackgroundColorNew: '#d9d9d980',
+    boldFontColorNew: '#2F3336',
+    selectedMenuItemColorNew: '#333',
     dividerColorNew: '#BDBDBD',
     reviewFontColorNew: '45, 156, 219', //used across elements with different opacities, this enables consistency throughout
     aboutProjectBackgroundColorNew: '#27ae601a',
