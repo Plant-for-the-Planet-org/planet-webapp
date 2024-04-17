@@ -111,7 +111,7 @@ export default function ProjectSnippet({
       <div
         onClick={() => {
           router.push(
-            `/${project.slug}/${
+            `/${locale}/${project.slug}/${
               embed === 'true'
                 ? `${
                     callbackUrl != undefined

@@ -7,6 +7,7 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../ProjectTypeIcon';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import { useLocale } from 'next-intl';
 
 type PopupClosedData = {
   show: false;
@@ -32,6 +33,7 @@ export default function Markers({
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
+  const locale = useLocale();
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
@@ -47,7 +49,7 @@ export default function Markers({
   };
   const goToProject = (projectSlug: string): void => {
     router.push(
-      `/${projectSlug}/${
+      `/${locale}/${projectSlug}/${
         embed === 'true'
           ? `${
               callbackUrl != undefined
