@@ -86,8 +86,10 @@ export const YearRangeSlider = ({
           />
         </div>
       </div>
-      <div className={style.startYear}>{startYear}</div>
-      <div className={style.endYear}>{endYear}</div>
+      <div className={style.yearRangeContainer}>
+        <div className={style.startYear}>{startYear}</div>
+        <div className={style.endYear}>{endYear}</div>
+      </div>
     </div>
   );
 };

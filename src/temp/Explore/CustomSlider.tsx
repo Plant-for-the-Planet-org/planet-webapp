@@ -4,7 +4,6 @@ const { light, nonDonatableProjectBackgroundColor } = theme;
 export const SmallSlider = styled(Slider)(() => ({
   '&.MuiSlider-root': {
     padding: '0px',
-    position: 'static',
   },
   '.MuiSlider-thumb': {
     width: '9px',

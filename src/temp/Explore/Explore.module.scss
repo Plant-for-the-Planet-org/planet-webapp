@@ -45,41 +45,37 @@
   background-color: rgba(var(--deforestration-range-background-new), 0.1);
   margin-top: 6px;
   border-radius: 6px;
-  position: relative;
 }
 .rangeContainer {
-  width: 131px;
-  padding-top: 8px;
-  position: absolute;
-  left: 8px;
-  top: 6px;
+  padding-left: 8px;
+  display: flex;
+  gap: 12px;
 }
 
 .playIconContainer {
-  position: absolute;
-  bottom: -5px;
+  display: flex;
+  margin-top: 8px;
 }
 
 .sliderContainer {
   width: 107px;
-  position: absolute;
-  left: 20px;
-  bottom: -7px;
+  display: flex;
+  margin-top: 10px;
+}
+
+.yearRangeContainer {
+  display: flex;
+  padding-left: 22px;
+  padding-right: 8px;
+  justify-content: space-between;
+  margin-top: 1px;
 }
 .endYear,
 .startYear {
-  position: absolute;
   font-size: $fontXXXXSmallNew;
   font-weight: 400;
-  top: 17px;
 }
 
-.startYear {
-  left: 21px;
-}
-.endYear {
-  left: 130px;
-}
 .exploreDescription {
   padding: 8px;
   height: fit-content;
