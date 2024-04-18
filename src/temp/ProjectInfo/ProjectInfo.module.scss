@@ -27,9 +27,9 @@
     background-color: rgba(var(--contactDetail-background-color-new), 0.1);
 }
 
-.halfInfo {
+.singleRowInfoContent {
     flex: 1;
-    .infoTitle {
+    .singleRowInfoTitle {
         font-weight: 700;
         margin-bottom: 4px;
         text-transform: capitalize;
@@ -47,7 +47,7 @@
     }
 }
 
-.singleInfo {
+.singleRowInfoContainer {
    display: flex;
    width: 100%;
    flex-direction: row;
@@ -63,6 +63,12 @@
     padding: 12px 16px;
     font-size: $fontXXSmall;
     max-width: 200px !important;
+}
+
+
+.abandonmentTitle {
+    display: flex;
+    gap: 12px;
 }
 
 .siteOwnershipTitle {
@@ -157,13 +163,14 @@
     }
     .title {
         font-size: $fontXXSmall;
-        font-weight: 600;
+        font-weight: 500;
         color: #2F3336; //to be replaced
     }
     .rightArrow {
         margin-left: auto;
     }
 }
+
 
 @include xsPhoneView {
     .contactDetailsContainer, .moreInfoContainer, .certificationContainer, .projectInfoContainer {

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import MoreInfoContainer from '../ProjectInfo/MoreInfoContainer';
+import AdditionalInfo from '../ProjectInfo/AdditionalInfo';
 
-const meta: Meta<typeof MoreInfoContainer> = {
-  component: MoreInfoContainer,
+const meta: Meta<typeof AdditionalInfo> = {
+  component: AdditionalInfo,
 };
 
 export default meta;
-type Story = StoryObj<typeof MoreInfoContainer>;
+type Story = StoryObj<typeof AdditionalInfo>;
 
 const ownershipArray = ['public-property', 'private', 'communal-land'];
 
@@ -22,7 +22,6 @@ export const Preview: Story = {
       'Mida Creek is a stopover of many migratory birds and a foraging heaven for green turtles. Mida Creek is a UNESCO Biosphere Reserve that promote conservation of biodiversity hence that need to increase the forest cover through restoration of the degraded sites.',
     longTermProtectionText:
       'We anticipate that through the donations from here, the group shall be able to start more ecotourism ventures at different spots around Mida Creek to eleviate poverty and reduce the pressure on mangrove resources as we move along to meet our 2 million tree target.',
-    externalCertifications: 'Consolata Machuko',
     siteOwnershipType: ownershipArray,
     acquiredSince: 2015,
   },

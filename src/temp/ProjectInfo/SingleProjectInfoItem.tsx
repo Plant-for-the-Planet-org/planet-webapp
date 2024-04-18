@@ -3,15 +3,15 @@ import styles from './ProjectInfo.module.scss';
 
 interface Props {
   title: ReactElement | string;
-  itemContent: ReactElement;
+  children: ReactElement;
 }
 
-const SingleProjectInfoItem = ({ title, itemContent }: Props) => {
+const SingleProjectInfoItem = ({ title, children }: Props) => {
   return (
-    <div className={styles.singleInfo}>
-      <div className={styles.halfInfo}>
-        <div className={styles.infoTitle}>{title}</div>
-        {itemContent}
+    <div className={styles.singleRowInfoContainer}>
+      <div className={styles.singleRowInfoContent}>
+        <div className={styles.singleRowInfoTitle}>{title}</div>
+        {children}
       </div>
     </div>
   );

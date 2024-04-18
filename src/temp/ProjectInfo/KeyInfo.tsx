@@ -14,7 +14,7 @@ interface Props {
   plantingSeasons: number[];
 }
 
-const InfoContainer = ({
+const KeyInfo = ({
   abandonment,
   firstTree,
   plantingDensity,
@@ -64,7 +64,7 @@ const InfoContainer = ({
       <Fragment key={seasons[season - 1].title}>
         {seasons[season - 1].title}
         {index === plantingSeasons.length - 2 ? (
-          <> {t('manageProjects:and')} </>
+          <span> {t('manageProjects:and')} </span>
         ) : index === plantingSeasons.length - 1 ? (
           '.'
         ) : (
@@ -76,10 +76,10 @@ const InfoContainer = ({
 
   return (
     <div className={styles.projectInfoContainer}>
-      <div className={styles.singleInfo}>
+      <div className={styles.singleRowInfoContainer}>
         <SingleProjectInfoItem
           title={
-            <>
+            <h1 className={styles.abandonmentTitle}>
               {t('manageProjects:abandonment')}
               <InfoIconPopup
                 height={10}
@@ -90,54 +90,45 @@ const InfoContainer = ({
                   {t('manageProjects:yearAbandonedInfo')}
                 </div>
               </InfoIconPopup>
-            </>
+            </h1>
           }
-          itemContent={
-            <>
-              {t('common:approx')} {abandonment}
-            </>
-          }
-        />
-        <SingleProjectInfoItem
-          title={t('projectDetails:firstTreePlanted')}
-          itemContent={
-            <time>
-              {firstTree.length > 0 &&
-                formatDate(
-                  firstTree.split('-')[1].length === 1 ||
-                    firstTree.split('-')[2].length === 1
-                    ? addZeroToDate(firstTree)
-                    : firstTree
-                )}
-            </time>
-          }
-        />
+        >
+          <p>
+            {t('common:approx')} {abandonment}
+          </p>
+        </SingleProjectInfoItem>
+        <SingleProjectInfoItem title={t('projectDetails:firstTreePlanted')}>
+          <time>
+            {firstTree.length > 0 &&
+              formatDate(
+                firstTree.split('-')[1].length === 1 ||
+                  firstTree.split('-')[2].length === 1
+                  ? addZeroToDate(firstTree)
+                  : firstTree
+              )}
+          </time>
+        </SingleProjectInfoItem>
       </div>
       <div className={styles.seperator}></div>
-      <div className={styles.singleInfo}>
-        <SingleProjectInfoItem
-          title={t('manageProjects:plantingDensity')}
-          itemContent={
-            <>
-              {plantingDensity}
-              {maxPlantingDensity !== null
-                ? `-${maxPlantingDensity} ${t('manageProjects:treePerHa')}`
-                : ` ${t('manageProjects:treePerHa')}`}
-            </>
-          }
-        />
-        <SingleProjectInfoItem
-          title={t('manageProjects:employees')}
-          itemContent={<>{employees}</>}
-        />
+      <div className={styles.singleRowInfoContainer}>
+        <SingleProjectInfoItem title={t('manageProjects:plantingDensity')}>
+          <>
+            {plantingDensity}
+            {maxPlantingDensity !== null
+              ? `-${maxPlantingDensity} ${t('manageProjects:treePerHa')}`
+              : ` ${t('manageProjects:treePerHa')}`}
+          </>
+        </SingleProjectInfoItem>
+        <SingleProjectInfoItem title={t('manageProjects:employees')}>
+          <p>{employees}</p>
+        </SingleProjectInfoItem>
       </div>
       <div className={styles.seperator}></div>
-      <SingleProjectInfoItem
-        title={t('projectDetails:plantingSeasons')}
-        itemContent={<>{renderPlantingSeasons()}</>}
-      />
+      <SingleProjectInfoItem title={t('projectDetails:plantingSeasons')}>
+        <>{renderPlantingSeasons()}</>
+      </SingleProjectInfoItem>
     </div>
   );
 };
 
-export default InfoContainer;
+export default KeyInfo;

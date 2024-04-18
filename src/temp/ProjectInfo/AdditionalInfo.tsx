@@ -7,18 +7,16 @@ interface Props {
   causeOfDegradationText: string;
   whyThisSiteText: string;
   longTermProtectionText: string;
-  externalCertifications: string;
   siteOwnershipType: string[];
   acquiredSince: number;
 }
 
-const MoreInfoContainer = ({
+const AdditionalInfo = ({
   mainChallengeText,
   siteOwnershipText,
   causeOfDegradationText,
   whyThisSiteText,
   longTermProtectionText,
-  externalCertifications,
   siteOwnershipType,
   acquiredSince,
 }: Props) => {
@@ -110,14 +108,12 @@ const MoreInfoContainer = ({
   return (
     <div className={styles.moreInfoContainer}>
       {moreInfoContent.map((item) => (
-        <SingleProjectInfoItem
-          key={item.title}
-          title={item.title}
-          itemContent={item.content}
-        />
+        <SingleProjectInfoItem key={item.title} title={item.title}>
+          {item.content}
+        </SingleProjectInfoItem>
       ))}
     </div>
   );
 };
 
-export default MoreInfoContainer;
+export default AdditionalInfo;

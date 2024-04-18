@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import InfoContainer from '../ProjectInfo/InfoContainer';
+import KeyInfo from '../ProjectInfo/KeyInfo';
 
-const meta: Meta<typeof InfoContainer> = {
-  component: InfoContainer,
+const meta: Meta<typeof KeyInfo> = {
+  component: KeyInfo,
 };
 
 export default meta;
-type Story = StoryObj<typeof InfoContainer>;
+type Story = StoryObj<typeof KeyInfo>;
 
 const seasons = [6, 7, 8, 9, 10, 11, 12, 3, 4];
 
