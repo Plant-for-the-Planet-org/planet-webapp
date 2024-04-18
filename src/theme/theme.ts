@@ -93,6 +93,7 @@ const getGlobalStyles = async () => {
       --divider-color-new: ${light.dividerColorNew};
       --review-font-color-new: ${light.reviewFontColorNew};
       --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
+      --danger-color-new: ${light.dangerColorNew};
     }
     .theme-dark {
       --primary-font-color: ${dark.primaryFontColor};
