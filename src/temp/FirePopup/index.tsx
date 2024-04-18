@@ -4,12 +4,14 @@ import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
 import InfoIconPopup from '../components/InfoIconPopup';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import RightArrowIcon from '../icons/RightArrowIcon';
 
 interface Props {
   isOpen: boolean;
 }
+
+// Currently contains hardcoded data, component would need refactoring based on the api/data when available.
 
 export default function FirePopup({ isOpen }: Props) {
   const anchorRef = React.useRef(null);
@@ -24,7 +26,7 @@ export default function FirePopup({ isOpen }: Props) {
         open={showPopup}
         anchorEl={anchorRef.current}
         placement="top"
-        disablePortal={false}
+        disablePortal={true}
         onMouseLeave={() => setShowPopup(false)}
         onMouseEnter={() => setShowPopup(true)}
         modifiers={[
@@ -42,33 +44,39 @@ export default function FirePopup({ isOpen }: Props) {
         ]}
       >
         <span className={styles.arrow} ref={setArrowRef} />
-        <div className={styles.popupContainer}>
-          <div className={styles.popupTitle}>
-            <div className={styles.titleText}>
-              <FirePopupIcon width={18} /> Forest Fire
-            </div>
+        <aside className={styles.popupContainer}>
+          <header className={styles.popupTitle}>
+            <h2 className={styles.titleText}>
+              <FirePopupIcon width={18} /> {t('forestFire')}
+            </h2>
             <p className={styles.timeDuration}>
-              21h ago
+              {t('hoursAgo', {
+                hours: 21,
+              })}
               <InfoIconPopup width={9} height={9} color={'#828282'}>
                 <div className={styles.infoIconPopupContainer}>
                   {t('firePopupText')}
                 </div>
               </InfoIconPopup>
             </p>
-          </div>
+          </header>
           <div className={styles.popupText}>
             <p className={styles.coordinates}>18.71122, -87.71138</p>
             <p>
-              <span>High</span> alert confidence
+              <Trans i18nKey="highAlertConfidenceText">
+                <span>High</span> alert confidence
+              </Trans>
             </p>
             <div className={styles.setUpAlertsContainer}>
               <p className={styles.setUpAlerts}>
-                Set up alerts with <span>FireAlert</span>
+                <Trans i18nKey="setUpAlertsText">
+                  Set up alerts with <span>FireAlert</span>
+                </Trans>
               </p>
-              <RightArrowIcon width={5} height={8} color={'#4F4F4F'} />
+              <RightArrowIcon width={5} color={'#4F4F4F'} />
             </div>
           </div>
-        </div>
+        </aside>
       </Popper>
       <div
         ref={anchorRef}

@@ -5,5 +5,10 @@
   "offSiteReviewed": "Off-Site reviewed",
   "report": "Report",
   "seeLess": "see less",
-  "seeMore": "see more"
+  "seeMore": "see more",
+  "forestFire": "Forest Fire",
+  "hoursAgo": "{{hours}}h ago",
+  "highAlertConfidenceText": "<span>High</span> alert confidence",
+  "setUpAlertsText": "Set up alerts with <span>FireAlert</span>"
+
 }

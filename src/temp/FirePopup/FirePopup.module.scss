@@ -5,7 +5,7 @@
     height: 0px;
     width: 0px;
     border: 10px solid transparent;
-    border-top-color: #fff;
+    border-top-color: $light;
     position: absolute;
     bottom: -19px;
     left: calc(50% - 10px);
@@ -70,7 +70,7 @@
     gap: 13px;
     .setUpAlerts {
         span {
-            color: #E86F56;
+            color: $dangerColorNew;
         }
     }
 }
@@ -85,7 +85,7 @@
 .timeDuration {
     font-size: $fontXXSmall;
     font-weight: 600;
-    color: #E86F56;
+    color: $dangerColorNew;
     display: flex;
     gap: 3px;
 }
