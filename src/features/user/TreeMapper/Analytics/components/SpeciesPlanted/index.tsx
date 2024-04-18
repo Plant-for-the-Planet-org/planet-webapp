@@ -239,7 +239,7 @@ export const SpeciesPlanted = () => {
       });
     }, 2000);
 
-    if (process.env.ENABLE_ANALYTICS === 'true' && project) {
+    if (process.env.ENABLE_ANALYTICS && project) {
       fetchPlantedSpecies();
     }
 
@@ -249,7 +249,9 @@ export const SpeciesPlanted = () => {
   }, [project, fromDate, toDate]);
 
   return (
-    <Container title={t('speciesPlanted')}>
+    <Container
+      leftElement={<h3 className={styles.title}>{t('speciesPlanted')}</h3>}
+    >
       <ReactApexChart options={options} series={series} type="bar" />
     </Container>
   );
