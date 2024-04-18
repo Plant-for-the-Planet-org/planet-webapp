@@ -12,6 +12,10 @@ export const SmallSlider = styled(Slider)(() => ({
     border: '1px solid rgba(217, 217, 217, 1)',
     color: `${light.light}`,
   },
+  '.MuiSlider-thumb.Mui-active': {
+    boxShadow:
+      '0px 0px 0px 14px rgba(var(--deforestration-range-background-new), 0.1)',
+  },
   '.MuiSlider-rail': {
     height: '2.5px',
     backgroundColor: `${nonDonatableProjectBackgroundColor}`,
@@ -21,6 +25,6 @@ export const SmallSlider = styled(Slider)(() => ({
     color: `${'rgba(var(--deforestration-range-background-new))'}`,
   },
   '.MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb:hover': {
-    boxShadow: 'none',
+    boxShadow: `0px 0px 0px 14px rgba(var(--deforestration-range-background-new), 0.1)`,
   },
 }));

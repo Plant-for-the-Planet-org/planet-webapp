@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { ExploreIcon } from '../icons/ExploreIcon';
 import style from './Explore.module.scss';
-import InfoIcon from '../icons/InfoIcon';
-import { StyledSwitch } from './CustomSwitch';
 import { SmallSlider } from './CustomSlider';
 import PlayIcon from '../icons/PlayIcon';
-import { useTranslation } from 'next-i18next';
 import CustomButton from './CustomButton';
+import MapLayers from './MapLayers';
+import { useTranslation } from 'next-i18next';
 
-interface ExploreButtonProps {
+interface ExploreProjectProps {
   label: string | string[];
   isOpen: boolean;
   startYear: number;
@@ -21,12 +20,12 @@ interface EcosystemOptionProps {
   switchComponent: React.ReactNode;
 }
 
-interface YearRangeSliderProps {
+export interface YearRangeSliderProps {
   startYear: number;
   endYear: number;
 }
 
-export const EcosystemOption = ({
+export const MapLayerToggle = ({
   infoIcon,
   label,
   switchComponent,
@@ -93,59 +92,21 @@ export const YearRangeSlider = ({
   );
 };
 
-const ExploreButton = ({
-  label,
-  isOpen,
-  startYear,
-  endYear,
-}: ExploreButtonProps) => {
-  const { t } = useTranslation(['allProjects', 'maps']);
-
+const ExploreProject = ({ startYear, endYear }: ExploreProjectProps) => {
+  const { t } = useTranslation(['maps']);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <CustomButton startIcon={<ExploreIcon width={'19px'} />}>
-        {label}
+      <CustomButton
+        startIcon={<ExploreIcon width={'19px'} />}
+        onClick={() => setIsOpen(true)}
+      >
+        {t('maps:explore')}
       </CustomButton>
 
-      {isOpen ? (
-        <div className={style.exploreMainContainer}>
-          <div className={style.exploreContainer}>
-            <div>
-              <EcosystemOption
-                infoIcon={<InfoIcon width={'10px'} />}
-                label={t('allProjects:currentForests')}
-                switchComponent={<StyledSwitch currentForestSwitch="true" />}
-              />
-              <div className={style.hrLine} />
-              <EcosystemOption
-                infoIcon={<InfoIcon width={'10px'} />}
-                label={t('allProjects:restorationPotential')}
-                switchComponent={<StyledSwitch restorationSwitch="true" />}
-              />
-              <div className={style.hrLine} />
-              <EcosystemOption
-                infoIcon={<InfoIcon width={'10px'} />}
-                label={t('allProjects:deforestation')}
-                switchComponent={<StyledSwitch deforestationSwitch="true" />}
-              />
-              <YearRangeSlider startYear={startYear} endYear={endYear} />
-              <div className={style.hrLine} />
-              <EcosystemOption
-                infoIcon={undefined}
-                label={t('allProjects:projects')}
-                switchComponent={<StyledSwitch />}
-              />
-            </div>
-            <div className={style.exploreDescription}>
-              {t('maps:3trilliontrees')}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
+      {isOpen ? <MapLayers startYear={startYear} endYear={endYear} /> : <></>}
     </>
   );
 };
 
-export default ExploreButton;
+export default ExploreProject;
