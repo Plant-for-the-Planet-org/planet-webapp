@@ -5,7 +5,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { ReactElement } from 'react';
 import myForestStyles from '../../styles/MyForest.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
@@ -20,10 +20,11 @@ const RestoredButton = ({
   plantedTrees,
 }: RestoredButtonProps): ReactElement => {
   const { primaryDarkColorX, light } = theme;
-  const { t, i18n, ready } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
+  const locale = useLocale();
   const { isTreePlantedButtonActive } = useMyForest();
 
-  return ready ? (
+  return (
     <div
       className={
         isTreePlantedButtonActive
@@ -42,12 +43,14 @@ const RestoredButton = ({
           />
         </div>
         <div className={myForestStyles.plantedTreesLabel}>
-          {t('profile:myForestMap.restored')}
+          {t('myForestMap.restored')}
         </div>
       </div>
       <div className={myForestStyles.valueContainer}>
         <div className={myForestStyles.areaRestored}>
-          <div>{restoredArea ? getFormattedNumber(i18n.language, restoredArea) : 0}</div>
+          <div>
+            {restoredArea ? getFormattedNumber(locale, restoredArea) : 0}
+          </div>
         </div>
         <div className={myForestStyles.restoredUnit}>{'m²'}</div>
         {restoredArea !== null &&
@@ -64,8 +67,6 @@ const RestoredButton = ({
           )}
       </div>
     </div>
-  ) : (
-    <></>
   );
 };
 

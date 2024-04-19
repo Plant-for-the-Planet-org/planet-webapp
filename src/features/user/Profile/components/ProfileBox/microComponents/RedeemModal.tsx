@@ -1,7 +1,7 @@
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { postAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../../../theme/themeContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
@@ -23,7 +23,7 @@ export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
-  const { t, ready } = useTranslation(['redeem']);
+  const t = useTranslations('Redeem');
   const { tenantConfig } = useTenant();
   const {
     user,
@@ -70,13 +70,13 @@ export default function RedeemModal({
           switch (error.message) {
             case 'already_redeemed':
               _serializedErrors.push({
-                message: t('redeem:alreadyRedeemed'),
+                message: t('alreadyRedeemed'),
               });
               break;
 
             case 'invalid_code':
               _serializedErrors.push({
-                message: t('redeem:invalidCode'),
+                message: t('invalidCode'),
               });
               break;
 
@@ -117,7 +117,7 @@ export default function RedeemModal({
   };
   const { theme } = React.useContext(ThemeContext);
 
-  return ready ? (
+  return (
     <Modal
       className={'modalContainer' + ' ' + theme}
       open={redeemModalOpen}
@@ -157,5 +157,5 @@ export default function RedeemModal({
         </div>
       </Fade>
     </Modal>
-  ) : null;
+  );
 }

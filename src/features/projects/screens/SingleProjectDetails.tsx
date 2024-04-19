@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
@@ -34,7 +34,9 @@ const ImageSlider = dynamic(
 function SingleProjectDetails(): ReactElement {
   const router = useRouter();
 
-  const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
+  const tDonate = useTranslations('Donate');
+  const tMaps = useTranslations('Maps');
+  const locale = useLocale();
   const {
     project,
     geoJson,
@@ -96,22 +98,21 @@ function SingleProjectDetails(): ReactElement {
     } else {
       if (document.referrer) {
         window.history.go(-2);
+      } else {
+        router.replace({
+          pathname: `/${locale}`,
+          query: {
+            ...(isEmbed ? { embed: 'true' } : {}),
+            ...(isEmbed && callbackUrl !== undefined
+              ? { callback: callbackUrl }
+              : {}),
+          },
+        });
       }
-      router.replace(
-        `/${
-          isEmbed
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ``
-        }`
-      );
     }
   };
 
-  return ready && project !== null ? (
+  return project !== null ? (
     <>
       {/* <Explore /> */}
       {geoJson && <SitesDropdown />}
@@ -130,8 +131,8 @@ function SingleProjectDetails(): ReactElement {
           className="toggleButton"
         >
           {hideProjectContainer
-            ? t('maps:showProjectDetails')
-            : t('maps:hideProjectDetails')}
+            ? tMaps('showProjectDetails')
+            : tMaps('hideProjectDetails')}
         </MuiButton>
       )}
       <div
@@ -218,15 +219,13 @@ function SingleProjectDetails(): ReactElement {
                       <TopProjectReports projectReviews={project.reviews} />
                     )}
                   <div className={'projectDescription'}>
-                    <div className={'infoTitle'}>
-                      {t('donate:aboutProject')}
-                    </div>
+                    <div className={'infoTitle'}>{tDonate('aboutProject')}</div>
                     <ReadMoreReact
                       key={project.description || ''}
                       min={300}
                       ideal={350}
                       max={400}
-                      readMoreText={t('donate:readMore')}
+                      readMoreText={tDonate('readMore')}
                       text={project.description || ''}
                     />
                   </div>

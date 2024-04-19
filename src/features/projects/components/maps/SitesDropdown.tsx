@@ -44,7 +44,7 @@ export default function SitesDropdown(): ReactElement {
   const dropdownContainerClasses = `${
     embed === 'true' ? styles.embed_dropdownContainer : styles.dropdownContainer
   } ${
-    router.pathname === '/[p]'
+    router.pathname.includes('/[p]')
       ? styles['dropdownContainer--reduce-right-offset']
       : ''
   }`;
@@ -54,7 +54,7 @@ export default function SitesDropdown(): ReactElement {
       ? styles.embed_projectSitesButton
       : styles.projectSitesButton
   } ${
-    router.pathname === '/[p]'
+    router.pathname.includes('/[p]')
       ? styles['projectSitesButton--reduce-right-offset']
       : ''
   }`;

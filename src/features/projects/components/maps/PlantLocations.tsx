@@ -5,7 +5,7 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { Feature, Point, Polygon } from 'geojson';
 import {
   PlantLocation,
@@ -27,7 +27,8 @@ export default function PlantLocations(): ReactElement {
     samplePlantLocation,
   } = useProjectProps();
 
-  const { i18n, t } = useTranslation(['maps', 'common']);
+  const t = useTranslations('Maps');
+  const locale = useLocale();
 
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
     switch (pl.type) {
@@ -106,7 +107,7 @@ export default function PlantLocations(): ReactElement {
       return t('yesterday');
     } else if (differenceInDays <= 10) {
       return t('daysAgo', {
-        days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
+        days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
       });
     } else {
       return null;

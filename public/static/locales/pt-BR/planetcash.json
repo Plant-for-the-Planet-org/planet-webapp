@@ -1,1 +1,34 @@
-{ }
+{
+  "Planetcash": {
+    "title": "PlanetCash",
+    "partnerSignupInfo": "O uso desse recurso pelas empresas está sujeito à parceria com a Plant-for-the-Planet. Entre em contato com <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink> para obter detalhes.",
+    "description": "O PlanetCash é uma ferramenta de fácil desenvolvimento que amplia a plataforma Plant-for-the-Planet com APIs e ferramentas integradas. O saldo do PlanetCash é uma contribuição para o Plant-for-the-Planet que pode ser dedicada pelo doador a diferentes projetos na plataforma.",
+    "termsText": "Ver Termos e Condições.",
+    "learnMoreText": "Saiba mais sobre o PlanetCash.",
+    "tabAccounts": "Contas",
+    "tabCreateAccount": "Criar conta",
+    "tabTransactions": "Transações",
+    "accountTitleText": "{currency} Conta PlanetCash ({country})",
+    "createAccountTitleText": "Registrar-se no PlanetCash",
+    "addBalanceButton": "Adicionar saldo",
+    "labelAccountHolder": "Titular da conta",
+    "labelBalance": "Equilíbrio",
+    "labelCreditLimit": "Limite",
+    "deactivateAccountButton": "Desativar",
+    "activateAccountButton": "Ativar",
+    "accountInactiveHelpText": "Essa conta está inativa e não pode ser usada para fazer contribuições. Para ativar essa conta, entre em contato com support@plant-for-the-planet.org.",
+    "noAccountsText": "Parece que você ainda não criou uma conta PlanetCash.",
+    "createPlanetCashButton": "Criar uma conta Planet Cash",
+    "accountQuotaReachedText": "Não é possível criar mais contas porque a cota de contas foi esgotada.",
+    "accountCreationSuccess": "Sua conta PlanetCash foi criada com sucesso",
+    "labelCountry": "País",
+    "planetCashTerms1": "Ao clicar em \"Criar conta PlanetCash\", eu concordo com os Termos e Condições do Plant-for-the-Planet e do PlanetCash.",
+    "planetCashTerms2": "Entendo que as doações PlanetCash não são reembolsáveis e que os pagamentos não alocados serão automaticamente alocados a projetos na Plataforma após seis meses de um Pagamento.",
+    "planetCashTerms3": "As doações para a Conta PlanetCash por motivos pessoais geralmente são dedutíveis de impostos no país selecionado nesta etapa. O uso comercial do PlanetCash pode não ser elegível para deduções fiscais. Em caso de dúvidas, entre em contato com support@plant-for-the-planet.org ou com seu consultor fiscal.",
+    "accountError": {
+      "active_account_exists": "Já existe uma conta ativa. Desative essa conta antes de ativar outra conta.",
+      "duplicate_account": "Você já criou uma conta para {country}",
+      "default": "Algo deu errado ao criar uma conta. Por favor, tente depois de algum tempo."
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import { Trans, useTranslation } from 'next-i18next';
 import {
   bindPopover,
   usePopupState,
@@ -8,6 +7,7 @@ import {
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
 import themeProperties from '../../../theme/themeProperties';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   displayPopup: boolean;
@@ -18,14 +18,14 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
     variant: 'popover',
     popupId: 'topProjectPopover',
   });
-  const { t } = useTranslation('common');
+  const t = useTranslations('Common');
   return (
     <>
       <div className={'topProjectBadge'} {...bindHover(topProjectPopupState)}>
         <div className={'badgeIcon'}>
           <TopProjectIcon color={'#6D4230'} />
         </div>
-        <div>{t('common:topProject')}</div>
+        <div>{t('topProject')}</div>
       </div>
       {displayPopup && (
         <HoverPopover
@@ -43,19 +43,22 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
           }}
         >
           <div className="topProjectPopupContainer">
-            <Trans i18nKey="common:top_project_standards_fulfilled">
-              The project inspection revealed that this project fulfilled at
-              least 12 of the 19 Top Project{' '}
-              <a
-                target="_blank"
-                href={t('common:standardsLink')}
-                rel="noreferrer"
-                style={{ color: themeProperties.primaryColor, fontWeight: 400 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                standards.
-              </a>
-            </Trans>
+            {t.rich('top_project_standards_fulfilled', {
+              standardsLink: (chunks) => (
+                <a
+                  target="_blank"
+                  href={t('standardsLink')}
+                  rel="noreferrer"
+                  style={{
+                    color: themeProperties.primaryColor,
+                    fontWeight: 400,
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </div>
         </HoverPopover>
       )}

@@ -1,26 +1,22 @@
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import CenteredContainer from '../../../../../common/Layout/CenteredContainer';
 
 const NoProjectsFound = (): ReactElement | null => {
-  const { t, ready } = useTranslation('treemapperAnalytics');
+  const t = useTranslations('TreemapperAnalytics');
 
-  if (ready) {
-    return (
-      <CenteredContainer>
-        <p className="centered-text">{t('noProjectsText')}</p>
-        <Link href="/profile/projects">
-          <Button variant="contained" color="primary">
-            {t('addProjectsButton')}
-          </Button>
-        </Link>
-      </CenteredContainer>
-    );
-  }
-
-  return null;
+  return (
+    <CenteredContainer>
+      <p className="centered-text">{t('noProjectsText')}</p>
+      <Link href="/profile/projects">
+        <Button variant="contained" color="primary">
+          {t('addProjectsButton')}
+        </Button>
+      </Link>
+    </CenteredContainer>
+  );
 };
 
 export default NoProjectsFound;

@@ -13,13 +13,12 @@ export async function getAccountInfo(
   token: string | null,
   impersonationData?: ImpersonationData
 ): Promise<any> {
+  const lang = localStorage.getItem('language') || 'en';
   const header = {
     'tenant-key': `${tenant}`,
     'X-SESSION-ID': await getsessionId(),
     Authorization: `Bearer ${token}`,
-    'x-locale': `${
-      localStorage.getItem('language') ? localStorage.getItem('language') : 'en'
-    }`,
+    'x-locale': lang,
   };
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
@@ -43,7 +42,7 @@ export function getRequest<T>(
   version?: string
 ) {
   const lang = localStorage.getItem('language') || 'en';
-  const query = { ...queryParams, locale: lang };
+  const query = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
   const fullUrl = isAbsoluteUrl(url)
@@ -58,11 +57,7 @@ export function getRequest<T>(
           headers: {
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
+            'x-locale': query.locale || lang,
             'x-accept-versions': version ? version : '1.0.3',
           },
         });
@@ -103,7 +98,7 @@ export function getAuthenticatedRequest<T>(
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
             Authorization: `Bearer ${token}`,
-            'x-locale': `${lang}`,
+            'x-locale': lang,
             'x-accept-versions': version ? version : '1.0.3',
             ...(header ? header : {}),
           };
@@ -144,6 +139,7 @@ export function postAuthenticatedRequest<T>(
   logoutUser: (value?: string | undefined) => void,
   headers?: Record<string, string>
 ) {
+  const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
@@ -153,11 +149,7 @@ export function postAuthenticatedRequest<T>(
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
             Authorization: `Bearer ${token}`,
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
+            'x-locale': lang,
             ...(headers ? headers : {}),
           };
           const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -189,7 +181,12 @@ export function postAuthenticatedRequest<T>(
   });
 }
 
-export function postRequest<T>(tenant: string | undefined, url: string, data: any) {
+export function postRequest<T>(
+  tenant: string | undefined,
+  url: string,
+  data: any
+) {
+  const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
@@ -200,11 +197,7 @@ export function postRequest<T>(tenant: string | undefined, url: string, data: an
             'Content-Type': 'application/json',
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
+            'x-locale': lang,
           },
         });
 
@@ -230,6 +223,7 @@ export function deleteAuthenticatedRequest<T>(
   token: string | null,
   logoutUser: (value?: string | undefined) => void
 ) {
+  const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
@@ -239,11 +233,7 @@ export function deleteAuthenticatedRequest<T>(
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
             Authorization: `Bearer ${token}`,
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
+            'x-locale': lang,
           };
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'DELETE',
@@ -281,6 +271,7 @@ export function putAuthenticatedRequest<T>(
   logoutUser: (value?: string | undefined) => void
 ) {
   return new Promise<T>((resolve, reject) => {
+    const lang = localStorage.getItem('language') || 'en';
     (async () => {
       try {
         if (token && validateToken(token)) {
@@ -289,11 +280,7 @@ export function putAuthenticatedRequest<T>(
             'tenant-key': `${tenant}`,
             'X-SESSION-ID': await getsessionId(),
             Authorization: `Bearer ${token}`,
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
+            'x-locale': lang,
           };
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'PUT',

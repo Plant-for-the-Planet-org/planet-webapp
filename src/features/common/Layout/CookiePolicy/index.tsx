@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import { useUserProps } from '../UserPropsContext';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
-  const { i18n, t, ready } = useTranslation(['leaderboard']);
+  const t = useTranslations('Common');
+  const locale = useLocale();
   const { user, contextLoaded } = useUserProps();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function CookiePolicy() {
     isMountedRef.current = true;
   }, []);
 
-  return ready && showCookieNotice ? (
+  return showCookieNotice ? (
     <div className={styles.cookieContainer}>
       <button
         id={'cookieCloseButton'}
@@ -50,9 +51,9 @@ export default function CookiePolicy() {
         <CloseIcon color={styles.primaryColor} />
       </button>
       <div className={styles.cookieContent}>
-        {t('common:privacyPolicyNotice')}{' '}
-        <a href={`https://pp.eco/legal/${i18n.language}/privacy`}>
-          {t('common:privacyPolicy')}
+        {t('privacyPolicyNotice')}{' '}
+        <a href={`https://pp.eco/legal/${locale}/privacy`}>
+          {t('privacyPolicy')}
         </a>
       </div>
     </div>

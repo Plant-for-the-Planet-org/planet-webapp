@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from '../TreeMapper.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import {
   SamplePlantLocation,
   PlantLocation as PlantLocationType,
@@ -34,7 +34,7 @@ export default function TreeMapperList({
   fetchTreemapperData,
   links,
 }: Props): ReactElement {
-  const { t } = useTranslation('treemapper');
+  const t = useTranslations('Treemapper');
   return (
     <div
       className={`${location ? styles.hideOnMobile : ''} ${

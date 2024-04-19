@@ -1,29 +1,25 @@
 import { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 const NoPlanetCashAccount = (): ReactElement | null => {
-  const { t, ready } = useTranslation('planetcash');
+  const t = useTranslations('Planetcash');
   const router = useRouter();
 
   const handleClick = () => {
     router.push('/profile/planetcash/new');
   };
 
-  if (ready) {
-    return (
-      <CenteredContainer>
-        <p className="centered-text">{t('noAccountsText')}</p>
-        <Button variant="contained" color="primary" onClick={handleClick}>
-          {t('createPlanetCashButton')}
-        </Button>
-      </CenteredContainer>
-    );
-  }
-
-  return null;
+  return (
+    <CenteredContainer>
+      <p className="centered-text">{t('noAccountsText')}</p>
+      <Button variant="contained" color="primary" onClick={handleClick}>
+        {t('createPlanetCashButton')}
+      </Button>
+    </CenteredContainer>
+  );
 };
 
 export default NoPlanetCashAccount;

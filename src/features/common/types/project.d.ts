@@ -227,7 +227,6 @@ interface EditSiteProps {
   siteDetails: SiteDetails;
   status: Option[];
   geoJsonProp: GeoJson | null;
-  ready: boolean;
   projectGUID: string;
   setSiteList: SetState<Site[]>;
   token: string;
