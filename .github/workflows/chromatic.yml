@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - feature/storybook-update
+      - hotfix/storybook-build-issue
       - develop
 # List of jobs
 jobs:
