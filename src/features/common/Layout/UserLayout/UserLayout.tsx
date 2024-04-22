@@ -451,15 +451,9 @@ const UserLayout: FC = ({ children }) => {
 
   useEffect(() => {
     if (contextLoaded) {
-      //checks whether user is login
-      if (router.asPath) {
-        if (router.query.slug) {
-          // router.push(`${router.pathname.replace('/_sites/[slug]', '')}`);
-        } else {
-          localStorage.setItem('redirectLink', router.asPath);
-        }
-      }
+      //Redirects the user to the desired page after login
       if (!user) {
+        if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
         router.push('/login');
       }
     }
