@@ -1,5 +1,5 @@
 import { Marker } from 'react-map-gl';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ReactElement, useState } from 'react';
 import {
   ConservationTreeSvg,
@@ -17,7 +17,7 @@ export const TreePlantedClusterMarker = ({
   mapRef,
 }: MarkerProps): ReactElement => {
   const { primaryDarkColorX } = theme;
-  const { t, ready } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const [showPopUp, setShowPopUp] = useState(false);
 
   const _totalTrees =
@@ -32,7 +32,7 @@ export const TreePlantedClusterMarker = ({
     geoJson?.properties?.plantProject?.unitType === 'm2' &&
     geoJson?.properties?.purpose === 'trees';
 
-  return ready ? (
+  return (
     <>
       <CustomPopupMarker
         geoJson={geoJson}
@@ -58,18 +58,16 @@ export const TreePlantedClusterMarker = ({
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {_isRestoredArea
-              ? t('profile:myForestMap.area', {
+              ? t('myForestMap.area', {
                   areaConserved: `${_unitArea}`,
                 })
-              : t('profile:myForestMap.plantedTree', {
+              : t('myForestMap.plantedTree', {
                   count: Number(_totalTrees.toFixed(2)) || 0,
                 })}
           </div>
         </div>
       </Marker>
     </>
-  ) : (
-    <></>
   );
 };
 
@@ -80,9 +78,9 @@ export const ConservAreaClusterMarker = ({
   const _unitArea =
     geoJson.properties.totalTrees || geoJson.properties.quantity;
   const { lightBlueColor } = theme;
-  const { t, ready } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const [showPopUp, setShowPopUp] = useState(false);
-  return ready ? (
+  return (
     <div>
       <CustomPopupMarker
         geoJson={geoJson}
@@ -104,14 +102,12 @@ export const ConservAreaClusterMarker = ({
             <ConservationTreeSvg color={`${lightBlueColor}`} />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
-            {t('profile:myForestMap.area', {
+            {t('myForestMap.area', {
               areaConserved: `${_unitArea}`,
             })}
           </div>
         </div>
       </Marker>
     </div>
-  ) : (
-    <></>
   );
 };

@@ -1,6 +1,6 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDropzone, ErrorCode, FileRejection } from 'react-dropzone';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import FileUploadIcon from '../../../../../public/assets/images/icons/FileUploadIcon';
 import FileProcessingIcon from '../../../../../public/assets/images/icons/FileProcessingIcon';
 import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
@@ -25,7 +25,7 @@ const UploadWidget = ({
   hasIgnoredColumns = false,
   shouldWarn = false,
 }: UploadWidgetInterface): ReactElement | null => {
-  const { t, ready } = useTranslation(['bulkCodes']);
+  const t = useTranslations('BulkCodes');
   const [error, setError] = useState<FileImportError | null>(null);
 
   const handleUploadError = (errorType: string, error?: FileImportError) => {
@@ -33,25 +33,25 @@ const UploadWidget = ({
       case ErrorCode.FileInvalidType:
         setError({
           type: 'fileInvalidType',
-          message: t('bulkCodes:errorUploadCSV.fileInvalidType'),
+          message: t('errorUploadCSV.fileInvalidType'),
         });
         break;
       case ErrorCode.TooManyFiles:
         setError({
           type: 'tooManyFiles',
-          message: t('bulkCodes:errorUploadCSV.tooManyFiles'),
+          message: t('errorUploadCSV.tooManyFiles'),
         });
         break;
       case ErrorCode.FileTooLarge:
         setError({
           type: 'fileTooLarge',
-          message: t('bulkCodes:errorUploadCSV.fileTooLarge'),
+          message: t('errorUploadCSV.fileTooLarge'),
         });
         break;
       case ErrorCode.FileTooSmall:
         setError({
           type: 'fileTooSmall',
-          message: t('bulkCodes:errorUploadCSV.fileTooSmall'),
+          message: t('errorUploadCSV.fileTooSmall'),
         });
         break;
       case 'parseError':
@@ -59,13 +59,13 @@ const UploadWidget = ({
         else
           setError({
             type: 'generalError',
-            message: t('bulkCodes:errorUploadCSV.generalError'),
+            message: t('errorUploadCSV.generalError'),
           });
         break;
       default:
         setError({
           type: 'generalError',
-          message: t('bulkCodes:errorUploadCSV.generalError'),
+          message: t('errorUploadCSV.generalError'),
         });
         break;
     }
@@ -119,18 +119,16 @@ const UploadWidget = ({
     let statusText;
     switch (status) {
       case 'success':
-        statusText = t(`bulkCodes:statusUploadCSV.${status}`);
+        statusText = t(`statusUploadCSV.${status}`);
         if (hasIgnoredColumns) {
           statusText = statusText.concat(
             ' - ',
-            t('bulkCodes:successUploadCSV.ignoredColumns')
+            t('successUploadCSV.ignoredColumns')
           );
         }
         break;
       case 'error':
-        statusText = `${t(`bulkCodes:statusUploadCSV.${status}`)} - ${
-          error?.message
-        }`;
+        statusText = `${t(`statusUploadCSV.${status}`)} - ${error?.message}`;
         break;
       default:
         return null;
@@ -142,29 +140,26 @@ const UploadWidget = ({
     );
   };
 
-  if (ready) {
-    return (
-      <div
-        {...getRootProps({
-          onClick: (e) => {
-            if (shouldWarn) {
-              const shouldContinue = confirm(t('bulkCodes:fileUploadWarning'));
-              if (!shouldContinue) e.stopPropagation();
-            }
-          },
-          className: `${styles.uploadWidget} ${
-            styles[`uploadWidget--${status}`]
-          }`,
-        })}
-      >
-        <input {...getInputProps()} />
-        {renderWidgetIcon(status)}
-        {renderStatusText(status, error, hasIgnoredColumns)}
-        <p>{t(`bulkCodes:instructionsUploadCSV.${status}`)}</p>
-      </div>
-    );
-  }
-  return null;
+  return (
+    <div
+      {...getRootProps({
+        onClick: (e) => {
+          if (shouldWarn) {
+            const shouldContinue = confirm(t('fileUploadWarning'));
+            if (!shouldContinue) e.stopPropagation();
+          }
+        },
+        className: `${styles.uploadWidget} ${
+          styles[`uploadWidget--${status}`]
+        }`,
+      })}
+    >
+      <input {...getInputProps()} />
+      {renderWidgetIcon(status)}
+      {renderStatusText(status, error, hasIgnoredColumns)}
+      <p>{t(`instructionsUploadCSV.${status}`)}</p>
+    </div>
+  );
 };
 
 export default UploadWidget;

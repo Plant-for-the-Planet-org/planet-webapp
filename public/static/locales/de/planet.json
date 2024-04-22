@@ -1,14 +1,16 @@
 {
-  "treesDonated": "Gespendete Bäume seit dem Start der Plattform (2019)",
-  "plantedByTPO": "Gepflanzt von den {{projects}}+ teilnehmenden Projekten",
-  "plantedGlobally": "An uns gemeldete Bäume seit 2006",
-  "forestLoss": "Netto-Waldverlust pro Jahr",
-  "estimateOf": "Schätzung des jährlichen Baumverlusts nach",
-  "globallySince": "Anzahl der Bäume, die der Billion Tree Campaign (später Trillion Tree Campaign) seit ihrer Gründung durch das UNEP im Jahr 2006 selbst gemeldet wurden",
-  "restoreTrees": "Wie können wir 1000 Milliarden Bäume wiederherstellen?",
-  "watchVideo": "Video ansehen",
-  "selectProjects": "Wie wir Projekte auswählen",
-  "learnMore": "Erfahre mehr",
-  "treesDonatedDescription": "Alle von Plant-for-the-Planet verarbeiteten Baumspenden seit 2019. Beinhaltet Bäume, die direkt über unsere Apps gespendet wurden, sowie große Privat- und Unternehmensspenden. Diese Spenden gingen nicht nur an Projekte, die direkt von Plant-for-the-Planet betrieben werden, sondern an alle teilnehmenden Wiederherstellungsorganisationen. Einige gespendete Bäume sind möglicherweise noch nicht gepflanzt worden.",
-  "treesPlantedDescription": "Alle über Plant-for-the-Planet gespendeten Bäume und Bäume, die von den teilnehmenden Wiederherstellungsorganisationen als gepflanzt gemeldet wurden."
+  "Planet": {
+    "treesDonated": "Gespendete Bäume seit dem Start der Plattform (2019)",
+    "plantedByTPO": "Gepflanzt von den {projects}+ teilnehmenden Projekten",
+    "plantedGlobally": "An uns gemeldete Bäume seit 2006",
+    "forestLoss": "Netto-Waldverlust pro Jahr",
+    "estimateOf": "Schätzung des jährlichen Baumverlusts nach",
+    "globallySince": "Anzahl der Bäume, die der Billion Tree Campaign (später Trillion Tree Campaign) seit ihrer Gründung durch das UNEP im Jahr 2006 selbst gemeldet wurden",
+    "restoreTrees": "Wie können wir 1000 Milliarden Bäume wiederherstellen?",
+    "watchVideo": "Video ansehen",
+    "selectProjects": "Wie wir Projekte auswählen",
+    "learnMore": "Erfahre mehr",
+    "treesDonatedDescription": "Alle von Plant-for-the-Planet verarbeiteten Baumspenden seit 2019. Beinhaltet Bäume, die direkt über unsere Apps gespendet wurden, sowie große Privat- und Unternehmensspenden. Diese Spenden gingen nicht nur an Projekte, die direkt von Plant-for-the-Planet betrieben werden, sondern an alle teilnehmenden Wiederherstellungsorganisationen. Einige gespendete Bäume sind möglicherweise noch nicht gepflanzt worden.",
+    "treesPlantedDescription": "Alle über Plant-for-the-Planet gespendeten Bäume und Bäume, die von den teilnehmenden Wiederherstellungsorganisationen als gepflanzt gemeldet wurden."
+  }
 }

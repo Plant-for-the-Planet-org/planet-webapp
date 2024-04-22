@@ -4,7 +4,7 @@ import materialTheme from '../../../../theme/themeStyles';
 
 interface DashboardViewProps {
   title: string;
-  subtitle: ReactElement | null;
+  subtitle: string | ReactElement | null;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
   multiColumn?: boolean;

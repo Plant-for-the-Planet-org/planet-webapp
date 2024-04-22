@@ -21,8 +21,10 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 import styles from './SelectLanguageAndCountry.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
+import { useRouter } from 'next/router';
+import { CountryCode } from '@planet-sdk/common';
 
 interface MapCountryProps {
   value: string;
@@ -43,7 +45,7 @@ interface TransitionsModalProps {
 
 interface countryInterface {
   countryName: string;
-  countryCode: string;
+  countryCode: CountryCode;
   currencyName: string;
   currencyCode: string;
   currencyCountryFlag: string;
@@ -90,13 +92,16 @@ function MapLanguage({ value, handleChange }: MapLanguageProps) {
 
 // Maps the radio buttons for countries
 function MapCountry({ value, handleChange }: MapCountryProps) {
-  const { t, i18n, ready } = useTranslation(['country']);
+  const t = useTranslations('Country');
+  const locale = useLocale();
   const country = getStoredConfig('country');
   const priorityCountries = country === value ? [value] : [value, country];
-  const sortedCountriesData = ready
-    ? sortCountriesByTranslation(t, i18n.language, priorityCountries)
-    : {};
-  return ready ? (
+  const sortedCountriesData = sortCountriesByTranslation(
+    t,
+    locale,
+    priorityCountries
+  );
+  return (
     <FormControl variant="standard" component="fieldset">
       <RadioGroup
         aria-label="language"
@@ -111,7 +116,7 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
             value={country.countryCode}
             control={<GreenRadio />}
             label={
-              t('country:' + country.countryCode.toLowerCase()) +
+              t(country.countryCode.toLowerCase()) +
               ' · ' +
               country.currencyCode
             }
@@ -119,7 +124,7 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
         ))}
       </RadioGroup>
     </FormControl>
-  ) : null;
+  );
 }
 
 export default function TransitionsModal({
@@ -133,7 +138,9 @@ export default function TransitionsModal({
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
 
-  const { t, i18n, ready } = useTranslation(['common', 'country']);
+  const tCommon = useTranslations('Common');
+  const locale = useLocale();
+  const router = useRouter();
 
   const { theme } = useContext(ThemeContext);
 
@@ -150,10 +157,6 @@ export default function TransitionsModal({
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-    // window.localStorage.setItem('language', modalLanguage);
-
-    i18n.changeLanguage(modalLanguage);
-    window.localStorage.setItem('language', modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
     const currencyCode = (
@@ -164,14 +167,29 @@ export default function TransitionsModal({
       setSelectedCurrency(currencyCode);
       if (setCurrencyCode) setCurrencyCode(currencyCode);
     }
+    // TODOO - loader while changing the locale
+    if (modalLanguage !== locale) {
+      const { asPath, pathname } = router;
+      if (pathname === '/sites/[slug]/[locale]') {
+        router.replace(encodeURI(`/${modalLanguage}`));
+      } else {
+        const splitPathnames = asPath.split('/');
+        if (splitPathnames.length > 2) {
+          const newPathname = splitPathnames.slice(2).join('/');
+          router.replace(encodeURI(`/${modalLanguage}/${newPathname}`));
+        } else {
+          router.replace(encodeURI(`/${modalLanguage}`));
+        }
+      }
+    }
     handleModalClose();
   }
 
   useEffect(() => {
-    if (i18n.language) {
-      setModalLanguage(i18n.language);
+    if (locale) {
+      setModalLanguage(locale);
     }
-  }, [i18n.language]);
+  }, [locale]);
   // changes the selected country in local state whenever the currency changes
   // in Footer state
   useEffect(() => {
@@ -180,7 +198,7 @@ export default function TransitionsModal({
     }
   }, [selectedCountry]);
 
-  return ready ? (
+  return (
     <div>
       <Modal
         open={openModal}
@@ -196,13 +214,13 @@ export default function TransitionsModal({
         <Fade in={openModal}>
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>{t('common:selectLanguage')}</p>
+              <p className={styles.sectionHead}>{tCommon('selectLanguage')}</p>
               {/* maps the radio button for languages */}
               <MapLanguage
                 value={modalLanguage}
                 handleChange={handleLanguageChange}
               />
-              <p className={styles.sectionHead}>{t('common:selectCountry')}</p>
+              <p className={styles.sectionHead}>{tCommon('selectCountry')}</p>
               {/* maps the radio button for countries */}
               <MapCountry
                 value={selectedModalCountry}
@@ -217,7 +235,7 @@ export default function TransitionsModal({
                 onClick={handleModalClose}
               >
                 <div></div>
-                <p>{t('common:cancel')}</p>
+                <p>{tCommon('cancel')}</p>
               </button>
               <button
                 id={'selLangAndCountryOk'}
@@ -225,12 +243,12 @@ export default function TransitionsModal({
                 onClick={handleOKClick}
               >
                 <div></div>
-                <p>{t('common:ok')}</p>
+                <p>{tCommon('ok')}</p>
               </button>
             </div>
           </div>
         </Fade>
       </Modal>
     </div>
-  ) : null;
+  );
 }

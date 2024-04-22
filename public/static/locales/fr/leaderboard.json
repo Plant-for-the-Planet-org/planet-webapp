@@ -1,7 +1,9 @@
 {
-  "forestFrontrunners": "Les pionniers de la forêt",
-  "mostRecent": "Les plus récentes",
-  "mostTrees": "La plupart des arbres",
-  "videoTitle": "Et enfin, ce/cette",
-  "searchUser": "Rechercher un utilisateur"
+  "Leaderboard": {
+    "forestFrontrunners": "Les pionniers de la forêt",
+    "mostRecent": "Les plus récentes",
+    "mostTrees": "La plupart des arbres",
+    "videoTitle": "Et enfin, ce/cette",
+    "searchUser": "Rechercher un utilisateur"
+  }
 }

@@ -17,7 +17,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { allCountries } from '../../../../utils/constants/countries';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
@@ -65,7 +65,7 @@ export default function EditProfileForm() {
   const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { t, ready } = useTranslation('editProfile');
+  const t = useTranslations('EditProfile');
 
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -183,24 +183,24 @@ export default function EditProfileForm() {
   );
   const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
     id: 1,
-    title: ready ? t('individual') : '',
+    title: t('individual'),
     value: 'individual',
   });
 
   const profileTypes: ProfileTypeOption[] = [
     {
       id: 1,
-      title: ready ? t('individual') : '',
+      title: t('individual'),
       value: 'individual',
     },
     {
       id: 2,
-      title: ready ? t('organization') : '',
+      title: t('organization'),
       value: 'organization',
     },
     {
       id: 3,
-      title: ready ? t('education') : '',
+      title: t('education'),
       value: 'education',
     },
   ];
@@ -233,7 +233,7 @@ export default function EditProfileForm() {
               imageFile: event.target?.result,
             };
             setSeverity('info');
-            setSnackbarMessage(ready ? t('profilePicUpdated') : '');
+            setSnackbarMessage(t('profilePicUpdated'));
             handleSnackbarOpen();
 
             try {
@@ -284,7 +284,7 @@ export default function EditProfileForm() {
           logoutUser
         );
         setSeverity('success');
-        setSnackbarMessage(ready ? t('profileSaved') : '');
+        setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();
         setIsUploadingData(false);
         setUser(res);
@@ -296,7 +296,7 @@ export default function EditProfileForm() {
   };
   let suggestion_counter = 0;
 
-  return ready ? (
+  return (
     <StyledForm>
       <div className="inputContainer">
         <div {...getRootProps()}>
@@ -674,5 +674,5 @@ export default function EditProfileForm() {
         </div>
       </Snackbar>
     </StyledForm>
-  ) : null;
+  );
 }

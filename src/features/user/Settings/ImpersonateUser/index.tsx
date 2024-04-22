@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
@@ -6,13 +6,10 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import ImpersonateUserForm from './ImpersonateUserForm';
 
 const ImpersonateUser = (): ReactElement => {
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
 
   return (
-    <DashboardView
-      title={t('me:switchUser')}
-      subtitle={t('me:switchUserMessage')}
-    >
+    <DashboardView title={t('switchUser')} subtitle={t('switchUserMessage')}>
       <SingleColumnView>
         <CenteredContainer>
           <ImpersonateUserForm />

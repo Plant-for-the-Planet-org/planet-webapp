@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import Fade from '@mui/material/Fade';
 import styles from '../../../../../common/RedeemCode/style/RedeemModal.module.scss';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../../../theme/themeContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
@@ -26,7 +26,7 @@ export default function AddTargetModal({
   handleAddTargetModalClose,
 }: AddTargetModalProps) {
   // External imports
-  const { t, ready } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const { user, token, contextLoaded, setUser, logoutUser } = useUserProps();
   const {
     control,
@@ -75,7 +75,7 @@ export default function AddTargetModal({
     if (!addTargetModalOpen) setIsLoading(false);
   };
 
-  return ready && user ? (
+  return user ? (
     <Modal
       className={'modalContainer' + ' ' + theme}
       open={addTargetModalOpen}
@@ -94,7 +94,7 @@ export default function AddTargetModal({
               <CancelIcon />
             </button>
             <div>
-              <b>{t('me:setTarget')}</b>{' '}
+              <b>{t('setTarget')}</b>{' '}
             </div>
             <div className={styles.inputField}>
               <Controller
@@ -114,11 +114,11 @@ export default function AddTargetModal({
               />
             </div>
             {errors.target && (
-              <span className={'formErrors'}>{t('me:targetErrorMessage')}</span>
+              <span className={'formErrors'}>{t('targetErrorMessage')}</span>
             )}
             {errors.target ? (
               <div className="primaryButton" style={{ marginTop: '24px' }}>
-                {t('me:targetSave')}
+                {t('targetSave')}
               </div>
             ) : (
               <button
@@ -130,7 +130,7 @@ export default function AddTargetModal({
                 {isLoadingForm ? (
                   <div className={'spinner'}></div>
                 ) : (
-                  t('me:targetSave')
+                  t('targetSave')
                 )}
               </button>
             )}

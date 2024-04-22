@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import DashboardView from '../../../common/Layout/DashboardView';
@@ -6,15 +6,15 @@ import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import ApiKeyForm from './ApiKeyForm';
 
 export default function ApiKey(): ReactElement | null {
-  const { t, ready } = useTranslation('me');
+  const t = useTranslations('Me');
 
-  return ready ? (
+  return (
     <DashboardView
       title={t('apiKey')}
       subtitle={
         <div>
-          <p>{t('me:apiKeyMessage1')}</p>
-          <p>{t('me:apiKeyMessage3')}</p>
+          <p>{t('apiKeyMessage1')}</p>
+          <p>{t('apiKeyMessage3')}</p>
         </div>
       }
     >
@@ -24,5 +24,5 @@ export default function ApiKey(): ReactElement | null {
         </CenteredContainer>
       </SingleColumnView>
     </DashboardView>
-  ) : null;
+  );
 }

@@ -1,14 +1,16 @@
 {
-  "treesDonated": "Darované stromy od spuštění platformy (2019)",
-  "plantedByTPO": "Zasazeno {{projects}} + zúčastněnými projekty",
-  "plantedGlobally": "Od roku 2006 jsou nám hlášeny stromy",
-  "forestLoss": "Čistá ztráta stromu za rok",
-  "estimateOf": "Odhad roční ztráty stromů",
-  "globallySince": "Počet stromů samostatně nahlášených do kampaně Billion Tree Campaign (později kampaň Trillion Tree Campaign) od jejího založení UNEP v roce 2006",
-  "restoreTrees": "Jak obnovíme bilion stromů?",
-  "watchVideo": "Sledovat video",
-  "selectProjects": "Jak vybíráme projekty",
-  "learnMore": "Přečtěte si více",
-  "treesDonatedDescription": "Všechny dary stromů zpracované společností Plant-for-the-Planet od roku 2019. Zahrnuje stromy darované přímo prostřednictvím našich aplikací, stejně jako velké soukromé a firemní dary. Všechny tyto dary nešly na projekty přímo řízené Plant-for-the-Planet, ale všechny zúčastněné restaurátorské organizace. Některé darované stromy ještě nemusí být vysazeny.",
-  "treesPlantedDescription": "Všechny stromy darované prostřednictvím Plant-for-the-Planet a další stromy nahlášené jako vysazené zúčastněnými restaurátorskými organizacemi."
+  "Planet": {
+    "treesDonated": "Darované stromy od spuštění platformy (2019)",
+    "plantedByTPO": "Zasazeno {projects} + zúčastněnými projekty",
+    "plantedGlobally": "Od roku 2006 jsou nám hlášeny stromy",
+    "forestLoss": "Čistá ztráta stromu za rok",
+    "estimateOf": "Odhad roční ztráty stromů",
+    "globallySince": "Počet stromů samostatně nahlášených do kampaně Billion Tree Campaign (později kampaň Trillion Tree Campaign) od jejího založení UNEP v roce 2006",
+    "restoreTrees": "Jak obnovíme bilion stromů?",
+    "watchVideo": "Sledovat video",
+    "selectProjects": "Jak vybíráme projekty",
+    "learnMore": "Přečtěte si více",
+    "treesDonatedDescription": "Všechny dary stromů zpracované společností Plant-for-the-Planet od roku 2019. Zahrnuje stromy darované přímo prostřednictvím našich aplikací, stejně jako velké soukromé a firemní dary. Všechny tyto dary nešly na projekty přímo řízené Plant-for-the-Planet, ale všechny zúčastněné restaurátorské organizace. Některé darované stromy ještě nemusí být vysazeny.",
+    "treesPlantedDescription": "Všechny stromy darované prostřednictvím Plant-for-the-Planet a další stromy nahlášené jako vysazené zúčastněnými restaurátorskými organizacemi."
+  }
 }

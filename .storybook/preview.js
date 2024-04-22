@@ -3,11 +3,8 @@ import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from '@storybook/theming';
-import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
-import { useEffect } from 'react';
-
-// import { ThemeProvider } from 'emotion-theming';
+import getMessages from './i18n';
+import { NextIntlClientProvider } from 'next-intl';
 
 /*
  * Global decorator to apply the styles to all stories
@@ -16,20 +13,16 @@ import { useEffect } from 'react';
  */
 export const decorators = [
   (Story, context) => {
-    const { locale } = context.globals;
-
-    useEffect(() => {
-      i18n.changeLanguage(locale);
-    }, [locale]);
+    const locale = context.globals.locale;
 
     return (
-      <I18nextProvider i18n={i18n}>
+      <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
         <MUIThemeProvider theme={materialTheme}>
           <ThemeProvider theme={materialTheme}>
             <Story />
           </ThemeProvider>
         </MUIThemeProvider>
-      </I18nextProvider>
+      </NextIntlClientProvider>
     );
   },
 ];
@@ -48,6 +41,7 @@ export const globalTypes = {
   locale: {
     name: 'Locale',
     description: 'Internationalization locale',
+    defaultValue: 'en',
     toolbar: {
       icon: 'globe',
       items: [

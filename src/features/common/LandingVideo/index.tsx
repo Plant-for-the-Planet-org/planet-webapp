@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import styles from './styles.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import ReactPlayer from 'react-player/lazy';
 import { useUserAgent } from 'next-useragent';
 import { ParamsContext } from '../Layout/QueryParamsContext';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 function VideoContainer({ setshowVideo }: Props): ReactElement {
-  const { t, ready } = useTranslation(['common']);
+  const t = useTranslations('Common');
   const [videoURL, setvideoURL] = useState<null | string>(null);
   const { isContextLoaded, embed, enableIntro } = useContext(ParamsContext);
   const videoRef = useRef<ReactPlayer | null>(null);
@@ -95,7 +95,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     }
   }, [videoURL]);
 
-  return ready && isContextLoaded ? (
+  return isContextLoaded ? (
     <div className={styles.landingVideoSection}>
       <div className={styles.landingVideoWrapper}>
         {videoURL &&
@@ -122,7 +122,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
         className={styles.landingVideoSkipButton}
         onClick={() => handleVideoClose()}
       >
-        {t('common:skipIntroVideo')}
+        {t('skipIntroVideo')}
       </button>
     </div>
   ) : (

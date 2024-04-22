@@ -2,7 +2,7 @@ import React from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import Recurrency from './Recurrency';
 import { Subscription } from '../../common/types/payments';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   isDataLoading: boolean;
@@ -11,12 +11,9 @@ interface Props {
 }
 
 export default function RecurrentPayments(RecurrencyProps: Props) {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   return (
-    <DashboardView
-      title={t('me:payments')}
-      subtitle={t('me:donationsSubTitle')}
-    >
+    <DashboardView title={t('payments')} subtitle={t('donationsSubTitle')}>
       <Recurrency {...RecurrencyProps} />
     </DashboardView>
   );

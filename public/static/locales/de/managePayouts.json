@@ -1,74 +1,76 @@
 {
-  "title": "Auszahlungen verwalten",
-  "description": "Halte deine Auszahlungsinformationen auf dem neuesten Stand (z. B. Zeitplan, Bankverbindung), um reibungslose Auszahlungen zu ermöglichen",
-  "tabPayoutSchedule": "Auszahlungszeitplan",
-  "tabAddBankDetails": "Bankverbindung hinzufügen",
-  "tabOverview": "Übersicht",
-  "payoutInformation1": "Die Auszahlung erfolgt automatisch jedes Jahr oder wenn eine Organisation 30.000 EUR oder den Gegenwert in einer anderen Währung gesammelt hat.",
-  "payoutInformation2": "Die Auszahlungen werden von der Plant-for-the-Planet Foundation und ihren Schwesterorganisationen vorgenommen, z.B. Plant-for-the-Planet US, Plant-for-the-Planet Switzerland usw.",
-  "payoutInformation3": "Du kannst den Auszahlungszeitplan anpassen und erhältst häufige Auszahlungen, solange du das Kriterium des Mindestbetrags von 1.500 EUR erfüllen.",
-  "supportInformation": "Wenn du einen Ausnahmefall hast, wenden dich bitte an<1></1><2>support@plant-for-the-planet.org.</2>",
-  "scheduleFrequencies": {
-    "monthly": "Monatlich",
-    "quarterly": "Vierteljährlich",
-    "semiannually": "Halbjährlich",
-    "annually": "Jährlich",
-    "manual": "manuell"
-  },
-  "defaultCurrency": "Standard",
-  "labels": {
-    "currency": "Währung",
-    "scheduleFrequency": "Häufigkeit der Zahlungen",
-    "payoutMinAmount": "Mindestauszahlungsbetrag",
-    "bankName": "Name der Bank",
-    "bankAddress": "Adresse der Bank",
-    "bankCountry": "Land der Bank",
-    "holderName": "Name des Kontoinhabers",
-    "holderAddress": "Adresse des Kontoinhabers",
-    "remarks": "Zusätzliche Details",
-    "accountNumber": "IBAN / Kontonummer",
-    "routingNumber": "ABA / Routing-Nummer (nur US)",
-    "bic": "BIC / SWIFT",
-    "branchCode": "Filialnummer"
-  },
-  "errors": {
-    "scheduleFrequencyRequired": "Zahlungsfrequenz ist erforderlich",
-    "payoutMinAmountRequired": "Mindestauszahlungsbetrag ist erforderlich",
-    "payoutMinAmountTooLow": "Der Mindestauszahlungsbetrag sollte mindestens {{currency}} {{minAmount}} betragen",
-    "bankNameRequired": "Der Name der Bank ist erforderlich.",
-    "bankAddressRequired": "Die Bankadresse ist erforderlich.",
-    "holderNameRequired": "Der Name des Inhabers ist erforderlich.",
-    "holderAddressRequired": "Die Adresse des Inhabers ist erforderlich.",
-    "accountNumberRequired": "Die Kontonummer ist erforderlich.",
-    "bicRequired": "BIC / SWIFT-Code ist erforderlich.",
-    "noAccountFound": "Es wurde kein Konto abgefragt"
-  },
-  "placeholders": {
-    "payoutMinAmount": "Sollte mindestens {{currency}} {{minAmount}} sein",
-    "bankName": "z.B. Century Bank LLC",
-    "bankAddress": "z. B. 1 West St, Hamington Way, MA, 10311, USA",
-    "holderName": "z.B. John Doe",
-    "holderAddress": "z. B. 21 Penn Avenue, MA 10317 USA",
-    "remarks": "z.B. lease include ref acct=1237 on the transfer."
-  },
-  "helperText": {
-    "currency": "Wähle \"Standard\", wenn es sich um dein Standard-Bankkonto handelt. Wenn du spezielle Angaben für eine Währung machen musst, wähle diese bitte hier aus und gib die Details an. Wir werden auch die Standard-Mindestbeträge für eine Auszahlung verwenden.",
-    "remarks": "Gib hier zusätzliche Einzelheiten an, z. B. Angaben zur zwischengeschalteten Bank, PC (Purpose Codes) oder andere Referenzen."
-  },
-  "saveButton": "Speichern",
-  "accountError": {
-    "min_amount_range": "Der Mindestauszahlungsbetrag muss mindestens {{currency}} {{min}} betragen.",
-    "min_amount_forbidden": "Du kannst für das Standardkonto keinen Mindestbetrag für die Auszahlung festlegen.",
-    "account_duplicate": "Es gibt bereits ein {{currency}}-Konto.",
-    "default": "Beim Erstellen des Kontos ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
-  },
-  "accountCreationSuccess": "Deine Kontodaten wurden erfolgreich gespeichert.",
-  "accountUpdationSuccess": "Dein Kontodaten wurden erfolgreich aktualisiert.",
-  "scheduleSaveSuccess": "Dein Auszahlungsplan wurde erfolgreich gespeichert.",
-  "editAccountButton": "Konto bearbeiten",
-  "accountTitleText": "Überweisung in {{currency}}",
-  "addBankDetailsButton": "Bankverbindung hinzufügen",
-  "noBankAccountText": "Du hast noch keine Bankverbindung angegeben.",
-  "editBankAccountTitle": "Konto bearbeiten",
-  "minPayoutText": "Min. Auszahlung: {{amount}}"
+  "ManagePayouts": {
+    "title": "Auszahlungen verwalten",
+    "description": "Halte deine Auszahlungsinformationen auf dem neuesten Stand (z. B. Zeitplan, Bankverbindung), um reibungslose Auszahlungen zu ermöglichen",
+    "tabPayoutSchedule": "Auszahlungszeitplan",
+    "tabAddBankDetails": "Bankverbindung hinzufügen",
+    "tabOverview": "Übersicht",
+    "payoutInformation1": "Die Auszahlung erfolgt automatisch jedes Jahr oder wenn eine Organisation 30.000 EUR oder den Gegenwert in einer anderen Währung gesammelt hat.",
+    "payoutInformation2": "Die Auszahlungen werden von der Plant-for-the-Planet Foundation und ihren Schwesterorganisationen vorgenommen, z.B. Plant-for-the-Planet US, Plant-for-the-Planet Switzerland usw.",
+    "payoutInformation3": "Du kannst den Auszahlungszeitplan anpassen und erhältst häufige Auszahlungen, solange du das Kriterium des Mindestbetrags von 1.500 EUR erfüllen.",
+    "supportInformation": "Wenn du einen Ausnahmefall hast, wenden dich bitte an <supportLink>support@plant-for-the-planet.org.</supportLink>",
+    "scheduleFrequencies": {
+      "monthly": "Monatlich",
+      "quarterly": "Vierteljährlich",
+      "semiannually": "Halbjährlich",
+      "annually": "Jährlich",
+      "manual": "manuell"
+    },
+    "defaultCurrency": "Standard",
+    "labels": {
+      "currency": "Währung",
+      "scheduleFrequency": "Häufigkeit der Zahlungen",
+      "payoutMinAmount": "Mindestauszahlungsbetrag",
+      "bankName": "Name der Bank",
+      "bankAddress": "Adresse der Bank",
+      "bankCountry": "Land der Bank",
+      "holderName": "Name des Kontoinhabers",
+      "holderAddress": "Adresse des Kontoinhabers",
+      "remarks": "Zusätzliche Details",
+      "accountNumber": "IBAN / Kontonummer",
+      "routingNumber": "ABA / Routing-Nummer (nur US)",
+      "bic": "BIC / SWIFT",
+      "branchCode": "Filialnummer"
+    },
+    "errors": {
+      "scheduleFrequencyRequired": "Zahlungsfrequenz ist erforderlich",
+      "payoutMinAmountRequired": "Mindestauszahlungsbetrag ist erforderlich",
+      "payoutMinAmountTooLow": "Der Mindestauszahlungsbetrag sollte mindestens {currency} {minAmount} betragen",
+      "bankNameRequired": "Der Name der Bank ist erforderlich.",
+      "bankAddressRequired": "Die Bankadresse ist erforderlich.",
+      "holderNameRequired": "Der Name des Inhabers ist erforderlich.",
+      "holderAddressRequired": "Die Adresse des Inhabers ist erforderlich.",
+      "accountNumberRequired": "Die Kontonummer ist erforderlich.",
+      "bicRequired": "BIC / SWIFT-Code ist erforderlich.",
+      "noAccountFound": "Es wurde kein Konto abgefragt"
+    },
+    "placeholders": {
+      "payoutMinAmount": "Sollte mindestens {currency} {minAmount} sein",
+      "bankName": "z.B. Century Bank LLC",
+      "bankAddress": "z. B. 1 West St, Hamington Way, MA, 10311, USA",
+      "holderName": "z.B. John Doe",
+      "holderAddress": "z. B. 21 Penn Avenue, MA 10317 USA",
+      "remarks": "z.B. lease include ref acct=1237 on the transfer."
+    },
+    "helperText": {
+      "currency": "Wähle \"Standard\", wenn es sich um dein Standard-Bankkonto handelt. Wenn du spezielle Angaben für eine Währung machen musst, wähle diese bitte hier aus und gib die Details an. Wir werden auch die Standard-Mindestbeträge für eine Auszahlung verwenden.",
+      "remarks": "Gib hier zusätzliche Einzelheiten an, z. B. Angaben zur zwischengeschalteten Bank, PC (Purpose Codes) oder andere Referenzen."
+    },
+    "saveButton": "Speichern",
+    "accountError": {
+      "min_amount_range": "Der Mindestauszahlungsbetrag muss mindestens {currency} {min} betragen.",
+      "min_amount_forbidden": "Du kannst für das Standardkonto keinen Mindestbetrag für die Auszahlung festlegen.",
+      "account_duplicate": "Es gibt bereits ein {currency}-Konto.",
+      "default": "Beim Erstellen des Kontos ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
+    },
+    "accountCreationSuccess": "Deine Kontodaten wurden erfolgreich gespeichert.",
+    "accountUpdationSuccess": "Dein Kontodaten wurden erfolgreich aktualisiert.",
+    "scheduleSaveSuccess": "Dein Auszahlungsplan wurde erfolgreich gespeichert.",
+    "editAccountButton": "Konto bearbeiten",
+    "accountTitleText": "Überweisung in {currency}",
+    "addBankDetailsButton": "Bankverbindung hinzufügen",
+    "noBankAccountText": "Du hast noch keine Bankverbindung angegeben.",
+    "editBankAccountTitle": "Konto bearbeiten",
+    "minPayoutText": "Min. Auszahlung: {amount}"
+  }
 }

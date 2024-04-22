@@ -1,6 +1,6 @@
 import myForestStyles from '../../../styles/MyForest.module.scss';
 import format from 'date-fns/format';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 
 interface ProjectInfoAndContributionDateProps {
@@ -22,15 +22,16 @@ const ProjectInfoAndContributionDate = ({
   contributionType,
   quantity,
 }: ProjectInfoAndContributionDateProps) => {
-  const { t, ready } = useTranslation(['profile']);
-  return ready ? (
+  const t = useTranslations('Profile');
+  const tCountry = useTranslations('Country');
+  return (
     <div className={myForestStyles.projectDetail}>
       <div className={myForestStyles.projectDetailMain}>
         <div className={myForestStyles.projectName}>{projectName}</div>
 
         {tpoName || countryName ? (
           <div className={myForestStyles.sepratorContainer}>
-            <div>{t('country:' + countryName)}</div>
+            <div>{tCountry(countryName)}</div>
             <div className={myForestStyles.dotSeprator}>
               <div className={myForestStyles.dot}>.</div>
             </div>
@@ -40,7 +41,7 @@ const ProjectInfoAndContributionDate = ({
           <time className={myForestStyles.treeCount}>
             {contributionType === 'planting' &&
               Number(quantity) && //for register  tree
-              t('profile:myContributions.treeRegistered', {
+              t('myContributions.treeRegistered', {
                 count: parseInt(`${quantity}`),
               })}
           </time>
@@ -48,7 +49,7 @@ const ProjectInfoAndContributionDate = ({
 
         {giftSenderName ? (
           <div>
-            {t('profile:myContributions.receivedFrom', {
+            {t('myContributions.receivedFrom', {
               name: `${giftSenderName}`,
             })}
           </div>
@@ -67,8 +68,6 @@ const ProjectInfoAndContributionDate = ({
         <></>
       )}
     </div>
-  ) : (
-    <></>
   );
 };
 

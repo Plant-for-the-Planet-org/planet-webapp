@@ -4,7 +4,7 @@ import {
   ArrowSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
@@ -24,7 +24,8 @@ const ConservationButton = ({
     setIsTreePlantedButtonActive,
   } = useMyForest();
 
-  const { t, i18n } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
+  const locale = useLocale();
 
   const handleClick = () => {
     if (isConservedButtonActive) {
@@ -55,12 +56,12 @@ const ConservationButton = ({
             />
           </div>
           <div className={myForestStyles.conservedLabel}>
-            {t('profile:myForestMap.conservation')}
+            {t('myForestMap.conservation')}
           </div>
         </div>
         <div className={myForestStyles.conservedAreaValue}>
           <div className={myForestStyles.value}>
-            {conservedArea ? getFormattedNumber(i18n.language, conservedArea) : 0}
+            {conservedArea ? getFormattedNumber(locale, conservedArea) : 0}
           </div>
           <div className={myForestStyles.unit}>{'m²'}</div>
           {conservedArea !== null &&
