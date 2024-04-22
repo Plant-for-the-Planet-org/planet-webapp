@@ -14,10 +14,12 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { BankAccount } from '../../../common/types/payouts';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
@@ -40,6 +42,7 @@ const EditBankAccount = (): ReactElement | null => {
 
     try {
       const res = await putAuthenticatedRequest<BankAccount>(
+        tenantConfig?.id,
         `/app/accounts/${accountToEdit?.id}`,
         accountData,
         token,

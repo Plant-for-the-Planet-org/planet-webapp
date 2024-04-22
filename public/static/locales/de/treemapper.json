@@ -62,5 +62,6 @@
   "speciesValidation": "Bitte gib eine Art ein",
   "external": "Extern",
   "date": "Datum",
-  "measurements": "Messwerte"
+  "measurements": "Messwerte",
+  "ignoredColumnsWarning": "Die zusätzlichen Spalten wurden ignoriert"
 }

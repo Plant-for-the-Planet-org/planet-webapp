@@ -5,8 +5,7 @@ import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from '@storybook/theming';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
-import { useEffect } from 'react';
-import globalStyles from '../src/theme/theme';
+import { lazy, useEffect } from 'react';
 import { useTheme } from '../src/theme/themeContext';
 
 // import { ThemeProvider } from 'emotion-theming';
@@ -16,6 +15,9 @@ import { useTheme } from '../src/theme/themeContext';
  * Read more about them at:
  * https://storybook.js.org/docs/react/writing-stories/decorators#global-decorators
  */
+
+const globalStyles = lazy(() => import('../src/theme/theme'));
+
 export const decorators = [
   (Story, context) => {
     const { locale } = context.globals;

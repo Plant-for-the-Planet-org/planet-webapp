@@ -19,6 +19,7 @@ import {
   Species,
   SpeciesSuggestionType,
 } from '../../../common/types/plantLocation';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface NewSpecies {
   aliases: string;
@@ -31,6 +32,7 @@ export default function MySpeciesForm() {
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<Species[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const { tenantConfig } = useTenant();
 
   const defaultMySpeciesValue = {
     aliases: '',
@@ -49,6 +51,7 @@ export default function MySpeciesForm() {
   const fetchMySpecies = async () => {
     try {
       const result = await getAuthenticatedRequest<Species[]>(
+        tenantConfig.id,
         '/treemapper/species',
         token,
         logoutUser
@@ -62,6 +65,7 @@ export default function MySpeciesForm() {
   const deleteSpecies = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig.id,
         `/treemapper/species/${id}`,
         token,
         logoutUser
@@ -83,6 +87,7 @@ export default function MySpeciesForm() {
     };
     try {
       await postAuthenticatedRequest(
+        tenantConfig.id,
         `/treemapper/species`,
         data,
         token,
