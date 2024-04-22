@@ -1,9 +1,9 @@
-import style from './DiveIntoMap.module.scss';
+import style from './MapPreview.module.scss';
 import ShowMapButton from './ShowMapButton';
 
 const MapPreview = () => {
   return (
-    <div className={style.diveIntoMapMainContainer}>
+    <div className={style.mapPreviewContainer}>
       <ShowMapButton />
     </div>
   );

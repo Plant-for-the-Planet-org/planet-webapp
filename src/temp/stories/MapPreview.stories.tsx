@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import MapPreview from '../diveButton/MapPreview';
+import MapPreview from '../MapPreview';
 
 const meta: Meta<typeof MapPreview> = {
   component: MapPreview,
