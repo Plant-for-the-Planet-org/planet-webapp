@@ -1,4 +1,4 @@
-import Filter from '../Project/Filter';
+import Filter, { Classification } from '../Project/Filter';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Filter> = {
@@ -8,14 +8,31 @@ const meta: Meta<typeof Filter> = {
 export default meta;
 type Story = StoryObj<typeof Filter>;
 
-export const inActive: Story = {
-  args: {
-    isFilter: false,
-  },
+interface FilterState {
+  availableFilters: Classification[];
+  filterApplied: Classification | undefined;
+}
+
+const filterState: FilterState = {
+  availableFilters: [
+    'large-scale-planting',
+    'agroforestry',
+    'natural-regeneration',
+    'managed-regeneration',
+    'urban-planting',
+    'other-planting',
+  ],
+  filterApplied: 'large-scale-planting',
 };
 
-export const active = {
+const setFilterApplied = (value: Classification | undefined) => {
+  window.alert(`${value} is selected`);
+};
+
+export const Default: Story = {
   args: {
-    isFilter: true,
+    filterApplied: filterState.filterApplied,
+    setFilterApplied: setFilterApplied,
+    availableFilters: filterState.availableFilters,
   },
 };

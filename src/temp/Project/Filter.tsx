@@ -4,49 +4,72 @@ import style from './Filter.module.scss';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 
+export type Classification =
+  | 'large-scale-planting'
+  | 'agroforestry'
+  | 'natural-regeneration'
+  | 'managed-regeneration'
+  | 'urban-planting'
+  | 'other-planting';
 interface FilterProps {
-  isFilter: boolean;
+  filterApplied: Classification | undefined;
+  setFilterApplied: (newValue: Classification | undefined) => void;
+  availableFilters: Classification[];
 }
 
-export const FilterDropDown = ({ isFilter }: FilterProps) => {
-  const { t } = useTranslation(['projectDetails', 'donate', 'manageProjects']);
-  const [selectEcosystem, setSelectEcosystem] = useState('');
-  const ecosystemType = [
-    t('projectDetails:allProjects'),
-    t('manageProjects:naturalRegeneration'),
-    t('manageProjects:mangroves'),
-    t('manageProjects:managedRegeneration'),
-    t('manageProjects:otherRestoration'),
-    t('manageProjects:treePlanting'),
-    t('manageProjects:agroforestry'),
-    t('donate:urban-planting'),
-    t('donate:conservation'),
-  ];
-  const handleClick = (singleEcosystem: string): void => {
-    setSelectEcosystem(singleEcosystem);
+export const FilterDropDown = ({
+  filterApplied,
+  setFilterApplied,
+  availableFilters,
+}: FilterProps) => {
+  const { t } = useTranslation([
+    'projectDetails',
+    'donate',
+    'manageProjects',
+    'allProjects',
+  ]);
+
+  const handleClick = (singleFilter: Classification | undefined): void => {
+    setFilterApplied(singleFilter);
   };
+
   return (
     <>
-      {isFilter && ecosystemType.length > 0 ? (
+      {availableFilters.length > 0 ? (
         <div className={style.projectListMainContainer}>
+          <button
+            className={style.filterButton}
+            onClick={() => handleClick(undefined)}
+          >
+            <div
+              className={
+                filterApplied === undefined
+                  ? style.filterSelected
+                  : style.projectName
+              }
+            >
+              {t('allProjects:classificationTypes.all')}
+            </div>
+            <hr className={style.hrLine} />
+          </button>
           <div className={style.container}>
-            {ecosystemType.map((singleEcosystem, index) => {
+            {availableFilters.map((singleFilter, index) => {
               return (
                 <button
                   key={index}
-                  className={style.ecosystemButton}
-                  onClick={() => handleClick(singleEcosystem)}
+                  className={style.filterButton}
+                  onClick={() => handleClick(singleFilter)}
                 >
                   <div
                     className={
-                      selectEcosystem === singleEcosystem
-                        ? style.ecosystemSelected
+                      filterApplied === singleFilter
+                        ? style.filterSelected
                         : style.projectName
                     }
                   >
-                    {singleEcosystem}
+                    {t(`allProjects:classificationTypes.${singleFilter}`)}
                   </div>
-                  {index !== ecosystemType.length - 1 && (
+                  {index !== availableFilters.length - 1 && (
                     <hr className={style.hrLine} />
                   )}
                 </button>
@@ -61,14 +84,24 @@ export const FilterDropDown = ({ isFilter }: FilterProps) => {
   );
 };
 
-const Filter = ({ isFilter }: FilterProps) => {
+const Filter = ({
+  filterApplied,
+  setFilterApplied,
+  availableFilters,
+}: FilterProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <Button>
+      <Button onClick={() => setIsOpen(!isOpen)}>
         <FilterIcon width={'16px'} />
       </Button>
-
-      <FilterDropDown isFilter={isFilter} />
+      {isOpen && (
+        <FilterDropDown
+          filterApplied={filterApplied}
+          setFilterApplied={setFilterApplied}
+          availableFilters={availableFilters}
+        />
+      )}
     </div>
   );
 };
