@@ -8,7 +8,7 @@ const meta: Meta<typeof SearchTabForMobile> = {
 export default meta;
 type Story = StoryObj<typeof SearchTabForMobile>;
 
-export const inActive: Story = {
+export const Default: Story = {
   args: {
     numberOfProject: 56,
   },

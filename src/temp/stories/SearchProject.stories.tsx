@@ -8,14 +8,4 @@ const meta: Meta<typeof SearchProject> = {
 export default meta;
 type Story = StoryObj<typeof SearchProject>;
 
-export const inActive: Story = {
-  args: {
-    isSearch: false,
-  },
-};
-
-export const active: Story = {
-  args: {
-    isSearch: true,
-  },
-};
+export const Default: Story = {};

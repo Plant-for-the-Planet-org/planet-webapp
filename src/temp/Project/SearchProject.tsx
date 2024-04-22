@@ -10,12 +10,9 @@ import CustomTab from './CustomTab';
 import { SearchTextField } from './CustomSearchTextField';
 import themeProperties from '../../theme/themeProperties';
 
-interface SearchProjectInterface {
-  isSearch: boolean;
-}
-const SearchProject = ({ isSearch }: SearchProjectInterface) => {
+const SearchProject = () => {
   const [input, setInput] = useState('');
-  const [activeSearch, setSearchActive] = useState(isSearch);
+  const [isSearching, setIsSearching] = useState(false);
   const { t } = useTranslation(['projectDetails']);
   const [value, setValue] = useState(0);
   const { primaryColorNew, dark } = themeProperties;
@@ -23,18 +20,17 @@ const SearchProject = ({ isSearch }: SearchProjectInterface) => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  console.log(value, '==1');
   return (
     <>
       <div className={style.searchBarMainConatiner}>
-        {isSearch || activeSearch ? (
+        {isSearching ? (
           <>
-            <div
+            <button
               className={style.activeSearchIcon}
-              onClick={() => setSearchActive(false)}
+              onClick={() => setIsSearching(!isSearching)}
             >
               <SearchIcon />
-            </div>
+            </button>
             <SearchTextField
               id="standard-search"
               variant="standard"
@@ -48,7 +44,7 @@ const SearchProject = ({ isSearch }: SearchProjectInterface) => {
             <button
               onClick={() => {
                 setInput('');
-                setSearchActive(false);
+                setIsSearching(false);
               }}
               className={style.crossIcon}
             >
@@ -99,7 +95,10 @@ const SearchProject = ({ isSearch }: SearchProjectInterface) => {
               />
             </Tabs>
             <div className={style.iconsContainer}>
-              <button className={style.icon}>
+              <button
+                className={style.icon}
+                onClick={() => setIsSearching(!isSearching)}
+              >
                 <SearchIcon />
               </button>
               <button className={style.icon}>
