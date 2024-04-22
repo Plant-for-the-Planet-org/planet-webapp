@@ -1,10 +1,13 @@
 @import '../../theme/theme';
 .diveIntoMapMainContainer {
-  width: 306px;
+  max-width: 306px;
+  width: 100%;
   height: 341px;
   background: grey; //need to be removed
   border-radius: 13.401px;
-  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .diveIntoProjectButton {
@@ -12,13 +15,13 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
-  position: absolute;
-  width: 274px;
   height: 40px;
   background: $primaryColorNew;
   border-radius: 8px;
-  bottom: 16px;
-  left: 16px;
+  margin-bottom: 15px;
+  max-width: 274px;
+  width: 100%;
+  cursor: pointer;
   .label {
     font-size: $fontXSmall;
     font-weight: 700;
