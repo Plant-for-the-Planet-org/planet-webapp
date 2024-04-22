@@ -21,3 +21,9 @@
     max-width: 250px;
    
 }
+
+@include xsPhoneView {
+    .imageSliderContainer {
+        max-width: 431px;
+    }
+}
