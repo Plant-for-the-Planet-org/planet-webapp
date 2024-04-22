@@ -19,8 +19,8 @@ const ProjectImagesSlider = ({ images, height, imageSize, type }: Props) => {
   useEffect(() => {
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
-        const imageURL = getImageUrl(type, imageSize, sliderImage.image);
-
+        // const imageURL = getImageUrl(type, imageSize, sliderImage.image);
+        const imageURL = sliderImage.image; //to be replaced with above line
         projectImages.push({
           content: () => (
             <ProjectSingleImage
