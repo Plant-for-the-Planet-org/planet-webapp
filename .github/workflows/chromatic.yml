@@ -7,16 +7,8 @@ name: 'Chromatic'
 on:
   push:
     branches:
-      - feature/storybook-update
       - develop
       - feature/redesign-explore-btn
-      - feature/dive_into_project
-      - feature/design-fire-popup
-      - feature/redesign-time-travel-dropdown
-      - feature/redesign-project-snippet-comp
-      - feature/redesign-site-dropdown
-      - feature/redesign-project-review-section
-      - feature/redesign-about-section
 # List of jobs
 jobs:
   chromatic-deployment:
