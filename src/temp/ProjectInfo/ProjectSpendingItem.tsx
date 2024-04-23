@@ -1,16 +1,16 @@
 import React from 'react';
 import styles from './ProjectInfo.module.scss';
 import { ProjectExpense } from '@planet-sdk/common';
-import CertificationLabel from './CertificationLabel';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
-import { renderDownloadIcon } from './ExternalCertification';
 import { useTranslation } from 'next-i18next';
+import DownloadButton from './DownloadButton';
+import DownloadsLabel from './DownloadsLabel';
 
 interface Props {
   spendings: ProjectExpense[];
 }
 
-const ProjectSpendingCertificationItem = ({ spendings }: Props) => {
+const ProjectSpendingItem = ({ spendings }: Props) => {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 481;
   const { i18n } = useTranslation();
@@ -20,24 +20,24 @@ const ProjectSpendingCertificationItem = ({ spendings }: Props) => {
       {spendings.map((expense) => (
         <div className={styles.spendingDetail} key={expense.id}>
           {isMobile ? (
-            <CertificationLabel>
+            <DownloadsLabel>
               <time>{expense.year}</time>
-            </CertificationLabel>
+            </DownloadsLabel>
           ) : (
-            <CertificationLabel>
+            <DownloadsLabel>
               <a href="#" target="_blank" rel="noreferrer">
                 {expense.year}
               </a>
-            </CertificationLabel>
+            </DownloadsLabel>
           )}
 
           <div>{getFormatedCurrency(i18n.language, 'EUR', expense.amount)}</div>
 
-          {renderDownloadIcon()}
+          <DownloadButton />
         </div>
       ))}
     </div>
   );
 };
 
-export default ProjectSpendingCertificationItem;
+export default ProjectSpendingItem;

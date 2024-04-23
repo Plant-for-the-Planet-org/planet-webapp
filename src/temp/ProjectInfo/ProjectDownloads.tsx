@@ -4,19 +4,8 @@ import { useTranslation } from 'next-i18next';
 import DownloadIcon from '../icons/DownloadIcon';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import ExternalCertificationItem from './ExternalCertificationItem';
-import ProjectSpendingCertificationItem from './ProjectSpendingCertificationItem';
-import ProgressReportCertificationItem from './ProgressReportCertificationItem';
-
-export const renderDownloadIcon = () => {
-  return (
-    <div className={styles.downloadIcon}>
-      <DownloadIcon
-        width={10}
-        color={`${'rgba(var(--certification-background-color-new))'}`}
-      />
-    </div>
-  );
-};
+import ProjectSpendingItem from './ProjectSpendingItem';
+import ProgressReportItem from './ProgressReportItem';
 
 interface ExternalCertificationProps {
   certification: string;
@@ -24,7 +13,7 @@ interface ExternalCertificationProps {
   progressReports: number[];
 }
 
-const ExternalCertification = ({
+const ProjectDownloads = ({
   certification,
   spendings,
   progressReports,
@@ -38,13 +27,11 @@ const ExternalCertification = ({
     },
     {
       title: `${t('manageProjects:projectSpending')}`,
-      content: <ProjectSpendingCertificationItem spendings={spendings} />,
+      content: <ProjectSpendingItem spendings={spendings} />,
     },
     {
       title: `${t('projectDetails:progressReports')}`,
-      content: (
-        <ProgressReportCertificationItem progressReports={progressReports} />
-      ),
+      content: <ProgressReportItem progressReports={progressReports} />,
     },
   ];
 
@@ -59,4 +46,4 @@ const ExternalCertification = ({
   );
 };
 
-export default ExternalCertification;
+export default ProjectDownloads;

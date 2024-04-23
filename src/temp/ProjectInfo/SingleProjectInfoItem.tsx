@@ -10,7 +10,11 @@ const SingleProjectInfoItem = ({ title, children }: Props) => {
   return (
     <div className={styles.singleRowInfoContainer}>
       <div className={styles.singleRowInfoContent}>
-        <div className={styles.singleRowInfoTitle}>{title}</div>
+        {typeof title === 'string' ? (
+          <h2 className={styles.singleRowInfoTitle}>{title}</h2>
+        ) : (
+          <div className={styles.singleRowInfoTitle}>{title}</div>
+        )}
         {children}
       </div>
     </div>

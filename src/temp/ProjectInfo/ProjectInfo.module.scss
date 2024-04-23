@@ -104,7 +104,7 @@
     display: none;  /* Safari and Chrome */
 }
 
-.certificationLabel {
+.downloadLabel {
     padding: 2px 9px;
     border-radius: 24px;
     border: 0.4px solid  rgba(var(--certification-background-color-new), 0.2); 
@@ -176,7 +176,7 @@
     .contactDetailsContainer, .moreInfoContainer, .certificationContainer, .projectInfoContainer {
         max-width: 240px;
     }
-    .certificationLabel {
+    .downloadLabel {
         background-color: transparent;
         border: 0px;
         font-weight: 400;

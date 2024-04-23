@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './ProjectInfo.module.scss';
-import CertificationLabel from './CertificationLabel';
-import { renderDownloadIcon } from './ExternalCertification';
+import DownloadsLabel from './DownloadsLabel';
+import DownloadButton from './DownloadButton';
 
 interface Props {
   progressReports: number[];
 }
 
-const ProgressReportCertificationItem = ({ progressReports }: Props) => {
+const ProgressReportItem = ({ progressReports }: Props) => {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 481;
   return (
@@ -15,21 +15,21 @@ const ProgressReportCertificationItem = ({ progressReports }: Props) => {
       {progressReports.map((report) => (
         <div key={report}>
           {isMobile ? (
-            <CertificationLabel>
+            <DownloadsLabel>
               <p>{report.toString()} </p>
-            </CertificationLabel>
+            </DownloadsLabel>
           ) : (
-            <CertificationLabel>
+            <DownloadsLabel>
               <a href="#" target="_blank" rel="noreferrer">
                 {report}
               </a>
-            </CertificationLabel>
+            </DownloadsLabel>
           )}
-          {renderDownloadIcon()}
+          <DownloadButton />
         </div>
       ))}
     </div>
   );
 };
 
-export default ProgressReportCertificationItem;
+export default ProgressReportItem;

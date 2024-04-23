@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import formatDate from '../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import InfoIconPopup from '../components/InfoIconPopup';
+import PlantingSeasons from './PlantingSeasons';
 
 interface Props {
   abandonment: number;
@@ -22,11 +23,7 @@ const KeyInfo = ({
   employees,
   plantingSeasons,
 }: Props) => {
-  const { t, ready } = useTranslation([
-    'manageProjects',
-    'common',
-    'projectDetails',
-  ]);
+  const { t } = useTranslation(['manageProjects', 'common', 'projectDetails']);
 
   const addZeroToDate = (val: string) => {
     const arr = val.split('-');
@@ -44,42 +41,12 @@ const KeyInfo = ({
     return newDateArr.join('-');
   };
 
-  const seasons = [
-    { id: 0, title: ready ? t('common:january') : '' },
-    { id: 1, title: ready ? t('common:february') : '' },
-    { id: 2, title: ready ? t('common:march') : '' },
-    { id: 3, title: ready ? t('common:april') : '' },
-    { id: 4, title: ready ? t('common:may') : '' },
-    { id: 5, title: ready ? t('common:june') : '' },
-    { id: 6, title: ready ? t('common:july') : '' },
-    { id: 7, title: ready ? t('common:august') : '' },
-    { id: 8, title: ready ? t('common:september') : '' },
-    { id: 9, title: ready ? t('common:october') : '' },
-    { id: 10, title: ready ? t('common:november') : '' },
-    { id: 11, title: ready ? t('common:december') : '' },
-  ];
-
-  const renderPlantingSeasons = () => {
-    return plantingSeasons.map((season, index) => (
-      <Fragment key={seasons[season - 1].title}>
-        {seasons[season - 1].title}
-        {index === plantingSeasons.length - 2 ? (
-          <span> {t('manageProjects:and')} </span>
-        ) : index === plantingSeasons.length - 1 ? (
-          '.'
-        ) : (
-          ', '
-        )}
-      </Fragment>
-    ));
-  };
-
   return (
     <div className={styles.projectInfoContainer}>
       <div className={styles.singleRowInfoContainer}>
         <SingleProjectInfoItem
           title={
-            <h1 className={styles.abandonmentTitle}>
+            <h2 className={styles.abandonmentTitle}>
               {t('manageProjects:abandonment')}
               <InfoIconPopup
                 height={10}
@@ -90,7 +57,7 @@ const KeyInfo = ({
                   {t('manageProjects:yearAbandonedInfo')}
                 </div>
               </InfoIconPopup>
-            </h1>
+            </h2>
           }
         >
           <p>
@@ -125,7 +92,7 @@ const KeyInfo = ({
       </div>
       <div className={styles.seperator}></div>
       <SingleProjectInfoItem title={t('projectDetails:plantingSeasons')}>
-        <>{renderPlantingSeasons()}</>
+        <PlantingSeasons plantingSeasons={plantingSeasons} />
       </SingleProjectInfoItem>
     </div>
   );

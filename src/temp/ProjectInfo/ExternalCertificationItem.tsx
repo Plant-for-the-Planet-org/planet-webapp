@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ProjectInfo.module.scss';
-import CertificationLabel from './CertificationLabel';
-import { renderDownloadIcon } from './ExternalCertification';
+import DownloadsLabel from './DownloadsLabel';
+import DownloadButton from './DownloadButton';
 
 interface Props {
   certification: string;
@@ -14,17 +14,17 @@ const ExternalCertificationItems = ({ certification }: Props) => {
   return (
     <div className={styles.infoDetail}>
       {isMobile ? (
-        <CertificationLabel>
+        <DownloadsLabel>
           <p>{certification}</p>
-        </CertificationLabel>
+        </DownloadsLabel>
       ) : (
-        <CertificationLabel>
+        <DownloadsLabel>
           <a href="#" target="_blank" rel="noreferrer">
             {certification}
           </a>
-        </CertificationLabel>
+        </DownloadsLabel>
       )}
-      {renderDownloadIcon()}
+      <DownloadButton />
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ExternalCertification from '../ProjectInfo/ExternalCertification';
+import ProjectDownloads from '../ProjectInfo/ProjectDownloads';
 
-const meta: Meta<typeof ExternalCertification> = {
-  component: ExternalCertification,
+const meta: Meta<typeof ProjectDownloads> = {
+  component: ProjectDownloads,
 };
 
 export default meta;
-type Story = StoryObj<typeof ExternalCertification>;
+type Story = StoryObj<typeof ProjectDownloads>;
 
 const expenses = [
   {
