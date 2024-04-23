@@ -10,6 +10,7 @@ import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import {
   Measurements,
   SampleTree,
@@ -39,6 +40,7 @@ export default function SampleTrees({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+  const { tenantConfig } = useTenant();
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
 
@@ -141,6 +143,7 @@ export default function SampleTrees({
 
     try {
       const res: SampleTree = await postAuthenticatedRequest(
+        tenantConfig?.id,
         `/treemapper/plantLocations`,
         sampleTree,
         token,

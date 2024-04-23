@@ -1,8 +1,13 @@
 {
-    "satelliteAnalysis": "Satellite Analysis",
-    "firstTreePlanted": "First tree planted",
-    "plantingSeasons": "planting seasons",
-    "privateProperty": "private property",
-    "publicProperty": "public property",
-    "progressReports": "progress reports"
+  "satelliteAnalysis": "Satellite Analysis",
+  "fieldReviewed": "Field Reviewed",
+  "offSiteReviewed": "Off-Site reviewed",
+  "report": "Report",
+  "seeLess": "see less",
+  "seeMore": "see more",
+  "firstTreePlanted": "First tree planted",
+  "plantingSeasons": "planting seasons",
+  "privateProperty": "private property",
+  "publicProperty": "public property",
+  "progressReports": "progress reports"
 }

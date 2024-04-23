@@ -13,6 +13,7 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Properties } from '../../common/types/project';
 import { Geometry } from '@turf/turf';
+import { useTenant } from '../../common/Layout/TenantContext';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 
@@ -96,6 +97,7 @@ function SingleProject({ project }: { project: Properties }) {
 
 export default function ProjectsContainer() {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
+  const { tenantConfig } = useTenant();
   const [projects, setProjects] = React.useState<UserProjectsType[]>([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -105,6 +107,7 @@ export default function ProjectsContainer() {
     if (user) {
       try {
         const projects = await getAuthenticatedRequest<UserProjectsType[]>(
+          tenantConfig?.id,
           '/app/profile/projects?version=1.2',
           token,
           logoutUser
