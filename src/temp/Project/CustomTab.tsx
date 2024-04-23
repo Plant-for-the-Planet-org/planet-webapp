@@ -1,6 +1,6 @@
 import { Tab, styled } from '@mui/material';
 
-const CustomTab = styled(Tab)(({}) => ({
+const CustomTab = styled(Tab)(() => ({
   flexDirection: 'row',
   textTransform: 'none',
   padding: '14px 0px',

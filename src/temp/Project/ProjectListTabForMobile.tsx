@@ -1,19 +1,22 @@
-import { useState } from 'react';
 import StarIcon from '../icons/StarIcon';
 import style from '../Project/Search.module.scss';
 import { Trans } from 'next-i18next';
 import themeProperties from '../../theme/themeProperties';
 
+type ProjectCollection = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
   numberOfProject: number;
+  tabSelected: ProjectCollection;
+  setTabSelected: (value: ProjectCollection) => void;
+  setIsFilterOpen: (value: boolean) => void;
 }
 
 const ProjectListTabForMobile = ({
   numberOfProject,
+  tabSelected,
+  setTabSelected,
+  setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
-  const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
-    'topProjects'
-  );
   const { light, dark } = themeProperties;
   return (
     <div className={style.projectListTabs}>
@@ -23,7 +26,10 @@ const ProjectListTabForMobile = ({
             ? style.activeTopProjectButton
             : style.topProjectButton
         }
-        onClick={() => setTabSelected('topProjects')}
+        onClick={() => {
+          setTabSelected('topProjects');
+          setIsFilterOpen(false);
+        }}
       >
         <div className={style.starIconContainer}>
           <StarIcon
@@ -55,7 +61,10 @@ const ProjectListTabForMobile = ({
             ? style.activeAllProjectButton
             : style.allProjectButton
         }
-        onClick={() => setTabSelected('allProjects')}
+        onClick={() => {
+          setIsFilterOpen(false);
+          setTabSelected('allProjects');
+        }}
       >
         <div className={style.allProjectLabel}>
           <Trans i18nKey="all">

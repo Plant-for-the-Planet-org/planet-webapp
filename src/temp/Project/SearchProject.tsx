@@ -1,56 +1,40 @@
 import { useState } from 'react';
-import CrossIcon from '../icons/CrossIcon';
 import FilterIcon from '../icons/FilterIcon';
 import SearchIcon from '../icons/SearchIcon';
 import StarIcon from '../icons/StarIcon';
 import Tabs from '@mui/material/Tabs';
 import style from './Search.module.scss';
-import { useTranslation, Trans } from 'next-i18next';
+import { Trans } from 'next-i18next';
 import CustomTab from './CustomTab';
-import { SearchTextField } from './CustomSearchTextField';
 import themeProperties from '../../theme/themeProperties';
+import ActiveSearchField from './ActiveSearchField';
+import { FilterDropDown } from './Filter';
+import { SearchTabForMobileProps } from './SearchTabForMobile';
 
-const SearchProject = () => {
-  const [input, setInput] = useState('');
+type SearchTabProps = Omit<SearchTabForMobileProps, 'numberOfProject'>;
+
+const SearchProject = ({
+  filterApplied,
+  setFilterApplied,
+  availableFilters,
+}: SearchTabProps) => {
   const [isSearching, setIsSearching] = useState(false);
-  const { t } = useTranslation(['projectDetails']);
   const [value, setValue] = useState(0);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { primaryColorNew, dark } = themeProperties;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    setIsFilterOpen(false);
   };
   return (
     <>
       <div className={style.searchBarMainConatiner}>
         {isSearching ? (
-          <>
-            <button
-              className={style.activeSearchIcon}
-              onClick={() => setIsSearching(!isSearching)}
-            >
-              <SearchIcon />
-            </button>
-            <SearchTextField
-              id="standard-search"
-              variant="standard"
-              placeholder={t('projectDetails:searchProject')}
-              value={input}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setInput(event.target.value);
-              }}
-            />
-
-            <button
-              onClick={() => {
-                setInput('');
-                setIsSearching(false);
-              }}
-              className={style.crossIcon}
-            >
-              <CrossIcon width={'18px'} />
-            </button>
-          </>
+          <ActiveSearchField
+            setIsSearching={setIsSearching}
+            setIsFilterOpen={setIsFilterOpen}
+          />
         ) : (
           <div className={style.searchBarContainer}>
             <Tabs
@@ -101,11 +85,23 @@ const SearchProject = () => {
               >
                 <SearchIcon />
               </button>
-              <button className={style.icon}>
+              <button
+                className={style.icon}
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+              >
                 <FilterIcon width={'16px'} />
               </button>
             </div>
           </div>
+        )}
+      </div>
+      <div className={style.filterDropDownContainer}>
+        {isFilterOpen && !isSearching && (
+          <FilterDropDown
+            setFilterApplied={setFilterApplied}
+            availableFilters={availableFilters}
+            filterApplied={filterApplied}
+          />
         )}
       </div>
     </>

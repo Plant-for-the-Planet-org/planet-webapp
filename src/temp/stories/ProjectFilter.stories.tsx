@@ -8,7 +8,7 @@ const meta: Meta<typeof Filter> = {
 export default meta;
 type Story = StoryObj<typeof Filter>;
 
-interface FilterState {
+export interface FilterState {
   availableFilters: Classification[];
   filterApplied: Classification | undefined;
 }
