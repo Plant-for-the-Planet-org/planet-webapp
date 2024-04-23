@@ -9,6 +9,7 @@ on:
     branches:
       - develop
       - feature/redesign-explore-btn
+      - feature/design-project-info-container
 # List of jobs
 jobs:
   chromatic-deployment:

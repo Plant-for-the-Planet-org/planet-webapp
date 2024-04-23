@@ -94,6 +94,12 @@ const getGlobalStyles = async () => {
       --review-font-color-new: ${light.reviewFontColorNew};
       --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
       --danger-color-new: ${light.dangerColorNew};
+      --abandonment-background-color-new: ${light.abandonmentBackgroundColorNew};
+      --more-info-background-color-new: ${light.moreInfoBackgroundColorNew};
+      --certification-background-color-new: ${light.certificationBackgroundColorNew};
+      --contactDetail-background-color-new: ${light.contactDetailBackgroundColorNew};
+      --certification-link-color-new: ${light.certificationLinkColorNew};
+      --secondary-divider-color-new: ${light.secondaryDividerColor};
     }
     .theme-dark {
       --primary-font-color: ${dark.primaryFontColor};

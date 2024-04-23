@@ -10,5 +10,10 @@
   "forestFire": "Forest Fire",
   "hoursAgo": "{{hours}}h ago",
   "highAlertConfidenceText": "<span>High</span> alert confidence",
-  "setUpAlertsText": "Set up alerts with <span>FireAlert</span>"
+  "setUpAlertsText": "Set up alerts with <span>FireAlert</span>",
+  "firstTreePlanted": "First tree planted",
+  "plantingSeasons": "planting seasons",
+  "privateProperty": "private property",
+  "publicProperty": "public property",
+  "progressReports": "progress reports"
 }
