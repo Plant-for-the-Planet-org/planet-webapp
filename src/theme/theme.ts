@@ -93,6 +93,7 @@ const getGlobalStyles = async () => {
       --divider-color-new: ${light.dividerColorNew};
       --review-font-color-new: ${light.reviewFontColorNew};
       --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
+      --danger-color-new: ${light.dangerColorNew};
       --abandonment-background-color-new: ${light.abandonmentBackgroundColorNew};
       --more-info-background-color-new: ${light.moreInfoBackgroundColorNew};
       --certification-background-color-new: ${light.certificationBackgroundColorNew};
