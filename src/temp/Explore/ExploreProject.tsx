@@ -4,7 +4,7 @@ import style from './Explore.module.scss';
 import { SmallSlider } from './CustomSlider';
 import PlayIcon from '../icons/PlayIcon';
 import CustomButton from './CustomButton';
-import MapLayers from './MapLayers';
+import MayLayerOptions from './MapLayerOptions';
 import { useTranslation } from 'next-i18next';
 
 interface ExploreProjectProps {
@@ -43,10 +43,7 @@ export const MapLayerToggle = ({
   );
 };
 
-export const YearRangeSlider = ({
-  startYear,
-  endYear,
-}: YearRangeSliderProps) => {
+export const YearRangeSlider = () => {
   const minDistance = 10;
   const [value1, setValue1] = useState<number[]>([20, 37]);
 
@@ -87,26 +84,26 @@ export const YearRangeSlider = ({
         </div>
       </div>
       <div className={style.yearRangeContainer}>
-        <div className={style.startYear}>{startYear}</div>
-        <div className={style.endYear}>{endYear}</div>
+        <div className={style.startYear}>{'2012'}</div>
+        <div className={style.endYear}>{'2024'}</div>
       </div>
     </div>
   );
 };
 
-const ExploreProject = ({ startYear, endYear }: ExploreProjectProps) => {
+const ExploreProject = () => {
   const { t } = useTranslation(['maps']);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <CustomButton
         startIcon={<ExploreIcon width={'19px'} />}
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(!isOpen)}
       >
         {t('maps:explore')}
       </CustomButton>
 
-      {isOpen ? <MapLayers startYear={startYear} endYear={endYear} /> : <></>}
+      {isOpen && <MayLayerOptions />}
     </>
   );
 };

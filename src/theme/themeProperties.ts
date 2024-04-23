@@ -28,9 +28,7 @@ const themeProperties = {
   primaryColorNew: '#219653',
   horizontalLineColorNew: '#bdbdbd',
   restorationToggleColorNew: '#2f80ed',
-  currentForestSwitchTrackColorNew: '#cae6d6',
-  restorationSwitchTrackColorNew: '#cde1fb',
-  deforestrationSwitchTrackColorNew: '#fad7d7',
+  deforestrationToggleColorNew: 'rgba(235, 87, 87, 1)',
   exploreDescriptionBackground: '242, 242, 242',
   light: {
     primaryFontColor: '#2f3336',

@@ -3,7 +3,7 @@ import theme from '../../theme/themeProperties';
 
 const { fontSizes, light } = theme;
 
-const CustomButton = styled(Button)(({}) => ({
+const CustomButton = styled(Button)(() => ({
   '&.MuiButton-root': {
     width: '182px',
     height: '47px',

@@ -5,15 +5,19 @@ import InfoIcon from '../icons/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
 import { YearRangeSlider } from './ExploreProject';
 import { useTranslation } from 'next-i18next';
-import { YearRangeSliderProps } from './ExploreProject';
+import themeProperties from '../../theme/themeProperties';
 
-const MapLayers = ({ startYear, endYear }: YearRangeSliderProps) => {
+const MayLayerOptions = () => {
   const [checked, setChecked] = useState(false);
   const { t } = useTranslation(['allProjects', 'maps']);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
-
+  const {
+    primaryColorNew,
+    restorationToggleColorNew,
+    deforestrationToggleColorNew,
+  } = themeProperties;
   return (
     <div className={style.exploreMainContainer}>
       <div className={style.exploreContainer}>
@@ -21,13 +25,15 @@ const MapLayers = ({ startYear, endYear }: YearRangeSliderProps) => {
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
             label={t('allProjects:currentForests')}
-            switchComponent={<StyledSwitch currentforestswitch="true" />}
+            switchComponent={<StyledSwitch colors={`${primaryColorNew}`} />}
           />
           <div className={style.hrLine} />
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
             label={t('allProjects:restorationPotential')}
-            switchComponent={<StyledSwitch restorationswitch="true" />}
+            switchComponent={
+              <StyledSwitch colors={`${restorationToggleColorNew}`} />
+            }
           />
           <div className={style.hrLine} />
           <MapLayerToggle
@@ -35,14 +41,12 @@ const MapLayers = ({ startYear, endYear }: YearRangeSliderProps) => {
             label={t('allProjects:deforestation')}
             switchComponent={
               <StyledSwitch
-                deforestationswitch="true"
+                colors={`${deforestrationToggleColorNew}`}
                 onChange={handleChange}
               />
             }
           />
-          {checked && (
-            <YearRangeSlider startYear={startYear} endYear={endYear} />
-          )}
+          {checked && <YearRangeSlider />}
           <div className={style.hrLine} />
           <MapLayerToggle
             infoIcon={undefined}
@@ -58,4 +62,4 @@ const MapLayers = ({ startYear, endYear }: YearRangeSliderProps) => {
   );
 };
 
-export default MapLayers;
+export default MayLayerOptions;
