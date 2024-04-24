@@ -1,7 +1,7 @@
 import { Switch, styled } from '@mui/material';
 
 interface SwitchProps {
-  colors?: string;
+  customColor?: string;
 }
 
 const baseSwitchStyle = {
@@ -29,11 +29,13 @@ const baseSwitchStyle = {
 const SmallSwitch = styled(Switch)(() => ({
   ...baseSwitchStyle,
 }));
-export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(({ colors }) => ({
-  '.MuiSwitch-switchBase.Mui-checked': {
-    color: `${colors}`,
-  },
-  '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-    backgroundColor: `${colors}`,
-  },
-}));
+export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
+  ({ customColor }) => ({
+    '.MuiSwitch-switchBase.Mui-checked': {
+      color: `${customColor}`,
+    },
+    '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+      backgroundColor: `${customColor}`,
+    },
+  })
+);
