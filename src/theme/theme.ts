@@ -13,6 +13,9 @@ const {
   topProjectBackgroundColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
+  deforestrationRangeBackgroundNew,
+  horizontalLineColorNew,
+  exploreDescriptionBackground,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -54,6 +57,7 @@ const getGlobalStyles = async () => {
       --secondary-font-family: ${tenantConfig
         ? tenantConfig.config.font.secondaryFontFamily
         : defaultFontFamily};
+      --font-xxxx-extra-small-new: ${fontSizes.fontXXXXSmallNew};
       --font-xxx-extra-small-new: ${fontSizes.fontXXXSmallNew};
       --font-xx-extra-small: ${fontSizes.fontXXSmall};
       --font-x-extra-small: ${fontSizes.fontXSmall};
@@ -70,6 +74,9 @@ const getGlobalStyles = async () => {
       --top-project-background-color: ${topProjectBackgroundColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
       --primary-color-new: ${primaryColorNew};
+      --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
+      --explore-description-background-color-new: ${exploreDescriptionBackground};
+      --horizontal-line-color: ${horizontalLineColorNew};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};
