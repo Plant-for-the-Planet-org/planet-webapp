@@ -11,23 +11,19 @@ import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 type PopupClosedData = {
   show: false;
 };
-
 type PopupOpenData = {
   show: true;
   lat: number;
   long: number;
   project: MapProject;
 };
-
 export type PopupData = PopupClosedData | PopupOpenData;
-
 interface Props {
   searchedProject: MapProject[];
   setPopupData: SetState<PopupData>;
   popupData: PopupData;
   isMobile: boolean;
 }
-
 export default function Markers({
   searchedProject,
   setPopupData,
@@ -36,11 +32,9 @@ export default function Markers({
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
-
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -76,14 +70,10 @@ export default function Markers({
                             : '?embed=true'
                         }`
                       : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
+                  }`
                 );
               }}
-              onKeyPress={() => {
+              onKeyDown={() => {
                 router.push(
                   `/${projectMarker.properties.slug}/${
                     embed === 'true'
@@ -93,11 +83,7 @@ export default function Markers({
                             : '?embed=true'
                         }`
                       : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
+                  }`
                 );
               }}
               role="button"
@@ -154,15 +140,11 @@ export default function Markers({
                             : '?embed=true'
                         }`
                       : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
+                  }`
                 );
               }
             }}
-            onKeyPress={() => {
+            onKeyDown={() => {
               router.push(
                 `/${popupData.project.properties.slug}/${
                   embed === 'true'
@@ -172,11 +154,7 @@ export default function Markers({
                           : '?embed=true'
                       }`
                     : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
-                }
+                }`
               );
             }}
             role="button"

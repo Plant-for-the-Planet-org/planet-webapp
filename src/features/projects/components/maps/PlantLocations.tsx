@@ -231,7 +231,9 @@ export default function PlantLocations(): ReactElement {
                   {viewport.zoom > 14 && (
                     <div
                       key={`${pl.id}-marker`}
-                      onClick={() => openPl(pl)}
+                      onClick={() => {
+                        openPl(pl);
+                      }}
                       onMouseEnter={() => onHover(pl)}
                       onMouseLeave={onHoverEnd}
                       className={`${styles.single} ${

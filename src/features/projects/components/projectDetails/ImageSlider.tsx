@@ -21,7 +21,7 @@ export default function ImageSlider({
   imageSize,
   type,
 }: Props) {
-  const [slider, setSlider] = React.useState<ReactElement>();
+  const [slider, setSlider] = React.useState<ReactElement>(<div></div>);
   const projectImages: { content: () => ReactElement }[] = [];
 
   const loadImageSource = (imageName: string): string => {
@@ -33,7 +33,6 @@ export default function ImageSlider({
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
-
         projectImages.push({
           content: () => (
             <div
@@ -57,15 +56,19 @@ export default function ImageSlider({
   }, [images]);
 
   React.useEffect(() => {
-    setSlider(
-      <Stories
-        stories={projectImages}
-        defaultInterval={7000}
-        width="100%"
-        height={height}
-        loop={true}
-      />
-    );
+    if (projectImages.length > 0) {
+      setSlider(
+        <Stories
+          stories={projectImages}
+          defaultInterval={7000}
+          width="100%"
+          height={height}
+          loop={true}
+        />
+      );
+    } else {
+      setSlider(<div></div>);
+    }
   }, [images]);
 
   return <>{slider}</>;

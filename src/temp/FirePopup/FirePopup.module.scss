@@ -1,0 +1,98 @@
+@import '../../theme/theme';
+
+.arrow {
+    display: block;
+    height: 0px;
+    width: 0px;
+    border: 10px solid transparent;
+    border-top-color: $light;
+    position: absolute;
+    bottom: -19px;
+    left: calc(50% - 10px);
+}
+    
+//fireIcon style : to be removed
+.fireIcon {
+   width:100%;
+   display: flex;
+   justify-content: center;
+   margin-top: 20%; 
+   padding-top:20px;
+   cursor: pointer;
+}
+
+.popupContainer {
+    background-color: $backgroundColor;
+    border-radius: 8px;
+    svg {
+        overflow: visible;
+    }
+}
+
+.popupTitle {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(232, 111, 86, 0.2); //to be replaced
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px 8px 0 0;
+
+   .titleText {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 700;
+    color: #333; //to be replaced
+    font-size: $fontXSmall;
+   }
+}
+
+.popupText {
+    padding: 14px;
+    font-size: $fontXSmall;
+    font-weight: 400;
+    color: #4F4F4F; //to be replaced
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    .coordinates {
+        color: #828282;//to be replaced
+    }
+    span {
+        font-weight: 700;
+    }
+   
+}
+
+.setUpAlertsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 13px;
+    .setUpAlerts {
+        span {
+            color: $dangerColorNew;
+        }
+    }
+}
+
+.infoIconPopupContainer {
+    padding: 10px;
+    max-width: 123px;
+    font-size: $fontXXSmall;
+    border-radius: 8px;
+}
+
+.timeDuration {
+    font-size: $fontXXSmall;
+    font-weight: 600;
+    color: $dangerColorNew;
+    display: flex;
+    gap: 3px;
+}
+
+//to be removed
+@include xsPhoneView {
+    .fireIcon {
+        margin-top: 60%;
+    }
+}
