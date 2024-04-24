@@ -1,8 +1,16 @@
-import { TextField, styled } from '@mui/material';
-import tenantConfig from '../../../../tenant.config';
-const config = tenantConfig();
+import { TextField, TextFieldProps, styled } from '@mui/material';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { useTenant } from '../Layout/TenantContext';
 
-const MaterialTextField = styled(TextField)({
+interface StyledTextFieldType {
+  config: Tenant;
+}
+
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => {
+    return prop !== 'config';
+  },
+})(({ config }: StyledTextFieldType) => ({
   width: '100%',
   color: 'var(--primary-font-color)',
   '& .MuiInputBase-input.MuiOutlinedInput-input': {
@@ -10,11 +18,11 @@ const MaterialTextField = styled(TextField)({
   },
   '& label.Mui-focused': {
     color: 'var(--primary-font-color)',
-    fontFamily: config.font.primaryFontFamily,
+    fontFamily: config.config.font.primaryFontFamily,
   },
   '& label': {
     color: 'var(--primary-font-color)',
-    fontFamily: config.font.primaryFontFamily,
+    fontFamily: config.config.font.primaryFontFamily,
     fontSize: '14px',
     top: '-3px',
   },
@@ -29,7 +37,7 @@ const MaterialTextField = styled(TextField)({
     color: 'var(--primary-font-color)',
     border: '0px!important',
     borderRadius: '10px',
-    fontFamily: config.font.primaryFontFamily,
+    fontFamily: config.config.font.primaryFontFamily,
   },
   '& .MuiOutlinedInput-input': {
     padding: '14px',
@@ -51,6 +59,12 @@ const MaterialTextField = styled(TextField)({
   '& .Mui-disabled.MuiOutlinedInput-input ': {
     color: 'var(--disabled-font-color)',
   },
-});
+}));
+
+const MaterialTextField = (props: TextFieldProps) => {
+  const { tenantConfig } = useTenant();
+
+  return <StyledTextField config={tenantConfig} {...props} />;
+};
 
 export default MaterialTextField;

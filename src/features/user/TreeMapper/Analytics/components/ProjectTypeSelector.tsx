@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState, useEffect, CSSProperties } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 
@@ -27,10 +27,12 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 
 interface ProjectTypeSelectorProps {
   handleProjectTypeChange?: (projectType: ProjectType | null) => void; // eslint-disable-line no-unused-vars
+  styles?: CSSProperties | null;
 }
 
 const ProjectTypeSelector = ({
   handleProjectTypeChange,
+  styles = null,
 }: ProjectTypeSelectorProps): ReactElement | null => {
   const [localProjectType, setLocalProjectType] = useState<ProjectType | null>(
     null
@@ -50,6 +52,7 @@ const ProjectTypeSelector = ({
   if (ready) {
     return (
       <MuiAutocomplete
+        style={styles ? styles : {}}
         options={projectTypeList}
         getOptionLabel={(option) => t(option as ProjectType)}
         isOptionEqualToValue={(option, value) =>
