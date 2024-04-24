@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectImagesSlider from '../ProjectImagesSlider';
+import ImagesSlider from '../ImagesSlider';
 
-const meta: Meta<typeof ProjectImagesSlider> = {
-  component: ProjectImagesSlider,
+const meta: Meta<typeof ImagesSlider> = {
+  component: ImagesSlider,
 };
 
 export default meta;
-type Story = StoryObj<typeof ProjectImagesSlider>;
+type Story = StoryObj<typeof ImagesSlider>;
 
 const images = [
   {

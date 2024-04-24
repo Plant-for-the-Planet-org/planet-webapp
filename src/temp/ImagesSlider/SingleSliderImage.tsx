@@ -7,7 +7,7 @@ interface Props {
   sliderImage: SliderImage;
 }
 
-export const ProjectSingleImage = ({ type, imageURL, sliderImage }: Props) => {
+export const SingleSliderImage = ({ type, imageURL, sliderImage }: Props) => {
   return (
     <div
       className={styles.sliderContent}
