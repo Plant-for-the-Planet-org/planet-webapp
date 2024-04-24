@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
-import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
@@ -99,7 +98,7 @@ export default function Project({
 
   // for project site
   useEffect(() => {
-    if (project.sites && siteExists && !router.query.ploc && !selectedPl) {
+    if (project.sites && siteExists && router.query.site && !selectedPl) {
       loadRasterData();
       zoomToProjectSite(
         {
@@ -113,7 +112,7 @@ export default function Project({
         4000
       );
     }
-  }, [siteExists]);
+  }, [siteExists, router.query.site]);
 
   // A site may have a polygon or point (the below logic is for polygon)
   useEffect(() => {
