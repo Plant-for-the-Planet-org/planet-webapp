@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
@@ -43,7 +43,7 @@ export default function Project({
   } = useProjectProps();
 
   const router = useRouter();
-  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
+  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = useState<
     Position[] | null
   >(null);
 
@@ -90,15 +90,16 @@ export default function Project({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (plantLocations && selectedPl && selectedPl.type === 'multi') {
       setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
     if (selectedPl) router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
   }, [selectedPl]);
 
-  React.useEffect(() => {
-    if (project.sites && siteExists && !router.query.ploc) {
+  // for project site
+  useEffect(() => {
+    if (project.sites && siteExists && !router.query.ploc && !selectedPl) {
       loadRasterData();
       zoomToProjectSite(
         {
@@ -111,7 +112,12 @@ export default function Project({
         setSiteViewPort,
         4000
       );
-    } else if (plantLocations && router.query.ploc && selectedPl) {
+    }
+  }, [siteExists]);
+
+  // A site may have a polygon or point (the below logic is for polygon)
+  useEffect(() => {
+    if (plantLocations && router.query.ploc && selectedPl) {
       if (selectedPl?.type === 'multi' && plantPolygonCoordinates) {
         zoomToPlantLocation(
           plantPolygonCoordinates,
@@ -121,25 +127,8 @@ export default function Project({
           1200
         );
       }
-    } else {
-      zoomToLocation(
-        viewport,
-        setViewPort,
-        project.coordinates.lon,
-        project.coordinates.lat,
-        5,
-        3000
-      );
     }
-  }, [
-    project,
-    siteExists,
-    plantLocations,
-    router.query.ploc,
-    selectedPl,
-    plantPolygonCoordinates,
-  ]);
-
+  }, [router.query.ploc, selectedPl, plantPolygonCoordinates]);
   //Props
   const locationProps = {
     siteExists,

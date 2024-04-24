@@ -26,7 +26,6 @@ export default function zoomToProjectSite(
       isPortrait = window.orientation === 0 || window.orientation === 180;
     }
     const isMobile = window.innerWidth <= 767 && isPortrait;
-    //console.log("zoomToProjectSite", viewport, viewport.width, window.innerWidth, viewport.height, window.innerHeight);
 
     const bbox = turf.bbox(geoJson.features[selectedSite]);
 
