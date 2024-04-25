@@ -105,9 +105,80 @@ export default function ContentSection() {
               .
             </p>
             <p>
-              In 2023, Salesforce provided funding to conserve, restore, and
-              grow over 8 M trees across 8 high quality mangrove projects [TODO
-              - LINK to April philanthropy rollup].
+              In partnership with{' '}
+              <a
+                href="https://www.plant-for-the-planet.org/?gad_source=1&gclid=CjwKCAjw8diwBhAbEiwA7i_sJWbkVU_BglqiNDU1QLKdNko2AdseFgtGEu65nINJ2o8UwHR5DcLAVhoCNkIQAvD_BwE"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Plant-for-the-Planet
+              </a>
+              , we invested in eight mangrove restoration and conservation
+              projects to support the Mangrove Breakthrough, including{' '}
+              <a
+                href="https://blueventures.org/what-we-do/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Blue Ventures
+              </a>
+              ,{' '}
+              <a
+                href="https://www.wwf.mg/en/our_work/priority_places/mtb_landscape/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                World Wildlife Fund (WWF)
+              </a>
+              ,{' '}
+              <a
+                href="https://osaconservation.org/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Osa Conservation
+              </a>
+              ,{' '}
+              <a
+                href="https://onetreeplanted.org/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                One Tree Planted
+              </a>
+              ,{' '}
+              <a
+                href="https://oceanfdn.org/climate-resilience-on-the-coast-of-chiapas-mexico/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Fundación Mexicana para el Océano A.C.
+              </a>
+              ,{' '}
+              <a
+                href="https://www.perryinstitute.org/wp-content/uploads/2023/10/Mangrove-Report-Card-FINAL-interactive-.pdf"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Perry Institute of Marine Science
+              </a>
+              ,{' '}
+              <a
+                href="https://www.conservation.org/priorities/surf-conservation"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Conservation International
+              </a>
+              , and the{' '}
+              <a
+                href="https://soatanzania.or.tz/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Sustainable Ocean Alliance Tanzania
+              </a>
+              .
             </p>
             <p>
               In 2022, Salesforce included several mangrove projects in the{' '}
