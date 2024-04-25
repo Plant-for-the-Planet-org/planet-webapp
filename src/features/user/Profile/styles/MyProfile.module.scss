@@ -139,7 +139,7 @@
 
 .publicProfileMainContainer {
   max-width: 1400px;
-  padding-top: 30px;
+  padding-top: 20px;
   background-color: $backgroundBase;
   @include xsPhoneView {
     padding-left: 0px;
@@ -151,10 +151,20 @@
   gap: 12px;
 }
 .profileContainer {
-  margin-top: 140px;
+  margin-top: 80px;
+  padding-top: 20px;
+  @include xsPhoneView {
+    margin-top: 140px;
+    padding-top: 0px;
+  }
 }
 
 .publicProfile {
   width: 100%;
   background: $backgroundBase;
+  margin-top: 80px;
+
+  &.impersonationMode {
+    margin-top: 130px;
+  }
 }
