@@ -299,7 +299,7 @@ export const MapContainer = () => {
           return;
         }
       }
-      const getResponse = setTimeout(fetchProjectLocations, 2000);
+      const getResponse = setTimeout(fetchProjectLocations, 500);
       return () => clearTimeout(getResponse);
     }
   }, [project, species, queryType, fromDate, toDate]);
