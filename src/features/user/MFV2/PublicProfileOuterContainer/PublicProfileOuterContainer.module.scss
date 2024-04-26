@@ -4,7 +4,14 @@
   background-color: $backgroundBase;
   margin-top: 80px;
   min-height: 100vh;
-  padding: 20px 40px 40px;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
+  width: 100%;
+}
+
+@include smTabletView {
+  .mainContainer {
+    padding: 20px 40px 40px;
+  }
 }

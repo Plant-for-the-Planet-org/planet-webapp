@@ -1,0 +1,109 @@
+@import '../../../../theme/theme';
+
+.publicProfileLayout {
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    'profileContainer'
+    'mapContainer'
+    'progressContainer'
+    'myContributionsContainer'
+    'communityContributionsContainer'
+    'infoAndCtaContainer';
+  gap: 16px;
+
+  > section {
+    border-radius: 16px;
+    background-color: #fff;
+    border: 4px solid #fff;
+    margin: 0 20px;
+    // Temporary value
+    padding: 20px;
+  }
+
+  // heights are temporary values and may not be needed
+  .profileContainer {
+    height: 300px;
+    grid-area: profileContainer;
+  }
+
+  .mapContainer {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    height: 435px;
+    grid-area: mapContainer;
+  }
+
+  .progressContainer {
+    height: 300px;
+    grid-area: progressContainer;
+  }
+
+  .myContributionsContainer {
+    height: 500px;
+    grid-area: myContributionsContainer;
+  }
+
+  .communityContributionsContainer {
+    height: 500px;
+    grid-area: communityContributionsContainer;
+  }
+
+  .infoAndCtaContainer {
+    height: 600px;
+    grid-area: infoAndCtaContainer;
+  }
+}
+
+@include smTabletView {
+  .publicProfileLayout {
+    > section {
+      margin: 0;
+    }
+
+    .mapContainer {
+      border-radius: 16px;
+      border: 4px solid #fff;
+    }
+  }
+}
+
+@include mdTabletView {
+  .publicProfileLayout {
+    grid-template-columns: 19fr 1fr 10fr 10fr;
+    grid-template-rows: 300px 200px 500px 600px;
+    grid-template-areas:
+      'profileContainer mapContainer mapContainer mapContainer'
+      'progressContainer progressContainer progressContainer progressContainer'
+      'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
+      'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+
+    > section {
+      border-radius: 24px;
+    }
+
+    .profileContainer,
+    .mapContainer,
+    .progressContainer,
+    .myContributionsContainer,
+    .communityContributionsContainer,
+    .infoAndCtaContainer {
+      height: auto;
+    }
+  }
+}
+
+@include lgLaptopView {
+  .publicProfileLayout {
+    grid-template-columns: 3fr 1fr 2fr 2fr;
+    grid-template-areas:
+      'profileContainer mapContainer mapContainer mapContainer'
+      'progressContainer progressContainer progressContainer progressContainer'
+      'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
+      'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+  }
+}

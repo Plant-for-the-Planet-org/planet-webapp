@@ -13,6 +13,7 @@ import getMessagesForPage from '../../../../../src/utils/language/getMessagesFor
 import { defaultTenant } from '../../../../../tenant.config';
 import Head from 'next/head';
 import PublicProfileOuterContainer from '../../../../../src/features/user/MFV2/PublicProfileOuterContainer';
+import PublicProfileLayout from '../../../../../src/features/user/MFV2/PublicProfileLayout';
 
 interface Props {
   pageProps: PageProps;
@@ -25,9 +26,7 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
         <title>My Forest V2</title>
       </Head>
       <PublicProfileOuterContainer>
-        <div>
-          <h1>My Forest V2</h1>
-        </div>
+        <PublicProfileLayout />
       </PublicProfileOuterContainer>
     </>
   ) : (
