@@ -14,13 +14,12 @@
   top: 0;
 }
 .top_nav {
-  justify-content: center;
+  justify-content: flex-end;
   width: 100%;
   height: 80px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  max-width: 1660px;
   z-index: 1030;
   position: relative;
 }
@@ -58,9 +57,7 @@
 
 .menuItems {
   display: flex;
-  flex-direction: row;
-  height: 100%;
-  margin-left: -54px;
+  padding-right: 34px;
   .linkContainer {
     display: flex;
     flex-direction: column;
@@ -69,11 +66,11 @@
     margin: 10px;
     > p {
       font-family: $primaryFontFamily;
-      font-size: $fontSmall;
-      font-weight: 700;
+      font-size: $fontMedium;
+      font-weight: 600;
       margin: 5px;
       line-height: 1;
-      color: $primaryFontColor;
+      color: rgba(47, 51, 54, 1);
     }
     > p.active_icon {
       color: $primaryColor;
@@ -105,9 +102,11 @@
 }
 
 .subMenu {
+  display: flex;
+  align-items: center;
   position: relative;
   .subMenuItems {
-    top: 78px;
+    top: 48px;
     left: -5px;
     position: absolute;
     height: 330px;
@@ -169,17 +168,7 @@
   }
 }
 
-@include mdTabletView {
-  .top_nav {
-    justify-content: center;
-  }
-}
-
 @include xsPhoneView {
-  // .mainNavContainer {
-  //   bottom: 0;
-  //   top: auto;
-  // }
   .top_nav {
     display: flex !important;
     padding: 0;
@@ -206,7 +195,7 @@
   .menuItems {
     margin-left: 0px;
     position: absolute;
-    right: 8px;
+    right: -8px;
     justify-content: right;
     align-items: center;
     .linkContainer {
@@ -223,4 +212,34 @@
     top: 68px !important;
     left: -120px !important;
   }
+}
+
+//new version
+
+.signInButton {
+  width: 126px;
+  height: 46px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 1);
+  background: linear-gradient(134.6deg, #68b030 -52.19%, #007a49 100%);
+  border-radius: 100px;
+  font-size: 16px;
+  @include xsPhoneView {
+    width: 76px;
+    height: 32px;
+    font-size: 12px;
+  }
+}
+
+.profileImageButton {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(223, 244, 232, 1);
+  cursor: pointer;
 }
