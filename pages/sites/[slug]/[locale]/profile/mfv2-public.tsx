@@ -1,3 +1,4 @@
+// This page will be moved to a different place in the future, as it is not a part of the user dashboard
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import {
   GetStaticProps,
