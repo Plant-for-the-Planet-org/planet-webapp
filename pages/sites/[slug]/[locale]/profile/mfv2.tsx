@@ -14,6 +14,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ProfileOuterContainer from '../../../../../src/features/user/MFV2/ProfileOuterContainer';
+import ProfileLayout from '../../../../../src/features/user/MFV2/ProfileLayout';
 
 interface Props {
   pageProps: PageProps;
@@ -26,9 +27,7 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
         <title>My Forest V2</title>
       </Head>
       <ProfileOuterContainer>
-        <div>
-          <h1>My Forest V2</h1>
-        </div>
+        <ProfileLayout />
       </ProfileOuterContainer>
     </UserLayout>
   ) : (
