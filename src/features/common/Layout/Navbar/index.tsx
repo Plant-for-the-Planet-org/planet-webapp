@@ -202,6 +202,14 @@ export default function NavbarComponent() {
             if (link === 'shop' && mobileWidth) {
               SingleLink.visible = false;
             }
+
+            const subMenuLinks = SingleLink.subMenu?.map(
+              (subItem) => subItem.onclick
+            );
+            const isActive =
+              router.pathname === SingleLink.onclick ||
+              subMenuLinks?.includes(router.pathname);
+
             return SingleLink.visible ? (
               <div
                 className={`${hasSubMenu ? 'subMenu' : ''}`}
@@ -237,13 +245,7 @@ export default function NavbarComponent() {
                         {t('common:' + SingleLink.title)}
                       </p>
                     ) : (
-                      <p
-                        className={
-                          router.pathname === SingleLink.onclick
-                            ? 'active_icon'
-                            : ''
-                        }
-                      >
+                      <p className={isActive ? 'active_icon' : ''}>
                         {t('common:' + SingleLink.title)}
                       </p>
                     )}
@@ -253,36 +255,59 @@ export default function NavbarComponent() {
                   {SingleLink.subMenu &&
                     SingleLink.subMenu.length > 0 &&
                     SingleLink.subMenu.map((submenu) => {
-                      return (
-                        <a
-                          key={submenu.title}
-                          className={'menuRow'}
-                          href={`https://a.plant-for-the-planet.org/${
-                            lang_path[i18n.language as keyof typeof lang_path]
-                              ? lang_path[
-                                  i18n.language as keyof typeof lang_path
-                                ]
-                              : 'en'
-                          }/${
-                            subMenuPath[
-                              submenu.title as keyof typeof subMenuPath
-                            ]
-                          }`}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
+                      if (submenu.onclick.startsWith('/')) {
+                        return (
+                          <Link
+                            className={'menuRow'}
+                            key={submenu.title}
+                            href={submenu.onclick}
                           >
-                            <GetSubMenu title={submenu.title} />
-                            <div className={'menuText'}>
-                              {t('common:' + submenu.title)}
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <GetSubMenu title={submenu.title} />
+                              <div className={'menuText'}>
+                                {t('common:' + submenu.title)}
+                              </div>
                             </div>
-                          </div>
-                        </a>
-                      );
+                          </Link>
+                        );
+                      } else {
+                        return (
+                          <a
+                            key={submenu.title}
+                            className={'menuRow'}
+                            href={`https://a.plant-for-the-planet.org/${
+                              lang_path[i18n.language as keyof typeof lang_path]
+                                ? lang_path[
+                                    i18n.language as keyof typeof lang_path
+                                  ]
+                                : 'en'
+                            }/${
+                              subMenuPath[
+                                submenu.title as keyof typeof subMenuPath
+                              ]
+                            }`}
+                          >
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <GetSubMenu title={submenu.title} />
+                              <div className={'menuText'}>
+                                {t('common:' + submenu.title)}
+                              </div>
+                            </div>
+                          </a>
+                        );
+                      }
                     })}
                 </div>
               </div>

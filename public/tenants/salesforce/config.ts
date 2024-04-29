@@ -22,9 +22,21 @@ const config = {
         visible: true,
       },
       campaign: {
-        title: 'vtoChallenge',
+        title: 'campaigns',
         onclick: '/vto-fitness-challenge',
         visible: true,
+        subMenu: [
+          {
+            title: 'vtoChallenge',
+            onclick: '/vto-fitness-challenge',
+            visible: true,
+          },
+          {
+            title: 'mangroves',
+            onclick: '/mangroves',
+            visible: true,
+          },
+        ],
       },
       donate: {
         title: 'donate_gift',

@@ -10,22 +10,39 @@ import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
 
+const MANGROVE_PROJECTS = [
+  'proj_4urzfQ47Xwv5SlNOurnXn2hU',
+  'proj_7gmlF7Q8aL65V7j7AG9NW8Yy',
+  'proj_StWEs2TGZFPf1WgfT6IJQoLC',
+  'proj_cVpKWdkq5nM31NfQ5Yn9pXMY',
+  'proj_mgtS4XFpiL6RCieGK403qDG5',
+  'proj_FEvW3WIB0Vcq2far1ppJvgLs',
+  'proj_AzYMCCfmCnrwfS8nilKFng8z',
+  'proj_70kDfWL50GRS79MHDaCXMwY1',
+  'proj_ekdaWSYWHRBdtAzncLVdclzP',
+  'proj_h27ErrwYmhAGB5jp6nyLGEkN',
+  'proj_sRvqi265caRiKyLaog760QsT',
+];
+
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest(`/app/projects`, {
+        const projects = await getRequest<MapProject[]>(`/app/projects`, {
           _scope: 'map',
           currency: currencyCode,
           tenant: TENANT_ID,
           'filter[purpose]': 'trees,conservation',
         });
-        setProjects(projects as MapProject[]);
+        setProjects(projects);
+        setIsLoaded(true);
       } catch (err) {
+        console.error('Failed to load projects:', err);
         setErrors(handleError(err as APIError));
         redirect('/');
       }
@@ -35,7 +52,22 @@ export default function ProjectGrid() {
 
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
-      .filter((project) => project.properties.allowDonations === true)
+      .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id))
+      .sort((projectA, projectB) => {
+        if (
+          projectA.properties.allowDonations ===
+          projectB.properties.allowDonations
+        ) {
+          return 0;
+        } else if (
+          projectA.properties.allowDonations &&
+          !projectB.properties.allowDonations
+        ) {
+          return -1;
+        } else {
+          return 1;
+        }
+      })
       .map((allowedProject) => {
         return (
           <div
@@ -46,7 +78,8 @@ export default function ProjectGrid() {
               project={allowedProject.properties}
               editMode={false}
               displayPopup={false}
-              utmCampaign="243BY4FZ71"
+              utmCampaign="vto-fc-2023"
+              disableDonations={true}
             />
           </div>
         );
@@ -55,7 +88,7 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div className={`${styles.projectGridContainer}`}>
+    <div className={`${styles.projectGridContainer}`} id="project-grid">
       <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
@@ -70,7 +103,11 @@ export default function ProjectGrid() {
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
         >
-          {projects ? renderAllowedProjects(projects) : <></>}
+          {projects ? (
+            renderAllowedProjects(projects)
+          ) : (
+            <>{!isLoaded ? <p>Loading projects...</p> : ''}</>
+          )}
         </div>
       </div>
     </div>

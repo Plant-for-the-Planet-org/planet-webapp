@@ -91,7 +91,11 @@ export default function GrowingImpact() {
                   <h5>{article.copy}</h5>
                   <h5>{article.subCopy}</h5>
                   {article.linkCopy !== undefined && (
-                    <a href={article.link} target="_blank" rel="noreferrer">
+                    <a
+                      href={article.link}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       {article.linkCopy}
                     </a>
                   )}

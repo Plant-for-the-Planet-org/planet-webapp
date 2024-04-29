@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';
 
@@ -10,30 +11,45 @@ export default function SeaOfTrees() {
             className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
           >
             <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-              <h3>Blue Carbon Ocean Sustainability Program</h3>
+              <h3>Mangrove Forests</h3>
               <p className={styles.contentSectionSubhead}>
                 Where Ocean Sustainability meets Trees.
               </p>
               <p>
-                Bold Ocean-Climate Action is necessary to create a just and
-                sustainable future where everyone can thrive. We strive for
-                Ocean Action for all, by all.
+                Mangroves are the world’s “super trees”. Mangrove forests can
+                sequester up to 10x as much carbon as trees on land; they
+                provide habitat for hundreds of threatened species; they foster
+                food security and livelihoods for communities that depend on the
+                fish they shelter; and they serve as a buffer from storm surge,
+                which makes them a powerful tool for coastal resilience. And in
+                addition to all that, because vulnerable and Indigenous
+                communities often live side-by-side with mangroves, they can
+                also be a key solution for achieving climate justice.
               </p>
               <p>
-                The Salesforce Ocean Sustainability Program taps into the full
-                power of Salesforce to protect, restore, and invest in
-                mangroves, kelp, corals, salt marshes, sea grass, and oyster
-                reefs.
+                As part of our commitment to{' '}
+                <a
+                  href="https://www.1t.org/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  1t.org
+                </a>
+                , Salesforce is supporting the{' '}
+                <a
+                  href="https://www.mangrovealliance.org/news/the-mangrove-breakthrough/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Mangrove Breakthrough
+                </a>
+                , a collective initiative to secure the future of mangrove
+                forests globally. Learn more about Salesforce’s mangrove journey
+                and discover opportunities to join the movement here.
               </p>
-              <p>
-                The improved protection and restoration of these ocean
-                ecosystems will grow global carbon sequestration capacity,
-                increase resilience, enhance food security, and help secure
-                livelihoods.
-              </p>
-              <a href="https://trees.salesforce.com/restoring-guatemala">
-                <button>Donate to Blue Carbon Projects</button>
-              </a>
+              <Link href="/mangroves">
+                <button>Learn More</button>
+              </Link>
             </div>
           </div>
           <div
