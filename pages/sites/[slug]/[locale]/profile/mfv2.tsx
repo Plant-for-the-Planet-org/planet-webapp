@@ -11,12 +11,27 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../../tenant.config';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import ProfileOuterContainer from '../../../../../src/features/user/MFV2/ProfileOuterContainer';
+import ProfileLayout from '../../../../../src/features/user/MFV2/ProfileLayout';
 
-const MyForestPage = () => {
-  return (
-    <div>
-      <h1>My Forest</h1>
-    </div>
+interface Props {
+  pageProps: PageProps;
+}
+
+const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
+  return tenantConfig ? (
+    <UserLayout>
+      <Head>
+        <title>My Forest V2</title>
+      </Head>
+      <ProfileOuterContainer>
+        <ProfileLayout />
+      </ProfileOuterContainer>
+    </UserLayout>
+  ) : (
+    <></>
   );
 };
 
@@ -53,7 +68,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common'],
+    filenames: ['common', 'me', 'country'],
   });
 
   return {

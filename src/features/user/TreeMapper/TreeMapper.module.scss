@@ -1,7 +1,7 @@
 @import '../../../theme/theme';
 
 .profilePage {
-  margin-top: 300px;
+  margin-top: 255px;
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
   margin-bottom: 80px;
@@ -509,7 +509,7 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
-    padding: 65px 40px 40px;
+    padding: 20px 40px 40px;
     > :first-child {
       text-align: left;
     }
