@@ -1,24 +1,55 @@
 import { useTenant } from '../../TenantContext';
 import { useRouter } from 'next/router';
-import { useLocale } from 'next-intl';
 import { lang_path } from '../../../../../utils/constants/wpLanguages';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import GetSubMenu from '../getSubMenu';
 import UserIcon from './UserIcon';
+import { useState, useEffect } from 'react';
+import AboutUsSubMenu from './AboutUsSubMenu';
 
-const MenuItems = ({ isMobile, mobileWidth, menu, setMenu, subMenuPath }) => {
+// used to detect window resize and return the current width of the window
+const useWidth = () => {
+  const [width, setWidth] = useState(0); // default width, detect on server.
+  const handleResize = () => setWidth(window.innerWidth);
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, [handleResize]);
+  return width;
+};
+
+const MenuItems = () => {
   const locale = useLocale();
   const router = useRouter();
   const t = useTranslations('Common');
   const { tenantConfig } = useTenant();
+  const [isMobile, setIsMobile] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [mobileWidth, setMobileWidth] = useState(false);
   const links = Object.keys(tenantConfig.config.header.items);
   const tenantName = tenantConfig.config.slug || '';
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 767) {
+        setMobileWidth(false);
+      } else {
+        setMobileWidth(true);
+      }
+    }
+  });
+  const width = useWidth();
+  // changes the isMobile state to true if the window width is less than 768px
+  useEffect(() => {
+    setIsMobile(width < 768);
+  }, [width]);
+
   return tenantConfig && links ? (
     <div className={'menuItems'}>
-      {links.map((link) => {
-        if (link !== 'shop') {
+      {links
+        .filter((link) => link !== 'shop')
+        .map((link) => {
           let SingleLink = tenantConfig.config.header.items[link];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
@@ -49,6 +80,7 @@ const MenuItems = ({ isMobile, mobileWidth, menu, setMenu, subMenuPath }) => {
                 SingleLink.subMenu[0].onclick = aboutOnclick;
               }
             }
+
             return SingleLink.visible ? (
               <div
                 className={`${hasSubMenu ? 'subMenu' : ''}`}
@@ -84,57 +116,29 @@ const MenuItems = ({ isMobile, mobileWidth, menu, setMenu, subMenuPath }) => {
                         {t(SingleLink.title)}
                       </p>
                     ) : (
-                      <p
+                      <button
                         className={
                           router.asPath === `/${locale}${SingleLink.onclick}`
                             ? 'active_icon'
                             : ''
                         }
                       >
-                        {t(SingleLink.title)}
-                      </p>
+                        {t(link)}
+                      </button>
                     )}
                   </div>
                 </Link>
                 <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
-                  {SingleLink.subMenu &&
-                    SingleLink.subMenu.length > 0 &&
-                    SingleLink.subMenu.map((submenu) => {
-                      return (
-                        <a
-                          key={submenu.title}
-                          className={'menuRow'}
-                          href={`https://www.plant-for-the-planet.org/${
-                            lang_path[locale as keyof typeof lang_path]
-                              ? lang_path[locale as keyof typeof lang_path]
-                              : 'en'
-                          }/${
-                            subMenuPath[
-                              submenu.title as keyof typeof subMenuPath
-                            ]
-                          }`}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <GetSubMenu title={submenu.title} />
-                            <div className={'menuText'}>{t(submenu.title)}</div>
-                          </div>
-                        </a>
-                      );
-                    })}
+                  {SingleLink.subMenu && SingleLink.subMenu.length > 0 && (
+                    <AboutUsSubMenu subMenu={SingleLink.subMenu} />
+                  )}
                 </div>
               </div>
             ) : (
               <div key={link}></div>
             );
           }
-        }
-      })}
+        })}
     </div>
   ) : (
     <></>
