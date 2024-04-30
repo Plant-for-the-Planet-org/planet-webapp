@@ -88,7 +88,7 @@ export default function Home({ pageProps }: Props) {
       try {
         const newTreesDonated = await getRequest<TreesDonated>(
           pageProps.tenantConfig.id,
-          'https://automate.plant-for-the-planet.org/webhook/platform/total-tree-count'
+          `${process.env.WEBHOOK_URL}/platform/total-tree-count`
         );
         setTreesDonated(newTreesDonated);
       } catch (err) {
