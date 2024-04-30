@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .mainNavContainer {
-  height: 80px;
+  height: 82px;
   width: 100%;
   background-color: $backgroundColor;
   display: flex;
@@ -11,10 +11,10 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   z-index: 1030;
   position: fixed;
-  top: 0;
 }
 
 .brandLogos {
+  display: flex;
   padding-left: 22px;
   padding-top: 3px;
   .tenantLogo {
@@ -50,7 +50,7 @@
     align-items: center;
     justify-content: center;
     margin: 10px;
-    > button {
+    > p {
       font-family: $primaryFontFamily;
       font-size: $fontMedium;
       font-weight: 600;
@@ -59,7 +59,7 @@
       color: rgba(47, 51, 54, 1);
       cursor: pointer;
     }
-    > button.active_icon {
+    > p.active_icon {
       color: $primaryColor;
     }
     .link_icon {
@@ -68,21 +68,11 @@
       margin: 5px;
       cursor: pointer;
     }
-    > .link_icon > svg > path {
-      fill: $primaryFontColor;
-    }
-    > .link_icon.active_icon > svg > path {
-      fill: $primaryColor;
-    }
     &:hover {
       cursor: pointer;
       color: $primaryColor;
       > p {
         color: $primaryColor;
-      }
-      > .link_icon > svg > path {
-        fill: $primaryColor;
-        stroke: $primaryColor;
       }
     }
   }
@@ -149,11 +139,8 @@
 
 @include xsPhoneView {
   .menuItems {
-    margin-left: 0px;
-    position: absolute;
-    right: -8px;
-    justify-content: right;
     align-items: center;
+    padding-right: 20px;
     .linkContainer {
       margin: 0px;
       > p {
@@ -195,7 +182,13 @@
   width: 50px;
   display: flex;
   align-items: center;
-  border-radius: 50%;
   background-color: rgba(223, 244, 232, 1);
   cursor: pointer;
+  > img {
+    border-radius: 50%;
+  }
+}
+
+.userIconContainer {
+  margin-left: 20px;
 }

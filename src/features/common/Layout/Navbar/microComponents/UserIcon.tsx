@@ -16,10 +16,7 @@ const UserIcon = () => {
       onClick={() => router.push(`/profile`)}
     >
       {user.image ? (
-        <img
-          src={getImageUrl('profile', 'avatar', user.image)}
-          style={{ borderRadius: '40px' }}
-        />
+        <img src={getImageUrl('profile', 'avatar', user.image)} />
       ) : (
         <DefaultProfileImageIcon width={'110px'} />
       )}

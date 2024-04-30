@@ -1,11 +1,18 @@
 import { useTenant } from '../../TenantContext';
 import { useRouter } from 'next/router';
-import { lang_path } from '../../../../../utils/constants/wpLanguages';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import UserIcon from './UserIcon';
 import { useState, useEffect } from 'react';
-import AboutUsSubMenu from './AboutUsSubMenu';
+import AboutUsSubMenu, { SubMenu } from './AboutUsSubMenu';
+
+interface SingleLink {
+  loggedInTitle?: string;
+  subMenu?: SubMenu[];
+  onclick: string;
+  title: string;
+  visible: boolean;
+}
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -20,25 +27,13 @@ const useWidth = () => {
 };
 
 const MenuItems = () => {
-  const locale = useLocale();
   const router = useRouter();
   const t = useTranslations('Common');
   const { tenantConfig } = useTenant();
   const [isMobile, setIsMobile] = useState(false);
   const [menu, setMenu] = useState(false);
-  const [mobileWidth, setMobileWidth] = useState(false);
   const links = Object.keys(tenantConfig.config.header.items);
-  const tenantName = tenantConfig.config.slug || '';
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth > 767) {
-        setMobileWidth(false);
-      } else {
-        setMobileWidth(true);
-      }
-    }
-  });
   const width = useWidth();
   // changes the isMobile state to true if the window width is less than 768px
   useEffect(() => {
@@ -50,35 +45,16 @@ const MenuItems = () => {
       {links
         .filter((link) => link !== 'shop')
         .map((link) => {
-          let SingleLink = tenantConfig.config.header.items[link];
+          const SingleLink: SingleLink = tenantConfig.config.header.items[link];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
-                <div key={link} style={{ marginLeft: '20px' }}>
+                <div key={link} className="userIconContainer">
                   <UserIcon />
                 </div>
               );
-            }
-
-            if (link === 'about' && SingleLink.visible) {
-              let aboutOnclick = `${SingleLink.onclick}${
-                (tenantConfig.config.slug === 'planet' ||
-                  tenantConfig.config.slug === 'ttc') &&
-                lang_path[locale as keyof typeof lang_path]
-                  ? lang_path[locale as keyof typeof lang_path]
-                  : ''
-              }`;
-
-              aboutOnclick = isMobile ? '' : aboutOnclick;
-              SingleLink = {
-                ...SingleLink,
-                onclick: aboutOnclick,
-              };
-              if (hasSubMenu && SingleLink.subMenu) {
-                SingleLink.subMenu[0].onclick = aboutOnclick;
-              }
             }
 
             return SingleLink.visible ? (
@@ -99,6 +75,7 @@ const MenuItems = () => {
                     isMobile && hasSubMenu ? router.asPath : SingleLink.onclick
                   }
                 >
+                  {console.log(router.asPath, SingleLink.onclick)}
                   <div className={`linkContainer`}>
                     {link === 'donate' ? (
                       <p
@@ -116,15 +93,18 @@ const MenuItems = () => {
                         {t(SingleLink.title)}
                       </p>
                     ) : (
-                      <button
+                      <p
                         className={
-                          router.asPath === `/${locale}${SingleLink.onclick}`
+                          (router.pathname === '/sites/[slug]/[locale]' &&
+                            link === 'home') ||
+                          (router.pathname === '/sites/[slug]/[locale]/all' &&
+                            link === 'leaderboard')
                             ? 'active_icon'
                             : ''
                         }
                       >
                         {t(link)}
-                      </button>
+                      </p>
                     )}
                   </div>
                 </Link>

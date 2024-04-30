@@ -6,13 +6,35 @@ import { useTenant } from '../TenantContext';
 import BrandLogo from './microComponents/BrandLogo';
 import MenuItems from './microComponents/MenuItems';
 
+const ImpersonationStatusHeader = () => {
+  const { isImpersonationModeOn } = useUserProps();
+  return isImpersonationModeOn ? (
+    <div className="impersonationAlertContainer" style={{ top: -142 }}>
+      <ImpersonationActivated />
+    </div>
+  ) : (
+    <></>
+  );
+};
+
+const CommonHeader = () => {
+  const { isImpersonationModeOn } = useUserProps();
+  return (
+    <div
+      className={`mainNavContainer`}
+      style={{ top: isImpersonationModeOn ? 49 : 0 }}
+    >
+      <BrandLogo />
+      <MenuItems />
+    </div>
+  );
+};
 export default function NavbarComponent() {
   const { embed } = useContext(ParamsContext);
 
   const { tenantConfig } = useTenant();
 
-  const { setUser, logoutUser, auth0Error, isImpersonationModeOn } =
-    useUserProps();
+  const { setUser, logoutUser, auth0Error } = useUserProps();
 
   if (auth0Error) {
     if (auth0Error.message === '401') {
@@ -35,18 +57,8 @@ export default function NavbarComponent() {
     <></>
   ) : tenantConfig ? (
     <>
-      {isImpersonationModeOn && (
-        <div className="impersonationAlertContainer" style={{ top: -142 }}>
-          <ImpersonationActivated />
-        </div>
-      )}
-      <div
-        className={`mainNavContainer`}
-        style={{ top: isImpersonationModeOn ? 49 : 0 }}
-      >
-        <BrandLogo />
-        <MenuItems />
-      </div>
+      <ImpersonationStatusHeader />
+      <CommonHeader />
     </>
   ) : (
     <></>
