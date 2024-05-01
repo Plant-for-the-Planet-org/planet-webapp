@@ -11,8 +11,11 @@ import {
   ShareIcon,
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import ProfileCardButton from './ProfileCardButton';
+import { useTranslations } from 'next-intl';
 
 const ProfileCard = ({ userProfile }: ProfileProps) => {
+  const t = useTranslations('Profile');
+
   return (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileBackground}></div>
@@ -29,21 +32,16 @@ const ProfileCard = ({ userProfile }: ProfileProps) => {
       </div>
       <div className={styles.profileDetailsContainer}>
         <button className={styles.editProfileIcon}>
-          {/* <SettingsIcon
-            width={18}
-            gearColor="#007A49"
-            gearCenterColor="transparent"
-          /> */}
           <SettingsIcon />
         </button>
         <div className={styles.profileInfo}>
-          <h2>Paul Sanchez</h2>
+          <h2>{userProfile?.displayName}</h2>
           <p>
-            I grew up planting trees with Plant-for-the-Planet and since 2008,
-            we’ve planted over 6 Million trees near my hometown in Yucatan, Join
-            the app, and plant some more!
+            {/* {t('myProfile.userDescription', {
+              bio: userProfile?.bio,
+            })} */}
+            {userProfile?.bio}
           </p>
-          {/* buttons */}
         </div>
         <div className={styles.profileCardButtonContainer}>
           <ProfileCardButton icon={<AllDonations />} text={'All Donations'} />

@@ -1,3 +1,5 @@
+@import '../../../../theme/theme';
+
 .profileCardContainer {
     display: flex;
     flex-direction: column;
@@ -9,7 +11,6 @@
     width: 100%;
     min-height: 9rem;
     border-radius: 24px 24px 0px 0px;
-    position: relative;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -30,6 +31,33 @@
 
 }
 
+.profileDetailsContainer{
+    width: 100%;
+    padding: 0 14px 24px 14px;
+
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        white-space: nowrap;
+        text-transform: capitalize;
+    }
+
+    p {
+        font-size: 0.75rem;
+        text-align: center;
+    }
+
+}
+
 .editProfileIcon {
     background: linear-gradient(0deg, rgba(33, 150, 83, 0.20) 0%, rgba(33, 150, 83, 0.20) 100%), #FFF;
     width: 2.25rem;
@@ -41,32 +69,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;  
-}
-
-.profileDetailsContainer{
-    padding: 0 14px 24px 14px;
-
-}
-
-.profileInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    // padding: 0 36px;
-
-    h2 {
-        font-size: 2.25rem;
-        font-weight: 700;
-        margin-top: -2rem;
-        white-space: nowrap;
-    }
-
-    p {
-        font-size: 0.75rem;
-        text-align: center;
-    }
-
+    margin-top: -1rem;
 }
 
 .profileCardButtonContainer {
@@ -74,6 +77,7 @@
     gap: 8px;
     margin-top: 20px;
     justify-content: center;
+    flex-wrap: wrap;
 
     .profileCardButton {
         padding: 6px 16px;
@@ -85,6 +89,8 @@
         border: 1px solid rgba(33, 150, 83, 0.40);
         background: #FFF;
         white-space: nowrap;
+        cursor: pointer;
+        min-height: 2rem;
 
         .icon {
             display: flex;
@@ -99,4 +105,13 @@
         }
     }
     
+}
+
+@include xsPhoneView {
+   .profileInfo {
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 0;
+    }
+   }
 }
