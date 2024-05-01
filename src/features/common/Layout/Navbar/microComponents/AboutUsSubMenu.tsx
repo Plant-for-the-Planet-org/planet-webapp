@@ -2,18 +2,9 @@ import { lang_path } from '../../../../../utils/constants/wpLanguages';
 import GetSubMenuIcons from '../getSubMenu';
 import { useTranslations, useLocale } from 'next-intl';
 
-type AboutUsList =
-  | 'overview'
-  | 'childrenAndYouth'
-  | 'trillionTrees'
-  | 'yucatan'
-  | 'partners'
-  | 'changeChocolate'
-  | 'stopTalkingStartPlanting';
-
 export interface SubMenu {
   onclick: string;
-  title: AboutUsList;
+  title: string;
   visible: boolean;
 }
 export interface AboutUsSubMenuProp {

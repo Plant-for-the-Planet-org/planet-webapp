@@ -11,12 +11,16 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   z-index: 1030;
   position: fixed;
+  padding-left: 25px;
+  padding-right: 36px;
+  @include xsPhoneView {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
 }
 
 .brandLogos {
   display: flex;
-  padding-left: 22px;
-  padding-top: 3px;
   .tenantLogo {
     height: 60px;
   }
@@ -33,17 +37,11 @@
     background-color: rgba(0, 0, 0, 0.5);
     margin: 0rem 0.5rem;
   }
-  .mobile {
-    display: none;
-  }
-  .desktop {
-    display: block;
-  }
 }
 
 .menuItems {
   display: flex;
-  padding-right: 34px;
+  gap: 20px;
   .linkContainer {
     display: flex;
     flex-direction: column;
@@ -140,11 +138,11 @@
 @include xsPhoneView {
   .menuItems {
     align-items: center;
-    padding-right: 20px;
+    gap: 12px;
     .linkContainer {
       margin: 0px;
       > p {
-        font-size: $fontXSmall;
+        font-size: var(--font-xx-extra-small);
       }
       .link_icon {
         margin: 5px;
@@ -152,8 +150,8 @@
     }
   }
   .subMenuItems {
-    top: 68px !important;
-    left: -120px !important;
+    top: 68px;
+    left: -120px;
   }
 }
 
@@ -182,13 +180,8 @@
   width: 50px;
   display: flex;
   align-items: center;
-  background-color: rgba(223, 244, 232, 1);
   cursor: pointer;
   > img {
     border-radius: 50%;
   }
-}
-
-.userIconContainer {
-  margin-left: 20px;
 }
