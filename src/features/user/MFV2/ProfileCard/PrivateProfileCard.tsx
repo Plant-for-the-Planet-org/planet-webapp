@@ -13,7 +13,7 @@ import {
 import ProfileCardButton from './ProfileCardButton';
 import { useTranslations } from 'next-intl';
 
-const ProfileCard = ({ userProfile }: ProfileProps) => {
+const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
   const t = useTranslations('Profile');
 
   return (
@@ -53,4 +53,4 @@ const ProfileCard = ({ userProfile }: ProfileProps) => {
   );
 };
 
-export default ProfileCard;
+export default PrivateProfileCard;

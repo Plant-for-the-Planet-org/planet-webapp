@@ -1,13 +1,12 @@
 import styles from './ProfileLayout.module.scss';
-import ProfileCard from '../ProfileCard';
 import { User } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import PrivateProfileCard from '../ProfileCard/PrivateProfileCard';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const ProfileLayout = () => {
-  // External imports
   const router = useRouter();
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = React.useState<null | User>();
@@ -23,7 +22,7 @@ const ProfileLayout = () => {
   return (
     <article className={styles.profileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
-        <ProfileCard userProfile={profile} />
+        <PrivateProfileCard userProfile={profile} />
       </section>
       <section id="map-container" className={styles.mapContainer}>
         Map
