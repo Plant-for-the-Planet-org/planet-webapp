@@ -1,16 +1,16 @@
 import React from 'react';
-import { ProfileProps } from '../../../common/types/profile';
+import { ProfileProps } from '../../../../common/types/profile';
 import { Avatar } from '@mui/material';
-import getImageUrl from '../../../../utils/getImageURL';
-import { DefaultProfileImage } from '../../../../../public/assets/images/ProfilePageIcons';
-import styles from './ProfileCard.module.scss';
+import getImageUrl from '../../../../../utils/getImageURL';
+import { DefaultProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
+import styles from './PrivateProfileCard.module.scss';
 import {
   AllDonations,
   RedeemIcon,
   SettingsIcon,
   ShareIcon,
-} from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import ProfileCardButton from './ProfileCardButton';
+} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import ProfileCardButton from '../ProfileCardButton';
 import { useTranslations } from 'next-intl';
 
 const PrivateProfileCard = ({ userProfile }: ProfileProps) => {

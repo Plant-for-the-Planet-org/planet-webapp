@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styles from './ProfileCard.module.scss';
+import styles from './ProfileCardButton.module.scss';
 
 interface Props {
   icon: ReactElement;

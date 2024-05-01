@@ -1,0 +1,25 @@
+.profileCardButton {
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(33, 150, 83, 0.40);
+    background: #FFF;
+    white-space: nowrap;
+    cursor: pointer;
+    min-height: 2rem;
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 700;
+        color: #2F3336;
+    }
+}
