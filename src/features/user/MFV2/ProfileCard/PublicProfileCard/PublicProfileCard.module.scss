@@ -1,0 +1,37 @@
+.profileCardContainer {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   height: 100%;
+   width: 100%;
+   background-image: url('../../../../../../public/assets/images/publicProfileBackground.jpg');
+   padding: 24px;
+   background-repeat: no-repeat;
+   background-size: cover;
+   border-radius: inherit;
+
+   h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        white-space: nowrap;
+   }
+
+   .profileCardDetails {
+        margin-top: auto;
+        margin-bottom: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+   }
+
+   .profileCardButtonContainer {
+       margin-top: auto;
+       >div {
+        display: flex;
+        margin-top: 8px;
+        gap: 8px;
+       }
+   }
+
+}
