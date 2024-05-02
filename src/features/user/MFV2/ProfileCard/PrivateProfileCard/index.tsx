@@ -5,11 +5,17 @@ import getImageUrl from '../../../../../utils/getImageURL';
 import { DefaultUserProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
 import styles from './PrivateProfileCard.module.scss';
 import { SettingsIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
+import { useRouter } from 'next/router';
 
 const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
   const t = useTranslations('Profile');
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 481;
+  const router = useRouter();
+  const locale = useLocale();
+  const isPublicAccount = router.asPath === `/${locale}/profile/mfv2-public`;
 
   return (
     <div className={styles.profileCardContainer}>
@@ -26,9 +32,11 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
         )}
       </div>
       <div className={styles.profileDetailsContainer}>
-        <button className={styles.editProfileIcon}>
-          <SettingsIcon />
-        </button>
+        {!isPublicAccount && (
+          <button className={styles.editProfileIcon}>
+            <SettingsIcon />
+          </button>
+        )}
         <div className={styles.profileInfo}>
           <h2>{userProfile?.displayName}</h2>
           <p>
@@ -38,7 +46,13 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
             {userProfile?.bio}
           </p>
         </div>
-        <ProfileCardButtonContainer isPrivate={true} />
+
+        {isPublicAccount && isMobile ? (
+          // renders public account features for mobile screen
+          <ProfileCardButtonContainer isPrivate={false} />
+        ) : (
+          <ProfileCardButtonContainer isPrivate={true} />
+        )}
       </div>
     </div>
   );
