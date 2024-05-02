@@ -1,0 +1,24 @@
+.markerIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 32.67px;
+  border-radius: 50% 50% 50% 10%;
+  transform: rotate(-42deg);
+  > svg {
+    transform: rotate(45deg);
+  }
+}
+
+.treePlantation {
+  background-color: rgba(0, 122, 73, 1);
+}
+
+.conservation {
+  background-color: rgba(45, 156, 219, 1);
+}
+
+.markerIconContainerR {
+  background-color: rgba(155, 81, 224, 1);
+}
