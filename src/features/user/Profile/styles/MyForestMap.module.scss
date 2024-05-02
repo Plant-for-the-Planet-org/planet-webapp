@@ -184,26 +184,14 @@
 .mapCreditsContainer {
   position: absolute;
   right: 92px;
-  bottom: 1px;
+  bottom: 2px;
   z-index: 1;
   cursor: pointer;
   @include xsPhoneView {
-    bottom: 51px;
-    right: 40px;
-  }
-  @include smTabletView {
-    bottom: 52px;
     right: 48px;
   }
-  @include mdTabletView {
-    bottom: 47px;
-    right: 93px;
-  }
-  @include lgLaptopView {
-    bottom: 47px;
-  }
-  @include xlDesktopView {
-    bottom: 0px;
+  @include smTabletView {
+    right: 48px;
   }
 }
 

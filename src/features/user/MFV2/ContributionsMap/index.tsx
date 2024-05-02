@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Map, { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { NavigationControl } from 'react-map-gl-v7';
+import MyForestMapCredit from '../../Profile/components/MyForestMap/microComponents/MyForestMapCredit';
 
 interface MapState {
   mapStyle: MapStyle;
@@ -49,7 +51,10 @@ function ContributionsMap() {
       {...mapState}
       onMove={(e) => setViewState(e.viewState)}
       attributionControl={false}
-    ></Map>
+    >
+      <MyForestMapCredit />
+      <NavigationControl position="bottom-right" showCompass={false} />
+    </Map>
   );
 }
 
