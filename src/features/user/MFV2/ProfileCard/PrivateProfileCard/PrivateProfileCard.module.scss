@@ -71,14 +71,7 @@
     margin-top: -1rem;
 }
 
-.profileCardButtonContainer {
-    display: flex;
-    gap: 8px;
-    margin-top: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-    
-}
+
 
 @include xsPhoneView {
    .profileInfo {

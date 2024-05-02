@@ -2,14 +2,9 @@ import React from 'react';
 import styles from './PublicProfileCard.module.scss';
 import { ProfileProps } from '../../../../common/types/profile';
 import { Avatar } from '@mui/material';
-import {
-  DefaultProfileImage,
-  SupportUserIcon,
-  WebsiteLinkIcon,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
+import { DefaultUserProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
 import getImageUrl from '../../../../../utils/getImageURL';
-import { ShareIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import ProfileCardButton from '../ProfileCardButton';
+import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
 
 const PublicProfileCard = ({ userProfile }: ProfileProps) => {
   return (
@@ -23,23 +18,13 @@ const PublicProfileCard = ({ userProfile }: ProfileProps) => {
               className={styles.avatar}
             />
           ) : (
-            <DefaultProfileImage />
+            <DefaultUserProfileImage />
           )}
         </div>
         <h2>{userProfile?.displayName}</h2>
       </div>
 
-      <div className={styles.profileCardButtonContainer}>
-        <ProfileCardButton
-          icon={<SupportUserIcon />}
-          text={'Support Sophia by donating'}
-          type={'primary'}
-        />
-        <div>
-          <ProfileCardButton icon={<WebsiteLinkIcon />} text={'My Website'} />
-          <ProfileCardButton icon={<ShareIcon />} text={'Share'} />
-        </div>
-      </div>
+      <ProfileCardButtonContainer isPrivate={false} />
     </div>
   );
 };

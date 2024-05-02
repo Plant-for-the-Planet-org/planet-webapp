@@ -2,16 +2,11 @@ import React from 'react';
 import { ProfileProps } from '../../../../common/types/profile';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../../utils/getImageURL';
-import { DefaultProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { DefaultUserProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
 import styles from './PrivateProfileCard.module.scss';
-import {
-  AllDonations,
-  RedeemIcon,
-  SettingsIcon,
-  ShareIcon,
-} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import ProfileCardButton from '../ProfileCardButton';
+import { SettingsIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
+import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
 
 const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
   const t = useTranslations('Profile');
@@ -27,7 +22,7 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
             className={styles.avatar}
           />
         ) : (
-          <DefaultProfileImage />
+          <DefaultUserProfileImage />
         )}
       </div>
       <div className={styles.profileDetailsContainer}>
@@ -43,11 +38,7 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
             {userProfile?.bio}
           </p>
         </div>
-        <div className={styles.profileCardButtonContainer}>
-          <ProfileCardButton icon={<AllDonations />} text={'All Donations'} />
-          <ProfileCardButton icon={<RedeemIcon />} text={'Redeem'} />
-          <ProfileCardButton icon={<ShareIcon />} text={'Share'} />
-        </div>
+        <ProfileCardButtonContainer isPrivate={true} />
       </div>
     </div>
   );

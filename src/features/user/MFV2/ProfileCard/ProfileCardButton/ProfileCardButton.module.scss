@@ -30,3 +30,21 @@
         color: #fff;
     }
 }
+
+.privateProfileCardButtonContainer {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+.publicProfileCardButtonContainer {
+    margin-top: auto;
+    >div {
+     display: flex;
+     margin-top: 8px;
+     gap: 8px;
+    }
+}
