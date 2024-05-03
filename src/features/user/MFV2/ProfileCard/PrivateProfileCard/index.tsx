@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
   const t = useTranslations('Profile');
   const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 481;
+  const isMobile = screenWidth <= 767;
   const router = useRouter();
   const locale = useLocale();
   const isPublicAccount = router.asPath === `/${locale}/profile/mfv2-public`;
@@ -49,9 +49,15 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
 
         {isPublicAccount && isMobile ? (
           // renders public account features for mobile screen
-          <ProfileCardButtonContainer isPrivate={false} />
+          <ProfileCardButtonContainer
+            authenticatedType={'public'}
+            userProfile={userProfile}
+          />
         ) : (
-          <ProfileCardButtonContainer isPrivate={true} />
+          <ProfileCardButtonContainer
+            authenticatedType={'private'}
+            userProfile={userProfile}
+          />
         )}
       </div>
     </div>

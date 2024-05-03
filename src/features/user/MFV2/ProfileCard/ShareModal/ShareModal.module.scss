@@ -1,0 +1,63 @@
+@import '../../../../../theme/theme';
+
+.shareModalPopup {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 16px;
+    min-width: calc(100% - 20px);
+    min-height: 300px;
+
+    .copyButton {
+        display: flex;
+        padding: 16px 43px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        background: #008F5C;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #fff;
+
+        label {
+            white-space: nowrap;
+        }
+    }
+
+    .socialMediaIconContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        h3 {
+            font-size: 1rem;
+            color: #4F4F4F;
+            font-weight: 600;
+        }
+
+        >div {
+            display: flex;
+            gap: 24px;
+
+            button {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .shareLinkContainer {
+        display: flex;
+        gap: 18px;
+        width: 90%;
+    }
+}
+
+@include mdTabletView {
+    .shareModalPopup {
+        min-width: 730px;
+    }
+}

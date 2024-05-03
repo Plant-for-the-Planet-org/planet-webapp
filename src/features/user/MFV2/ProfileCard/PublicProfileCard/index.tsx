@@ -24,7 +24,10 @@ const PublicProfileCard = ({ userProfile }: ProfileProps) => {
         <h2>{userProfile?.displayName}</h2>
       </div>
 
-      <ProfileCardButtonContainer isPrivate={false} />
+      <ProfileCardButtonContainer
+        authenticatedType={'public'}
+        userProfile={userProfile}
+      />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const PublicProfileLayout = () => {
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = useState<null | User>();
   const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 481;
+  const isMobile = screenWidth <= 767;
 
   useEffect(() => {
     if (contextLoaded) {

@@ -1,0 +1,137 @@
+import React from 'react';
+import styles from './ShareModal.module.scss';
+import { Modal, Fade, TextField } from '@mui/material';
+import { ThemeContext } from '../../../../../theme/themeContext';
+import CopyToClipboard from '../../../../common/CopyToClipboard';
+import {
+  FacebookCustomIcon,
+  LinkedInCustomIcon,
+  MailCustomIcon,
+  WhatsappCustomIcon,
+  XCustomIcon,
+} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import { useTranslations } from 'next-intl';
+import { useTenant } from '../../../../common/Layout/TenantContext';
+import { ProfileProps } from '../../../../common/types/profile';
+
+const CopyIcon = () => {
+  return (
+    <button className={styles.copyButton}>
+      <label>Copy Link</label>
+    </button>
+  );
+};
+
+interface ShareModalProps {
+  shareModalOpen: boolean;
+  handleShareModalClose: () => void;
+  userProfile: ProfileProps['userProfile'];
+}
+
+const ShareModal = ({
+  shareModalOpen,
+  handleShareModalClose,
+  userProfile,
+}: ShareModalProps) => {
+  const { theme } = React.useContext(ThemeContext);
+  const { tenantConfig } = useTenant();
+  const t = useTranslations('Donate');
+  const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;
+  const textToShare = t('textToShare', { name: userProfile?.displayName });
+  const textToShareLinkedin = t('textToShareLinkedin', {
+    name: userProfile?.displayName,
+  });
+  const handleShare = (shareUrl: string) => {
+    window.open(shareUrl, '_blank');
+  };
+
+  const handleMailShare = () => {
+    const subject = t('shareTextTitle');
+    const body = encodeURIComponent(
+      `${t('textToShare', {
+        name: userProfile?.displayName,
+      })}\n\n${linkToShare}`
+    );
+    const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
+
+    window.open(mailtoLink);
+  };
+
+  return (
+    <Modal
+      className={'modalContainer' + ' ' + theme}
+      open={shareModalOpen}
+      onClose={handleShareModalClose}
+      closeAfterTransition
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+      style={{ backdropFilter: 'blur(5px)' }}
+    >
+      <Fade in={shareModalOpen}>
+        <div className={styles.shareModalPopup}>
+          <div className={styles.socialMediaIconContainer}>
+            <h3>Share via</h3>
+            <div>
+              <button
+                onClick={() =>
+                  handleShare(
+                    `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`
+                  )
+                }
+              >
+                <FacebookCustomIcon />
+              </button>
+              <button
+                onClick={() =>
+                  handleShare(
+                    `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`
+                  )
+                }
+              >
+                <LinkedInCustomIcon />
+              </button>
+
+              <button
+                onClick={() =>
+                  handleShare(`whatsapp://send?text=${linkToShare}`)
+                }
+              >
+                <WhatsappCustomIcon />
+              </button>
+
+              <button
+                onClick={() =>
+                  handleShare(
+                    `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
+                  )
+                }
+              >
+                <XCustomIcon />
+              </button>
+              <button onClick={handleMailShare}>
+                <MailCustomIcon />
+              </button>
+            </div>
+          </div>
+          <div className={styles.shareLinkContainer}>
+            <TextField
+              id="donation-url"
+              name="donation-url"
+              InputProps={{
+                readOnly: true,
+              }}
+              value={linkToShare}
+            />
+            <CopyToClipboard
+              isButton={false}
+              text={linkToShare}
+              customCopyButton={<CopyIcon />}
+            />
+          </div>
+        </div>
+      </Fade>
+    </Modal>
+  );
+};
+
+export default ShareModal;
