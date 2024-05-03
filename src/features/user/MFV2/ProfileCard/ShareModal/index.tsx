@@ -115,8 +115,8 @@ const ShareModal = ({
           </div>
           <div className={styles.shareLinkContainer}>
             <TextField
-              id="donation-url"
-              name="donation-url"
+              id="share-profile-link"
+              name="share-profile-link"
               InputProps={{
                 readOnly: true,
               }}
