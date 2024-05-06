@@ -5,6 +5,8 @@ import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from '@storybook/theming';
 import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
+import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 
 /*
  * Global decorator to apply the styles to all stories
@@ -18,9 +20,13 @@ export const decorators = [
     return (
       <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
         <MUIThemeProvider theme={materialTheme}>
-          <ThemeProvider theme={materialTheme}>
-            <Story />
-          </ThemeProvider>
+          <TenantProvider>
+            <UserPropsProvider>
+              <ThemeProvider theme={materialTheme}>
+                <Story />
+              </ThemeProvider>
+            </UserPropsProvider>
+          </TenantProvider>
         </MUIThemeProvider>
       </NextIntlClientProvider>
     );

@@ -4,7 +4,7 @@ import styles from './ProfileCardButton.module.scss';
 interface Props {
   icon?: ReactElement;
   text?: string;
-  type?: string;
+  type?: 'primary' | 'secondary';
   onClick: () => void;
 }
 
