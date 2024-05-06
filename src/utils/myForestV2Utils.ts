@@ -149,4 +149,19 @@ export const contributionLocation = [
       cluster: false,
     },
   },
+  {
+    geometry: {
+      coordinates: [116.07846482921013, -23.11451720383624],
+      type: 'Point',
+    },
+    properties: {
+      isTreeRegistered: false,
+      _type: 'contribution',
+      startDate: 'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time)',
+      quantity: '56',
+      projectType: 'other-planting',
+      classification: 'restoration',
+      cluster: true,
+    },
+  },
 ];

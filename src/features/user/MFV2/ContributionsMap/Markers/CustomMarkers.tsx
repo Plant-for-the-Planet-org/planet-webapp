@@ -104,15 +104,15 @@ export const renderIcons = (properties: any) => {
   }
 };
 
-const SingleMarker = () => {
+const CustomMarkers = () => {
   return (
     <>
       {contributionLocation.map((singleLocation, key) => {
         return (
           <Marker
-            key={key}
             longitude={singleLocation?.geometry.coordinates[0]}
             latitude={singleLocation?.geometry.coordinates[1]}
+            key={key}
           >
             {renderIcons(singleLocation.properties)}
           </Marker>
@@ -122,4 +122,4 @@ const SingleMarker = () => {
   );
 };
 
-export default SingleMarker;
+export default CustomMarkers;
