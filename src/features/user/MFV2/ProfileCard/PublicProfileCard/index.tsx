@@ -5,8 +5,10 @@ import { Avatar } from '@mui/material';
 import { DefaultUserProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
 import getImageUrl from '../../../../../utils/getImageURL';
 import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
+import { useTranslations } from 'next-intl';
 
 const PublicProfileCard = ({ userProfile }: ProfileProps) => {
+  const t = useTranslations('Profile');
   return (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileCardDetails}>
@@ -22,6 +24,11 @@ const PublicProfileCard = ({ userProfile }: ProfileProps) => {
           )}
         </div>
         <h2>{userProfile?.displayName}</h2>
+        <p>
+          {t('myProfile.userDescription', {
+            bio: userProfile?.bio,
+          })}
+        </p>
       </div>
 
       <ProfileCardButtonContainer

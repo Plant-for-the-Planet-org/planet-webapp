@@ -13,6 +13,7 @@ import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/
 import { useRouter } from 'next/router';
 import SocialMediaShareButton from '../ShareModal/SocialMediaShareButton';
 import { ProfileProps } from '../../../../common/types/profile';
+import { useTranslations } from 'next-intl';
 
 const ProfileCardButtonContainer = ({
   authenticatedType,
@@ -20,6 +21,7 @@ const ProfileCardButtonContainer = ({
 }: ProfileProps) => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const router = useRouter();
+  const t = useTranslations('Profile');
 
   const handleRedeemModalOpen = () => {
     setIsRedeemModalOpen(true);
@@ -46,12 +48,12 @@ const ProfileCardButtonContainer = ({
     <div className={styles.privateProfileCardButtonContainer}>
       <ProfileCardButton
         icon={<AllDonations />}
-        text={'All Donations'}
+        text={t('feature.allDonations')}
         onClick={() => router.push('/profile/history')}
       />
       <ProfileCardButton
         icon={<RedeemIcon />}
-        text={'Redeem'}
+        text={t('feature.redeem')}
         onClick={handleRedeemModalOpen}
       />
       <RedeemModal
@@ -64,14 +66,16 @@ const ProfileCardButtonContainer = ({
     <div className={styles.publicProfileCardButtonContainer}>
       <ProfileCardButton
         icon={<SupportUserIcon />}
-        text={`Support ${userProfile?.firstname} by donating`}
+        text={t('feature.supportUserText', {
+          username: userProfile?.firstname,
+        })}
         type={'primary'}
         onClick={handleSupport}
       />
       <div>
         <ProfileCardButton
           icon={<WebsiteLinkIcon />}
-          text={'My Website'}
+          text={t('feature.website')}
           onClick={handleWebsiteShareUrl}
         />
         <SocialMediaShareButton userProfile={userProfile} />

@@ -15,9 +15,10 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ProfileProps } from '../../../../common/types/profile';
 
 const CopyIcon = () => {
+  const t = useTranslations('Donate');
   return (
     <button className={styles.copyButton}>
-      <label>Copy Link</label>
+      <label>{t('copyLink')}</label>
     </button>
   );
 };
@@ -70,7 +71,7 @@ const ShareModal = ({
       <Fade in={shareModalOpen}>
         <div className={styles.shareModalPopup}>
           <div className={styles.socialMediaIconContainer}>
-            <h3>Share via</h3>
+            <h3>{t('shareVia')}</h3>
             <div>
               <button
                 onClick={() =>

@@ -40,10 +40,9 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
         <div className={styles.profileInfo}>
           <h2>{userProfile?.displayName}</h2>
           <p>
-            {/* {t('myProfile.userDescription', {
+            {t('myProfile.userDescription', {
               bio: userProfile?.bio,
-            })} */}
-            {userProfile?.bio}
+            })}
           </p>
         </div>
 

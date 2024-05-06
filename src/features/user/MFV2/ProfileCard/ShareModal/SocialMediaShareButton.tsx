@@ -44,7 +44,7 @@ const SocialMediaShareButton = ({ userProfile }: ProfileProps) => {
     <>
       <ProfileCardButton
         icon={<ShareIcon />}
-        text={'Share'}
+        text={t('share')}
         onClick={
           isNativeShareSupported
             ? handleNativeSocialMediaShare
