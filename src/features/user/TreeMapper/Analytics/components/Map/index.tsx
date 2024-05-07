@@ -49,6 +49,7 @@ import {
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import PlantLocationDetails from './components/PlantLocationDetails';
 import MyForestMapCredit from '../../../../Profile/components/MyForestMap/microComponents/MyForestMapCredit';
+import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -299,9 +300,18 @@ export const MapContainer = () => {
           return;
         }
       }
-      fetchProjectLocations();
     }
   }, [project, species, queryType, fromDate, toDate]);
+
+  useDebouncedEffect(
+    () => {
+      if (project && species) {
+        fetchProjectLocations();
+      }
+    },
+    500,
+    [project, species, queryType, fromDate, toDate]
+  );
 
   // Set the map style to the default style
   // Currently this only shows Intervention
