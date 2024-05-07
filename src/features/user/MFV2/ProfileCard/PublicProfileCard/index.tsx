@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './PublicProfileCard.module.scss';
 import { ProfileProps } from '../../../../common/types/profile';
 import { Avatar } from '@mui/material';
-import { DefaultUserProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
 import getImageUrl from '../../../../../utils/getImageURL';
 import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
 import { useTranslations } from 'next-intl';
+import { DefaultUserProfileImage } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 
 const PublicProfileCard = ({ userProfile }: ProfileProps) => {
   const t = useTranslations('Profile');

@@ -37,7 +37,7 @@
 
 }
 
-.profileInfo {
+.profileNameAndDescriptionContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,7 +75,7 @@
 
 
 @include xsPhoneView {
-   .profileInfo {
+   .profileNameAndDescriptionContainer {
     h2 {
         font-size: 1.5rem;
         margin-top: 0;

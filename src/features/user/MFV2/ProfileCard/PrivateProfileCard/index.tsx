@@ -2,9 +2,11 @@ import React from 'react';
 import { ProfileProps } from '../../../../common/types/profile';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../../utils/getImageURL';
-import { DefaultUserProfileImage } from '../../../../../../public/assets/images/ProfilePageIcons';
 import styles from './PrivateProfileCard.module.scss';
-import { SettingsIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import {
+  DefaultUserProfileImage,
+  SettingsIcon,
+} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useLocale, useTranslations } from 'next-intl';
 import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
 import { useRouter } from 'next/router';
@@ -37,7 +39,7 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
             <SettingsIcon />
           </button>
         )}
-        <div className={styles.profileInfo}>
+        <div className={styles.profileNameAndDescriptionContainer}>
           <h2>{userProfile?.displayName}</h2>
           <p>
             {t('myProfile.userDescription', {

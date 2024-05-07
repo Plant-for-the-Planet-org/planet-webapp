@@ -3,12 +3,10 @@ import ProfileCardButton from '.';
 import {
   AllDonations,
   RedeemIcon,
-} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import styles from './ProfileCardButton.module.scss';
-import {
   SupportUserIcon,
   WebsiteLinkIcon,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
+} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import styles from './ProfileCardButton.module.scss';
 import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/RedeemModal';
 import { useRouter } from 'next/router';
 import SocialMediaShareButton from '../ShareModal/SocialMediaShareButton';
