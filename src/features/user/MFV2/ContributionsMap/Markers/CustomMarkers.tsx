@@ -10,6 +10,7 @@ import TreePlanting from '../../../../../../public/assets/images/icons/myForestV
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import { contributionLocation } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
+import RegisteredTreePopup from '../PopUps/RegisteredTreePopUp';
 
 interface ProjectTypeIconProps {
   projectType: string;
@@ -109,13 +110,16 @@ const CustomMarkers = () => {
     <>
       {contributionLocation.map((singleLocation, key) => {
         return (
-          <Marker
-            longitude={singleLocation?.geometry.coordinates[0]}
-            latitude={singleLocation?.geometry.coordinates[1]}
-            key={key}
-          >
-            {renderIcons(singleLocation.properties)}
-          </Marker>
+          <>
+            <RegisteredTreePopup singleLocation={singleLocation} key={key} />
+            <Marker
+              longitude={singleLocation?.geometry.coordinates[0]}
+              latitude={singleLocation?.geometry.coordinates[1]}
+              key={key}
+            >
+              {renderIcons(singleLocation.properties)}
+            </Marker>
+          </>
         );
       })}
     </>
