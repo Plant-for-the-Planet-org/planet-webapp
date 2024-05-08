@@ -33,6 +33,7 @@ import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
+import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -299,28 +300,36 @@ export default function EditProfileForm() {
   return (
     <StyledForm>
       <div className="inputContainer">
-        <div {...getRootProps()}>
-          <label htmlFor="upload">
-            <div className={styles.profilePicDiv}>
-              <input {...getInputProps()} />
-              {updatingPic ? (
-                <div className={styles.spinnerImage}></div>
-              ) : user?.image ? (
-                <div className={styles.profilePic}>
-                  <img
-                    src={getImageUrl('profile', 'thumb', user.image)}
-                    className={styles.profilePicImg}
-                  />
-                  <div className={styles.profilePicOverlay} />
-                  <CameraWhite />
-                </div>
-              ) : (
-                <div className={styles.noProfilePic}>
-                  <Camera />
-                </div>
-              )}
+        <div className={styles.profilePicDiv}>
+          {updatingPic ? (
+            <div className={styles.spinnerImage}></div>
+          ) : user?.image ? (
+            <div className={styles.profilePic}>
+              <img
+                src={getImageUrl('profile', 'thumb', user.image)}
+                className={styles.profilePicImg}
+              />
             </div>
-          </label>
+          ) : (
+            <div className={styles.noProfilePic}>
+              <Camera />
+            </div>
+          )}
+          <div className={styles.profilePicDivButtons}>
+            <div {...getRootProps()} className={styles.uploadProfilePicButton}>
+              <label htmlFor="upload">
+                <input {...getInputProps()} />
+                <Camera />
+                <span>Upload a new photo</span>
+              </label>
+            </div>
+            <button className={styles.deleteProfilePicButton}>
+              <label>
+                <Delete color="#828282" />
+                <span>Delete Photo</span>
+              </label>
+            </button>
+          </div>
         </div>
 
         {type !== 'tpo' ? (

@@ -20,7 +20,7 @@ const themeProperties = {
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
   primaryLightColor: '#79AE4633',
-  primaryDarkColorX: '#219653',
+  primaryDarkColorX: '33, 150, 83',
   lightBlueColor: '#48AADD',
   darkBlackColor: '#4F4F4F',
   darkOliveGreen: '#688816',
