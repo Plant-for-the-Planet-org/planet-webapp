@@ -8,7 +8,7 @@ export default function (): ReactElement | null {
   const t = useTranslations('Me');
 
   return (
-    <DashboardView title={t('editProfile')} subtitle={null} variant="compact">
+    <DashboardView title={t('editProfile')} subtitle={null}>
       <CenteredContainer>
         <EditProfileForm />
       </CenteredContainer>
