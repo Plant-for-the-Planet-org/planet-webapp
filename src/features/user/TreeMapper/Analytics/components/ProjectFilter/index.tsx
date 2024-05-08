@@ -75,7 +75,9 @@ const ProjectFilter = () => {
               label={t('from')}
               value={localFromDate}
               onChange={(e) => setLocalFromDate(e)}
-              onAccept={setFromDate}
+              onAccept={(value) => {
+                if (value) setFromDate(value);
+              }}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}
@@ -102,7 +104,9 @@ const ProjectFilter = () => {
               label={t('to')}
               value={localToDate}
               onChange={(e) => setLocalToDate(e)}
-              onAccept={setToDate}
+              onAccept={(value) => {
+                if (value) setToDate(value);
+              }}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}
