@@ -96,7 +96,7 @@ const ProjectTypeIcon = ({
       return null;
   }
 };
-export const renderIcons = (properties: any) => {
+const renderIcons = (properties: any) => {
   if (!properties.isTreeRegistered) {
     return <>{ProjectTypeIcon(properties)}</>;
   } else {
@@ -104,7 +104,7 @@ export const renderIcons = (properties: any) => {
   }
 };
 
-const CustomMarkers = () => {
+const SinglePointMarkers = () => {
   return (
     <>
       {contributionLocation.map((singleLocation, key) => {
@@ -122,4 +122,4 @@ const CustomMarkers = () => {
   );
 };
 
-export default CustomMarkers;
+export default SinglePointMarkers;
