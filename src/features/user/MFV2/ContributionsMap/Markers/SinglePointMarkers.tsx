@@ -1,4 +1,5 @@
 import { Marker } from 'react-map-gl-v7';
+import { useMemo } from 'react';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
 import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
@@ -11,94 +12,69 @@ import OtherPlanting from '../../../../../../public/assets/images/icons/myForest
 import { contributionLocation } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
 
+type Classification =
+  | 'natural-regeneration'
+  | 'mangroves'
+  | 'managed-regeneration'
+  | 'agroforestry'
+  | 'urban-planting'
+  | 'conservation'
+  | 'large-scale-planting'
+  | 'other-planting';
 interface ProjectTypeIconProps {
   projectType: string;
-  classification: string;
+  classification: Classification;
 }
 
 const ProjectTypeIcon = ({
   projectType,
   classification,
 }: ProjectTypeIconProps) => {
-  const chooseColorForMarkerIcon = (classification: string) => {
-    switch (classification) {
-      case 'treePlantation':
-        return `${themeProperties.primaryDarkColorX}`;
+  const getMarkerColor = (projectType: string) => {
+    switch (projectType) {
       case 'conservation':
         return `${themeProperties.mediumBlue}`;
       case 'restoration':
         return `${themeProperties.electricPurple}`;
       default:
-        return null;
+        return `${themeProperties.primaryDarkColorX}`;
     }
   };
+  const Markercolor = useMemo(() => getMarkerColor(projectType), [projectType]);
+  const IconProps = {
+    width: 68,
+    color: Markercolor,
+  };
 
-  switch (projectType) {
+  switch (classification) {
     case 'natural-regeneration':
-      return <NaturalRegeneration />;
+      return <NaturalRegeneration {...IconProps} />;
     case 'mangroves':
-      return (
-        <Mangroves
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <Mangroves {...IconProps} />;
     case 'managed-regeneration':
-      return (
-        <ManagedRegeneration
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <ManagedRegeneration {...IconProps} />;
     case 'agroforestry':
-      return (
-        <Agroforestry
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <Agroforestry {...IconProps} />;
     case 'urban-planting':
-      return (
-        <UrbanRestoration
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <UrbanRestoration {...IconProps} />;
     case 'conservation':
-      return (
-        <Conservation
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <Conservation {...IconProps} />;
     case 'large-scale-planting':
-      return (
-        <TreePlanting
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <TreePlanting {...IconProps} />;
     case 'other-planting':
-      return (
-        <OtherPlanting
-          width={68}
-          height={75}
-          color={chooseColorForMarkerIcon(classification)}
-        />
-      );
+      return <OtherPlanting {...IconProps} />;
     default:
       return null;
   }
 };
 const renderIcons = (properties: any) => {
   if (!properties.isTreeRegistered) {
-    return <>{ProjectTypeIcon(properties)}</>;
+    return (
+      <ProjectTypeIcon
+        projectType={properties?.projectType}
+        classification={properties?.classification}
+      />
+    );
   } else {
     return <RegisteredTreeIcon />;
   }

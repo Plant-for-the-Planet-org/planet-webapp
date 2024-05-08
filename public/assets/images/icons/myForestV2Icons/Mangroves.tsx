@@ -1,12 +1,9 @@
-const Mangroves = ({ width, height, color }) => {
+import { IconProps } from '../../../../../src/features/common/types/common';
+
+const Mangroves = ({ width, color }: IconProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      fill="none"
-    >
-      <g filter="url(#a)">
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} fill="none">
+      <g filter="url(#a)" width={width}>
         <path
           fill={color}
           fillRule="evenodd"
@@ -23,8 +20,7 @@ const Mangroves = ({ width, height, color }) => {
       <defs>
         <filter
           id="a"
-          width={67.417}
-          height={74.417}
+          width={width}
           x={0.291}
           y={0.104}
           colorInterpolationFilters="sRGB"
