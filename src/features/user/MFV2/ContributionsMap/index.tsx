@@ -3,8 +3,8 @@ import Map, { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7';
-import MyForestMapCredit from './Other/MyForestMapCredit';
 import SinglePointMarkers from './Markers/SinglePointMarkers';
+import MapCredits from './Common/MapCredits';
 
 interface MapState {
   mapStyle: MapStyle;
@@ -54,7 +54,7 @@ function ContributionsMap() {
       attributionControl={false}
     >
       <SinglePointMarkers />
-      <MyForestMapCredit />
+      <MapCredits />
       <NavigationControl position="bottom-right" showCompass={false} />
     </Map>
   );
