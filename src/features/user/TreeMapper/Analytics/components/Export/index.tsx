@@ -240,7 +240,7 @@ export const Export = () => {
             }
           >
             <MuiDatePicker
-              label={t('from')}
+              label={t('to')}
               value={localToDate}
               onChange={setLocalToDate}
               renderInput={(props) => (
