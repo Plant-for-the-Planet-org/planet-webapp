@@ -9,7 +9,7 @@ import UrbanRestoration from '../../../../../../public/assets/images/icons/myFor
 import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
-import { contributionLocation } from '../../../../../utils/myForestV2Utils';
+import { contributions } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
 
 type Classification =
@@ -22,16 +22,13 @@ type Classification =
   | 'large-scale-planting'
   | 'other-planting';
 interface ProjectTypeIconProps {
-  projectType: string;
+  purpose: string;
   classification: Classification;
 }
 
-const ProjectTypeIcon = ({
-  projectType,
-  classification,
-}: ProjectTypeIconProps) => {
-  const getMarkerColor = (projectType: string) => {
-    switch (projectType) {
+const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
+  const getMarkerColor = (purpose: string) => {
+    switch (purpose) {
       case 'conservation':
         return `${themeProperties.mediumBlue}`;
       case 'restoration':
@@ -40,7 +37,7 @@ const ProjectTypeIcon = ({
         return `${themeProperties.primaryDarkColorX}`;
     }
   };
-  const Markercolor = useMemo(() => getMarkerColor(projectType), [projectType]);
+  const Markercolor = useMemo(() => getMarkerColor(purpose), [purpose]);
   const IconProps = {
     width: 68,
     color: Markercolor,
@@ -68,11 +65,11 @@ const ProjectTypeIcon = ({
   }
 };
 const renderIcons = (properties: any) => {
-  if (!properties.isTreeRegistered) {
+  if (properties.type !== 'registration') {
     return (
       <ProjectTypeIcon
-        projectType={properties?.projectType}
-        classification={properties?.classification}
+        purpose={properties.project.purpose}
+        classification={properties.project.classification}
       />
     );
   } else {
@@ -83,7 +80,7 @@ const renderIcons = (properties: any) => {
 const SinglePointMarkers = () => {
   return (
     <>
-      {contributionLocation.map((singleLocation, key) => {
+      {contributions.map((singleLocation, key) => {
         return (
           <Marker
             longitude={singleLocation?.geometry.coordinates[0]}
