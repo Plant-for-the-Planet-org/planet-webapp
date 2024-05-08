@@ -292,20 +292,15 @@ export const MapContainer = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (project && species) {
-      if (queryType === QueryType.DATE) {
-        if (!isDateBetween(search, fromDate, toDate)) {
-          setErrors([{ message: t('searchDateError') }]);
-          return;
-        }
-      }
-    }
-  }, [project, species, queryType, fromDate, toDate]);
-
   useDebouncedEffect(
     () => {
       if (project && species) {
+        if (queryType === QueryType.DATE) {
+          if (!isDateBetween(search, fromDate, toDate)) {
+            setErrors([{ message: t('searchDateError') }]);
+            return;
+          }
+        }
         fetchProjectLocations();
       }
     },
