@@ -10,3 +10,14 @@
   padding: 10px;
   width: 330px;
 }
+.contributionPopup,
+.registeredTreePopup {
+  > div {
+    border-radius: 8px;
+  }
+}
+
+.contributionPopupContainer {
+  min-width: 208px;
+  min-height: 95px;
+}

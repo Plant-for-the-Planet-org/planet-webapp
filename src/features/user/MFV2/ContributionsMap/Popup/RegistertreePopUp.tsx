@@ -1,12 +1,15 @@
+import React from 'react';
 import { Popup } from 'react-map-gl-v7';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreePopupIcon';
+import style from '../MyForestV2.module.scss';
 
-const RegisteredTreePopup = ({ singleLocation }) => {
+const RegisterTreePopup = ({ singleLocation }) => {
   return (
     <Popup
       latitude={singleLocation?.geometry?.coordinates[1]}
       longitude={singleLocation?.geometry?.coordinates[0]}
       offset={34}
+      className={style.registeredTreePopup}
     >
       <div
         style={{
@@ -36,4 +39,4 @@ const RegisteredTreePopup = ({ singleLocation }) => {
   );
 };
 
-export default RegisteredTreePopup;
+export default RegisterTreePopup;

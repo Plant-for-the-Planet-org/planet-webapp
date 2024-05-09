@@ -1,4 +1,4 @@
-import { Marker } from 'react-map-gl-v7';
+import SingleMarker from './SingleMarker';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
 import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
@@ -10,7 +10,6 @@ import TreePlanting from '../../../../../../public/assets/images/icons/myForestV
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import { contributionLocation } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
-import RegisteredTreePopup from '../PopUps/RegisteredTreePopUp';
 
 interface ProjectTypeIconProps {
   projectType: string;
@@ -109,18 +108,7 @@ const CustomMarkers = () => {
   return (
     <>
       {contributionLocation.map((singleLocation, key) => {
-        return (
-          <>
-            <RegisteredTreePopup singleLocation={singleLocation} key={key} />
-            <Marker
-              longitude={singleLocation?.geometry.coordinates[0]}
-              latitude={singleLocation?.geometry.coordinates[1]}
-              key={key}
-            >
-              {renderIcons(singleLocation.properties)}
-            </Marker>
-          </>
-        );
+        return <SingleMarker singleLocation={singleLocation} key={key} />;
       })}
     </>
   );
