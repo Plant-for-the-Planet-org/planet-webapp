@@ -10,6 +10,7 @@ const RegisterTreePopup = ({ singleLocation }) => {
       longitude={singleLocation?.geometry?.coordinates[0]}
       offset={34}
       className={style.registeredTreePopup}
+      closeButton={false}
     >
       <div
         style={{
@@ -23,7 +24,9 @@ const RegisterTreePopup = ({ singleLocation }) => {
         <div style={{ fontSize: '14px', fontWeight: '700', marginTop: '5px' }}>
           {'12 trees'}
         </div>
-        <p style={{ fontSize: '8px', fontWeight: '600' }}>{'Registered'}</p>
+        <p style={{ fontSize: '8px', fontWeight: '600', lineHeight: '120%' }}>
+          {'Registered'}
+        </p>
         <div
           style={{
             color: 'rgba(130, 130, 130, 1)',

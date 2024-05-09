@@ -1,4 +1,3 @@
-import { Marker } from 'react-map-gl-v7';
 import { useMemo } from 'react';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
@@ -11,6 +10,7 @@ import TreePlanting from '../../../../../../public/assets/images/icons/myForestV
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import { contributions } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
+import SingleMarker from './SingleMarker';
 
 type Classification =
   | 'natural-regeneration'
@@ -26,7 +26,10 @@ interface ProjectTypeIconProps {
   classification: Classification;
 }
 
-const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
+export const ProjectTypeIcon = ({
+  purpose,
+  classification,
+}: ProjectTypeIconProps) => {
   const getMarkerColor = (purpose: string) => {
     switch (purpose) {
       case 'conservation':
@@ -64,23 +67,11 @@ const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
       return null;
   }
 };
-const renderIcons = (properties: any) => {
-  if (properties.type !== 'registration') {
-    return (
-      <ProjectTypeIcon
-        purpose={properties.project.purpose}
-        classification={properties.project.classification}
-      />
-    );
-  } else {
-    return <RegisteredTreeIcon />;
-  }
-};
 
 const SinglePointMarkers = () => {
   return (
     <>
-      {contributionLocation.map((singleLocation, key) => {
+      {contributions.map((singleLocation, key) => {
         return <SingleMarker singleLocation={singleLocation} key={key} />;
       })}
     </>
