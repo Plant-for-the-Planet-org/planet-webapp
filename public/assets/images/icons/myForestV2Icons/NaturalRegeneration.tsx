@@ -1,9 +1,11 @@
-const NaturalRegeneration = () => {
+import { IconProps } from '../../../../../src/features/common/types/common';
+
+const NaturalRegeneration = ({ width, color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={68} height={75} fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} fill="none">
       <g filter="url(#a)">
         <path
-          fill="#219653"
+          fill={color}
           fillRule="evenodd"
           d="M19.2 15.023a20.257 20.257 0 0 0 0 29.076l13.738 13.45c.614.601 1.608.601 2.221 0L48.9 44.1a20.257 20.257 0 0 0 0-29.076c-8.202-8.03-21.499-8.03-29.7 0Z"
           clipRule="evenodd"
@@ -16,8 +18,7 @@ const NaturalRegeneration = () => {
       <defs>
         <filter
           id="a"
-          width={67.417}
-          height={74.417}
+          width={width}
           x={0.34}
           y={0.104}
           colorInterpolationFilters="sRGB"

@@ -1,11 +1,11 @@
 import { useState, MouseEvent } from 'react';
-import { Popover } from '@mui/material';
+import { Typography, Popover } from '@mui/material';
 import myForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import { InfoIcon } from '../../../../../../../public/assets/images/ProfilePageIcons/index';
 
 const MyForestMapCredit = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
-  const handlePopoverOpen = (event: MouseEvent<HTMLDivElement>) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const handlePopoverOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -16,9 +16,13 @@ const MyForestMapCredit = () => {
 
   return (
     <div className={myForestMapStyle.mapCreditsContainer}>
-      <div onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+      <Typography
+        aria-owns={open ? 'mouse-over-popover' : undefined}
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={handlePopoverClose}
+      >
         <InfoIcon width={24} height={24} />
-      </div>
+      </Typography>
       <Popover
         id="mouse-over-popover"
         sx={{
