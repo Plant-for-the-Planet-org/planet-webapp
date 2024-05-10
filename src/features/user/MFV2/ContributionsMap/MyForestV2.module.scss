@@ -23,17 +23,144 @@
   }
 }
 
+//styles for contribution  popup
+
 .contributionPopupContainer {
-  min-width: 208px;
+  max-width: 235px;
   min-height: 154px;
   border-radius: 8px;
+  box-shadow: 2.889px 5.778px 11.556px 0px rgba(0, 0, 0, 0.1);
+  .imageContainer {
+    height: 94px;
+  }
 }
 
-.popupImage {
+.popupProjctImage {
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
   border: 1px solid #fff;
   width: 100%;
   height: 94px;
   object-fit: cover;
+}
+
+.contributionInfoContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+  height: fit-content;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 10px;
+}
+
+.treesAndCountry {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  line-height: 166%;
+  gap: 5px;
+  > .trees {
+    font-weight: 700;
+  }
+}
+
+.seperator {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.countryAndTpo {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 8px;
+  margin-top: 4px;
+  line-height: 0px;
+  font-weight: 400;
+}
+
+.singleContributionDate {
+  font-size: 7px;
+  color: rgba(130, 130, 130, 1);
+}
+
+.popupDonateButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 122, 73, 1);
+  width: 53px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.listOfContributionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 5px;
+  background: rgba(33, 150, 83, 0.05);
+  gap: 4px;
+  > .contributionInfoContainer {
+    min-width: 110px;
+    background: #fff;
+    border-radius: 4px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    > .trees {
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 7px;
+    }
+    .contributionDate {
+      font-size: 6px;
+      line-height: 7px;
+      color: rgba(79, 79, 79, 1);
+    }
+  }
+}
+
+.totalContribution {
+  min-width: 110px;
+  height: 18px;
+  background: rgba(0, 122, 73, 0.1);
+  color: rgba(0, 122, 73, 1);
+  border-radius: 4px;
+  padding: 7px 14px;
+  display: flex;
+  font-size: 6px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+}
+
+// styles for registered tree popup
+.registeredTreePopupContainer {
+  display: flex;
+  min-width: 98px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.registeredTrees {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.registeredTreeLabel {
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+.registeredTreeDate {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(130, 130, 130, 1);
 }

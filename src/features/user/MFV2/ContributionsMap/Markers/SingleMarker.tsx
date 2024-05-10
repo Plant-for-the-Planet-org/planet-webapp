@@ -35,7 +35,7 @@ const SingleMarker = ({ singleLocation }) => {
       >
         <div
           onMouseEnter={() => setShowPopUp(true)}
-          // onMouseLeave={() => setShowPopUp(false)}
+          onMouseLeave={() => setShowPopUp(false)}
         >
           {renderIcons(singleLocation.properties)}
         </div>

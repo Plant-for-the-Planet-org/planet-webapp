@@ -3,6 +3,7 @@ import style from '../MyForestV2.module.scss';
 import getImageUrl from '../../../../../utils/getImageURL';
 
 const ContributionPopup = ({ singleLocation }) => {
+  console.log(singleLocation?.properties.contributions, '==1');
   return (
     <Popup
       latitude={singleLocation?.geometry?.coordinates[1]}
@@ -12,7 +13,7 @@ const ContributionPopup = ({ singleLocation }) => {
       closeButton={false}
     >
       <div className={style.contributionPopupContainer}>
-        <div style={{ height: '94px' }}>
+        <div className={style.imageContainer}>
           <img
             alt="projectImage"
             src={getImageUrl(
@@ -21,79 +22,46 @@ const ContributionPopup = ({ singleLocation }) => {
               singleLocation?.properties?.project.image
             )}
             width={'fit-content'}
-            className={style.popupImage}
+            className={style.popupProjctImage}
           />
         </div>
-        <div
-          style={{
-            width: 'inherit',
-            height: 'fit-content',
-            justifyContent: 'space-between',
-            borderBottomLeftRadius: '8px',
-            borderBottomRightRadius: '8px',
-            padding: '10px',
-            display: 'flex',
-            gap: '2px',
-          }}
-        >
+        <div className={style.contributionInfoContainer}>
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                fontSize: '10px',
-                lineHeight: '166%',
-                gap: '5px',
-              }}
-            >
-              <p style={{ fontWeight: 700 }}>5 trees</p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontWeight: 700,
-                  marginBottom: '4px',
-                }}
-              >
-                .
+            <div className={style.treesAndCountry}>
+              <p className={style.trees}>
+                {singleLocation?.properties.totalTrees}
               </p>
+              <p className={style.seperator}>.</p>
               <p>Costa Rica</p>
             </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                fontSize: '8px',
-                gap: '3px',
-                lineHeight: '0%',
-                marginTop: '4px',
-              }}
-            >
+            <div className={style.countryAndTpo}>
               <p>Costa Rica</p>
-              <p style={{ fontWeight: '700', marginBottom: '4px' }}>.</p>
+              <p className={style.seperator}>.</p>
               <p>By One Tree Planted</p>
             </div>
-            <div style={{ fontSize: '7px', color: 'rgba(130, 130, 130, 1)' }}>
-              Aug 25, 2021
-            </div>
+            {singleLocation?.properties?.contributionCount.lenght > 1 && (
+              <div className={style.singleContributionDate}>Aug 25, 2021</div>
+            )}
           </div>
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '2px 8px',
-              fontSize: '10px',
-              fontWeight: '700',
-              color: '#fff',
-              background: 'rgba(0, 122, 73, 1)',
-              width: '53px',
-              height: '18px',
-              borderRadius: '4px',
-            }}
-          >
-            Donate
-          </button>
+          <button className={style.popupDonateButton}>Donate</button>
+        </div>
+
+        <div className={style.listOfContributionsContainer}>
+          {singleLocation?.properties.contributions
+            .slice(0, 3)
+            .map((singleContribution: any, key: any) => {
+              return (
+                <div className={style.contributionInfoContainer} key={key}>
+                  <p className={style.trees}>{singleContribution.quantity}</p>
+                  <p className={style.contributionDate}>Aug 25, 2025</p>
+                </div>
+              );
+            })}
+          {singleLocation?.properties.contributions.lenght > 3 && (
+            <div className={style.totalContribution}>
+              +234,003 contributions
+            </div>
+          )}
         </div>
       </div>
     </Popup>

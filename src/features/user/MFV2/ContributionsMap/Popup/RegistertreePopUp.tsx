@@ -12,31 +12,11 @@ const RegisterTreePopup = ({ singleLocation }) => {
       className={style.registeredTreePopup}
       closeButton={false}
     >
-      <div
-        style={{
-          minWidth: '98px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
+      <div className={style.registeredTreePopupContainer}>
         <RegisteredTreePopupIcon />
-        <div style={{ fontSize: '14px', fontWeight: '700', marginTop: '5px' }}>
-          {'12 trees'}
-        </div>
-        <p style={{ fontSize: '8px', fontWeight: '600', lineHeight: '120%' }}>
-          {'Registered'}
-        </p>
-        <div
-          style={{
-            color: 'rgba(130, 130, 130, 1)',
-            fontSize: '8px',
-            textTransform: 'capitalize',
-            fontWeight: '600',
-          }}
-        >
-          {'April 4, 2024'}
-        </div>
+        <div className={style.registeredTrees}>{'12 trees'}</div>
+        <p className={style.registeredTreeLabel}>{'Registered'}</p>
+        <div className={style.registeredTreeDate}>{'April 4, 2024'}</div>
       </div>
     </Popup>
   );

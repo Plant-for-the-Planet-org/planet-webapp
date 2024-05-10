@@ -7,6 +7,7 @@ export const contributions = [
     properties: {
       type: 'contribution',
       contributionCount: 1,
+      totalTrees: 1,
       project: {
         id: 'project_5e31028724223240553272',
         name: 'Pai River Forest Restoration',
@@ -33,7 +34,8 @@ export const contributions = [
       contributions: [
         {
           quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
           unitType: 'tree',
         },
       ],
@@ -46,7 +48,8 @@ export const contributions = [
     },
     properties: {
       type: 'contribution',
-      contributionCount: 1,
+      contributionCount: 4,
+      totalTrees: 4,
       project: {
         id: 'project_5e31028724223240553272',
         name: 'Pai River Forest Restoration',
@@ -73,12 +76,26 @@ export const contributions = [
       contributions: [
         {
           quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
           unitType: 'tree',
         },
         {
           quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
+          unitType: 'tree',
+        },
+        {
+          quantity: 1,
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
+          unitType: 'tree',
+        },
+        {
+          quantity: 1,
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
           unitType: 'tree',
         },
       ],
@@ -92,6 +109,7 @@ export const contributions = [
     properties: {
       type: 'registration',
       contributionCount: 1,
+      totalTrees: 1,
       project: {
         id: 'project_5e31028724223240553272',
         name: 'Pai River Forest Restoration',
@@ -118,7 +136,7 @@ export const contributions = [
       contributions: [
         {
           quantity: 1,
-          date: '2024-01-15T07:47:14.000Z',
+          date: '2024-05-02T00:00:00.000Z',
           unitType: 'tree',
         },
       ],
@@ -136,7 +154,7 @@ export const contributions = [
       contributions: [
         {
           quantity: 1,
-          date: '2024-01-15T07:47:14.000Z',
+          date: '2024-05-02T00:00:00.000Z',
           unitType: 'tree',
         },
       ],
@@ -150,6 +168,7 @@ export const contributions = [
     properties: {
       type: 'contribution',
       contributionCount: 1,
+      totalTrees: 2,
       project: {
         id: 'project_5e31028724223240553272',
         name: 'Pai River Forest Restoration',
@@ -176,12 +195,14 @@ export const contributions = [
       contributions: [
         {
           quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
           unitType: 'tree',
         },
         {
           quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
+          plantDate:
+            'Thu May 02 2024 05:30:00 GMT+0530 (India Standard Time) =',
           unitType: 'tree',
         },
       ],
