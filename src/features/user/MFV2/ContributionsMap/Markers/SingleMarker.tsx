@@ -1,6 +1,6 @@
 import { Marker } from 'react-map-gl-v7';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
-import { ProjectTypeIcon } from './SinglePointMarkers';
+import { ProjectTypeIcon } from './Markers';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import { useState } from 'react';
 import ContributionPopup from '../Popup/ContributionPopup';

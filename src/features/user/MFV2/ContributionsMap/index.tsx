@@ -3,7 +3,7 @@ import Map, { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7';
-import SinglePointMarkers from './Markers/SinglePointMarkers';
+import Markers from './Markers/Markers';
 import MapCredits from './Common/MapCredits';
 
 interface MapState {
@@ -53,7 +53,7 @@ function ContributionsMap() {
       onMove={(e) => setViewState(e.viewState)}
       attributionControl={false}
     >
-      <SinglePointMarkers />
+      <Markers />
       <MapCredits />
       <NavigationControl position="bottom-right" showCompass={false} />
     </Map>

@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
 import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
 import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
@@ -68,7 +67,7 @@ export const ProjectTypeIcon = ({
   }
 };
 
-const SinglePointMarkers = () => {
+const Markers = () => {
   return (
     <>
       {contributions.map((singleLocation, key) => {
@@ -78,4 +77,4 @@ const SinglePointMarkers = () => {
   );
 };
 
-export default SinglePointMarkers;
+export default Markers;
