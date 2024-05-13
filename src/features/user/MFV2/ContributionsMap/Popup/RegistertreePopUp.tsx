@@ -3,6 +3,16 @@ import { Popup } from 'react-map-gl-v7';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreePopupIcon';
 import style from '../MyForestV2.module.scss';
 
+const RegisteredTreeInfo = () => {
+  return (
+    <>
+      <div className={style.registeredTrees}>{'12 trees'}</div>
+      <div className={style.registeredTreeLabel}>{'Registered'}</div>
+      <div className={style.registeredTreeDate}>{'April 4, 2024'}</div>
+    </>
+  );
+};
+
 const RegisterTreePopup = ({ singleLocation }) => {
   return (
     <Popup
@@ -14,9 +24,7 @@ const RegisterTreePopup = ({ singleLocation }) => {
     >
       <div className={style.registeredTreePopupContainer}>
         <RegisteredTreePopupIcon />
-        <div className={style.registeredTrees}>{'12 trees'}</div>
-        <p className={style.registeredTreeLabel}>{'Registered'}</p>
-        <div className={style.registeredTreeDate}>{'April 4, 2024'}</div>
+        <RegisteredTreeInfo />
       </div>
     </Popup>
   );

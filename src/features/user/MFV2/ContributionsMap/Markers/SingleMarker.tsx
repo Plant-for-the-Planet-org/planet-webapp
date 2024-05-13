@@ -8,6 +8,16 @@ import ContributionPopup from '../Popup/ContributionPopup';
 const SingleMarker = ({ singleLocation }) => {
   const [showPopup, setShowPopUp] = useState(false);
 
+  const handleMouseEnter = () => {
+    setShowPopUp(true);
+  };
+
+  const handleMouseLeave = () => {
+    setTimeout(() => {
+      setShowPopUp(false);
+    }, 3000);
+  };
+
   const renderIcons = (properties: any) => {
     if (properties.type !== 'registration') {
       return (
@@ -33,10 +43,7 @@ const SingleMarker = ({ singleLocation }) => {
         longitude={singleLocation?.geometry.coordinates[0]}
         latitude={singleLocation?.geometry.coordinates[1]}
       >
-        <div
-          onMouseEnter={() => setShowPopUp(true)}
-          onMouseLeave={() => setShowPopUp(false)}
-        >
+        <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {renderIcons(singleLocation.properties)}
         </div>
       </Marker>

@@ -52,7 +52,7 @@ export const contributions = [
       totalTrees: 4,
       project: {
         id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
+        name: 'Pai aRiver Forest Restoration',
         country: 'TH',
         image: '5e31028724223240553272.jpeg',
         tpo: {
