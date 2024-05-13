@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PublicProfileCard from '../ProfileCard/PublicProfileCard';
+import ProfileCard from '../ProfileCard';
 
-const meta: Meta<typeof PublicProfileCard> = {
-  component: PublicProfileCard,
+const meta: Meta<typeof ProfileCard> = {
+  component: ProfileCard,
   title: 'Components/PublicProfileCard',
 };
 
 export default meta;
-type Story = StoryObj<typeof PublicProfileCard>;
+type Story = StoryObj<typeof ProfileCard>;
 
 const dummyUserProfile = {
   slug: 'plant-for-the-planet',
@@ -58,5 +58,6 @@ const dummyUserProfile = {
 export const Preview: Story = {
   args: {
     userProfile: dummyUserProfile,
+    authenticatedType: 'public',
   },
 };

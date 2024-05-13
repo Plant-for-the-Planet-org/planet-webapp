@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProfileCardButtonContainer from '../ProfileCard/ProfileCardButton/ProfileCardButtonContainer';
+import ProfileActions from '../ProfileCard/ProfileCardButton/ProfileActions';
 
-const meta: Meta<typeof ProfileCardButtonContainer> = {
-  component: ProfileCardButtonContainer,
-  title: 'Components/ProfileCardButtonContainer',
+const meta: Meta<typeof ProfileActions> = {
+  component: ProfileActions,
+  title: 'Components/ProfileActions',
 };
 
 export default meta;
-type Story = StoryObj<typeof ProfileCardButtonContainer>;
+type Story = StoryObj<typeof ProfileActions>;
 
 const dummyUserProfile = {
   slug: 'plant-for-the-planet',

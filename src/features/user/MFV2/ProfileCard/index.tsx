@@ -1,23 +1,23 @@
 import React from 'react';
-import { ProfileProps } from '../../../../common/types/profile';
+import { ProfileProps } from '../../../common/types/profile';
 import { Avatar } from '@mui/material';
-import getImageUrl from '../../../../../utils/getImageURL';
-import styles from './PrivateProfileCard.module.scss';
+import getImageUrl from '../../../../utils/getImageURL';
+import styles from './ProfileCard.module.scss';
 import {
   DefaultUserProfileImage,
   SettingsIcon,
-} from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
+} from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useLocale, useTranslations } from 'next-intl';
-import ProfileCardButtonContainer from '../ProfileCardButton/ProfileCardButtonContainer';
 import { useRouter } from 'next/router';
+import ProfileActions from './ProfileCardButton/ProfileActions';
+import Link from 'next/link';
 
-const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
+const ProfileCard = ({ userProfile, authenticatedType }: ProfileProps) => {
   const t = useTranslations('Profile');
   const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 767;
   const router = useRouter();
   const locale = useLocale();
-  const isPublicAccount = router.asPath === `/${locale}/profile/mfv2-public`;
+  const isPrivateAccount = authenticatedType === 'private';
 
   return (
     <div className={styles.profileCardContainer}>
@@ -34,10 +34,12 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
         )}
       </div>
       <div className={styles.profileDetailsContainer}>
-        {!isPublicAccount && (
-          <button className={styles.editProfileIcon}>
-            <SettingsIcon />
-          </button>
+        {isPrivateAccount && (
+          <Link href="/profile/edit">
+            <button className={styles.editProfileIcon}>
+              <SettingsIcon />
+            </button>
+          </Link>
         )}
         <div className={styles.profileNameAndDescriptionContainer}>
           <h2>{userProfile?.displayName}</h2>
@@ -48,21 +50,24 @@ const PrivateProfileCard = ({ userProfile }: ProfileProps) => {
           </p>
         </div>
 
-        {isPublicAccount && isMobile ? (
-          // renders public account features for mobile screen
-          <ProfileCardButtonContainer
+        {/* {isPublicAccount ? (
+          <ProfileActions
             authenticatedType={'public'}
             userProfile={userProfile}
           />
         ) : (
-          <ProfileCardButtonContainer
+          <ProfileActions
             authenticatedType={'private'}
             userProfile={userProfile}
           />
-        )}
+        )} */}
+        <ProfileActions
+          authenticatedType={authenticatedType}
+          userProfile={userProfile}
+        />
       </div>
     </div>
   );
 };
 
-export default PrivateProfileCard;
+export default ProfileCard;

@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PrivateProfileCard from '../ProfileCard/PrivateProfileCard';
+import ProfileCard from '../ProfileCard';
 
-const meta: Meta<typeof PrivateProfileCard> = {
-  component: PrivateProfileCard,
+const meta: Meta<typeof ProfileCard> = {
+  component: ProfileCard,
   title: 'Components/PrivateProfileCard',
 };
 
 export default meta;
-type Story = StoryObj<typeof PrivateProfileCard>;
+type Story = StoryObj<typeof ProfileCard>;
 
 const dummyUserProfile = {
   slug: 'plant-for-the-planet',
@@ -31,7 +31,7 @@ const dummyUserProfile = {
   },
   supportedProfile: null,
   id: 'tpo_gEZeQNxNhxZZ54zvYzCofsCr',
-  isPrivate: false,
+  isPrivate: true,
   getNews: true,
   bio: null,
   address: {
@@ -58,5 +58,6 @@ const dummyUserProfile = {
 export const Preview: Story = {
   args: {
     userProfile: dummyUserProfile,
+    authenticatedType: 'private',
   },
 };

@@ -11,23 +11,31 @@
     cursor: pointer;
     min-height: 2rem;
 
-    .icon {
+
+    a {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 10px;
     }
+}
+    
+.profileCardButtonIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    label {
-        font-size: 14px;
-        font-weight: 700;
-        color: #2F3336;
-        cursor: pointer;
-    }
+.profileCardButtonLabel {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2F3336;
+    cursor: pointer;
 }
 
 .primaryProfileCardButton {
     background-color: #007A49;
-    label {
+    .profileCardButtonLabel {
         color: #fff;
     }
 }

@@ -1,4 +1,4 @@
-@import '../../../../../theme/theme';
+@import '../../../../theme/theme';
 
 .profileCardContainer {
     display: flex;
@@ -7,7 +7,7 @@
 }   
 
 .profileBackground {
-    background-image: url('../../../../../../public/assets/images/privateProfileBackground.jpg');
+    background-image: url('../../../../../public/assets/images/profileBackground.jpg');
     width: 100%;
     min-height: 9rem;
     border-radius: 24px 24px 0px 0px;
