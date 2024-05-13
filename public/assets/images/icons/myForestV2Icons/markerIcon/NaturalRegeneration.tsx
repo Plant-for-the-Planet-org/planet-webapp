@@ -1,4 +1,4 @@
-import { IconProps } from '../../../../../src/features/common/types/common';
+import { IconProps } from '../../../../../../src/features/common/types/common';
 
 const NaturalRegeneration = ({ width, color }: IconProps) => {
   return (

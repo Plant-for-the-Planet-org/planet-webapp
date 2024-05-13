@@ -1,4 +1,4 @@
-import { IconProps } from '../../../../../src/features/common/types/common';
+import { IconProps } from '../../../../../../src/features/common/types/common';
 
 const TreePlanting = ({ width, color }: IconProps) => {
   return (

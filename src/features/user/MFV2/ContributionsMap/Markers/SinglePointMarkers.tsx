@@ -1,14 +1,14 @@
 import { Marker } from 'react-map-gl-v7';
 import { useMemo } from 'react';
-import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
-import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
-import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
-import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
-import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/Agroforestry';
-import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/UrbanRestoration';
-import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
-import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
-import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
+import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/RegisteredTreeIcon';
+import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/NaturalRegeneration';
+import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Mangroves';
+import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/ManagedRegeneration';
+import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Agroforestry';
+import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/UrbanRestoration';
+import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Conservation';
+import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/TreePlanting';
+import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/OtherPlanting';
 import { contributions } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
 
