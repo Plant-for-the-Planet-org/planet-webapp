@@ -2,51 +2,51 @@ import React, { ReactElement } from 'react';
 import styles from './ProfileCardButton.module.scss';
 import Link from 'next/link';
 
-interface LinkProps {
-  href: string;
-  target?: '_blank' | '_self' | '_parent' | '_top';
-  isLink: true;
-}
-
-interface ButtonProps {
+interface CommonProps {
   icon?: ReactElement;
   text?: string;
   type?: 'primary' | 'secondary';
+}
+
+interface LinkProps extends CommonProps {
+  href: string;
+  target?: '_blank' | '_self' | '_parent' | '_top';
+  isLink: 'true';
+}
+
+interface ButtonProps extends CommonProps {
   onClick: () => void;
-  isLink: false;
+  isLink: 'false';
 }
 
 type ProfileCardButtonProps = LinkProps | ButtonProps;
 
-function ProfileCardButton({
-  icon,
-  text,
-  type = 'secondary',
-  onClick,
-  isLink,
-  href,
-  target = '_self',
-}: ProfileCardButtonProps): React.JSX.Element {
-  return (
-    <button
-      className={`${styles.profileCardButton} ${
-        type === 'primary' ? styles.primaryProfileCardButton : ''
-      }`}
-      onClick={onClick}
-    >
-      {isLink ? (
-        <Link href={href} target={target}>
-          <div className={styles.profileCardButtonIcon}>{icon}</div>
-          <label className={styles.profileCardButtonLabel}>{text}</label>
-        </Link>
-      ) : (
-        <>
-          <div className={styles.profileCardButtonIcon}>{icon}</div>
-          <label className={styles.profileCardButtonLabel}>{text}</label>
-        </>
-      )}
-    </button>
-  );
+function ProfileCardButton(props: ProfileCardButtonProps): React.JSX.Element {
+  if (props.isLink === 'true') {
+    return (
+      <Link href={props.href} target={props.target}>
+        <button
+          className={`${styles.profileCardButton} ${
+            props.type === 'primary' ? styles.primaryProfileCardButton : ''
+          }`}
+        >
+          <div className={styles.profileCardButtonIcon}>{props.icon}</div>
+          <label className={styles.profileCardButtonLabel}>{props.text}</label>
+        </button>
+      </Link>
+    );
+  } else {
+    return (
+      <button
+        className={`${styles.profileCardButton} ${
+          props.type === 'primary' ? styles.primaryProfileCardButton : ''
+        }`}
+      >
+        <div className={styles.profileCardButtonIcon}>{props.icon}</div>
+        <label className={styles.profileCardButtonLabel}>{props.text}</label>
+      </button>
+    );
+  }
 }
 
 export default ProfileCardButton;

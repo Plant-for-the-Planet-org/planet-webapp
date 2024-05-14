@@ -8,15 +8,11 @@ import {
   SettingsIcon,
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 import ProfileActions from './ProfileCardButton/ProfileActions';
 import Link from 'next/link';
 
 const ProfileCard = ({ userProfile, authenticatedType }: ProfileProps) => {
   const t = useTranslations('Profile');
-  const screenWidth = window.innerWidth;
-  const router = useRouter();
-  const locale = useLocale();
   const isPrivateAccount = authenticatedType === 'private';
 
   return (
@@ -50,17 +46,6 @@ const ProfileCard = ({ userProfile, authenticatedType }: ProfileProps) => {
           </p>
         </div>
 
-        {/* {isPublicAccount ? (
-          <ProfileActions
-            authenticatedType={'public'}
-            userProfile={userProfile}
-          />
-        ) : (
-          <ProfileActions
-            authenticatedType={'private'}
-            userProfile={userProfile}
-          />
-        )} */}
         <ProfileActions
           authenticatedType={authenticatedType}
           userProfile={userProfile}

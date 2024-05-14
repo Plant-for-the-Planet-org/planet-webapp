@@ -50,6 +50,7 @@ const SocialMediaShareButton = ({ userProfile }: ProfileProps) => {
             ? handleNativeSocialMediaShare
             : handleShareModalOpen
         }
+        isLink="false"
       />
       {!isNativeShareSupported && (
         <ShareModal
