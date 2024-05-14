@@ -2,6 +2,7 @@ import CountryStatIcon from '../../../../../../public/assets/images/icons/myFore
 import DonationStatIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/statsIcon/DonationStat';
 import { contributionStats } from '../../../../../utils/myForestV2Utils';
 import style from '../Common/common.module.scss';
+import DonationStatInfo from './DonationStatInfo';
 
 const SelectIconForContributionStats = ({
   stat,
@@ -28,9 +29,14 @@ const ContributionStats = () => {
             <div className={style.statsIconContainer}>
               <SelectIconForContributionStats stat={singleStat.stat} />
             </div>
-            <div
-              className={style.stats}
-            >{`${singleStat.value} ${singleStat.stat}`}</div>
+
+            <div className={style.stats}>
+              {singleStat.stat === 'Donation' && '€'}
+              {`${singleStat.value} ${singleStat.stat}`}
+            </div>
+            <div style={{ marginBottom: '3px' }}>
+              {singleStat.stat === 'Donation' && <DonationStatInfo />}
+            </div>
           </div>
         );
       })}

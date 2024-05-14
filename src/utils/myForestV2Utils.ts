@@ -192,5 +192,5 @@ export const contributions = [
 export const contributionStats = [
   { stat: 'Countries', value: 5 },
   { stat: 'Projects', value: 12 },
-  { stat: 'Donation', value: 234 },
+  { stat: 'Donation', value: 23489 },
 ];
