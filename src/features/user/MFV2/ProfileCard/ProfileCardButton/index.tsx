@@ -41,6 +41,7 @@ function ProfileCardButton(props: ProfileCardButtonProps): React.JSX.Element {
         className={`${styles.profileCardButton} ${
           props.type === 'primary' ? styles.primaryProfileCardButton : ''
         }`}
+        onClick={props.onClick}
       >
         <div className={styles.profileCardButtonIcon}>{props.icon}</div>
         <label className={styles.profileCardButtonLabel}>{props.text}</label>

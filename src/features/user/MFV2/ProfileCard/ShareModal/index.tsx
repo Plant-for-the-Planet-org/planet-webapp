@@ -79,6 +79,7 @@ const ShareModal = ({
                     `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`
                   )
                 }
+                className={styles.socialMediaIcon}
               >
                 <FacebookCustomIcon />
               </button>
@@ -88,6 +89,7 @@ const ShareModal = ({
                     `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`
                   )
                 }
+                className={styles.socialMediaIcon}
               >
                 <LinkedInCustomIcon />
               </button>
@@ -96,6 +98,7 @@ const ShareModal = ({
                 onClick={() =>
                   handleShare(`whatsapp://send?text=${linkToShare}`)
                 }
+                className={styles.socialMediaIcon}
               >
                 <WhatsappCustomIcon />
               </button>
@@ -106,10 +109,14 @@ const ShareModal = ({
                     `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
                   )
                 }
+                className={styles.socialMediaIcon}
               >
                 <XCustomIcon />
               </button>
-              <button onClick={handleMailShare}>
+              <button
+                onClick={handleMailShare}
+                className={styles.socialMediaIcon}
+              >
                 <MailCustomIcon />
               </button>
             </div>
