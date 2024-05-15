@@ -47,6 +47,15 @@
       "restoredSmall": "restored",
       "areaType": "{areaConserved} m² {type}",
       "areaConserved": "Areas Conserved"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
+      "share": "Share",
+      "shareVia": "Share via",
+      "copyLink": "Copy Link",
+      "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
+    
     }
   }
 }

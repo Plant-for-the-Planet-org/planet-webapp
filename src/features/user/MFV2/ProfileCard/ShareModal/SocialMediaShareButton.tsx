@@ -9,12 +9,12 @@ import { ProfileProps } from '../../../../common/types/profile';
 const SocialMediaShareButton = ({ userProfile }: ProfileProps) => {
   const [isShareModelOpen, setIsShareModelOpen] = React.useState(false);
   const { tenantConfig } = useTenant();
-  const t = useTranslations('Donate');
+  const t = useTranslations('Profile');
 
   const webShareData = {
-    title: t('shareTextTitle'),
+    title: t('shareFeature.shareTextTitle'),
     url: `${process.env.SCHEME}://${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`,
-    text: t('textToShare', { name: userProfile?.displayName }),
+    text: t('shareFeature.textToShare', { name: userProfile?.displayName }),
   };
 
   const isNativeShareSupported =
@@ -44,7 +44,7 @@ const SocialMediaShareButton = ({ userProfile }: ProfileProps) => {
     <>
       <ProfileCardButton
         icon={<ShareIcon />}
-        text={t('share')}
+        text={t('shareFeature.share')}
         onClick={
           isNativeShareSupported
             ? handleNativeSocialMediaShare

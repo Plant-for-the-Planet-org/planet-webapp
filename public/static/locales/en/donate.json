@@ -110,9 +110,6 @@
     "projectType": "Project Type",
     "restoration": "Restoration",
     "filters": "Filters",
-    "perM2": "per m²",
-    "share": "Share",
-    "shareVia": "Share via",
-    "copyLink": "Copy Link"
+    "perM2": "per m²"
   }
 }

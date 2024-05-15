@@ -15,10 +15,10 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ProfileProps } from '../../../../common/types/profile';
 
 const CopyIcon = () => {
-  const t = useTranslations('Donate');
+  const t = useTranslations('Profile');
   return (
     <button className={styles.copyButton}>
-      <label>{t('copyLink')}</label>
+      <label>{t('shareFeature.copyLink')}</label>
     </button>
   );
 };
@@ -36,10 +36,12 @@ const ShareModal = ({
 }: ShareModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { tenantConfig } = useTenant();
-  const t = useTranslations('Donate');
+  const t = useTranslations('Profile');
   const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;
-  const textToShare = t('textToShare', { name: userProfile?.displayName });
-  const textToShareLinkedin = t('textToShareLinkedin', {
+  const textToShare = t('shareFeature.textToShare', {
+    name: userProfile?.displayName,
+  });
+  const textToShareLinkedin = t('shareFeature.textToShareLinkedin', {
     name: userProfile?.displayName,
   });
   const handleShare = (shareUrl: string) => {
@@ -47,9 +49,9 @@ const ShareModal = ({
   };
 
   const handleMailShare = () => {
-    const subject = t('shareTextTitle');
+    const subject = t('shareFeature.shareTextTitle');
     const body = encodeURIComponent(
-      `${t('textToShare', {
+      `${t('shareFeature.textToShare', {
         name: userProfile?.displayName,
       })}\n\n${linkToShare}`
     );
@@ -71,7 +73,7 @@ const ShareModal = ({
       <Fade in={shareModalOpen}>
         <div className={styles.shareModalPopup}>
           <div className={styles.socialMediaIconContainer}>
-            <h3>{t('shareVia')}</h3>
+            <h3>{t('shareFeature.shareVia')}</h3>
             <div>
               <button
                 onClick={() =>
