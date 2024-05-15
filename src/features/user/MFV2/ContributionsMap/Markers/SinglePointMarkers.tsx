@@ -9,7 +9,6 @@ import UrbanRestoration from '../../../../../../public/assets/images/icons/myFor
 import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
-import { contributions } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
 
 type Classification =
@@ -77,20 +76,29 @@ const renderIcons = (properties: any) => {
   }
 };
 
-const SinglePointMarkers = () => {
+const SinglePointMarkers = ({ superClusterResponse }) => {
   return (
     <>
-      {contributions.map((singleLocation, key) => {
-        return (
-          <Marker
-            longitude={singleLocation?.geometry.coordinates[0]}
-            latitude={singleLocation?.geometry.coordinates[1]}
-            key={key}
-          >
-            {renderIcons(singleLocation.properties)}
-          </Marker>
-        );
-      })}
+      {Array.isArray(superClusterResponse) ? (
+        superClusterResponse.map((singleLocation, key) => {
+          return (
+            <Marker
+              longitude={singleLocation?.geometry.coordinates[0]}
+              latitude={singleLocation?.geometry.coordinates[1]}
+              key={key}
+            >
+              {renderIcons(singleLocation.properties)}
+            </Marker>
+          );
+        })
+      ) : (
+        <Marker
+          longitude={superClusterResponse?.geometry.coordinates[0]}
+          latitude={superClusterResponse?.geometry.coordinates[1]}
+        >
+          {renderIcons(superClusterResponse.properties)}
+        </Marker>
+      )}
     </>
   );
 };
