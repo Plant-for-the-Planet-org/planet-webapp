@@ -4,19 +4,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
+    min-height: 300px;
 }   
 
 .profileBackground {
     background-image: url('../../../../../public/assets/images/profileBackground.jpg');
     width: 100%;
-    min-height: 9rem;
     border-radius: 24px 24px 0px 0px;
     background-repeat: no-repeat;
     background-size: cover;
+    min-height: 8rem;
 }
 
 .profilePicture {
-    margin-top: -4em;
+    margin-top: -3.5em;
     z-index: 10;
     border-radius: 50%;
     background-color: #fff;
@@ -69,7 +71,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;  
-    margin-top: -1rem;
+    margin-top: -2rem;
 }
 
 
