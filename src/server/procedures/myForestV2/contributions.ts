@@ -227,8 +227,8 @@ function handleDonationContribution(
 
       item.contributionCount++;
       item.totalContributionUnits += Number(contribution.units);
-      if (item.latestContributions.length < 5) {
-        item.latestContributions.push(donationData);
+      if (item.latestDonations && item.latestDonations.length < 5) {
+        item.latestDonations.push(donationData);
       }
     } else {
       stats.contributedProjects.add(project.guid);
@@ -238,7 +238,8 @@ function handleDonationContribution(
         contributionCount: 1,
         totalContributionUnits: Number(contribution.units),
         contributionUnitType: contribution.unitType,
-        latestContributions: [donationData],
+        latestContributions: [],
+        latestDonations: [donationData],
       });
     }
 
@@ -290,8 +291,8 @@ function handleGiftContribution(
 
     item.contributionCount++;
     item.totalContributionUnits += Math.round(gift.quantity * 100) / 100;
-    if (item.latestContributions.length < 5) {
-      item?.latestContributions.push(giftData);
+    if (item.latestGifts && item.latestGifts.length < 5) {
+      item.latestGifts.push(giftData);
     }
   } else {
     stats.contributedProjects.add(gift.projectGuid);
@@ -301,9 +302,25 @@ function handleGiftContribution(
       contributionCount: 1,
       contributionUnitType: 'tree',
       totalContributionUnits: Math.round(gift.quantity * 100) / 100,
-      latestContributions: [giftData],
+      latestContributions: [],
+      latestGifts: [giftData],
     });
   }
+}
+
+function mergeAndSortLatestContributions(
+  singleProject: MyContributionsSingleProject
+) {
+  singleProject.latestContributions = [
+    ...(singleProject.latestDonations || []),
+    ...(singleProject.latestGifts || []),
+  ];
+  // Sort latestContributions by plantDate in descending order
+  singleProject.latestContributions.sort((a, b) => {
+    return new Date(b.plantDate).getTime() - new Date(a.plantDate).getTime();
+  });
+  delete singleProject.latestDonations;
+  delete singleProject.latestGifts;
 }
 
 export const contributionsProcedure = procedure
@@ -388,6 +405,13 @@ export const contributionsProcedure = procedure
       // Handle individual gift contributions if the project is in the eligible project set
       if (projectSet.has(gift.projectGuid)) {
         handleGiftContribution(gift, stats, myContributionsMap);
+      }
+    });
+
+    // combine latestGifts and latestDonations into latestContributions for each project
+    myContributionsMap.forEach((item) => {
+      if (item.type === 'project') {
+        mergeAndSortLatestContributions(item);
       }
     });
 

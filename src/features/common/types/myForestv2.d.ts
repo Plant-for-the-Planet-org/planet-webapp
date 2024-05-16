@@ -34,6 +34,8 @@ export type MyContributionsSingleProject = {
   /** Gifts received or donations made (including gifts given)  */
   totalContributionUnits: number;
   latestContributions: MySingleContribution[];
+  latestGifts?: SingleGiftReceived[];
+  latestDonations?: SingleDonation[];
 };
 
 export type MySingleContribution = SingleDonation | SingleGiftReceived;
