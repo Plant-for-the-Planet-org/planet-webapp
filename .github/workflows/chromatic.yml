@@ -7,7 +7,6 @@ name: 'Chromatic'
 on:
   push:
     branches:
-      - feature/storybook-update
       - develop
       - feature/redesign-explore-btn
       - feature/design-projectlist-filter

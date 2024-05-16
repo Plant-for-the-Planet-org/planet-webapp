@@ -244,5 +244,6 @@
   "financialReport": "Latest audited financial report",
   "PlantingReport": "Project Progress Report",
   "otherRestoration": "Other Restoration",
-  "treePlanting": "Tree Planting"
+  "treePlanting": "Tree Planting",
+  "siteCount": "Site {{siteId}} of {{totalCount}}"
 }

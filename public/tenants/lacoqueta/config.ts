@@ -16,12 +16,12 @@ const config = {
     title: 'La Coqueta ❤️ Trees',
     description:
       'Seeing her own children grow up and become increasingly interested in the climate crisis has inspired Celia to use her brand as a platform for positive change. After learning that trees are the most economical and effective means of binding CO2, allowing more time to reduce greenhouse gas emissions to zero and mitigate the climate crisis, they decided to embark on this exciting journey with Plant-for-the-Planet. You can also become part of that journey and donate some trees – in Granada, the hometown of Celia, or other areas around the world.',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'en_US',
   },
   home: {
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,
@@ -40,7 +40,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: false,
       },
       leaderboard: {

@@ -7,5 +7,9 @@
     "urban-planting": "Urban Planting",
     "other-planting": "Other Planting",
     "all": "All Projects"
-  }
+  },
+  "currentForests": "Current Forests",
+  "restorationPotential": "Restoration Potential",
+  "deforestation": "Deforestation",
+  "projects": "Projects"
 }

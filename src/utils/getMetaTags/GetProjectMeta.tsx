@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import tenantConfig from '../../../tenant.config';
+import { useTenant } from '../../features/common/Layout/TenantContext';
 import getImageUrl from '../getImageURL';
 import Head from 'next/head';
 import { truncateString } from '../getTruncatedString';
@@ -8,13 +8,13 @@ import {
   TreeProjectExtended,
 } from '@planet-sdk/common';
 
-const config = tenantConfig();
-
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
 }
 
 export default function GetProjectMeta({ project }: Props): ReactElement {
+  const { tenantConfig } = useTenant();
+
   const description = truncateString(project.description, 147);
   return (
     <Head>
@@ -22,7 +22,7 @@ export default function GetProjectMeta({ project }: Props): ReactElement {
       <meta property="og:site_name" content={project.name} />
       <meta
         property="og:url"
-        content={`${process.env.SCHEME}://${config.tenantURL}`}
+        content={`${process.env.SCHEME}://${tenantConfig.config.tenantURL}`}
       />
       <meta property="og:title" content={project.name} />
       <meta property="og:description" content={description} />
@@ -33,13 +33,13 @@ export default function GetProjectMeta({ project }: Props): ReactElement {
         content={getImageUrl('project', 'medium', project.image)}
       />
       <meta property="og:video" content={project.videoUrl || undefined} />
-      {config.tenantName === 'planet' ? (
+      {tenantConfig.config.slug === 'planet' ? (
         <link rel="alternate" href="android-app://org.pftp/projects" />
       ) : null}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={project.name} />
-      <meta name="twitter:site" content={config.meta.twitterHandle} />
-      <meta name="twitter:url" content={config.tenantURL} />
+      <meta name="twitter:site" content={tenantConfig.config.meta.twitterHandle} />
+      <meta name="twitter:url" content={tenantConfig.config.tenantURL ?? ''} />
       <meta name="twitter:description" content={description} />
     </Head>
   );
