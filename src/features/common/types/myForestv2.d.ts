@@ -47,7 +47,6 @@ export type SingleDonation = {
   unitType: 'tree' | 'm2';
   isGifted: boolean;
   giftDetails: GiftGivenDetails | null;
-  quantity: number;
 };
 
 export type GiftGivenDetails = {

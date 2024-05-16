@@ -16,5 +16,4 @@ export const myForestV2Router = router({
   projectList: projectListsProcedure,
   contributions: contributionsProcedure,
   //leaderboard: TODO,
-  //stats: TODO,
 });
