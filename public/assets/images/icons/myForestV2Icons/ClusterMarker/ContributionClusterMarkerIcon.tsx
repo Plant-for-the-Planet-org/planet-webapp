@@ -1,15 +1,15 @@
-interface ClusterMarkerIconProps {
+interface ContributionClusterMarkerIconProps {
   color1: string;
   color2: string;
   color3: string;
   width: number;
 }
-const ClusterMarkerIcon = ({
+const ContributionClusterMarkerIcon = ({
   color1,
   color2,
   color3,
   width,
-}: ClusterMarkerIconProps) => {
+}: ContributionClusterMarkerIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -78,4 +78,4 @@ const ClusterMarkerIcon = ({
   );
 };
 
-export default ClusterMarkerIcon;
+export default ContributionClusterMarkerIcon;

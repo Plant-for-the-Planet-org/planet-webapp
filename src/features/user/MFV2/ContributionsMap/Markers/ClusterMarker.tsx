@@ -1,6 +1,6 @@
 import { Marker } from 'react-map-gl-v7';
 import { useEffect, useState } from 'react';
-import ClusterMarkerIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/ClusterMarker';
+import ContributionClusterMarkerIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/ClusterMarker/ContributionClusterMarkerIcon';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { contributions } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
@@ -111,7 +111,7 @@ const ClusterMarker = ({ geoJson, viewport, mapRef }) => {
       longitude={geoJson?.geometry.coordinates[0]}
       latitude={geoJson?.geometry.coordinates[1]}
     >
-      <ClusterMarkerIcon
+      <ContributionClusterMarkerIcon
         color1={color1}
         color2={color2}
         color3={color3}
