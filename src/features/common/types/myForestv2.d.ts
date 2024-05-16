@@ -1,4 +1,4 @@
-import { Point } from 'geojson';
+import { Point, Polygon } from 'geojson';
 import { DateString } from './common';
 
 export type ContributionStats = {
@@ -104,7 +104,7 @@ export type ContributionsQueryResult = {
   projectId: string;
   amount: number;
   currency: string;
-  geometry: Point | null;
+  geometry: Point | Polygon | null;
   country: string;
   giftMethod: string | null;
   giftRecipient: string | null;

@@ -15,6 +15,7 @@ import {
   SingleDonation,
   SingleGiftReceived,
 } from '../../../features/common/types/myForestv2';
+import getPointCoordinates from '../../../utils/getPointCoordinates';
 
 function initializeStats(): ContributionStats {
   return {
@@ -178,7 +179,10 @@ function handleRegistrationContribution(
   // Updates registrationLocationsMap
   if (contribution.geometry !== null) {
     registrationLocationsMap.set(contribution.guid, {
-      geometry: contribution.geometry,
+      geometry: {
+        type: 'Point',
+        coordinates: getPointCoordinates(contribution.geometry),
+      },
     });
   }
 }
