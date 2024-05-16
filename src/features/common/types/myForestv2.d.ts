@@ -2,8 +2,8 @@ import { Point } from 'geojson';
 import { DateString } from './common';
 
 export type ContributionStats = {
-  giftCount: number;
-  contributionCount: number;
+  giftsReceivedCount: number;
+  contributionsMadeCount: number;
   contributedProjects: Set<string>;
   contributedCountries: Set<string>;
   treesRegistered: number;
@@ -23,21 +23,22 @@ export type ContributionStats = {
   };
 };
 
-export type ContributionsMapItem =
-  | ContributionsMapSingleDonation
-  | ContributionsMapSingleRegistration;
+export type MyContributionsMapItem =
+  | MyContributionsSingleProject
+  | MyContributionsSingleRegistration;
 
-export type ContributionsMapSingleDonation = {
-  type: 'contribution';
-  totalContributionUnits: number;
-  contributionUnitType: 'tree' | 'm2';
+export type MyContributionsSingleProject = {
+  type: 'project';
   contributionCount: number;
-  contributions: ContributionData[];
+  contributionUnitType: 'tree' | 'm2';
+  /** Gifts received or donations made (including gifts given)  */
+  totalContributionUnits: number;
+  latestContributions: MySingleContribution[];
 };
 
-export type ContributionData = DonationData | GiftData;
+export type MySingleContribution = SingleDonation | SingleGiftReceived;
 
-export type DonationData = {
+export type SingleDonation = {
   dataType: 'donation';
   quantity: number;
   plantDate: DateString;
@@ -52,7 +53,7 @@ export type GiftGivenDetails = {
   type: string | null;
 };
 
-export type GiftData = {
+export type SingleGiftReceived = {
   dataType: 'receivedGift';
   quantity: number;
   plantDate: DateString;
@@ -65,15 +66,15 @@ export type GiftReceivedDetails = {
   giverName: string | null;
 };
 
-export type ContributionsMapSingleRegistration = {
+export type MyContributionsSingleRegistration = {
   type: 'registration';
   totalContributionUnits: number;
   contributionUnitType: 'tree';
   contributionCount: number;
-  contributions: RegistrationData[];
+  contributions: SingleRegistration[];
 };
 
-export type RegistrationData = {
+export type SingleRegistration = {
   dataType: 'treeRegistration';
   quantity: number;
   plantDate: DateString;

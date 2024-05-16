@@ -6,20 +6,20 @@ import { TRPCError } from '@trpc/server';
 import {
   BriefProjectQueryResult,
   ContributionStats,
-  ContributionsMapItem,
-  ContributionsMapSingleDonation,
+  MyContributionsMapItem,
+  MyContributionsSingleProject,
   ContributionsQueryResult,
-  DonationData,
-  GiftData,
   GiftsQueryResult,
   GroupTreecounterQueryResult,
   RegistrationLocation,
+  SingleDonation,
+  SingleGiftReceived,
 } from '../../../features/common/types/myForestv2';
 
 function initializeStats(): ContributionStats {
   return {
-    giftCount: 0,
-    contributionCount: 0,
+    giftsReceivedCount: 0,
+    contributionsMadeCount: 0,
     contributedProjects: new Set<string>(),
     contributedCountries: new Set<string>(),
     treesRegistered: 0,
@@ -141,20 +141,20 @@ async function fetchGifts(profileIds: number[]) {
 }
 
 /**
- * Accepts a registration contribution and mutates the stats, contributionsMap, and treeRegistrationMap data passed in.
+ * Accepts a registration contribution and mutates the stats, myContributionsMap, and registrationLocationsMap data passed in.
  * @param stats
- * @param contributionsMap
- * @param treeRegistrationMap
+ * @param myContributionsMap
+ * @param registrationLocationsMap
  * @param contribution
  */
 function handleRegistrationContribution(
   contribution: ContributionsQueryResult,
   stats: ContributionStats,
-  contributionsMap: Map<string, ContributionsMapItem>,
-  treeRegistrationMap: Map<string, RegistrationLocation>
+  myContributionsMap: Map<string, MyContributionsMapItem>,
+  registrationLocationsMap: Map<string, RegistrationLocation>
 ) {
-  // Updates contributionsMap
-  contributionsMap.set(contribution.guid, {
+  // Updates myContributionsMap
+  myContributionsMap.set(contribution.guid, {
     type: 'registration',
     contributionCount: 1,
     contributionUnitType: 'tree',
@@ -175,29 +175,29 @@ function handleRegistrationContribution(
     stats.contributedCountries.add(contribution.country);
   }
 
-  // Updates treeRegistrationMap
+  // Updates registrationLocationsMap
   if (contribution.geometry !== null) {
-    treeRegistrationMap.set(contribution.guid, {
+    registrationLocationsMap.set(contribution.guid, {
       geometry: contribution.geometry,
     });
   }
 }
 
 /**
- * Accepts a donation contribution and projectMap and mutates the stats, contributionsMap data passed in.
+ * Accepts a donation contribution and projectMap and mutates the stats, myContributionsMap data passed in.
  * @param contribution
  * @param projectMap
  * @param stats
- * @param contributionsMap
+ * @param myContributionsMap
  */
 function handleDonationContribution(
   contribution: ContributionsQueryResult,
   projectMap: Map<string, BriefProjectQueryResult>,
   stats: ContributionStats,
-  contributionsMap: Map<string, ContributionsMapItem>
+  myContributionsMap: Map<string, MyContributionsMapItem>
 ) {
   // Initialize data
-  const contributionData: DonationData = {
+  const donationData: SingleDonation = {
     dataType: 'donation',
     plantDate: contribution.plantDate,
     quantity: contribution.units,
@@ -216,25 +216,25 @@ function handleDonationContribution(
   if (project) {
     // Check if the project is already in the contributions map.
     // If yes, increment the contributionCount and push contributionData to the contributions array
-    if (contributionsMap.has(project.guid)) {
-      const item = contributionsMap.get(
+    if (myContributionsMap.has(project.guid)) {
+      const item = myContributionsMap.get(
         project.guid
-      ) as ContributionsMapSingleDonation;
+      ) as MyContributionsSingleProject;
 
       item.contributionCount++;
       item.totalContributionUnits += Number(contribution.units);
-      if (item.contributions.length < 5) {
-        item.contributions.push(contributionData);
+      if (item.latestContributions.length < 5) {
+        item.latestContributions.push(donationData);
       }
     } else {
       stats.contributedProjects.add(project.guid);
       // Adds a new key to the contributions map
-      contributionsMap.set(project.guid, {
-        type: 'contribution',
+      myContributionsMap.set(project.guid, {
+        type: 'project',
         contributionCount: 1,
         totalContributionUnits: Number(contribution.units),
         contributionUnitType: contribution.unitType,
-        contributions: [contributionData],
+        latestContributions: [donationData],
       });
     }
 
@@ -256,18 +256,18 @@ function handleDonationContribution(
 }
 
 /**
- * Accepts a gift contribution and mutates the stats and contributionsMap data passed in.
+ * Accepts a gift contribution and mutates the stats and myContributionsMap data passed in.
  * @param gift
  * @param stats
- * @param contributionsMap
+ * @param myContributionsMap
  */
 function handleGiftContribution(
   gift: GiftsQueryResult,
   stats: ContributionStats,
-  contributionsMap: Map<string, ContributionsMapItem>
+  myContributionsMap: Map<string, MyContributionsMapItem>
 ) {
   // Initialize data
-  const giftData: GiftData = {
+  const giftData: SingleGiftReceived = {
     dataType: 'receivedGift',
     plantDate: gift.plantDate,
     quantity: Math.round(gift.quantity * 100) / 100,
@@ -279,25 +279,25 @@ function handleGiftContribution(
   };
 
   // Check if the project is already in the contributions map.
-  if (contributionsMap.has(gift.projectGuid)) {
-    const item = contributionsMap.get(
+  if (myContributionsMap.has(gift.projectGuid)) {
+    const item = myContributionsMap.get(
       gift.projectGuid
-    ) as ContributionsMapSingleDonation; //Only donations are mapped with a project guid
+    ) as MyContributionsSingleProject; //Only donations are mapped with a project guid
 
     item.contributionCount++;
     item.totalContributionUnits += Math.round(gift.quantity * 100) / 100;
-    if (item.contributions.length < 5) {
-      item?.contributions.push(giftData);
+    if (item.latestContributions.length < 5) {
+      item?.latestContributions.push(giftData);
     }
   } else {
     stats.contributedProjects.add(gift.projectGuid);
     // Adds a new key to the contributions map
-    contributionsMap.set(gift.projectGuid, {
-      type: 'contribution',
+    myContributionsMap.set(gift.projectGuid, {
+      type: 'project',
       contributionCount: 1,
       contributionUnitType: 'tree',
       totalContributionUnits: Math.round(gift.quantity * 100) / 100,
-      contributions: [giftData],
+      latestContributions: [giftData],
     });
   }
 }
@@ -318,9 +318,9 @@ export const contributionsProcedure = procedure
      * Map of project guid / contribution id (to identify registrations) to contribution data.
      * This groups data for donations and gifts by project, and tree registrations by contribution id
      * */
-    const contributionsMap: Map<string, ContributionsMapItem> = new Map();
+    const myContributionsMap: Map<string, MyContributionsMapItem> = new Map();
     /** Maps contribution id to geometry of registered tree */
-    const treeRegistrationMap = new Map<string, RegistrationLocation>();
+    const registrationLocationsMap = new Map<string, RegistrationLocation>();
 
     // Check that the profile actually exists
     const profile = await fetchProfile(profileId);
@@ -354,36 +354,36 @@ export const contributionsProcedure = procedure
     const contributions = await fetchContributions(profileIds);
     const gifts = await fetchGifts(profileIds);
 
-    // Process contribution data, updating stats, contributionsMap, and treeRegistrationMap
+    // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
     contributions.forEach((contribution) => {
-      stats.contributionCount++;
+      stats.contributionsMadeCount++;
       if (contribution.contributionType === 'planting') {
         handleRegistrationContribution(
           contribution,
           stats,
-          contributionsMap,
-          treeRegistrationMap
+          myContributionsMap,
+          registrationLocationsMap
         );
       } else {
         handleDonationContribution(
           contribution,
           projectMap,
           stats,
-          contributionsMap
+          myContributionsMap
         );
       }
     });
 
-    // Process gift data, updating contributionsMap and stats
+    // Process gift data, updating myContributionsMap and stats
     gifts.forEach((gift) => {
-      stats.giftCount++;
+      stats.giftsReceivedCount++;
       stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
       if (gift.country !== null) {
         stats.contributedCountries.add(gift.country);
       }
       // Handle individual gift contributions if the project is in the eligible project set
       if (projectSet.has(gift.projectGuid)) {
-        handleGiftContribution(gift, stats, contributionsMap);
+        handleGiftContribution(gift, stats, myContributionsMap);
       }
     });
 
@@ -391,7 +391,7 @@ export const contributionsProcedure = procedure
 
     return {
       stats,
-      contributionsMap,
-      treeRegistrationMap,
+      myContributionsMap,
+      registrationLocationsMap,
     };
   });
