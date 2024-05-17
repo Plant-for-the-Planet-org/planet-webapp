@@ -15,6 +15,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import Head from 'next/head';
 import PublicProfileOuterContainer from '../../../../../src/features/user/MFV2/PublicProfileOuterContainer';
 import PublicProfileLayout from '../../../../../src/features/user/MFV2/PublicProfileLayout';
+import { v4 } from 'uuid';
 
 interface Props {
   pageProps: PageProps;
@@ -45,6 +46,7 @@ export const getStaticPaths = async () => {
       params: {
         slug: path.params.slug,
         locale: 'en',
+        profile: v4(),
       },
     };
   });
