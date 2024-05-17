@@ -230,8 +230,12 @@ function handleDonationContribution(
 
       item.contributionCount++;
       item.totalContributionUnits += Number(contribution.units);
-      if (item.latestDonations && item.latestDonations.length < 5) {
-        item.latestDonations.push(donationData);
+      if (!item.latestDonations) {
+        item.latestDonations = [donationData];
+      } else {
+        if (item.latestDonations.length < 5) {
+          item.latestDonations.push(donationData);
+        }
       }
     } else {
       stats.contributedProjects.add(project.guid);
@@ -303,8 +307,12 @@ function handleGiftContribution(
 
     item.contributionCount++;
     item.totalContributionUnits += Math.round(gift.quantity * 100) / 100;
-    if (item.latestGifts && item.latestGifts.length < 5) {
-      item.latestGifts.push(giftData);
+    if (!item.latestGifts) {
+      item.latestGifts = [giftData];
+    } else {
+      if (item.latestGifts.length < 5) {
+        item.latestGifts.push(giftData);
+      }
     }
   } else {
     stats.contributedProjects.add(gift.projectGuid);
