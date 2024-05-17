@@ -5,7 +5,7 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages } from 'next-intl';
+import { AbstractIntlMessages, useLocale } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -16,19 +16,68 @@ import Head from 'next/head';
 import PublicProfileOuterContainer from '../../../../../src/features/user/MFV2/PublicProfileOuterContainer';
 import PublicProfileLayout from '../../../../../src/features/user/MFV2/PublicProfileLayout';
 import { v4 } from 'uuid';
+import { APIError, UserPublicProfile, handleError } from '@planet-sdk/common';
+import { useState, useContext, useEffect } from 'react';
+import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
+import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
+import { useRouter } from 'next/router';
+import { getRequest } from '../../../../../src/utils/apiRequests/api';
 
 interface Props {
   pageProps: PageProps;
 }
 
 const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
-  return tenantConfig ? (
+  const [profile, setProfile] = useState<null | UserPublicProfile>();
+  const { user, contextLoaded } = useUserProps();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { setTenantConfig } = useTenant();
+  const locale = useLocale();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(tenantConfig);
+    }
+  }, [router.isReady]);
+
+  // Loads the public user profile
+  async function loadPublicProfile(id: string) {
+    try {
+      const profileData = await getRequest<UserPublicProfile>(
+        tenantConfig.id,
+        `/app/profiles/${id}`
+      );
+      setProfile(profileData);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/');
+    }
+  }
+
+  useEffect(() => {
+    if (router && router.isReady && router.query.profile && contextLoaded) {
+      // reintiating the profile
+      setProfile(null);
+      // Check if the user is authenticated and trying to access their own profile
+      if (user && user.slug === router.query.profile) {
+        router.replace(encodeURI(`/${locale}/profile/mfv2`));
+      }
+      // If user is not access their own profile, load the public profile
+      else {
+        loadPublicProfile(router.query.profile as string);
+      }
+    }
+  }, [contextLoaded, user, router]);
+
+  return tenantConfig && profile ? (
     <>
       <Head>
         <title>My Forest V2</title>
       </Head>
       <PublicProfileOuterContainer>
-        <PublicProfileLayout />
+        <PublicProfileLayout profile={profile} />
       </PublicProfileOuterContainer>
     </>
   ) : (

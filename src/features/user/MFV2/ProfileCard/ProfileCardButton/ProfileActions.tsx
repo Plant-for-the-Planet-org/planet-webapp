@@ -58,7 +58,7 @@ const ProfileActions = ({ authenticatedType, userProfile }: ProfileProps) => {
       <ProfileCardButton
         icon={<SupportUserIcon />}
         text={t('feature.supportUserText', {
-          username: userProfile?.firstname,
+          username: userProfile?.displayName.split(' ')[0],
         })}
         type={'primary'}
         isLink={'true'}
