@@ -82,7 +82,7 @@ export type SingleRegistration = {
   unitType: 'tree';
 };
 
-export type RegistrationLocation = {
+export type MapLocation = {
   geometry: Point;
 };
 
@@ -94,6 +94,8 @@ export type BriefProjectQueryResult = {
   id: string;
   guid: string;
   purpose: 'trees' | 'conservation';
+  country: string;
+  geometry: Point | null;
 };
 
 export type ContributionsQueryResult = {

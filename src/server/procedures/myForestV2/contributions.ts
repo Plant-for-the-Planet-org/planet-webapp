@@ -11,7 +11,7 @@ import {
   ContributionsQueryResult,
   GiftsQueryResult,
   GroupTreecounterQueryResult,
-  RegistrationLocation,
+  MapLocation,
   SingleDonation,
   SingleGiftReceived,
 } from '../../../features/common/types/myForestv2';
@@ -77,7 +77,9 @@ async function fetchProjects() {
 			SELECT 
 				id,
 				guid, 
-				purpose
+				purpose,
+				country,
+				geometry
 			FROM
 				project
 			WHERE
@@ -152,7 +154,7 @@ function handleRegistrationContribution(
   contribution: ContributionsQueryResult,
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
-  registrationLocationsMap: Map<string, RegistrationLocation>
+  registrationLocationsMap: Map<string, MapLocation>
 ) {
   // Updates myContributionsMap
   myContributionsMap.set(contribution.guid, {
@@ -198,7 +200,8 @@ function handleDonationContribution(
   contribution: ContributionsQueryResult,
   projectMap: Map<string, BriefProjectQueryResult>,
   stats: ContributionStats,
-  myContributionsMap: Map<string, MyContributionsMapItem>
+  myContributionsMap: Map<string, MyContributionsMapItem>,
+  projectLocationsMap: Map<string, MapLocation>
 ) {
   // Initialize data
   const donationData: SingleDonation = {
@@ -243,6 +246,13 @@ function handleDonationContribution(
       });
     }
 
+    // Add a new key to the projectLocationsMap
+    if (project.geometry !== null && !projectLocationsMap.has(project.guid)) {
+      projectLocationsMap.set(project.guid, {
+        geometry: project.geometry,
+      });
+    }
+
     if (project.purpose === 'trees') {
       if (contribution.unitType === 'tree') {
         stats.treesDonated.personal += Number(contribution.units);
@@ -268,8 +278,10 @@ function handleDonationContribution(
  */
 function handleGiftContribution(
   gift: GiftsQueryResult,
+  project: BriefProjectQueryResult,
   stats: ContributionStats,
-  myContributionsMap: Map<string, MyContributionsMapItem>
+  myContributionsMap: Map<string, MyContributionsMapItem>,
+  projectLocationsMap: Map<string, MapLocation>
 ) {
   // Initialize data
   const giftData: SingleGiftReceived = {
@@ -304,6 +316,13 @@ function handleGiftContribution(
       totalContributionUnits: Math.round(gift.quantity * 100) / 100,
       latestContributions: [],
       latestGifts: [giftData],
+    });
+  }
+
+  // Add a new key to the projectLocationsMap
+  if (project.geometry !== null && !projectLocationsMap.has(project.guid)) {
+    projectLocationsMap.set(project.guid, {
+      geometry: project.geometry,
     });
   }
 }
@@ -341,7 +360,8 @@ export const contributionsProcedure = procedure
      * */
     const myContributionsMap: Map<string, MyContributionsMapItem> = new Map();
     /** Maps contribution id to geometry of registered tree */
-    const registrationLocationsMap = new Map<string, RegistrationLocation>();
+    const registrationLocationsMap = new Map<string, MapLocation>();
+    const projectLocationsMap = new Map<string, MapLocation>();
 
     // Check that the profile actually exists
     const profile = await fetchProfile(profileId);
@@ -367,10 +387,12 @@ export const contributionsProcedure = procedure
     // Fetch eligible projects
     const projects = await fetchProjects();
     /** Map of project id to project information */
-    const projectMap = new Map(
+    const projectIdMap = new Map(
       projects.map((project) => [project.id, project])
     );
-    const projectSet = new Set(projects.map((project) => project.guid));
+    const projectGuidMap = new Map(
+      projects.map((project) => [project.guid, project])
+    );
 
     const contributions = await fetchContributions(profileIds);
     const gifts = await fetchGifts(profileIds);
@@ -388,9 +410,10 @@ export const contributionsProcedure = procedure
       } else {
         handleDonationContribution(
           contribution,
-          projectMap,
+          projectIdMap,
           stats,
-          myContributionsMap
+          myContributionsMap,
+          projectLocationsMap
         );
       }
     });
@@ -403,8 +426,15 @@ export const contributionsProcedure = procedure
         stats.contributedCountries.add(gift.country);
       }
       // Handle individual gift contributions if the project is in the eligible project set
-      if (projectSet.has(gift.projectGuid)) {
-        handleGiftContribution(gift, stats, myContributionsMap);
+      const project = projectGuidMap.get(gift.projectGuid);
+      if (project) {
+        handleGiftContribution(
+          gift,
+          project,
+          stats,
+          myContributionsMap,
+          projectLocationsMap
+        );
       }
     });
 
@@ -421,5 +451,6 @@ export const contributionsProcedure = procedure
       stats,
       myContributionsMap,
       registrationLocationsMap,
+      projectLocationsMap,
     };
   });
