@@ -10,12 +10,13 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ProfileV2Props } from '../../../common/types/common';
 import ProfileActions from './ProfileActions';
+import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 
 const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
   const isPrivateAccount = profileType === 'private';
   const userImageUrl = getImageUrl('profile', 'avatar', userProfile?.image);
-  return (
+  return userProfile ? (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileBackground}></div>
       <div className={styles.profilePicture}>
@@ -48,6 +49,8 @@ const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
         <ProfileActions profileType={profileType} userProfile={userProfile} />
       </div>
     </div>
+  ) : (
+    <ProfileLoader />
   );
 };
 
