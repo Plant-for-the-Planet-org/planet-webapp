@@ -1,5 +1,4 @@
 import React from 'react';
-import { ProfileProps } from '../../../common/types/profile';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './ProfileCard.module.scss';
@@ -7,13 +6,14 @@ import {
   DefaultUserProfileImage,
   SettingsIcon,
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import ProfileActions from './ProfileCardButton/ProfileActions';
 import Link from 'next/link';
+import { ProfileV2Props } from '../../../common/types/common';
 
-const ProfileCard = ({ userProfile, authenticatedType }: ProfileProps) => {
+const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
-  const isPrivateAccount = authenticatedType === 'private';
+  const isPrivateAccount = profileType === 'private';
 
   return (
     <div className={styles.profileCardContainer}>
@@ -46,10 +46,7 @@ const ProfileCard = ({ userProfile, authenticatedType }: ProfileProps) => {
           </p>
         </div>
 
-        <ProfileActions
-          authenticatedType={authenticatedType}
-          userProfile={userProfile}
-        />
+        <ProfileActions profileType={profileType} userProfile={userProfile} />
       </div>
     </div>
   );

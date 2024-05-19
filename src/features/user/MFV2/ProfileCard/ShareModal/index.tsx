@@ -12,7 +12,7 @@ import {
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ProfileProps } from '../../../../common/types/profile';
+import { ProfileV2Props } from '../../../../common/types/common';
 
 const CopyIcon = () => {
   const t = useTranslations('Profile');
@@ -26,7 +26,7 @@ const CopyIcon = () => {
 interface ShareModalProps {
   shareModalOpen: boolean;
   handleShareModalClose: () => void;
-  userProfile: ProfileProps['userProfile'];
+  userProfile: ProfileV2Props['userProfile'];
 }
 
 const ShareModal = ({

@@ -9,10 +9,10 @@ import {
 import styles from './ProfileCardButton.module.scss';
 import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/RedeemModal';
 import SocialMediaShareButton from '../ShareModal/SocialMediaShareButton';
-import { ProfileProps } from '../../../../common/types/profile';
 import { useTranslations } from 'next-intl';
+import { ProfileV2Props } from '../../../../common/types/common';
 
-const ProfileActions = ({ authenticatedType, userProfile }: ProfileProps) => {
+const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const t = useTranslations('Profile');
 
@@ -33,7 +33,7 @@ const ProfileActions = ({ authenticatedType, userProfile }: ProfileProps) => {
     return profileURL;
   };
 
-  return authenticatedType === 'private' ? (
+  return profileType === 'private' ? (
     <div className={styles.privateProfileCardButtonContainer}>
       <ProfileCardButton
         icon={<AllDonations />}
