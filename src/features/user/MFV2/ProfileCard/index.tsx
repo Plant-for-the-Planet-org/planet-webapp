@@ -7,9 +7,9 @@ import {
   SettingsIcon,
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
-import ProfileActions from './ProfileCardButton/ProfileActions';
 import Link from 'next/link';
 import { ProfileV2Props } from '../../../common/types/common';
+import ProfileActions from './ProfileActions';
 
 const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
   const t = useTranslations('Profile');

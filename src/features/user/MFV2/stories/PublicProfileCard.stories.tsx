@@ -31,6 +31,6 @@ const dummyUserProfile = {
 export const Preview: Story = {
   args: {
     userProfile: dummyUserProfile,
-    authenticatedType: 'public',
+    profileType: 'public',
   },
 };

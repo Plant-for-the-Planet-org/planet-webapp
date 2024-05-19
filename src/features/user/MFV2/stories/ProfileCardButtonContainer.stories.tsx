@@ -58,13 +58,13 @@ const dummyUserProfile = {
 export const Private: Story = {
   args: {
     userProfile: dummyUserProfile,
-    authenticatedType: 'private',
+    profileType: 'private',
   },
 };
 
 export const Public: Story = {
   args: {
     userProfile: dummyUserProfile,
-    authenticatedType: 'public',
+    profileType: 'public',
   },
 };

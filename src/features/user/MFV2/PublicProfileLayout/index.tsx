@@ -11,7 +11,7 @@ const PublicProfileLayout = ({ profile }: Props) => {
   return (
     <article className={styles.publicProfileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
-        <ProfileCard userProfile={profile} authenticatedType="public" />
+        <ProfileCard userProfile={profile} profileType="public" />
       </section>
       <section id="map-container" className={styles.mapContainer}>
         Map

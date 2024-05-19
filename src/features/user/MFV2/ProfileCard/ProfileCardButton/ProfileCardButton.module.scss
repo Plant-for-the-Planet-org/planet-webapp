@@ -48,24 +48,3 @@
         color: #fff;
     }
 }
-
-.privateProfileCardButtonContainer {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    flex-wrap: wrap;
-    
-}
-
-.publicProfileCardButtonContainer {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    >div {
-     display: flex;
-     margin-top: 8px;
-     gap: 8px;
-    }
-}

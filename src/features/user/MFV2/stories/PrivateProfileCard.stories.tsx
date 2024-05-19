@@ -58,6 +58,6 @@ const dummyUserProfile = {
 export const Preview: Story = {
   args: {
     userProfile: dummyUserProfile,
-    authenticatedType: 'private',
+    profileType: 'private',
   },
 };

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import ProfileCardButton from '.';
 import {
   AllDonations,
   RedeemIcon,
   SupportUserIcon,
   WebsiteLinkIcon,
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import styles from './ProfileCardButton.module.scss';
+import styles from './ProfileActions.module.scss';
 import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/RedeemModal';
 import SocialMediaShareButton from '../ShareModal/SocialMediaShareButton';
 import { useTranslations } from 'next-intl';
 import { ProfileV2Props } from '../../../../common/types/common';
+import ProfileCardButton from '../ProfileCardButton';
 
 const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
@@ -34,7 +34,7 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
   };
 
   return profileType === 'private' ? (
-    <div className={styles.privateProfileCardButtonContainer}>
+    <div className={styles.privateProfileActions}>
       <ProfileCardButton
         icon={<AllDonations />}
         text={t('feature.allDonations')}
@@ -54,7 +54,7 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
       <SocialMediaShareButton userProfile={userProfile} />
     </div>
   ) : (
-    <div className={styles.publicProfileCardButtonContainer}>
+    <div className={styles.publicProfileActions}>
       <ProfileCardButton
         icon={<SupportUserIcon />}
         text={t('feature.supportUserText', {
@@ -64,7 +64,7 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
         isLink={'true'}
         href={`/s/${userProfile?.slug}`}
       />
-      <div>
+      <div className={styles.websiteShareActions}>
         <ProfileCardButton
           icon={<WebsiteLinkIcon />}
           text={t('feature.website')}
