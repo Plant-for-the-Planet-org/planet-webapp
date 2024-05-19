@@ -291,14 +291,7 @@ export const DefaultUserProfileImage = () => {
       viewBox="0 0 110 110"
       fill="none"
     >
-      <circle
-        cx="55"
-        cy="55"
-        r="52.3385"
-        fill="#DFF4E8"
-        stroke="white"
-        strokeWidth="4.67692"
-      />
+      <circle cx="55" cy="55" r="55" fill="#DFF4E8" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"

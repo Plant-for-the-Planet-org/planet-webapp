@@ -14,19 +14,18 @@ import ProfileActions from './ProfileActions';
 const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
   const isPrivateAccount = profileType === 'private';
-
+  const userImageUrl = getImageUrl('profile', 'avatar', userProfile?.image);
   return (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileBackground}></div>
       <div className={styles.profilePicture}>
-        {userProfile?.image ? (
-          <Avatar
-            alt="user Image"
-            src={getImageUrl('profile', 'avatar', userProfile?.image)}
-            className={styles.avatar}
-          />
+        {/* if no user profile picture exists or image is fetched from CDN in development env, show default profile image */}
+        {userProfile?.image && !userImageUrl.includes('development') ? (
+          <Avatar alt={userProfile.slug || 'user Image'} src={userImageUrl} />
         ) : (
-          <DefaultUserProfileImage />
+          <Avatar>
+            <DefaultUserProfileImage />
+          </Avatar>
         )}
       </div>
       <div className={styles.profileDetailsContainer}>
