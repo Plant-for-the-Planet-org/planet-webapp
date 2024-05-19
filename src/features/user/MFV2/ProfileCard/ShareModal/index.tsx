@@ -14,7 +14,7 @@ import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ProfileV2Props } from '../../../../common/types/common';
 
-const CopyIcon = () => {
+const CustomCopyButton = () => {
   const t = useTranslations('Profile');
   return (
     <button className={styles.copyButton}>
@@ -135,7 +135,7 @@ const ShareModal = ({
             <CopyToClipboard
               isButton={false}
               text={linkToShare}
-              customCopyButton={<CopyIcon />}
+              customCopyButton={<CustomCopyButton />}
             />
           </div>
         </div>
