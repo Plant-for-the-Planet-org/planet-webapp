@@ -1,7 +1,7 @@
 import React from 'react';
 import { ShareIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import ProfileCardButton from '../ProfileCardButton';
-import ShareModal from '.';
+import ShareModal from '../ShareModal';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ProfileV2Props } from '../../../../common/types/common';
@@ -50,7 +50,7 @@ const SocialMediaShareButton = ({ userProfile }: ProfileV2Props) => {
             ? handleNativeSocialMediaShare
             : handleShareModalOpen
         }
-        isLink="false"
+        elementType="button"
       />
       {!isNativeShareSupported && (
         <ShareModal

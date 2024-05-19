@@ -5,29 +5,29 @@ import Link from 'next/link';
 interface CommonProps {
   icon?: ReactElement;
   text?: string;
-  type?: 'primary' | 'secondary';
+  color?: 'primary' | 'secondary';
 }
 
 interface LinkProps extends CommonProps {
   href: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
-  isLink: 'true';
+  elementType: 'link';
 }
 
 interface ButtonProps extends CommonProps {
   onClick: () => void;
-  isLink: 'false';
+  elementType: 'button';
 }
 
 type ProfileCardButtonProps = LinkProps | ButtonProps;
 
 function ProfileCardButton(props: ProfileCardButtonProps): React.JSX.Element {
-  if (props.isLink === 'true') {
+  if (props.elementType === 'link') {
     return (
       <Link href={props.href} target={props.target}>
         <button
           className={`${styles.profileCardButton} ${
-            props.type === 'primary' ? styles.primaryProfileCardButton : ''
+            props.color === 'primary' ? styles.primaryProfileCardButton : ''
           }`}
         >
           <div className={styles.profileCardButtonIcon}>{props.icon}</div>
@@ -39,7 +39,7 @@ function ProfileCardButton(props: ProfileCardButtonProps): React.JSX.Element {
     return (
       <button
         className={`${styles.profileCardButton} ${
-          props.type === 'primary' ? styles.primaryProfileCardButton : ''
+          props.color === 'primary' ? styles.primaryProfileCardButton : ''
         }`}
         onClick={props.onClick}
       >

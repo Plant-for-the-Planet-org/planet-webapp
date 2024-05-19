@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProfileActions from '../ProfileCard/ProfileCardButton/ProfileActions';
+import ProfileActions from '../ProfileCard/ProfileActions';
 
 const meta: Meta<typeof ProfileActions> = {
   component: ProfileActions,

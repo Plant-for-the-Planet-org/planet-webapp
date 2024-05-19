@@ -7,7 +7,7 @@ import {
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import styles from './ProfileActions.module.scss';
 import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/RedeemModal';
-import SocialMediaShareButton from '../ShareModal/SocialMediaShareButton';
+import SocialMediaShareButton from './SocialMediaShareButton';
 import { useTranslations } from 'next-intl';
 import { ProfileV2Props } from '../../../../common/types/common';
 import ProfileCardButton from '../ProfileCardButton';
@@ -38,14 +38,14 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
       <ProfileCardButton
         icon={<AllDonations />}
         text={t('feature.allDonations')}
-        isLink={'true'}
+        elementType={'link'}
         href={'/profile/history'}
       />
       <ProfileCardButton
         icon={<RedeemIcon />}
         text={t('feature.redeem')}
         onClick={handleRedeemModalOpen}
-        isLink={'false'}
+        elementType={'button'}
       />
       <RedeemModal
         redeemModalOpen={isRedeemModalOpen}
@@ -60,15 +60,15 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
         text={t('feature.supportUserText', {
           username: userProfile?.displayName.split(' ')[0],
         })}
-        type={'primary'}
-        isLink={'true'}
+        color={'primary'}
+        elementType={'link'}
         href={`/s/${userProfile?.slug}`}
       />
       <div className={styles.websiteShareActions}>
         <ProfileCardButton
           icon={<WebsiteLinkIcon />}
           text={t('feature.website')}
-          isLink={'true'}
+          elementType={'link'}
           href={handleWebsiteShareUrl()}
           target={'_blank'}
         />
