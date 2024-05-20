@@ -90,45 +90,30 @@ export default function ProjectsMap(): ReactElement {
     setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
-    if (e.features && e.features?.length !== 0) {
-      if (e.features[0].layer?.source) {
-        for (const key in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-            const element = plantLocations[Number(key)];
-            if (element.id === e.features[0].layer?.source) {
-              setSelectedPl(element);
-
-              break;
-            }
-          }
-        }
-        //router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
+    if (plantLocations && e && e.features && e.features[0]) {
+      const element = plantLocations.find(obj => obj.id === e.features[0].properties.id);
+      if (element) {
+        setSelectedPl(element);
       }
+      return;
     }
   };
 
   const onMapHover = (e: MapEvent) => {
-    if (e.features && e.features?.length !== 0) {
-      if (!hoveredPl || hoveredPl.type !== 'sample') {
-        if (e.features[0].layer?.source && plantLocations) {
-          for (const key in plantLocations) {
-            if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-              const element = plantLocations[key];
-              if (element.id === e.features[0].layer?.source) {
-                setHoveredPl(element);
-                // setSelectedPl(element);
-                break;
-              }
-            }
-          }
-        }
+    if (plantLocations && e && e.features && e.features[0]) {
+      const element = plantLocations.find(obj => obj.id === e.features[0].properties.id);
+      if (element) {
+        setHoveredPl(element);
+        setShowDetails({ coordinates: e.lngLat, show: true });
       }
-      setShowDetails({ coordinates: e.lngLat, show: true });
-    } else {
-      setShowDetails({ ...showDetails, show: false });
-      setHoveredPl(null);
+      return;
     }
-  };
+    setShowDetails({ ...showDetails, show: false });
+    setHoveredPl(null);
+  }
+
+
+
 
   React.useEffect(() => {
     if (zoomLevel !== 2) {
@@ -147,6 +132,15 @@ export default function ProjectsMap(): ReactElement {
     }
   }, [showProjectList]);
 
+  const handleOnLoad = () => {
+    setLoaded(true)
+  }
+
+
+
+
+
+
   return (
     <div
       className={
@@ -161,8 +155,8 @@ export default function ProjectsMap(): ReactElement {
         onStateChange={_onStateChange}
         onClick={onMapClick}
         onHover={onMapHover}
-        onLoad={() => setLoaded(true)}
-        interactiveLayerIds={plIds ? plIds : undefined}
+        onLoad={handleOnLoad}
+        interactiveLayerIds={['shape-layer-poly','shape-layer']}
       >
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
