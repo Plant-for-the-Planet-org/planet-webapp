@@ -18,6 +18,11 @@
         justify-content: center;
         gap: 10px;
     }
+
+    &:hover {
+        background: rgba(33, 150, 83, 0.20);
+        border: none;
+    }
 }
     
 .profileCardButtonIcon {
@@ -46,5 +51,9 @@
     background-color: #007A49;
     .profileCardButtonLabel {
         color: #fff;
+    }
+    &:hover {
+        border: 1px solid rgba(33, 150, 83, 0.40);
+        background: #27AE60;
     }
 }
