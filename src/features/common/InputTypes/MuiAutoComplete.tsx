@@ -1,4 +1,4 @@
-import { Autocomplete, styled } from '@mui/material';
+import { Autocomplete, InputLabel, styled } from '@mui/material';
 
 const MuiAutoComplete = styled(Autocomplete)((/* { theme } */) => {
   return {
@@ -17,4 +17,13 @@ const StyledAutoCompleteOption = styled('li')({
   },
 });
 
-export { MuiAutoComplete, StyledAutoCompleteOption };
+const StyledInputLabel = styled(InputLabel)((/* { theme } */) => {
+  return {
+    '& p': {
+      fontSize: '0.75rem',
+      fontWeight: 700,
+    },
+  };
+});
+
+export { MuiAutoComplete, StyledAutoCompleteOption, StyledInputLabel };

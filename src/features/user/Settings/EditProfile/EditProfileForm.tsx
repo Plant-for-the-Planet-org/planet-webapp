@@ -1,4 +1,10 @@
-import { Button, styled, TextField } from '@mui/material';
+import {
+  Button,
+  InputLabel,
+  styled,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
@@ -23,6 +29,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import {
   MuiAutoComplete,
   StyledAutoCompleteOption,
+  StyledInputLabel,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
 import {
@@ -297,6 +304,14 @@ export default function EditProfileForm() {
   };
   let suggestion_counter = 0;
 
+  const EditProfileInputContainer = styled('div')({
+    flex: 1,
+    minWidth: 180,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  });
+
   return (
     <StyledForm>
       <div className="inputContainer">
@@ -326,129 +341,154 @@ export default function EditProfileForm() {
             <button className={styles.deleteProfilePicButton}>
               <label>
                 <Delete color="#828282" />
-                <span>Delete Photo</span>
+                <span>Delete photo</span>
               </label>
             </button>
           </div>
         </div>
 
         {type !== 'tpo' ? (
-          <MuiAutoComplete
-            id="profile-type"
-            value={localProfileType}
-            options={profileTypes}
-            getOptionLabel={(option) => (option as ProfileTypeOption).title}
-            isOptionEqualToValue={(option, selectedOption) =>
-              (option as ProfileTypeOption).value ===
-              (selectedOption as ProfileTypeOption).value
-            }
-            renderOption={(props, option) => {
-              const { id, title } = option as ProfileTypeOption;
-              return (
-                <StyledAutoCompleteOption {...props} key={id}>
-                  {title}
-                </StyledAutoCompleteOption>
-              );
-            }}
-            onChange={(event, newType) => {
-              if (newType) {
-                setAccountType((newType as ProfileTypeOption).value);
-                setLocalProfileType(newType as ProfileTypeOption);
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="profile-type">
+              <Typography>{t('fieldLabels.profileType')}</Typography>
+            </StyledInputLabel>
+            <MuiAutoComplete
+              id="profile-type"
+              value={localProfileType}
+              options={profileTypes}
+              getOptionLabel={(option) => (option as ProfileTypeOption).title}
+              isOptionEqualToValue={(option, selectedOption) =>
+                (option as ProfileTypeOption).value ===
+                (selectedOption as ProfileTypeOption).value
               }
-            }}
-            renderInput={(params) => (
-              <TextField {...params} label={t('fieldLabels.profileType')} />
-            )}
-          />
+              renderOption={(props, option) => {
+                const { id, title } = option as ProfileTypeOption;
+                return (
+                  <StyledAutoCompleteOption {...props} key={id}>
+                    {title}
+                  </StyledAutoCompleteOption>
+                );
+              }}
+              onChange={(event, newType) => {
+                if (newType) {
+                  setAccountType((newType as ProfileTypeOption).value);
+                  setLocalProfileType(newType as ProfileTypeOption);
+                }
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </EditProfileInputContainer>
         ) : null}
+        {/* to be changed to fullname after api changes */}
         <InlineFormDisplayGroup>
-          <Controller
-            name="firstname"
-            control={control}
-            rules={{
-              required: t('validationErrors.firstNameRequired'),
-              maxLength: {
-                value: 50,
-                message: t('validationErrors.maxChars', { max: 50 }),
-              },
-              pattern: {
-                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
-                message: t('validationErrors.firstNameInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.firstName')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.firstname !== undefined}
-                helperText={
-                  errors.firstname !== undefined && errors.firstname.message
-                }
-              />
-            )}
-          />
-          <Controller
-            name="lastname"
-            control={control}
-            rules={{
-              required: t('validationErrors.lastNameRequired'),
-              maxLength: {
-                value: 50,
-                message: t('validationErrors.maxChars', { max: 50 }),
-              },
-              pattern: {
-                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
-                message: t('validationErrors.lastNameInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.lastName')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.lastname !== undefined}
-                helperText={
-                  errors.lastname !== undefined && errors.lastname.message
-                }
-              />
-            )}
-          />
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="firstname">
+              <Typography>{t('fieldLabels.firstName')}</Typography>
+            </StyledInputLabel>
+            <Controller
+              name="firstname"
+              control={control}
+              rules={{
+                required: t('validationErrors.firstNameRequired'),
+                maxLength: {
+                  value: 50,
+                  message: t('validationErrors.maxChars', { max: 50 }),
+                },
+                pattern: {
+                  value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
+                  message: t('validationErrors.firstNameInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.firstname !== undefined}
+                  helperText={
+                    errors.firstname !== undefined && errors.firstname.message
+                  }
+                />
+              )}
+            />
+          </EditProfileInputContainer>
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="lastname">
+              <Typography>{t('fieldLabels.lastName')}</Typography>
+            </StyledInputLabel>
+            <Controller
+              name="lastname"
+              control={control}
+              rules={{
+                required: t('validationErrors.lastNameRequired'),
+                maxLength: {
+                  value: 50,
+                  message: t('validationErrors.maxChars', { max: 50 }),
+                },
+                pattern: {
+                  value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
+                  message: t('validationErrors.lastNameInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.lastname !== undefined}
+                  helperText={
+                    errors.lastname !== undefined && errors.lastname.message
+                  }
+                />
+              )}
+            />
+          </EditProfileInputContainer>
         </InlineFormDisplayGroup>
-        <TextField
-          label={t('fieldLabels.email')}
-          name="email"
-          defaultValue={user?.email}
-          disabled
-        ></TextField>
+        <EditProfileInputContainer>
+          <StyledInputLabel shrink={false} htmlFor="email">
+            <Typography>{t('fieldLabels.email')}</Typography>
+          </StyledInputLabel>
+          <TextField
+            name="email"
+            defaultValue={user?.email}
+            disabled
+          ></TextField>
+        </EditProfileInputContainer>
         {type && type !== 'individual' && (
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: t('validationErrors.nameRequired'),
-              pattern: {
-                value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
-                message: t('validationErrors.nameInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.name', {
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="name">
+              <Typography>
+                {t('fieldLabels.name', {
                   type: selectUserType(type, t),
                 })}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.name !== undefined}
-                helperText={errors.name !== undefined && errors.name.message}
-              />
-            )}
-          />
+              </Typography>
+            </StyledInputLabel>
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: t('validationErrors.nameRequired'),
+                pattern: {
+                  value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
+                  message: t('validationErrors.nameInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.name !== undefined}
+                  helperText={errors.name !== undefined && errors.name.message}
+                />
+              )}
+            />
+          </EditProfileInputContainer>
         )}
-        <div className={styles.formFieldLarge}>
+        <EditProfileInputContainer>
+          <StyledInputLabel shrink={false} htmlFor="address">
+            <Typography>{t('fieldLabels.address')}</Typography>
+          </StyledInputLabel>
           <Controller
             name="address"
             control={control}
@@ -463,7 +503,6 @@ export default function EditProfileForm() {
               field: { onChange: handleChange, value, onBlur: handleBlur },
             }) => (
               <TextField
-                label={t('fieldLabels.address')}
                 onChange={(event) => {
                   suggestAddress(event.target.value);
                   handleChange(event);
@@ -499,60 +538,127 @@ export default function EditProfileForm() {
                 </div>
               )
             : null}
-        </div>
+        </EditProfileInputContainer>
         <InlineFormDisplayGroup>
-          <Controller
-            name="city"
-            control={control}
-            rules={{
-              required: t('validationErrors.cityRequired'),
-              pattern: {
-                value: /^[\p{L}\sß.,()-]+$/u,
-                message: t('validationErrors.cityInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.city')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.city !== undefined}
-                helperText={errors.city !== undefined && errors.city.message}
-              />
-            )}
-          />
-          <Controller
-            name="zipCode"
-            control={control}
-            rules={{
-              required: t('validationErrors.zipCodeRequired'),
-              pattern: {
-                value: postalRegex as RegExp,
-                message: t('validationErrors.zipCodeInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.zipCode')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.zipCode !== undefined}
-                helperText={
-                  errors.zipCode !== undefined && errors.zipCode.message
-                }
-              />
-            )}
-          />
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="city">
+              <Typography>{t('fieldLabels.city')}</Typography>
+            </StyledInputLabel>
+            <Controller
+              name="city"
+              control={control}
+              rules={{
+                required: t('validationErrors.cityRequired'),
+                pattern: {
+                  value: /^[\p{L}\sß.,()-]+$/u,
+                  message: t('validationErrors.cityInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.city !== undefined}
+                  helperText={errors.city !== undefined && errors.city.message}
+                />
+              )}
+            />
+          </EditProfileInputContainer>
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="zipCode">
+              <Typography>{t('fieldLabels.zipCode')}</Typography>
+            </StyledInputLabel>
+            <Controller
+              name="zipCode"
+              control={control}
+              rules={{
+                required: t('validationErrors.zipCodeRequired'),
+                pattern: {
+                  value: postalRegex as RegExp,
+                  message: t('validationErrors.zipCodeInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.zipCode !== undefined}
+                  helperText={
+                    errors.zipCode !== undefined && errors.zipCode.message
+                  }
+                />
+              )}
+            />
+          </EditProfileInputContainer>
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="country">
+              <Typography>{t('fieldLabels.country')}</Typography>
+            </StyledInputLabel>
+            <AutoCompleteCountry
+              defaultValue={country}
+              onChange={setCountry}
+              name="country"
+              countries={allCountries}
+            />
+          </EditProfileInputContainer>
         </InlineFormDisplayGroup>
-        <AutoCompleteCountry
-          defaultValue={country}
-          onChange={setCountry}
-          label={t('fieldLabels.country')}
-          name="editProfile"
-          countries={allCountries}
-        />
+
+        <EditProfileInputContainer>
+          <StyledInputLabel shrink={false} htmlFor="bio">
+            <Typography>{t('fieldLabels.bio')}</Typography>
+          </StyledInputLabel>
+          <Controller
+            name="bio"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('validationErrors.maxChars', { max: 300 }),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                multiline
+                rows={4}
+                error={errors.bio !== undefined}
+                helperText={errors.bio !== undefined && errors.bio.message}
+              />
+            )}
+          />
+        </EditProfileInputContainer>
+
+        <EditProfileInputContainer>
+          <StyledInputLabel shrink={false} htmlFor="url">
+            <Typography>{t('fieldLabels.website')}</Typography>
+          </StyledInputLabel>
+          <Controller
+            name="url"
+            control={control}
+            rules={{
+              pattern: {
+                //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                value:
+                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                message: t('validationErrors.websiteInvalid'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.url !== undefined}
+                helperText={errors.url !== undefined && errors.url.message}
+              />
+            )}
+          />
+        </EditProfileInputContainer>
+
         <InlineFormDisplayGroup type="other">
           <div>
             <label
@@ -607,52 +713,6 @@ export default function EditProfileForm() {
         </InlineFormDisplayGroup>
 
         <div className={styles.horizontalLine} />
-
-        <Controller
-          name="bio"
-          control={control}
-          rules={{
-            maxLength: {
-              value: 300,
-              message: t('validationErrors.maxChars', { max: 300 }),
-            },
-          }}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <TextField
-              label={t('fieldLabels.bio')}
-              onChange={onChange}
-              onBlur={onBlur}
-              value={value}
-              multiline
-              rows={4}
-              error={errors.bio !== undefined}
-              helperText={errors.bio !== undefined && errors.bio.message}
-            />
-          )}
-        />
-
-        <Controller
-          name="url"
-          control={control}
-          rules={{
-            pattern: {
-              //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-              value:
-                /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-              message: t('validationErrors.websiteInvalid'),
-            },
-          }}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <TextField
-              label={t('fieldLabels.website')}
-              onChange={onChange}
-              onBlur={onBlur}
-              value={value}
-              error={errors.url !== undefined}
-              helperText={errors.url !== undefined && errors.url.message}
-            />
-          )}
-        />
       </div>
       <Button
         id={'editProfileSaveProfile'}

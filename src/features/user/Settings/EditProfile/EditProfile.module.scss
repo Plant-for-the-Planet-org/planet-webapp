@@ -109,6 +109,13 @@
   flex-wrap: wrap;
 }
 
+
+.editProfileInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 @include smTabletView {
   .formFieldHalf {
     div,
@@ -193,6 +200,13 @@
   }
   .profilePicDivButtons {
     align-items: center;
+  }
+  .uploadProfilePicButton, .deleteProfilePicButton{
+    label {
+      span {
+        font-weight: 600;
+      }
+    }
   }
   .formFieldHalf {
     div,
