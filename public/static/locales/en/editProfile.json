@@ -24,6 +24,10 @@
     "cancel": "Cancel",
     "termAndCondition": "I agree to the <termsLink>Terms and Conditions</termsLink> of the Plant-for-the-Planet platform.",
     "termAndConditionError": "Please Accept the Terms and Conditions",
+    "profilePictureButtonLabels": {
+      "upload": "Upload a new photo",
+      "delete": "Delete photo"
+    },
     "fieldLabels": {
       "profileType": "I am a",
       "firstName": "First Name",

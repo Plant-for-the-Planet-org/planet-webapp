@@ -335,13 +335,13 @@ export default function EditProfileForm() {
               <label htmlFor="upload">
                 <input {...getInputProps()} />
                 <Camera />
-                <span>Upload a new photo</span>
+                <span>{t('profilePictureButtonLabels.upload')}</span>
               </label>
             </div>
             <button className={styles.deleteProfilePicButton}>
               <label>
                 <Delete color="#828282" />
-                <span>Delete photo</span>
+                <span>{t('profilePictureButtonLabels.delete')}</span>
               </label>
             </button>
           </div>
