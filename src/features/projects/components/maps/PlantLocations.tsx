@@ -96,23 +96,23 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  // const getDateDiff = (pl: PlantLocation) => {
-  //   const today = new Date();
-  //   const plantationDate = new Date(pl.plantDate?.substr(0, 10));
-  //   const differenceInTime = today.getTime() - plantationDate.getTime();
-  //   const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-  //   if (differenceInDays < 1) {
-  //     return t('today');
-  //   } else if (differenceInDays < 2) {
-  //     return t('yesterday');
-  //   } else if (differenceInDays <= 10) {
-  //     return t('daysAgo', {
-  //       days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
-  //     });
-  //   } else {
-  //     return null;
-  //   }
-  // };
+  const getDateDiff = (pl: PlantLocation) => {
+    const today = new Date();
+    const plantationDate = new Date(pl.plantDate?.substr(0, 10));
+    const differenceInTime = today.getTime() - plantationDate.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    if (differenceInDays < 1) {
+      return t('today');
+    } else if (differenceInDays < 2) {
+      return t('yesterday');
+    } else if (differenceInDays <= 10) {
+      return t('daysAgo', {
+        days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
+      });
+    } else {
+      return false;
+    }
+  };
 
   const makeInterventionGeoJson = (
     type: string,
@@ -173,7 +173,8 @@ export default function PlantLocations(): ReactElement {
     const isHovered = hoveredPl && hoveredPl.id === el.id
     const { geoJSON } = makeInterventionGeoJson(el.geometry.type, el.geometry.coordinates[0], el.id, {
       highlightLine: isSelected || isHovered,
-      opacity: el.type==='multi'? getPolygonColor(el) : 0.5
+      opacity: el.type === 'multi' ? getPolygonColor(el) : 0.5,
+      dateDiff: getDateDiff(el)
     })
     return geoJSON
   })
@@ -193,7 +194,7 @@ export default function PlantLocations(): ReactElement {
           type="fill"
           paint={{
             'fill-color': satellite ? '#ffffff' : '#007A49',
-            'fill-opacity':['get', 'opacity'],
+            'fill-opacity': ['get', 'opacity'],
           }}
           filter={['==', ['geometry-type'], 'Polygon']}
         />
@@ -214,6 +215,19 @@ export default function PlantLocations(): ReactElement {
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
+        />
+        <Layer
+          id={`datediff-label`}
+          type="symbol"
+          layout={{
+            'text-field': ['get', 'dateDiff'],
+            'text-anchor': 'center',
+            'text-font': ['Ubuntu Regular'],
+          }}
+          paint={{
+            'text-color': satellite ? '#ffffff' : '#2f3336',
+          }}
+          filter={['!=', ['get', 'dateDiff'], false]}
         />
         {selectedPl && selectedPl.samplePlantLocations ?
           selectedPl.samplePlantLocations.map((spl) => {
@@ -238,22 +252,6 @@ export default function PlantLocations(): ReactElement {
               </Marker>
             );
           }) : null}
-        {/* {dateDiff && (
-                      <Layer
-                        key={`${pl.id}-label`}
-                        id={`${pl.id}-label`}
-                        type="symbol"
-                        source={pl.id}
-                        layout={{
-                          'text-field': dateDiff,
-                          'text-anchor': 'center',
-                          'text-font': ['Ubuntu Regular'],
-                        }}
-                        paint={{
-                          'text-color': satellite ? '#ffffff' : '#2f3336',
-                        }}
-                      />
-                    )} */}
       </Source>
     </>
   );
