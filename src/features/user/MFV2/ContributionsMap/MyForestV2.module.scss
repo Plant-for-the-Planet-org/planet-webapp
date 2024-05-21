@@ -97,6 +97,7 @@
   width: 53px;
   height: 18px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .listOfContributionsContainer {
@@ -156,11 +157,13 @@
 .classificationContainer {
   display: flex;
   gap: 3.8px;
-  height: 15px;
+  height: 8px;
+  align-items: center;
 }
 .classificationIcon {
   height: 10px;
   width: 10px;
+  margin-top: 3px;
 }
 .classification {
   font-size: 7px;

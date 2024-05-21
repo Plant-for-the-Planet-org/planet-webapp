@@ -13,11 +13,11 @@ const RegisteredTreeInfo = () => {
   );
 };
 
-const RegisterTreePopup = ({ singleLocation }) => {
+const RegisterTreePopup = ({ superclusterResponse }) => {
   return (
     <Popup
-      latitude={singleLocation?.geometry?.coordinates[1]}
-      longitude={singleLocation?.geometry?.coordinates[0]}
+      latitude={superclusterResponse?.geometry?.coordinates[1]}
+      longitude={superclusterResponse?.geometry?.coordinates[0]}
       offset={34}
       className={style.registeredTreePopup}
       closeButton={false}

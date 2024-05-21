@@ -2,18 +2,22 @@ import { Marker } from 'react-map-gl-v7';
 import { useEffect, useState } from 'react';
 import ContributionClusterMarkerIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/ClusterMarker/ContributionClusterMarkerIcon';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import { contributions } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
+import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
+import { ClusterFeature, PointFeature, AnyProps } from 'supercluster';
 
 const ClusterMarker = ({ geoJson, viewport, mapRef }) => {
-  const [clusterChildren, setClusterChildren] = useState([]);
+  const [clusterChildren, setClusterChildren] = useState<
+    (ClusterFeature<AnyProps> | PointFeature<AnyProps>)[]
+  >([]);
+  const { donationGeojson } = useMyForestV2();
   const { primaryDarkColor, electricPurple, mediumBlue } = themeProperties;
   useEffect(() => {
-    if (geoJson && viewport && contributions) {
+    if (geoJson && viewport && donationGeojson) {
       const data = _getClusterGeojson(
         viewport,
         mapRef,
-        contributions,
+        donationGeojson,
         geoJson.id
       );
       setClusterChildren(data);

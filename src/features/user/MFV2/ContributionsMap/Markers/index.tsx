@@ -1,7 +1,7 @@
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { useEffect, useState } from 'react';
 import ClusterMarker from './ClusterMarker';
-import SinglePointMarkers from './SinglePointMarkers';
+import SinglePointMarkers from './SinglePointMarker';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { ClusterFeature, PointFeature } from 'supercluster';

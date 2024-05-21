@@ -1,67 +1,107 @@
 import { Popup } from 'react-map-gl-v7';
+import { useContext } from 'react';
 import style from '../MyForestV2.module.scss';
 import getImageUrl from '../../../../../utils/getImageURL';
 import ProjectTypeIcon from '../../../../projects/components/ProjectTypeIcon';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import { getDonationUrl } from '../../../../../utils/getDonationUrl';
+import { useTenant } from '../../../../common/Layout/TenantContext';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
 
-const Projectimage = ({ singleLocation }) => {
+const Projectimage = ({ superclusterResponse }) => {
+  const { classification, image, name } =
+    superclusterResponse.properties.projectInfo;
   return (
     <div className={style.imageContainer}>
       <img
         alt="projectImage"
-        src={getImageUrl(
-          'project',
-          'medium',
-          singleLocation?.properties?.project.image
-        )}
+        src={getImageUrl('project', 'medium', image)}
         width={'fit-content'}
         className={style.popupProjctImage}
       />
       <div className={style.projectImageInfoContainer}>
         <div className={style.classificationContainer}>
           <div className={style.classificationIcon}>
-            <ProjectTypeIcon
-              projectType={singleLocation?.properties.project.classification}
-            />
+            <ProjectTypeIcon projectType={classification} />
           </div>
-          <div className={style.classification}>Natural Regeneration</div>
+          <div className={style.classification}>{classification}</div>
         </div>
-        <div className={style.projectName}>Costa Rica - Ridge to Reef</div>
+        <div className={style.projectName}>{name}</div>
       </div>
     </div>
   );
 };
 
-const ProjectInfo = ({ singleLocation }) => {
+const ProjectInfo = ({ superclusterResponse }) => {
+  const { totalContributionUnits, contributionCount } =
+    superclusterResponse.properties.contributionInfo;
+  const { name, tpoName, guid } = superclusterResponse.properties.projectInfo;
+  const router = useRouter();
+  const locale = useLocale();
+  const { embed } = useContext(ParamsContext);
+  const { token, user } = useUserProps();
+  const { tenantConfig } = useTenant(); //default tenant
+
+  const handleDonation = (id: string, tenant: string) => {
+    if (user) {
+      const url = getDonationUrl(
+        tenant,
+        id,
+        token,
+        undefined,
+        undefined,
+        router.asPath !== `/${locale}/profile` ? user.slug : undefined
+      );
+      embed === 'true'
+        ? window.open(encodeURI(url), '_blank')
+        : (window.location.href = encodeURI(url));
+    }
+  };
   return (
     <div className={style.contributionInfoContainer}>
       <div>
         <div className={style.treesAndCountry}>
-          <p className={style.trees}>
-            {`${singleLocation?.properties.totalTrees} trees`}
-          </p>
+          <p className={style.trees}>{`${totalContributionUnits.toFixed(
+            2
+          )} trees`}</p>
           <p className={style.seperator}>.</p>
-          <p>Costa Rica</p>
+          <p>{name.replace(/^(.{11}[^\s]*).*/, '$1')}...</p>
         </div>
         <div className={style.countryAndTpo}>
-          <p>Costa Rica</p>
+          <p>{name.replace(/^(.{11}[^\s]*).*/, '$1')}...</p>
           <p className={style.seperator}>.</p>
-          <p>By One Tree Planted</p>
+          <p>{tpoName}</p>
         </div>
-        {singleLocation?.properties?.contributionCount === 1 && (
-          <div className={style.singleContributionDate}>Aug 25, 2021</div>
+        {contributionCount === 1 && (
+          <div className={style.singleContributionDate}>Aug 25, 2021</div> // need to do integaration
         )}
       </div>
-      <button className={style.popupDonateButton}>Donate</button>
+      <button
+        className={style.popupDonateButton}
+        onClick={() => handleDonation(guid, tenantConfig.id)}
+      >
+        Donate
+      </button>
     </div>
   );
 };
 
-const ContributionList = ({ singleLocation }) => {
-  return singleLocation.properties.contributionCount === 1 ? (
+const ContributionList = ({ superclusterResponse }) => {
+  const { contributionCount, latestContributions } =
+    superclusterResponse.properties.contributionInfo;
+  console.log(
+    superclusterResponse.properties.contributionInfo,
+    superclusterResponse.properties.projectInfo,
+    '==1'
+  );
+  return contributionCount === 1 ? (
     <></>
   ) : (
     <div className={style.listOfContributionsContainer}>
-      {singleLocation?.properties.contributions
+      {latestContributions
         .slice(0, 3)
         .map((singleContribution: any, key: any) => {
           return (
@@ -72,28 +112,30 @@ const ContributionList = ({ singleLocation }) => {
           );
         })}
 
-      {singleLocation?.properties.contributionCount >= 4 && (
+      {contributionCount >= 4 && (
         <div className={style.totalContribution}>{`+${
-          singleLocation?.properties.contributionCount - 3
+          Number(contributionCount) - 3
         } contribution`}</div>
       )}
     </div>
   );
 };
 
-const ContributionPopup = ({ singleLocation }) => {
+const ContributionPopup = ({ superclusterResponse }) => {
+  if (!superclusterResponse) return null;
+  const { coordinates } = superclusterResponse.geometry;
   return (
     <Popup
-      latitude={singleLocation?.geometry?.coordinates[1]}
-      longitude={singleLocation?.geometry?.coordinates[0]}
+      latitude={coordinates[1]}
+      longitude={coordinates[0]}
       className={style.contributionPopup}
       offset={65}
       closeButton={false}
     >
       <div className={style.contributionPopupContainer}>
-        <Projectimage singleLocation={singleLocation} />
-        <ProjectInfo singleLocation={singleLocation} />
-        <ContributionList singleLocation={singleLocation} />
+        <Projectimage superclusterResponse={superclusterResponse} />
+        <ProjectInfo superclusterResponse={superclusterResponse} />
+        <ContributionList superclusterResponse={superclusterResponse} />
       </div>
     </Popup>
   );

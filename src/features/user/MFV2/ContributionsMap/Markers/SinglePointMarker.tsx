@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
 import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
 import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
@@ -11,6 +11,8 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { Marker } from 'react-map-gl-v7';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import { AnyProps, PointFeature } from 'supercluster';
+import ContributionPopup from '../Popup/ContributionPopup';
+import RegisterTreePopup from '../Popup/RegistertreePopUp';
 
 type Classification =
   | 'natural-regeneration'
@@ -76,19 +78,58 @@ const SinglePointMarkers = ({
   superclusterResponse,
 }: SinglePointMarkersProps) => {
   if (!superclusterResponse) return null;
+
+  const [showPopup, setShowPopUp] = useState(false);
+
+  const handleMouseEnter = () => {
+    setShowPopUp(true);
+  };
+
+  const handleMouseLeave = () => {
+    setTimeout(() => {
+      setShowPopUp(false);
+    }, 3000);
+  };
+  const handleMouseLeaveRegisteredtreePopup = () => {
+    setShowPopUp(false);
+  };
+
   const { coordinates } = superclusterResponse.geometry;
   const { type, projectInfo } = superclusterResponse.properties;
   return (
-    <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
-      {type === 'registration' ? (
-        <RegisteredTreeIcon />
-      ) : (
-        <ProjectTypeIcon
-          purpose={projectInfo.purpose}
-          classification={projectInfo.classification}
-        />
-      )}
-    </Marker>
+    <>
+      <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
+        {type === 'registration' ? (
+          <>
+            {showPopup && (
+              <RegisterTreePopup superclusterResponse={superclusterResponse} />
+            )}
+
+            <div
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeaveRegisteredtreePopup}
+            >
+              <RegisteredTreeIcon />
+            </div>
+          </>
+        ) : (
+          <>
+            {showPopup && (
+              <ContributionPopup superclusterResponse={superclusterResponse} />
+            )}
+            <div
+              onMouseEnter={handleMouseEnter}
+              // onMouseLeave={handleMouseLeave}
+            >
+              <ProjectTypeIcon
+                purpose={projectInfo.purpose}
+                classification={projectInfo.classification}
+              />
+            </div>
+          </>
+        )}
+      </Marker>
+    </>
   );
 };
 
