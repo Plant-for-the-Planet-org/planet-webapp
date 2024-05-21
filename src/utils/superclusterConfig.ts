@@ -21,6 +21,10 @@ const _clusterConfig = {
     }
   },
 };
+const _clusterConfigV2 = {
+  radius: 40,
+  maxZoom: 3,
+};
 
 export const _getClusterGeojson = (
   viewState: ViewState,
@@ -28,7 +32,7 @@ export const _getClusterGeojson = (
   geoJson: PointFeature<TestPointProps>[],
   clusterId: string | number | undefined
 ) => {
-  const supercluster = new Supercluster(_clusterConfig);
+  const supercluster = new Supercluster(_clusterConfigV2);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {

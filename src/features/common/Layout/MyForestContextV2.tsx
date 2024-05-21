@@ -24,8 +24,10 @@ import {
   MyContributionsMapItem,
   MapLocation,
 } from '../types/myForestv2';
+import { AnyProps, PointFeature } from 'supercluster';
+import { TestPointProps } from '../types/map';
 
-interface ProjectInfo {
+export interface ProjectInfo {
   allowDonations: boolean;
   classification: TreeProjectClassification;
   country: CountryCode;
@@ -43,13 +45,6 @@ interface RegistrationGeojson {
   properties: MyContributionsMapItem | undefined;
 }
 
-interface DonationGeojson {
-  geometry: Point;
-  properties: {
-    projectInfo: ProjectInfo;
-    contributionInfo: MyContributionsMapItem | undefined;
-  };
-}
 interface Contributions {
   registrationLocationsMap: Map<string, MapLocation>;
   stats: ContributionStats;
@@ -62,10 +57,10 @@ interface MyForestContextV2Interface {
   setProjectList: SetState<Map<string, ProjectInfo> | undefined>;
   contributions: Contributions | undefined;
   setContributions: SetState<Contributions | undefined>;
-  registrationGeojson: RegistrationGeojson[];
-  setRegistrationGeojson: SetState<RegistrationGeojson[]>;
-  donationGeojson: DonationGeojson[];
-  setDonationGeojson: SetState<DonationGeojson[]>;
+  registrationGeojson: PointFeature<TestPointProps>[];
+  setRegistrationGeojson: SetState<PointFeature<TestPointProps>[]>;
+  donationGeojson: PointFeature<TestPointProps>[];
+  setDonationGeojson: SetState<PointFeature<TestPointProps>[]>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -80,9 +75,11 @@ export const MyForestProviderV2: FC = ({ children }) => {
     undefined
   );
   const [registrationGeojson, setRegistrationGeojson] = useState<
-    RegistrationGeojson[]
+    PointFeature<AnyProps>[]
   >([]);
-  const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
+  const [donationGeojson, setDonationGeojson] = useState<
+    PointFeature<AnyProps>[]
+  >([]);
   const { user } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const _projectList = trpc.myForestV2.projectList.useQuery();
@@ -146,8 +143,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
 
   useEffect(() => {
     if (contributions) {
-      const _registrationGeojson: RegistrationGeojson[] = [];
-      const _donationGeojson: DonationGeojson[] = [];
+      const _registrationGeojson: PointFeature<AnyProps>[] = [];
+      const _donationGeojson: PointFeature<AnyProps>[] = [];
       //condition to check whether a contribution belongs to donation or register
       contributions.myContributionsMap?.keys().forEach((x: string) => {
         if (x.startsWith('proj_')) {
