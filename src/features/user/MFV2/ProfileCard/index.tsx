@@ -8,21 +8,24 @@ import {
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ProfileV2Props } from '../../../common/types/common';
+import { ProfileV2Props } from '../../../common/types/profile';
 import ProfileActions from './ProfileActions';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 
 const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
   const isPrivateAccount = profileType === 'private';
-  const userImageUrl = getImageUrl('profile', 'avatar', userProfile?.image);
+  const userImageUrl = userProfile.image
+    ? getImageUrl('profile', 'avatar', userProfile.image)
+    : '';
+
   return userProfile ? (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileBackground}></div>
       <div className={styles.profilePicture}>
         {/* if no user profile picture exists or image is fetched from CDN in development env, show default profile image */}
-        {userProfile?.image && !userImageUrl.includes('development') ? (
-          <Avatar alt={userProfile.slug || 'user Image'} src={userImageUrl} />
+        {userImageUrl && !userImageUrl.includes('development') ? (
+          <Avatar alt={userProfile.displayName} src={userImageUrl} />
         ) : (
           <Avatar>
             <DefaultUserProfileImage />

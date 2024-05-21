@@ -12,7 +12,7 @@ import {
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ProfileV2Props } from '../../../../common/types/common';
+import { ProfileV2Props } from '../../../../common/types/profile';
 
 const CustomCopyButton = () => {
   const t = useTranslations('Profile');

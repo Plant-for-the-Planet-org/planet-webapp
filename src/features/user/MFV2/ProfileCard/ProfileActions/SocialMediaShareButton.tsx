@@ -4,7 +4,7 @@ import ProfileCardButton from '../ProfileCardButton';
 import ShareModal from '../ShareModal';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ProfileV2Props } from '../../../../common/types/common';
+import { ProfileV2Props } from '../../../../common/types/profile';
 
 const SocialMediaShareButton = ({ userProfile }: ProfileV2Props) => {
   const [isShareModelOpen, setIsShareModelOpen] = React.useState(false);

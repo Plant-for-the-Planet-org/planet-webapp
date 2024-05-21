@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from './user';
+
 export type SetState<T> = Dispatch<SetStateAction<T>>;
 
 /**
@@ -15,9 +14,4 @@ export interface IconProps {
   height?: string | number | undefined;
   className?: string | undefined;
   solid?: boolean;
-}
-
-export interface ProfileV2Props {
-  userProfile: User | PublicUser;
-  profileType?: 'private' | 'public';
 }

@@ -9,7 +9,7 @@ import styles from './ProfileActions.module.scss';
 import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/RedeemModal';
 import SocialMediaShareButton from './SocialMediaShareButton';
 import { useTranslations } from 'next-intl';
-import { ProfileV2Props } from '../../../../common/types/common';
+import { ProfileV2Props } from '../../../../common/types/profile';
 import ProfileCardButton from '../ProfileCardButton';
 
 const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
