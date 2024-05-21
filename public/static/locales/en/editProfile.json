@@ -12,7 +12,6 @@
     "profileCreationFailed": "Error in creating profile. Please try again.",
     "profileCreationError": "Error in creating profile.",
     "edit": "Edit Profile",
-    "privateAccountTxt": "Your profile is hidden and only your first name appears in the leaderboard",
     "save": "Save",
     "profilePicUpdated": "Profile picture is being updated...",
     "profileSaved": "Saved successfully!",
@@ -39,9 +38,7 @@
       "zipCode": "Postal/Zip Code",
       "country": "Country",
       "bio": "Your Description",
-      "website": "Website",
-      "privateAccount": "Private Account",
-      "subscribe": "Subscribe to news via email"
+      "website": "Website"
     },
     "validationErrors": {
       "maxChars": "Should be {max} characters or less",
@@ -61,6 +58,15 @@
       "websiteInvalid": "Please enter valid Website URL",
       "countryRequired": "Country is required",
       "companyRequired": "Company Name is required"
+    }, 
+    "customiseProfileFields": {
+      "customiseProfileTitle": "Customise Public Profile",
+      "switchVisibility": "Make profile public",
+      "publicProfileText": "By making your profile public, you can choose to share your information and connect with others.",
+      "subscribe": "Subscribe to news via email",
+      "showLeaderboard": "Show my leaderboard",
+      "showTreegame": "Show TreeGame",
+      "leaderboardTooltipText": "The leaderboard shows all contributions others have made to your profile. This could be trees gifted to you or donations that were made by people while visiting your profile. By turning this on, you will allow anyone on the internet to see who made the biggest contributions"
     }
   }
 }

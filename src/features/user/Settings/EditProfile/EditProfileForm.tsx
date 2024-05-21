@@ -41,6 +41,7 @@ import { APIError, handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
+import InfoIconPopup from './InfoIconPopup';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -54,11 +55,13 @@ type FormData = {
   city: string;
   firstname: string;
   getNews: boolean;
-  isPrivate: boolean;
+  isPublic: boolean;
   lastname: string;
   name: string;
   url: string;
   zipCode: string;
+  showLeaderboard: boolean;
+  showTreegame: boolean;
 };
 
 type ProfileTypeOption = {
@@ -185,7 +188,6 @@ export default function EditProfileForm() {
   // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const watchIsPrivate = watch('isPrivate');
   const [type, setAccountType] = useState(
     user?.type ? user.type : 'individual'
   );
@@ -659,60 +661,114 @@ export default function EditProfileForm() {
           />
         </EditProfileInputContainer>
 
-        <InlineFormDisplayGroup type="other">
-          <div>
+        <div className={styles.customiseProfileToggles}>
+          <h2>{t('customiseProfileFields.customiseProfileTitle')}</h2>
+          <InlineFormDisplayGroup type="other">
+            <div>
+              <label
+                htmlFor="editPublic"
+                className={styles.customiseProfileToggleLabel}
+                style={{ cursor: 'pointer' }}
+              >
+                {t('customiseProfileFields.switchVisibility')}
+              </label>
+              <br />
+              <label className={styles.isPrivateAccountText}>
+                {t('customiseProfileFields.publicProfileText')}
+              </label>
+            </div>
+            <Controller
+              name="isPublic"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <ToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="editPublic"
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
+          <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="editPrivate"
-              className={styles.mainText}
+              htmlFor="editGetNews"
+              className={styles.customiseProfileToggleLabel}
               style={{ cursor: 'pointer' }}
             >
-              {t('fieldLabels.privateAccount')}
-            </label>{' '}
-            <br />
-            {watchIsPrivate && (
-              <label className={styles.isPrivateAccountText}>
-                {t('privateAccountTxt')}
-              </label>
-            )}
-          </div>
-          <Controller
-            name="isPrivate"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <ToggleSwitch
-                checked={value}
-                onChange={onChange}
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                id="editPrivate"
-              />
-            )}
-          />
-        </InlineFormDisplayGroup>
+              {t('customiseProfileFields.subscribe')}
+            </label>
 
-        <InlineFormDisplayGroup type="other">
-          <label
-            htmlFor="editGetNews"
-            className={styles.mainText}
-            style={{ cursor: 'pointer' }}
-          >
-            {t('fieldLabels.subscribe')}
-          </label>
+            <Controller
+              name="getNews"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <ToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="editGetNews"
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
+          <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
+            <label
+              htmlFor="showLeaderboard"
+              className={styles.customiseProfileToggleLabel}
+              style={{ cursor: 'pointer' }}
+            >
+              {t('customiseProfileFields.showLeaderboard')}
+              <div className={styles.infoIcon}>
+                <InfoIconPopup height={15} width={14} color={'#828282'}>
+                  <div className={styles.infoIconPopupContainer}>
+                    {t('customiseProfileFields.leaderboardTooltipText')}
+                  </div>
+                </InfoIconPopup>
+              </div>
+            </label>
 
-          <Controller
-            name="getNews"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <ToggleSwitch
-                checked={value}
-                onChange={onChange}
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                id="editGetNews"
-              />
-            )}
-          />
-        </InlineFormDisplayGroup>
+            <Controller
+              name="showLeaderboard"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <ToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="editGetNews"
+                  disabled={true}
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
+          <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
+            <label
+              htmlFor="showTreegame"
+              className={styles.customiseProfileToggleLabel}
+              style={{ cursor: 'pointer' }}
+            >
+              {t('customiseProfileFields.showTreegame')}
+            </label>
 
-        <div className={styles.horizontalLine} />
+            <Controller
+              name="showTreegame"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <ToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="editGetNews"
+                  disabled={true}
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
+        </div>
       </div>
       <Button
         id={'editProfileSaveProfile'}
