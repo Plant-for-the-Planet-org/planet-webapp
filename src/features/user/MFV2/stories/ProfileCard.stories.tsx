@@ -3,7 +3,7 @@ import ProfileCard from '../ProfileCard';
 
 const meta: Meta<typeof ProfileCard> = {
   component: ProfileCard,
-  title: 'Components/PrivateProfileCard',
+  title: 'Components/ProfileCard',
 };
 
 export default meta;
