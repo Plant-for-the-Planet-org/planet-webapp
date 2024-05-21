@@ -136,7 +136,8 @@ async function fetchGifts(profileIds: number[]) {
 				gift g
 			WHERE 
 				g.recipient_id IN (${Prisma.join(profileIds)}) AND 
-				g.deleted_at is null
+				g.deleted_at is null AND
+				g.value <> 0
 			ORDER BY
 				g.id DESC;
 		`;
