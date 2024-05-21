@@ -8,9 +8,9 @@ import Conservation from '../../../../../../public/assets/images/icons/myForestV
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import themeProperties from '../../../../../theme/themeProperties';
-import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { Marker } from 'react-map-gl-v7';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
+import { AnyProps, PointFeature } from 'supercluster';
 
 type Classification =
   | 'natural-regeneration'
@@ -68,44 +68,27 @@ export const ProjectTypeIcon = ({
   }
 };
 
-const SinglePointMarkers = () => {
-  const { registrationGeojson, donationGeojson } = useMyForestV2();
-  return registrationGeojson ? (
-    <>
-      {registrationGeojson.map((singleLocation, key) => {
-        if (singleLocation.geometry !== undefined) {
-          return (
-            <Marker
-              longitude={singleLocation?.geometry.coordinates[0]}
-              latitude={singleLocation?.geometry.coordinates[1]}
-              key={key}
-            >
-              <RegisteredTreeIcon />
-            </Marker>
-          );
-        } else {
-          return <></>;
-        }
-      })}
-      {donationGeojson.map((singleLocation, key) => {
-        return (
-          <Marker
-            longitude={singleLocation?.geometry.coordinates[0]}
-            latitude={singleLocation?.geometry.coordinates[1]}
-            key={key}
-          >
-            <ProjectTypeIcon
-              purpose={singleLocation.properties.projectInfo.purpose}
-              classification={
-                singleLocation.properties.projectInfo.classification
-              }
-            />
-          </Marker>
-        );
-      })}
-    </>
-  ) : (
-    <></>
+interface SinglePointMarkersProps {
+  superclusterResponse: PointFeature<AnyProps>;
+}
+
+const SinglePointMarkers = ({
+  superclusterResponse,
+}: SinglePointMarkersProps) => {
+  if (!superclusterResponse) return null;
+  const { coordinates } = superclusterResponse.geometry;
+  const { type, projectInfo } = superclusterResponse.properties;
+  return (
+    <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
+      {type === 'registration' ? (
+        <RegisteredTreeIcon />
+      ) : (
+        <ProjectTypeIcon
+          purpose={projectInfo.purpose}
+          classification={projectInfo.classification}
+        />
+      )}
+    </Marker>
   );
 };
 
