@@ -10,12 +10,13 @@ import {
   MyContributionsSingleProject,
   ContributionsQueryResult,
   GiftsQueryResult,
-  GroupTreecounterQueryResult,
   MapLocation,
   SingleDonation,
   SingleGiftReceived,
 } from '../../../features/common/types/myForestv2';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
+import { fetchProfile } from '../../utils/fetchProfile';
+import { fetchGroupTreecounterData } from '../../utils/fetchGroupTreecounterData';
 
 function initializeStats(): ContributionStats {
   return {
@@ -37,36 +38,6 @@ function initializeStats(): ContributionStats {
       received: 0,
     },
   };
-}
-
-async function fetchProfile(profileId: string) {
-  const profile = await prisma.profile.findFirst({
-    select: {
-      id: true,
-      guid: true,
-      treecounterId: true,
-    },
-    where: {
-      guid: profileId,
-      deleted_at: null,
-    },
-  });
-  return profile;
-}
-
-async function fetchGroupTreecounterData(
-  slug: string,
-  parentTreecounterId: number
-) {
-  const data = await prisma.$queryRaw<GroupTreecounterQueryResult[]>`
-				SELECT p.id as profileId
-				FROM profile p
-					INNER JOIN treecounter t ON p.treecounter_id = t.id
-					INNER JOIN treecounter_group child ON child.treecounter_id = t.id
-					INNER JOIN treecounter_group parent ON child.root_id = parent.id
-				WHERE parent.slug = ${slug} AND parent.treecounter_id = ${parentTreecounterId};
-			`;
-  return data;
 }
 
 /**

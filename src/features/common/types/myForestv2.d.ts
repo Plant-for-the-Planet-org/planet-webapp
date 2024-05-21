@@ -122,3 +122,14 @@ export type GiftsQueryResult = {
   country: string;
   plantDate: DateString;
 };
+
+export type LeaderboardItem = {
+  name: string;
+  units: number;
+  unitType: 'tree' | 'm2';
+};
+
+export type Leaderboard = {
+  mostRecent: LeaderboardItem[];
+  mostTrees: LeaderboardItem[];
+};
