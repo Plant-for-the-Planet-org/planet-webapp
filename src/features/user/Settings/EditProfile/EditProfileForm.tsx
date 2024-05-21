@@ -42,6 +42,7 @@ import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import InfoIconPopup from './InfoIconPopup';
+import EditProfileToggleSwitch from '../../../common/InputTypes/EditProfileToggleSwitch';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -681,7 +682,7 @@ export default function EditProfileForm() {
               name="isPublic"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <ToggleSwitch
+                <EditProfileToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -704,7 +705,7 @@ export default function EditProfileForm() {
               name="getNews"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <ToggleSwitch
+                <EditProfileToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -734,7 +735,7 @@ export default function EditProfileForm() {
               name="showLeaderboard"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <ToggleSwitch
+                <EditProfileToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -758,7 +759,7 @@ export default function EditProfileForm() {
               name="showTreegame"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <ToggleSwitch
+                <EditProfileToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
