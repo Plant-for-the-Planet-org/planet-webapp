@@ -5,7 +5,7 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages, useLocale } from 'next-intl';
+import { AbstractIntlMessages } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -33,7 +33,6 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
   const { user, contextLoaded } = useUserProps();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
-  const locale = useLocale();
   const router = useRouter();
 
   useEffect(() => {
@@ -60,14 +59,8 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
     if (router && router.isReady && router.query.profile && contextLoaded) {
       // reintiating the profile
       setProfile(null);
-      // Check if the user is authenticated and trying to access their own profile
-      if (user && user.slug === router.query.profile) {
-        router.replace(encodeURI(`/${locale}/profile/mfv2`));
-      }
-      // If user is not access their own profile, load the public profile
-      else {
-        loadPublicProfile(router.query.profile as string);
-      }
+
+      loadPublicProfile(router.query.profile as string);
     }
   }, [contextLoaded, user, router]);
 
