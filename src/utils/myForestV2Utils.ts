@@ -1,4 +1,4 @@
-export const contributions = [
+export const contribution = [
   {
     geometry: {
       coordinates: [75.5417969889786, 24.33591112993029],
