@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ProfileCard from '../ProfileCard';
+import {
+  PaymentFrequencies,
+  User,
+  UserPublicProfile,
+} from '@planet-sdk/common';
 
 const meta: Meta<typeof ProfileCard> = {
   component: ProfileCard,
@@ -9,7 +14,7 @@ const meta: Meta<typeof ProfileCard> = {
 export default meta;
 type Story = StoryObj<typeof ProfileCard>;
 
-const privateUserProfile = {
+const privateUserProfile: User = {
   slug: 'plant-for-the-planet',
   type: 'tpo',
   currency: 'EUR',
@@ -44,7 +49,7 @@ const privateUserProfile = {
   hasLogoLicense: false,
   tin: null,
   payoutMinAmount: null,
-  scheduleFrequency: 'manual',
+  scheduleFrequency: PaymentFrequencies.MANUAL,
   planetCash: {
     account: 'pcash_bXzDY0nsWb9FRqKeUSr07a4b',
     country: 'DE',
@@ -55,7 +60,7 @@ const privateUserProfile = {
   },
 };
 
-const publicUserProfile = {
+const publicUserProfile: UserPublicProfile = {
   slug: 'prachi-garg',
   type: 'individual',
   image: '663bb3840f303535831427.jpg',

@@ -6,7 +6,13 @@ import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ProfileV2Props } from '../../../../common/types/profile';
 
-const SocialMediaShareButton = ({ userProfile }: ProfileV2Props) => {
+interface SocialMediaShareButtonProps {
+  userProfile: ProfileV2Props['userProfile'];
+}
+
+const SocialMediaShareButton = ({
+  userProfile,
+}: SocialMediaShareButtonProps) => {
   const [isShareModelOpen, setIsShareModelOpen] = React.useState(false);
   const { tenantConfig } = useTenant();
   const t = useTranslations('Profile');
