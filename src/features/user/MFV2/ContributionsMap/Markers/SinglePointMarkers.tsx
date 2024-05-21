@@ -1,5 +1,5 @@
 import { Marker } from 'react-map-gl-v7';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
 import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
 import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
@@ -9,7 +9,6 @@ import UrbanRestoration from '../../../../../../public/assets/images/icons/myFor
 import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
-import { contribution } from '../../../../../utils/myForestV2Utils';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 
@@ -65,31 +64,39 @@ const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
       return null;
   }
 };
-const renderIcons = (properties: any) => {
-  if (properties.type !== 'registration') {
-    return (
-      <ProjectTypeIcon
-        purpose={properties.project.purpose}
-        classification={properties.project.classification}
-      />
-    );
-  } else {
-    return <RegisteredTreeIcon />;
-  }
-};
 
 const SinglePointMarkers = () => {
-  const { registeredTreesCoordinates } = useMyForestV2();
-  return registeredTreesCoordinates ? (
+  const { registrationGeojson, donationGeojson } = useMyForestV2();
+  return registrationGeojson ? (
     <>
-      {registeredTreesCoordinates.map((singleLocation, key) => {
+      {registrationGeojson.map((singleLocation, key) => {
+        if (singleLocation.geometry !== undefined) {
+          return (
+            <Marker
+              longitude={singleLocation?.geometry.coordinates[0]}
+              latitude={singleLocation?.geometry.coordinates[1]}
+              key={key}
+            >
+              <RegisteredTreeIcon />
+            </Marker>
+          );
+        } else {
+          return <></>;
+        }
+      })}
+      {donationGeojson.map((singleLocation, key) => {
         return (
           <Marker
             longitude={singleLocation?.geometry.coordinates[0]}
             latitude={singleLocation?.geometry.coordinates[1]}
             key={key}
           >
-            <RegisteredTreeIcon />
+            <ProjectTypeIcon
+              purpose={singleLocation.properties.projectInfo.purpose}
+              classification={
+                singleLocation.properties.projectInfo.classification
+              }
+            />
           </Marker>
         );
       })}
