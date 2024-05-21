@@ -9,7 +9,7 @@ const meta: Meta<typeof ProfileActions> = {
 export default meta;
 type Story = StoryObj<typeof ProfileActions>;
 
-const dummyUserProfile = {
+const dummyPrivateProfile = {
   slug: 'plant-for-the-planet',
   type: 'tpo',
   currency: 'EUR',
@@ -55,16 +55,35 @@ const dummyUserProfile = {
   },
 };
 
+const dummyPublicProfile = {
+  slug: 'prachi-garg',
+  type: 'individual',
+  image: '663bb3840f303535831427.jpg',
+  url: 'https://dev.pp.eco/en',
+  urlText: null,
+  displayName: 'Prachi Garggggggg',
+  created: '2022-06-24T08:29:00+00:00',
+  score: {
+    personal: 8.0,
+    received: 0.0,
+    target: 0.0,
+  },
+  supportedProfile: null,
+  id: 'prf_n06cLhehvsBEpbyiVDorLP6f',
+  bio: 'planting trees',
+  hasLogoLicense: false,
+};
+
 export const Private: Story = {
   args: {
-    userProfile: dummyUserProfile,
+    userProfile: dummyPrivateProfile,
     profileType: 'private',
   },
 };
 
 export const Public: Story = {
   args: {
-    userProfile: dummyUserProfile,
+    userProfile: dummyPublicProfile,
     profileType: 'public',
   },
 };
