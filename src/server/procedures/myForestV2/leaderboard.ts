@@ -16,11 +16,12 @@ async function fetchMostRecentGifts(profileIds: number[]) {
   >`
 		SELECT
 			round((value)/100, 2) as quantity,
-			metadata->>'$.giver.name' as giverName
+			COALESCE(NULLIF(metadata->>'$.giver.name', ''), 'anonymous') as giverName
 		FROM gift
-		WHERE recipient_id IN (${Prisma.join(
-      profileIds
-    )}) AND deleted_at IS NULL AND value <> 0
+		WHERE 
+			recipient_id IN (${Prisma.join(profileIds)}) 
+			AND deleted_at IS NULL 
+			AND value <> 0
 		ORDER BY payment_date DESC
 		LIMIT 10;
 	`;
@@ -37,9 +38,12 @@ async function fetchTopGifters(profileIds: number[]) {
 			sum(round((value)/100, 2)) as totalQuantity,
 			metadata->>'$.giver.name' as giverName
 		FROM gift
-		WHERE recipient_id IN (${Prisma.join(
-      profileIds
-    )}) AND deleted_at IS NULL AND value <> 0
+		WHERE 
+			recipient_id IN (${Prisma.join(profileIds)}) 
+			AND deleted_at IS NULL 
+			AND value <> 0 
+			AND metadata->>'$.giver.name' IS NOT NULL
+			AND metadata->>'$.giver.name' <> ''
 		GROUP BY giverName
 		ORDER BY totalQuantity DESC
 		LIMIT 10;
