@@ -78,7 +78,6 @@ const SinglePointMarkers = ({
   superclusterResponse,
 }: SinglePointMarkersProps) => {
   if (!superclusterResponse) return null;
-
   const [showPopup, setShowPopUp] = useState(false);
 
   const handleMouseEnter = () => {
@@ -96,39 +95,41 @@ const SinglePointMarkers = ({
 
   const { coordinates } = superclusterResponse.geometry;
   const { type, projectInfo } = superclusterResponse.properties;
+
   return (
     <>
-      <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
-        {type === 'registration' ? (
-          <>
-            {showPopup && (
-              <RegisterTreePopup superclusterResponse={superclusterResponse} />
-            )}
-
+      {type === 'registration' ? (
+        <>
+          {showPopup && (
+            <RegisterTreePopup superclusterResponse={superclusterResponse} />
+          )}
+          <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
             <div
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeaveRegisteredtreePopup}
             >
               <RegisteredTreeIcon />
             </div>
-          </>
-        ) : (
-          <>
-            {showPopup && (
-              <ContributionPopup superclusterResponse={superclusterResponse} />
-            )}
+          </Marker>
+        </>
+      ) : (
+        <>
+          {showPopup && (
+            <ContributionPopup superclusterResponse={superclusterResponse} />
+          )}
+          <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
             <div
               onMouseEnter={handleMouseEnter}
-              // onMouseLeave={handleMouseLeave}
+              onMouseLeave={handleMouseLeave}
             >
               <ProjectTypeIcon
                 purpose={projectInfo.purpose}
                 classification={projectInfo.classification}
               />
             </div>
-          </>
-        )}
-      </Marker>
+          </Marker>
+        </>
+      )}
     </>
   );
 };

@@ -87,6 +87,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
     profileId: `${user?.id}`,
     slug: `${user?.slug}`,
   });
+
   const _updateStateWithTrpcData = <T,>(
     trpcProcedure: any,
     stateUpdaterFunction: SetState<T>
@@ -158,10 +159,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
           _registrationGeojson.push(geojson);
         }
       });
-      if (_registrationGeojson.length > 0 && _donationGeojson.length > 0) {
-        setRegistrationGeojson(_registrationGeojson);
-        setDonationGeojson(_donationGeojson);
-      }
+      setRegistrationGeojson(_registrationGeojson);
+      setDonationGeojson(_donationGeojson);
     }
   }, [contributions, projectList]);
 
