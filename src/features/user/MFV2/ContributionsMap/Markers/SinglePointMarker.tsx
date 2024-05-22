@@ -101,7 +101,10 @@ const SinglePointMarkers = ({
       {type === 'registration' ? (
         <>
           {showPopup && (
-            <RegisterTreePopup superclusterResponse={superclusterResponse} />
+            <RegisterTreePopup
+              superclusterResponse={superclusterResponse}
+              setShowPopUp={setShowPopUp}
+            />
           )}
           <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
             <div
@@ -115,7 +118,10 @@ const SinglePointMarkers = ({
       ) : (
         <>
           {showPopup && (
-            <ContributionPopup superclusterResponse={superclusterResponse} />
+            <ContributionPopup
+              superclusterResponse={superclusterResponse}
+              setShowPopUp={setShowPopUp}
+            />
           )}
           <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
             <div

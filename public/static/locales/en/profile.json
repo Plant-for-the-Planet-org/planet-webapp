@@ -44,6 +44,18 @@
       "restoredSmall": "restored",
       "areaType": "{areaConserved} m² {type}",
       "areaConserved": "Areas Conserved"
+    },
+    "myForestMapV": {
+      "plantedTree": "{count, plural, =1 {# Tree} other {# Trees}}",
+      "totalContribution": "+{count, plural, =1 {# Contribution} other {# Contributions}}",
+      "treesPlanted": "Trees Planted",
+      "registered": "Registered",
+      "projects": "Projects",
+      "totalDonation": "{count, plural, =1 {# donation} other {# donations}} ",
+      "totalProject": "to {count, plural, =1 {# project} other {# projects}}",
+      "tpoName": "{tpo}",
+      "projectName": "{name}",
+      "classification": "{Classification}"
     }
   }
 }

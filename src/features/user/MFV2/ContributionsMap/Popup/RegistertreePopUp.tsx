@@ -1,19 +1,27 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { Popup } from 'react-map-gl-v7';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreePopupIcon';
 import style from '../MyForestV2.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
-const RegisteredTreeInfo = ({ contributions }) => {
+const RegisteredTreeInfo = ({ contributions }: any) => {
+  const tProfile = useTranslations('Profile');
   return (
     <>
-      {contributions.map((singleContribution) => {
+      {contributions.map((singleContribution: any) => {
         const { plantDate, quantity } = singleContribution;
 
         return (
           <>
-            <div className={style.registeredTrees}>{quantity} trees</div>
-            <div className={style.registeredTreeLabel}>{'Registered'}</div>
+            <div className={style.registeredTrees}>
+              {tProfile('myForestMapV.plantedTree', {
+                count: quantity,
+              })}
+            </div>
+            <div className={style.registeredTreeLabel}>
+              {tProfile('myForestMapV.registered')}
+            </div>
             <div className={style.registeredTreeDate}>
               {formatDate(plantDate)}
             </div>
@@ -24,7 +32,7 @@ const RegisteredTreeInfo = ({ contributions }) => {
   );
 };
 
-const RegisterTreePopup = ({ superclusterResponse }) => {
+const RegisterTreePopup = ({ superclusterResponse }: any) => {
   const { coordinates } = superclusterResponse.geometry;
   const { contributions } = superclusterResponse.properties;
   return (

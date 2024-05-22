@@ -53,26 +53,28 @@ const Markers = ({ mapRef, viewport }) => {
   return donatedTreeSuperclusterResponse &&
     registeredTreeSuperclusterResponse ? (
     <>
-      {donatedTreeSuperclusterResponse.map((geoJson) => {
+      {donatedTreeSuperclusterResponse.map((geoJson, key) => {
         return geoJson.id ? (
           <ClusterMarker
             geoJson={geoJson}
             viewport={viewport}
             mapRef={mapRef}
+            key={key}
           />
         ) : (
-          <SinglePointMarkers superclusterResponse={geoJson} />
+          <SinglePointMarkers superclusterResponse={geoJson} key={key} />
         );
       })}
-      {registeredTreeSuperclusterResponse.map((geoJson) => {
+      {registeredTreeSuperclusterResponse.map((geoJson, key) => {
         return geoJson.id ? (
           <RegisteredTreeClusterMarker
             geoJson={geoJson}
             viewport={viewport}
             mapRef={mapRef}
+            key={key}
           />
         ) : (
-          <SinglePointMarkers superclusterResponse={geoJson} />
+          <SinglePointMarkers superclusterResponse={geoJson} key={key} />
         );
       })}
     </>
