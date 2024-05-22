@@ -7,7 +7,10 @@
     "feature": {
       "redeem": "Redeem",
       "registerTree": "Register Tree",
-      "share": "Share"
+      "share": "Share",
+      "allDonations": "All Donations",
+      "supportUserText": "Support {username} by donating",
+      "website": "My Website"
     },
     "myPublicProfile": {
       "support": "Support",
@@ -44,6 +47,14 @@
       "restoredSmall": "restored",
       "areaType": "{areaConserved} m² {type}",
       "areaConserved": "Areas Conserved"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
+      "shareVia": "Share via",
+      "copyLink": "Copy Link",
+      "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
+    
     }
   }
 }
