@@ -1,10 +1,4 @@
-import {
-  Button,
-  InputLabel,
-  styled,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { styled, TextField, Typography } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
@@ -56,7 +50,7 @@ type FormData = {
   city: string;
   firstname: string;
   getNews: boolean;
-  isPublic: boolean;
+  isPrivate: boolean;
   lastname: string;
   name: string;
   url: string;
@@ -98,12 +92,13 @@ export default function EditProfileForm() {
     };
   }, [user]);
 
+  console.log(user?.isPrivate);
+
   const {
     handleSubmit,
     control,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     mode: 'onBlur',
@@ -408,7 +403,7 @@ export default function EditProfileForm() {
         <InlineFormDisplayGroup>
           <EditProfileInputContainer>
             <StyledInputLabel shrink={false} htmlFor="firstname">
-              <Typography>{t('fieldLabels.firstName')}</Typography>
+              <Typography>{t('fieldLabels.firstName')}*</Typography>
             </StyledInputLabel>
             <Controller
               name="firstname"
@@ -439,7 +434,7 @@ export default function EditProfileForm() {
           </EditProfileInputContainer>
           <EditProfileInputContainer>
             <StyledInputLabel shrink={false} htmlFor="lastname">
-              <Typography>{t('fieldLabels.lastName')}</Typography>
+              <Typography>{t('fieldLabels.lastName')}*</Typography>
             </StyledInputLabel>
             <Controller
               name="lastname"
@@ -514,6 +509,7 @@ export default function EditProfileForm() {
                 {t('fieldLabels.name', {
                   type: selectUserType(type, t),
                 })}
+                *
               </Typography>
             </StyledInputLabel>
             <Controller
@@ -540,7 +536,7 @@ export default function EditProfileForm() {
         )}
         <EditProfileInputContainer>
           <StyledInputLabel shrink={false} htmlFor="address">
-            <Typography>{t('fieldLabels.address')}</Typography>
+            <Typography>{t('fieldLabels.address')}*</Typography>
           </StyledInputLabel>
           <Controller
             name="address"
@@ -595,7 +591,7 @@ export default function EditProfileForm() {
         <InlineFormDisplayGroup>
           <EditProfileInputContainer>
             <StyledInputLabel shrink={false} htmlFor="city">
-              <Typography>{t('fieldLabels.city')}</Typography>
+              <Typography>{t('fieldLabels.city')}*</Typography>
             </StyledInputLabel>
             <Controller
               name="city"
@@ -620,7 +616,7 @@ export default function EditProfileForm() {
           </EditProfileInputContainer>
           <EditProfileInputContainer>
             <StyledInputLabel shrink={false} htmlFor="zipCode">
-              <Typography>{t('fieldLabels.zipCode')}</Typography>
+              <Typography>{t('fieldLabels.zipCode')}*</Typography>
             </StyledInputLabel>
             <Controller
               name="zipCode"
@@ -702,7 +698,7 @@ export default function EditProfileForm() {
               </label>
             </div>
             <Controller
-              name="isPublic"
+              name="isPrivate"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <EditProfileToggleSwitch
