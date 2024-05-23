@@ -9,19 +9,19 @@ export const selectUserType = (type: UserType, t: Function) => {
   let name;
   switch (type) {
     case 'individual':
-      name = t('editProfile:individual');
+      name = t('individual');
       break;
     case 'tpo':
-      name = t('editProfile:tpo');
+      name = t('tpo');
       break;
     case 'education':
-      name = t('editProfile:education');
+      name = t('education');
       break;
     case 'organization':
-      name = t('editProfile:organization');
+      name = t('organization');
       break;
     default:
-      name = t('editProfile:tpo');
+      name = t('tpo');
       break;
   }
   return name;
