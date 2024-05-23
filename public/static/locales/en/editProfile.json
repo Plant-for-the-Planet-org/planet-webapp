@@ -13,6 +13,7 @@
     "profileCreationError": "Error in creating profile.",
     "edit": "Edit Profile",
     "save": "Save",
+    "viewPublicProfile": "View public profile",
     "profilePicUpdated": "Profile picture is being updated...",
     "profileSaved": "Saved successfully!",
     "profileSaveFailed": "Error in updating profile.",

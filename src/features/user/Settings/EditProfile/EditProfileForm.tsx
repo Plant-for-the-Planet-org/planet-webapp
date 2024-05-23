@@ -12,18 +12,16 @@ import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import { User } from '@planet-sdk/common/build/types/user';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
-import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { allCountries } from '../../../../utils/constants/countries';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
@@ -43,6 +41,7 @@ import { ExtendedCountryCode } from '../../../common/types/country';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import InfoIconPopup from './InfoIconPopup';
 import EditProfileToggleSwitch from '../../../common/InputTypes/EditProfileToggleSwitch';
+import { useRouter } from 'next/router';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -78,6 +77,8 @@ export default function EditProfileForm() {
   const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('EditProfile');
+  const locale = useLocale();
+  const router = useRouter();
 
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -772,15 +773,29 @@ export default function EditProfileForm() {
           </InlineFormDisplayGroup>
         </div>
       </div>
-      <Button
-        id={'editProfileSaveProfile'}
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit(saveProfile)}
-        disabled={isUploadingData}
-      >
-        {isUploadingData ? <div className={styles.spinner}></div> : t('save')}
-      </Button>
+      <InlineFormDisplayGroup>
+        <EditProfileInputContainer>
+          <button
+            onClick={() => router.push(`/${locale}/mfv2-public/${user?.slug}`)}
+            className={styles.viewPublicProfileButton}
+          >
+            {t('viewPublicProfile')}
+          </button>
+        </EditProfileInputContainer>
+        <EditProfileInputContainer>
+          <button
+            onClick={handleSubmit(saveProfile)}
+            disabled={isUploadingData}
+            className={styles.saveProfileButton}
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('save')
+            )}
+          </button>
+        </EditProfileInputContainer>
+      </InlineFormDisplayGroup>
 
       {/* snackbar for showing various messages */}
       <Snackbar

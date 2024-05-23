@@ -41,8 +41,20 @@
     }
 }
 
+.uploadProfilePicButton {
+  &:hover {
+    background-color: rgba(33, 150, 83, 0.20);
+    border: none;
+  }
+}
+
 .deleteProfilePicButton {
   border: 1px solid #E0E0E0;
+
+  &:hover {
+    background-color: #E0E0E0;
+    border: none;
+  }
 }
 
 .profilePicImg {
@@ -148,6 +160,40 @@
   padding: 12px 16px;
   font-size: $fontXXSmall;
   max-width: 200px !important;
+}
+
+.viewPublicProfileButton, .saveProfileButton {
+  font-size: 1em;
+  font-weight: 700;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 45px;
+}
+
+.viewPublicProfileButton {
+  color: $dark;
+  border: 1px solid #21965366;
+
+  &:hover {
+    background: rgba(33, 150, 83, 0.20);
+    border: none;
+  } 
+
+}
+
+.saveProfileButton {
+  background-color: #008F5C;
+  color: $light;
+  padding: 11px 12px;  
+
+  &:hover {
+    border: 1px solid rgba(33, 150, 83, 0.40);
+    background: #27AE60;
+  }
 }
 
 @include smTabletView {
