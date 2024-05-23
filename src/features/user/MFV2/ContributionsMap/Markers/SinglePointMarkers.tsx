@@ -26,7 +26,10 @@ interface ProjectTypeIconProps {
   classification: Classification;
 }
 
-const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
+const ProjectTypeIcon = ({
+  purpose,
+  classifications,
+}: ProjectTypeIconProps) => {
   const getMarkerColor = (purpose: string) => {
     switch (purpose) {
       case 'conservation':
@@ -39,10 +42,10 @@ const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
   };
   const Markercolor = useMemo(() => getMarkerColor(purpose), [purpose]);
   const IconProps = {
-    width: 68,
+    width: 42,
     color: Markercolor,
   };
-
+  const classification = 'other-planting';
   switch (classification) {
     case 'natural-regeneration':
       return <NaturalRegeneration {...IconProps} />;
