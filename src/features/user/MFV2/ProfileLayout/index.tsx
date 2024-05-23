@@ -1,3 +1,4 @@
+import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
 import { User } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
@@ -30,7 +31,7 @@ const ProfileLayout = () => {
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        Map
+        <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
         Progress
