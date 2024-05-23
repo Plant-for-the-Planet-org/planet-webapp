@@ -764,8 +764,8 @@ export default function EditProfileForm() {
               )}
             />
           </InlineFormDisplayGroup>
-          <div className={styles.horizontalLine} />
-          <InlineFormDisplayGroup type="other">
+          {/* <div className={styles.horizontalLine} /> */}
+          {/* <InlineFormDisplayGroup type="other">
             <label
               htmlFor="showTreegame"
               className={styles.customiseProfileToggleLabel}
@@ -787,7 +787,7 @@ export default function EditProfileForm() {
                 />
               )}
             />
-          </InlineFormDisplayGroup>
+          </InlineFormDisplayGroup> */}
         </div>
       </div>
       <InlineFormDisplayGroup>
