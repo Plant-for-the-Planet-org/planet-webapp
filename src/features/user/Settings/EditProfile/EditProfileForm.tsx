@@ -447,16 +447,44 @@ export default function EditProfileForm() {
             />
           </EditProfileInputContainer>
         </InlineFormDisplayGroup>
-        <EditProfileInputContainer>
-          <StyledInputLabel shrink={false} htmlFor="email">
-            <Typography>{t('fieldLabels.email')}</Typography>
-          </StyledInputLabel>
-          <TextField
-            name="email"
-            defaultValue={user?.email}
-            disabled
-          ></TextField>
-        </EditProfileInputContainer>
+        <InlineFormDisplayGroup>
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="email">
+              <Typography>{t('fieldLabels.email')}</Typography>
+            </StyledInputLabel>
+            <TextField
+              name="email"
+              defaultValue={user?.email}
+              disabled
+            ></TextField>
+          </EditProfileInputContainer>
+          <EditProfileInputContainer>
+            <StyledInputLabel shrink={false} htmlFor="url">
+              <Typography>{t('fieldLabels.website')}</Typography>
+            </StyledInputLabel>
+            <Controller
+              name="url"
+              control={control}
+              rules={{
+                pattern: {
+                  //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                  value:
+                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                  message: t('validationErrors.websiteInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.url !== undefined}
+                  helperText={errors.url !== undefined && errors.url.message}
+                />
+              )}
+            />
+          </EditProfileInputContainer>
+        </InlineFormDisplayGroup>
         {type && type !== 'individual' && (
           <EditProfileInputContainer>
             <StyledInputLabel shrink={false} htmlFor="name">
@@ -630,33 +658,6 @@ export default function EditProfileForm() {
                 rows={4}
                 error={errors.bio !== undefined}
                 helperText={errors.bio !== undefined && errors.bio.message}
-              />
-            )}
-          />
-        </EditProfileInputContainer>
-
-        <EditProfileInputContainer>
-          <StyledInputLabel shrink={false} htmlFor="url">
-            <Typography>{t('fieldLabels.website')}</Typography>
-          </StyledInputLabel>
-          <Controller
-            name="url"
-            control={control}
-            rules={{
-              pattern: {
-                //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                value:
-                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                message: t('validationErrors.websiteInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.url !== undefined}
-                helperText={errors.url !== undefined && errors.url.message}
               />
             )}
           />
