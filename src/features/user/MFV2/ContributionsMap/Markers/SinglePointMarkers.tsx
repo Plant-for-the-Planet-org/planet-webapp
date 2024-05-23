@@ -26,10 +26,7 @@ interface ProjectTypeIconProps {
   classification: Classification;
 }
 
-const ProjectTypeIcon = ({
-  purpose,
-  classifications,
-}: ProjectTypeIconProps) => {
+const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
   const getMarkerColor = (purpose: string) => {
     switch (purpose) {
       case 'conservation':
@@ -45,7 +42,6 @@ const ProjectTypeIcon = ({
     width: 42,
     color: Markercolor,
   };
-  const classification = 'other-planting';
   switch (classification) {
     case 'natural-regeneration':
       return <NaturalRegeneration {...IconProps} />;
@@ -80,7 +76,7 @@ const SinglePointMarkers = () => {
               latitude={singleLocation?.geometry.coordinates[1]}
               key={key}
             >
-              <RegisteredTreeIcon />
+              <RegisteredTreeIcon width={42} />
             </Marker>
           );
         } else {
