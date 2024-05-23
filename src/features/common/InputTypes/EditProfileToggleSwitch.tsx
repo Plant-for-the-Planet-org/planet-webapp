@@ -1,8 +1,6 @@
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import theme from '../../../theme/themeProperties';
 import { ChangeEvent, InputHTMLAttributes } from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -27,7 +25,7 @@ export default function EditProfileToggleSwitch(props: ToggleSwitchProps) {
         transform: 'translateX(24px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor: '#BDBDBD',
+          backgroundColor: '#007A49',
           opacity: 1,
           border: 0,
         },
@@ -39,15 +37,10 @@ export default function EditProfileToggleSwitch(props: ToggleSwitchProps) {
         color: '#fff',
         border: '6px solid #fff',
       },
-      //   '&.Mui-disabled .MuiSwitch-thumb': {
-      //     color:
-      //       theme.palette.mode === 'light'
-      //         ? theme.palette.grey[100]
-      //         : theme.palette.grey[600],
-      //   },
-      //   '&.Mui-disabled + .MuiSwitch-track': {
-      //     opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-      //   },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        background: '#E0E0E0',
+        opacity: 1,
+      },
     },
     '& .MuiSwitch-thumb': {
       boxSizing: 'border-box',
