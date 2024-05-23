@@ -149,7 +149,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
       const _registrationGeojson: RegistrationGeojson[] = [];
       const _donationGeojson: DonationGeojson[] = [];
       //condition to check whether a contribution belongs to donation or register
-      contributions.myContributionsMap?.keys().forEach((x: string) => {
+      const arrayOfKeys = Array.from(contributions.myContributionsMap?.keys());
+      arrayOfKeys.forEach((x: string) => {
         if (x.startsWith('proj_')) {
           const geojson = _donationTreeGeojson(projectList, contributions, x);
           _donationGeojson.push(geojson);
