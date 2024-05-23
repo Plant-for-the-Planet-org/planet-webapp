@@ -92,8 +92,6 @@ export default function EditProfileForm() {
     };
   }, [user]);
 
-  console.log(user?.isPrivate);
-
   const {
     handleSubmit,
     control,
@@ -274,9 +272,9 @@ export default function EditProfileForm() {
   );
 
   const deleteProfilePicture = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    e.preventDefault();
+    event.preventDefault();
     const bodyToSend = {
       imageFile: null,
     };
@@ -357,7 +355,7 @@ export default function EditProfileForm() {
             </div>
             <button
               className={styles.deleteProfilePicButton}
-              onClick={(e) => deleteProfilePicture(e)}
+              onClick={(event) => deleteProfilePicture(event)}
             >
               <label htmlFor="delete">
                 <Delete color="#828282" />
