@@ -42,6 +42,7 @@ import Delete from '../../../../../public/assets/images/icons/manageProjects/Del
 import InfoIconPopup from './InfoIconPopup';
 import EditProfileToggleSwitch from '../../../common/InputTypes/EditProfileToggleSwitch';
 import { useRouter } from 'next/router';
+import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -227,6 +228,28 @@ export default function EditProfileForm() {
       });
   }, []);
 
+  const handleUserProfileImage = async (bodyToSend: {
+    imageFile: string | ArrayBuffer | null | undefined;
+  }) => {
+    try {
+      const res = await putAuthenticatedRequest<User>(
+        tenantConfig?.id,
+        `/app/profile`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      if (user) {
+        const newUserInfo = { ...user, image: res.image };
+        setUpdatingPic(false);
+        setUser(newUserInfo);
+      }
+    } catch (err) {
+      setUpdatingPic(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
   React.useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset();
@@ -247,30 +270,23 @@ export default function EditProfileForm() {
             setSeverity('info');
             setSnackbarMessage(t('profilePicUpdated'));
             handleSnackbarOpen();
-
-            try {
-              const res = await putAuthenticatedRequest<User>(
-                tenantConfig?.id,
-                `/app/profile`,
-                bodyToSend,
-                token,
-                logoutUser
-              );
-              if (user) {
-                const newUserInfo = { ...user, image: res.image };
-                setUpdatingPic(false);
-                setUser(newUserInfo);
-              }
-            } catch (err) {
-              setUpdatingPic(false);
-              setErrors(handleError(err as APIError));
-            }
+            handleUserProfileImage(bodyToSend);
           }
         };
       });
     },
     [token]
   );
+
+  const deleteProfilePicture = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const bodyToSend = {
+      imageFile: null,
+    };
+    handleUserProfileImage(bodyToSend);
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -321,7 +337,9 @@ export default function EditProfileForm() {
       <div className="inputContainer">
         <div className={styles.profilePicDiv}>
           {updatingPic ? (
-            <div className={styles.spinnerImage}></div>
+            <div className={styles.spinnerContainer}>
+              <div className={styles.spinnerImage}></div>
+            </div>
           ) : user?.image ? (
             <div className={styles.profilePic}>
               <img
@@ -331,7 +349,7 @@ export default function EditProfileForm() {
             </div>
           ) : (
             <div className={styles.noProfilePic}>
-              <Camera />
+              <DefaultUserProfileImage />
             </div>
           )}
           <div className={styles.profilePicDivButtons}>
@@ -342,8 +360,11 @@ export default function EditProfileForm() {
                 <span>{t('profilePictureButtonLabels.upload')}</span>
               </label>
             </div>
-            <button className={styles.deleteProfilePicButton}>
-              <label>
+            <button
+              className={styles.deleteProfilePicButton}
+              onClick={(e) => deleteProfilePicture(e)}
+            >
+              <label htmlFor="delete">
                 <Delete color="#828282" />
                 <span>{t('profilePictureButtonLabels.delete')}</span>
               </label>
