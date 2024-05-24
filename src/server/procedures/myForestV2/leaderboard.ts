@@ -103,6 +103,7 @@ export const leaderboardProcedure = procedure
       unitType: 'tree',
     }));
 
+    // TODO: do we want to return {leaderboard} or just leaderboard?
     return {
       leaderboard,
     };
