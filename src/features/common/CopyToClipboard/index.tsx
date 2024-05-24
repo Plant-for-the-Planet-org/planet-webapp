@@ -15,11 +15,13 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 interface Props {
   text: string;
   isButton?: boolean;
+  customCopyButton?: ReactElement;
 }
 
 export default function CopyToClipboard({
   text,
   isButton,
+  customCopyButton,
 }: Props): ReactElement {
   const t = useTranslations('Common');
   const [open, setOpen] = useState(false);
@@ -48,7 +50,7 @@ export default function CopyToClipboard({
           isButton ? styles.button : ''
         }`}
       >
-        <CopyIcon />
+        {customCopyButton ? customCopyButton : <CopyIcon />}
       </div>
       <Snackbar
         open={open}

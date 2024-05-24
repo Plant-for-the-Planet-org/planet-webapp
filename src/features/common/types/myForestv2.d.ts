@@ -151,3 +151,15 @@ interface ContributionsResponse {
 }
 
 type ProjectListResponse = Record<string, MyForestProject>;
+
+// TODO: Could probably rename this to something more descriptive, similar to the other types for API response
+export type LeaderboardItem = {
+  name: string;
+  units: number;
+  unitType: 'tree' | 'm2';
+};
+
+export type Leaderboard = {
+  mostRecent: LeaderboardItem[];
+  mostTrees: LeaderboardItem[];
+};
