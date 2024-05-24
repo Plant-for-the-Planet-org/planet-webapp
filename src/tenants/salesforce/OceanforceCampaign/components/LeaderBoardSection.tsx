@@ -15,6 +15,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const isLeaderboardAvailable =
     isLoaded &&
+    leaderboard &&
     leaderboard.mostDonated.length + leaderboard.mostRecent.length > 0 &&
     !(
       leaderboard.mostDonated.length === 1 &&

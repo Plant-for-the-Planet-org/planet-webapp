@@ -27,8 +27,10 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
         const leaderboardRes = await fetch(
           `${process.env.WEBHOOK_URL}/salesforce-vto-2024-leaderboard`
         );
-        const leaderBoardArr = await leaderboardRes.json();
-        setLeaderBoard(leaderBoardArr[0]);
+        if (leaderboardRes.ok && leaderboardRes.status === 200) {
+          const leaderBoardArr = await leaderboardRes.json();
+          setLeaderBoard(leaderBoardArr[0]);
+        }
       } catch (err) {
         console.error('Leaderboard could not be loaded:', err);
       }
@@ -37,9 +39,11 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
         const tenantscoreRes = await fetch(
           `${process.env.WEBHOOK_URL}/salesforce-vto-2024-treecount`
         );
-        const tenantScoreArr = await tenantscoreRes.json();
-        setTenantScore(tenantScoreArr[0]);
-        setIsLoaded(true);
+        if (tenantscoreRes.ok && tenantscoreRes.status === 200) {
+          const tenantScoreArr = await tenantscoreRes.json();
+          setTenantScore(tenantScoreArr[0]);
+          setIsLoaded(true);
+        }
       } catch (err) {
         console.error('Treecount could not be loaded:', err);
       }
