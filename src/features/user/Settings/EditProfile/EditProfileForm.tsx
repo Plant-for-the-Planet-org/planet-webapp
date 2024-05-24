@@ -791,7 +791,10 @@ export default function EditProfileForm() {
       <InlineFormDisplayGroup>
         <EditProfileInputContainer>
           <button
-            onClick={() => router.push(`/${locale}/mfv2-public/${user?.slug}`)}
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/${locale}/mfv2-public/${user?.slug}`);
+            }}
             className={styles.viewPublicProfileButton}
           >
             {t('viewPublicProfile')}
