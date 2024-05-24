@@ -7,65 +7,38 @@ import {
   useEffect,
 } from 'react';
 import { trpc } from '../../../utils/trpc';
-import { SetState } from '../types/common';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
 import { useUserProps } from './UserPropsContext';
-import {
-  handleError,
-  APIError,
-  TreeProjectClassification,
-  CountryCode,
-  ProjectPurpose,
-  UnitTypes,
-} from '@planet-sdk/common';
+
 import { Point } from 'geojson';
 import {
-  ContributionStats,
-  MyContributionsMapItem,
+  ProjectListResponse,
+  MyForestProject,
+  ContributionsResponse,
+  MyContributionsSingleRegistration,
+  MyContributionsSingleProject,
   MapLocation,
 } from '../types/myForestv2';
+import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 
-interface ProjectInfo {
-  allowDonations: boolean;
-  classification: TreeProjectClassification;
-  country: CountryCode;
-  geometry: Point;
-  guid: string;
-  image: string;
-  name: string;
-  purpose: ProjectPurpose;
-  slug: string;
-  tpoName: string;
-  unitType: UnitTypes;
-}
 interface RegistrationGeojson {
-  geometry: Point | undefined;
-  properties: MyContributionsMapItem | undefined;
+  geometry: Point;
+  properties: MyContributionsSingleRegistration;
 }
 
 interface DonationGeojson {
   geometry: Point;
   properties: {
-    projectInfo: ProjectInfo;
-    contributionInfo: MyContributionsMapItem | undefined;
+    projectInfo: MyForestProject;
+    contributionInfo: MyContributionsSingleProject;
   };
-}
-interface Contributions {
-  registrationLocationsMap: Map<string, MapLocation>;
-  stats: ContributionStats;
-  myContributionsMap: Map<string, MyContributionsMapItem | undefined>;
-  projectLocationsMap: Map<string, MapLocation>;
 }
 
 interface MyForestContextV2Interface {
-  projectList: Map<string, ProjectInfo> | undefined;
-  setProjectList: SetState<Map<string, ProjectInfo> | undefined>;
-  contributions: Contributions | undefined;
-  setContributions: SetState<Contributions | undefined>;
+  projectListResult: ProjectListResponse | undefined;
+  contributionsResult: ContributionsResponse | undefined;
   registrationGeojson: RegistrationGeojson[];
-  setRegistrationGeojson: SetState<RegistrationGeojson[]>;
   donationGeojson: DonationGeojson[];
-  setDonationGeojson: SetState<DonationGeojson[]>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -73,122 +46,113 @@ const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
 );
 
 export const MyForestProviderV2: FC = ({ children }) => {
-  const [projectList, setProjectList] = useState<
-    Map<string, ProjectInfo> | undefined
-  >(undefined);
-  const [contributions, setContributions] = useState<Contributions | undefined>(
-    undefined
-  );
+  const [projectListResult, setProjectListResult] =
+    useState<ProjectListResponse>();
+  const [contributionsResult, setContributionsResult] =
+    useState<ContributionsResponse>();
   const [registrationGeojson, setRegistrationGeojson] = useState<
     RegistrationGeojson[]
   >([]);
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
+
   const { user } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
+
   const _projectList = trpc.myForestV2.projectList.useQuery();
   const _contributions = trpc.myForestV2.contributions.useQuery({
     profileId: `${user?.id}`,
     slug: `${user?.slug}`,
   });
-  const _updateStateWithTrpcData = <T,>(
-    trpcProcedure: any,
-    stateUpdaterFunction: SetState<T>
-  ): void => {
-    if (!trpcProcedure.isLoading) {
-      if (trpcProcedure.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              trpcProcedure.error?.data?.httpStatus as number,
-              trpcProcedure.error
-            )
-          )
-        );
-      } else {
-        stateUpdaterFunction(trpcProcedure?.data);
-      }
-    }
-  };
-
-  useEffect(
-    () => _updateStateWithTrpcData(_projectList, setProjectList),
-    [_projectList.data]
-  );
 
   useEffect(() => {
-    _updateStateWithTrpcData(_contributions, setContributions);
+    if (_projectList.data) {
+      updateStateWithTrpcData(_projectList, setProjectListResult, setErrors);
+    }
+  }, [_projectList.data]);
+
+  useEffect(() => {
+    if (_contributions.data) {
+      updateStateWithTrpcData(
+        _contributions,
+        setContributionsResult,
+        setErrors
+      );
+    }
   }, [_contributions.data]);
 
   //format geojson
-  const _donationTreeGeojson = (
-    projectList: any,
-    contributions: Contributions,
-    projectId: string
+  const _generateDonationGeojson = (
+    project: MyForestProject,
+    contributionsForProject: MyContributionsSingleProject
   ) => {
     return {
-      geometry: projectList?.[projectId]?.geometry,
+      geometry: project.geometry,
       properties: {
-        projectInfo: projectList?.[projectId],
-        contributionInfo: contributions?.['myContributionsMap']?.get(projectId),
+        projectInfo: project,
+        contributionInfo: contributionsForProject,
       },
     };
   };
 
-  const _registeredTreeGeojson = (
-    contributions: Contributions,
-    key: string
+  const _generateRegistrationGeojson = (
+    registrationLocation: MapLocation,
+    registration: MyContributionsSingleRegistration
   ) => {
     return {
-      geometry: contributions?.['registrationLocationsMap']?.get(key)?.geometry,
-      properties: contributions?.['myContributionsMap']?.get(key),
+      geometry: registrationLocation.geometry,
+      properties: registration,
     };
   };
 
   useEffect(() => {
-    if (contributions) {
+    if (contributionsResult) {
       const _registrationGeojson: RegistrationGeojson[] = [];
       const _donationGeojson: DonationGeojson[] = [];
-      //condition to check whether a contribution belongs to donation or register
-      const arrayOfKeys = Array.from(contributions.myContributionsMap?.keys());
-      arrayOfKeys.forEach((x: string) => {
-        if (x.startsWith('proj_')) {
-          const geojson = _donationTreeGeojson(projectList, contributions, x);
-          _donationGeojson.push(geojson);
+
+      //iterate through contributionsMap and generate geojson for each contribution
+      contributionsResult.myContributionsMap.forEach((item, key) => {
+        if (item.type === 'project') {
+          // add to donation Geojson
+          if (projectListResult && projectListResult[key]) {
+            const geojson = _generateDonationGeojson(
+              projectListResult[key],
+              item
+            );
+            _donationGeojson.push(geojson);
+          }
         } else {
-          const geojson: RegistrationGeojson = _registeredTreeGeojson(
-            contributions,
-            x
-          );
-          _registrationGeojson.push(geojson);
+          // add to registration Geojson
+          const registrationLocation =
+            contributionsResult.registrationLocationsMap.get(key);
+          if (registrationLocation) {
+            const geojson = _generateRegistrationGeojson(
+              registrationLocation,
+              item
+            );
+            _registrationGeojson.push(geojson);
+          }
         }
       });
-      if (_registrationGeojson.length > 0 && _donationGeojson.length > 0) {
+
+      if (_registrationGeojson.length > 0)
         setRegistrationGeojson(_registrationGeojson);
-        setDonationGeojson(_donationGeojson);
-      }
+
+      if (_donationGeojson.length > 0) setDonationGeojson(_donationGeojson);
     }
-  }, [contributions, projectList]);
+  }, [contributionsResult, projectListResult]);
 
   const value = useMemo(
     () => ({
-      projectList,
-      setProjectList,
-      contributions,
-      setContributions,
+      projectListResult,
+      contributionsResult,
       registrationGeojson,
-      setRegistrationGeojson,
       donationGeojson,
-      setDonationGeojson,
     }),
     [
-      projectList,
-      setProjectList,
-      contributions,
-      setContributions,
+      projectListResult,
+      contributionsResult,
       registrationGeojson,
-      setRegistrationGeojson,
       donationGeojson,
-      setDonationGeojson,
     ]
   );
 
