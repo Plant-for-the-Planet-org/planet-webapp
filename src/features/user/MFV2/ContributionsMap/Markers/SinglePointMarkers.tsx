@@ -22,8 +22,8 @@ type Classification =
   | 'large-scale-planting'
   | 'other-planting';
 interface ProjectTypeIconProps {
-  purpose: string;
-  classification: Classification;
+  purpose: 'conservation' | 'restoration' | 'trees';
+  classification: Classification | null;
 }
 
 const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
@@ -37,10 +37,10 @@ const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
         return `${themeProperties.primaryDarkColorX}`;
     }
   };
-  const Markercolor = useMemo(() => getMarkerColor(purpose), [purpose]);
+  const markercolor = useMemo(() => getMarkerColor(purpose), [purpose]);
   const IconProps = {
     width: 42,
-    color: Markercolor,
+    color: markercolor,
   };
   switch (classification) {
     case 'natural-regeneration':
@@ -74,6 +74,7 @@ const SinglePointMarkers = () => {
             <Marker
               longitude={singleLocation?.geometry.coordinates[0]}
               latitude={singleLocation?.geometry.coordinates[1]}
+              offset={[0, -15]}
               key={key}
             >
               <RegisteredTreeIcon width={42} />
@@ -88,6 +89,7 @@ const SinglePointMarkers = () => {
           <Marker
             longitude={singleLocation?.geometry.coordinates[0]}
             latitude={singleLocation?.geometry.coordinates[1]}
+            offset={[0, -15]}
             key={key}
           >
             <ProjectTypeIcon
