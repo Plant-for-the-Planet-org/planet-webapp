@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from './communityContributions.module.scss';
 import { leaderboard } from './dummyData';
-import { ProfileInfoIcon } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import InfoIconPopup from './InfoIconPopup';
+import NoContributions from './NoContributions';
 
 const CommunityContributions = () => {
   const [tabSelected, setTabSelected] = useState('most-recent');
@@ -58,19 +58,23 @@ const CommunityContributions = () => {
       <div className={styles.mobileHeaderTabContainer}>
         <HeaderTabs />
       </div>
-      <ul className={styles.leaderboardList}>
-        {leaderboardList.map((item, index) => (
-          <>
-            <li key={index}>
-              <span>{item.name}</span>
-              <span className={styles.units}>
-                {item.units} {item.unitType}
-              </span>
-            </li>
-            <div className={styles.horizontalLine}></div>
-          </>
-        ))}
-      </ul>
+      {leaderboardList.length > 0 ? (
+        <ul className={styles.leaderboardList}>
+          {leaderboardList.map((item, index) => (
+            <>
+              <li key={index}>
+                <span>{item.name}</span>
+                <span className={styles.units}>
+                  {item.units} {item.unitType}
+                </span>
+              </li>
+              <div className={styles.horizontalLine}></div>
+            </>
+          ))}
+        </ul>
+      ) : (
+        <NoContributions />
+      )}
     </div>
   );
 };
