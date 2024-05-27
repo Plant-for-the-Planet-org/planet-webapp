@@ -50,7 +50,7 @@ type FormData = {
   city: string;
   firstname: string;
   getNews: boolean;
-  isPrivate: boolean;
+  isPublic: boolean;
   lastname: string;
   name: string;
   url: string;
@@ -84,7 +84,7 @@ export default function EditProfileForm() {
       city: user?.address && user.address.city ? user.address.city : '',
       zipCode:
         user?.address && user.address.zipCode ? user.address.zipCode : '',
-      isPrivate: user?.isPrivate ? user.isPrivate : false,
+      isPublic: user?.isPrivate === false ? true : false,
       getNews: user?.getNews ? user.getNews : false,
       bio: user?.bio ? user.bio : '',
       url: user?.url ? user.url : '',
@@ -290,11 +290,15 @@ export default function EditProfileForm() {
 
   const saveProfile = async (data: FormData) => {
     setIsUploadingData(true);
+    const { isPublic, ...otherData } = data;
+
     const bodyToSend = {
-      ...data,
+      ...otherData,
       country: country,
+      isPrivate: !isPublic,
       ...(type !== 'tpo' ? { type: type } : {}),
     };
+
     if (contextLoaded && token) {
       try {
         const res: User = await putAuthenticatedRequest(
@@ -684,7 +688,7 @@ export default function EditProfileForm() {
           <InlineFormDisplayGroup type="other">
             <div>
               <label
-                htmlFor="editPublic"
+                htmlFor="is-public"
                 className={styles.customiseProfileToggleLabel}
                 style={{ cursor: 'pointer' }}
               >
@@ -696,14 +700,14 @@ export default function EditProfileForm() {
               </label>
             </div>
             <Controller
-              name="isPrivate"
+              name="isPublic"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <EditProfileToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editPublic"
+                  id="is-public"
                 />
               )}
             />
