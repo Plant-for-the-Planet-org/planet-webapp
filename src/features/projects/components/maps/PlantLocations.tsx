@@ -110,7 +110,7 @@ export default function PlantLocations(): ReactElement {
         days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
       });
     } else {
-      return false;
+      return null;
     }
   };
 
@@ -118,50 +118,28 @@ export default function PlantLocations(): ReactElement {
     type: string,
     coordinates: Array<number[]>,
     id: string,
-    extra?: any
+    extra?: { [key: string]: string }
   ) => {
-    const coord: Array<number[]> = coordinates
-    switch (type) {
-      case 'Point':
-        return {
-          geoJSON: {
-            type: 'Feature',
-            properties: {
-              id,
-              ...extra ? extra : {}
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [...coord[0]],
-            },
-          },
-          coordinates: JSON.stringify(coord),
-          type,
-        }
-      case 'Polygon':
-        return {
-          geoJSON: {
-            type: 'Feature',
-            properties: {
-              id,
-              ...extra ? extra : {}
-            },
-            geometry: {
-              type: 'Polygon',
-              coordinates: [coord],
-            },
-          },
-          coordinates: JSON.stringify(coord),
-          type,
-        }
-      default:
-        return {
-          geoJSON: {},
-          coordinates: '',
-          type: '',
-        }
+    if (type !== 'Point' && type !== 'Polygon') {
+      return {};
     }
-  }
+  
+    const properties = {
+      id,
+      ...extra
+    };
+  
+    const geometry = {
+      type,
+      coordinates: type === 'Point' ? coordinates[0] : [coordinates]
+    };
+  
+    return {
+      type: 'Feature',
+      properties,
+      geometry
+    };
+  };
 
   if (!plantLocations) {
     return <></>
@@ -171,12 +149,12 @@ export default function PlantLocations(): ReactElement {
   const features = plantLocations.map(el => {
     const isSelected = selectedPl && selectedPl.id === el.id
     const isHovered = hoveredPl && hoveredPl.id === el.id
-    const { geoJSON } = makeInterventionGeoJson(el.geometry.type, el.geometry.coordinates[0], el.id, {
+    const GeoJSON = makeInterventionGeoJson(el.geometry.type, el.geometry.coordinates[0], el.id, {
       highlightLine: isSelected || isHovered,
       opacity: el.type === 'multi' ? getPolygonColor(el) : 0.5,
       dateDiff: getDateDiff(el)
     })
-    return geoJSON
+    return GeoJSON
   })
 
   return (
@@ -227,7 +205,7 @@ export default function PlantLocations(): ReactElement {
           paint={{
             'text-color': satellite ? '#ffffff' : '#2f3336',
           }}
-          filter={['!=', ['get', 'dateDiff'], false]}
+          filter={['!=', ['get', 'dateDiff'], null]}
         />
         {selectedPl && selectedPl.samplePlantLocations ?
           selectedPl.samplePlantLocations.map((spl) => {

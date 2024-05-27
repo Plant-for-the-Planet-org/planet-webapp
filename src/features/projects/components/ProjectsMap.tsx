@@ -90,12 +90,20 @@ export default function ProjectsMap(): ReactElement {
     setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
-    if (plantLocations && e && e.features && e.features[0]) {
-      const element = plantLocations.find(obj => obj.id === e.features[0].properties.id);
-      if (element) {
-        setSelectedPl(element);
-      }
+    handlePlantLocationSelection(plantLocations, e)
+  };
+
+
+  const handlePlantLocationSelection = (plantLocations, e) => {
+    if (!plantLocations || !e || !e.features || !e.features[0]) {
       return;
+    }
+
+    const { id } = e.features[0].properties;
+    const selectedElement = plantLocations.find(location => location.id === id);
+
+    if (selectedElement) {
+      setSelectedPl(selectedElement);
     }
   };
 
@@ -156,7 +164,7 @@ export default function ProjectsMap(): ReactElement {
         onClick={onMapClick}
         onHover={onMapHover}
         onLoad={handleOnLoad}
-        interactiveLayerIds={['shape-layer-poly','shape-layer']}
+        interactiveLayerIds={['shape-layer-poly', 'shape-layer']}
       >
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
