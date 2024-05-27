@@ -17,7 +17,7 @@ const NoContributions = ({ profileType, userProfile }: ProfileV2Props) => {
         <span>Oops! No contributions to show yet</span>
       ) : (
         <>
-          <span>Make a donation to support Sophia's efforts</span>
+          <span>{`Make a donation to support Sophia's efforts`}</span>
           <ProfileCardButton
             icon={<SupportUserIcon />}
             text={t('feature.supportUserText', {
