@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import styles from './communityContributions.module.scss';
 import { leaderboard } from './dummyData';
-import InfoIconPopup from './InfoIconPopup';
 import NoContributions from './NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
+import ContributionListItem from './ContributionListItem';
+import CustomTooltip from './CustomTooltip';
 
 const CommunityContributions = ({
   profileType,
@@ -45,13 +46,13 @@ const CommunityContributions = ({
     <div className={styles.communityContributions}>
       <div className={styles.header}>
         <div className={styles.infoIcon}>
-          <InfoIconPopup height={15} width={15} color={'#828282'}>
+          <CustomTooltip height={15} width={15} color={'#828282'}>
             <div className={styles.infoIconPopupContainer}>
               Community contributions are all tree, restoration or conservation
               donations that are dedicated to you, for instance by donating via
               your profile
             </div>
-          </InfoIconPopup>
+          </CustomTooltip>
         </div>
         <div className={styles.headerItems}>
           <h2 className={styles.headerTitle}>Community Contributions</h2>
@@ -66,12 +67,12 @@ const CommunityContributions = ({
         <ul className={styles.leaderboardList}>
           {leaderboardList.map((item, index) => (
             <>
-              <li key={index}>
-                <span>{item.name}</span>
-                <span className={styles.units}>
-                  {item.units} {item.unitType}
-                </span>
-              </li>
+              <ContributionListItem
+                key={index}
+                name={item.name}
+                units={item.units}
+                unitType={item.unitType}
+              />
               <div className={styles.horizontalLine}></div>
             </>
           ))}

@@ -1,3 +1,4 @@
+//to be removed
 import { bindHover, bindPopover } from 'material-ui-popup-state';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { usePopupState } from 'material-ui-popup-state/hooks';
@@ -11,7 +12,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const InfoIconPopup = ({ height, width, color, children }: Props) => {
+const CustomTooltip = ({ height, width, color, children }: Props) => {
   const abandonmentInfoPopupState = usePopupState({
     variant: 'popover',
     popupId: 'abandonmentInfoPopover',
@@ -42,4 +43,4 @@ const InfoIconPopup = ({ height, width, color, children }: Props) => {
   );
 };
 
-export default InfoIconPopup;
+export default CustomTooltip;
