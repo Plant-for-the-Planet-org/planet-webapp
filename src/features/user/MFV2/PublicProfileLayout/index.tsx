@@ -2,6 +2,8 @@ import styles from './PublicProfileLayout.module.scss';
 import ProfileCard from '../ProfileCard';
 import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import TreeTarget from '../TreeTarget';
+import ContributionsMap from '../ContributionsMap';
 
 interface Props {
   profile: UserPublicProfile;
@@ -19,10 +21,10 @@ const PublicProfileLayout = ({ profile }: Props) => {
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        Map
+        <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        Progress
+        <TreeTarget />
       </section>
       <section
         id="my-contributions-container"
