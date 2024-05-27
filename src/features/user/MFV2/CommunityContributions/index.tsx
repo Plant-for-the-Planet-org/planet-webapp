@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styles from './communityContributions.module.scss';
 import { leaderboard } from './dummyData';
+import { ProfileInfoIcon } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import InfoIconPopup from './InfoIconPopup';
 
 const CommunityContributions = () => {
   const [tabSelected, setTabSelected] = useState('most-recent');
@@ -38,9 +40,15 @@ const CommunityContributions = () => {
   return (
     <div className={styles.communityContributions}>
       <div className={styles.header}>
-        {/* <div className={styles.infoIcon}>
-          <ProfileInfoIcon />
-        </div> */}
+        <div className={styles.infoIcon}>
+          <InfoIconPopup height={15} width={15} color={'#828282'}>
+            <div className={styles.infoIconPopupContainer}>
+              Community contributions are all tree, restoration or conservation
+              donations that are dedicated to you, for instance by donating via
+              your profile
+            </div>
+          </InfoIconPopup>
+        </div>
         <div className={styles.headerItems}>
           <h2 className={styles.headerTitle}>Community Contributions</h2>
           {!isMobile && <HeaderTabs />}
