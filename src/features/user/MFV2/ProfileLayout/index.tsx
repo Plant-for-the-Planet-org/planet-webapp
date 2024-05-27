@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import CommunityContributions from '../CommunityContributions';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const ProfileLayout = () => {
@@ -46,7 +47,7 @@ const ProfileLayout = () => {
         id="community-contributions-container"
         className={styles.communityContributionsContainer}
       >
-        Community Contributions
+        <CommunityContributions />
       </section>
     </article>
   );

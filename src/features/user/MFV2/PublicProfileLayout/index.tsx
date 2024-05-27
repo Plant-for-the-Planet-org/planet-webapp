@@ -2,6 +2,7 @@ import styles from './PublicProfileLayout.module.scss';
 import ProfileCard from '../ProfileCard';
 import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import CommunityContributions from '../CommunityContributions';
 
 interface Props {
   profile: UserPublicProfile;
@@ -40,7 +41,7 @@ const PublicProfileLayout = ({ profile }: Props) => {
         id="community-contributions-container"
         className={styles.communityContributionsContainer}
       >
-        Community Contributions
+        <CommunityContributions />
       </section>
       <section id="info-cta-container" className={styles.infoAndCtaContainer}>
         Additional information and CTAs - Become a member, Treegame, SDG Slider
