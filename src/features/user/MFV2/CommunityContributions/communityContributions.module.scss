@@ -1,3 +1,5 @@
+@import '../../../../theme/theme';
+
 .communityContributions {
     display: flex;
     flex-direction: column;
@@ -5,13 +7,12 @@
 
 }
 .header {
-    flex-basis: 40%;
     // min-height: 120px;
     border: 5px solid #fff;
     border-radius: 24px 24px 0 0;
     border-bottom: 0px;
-    background-image: url('../../../../../public/assets/images/communityContributionHeader.svg');
-    background-position: 90%;
+    background-image:url('../../../../../public/assets/images/communityContributionHeader-sm.svg');
+    background-position: 70%;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -86,5 +87,11 @@
         &:last-child {
             display: none;
         }
+    }
+}
+
+@include xlDesktopView {
+    .header {
+        background-image:url('../../../../../public/assets/images/communityContributionHeader-lg.svg');
     }
 }
