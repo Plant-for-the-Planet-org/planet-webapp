@@ -3,8 +3,12 @@ import styles from './communityContributions.module.scss';
 import { leaderboard } from './dummyData';
 import InfoIconPopup from './InfoIconPopup';
 import NoContributions from './NoContributions';
+import { ProfileV2Props } from '../../../common/types/profile';
 
-const CommunityContributions = () => {
+const CommunityContributions = ({
+  profileType,
+  userProfile,
+}: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState('most-recent');
   const [leaderboardList, setLeaderboardList] = useState([]);
   const isMobile = typeof window !== `undefined` && window.innerWidth <= 481;
@@ -73,7 +77,7 @@ const CommunityContributions = () => {
           ))}
         </ul>
       ) : (
-        <NoContributions />
+        <NoContributions profileType={profileType} userProfile={userProfile} />
       )}
     </div>
   );

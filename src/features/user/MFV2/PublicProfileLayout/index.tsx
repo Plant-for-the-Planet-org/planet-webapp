@@ -41,7 +41,7 @@ const PublicProfileLayout = ({ profile }: Props) => {
         id="community-contributions-container"
         className={styles.communityContributionsContainer}
       >
-        <CommunityContributions />
+        <CommunityContributions userProfile={profile} profileType="public" />
       </section>
       <section id="info-cta-container" className={styles.infoAndCtaContainer}>
         Additional information and CTAs - Become a member, Treegame, SDG Slider
