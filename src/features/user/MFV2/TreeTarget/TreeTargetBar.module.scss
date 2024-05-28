@@ -224,3 +224,30 @@
   font-size: 16px;
   font-weight: 700;
 }
+
+//target initialize  copntainer style
+
+.targetInitializeMainContainer {
+  display: flex;
+  padding: 36px;
+  height: 116px;
+  border-radius: 24px;
+  justify-content: space-between;
+  .setTargetLabel {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    font-weight: 400;
+  }
+}
+
+.setTargetButton {
+  width: 147px;
+  height: 45px;
+  background: linear-gradient(0deg, #008f5c 0%, #008f5c 100%);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+}

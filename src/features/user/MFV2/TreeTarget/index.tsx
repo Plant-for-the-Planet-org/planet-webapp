@@ -7,28 +7,32 @@ import RestoreTreeTargetModal from './microComponents/RestoreTreeTargetModal';
 import ConservAreaTargetModal from './microComponents/ConservAreaTargetModal';
 import ConservAreaTarget from './microComponents/ConservAreaTarget';
 import RestoreAreaTarget from './microComponents/RestoreTreeTarget';
+import TargetInitialize from './microComponents/TargetInitialize';
 
 const TreeTarget = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
-    <div className={targetBarStyle.targetMainContainer}>
-      <PlantTreeTarget handleOpen={handleOpen} />
-      <RestoreAreaTarget handleOpen={handleOpen} />
-      <ConservAreaTarget handleOpen={handleOpen} />
-      <Modal open={open} onClose={handleClose}>
-        <div className={targetBarStyle.targetModalMainContainer}>
-          <div className={targetBarStyle.setTargetLabel}>Set targets</div>
-          <div className={targetBarStyle.targetModalSubConatiner}>
-            <TreeTargetModal />
-            <ConservAreaTargetModal />
-            <RestoreTreeTargetModal />
+    <>
+      {/* <TargetInitialize handleOpen={handleOpen} /> */}
+      <div className={targetBarStyle.targetMainContainer}>
+        <PlantTreeTarget handleOpen={handleOpen} />
+        <RestoreAreaTarget handleOpen={handleOpen} />
+        <ConservAreaTarget handleOpen={handleOpen} />
+        <Modal open={open} onClose={handleClose}>
+          <div className={targetBarStyle.targetModalMainContainer}>
+            <div className={targetBarStyle.setTargetLabel}>Set targets</div>
+            <div className={targetBarStyle.targetModalSubConatiner}>
+              <TreeTargetModal />
+              <ConservAreaTargetModal />
+              <RestoreTreeTargetModal />
+            </div>
+            <button className={targetBarStyle.saveButton}>Save</button>
           </div>
-          <button className={targetBarStyle.saveButton}>Save</button>
-        </div>
-      </Modal>
-    </div>
+        </Modal>
+      </div>
+    </>
   );
 };
 
