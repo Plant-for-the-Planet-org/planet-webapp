@@ -7,6 +7,9 @@ import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
+import { lazy } from 'react';
+
+const globalStyles = lazy(() => import('../src/theme/theme'));
 
 /*
  * Global decorator to apply the styles to all stories
@@ -19,6 +22,7 @@ export const decorators = [
 
     return (
       <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
+        <style>{globalStyles}</style>
         <MUIThemeProvider theme={materialTheme}>
           {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
           <TenantProvider>
