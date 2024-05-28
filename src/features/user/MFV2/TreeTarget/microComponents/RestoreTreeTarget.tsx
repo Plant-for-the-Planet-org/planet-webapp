@@ -2,14 +2,17 @@ import RestoredTreeTargetIcon from '../../../../../../public/assets/images/icons
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import EditTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/EditTargetIcon';
 
-const RestoreAreaTarget = () => {
+const RestoreAreaTarget = ({ handleOpen }) => {
   return (
     <div className={targetBarStyle.targetMainContainerRestoreArea}>
       <div className={targetBarStyle.targetSubContainer}>
-        <div className={targetBarStyle.editTargetContainer}>
+        <button
+          className={targetBarStyle.editTargetContainer}
+          onClick={handleOpen}
+        >
           <EditTargetIcon width={9} color={'rgba(155, 81, 224, 1)'} />
           <p className={targetBarStyle.restoreTargetLabel}>Edit Target</p>
-        </div>
+        </button>
         <div className={targetBarStyle.StatisticsContainer}>
           <div className={targetBarStyle.iconContainerRestoreArea}>
             <RestoredTreeTargetIcon width={17} />

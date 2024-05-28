@@ -2,14 +2,17 @@ import ConservedAreaTargetIcon from '../../../../../../public/assets/images/icon
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import EditTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/EditTargetIcon';
 
-const ConservAreaTarget = () => {
+const ConservAreaTarget = ({ handleOpen }) => {
   return (
     <div className={targetBarStyle.targetMainContainerConservArea}>
       <div className={targetBarStyle.targetSubContainer}>
-        <div className={targetBarStyle.editTargetContainer}>
+        <button
+          className={targetBarStyle.editTargetContainer}
+          onClick={handleOpen}
+        >
           <EditTargetIcon width={9} color={'rgba(45, 156, 219, 1)'} />
           <p className={targetBarStyle.conservTargetLabel}>Edit target</p>
-        </div>
+        </button>
         <div className={targetBarStyle.StatisticsContainer}>
           <div className={targetBarStyle.iconContainerConservArea}>
             <ConservedAreaTargetIcon width={13} />
