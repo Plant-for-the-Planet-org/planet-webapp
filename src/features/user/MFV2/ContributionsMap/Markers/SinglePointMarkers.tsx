@@ -1,16 +1,17 @@
 import { Marker } from 'react-map-gl-v7';
 import { useMemo } from 'react';
-import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/RegisteredTreeIcon';
-import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/NaturalRegeneration';
-import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Mangroves';
-import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/ManagedRegeneration';
-import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Agroforestry';
-import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/UrbanRestoration';
-import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Conservation';
-import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/TreePlanting';
-import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/OtherPlanting';
-import { contributions } from '../../../../../utils/myForestV2Utils';
+import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
+import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
+import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
+import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
+import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/Agroforestry';
+import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/UrbanRestoration';
+import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
+import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import themeProperties from '../../../../../theme/themeProperties';
+import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
+import style from '.././Common/common.module.scss';
+import { UnitTypes } from '@planet-sdk/common';
 
 type Classification =
   | 'natural-regeneration'
@@ -18,31 +19,39 @@ type Classification =
   | 'managed-regeneration'
   | 'agroforestry'
   | 'urban-planting'
-  | 'conservation'
   | 'large-scale-planting'
   | 'other-planting';
 interface ProjectTypeIconProps {
-  purpose: string;
-  classification: Classification;
+  purpose: 'conservation' | 'restoration' | 'trees';
+  classification: Classification | null;
+  unitType: UnitTypes;
 }
 
-const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
-  const getMarkerColor = (purpose: string) => {
+const ProjectTypeIcon = ({
+  purpose,
+  classification,
+  unitType,
+}: ProjectTypeIconProps) => {
+  const getMarkerColor = (purpose: string, unitType: UnitTypes) => {
     switch (purpose) {
       case 'conservation':
-        return `${themeProperties.mediumBlue}`;
-      case 'restoration':
-        return `${themeProperties.electricPurple}`;
+        return themeProperties.mediumBlue;
+      case 'trees':
+        return unitType === 'm2'
+          ? themeProperties.electricPurple
+          : themeProperties.primaryDarkColorX;
       default:
-        return `${themeProperties.primaryDarkColorX}`;
+        return themeProperties.primaryDarkColorX;
     }
   };
-  const Markercolor = useMemo(() => getMarkerColor(purpose), [purpose]);
+  const markercolor = useMemo(
+    () => getMarkerColor(purpose, unitType),
+    [purpose, unitType]
+  );
   const IconProps = {
-    width: 68,
-    color: Markercolor,
+    width: 42,
+    color: markercolor,
   };
-
   switch (classification) {
     case 'natural-regeneration':
       return <NaturalRegeneration {...IconProps} />;
@@ -54,8 +63,6 @@ const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
       return <Agroforestry {...IconProps} />;
     case 'urban-planting':
       return <UrbanRestoration {...IconProps} />;
-    case 'conservation':
-      return <Conservation {...IconProps} />;
     case 'large-scale-planting':
       return <TreePlanting {...IconProps} />;
     case 'other-planting':
@@ -64,34 +71,50 @@ const ProjectTypeIcon = ({ purpose, classification }: ProjectTypeIconProps) => {
       return null;
   }
 };
-const renderIcons = (properties: any) => {
-  if (properties.type !== 'registration') {
-    return (
-      <ProjectTypeIcon
-        purpose={properties.project.purpose}
-        classification={properties.project.classification}
-      />
-    );
-  } else {
-    return <RegisteredTreeIcon />;
-  }
-};
 
 const SinglePointMarkers = () => {
-  return (
+  const { registrationGeojson, donationGeojson } = useMyForestV2();
+  return registrationGeojson ? (
     <>
-      {contributions.map((singleLocation, key) => {
+      {registrationGeojson.map((singleLocation, key) => {
+        if (singleLocation.geometry !== undefined) {
+          return (
+            <Marker
+              longitude={singleLocation?.geometry.coordinates[0]}
+              latitude={singleLocation?.geometry.coordinates[1]}
+              offset={[0, -15]}
+              key={key}
+            >
+              <div className={style.registeredTreeMarkerContainer}>
+                <RegisteredTreeIcon />
+              </div>
+            </Marker>
+          );
+        } else {
+          return <></>;
+        }
+      })}
+      {donationGeojson.map((singleLocation, key) => {
         return (
           <Marker
             longitude={singleLocation?.geometry.coordinates[0]}
             latitude={singleLocation?.geometry.coordinates[1]}
+            offset={[0, -15]}
             key={key}
           >
-            {renderIcons(singleLocation.properties)}
+            <ProjectTypeIcon
+              purpose={singleLocation.properties.projectInfo.purpose}
+              classification={
+                singleLocation.properties.projectInfo.classification
+              }
+              unitType={singleLocation.properties.projectInfo.unitType}
+            />
           </Marker>
         );
       })}
     </>
+  ) : (
+    <></>
   );
 };
 
