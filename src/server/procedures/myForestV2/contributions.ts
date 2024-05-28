@@ -102,7 +102,7 @@ async function fetchGifts(profileIds: number[]) {
 				g.metadata->>'$.project.id' as projectGuid, 
 				g.metadata->>'$.project.name' as projectName, 
 				g.metadata->>'$.project.country' as country, 
-				g.payment_date as plantDate
+				COALESCE(g.payment_date, g.redemption_date) as plantDate
 			FROM 
 				gift g
 			WHERE 
