@@ -54,7 +54,10 @@
       "shareVia": "Share via",
       "copyLink": "Copy Link",
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
-    
+    },
+    "myForestMapV2": {
+      "countries": "{count, plural, =1 {# Country} other {# Countries}} ",
+      "projects": "{count, plural, =1 {# Project} other {# Projects}} "
     }
   }
 }
