@@ -11,15 +11,8 @@ interface CertificatesProps {
   unitType: UnitTypes;
 }
 
-export const shouldEnableCertificate = (
-  purpose: ProjectPurpose,
-  unitType: UnitTypes
-) => {
-  if (
-    purpose === 'conservation' ||
-    purpose === 'bouquet' ||
-    (purpose === 'trees' && unitType === 'm2')
-  ) {
+export const shouldEnableCertificate = (purpose: ProjectPurpose) => {
+  if (purpose === 'bouquet') {
     return false;
   } else {
     return true;
