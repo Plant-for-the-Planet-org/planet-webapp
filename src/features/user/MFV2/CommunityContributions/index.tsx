@@ -9,6 +9,7 @@ import { updateStateWithTrpcData } from '../../../../utils/trpcHelpers';
 import { Leaderboard, LeaderboardItem } from '../../../common/types/myForestv2';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import { useTranslations } from 'next-intl';
 
 const CommunityContributions = ({
   profileType,
@@ -26,6 +27,7 @@ const CommunityContributions = ({
   const isMobile = typeof window !== `undefined` && window.innerWidth <= 481;
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataFetched, setIsDataFetched] = useState(false);
+  const t = useTranslations('Profile');
 
   const handleTabChange = (selectedTab: string) => {
     setTabSelected(selectedTab);
@@ -59,13 +61,13 @@ const CommunityContributions = ({
           onClick={() => handleTabChange('most-recent')}
           className={`${tabSelected === 'most-recent' ? styles.selected : ''}`}
         >
-          Most recent
+          {t('communityContributions.mostRecentTabLabel')}
         </button>
         <button
           onClick={() => handleTabChange('most-trees')}
           className={`${tabSelected === 'most-trees' ? styles.selected : ''}`}
         >
-          Most trees
+          {t('communityContributions.mostTreesTabLabel')}
         </button>
       </div>
     );
@@ -98,9 +100,7 @@ const CommunityContributions = ({
         <div className={styles.infoIcon}>
           <CustomTooltip height={15} width={15} color={'#828282'}>
             <div className={styles.infoIconPopupContainer}>
-              Community contributions are all tree, restoration or conservation
-              donations that are dedicated to you, for instance by donating via
-              your profile
+              {t('communityContributions.tooltipText')}
             </div>
           </CustomTooltip>
         </div>
