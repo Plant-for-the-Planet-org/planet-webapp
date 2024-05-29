@@ -3,6 +3,7 @@
 .contributionSummary {
   padding: 6px;
   background-color: #fff;
+  color: #4f4f4f;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -17,6 +18,10 @@
     display: flex;
     align-items: center;
     gap: 2px;
+  }
+
+  .contributedUnits {
+    font-weight: 700;
   }
 
   .giftIconContainer {
