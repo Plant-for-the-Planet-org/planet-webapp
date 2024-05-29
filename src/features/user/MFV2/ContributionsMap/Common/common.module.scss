@@ -1,0 +1,24 @@
+.mapCreditsContainer {
+  position: absolute;
+  right: 51px;
+  bottom: 0;
+  margin-bottom: 10px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.mapCreditsTooltip {
+  > svg {
+    display: block;
+  }
+}
+
+.mapCreditsContent {
+  padding: 10px;
+  width: 330px;
+}
+
+.registeredTreeMarkerContainer {
+  width: 42px;
+  height: 49px;
+}
