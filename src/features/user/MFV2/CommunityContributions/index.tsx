@@ -14,9 +14,11 @@ const CommunityContributions = ({
   userProfile,
 }: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState('most-recent');
-  const [leaderboardList, setLeaderboardList] = useState<
+  //stores fetched leaderboard object from api
+  const [leaderboardResult, setLeaderboardResult] = useState<
     Leaderboard | undefined
   >(undefined);
+  //stores list for tabSelected
   const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
     []
   );
@@ -25,11 +27,10 @@ const CommunityContributions = ({
 
   const handleTabChange = (selectedTab: string) => {
     setTabSelected(selectedTab);
-    setContributionList([]);
     if (selectedTab === 'most-recent') {
-      setContributionList(leaderboardList?.mostRecent || []);
+      setContributionList(leaderboardResult?.mostRecent || []);
     } else if (selectedTab === 'most-trees') {
-      setContributionList(leaderboardList?.mostTrees || []);
+      setContributionList(leaderboardResult?.mostTrees || []);
     }
   };
 
@@ -40,14 +41,14 @@ const CommunityContributions = ({
 
   useEffect(() => {
     if (_leaderboard.data) {
-      updateStateWithTrpcData(_leaderboard, setLeaderboardList, setErrors);
-      setLeaderboardList(_leaderboard.data);
+      updateStateWithTrpcData(_leaderboard, setLeaderboardResult, setErrors);
+      setLeaderboardResult(_leaderboard.data);
     }
   }, [_leaderboard?.data, userProfile]);
 
   useEffect(() => {
-    setContributionList(leaderboardList?.mostRecent || []);
-  }, [leaderboardList]);
+    setContributionList(leaderboardResult?.mostRecent || []);
+  }, [leaderboardResult]);
 
   const HeaderTabs = () => {
     return (
