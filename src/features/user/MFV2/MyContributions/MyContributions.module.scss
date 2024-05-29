@@ -1,0 +1,27 @@
+@import '../../../../theme/theme';
+
+.contributionSummary {
+  padding: 6px;
+  background-color: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  width: fit-content;
+
+  > * {
+    font-size: $fontXXSmall;
+  }
+
+  .contributionDetails {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .giftIconContainer {
+    width: 10px;
+    display: grid;
+    place-items: center;
+  }
+}

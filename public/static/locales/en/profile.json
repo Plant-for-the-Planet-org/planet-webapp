@@ -46,7 +46,9 @@
       "conservedSmall": "conserved",
       "restoredSmall": "restored",
       "areaType": "{areaConserved} m² {type}",
-      "areaConserved": "Areas Conserved"
+      "areaConserved": "Areas Conserved",
+      "treesContributed": "{count, plural, =1 {# tree} other {# trees}}",
+      "areaContributed": "{projectPurpose, select, trees {{count}m² restored} other {{count}m² conserved}}"
     },
     "shareFeature": {
       "shareTextTitle": "Stop talking. Start planting.",
@@ -54,7 +56,6 @@
       "shareVia": "Share via",
       "copyLink": "Copy Link",
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
-    
     }
   }
 }
