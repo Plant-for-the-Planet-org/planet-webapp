@@ -109,7 +109,5 @@ export const leaderboardProcedure = procedure
       purpose: gifter.purpose,
     }));
 
-    return {
-      leaderboard,
-    };
+    return leaderboard;
   });

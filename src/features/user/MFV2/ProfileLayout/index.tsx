@@ -47,7 +47,11 @@ const ProfileLayout = () => {
         id="community-contributions-container"
         className={styles.communityContributionsContainer}
       >
-        <CommunityContributions userProfile={profile} profileType="private" />
+        {profile ? (
+          <CommunityContributions userProfile={profile} profileType="private" />
+        ) : (
+          <ProfileLoader />
+        )}
       </section>
     </article>
   );

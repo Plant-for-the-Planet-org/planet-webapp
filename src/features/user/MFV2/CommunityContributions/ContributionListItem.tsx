@@ -1,11 +1,12 @@
+import { LeaderboardItem } from '../../../common/types/myForestv2';
 import styles from './communityContributions.module.scss';
 
-interface Props {
-  name: string;
-  units: number;
-  unitType: string;
-}
-const ContributionListItem = ({ name, units, unitType }: Props) => {
+const ContributionListItem = ({
+  name,
+  units,
+  unitType,
+  purpose,
+}: LeaderboardItem) => {
   return (
     <li>
       <span>{name}</span>

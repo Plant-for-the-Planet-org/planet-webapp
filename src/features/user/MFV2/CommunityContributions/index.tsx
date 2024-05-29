@@ -1,27 +1,53 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './communityContributions.module.scss';
-import { leaderboard } from './dummyData';
 import NoContributions from './NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
 import ContributionListItem from './ContributionListItem';
 import CustomTooltip from './CustomTooltip';
+import { trpc } from '../../../../utils/trpc';
+import { updateStateWithTrpcData } from '../../../../utils/trpcHelpers';
+import { Leaderboard, LeaderboardItem } from '../../../common/types/myForestv2';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const CommunityContributions = ({
   profileType,
   userProfile,
 }: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState('most-recent');
-  const [leaderboardList, setLeaderboardList] = useState([]);
+  const [leaderboardList, setLeaderboardList] = useState<
+    Leaderboard | undefined
+  >(undefined);
+  const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
+    []
+  );
   const isMobile = typeof window !== `undefined` && window.innerWidth <= 481;
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const handleTabChange = (selectedTab: string) => {
     setTabSelected(selectedTab);
+    setContributionList([]);
     if (selectedTab === 'most-recent') {
-      setLeaderboardList(leaderboard.mostRecent);
-    } else {
-      setLeaderboardList(leaderboard.mostTrees);
+      setContributionList(leaderboardList?.mostRecent || []);
+    } else if (selectedTab === 'most-trees') {
+      setContributionList(leaderboardList?.mostTrees || []);
     }
   };
+
+  const _leaderboard = trpc.myForestV2.leaderboard.useQuery({
+    profileId: `${userProfile?.id}`,
+    slug: `${userProfile?.slug}`,
+  });
+
+  useEffect(() => {
+    if (_leaderboard.data) {
+      updateStateWithTrpcData(_leaderboard, setLeaderboardList, setErrors);
+      setLeaderboardList(_leaderboard.data);
+    }
+  }, [_leaderboard?.data, userProfile]);
+
+  useEffect(() => {
+    setContributionList(leaderboardList?.mostRecent || []);
+  }, [leaderboardList]);
 
   const HeaderTabs = () => {
     return (
@@ -63,15 +89,16 @@ const CommunityContributions = ({
       <div className={styles.mobileHeaderTabContainer}>
         <HeaderTabs />
       </div>
-      {leaderboardList.length > 0 ? (
+      {contributionList.length > 0 ? (
         <ul className={styles.leaderboardList}>
-          {leaderboardList.map((item, index) => (
+          {contributionList.map((item, index) => (
             <>
               <ContributionListItem
                 key={index}
                 name={item.name}
                 units={item.units}
                 unitType={item.unitType}
+                purpose={item.purpose}
               />
               <div className={styles.horizontalLine}></div>
             </>

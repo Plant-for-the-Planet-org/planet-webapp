@@ -36,7 +36,11 @@ const PublicProfileLayout = ({ profile }: Props) => {
         id="community-contributions-container"
         className={styles.communityContributionsContainer}
       >
-        Community Contributions
+        {profile ? (
+          <CommunityContributions userProfile={profile} profileType="public" />
+        ) : (
+          <ProfileLoader />
+        )}
       </section>
       <section
         id="community-contributions-container"
