@@ -8,6 +8,7 @@ import { trpc } from '../../../../utils/trpc';
 import { updateStateWithTrpcData } from '../../../../utils/trpcHelpers';
 import { Leaderboard, LeaderboardItem } from '../../../common/types/myForestv2';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 
 const CommunityContributions = ({
   profileType,
@@ -24,6 +25,7 @@ const CommunityContributions = ({
   );
   const isMobile = typeof window !== `undefined` && window.innerWidth <= 481;
   const { setErrors } = useContext(ErrorHandlingContext);
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   const handleTabChange = (selectedTab: string) => {
     setTabSelected(selectedTab);
@@ -42,7 +44,7 @@ const CommunityContributions = ({
   useEffect(() => {
     if (_leaderboard.data) {
       updateStateWithTrpcData(_leaderboard, setLeaderboardResult, setErrors);
-      setLeaderboardResult(_leaderboard.data);
+      setIsDataFetched(true);
     }
   }, [_leaderboard?.data, userProfile]);
 
@@ -69,7 +71,28 @@ const CommunityContributions = ({
     );
   };
 
-  return (
+  const RenderContributionsList = () => {
+    return contributionList.length > 0 ? (
+      <ul className={styles.leaderboardList}>
+        {contributionList.map((item, index) => (
+          <>
+            <ContributionListItem
+              key={index}
+              name={item.name}
+              units={item.units}
+              unitType={item.unitType}
+              purpose={item.purpose}
+            />
+            <div className={styles.horizontalLine}></div>
+          </>
+        ))}
+      </ul>
+    ) : (
+      <NoContributions profileType={profileType} userProfile={userProfile} />
+    );
+  };
+
+  return isDataFetched ? (
     <div className={styles.communityContributions}>
       <div className={styles.header}>
         <div className={styles.infoIcon}>
@@ -90,25 +113,10 @@ const CommunityContributions = ({
       <div className={styles.mobileHeaderTabContainer}>
         <HeaderTabs />
       </div>
-      {contributionList.length > 0 ? (
-        <ul className={styles.leaderboardList}>
-          {contributionList.map((item, index) => (
-            <>
-              <ContributionListItem
-                key={index}
-                name={item.name}
-                units={item.units}
-                unitType={item.unitType}
-                purpose={item.purpose}
-              />
-              <div className={styles.horizontalLine}></div>
-            </>
-          ))}
-        </ul>
-      ) : (
-        <NoContributions profileType={profileType} userProfile={userProfile} />
-      )}
+      <RenderContributionsList />
     </div>
+  ) : (
+    <ProfileLoader />
   );
 };
 
