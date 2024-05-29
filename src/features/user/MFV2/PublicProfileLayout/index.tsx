@@ -2,7 +2,7 @@ import styles from './PublicProfileLayout.module.scss';
 import ProfileCard from '../ProfileCard';
 import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
-import TreeTarget from '../TreeTarget';
+import Targets from '../TreeTarget';
 import ContributionsMap from '../ContributionsMap';
 
 interface Props {
@@ -24,7 +24,7 @@ const PublicProfileLayout = ({ profile }: Props) => {
         <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        <TreeTarget />
+        <Targets />
       </section>
       <section
         id="my-contributions-container"
