@@ -21,6 +21,7 @@ export default function PlantLocations(): ReactElement {
     selectedPl,
     setSelectedPl,
     setHoveredPl,
+    viewport,
     satellite,
     setSamplePlantLocation,
     samplePlantLocation,
@@ -204,22 +205,22 @@ export default function PlantLocations(): ReactElement {
                   key={`${spl.id}-sample`}
                   latitude={spl.geometry.coordinates[1]}
                   longitude={spl.geometry.coordinates[0]}
-                  onClick={() => {
-                    openPl(spl);
-                  }}
                 >
-                  <div
-                    key={`${spl.id}-marker`}
-                    className={`${styles.single} ${
-                      spl.hid === samplePlantLocation?.hid
-                        ? styles.singleSelected
-                        : ''
-                    }`}
-                    role="button"
-                    tabIndex={0}
-                    onMouseEnter={() => onHover(spl)}
-                    onMouseLeave={onHoverEnd}
-                  />
+                  {viewport.zoom > 14 && (
+                    <div
+                      key={`${spl.id}-marker`}
+                      className={`${styles.single} ${
+                        spl.hid === samplePlantLocation?.hid
+                          ? styles.singleSelected
+                          : ''
+                      }`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => openPl(spl)}
+                      onMouseEnter={() => onHover(spl)}
+                      onMouseLeave={onHoverEnd}
+                    />
+                  )}
                 </Marker>
               );
             })
