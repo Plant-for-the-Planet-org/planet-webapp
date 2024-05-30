@@ -163,7 +163,7 @@ export default function ProjectsMap(): ReactElement {
         onClick={onMapClick}
         onHover={onMapHover}
         onLoad={handleOnLoad}
-        interactiveLayerIds={['shape-layer-poly', 'shape-layer']}
+        interactiveLayerIds={['polygon-layer', 'point-layer']}
       >
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />

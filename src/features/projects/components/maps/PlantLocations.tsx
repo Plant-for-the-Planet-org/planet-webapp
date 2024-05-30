@@ -156,7 +156,7 @@ export default function PlantLocations(): ReactElement {
         }}
       >
         <Layer
-          id={`shape-layer-poly`}
+          id={`polygon-layer`}
           type="fill"
           paint={{
             'fill-color': satellite ? '#ffffff' : '#007A49',
@@ -165,7 +165,7 @@ export default function PlantLocations(): ReactElement {
           filter={['==', ['geometry-type'], 'Polygon']}
         />
         <Layer
-          id={`shape-layer`}
+          id={`point-layer`}
           type="circle"
           paint={{
             'circle-color': satellite ? '#ffffff' : '#007A49',
