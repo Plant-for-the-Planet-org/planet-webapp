@@ -12,6 +12,7 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { PopupData } from './maps/Markers';
+import { PlantLocation } from '../../common/types/plantLocation';
 
 interface ShowDetailsProps {
   coordinates: [number, number] | null;
@@ -33,7 +34,6 @@ export default function ProjectsMap(): ReactElement {
     defaultMapCenter,
     defaultZoom,
     zoomLevel,
-    plIds,
     setHoveredPl,
     plantLocations,
     setSelectedPl,
@@ -85,43 +85,47 @@ export default function ProjectsMap(): ReactElement {
     setViewPort,
   };
 
-  const onMapClick = (e: MapEvent) => {
-    setSamplePlantLocation(null);
-    setPopupData({ show: false });
-    setIsPolygonMenuOpen(false);
-    setFilterOpen(false);
-    handlePlantLocationSelection(plantLocations, e)
-  };
-
-
-  const handlePlantLocationSelection = (plantLocations, e) => {
+  const handlePlantLocationSelection = (
+    plantLocations: PlantLocation[] | null,
+    e: MapEvent
+  ) => {
     if (!plantLocations || !e || !e.features || !e.features[0]) {
       return;
     }
 
     const { id } = e.features[0].properties;
-    const selectedElement = plantLocations.find(location => location.id === id);
+    const selectedElement = plantLocations.find(
+      (location) => location.id === id
+    );
 
     if (selectedElement) {
       setSelectedPl(selectedElement);
     }
   };
 
+  const onMapClick = (e: MapEvent) => {
+    setSamplePlantLocation(null);
+    setPopupData({ show: false });
+    setIsPolygonMenuOpen(false);
+    setFilterOpen(false);
+    handlePlantLocationSelection(plantLocations, e);
+  };
+
   const onMapHover = (e: MapEvent) => {
     if (plantLocations && e && e.features && e.features[0]) {
-      const element = plantLocations.find(obj => obj.id === e.features[0].properties.id);
-      if (element) {
-        setHoveredPl(element);
+      const activeElement = e.features[0];
+      const activePlantLocation = plantLocations.find(
+        (obj) => obj.id === activeElement.properties.id
+      );
+      if (activePlantLocation) {
+        setHoveredPl(activePlantLocation);
         setShowDetails({ coordinates: e.lngLat, show: true });
       }
       return;
     }
     setShowDetails({ ...showDetails, show: false });
     setHoveredPl(null);
-  }
-
-
-
+  };
 
   React.useEffect(() => {
     if (zoomLevel !== 2) {
@@ -141,13 +145,8 @@ export default function ProjectsMap(): ReactElement {
   }, [showProjectList]);
 
   const handleOnLoad = () => {
-    setLoaded(true)
-  }
-
-
-
-
-
+    setLoaded(true);
+  };
 
   return (
     <div
@@ -217,8 +216,4 @@ export default function ProjectsMap(): ReactElement {
       </MapGL>
     </div>
   );
-}
-interface DetailsType {
-  coordinates: number[];
-  show: boolean;
 }

@@ -6,13 +6,13 @@ import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
-import { Feature, Point, Polygon } from 'geojson';
 import {
   PlantLocation,
   PlantLocationMulti,
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+import { Feature, Point, Polygon } from 'geojson';
 
 export default function PlantLocations(): ReactElement {
   const {
@@ -21,7 +21,6 @@ export default function PlantLocations(): ReactElement {
     selectedPl,
     setSelectedPl,
     setHoveredPl,
-    viewport,
     satellite,
     setSamplePlantLocation,
     samplePlantLocation,
@@ -115,47 +114,36 @@ export default function PlantLocations(): ReactElement {
   };
 
   const makeInterventionGeoJson = (
-    type: string,
-    coordinates: Array<number[]>,
+    geometry: Point | Polygon,
     id: string,
-    extra?: { [key: string]: string }
-  ) => {
-    if (type !== 'Point' && type !== 'Polygon') {
-      return {};
-    }
-  
+    extra?: Record<string, string | number | boolean | null>
+  ): Feature<Point | Polygon> => {
     const properties = {
       id,
-      ...extra
+      ...extra,
     };
-  
-    const geometry = {
-      type,
-      coordinates: type === 'Point' ? coordinates[0] : [coordinates]
-    };
-  
+
     return {
       type: 'Feature',
       properties,
-      geometry
+      geometry,
     };
   };
 
   if (!plantLocations) {
-    return <></>
+    return <></>;
   }
 
-
-  const features = plantLocations.map(el => {
-    const isSelected = selectedPl && selectedPl.id === el.id
-    const isHovered = hoveredPl && hoveredPl.id === el.id
-    const GeoJSON = makeInterventionGeoJson(el.geometry.type, el.geometry.coordinates[0], el.id, {
+  const features = plantLocations.map((el) => {
+    const isSelected = selectedPl && selectedPl.id === el.id;
+    const isHovered = hoveredPl && hoveredPl.id === el.id;
+    const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
       highlightLine: isSelected || isHovered,
       opacity: el.type === 'multi' ? getPolygonColor(el) : 0.5,
-      dateDiff: getDateDiff(el)
-    })
-    return GeoJSON
-  })
+      dateDiff: getDateDiff(el),
+    });
+    return GeoJSON;
+  });
 
   return (
     <>
@@ -207,29 +195,35 @@ export default function PlantLocations(): ReactElement {
           }}
           filter={['!=', ['get', 'dateDiff'], null]}
         />
-        {selectedPl && selectedPl.samplePlantLocations ?
-          selectedPl.samplePlantLocations.map((spl) => {
-            return (
-              <Marker
-                key={`${spl.id}-sample`}
-                latitude={spl.geometry.coordinates[1]}
-                longitude={spl.geometry.coordinates[0]}
-                onClick={(() => { openPl(spl) })}
-              >
-                <div
-                  key={`${spl.id}-marker`}
-                  className={`${styles.single} ${spl.hid === samplePlantLocation?.hid
-                    ? styles.singleSelected
-                    : ''
+        {selectedPl &&
+        selectedPl.type === 'multi' &&
+        selectedPl.samplePlantLocations
+          ? selectedPl.samplePlantLocations.map((spl) => {
+              return (
+                <Marker
+                  key={`${spl.id}-sample`}
+                  latitude={spl.geometry.coordinates[1]}
+                  longitude={spl.geometry.coordinates[0]}
+                  onClick={() => {
+                    openPl(spl);
+                  }}
+                >
+                  <div
+                    key={`${spl.id}-marker`}
+                    className={`${styles.single} ${
+                      spl.hid === samplePlantLocation?.hid
+                        ? styles.singleSelected
+                        : ''
                     }`}
-                  role="button"
-                  tabIndex={0}
-                  onMouseEnter={() => onHover(spl)}
-                  onMouseLeave={onHoverEnd}
-                />
-              </Marker>
-            );
-          }) : null}
+                    role="button"
+                    tabIndex={0}
+                    onMouseEnter={() => onHover(spl)}
+                    onMouseLeave={onHoverEnd}
+                  />
+                </Marker>
+              );
+            })
+          : null}
       </Source>
     </>
   );
