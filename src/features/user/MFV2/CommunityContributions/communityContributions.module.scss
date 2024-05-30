@@ -22,6 +22,10 @@
     top:16px;
     left: 16px;
     cursor: pointer;
+
+    svg {
+        overflow: visible;
+    }
 }
 
 .infoIconPopupContainer{
