@@ -101,3 +101,9 @@
       'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
   }
 }
+
+@include xsPhoneView {
+  .publicProfileLayout {
+    width: fit-content;
+  }
+}
