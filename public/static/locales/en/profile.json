@@ -62,7 +62,9 @@
       "mostTreesTabLabel": "Most trees",
       "restorationPurpose": "restored",
       "conservationPurpose": "conserved",
-      "treesPurpose": "Trees"
+      "treesPurpose": "Trees",
+      "noContributionPrivateProfileText": "Oops! No contributions to show yet",
+      "noContributionPublicProfileText": "Make a donation to support {name}'s efforts"
     },
     "unitType": {
     "m2": "m²"

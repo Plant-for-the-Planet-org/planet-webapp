@@ -14,10 +14,16 @@ const NoContributions = ({ profileType, userProfile }: ProfileV2Props) => {
     <div className={styles.noContributionsContainer}>
       <NoContributionsIcon />
       {isPrivateAccount ? (
-        <span>Oops! No contributions to show yet</span>
+        <span>
+          {t('communityContributions.noContributionPrivateProfileText')}
+        </span>
       ) : (
         <>
-          <span>{`Make a donation to support Sophia's efforts`}</span>
+          <span>
+            {t('communityContributions.noContributionPublicProfileText', {
+              name: userProfile?.displayName.split(' ')[0],
+            })}
+          </span>
           <ProfileCardButton
             icon={<SupportUserIcon />}
             text={t('feature.supportUserText', {
