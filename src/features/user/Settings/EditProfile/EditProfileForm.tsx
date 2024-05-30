@@ -325,22 +325,25 @@ export default function EditProfileForm() {
     <StyledForm>
       <div className="inputContainer">
         <div className={styles.profilePicDiv}>
-          {updatingPic ? (
-            <div className={styles.spinnerContainer}>
-              <div className={styles.spinnerImage}></div>
-            </div>
-          ) : user?.image ? (
-            <div className={styles.profilePic}>
-              <img
-                src={getImageUrl('profile', 'thumb', user.image)}
-                className={styles.profilePicImg}
-              />
-            </div>
-          ) : (
-            <div className={styles.noProfilePic}>
-              <DefaultUserProfileImage />
-            </div>
-          )}
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {updatingPic ? (
+              <div className={styles.spinnerContainer}>
+                <div className={styles.spinnerImage}></div>
+              </div>
+            ) : user?.image ? (
+              <div className={styles.profilePic}>
+                <img
+                  src={getImageUrl('profile', 'thumb', user.image)}
+                  className={styles.profilePicImg}
+                />
+              </div>
+            ) : (
+              <div className={styles.noProfilePic}>
+                <DefaultUserProfileImage />
+              </div>
+            )}
+          </div>
           <div className={styles.profilePicDivButtons}>
             <button
               {...getRootProps()}
