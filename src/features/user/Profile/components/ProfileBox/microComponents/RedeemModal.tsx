@@ -82,7 +82,7 @@ export default function RedeemModal({
 
             case 'self_gift':
               _serializedErrors.push({
-                message: t('redeem:selfGiftMessage'),
+                message: t('selfGiftMessage'),
               });
               break;
 
