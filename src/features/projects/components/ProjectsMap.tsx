@@ -159,6 +159,7 @@ export default function ProjectsMap(): ReactElement {
         {...mapState}
         {...viewport}
         onViewportChange={_onViewportChange}
+        // TODO: onStateChange is deprecated, and does not work any more. _onStateChange does not seem to be called in any scenario while debugging the code. However this is left in to avoid breaking the code unintentionally. NOTE: replacing with onViewStateChange does not work as expected, the map stops zooming in to a clicked plant location, or to the site after switching between the Field data and Time travel map tabs.
         onStateChange={_onStateChange}
         onClick={onMapClick}
         onHover={onMapHover}
