@@ -413,7 +413,7 @@ export default function AccountRecord({
 
   const showCertificate = useMemo(() => {
     if (
-      (shouldEnableCertificate(record.purpose, record.unitType) &&
+      (shouldEnableCertificate(record.purpose) &&
         (record?.details?.donorCertificate ||
           record?.details?.giftCertificate)) ||
       record?.details?.taxDeductibleReceipt
