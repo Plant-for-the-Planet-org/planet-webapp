@@ -17,13 +17,4 @@ const StyledAutoCompleteOption = styled('li')({
   },
 });
 
-const StyledInputLabel = styled(InputLabel)((/* { theme } */) => {
-  return {
-    '& p': {
-      fontSize: '0.75rem',
-      fontWeight: 700,
-    },
-  };
-});
-
-export { MuiAutoComplete, StyledAutoCompleteOption, StyledInputLabel };
+export { MuiAutoComplete, StyledAutoCompleteOption };

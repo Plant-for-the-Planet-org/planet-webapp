@@ -172,6 +172,8 @@
   align-items: center;
   justify-content: center;
   min-height: 45px;
+  text-wrap: nowrap;
+  flex:1;
 }
 
 .viewPublicProfileButton {
