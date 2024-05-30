@@ -24,7 +24,7 @@
 .uploadProfilePicButton, .deleteProfilePicButton {
   padding: 8px 12px;
   border-radius: 6.295px;
-  border: 1px solid rgba(var(--primary-color-x), 0.4);
+  border: 1px solid rgba(33, 150, 83, 0.4);
   background: $light;
   cursor: pointer;
   width: fit-content;
@@ -128,7 +128,7 @@
   gap: 8px;
 }
 
-.customiseProfileToggles {
+.profileConsentSettings {
   margin: 8px 0px 32px 0px;
   display: flex;
   flex-direction: column;
@@ -140,7 +140,7 @@
     text-transform: capitalize;
   }
 
-  .customiseProfileToggleLabel {
+  .profileConsentSettingLabel {
     font-size: 0.875em;
     font-weight: 700;
     display: inline-flex;

@@ -33,8 +33,8 @@ import { APIError, handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
-import InfoIconPopup from './InfoIconPopup';
-import EditProfileToggleSwitch from '../../../common/InputTypes/EditProfileToggleSwitch';
+import CustomTooltip from './CustomTooltip';
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import { useRouter } from 'next/router';
 import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 
@@ -221,6 +221,11 @@ export default function EditProfileForm() {
       });
   }, []);
 
+  React.useEffect(() => {
+    // This will remove field values which do not exist for the new type
+    reset();
+  }, [type]);
+
   const handleUserProfileImage = async (bodyToSend: {
     imageFile: string | ArrayBuffer | null | undefined;
   }) => {
@@ -243,10 +248,6 @@ export default function EditProfileForm() {
     }
   };
 
-  React.useEffect(() => {
-    // This will remove field values which do not exist for the new type
-    reset();
-  }, [type]);
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
@@ -350,13 +351,16 @@ export default function EditProfileForm() {
             </div>
           )}
           <div className={styles.profilePicDivButtons}>
-            <div {...getRootProps()} className={styles.uploadProfilePicButton}>
+            <button
+              {...getRootProps()}
+              className={styles.uploadProfilePicButton}
+            >
               <label htmlFor="upload">
                 <input {...getInputProps()} />
                 <Camera />
                 <span>{t('profilePictureButtonLabels.upload')}</span>
               </label>
-            </div>
+            </button>
             <button
               className={styles.deleteProfilePicButton}
               onClick={(event) => deleteProfilePicture(event)}
@@ -683,13 +687,13 @@ export default function EditProfileForm() {
           />
         </EditProfileInputContainer>
 
-        <div className={styles.customiseProfileToggles}>
+        <section className={styles.profileConsentSettings}>
           <h2>{t('customiseProfileFields.customiseProfileTitle')}</h2>
           <InlineFormDisplayGroup type="other">
             <div>
               <label
                 htmlFor="is-public"
-                className={styles.customiseProfileToggleLabel}
+                className={styles.profileConsentSettingLabel}
                 style={{ cursor: 'pointer' }}
               >
                 {t('customiseProfileFields.switchVisibility')}
@@ -703,7 +707,7 @@ export default function EditProfileForm() {
               name="isPublic"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <EditProfileToggleSwitch
+                <NewToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -716,7 +720,7 @@ export default function EditProfileForm() {
           <InlineFormDisplayGroup type="other">
             <label
               htmlFor="editGetNews"
-              className={styles.customiseProfileToggleLabel}
+              className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
               {t('customiseProfileFields.subscribe')}
@@ -726,42 +730,11 @@ export default function EditProfileForm() {
               name="getNews"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <EditProfileToggleSwitch
+                <NewToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                   id="editGetNews"
-                />
-              )}
-            />
-          </InlineFormDisplayGroup>
-          <div className={styles.horizontalLine} />
-          <InlineFormDisplayGroup type="other">
-            <label
-              htmlFor="showLeaderboard"
-              className={styles.customiseProfileToggleLabel}
-              style={{ cursor: 'pointer' }}
-            >
-              {t('customiseProfileFields.showLeaderboard')}
-              <div className={styles.infoIcon}>
-                <InfoIconPopup height={15} width={14} color={'#828282'}>
-                  <div className={styles.infoIconPopupContainer}>
-                    {t('customiseProfileFields.leaderboardTooltipText')}
-                  </div>
-                </InfoIconPopup>
-              </div>
-            </label>
-
-            <Controller
-              name="showLeaderboard"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <EditProfileToggleSwitch
-                  checked={value}
-                  onChange={onChange}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editGetNews"
-                  disabled={true}
                 />
               )}
             />
@@ -769,18 +742,25 @@ export default function EditProfileForm() {
           {/* <div className={styles.horizontalLine} /> */}
           {/* <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="showTreegame"
-              className={styles.customiseProfileToggleLabel}
+              htmlFor="showLeaderboard"
+              className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
-              {t('customiseProfileFields.showTreegame')}
+              {t('customiseProfileFields.showLeaderboard')}
+              <div className={styles.infoIcon}>
+                <CustomTooltip height={15} width={14} color={'#828282'}>
+                  <div className={styles.infoIconPopupContainer}>
+                    {t('customiseProfileFields.leaderboardTooltipText')}
+                  </div>
+                </CustomTooltip>
+              </div>
             </label>
 
             <Controller
-              name="showTreegame"
+              name="showLeaderboard"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <EditProfileToggleSwitch
+                <NewToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -790,7 +770,31 @@ export default function EditProfileForm() {
               )}
             />
           </InlineFormDisplayGroup> */}
-        </div>
+          {/* <div className={styles.horizontalLine} /> */}
+          {/* <InlineFormDisplayGroup type="other">
+            <label
+              htmlFor="showTreegame"
+              className={styles.profileConsentSettingLabel}
+              style={{ cursor: 'pointer' }}
+            >
+              {t('customiseProfileFields.showTreegame')}
+            </label>
+
+            <Controller
+              name="showTreegame"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <NewToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="editGetNews"
+                  disabled={true}
+                />
+              )}
+            />
+          </InlineFormDisplayGroup> */}
+        </section>
       </div>
       <InlineFormDisplayGroup>
         <EditProfileInputContainer>

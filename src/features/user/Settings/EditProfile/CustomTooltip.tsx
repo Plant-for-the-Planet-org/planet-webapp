@@ -1,4 +1,4 @@
-//to be replaced with info icon popup in project redesign
+//TEMP FILE: TO BE REMOVED
 
 import React from 'react';
 import { bindHover, bindPopover } from 'material-ui-popup-state';
@@ -30,7 +30,7 @@ const NewInfoIcon = ({ height, width, color }: IconProps) => {
   );
 };
 
-const InfoIconPopup = ({ height, width, color, children }: Props) => {
+const CustomTooltip = ({ height, width, color, children }: Props) => {
   const abandonmentInfoPopupState = usePopupState({
     variant: 'popover',
     popupId: 'abandonmentInfoPopover',
@@ -61,4 +61,4 @@ const InfoIconPopup = ({ height, width, color, children }: Props) => {
   );
 };
 
-export default InfoIconPopup;
+export default CustomTooltip;

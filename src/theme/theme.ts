@@ -12,7 +12,6 @@ const {
   primaryLightColor,
   topProjectBackgroundColor,
   nonDonatableProjectBackgroundColor,
-  primaryDarkColorX,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -64,7 +63,6 @@ const getGlobalStyles = async () => {
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
-      --primary-color-x: ${primaryDarkColorX};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};

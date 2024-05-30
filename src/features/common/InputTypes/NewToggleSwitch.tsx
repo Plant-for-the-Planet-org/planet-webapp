@@ -1,6 +1,7 @@
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, InputHTMLAttributes } from 'react';
+import theme from '../../../theme/themeProperties';
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -12,8 +13,8 @@ interface ToggleSwitchProps {
   color?: string;
 }
 
-export default function EditProfileToggleSwitch(props: ToggleSwitchProps) {
-  const EditProfileToggleSwitch = styled(Switch)({
+export default function NewToggleSwitch(props: ToggleSwitchProps) {
+  const NewToggleSwitch = styled(Switch)({
     width: 50,
     height: 26,
     padding: 0,
@@ -25,7 +26,7 @@ export default function EditProfileToggleSwitch(props: ToggleSwitchProps) {
         transform: 'translateX(24px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor: '#007A49',
+          backgroundColor: theme.primaryDarkColorX,
           opacity: 1,
           border: 0,
         },
@@ -34,11 +35,11 @@ export default function EditProfileToggleSwitch(props: ToggleSwitchProps) {
         },
       },
       '&.Mui-focusVisible .MuiSwitch-thumb': {
-        color: '#fff',
-        border: '6px solid #fff',
+        color: theme.light,
+        border: `6px solid ${theme.light}`,
       },
       '&.Mui-disabled + .MuiSwitch-track': {
-        background: '#E0E0E0',
+        background: '#E0E0E0', //TODO: add to theme
         opacity: 1,
       },
     },
@@ -46,17 +47,17 @@ export default function EditProfileToggleSwitch(props: ToggleSwitchProps) {
       boxSizing: 'border-box',
       width: 22,
       height: 22,
-      backgroundColor: '#fff',
+      backgroundColor: theme.light,
     },
     '& .MuiSwitch-track': {
       borderRadius: 26 / 2,
-      backgroundColor: '#BDBDBD',
+      backgroundColor: '#BDBDBD', //TODO: add to theme
       opacity: 1,
     },
   });
 
   return (
-    <EditProfileToggleSwitch
+    <NewToggleSwitch
       checked={props.checked}
       onChange={props.onChange}
       id={props.id}
