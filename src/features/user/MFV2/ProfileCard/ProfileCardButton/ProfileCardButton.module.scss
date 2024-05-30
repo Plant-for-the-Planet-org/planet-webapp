@@ -1,0 +1,59 @@
+.profileCardButton {
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(33, 150, 83, 0.40);
+    background: #FFF;
+    white-space: nowrap;
+    cursor: pointer;
+    min-height: 2rem;
+
+
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    &:hover {
+        background: rgba(33, 150, 83, 0.20);
+        border: none;
+    }
+}
+    
+.profileCardButtonIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+    
+}
+
+.profileCardButtonLabel {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2F3336;
+    cursor: pointer;
+}
+
+.primaryProfileCardButton {
+    background-color: #007A49;
+    .profileCardButtonLabel {
+        color: #fff;
+    }
+    &:hover {
+        border: 1px solid rgba(33, 150, 83, 0.40);
+        background: #27AE60;
+    }
+}

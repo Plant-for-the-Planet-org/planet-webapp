@@ -189,7 +189,7 @@ const ContributionPopup = ({
       latitude={coordinates[1]}
       longitude={coordinates[0]}
       className={style.contributionPopup}
-      offset={65}
+      offset={30}
       closeButton={false}
     >
       <div
