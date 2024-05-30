@@ -39,6 +39,9 @@ interface MyForestContextV2Interface {
   contributionsResult: ContributionsResponse | undefined;
   registrationGeojson: RegistrationGeojson[];
   donationGeojson: DonationGeojson[];
+  treePlanted: number;
+  restoredTree: number;
+  conservArea: number;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -54,6 +57,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
     RegistrationGeojson[]
   >([]);
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
+  const [treePlanted, setTreePlanted] = useState(0);
+  const [restoredTree, setRestoredTree] = useState(0);
+  const [conservArea, setConservArea] = useState(0);
 
   const { user } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -63,6 +69,30 @@ export const MyForestProviderV2: FC = ({ children }) => {
     profileId: `${user?.id}`,
     slug: `${user?.slug}`,
   });
+
+  const aggregate = () => {
+    if (_contributions.data?.stats) {
+      const totalTrees =
+        _contributions.data?.stats.treesDonated.personal +
+        _contributions.data?.stats.treesDonated.received +
+        _contributions.data?.stats.treesRegistered;
+
+      const totalRestore =
+        _contributions.data?.stats.areaRestoredInM2.personal +
+        _contributions.data?.stats.areaRestoredInM2.received;
+
+      const totalConserv =
+        _contributions.data?.stats.areaConservedInM2.personal +
+        _contributions.data?.stats.areaConservedInM2.received;
+      setTreePlanted(totalTrees);
+      setRestoredTree(totalRestore);
+      setConservArea(totalConserv);
+    }
+  };
+
+  useEffect(() => {
+    aggregate();
+  }, [_contributions.data?.stats]);
 
   useEffect(() => {
     if (_projectList.data) {
@@ -147,12 +177,18 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsResult,
       registrationGeojson,
       donationGeojson,
+      treePlanted,
+      restoredTree,
+      conservArea,
     }),
     [
       projectListResult,
       contributionsResult,
       registrationGeojson,
       donationGeojson,
+      treePlanted,
+      restoredTree,
+      conservArea,
     ]
   );
 

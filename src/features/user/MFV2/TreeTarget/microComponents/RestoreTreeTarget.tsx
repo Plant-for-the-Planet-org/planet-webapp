@@ -13,7 +13,7 @@ const RestoreAreaTarget = ({ handleOpen }) => {
           <EditTargetIcon width={9} color={'rgba(155, 81, 224, 1)'} />
           <p className={targetBarStyle.restoreTargetLabel}>Edit Target</p>
         </button>
-        <div className={targetBarStyle.StatisticsContainer}>
+        <div className={targetBarStyle.statisticsContainer}>
           <div className={targetBarStyle.iconContainerRestoreArea}>
             <RestoredTreeTargetIcon width={17} />
           </div>

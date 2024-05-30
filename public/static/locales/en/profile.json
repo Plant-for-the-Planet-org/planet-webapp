@@ -54,7 +54,13 @@
       "shareVia": "Share via",
       "copyLink": "Copy Link",
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
-    
+    },
+    "progressBar": {
+      "treeWithoutTarget": "{count, plural, =1 {# tree planted} other {# trees planted}}",
+      "treeWithTarget": "{count} of {total, plural, =1  {# tree} other {# trees}} planted",
+      "totalGiftFromCommunity": "{quantity} from our community ",
+      "editTarget": "Edit Target",
+      "setTarget": "Set Target"
     }
   }
 }

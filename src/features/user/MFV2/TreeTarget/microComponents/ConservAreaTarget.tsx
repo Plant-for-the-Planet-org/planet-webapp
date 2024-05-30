@@ -13,7 +13,7 @@ const ConservAreaTarget = ({ handleOpen }) => {
           <EditTargetIcon width={9} color={'rgba(45, 156, 219, 1)'} />
           <p className={targetBarStyle.conservTargetLabel}>Edit target</p>
         </button>
-        <div className={targetBarStyle.StatisticsContainer}>
+        <div className={targetBarStyle.statisticsContainer}>
           <div className={targetBarStyle.iconContainerConservArea}>
             <ConservedAreaTargetIcon width={13} />
           </div>
