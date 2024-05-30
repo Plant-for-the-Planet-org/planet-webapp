@@ -24,6 +24,9 @@
     "cancel": "Cancel",
     "termAndCondition": "I agree to the <termsLink>Terms and Conditions</termsLink> of the Plant-for-the-Planet platform.",
     "termAndConditionError": "Please Accept the Terms and Conditions",
+    "profileConsentSettingsTitle": "Customise Public Profile",
+    "publicProfileExplanation": "By making your profile public, you can choose to share your information and connect with others.",
+    "leaderboardTooltipExplanation": "The leaderboard shows all contributions others have made to your profile. This could be trees gifted to you or donations that were made by people while visiting your profile. By turning this on, you will allow anyone on the internet to see who made the biggest contributions",
     "profilePictureButtonLabels": {
       "upload": "Upload a new photo",
       "delete": "Delete photo"
@@ -39,7 +42,11 @@
       "zipCode": "Postal/Zip Code",
       "country": "Country",
       "bio": "Your Description",
-      "website": "Website"
+      "website": "Website",
+      "isPublic": "Make profile public",
+      "subscribe": "Subscribe to news via email",
+      "showLeaderboard": "Show my leaderboard",
+      "showTreegame": "Show TreeGame"
     },
     "validationErrors": {
       "maxChars": "Should be {max} characters or less",
@@ -59,15 +66,6 @@
       "websiteInvalid": "Please enter valid Website URL",
       "countryRequired": "Country is required",
       "companyRequired": "Company Name is required"
-    }, 
-    "customiseProfileFields": {
-      "customiseProfileTitle": "Customise Public Profile",
-      "switchVisibility": "Make profile public",
-      "publicProfileText": "By making your profile public, you can choose to share your information and connect with others.",
-      "subscribe": "Subscribe to news via email",
-      "showLeaderboard": "Show my leaderboard",
-      "showTreegame": "Show TreeGame",
-      "leaderboardTooltipText": "The leaderboard shows all contributions others have made to your profile. This could be trees gifted to you or donations that were made by people while visiting your profile. By turning this on, you will allow anyone on the internet to see who made the biggest contributions"
     }
   }
 }

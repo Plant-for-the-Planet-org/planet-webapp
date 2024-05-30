@@ -636,7 +636,7 @@ export default function EditProfileForm() {
         />
 
         <section className={styles.profileConsentSettings}>
-          <h2>{t('customiseProfileFields.customiseProfileTitle')}</h2>
+          <h2>{t('profileConsentSettingsTitle')}</h2>
           <InlineFormDisplayGroup type="other">
             <div>
               <label
@@ -644,11 +644,11 @@ export default function EditProfileForm() {
                 className={styles.profileConsentSettingLabel}
                 style={{ cursor: 'pointer' }}
               >
-                {t('customiseProfileFields.switchVisibility')}
+                {t('fieldLabels.isPublic')}
               </label>
               <br />
               <p className={styles.fieldExplanation}>
-                {t('customiseProfileFields.publicProfileText')}
+                {t('publicProfileExplanation')}
               </p>
             </div>
             <Controller
@@ -671,7 +671,7 @@ export default function EditProfileForm() {
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
-              {t('customiseProfileFields.subscribe')}
+              {t('fieldLabels.subscribe')}
             </label>
 
             <Controller
@@ -694,11 +694,11 @@ export default function EditProfileForm() {
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
-              {t('customiseProfileFields.showLeaderboard')}
+              {t('fieldLabels.showLeaderboard')}
               <div className={styles.infoIcon}>
                 <CustomTooltip height={15} width={14} color={'#828282'}>
                   <div className={styles.infoIconPopupContainer}>
-                    {t('customiseProfileFields.leaderboardTooltipText')}
+                    {t('leaderboardTooltipExplanation')}
                   </div>
                 </CustomTooltip>
               </div>
@@ -725,7 +725,7 @@ export default function EditProfileForm() {
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
-              {t('customiseProfileFields.showTreegame')}
+              {t('fieldLabels.showTreegame')}
             </label>
 
             <Controller
