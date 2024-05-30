@@ -644,9 +644,9 @@ export default function EditProfileForm() {
                 {t('customiseProfileFields.switchVisibility')}
               </label>
               <br />
-              <label className={styles.isPrivateAccountText}>
+              <p className={styles.fieldExplanation}>
                 {t('customiseProfileFields.publicProfileText')}
-              </label>
+              </p>
             </div>
             <Controller
               name="isPublic"
@@ -684,8 +684,8 @@ export default function EditProfileForm() {
               )}
             />
           </InlineFormDisplayGroup>
-          {/* <div className={styles.horizontalLine} /> */}
-          {/* <InlineFormDisplayGroup type="other">
+          {/* <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
             <label
               htmlFor="showLeaderboard"
               className={styles.profileConsentSettingLabel}
@@ -709,14 +709,14 @@ export default function EditProfileForm() {
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editGetNews"
+                  id="editShowLeaderboard"
                   disabled={true}
                 />
               )}
             />
-          </InlineFormDisplayGroup> */}
-          {/* <div className={styles.horizontalLine} /> */}
-          {/* <InlineFormDisplayGroup type="other">
+          </InlineFormDisplayGroup>
+          <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
             <label
               htmlFor="showTreegame"
               className={styles.profileConsentSettingLabel}
@@ -733,7 +733,7 @@ export default function EditProfileForm() {
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editGetNews"
+                  id="editShowTreegame"
                   disabled={true}
                 />
               )}
