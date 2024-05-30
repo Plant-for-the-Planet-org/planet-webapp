@@ -82,7 +82,8 @@ const SinglePointMarkers = () => {
             <Marker
               longitude={singleLocation?.geometry.coordinates[0]}
               latitude={singleLocation?.geometry.coordinates[1]}
-              offset={[0, -15]}
+              anchor="bottom"
+              offset={[0, 0]}
               key={key}
             >
               <div className={style.registeredTreeMarkerContainer}>
@@ -99,7 +100,8 @@ const SinglePointMarkers = () => {
           <Marker
             longitude={singleLocation?.geometry.coordinates[0]}
             latitude={singleLocation?.geometry.coordinates[1]}
-            offset={[0, -15]}
+            anchor="bottom"
+            offset={[0, 0]}
             key={key}
           >
             <ProjectTypeIcon
