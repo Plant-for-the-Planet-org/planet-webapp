@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ContributionSummary from '../MyContributions/ContributionSummary';
+import ContributionSummary from '../../MyContributions/ContributionSummary';
 
 const meta: Meta<typeof ContributionSummary> = {
   component: ContributionSummary,
-  title: 'Components/ContributionSummary',
+  title: 'Components/MyContributions/ContributionSummary',
 };
 
 export default meta;

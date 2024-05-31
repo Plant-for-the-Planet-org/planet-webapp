@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ContributionCountOverflow from '../MyContributions/ContributionCountOverflow';
+import ContributionCountOverflow from '../../MyContributions/ContributionCountOverflow';
 
 const meta: Meta<typeof ContributionCountOverflow> = {
   component: ContributionCountOverflow,
-  title: 'Components/ContributionCountOverflow',
+  title: 'Components/MyContributions/ContributionCountOverflow',
 };
 
 export default meta;
