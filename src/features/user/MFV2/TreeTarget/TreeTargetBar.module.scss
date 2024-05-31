@@ -136,7 +136,6 @@
 }
 
 .restoreTreeModalIconContainer,
-.barSubContainerRestoreArea,
 .iconContainerRestoreArea {
   background: rgba(155, 81, 224, 1);
 }
@@ -236,16 +235,34 @@
   justify-content: flex-end;
 }
 
-.targetCompleteBar {
-  background: rgba(0, 122, 73, 1);
+.restoredTargetCompleteBar,
+.treeTargetCompleteBar {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
 
-.targetBar {
-  background: rgba(0, 122, 73, 0.5);
+.treeTargetCompleteBar {
+  background: rgba(0, 122, 73, 1);
+}
+
+.restoredTargetCompleteBar {
+  background: rgba(155, 81, 224, 1);
+}
+// .restoredTargetCompleteBar {
+//   background: ;
+// }
+
+.restoreTargetBar,
+.treeTargetBar {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+
+.restoreTargetBar {
+  background: rgba(155, 81, 224, 0.5);
+}
+.treeTargetBar {
+  background: rgba(0, 122, 73, 0.5);
 }
 
 //target initialize  copntainer style

@@ -58,6 +58,8 @@
     "progressBar": {
       "treeWithoutTarget": "{count, plural, =1 {# tree planted} other {# trees planted}}",
       "treeWithTarget": "{count} of {total, plural, =1  {# tree} other {# trees}} planted",
+      "restoreWithTarget": "{count} of {unit}  m2 restored",
+      "restoreWithoutTarget": "{unit}  m2 restored",
       "totalGiftFromCommunity": "{quantity} from our community ",
       "editTarget": "Edit Target",
       "setTarget": "Set Target"

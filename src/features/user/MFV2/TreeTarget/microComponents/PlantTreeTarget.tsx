@@ -5,20 +5,21 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { calculatePercentage } from '../../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
 
 interface EditButtonProps {
   handleOpen: () => void;
   treeTarget: number;
 }
-interface TargetBarProps {
+export interface TargetBarProps {
   treeTarget: number;
   treePlanted: number;
   calculatePercentage: number;
   giftsReceivedCount: number | undefined;
 }
 
-interface PlantTreeTargetProps {
+export interface TargetProps {
   handleOpen: () => void;
 }
 
@@ -77,7 +78,7 @@ const TreeTargetBar = ({
                     treeTarget > 0 && treePlanted < treeTarget ? 0 : 5
                   }px`,
                 }}
-                className={targetBarStyle.targetCompleteBar}
+                className={targetBarStyle.treeTargetCompleteBar}
               ></div>
               <div
                 style={{
@@ -87,7 +88,7 @@ const TreeTargetBar = ({
                       : 0
                   }%`,
                 }}
-                className={targetBarStyle.targetBar}
+                className={targetBarStyle.treeTargetBar}
               ></div>
             </div>
             <div>
@@ -114,15 +115,10 @@ const PlantTreeTarget = ({ handleOpen }: PlantTreeTargetProps) => {
   const treeTarget = user?.targets.treesDonated;
   const giftsReceivedCount = contributionsResult?.stats.giftsReceivedCount;
 
-  const calculatePercentage = useMemo(() => {
-    if (treeTarget > 0) {
-      const percentageOfTreePlanted =
-        (Math.round(treePlanted) / treeTarget) * 100;
-      return percentageOfTreePlanted;
-    } else {
-      return 0;
-    }
-  }, [treeTarget, treePlanted]);
+  const _calculatePercentage: number = useMemo(
+    () => calculatePercentage(treeTarget, treePlanted),
+    [treeTarget, treePlanted]
+  );
 
   return (
     <div className={targetBarStyle.targetMainContainerTreeTarget}>
@@ -130,7 +126,7 @@ const PlantTreeTarget = ({ handleOpen }: PlantTreeTargetProps) => {
       <TreeTargetBar
         treeTarget={treeTarget}
         treePlanted={treePlanted}
-        calculatePercentage={Number(calculatePercentage.toFixed(1))}
+        calculatePercentage={Number(_calculatePercentage.toFixed(1))}
         giftsReceivedCount={giftsReceivedCount}
       />
     </div>
