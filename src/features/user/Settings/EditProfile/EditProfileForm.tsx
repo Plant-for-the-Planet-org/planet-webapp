@@ -348,21 +348,23 @@ export default function EditProfileForm() {
             <button
               {...getRootProps()}
               className={styles.uploadProfilePicButton}
+              aria-label="upload profile picture"
             >
-              <label htmlFor="upload">
+              <div className={styles.profilePicButtonText}>
                 <input {...getInputProps()} />
                 <Camera />
                 <span>{t('profilePictureButtonLabels.upload')}</span>
-              </label>
+              </div>
             </button>
             <button
               className={styles.deleteProfilePicButton}
               onClick={(event) => deleteProfilePicture(event)}
+              aria-label="delete profile picture"
             >
-              <label htmlFor="delete">
+              <div className={styles.profilePicButtonText}>
                 <Delete color="#828282" />
                 <span>{t('profilePictureButtonLabels.delete')}</span>
-              </label>
+              </div>
             </button>
           </div>
         </div>
@@ -667,7 +669,7 @@ export default function EditProfileForm() {
           <div className={styles.horizontalLine} />
           <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="editGetNews"
+              htmlFor="get-news"
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
@@ -682,7 +684,7 @@ export default function EditProfileForm() {
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editGetNews"
+                  id="get-news"
                 />
               )}
             />
@@ -690,7 +692,7 @@ export default function EditProfileForm() {
           {/* <div className={styles.horizontalLine} />
           <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="showLeaderboard"
+              htmlFor="show-leaderboard"
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
@@ -712,7 +714,7 @@ export default function EditProfileForm() {
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editShowLeaderboard"
+                  id="show-leaderboard"
                   disabled={true}
                 />
               )}
@@ -721,7 +723,7 @@ export default function EditProfileForm() {
           <div className={styles.horizontalLine} />
           <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="showTreegame"
+              htmlFor="show-treegame"
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
@@ -736,7 +738,7 @@ export default function EditProfileForm() {
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="editShowTreegame"
+                  id="show-treegame"
                   disabled={true}
                 />
               )}

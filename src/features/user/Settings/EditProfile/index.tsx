@@ -5,7 +5,7 @@ import DashboardView from '../../../common/Layout/DashboardView';
 import EditProfileForm from './EditProfileForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
 
-export default function (): ReactElement | null {
+export default function EditProfile(): ReactElement | null {
   const t = useTranslations('Me');
 
   return (

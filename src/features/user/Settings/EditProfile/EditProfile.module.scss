@@ -21,7 +21,8 @@
   gap: 6px;
 }
 
-.uploadProfilePicButton, .deleteProfilePicButton {
+.uploadProfilePicButton,
+.deleteProfilePicButton {
   padding: 8px 12px;
   border-radius: 6.295px;
   border: 1px solid rgba(33, 150, 83, 0.4);
@@ -29,30 +30,30 @@
   cursor: pointer;
   width: fit-content;
   white-space: nowrap;
-    label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      span {
-        font-weight: 700;
-        font-size: 0.75rem;
-      }
+  .profilePicButtonText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    span {
+      font-weight: 700;
+      font-size: 0.75rem;
     }
+  }
 }
 
 .uploadProfilePicButton {
   &:hover {
-    background-color: rgba(33, 150, 83, 0.20);
+    background-color: rgba(33, 150, 83, 0.2);
     border: none;
   }
 }
 
 .deleteProfilePicButton {
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
 
   &:hover {
-    background-color: #E0E0E0;
+    background-color: #e0e0e0;
     border: none;
   }
 }
@@ -121,7 +122,6 @@
   flex-wrap: wrap;
 }
 
-
 .editProfileInputContainer {
   display: flex;
   flex-direction: column;
@@ -162,7 +162,8 @@
   max-width: 200px !important;
 }
 
-.viewPublicProfileButton, .saveProfileButton {
+.viewPublicProfileButton,
+.saveProfileButton {
   font-size: 1em;
   font-weight: 700;
   padding: 10px 12px;
@@ -173,7 +174,7 @@
   justify-content: center;
   min-height: 45px;
   text-wrap: nowrap;
-  flex:1;
+  flex: 1;
 }
 
 .viewPublicProfileButton {
@@ -181,20 +182,19 @@
   border: 1px solid #21965366;
 
   &:hover {
-    background: rgba(33, 150, 83, 0.20);
+    background: rgba(33, 150, 83, 0.2);
     border: none;
-  } 
-
+  }
 }
 
 .saveProfileButton {
-  background-color: #008F5C;
+  background-color: #008f5c;
   color: $light;
-  padding: 11px 12px;  
+  padding: 11px 12px;
 
   &:hover {
-    border: 1px solid rgba(33, 150, 83, 0.40);
-    background: #27AE60;
+    border: 1px solid rgba(33, 150, 83, 0.4);
+    background: #27ae60;
   }
 }
 
@@ -283,8 +283,9 @@
   .profilePicDivButtons {
     align-items: center;
   }
-  .uploadProfilePicButton, .deleteProfilePicButton{
-    label {
+  .uploadProfilePicButton,
+  .deleteProfilePicButton {
+    .profilePicButtonText {
       span {
         font-weight: 600;
       }
