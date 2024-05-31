@@ -235,6 +235,7 @@
   justify-content: flex-end;
 }
 
+.conservTargetCompleteBar,
 .restoredTargetCompleteBar,
 .treeTargetCompleteBar {
   border-top-left-radius: 5px;
@@ -248,10 +249,11 @@
 .restoredTargetCompleteBar {
   background: rgba(155, 81, 224, 1);
 }
-// .restoredTargetCompleteBar {
-//   background: ;
-// }
+.conservTargetCompleteBar {
+  background: rgba(45, 156, 219, 1);
+}
 
+.conservTargetBar,
 .restoreTargetBar,
 .treeTargetBar {
   border-top-right-radius: 5px;
@@ -263,6 +265,9 @@
 }
 .treeTargetBar {
   background: rgba(0, 122, 73, 0.5);
+}
+.conservTargetBar {
+  background: rgba(45, 156, 219, 0.5);
 }
 
 //target initialize  copntainer style

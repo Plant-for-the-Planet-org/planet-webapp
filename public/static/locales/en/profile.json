@@ -60,6 +60,8 @@
       "treeWithTarget": "{count} of {total, plural, =1  {# tree} other {# trees}} planted",
       "restoreWithTarget": "{count} of {unit}  m2 restored",
       "restoreWithoutTarget": "{unit}  m2 restored",
+      "conservWithTarget": "{count} of {unit}  m2 conserved",
+      "conservWithoutTarget": "{unit}  m2 conserved",
       "totalGiftFromCommunity": "{quantity} from our community ",
       "editTarget": "Edit Target",
       "setTarget": "Set Target"
