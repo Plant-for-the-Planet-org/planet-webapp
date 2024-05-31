@@ -44,3 +44,27 @@
   padding: 6px 16px;
   width: fit-content;
 }
+
+.projectSummary {
+  .projectType {
+    font-size: $fontXXSmall;
+    font-weight: 600;
+    color: $primaryDarkColor;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .projectTypeIcon {
+    width: 12px;
+    svg > path {
+      fill: $primaryDarkColor;
+    }
+  }
+  .projectName {
+    font-weight: 700;
+    font-size: $fontMedium;
+  }
+  .additionalProjectInfo {
+    font-size: $fontSmall;
+  }
+}
