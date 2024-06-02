@@ -114,17 +114,25 @@ export default function ProjectsMap(): ReactElement {
   const onMapHover = (e: MapEvent) => {
     if (plantLocations && e && e.features && e.features[0]) {
       const activeElement = e.features[0];
+      if (selectedPl && selectedPl.id === activeElement.properties.id) {
+        setHoveredPl(null)
+        return
+      }
       const activePlantLocation = plantLocations.find(
         (obj) => obj.id === activeElement.properties.id
       );
       if (activePlantLocation) {
         setHoveredPl(activePlantLocation);
         setShowDetails({ coordinates: e.lngLat, show: true });
+        setSamplePlantLocation(null)
+        return
       }
+      setShowDetails({ ...showDetails, show: false });
+      setHoveredPl(null);
+      setSamplePlantLocation(null)
+      setSelectedPl(null)
       return;
     }
-    setShowDetails({ ...showDetails, show: false });
-    setHoveredPl(null);
   };
 
   React.useEffect(() => {
@@ -218,3 +226,5 @@ export default function ProjectsMap(): ReactElement {
     </div>
   );
 }
+
+
