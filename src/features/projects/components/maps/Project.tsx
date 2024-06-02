@@ -91,14 +91,14 @@ export default function Project({
   }
 
   React.useEffect(() => {
-    if (plantLocations && selectedPl && selectedPl.type === 'multi') {
-      setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
-    }
+    // if (plantLocations && selectedPl && selectedPl.type === 'multi') {
+    //   setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
+    // }
     if (selectedPl) router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
   }, [selectedPl]);
 
   React.useEffect(() => {
-    if (project.sites && siteExists && !router.query.ploc) {
+    if (project.sites && siteExists && !router.query.ploc && !selectedPl) {
       loadRasterData();
       zoomToProjectSite(
         {
@@ -109,26 +109,16 @@ export default function Project({
         viewport,
         setViewPort,
         setSiteViewPort,
-        4000
-      );
-    } else if (plantLocations && router.query.ploc && selectedPl) {
-      if (selectedPl?.type === 'multi' && plantPolygonCoordinates) {
-        zoomToPlantLocation(
-          plantPolygonCoordinates,
-          viewport,
-          isMobile,
-          setViewPort,
-          1200
-        );
-      }
-    } else {
-      zoomToLocation(
-        viewport,
-        setViewPort,
-        project.coordinates.lon,
-        project.coordinates.lat,
-        5,
         3000
+      );
+    } else if (selectedPl) {
+      const locationCoordinates = selectedPl.type === 'multi' ? selectedPl.geometry.coordinates[0] : selectedPl.geometry.coordinates
+      zoomToPlantLocation(
+        locationCoordinates,
+        viewport,
+        isMobile,
+        setViewPort,
+        1200
       );
     }
   }, [
