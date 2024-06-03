@@ -4,8 +4,31 @@ import ProjectSummary from '../../MyContributions/ProjectSummary';
 const meta: Meta<typeof ProjectSummary> = {
   component: ProjectSummary,
   title: 'Components/MyContributions/ProjectSummary',
+  argTypes: {
+    projectPurpose: {
+      options: ['conservation', 'trees'],
+      control: {
+        type: 'select',
+      },
+      description: 'The purpose of the project',
+      table: {
+        type: {
+          summary: '"conservation" | "trees"',
+          detail:
+            'Note: `projectClassification` required if `projectPurpose = trees`. `projectEcosystem` required if `projectPurpose = conservation`',
+        },
+      },
+    },
+    projectEcosystem: {
+      if: { arg: 'projectPurpose', eq: 'conservation' },
+      description: 'Required if `projectPurpose = conservation`',
+    },
+    projectClassification: {
+      if: { arg: 'projectPurpose', eq: 'trees' },
+      description: 'Required if `projectPurpose = trees`',
+    },
+  },
 };
-
 export default meta;
 
 type Story = StoryObj<typeof ProjectSummary>;
@@ -23,7 +46,7 @@ export const ConservationProject: Story = {
 export const TreesProject: Story = {
   args: {
     projectPurpose: 'trees',
-    classification: 'managed-regeneration',
+    projectClassification: 'managed-regeneration',
     projectName: 'Trees Project',
     projectCountry: 'US',
     projectTpoName: 'TPO Name',

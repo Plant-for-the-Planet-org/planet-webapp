@@ -14,7 +14,7 @@ type ConservationProps = {
 
 type TreesProps = {
   projectPurpose: 'trees';
-  classification: TreeProjectClassification;
+  projectClassification: TreeProjectClassification;
 };
 
 type Props = (ConservationProps | TreesProps) & {
@@ -30,7 +30,9 @@ const ProjectSummary = (props: Props) => {
   const { projectName, projectCountry, projectTpoName, projectPurpose } = props;
 
   const projectType =
-    projectPurpose === 'trees' ? props.classification : props.projectPurpose;
+    projectPurpose === 'trees'
+      ? props.projectClassification
+      : props.projectPurpose;
 
   return (
     <div className={styles.projectSummary}>
@@ -41,7 +43,7 @@ const ProjectSummary = (props: Props) => {
         <div className={styles.projectCategory}>
           {projectPurpose === 'trees'
             ? tProject(
-                `classification.${props.classification}`
+                `classification.${props.projectClassification}`
               ).toLocaleUpperCase()
             : tProject(
                 `ecosystem.${props.projectEcosystem}`
