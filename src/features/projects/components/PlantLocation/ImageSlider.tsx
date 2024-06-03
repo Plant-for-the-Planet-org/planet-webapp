@@ -33,7 +33,6 @@ export default function ImageSlider({
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
-        const ask = []
         projectImages.push({
           content: () => (
             <div

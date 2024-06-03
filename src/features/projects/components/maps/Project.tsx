@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
-import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
@@ -43,9 +42,7 @@ export default function Project({
   } = useProjectProps();
 
   const router = useRouter();
-  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
-    Position[] | null
-  >(null);
+
 
   async function loadRasterData() {
     let result;
@@ -91,9 +88,6 @@ export default function Project({
   }
 
   React.useEffect(() => {
-    // if (plantLocations && selectedPl && selectedPl.type === 'multi') {
-    //   setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
-    // }
     if (selectedPl) router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
   }, [selectedPl]);
 
@@ -127,7 +121,6 @@ export default function Project({
     plantLocations,
     router.query.ploc,
     selectedPl,
-    plantPolygonCoordinates,
   ]);
 
   //Props
