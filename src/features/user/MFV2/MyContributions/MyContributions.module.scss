@@ -73,3 +73,12 @@
   font-size: $fontMedium;
   font-weight: 700;
 }
+
+.donationButton {
+  &.conservation {
+    background-color: $mediumBlueColor;
+  }
+  &.restoration {
+    background-color: $electricPurpleColor;
+  }
+}

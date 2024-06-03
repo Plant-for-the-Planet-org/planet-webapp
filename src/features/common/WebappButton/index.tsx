@@ -6,6 +6,8 @@ interface CommonProps {
   icon?: ReactElement;
   text?: string;
   variant?: 'primary' | 'secondary' | 'tertiary';
+  /** Modifications to the default button styles */
+  buttonClasses?: string;
 }
 
 interface LinkProps extends CommonProps {
@@ -30,7 +32,9 @@ function WebappButton({
   if (otherProps.elementType === 'link') {
     return (
       <Link href={otherProps.href} target={otherProps.target || '_self'}>
-        <button className={`${styles.webappButton} ${buttonVariantClasses}`}>
+        <button
+          className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
+        >
           {otherProps.icon !== undefined && (
             <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
           )}
@@ -41,7 +45,7 @@ function WebappButton({
   } else {
     return (
       <button
-        className={`${styles.webappButton} ${buttonVariantClasses}`}
+        className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
         onClick={(e) => {
           e.preventDefault(); //ignores href if provided without elementType='link'
           otherProps.onClick();
