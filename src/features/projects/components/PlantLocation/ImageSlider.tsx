@@ -33,6 +33,7 @@ export default function ImageSlider({
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
+        const ask = []
         projectImages.push({
           content: () => (
             <div
@@ -48,19 +49,17 @@ export default function ImageSlider({
           ),
         });
       }
+      setSlider(
+        <Stories
+          stories={projectImages}
+          defaultInterval={7000}
+          width="100%"
+          height={height}
+          loop={true}
+        />
+      )
     });
   }, [images]);
 
-  React.useEffect(() => {
-    setSlider(
-      <Stories
-        stories={projectImages}
-        defaultInterval={7000}
-        width="100%"
-        height={height}
-        loop={true}
-      />
-    );
-  }, []);
   return <>{slider}</>;
 }
