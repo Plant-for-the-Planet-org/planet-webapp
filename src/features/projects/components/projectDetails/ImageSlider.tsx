@@ -31,7 +31,7 @@ export default function ImageSlider({
 
   React.useEffect(() => {
     images.forEach((sliderImage) => {
-      if (sliderImage.image) {
+      if (sliderImage && sliderImage.image && sliderImage.image !== '') {
         const imageURL = loadImageSource(sliderImage.image);
         projectImages.push({
           content: () => (
@@ -41,8 +41,8 @@ export default function ImageSlider({
                 type === 'coordinate'
                   ? { background: `url(${imageURL})` }
                   : {
-                      background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-                    }
+                    background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+                  }
               }
             >
               <p className={styles.projectImageSliderContentText}>
@@ -56,7 +56,7 @@ export default function ImageSlider({
   }, [images]);
 
   React.useEffect(() => {
-    if (projectImages.length > 0) {
+    if (projectImages && projectImages.length > 0) {
       setSlider(
         <Stories
           stories={projectImages}
