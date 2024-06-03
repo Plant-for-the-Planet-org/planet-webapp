@@ -148,8 +148,15 @@
 
 //tree target modal
 
-.targetModalMainContainer {
+.crossIconContainer {
   position: absolute;
+  right: 18px;
+  top: 18px;
+  cursor: pointer;
+}
+
+.targetModalMainContainer {
+  position: relative;
   left: 50%;
   top: 50%;
   width: 398px;
@@ -182,6 +189,16 @@
   flex-direction: column;
 }
 
+.deActivateTargetModal {
+  background: #f2f2f2;
+  .restoreTreeModalIconContainer,
+  .conservAreaModalIconConatiner,
+  .treeTargetModalIconConatainer {
+    background: #828282;
+  }
+}
+
+.deActivateTargetModal,
 .conservAreaTargetModalMainContainer,
 .restoreTreeTargetModalMainContainer,
 .treeTargetModalMainContainer {

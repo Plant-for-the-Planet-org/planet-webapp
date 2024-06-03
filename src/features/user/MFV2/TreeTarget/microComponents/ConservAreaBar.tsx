@@ -1,29 +1,23 @@
-import EditTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/EditTargetIcon';
-import TreeTargetPlantedTrees from '../../../../../../public/assets/images/icons/Mfv2/TreeTargetPlantedTrees';
+import ConservedAreaTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/ConservAreaTargetIcon';
 import targetBarStyle from '../TreeTargetBar.module.scss';
-import themeProperties from '../../../../../theme/themeProperties';
+import EditTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/EditTargetIcon';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { calculatePercentage } from '../../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
+import { TargetProps } from './PlantTreeBar';
 
-interface EditButtonProps {
-  handleOpen: () => void;
-  treeTarget: number;
-}
-export interface TargetBarProps {
-  treeTarget: number;
-  treePlanted: number;
+interface ConservTargetBarProps {
   calculatePercentage: number;
   giftsReceivedCount: number | undefined;
 }
 
-export interface TargetProps {
+interface EditButtonProps {
   handleOpen: () => void;
 }
 
-const EditButton = ({ handleOpen, treeTarget }: EditButtonProps) => {
+const EditButton = ({ handleOpen }: EditButtonProps) => {
+  const { conservTarget } = useMyForestV2();
   const tProfile = useTranslations('Profile');
   return (
     <div className={targetBarStyle.editTargetButtonContainer}>
@@ -31,9 +25,9 @@ const EditButton = ({ handleOpen, treeTarget }: EditButtonProps) => {
         className={targetBarStyle.editTargetContainer}
         onClick={handleOpen}
       >
-        <EditTargetIcon width={9} color={themeProperties.primaryDarkColor} />
-        <p className={targetBarStyle.treeTargetLabel}>
-          {treeTarget > 0
+        <EditTargetIcon width={9} color={'rgba(45, 156, 219, 1)'} />
+        <p className={targetBarStyle.conservTargetLabel}>
+          {conservTarget > 0
             ? tProfile('progressBar.editTarget')
             : tProfile('progressBar.setTarget')}
         </p>
@@ -42,58 +36,60 @@ const EditButton = ({ handleOpen, treeTarget }: EditButtonProps) => {
   );
 };
 
-const TreeTargetBar = ({
-  treeTarget,
-  treePlanted,
+const ConservTargetBar = ({
   calculatePercentage,
   giftsReceivedCount,
-}: TargetBarProps) => {
+}: ConservTargetBarProps) => {
   const tProfile = useTranslations('Profile');
+  const { conservTarget, conservArea } = useMyForestV2();
+
   return (
     <div className={targetBarStyle.targetSubContainer}>
       <div className={targetBarStyle.statisticsContainer}>
-        <div className={targetBarStyle.iconContainerTreeTarget}>
-          <TreeTargetPlantedTrees width={19} />
+        <div className={targetBarStyle.iconContainerConservArea}>
+          <ConservedAreaTargetIcon width={19} />
         </div>
         <div className={targetBarStyle.targetStatisticsContainer}>
           <div className={targetBarStyle.stat}>
-            {treeTarget > 0
-              ? tProfile('progressBar.treeWithTarget', {
-                  count: treePlanted,
-                  total: treeTarget,
+            {conservTarget > 0
+              ? tProfile('progressBar.conservWithTarget', {
+                  count: conservArea,
+                  unit: conservTarget,
                 })
-              : tProfile('progressBar.treeWithoutTarget', {
-                  count: treePlanted,
+              : tProfile('progressBar.conservWithoutTarget', {
+                  unit: conservArea,
                 })}
           </div>
           <div className={targetBarStyle.barContainer}>
-            <div className={targetBarStyle.barSubContainerTreeTarget}>
+            <div className={targetBarStyle.barSubContainerRestoreArea}>
               <div
                 style={{
-                  width: `${treeTarget > 0 ? calculatePercentage : 100}%`,
+                  width: `${conservTarget > 0 ? calculatePercentage : 100}%`,
                   borderTopRightRadius: `${
-                    treeTarget > 0 && treePlanted < treeTarget ? 0 : 5
+                    conservTarget > 0 && conservArea < conservTarget ? 0 : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    treeTarget > 0 && treePlanted < treeTarget ? 0 : 5
+                    conservTarget > 0 && conservArea < conservTarget ? 0 : 5
                   }px`,
                 }}
-                className={targetBarStyle.treeTargetCompleteBar}
+                className={targetBarStyle.conservTargetCompleteBar}
               ></div>
               <div
                 style={{
                   width: `${
-                    treeTarget > 0 && treePlanted < treeTarget
+                    conservTarget > 0 && conservArea < conservTarget
                       ? 100 - calculatePercentage
                       : 0
                   }%`,
+                  borderTopLeftRadius: `${conservArea === 0 ? 5 : 0}px`,
+                  borderBottomLeftRadius: `${conservArea === 0 ? 5 : 0}px`,
                 }}
-                className={targetBarStyle.treeTargetBar}
+                className={targetBarStyle.conservTargetBar}
               ></div>
             </div>
             <div>
-              {treeTarget > 0 &&
-                `${treePlanted > treeTarget ? 100 : calculatePercentage}%`}
+              {conservTarget > 0 &&
+                `${conservArea > conservTarget ? 100 : calculatePercentage}%`}
             </div>
           </div>
           {giftsReceivedCount !== undefined && giftsReceivedCount > 0 && (
@@ -109,23 +105,19 @@ const TreeTargetBar = ({
   );
 };
 
-const PlantTreeTarget = ({ handleOpen }: PlantTreeTargetProps) => {
-  const { treePlanted, contributionsResult } = useMyForestV2();
-  const { user } = useUserProps();
-  const treeTarget = user?.targets.treesDonated;
+const ConservAreaTarget = ({ handleOpen }: TargetProps) => {
+  const { conservArea, contributionsResult, conservTarget } = useMyForestV2();
   const giftsReceivedCount = contributionsResult?.stats.giftsReceivedCount;
 
   const _calculatePercentage: number = useMemo(
-    () => calculatePercentage(treeTarget, treePlanted),
-    [treeTarget, treePlanted]
+    () => calculatePercentage(conservTarget, conservArea),
+    [conservTarget, conservArea]
   );
 
   return (
-    <div className={targetBarStyle.targetMainContainerTreeTarget}>
-      <EditButton handleOpen={handleOpen} treeTarget={treeTarget} />
-      <TreeTargetBar
-        treeTarget={treeTarget}
-        treePlanted={treePlanted}
+    <div className={targetBarStyle.targetMainContainerConservArea}>
+      <EditButton handleOpen={handleOpen} />
+      <ConservTargetBar
         calculatePercentage={Number(_calculatePercentage.toFixed(1))}
         giftsReceivedCount={giftsReceivedCount}
       />
@@ -133,4 +125,4 @@ const PlantTreeTarget = ({ handleOpen }: PlantTreeTargetProps) => {
   );
 };
 
-export default PlantTreeTarget;
+export default ConservAreaTarget;

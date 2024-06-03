@@ -64,7 +64,12 @@
       "conservWithoutTarget": "{unit}  m2 conserved",
       "totalGiftFromCommunity": "{quantity} from our community ",
       "editTarget": "Edit Target",
-      "setTarget": "Set Target"
+      "setTarget": "Set Target",
+      "plantedTreesTarget": "Planted trees target",
+      "areaConservedTarget": "Area conserved target",
+      "save": "Save",
+      "setTargets": "Set targets",
+      "areaRestoredTarget": "Area restored target"
     }
   }
 }

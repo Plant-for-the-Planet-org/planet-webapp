@@ -20,6 +20,7 @@ import {
   MapLocation,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
+import { SetState } from '../types/common';
 
 interface RegistrationGeojson {
   geometry: Point;
@@ -42,6 +43,14 @@ interface MyForestContextV2Interface {
   treePlanted: number;
   restoredTree: number;
   conservArea: number;
+  isTargetModalLoading: boolean;
+  setIsTargetModalLoading: SetState<boolean>;
+  treeTarget: number;
+  setTreeTarget: SetState<number>;
+  restoreTarget: number;
+  setRestoreTarget: SetState<number>;
+  conservTarget: number;
+  setConservTarget: SetState<number>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -49,6 +58,9 @@ const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
 );
 
 export const MyForestProviderV2: FC = ({ children }) => {
+  const { user } = useUserProps();
+  const { setErrors } = useContext(ErrorHandlingContext);
+
   const [projectListResult, setProjectListResult] =
     useState<ProjectListResponse>();
   const [contributionsResult, setContributionsResult] =
@@ -58,11 +70,16 @@ export const MyForestProviderV2: FC = ({ children }) => {
   >([]);
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
   const [treePlanted, setTreePlanted] = useState(0);
+  const [treeTarget, setTreeTarget] = useState(user?.targets.treesDonated);
   const [restoredTree, setRestoredTree] = useState(0);
+  const [restoreTarget, setRestoreTarget] = useState(
+    user?.targets.areaRestored
+  );
   const [conservArea, setConservArea] = useState(0);
-
-  const { user } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  const [conservTarget, setConservTarget] = useState(
+    user?.targets.areaConserved
+  );
+  const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
   const _contributions = trpc.myForestV2.contributions.useQuery({
@@ -180,6 +197,14 @@ export const MyForestProviderV2: FC = ({ children }) => {
       treePlanted,
       restoredTree,
       conservArea,
+      isTargetModalLoading,
+      setIsTargetModalLoading,
+      treeTarget,
+      setTreeTarget,
+      restoreTarget,
+      setRestoreTarget,
+      conservTarget,
+      setConservTarget,
     }),
     [
       projectListResult,
@@ -189,6 +214,14 @@ export const MyForestProviderV2: FC = ({ children }) => {
       treePlanted,
       restoredTree,
       conservArea,
+      isTargetModalLoading,
+      setIsTargetModalLoading,
+      treeTarget,
+      setTreeTarget,
+      restoreTarget,
+      setRestoreTarget,
+      conservTarget,
+      setConservTarget,
     ]
   );
 
