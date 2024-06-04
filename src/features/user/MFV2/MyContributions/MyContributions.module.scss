@@ -63,15 +63,18 @@
   .projectName {
     font-weight: 700;
     font-size: $fontMedium;
+    color: #333;
   }
   .additionalProjectInfo {
     font-size: $fontSmall;
+    color: #4f4f4f;
   }
 }
 
 .projectTotalContributions {
   font-size: $fontMedium;
   font-weight: 700;
+  color: #333;
 }
 
 .donationButton {
@@ -80,5 +83,18 @@
   }
   &.restoration {
     background-color: $electricPurpleColor;
+  }
+}
+
+.registrationSummary {
+  .registeredTreeCount {
+    font-weight: 700;
+    font-size: $fontMedium;
+    color: #333;
+  }
+
+  .registrationInfo {
+    font-size: $fontSmall;
+    color: #4f4f4f;
   }
 }

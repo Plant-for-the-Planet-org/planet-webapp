@@ -53,7 +53,9 @@
       "giftReceivedInfo": "Gift from {name}",
       "giftGivenInfo": "Gift to {name}",
       "anonymousUser": "an anonymous user",
-      "contributionCountOverflow": "+{additionalCount, plural, =1 {# more contribution} other {# more contributions}}"
+      "contributionCountOverflow": "+{additionalCount, plural, =1 {# more contribution} other {# more contributions}}",
+      "treesRegisteredHeadline": "{count, plural, =1 {# Tree} other {# Trees}}",
+      "registrationInfo": "Registered • {countryName} • {date}"
     },
     "shareFeature": {
       "shareTextTitle": "Stop talking. Start planting.",
