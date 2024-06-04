@@ -23,16 +23,18 @@ export const decorators = [
     return (
       <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
         <style>{globalStyles}</style>
-        <MUIThemeProvider theme={materialTheme}>
-          {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
-          <TenantProvider>
-            <UserPropsProvider>
-              <ThemeProvider theme={materialTheme}>
-                <Story />
-              </ThemeProvider>
-            </UserPropsProvider>
-          </TenantProvider>
-        </MUIThemeProvider>
+        <div className="theme-light" style={{ width: 'fit-content' }}>
+          <MUIThemeProvider theme={materialTheme}>
+            {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
+            <TenantProvider>
+              <UserPropsProvider>
+                <ThemeProvider theme={materialTheme}>
+                  <Story />
+                </ThemeProvider>
+              </UserPropsProvider>
+            </TenantProvider>
+          </MUIThemeProvider>
+        </div>
       </NextIntlClientProvider>
     );
   },
