@@ -4,27 +4,34 @@ import CustomTargetTextField from './CustomTargetTextField';
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { ChangeEvent } from 'react';
 import themeProperties from '../../../../../theme/themeProperties';
 
 const RestoreAreaTargetModal = () => {
-  const { restoreTarget, setRestoreTarget } = useMyForestV2();
+  const { restoreTarget, setRestoreTarget, restoreChecked, setRestoreChecked } =
+    useMyForestV2();
   const tProfile = useTranslations('Profile');
   const { electricPurple } = themeProperties;
-  const [checked, setChecked] = useState(restoreTarget > 0);
 
-  const handleChange = () => {
+  const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (restoreTarget > 0) {
-      setChecked(true);
-    } else {
-      setChecked(false);
+      setRestoreChecked(e.target.checked);
+      localStorage.setItem('restoreChecked', `${e.target.checked}`);
     }
+  };
+
+  const handleTextFieldChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    localStorage.setItem('restoreChecked', `true`);
+    setRestoreChecked(Number(e.target.value) > 0 ? true : false);
+    setRestoreTarget(Number(e.target.value));
   };
 
   return (
     <div
       className={
-        restoreTarget > 0
+        restoreChecked
           ? targetBarStyle.restoreTreeTargetModalMainContainer
           : targetBarStyle.deActivateTargetModal
       }
@@ -40,17 +47,14 @@ const RestoreAreaTargetModal = () => {
         </div>
         <CustomTargetSwitch
           switchColor={`${electricPurple}`}
-          checked={checked}
-          onChange={handleChange}
+          checked={restoreChecked}
+          onChange={handleSwitchChange}
         />
       </div>
       <CustomTargetTextField
         variant="outlined"
         focusColor={`${electricPurple}`}
-        onChange={(e) => {
-          setChecked(e.target.value ? true : false);
-          setRestoreTarget(Number(e.target.value));
-        }}
+        onChange={handleTextFieldChange}
         value={restoreTarget || ''}
       />
     </div>

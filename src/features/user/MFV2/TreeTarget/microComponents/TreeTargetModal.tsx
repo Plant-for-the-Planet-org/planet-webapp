@@ -3,28 +3,36 @@ import CustomTargetTextField from './CustomTargetTextField';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import themeProperties from '../../../../../theme/themeProperties';
+import { ChangeEvent } from 'react';
 
 const TreeTargetModal = () => {
   const tProfile = useTranslations('Profile');
-  const { treeTarget, setTreeTarget } = useMyForestV2();
-  const [checked, setChecked] = useState(treeTarget > 0);
+  const { treeTarget, setTreeTarget, treeChecked, setTreeChecked } =
+    useMyForestV2();
   const { primaryDarkColor } = themeProperties;
 
-  const handleChange = () => {
+  const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //if user set some target then make toggle active and set the localstorage
     if (treeTarget > 0) {
-      setChecked(true);
-    } else {
-      setChecked(false);
+      setTreeChecked(e.target.checked);
+      localStorage.setItem('treeChecked', `${e.target.checked}`);
     }
+  };
+
+  const handleTextFieldChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    localStorage.setItem('treeChecked', `true`);
+    setTreeChecked(Number(e.target.value) > 0 ? true : false);
+    setTreeTarget(Number(e.target.value));
   };
 
   return (
     <div
       className={
-        treeTarget
+        treeChecked
           ? targetBarStyle.treeTargetModalMainContainer
           : targetBarStyle.deActivateTargetModal
       }
@@ -40,18 +48,15 @@ const TreeTargetModal = () => {
         </div>
         <CustomTargetSwitch
           switchColor={`${primaryDarkColor}`}
-          checked={checked}
-          onChange={handleChange}
+          checked={treeChecked}
+          onChange={handleSwitchChange}
         />
       </div>
       <CustomTargetTextField
         type="number"
         variant="outlined"
         focusColor={`${primaryDarkColor}`}
-        onChange={(e) => {
-          setChecked(e.target.value ? true : false);
-          setTreeTarget(Number(e.target.value));
-        }}
+        onChange={handleTextFieldChange}
         value={treeTarget || ''}
       />
     </div>

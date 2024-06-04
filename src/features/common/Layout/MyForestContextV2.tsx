@@ -51,6 +51,12 @@ interface MyForestContextV2Interface {
   setRestoreTarget: SetState<number>;
   conservTarget: number;
   setConservTarget: SetState<number>;
+  treeChecked: boolean;
+  setTreeChecked: SetState<boolean>;
+  restoreChecked: boolean;
+  setRestoreChecked: SetState<boolean>;
+  conservChecked: boolean;
+  setConservChecked: SetState<boolean>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -71,14 +77,17 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
   const [treePlanted, setTreePlanted] = useState(0);
   const [treeTarget, setTreeTarget] = useState(user?.targets.treesDonated);
+  const [treeChecked, setTreeChecked] = useState(false);
   const [restoredTree, setRestoredTree] = useState(0);
   const [restoreTarget, setRestoreTarget] = useState(
     user?.targets.areaRestored
   );
+  const [restoreChecked, setRestoreChecked] = useState(false);
   const [conservArea, setConservArea] = useState(0);
   const [conservTarget, setConservTarget] = useState(
     user?.targets.areaConserved
   );
+  const [conservChecked, setConservChecked] = useState(false);
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
@@ -86,6 +95,37 @@ export const MyForestProviderV2: FC = ({ children }) => {
     profileId: `${user?.id}`,
     slug: `${user?.slug}`,
   });
+
+  const targetStatus = () => {
+    if (localStorage.getItem('treeChecked') && treeTarget > 0) {
+      //to check if user has treeTarget value but disabled it in the profile
+      setTreeChecked(
+        localStorage.getItem('treeChecked') === 'false' ? false : true
+      );
+    } else {
+      setTreeChecked(treeTarget > 0);
+    }
+    if (localStorage.getItem('restoreChecked') && restoreTarget > 0) {
+      //to check if user has treeTarget value but disabled it in the profile
+      setTreeChecked(
+        localStorage.getItem('restoreChecked') === 'false' ? false : true
+      );
+    } else {
+      setTreeChecked(restoreTarget > 0);
+    }
+    if (localStorage.getItem('conservChecked') && conservTarget > 0) {
+      //to check if user has treeTarget value but disabled it in the profile
+      setTreeChecked(
+        localStorage.getItem('conservChecked') === 'false' ? false : true
+      );
+    } else {
+      setTreeChecked(conservTarget > 0);
+    }
+  };
+
+  useEffect(() => {
+    targetStatus();
+  }, []);
 
   const aggregate = () => {
     if (_contributions.data?.stats) {
@@ -205,6 +245,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setRestoreTarget,
       conservTarget,
       setConservTarget,
+      treeChecked,
+      setTreeChecked,
+      restoreChecked,
+      setRestoreChecked,
+      conservChecked,
+      setConservChecked,
     }),
     [
       projectListResult,
@@ -222,6 +268,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setRestoreTarget,
       conservTarget,
       setConservTarget,
+      treeChecked,
+      setTreeChecked,
+      restoreChecked,
+      setRestoreChecked,
+      conservChecked,
+      setConservChecked,
     ]
   );
 

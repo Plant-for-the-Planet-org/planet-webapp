@@ -42,7 +42,7 @@ const ConservTargetBar = ({
   giftsReceivedCount,
 }: ConservTargetBarProps) => {
   const tProfile = useTranslations('Profile');
-  const { conservTarget, conservArea } = useMyForestV2();
+  const { conservTarget, conservArea, conservChecked } = useMyForestV2();
 
   return (
     <div className={targetBarStyle.targetSubContainer}>
@@ -52,7 +52,7 @@ const ConservTargetBar = ({
         </div>
         <div className={targetBarStyle.targetStatisticsContainer}>
           <div className={targetBarStyle.stat}>
-            {conservTarget > 0
+            {conservTarget > 0 && conservChecked
               ? tProfile('progressBar.conservWithTarget', {
                   count: conservArea,
                   unit: conservTarget,
@@ -65,12 +65,24 @@ const ConservTargetBar = ({
             <div className={targetBarStyle.barSubContainerRestoreArea}>
               <div
                 style={{
-                  width: `${conservTarget > 0 ? calculatePercentage : 100}%`,
+                  width: `${
+                    conservTarget > 0 && conservChecked
+                      ? calculatePercentage
+                      : 100
+                  }%`,
                   borderTopRightRadius: `${
-                    conservTarget > 0 && conservArea < conservTarget ? 0 : 5
+                    conservTarget > 0 &&
+                    conservArea < conservTarget &&
+                    conservChecked
+                      ? 0
+                      : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    conservTarget > 0 && conservArea < conservTarget ? 0 : 5
+                    conservTarget > 0 &&
+                    conservArea < conservTarget &&
+                    conservChecked
+                      ? 0
+                      : 5
                   }px`,
                 }}
                 className={targetBarStyle.conservTargetCompleteBar}
@@ -78,7 +90,9 @@ const ConservTargetBar = ({
               <div
                 style={{
                   width: `${
-                    conservTarget > 0 && conservArea < conservTarget
+                    conservTarget > 0 &&
+                    conservArea < conservTarget &&
+                    conservChecked
                       ? 100 - calculatePercentage
                       : 0
                   }%`,
@@ -90,6 +104,7 @@ const ConservTargetBar = ({
             </div>
             <div>
               {conservTarget > 0 &&
+                conservChecked &&
                 `${conservArea > conservTarget ? 100 : calculatePercentage}%`}
             </div>
           </div>

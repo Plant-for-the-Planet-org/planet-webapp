@@ -18,17 +18,20 @@ const ProgressBars = ({ handleOpen }: TargetProps) => {
     treeTarget,
     conservTarget,
     restoreTarget,
+    treeChecked,
+    restoreChecked,
+    conservChecked,
   } = useMyForestV2();
 
   return (
     <>
-      {(treePlanted > 0 || treeTarget > 0) && (
+      {(treePlanted > 0 || (treeTarget > 0 && treeChecked)) && (
         <PlantTreeProgressBar handleOpen={handleOpen} />
       )}
-      {(restoredTree > 0 || restoreTarget > 0) && (
+      {(restoredTree > 0 || (restoreTarget > 0 && restoreChecked)) && (
         <RestoreAreaProgressBar handleOpen={handleOpen} />
       )}
-      {(conservArea > 0 || conservTarget > 0) && (
+      {(conservArea > 0 || (conservTarget > 0 && conservChecked)) && (
         <ConservAreaProgressBar handleOpen={handleOpen} />
       )}
     </>

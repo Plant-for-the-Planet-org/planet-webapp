@@ -39,7 +39,7 @@ const TreeTargetBar = ({
   calculatePercentage,
   giftsReceivedCount,
 }: TargetBarProps) => {
-  const { treePlanted, treeTarget } = useMyForestV2();
+  const { treePlanted, treeTarget, treeChecked } = useMyForestV2();
   const tProfile = useTranslations('Profile');
   return (
     <div className={targetBarStyle.targetSubContainer}>
@@ -49,7 +49,7 @@ const TreeTargetBar = ({
         </div>
         <div className={targetBarStyle.targetStatisticsContainer}>
           <div className={targetBarStyle.stat}>
-            {treeTarget > 0
+            {treeTarget > 0 && treeChecked
               ? tProfile('progressBar.treeWithTarget', {
                   count: treePlanted,
                   total: treeTarget,
@@ -62,12 +62,18 @@ const TreeTargetBar = ({
             <div className={targetBarStyle.barSubContainerTreeTarget}>
               <div
                 style={{
-                  width: `${treeTarget > 0 ? calculatePercentage : 100}%`,
+                  width: `${
+                    treeTarget > 0 && treeChecked ? calculatePercentage : 100
+                  }%`,
                   borderTopRightRadius: `${
-                    treeTarget > 0 && treePlanted < treeTarget ? 0 : 5
+                    treeTarget > 0 && treePlanted < treeTarget && treeChecked
+                      ? 0
+                      : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    treeTarget > 0 && treePlanted < treeTarget ? 0 : 5
+                    treeTarget > 0 && treePlanted < treeTarget && treeChecked
+                      ? 0
+                      : 5
                   }px`,
                 }}
                 className={targetBarStyle.treeTargetCompleteBar}
@@ -75,7 +81,7 @@ const TreeTargetBar = ({
               <div
                 style={{
                   width: `${
-                    treeTarget > 0 && treePlanted < treeTarget
+                    treeTarget > 0 && treePlanted < treeTarget && treeChecked
                       ? 100 - calculatePercentage
                       : 0
                   }%`,
@@ -87,6 +93,7 @@ const TreeTargetBar = ({
             </div>
             <div>
               {treeTarget > 0 &&
+                treeChecked &&
                 `${treePlanted > treeTarget ? 100 : calculatePercentage}%`}
             </div>
           </div>

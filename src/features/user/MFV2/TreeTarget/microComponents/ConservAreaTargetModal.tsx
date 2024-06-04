@@ -2,28 +2,36 @@ import ConservedAreaTargetIcon from '../../../../../../public/assets/images/icon
 import CustomTargetSwitch from './CustomTargetSwitch';
 import CustomTargetTextField from './CustomTargetTextField';
 import targetBarStyle from '../TreeTargetBar.module.scss';
-import { useState } from 'react';
+import { ChangeEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import themeProperties from '../../../../../theme/themeProperties';
 
 const ConservAreaTargetModal = () => {
-  const { conservTarget, setConservTarget } = useMyForestV2();
-  const [checked, setChecked] = useState(conservTarget > 0);
+  const { conservTarget, setConservTarget, setConservChecked, conservChecked } =
+    useMyForestV2();
   const { mediumBlue } = themeProperties;
   const tProfile = useTranslations('Profile');
 
-  const handleChange = () => {
+  const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //if user set some target then make toggle active and set the localstorage
     if (conservTarget > 0) {
-      setChecked(true);
-    } else {
-      setChecked(false);
+      setConservChecked(e.target.checked);
+      localStorage.setItem('treeChecked', `${e.target.checked}`);
     }
+  };
+
+  const handleTextFieldChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    localStorage.setItem('treeChecked', `true`);
+    setConservChecked(Number(e.target.value) > 0 ? true : false);
+    setConservTarget(Number(e.target.value));
   };
   return (
     <div
       className={
-        conservTarget > 0
+        conservChecked
           ? targetBarStyle.conservAreaTargetModalMainContainer
           : targetBarStyle.deActivateTargetModal
       }
@@ -39,18 +47,15 @@ const ConservAreaTargetModal = () => {
         </div>
         <CustomTargetSwitch
           switchColor={`${mediumBlue}`}
-          onChange={handleChange}
-          checked={checked}
+          onChange={handleSwitchChange}
+          checked={conservChecked}
         />
       </div>
       <CustomTargetTextField
         type="number"
         variant="outlined"
         focusColor={`${mediumBlue}`}
-        onChange={(e) => {
-          setChecked(e.target.value ? true : false);
-          setConservTarget(Number(e.target.value));
-        }}
+        onChange={handleTextFieldChange}
         value={conservTarget || ''}
       />
     </div>

@@ -41,7 +41,7 @@ const RestoreTargetBar = ({
   giftsReceivedCount,
 }: RestoreTargetBarProps) => {
   const tProfile = useTranslations('Profile');
-  const { restoredTree, restoreTarget } = useMyForestV2();
+  const { restoredTree, restoreTarget, restoreChecked } = useMyForestV2();
   return (
     <div className={targetBarStyle.targetSubContainer}>
       <div className={targetBarStyle.statisticsContainer}>
@@ -50,7 +50,7 @@ const RestoreTargetBar = ({
         </div>
         <div className={targetBarStyle.targetStatisticsContainer}>
           <div className={targetBarStyle.stat}>
-            {restoreTarget > 0
+            {restoreTarget > 0 && restoreChecked
               ? tProfile('progressBar.restoreWithTarget', {
                   count: restoredTree,
                   unit: restoreTarget,
@@ -63,12 +63,24 @@ const RestoreTargetBar = ({
             <div className={targetBarStyle.barSubContainerRestoreArea}>
               <div
                 style={{
-                  width: `${restoreTarget > 0 ? calculatePercentage : 100}%`,
+                  width: `${
+                    restoreTarget > 0 && restoreChecked
+                      ? calculatePercentage
+                      : 100
+                  }%`,
                   borderTopRightRadius: `${
-                    restoreTarget > 0 && restoredTree < restoreTarget ? 0 : 5
+                    restoreTarget > 0 &&
+                    restoredTree < restoreTarget &&
+                    restoreChecked
+                      ? 0
+                      : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    restoreTarget > 0 && restoredTree < restoreTarget ? 0 : 5
+                    restoreTarget > 0 &&
+                    restoredTree < restoreTarget &&
+                    restoreChecked
+                      ? 0
+                      : 5
                   }px`,
                 }}
                 className={targetBarStyle.restoredTargetCompleteBar}
@@ -76,7 +88,9 @@ const RestoreTargetBar = ({
               <div
                 style={{
                   width: `${
-                    restoreTarget > 0 && restoredTree < restoreTarget
+                    restoreTarget > 0 &&
+                    restoredTree < restoreTarget &&
+                    restoreChecked
                       ? 100 - calculatePercentage
                       : 0
                   }%`,
@@ -88,6 +102,7 @@ const RestoreTargetBar = ({
             </div>
             <div>
               {restoreTarget > 0 &&
+                restoreChecked &&
                 `${restoredTree > restoreTarget ? 100 : calculatePercentage}%`}
             </div>
           </div>
