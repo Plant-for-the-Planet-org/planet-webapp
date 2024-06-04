@@ -1,13 +1,19 @@
 import targetBarStyle from '../TreeTargetBar.module.scss';
+import { useTranslations } from 'next-intl';
 
-const TargetInitialize = ({ handleOpen }) => {
+interface TargetInitializeProps {
+  handleOpen: () => void;
+}
+
+const TargetInitialize = ({ handleOpen }: TargetInitializeProps) => {
+  const tProfile = useTranslations('Profile');
   return (
     <div className={targetBarStyle.targetInitializeMainContainer}>
       <div className={targetBarStyle.setTargetLabel}>
-        Set targets for planted trees, area conserved, and area restored
+        {tProfile('progressBar.targetInfo')}
       </div>
       <button className={targetBarStyle.setTargetButton} onClick={handleOpen}>
-        Set target
+        {tProfile('progressBar.setTargets')}
       </button>
     </div>
   );

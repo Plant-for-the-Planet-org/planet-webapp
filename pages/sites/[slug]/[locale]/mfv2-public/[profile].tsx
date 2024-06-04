@@ -23,6 +23,7 @@ import { useTenant } from '../../../../../src/features/common/Layout/TenantConte
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
 
 interface Props {
   pageProps: PageProps;
@@ -69,9 +70,11 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
       <Head>
         <title>My Forest V2</title>
       </Head>
-      <PublicProfileOuterContainer>
-        <PublicProfileLayout profile={profile} />
-      </PublicProfileOuterContainer>
+      <MyForestProviderV2>
+        <PublicProfileOuterContainer>
+          <PublicProfileLayout profile={profile} />
+        </PublicProfileOuterContainer>
+      </MyForestProviderV2>
     </>
   ) : (
     <></>

@@ -69,7 +69,8 @@
       "areaConservedTarget": "Area conserved target",
       "save": "Save",
       "setTargets": "Set targets",
-      "areaRestoredTarget": "Area restored target"
+      "areaRestoredTarget": "Area restored target",
+      "targetInfo": "Set targets for planted trees, area conserved, and area restored"
     }
   }
 }

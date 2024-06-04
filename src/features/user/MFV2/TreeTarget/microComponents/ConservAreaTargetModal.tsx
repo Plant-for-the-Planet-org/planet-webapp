@@ -5,10 +5,12 @@ import targetBarStyle from '../TreeTargetBar.module.scss';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
+import themeProperties from '../../../../../theme/themeProperties';
 
 const ConservAreaTargetModal = () => {
   const { conservTarget, setConservTarget } = useMyForestV2();
   const [checked, setChecked] = useState(conservTarget > 0);
+  const { mediumBlue } = themeProperties;
   const tProfile = useTranslations('Profile');
 
   const handleChange = () => {
@@ -36,7 +38,7 @@ const ConservAreaTargetModal = () => {
           </div>
         </div>
         <CustomTargetSwitch
-          switchColor="rgba(45, 156, 219, 1)"
+          switchColor={`${mediumBlue}`}
           onChange={handleChange}
           checked={checked}
         />
@@ -44,7 +46,7 @@ const ConservAreaTargetModal = () => {
       <CustomTargetTextField
         type="number"
         variant="outlined"
-        focusColor="rgba(45, 156, 219, 1)"
+        focusColor={`${mediumBlue}`}
         onChange={(e) => {
           setChecked(e.target.value ? true : false);
           setConservTarget(Number(e.target.value));

@@ -5,7 +5,7 @@ import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { useTranslations } from 'next-intl';
 import { calculatePercentage } from '../../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
-import { TargetProps } from './PlantTreeBar';
+import themeProperties from '../../../../../theme/themeProperties';
 
 interface ConservTargetBarProps {
   calculatePercentage: number;
@@ -19,13 +19,14 @@ interface EditButtonProps {
 const EditButton = ({ handleOpen }: EditButtonProps) => {
   const { conservTarget } = useMyForestV2();
   const tProfile = useTranslations('Profile');
+  const { mediumBlue } = themeProperties;
   return (
     <div className={targetBarStyle.editTargetButtonContainer}>
       <button
         className={targetBarStyle.editTargetContainer}
         onClick={handleOpen}
       >
-        <EditTargetIcon width={9} color={'rgba(45, 156, 219, 1)'} />
+        <EditTargetIcon width={9} color={`${mediumBlue}`} />
         <p className={targetBarStyle.conservTargetLabel}>
           {conservTarget > 0
             ? tProfile('progressBar.editTarget')
@@ -105,7 +106,11 @@ const ConservTargetBar = ({
   );
 };
 
-const ConservAreaTarget = ({ handleOpen }: TargetProps) => {
+interface ConservAreaTargetProp {
+  handleOpen: () => void;
+}
+
+const ConservAreaTarget = ({ handleOpen }: ConservAreaTargetProp) => {
   const { conservArea, contributionsResult, conservTarget } = useMyForestV2();
   const giftsReceivedCount = contributionsResult?.stats.giftsReceivedCount;
 

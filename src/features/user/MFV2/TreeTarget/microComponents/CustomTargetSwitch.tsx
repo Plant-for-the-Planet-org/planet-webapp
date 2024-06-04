@@ -1,10 +1,11 @@
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material';
+import themeProperties from '../../../../../theme/themeProperties';
 
 interface CustomTargetSwitchProps {
   switchColor: string;
 }
-
+const { light } = themeProperties;
 const CustomTargetSwitch = styled(Switch, {
   shouldForwardProp: (props) => props !== 'switchColor',
 })<CustomTargetSwitchProps>((p) => ({
@@ -24,7 +25,7 @@ const CustomTargetSwitch = styled(Switch, {
     padding: 2,
     '&.Mui-checked': {
       transform: 'translateX(15px)',
-      color: '#fff',
+      color: `${light.light}`,
       '& + .MuiSwitch-track': {
         opacity: 1,
         backgroundColor: `${p.switchColor}`,

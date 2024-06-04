@@ -5,7 +5,7 @@ import EditTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/Ed
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { calculatePercentage } from '../../../../../utils/myForestV2Utils';
-
+import themeProperties from '../../../../../theme/themeProperties';
 interface EditButtonProps {
   handleOpen: () => void;
 }
@@ -18,13 +18,14 @@ interface RestoreTargetBarProps {
 const EditButton = ({ handleOpen }: EditButtonProps) => {
   const { restoreTarget } = useMyForestV2();
   const tProfile = useTranslations('Profile');
+  const { electricPurple } = themeProperties;
   return (
     <div className={targetBarStyle.editTargetButtonContainer}>
       <button
         className={targetBarStyle.editTargetContainer}
         onClick={handleOpen}
       >
-        <EditTargetIcon width={9} color={'rgba(155, 81, 224, 1)'} />
+        <EditTargetIcon width={9} color={`${electricPurple}`} />
         <p className={targetBarStyle.restoreTargetLabel}>
           {restoreTarget > 0
             ? tProfile('progressBar.editTarget')
