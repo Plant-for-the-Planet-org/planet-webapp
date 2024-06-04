@@ -125,3 +125,33 @@
     object-fit: cover;
   }
 }
+
+.listHeader {
+  background: linear-gradient(
+    0deg,
+    rgba(104, 176, 48, 0.1),
+    rgba(104, 176, 48, 0.1)
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+
+  .headerTitle {
+    font-size: $fontLarge;
+    color: $primaryDarkColor;
+    font-weight: 700;
+  }
+
+  .iconContainer {
+    display: flex;
+    align-items: center;
+  }
+
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+}
