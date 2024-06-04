@@ -1,34 +1,29 @@
 import { useTranslations } from 'next-intl';
 import styles from './MyContributions.module.scss';
 import GiftIcon from '../../../../../public/assets/images/icons/Gift';
+import {
+  GiftReceivedDetails,
+  GiftGivenDetails,
+} from '../../../common/types/myForestv2';
 
-type GiftReceivedProps = {
-  giftDirection: 'received';
-  giftGiver?: string;
+type Props = {
+  giftDetails: GiftGivenDetails | GiftReceivedDetails;
 };
 
-type GiftGivenProps = {
-  giftDirection: 'given';
-  giftReceiver?: string;
-};
-
-type GiftLabelProps = GiftReceivedProps | GiftGivenProps;
-
-const GiftLabel = (props: GiftLabelProps) => {
+const GiftLabel = ({ giftDetails }: Props) => {
   const t = useTranslations('Profile');
-  const { giftDirection } = props;
 
   return (
     <div className={styles.giftLabel}>
       <div className={styles.giftIconContainer}>
         <GiftIcon />
       </div>
-      {giftDirection === 'received'
+      {'recipient' in giftDetails
         ? t('myContributions.giftReceivedInfo', {
-            name: props.giftGiver || t('myContributions.anonymousUser'),
+            name: giftDetails.recipient || t('myContributions.anonymousUser'),
           })
         : t('myContributions.giftGivenInfo', {
-            name: props.giftReceiver || t('myContributions.anonymousUser'),
+            name: giftDetails.giverName || t('myContributions.anonymousUser'),
           })}
     </div>
   );
