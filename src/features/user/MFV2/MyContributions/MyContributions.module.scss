@@ -23,12 +23,6 @@
   .contributedUnits {
     font-weight: 700;
   }
-
-  .giftIconContainer {
-    width: 10px;
-    display: grid;
-    place-items: center;
-  }
 }
 
 .tooltip {
@@ -97,4 +91,26 @@
     font-size: $fontSmall;
     color: #4f4f4f;
   }
+}
+
+.giftLabel {
+  font-size: $fontXXSmall;
+  font-weight: 700;
+  color: $primaryDarkColor;
+  background-color: #007a491a;
+  padding: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+
+  @include smTabletView {
+    padding: 4px;
+  }
+}
+
+.giftIconContainer {
+  width: 10px;
+  display: grid;
+  place-items: center;
 }

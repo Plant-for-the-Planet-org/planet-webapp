@@ -23,7 +23,7 @@ export const decorators = [
     return (
       <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
         <style>{globalStyles}</style>
-        <div className="theme-light" style={{ width: 'fit-content' }}>
+        <div className="theme-light" style={{ backgroundColor: 'transparent' }}>
           <MUIThemeProvider theme={materialTheme}>
             {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
             <TenantProvider>
