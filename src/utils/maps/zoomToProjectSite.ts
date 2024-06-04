@@ -14,7 +14,7 @@ export default function zoomToProjectSite(
   viewport: ViewPort,
   setViewPort: SetState<ViewPort>,
   setSiteViewPort: SetState<SiteViewPort | null>,
-  duration = 1200
+  duration = 4000
 ) {
   if (viewport.width && viewport.height && geoJson) {
     // decide which paddings to use (for mobile or normal)

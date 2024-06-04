@@ -94,17 +94,6 @@ export default function Project({
   React.useEffect(() => {
     if (project.sites && siteExists && !router.query.ploc && !selectedPl) {
       loadRasterData();
-      zoomToProjectSite(
-        {
-          type: 'FeatureCollection',
-          features: project.sites,
-        },
-        selectedSite,
-        viewport,
-        setViewPort,
-        setSiteViewPort,
-        3000
-      );
     } else if (selectedPl) {
       const locationCoordinates = selectedPl.type === 'multi' ? selectedPl.geometry.coordinates[0] : selectedPl.geometry.coordinates
       zoomToPlantLocation(
