@@ -62,7 +62,7 @@
       "restoreWithoutTarget": "{unit}  m2 restored",
       "conservWithTarget": "{count} of {unit}  m2 conserved",
       "conservWithoutTarget": "{unit}  m2 conserved",
-      "totalGiftFromCommunity": "{quantity} from our community ",
+      "totalGiftFromCommunity": "{quantity} from your community",
       "editTarget": "Edit Target",
       "setTarget": "Set Target",
       "plantedTreesTarget": "Planted trees target",

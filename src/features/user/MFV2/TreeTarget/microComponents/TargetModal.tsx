@@ -88,8 +88,8 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
 
         <div className={targetBarStyle.targetModalSubConatiner}>
           <TreeTargetModal />
-          <ConservAreaTargetModal />
           <RestoreAreaTargetModal />
+          <ConservAreaTargetModal />
         </div>
         <button className={targetBarStyle.saveButton} onClick={changeTarget}>
           {isTargetModalLoading ? (

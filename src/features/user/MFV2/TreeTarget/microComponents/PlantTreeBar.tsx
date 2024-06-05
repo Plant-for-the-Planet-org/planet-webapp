@@ -6,12 +6,14 @@ import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { useTranslations } from 'next-intl';
 import { calculatePercentage } from '../../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
+import { useRouter } from 'next/router';
 
 interface EditButtonProps {
   handleOpen: () => void;
 }
 export interface TargetBarProps {
-  calculatePercentage: number;
+  giftPercentage: number;
+  personalPercentage: number;
   giftsReceivedCount: number | undefined;
 }
 
@@ -36,11 +38,43 @@ const EditButton = ({ handleOpen }: EditButtonProps) => {
 };
 
 const TreeTargetBar = ({
-  calculatePercentage,
+  giftPercentage,
+  personalPercentage,
   giftsReceivedCount,
 }: TargetBarProps) => {
-  const { treePlanted, treeTarget, treeChecked } = useMyForestV2();
+  const { treePlanted, treeTarget, treeChecked, contributionsResult } =
+    useMyForestV2();
   const tProfile = useTranslations('Profile');
+  const giftReceived = contributionsResult?.stats.treesDonated.received;
+  const personal = contributionsResult?.stats.treesDonated.personal;
+
+  const treePlantedProgress = () => {
+    if (personal !== undefined && giftReceived !== undefined) {
+      if (treeTarget > personal) {
+        return personalPercentage;
+      } else {
+        if (giftReceived === 0) {
+          return 100;
+        } else {
+          return personalPercentage;
+        }
+      }
+    }
+  };
+
+  const giftReceiveProgress = () => {
+    if (giftReceived !== undefined && personal !== undefined) {
+      if (treeTarget > giftReceived) {
+        return giftPercentage;
+      } else {
+        if (personal === 0) {
+          return 100;
+        } else {
+          return giftPercentage;
+        }
+      }
+    }
+  };
   return (
     <div className={targetBarStyle.targetSubContainer}>
       <div className={targetBarStyle.statisticsContainer}>
@@ -62,31 +96,41 @@ const TreeTargetBar = ({
             <div className={targetBarStyle.barSubContainerTreeTarget}>
               <div
                 style={{
-                  width: `${
-                    treeTarget > 0 && treeChecked ? calculatePercentage : 100
-                  }%`,
+                  width: `${treePlantedProgress()}%`,
                   borderTopRightRadius: `${
-                    treeTarget > 0 && treePlanted < treeTarget && treeChecked
-                      ? 0
-                      : 5
+                    personalPercentage && treeChecked && giftPercentage === 0
+                      ? 5
+                      : 0
                   }px`,
                   borderBottomRightRadius: `${
-                    treeTarget > 0 && treePlanted < treeTarget && treeChecked
-                      ? 0
-                      : 5
+                    personalPercentage && treeChecked && giftPercentage === 0
+                      ? 5
+                      : 0
                   }px`,
                 }}
                 className={targetBarStyle.treeTargetCompleteBar}
               ></div>
               <div
                 style={{
-                  width: `${
-                    treeTarget > 0 && treePlanted < treeTarget && treeChecked
-                      ? 100 - calculatePercentage
+                  width: `${giftReceiveProgress()}%`,
+                  borderTopRightRadius: `${
+                    giftPercentage &&
+                    giftReceived !== undefined &&
+                    treeTarget < giftReceived
+                      ? 5
                       : 0
-                  }%`,
-                  borderTopLeftRadius: `${treePlanted === 0 ? 5 : 0}px`,
-                  borderBottomLeftRadius: `${treePlanted === 0 ? 5 : 0}px`,
+                  }px`,
+                  borderBottomRightRadius: `${
+                    giftPercentage &&
+                    giftReceived !== undefined &&
+                    treeTarget < giftReceived
+                      ? 5
+                      : 0
+                  }px`,
+                  borderTopLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
+                  borderBottomLeftRadius: `${
+                    personalPercentage === 0 ? 5 : 0
+                  }px`,
                 }}
                 className={targetBarStyle.treeTargetBar}
               ></div>
@@ -94,7 +138,7 @@ const TreeTargetBar = ({
             <div>
               {treeTarget > 0 &&
                 treeChecked &&
-                `${treePlanted > treeTarget ? 100 : calculatePercentage}%`}
+                `${giftPercentage + personalPercentage}%`}
             </div>
           </div>
           {giftsReceivedCount !== undefined && giftsReceivedCount > 0 && (
@@ -111,19 +155,29 @@ const TreeTargetBar = ({
 };
 
 const PlantTreeBar = ({ handleOpen }: EditButtonProps) => {
-  const { treePlanted, contributionsResult, treeTarget } = useMyForestV2();
-  const giftsReceivedCount = contributionsResult?.stats.giftsReceivedCount;
+  const { asPath } = useRouter();
 
-  const _calculatePercentage: number = useMemo(
-    () => calculatePercentage(treeTarget, treePlanted),
-    [treeTarget, treePlanted]
+  const { contributionsResult, treeTarget } = useMyForestV2();
+  const giftsReceivedCount = contributionsResult?.stats.treesDonated.received;
+
+  const _calculatePercentage = useMemo(
+    () =>
+      calculatePercentage(
+        treeTarget,
+        contributionsResult?.stats.treesDonated.received,
+        contributionsResult?.stats.treesDonated.personal
+      ),
+    [treeTarget, contributionsResult]
   );
-
   return (
     <div className={targetBarStyle.targetMainContainerTreeTarget}>
-      <EditButton handleOpen={handleOpen} />
+      {asPath === '/en/profile/mfv2' && <EditButton handleOpen={handleOpen} />}
+
       <TreeTargetBar
-        calculatePercentage={Number(_calculatePercentage.toFixed(1))}
+        giftPercentage={Number(_calculatePercentage.giftPercentage.toFixed(1))}
+        personalPercentage={Number(
+          _calculatePercentage.personalPercentage.toFixed(1)
+        )}
         giftsReceivedCount={giftsReceivedCount}
       />
     </div>

@@ -1,8 +1,13 @@
-export const calculatePercentage = (targetValue, targetFulfilled) => {
-  if (targetValue > 0) {
-    const percentage = (Math.round(targetFulfilled) / targetValue) * 100;
-    return percentage;
+export const calculatePercentage = (target, gift, personal) => {
+  if (target > gift + personal) {
+    const total = target + gift + personal;
+    const giftPercentage = (gift / total) * 100;
+    const personalPercentage = (personal / total) * 100;
+    return { giftPercentage, personalPercentage };
   } else {
-    return 0;
+    const total = gift + personal;
+    const giftPercentage = (gift / total) * 100;
+    const personalPercentage = (personal / total) * 100;
+    return { giftPercentage, personalPercentage };
   }
 };

@@ -106,20 +106,18 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setTreeChecked(treeTarget > 0);
     }
     if (localStorage.getItem('restoreChecked') && restoreTarget > 0) {
-      //to check if user has treeTarget value but disabled it in the profile
-      setTreeChecked(
+      setRestoreChecked(
         localStorage.getItem('restoreChecked') === 'false' ? false : true
       );
     } else {
-      setTreeChecked(restoreTarget > 0);
+      setRestoreChecked(restoreTarget > 0);
     }
     if (localStorage.getItem('conservChecked') && conservTarget > 0) {
-      //to check if user has treeTarget value but disabled it in the profile
-      setTreeChecked(
+      setConservChecked(
         localStorage.getItem('conservChecked') === 'false' ? false : true
       );
     } else {
-      setTreeChecked(conservTarget > 0);
+      setConservChecked(conservTarget > 0);
     }
   };
 

@@ -6,9 +6,11 @@ import { useTranslations } from 'next-intl';
 import { calculatePercentage } from '../../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
 import themeProperties from '../../../../../theme/themeProperties';
+import { useRouter } from 'next/router';
 
 interface ConservTargetBarProps {
-  calculatePercentage: number;
+  giftPercentage: number;
+  personalPercentage: number;
   giftsReceivedCount: number | undefined;
 }
 
@@ -38,11 +40,43 @@ const EditButton = ({ handleOpen }: EditButtonProps) => {
 };
 
 const ConservTargetBar = ({
-  calculatePercentage,
+  giftPercentage,
+  personalPercentage,
   giftsReceivedCount,
 }: ConservTargetBarProps) => {
   const tProfile = useTranslations('Profile');
-  const { conservTarget, conservArea, conservChecked } = useMyForestV2();
+  const { conservTarget, conservArea, conservChecked, contributionsResult } =
+    useMyForestV2();
+  const giftReceived = contributionsResult?.stats.areaConservedInM2.received;
+  const personal = contributionsResult?.stats.areaConservedInM2.personal;
+
+  const restoreProgress = () => {
+    if (personal !== undefined && giftReceived !== undefined) {
+      if (conservTarget > personal) {
+        return personalPercentage;
+      } else {
+        if (giftReceived === 0) {
+          return 100;
+        } else {
+          return personalPercentage;
+        }
+      }
+    }
+  };
+
+  const giftReceiveProgress = () => {
+    if (giftReceived !== undefined && personal !== undefined) {
+      if (conservTarget > giftReceived) {
+        return giftPercentage;
+      } else {
+        if (personal === 0) {
+          return 100;
+        } else {
+          return giftPercentage;
+        }
+      }
+    }
+  };
 
   return (
     <div className={targetBarStyle.targetSubContainer}>
@@ -65,39 +99,43 @@ const ConservTargetBar = ({
             <div className={targetBarStyle.barSubContainerRestoreArea}>
               <div
                 style={{
-                  width: `${
-                    conservTarget > 0 && conservChecked
-                      ? calculatePercentage
-                      : 100
-                  }%`,
+                  width: `${restoreProgress()}%`,
                   borderTopRightRadius: `${
-                    conservTarget > 0 &&
-                    conservArea < conservTarget &&
-                    conservChecked
-                      ? 0
-                      : 5
+                    personalPercentage && conservChecked && giftPercentage === 0
+                      ? 5
+                      : 0
                   }px`,
                   borderBottomRightRadius: `${
-                    conservTarget > 0 &&
-                    conservArea < conservTarget &&
-                    conservChecked
-                      ? 0
-                      : 5
+                    personalPercentage && conservChecked && giftPercentage === 0
+                      ? 5
+                      : 0
                   }px`,
                 }}
-                className={targetBarStyle.conservTargetCompleteBar}
+                className={targetBarStyle.restoredTargetCompleteBar}
               ></div>
               <div
                 style={{
-                  width: `${
-                    conservTarget > 0 &&
-                    conservArea < conservTarget &&
-                    conservChecked
-                      ? 100 - calculatePercentage
+                  width: `${giftReceiveProgress()}%`,
+                  borderTopRightRadius: `${
+                    (giftPercentage &&
+                      giftReceived !== undefined &&
+                      conservTarget < giftReceived) ||
+                    conservTarget === 0
+                      ? 5
                       : 0
-                  }%`,
-                  borderTopLeftRadius: `${conservArea === 0 ? 5 : 0}px`,
-                  borderBottomLeftRadius: `${conservArea === 0 ? 5 : 0}px`,
+                  }px`,
+                  borderBottomRightRadius: `${
+                    (giftPercentage &&
+                      giftReceived !== undefined &&
+                      conservTarget < giftReceived) ||
+                    conservTarget === 0
+                      ? 5
+                      : 0
+                  }px`,
+                  borderTopLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
+                  borderBottomLeftRadius: `${
+                    personalPercentage === 0 ? 5 : 0
+                  }px`,
                 }}
                 className={targetBarStyle.conservTargetBar}
               ></div>
@@ -105,7 +143,7 @@ const ConservTargetBar = ({
             <div>
               {conservTarget > 0 &&
                 conservChecked &&
-                `${conservArea > conservTarget ? 100 : calculatePercentage}%`}
+                `${giftPercentage + personalPercentage}%`}
             </div>
           </div>
           {giftsReceivedCount !== undefined && giftsReceivedCount > 0 && (
@@ -126,19 +164,30 @@ interface ConservAreaTargetProp {
 }
 
 const ConservAreaTarget = ({ handleOpen }: ConservAreaTargetProp) => {
-  const { conservArea, contributionsResult, conservTarget } = useMyForestV2();
-  const giftsReceivedCount = contributionsResult?.stats.giftsReceivedCount;
+  const { contributionsResult, conservTarget } = useMyForestV2();
+  const { asPath } = useRouter();
+  const giftsReceivedCount =
+    contributionsResult?.stats.areaConservedInM2.received;
 
-  const _calculatePercentage: number = useMemo(
-    () => calculatePercentage(conservTarget, conservArea),
-    [conservTarget, conservArea]
+  const _calculatePercentage = useMemo(
+    () =>
+      calculatePercentage(
+        conservTarget,
+        contributionsResult?.stats.areaConservedInM2.received,
+        contributionsResult?.stats.areaConservedInM2.personal
+      ),
+    [conservTarget, contributionsResult]
   );
 
   return (
     <div className={targetBarStyle.targetMainContainerConservArea}>
-      <EditButton handleOpen={handleOpen} />
+      {asPath === '/en/profile/mfv2' && <EditButton handleOpen={handleOpen} />}
+
       <ConservTargetBar
-        calculatePercentage={Number(_calculatePercentage.toFixed(1))}
+        giftPercentage={Number(_calculatePercentage.giftPercentage.toFixed(1))}
+        personalPercentage={Number(
+          _calculatePercentage.personalPercentage.toFixed(1)
+        )}
         giftsReceivedCount={giftsReceivedCount}
       />
     </div>

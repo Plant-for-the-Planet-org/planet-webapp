@@ -17,14 +17,14 @@ const ConservAreaTargetModal = () => {
     //if user set some target then make toggle active and set the localstorage
     if (conservTarget > 0) {
       setConservChecked(e.target.checked);
-      localStorage.setItem('treeChecked', `${e.target.checked}`);
+      localStorage.setItem('conservChecked', `${e.target.checked}`);
     }
   };
 
   const handleTextFieldChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    localStorage.setItem('treeChecked', `true`);
+    localStorage.setItem('conservChecked', `true`);
     setConservChecked(Number(e.target.value) > 0 ? true : false);
     setConservTarget(Number(e.target.value));
   };
