@@ -105,11 +105,13 @@
 .itemImageContainer {
   width: 130px;
   height: 130px;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 
-  .itemImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  @include xsPhoneView {
+    display: none;
   }
 }
 
