@@ -17,14 +17,12 @@ const TreeTargetModal = () => {
     //if user set some target then make toggle active and set the localstorage
     if (treeTarget > 0) {
       setTreeChecked(e.target.checked);
-      localStorage.setItem('treeChecked', `${e.target.checked}`);
     }
   };
 
   const handleTextFieldChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    localStorage.setItem('treeChecked', `true`);
     setTreeChecked(Number(e.target.value) > 0 ? true : false);
     setTreeTarget(Number(e.target.value));
   };

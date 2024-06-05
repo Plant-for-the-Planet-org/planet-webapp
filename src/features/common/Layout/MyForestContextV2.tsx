@@ -96,35 +96,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
     slug: `${user?.slug}`,
   });
 
-  const targetStatus = () => {
-    if (localStorage.getItem('treeChecked') && treeTarget > 0) {
-      //to check if user has treeTarget value but disabled it in the profile
-      setTreeChecked(
-        localStorage.getItem('treeChecked') === 'false' ? false : true
-      );
-    } else {
-      setTreeChecked(treeTarget > 0);
-    }
-    if (localStorage.getItem('restoreChecked') && restoreTarget > 0) {
-      setRestoreChecked(
-        localStorage.getItem('restoreChecked') === 'false' ? false : true
-      );
-    } else {
-      setRestoreChecked(restoreTarget > 0);
-    }
-    if (localStorage.getItem('conservChecked') && conservTarget > 0) {
-      setConservChecked(
-        localStorage.getItem('conservChecked') === 'false' ? false : true
-      );
-    } else {
-      setConservChecked(conservTarget > 0);
-    }
-  };
-
-  useEffect(() => {
-    targetStatus();
-  }, []);
-
   const aggregate = () => {
     if (_contributions.data?.stats) {
       const totalTrees =

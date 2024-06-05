@@ -17,7 +17,6 @@ const ConservAreaTargetModal = () => {
     //if user set some target then make toggle active and set the localstorage
     if (conservTarget > 0) {
       setConservChecked(e.target.checked);
-      localStorage.setItem('conservChecked', `${e.target.checked}`);
     }
   };
 

@@ -16,14 +16,12 @@ const RestoreAreaTargetModal = () => {
   const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (restoreTarget > 0) {
       setRestoreChecked(e.target.checked);
-      localStorage.setItem('restoreChecked', `${e.target.checked}`);
     }
   };
 
   const handleTextFieldChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    localStorage.setItem('restoreChecked', `true`);
     setRestoreChecked(Number(e.target.value) > 0 ? true : false);
     setRestoreTarget(Number(e.target.value));
   };

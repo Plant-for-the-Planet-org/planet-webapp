@@ -26,6 +26,9 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
     treeTarget,
     restoreTarget,
     conservTarget,
+    treeChecked,
+    restoreChecked,
+    conservChecked,
   } = useMyForestV2();
   const { user, contextLoaded, token, logoutUser, setUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -41,9 +44,9 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
     if (contextLoaded && token && open && !isTargetModalLoading) {
       const bodyToSend = {
         targets: {
-          treesDonated: treeTarget,
-          areaConserved: conservTarget,
-          areaRestored: restoreTarget,
+          treesDonated: treeChecked ? treeTarget : 0,
+          areaConserved: conservChecked ? conservTarget : 0,
+          areaRestored: restoreChecked ? restoreTarget : 0,
         },
       };
 
