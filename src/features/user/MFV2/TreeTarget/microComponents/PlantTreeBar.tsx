@@ -85,11 +85,11 @@ const TreeTargetBar = ({
           <div className={targetBarStyle.stat}>
             {treeTarget > 0 && treeChecked
               ? tProfile('progressBar.treeWithTarget', {
-                  count: treePlanted,
-                  total: treeTarget,
+                  count: treePlanted.toFixed(1),
+                  total: treeTarget.toFixed(1),
                 })
               : tProfile('progressBar.treeWithoutTarget', {
-                  count: treePlanted,
+                  count: treePlanted.toFixed(1),
                 })}
           </div>
           <div className={targetBarStyle.barContainer}>
@@ -178,7 +178,7 @@ const PlantTreeBar = ({ handleOpen }: EditButtonProps) => {
         personalPercentage={Number(
           _calculatePercentage.personalPercentage.toFixed(1)
         )}
-        giftsReceivedCount={giftsReceivedCount}
+        giftsReceivedCount={Number(giftsReceivedCount?.toFixed(1))}
       />
     </div>
   );

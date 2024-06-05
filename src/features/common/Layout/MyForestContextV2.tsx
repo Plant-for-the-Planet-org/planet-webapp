@@ -91,6 +91,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
+
   const _contributions = trpc.myForestV2.contributions.useQuery({
     profileId: `${user?.id}`,
     slug: `${user?.slug}`,
@@ -115,6 +116,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setConservArea(totalConserv);
     }
   };
+
+  useEffect(() => {
+    setTreeChecked(user?.targets.treesDonated > 0 ? true : false);
+    setRestoreChecked(user?.targets.areaRestored > 0 ? true : false);
+    setConservChecked(user?.targets.areaConserved > 0 ? true : false);
+  }, []);
 
   useEffect(() => {
     aggregate();

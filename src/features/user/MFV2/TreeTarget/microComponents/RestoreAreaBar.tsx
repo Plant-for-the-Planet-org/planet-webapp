@@ -86,11 +86,11 @@ const RestoreTargetBar = ({
           <div className={targetBarStyle.stat}>
             {restoreTarget > 0 && restoreChecked
               ? tProfile('progressBar.restoreWithTarget', {
-                  count: restoredTree,
-                  unit: restoreTarget,
+                  count: restoredTree.toFixed(1),
+                  unit: restoreTarget.toFixed(1),
                 })
               : tProfile('progressBar.restoreWithoutTarget', {
-                  unit: restoredTree,
+                  unit: restoredTree.toFixed(1),
                 })}
           </div>
           <div className={targetBarStyle.barContainer}>
@@ -182,7 +182,7 @@ const RestoreAreaBar = ({ handleOpen }: EditButtonProps) => {
         personalPercentage={Number(
           _calculatePercentage.personalPercentage.toFixed(1)
         )}
-        giftsReceivedCount={giftsReceivedCount}
+        giftsReceivedCount={Number(giftsReceivedCount?.toFixed(1))}
       />
     </div>
   );

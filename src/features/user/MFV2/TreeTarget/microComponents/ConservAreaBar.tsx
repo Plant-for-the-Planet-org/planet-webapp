@@ -88,7 +88,7 @@ const ConservTargetBar = ({
           <div className={targetBarStyle.stat}>
             {conservTarget > 0 && conservChecked
               ? tProfile('progressBar.conservWithTarget', {
-                  count: conservArea,
+                  count: conservArea.toFixed(1),
                   unit: conservTarget,
                 })
               : tProfile('progressBar.conservWithoutTarget', {
@@ -188,7 +188,7 @@ const ConservAreaTarget = ({ handleOpen }: ConservAreaTargetProp) => {
         personalPercentage={Number(
           _calculatePercentage.personalPercentage.toFixed(1)
         )}
-        giftsReceivedCount={giftsReceivedCount}
+        giftsReceivedCount={Number(giftsReceivedCount?.toFixed(1))}
       />
     </div>
   );
