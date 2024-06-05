@@ -5,7 +5,7 @@ import {
   EcosystemTypes,
   TreeProjectClassification,
 } from '@planet-sdk/common';
-import ProjectTypeIcon from '../../../projects/components/ProjectTypeIcon';
+import ProjectHeader from './ProjectHeader';
 
 type ConservationProps = {
   projectPurpose: 'conservation';
@@ -27,30 +27,24 @@ const ProjectSummary = (props: Props) => {
   const tProject = useTranslations('Project');
   const tCountry = useTranslations('Country');
 
-  const { projectName, projectCountry, projectTpoName, projectPurpose } = props;
+  const { projectCountry, projectTpoName, projectName, projectPurpose } = props;
 
-  const projectType =
+  const projectHeaderProps =
     projectPurpose === 'trees'
-      ? props.projectClassification
-      : props.projectPurpose;
+      ? {
+          projectName,
+          projectPurpose: 'trees' as const,
+          projectClassification: props.projectClassification,
+        }
+      : {
+          projectName,
+          projectPurpose: 'conservation' as const,
+          projectEcosystem: props.projectEcosystem,
+        };
 
   return (
     <div className={styles.projectSummary}>
-      <div className={styles.projectType}>
-        <div className={styles.projectTypeIcon}>
-          <ProjectTypeIcon projectType={projectType} />
-        </div>
-        <div className={styles.projectCategory}>
-          {projectPurpose === 'trees'
-            ? tProject(
-                `classification.${props.projectClassification}`
-              ).toLocaleUpperCase()
-            : tProject(
-                `ecosystem.${props.projectEcosystem}`
-              ).toLocaleUpperCase()}
-        </div>
-      </div>
-      <h3 className={styles.projectName}>{projectName}</h3>
+      <ProjectHeader {...projectHeaderProps} />
       <div className={styles.additionalProjectInfo}>
         {tCountry(projectCountry.toLowerCase() as Lowercase<CountryCode>)} •{' '}
         {tProject('tpoName', { tpoName: projectTpoName })}

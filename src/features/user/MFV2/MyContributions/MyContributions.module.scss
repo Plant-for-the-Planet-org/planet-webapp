@@ -40,25 +40,6 @@
 }
 
 .projectSummary {
-  .projectType {
-    font-size: $fontXXSmall;
-    font-weight: 600;
-    color: $primaryDarkColor;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .projectTypeIcon {
-    width: 12px;
-    svg > path {
-      fill: $primaryDarkColor;
-    }
-  }
-  .projectName {
-    font-weight: 700;
-    font-size: $fontMedium;
-    color: #333;
-  }
   .additionalProjectInfo {
     font-size: $fontSmall;
     color: #4f4f4f;
@@ -97,7 +78,13 @@
   font-size: $fontXXSmall;
   font-weight: 700;
   color: $primaryDarkColor;
-  background-color: #007a491a;
+  background: linear-gradient(
+      0deg,
+      rgba(33, 150, 83, 0.15),
+      rgba(33, 150, 83, 0.15)
+    ),
+    linear-gradient(0deg, #ffffff, #ffffff);
+
   padding: 7px;
   display: flex;
   justify-content: center;
@@ -153,5 +140,84 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 0 40px;
+  }
+}
+
+.projectHeader {
+  .projectType {
+    font-size: $fontXXSmall;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 12px;
+  }
+  .projectTypeIcon {
+    width: 12px;
+    display: grid;
+    align-items: center;
+  }
+  .projectName {
+    font-weight: 700;
+    font-size: $fontMedium;
+  }
+
+  &.dark {
+    .projectType {
+      color: $primaryDarkColor;
+    }
+    .projectTypeIcon {
+      svg > path {
+        fill: $primaryDarkColor;
+      }
+    }
+    .projectName {
+      color: #333;
+    }
+  }
+
+  &.light {
+    .projectType,
+    .projectName {
+      color: #fff;
+    }
+    .projectTypeIcon {
+      svg > path {
+        fill: #fff;
+      }
+    }
+  }
+}
+
+.itemMobileHeader {
+  height: 150px;
+  background: black;
+
+  .headerContent {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .projectHeaderContainer {
+    margin: auto 16px 16px;
+
+    .projectName {
+      font-size: $fontSixteen;
+      font-weight: 600;
+    }
+
+    .projectType {
+      height: 16px;
+    }
+
+    .projectTypeIcon {
+      width: 16px;
+    }
+  }
+
+  @include smTabletView {
+    display: none;
   }
 }
