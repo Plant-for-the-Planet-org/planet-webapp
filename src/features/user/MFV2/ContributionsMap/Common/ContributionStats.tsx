@@ -31,13 +31,13 @@ const ContributionStats = () => {
     <div className={style.contributionStatsContainer}>
       <StatItem
         Icon={CountryStatIcon}
-        label={tProfile('myForestMapV2.countries', {
+        label={tProfile('mapState.countryStats', {
           count: countries,
         })}
       />
       <StatItem
         Icon={DonationStatIcon}
-        label={tProfile('myForestMapV2.projects', {
+        label={tProfile('mapState.projectStats', {
           count: projects,
         })}
       />

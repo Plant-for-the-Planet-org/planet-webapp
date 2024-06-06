@@ -11,19 +11,13 @@ import OtherPlanting from '../../../../../../public/assets/images/icons/myForest
 import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import style from '.././Common/common.module.scss';
-import { UnitTypes } from '@planet-sdk/common';
+import { UnitTypes, ProjectPurpose } from '@planet-sdk/common';
+import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/markerIcon/Conservation';
+import { TreeProjectClassification } from '@planet-sdk/common';
 
-type Classification =
-  | 'natural-regeneration'
-  | 'mangroves'
-  | 'managed-regeneration'
-  | 'agroforestry'
-  | 'urban-planting'
-  | 'large-scale-planting'
-  | 'other-planting';
 interface ProjectTypeIconProps {
-  purpose: 'conservation' | 'restoration' | 'trees';
-  classification: Classification | null;
+  purpose: ProjectPurpose;
+  classification: TreeProjectClassification | null;
   unitType: UnitTypes;
 }
 
@@ -32,7 +26,7 @@ const ProjectTypeIcon = ({
   classification,
   unitType,
 }: ProjectTypeIconProps) => {
-  const getMarkerColor = (purpose: string, unitType: UnitTypes) => {
+  const getMarkerColor = (purpose: ProjectPurpose, unitType: UnitTypes) => {
     switch (purpose) {
       case 'conservation':
         return themeProperties.mediumBlue;
@@ -44,14 +38,19 @@ const ProjectTypeIcon = ({
         return themeProperties.primaryDarkColorX;
     }
   };
-  const markercolor = useMemo(
+  const markerColor = useMemo(
     () => getMarkerColor(purpose, unitType),
     [purpose, unitType]
   );
   const IconProps = {
     width: 42,
-    color: markercolor,
+    color: markerColor,
   };
+
+  if (purpose === 'conservation') {
+    return <Conservation {...IconProps} />;
+  }
+
   switch (classification) {
     case 'natural-regeneration':
       return <NaturalRegeneration {...IconProps} />;
@@ -82,7 +81,8 @@ const SinglePointMarkers = () => {
             <Marker
               longitude={singleLocation?.geometry.coordinates[0]}
               latitude={singleLocation?.geometry.coordinates[1]}
-              offset={[0, -15]}
+              anchor="bottom"
+              offset={[0, 0]}
               key={key}
             >
               <div className={style.registeredTreeMarkerContainer}>
@@ -99,7 +99,8 @@ const SinglePointMarkers = () => {
           <Marker
             longitude={singleLocation?.geometry.coordinates[0]}
             latitude={singleLocation?.geometry.coordinates[1]}
-            offset={[0, -15]}
+            anchor="bottom"
+            offset={[0, 0]}
             key={key}
           >
             <ProjectTypeIcon
