@@ -9,12 +9,15 @@ import ProjectHeader from './ProjectHeader';
 
 type ConservationProps = {
   projectPurpose: 'conservation';
-  projectEcosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'>;
+  projectEcosystem: Exclude<
+    EcosystemTypes,
+    'tropical-forests' | 'temperate'
+  > | null;
 };
 
 type TreesProps = {
   projectPurpose: 'trees';
-  projectClassification: TreeProjectClassification;
+  projectClassification: TreeProjectClassification | null;
 };
 
 type Props = (ConservationProps | TreesProps) & {

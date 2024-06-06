@@ -2,15 +2,19 @@ import styles from './MyContributions.module.scss';
 import ProjectTypeIcon from '../../../projects/components/ProjectTypeIcon';
 import { useTranslations } from 'next-intl';
 import { EcosystemTypes, TreeProjectClassification } from '@planet-sdk/common';
+import { useMemo } from 'react';
 
 type ConservationProps = {
   projectPurpose: 'conservation';
-  projectEcosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'>;
+  projectEcosystem: Exclude<
+    EcosystemTypes,
+    'tropical-forests' | 'temperate'
+  > | null;
 };
 
 type TreesProps = {
   projectPurpose: 'trees';
-  projectClassification: TreeProjectClassification;
+  projectClassification: TreeProjectClassification | null;
 };
 
 type Props = (ConservationProps | TreesProps) & {
@@ -27,22 +31,38 @@ const ProjectHeader = ({ color = 'dark', ...otherProps }: Props) => {
       ? otherProps.projectClassification
       : otherProps.projectPurpose;
 
+  const projectCategory = useMemo(() => {
+    if (
+      projectPurpose === 'trees' &&
+      otherProps.projectClassification !== null
+    ) {
+      return tProject(
+        `classification.${otherProps.projectClassification}`
+      ).toLocaleUpperCase();
+    }
+
+    if (
+      projectPurpose === 'conservation' &&
+      otherProps.projectEcosystem !== null
+    ) {
+      return tProject(
+        `ecosystem.${otherProps.projectEcosystem}`
+      ).toLocaleUpperCase();
+    }
+
+    return null;
+  }, [tProject, projectType, otherProps]);
+
   return (
     <header className={`${styles.projectHeader} ${styles[color]}`}>
-      <div className={styles.projectType}>
-        <div className={styles.projectTypeIcon}>
-          <ProjectTypeIcon projectType={projectType} />
+      {projectType !== null && projectCategory !== null && (
+        <div className={styles.projectType}>
+          <div className={styles.projectTypeIcon}>
+            <ProjectTypeIcon projectType={projectType} />
+          </div>
+          <div className={styles.projectCategory}>{projectCategory}</div>
         </div>
-        <div className={styles.projectCategory}>
-          {projectPurpose === 'trees'
-            ? tProject(
-                `classification.${otherProps.projectClassification}`
-              ).toLocaleUpperCase()
-            : tProject(
-                `ecosystem.${otherProps.projectEcosystem}`
-              ).toLocaleUpperCase()}
-        </div>
-      </div>
+      )}
       <h3 className={styles.projectName}>{projectName}</h3>
     </header>
   );

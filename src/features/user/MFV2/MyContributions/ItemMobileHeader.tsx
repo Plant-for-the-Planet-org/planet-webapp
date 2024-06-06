@@ -22,12 +22,15 @@ type ProjectItemBaseProps = {
 
 type ConservationProjectItemProps = {
   projectPurpose: 'conservation';
-  projectEcosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'>;
+  projectEcosystem: Exclude<
+    EcosystemTypes,
+    'tropical-forests' | 'temperate'
+  > | null;
 };
 
 type TreeProjectItemProps = {
   projectPurpose: 'trees';
-  projectClassification: TreeProjectClassification;
+  projectClassification: TreeProjectClassification | null;
 };
 
 type ProjectItemProps = ProjectItemBaseProps &

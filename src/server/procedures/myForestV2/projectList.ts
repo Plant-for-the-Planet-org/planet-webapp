@@ -1,6 +1,10 @@
 import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
-import { CountryCode, TreeProjectClassification } from '@planet-sdk/common';
+import {
+  CountryCode,
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
 import { Point } from 'geojson';
 
 type ProjectQueryResponse = {
@@ -8,6 +12,7 @@ type ProjectQueryResponse = {
   name: string;
   slug: string;
   classification: TreeProjectClassification | null;
+  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
   purpose: 'trees' | 'conservation';
   unitType: 'tree' | 'm2';
   country: CountryCode;
@@ -17,7 +22,7 @@ type ProjectQueryResponse = {
   tpoName: string;
 };
 
-type MyForestProject = Omit<ProjectQueryResponse, 'allowDonations'> & {
+export type MyForestProject = Omit<ProjectQueryResponse, 'allowDonations'> & {
   allowDonations: boolean;
 };
 

@@ -1,19 +1,11 @@
 import { useTranslations } from 'next-intl';
 import styles from './MyContributions.module.scss';
 
-type TotalContributionsConservation = {
-  projectPurpose: 'conservation';
-  totalContributionUnits: number;
-  contributionUnitType: 'm2';
-};
-
-type TotalContributionsTrees = {
-  projectPurpose: 'trees';
+type Props = {
+  projectPurpose: 'conservation' | 'trees';
   totalContributionUnits: number;
   contributionUnitType: 'tree' | 'm2';
 };
-
-type Props = TotalContributionsConservation | TotalContributionsTrees;
 
 const ProjectTotalContributions = ({
   projectPurpose,
