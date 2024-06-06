@@ -57,11 +57,20 @@ const TreeTargetBar = ({
           <div className={targetBarStyle.stat}>
             {treeTarget > 0 && treeChecked
               ? tProfile('progressBar.treeWithTarget', {
-                  count: treePlanted.toFixed(1),
-                  total: treeTarget.toFixed(1),
+                  count:
+                    treePlanted !== Math.floor(treePlanted)
+                      ? treePlanted.toFixed(1)
+                      : treePlanted,
+                  total:
+                    treeTarget !== Math.floor(treeTarget)
+                      ? treeTarget.toFixed(1)
+                      : treeTarget,
                 })
               : tProfile('progressBar.treeWithoutTarget', {
-                  count: treePlanted.toFixed(1),
+                  count:
+                    treePlanted !== Math.floor(treePlanted)
+                      ? treePlanted.toFixed(1)
+                      : treePlanted,
                 })}
           </div>
           <div className={targetBarStyle.barContainer}>

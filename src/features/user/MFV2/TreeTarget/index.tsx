@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PlantTreeProgressBar from './microComponents/PlantTreeBar';
 import ConservAreaProgressBar from './microComponents/ConservAreaBar';
 import RestoreAreaProgressBar from './microComponents/RestoreAreaBar';
 import targetBarStyle from './TreeTargetBar.module.scss';
 import TargetsModal from './microComponents/TargetModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
+import TargetInitialize from './microComponents/TargetInitialize';
+import Skeleton from 'react-loading-skeleton';
 
 interface TargetProps {
   handleOpen: () => void;
@@ -40,14 +42,51 @@ const ProgressBars = ({ handleOpen }: TargetProps) => {
 
 const BarGraphs = () => {
   const [open, setOpen] = useState(false);
+  const [enableTarget, setEnableTarget] = useState(false);
   const handleOpen = () => setOpen(true);
+  const {
+    conservArea,
+    restoredTree,
+    treePlanted,
+    treeTarget,
+    conservTarget,
+    restoreTarget,
+    isLoading,
+  } = useMyForestV2();
+
+  const checkCondition = () =>
+    treePlanted === 0 &&
+    treeTarget === 0 &&
+    restoredTree === 0 &&
+    restoreTarget === 0 &&
+    conservTarget === 0 &&
+    conservArea === 0;
+  useEffect(() => {
+    setEnableTarget(checkCondition());
+  }, [
+    conservArea,
+    restoredTree,
+    treePlanted,
+    treeTarget,
+    conservTarget,
+    restoreTarget,
+  ]);
 
   return (
     <>
-      <div className={targetBarStyle.targetMainContainer}>
-        <ProgressBars handleOpen={handleOpen} />
-        <TargetsModal open={open} setOpen={setOpen} />
-      </div>
+      {isLoading ? (
+        <Skeleton height={'inherit'} />
+      ) : (
+        <div className={targetBarStyle.targetMainContainer}>
+          {enableTarget ? (
+            <TargetInitialize handleOpen={handleOpen} />
+          ) : (
+            <ProgressBars handleOpen={handleOpen} />
+          )}
+
+          <TargetsModal open={open} setOpen={setOpen} />
+        </div>
+      )}
     </>
   );
 };

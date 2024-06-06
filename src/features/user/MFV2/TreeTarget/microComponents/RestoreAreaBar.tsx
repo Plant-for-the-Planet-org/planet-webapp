@@ -62,7 +62,10 @@ const RestoreTargetBar = ({
                     restoredTree !== Math.floor(restoredTree)
                       ? restoredTree.toFixed(1)
                       : restoredTree,
-                  unit: restoreTarget.toFixed(1),
+                  unit:
+                    restoreTarget !== Math.floor(restoreTarget)
+                      ? restoreTarget.toFixed(1)
+                      : restoreTarget,
                 })
               : tProfile('progressBar.restoreWithoutTarget', {
                   unit:

@@ -64,7 +64,10 @@ const ConservTargetBar = ({
                     conservArea !== Math.floor(conservArea)
                       ? conservArea.toFixed(1)
                       : conservArea,
-                  unit: conservTarget,
+                  unit:
+                    conservTarget !== Math.floor(conservTarget)
+                      ? conservTarget.toFixed(1)
+                      : conservTarget,
                 })
               : tProfile('progressBar.conservWithoutTarget', {
                   unit:
