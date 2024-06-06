@@ -12,6 +12,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import style from '.././Common/common.module.scss';
 import { UnitTypes } from '@planet-sdk/common';
+import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 
 type Classification =
   | 'natural-regeneration'
@@ -52,6 +53,11 @@ const ProjectTypeIcon = ({
     width: 42,
     color: markercolor,
   };
+
+  if (purpose === 'conservation') {
+    return <Conservation {...IconProps} />;
+  }
+
   switch (classification) {
     case 'natural-regeneration':
       return <NaturalRegeneration {...IconProps} />;
