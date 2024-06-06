@@ -75,7 +75,7 @@ const BarGraphs = () => {
   return (
     <>
       {isLoading ? (
-        <Skeleton height={'inherit'} />
+        <Skeleton height={84} />
       ) : (
         <div className={targetBarStyle.targetMainContainer}>
           {enableTarget ? (
