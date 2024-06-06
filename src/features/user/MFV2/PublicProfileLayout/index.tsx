@@ -63,10 +63,10 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     if (router && router.isReady && router.query.profile && contextLoaded) {
       // reintiating the profile
       setProfile(null);
-
       loadPublicProfile(router.query.profile as string);
     }
   }, [contextLoaded, user, router]);
+
   return (
     <article className={styles.publicProfileLayout}>
       <section id="profile-container" className={styles.profileContainer}>

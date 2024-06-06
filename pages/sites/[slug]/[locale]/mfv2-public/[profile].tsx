@@ -16,14 +16,10 @@ import Head from 'next/head';
 import PublicProfileOuterContainer from '../../../../../src/features/user/MFV2/PublicProfileOuterContainer';
 import PublicProfileLayout from '../../../../../src/features/user/MFV2/PublicProfileLayout';
 import { v4 } from 'uuid';
-import { APIError, UserPublicProfile, handleError } from '@planet-sdk/common';
-import { useState, useContext, useEffect } from 'react';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
+import { useEffect } from 'react';
 
 interface Props {
   pageProps: PageProps;
