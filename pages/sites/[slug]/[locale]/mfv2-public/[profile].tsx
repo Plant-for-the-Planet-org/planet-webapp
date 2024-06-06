@@ -30,9 +30,6 @@ interface Props {
 }
 
 const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
-  const [profile, setProfile] = useState<null | UserPublicProfile>();
-  const { user, contextLoaded } = useUserProps();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
   const router = useRouter();
 
@@ -42,37 +39,14 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
     }
   }, [router.isReady]);
 
-  // Loads the public user profile
-  async function loadPublicProfile(id: string) {
-    try {
-      const profileData = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
-        `/app/profiles/${id}`
-      );
-      setProfile(profileData);
-    } catch (err) {
-      setErrors(handleError(err as APIError));
-      redirect('/');
-    }
-  }
-
-  useEffect(() => {
-    if (router && router.isReady && router.query.profile && contextLoaded) {
-      // reintiating the profile
-      setProfile(null);
-
-      loadPublicProfile(router.query.profile as string);
-    }
-  }, [contextLoaded, user, router]);
-
-  return tenantConfig && profile ? (
+  return tenantConfig ? (
     <>
       <Head>
         <title>My Forest V2</title>
       </Head>
       <MyForestProviderV2>
         <PublicProfileOuterContainer>
-          <PublicProfileLayout profile={profile} />
+          <PublicProfileLayout tenantConfigId={tenantConfig.id} />
         </PublicProfileOuterContainer>
       </MyForestProviderV2>
     </>
