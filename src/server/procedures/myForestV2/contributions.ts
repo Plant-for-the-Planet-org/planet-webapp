@@ -102,7 +102,7 @@ async function fetchGifts(profileIds: number[]) {
 				g.metadata->>'$.project.id' as projectGuid, 
 				g.metadata->>'$.project.name' as projectName, 
 				g.metadata->>'$.project.country' as country, 
-				g.payment_date as plantDate
+				COALESCE(g.payment_date, g.redemption_date) as plantDate
 			FROM 
 				gift g
 			WHERE 
@@ -145,10 +145,6 @@ function handleRegistrationContribution(
   });
   // Updates stats
   stats.treesRegistered += Number(contribution.units);
-
-  if (contribution.country !== null) {
-    stats.contributedCountries.add(contribution.country);
-  }
 
   // Updates registrationLocationsMap
   if (contribution.geometry !== null) {
@@ -239,10 +235,6 @@ function handleDonationContribution(
     } else {
       stats.areaConservedInM2.personal += Number(contribution.units);
     }
-
-    if (contribution.country !== null) {
-      stats.contributedCountries.add(contribution.country);
-    }
   }
 }
 
@@ -322,6 +314,15 @@ function mergeAndSortLatestContributions(
   delete singleProject.latestGifts;
 }
 
+function populateContributedCountries(
+  country: string | undefined,
+  projectCountry: string | undefined,
+  contributedCountries: ContributionStats['contributedCountries']
+) {
+  const contributedCountry = country || projectCountry;
+  if (contributedCountry) contributedCountries.add(contributedCountry);
+}
+
 export const contributionsProcedure = procedure
   .input(
     z.object({
@@ -380,6 +381,11 @@ export const contributionsProcedure = procedure
     // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
     contributions.forEach((contribution) => {
       stats.contributionsMadeCount++;
+      populateContributedCountries(
+        contribution.country,
+        projectIdMap.get(contribution.projectId)?.country,
+        stats.contributedCountries
+      );
       if (contribution.contributionType === 'planting') {
         handleRegistrationContribution(
           contribution,
@@ -402,9 +408,11 @@ export const contributionsProcedure = procedure
     gifts.forEach((gift) => {
       stats.giftsReceivedCount++;
       stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
-      if (gift.country !== null) {
-        stats.contributedCountries.add(gift.country);
-      }
+      populateContributedCountries(
+        gift.country,
+        projectGuidMap.get(gift.projectGuid)?.country,
+        stats.contributedCountries
+      );
       // Handle individual gift contributions if the project is in the eligible project set
       const project = projectGuidMap.get(gift.projectGuid);
       if (project) {
