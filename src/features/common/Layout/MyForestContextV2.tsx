@@ -8,8 +8,6 @@ import {
 } from 'react';
 import { trpc } from '../../../utils/trpc';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
-import { useUserProps } from './UserPropsContext';
-
 import { Point } from 'geojson';
 import {
   ProjectListResponse,
@@ -35,6 +33,15 @@ interface DonationGeojson {
   };
 }
 
+interface UserInfo {
+  profileId: string;
+  slug: string;
+  targets: {
+    treesDonated: number;
+    areaRestored: number;
+    areaConserved: number;
+  };
+}
 interface MyForestContextV2Interface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
@@ -57,6 +64,8 @@ interface MyForestContextV2Interface {
   setRestoreChecked: SetState<boolean>;
   conservChecked: boolean;
   setConservChecked: SetState<boolean>;
+  userInfo: UserInfo | null;
+  setUserInfo: SetState<UserInfo | null>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -64,7 +73,6 @@ const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
 );
 
 export const MyForestProviderV2: FC = ({ children }) => {
-  const { user } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
 
   const [projectListResult, setProjectListResult] =
@@ -89,12 +97,13 @@ export const MyForestProviderV2: FC = ({ children }) => {
   );
   const [conservChecked, setConservChecked] = useState(false);
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
 
   const _contributions = trpc.myForestV2.contributions.useQuery({
-    profileId: `${user?.id}`,
-    slug: `${user?.slug}`,
+    profileId: `${userInfo?.profileId}`,
+    slug: `${userInfo?.slug}`,
   });
 
   const aggregate = () => {
@@ -227,6 +236,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setRestoreChecked,
       conservChecked,
       setConservChecked,
+      userInfo,
+      setUserInfo,
     }),
     [
       projectListResult,
@@ -250,6 +261,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setRestoreChecked,
       conservChecked,
       setConservChecked,
+      userInfo,
+      setUserInfo,
     ]
   );
 
