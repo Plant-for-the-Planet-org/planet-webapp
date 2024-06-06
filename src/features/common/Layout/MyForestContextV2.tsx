@@ -84,17 +84,13 @@ export const MyForestProviderV2: FC = ({ children }) => {
   >([]);
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
   const [treePlanted, setTreePlanted] = useState(0);
-  const [treeTarget, setTreeTarget] = useState(user?.targets.treesDonated);
+  const [treeTarget, setTreeTarget] = useState(0);
   const [treeChecked, setTreeChecked] = useState(false);
   const [restoredTree, setRestoredTree] = useState(0);
-  const [restoreTarget, setRestoreTarget] = useState(
-    user?.targets.areaRestored
-  );
+  const [restoreTarget, setRestoreTarget] = useState(0);
   const [restoreChecked, setRestoreChecked] = useState(false);
   const [conservArea, setConservArea] = useState(0);
-  const [conservTarget, setConservTarget] = useState(
-    user?.targets.areaConserved
-  );
+  const [conservTarget, setConservTarget] = useState(0);
   const [conservChecked, setConservChecked] = useState(false);
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
@@ -127,10 +123,20 @@ export const MyForestProviderV2: FC = ({ children }) => {
   };
 
   useEffect(() => {
-    setTreeChecked(user?.targets.treesDonated > 0 ? true : false);
-    setRestoreChecked(user?.targets.areaRestored > 0 ? true : false);
-    setConservChecked(user?.targets.areaConserved > 0 ? true : false);
-  }, []);
+    if (userInfo?.targets !== undefined) {
+      setTreeChecked(userInfo?.targets.treesDonated > 0 ? true : false);
+      setRestoreChecked(userInfo?.targets.areaRestored > 0 ? true : false);
+      setConservChecked(userInfo?.targets.areaConserved > 0 ? true : false);
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (userInfo?.targets !== undefined) {
+      setTreeTarget(userInfo?.targets.treesDonated);
+      setRestoreTarget(userInfo.targets.areaRestored);
+      setConservTarget(userInfo.targets.areaConserved);
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     aggregate();
