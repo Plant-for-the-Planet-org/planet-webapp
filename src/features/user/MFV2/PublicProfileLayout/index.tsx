@@ -15,17 +15,9 @@ interface Props {
   tenantConfigId: string;
 }
 
-interface UpdatedUserPublicProfile extends UserPublicProfile {
-  targets: {
-    treesDonated: number;
-    areaRestored: number;
-    areaConserved: number;
-  };
-}
-
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ tenantConfigId }: Props) => {
-  const [profile, setProfile] = useState<null | UpdatedUserPublicProfile>();
+  const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
   const { setUserInfo } = useMyForestV2();
@@ -33,7 +25,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
 
   async function loadPublicProfile(id: string) {
     try {
-      const profileData = await getRequest<UpdatedUserPublicProfile>(
+      const profileData = await getRequest<UserPublicProfile>(
         tenantConfigId,
         `/app/profiles/${id}`
       );
@@ -50,11 +42,12 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         profileId: profile.id,
         slug: profile.slug,
         targets: {
-          treesDonated: profile.targets.treesDonated,
-          areaRestored: profile.targets.areaRestored,
-          areaConserved: profile.targets.areaConserved,
+          treesDonated: profile.targets.treesDonated ?? 0,
+          areaRestored: profile.targets.areaRestored ?? 0,
+          areaConserved: profile.targets.areaConserved ?? 0,
         },
       };
+
       setUserInfo(_userInfo);
     }
   }, [profile]);

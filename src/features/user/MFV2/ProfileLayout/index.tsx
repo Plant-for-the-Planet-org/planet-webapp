@@ -24,9 +24,9 @@ const ProfileLayout = () => {
           profileId: user.id,
           slug: user.slug,
           targets: {
-            treesDonated: user.targets.treesDonated,
-            areaRestored: user.targets.areaRestored,
-            areaConserved: user.targets.areaConserved,
+            treesDonated: user.targets.treesDonated ?? 0,
+            areaRestored: user.targets.areaRestored ?? 0,
+            areaConserved: user.targets.areaConserved ?? 0,
           },
         };
         setUserInfo(_userInfo);
