@@ -46,36 +46,8 @@ const RestoreTargetBar = ({
   const tProfile = useTranslations('Profile');
   const { restoredTree, restoreTarget, restoreChecked, contributionsResult } =
     useMyForestV2();
-  const giftReceived = contributionsResult?.stats.treesDonated.received;
-  const personal = contributionsResult?.stats.treesDonated.personal;
-  const restoreProgress = () => {
-    if (personal !== undefined && giftReceived !== undefined) {
-      if (restoreTarget > personal) {
-        return personalPercentage;
-      } else {
-        if (giftReceived === 0) {
-          return 100;
-        } else {
-          return personalPercentage;
-        }
-      }
-    }
-  };
-
-  const giftReceiveProgress = () => {
-    if (giftReceived !== undefined && personal !== undefined) {
-      if (restoreTarget > giftReceived) {
-        return giftPercentage;
-      } else {
-        if (personal === 0) {
-          return 100;
-        } else {
-          return giftPercentage;
-        }
-      }
-    }
-  };
-
+  const giftReceived =
+    contributionsResult?.stats.areaRestoredInM2.received ?? 0;
   return (
     <div className={targetBarStyle.targetSubContainer}>
       <div className={targetBarStyle.statisticsContainer}>
@@ -86,49 +58,41 @@ const RestoreTargetBar = ({
           <div className={targetBarStyle.stat}>
             {restoreTarget > 0 && restoreChecked
               ? tProfile('progressBar.restoreWithTarget', {
-                  count: restoredTree.toFixed(1),
+                  count:
+                    restoredTree !== Math.floor(restoredTree)
+                      ? restoredTree.toFixed(1)
+                      : restoredTree,
                   unit: restoreTarget.toFixed(1),
                 })
               : tProfile('progressBar.restoreWithoutTarget', {
-                  unit: restoredTree.toFixed(1),
+                  unit:
+                    restoredTree !== Math.floor(restoredTree)
+                      ? restoredTree.toFixed(1)
+                      : restoredTree,
                 })}
           </div>
           <div className={targetBarStyle.barContainer}>
             <div className={targetBarStyle.barSubContainerRestoreArea}>
               <div
                 style={{
-                  width: `${restoreProgress()}%`,
+                  width: `${personalPercentage}%`,
                   borderTopRightRadius: `${
-                    personalPercentage && restoreChecked && giftPercentage === 0
-                      ? 5
-                      : 0
+                    giftPercentage !== 0 || restoreTarget > restoredTree ? 0 : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    personalPercentage && restoreChecked && giftPercentage === 0
-                      ? 5
-                      : 0
+                    giftPercentage !== 0 || restoreTarget > restoredTree ? 0 : 5
                   }px`,
                 }}
                 className={targetBarStyle.restoredTargetCompleteBar}
               ></div>
               <div
                 style={{
-                  width: `${giftReceiveProgress()}%`,
+                  width: `${giftPercentage}%`,
                   borderTopRightRadius: `${
-                    (giftPercentage &&
-                      giftReceived !== undefined &&
-                      restoreTarget < giftReceived) ||
-                    restoreTarget === 0
-                      ? 5
-                      : 0
+                    restoreTarget > giftReceived ? 0 : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    (giftPercentage &&
-                      giftReceived !== undefined &&
-                      restoreTarget < giftReceived) ||
-                    restoreTarget === 0
-                      ? 5
-                      : 0
+                    restoreTarget > giftReceived ? 0 : 5
                   }px`,
                   borderTopLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
                   borderBottomLeftRadius: `${
@@ -139,9 +103,7 @@ const RestoreTargetBar = ({
               ></div>
             </div>
             <div>
-              {restoreTarget > 0 &&
-                restoreChecked &&
-                `${giftPercentage + personalPercentage}%`}
+              {restoreTarget > 0 && `${giftPercentage + personalPercentage}%`}
             </div>
           </div>
           {giftsReceivedCount !== undefined && giftsReceivedCount > 0 && (
@@ -160,16 +122,12 @@ const RestoreTargetBar = ({
 const RestoreAreaBar = ({ handleOpen }: EditButtonProps) => {
   const { restoredTree, restoreTarget, contributionsResult } = useMyForestV2();
   const { asPath } = useRouter();
-  const giftsReceivedCount =
-    contributionsResult?.stats.areaRestoredInM2.received;
+  const giftsReceived =
+    contributionsResult?.stats.areaRestoredInM2.received ?? 0;
+  const personal = contributionsResult?.stats.areaRestoredInM2.personal ?? 0;
 
   const _calculatePercentage = useMemo(
-    () =>
-      calculatePercentage(
-        restoreTarget,
-        contributionsResult?.stats.areaRestoredInM2.received,
-        contributionsResult?.stats.areaRestoredInM2.personal
-      ),
+    () => calculatePercentage(restoreTarget, giftsReceived, personal),
     [restoreTarget, restoredTree]
   );
 
@@ -182,7 +140,7 @@ const RestoreAreaBar = ({ handleOpen }: EditButtonProps) => {
         personalPercentage={Number(
           _calculatePercentage.personalPercentage.toFixed(1)
         )}
-        giftsReceivedCount={Number(giftsReceivedCount?.toFixed(1))}
+        giftsReceivedCount={Number(giftsReceived?.toFixed(1))}
       />
     </div>
   );

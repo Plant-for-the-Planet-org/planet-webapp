@@ -45,36 +45,8 @@ const TreeTargetBar = ({
   const { treePlanted, treeTarget, treeChecked, contributionsResult } =
     useMyForestV2();
   const tProfile = useTranslations('Profile');
-  const giftReceived = contributionsResult?.stats.treesDonated.received;
-  const personal = contributionsResult?.stats.treesDonated.personal;
+  const giftReceived = contributionsResult?.stats.treesDonated.received ?? 0;
 
-  const treePlantedProgress = () => {
-    if (personal !== undefined && giftReceived !== undefined) {
-      if (treeTarget > personal) {
-        return personalPercentage;
-      } else {
-        if (giftReceived === 0) {
-          return 100;
-        } else {
-          return personalPercentage;
-        }
-      }
-    }
-  };
-
-  const giftReceiveProgress = () => {
-    if (giftReceived !== undefined && personal !== undefined) {
-      if (treeTarget > giftReceived) {
-        return giftPercentage;
-      } else {
-        if (personal === 0) {
-          return 100;
-        } else {
-          return giftPercentage;
-        }
-      }
-    }
-  };
   return (
     <div className={targetBarStyle.targetSubContainer}>
       <div className={targetBarStyle.statisticsContainer}>
@@ -96,36 +68,24 @@ const TreeTargetBar = ({
             <div className={targetBarStyle.barSubContainerTreeTarget}>
               <div
                 style={{
-                  width: `${treePlantedProgress()}%`,
+                  width: `${personalPercentage}%`,
                   borderTopRightRadius: `${
-                    personalPercentage && treeChecked && giftPercentage === 0
-                      ? 5
-                      : 0
+                    giftPercentage !== 0 || treeTarget > treePlanted ? 0 : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    personalPercentage && treeChecked && giftPercentage === 0
-                      ? 5
-                      : 0
+                    giftPercentage !== 0 || treeTarget > treePlanted ? 0 : 5
                   }px`,
                 }}
                 className={targetBarStyle.treeTargetCompleteBar}
               ></div>
               <div
                 style={{
-                  width: `${giftReceiveProgress()}%`,
+                  width: `${giftPercentage}%`,
                   borderTopRightRadius: `${
-                    giftPercentage &&
-                    giftReceived !== undefined &&
-                    treeTarget < giftReceived
-                      ? 5
-                      : 0
+                    treeTarget > giftReceived ? 0 : 5
                   }px`,
                   borderBottomRightRadius: `${
-                    giftPercentage &&
-                    giftReceived !== undefined &&
-                    treeTarget < giftReceived
-                      ? 5
-                      : 0
+                    treeTarget > giftReceived ? 0 : 5
                   }px`,
                   borderTopLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
                   borderBottomLeftRadius: `${
@@ -136,9 +96,7 @@ const TreeTargetBar = ({
               ></div>
             </div>
             <div>
-              {treeTarget > 0 &&
-                treeChecked &&
-                `${giftPercentage + personalPercentage}%`}
+              {treeTarget > 0 && `${giftPercentage + personalPercentage}%`}
             </div>
           </div>
           {giftsReceivedCount !== undefined && giftsReceivedCount > 0 && (
@@ -158,15 +116,12 @@ const PlantTreeBar = ({ handleOpen }: EditButtonProps) => {
   const { asPath } = useRouter();
 
   const { contributionsResult, treeTarget } = useMyForestV2();
-  const giftsReceivedCount = contributionsResult?.stats.treesDonated.received;
+  const giftsReceivedCount =
+    contributionsResult?.stats.treesDonated.received ?? 0;
+  const personal = contributionsResult?.stats.treesDonated.personal ?? 0;
 
   const _calculatePercentage = useMemo(
-    () =>
-      calculatePercentage(
-        treeTarget,
-        contributionsResult?.stats.treesDonated.received,
-        contributionsResult?.stats.treesDonated.personal
-      ),
+    () => calculatePercentage(treeTarget, giftsReceivedCount, personal),
     [treeTarget, contributionsResult]
   );
   return (
