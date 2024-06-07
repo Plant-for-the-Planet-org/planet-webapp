@@ -24,7 +24,6 @@ export type ProjectQueryResponse = {
 export type MyForestProject = Omit<ProjectQueryResponse, 'allowDonations'> & {
   allowDonations: boolean;
 };
-
 export type ContributionStats = {
   giftsReceivedCount: number;
   contributionsMadeCount: number;
@@ -147,6 +146,35 @@ export type GiftsQueryResult = {
   plantDate: DateString;
 };
 
+export type ProjectQueryResult = {
+  guid: string;
+  name: string;
+  slug: string;
+  classification: TreeProjectClassification | null;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2';
+  country: CountryCode;
+  geometry: Point;
+  image: string;
+  allowDonations: '0' | '1';
+  tpoName: string;
+};
+
+export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
+  allowDonations: boolean;
+};
+
+// Procedure Response types
+interface ContributionsResponse {
+  stats: ContributionStats;
+  myContributionsMap: Map<string, MyContributionsMapItem>;
+  registrationLocationsMap: Map<string, MapLocation>;
+  projectLocationsMap: Map<string, MapLocation>;
+}
+
+type ProjectListResponse = Record<string, MyForestProject>;
+
+// TODO: Could probably rename this to something more descriptive, similar to the other types for API response
 export type LeaderboardItem = {
   name: string;
   units: number;

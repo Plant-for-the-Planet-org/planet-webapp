@@ -1,4 +1,5 @@
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -26,9 +27,11 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
       <Head>
         <title>My Forest V2</title>
       </Head>
-      <ProfileOuterContainer>
-        <ProfileLayout />
-      </ProfileOuterContainer>
+      <MyForestProviderV2>
+        <ProfileOuterContainer>
+          <ProfileLayout />
+        </ProfileOuterContainer>
+      </MyForestProviderV2>
     </UserLayout>
   ) : (
     <></>

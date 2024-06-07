@@ -1,14 +1,13 @@
 import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
-
 import {
   MyForestProject,
-  ProjectQueryResponse,
+  ProjectQueryResult,
 } from '../../../features/common/types/myForestv2';
 
 export const projectListsProcedure = procedure.query(async () => {
   // Get the list of projects
-  const projects = await prisma.$queryRaw<ProjectQueryResponse[]>`
+  const projects = await prisma.$queryRaw<ProjectQueryResult[]>`
 		SELECT 
 			p.guid,
 			p.name,
