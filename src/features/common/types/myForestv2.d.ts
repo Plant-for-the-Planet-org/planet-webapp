@@ -77,6 +77,8 @@ export type MyContributionsSingleRegistration = {
   totalContributionUnits: number;
   contributionUnitType: 'tree';
   contributionCount: number;
+  country: CountryCode | null;
+  projectGuid: string | null;
   contributions: SingleRegistration[];
 };
 
@@ -132,7 +134,7 @@ export type ContributionsQueryResult = {
   amount: number;
   currency: string;
   geometry: Point | Polygon | null;
-  country: string;
+  country: CountryCode | '';
   giftMethod: string | null;
   giftRecipient: string | null;
   giftType: string | null;
