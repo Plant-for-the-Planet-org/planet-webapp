@@ -67,15 +67,31 @@
 }
 
 .registrationSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
   .registeredTreeCount {
     font-weight: 700;
-    font-size: $fontMedium;
-    color: #333;
+    font-size: $fontSixteen;
+    color: #4f4f4f;
   }
 
   .registrationInfo {
-    font-size: $fontSmall;
+    font-size: $fontXSmall;
     color: #4f4f4f;
+  }
+
+  @include smTabletView {
+    .registeredTreeCount {
+      font-weight: 700;
+      font-size: $fontMedium;
+      color: #333;
+    }
+
+    .registrationInfo {
+      font-size: $fontSmall;
+    }
   }
 }
 
@@ -115,17 +131,17 @@
 }
 
 .itemImageContainer {
-  width: 130px;
-  height: 130px;
-  border-radius: 8px;
+  height: 150px;
   background: black;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
 
-  @include xsPhoneView {
-    display: none;
+  @include smTabletView {
+    width: 130px;
+    height: 130px;
+    border-radius: 8px;
   }
 }
 
@@ -232,13 +248,10 @@
       width: 16px;
     }
   }
-
-  @include smTabletView {
-    display: none;
-  }
 }
 
-.projectItemCard {
+.projectItemCard,
+.registrationItemCard {
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -246,13 +259,23 @@
   border-radius: 12px;
   overflow: hidden;
 
+  @include smTabletView {
+    border: none;
+    background: linear-gradient(
+        0deg,
+        rgba(33, 150, 83, 0.05),
+        rgba(33, 150, 83, 0.05)
+      ),
+      linear-gradient(0deg, #ffffff, #ffffff);
+    padding: 6px;
+    gap: 12px;
+  }
+}
+
+.projectItemCard {
   .sectionOneMobile {
     display: flex;
     flex-direction: column;
-
-    @include smTabletView {
-      display: none;
-    }
 
     .aggregateInfoAndActions {
       padding: 16px;
@@ -308,22 +331,39 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 6px;
+  }
 
-    @include smTabletView {
+  @include smTabletView {
+    .sectionOneMobile {
+      display: none;
+    }
+
+    .sectionTwo {
       background-color: transparent;
       padding: 0 0 6px 0;
     }
   }
+}
+
+.registrationItemCard {
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .itemInfo {
+    padding: 16px;
+  }
 
   @include smTabletView {
-    border: none;
-    background: linear-gradient(
-        0deg,
-        rgba(33, 150, 83, 0.05),
-        rgba(33, 150, 83, 0.05)
-      ),
-      linear-gradient(0deg, #ffffff, #ffffff);
-    padding: 6px;
-    gap: 12px;
+    .cardContent {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .itemInfo {
+      padding: 0;
+    }
   }
 }
