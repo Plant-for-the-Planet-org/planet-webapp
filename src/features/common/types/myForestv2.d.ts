@@ -6,24 +6,6 @@ import {
   TreeProjectClassification,
 } from '@planet-sdk/common';
 
-export type ProjectQueryResponse = {
-  guid: string;
-  name: string;
-  slug: string;
-  classification: TreeProjectClassification | null;
-  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
-  purpose: 'trees' | 'conservation';
-  unitType: 'tree' | 'm2';
-  country: CountryCode;
-  geometry: Point;
-  image: string;
-  allowDonations: '0' | '1';
-  tpoName: string;
-};
-
-export type MyForestProject = Omit<ProjectQueryResponse, 'allowDonations'> & {
-  allowDonations: boolean;
-};
 export type ContributionStats = {
   giftsReceivedCount: number;
   contributionsMadeCount: number;
@@ -109,6 +91,25 @@ export type MapLocation = {
   geometry: Point;
 };
 
+export type ProjectQueryResult = {
+  guid: string;
+  name: string;
+  slug: string;
+  classification: TreeProjectClassification | null;
+  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2';
+  country: CountryCode;
+  geometry: Point;
+  image: string;
+  allowDonations: '0' | '1';
+  tpoName: string;
+};
+
+export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
+  allowDonations: boolean;
+};
+
 export type GroupTreecounterQueryResult = {
   profileId: number;
 };
@@ -144,24 +145,6 @@ export type GiftsQueryResult = {
   projectName: string;
   country: string;
   plantDate: DateString;
-};
-
-export type ProjectQueryResult = {
-  guid: string;
-  name: string;
-  slug: string;
-  classification: TreeProjectClassification | null;
-  purpose: 'trees' | 'conservation';
-  unitType: 'tree' | 'm2';
-  country: CountryCode;
-  geometry: Point;
-  image: string;
-  allowDonations: '0' | '1';
-  tpoName: string;
-};
-
-export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
-  allowDonations: boolean;
 };
 
 // Procedure Response types
