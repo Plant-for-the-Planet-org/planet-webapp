@@ -1,30 +1,10 @@
 import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
+
 import {
-  CountryCode,
-  EcosystemTypes,
-  TreeProjectClassification,
-} from '@planet-sdk/common';
-import { Point } from 'geojson';
-
-type ProjectQueryResponse = {
-  guid: string;
-  name: string;
-  slug: string;
-  classification: TreeProjectClassification | null;
-  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
-  purpose: 'trees' | 'conservation';
-  unitType: 'tree' | 'm2';
-  country: CountryCode;
-  geometry: Point;
-  image: string;
-  allowDonations: '0' | '1';
-  tpoName: string;
-};
-
-export type MyForestProject = Omit<ProjectQueryResponse, 'allowDonations'> & {
-  allowDonations: boolean;
-};
+  MyForestProject,
+  ProjectQueryResponse,
+} from '../../../features/common/types/myForestv2';
 
 export const projectListsProcedure = procedure.query(async () => {
   // Get the list of projects
@@ -34,6 +14,7 @@ export const projectListsProcedure = procedure.query(async () => {
 			p.name,
 			p.slug,
 			p.classification,
+			COALESCE(metadata ->> '$.ecosystem', metadata ->> '$.ecosystems') as ecosystem,
 			p.purpose,
 			p.unit_type AS unitType,
 			p.country,

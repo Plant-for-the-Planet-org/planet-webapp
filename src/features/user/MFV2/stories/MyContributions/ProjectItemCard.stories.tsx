@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ProjectItemCard from '../../MyContributions/ProjectItemCard';
-import { MyForestProject } from '../../../../../server/procedures/myForestV2/projectList';
+import { MyForestProject } from '../../../../common/types/myForestv2';
 import { MyContributionsSingleProject } from '../../../../common/types/myForestv2';
-import { sample } from 'cypress/types/lodash';
-import { latest } from 'maplibre-gl';
 
 const meta: Meta<typeof ProjectItemCard> = {
   component: ProjectItemCard,

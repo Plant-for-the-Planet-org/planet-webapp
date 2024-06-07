@@ -4,7 +4,7 @@ import DonateButton from './DonateButton';
 import ItemMobileHeader from './ItemMobileHeader';
 import ProjectTotalContributions from './ProjectTotalContributions';
 import styles from './MyContributions.module.scss';
-import { MyForestProject } from '../../../../server/procedures/myForestV2/projectList';
+import { MyForestProject } from '../../../common/types/myForestv2';
 import { MyContributionsSingleProject } from '../../../common/types/myForestv2';
 import { useTranslations } from 'next-intl';
 import { CountryCode } from '@planet-sdk/common';
@@ -143,9 +143,6 @@ const ProjectItemCard = ({
               purpose={project.purpose}
             />
           ))}
-          {/* Iterate through contributions list. Section only seen when there are contributions */}
-          {/* <ContributionSummary /> */}
-          {/* <ContributionCountOverflow /> */}
           {contributionDetails.contributionCount > 3 && (
             <ContributionCountOverflow
               contributionCount={contributionDetails.contributionCount}

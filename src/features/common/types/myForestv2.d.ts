@@ -1,5 +1,29 @@
 import { Point, Polygon } from 'geojson';
 import { DateString } from './common';
+import {
+  CountryCode,
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+
+export type ProjectQueryResponse = {
+  guid: string;
+  name: string;
+  slug: string;
+  classification: TreeProjectClassification | null;
+  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2';
+  country: CountryCode;
+  geometry: Point;
+  image: string;
+  allowDonations: '0' | '1';
+  tpoName: string;
+};
+
+export type MyForestProject = Omit<ProjectQueryResponse, 'allowDonations'> & {
+  allowDonations: boolean;
+};
 
 export type ContributionStats = {
   giftsReceivedCount: number;
