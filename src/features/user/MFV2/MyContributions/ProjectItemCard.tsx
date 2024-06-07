@@ -40,8 +40,15 @@ const ProjectItemCard = ({
     3
   );
 
+  const projectType =
+    project.purpose === 'conservation'
+      ? 'conservation'
+      : project.unitType === 'm2'
+      ? 'restoration'
+      : 'trees';
+
   return (
-    <article className={styles.projectItemCard}>
+    <article className={`${styles.projectItemCard} ${styles[projectType]}`}>
       <section className={styles.sectionOneLandscape}>
         <ItemImage
           imageUrl={project.image}
@@ -135,7 +142,7 @@ const ProjectItemCard = ({
         </div>
       </section>
       {contributionDetails.contributionCount > 1 && (
-        <section className={styles.sectionTwo}>
+        <section className={`${styles.sectionTwo} ${styles[projectType]}`}>
           {lastThreeContributions.map((contribution, index) => (
             <ContributionSummary
               key={index}

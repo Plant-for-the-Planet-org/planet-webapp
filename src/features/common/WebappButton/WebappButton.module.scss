@@ -7,7 +7,6 @@
   justify-content: center;
   gap: 10px;
   border-radius: 8px;
-  border: 1px solid rgba(33, 150, 83, 0.4);
   background: #fff;
   white-space: nowrap;
   cursor: pointer;
@@ -48,7 +47,9 @@
 }
 
 .primaryWebappButton {
-  background-color: #007a49;
+  background-color: $primaryDarkColor;
+  border: 1px solid $primaryDarkColor;
+  box-sizing: border-box;
   .webappButtonLabel {
     color: #fff;
   }
@@ -60,23 +61,23 @@
 
 .secondaryWebappButton {
   background-color: #fff;
+  border: 1px solid rgba(33, 150, 83, 0.4);
   .webappButtonLabel {
     color: #2f3336;
   }
   &:hover {
     background: rgba(33, 150, 83, 0.2);
-    border: none;
+    border: 1px solid transparent;
   }
 }
 
 .tertiaryWebappButton {
-  background-color: #007a49;
+  background-color: $primaryDarkColor;
   .webappButtonLabel {
     color: #fff;
     font-size: $fontXSmall;
   }
   &:hover {
-    border: 1px solid rgba(33, 150, 83, 0.4);
     background: #27ae60;
   }
 }
