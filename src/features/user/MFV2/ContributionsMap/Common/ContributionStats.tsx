@@ -1,5 +1,7 @@
-import CountryStatIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/statsIcon/CountryStatIcon';
-import DonationStatIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/statsIcon/DonationStat';
+import {
+  DonationStatIcon,
+  CountryStatIcon,
+} from '../../../../../../public/assets/images/icons/MyForestMapIcons';
 import style from '../Common/common.module.scss';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';

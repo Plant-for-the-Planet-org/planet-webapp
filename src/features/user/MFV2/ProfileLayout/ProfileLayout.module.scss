@@ -25,24 +25,11 @@
 
   .mapContainer {
     margin: 0;
-    padding: 0;
+    padding: 4px;
     border-radius: 0;
-    overflow: hidden;
     border: none;
     height: 435px;
     grid-area: mapContainer;
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-top: 2px;
-    canvas {
-      border-top-right-radius: 14px;
-      border-top-left-radius: 14px;
-    }
-    @include xsPhoneView {
-      canvas {
-        border-radius: 0px;
-      }
-    }
   }
 
   .progressContainer {

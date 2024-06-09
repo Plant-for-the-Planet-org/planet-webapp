@@ -20,17 +20,25 @@
   width: 330px;
 }
 .mapSubContainer {
-  position: relative;
-  height: 85%;
+  // padding-bottom: 2px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  canvas {
+    border-top-right-radius: 14px;
+    border-top-left-radius: 14px;
+  }
+  @include xsPhoneView {
+    canvas {
+      border-radius: 0px;
+    }
+  }
 }
 
 //style for contribution statistics
 .contributionStatsContainer {
   background: #f0f6f5;
   width: 100%;
-  height: 48px;
-  position: absolute;
-  bottom: -42px;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
   padding-top: 12px;
@@ -44,18 +52,12 @@
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
   }
-  @include smTabletView {
-    bottom: -53px;
-  }
-  @include mdTabletView {
-    bottom: -49px;
-  }
 }
 
 .contributionStatsSubContainer {
   display: flex;
+  height: 100%;
   gap: 10px;
-  height: 24px;
   align-items: center;
 }
 
