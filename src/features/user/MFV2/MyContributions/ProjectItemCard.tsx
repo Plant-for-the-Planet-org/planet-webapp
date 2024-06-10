@@ -10,6 +10,8 @@ import { useTranslations } from 'next-intl';
 import { CountryCode } from '@planet-sdk/common';
 import ItemImage from './ItemImage';
 import ProjectSummary from './ProjectSummary';
+import getImageUrl from '../../../../utils/getImageURL';
+import { ComponentProps } from 'react';
 
 interface Props {
   project: MyForestProject;
@@ -17,6 +19,8 @@ interface Props {
   pageType: 'public' | 'private';
   supportedTreecounter?: string;
 }
+
+export type ProjectItemCardProps = ComponentProps<typeof ProjectItemCard>;
 
 const ProjectItemCard = ({
   project,
@@ -40,6 +44,10 @@ const ProjectItemCard = ({
     3
   );
 
+  const imageSource = project.image
+    ? getImageUrl('project', 'medium', project.image)
+    : '';
+
   const projectType =
     project.purpose === 'conservation'
       ? 'conservation'
@@ -51,7 +59,7 @@ const ProjectItemCard = ({
     <article className={`${styles.projectItemCard} ${styles[projectType]}`}>
       <section className={styles.sectionOneLandscape}>
         <ItemImage
-          imageUrl={project.image}
+          imageUrl={imageSource}
           {...(giftDetails !== null && { giftDetails })}
         />
         <div className={styles.itemInfo}>
@@ -97,7 +105,7 @@ const ProjectItemCard = ({
         <ItemMobileHeader
           type="project"
           projectName={project.name}
-          projectImageUrl={project.image}
+          projectImageUrl={imageSource}
           {...(project.purpose === 'trees'
             ? {
                 projectPurpose: project.purpose,

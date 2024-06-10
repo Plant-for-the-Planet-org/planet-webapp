@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react';
+import getImageUrl from '../../../../utils/getImageURL';
 import {
   MyContributionsSingleRegistration,
   MyForestProject,
@@ -11,11 +13,19 @@ interface Props {
   contributionDetails: MyContributionsSingleRegistration;
 }
 
+export type RegistrationItemCardProps = ComponentProps<
+  typeof RegistrationItemCard
+>;
+
 const RegistrationItemCard = ({ project, contributionDetails }: Props) => {
+  const imageSource = project?.image
+    ? getImageUrl('project', 'medium', project.image)
+    : '';
+
   return (
     <article className={styles.registrationItemCard}>
       <div className={styles.cardContent}>
-        <ItemImage {...(project ? { imageUrl: project.image } : {})} />
+        <ItemImage {...(project ? { imageUrl: imageSource } : {})} />
         <div className={styles.itemInfo}>
           <RegistrationSummary
             treeCount={contributionDetails.totalContributionUnits}
