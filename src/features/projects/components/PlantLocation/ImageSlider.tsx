@@ -66,7 +66,7 @@ export default function ImageSlider({
 
   return <Stories
     stories={slider}
-    defaultInterval={300}
+    defaultInterval={7000}
     width="100%"
     height={height}
     loop={true}
