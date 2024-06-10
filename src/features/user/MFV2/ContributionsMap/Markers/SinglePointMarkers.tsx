@@ -9,7 +9,6 @@ import UrbanRestoration from '../../../../../../public/assets/images/icons/myFor
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
 import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import themeProperties from '../../../../../theme/themeProperties';
-import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import style from '.././Common/common.module.scss';
 import { UnitTypes } from '@planet-sdk/common';
 
@@ -39,7 +38,7 @@ const ProjectTypeIcon = ({
       case 'trees':
         return unitType === 'm2'
           ? themeProperties.electricPurple
-          : themeProperties.primaryDarkColorX;
+          : themeProperties.primaryDarkColor;
       default:
         return themeProperties.primaryDarkColorX;
     }
@@ -72,49 +71,27 @@ const ProjectTypeIcon = ({
   }
 };
 
-const SinglePointMarkers = () => {
-  const { registrationGeojson, donationGeojson } = useMyForestV2();
-  return registrationGeojson ? (
-    <>
-      {registrationGeojson.map((singleLocation, key) => {
-        if (singleLocation.geometry !== undefined) {
-          return (
-            <Marker
-              longitude={singleLocation?.geometry.coordinates[0]}
-              latitude={singleLocation?.geometry.coordinates[1]}
-              offset={[0, -15]}
-              key={key}
-            >
-              <div className={style.registeredTreeMarkerContainer}>
-                <RegisteredTreeIcon />
-              </div>
-            </Marker>
-          );
-        } else {
-          return <></>;
-        }
-      })}
-      {donationGeojson.map((singleLocation, key) => {
-        return (
-          <Marker
-            longitude={singleLocation?.geometry.coordinates[0]}
-            latitude={singleLocation?.geometry.coordinates[1]}
-            offset={[0, -15]}
-            key={key}
-          >
-            <ProjectTypeIcon
-              purpose={singleLocation.properties.projectInfo.purpose}
-              classification={
-                singleLocation.properties.projectInfo.classification
-              }
-              unitType={singleLocation.properties.projectInfo.unitType}
-            />
-          </Marker>
-        );
-      })}
-    </>
-  ) : (
-    <></>
+const SinglePointMarkers = ({ superclusterResponse }) => {
+  return (
+    <Marker
+      longitude={superclusterResponse?.geometry.coordinates[0]}
+      latitude={superclusterResponse?.geometry.coordinates[1]}
+      offset={[0, -15]}
+    >
+      {superclusterResponse?.properties.type === 'registration' ? (
+        <div className={style.registeredTreeMarkerContainer}>
+          <RegisteredTreeIcon />
+        </div>
+      ) : (
+        <ProjectTypeIcon
+          purpose={superclusterResponse.properties.projectInfo.purpose}
+          classification={
+            superclusterResponse.properties.projectInfo.classification
+          }
+          unitType={superclusterResponse.properties.projectInfo.unitType}
+        />
+      )}
+    </Marker>
   );
 };
 

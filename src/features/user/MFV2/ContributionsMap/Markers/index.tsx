@@ -37,7 +37,11 @@ const Markers = ({ mapRef, viewport }) => {
         undefined
       );
       setDonatedTreeSuperclusteResponse(superclusterResponseForDonatedTree);
+    }
+  }, [viewport, donationGeojson]);
 
+  useEffect(() => {
+    if (donationGeojson && viewport) {
       const superclusterResponseForRegisteredTree = _getClusterGeojson(
         viewport,
         mapRef,
@@ -48,7 +52,7 @@ const Markers = ({ mapRef, viewport }) => {
         superclusterResponseForRegisteredTree
       );
     }
-  }, [viewport, registrationGeojson, donationGeojson]);
+  }, [viewport, registrationGeojson]);
 
   return donatedTreeSuperclusterResponse &&
     registeredTreeSuperclusterResponse ? (
@@ -61,11 +65,14 @@ const Markers = ({ mapRef, viewport }) => {
             mapRef={mapRef}
           />
         ) : (
-          <SinglePointMarkers superclusterResponse={geoJson} />
+          <>
+            {/* {console.log(geoJson, '==1')} */}
+            <SinglePointMarkers superclusterResponse={geoJson} />
+          </>
         );
       })}
       {registeredTreeSuperclusterResponse.map((geoJson) => {
-        return geoJson.id ? (
+        return geoJson.id && geoJson.properties.cluster ? (
           <RegisteredTreeClusterMarker
             geoJson={geoJson}
             viewport={viewport}
