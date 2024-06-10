@@ -21,12 +21,14 @@ import {
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 
-interface RegistrationGeojson {
+export interface RegistrationGeojson {
+  type: 'Feature';
   geometry: Point;
   properties: MyContributionsSingleRegistration;
 }
 
-interface DonationGeojson {
+export interface DonationGeojson {
+  type: 'Feature';
   geometry: Point;
   properties: {
     projectInfo: MyForestProject;
@@ -87,6 +89,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
     contributionsForProject: MyContributionsSingleProject
   ) => {
     return {
+      type: 'Feature',
       geometry: project.geometry,
       properties: {
         projectInfo: project,
@@ -100,6 +103,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
     registration: MyContributionsSingleRegistration
   ) => {
     return {
+      type: 'Feature',
       geometry: registrationLocation.geometry,
       properties: registration,
     };

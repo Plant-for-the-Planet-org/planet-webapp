@@ -7,6 +7,11 @@ import {
 import Supercluster, { PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
+import {
+  MyContributionsSingleProject,
+  MyContributionsSingleRegistration,
+  MyForestProject,
+} from '../features/common/types/myForestv2';
 
 const _clusterConfig = {
   radius: 40,
@@ -26,10 +31,17 @@ const _clusterConfigV2 = {
   maxZoom: 3,
 };
 
+interface DonationGeojsonProp {
+  projectInfo: MyForestProject;
+  contributionInfo: MyContributionsSingleProject;
+}
+
 export const _getClusterGeojson = (
   viewState: ViewState,
   mapRef: RefObject<MapRef>,
-  geoJson: PointFeature<TestPointProps>[],
+  geoJson: PointFeature<
+    DonationGeojsonProp | MyContributionsSingleRegistration
+  >[],
   clusterId: string | number | undefined
 ) => {
   const supercluster = new Supercluster(_clusterConfigV2);

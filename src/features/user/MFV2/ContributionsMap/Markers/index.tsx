@@ -1,31 +1,27 @@
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import ClusterMarker from './ClusterMarker';
 import SinglePointMarkers from './SinglePointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
-import { ClusterFeature, PointFeature } from 'supercluster';
-import Supercluster from 'supercluster';
+import { ClusterFeature, AnyProps, PointFeature } from 'supercluster';
 
-const Markers = ({ mapRef, viewport }) => {
+interface MarkersProps {
+  mapRef: MutableRefObject<null>;
+  viewport: any;
+}
+
+const Markers = ({ mapRef, viewport }: MarkersProps) => {
   const { registrationGeojson, donationGeojson } = useMyForestV2();
   const [donatedTreeSuperclusterResponse, setDonatedTreeSuperclusteResponse] =
-    useState<
-      | (
-          | ClusterFeature<Supercluster.AnyProps>
-          | PointFeature<Supercluster.AnyProps>
-        )[]
-      | undefined
-    >(undefined);
+    useState<(ClusterFeature<AnyProps> | PointFeature<AnyProps>)[] | undefined>(
+      undefined
+    );
   const [
     registeredTreeSuperclusterResponse,
     setRegisteredTreeSuperclusteResponse,
   ] = useState<
-    | (
-        | ClusterFeature<Supercluster.AnyProps>
-        | PointFeature<Supercluster.AnyProps>
-      )[]
-    | undefined
+    (ClusterFeature<AnyProps> | PointFeature<AnyProps>)[] | undefined
   >([]);
 
   useEffect(() => {
@@ -60,24 +56,17 @@ const Markers = ({ mapRef, viewport }) => {
       {donatedTreeSuperclusterResponse.map((geoJson) => {
         return geoJson.id ? (
           <ClusterMarker
-            geoJson={geoJson}
+            superclusterResponse={geoJson}
             viewport={viewport}
             mapRef={mapRef}
           />
         ) : (
-          <>
-            {/* {console.log(geoJson, '==1')} */}
-            <SinglePointMarkers superclusterResponse={geoJson} />
-          </>
+          <SinglePointMarkers superclusterResponse={geoJson} />
         );
       })}
       {registeredTreeSuperclusterResponse.map((geoJson) => {
         return geoJson.id && geoJson.properties.cluster ? (
-          <RegisteredTreeClusterMarker
-            geoJson={geoJson}
-            viewport={viewport}
-            mapRef={mapRef}
-          />
+          <RegisteredTreeClusterMarker superclusterResponse={geoJson} />
         ) : (
           <SinglePointMarkers superclusterResponse={geoJson} />
         );

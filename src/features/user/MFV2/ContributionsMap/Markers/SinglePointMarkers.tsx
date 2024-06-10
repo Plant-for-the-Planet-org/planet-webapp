@@ -71,7 +71,7 @@ const ProjectTypeIcon = ({
   }
 };
 
-const SinglePointMarkers = ({ superclusterResponse }) => {
+const SinglePointMarkers = ({ superclusterResponse }: any) => {
   return (
     <Marker
       longitude={superclusterResponse?.geometry.coordinates[0]}

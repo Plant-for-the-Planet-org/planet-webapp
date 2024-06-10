@@ -1,37 +1,60 @@
 import { Marker } from 'react-map-gl-v7';
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import ContributionClusterMarkerIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/ClusterMarker/ContributionClusterMarkerIcon';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
+import Supercluster, {
+  ClusterFeature,
+  PointFeature,
+  AnyProps,
+} from 'supercluster';
 
-const ClusterMarker = ({ geoJson, viewport, mapRef }) => {
-  const [clusterChildren, setClusterChildren] = useState([]);
+export interface ClusterMarkerProps {
+  superclusterResponse: ClusterFeature<AnyProps> | PointFeature<AnyProps>;
+  viewport: any;
+  mapRef: MutableRefObject<null>;
+}
+
+const ClusterMarker = ({
+  superclusterResponse,
+  viewport,
+  mapRef,
+}: ClusterMarkerProps) => {
+  const [clusterChildren, setClusterChildren] = useState<
+    | (
+        | ClusterFeature<Supercluster.AnyProps>
+        | PointFeature<Supercluster.AnyProps>
+      )[]
+    | undefined
+  >(undefined);
   const { donationGeojson } = useMyForestV2();
   const { primaryDarkColor, electricPurple, mediumBlue } = themeProperties;
-
   useEffect(() => {
-    if (geoJson && viewport && donationGeojson) {
+    if (superclusterResponse && viewport && donationGeojson) {
       const data = _getClusterGeojson(
         viewport,
         mapRef,
         donationGeojson,
-        geoJson.id
+        superclusterResponse.id
       );
       setClusterChildren(data);
     }
-  }, [viewport, geoJson]);
+  }, [viewport, superclusterResponse]);
 
-  const countProjectsByPurpose = (purpose) => {
-    return clusterChildren.filter(
-      (geojson) => geojson?.properties?.projectInfo?.purpose === purpose
-    ).length;
+  const countProjectsByPurpose = (purpose: string) => {
+    if (clusterChildren) {
+      return clusterChildren.filter(
+        (superclusterResponse) =>
+          superclusterResponse?.properties?.projectInfo?.purpose === purpose
+      ).length;
+    }
   };
 
   const chooseColorForClusterMarker = () => {
-    const treeCount = countProjectsByPurpose('trees');
-    const restorationCount = countProjectsByPurpose('restoration');
-    const conservationCount = countProjectsByPurpose('conservation');
+    const treeCount = countProjectsByPurpose('trees') ?? 0;
+    const restorationCount = countProjectsByPurpose('restoration') ?? 0;
+    const conservationCount = countProjectsByPurpose('conservation') ?? 0;
 
     if (treeCount > 0 && restorationCount === 0 && conservationCount === 0) {
       return [
@@ -110,8 +133,8 @@ const ClusterMarker = ({ geoJson, viewport, mapRef }) => {
 
   return (
     <Marker
-      longitude={geoJson?.geometry.coordinates[0]}
-      latitude={geoJson?.geometry.coordinates[1]}
+      longitude={superclusterResponse?.geometry.coordinates[0]}
+      latitude={superclusterResponse?.geometry.coordinates[1]}
     >
       <ContributionClusterMarkerIcon
         color1={color1}
