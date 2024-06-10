@@ -36,6 +36,8 @@
       "editTarget": "Edit Target"
     },
     "myContributions": {
+      "titlePrivate": "My Contributions",
+      "titlePublic": "{name}'s Contributions",
       "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
       "treeRegistered": "{count, plural, =1 {# Tree Registered} other {# Trees Registered}}",
       "receivedFrom": "Received from {name}",

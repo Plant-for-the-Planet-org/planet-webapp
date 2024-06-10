@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import MyContributionsIcon from '../../../../../public/assets/images/icons/MyContributionsIcon';
 import styles from './MyContributions.module.scss';
 
@@ -13,12 +14,14 @@ type PublicProfileProps = {
 type Props = PrivateProfileProps | PublicProfileProps;
 
 const ListHeader = (props: Props) => {
+  const t = useTranslations('Profile.myContributions');
+
   return (
     <div className={styles.listHeader}>
       <h2 className={styles.headerTitle}>
         {props.profilePageType === 'private'
-          ? 'My Contributions'
-          : `${props.displayName}'s Contributions`}
+          ? t('titlePrivate')
+          : t('titlePublic', { name: props.displayName })}
       </h2>
       <div className={styles.iconContainer}>
         <MyContributionsIcon />
