@@ -38,6 +38,7 @@ export default function Project({
     siteExists,
     rasterData,
     setRasterData,
+    hoveredPl,
     isMobile,
     setSiteViewPort,
   } = useProjectProps();
@@ -98,8 +99,19 @@ export default function Project({
   }, [selectedPl]);
 
   React.useEffect(() => {
-    if (project.sites && siteExists && !router.query.ploc) {
-      loadRasterData();
+    if (selectedPl) {
+      const locationCoordinates = selectedPl.type === 'multi' ? selectedPl.geometry.coordinates[0] : selectedPl.geometry.coordinates
+      zoomToPlantLocation(
+        locationCoordinates,
+        viewport,
+        isMobile,
+        setViewPort,
+        1200
+      );
+      return
+    }
+
+    if (project && project.sites  && router.query.ploc && !selectedPl) {
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
@@ -111,17 +123,11 @@ export default function Project({
         setSiteViewPort,
         4000
       );
-    } else if (plantLocations && router.query.ploc && selectedPl) {
-      if (selectedPl?.type === 'multi' && plantPolygonCoordinates) {
-        zoomToPlantLocation(
-          plantPolygonCoordinates,
-          viewport,
-          isMobile,
-          setViewPort,
-          1200
-        );
-      }
-    } else {
+      loadRasterData();
+      return;
+    }
+
+    if (!selectedPl || !hoveredPl) {
       zoomToLocation(
         viewport,
         setViewPort,
