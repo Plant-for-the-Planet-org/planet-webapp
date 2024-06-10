@@ -111,7 +111,7 @@ export default function Project({
       return
     }
 
-    if (project && project.sites  && router.query.ploc && !selectedPl) {
+    if (project && project.sites && !selectedPl) {
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
@@ -141,7 +141,6 @@ export default function Project({
     project,
     siteExists,
     plantLocations,
-    router.query.ploc,
     selectedPl,
     plantPolygonCoordinates,
   ]);
