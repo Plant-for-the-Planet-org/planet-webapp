@@ -159,13 +159,16 @@
 
 .itemImageContainer {
   height: 150px;
-  background: black;
+  background-image: url('/assets/images/contribution-default-landscape.png');
+  background-position: center;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
 
   @include smTabletView {
+    background-image: url('/assets/images/contribution-default-portrait.png');
     width: 130px;
     height: 130px;
     border-radius: 8px;
@@ -250,7 +253,16 @@
 
 .itemMobileHeader {
   height: 150px;
-  background: black;
+  background-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    ),
+    url('/assets/images/contribution-default-landscape.png');
+  background-position: center;
+  background-size: cover;
 
   .headerContent {
     height: 100%;
