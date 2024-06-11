@@ -12,11 +12,13 @@ async function fetchMostRecentGifts(profileIds: number[]) {
     {
       quantity: number;
       giverName: string;
+      purpose: 'trees' | 'conservation';
     }[]
   >`
 		SELECT
 			round((value)/100, 2) as quantity,
-			COALESCE(NULLIF(metadata->>'$.giver.name', ''), 'anonymous') as giverName
+			COALESCE(NULLIF(metadata->>'$.giver.name', ''), 'anonymous') as giverName,
+			purpose
 		FROM gift
 		WHERE 
 			recipient_id IN (${Prisma.join(profileIds)}) 
@@ -32,11 +34,13 @@ async function fetchTopGifters(profileIds: number[]) {
     {
       totalQuantity: number;
       giverName: string;
+      purpose: 'trees' | 'conservation';
     }[]
   >`
 		SELECT
 			sum(round((value)/100, 2)) as totalQuantity,
-			metadata->>'$.giver.name' as giverName
+			metadata->>'$.giver.name' as giverName,
+			purpose
 		FROM gift
 		WHERE 
 			recipient_id IN (${Prisma.join(profileIds)}) 
@@ -44,7 +48,7 @@ async function fetchTopGifters(profileIds: number[]) {
 			AND value <> 0 
 			AND metadata->>'$.giver.name' IS NOT NULL
 			AND metadata->>'$.giver.name' <> ''
-		GROUP BY giverName
+		GROUP BY giverName, purpose
 		ORDER BY totalQuantity DESC
 		LIMIT 10;
 	`;
@@ -92,6 +96,7 @@ export const leaderboardProcedure = procedure
       name: gift.giverName,
       units: gift.quantity,
       unitType: 'tree',
+      purpose: gift.purpose,
     }));
 
     // Fetch the top 10 gifters for the profile(s)
@@ -101,6 +106,7 @@ export const leaderboardProcedure = procedure
       name: gifter.giverName,
       units: gifter.totalQuantity,
       unitType: 'tree',
+      purpose: gifter.purpose,
     }));
 
     // TODO: do we want to return {leaderboard} or just leaderboard?

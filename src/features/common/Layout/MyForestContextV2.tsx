@@ -8,8 +8,6 @@ import {
 } from 'react';
 import { trpc } from '../../../utils/trpc';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
-import { useUserProps } from './UserPropsContext';
-
 import { Point } from 'geojson';
 import {
   ProjectListResponse,
@@ -20,6 +18,7 @@ import {
   MapLocation,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
+import { SetState } from '../types/common';
 
 interface RegistrationGeojson {
   geometry: Point;
@@ -34,11 +33,22 @@ interface DonationGeojson {
   };
 }
 
+interface UserInfo {
+  profileId: string;
+  slug: string;
+  targets: {
+    treesDonated: number;
+    areaRestored: number;
+    areaConserved: number;
+  };
+}
 interface MyForestContextV2Interface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
   registrationGeojson: RegistrationGeojson[];
   donationGeojson: DonationGeojson[];
+  userInfo: UserInfo | null;
+  setUserInfo: SetState<UserInfo | null>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -55,14 +65,13 @@ export const MyForestProviderV2: FC = ({ children }) => {
   >([]);
 
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
-
-  const { user } = useUserProps();
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const { setErrors } = useContext(ErrorHandlingContext);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
   const _contributions = trpc.myForestV2.contributions.useQuery({
-    profileId: `${user?.id}`,
-    slug: `${user?.slug}`,
+    profileId: `${userInfo?.profileId}`,
+    slug: `${userInfo?.slug}`,
   });
 
   useEffect(() => {
@@ -148,12 +157,16 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsResult,
       registrationGeojson,
       donationGeojson,
+      userInfo,
+      setUserInfo,
     }),
     [
       projectListResult,
       contributionsResult,
       registrationGeojson,
       donationGeojson,
+      userInfo,
+      setUserInfo,
     ]
   );
 

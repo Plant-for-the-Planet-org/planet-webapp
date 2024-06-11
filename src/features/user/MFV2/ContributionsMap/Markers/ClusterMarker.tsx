@@ -26,7 +26,7 @@ const ClusterMarker = ({ geoJson, viewport, mapRef }) => {
 
   const countProjectsByPurpose = (purpose) => {
     return clusterChildren.filter(
-      (geojson) => geojson?.properties.project.purpose === purpose
+      (geojson) => geojson?.properties.projectInfo.purpose === purpose
     ).length;
   };
 
