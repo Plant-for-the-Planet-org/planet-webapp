@@ -9,19 +9,13 @@ import UrbanRestoration from '../../../../../../public/assets/images/icons/myFor
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
 import themeProperties from '../../../../../theme/themeProperties';
 import style from '.././Common/common.module.scss';
-import { UnitTypes } from '@planet-sdk/common';
+import { UnitTypes, ProjectPurpose } from '@planet-sdk/common';
+import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
+import { TreeProjectClassification } from '@planet-sdk/common';
 
-type Classification =
-  | 'natural-regeneration'
-  | 'mangroves'
-  | 'managed-regeneration'
-  | 'agroforestry'
-  | 'urban-planting'
-  | 'large-scale-planting'
-  | 'other-planting';
 interface ProjectTypeIconProps {
-  purpose: 'conservation' | 'restoration' | 'trees';
-  classification: Classification | null;
+  purpose: ProjectPurpose;
+  classification: TreeProjectClassification | null;
   unitType: UnitTypes;
 }
 
@@ -30,7 +24,7 @@ const ProjectTypeIcon = ({
   classification,
   unitType,
 }: ProjectTypeIconProps) => {
-  const getMarkerColor = (purpose: string, unitType: UnitTypes) => {
+  const getMarkerColor = (purpose: ProjectPurpose, unitType: UnitTypes) => {
     switch (purpose) {
       case 'conservation':
         return themeProperties.mediumBlue;
@@ -42,14 +36,19 @@ const ProjectTypeIcon = ({
         return themeProperties.primaryDarkColorX;
     }
   };
-  const markercolor = useMemo(
+  const markerColor = useMemo(
     () => getMarkerColor(purpose, unitType),
     [purpose, unitType]
   );
   const IconProps = {
     width: 42,
-    color: markercolor,
+    color: markerColor,
   };
+
+  if (purpose === 'conservation') {
+    return <Conservation {...IconProps} />;
+  }
+
   switch (classification) {
     case 'natural-regeneration':
       return <NaturalRegeneration {...IconProps} />;

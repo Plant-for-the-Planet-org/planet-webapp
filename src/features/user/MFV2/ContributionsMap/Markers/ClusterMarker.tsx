@@ -165,7 +165,6 @@ const ClusterMarker = ({
     //helper function to find out classification value which has more contribtuions
     const findMaxContributionClassification = () => {
       if (clusterChildren) {
-        console.log(clusterChildren, '==1');
         clusterChildren.forEach((obj) => {
           const { classification } = obj.properties.projectInfo;
           const { contributionCount } = obj.properties.contributionInfo;
