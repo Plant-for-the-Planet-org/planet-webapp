@@ -18,6 +18,16 @@
 
   @include smTabletView {
     gap: 12px;
+    max-height: 600px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+
+    &::-webkit-scrollbar {
+      /* WebKit */
+      width: 0;
+      height: 0;
+    }
   }
 }
 
@@ -311,6 +321,7 @@
     padding: 6px;
     gap: 12px;
     background: rgba(#007a49, 0.07);
+    overflow: visible;
 
     &.conservation {
       background: rgba(#2d9cdb, 0.07);
