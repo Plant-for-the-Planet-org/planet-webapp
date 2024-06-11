@@ -7,7 +7,6 @@ import ManagedRegeneration from '../../../../../../public/assets/images/icons/my
 import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/Agroforestry';
 import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/UrbanRestoration';
 import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
-import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
 import themeProperties from '../../../../../theme/themeProperties';
 import style from '.././Common/common.module.scss';
 import { UnitTypes } from '@planet-sdk/common';
@@ -63,9 +62,8 @@ const ProjectTypeIcon = ({
     case 'urban-planting':
       return <UrbanRestoration {...IconProps} />;
     case 'large-scale-planting':
-      return <TreePlanting {...IconProps} />;
     case 'other-planting':
-      return <OtherPlanting {...IconProps} />;
+      return <TreePlanting {...IconProps} />;
     default:
       return null;
   }
