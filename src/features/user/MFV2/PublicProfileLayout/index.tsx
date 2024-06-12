@@ -2,7 +2,7 @@ import styles from './PublicProfileLayout.module.scss';
 import ProfileCard from '../ProfileCard';
 import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
-import Targets from '../TreeTarget';
+import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import { useState, useEffect, useContext } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -74,7 +74,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        <Targets />
+        <ForestProgress />
       </section>
       <section
         id="my-contributions-container"

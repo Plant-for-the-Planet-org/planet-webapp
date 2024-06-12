@@ -5,7 +5,7 @@ import RestoreAreaProgressBar from './microComponents/RestoreAreaBar';
 import targetBarStyle from './TreeTargetBar.module.scss';
 import TargetsModal from './microComponents/TargetModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
-import TargetInitialize from './microComponents/TargetInitialize';
+import EmptyProgress from './microComponents/EmptyProgress';
 import Skeleton from 'react-loading-skeleton';
 
 interface TargetProps {
@@ -40,7 +40,7 @@ const ProgressBars = ({ handleOpen }: TargetProps) => {
   );
 };
 
-const BarGraphs = () => {
+const ForestProgress = () => {
   const [open, setOpen] = useState(false);
   const [enableTarget, setEnableTarget] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -79,7 +79,7 @@ const BarGraphs = () => {
       ) : (
         <div className={targetBarStyle.targetMainContainer}>
           {enableTarget ? (
-            <TargetInitialize handleOpen={handleOpen} />
+            <EmptyProgress handleOpen={handleOpen} />
           ) : (
             <ProgressBars handleOpen={handleOpen} />
           )}
@@ -91,4 +91,4 @@ const BarGraphs = () => {
   );
 };
 
-export default BarGraphs;
+export default ForestProgress;

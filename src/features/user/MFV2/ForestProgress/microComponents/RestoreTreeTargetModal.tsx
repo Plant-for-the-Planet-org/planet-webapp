@@ -1,4 +1,4 @@
-import RestoredTreeTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/RestoredTreeTargetIcon';
+import AreaRestoredIcon from '../../../../../../public/assets/images/icons/Mfv2/AreaRestoredIcon';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import CustomTargetTextField from './CustomTargetTextField';
 import targetBarStyle from '../TreeTargetBar.module.scss';
@@ -37,7 +37,7 @@ const RestoreAreaTargetModal = () => {
       <div className={targetBarStyle.switchMainContainer}>
         <div className={targetBarStyle.switchSubContainer}>
           <div className={targetBarStyle.restoreTreeModalIconContainer}>
-            <RestoredTreeTargetIcon width={14} />
+            <AreaRestoredIcon width={14} />
           </div>
           <div className={targetBarStyle.label}>
             {tProfile('progressBar.areaRestoredTarget')}

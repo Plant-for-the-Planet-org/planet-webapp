@@ -1,6 +1,6 @@
 import { IconProps } from '../../../../../src/features/common/types/common';
 
-const ConservedAreaTargetIcon = ({ width }: IconProps) => {
+const ConservedAreaIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,4 +16,4 @@ const ConservedAreaTargetIcon = ({ width }: IconProps) => {
   );
 };
 
-export default ConservedAreaTargetIcon;
+export default ConservedAreaIcon;

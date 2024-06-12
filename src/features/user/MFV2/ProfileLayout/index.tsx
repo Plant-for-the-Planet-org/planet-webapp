@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
-import TreeTarget from '../TreeTarget';
+import ForestProgress from '../ForestProgress';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
@@ -48,7 +48,7 @@ const ProfileLayout = () => {
         <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        <TreeTarget />
+        <ForestProgress />
       </section>
       <section
         id="my-contributions-container"

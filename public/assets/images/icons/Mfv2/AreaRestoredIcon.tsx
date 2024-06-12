@@ -1,6 +1,6 @@
 import { IconProps } from '../../../../../src/features/common/types/common';
 
-const RestoredTreeTargetIcon = ({ width }: IconProps) => {
+const AreaRestoredIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,4 +20,4 @@ const RestoredTreeTargetIcon = ({ width }: IconProps) => {
   );
 };
 
-export default RestoredTreeTargetIcon;
+export default AreaRestoredIcon;

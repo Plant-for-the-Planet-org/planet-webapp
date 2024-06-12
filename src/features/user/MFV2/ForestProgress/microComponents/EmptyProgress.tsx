@@ -1,14 +1,14 @@
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import { useTranslations } from 'next-intl';
 
-interface TargetInitializeProps {
+interface EmptyProgressProps {
   handleOpen: () => void;
 }
 
-const TargetInitialize = ({ handleOpen }: TargetInitializeProps) => {
+const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
   const tProfile = useTranslations('Profile');
   return (
-    <div className={targetBarStyle.targetInitializeMainContainer}>
+    <div className={targetBarStyle.EmptyProgressMainContainer}>
       <div className={targetBarStyle.setTargetLabel}>
         {tProfile('progressBar.targetInfo')}
       </div>
@@ -19,4 +19,4 @@ const TargetInitialize = ({ handleOpen }: TargetInitializeProps) => {
   );
 };
 
-export default TargetInitialize;
+export default EmptyProgress;

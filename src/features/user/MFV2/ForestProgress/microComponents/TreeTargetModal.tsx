@@ -1,4 +1,4 @@
-import TreeTargetPlantedTrees from '../../../../../../public/assets/images/icons/Mfv2/TreeTargetPlantedTrees';
+import TreesPlantedIcon from '../../../../../../public/assets/images/icons/Mfv2/TreesPlantedIcon';
 import CustomTargetTextField from './CustomTargetTextField';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import targetBarStyle from '../TreeTargetBar.module.scss';
@@ -38,7 +38,7 @@ const TreeTargetModal = () => {
       <div className={targetBarStyle.switchMainContainer}>
         <div className={targetBarStyle.switchSubContainer}>
           <div className={targetBarStyle.treeTargetModalIconConatainer}>
-            <TreeTargetPlantedTrees width={16} />
+            <TreesPlantedIcon width={16} />
           </div>
           <div className={targetBarStyle.label}>
             {tProfile('progressBar.plantedTreesTarget')}

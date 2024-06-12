@@ -1,4 +1,4 @@
-import ConservedAreaTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/ConservAreaTargetIcon';
+import ConservedAreaTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/ConservedAreaIcon';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import CustomTargetTextField from './CustomTargetTextField';
 import targetBarStyle from '../TreeTargetBar.module.scss';

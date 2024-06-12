@@ -1,4 +1,4 @@
-import RestoredTreeTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/RestoredTreeTargetIcon';
+import AreaRestoredIcon from '../../../../../../public/assets/images/icons/Mfv2/AreaRestoredIcon';
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import { useMemo } from 'react';
 import EditTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/EditTargetIcon';
@@ -52,7 +52,7 @@ const RestoreTargetBar = ({
     <div className={targetBarStyle.targetSubContainer}>
       <div className={targetBarStyle.statisticsContainer}>
         <div className={targetBarStyle.iconContainerRestoreArea}>
-          <RestoredTreeTargetIcon width={19} />
+          <AreaRestoredIcon width={19} />
         </div>
         <div className={targetBarStyle.targetStatisticsContainer}>
           <div className={targetBarStyle.stat}>

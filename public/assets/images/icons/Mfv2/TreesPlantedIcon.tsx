@@ -1,6 +1,6 @@
 import { IconProps } from '../../../../../src/features/common/types/common';
 
-const TreeTargetPlantedTrees = ({ width }: IconProps) => {
+const TreesPlantedIcon = ({ width }: IconProps) => {
   return (
     <svg
       width={width}
@@ -32,4 +32,4 @@ const TreeTargetPlantedTrees = ({ width }: IconProps) => {
     </svg>
   );
 };
-export default TreeTargetPlantedTrees;
+export default TreesPlantedIcon;
