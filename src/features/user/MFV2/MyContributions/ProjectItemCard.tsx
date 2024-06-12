@@ -34,15 +34,17 @@ const ProjectItemCard = ({
   const tProject = useTranslations('Project');
   const tProfile = useTranslations('Profile.myContributions');
 
-  const giftDetails =
-    contributionDetails.contributionCount === 1
-      ? contributionDetails.latestContributions[0].giftDetails
-      : null;
+  const {
+    contributionCount,
+    latestContributions,
+    totalContributionUnits,
+    contributionUnitType,
+  } = contributionDetails;
 
-  const lastThreeContributions = contributionDetails.latestContributions.slice(
-    0,
-    3
-  );
+  const giftDetails =
+    contributionCount === 1 ? latestContributions[0].giftDetails : null;
+
+  const lastThreeContributions = latestContributions.slice(0, 3);
 
   const imageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -80,10 +82,8 @@ const ProjectItemCard = ({
           <div className={styles.totalContributionsAndCTA}>
             <ProjectTotalContributions
               projectPurpose={project.purpose}
-              totalContributionUnits={
-                contributionDetails.totalContributionUnits
-              }
-              contributionUnitType={contributionDetails.contributionUnitType}
+              totalContributionUnits={totalContributionUnits}
+              contributionUnitType={contributionUnitType}
             />
             <DonateButton
               {...(pageType === 'public' && supportedTreecounter !== undefined
@@ -122,10 +122,8 @@ const ProjectItemCard = ({
           <div className={styles.aggregateInfo}>
             <ProjectTotalContributions
               projectPurpose={project.purpose}
-              totalContributionUnits={
-                contributionDetails.totalContributionUnits
-              }
-              contributionUnitType={contributionDetails.contributionUnitType}
+              totalContributionUnits={totalContributionUnits}
+              contributionUnitType={contributionUnitType}
             />
             <div className={styles.additionalProjectInfo}>
               {tCountry(
@@ -149,7 +147,7 @@ const ProjectItemCard = ({
           />
         </div>
       </section>
-      {contributionDetails.contributionCount > 1 && (
+      {contributionCount > 1 && (
         <section className={`${styles.sectionTwo} ${styles[projectType]}`}>
           {lastThreeContributions.map((contribution, index) => (
             <ContributionSummary
@@ -158,9 +156,9 @@ const ProjectItemCard = ({
               purpose={project.purpose}
             />
           ))}
-          {contributionDetails.contributionCount > 3 && (
+          {contributionCount > 3 && (
             <ContributionCountOverflow
-              contributionCount={contributionDetails.contributionCount}
+              contributionCount={contributionCount}
               displayedCount={3}
             />
           )}

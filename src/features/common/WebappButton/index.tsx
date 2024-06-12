@@ -38,7 +38,7 @@ function WebappButton({
           {otherProps.icon !== undefined && (
             <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
           )}
-          <label className={styles.webappButtonLabel}>{otherProps.text}</label>
+          <div className={styles.webappButtonLabel}>{otherProps.text}</div>
         </button>
       </Link>
     );
@@ -54,7 +54,7 @@ function WebappButton({
         {otherProps.icon !== undefined && (
           <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
         )}
-        <label className={styles.webappButtonLabel}>{otherProps.text}</label>
+        <div className={styles.webappButtonLabel}>{otherProps.text}</div>
       </button>
     );
   }
