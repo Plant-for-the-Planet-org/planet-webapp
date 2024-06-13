@@ -8,12 +8,11 @@ import WebappButton from '../../../common/WebappButton';
 import styles from './communityContributions.module.scss';
 
 const NoContributions = ({ profileType, userProfile }: ProfileV2Props) => {
-  const isPrivateAccount = profileType === 'private';
   const t = useTranslations('Profile');
   return (
     <div className={styles.noContributionsContainer}>
       <NoContributionsIcon />
-      {isPrivateAccount ? (
+      {profileType === 'private' ? (
         <span>
           {t('communityContributions.noContributionPrivateProfileText')}
         </span>
