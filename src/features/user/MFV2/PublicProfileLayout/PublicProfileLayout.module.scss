@@ -40,8 +40,9 @@
   }
 
   .myContributionsContainer {
-    height: 500px;
     grid-area: myContributionsContainer;
+    border: 4px solid #fff;
+    overflow: hidden;
   }
 
   .communityContributionsContainer {

@@ -1,4 +1,5 @@
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -26,9 +27,11 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
       <Head>
         <title>My Forest V2</title>
       </Head>
-      <ProfileOuterContainer>
-        <ProfileLayout />
-      </ProfileOuterContainer>
+      <MyForestProviderV2>
+        <ProfileOuterContainer>
+          <ProfileLayout />
+        </ProfileOuterContainer>
+      </MyForestProviderV2>
     </UserLayout>
   ) : (
     <></>
@@ -68,7 +71,15 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'redeem', 'donate', 'profile'],
+    filenames: [
+      'common',
+      'me',
+      'country',
+      'redeem',
+      'donate',
+      'profile',
+      'project',
+    ],
   });
 
   return {

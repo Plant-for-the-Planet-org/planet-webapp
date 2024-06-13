@@ -1,0 +1,441 @@
+@import '../../../../theme/theme';
+
+.myContributions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include smTabletView {
+    gap: 20px;
+  }
+}
+
+.myContributionsList {
+  margin: 0 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include smTabletView {
+    gap: 12px;
+    max-height: 600px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+
+    &::-webkit-scrollbar {
+      /* WebKit */
+      width: 0;
+      height: 0;
+    }
+  }
+}
+
+.contributionSummary {
+  padding: 6px;
+  background-color: $backgroundColor;
+  color: #4f4f4f;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: space-between;
+
+  > * {
+    font-size: $fontXXSmall;
+  }
+
+  .contributionDetails {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .contributedUnits {
+    font-weight: 700;
+  }
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  // align-items: stretch;
+}
+
+.contributionCountOverflow {
+  background-color: rgba(#007a49, 0.1);
+  color: $primaryDarkColor;
+  font-weight: 700;
+  font-size: 10px;
+  border-radius: 4px;
+  padding: 6px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.projectSummary {
+  .additionalProjectInfo {
+    font-size: $fontSmall;
+    color: #4f4f4f;
+  }
+}
+
+.projectTotalContributions {
+  font-size: $fontMedium;
+  font-weight: 700;
+  color: #333;
+}
+
+.donationButton {
+  &.conservation {
+    background-color: $mediumBlueColor;
+    &:hover {
+      background-color: #56ccf2;
+    }
+  }
+  &.restoration {
+    background-color: $electricPurpleColor;
+    &:hover {
+      background-color: #bc86ed;
+    }
+  }
+}
+
+.registrationSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  .registeredTreeCount {
+    font-weight: 700;
+    font-size: $fontSixteen;
+    color: #4f4f4f;
+  }
+
+  .registrationInfo {
+    font-size: $fontXSmall;
+    color: #4f4f4f;
+  }
+
+  @include smTabletView {
+    .registeredTreeCount {
+      font-weight: 700;
+      font-size: $fontMedium;
+      color: #333;
+    }
+
+    .registrationInfo {
+      font-size: $fontSmall;
+    }
+  }
+}
+
+.giftLabel {
+  font-size: $fontXXSmall;
+  font-weight: 700;
+  color: $primaryDarkColor;
+  background: linear-gradient(
+      0deg,
+      rgba(33, 150, 83, 0.15),
+      rgba(33, 150, 83, 0.15)
+    ),
+    linear-gradient(0deg, #ffffff, #ffffff);
+
+  padding: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+
+  @include smTabletView {
+    padding: 4px;
+  }
+
+  .giftLabelText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.giftIconContainer {
+  flex-shrink: 0;
+  width: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.itemImageContainer {
+  height: 150px;
+  background-image: url('/assets/images/contribution-default-landscape.png');
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+
+  @include smTabletView {
+    background-image: url('/assets/images/contribution-default-portrait.png');
+    width: 130px;
+    height: 130px;
+    border-radius: 8px;
+  }
+}
+
+.listHeader {
+  background: linear-gradient(
+    0deg,
+    rgba(104, 176, 48, 0.1),
+    rgba(104, 176, 48, 0.1)
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+
+  .headerTitle {
+    font-size: $fontLarge;
+    color: $primaryDarkColor;
+    font-weight: 700;
+  }
+
+  .iconContainer {
+    display: flex;
+    align-items: center;
+  }
+
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+}
+
+.projectHeader {
+  .projectType {
+    font-size: $fontXXSmall;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 12px;
+  }
+  .projectTypeIcon {
+    width: 12px;
+    display: grid;
+    align-items: center;
+  }
+  .projectName {
+    font-weight: 700;
+    font-size: $fontMedium;
+  }
+
+  &.dark {
+    .projectType {
+      color: $primaryDarkColor;
+    }
+    .projectTypeIcon {
+      svg > path {
+        fill: $primaryDarkColor;
+      }
+    }
+    .projectName {
+      color: #333;
+    }
+  }
+
+  &.light {
+    .projectType,
+    .projectName {
+      color: #fff;
+    }
+    .projectTypeIcon {
+      svg > path {
+        fill: #fff;
+      }
+    }
+  }
+}
+
+.itemMobileHeader {
+  height: 150px;
+  background-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    ),
+    url('/assets/images/contribution-default-landscape.png');
+  background-position: center;
+  background-size: cover;
+
+  .headerContent {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .projectHeaderContainer {
+    margin: auto 16px 16px;
+
+    .projectName {
+      font-size: $fontSixteen;
+      font-weight: 600;
+    }
+
+    .projectType {
+      height: 16px;
+    }
+
+    .projectTypeIcon {
+      width: 16px;
+    }
+  }
+}
+
+.projectItemCard,
+.registrationItemCard {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 3px solid rgba(#007a49, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+
+  &.conservation {
+    border-color: rgba(#2d9cdb, 0.1);
+  }
+
+  &.restoration {
+    border-color: rgba(#9b51e0, 0.1);
+  }
+
+  @include smTabletView {
+    border: none;
+    padding: 6px;
+    gap: 12px;
+    background: rgba(#007a49, 0.07);
+    overflow: visible;
+
+    &.conservation {
+      background: rgba(#2d9cdb, 0.07);
+    }
+
+    &.restoration {
+      background: rgba(#9b51e0, 0.07);
+    }
+  }
+}
+
+.projectItemCard {
+  .sectionOneMobile {
+    display: flex;
+    flex-direction: column;
+
+    .aggregateInfoAndActions {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+
+      .aggregateInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .projectTotalContributions {
+        font-size: $fontSixteen;
+        color: #4f4f4f;
+      }
+
+      .additionalProjectInfo {
+        font-size: $fontXSmall;
+        color: #4f4f4f;
+      }
+    }
+  }
+
+  .sectionOneLandscape {
+    @include xsPhoneView {
+      display: none;
+    }
+
+    display: flex;
+    gap: 16px;
+
+    .itemInfo {
+      margin: 6px 6px 6px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .totalContributionsAndCTA {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .sectionTwo {
+    padding: 8px;
+    background-color: rgba(33, 150, 83, 0.08);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    &.conservation {
+      background: rgba(#2d9cdb, 0.08);
+    }
+
+    &.restoration {
+      background: rgba(#9b51e00d, 0.08);
+    }
+  }
+
+  @include smTabletView {
+    .sectionOneMobile {
+      display: none;
+    }
+
+    .sectionTwo {
+      background-color: transparent;
+      padding: 0 0 6px 0;
+
+      &.conservation,
+      &.restoration {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+.registrationItemCard {
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .itemInfo {
+    padding: 16px;
+  }
+
+  @include smTabletView {
+    .cardContent {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .itemInfo {
+      padding: 0;
+    }
+  }
+}
