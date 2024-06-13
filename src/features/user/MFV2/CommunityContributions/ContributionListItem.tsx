@@ -21,7 +21,7 @@ const ContributionListItem = ({
         });
 
   return (
-    <li>
+    <li className={styles.contributionListItem}>
       <span>{name}</span>
       <span className={styles.units}>{contributedUnits}</span>
     </li>

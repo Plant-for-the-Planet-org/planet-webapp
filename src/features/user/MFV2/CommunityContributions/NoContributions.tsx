@@ -13,12 +13,12 @@ const NoContributions = ({ profileType, userProfile }: ProfileV2Props) => {
     <div className={styles.noContributionsContainer}>
       <NoContributionsIcon />
       {profileType === 'private' ? (
-        <span>
+        <span className={styles.noContributionsMessage}>
           {t('communityContributions.noContributionPrivateProfileText')}
         </span>
       ) : (
         <>
-          <span>
+          <span className={styles.noContributionsMessage}>
             {t('communityContributions.noContributionPublicProfileText', {
               name: userProfile?.displayName.split(' ')[0],
             })}
