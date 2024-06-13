@@ -9,20 +9,21 @@ const ContributionListItem = ({
   purpose,
 }: LeaderboardItem) => {
   const t = useTranslations('Profile');
-  const assignItemPurpose = (purpose: string) => {
-    if (purpose === 'conservation')
-      return t('communityContributions.conservationPurpose');
-    if (purpose === 'trees' && unitType === 'm2')
-      return t('communityContributions.restorationPurpose');
-    return t('communityContributions.treesPurpose');
-  };
+
+  const contributedUnits =
+    unitType === 'tree'
+      ? t('myContributions.treesContributed', {
+          count: units,
+        })
+      : t('myContributions.areaContributed', {
+          count: units,
+          projectPurpose: purpose,
+        });
+
   return (
     <li>
       <span>{name}</span>
-      <span className={styles.units}>
-        {units} {unitType === 'm2' && t('unitType.m2')}{' '}
-        {assignItemPurpose(purpose)}
-      </span>
+      <span className={styles.units}>{contributedUnits}</span>
     </li>
   );
 };
