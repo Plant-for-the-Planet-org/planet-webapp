@@ -29,12 +29,6 @@ export default function ImageSlider({
     return ImageSource;
   };
 
-  React.useEffect(() => {
-    if (images.length > 0) {
-      setupSlider()
-    }
-  }, [images]);
-
   const setupSlider = () => {
     const projectImages: Story[] = []
     images.forEach((sliderImage) => {
@@ -58,6 +52,14 @@ export default function ImageSlider({
     });
     setSlider(projectImages)
   }
+
+
+  React.useEffect(() => {
+    if (images.length > 0) {
+      setupSlider()
+    }
+  }, [images]);
+
 
   if (slider.length === 0) {
     return null
