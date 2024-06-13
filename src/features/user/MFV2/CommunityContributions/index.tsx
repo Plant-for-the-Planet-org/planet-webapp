@@ -71,7 +71,11 @@ const CommunityContributions = ({
         ))}
       </ul>
     ) : (
-      <NoContributions profileType={profileType} userProfile={userProfile} />
+      <NoContributions
+        {...(profileType === 'private'
+          ? { profileType: 'private', userProfile: userProfile }
+          : { profileType: 'public', userProfile: userProfile })}
+      />
     );
   };
 
