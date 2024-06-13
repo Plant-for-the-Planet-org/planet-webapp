@@ -109,8 +109,5 @@ export const leaderboardProcedure = procedure
       purpose: gifter.purpose,
     }));
 
-    // TODO: do we want to return {leaderboard} or just leaderboard?
-    return {
-      leaderboard,
-    };
+    return leaderboard;
   });

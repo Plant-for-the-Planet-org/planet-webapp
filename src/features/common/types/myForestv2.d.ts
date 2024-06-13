@@ -164,6 +164,7 @@ export type LeaderboardItem = {
   name: string;
   units: number;
   unitType: 'tree' | 'm2';
+  purpose: string;
 };
 
 export type Leaderboard = {

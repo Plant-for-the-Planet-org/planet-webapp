@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import CommunityContributions from '../CommunityContributions';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
 
@@ -65,7 +66,11 @@ const ProfileLayout = () => {
         id="community-contributions-container"
         className={styles.communityContributionsContainer}
       >
-        Community Contributions
+        {profile ? (
+          <CommunityContributions userProfile={profile} profileType="private" />
+        ) : (
+          <ProfileLoader />
+        )}
       </section>
     </article>
   );
