@@ -1,4 +1,4 @@
-//TEMPORARY FILE: TO BE REMOVED
+// Useful types while calling useQuery
 export interface TrpcQueryResultError {
   data?: {
     httpStatus: number;

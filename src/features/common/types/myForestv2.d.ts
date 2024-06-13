@@ -1,5 +1,10 @@
 import { Point, Polygon } from 'geojson';
 import { DateString } from './common';
+import {
+  CountryCode,
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
 
 export type ContributionStats = {
   giftsReceivedCount: number;
@@ -72,6 +77,8 @@ export type MyContributionsSingleRegistration = {
   totalContributionUnits: number;
   contributionUnitType: 'tree';
   contributionCount: number;
+  country: CountryCode | null;
+  projectGuid: string | null;
   contributions: SingleRegistration[];
 };
 
@@ -84,6 +91,25 @@ export type SingleRegistration = {
 
 export type MapLocation = {
   geometry: Point;
+};
+
+export type ProjectQueryResult = {
+  guid: string;
+  name: string;
+  slug: string;
+  classification: TreeProjectClassification | null;
+  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2';
+  country: CountryCode;
+  geometry: Point;
+  image: string;
+  allowDonations: '0' | '1';
+  tpoName: string;
+};
+
+export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
+  allowDonations: boolean;
 };
 
 export type GroupTreecounterQueryResult = {
@@ -108,7 +134,7 @@ export type ContributionsQueryResult = {
   amount: number;
   currency: string;
   geometry: Point | Polygon | null;
-  country: string;
+  country: CountryCode | '';
   giftMethod: string | null;
   giftRecipient: string | null;
   giftType: string | null;
@@ -123,6 +149,17 @@ export type GiftsQueryResult = {
   plantDate: DateString;
 };
 
+// Procedure Response types
+interface ContributionsResponse {
+  stats: ContributionStats;
+  myContributionsMap: Map<string, MyContributionsMapItem>;
+  registrationLocationsMap: Map<string, MapLocation>;
+  projectLocationsMap: Map<string, MapLocation>;
+}
+
+type ProjectListResponse = Record<string, MyForestProject>;
+
+// TODO: Could probably rename this to something more descriptive, similar to the other types for API response
 export type LeaderboardItem = {
   name: string;
   units: number;

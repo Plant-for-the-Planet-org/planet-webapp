@@ -5,15 +5,42 @@
   flex-direction: column;
   border-radius: 24px;
   position: relative;
+
+  @include xsPhoneView {
+    border-radius: 16px;
+  }
 }
+
 .header {
-  border: 5px solid #fff;
-  border-radius: 24px 24px 0 0;
-  border-bottom: 0px;
-  background-image: url('../../../../../public/assets/images/communityContributionHeader-md.svg');
-  background-position: 70%;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: linear-gradient(
+      0deg,
+      rgba(242, 201, 76, 0.15),
+      rgba(242, 201, 76, 0.15)
+    ),
+    linear-gradient(0deg, #ffffff, #ffffff);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 24px;
+
+  .iconContainer {
+    display: flex;
+    align-items: center;
+  }
+
+  @include smTabletView {
+    height: 120px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 0;
+    padding-left: 36px;
+  }
+
+  @include lgLaptopView {
+    padding: 0 24px 0 36px;
+  }
 }
 
 .infoIcon {
@@ -35,25 +62,38 @@
   max-width: 300px;
 }
 
-.headerImg {
-  height: 100%;
-  width: 100%;
-}
-
 .headerItems {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-top: 20px;
-  padding: 24px;
-  z-index: 100;
+  gap: 10px;
 
   .headerTitle {
     color: #007a49;
-    font-size: 1.37em;
+    font-size: $fontLarge;
     font-weight: 700;
   }
+
+  .headerTabs {
+    display: none;
+  }
+
+  @include smTabletView {
+    padding-bottom: 8px;
+    .headerTabs {
+      display: flex;
+    }
+  }
+
+  @include xsPhoneView {
+    justify-content: center;
+    margin-top: 0px;
+
+    .headerTitle {
+      text-align: center;
+    }
+  }
 }
+
 .headerTabs {
   background-color: #f2f2f2;
   display: flex;
@@ -70,7 +110,7 @@
     margin-right: auto;
     font-weight: 600;
     font-size: 0.75em;
-    padding: 0 20px;
+    padding: 6px 4px;
   }
 
   .selected {
@@ -78,12 +118,22 @@
     font-weight: 700;
     border-radius: 6px;
     background: #fff;
-    padding: 6px 14px;
+  }
+
+  @include lgLaptopView {
+    button {
+      padding: 6px 8px;
+    }
   }
 }
 
 .mobileHeaderTabContainer {
   display: none;
+
+  @include xsPhoneView {
+    display: inline;
+    margin: 16px auto 0;
+  }
 }
 
 .leaderboardList {
@@ -94,14 +144,15 @@
   font-size: 0.75em;
   color: #4f4f4f;
   font-weight: 500;
-  li {
+
+  .contributionListItem {
     display: flex;
     justify-content: space-between;
-
     .units {
       font-weight: 700;
     }
   }
+
   .horizontalLine {
     border-top: 1px solid #bdbdbd;
     width: 100%;
@@ -120,39 +171,9 @@
   gap: 20px;
   min-height: 400px;
 
-  span {
+  .noContributionsMessage {
     font-size: 0.75em;
     color: #4f4f4f;
     font-weight: 700;
-  }
-}
-
-@include xlDesktopView {
-  .header {
-    background-image: url('../../../../../public/assets/images/communityContributionHeader-lg.svg');
-  }
-}
-
-@include xsPhoneView {
-  .communityContributions {
-    border-radius: 16px;
-  }
-  .header {
-    background-position: 50%;
-    border-radius: 16px 16px 0 0;
-    background-image: url('../../../../../public/assets/images/communityContributionHeader-sm.svg');
-    min-height: 193px;
-  }
-  .headerItems {
-    justify-content: center;
-    margin-top: 0px;
-
-    .headerTitle {
-      text-align: center;
-    }
-  }
-  .mobileHeaderTabContainer {
-    display: inline;
-    margin: 16px auto 0 auto;
   }
 }

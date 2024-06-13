@@ -1,4 +1,3 @@
-//TEMPORARY FILE: TO BE REMOVED
 import { SerializedError } from '@planet-sdk/common';
 import { SetState } from '../features/common/types/common';
 import {
