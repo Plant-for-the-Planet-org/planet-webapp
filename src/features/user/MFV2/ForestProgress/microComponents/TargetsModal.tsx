@@ -11,6 +11,7 @@ import { SetState } from '../../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';
+import { useState } from 'react';
 
 interface TargetsModalProps {
   open: boolean;
@@ -31,23 +32,34 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
     conservChecked,
     setConservChecked,
   } = useMyForestV2();
-  const { user, contextLoaded, token, logoutUser, setUser } = useUserProps();
+  const {
+    user,
+    contextLoaded,
+    token,
+    logoutUser,
+    setUser,
+    setRefetchUserData,
+  } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const tProfile = useTranslations('Profile');
   const { tenantConfig } = useTenant();
+  const [targetForTree, setTargetForTree] = useState(0);
+  const [targetForRestoredArea, setTargetForRestoredArea] = useState(0);
+  const [targetForConservedArea, setTargetForConservedArea] = useState(0);
 
   const handleClose = () => {
     setOpen(false);
   };
+
   const changeTarget = async () => {
     setIsTargetModalLoading(true);
 
     if (contextLoaded && token && open && !isTargetModalLoading) {
       const bodyToSend = {
         targets: {
-          treesDonated: treeChecked ? treeTarget : 0,
-          areaConserved: conservChecked ? conservTarget : 0,
-          areaRestored: restoreChecked ? restoreTarget : 0,
+          treesDonated: treeChecked ? targetForTree : 0,
+          areaConserved: conservChecked ? targetForConservedArea : 0,
+          areaRestored: restoreChecked ? targetForRestoredArea : 0,
         },
       };
 
@@ -69,6 +81,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
           },
         };
         setUser(newUserInfo);
+        setRefetchUserData(true);
         setIsTargetModalLoading(false);
       } catch (err) {
         handleClose();
@@ -96,18 +109,24 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
             checked={treeChecked}
             setChecked={setTreeChecked}
             target={treeTarget}
+            latestTarget={targetForTree}
+            setLatestTarget={setTargetForTree}
           />
           <TargetFormInput
             dataType={'areaRestored'}
             checked={restoreChecked}
             setChecked={setRestoreChecked}
             target={restoreTarget}
+            latestTarget={targetForRestoredArea}
+            setLatestTarget={setTargetForRestoredArea}
           />
           <TargetFormInput
             dataType={'areaConserved'}
             checked={conservChecked}
             setChecked={setConservChecked}
             target={conservTarget}
+            latestTarget={targetForConservedArea}
+            setLatestTarget={setTargetForConservedArea}
           />
         </div>
         <button className={targetBarStyle.saveButton} onClick={changeTarget}>

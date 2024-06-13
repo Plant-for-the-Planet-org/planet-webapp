@@ -130,7 +130,7 @@ const ForestProgress = () => {
 
   useEffect(() => {
     setEnableTarget(checkCondition);
-  }, [checkCondition]);
+  }, [checkCondition, treeTarget, restoreTarget, conservTarget]);
 
   return (
     <>
@@ -138,7 +138,7 @@ const ForestProgress = () => {
         <Skeleton height={84} />
       ) : (
         <div className={targetBarStyle.targetMainContainer}>
-          {enableTarget ? (
+          {true ? (
             <EmptyProgress handleOpen={handleOpen} />
           ) : (
             <ProgressBars

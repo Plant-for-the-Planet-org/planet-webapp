@@ -8,7 +8,7 @@ interface EmptyProgressProps {
 const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
   const tProfile = useTranslations('Profile');
   return (
-    <div className={targetBarStyle.EmptyProgressMainContainer}>
+    <div className={targetBarStyle.EmptyProgressContainer}>
       <div className={targetBarStyle.setTargetLabel}>
         {tProfile('progressBar.targetInfo')}
       </div>

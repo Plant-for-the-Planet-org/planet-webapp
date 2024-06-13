@@ -1,7 +1,7 @@
 import targetModalStyle from '../TreeTargetBar.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../../theme/themeProperties';
-import { ChangeEvent, useState, useMemo } from 'react';
+import { ChangeEvent, useState, useMemo, useEffect } from 'react';
 import {
   AreaRestoredIcon,
   ConservedAreaIcon,
@@ -16,6 +16,8 @@ type TargetFormInputProps = {
   checked: boolean;
   setChecked: SetState<boolean>;
   target: number;
+  latestTarget: number;
+  setLatestTarget: SetState<number>;
 };
 
 const TargetFormInput = ({
@@ -23,9 +25,10 @@ const TargetFormInput = ({
   checked,
   setChecked,
   target,
+  latestTarget,
+  setLatestTarget,
 }: TargetFormInputProps) => {
   const tProfile = useTranslations('Profile');
-  const [userTarget, setUserTarget] = useState(target);
 
   const {
     primaryDarkColor,
@@ -38,6 +41,10 @@ const TargetFormInput = ({
     lightGray,
   } = themeProperties;
 
+  useEffect(() => {
+    if (target) setLatestTarget(target);
+  }, []);
+
   const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
     //if user set some target then make toggle active and set the localstorage
     if (target > 0) {
@@ -49,7 +56,7 @@ const TargetFormInput = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setChecked(Number(e.target.value) > 0 ? true : false);
-    setUserTarget(Number(e.target.value));
+    setLatestTarget(Number(e.target.value));
   };
 
   const getLighterColor = useMemo(() => {
@@ -137,8 +144,6 @@ const TargetFormInput = ({
     [dataType, checked]
   );
 
-  console.log(targetStatus, checked);
-
   const IconAndLabel = () => {
     return (
       <div className={targetModalStyle.targetInputIconMainContainer}>
@@ -154,14 +159,7 @@ const TargetFormInput = ({
   };
 
   return (
-    <div
-      className={
-        checked
-          ? targetModalStyle.targetFormInputContainer
-          : targetModalStyle.deActivateTargetModal
-      }
-      style={getLighterColor}
-    >
+    <div className={targetStatus} style={getLighterColor}>
       <div className={targetModalStyle.switchContainer}>
         <IconAndLabel />
         <TargetSwitch
@@ -175,7 +173,7 @@ const TargetFormInput = ({
         variant="outlined"
         focusColor={getColor}
         onChange={handleTextFieldChange}
-        value={userTarget || ''}
+        value={latestTarget || ''}
       />
     </div>
   );
