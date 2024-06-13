@@ -7,6 +7,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
+import MyContributions from '../MyContributions';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
@@ -53,7 +54,12 @@ const ProfileLayout = () => {
         id="my-contributions-container"
         className={styles.myContributionsContainer}
       >
-        My Contributions
+        {profile ? (
+          <MyContributions
+            profilePageType="private"
+            displayName={profile.displayName}
+          />
+        ) : null}
       </section>
       <section
         id="community-contributions-container"

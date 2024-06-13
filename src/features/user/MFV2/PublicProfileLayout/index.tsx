@@ -10,6 +10,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
+import MyContributions from '../MyContributions';
 
 interface Props {
   tenantConfigId: string;
@@ -79,7 +80,16 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         id="my-contributions-container"
         className={styles.myContributionsContainer}
       >
-        My Contributions
+        {profile ? (
+          <MyContributions
+            profilePageType="public"
+            displayName={
+              profile.type === 'individual'
+                ? profile.displayName.split(' ').slice(0, 1)[0]
+                : profile.displayName
+            }
+          />
+        ) : null}
       </section>
       <section
         id="community-contributions-container"
