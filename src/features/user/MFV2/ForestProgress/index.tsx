@@ -138,7 +138,7 @@ const ForestProgress = () => {
         <Skeleton height={84} />
       ) : (
         <div className={targetBarStyle.targetMainContainer}>
-          {true ? (
+          {enableTarget ? (
             <EmptyProgress handleOpen={handleOpen} />
           ) : (
             <ProgressBars
