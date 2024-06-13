@@ -2,13 +2,13 @@ import { Switch } from '@mui/material';
 import { styled } from '@mui/material';
 import themeProperties from '../../../../../theme/themeProperties';
 
-interface CustomTargetSwitchProps {
+interface TargetSwitchProps {
   switchColor: string;
 }
 const { light } = themeProperties;
-const CustomTargetSwitch = styled(Switch, {
+const TargetSwitch = styled(Switch, {
   shouldForwardProp: (props) => props !== 'switchColor',
-})<CustomTargetSwitchProps>((p) => ({
+})<TargetSwitchProps>((p) => ({
   width: 32,
   height: 16.76,
   padding: 0,
@@ -46,4 +46,4 @@ const CustomTargetSwitch = styled(Switch, {
   },
 }));
 
-export default CustomTargetSwitch;
+export default TargetSwitch;

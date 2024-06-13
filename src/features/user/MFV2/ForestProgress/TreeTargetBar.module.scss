@@ -27,18 +27,6 @@
   padding: 20px 16px 11px 16px;
 }
 
-.treeTargetModalMainContainer {
-  background: rgba(33, 150, 83, 0.05);
-}
-
-.conservAreaTargetModalMainContainer {
-  background: rgba(45, 156, 219, 0.05);
-}
-
-.restoreTreeTargetModalMainContainer {
-  background: rgba(155, 81, 224, 0.05);
-}
-
 .progressContainer {
   width: 100%;
   display: flex;
@@ -112,18 +100,6 @@
   line-height: 8px;
 }
 
-.treeTargetModalIconConatainer {
-  background: rgba(0, 122, 73, 1);
-}
-
-.restoreTreeModalIconContainer {
-  background: rgba(155, 81, 224, 1);
-}
-
-.conservAreaModalIconConatiner {
-  background: rgba(45, 156, 219, 1);
-}
-
 //tree target modal
 
 .crossIconContainer {
@@ -168,18 +144,13 @@
 }
 
 .deActivateTargetModal {
-  background: #f2f2f2;
-  .restoreTreeModalIconContainer,
-  .conservAreaModalIconConatiner,
-  .treeTargetModalIconConatainer {
+  .targetInputIconContainer {
     background: #828282;
   }
 }
 
 .deActivateTargetModal,
-.conservAreaTargetModalMainContainer,
-.restoreTreeTargetModalMainContainer,
-.treeTargetModalMainContainer {
+.targetFormInputContainer {
   width: 100%;
   height: 120px;
   border-radius: 8px;
@@ -190,12 +161,12 @@
   padding: 16px;
 }
 
-.switchMainContainer {
+.switchContainer {
   display: flex;
   justify-content: space-between;
 }
 
-.switchSubContainer {
+.targetInputIconMainContainer {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -207,9 +178,7 @@
   }
 }
 
-.conservAreaModalIconConatiner,
-.restoreTreeModalIconContainer,
-.treeTargetModalIconConatainer {
+.targetInputIconContainer {
   width: 24px;
   height: 24px;
   border-radius: 3.1px;

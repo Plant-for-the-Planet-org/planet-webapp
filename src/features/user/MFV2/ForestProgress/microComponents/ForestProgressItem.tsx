@@ -4,7 +4,7 @@ import {
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
-import targetBarStyle from '../TreeTargetBar.module.scss';
+import ProgressBarStyle from '../TreeTargetBar.module.scss';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { getAchievedTarget } from '../../../../../utils/myForestV2Utils';
@@ -52,14 +52,14 @@ const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
   }, [dataType]);
 
   return (
-    <div className={targetBarStyle.editTargetButtonContainer}>
+    <div className={ProgressBarStyle.editTargetButtonContainer}>
       <button
-        className={targetBarStyle.editTargetContainer}
+        className={ProgressBarStyle.editTargetContainer}
         onClick={handleOpen}
       >
         <EditTargetIcon width={9} color={getDarkerColor} />
         <p
-          className={targetBarStyle.editTargetLabel}
+          className={ProgressBarStyle.editTargetLabel}
           style={{ color: getDarkerColor }}
         >
           {target > 0
@@ -188,7 +188,7 @@ const ProgressData = ({
           }px`,
           ...getDarkerColor,
         }}
-        className={targetBarStyle.personalPercentageBar}
+        className={ProgressBarStyle.personalPercentageBar}
       ></div>
     );
   };
@@ -204,15 +204,15 @@ const ProgressData = ({
           borderBottomLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
           ...getGiftBarColor,
         }}
-        className={targetBarStyle.giftPercentageBar}
+        className={ProgressBarStyle.giftPercentageBar}
       ></div>
     );
   };
 
   const Bar = () => {
     return (
-      <div className={targetBarStyle.barMainContainer}>
-        <div className={targetBarStyle.barContainer}>
+      <div className={ProgressBarStyle.barMainContainer}>
+        <div className={ProgressBarStyle.barContainer}>
           <PersonalPercentage />
           <GiftPercentage />
         </div>
@@ -226,7 +226,7 @@ const ProgressData = ({
       <>
         {' '}
         {gift !== undefined && gift > 0 && (
-          <div className={targetBarStyle.communityReceived}>
+          <div className={ProgressBarStyle.communityReceived}>
             {tProfile('progressBar.totalGiftFromCommunity', {
               quantity: gift,
             })}
@@ -237,13 +237,13 @@ const ProgressData = ({
   };
 
   return (
-    <div className={targetBarStyle.progressContainer}>
-      <div className={targetBarStyle.statisticsMainContainer}>
-        <div className={targetBarStyle.iconContainer} style={getDarkerColor}>
+    <div className={ProgressBarStyle.progressContainer}>
+      <div className={ProgressBarStyle.statisticsMainContainer}>
+        <div className={ProgressBarStyle.iconContainer} style={getDarkerColor}>
           {getIcon}
         </div>
-        <div className={targetBarStyle.statisticsContainer}>
-          <div className={targetBarStyle.stat}>{getLabel}</div>
+        <div className={ProgressBarStyle.statisticsContainer}>
+          <div className={ProgressBarStyle.stat}>{getLabel}</div>
           <Bar />
           <GiftReceived />
         </div>
@@ -282,7 +282,7 @@ const ForestProgressItem = ({
 
   return (
     <div
-      className={targetBarStyle.progressMainContainer}
+      className={ProgressBarStyle.progressMainContainer}
       style={getLighterColor}
     >
       {asPath === '/en/profile/mfv2' && (

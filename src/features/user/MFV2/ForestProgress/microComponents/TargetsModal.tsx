@@ -1,7 +1,4 @@
 import { Modal } from '@mui/material';
-import TreeTargetModal from './TreeTargetModal';
-import ConservAreaTargetModal from './ConservAreaTargetModal';
-import RestoreAreaTargetModal from './RestoreTreeTargetModal';
 import targetBarStyle from '../TreeTargetBar.module.scss';
 import { useContext } from 'react';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
@@ -13,6 +10,7 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import { SetState } from '../../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../../public/assets/images/icons/manageProjects/Cross';
+import TargetFormInput from './TargetFormInput';
 
 interface TargetsModalProps {
   open: boolean;
@@ -27,8 +25,11 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
     restoreTarget,
     conservTarget,
     treeChecked,
+    setTreeChecked,
     restoreChecked,
+    setRestoreChecked,
     conservChecked,
+    setConservChecked,
   } = useMyForestV2();
   const { user, contextLoaded, token, logoutUser, setUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -90,9 +91,24 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
         </div>
 
         <div className={targetBarStyle.targetModalSubConatiner}>
-          <TreeTargetModal />
-          <RestoreAreaTargetModal />
-          <ConservAreaTargetModal />
+          <TargetFormInput
+            dataType={'treesPlanted'}
+            checked={treeChecked}
+            setChecked={setTreeChecked}
+            target={treeTarget}
+          />
+          <TargetFormInput
+            dataType={'areaRestored'}
+            checked={restoreChecked}
+            setChecked={setRestoreChecked}
+            target={restoreTarget}
+          />
+          <TargetFormInput
+            dataType={'areaConserved'}
+            checked={conservChecked}
+            setChecked={setConservChecked}
+            target={conservTarget}
+          />
         </div>
         <button className={targetBarStyle.saveButton} onClick={changeTarget}>
           {isTargetModalLoading ? (

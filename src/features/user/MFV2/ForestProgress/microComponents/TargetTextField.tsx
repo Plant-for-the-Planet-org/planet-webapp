@@ -1,13 +1,13 @@
 import { styled } from '@mui/material';
 import { TextField } from '@mui/material';
 
-interface CustomTextFieldProps {
+interface TextFieldProps {
   focusColor: string;
 }
 
-const CustomTargetTextField = styled(TextField, {
+const TargetTextField = styled(TextField, {
   shouldForwardProp: (props) => props !== 'focusColor',
-})<CustomTextFieldProps>((p) => ({
+})<TextFieldProps>((p) => ({
   '.mui-style-i6b3x2-MuiInputBase-root-MuiOutlinedInput-root': {
     borderRadius: '10px',
     height: '42px',
@@ -19,4 +19,4 @@ const CustomTargetTextField = styled(TextField, {
   },
 }));
 
-export default CustomTargetTextField;
+export default TargetTextField;

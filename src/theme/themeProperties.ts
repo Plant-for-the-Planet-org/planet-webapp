@@ -30,7 +30,8 @@ const themeProperties = {
   ceruleanBlue: '#2d9cdb0d',
   electricPurple: '#9b51e0',
   mintGreen: '#6fcf97',
-
+  mediumGray: '#828282',
+  lightGray: '#f2f2f2',
   amethystPurple: '#9b51e00d',
   lavenderPurple: '#c98eff',
   skyBlue: '#87ceeb',
