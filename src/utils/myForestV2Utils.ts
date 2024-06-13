@@ -4,9 +4,8 @@ export const getAchievedTarget = (
   personal: number
 ): { giftPercentage: number; personalPercentage: number } => {
   if (target > gift + personal) {
-    const total = target + gift + personal;
-    const giftPercentage = (gift / total) * 100;
-    const personalPercentage = (personal / total) * 100;
+    const giftPercentage = (gift / target) * 100;
+    const personalPercentage = (personal / target) * 100;
     return { giftPercentage, personalPercentage };
   } else {
     const total = gift + personal;

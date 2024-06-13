@@ -1,4 +1,4 @@
-import ConservedAreaTargetIcon from '../../../../../../public/assets/images/icons/Mfv2/ConservedAreaIcon';
+import { ConservedAreaIcon } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import CustomTargetTextField from './CustomTargetTextField';
 import targetBarStyle from '../TreeTargetBar.module.scss';
@@ -38,7 +38,7 @@ const ConservAreaTargetModal = () => {
       <div className={targetBarStyle.switchMainContainer}>
         <div className={targetBarStyle.switchSubContainer}>
           <div className={targetBarStyle.conservAreaModalIconConatiner}>
-            <ConservedAreaTargetIcon width={12} />
+            <ConservedAreaIcon width={12} />
           </div>
           <div className={targetBarStyle.label}>
             {tProfile('progressBar.areaConservedTarget')}

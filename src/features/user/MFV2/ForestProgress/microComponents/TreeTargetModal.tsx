@@ -1,4 +1,4 @@
-import TreesPlantedIcon from '../../../../../../public/assets/images/icons/Mfv2/TreesPlantedIcon';
+import { TreesPlantedIcon } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
 import CustomTargetTextField from './CustomTargetTextField';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import targetBarStyle from '../TreeTargetBar.module.scss';

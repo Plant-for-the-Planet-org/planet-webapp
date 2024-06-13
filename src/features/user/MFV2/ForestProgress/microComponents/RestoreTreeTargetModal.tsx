@@ -1,4 +1,4 @@
-import AreaRestoredIcon from '../../../../../../public/assets/images/icons/Mfv2/AreaRestoredIcon';
+import { AreaRestoredIcon } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
 import CustomTargetSwitch from './CustomTargetSwitch';
 import CustomTargetTextField from './CustomTargetTextField';
 import targetBarStyle from '../TreeTargetBar.module.scss';
