@@ -209,9 +209,24 @@
   }
 
   @include smTabletView {
+    height: 120px;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 40px;
+    align-items: flex-end;
+    padding-top: 0;
+    padding-left: 36px;
+
+    .iconContainer {
+      align-self: flex-end;
+    }
+
+    .headerTitle {
+      margin-bottom: 50px;
+    }
+  }
+
+  @include lgLaptopView {
+    padding: 0 24px 0 36px;
   }
 }
 

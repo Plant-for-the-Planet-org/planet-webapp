@@ -68,6 +68,7 @@
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
     },
     "communityContributions": {
+      "title": "Community Contributions",
       "tooltipText": "Community contributions are all tree, restoration or conservation donations that are dedicated to you, for instance by donating via your profile",
       "mostRecentTabLabel": "Most recent",
       "mostTreesTabLabel": "Most trees",

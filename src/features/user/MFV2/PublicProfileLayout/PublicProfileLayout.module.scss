@@ -47,6 +47,8 @@
 
   .communityContributionsContainer {
     grid-area: communityContributionsContainer;
+    border: 4px solid #fff;
+    overflow: hidden;
   }
 
   .infoAndCtaContainer {

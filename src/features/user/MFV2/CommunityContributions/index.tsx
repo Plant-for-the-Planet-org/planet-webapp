@@ -8,6 +8,7 @@ import { LeaderboardItem } from '../../../common/types/myForestv2';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
+import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -70,7 +71,6 @@ const CommunityContributions = ({
   const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
     []
   );
-  const isMobile = typeof window !== `undefined` && window.innerWidth <= 481;
   const t = useTranslations('Profile');
 
   const handleTabChange = (selectedTab: TabOptions) => {
@@ -97,13 +97,16 @@ const CommunityContributions = ({
           </CustomTooltip>
         </div>
         <div className={styles.headerItems}>
-          <h2 className={styles.headerTitle}>Community Contributions</h2>
-          {!isMobile && (
-            <HeaderTabs
-              tabSelected={tabSelected}
-              handleTabChange={handleTabChange}
-            />
-          )}
+          <h2 className={styles.headerTitle}>
+            {t('communityContributions.title')}
+          </h2>
+          <HeaderTabs
+            tabSelected={tabSelected}
+            handleTabChange={handleTabChange}
+          />
+        </div>
+        <div className={styles.iconContainer}>
+          <CommunityContributionsIcon />
         </div>
       </div>
       {/* header tabs for mobile screens */}
