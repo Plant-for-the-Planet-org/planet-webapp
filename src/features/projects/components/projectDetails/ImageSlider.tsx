@@ -1,7 +1,8 @@
-import React, { ReactElement } from 'react';
+import React, { useState } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './../../styles/ProjectDetails.module.scss';
+import { Story } from 'react-insta-stories/dist/interfaces';
 
 export type SliderImage = {
   image?: string;
@@ -21,8 +22,7 @@ export default function ImageSlider({
   imageSize,
   type,
 }: Props) {
-  const [slider, setSlider] = React.useState<ReactElement>(<div></div>);
-  const projectImages: { content: () => ReactElement }[] = [];
+  const [slider, setSlider] = useState<Story[]>([]);
 
   const loadImageSource = (imageName: string): string => {
     const ImageSource = getImageUrl(type, imageSize, imageName);
@@ -30,6 +30,14 @@ export default function ImageSlider({
   };
 
   React.useEffect(() => {
+    if (images.length > 0) {
+      setupSlider()
+    }
+  }, [images]);
+
+
+  const setupSlider = () => {
+    const projectImages: Story[] = []
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
@@ -41,8 +49,8 @@ export default function ImageSlider({
                 type === 'coordinate'
                   ? { background: `url(${imageURL})` }
                   : {
-                      background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-                    }
+                    background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+                  }
               }
             >
               <p className={styles.projectImageSliderContentText}>
@@ -53,23 +61,19 @@ export default function ImageSlider({
         });
       }
     });
-  }, [images]);
+    setSlider(projectImages)
+  }
 
-  React.useEffect(() => {
-    if (projectImages.length > 0) {
-      setSlider(
-        <Stories
-          stories={projectImages}
-          defaultInterval={7000}
-          width="100%"
-          height={height}
-          loop={true}
-        />
-      );
-    } else {
-      setSlider(<div></div>);
-    }
-  }, [images]);
+  if (slider.length === 0) {
+    return null
+  }
 
-  return <>{slider}</>;
+
+  return <Stories
+    stories={slider}
+    defaultInterval={300}
+    width="100%"
+    height={height}
+    loop={true}
+  />;
 }
