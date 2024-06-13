@@ -1,32 +1,25 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
 import ContributionListItem from './ContributionListItem';
 import CustomTooltip from './CustomTooltip';
-import { trpc } from '../../../../utils/trpc';
-import { updateStateWithTrpcData } from '../../../../utils/trpcHelpers';
-import { Leaderboard, LeaderboardItem } from '../../../common/types/myForestv2';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { LeaderboardItem } from '../../../common/types/myForestv2';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import { useTranslations } from 'next-intl';
+import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 
 const CommunityContributions = ({
   profileType,
   userProfile,
 }: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState('most-recent');
-  //stores fetched leaderboard object from api
-  const [leaderboardResult, setLeaderboardResult] = useState<
-    Leaderboard | undefined
-  >(undefined);
+  const { leaderboardResult, isLeaderboardLoaded } = useMyForestV2();
   //stores list for tabSelected
   const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
     []
   );
   const isMobile = typeof window !== `undefined` && window.innerWidth <= 481;
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [isDataFetched, setIsDataFetched] = useState(false);
   const t = useTranslations('Profile');
 
   const handleTabChange = (selectedTab: string) => {
@@ -37,18 +30,6 @@ const CommunityContributions = ({
       setContributionList(leaderboardResult?.mostTrees || []);
     }
   };
-
-  const _leaderboard = trpc.myForestV2.leaderboard.useQuery({
-    profileId: `${userProfile?.id}`,
-    slug: `${userProfile?.slug}`,
-  });
-
-  useEffect(() => {
-    if (_leaderboard.data) {
-      updateStateWithTrpcData(_leaderboard, setLeaderboardResult, setErrors);
-      setIsDataFetched(true);
-    }
-  }, [_leaderboard?.data, userProfile]);
 
   useEffect(() => {
     setContributionList(leaderboardResult?.mostRecent || []);
@@ -94,7 +75,7 @@ const CommunityContributions = ({
     );
   };
 
-  return isDataFetched ? (
+  return isLeaderboardLoaded ? (
     <div className={styles.communityContributions}>
       <div className={styles.header}>
         <div className={styles.infoIcon}>
