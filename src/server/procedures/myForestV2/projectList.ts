@@ -13,6 +13,7 @@ export const projectListsProcedure = procedure.query(async () => {
 			p.name,
 			p.slug,
 			p.classification,
+			COALESCE(metadata ->> '$.ecosystem', metadata ->> '$.ecosystems') as ecosystem,
 			p.purpose,
 			p.unit_type AS unitType,
 			p.country,

@@ -32,13 +32,13 @@ const TargetFormInput = ({
 
   const {
     primaryDarkColor,
-    greenHaze,
-    amethystPurple,
-    ceruleanBlue,
-    electricPurple,
-    mediumBlue,
-    mediumGray,
-    lightGray,
+    greenHazeColor,
+    amethystPurpleColor,
+    ceruleanBlueColor,
+    electricPurpleColor,
+    mediumBlueColor,
+    mediumGrayColor,
+    lightGrayColor,
   } = themeProperties;
 
   useEffect(() => {
@@ -63,16 +63,16 @@ const TargetFormInput = ({
     switch (dataType) {
       case 'treesPlanted':
         return checked
-          ? { background: `${greenHaze}` }
-          : { background: `${lightGray}` };
+          ? { background: `${greenHazeColor}` }
+          : { background: `${lightGrayColor}` };
       case 'areaRestored':
         return checked
-          ? { background: `${amethystPurple}` }
-          : { background: `${lightGray}` };
+          ? { background: `${amethystPurpleColor}` }
+          : { background: `${lightGrayColor}` };
       case 'areaConserved':
         return checked
-          ? { background: `${ceruleanBlue}` }
-          : { background: `${lightGray}` };
+          ? { background: `${ceruleanBlueColor}` }
+          : { background: `${lightGrayColor}` };
       default:
         return {};
     }
@@ -83,15 +83,15 @@ const TargetFormInput = ({
       case 'treesPlanted':
         return checked
           ? { background: `${primaryDarkColor}` }
-          : { background: `${mediumGray}` };
+          : { background: `${mediumGrayColor}` };
       case 'areaRestored':
         return checked
-          ? { background: `${electricPurple}` }
-          : { background: `${mediumGray}` };
+          ? { background: `${electricPurpleColor}` }
+          : { background: `${mediumGrayColor}` };
       case 'areaConserved':
         return checked
-          ? { background: `${mediumBlue}` }
-          : { background: `${mediumGray}` };
+          ? { background: `${mediumBlueColor}` }
+          : { background: `${mediumGrayColor}` };
       default:
         return {};
     }
@@ -102,9 +102,9 @@ const TargetFormInput = ({
       case 'treesPlanted':
         return primaryDarkColor;
       case 'areaRestored':
-        return electricPurple;
+        return electricPurpleColor;
       case 'areaConserved':
-        return mediumBlue;
+        return mediumBlueColor;
       default:
         return '';
     }

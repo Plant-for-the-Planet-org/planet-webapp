@@ -4,6 +4,7 @@ import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
+import CommunityContributions from '../CommunityContributions';
 import { useState, useEffect, useContext } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
@@ -11,6 +12,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
+import MyContributions from '../MyContributions';
 
 interface Props {
   tenantConfigId: string;
@@ -18,6 +20,7 @@ interface Props {
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ tenantConfigId }: Props) => {
+  const showLeaderboard = true;
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
@@ -80,20 +83,32 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         id="my-contributions-container"
         className={styles.myContributionsContainer}
       >
-        My Contributions
+        {profile ? (
+          <MyContributions
+            profilePageType="public"
+            displayName={
+              profile.type === 'individual'
+                ? profile.displayName.split(' ').slice(0, 1)[0]
+                : profile.displayName
+            }
+          />
+        ) : null}
       </section>
-      <section
-        id="community-contributions-container"
-        className={styles.communityContributionsContainer}
-      >
-        Community Contributions
-      </section>
-      <section
-        id="community-contributions-container"
-        className={styles.communityContributionsContainer}
-      >
-        Community Contributions
-      </section>
+      {showLeaderboard ? (
+        <section
+          id="community-contributions-container"
+          className={styles.communityContributionsContainer}
+        >
+          {profile ? (
+            <CommunityContributions
+              userProfile={profile}
+              profileType="public"
+            />
+          ) : (
+            <ProfileLoader />
+          )}
+        </section>
+      ) : null}
       <section id="info-cta-container" className={styles.infoAndCtaContainer}>
         Additional information and CTAs - Become a member, Treegame, SDG Slider
       </section>

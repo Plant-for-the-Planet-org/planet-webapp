@@ -37,15 +37,16 @@ interface ForestProgressItemProps {
 
 const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
   const tProfile = useTranslations('Profile');
-  const { primaryDarkColor, electricPurple, mediumBlue } = themeProperties;
+  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
+    themeProperties;
   const getDarkerColor = useMemo(() => {
     switch (dataType) {
       case 'treesPlanted':
         return primaryDarkColor;
       case 'areaRestored':
-        return electricPurple;
+        return electricPurpleColor;
       case 'areaConserved':
-        return mediumBlue;
+        return mediumBlueColor;
       default:
         return '';
     }
@@ -84,11 +85,11 @@ const ProgressData = ({
   const totalAchievment = gift + personal;
   const {
     primaryDarkColor,
-    electricPurple,
-    mediumBlue,
-    mintGreen,
-    lavenderPurple,
-    skyBlue,
+    electricPurpleColor,
+    mediumBlueColor,
+    mintGreenColor,
+    lavenderPurpleColor,
+    skyBlueColor,
   } = themeProperties;
 
   const getDarkerColor = useMemo(() => {
@@ -96,9 +97,9 @@ const ProgressData = ({
       case 'treesPlanted':
         return { background: `${primaryDarkColor}` };
       case 'areaRestored':
-        return { background: `${electricPurple}` };
+        return { background: `${electricPurpleColor}` };
       case 'areaConserved':
-        return { background: `${mediumBlue}` };
+        return { background: `${mediumBlueColor}` };
       default:
         return {};
     }
@@ -107,11 +108,11 @@ const ProgressData = ({
   const getGiftBarColor = useMemo(() => {
     switch (dataType) {
       case 'treesPlanted':
-        return { background: `${mintGreen}` };
+        return { background: `${mintGreenColor}` };
       case 'areaRestored':
-        return { background: `${lavenderPurple}` };
+        return { background: `${lavenderPurpleColor}` };
       case 'areaConserved':
-        return { background: `${skyBlue}` };
+        return { background: `${skyBlueColor}` };
       default:
         return {};
     }
@@ -261,7 +262,7 @@ const ForestProgressItem = ({
   checked,
 }: ForestProgressItemProps) => {
   const { asPath } = useRouter();
-  const { greenHaze, amethystPurple, ceruleanBlue } = themeProperties;
+  const { greenHaze, amethystPurpleColor, ceruleanBlueColor } = themeProperties;
   const _getAchievedTarget = useMemo(
     () => getAchievedTarget(target, gift, personal),
     [target, gift, personal]
@@ -272,9 +273,9 @@ const ForestProgressItem = ({
       case 'treesPlanted':
         return { background: `${greenHaze}` };
       case 'areaRestored':
-        return { background: `${amethystPurple}` };
+        return { background: `${amethystPurpleColor}` };
       case 'areaConserved':
-        return { background: `${ceruleanBlue}` };
+        return { background: `${ceruleanBlueColor}` };
       default:
         return {};
     }

@@ -43,6 +43,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
   const { setErrors } = useContext(ErrorHandlingContext);
   const tProfile = useTranslations('Profile');
   const { tenantConfig } = useTenant();
+  // local target state for modal
   const [targetForTree, setTargetForTree] = useState(0);
   const [targetForRestoredArea, setTargetForRestoredArea] = useState(0);
   const [targetForConservedArea, setTargetForConservedArea] = useState(0);

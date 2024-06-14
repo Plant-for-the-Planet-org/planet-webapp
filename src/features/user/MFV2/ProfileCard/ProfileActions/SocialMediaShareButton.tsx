@@ -1,6 +1,6 @@
 import React from 'react';
 import { ShareIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import ProfileCardButton from '../ProfileCardButton';
+import WebappButton from '../../../../common/WebappButton';
 import ShareModal from '../ShareModal';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
@@ -48,7 +48,7 @@ const SocialMediaShareButton = ({
 
   return (
     <>
-      <ProfileCardButton
+      <WebappButton
         icon={<ShareIcon />}
         text={t('feature.share')}
         onClick={

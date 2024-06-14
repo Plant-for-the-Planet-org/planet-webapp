@@ -1,6 +1,10 @@
 import { Point, Polygon } from 'geojson';
 import { DateString } from './common';
-import { TreeProjectClassification, CountryCode } from '@planet-sdk/common';
+import {
+  CountryCode,
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
 
 export type ContributionStats = {
   giftsReceivedCount: number;
@@ -73,6 +77,8 @@ export type MyContributionsSingleRegistration = {
   totalContributionUnits: number;
   contributionUnitType: 'tree';
   contributionCount: number;
+  country: CountryCode | null;
+  projectGuid: string | null;
   contributions: SingleRegistration[];
 };
 
@@ -85,6 +91,25 @@ export type SingleRegistration = {
 
 export type MapLocation = {
   geometry: Point;
+};
+
+export type ProjectQueryResult = {
+  guid: string;
+  name: string;
+  slug: string;
+  classification: TreeProjectClassification | null;
+  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2';
+  country: CountryCode;
+  geometry: Point;
+  image: string;
+  allowDonations: '0' | '1';
+  tpoName: string;
+};
+
+export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
+  allowDonations: boolean;
 };
 
 export type GroupTreecounterQueryResult = {
@@ -109,7 +134,7 @@ export type ContributionsQueryResult = {
   amount: number;
   currency: string;
   geometry: Point | Polygon | null;
-  country: string;
+  country: CountryCode | '';
   giftMethod: string | null;
   giftRecipient: string | null;
   giftType: string | null;
@@ -122,24 +147,6 @@ export type GiftsQueryResult = {
   projectName: string;
   country: string;
   plantDate: DateString;
-};
-
-export type ProjectQueryResult = {
-  guid: string;
-  name: string;
-  slug: string;
-  classification: TreeProjectClassification | null;
-  purpose: 'trees' | 'conservation';
-  unitType: 'tree' | 'm2';
-  country: CountryCode;
-  geometry: Point;
-  image: string;
-  allowDonations: '0' | '1';
-  tpoName: string;
-};
-
-export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
-  allowDonations: boolean;
 };
 
 // Procedure Response types
@@ -157,6 +164,7 @@ export type LeaderboardItem = {
   name: string;
   units: number;
   unitType: 'tree' | 'm2';
+  purpose: string;
 };
 
 export type Leaderboard = {
