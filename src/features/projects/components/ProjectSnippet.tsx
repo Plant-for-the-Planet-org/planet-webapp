@@ -55,7 +55,7 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = useProjectProps();
+  const { selectedPl, hoveredPl, setSelectedSite } = useProjectProps();
   const { tenantConfig } = useTenant();
 
   let progressPercentage = 0;
@@ -110,6 +110,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
+          setSelectedSite(0);
           router.push(
             `/${locale}/${project.slug}/${
               embed === 'true'

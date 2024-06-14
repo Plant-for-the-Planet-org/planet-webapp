@@ -13,19 +13,23 @@ export default function Sites(): ReactElement {
     selectedMode,
     rasterData,
     satellite,
+    selectedPl,
+    hoveredPl,
     setSiteViewPort,
     plantLocationsLoaded,
   } = useProjectProps();
 
   React.useEffect(() => {
-    zoomToProjectSite(
-      geoJson,
-      selectedSite,
-      viewport,
-      setViewPort,
-      setSiteViewPort,
-      4000
-    );
+    if (!hoveredPl && !selectedPl) {
+      zoomToProjectSite(
+        geoJson,
+        selectedSite,
+        viewport,
+        setViewPort,
+        setSiteViewPort,
+        4000
+      );
+    }
   }, [selectedSite, selectedMode]);
 
   return (
