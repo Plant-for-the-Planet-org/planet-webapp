@@ -4,12 +4,17 @@ import { Popup } from 'react-map-gl-v7';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreePopupIcon';
 import style from '../MyForestV2.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import { RegistrationGeojson } from '../../../../common/Layout/MyForestContextV2';
+import { SingleRegistration } from '../../../../common/types/myForestv2';
 
-const RegisteredTreeInfo = ({ contributions }: any) => {
+type RegisteredTreeInfoProp = {
+  contributions: SingleRegistration[];
+};
+const RegisteredTreeInfo = ({ contributions }: RegisteredTreeInfoProp) => {
   const tProfile = useTranslations('Profile');
   return (
     <>
-      {contributions.map((singleContribution: any) => {
+      {contributions.map((singleContribution) => {
         const { plantDate, quantity } = singleContribution;
 
         return (
@@ -31,10 +36,13 @@ const RegisteredTreeInfo = ({ contributions }: any) => {
     </>
   );
 };
-
-const RegisterTreePopup = ({ superclusterResponse }: any) => {
+interface RegisterTreePopupProp {
+  superclusterResponse: RegistrationGeojson;
+}
+const RegisterTreePopup = ({ superclusterResponse }: RegisterTreePopupProp) => {
   const { coordinates } = superclusterResponse.geometry;
-  const { contributions } = superclusterResponse.properties;
+  const contributions =
+    superclusterResponse.properties.contributionInfo?.contributions;
   return (
     <Popup
       latitude={coordinates[1]}

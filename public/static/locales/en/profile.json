@@ -68,9 +68,9 @@
       "projects": "Projects",
       "totalDonation": "{count, plural, =1 {# donation} other {# donations}} ",
       "totalProject": "to {count, plural, =1 {# project} other {# projects}}",
-      "tpoName": "{tpo}",
+      "tpoName": "By {tpo}",
       "projectName": "{name}",
-      "classification": "{Classification}",
+      "classification": "{classification}",
       "shareFeature": {
         "shareTextTitle": "Stop talking. Start planting.",
         "textToShare": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @trilliontrees",

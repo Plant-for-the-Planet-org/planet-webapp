@@ -45,7 +45,7 @@
   object-fit: cover;
 }
 
-.contributionInfoContainer {
+.projectInfoMainContainer {
   display: flex;
   justify-content: space-between;
   gap: 2px;
@@ -53,6 +53,15 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 10px;
+  > .projectInfoContainer {
+    width: 100%;
+  }
+}
+
+.donationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .treesAndCountry {
@@ -68,15 +77,14 @@
 
 .seperator {
   font-weight: 700;
-  margin-bottom: 4px;
 }
 .countryAndTpo {
   display: flex;
   align-items: center;
   gap: 3px;
   font-size: 8px;
-  margin-top: 4px;
-  line-height: 0px;
+  margin-top: 6px;
+  line-height: 4px;
   font-weight: 400;
 }
 

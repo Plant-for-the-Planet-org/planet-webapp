@@ -1,7 +1,7 @@
 import { Popup } from 'react-map-gl-v7';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { AnyProps, PointFeature } from 'supercluster';
+import { PointFeature } from 'supercluster';
 import { useTranslations, useLocale } from 'next-intl';
 import format from 'date-fns/format';
 import style from '../MyForestV2.module.scss';
@@ -13,15 +13,21 @@ import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { SetState } from '../../../../common/types/common';
+import { DonationGeojson } from '../../../../common/Layout/MyForestContextV2';
+import { CountryCode } from '@planet-sdk/common';
 
 interface ProjectProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<DonationGeojson>;
 }
-
 const Projectimage = ({ superclusterResponse }: ProjectProps) => {
   const t = useTranslations('Profile');
-  const { classification, image, name } =
-    superclusterResponse.properties.projectInfo;
+  const {
+    image,
+    classification,
+    name: projectName,
+    purpose,
+  } = superclusterResponse.properties.projectInfo;
+
   return (
     <div className={style.imageContainer}>
       <img
@@ -33,7 +39,11 @@ const Projectimage = ({ superclusterResponse }: ProjectProps) => {
       <div className={style.projectImageInfoContainer}>
         <div className={style.classificationContainer}>
           <div className={style.classificationIcon}>
-            <ProjectTypeIcon projectType={classification} />
+            <ProjectTypeIcon
+              projectType={
+                purpose === 'conservation' ? purpose : classification
+              }
+            />
           </div>
           <div className={style.classification}>
             {t('myForestMapV.classification', {
@@ -43,7 +53,7 @@ const Projectimage = ({ superclusterResponse }: ProjectProps) => {
         </div>
         <div className={style.projectName}>
           {t('myForestMapV.projectName', {
-            name: name,
+            name: projectName,
           })}
         </div>
       </div>
@@ -54,15 +64,18 @@ const Projectimage = ({ superclusterResponse }: ProjectProps) => {
 const ProjectInfo = ({ superclusterResponse }: ProjectProps) => {
   const { totalContributionUnits, contributionCount, latestContributions } =
     superclusterResponse.properties.contributionInfo;
+  const { tpoName, guid, country } =
+    superclusterResponse.properties.projectInfo;
   const tProfile = useTranslations('Profile');
   const tCommon = useTranslations('Common');
-  const { name, tpoName, guid } = superclusterResponse.properties.projectInfo;
+  const tCountry = useTranslations('Country');
   const router = useRouter();
   const locale = useLocale();
+  const { tenantConfig } = useTenant();
   const { embed } = useContext(ParamsContext);
   const { token, user } = useUserProps();
-  const { tenantConfig } = useTenant(); //default tenant
-  const _plantDate = latestContributions[0].plantDate;
+  const plantDate = Number(latestContributions[0].plantDate);
+
   const handleDonation = (id: string, tenant: string) => {
     if (user) {
       const url = getDonationUrl(
@@ -78,33 +91,34 @@ const ProjectInfo = ({ superclusterResponse }: ProjectProps) => {
         : (window.location.href = encodeURI(url));
     }
   };
-  function truncateString(str: string, maxLength: number) {
-    if (maxLength <= 18) {
-      return str.slice(0, maxLength);
-    }
-    if (str.length > maxLength) {
-      return str.slice(0, maxLength - 3) + '...';
-    } else {
-      return str;
-    }
-  }
+
   return (
-    <div className={style.contributionInfoContainer}>
-      <div>
-        <div className={style.treesAndCountry}>
-          <p className={style.trees}>
-            {tProfile('myForestMapV.plantedTree', {
-              count: Number.isInteger(totalContributionUnits)
-                ? totalContributionUnits
-                : totalContributionUnits.toFixed(2),
-            })}
-          </p>
-          <p className={style.seperator}>.</p>
-          <p>{truncateString(name, 19)}</p>
+    <div className={style.projectInfoMainContainer}>
+      <div className={style.projectInfoContainer}>
+        <div className={style.donationContainer}>
+          <div className={style.treesAndCountry}>
+            <p className={style.trees}>
+              {tProfile('myForestMapV.plantedTree', {
+                count: Number.isInteger(totalContributionUnits)
+                  ? totalContributionUnits
+                  : totalContributionUnits.toFixed(2),
+              })}
+            </p>
+            <p className={style.seperator}>•</p>
+            <p>
+              {tCountry(country.toLocaleLowerCase() as Lowercase<CountryCode>)}
+            </p>
+          </div>
+          <button
+            className={style.popupDonateButton}
+            onClick={() => handleDonation(guid, tenantConfig.id)}
+          >
+            {tCommon('donate')}
+          </button>
         </div>
         <div className={style.countryAndTpo}>
-          <p>{truncateString(name, 19)}</p>
-          <p className={style.seperator}>.</p>
+          {tCountry(country.toLocaleLowerCase() as Lowercase<CountryCode>)}
+          <p className={style.seperator}>•</p>
           <p>
             {tProfile('myForestMapV.tpoName', {
               tpo: tpoName,
@@ -113,19 +127,13 @@ const ProjectInfo = ({ superclusterResponse }: ProjectProps) => {
         </div>
         {contributionCount === 1 && (
           <div className={style.singleContributionDate}>
-            {format(_plantDate, 'PP', {
+            {format(plantDate, 'PP', {
               locale:
                 localeMapForDate[localStorage.getItem('language') || 'en'],
             })}
           </div>
         )}
       </div>
-      <button
-        className={style.popupDonateButton}
-        onClick={() => handleDonation(guid, tenantConfig.id)}
-      >
-        {tCommon('donate')}
-      </button>
     </div>
   );
 };
@@ -139,28 +147,26 @@ const ContributionList = ({ superclusterResponse }: ProjectProps) => {
     <></>
   ) : (
     <div className={style.listOfContributionsContainer}>
-      {latestContributions
-        .slice(0, 3)
-        .map((singleContribution: any, key: number) => {
-          return (
-            <div className={style.contributionInfoContainer} key={key}>
-              <p className={style.trees}>
-                {' '}
-                {tProfile('myForestMapV.plantedTree', {
-                  count: Number.isInteger(singleContribution.quantity)
-                    ? singleContribution.quantity
-                    : singleContribution.quantity.toFixed(2),
-                })}
-              </p>
-              <p className={style.contributionDate}>
-                {format(singleContribution.plantDate, 'PP', {
-                  locale:
-                    localeMapForDate[localStorage.getItem('language') || 'en'],
-                })}{' '}
-              </p>
-            </div>
-          );
-        })}
+      {latestContributions.slice(0, 3).map((singleContribution, key) => {
+        return (
+          <div className={style.contributionInfoContainer} key={key}>
+            <p className={style.trees}>
+              {' '}
+              {tProfile('myForestMapV.plantedTree', {
+                count: Number.isInteger(singleContribution.quantity)
+                  ? singleContribution.quantity
+                  : singleContribution.quantity.toFixed(2),
+              })}
+            </p>
+            <p className={style.contributionDate}>
+              {format(Number(singleContribution.plantDate), 'PP', {
+                locale:
+                  localeMapForDate[localStorage.getItem('language') || 'en'],
+              })}{' '}
+            </p>
+          </div>
+        );
+      })}
 
       {contributionCount >= 4 && (
         <div className={style.totalContribution}>
@@ -174,7 +180,7 @@ const ContributionList = ({ superclusterResponse }: ProjectProps) => {
 };
 
 interface ContributionPopupProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<DonationGeojson>;
   setShowPopUp: SetState<boolean>;
 }
 

@@ -18,21 +18,21 @@ import {
   MapLocation,
   MyContributionsMapItem,
   Leaderboard,
+  ProjectQueryResult,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
 
-interface RegistrationGeojson {
-  geometry: Point;
-  properties: MyContributionsSingleRegistration;
-}
-
-interface DonationGeojson {
+export interface RegistrationGeojson {
   geometry: Point;
   properties: {
-    projectInfo: MyForestProject;
-    contributionInfo: MyContributionsSingleProject;
+    contributionInfo: MyContributionsSingleRegistration;
   };
+}
+
+export interface DonationGeojson {
+  projectInfo: ProjectQueryResult;
+  contributionInfo: MyContributionsSingleProject;
 }
 
 interface UserInfo {

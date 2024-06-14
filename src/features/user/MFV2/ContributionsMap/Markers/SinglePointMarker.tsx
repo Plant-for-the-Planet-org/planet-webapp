@@ -9,13 +9,17 @@ import OtherPlanting from '../../../../../../public/assets/images/icons/myForest
 import themeProperties from '../../../../../theme/themeProperties';
 import { Marker } from 'react-map-gl-v7';
 import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
-import { AnyProps, PointFeature } from 'supercluster';
+import { PointFeature } from 'supercluster';
 import ContributionPopup from '../Popup/ContributionPopup';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
 import { UnitTypes, ProjectPurpose } from '@planet-sdk/common';
 import style from '../MyForestV2.module.scss';
 import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 import { TreeProjectClassification } from '@planet-sdk/common';
+import {
+  DonationGeojson,
+  RegistrationGeojson,
+} from '../../../../common/Layout/MyForestContextV2';
 
 interface ProjectTypeIconProps {
   purpose: ProjectPurpose;
@@ -74,7 +78,7 @@ const ProjectTypeIcon = ({
 };
 
 interface SinglePointMarkersProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<DonationGeojson | RegistrationGeojson>;
 }
 
 const SinglePointMarkers = ({
@@ -95,17 +99,49 @@ const SinglePointMarkers = ({
   const handleMouseLeaveRegisteredtreePopup = () => {
     setShowPopUp(false);
   };
-
   const { coordinates } = superclusterResponse.geometry;
-  const { type, projectInfo } = superclusterResponse.properties;
-
+  const isDonation = 'projectInfo' in superclusterResponse.properties;
   return (
     <>
-      {type === 'registration' ? (
+      {isDonation ? (
+        <>
+          {showPopup && (
+            <ContributionPopup
+              superclusterResponse={
+                superclusterResponse as PointFeature<DonationGeojson>
+              }
+              setShowPopUp={setShowPopUp}
+            />
+          )}
+          <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
+            <div
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <ProjectTypeIcon
+                purpose={
+                  (superclusterResponse.properties as DonationGeojson)
+                    .projectInfo.purpose
+                }
+                classification={
+                  (superclusterResponse.properties as DonationGeojson)
+                    .projectInfo.classification
+                }
+                unitType={
+                  (superclusterResponse.properties as DonationGeojson)
+                    .projectInfo.unitType
+                }
+              />
+            </div>
+          </Marker>
+        </>
+      ) : (
         <>
           {showPopup && (
             <RegisterTreePopup
-              superclusterResponse={superclusterResponse}
+              superclusterResponse={
+                superclusterResponse as PointFeature<RegistrationGeojson>
+              }
               setShowPopUp={setShowPopUp}
             />
           )}
@@ -116,27 +152,6 @@ const SinglePointMarkers = ({
               onMouseLeave={handleMouseLeaveRegisteredtreePopup}
             >
               <RegisteredTreeIcon />
-            </div>
-          </Marker>
-        </>
-      ) : (
-        <>
-          {showPopup && (
-            <ContributionPopup
-              superclusterResponse={superclusterResponse}
-              setShowPopUp={setShowPopUp}
-            />
-          )}
-          <Marker longitude={coordinates[0]} latitude={coordinates[1]}>
-            <div
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <ProjectTypeIcon
-                purpose={projectInfo.purpose}
-                classification={projectInfo.classification}
-                unitType={projectInfo.unitType}
-              />
             </div>
           </Marker>
         </>
