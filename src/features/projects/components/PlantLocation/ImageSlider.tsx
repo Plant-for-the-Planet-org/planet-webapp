@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './../../styles/PlantLocation.module.scss';
@@ -30,7 +30,7 @@ export default function ImageSlider({
   };
 
   const setupSlider = () => {
-    const projectImages: Story[] = []
+    const projectImages: Story[] = [];
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
@@ -50,27 +50,26 @@ export default function ImageSlider({
         });
       }
     });
-    setSlider(projectImages)
-  }
+    setSlider(projectImages);
+  };
 
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (images.length > 0) {
-      setupSlider()
+      setupSlider();
     }
   }, [images]);
 
-
   if (slider.length === 0) {
-    return null
+    return null;
   }
 
-
-  return <Stories
-    stories={slider}
-    defaultInterval={7000}
-    width="100%"
-    height={height}
-    loop={true}
-  />;
+  return (
+    <Stories
+      stories={slider}
+      defaultInterval={7000}
+      width="100%"
+      height={height}
+      loop={true}
+    />
+  );
 }

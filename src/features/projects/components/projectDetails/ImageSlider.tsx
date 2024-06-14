@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './../../styles/ProjectDetails.module.scss';
@@ -29,9 +29,8 @@ export default function ImageSlider({
     return ImageSource;
   };
 
-
   const setupSlider = () => {
-    const projectImages: Story[] = []
+    const projectImages: Story[] = [];
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
@@ -43,8 +42,8 @@ export default function ImageSlider({
                 type === 'coordinate'
                   ? { background: `url(${imageURL})` }
                   : {
-                    background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-                  }
+                      background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+                    }
               }
             >
               <p className={styles.projectImageSliderContentText}>
@@ -55,27 +54,26 @@ export default function ImageSlider({
         });
       }
     });
-    setSlider(projectImages)
-  }
+    setSlider(projectImages);
+  };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (images.length > 0) {
-      setupSlider()
+      setupSlider();
     }
   }, [images]);
 
-
-
   if (slider.length === 0) {
-    return null
+    return null;
   }
 
-
-  return <Stories
-    stories={slider}
-    defaultInterval={300}
-    width="100%"
-    height={height}
-    loop={true}
-  />;
+  return (
+    <Stories
+      stories={slider}
+      defaultInterval={7000}
+      width="100%"
+      height={height}
+      loop={true}
+    />
+  );
 }
