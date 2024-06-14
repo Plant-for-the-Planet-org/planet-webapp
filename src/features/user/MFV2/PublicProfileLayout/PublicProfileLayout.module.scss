@@ -40,13 +40,15 @@
   }
 
   .myContributionsContainer {
-    height: 500px;
     grid-area: myContributionsContainer;
+    border: 4px solid #fff;
+    overflow: hidden;
   }
 
   .communityContributionsContainer {
-    height: 500px;
     grid-area: communityContributionsContainer;
+    border: 4px solid #fff;
+    overflow: hidden;
   }
 
   .infoAndCtaContainer {
@@ -100,5 +102,11 @@
       'progressContainer progressContainer progressContainer progressContainer'
       'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
       'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+  }
+}
+
+@include xsPhoneView {
+  .publicProfileLayout {
+    width: fit-content;
   }
 }

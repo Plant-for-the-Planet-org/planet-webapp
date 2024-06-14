@@ -16,6 +16,8 @@ import {
   MyContributionsSingleRegistration,
   MyContributionsSingleProject,
   MapLocation,
+  MyContributionsMapItem,
+  Leaderboard,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
@@ -45,6 +47,9 @@ interface UserInfo {
 interface MyForestContextV2Interface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
+  leaderboardResult: Leaderboard | undefined;
+  isLeaderboardLoaded: boolean;
+  contributionsMap: Map<string, MyContributionsMapItem> | undefined;
   registrationGeojson: RegistrationGeojson[];
   donationGeojson: DonationGeojson[];
   userInfo: UserInfo | null;
@@ -60,6 +65,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
     useState<ProjectListResponse>();
   const [contributionsResult, setContributionsResult] =
     useState<ContributionsResponse>();
+  const [leaderboardResult, setLeaderboardResult] = useState<
+    Leaderboard | undefined
+  >();
+  const [isLeaderboardLoaded, setIsLeaderboardLoaded] = useState(false);
+  const [contributionsMap, setContributionsMap] =
+    useState<Map<string, MyContributionsMapItem>>();
   const [registrationGeojson, setRegistrationGeojson] = useState<
     RegistrationGeojson[]
   >([]);
@@ -70,6 +81,10 @@ export const MyForestProviderV2: FC = ({ children }) => {
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
   const _contributions = trpc.myForestV2.contributions.useQuery({
+    profileId: `${userInfo?.profileId}`,
+    slug: `${userInfo?.slug}`,
+  });
+  const _leaderboard = trpc.myForestV2.leaderboard.useQuery({
     profileId: `${userInfo?.profileId}`,
     slug: `${userInfo?.slug}`,
   });
@@ -89,6 +104,13 @@ export const MyForestProviderV2: FC = ({ children }) => {
       );
     }
   }, [_contributions.data]);
+
+  useEffect(() => {
+    if (_leaderboard.data) {
+      updateStateWithTrpcData(_leaderboard, setLeaderboardResult, setErrors);
+      setIsLeaderboardLoaded(true);
+    }
+  }, [_leaderboard?.data]);
 
   //format geojson
   const _generateDonationGeojson = (
@@ -118,6 +140,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
     if (contributionsResult) {
       const _registrationGeojson: RegistrationGeojson[] = [];
       const _donationGeojson: DonationGeojson[] = [];
+
+      setContributionsMap(contributionsResult.myContributionsMap);
 
       //iterate through contributionsMap and generate geojson for each contribution
       contributionsResult.myContributionsMap.forEach((item, key) => {
@@ -155,6 +179,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
     () => ({
       projectListResult,
       contributionsResult,
+      leaderboardResult,
+      isLeaderboardLoaded,
+      contributionsMap,
       registrationGeojson,
       donationGeojson,
       userInfo,
@@ -163,6 +190,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
     [
       projectListResult,
       contributionsResult,
+      leaderboardResult,
+      isLeaderboardLoaded,
+      contributionsMap,
       registrationGeojson,
       donationGeojson,
       userInfo,
