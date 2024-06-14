@@ -63,6 +63,8 @@ const getGlobalStyles = async () => {
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
+      --medium-blue-color: ${theme.mediumBlueColor};
+      --electric-purple-color: ${theme.electricPurpleColor};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};

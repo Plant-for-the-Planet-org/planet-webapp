@@ -126,7 +126,8 @@ function handleRegistrationContribution(
   contribution: ContributionsQueryResult,
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
-  registrationLocationsMap: Map<string, MapLocation>
+  registrationLocationsMap: Map<string, MapLocation>,
+  project: BriefProjectQueryResult | null
 ) {
   // Updates myContributionsMap
   myContributionsMap.set(contribution.guid, {
@@ -134,6 +135,8 @@ function handleRegistrationContribution(
     contributionCount: 1,
     contributionUnitType: 'tree',
     totalContributionUnits: contribution.units,
+    country: contribution.country || null,
+    projectGuid: project?.guid || null,
     contributions: [
       {
         dataType: 'treeRegistration',
@@ -391,7 +394,8 @@ export const contributionsProcedure = procedure
           contribution,
           stats,
           myContributionsMap,
-          registrationLocationsMap
+          registrationLocationsMap,
+          projectIdMap.get(contribution.projectId) || null
         );
       } else {
         handleDonationContribution(

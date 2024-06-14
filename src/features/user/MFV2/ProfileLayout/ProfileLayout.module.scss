@@ -38,13 +38,15 @@
   }
 
   .myContributionsContainer {
-    height: 500px;
     grid-area: myContributionsContainer;
+    border: 4px solid #fff;
+    overflow: hidden;
   }
 
   .communityContributionsContainer {
-    height: 500px;
     grid-area: communityContributionsContainer;
+    border: 4px solid #fff;
+    overflow: hidden;
   }
 }
 

@@ -36,6 +36,8 @@
       "editTarget": "Edit Target"
     },
     "myContributions": {
+      "titlePrivate": "My Contributions",
+      "titlePublic": "{name}'s Contributions",
       "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
       "treeRegistered": "{count, plural, =1 {# Tree Registered} other {# Trees Registered}}",
       "receivedFrom": "Received from {name}",
@@ -46,7 +48,17 @@
       "conservedSmall": "conserved",
       "restoredSmall": "restored",
       "areaType": "{areaConserved} m² {type}",
-      "areaConserved": "Areas Conserved"
+      "areaConserved": "Areas Conserved",
+      "unused": "v2 translations below",
+      "treesContributed": "{count, plural, =1 {# tree} other {# trees}}",
+      "areaContributed": "{projectPurpose, select, trees {{count}m² restored} other {{count}m² conserved}}",
+      "giftReceivedInfo": "Gift from {name}",
+      "giftGivenInfo": "Gift to {name}",
+      "anonymousUser": "an anonymous user",
+      "contributionCountOverflow": "+{additionalCount, plural, =1 {# contribution} other {# contributions}}",
+      "treesRegisteredHeadline": "{count, plural, =1 {# Tree} other {# Trees}}",
+      "registrationInfo": "Registered • {date}",
+      "registrationInfoWithCountry": "Registered • {countryName} • {date}"
     },
     "shareFeature": {
       "shareTextTitle": "Stop talking. Start planting.",
@@ -58,6 +70,20 @@
     "mapState": {
       "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
       "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "
+    },
+    "communityContributions": {
+      "title": "Community Contributions",
+      "tooltipText": "Community contributions are all tree, restoration or conservation donations that are dedicated to you, for instance by donating via your profile",
+      "mostRecentTabLabel": "Most recent",
+      "mostTreesTabLabel": "Most trees",
+      "restorationPurpose": "restored",
+      "conservationPurpose": "conserved",
+      "treesPurpose": "Trees",
+      "noContributionPrivateProfileText": "Oops! No contributions to show yet",
+      "noContributionPublicProfileText": "Make a donation to support {name}'s efforts"
+    },
+    "unitType": {
+      "m2": "m²"
     }
   }
 }
