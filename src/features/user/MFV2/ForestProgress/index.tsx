@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import targetBarStyle from './TreeTargetBar.module.scss';
+import targetBarStyle from './ForestProgress.module.scss';
 import TargetsModal from './microComponents/TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './microComponents/EmptyProgress';

@@ -4,7 +4,7 @@ import {
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
-import ProgressBarStyle from '../TreeTargetBar.module.scss';
+import ProgressBarStyle from '../ForestProgress.module.scss';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { getAchievedTarget } from '../../../../../utils/myForestV2Utils';

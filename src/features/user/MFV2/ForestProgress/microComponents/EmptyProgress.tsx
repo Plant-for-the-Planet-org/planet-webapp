@@ -1,4 +1,4 @@
-import targetBarStyle from '../TreeTargetBar.module.scss';
+import targetBarStyle from '../ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface EmptyProgressProps {

@@ -1,4 +1,4 @@
-import targetModalStyle from '../TreeTargetBar.module.scss';
+import targetModalStyle from '../ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../../theme/themeProperties';
 import { ChangeEvent, useState, useMemo, useEffect } from 'react';
