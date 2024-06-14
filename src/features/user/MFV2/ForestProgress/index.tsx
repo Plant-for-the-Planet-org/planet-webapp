@@ -83,43 +83,24 @@ const ForestProgress = () => {
   const handleOpen = () => setOpen(true);
   const {
     treeTarget,
+    treesPlanted,
     conservTarget,
     restoreTarget,
+    areaRestored,
     isLoading,
-    contributionsResult,
+    areaConserved,
   } = useMyForestV2();
-
-  const treesDonated = useMemo(
-    () =>
-      (contributionsResult?.stats.treesDonated.received ?? 0) +
-      (contributionsResult?.stats.treesDonated.personal ?? 0),
-    [contributionsResult]
-  );
-
-  const areaRestored = useMemo(
-    () =>
-      (contributionsResult?.stats.areaRestoredInM2.received ?? 0) +
-      (contributionsResult?.stats.areaRestoredInM2.personal ?? 0),
-    [contributionsResult]
-  );
-
-  const areaConserved = useMemo(
-    () =>
-      (contributionsResult?.stats.areaConservedInM2.received ?? 0) +
-      (contributionsResult?.stats.areaConservedInM2.personal ?? 0),
-    [contributionsResult]
-  );
 
   const checkCondition = useMemo(
     () =>
-      treesDonated === 0 &&
+      treesPlanted === 0 &&
       treeTarget === 0 &&
       areaRestored === 0 &&
       restoreTarget === 0 &&
       conservTarget === 0 &&
       areaConserved === 0,
     [
-      treesDonated,
+      treesPlanted,
       treeTarget,
       areaRestored,
       restoreTarget,
@@ -143,7 +124,7 @@ const ForestProgress = () => {
           ) : (
             <ProgressBars
               handleOpen={handleOpen}
-              treesDonated={treesDonated}
+              treesDonated={treesPlanted}
               areaRestored={areaRestored}
               areaConserved={areaConserved}
             />
