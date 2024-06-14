@@ -100,7 +100,10 @@ export default function Project({
 
   React.useEffect(() => {
     if (selectedPl) {
-      const locationCoordinates = selectedPl.type === 'multi' ? selectedPl.geometry.coordinates[0] : selectedPl.geometry.coordinates
+      const locationCoordinates =
+        selectedPl.type === 'multi'
+          ? selectedPl.geometry.coordinates[0]
+          : selectedPl.geometry.coordinates;
       zoomToPlantLocation(
         locationCoordinates,
         viewport,
@@ -108,10 +111,10 @@ export default function Project({
         setViewPort,
         1200
       );
-      return
+      return;
     }
 
-    if (project && project.sites && !selectedPl) {
+    if (project && project.sites && siteExists && !selectedPl) {
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
