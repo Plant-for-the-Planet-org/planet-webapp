@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import targetModalStyle from '../ForestProgressBar.module.scss';
+import targetModalStyle from '../ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import {
   TreesPlantedIcon,

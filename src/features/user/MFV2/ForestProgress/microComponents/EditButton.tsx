@@ -2,7 +2,7 @@ import { ForestProgressItemProps } from '../ForestProgressItem';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../../theme/themeProperties';
 
-import progressBarStyle from '../ForestProgressBar.module.scss';
+import progressBarStyle from '../ForestProgress.module.scss';
 import { EditTargetIcon } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
 
 type EditButtonProp = Omit<

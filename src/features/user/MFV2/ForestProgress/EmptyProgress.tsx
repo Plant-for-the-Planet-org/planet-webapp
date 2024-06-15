@@ -1,5 +1,5 @@
 import WebappButton from '../../../common/WebappButton';
-import targetBarStyle from './ForestProgressBar.module.scss';
+import targetBarStyle from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface EmptyProgressProps {

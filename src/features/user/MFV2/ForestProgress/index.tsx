@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import style from './ForestProgressBar.module.scss';
+import style from './ForestProgress.module.scss';
 import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './EmptyProgress';
@@ -106,7 +106,7 @@ const ForestProgress = () => {
   };
   return (
     <div className={style.targetMainContainer}>
-      {!disableProgress ? (
+      {disableProgress ? (
         <EmptyProgress handleOpen={handleOpen} />
       ) : (
         <ProgressBars {...progressBarsProps} />

@@ -1,5 +1,5 @@
 import { Modal } from '@mui/material';
-import targetBarStyle from './ForestProgressBar.module.scss';
+import targetBarStyle from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';

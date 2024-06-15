@@ -1,4 +1,4 @@
-import targetModalStyle from './ForestProgressBar.module.scss';
+import targetModalStyle from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import { ChangeEvent, useMemo, useEffect } from 'react';
@@ -57,7 +57,6 @@ const TargetFormInput = ({
         return mediumBlueColor;
     }
   };
-
   const targetContainerClass = useMemo(
     () =>
       check
@@ -65,6 +64,7 @@ const TargetFormInput = ({
         : targetModalStyle.deActivateTargetModal,
     [dataType, check, target]
   );
+  console.log(targetContainerClass, check, '==2');
 
   return (
     <div className={`${targetContainerClass} ${dataType}`}>

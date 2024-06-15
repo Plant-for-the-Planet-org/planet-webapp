@@ -3,7 +3,7 @@ import {
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../public/assets/images/icons/ProgressBarIcons';
-import progressBarStyle from './ForestProgressBar.module.scss';
+import progressBarStyle from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import { getAchievedTarget } from '../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
