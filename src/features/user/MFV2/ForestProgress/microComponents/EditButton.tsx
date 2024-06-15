@@ -11,7 +11,7 @@ type EditButtonProp = Omit<
 >;
 
 const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
-  const tProfile = useTranslations('Profile');
+  const tProfile = useTranslations('Profile.progressBar');
   const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
     themeProperties;
 
@@ -34,9 +34,7 @@ const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
       >
         <EditTargetIcon width={9} color={getIconColor()} />
         <p className={`${progressBarStyle.editTargetLabel} editTargetLabel`}>
-          {target > 0
-            ? tProfile('progressBar.editTarget')
-            : tProfile('progressBar.setTarget')}
+          {target > 0 ? tProfile('editTarget') : tProfile('setTarget')}
         </p>
       </button>
     </div>

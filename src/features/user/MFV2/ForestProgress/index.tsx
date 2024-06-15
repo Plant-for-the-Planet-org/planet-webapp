@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import style from './ForestProgress.module.scss';
 import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
@@ -59,6 +59,7 @@ const ProgressBars = ({
 
 const ForestProgress = () => {
   const [open, setOpen] = useState(false);
+  const [isProgressEnabled, setIsProgressEnabled] = useState(false);
   const handleOpen = () => setOpen(true);
   const { treeTarget, conservTarget, restoreTarget, contributionsResult } =
     useMyForestV2();
@@ -80,23 +81,25 @@ const ForestProgress = () => {
   const contributions = useMemo(aggregateContributions, [contributionsResult]);
   const { treesDonated, areaRestored, areaConserved } = contributions;
 
-  const disableProgress = useMemo(
-    () =>
-      treesDonated === 0 &&
-      treeTarget === 0 &&
-      areaRestored === 0 &&
-      restoreTarget === 0 &&
-      conservTarget === 0 &&
-      areaConserved === 0,
-    [
-      treesDonated,
-      treeTarget,
-      areaRestored,
-      restoreTarget,
-      conservTarget,
-      areaConserved,
-    ]
-  );
+  useEffect(() => {
+    setIsProgressEnabled(
+      !(
+        treesDonated === 0 &&
+        treeTarget === 0 &&
+        areaRestored === 0 &&
+        restoreTarget === 0 &&
+        conservTarget === 0 &&
+        areaConserved === 0
+      )
+    );
+  }, [
+    treeTarget,
+    treesDonated,
+    restoreTarget,
+    areaRestored,
+    conservTarget,
+    areaConserved,
+  ]);
 
   const progressBarsProps = {
     handleOpen,
@@ -106,10 +109,10 @@ const ForestProgress = () => {
   };
   return (
     <div className={style.targetMainContainer}>
-      {disableProgress ? (
-        <EmptyProgress handleOpen={handleOpen} />
-      ) : (
+      {isProgressEnabled ? (
         <ProgressBars {...progressBarsProps} />
+      ) : (
+        <EmptyProgress handleOpen={handleOpen} />
       )}
 
       <TargetsModal open={open} setOpen={setOpen} />

@@ -24,7 +24,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
-  const { setUserInfo } = useMyForestV2();
+  const { setUserInfo, contributionsResult } = useMyForestV2();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
   async function loadPublicProfile(id: string) {
@@ -77,7 +77,11 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        <ForestProgress />
+        {contributionsResult?.stats ? (
+          <ForestProgress />
+        ) : (
+          <ProfileLoader height={116} />
+        )}
       </section>
       <section
         id="my-contributions-container"

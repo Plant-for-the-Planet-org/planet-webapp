@@ -64,7 +64,6 @@ const TargetFormInput = ({
         : targetModalStyle.deActivateTargetModal,
     [dataType, check, target]
   );
-  console.log(targetContainerClass, check, '==2');
 
   return (
     <div className={`${targetContainerClass} ${dataType}`}>

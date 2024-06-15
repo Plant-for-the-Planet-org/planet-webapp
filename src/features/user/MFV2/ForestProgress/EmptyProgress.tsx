@@ -7,15 +7,15 @@ interface EmptyProgressProps {
 }
 
 const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
-  const tProfile = useTranslations('Profile');
+  const tProfile = useTranslations('Profile.progressBar');
   return (
     <div className={targetBarStyle.emptyProgressContainer}>
       <div className={targetBarStyle.setTargetLabel}>
-        {tProfile('progressBar.targetInfo')}
+        {tProfile('setTargetsEnvironmentalActions')}
       </div>
       <WebappButton
         variant="primary"
-        text={tProfile('progressBar.setTargets')}
+        text={tProfile('setTargets')}
         onClick={handleOpen}
         elementType="button"
       />

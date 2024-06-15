@@ -30,7 +30,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
   const { contextLoaded, token, logoutUser, setRefetchUserData } =
     useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const tProfile = useTranslations('Profile');
+  const tProfile = useTranslations('Profile.progressBar');
   const { tenantConfig } = useTenant();
   // states to manage modal
   const [plantedTreesTarget, setPlantedTreesTarget] = useState(0);
@@ -111,7 +111,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
           <CrossIcon />
         </button>
         <div className={targetBarStyle.setTargetLabel}>
-          {tProfile('progressBar.setTargets')}
+          {tProfile('setTargets')}
         </div>
 
         <div className={targetBarStyle.targetModalSubConatiner}>
@@ -144,7 +144,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
           {isTargetModalLoading ? (
             <div className={'spinner'}></div>
           ) : (
-            tProfile('progressBar.save')
+            tProfile('save')
           )}
         </button>
       </div>

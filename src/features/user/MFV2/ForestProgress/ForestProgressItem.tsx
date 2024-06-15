@@ -96,7 +96,6 @@ const ProgressData = ({
 }: ProgressDataProps) => {
   const tProfile = useTranslations('Profile.progressBar');
   const totalAchievment = gift + personal;
-
   const getLabel = useMemo(() => {
     const isTargetSet = target > 0;
     const targetAchievedUnit =
@@ -105,35 +104,34 @@ const ProgressData = ({
         : totalAchievment;
     const hasDecimalPart = target !== Math.floor(target);
     const _target = hasDecimalPart ? target.toFixed(1) : target;
-
     switch (dataType) {
       case 'treesPlanted':
         return isTargetSet
-          ? tProfile('treeWithTarget', {
+          ? tProfile('treePlantedWithTarget', {
               count: targetAchievedUnit,
               total: _target,
             })
-          : tProfile('treeWithoutTarget', {
+          : tProfile('treePlantedWithoutTarget', {
               count: targetAchievedUnit,
             });
 
       case 'areaRestored':
         return isTargetSet
-          ? tProfile('restoreWithTarget', {
+          ? tProfile('restoredAreaWithTarget', {
               count: targetAchievedUnit,
               unit: _target,
             })
-          : tProfile('restoreWithoutTarget', {
+          : tProfile('restoredAreaWithoutTarget', {
               unit: targetAchievedUnit,
             });
 
       case 'areaConserved':
         return isTargetSet
-          ? tProfile('conservWithTarget', {
+          ? tProfile('conservedAreaWithTarget', {
               count: targetAchievedUnit,
               unit: _target,
             })
-          : tProfile('conservWithoutTarget', {
+          : tProfile('conservedAreaWithoutTarget', {
               unit: targetAchievedUnit,
             });
 
