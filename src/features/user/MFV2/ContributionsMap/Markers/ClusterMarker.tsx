@@ -37,7 +37,8 @@ const ClusterMarker = ({
     | undefined
   >(undefined);
   const { donationGeojson } = useMyForestV2();
-  const { primaryDarkColor, electricPurple, mediumBlue } = themeProperties;
+  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
+    themeProperties;
   const [
     classificationWithMaxContributions,
     setClassificationWithMaxContributions,
@@ -83,13 +84,21 @@ const ClusterMarker = ({
         restorationCount > 0 &&
         conservationCount === 0
       ) {
-        return [`${electricPurple}`, `${electricPurple}`, `${electricPurple}`];
+        return [
+          `${electricPurpleColor}`,
+          `${electricPurpleColor}`,
+          `${electricPurpleColor}`,
+        ];
       } else if (
         treeCount === 0 &&
         restorationCount === 0 &&
         conservationCount > 0
       ) {
-        return [`${mediumBlue}`, `${mediumBlue}`, `${mediumBlue}`];
+        return [
+          `${mediumBlueColor}`,
+          `${mediumBlueColor}`,
+          `${mediumBlueColor}`,
+        ];
       } else if (
         treeCount > 0 &&
         restorationCount > 0 &&
@@ -99,21 +108,29 @@ const ClusterMarker = ({
         if (treeCount > restorationCount) {
           if (treeCount > conservationCount) {
             return [
-              `${mediumBlue}`,
-              `${electricPurple}`,
+              `${mediumBlueColor}`,
+              `${electricPurpleColor}`,
               `${primaryDarkColor}`,
             ];
           } else {
             return [
               `${primaryDarkColor}`,
-              `${electricPurple}`,
-              `${mediumBlue}`,
+              `${electricPurpleColor}`,
+              `${mediumBlueColor}`,
             ];
           }
         } else if (restorationCount > conservationCount) {
-          return [`${mediumBlue}`, `${primaryDarkColor}`, `${electricPurple}`];
+          return [
+            `${mediumBlueColor}`,
+            `${primaryDarkColor}`,
+            `${electricPurpleColor}`,
+          ];
         } else {
-          return [`${electricPurple}`, `${primaryDarkColor}`, `${mediumBlue}`];
+          return [
+            `${electricPurpleColor}`,
+            `${primaryDarkColor}`,
+            `${mediumBlueColor}`,
+          ];
         }
       } else if (
         treeCount > 0 &&
@@ -122,12 +139,16 @@ const ClusterMarker = ({
       ) {
         if (treeCount > conservationCount) {
           return [
-            `${mediumBlue}`,
+            `${mediumBlueColor}`,
             `${primaryDarkColor}`,
             `${primaryDarkColor}`,
           ];
         } else {
-          return [`${primaryDarkColor}`, `${mediumBlue}`, `${mediumBlue}`];
+          return [
+            `${primaryDarkColor}`,
+            `${mediumBlueColor}`,
+            `${mediumBlueColor}`,
+          ];
         }
       } else if (
         treeCount === 0 &&
@@ -135,9 +156,17 @@ const ClusterMarker = ({
         conservationCount > 0
       ) {
         if (restorationCount > conservationCount) {
-          return [`${mediumBlue}`, `${electricPurple}`, `${electricPurple}`];
+          return [
+            `${mediumBlueColor}`,
+            `${electricPurpleColor}`,
+            `${electricPurpleColor}`,
+          ];
         } else {
-          return [`${electricPurple}`, `${mediumBlue}`, `${mediumBlue}`];
+          return [
+            `${electricPurpleColor}`,
+            `${mediumBlueColor}`,
+            `${mediumBlueColor}`,
+          ];
         }
       } else if (
         treeCount > 0 &&
@@ -146,15 +175,15 @@ const ClusterMarker = ({
       ) {
         if (treeCount > restorationCount) {
           return [
-            `${electricPurple}`,
+            `${electricPurpleColor}`,
             `${primaryDarkColor}`,
             `${primaryDarkColor}`,
           ];
         } else {
           return [
             `${primaryDarkColor}`,
-            `${electricPurple}`,
-            `${electricPurple}`,
+            `${electricPurpleColor}`,
+            `${electricPurpleColor}`,
           ];
         }
       }

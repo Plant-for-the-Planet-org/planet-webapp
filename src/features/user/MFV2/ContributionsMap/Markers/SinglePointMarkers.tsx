@@ -27,11 +27,11 @@ const ProjectTypeIcon = ({
   const getMarkerColor = (purpose: ProjectPurpose, unitType: UnitTypes) => {
     switch (purpose) {
       case 'conservation':
-        return themeProperties.mediumBlue;
+        return themeProperties.mediumBlueColor;
       case 'trees':
         return unitType === 'm2'
-          ? themeProperties.electricPurple
-          : themeProperties.primaryDarkColor;
+          ? themeProperties.electricPurpleColor
+          : themeProperties.primaryDarkColorX;
       default:
         return themeProperties.primaryDarkColorX;
     }
