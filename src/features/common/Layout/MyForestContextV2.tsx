@@ -62,8 +62,6 @@ interface MyForestContextV2Interface {
   setConservTarget: SetState<number>;
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
-  isLoading: boolean;
-  setIsLoading: SetState<boolean>;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -92,7 +90,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [restoreTarget, setRestoreTarget] = useState(0);
   const [conservTarget, setConservTarget] = useState(0);
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
 
@@ -127,7 +124,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
         setErrors
       );
     }
-    setIsLoading(_contributions.isLoading);
   }, [_contributions.data]);
 
   useEffect(() => {
@@ -219,8 +215,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setConservTarget,
       userInfo,
       setUserInfo,
-      isLoading,
-      setIsLoading,
     }),
     [
       projectListResult,
@@ -240,8 +234,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setConservTarget,
       userInfo,
       setUserInfo,
-      isLoading,
-      setIsLoading,
     ]
   );
 

@@ -3,10 +3,9 @@ import style from './ForestProgressBar.module.scss';
 import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './EmptyProgress';
-import Skeleton from 'react-loading-skeleton';
 import ForestProgressItem from './ForestProgressItem';
 
-interface TargetProps {
+interface ProgressBarsProps {
   handleOpen: () => void;
   treesDonated: number;
   areaRestored: number;
@@ -18,7 +17,7 @@ const ProgressBars = ({
   treesDonated,
   areaRestored,
   areaConserved,
-}: TargetProps) => {
+}: ProgressBarsProps) => {
   const { contributionsResult, treeTarget, restoreTarget, conservTarget } =
     useMyForestV2();
 
@@ -61,13 +60,8 @@ const ProgressBars = ({
 const ForestProgress = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const {
-    treeTarget,
-    conservTarget,
-    restoreTarget,
-    isLoading,
-    contributionsResult,
-  } = useMyForestV2();
+  const { treeTarget, conservTarget, restoreTarget, contributionsResult } =
+    useMyForestV2();
 
   const aggregateContributions = () => {
     const treesDonated =
@@ -86,7 +80,7 @@ const ForestProgress = () => {
   const contributions = useMemo(aggregateContributions, [contributionsResult]);
   const { treesDonated, areaRestored, areaConserved } = contributions;
 
-  const disableTarget = useMemo(
+  const disableProgress = useMemo(
     () =>
       treesDonated === 0 &&
       treeTarget === 0 &&
@@ -111,21 +105,15 @@ const ForestProgress = () => {
     areaConserved,
   };
   return (
-    <>
-      {isLoading ? (
-        <Skeleton height={84} />
+    <div className={style.targetMainContainer}>
+      {!disableProgress ? (
+        <EmptyProgress handleOpen={handleOpen} />
       ) : (
-        <div className={style.targetMainContainer}>
-          {disableTarget ? (
-            <EmptyProgress handleOpen={handleOpen} />
-          ) : (
-            <ProgressBars {...progressBarsProps} />
-          )}
-
-          <TargetsModal open={open} setOpen={setOpen} />
-        </div>
+        <ProgressBars {...progressBarsProps} />
       )}
-    </>
+
+      <TargetsModal open={open} setOpen={setOpen} />
+    </div>
   );
 };
 

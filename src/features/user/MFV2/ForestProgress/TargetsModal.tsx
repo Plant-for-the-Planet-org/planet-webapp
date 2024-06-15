@@ -88,7 +88,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
         setRefetchUserData(true);
         if (newUserInfo !== undefined) {
           setUserInfo(newUserInfo);
-          setPlantedTreesTarget(newUserInfo.targets.treesDonated ?? 0); // modal local state
+          setPlantedTreesTarget(newUserInfo.targets.treesDonated ?? 0);
           setAreaRestoredTarget(newUserInfo.targets.areaRestored ?? 0);
           setAreaConservedTarget(newUserInfo.targets.areaConserved ?? 0);
           setIsTargetModalLoading(false);

@@ -17,7 +17,7 @@ const ProfileLayout = () => {
   const router = useRouter();
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = React.useState<null | User>(null);
-  const { setUserInfo } = useMyForestV2();
+  const { setUserInfo, contributionsResult } = useMyForestV2();
 
   useEffect(() => {
     if (contextLoaded) {
@@ -43,14 +43,18 @@ const ProfileLayout = () => {
         {profile ? (
           <ProfileCard userProfile={profile} profileType="private" />
         ) : (
-          <ProfileLoader />
+          <ProfileLoader height={350} />
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
         <ContributionsMap />
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        <ForestProgress />
+        {contributionsResult?.stats ? (
+          <ForestProgress />
+        ) : (
+          <ProfileLoader height={116} />
+        )}
       </section>
       <section
         id="my-contributions-container"
@@ -70,7 +74,7 @@ const ProfileLayout = () => {
         {profile ? (
           <CommunityContributions userProfile={profile} profileType="private" />
         ) : (
-          <ProfileLoader />
+          <ProfileLoader height={350} />
         )}
       </section>
     </article>

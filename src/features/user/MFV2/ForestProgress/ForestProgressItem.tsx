@@ -12,7 +12,7 @@ import EditButton from './microComponents/EditButton';
 import GiftPercentageBar from './microComponents/GiftPercentageBar';
 import PersonalPercentageBar from './microComponents/PersonalPercentage';
 
-type DataType = 'treesPlanted' | 'areaRestored' | 'areaConserved';
+export type DataType = 'treesPlanted' | 'areaRestored' | 'areaConserved';
 
 export interface ProgressDataProps {
   giftPercentage: number;

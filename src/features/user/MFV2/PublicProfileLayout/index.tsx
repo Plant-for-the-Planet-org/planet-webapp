@@ -70,7 +70,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         {profile ? (
           <ProfileCard userProfile={profile} profileType="public" />
         ) : (
-          <ProfileLoader />
+          <ProfileLoader height={350} />
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
@@ -105,7 +105,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
               profileType="public"
             />
           ) : (
-            <ProfileLoader />
+            <ProfileLoader height={350} />
           )}
         </section>
       ) : null}

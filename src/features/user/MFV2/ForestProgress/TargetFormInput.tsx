@@ -2,17 +2,14 @@ import targetModalStyle from './ForestProgressBar.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import { ChangeEvent, useMemo, useEffect } from 'react';
-import {
-  AreaRestoredIcon,
-  ConservedAreaIcon,
-  TreesPlantedIcon,
-} from '../../../../../public/assets/images/icons/ProgressBarIcons';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
 import { SetState } from '../../../common/types/common';
+import TargetModalIconLabel from './microComponents/TargetModalIconLabel';
+import { DataType } from './ForestProgressItem';
 
 type TargetFormInputProps = {
-  dataType: string;
+  dataType: DataType;
   target: number;
   latestTarget: number;
   setLatestTarget: SetState<number>;
@@ -30,74 +27,27 @@ const TargetFormInput = ({
 }: TargetFormInputProps) => {
   const tProfile = useTranslations('Profile.progressBar');
 
-  const {
-    primaryDarkColor,
-    greenHazeColor,
-    amethystPurpleColor,
-    ceruleanBlueColor,
-    electricPurpleColor,
-    mediumBlueColor,
-    mediumGrayColor,
-    lightGrayColor,
-  } = themeProperties;
+  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
+    themeProperties;
 
   useEffect(() => {
     if (target) setLatestTarget(target);
   }, []);
 
-  const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //if user set some target then make toggle active and set the localstorage
+  const handleTargetSwitch = (e: ChangeEvent<HTMLInputElement>) => {
     if (target > 0) {
       setCheck(e.target.checked);
     }
   };
 
-  const handleTextFieldChange = (
+  const handleTargetTextField = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setCheck(Number(e.target.value) > 0 ? true : false);
     setLatestTarget(Number(e.target.value));
   };
 
-  const getLighterColor = useMemo(() => {
-    switch (dataType) {
-      case 'treesPlanted':
-        return check
-          ? { background: `${greenHazeColor}` }
-          : { background: `${lightGrayColor}` };
-      case 'areaRestored':
-        return check
-          ? { background: `${amethystPurpleColor}` }
-          : { background: `${lightGrayColor}` };
-      case 'areaConserved':
-        return check
-          ? { background: `${ceruleanBlueColor}` }
-          : { background: `${lightGrayColor}` };
-      default:
-        return {};
-    }
-  }, [dataType, check]);
-
-  const getDarkerColor = useMemo(() => {
-    switch (dataType) {
-      case 'treesPlanted':
-        return check
-          ? { background: `${primaryDarkColor}` }
-          : { background: `${mediumGrayColor}` };
-      case 'areaRestored':
-        return check
-          ? { background: `${electricPurpleColor}` }
-          : { background: `${mediumGrayColor}` };
-      case 'areaConserved':
-        return check
-          ? { background: `${mediumBlueColor}` }
-          : { background: `${mediumGrayColor}` };
-      default:
-        return {};
-    }
-  }, [dataType, check]);
-
-  const getColor = useMemo(() => {
+  const targetColor = () => {
     switch (dataType) {
       case 'treesPlanted':
         return primaryDarkColor;
@@ -105,38 +55,10 @@ const TargetFormInput = ({
         return electricPurpleColor;
       case 'areaConserved':
         return mediumBlueColor;
-      default:
-        return '';
     }
-  }, [dataType]);
+  };
 
-  const getIcon = useMemo(() => {
-    switch (dataType) {
-      case 'treesPlanted':
-        return <TreesPlantedIcon width={16} />;
-      case 'areaRestored':
-        return <AreaRestoredIcon width={14} />;
-      case 'areaConserved':
-        return <ConservedAreaIcon width={12} />;
-      default:
-        return null;
-    }
-  }, [dataType]);
-
-  const getLabel = useMemo(() => {
-    switch (dataType) {
-      case 'treesPlanted':
-        return tProfile('plantedTreesTarget');
-      case 'areaRestored':
-        return tProfile('areaRestoredTarget');
-      case 'areaConserved':
-        return tProfile('areaConservedTarget');
-      default:
-        return '';
-    }
-  }, [dataType, target]);
-
-  const targetStatus = useMemo(
+  const targetContainerClass = useMemo(
     () =>
       check
         ? targetModalStyle.targetFormInputContainer
@@ -144,35 +66,21 @@ const TargetFormInput = ({
     [dataType, check, target]
   );
 
-  const IconAndLabel = () => {
-    return (
-      <div className={targetModalStyle.targetInputIconMainContainer}>
-        <div
-          className={targetModalStyle.targetInputIconContainer}
-          style={getDarkerColor}
-        >
-          {getIcon}
-        </div>
-        <div className={targetModalStyle.label}>{getLabel}</div>
-      </div>
-    );
-  };
-
   return (
-    <div className={`${targetStatus} ${dataType}`} style={getLighterColor}>
+    <div className={`${targetContainerClass} ${dataType}`}>
       <div className={targetModalStyle.switchContainer}>
-        <IconAndLabel />
+        <TargetModalIconLabel dataType={dataType} target={target} />
         <TargetSwitch
-          switchColor={getColor}
+          switchColor={targetColor() ?? ''}
           checked={check}
-          onChange={handleSwitchChange}
+          onChange={handleTargetSwitch}
         />
       </div>
       <TargetTextField
         type="number"
         variant="outlined"
-        focusColor={getColor}
-        onChange={handleTextFieldChange}
+        focusColor={targetColor() ?? ''}
+        onChange={handleTargetTextField}
         value={latestTarget || ''}
         placeholder={tProfile('enterYourTarget')}
       />

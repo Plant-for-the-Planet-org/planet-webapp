@@ -1,3 +1,4 @@
+import WebappButton from '../../../common/WebappButton';
 import targetBarStyle from './ForestProgressBar.module.scss';
 import { useTranslations } from 'next-intl';
 
@@ -12,9 +13,12 @@ const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
       <div className={targetBarStyle.setTargetLabel}>
         {tProfile('progressBar.targetInfo')}
       </div>
-      <button className={targetBarStyle.setTargetButton} onClick={handleOpen}>
-        {tProfile('progressBar.setTargets')}
-      </button>
+      <WebappButton
+        variant="primary"
+        text={tProfile('progressBar.setTargets')}
+        onClick={handleOpen}
+        elementType="button"
+      />
     </div>
   );
 };
