@@ -1,4 +1,4 @@
-import targetBarStyle from '../TreeTargetBar.module.scss';
+import targetBarStyle from './ForestProgressBar.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface EmptyProgressProps {
@@ -8,7 +8,7 @@ interface EmptyProgressProps {
 const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
   const tProfile = useTranslations('Profile');
   return (
-    <div className={targetBarStyle.EmptyProgressContainer}>
+    <div className={targetBarStyle.emptyProgressContainer}>
       <div className={targetBarStyle.setTargetLabel}>
         {tProfile('progressBar.targetInfo')}
       </div>

@@ -747,3 +747,45 @@ input[type='number'] {
     font-size: 30px;
   }
 }
+
+.treesPlanted {
+  background: $greenHazeColor;
+  .iconContainer,
+  .personalPercentageBar {
+    background: $primaryDarkColor;
+  }
+  .giftPercentageBar {
+    background: $mintGreenColor;
+  }
+  .editTargetLabel {
+    color: $primaryDarkColor;
+  }
+}
+
+.areaRestored {
+  background: $amethystPurpleColor;
+  .iconContainer,
+  .personalPercentageBar {
+    background: $electricPurpleColor;
+  }
+  .giftPercentageBar {
+    background: $lavenderPurpleColor;
+  }
+  .editTargetLabel {
+    color: $electricPurpleColor;
+  }
+}
+
+.areaConserved {
+  background: $ceruleanBlueColor;
+  .iconContainer,
+  .personalPercentageBar {
+    background: $mediumBlueColor;
+  }
+  .giftPercentageBar {
+    background: $skyBlueColor;
+  }
+  .editTargetLabel {
+    color: $mediumBlueColor;
+  }
+}

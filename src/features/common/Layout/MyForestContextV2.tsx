@@ -52,22 +52,14 @@ interface MyForestContextV2Interface {
   contributionsMap: Map<string, MyContributionsMapItem> | undefined;
   registrationGeojson: RegistrationGeojson[];
   donationGeojson: DonationGeojson[];
-  treesPlanted: number;
-  areaRestored: number;
-  areaConserved: number;
   isTargetModalLoading: boolean;
   setIsTargetModalLoading: SetState<boolean>;
   treeTarget: number;
+  setTreeTarget: SetState<number>;
   restoreTarget: number;
   setRestoreTarget: SetState<number>;
   conservTarget: number;
   setConservTarget: SetState<number>;
-  treeChecked: boolean;
-  setTreeChecked: SetState<boolean>;
-  restoreChecked: boolean;
-  setRestoreChecked: SetState<boolean>;
-  conservChecked: boolean;
-  setConservChecked: SetState<boolean>;
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
   isLoading: boolean;
@@ -81,6 +73,7 @@ const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
 export const MyForestProviderV2: FC = ({ children }) => {
   const { setErrors } = useContext(ErrorHandlingContext);
 
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [projectListResult, setProjectListResult] =
     useState<ProjectListResponse>();
   const [contributionsResult, setContributionsResult] =
@@ -95,18 +88,11 @@ export const MyForestProviderV2: FC = ({ children }) => {
     RegistrationGeojson[]
   >([]);
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
-  const [treesPlanted, setTreesPlanted] = useState(0);
   const [treeTarget, setTreeTarget] = useState(0);
-  const [treeChecked, setTreeChecked] = useState(false);
-  const [areaRestored, setAreaRestored] = useState(0);
   const [restoreTarget, setRestoreTarget] = useState(0);
-  const [restoreChecked, setRestoreChecked] = useState(false);
-  const [areaConserved, setAreaConserved] = useState(0);
   const [conservTarget, setConservTarget] = useState(0);
-  const [conservChecked, setConservChecked] = useState(false);
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
 
@@ -119,45 +105,13 @@ export const MyForestProviderV2: FC = ({ children }) => {
     slug: `${userInfo?.slug}`,
   });
 
-  const aggregate = () => {
-    if (_contributions.data?.stats) {
-      const totalTrees =
-        _contributions.data?.stats.treesDonated.personal +
-        _contributions.data?.stats.treesDonated.received +
-        _contributions.data?.stats.treesRegistered;
-
-      const totalRestore =
-        _contributions.data?.stats.areaRestoredInM2.personal +
-        _contributions.data?.stats.areaRestoredInM2.received;
-
-      const totalConserv =
-        _contributions.data?.stats.areaConservedInM2.personal +
-        _contributions.data?.stats.areaConservedInM2.received;
-      setTreesPlanted(totalTrees);
-      setAreaRestored(totalRestore);
-      setAreaConserved(totalConserv);
-    }
-  };
-
   useEffect(() => {
-    if (userInfo?.targets !== undefined) {
-      setTreeChecked(userInfo?.targets.treesDonated > 0 ? true : false);
-      setRestoreChecked(userInfo?.targets.areaRestored > 0 ? true : false);
-      setConservChecked(userInfo?.targets.areaConserved > 0 ? true : false);
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    if (userInfo?.targets !== undefined) {
-      setTreeTarget(userInfo?.targets.treesDonated);
+    if (userInfo) {
+      setTreeTarget(userInfo.targets.treesDonated);
       setRestoreTarget(userInfo.targets.areaRestored);
       setConservTarget(userInfo.targets.areaConserved);
     }
   }, [userInfo]);
-
-  useEffect(() => {
-    aggregate();
-  }, [_contributions.data?.stats]);
 
   useEffect(() => {
     if (_projectList.data) {
@@ -255,9 +209,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsMap,
       registrationGeojson,
       donationGeojson,
-      treesPlanted,
-      areaRestored,
-      areaConserved,
       isTargetModalLoading,
       setIsTargetModalLoading,
       treeTarget,
@@ -266,12 +217,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setRestoreTarget,
       conservTarget,
       setConservTarget,
-      treeChecked,
-      setTreeChecked,
-      restoreChecked,
-      setRestoreChecked,
-      conservChecked,
-      setConservChecked,
       userInfo,
       setUserInfo,
       isLoading,
@@ -285,9 +230,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsMap,
       registrationGeojson,
       donationGeojson,
-      treesPlanted,
-      areaRestored,
-      areaConserved,
       isTargetModalLoading,
       setIsTargetModalLoading,
       treeTarget,
@@ -296,12 +238,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
       setRestoreTarget,
       conservTarget,
       setConservTarget,
-      treeChecked,
-      setTreeChecked,
-      restoreChecked,
-      setRestoreChecked,
-      conservChecked,
-      setConservChecked,
       userInfo,
       setUserInfo,
       isLoading,

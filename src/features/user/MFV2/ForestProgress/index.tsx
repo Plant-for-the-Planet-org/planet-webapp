@@ -1,10 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
-import targetBarStyle from './TreeTargetBar.module.scss';
-import TargetsModal from './microComponents/TargetsModal';
+import { useState, useMemo } from 'react';
+import style from './ForestProgressBar.module.scss';
+import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
-import EmptyProgress from './microComponents/EmptyProgress';
+import EmptyProgress from './EmptyProgress';
 import Skeleton from 'react-loading-skeleton';
-import ForestProgressItem from './microComponents/ForestProgressItem';
+import ForestProgressItem from './ForestProgressItem';
 
 interface TargetProps {
   handleOpen: () => void;
@@ -19,58 +19,39 @@ const ProgressBars = ({
   areaRestored,
   areaConserved,
 }: TargetProps) => {
-  const {
-    contributionsResult,
-    treeTarget,
-    restoreTarget,
-    treeChecked,
-    restoreChecked,
-    conservTarget,
-    conservChecked,
-  } = useMyForestV2();
+  const { contributionsResult, treeTarget, restoreTarget, conservTarget } =
+    useMyForestV2();
 
-  const conditionsToShowBar = (
-    target: number,
-    checked: boolean,
-    treesDonated: number
-  ): boolean => {
-    if (treesDonated > 0 || (target > 0 && checked)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const shouldShowBar = (target: number, contributedUnits: number): boolean =>
+    contributedUnits > 0 || target > 0;
 
   return (
     <>
-      {conditionsToShowBar(treeTarget, treeChecked, treesDonated) && (
+      {shouldShowBar(treeTarget, treesDonated) && (
         <ForestProgressItem
           handleOpen={handleOpen}
           dataType={'treesPlanted'}
           target={treeTarget}
           gift={contributionsResult?.stats.treesDonated.received ?? 0}
           personal={contributionsResult?.stats.treesDonated.personal ?? 0}
-          checked={treeChecked}
         />
       )}
-      {conditionsToShowBar(restoreTarget, restoreChecked, areaRestored) && (
+      {shouldShowBar(restoreTarget, areaRestored) && (
         <ForestProgressItem
           handleOpen={handleOpen}
           dataType={'areaRestored'}
           target={restoreTarget}
           gift={contributionsResult?.stats.areaRestoredInM2.received ?? 0}
           personal={contributionsResult?.stats.areaRestoredInM2.personal ?? 0}
-          checked={restoreChecked}
         />
       )}
-      {conditionsToShowBar(conservTarget, conservChecked, areaConserved) && (
+      {shouldShowBar(conservTarget, areaConserved) && (
         <ForestProgressItem
           handleOpen={handleOpen}
           dataType={'areaConserved'}
           target={conservTarget}
           gift={contributionsResult?.stats.areaConservedInM2.received ?? 0}
-          personal={contributionsResult?.stats.areaRestoredInM2.personal ?? 0}
-          checked={conservChecked}
+          personal={contributionsResult?.stats.areaConservedInM2.personal ?? 0}
         />
       )}
     </>
@@ -79,28 +60,42 @@ const ProgressBars = ({
 
 const ForestProgress = () => {
   const [open, setOpen] = useState(false);
-  const [enableTarget, setEnableTarget] = useState(false);
   const handleOpen = () => setOpen(true);
   const {
     treeTarget,
-    treesPlanted,
     conservTarget,
     restoreTarget,
-    areaRestored,
     isLoading,
-    areaConserved,
+    contributionsResult,
   } = useMyForestV2();
 
-  const checkCondition = useMemo(
+  const aggregateContributions = () => {
+    const treesDonated =
+      (contributionsResult?.stats.treesDonated.personal ?? 0) +
+      (contributionsResult?.stats.treesDonated.received ?? 0) +
+      (contributionsResult?.stats.treesRegistered ?? 0);
+    const areaRestored =
+      (contributionsResult?.stats.areaRestoredInM2.personal ?? 0) +
+      (contributionsResult?.stats.areaRestoredInM2.received ?? 0);
+    const areaConserved =
+      (contributionsResult?.stats.areaConservedInM2.personal ?? 0) +
+      (contributionsResult?.stats.areaConservedInM2.received ?? 0);
+    return { treesDonated, areaRestored, areaConserved };
+  };
+
+  const contributions = useMemo(aggregateContributions, [contributionsResult]);
+  const { treesDonated, areaRestored, areaConserved } = contributions;
+
+  const disableTarget = useMemo(
     () =>
-      treesPlanted === 0 &&
+      treesDonated === 0 &&
       treeTarget === 0 &&
       areaRestored === 0 &&
       restoreTarget === 0 &&
       conservTarget === 0 &&
       areaConserved === 0,
     [
-      treesPlanted,
+      treesDonated,
       treeTarget,
       areaRestored,
       restoreTarget,
@@ -109,25 +104,22 @@ const ForestProgress = () => {
     ]
   );
 
-  useEffect(() => {
-    setEnableTarget(checkCondition);
-  }, [checkCondition, treeTarget, restoreTarget, conservTarget]);
-
+  const progressBarsProps = {
+    handleOpen,
+    treesDonated,
+    areaRestored,
+    areaConserved,
+  };
   return (
     <>
       {isLoading ? (
         <Skeleton height={84} />
       ) : (
-        <div className={targetBarStyle.targetMainContainer}>
-          {enableTarget ? (
+        <div className={style.targetMainContainer}>
+          {disableTarget ? (
             <EmptyProgress handleOpen={handleOpen} />
           ) : (
-            <ProgressBars
-              handleOpen={handleOpen}
-              treesDonated={treesPlanted}
-              areaRestored={areaRestored}
-              areaConserved={areaConserved}
-            />
+            <ProgressBars {...progressBarsProps} />
           )}
 
           <TargetsModal open={open} setOpen={setOpen} />

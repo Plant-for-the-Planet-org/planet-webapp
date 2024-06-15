@@ -82,7 +82,8 @@
       "save": "Save",
       "setTargets": "Set targets",
       "areaRestoredTarget": "Area restored target",
-      "targetInfo": "Set targets for planted trees, area conserved, and area restored"
+      "targetInfo": "Set targets for planted trees, area conserved, and area restored",
+      "enterYourTarget": "Enter your target"
     },
     "communityContributions": {
       "title": "Community Contributions",

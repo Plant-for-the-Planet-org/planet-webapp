@@ -116,6 +116,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   React.useEffect(() => {
     if (token) {
       loadUser();
+      console.log('profileFetched');
     }
   }, [token, refetchUserData]);
 

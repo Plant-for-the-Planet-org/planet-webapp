@@ -1,34 +1,34 @@
-import targetModalStyle from '../TreeTargetBar.module.scss';
+import targetModalStyle from './ForestProgressBar.module.scss';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../../../../theme/themeProperties';
-import { ChangeEvent, useState, useMemo, useEffect } from 'react';
+import themeProperties from '../../../../theme/themeProperties';
+import { ChangeEvent, useMemo, useEffect } from 'react';
 import {
   AreaRestoredIcon,
   ConservedAreaIcon,
   TreesPlantedIcon,
-} from '../../../../../../public/assets/images/icons/ProgressBarIcons';
+} from '../../../../../public/assets/images/icons/ProgressBarIcons';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
-import { SetState } from '../../../../common/types/common';
+import { SetState } from '../../../common/types/common';
 
 type TargetFormInputProps = {
   dataType: string;
-  checked: boolean;
-  setChecked: SetState<boolean>;
   target: number;
   latestTarget: number;
   setLatestTarget: SetState<number>;
+  check: boolean;
+  setCheck: SetState<boolean>;
 };
 
 const TargetFormInput = ({
   dataType,
-  checked,
-  setChecked,
   target,
   latestTarget,
   setLatestTarget,
+  check,
+  setCheck,
 }: TargetFormInputProps) => {
-  const tProfile = useTranslations('Profile');
+  const tProfile = useTranslations('Profile.progressBar');
 
   const {
     primaryDarkColor,
@@ -48,54 +48,54 @@ const TargetFormInput = ({
   const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
     //if user set some target then make toggle active and set the localstorage
     if (target > 0) {
-      setChecked(e.target.checked);
+      setCheck(e.target.checked);
     }
   };
 
   const handleTextFieldChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setChecked(Number(e.target.value) > 0 ? true : false);
+    setCheck(Number(e.target.value) > 0 ? true : false);
     setLatestTarget(Number(e.target.value));
   };
 
   const getLighterColor = useMemo(() => {
     switch (dataType) {
       case 'treesPlanted':
-        return checked
+        return check
           ? { background: `${greenHazeColor}` }
           : { background: `${lightGrayColor}` };
       case 'areaRestored':
-        return checked
+        return check
           ? { background: `${amethystPurpleColor}` }
           : { background: `${lightGrayColor}` };
       case 'areaConserved':
-        return checked
+        return check
           ? { background: `${ceruleanBlueColor}` }
           : { background: `${lightGrayColor}` };
       default:
         return {};
     }
-  }, [dataType, checked]);
+  }, [dataType, check]);
 
   const getDarkerColor = useMemo(() => {
     switch (dataType) {
       case 'treesPlanted':
-        return checked
+        return check
           ? { background: `${primaryDarkColor}` }
           : { background: `${mediumGrayColor}` };
       case 'areaRestored':
-        return checked
+        return check
           ? { background: `${electricPurpleColor}` }
           : { background: `${mediumGrayColor}` };
       case 'areaConserved':
-        return checked
+        return check
           ? { background: `${mediumBlueColor}` }
           : { background: `${mediumGrayColor}` };
       default:
         return {};
     }
-  }, [dataType, checked]);
+  }, [dataType, check]);
 
   const getColor = useMemo(() => {
     switch (dataType) {
@@ -126,22 +126,22 @@ const TargetFormInput = ({
   const getLabel = useMemo(() => {
     switch (dataType) {
       case 'treesPlanted':
-        return tProfile('progressBar.plantedTreesTarget');
+        return tProfile('plantedTreesTarget');
       case 'areaRestored':
-        return tProfile('progressBar.areaRestoredTarget');
+        return tProfile('areaRestoredTarget');
       case 'areaConserved':
-        return tProfile('progressBar.areaConservedTarget');
+        return tProfile('areaConservedTarget');
       default:
         return '';
     }
-  }, [dataType, checked, target]);
+  }, [dataType, target]);
 
   const targetStatus = useMemo(
     () =>
-      checked
+      check
         ? targetModalStyle.targetFormInputContainer
         : targetModalStyle.deActivateTargetModal,
-    [dataType, checked]
+    [dataType, check, target]
   );
 
   const IconAndLabel = () => {
@@ -159,12 +159,12 @@ const TargetFormInput = ({
   };
 
   return (
-    <div className={targetStatus} style={getLighterColor}>
+    <div className={`${targetStatus} ${dataType}`} style={getLighterColor}>
       <div className={targetModalStyle.switchContainer}>
         <IconAndLabel />
         <TargetSwitch
           switchColor={getColor}
-          checked={checked}
+          checked={check}
           onChange={handleSwitchChange}
         />
       </div>
@@ -174,6 +174,7 @@ const TargetFormInput = ({
         focusColor={getColor}
         onChange={handleTextFieldChange}
         value={latestTarget || ''}
+        placeholder={tProfile('enterYourTarget')}
       />
     </div>
   );
