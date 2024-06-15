@@ -8,11 +8,9 @@ interface TextFieldProps {
 const TargetTextField = styled(TextField, {
   shouldForwardProp: (props) => props !== 'focusColor',
 })<TextFieldProps>((p) => ({
-  '.mui-style-i6b3x2-MuiInputBase-root-MuiOutlinedInput-root': {
+  '& .MuiOutlinedInput-root': {
     borderRadius: '10px',
     height: '42px',
-  },
-  '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
       borderColor: p.focusColor,
     },
