@@ -1,6 +1,6 @@
 import targetModalStyle from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../../../theme/themeProperties';
+import { targetColor } from '../../../../utils/myForestV2Utils';
 import { ChangeEvent, useMemo, useEffect } from 'react';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
@@ -27,9 +27,6 @@ const TargetFormInput = ({
 }: TargetFormInputProps) => {
   const tProfile = useTranslations('Profile.progressBar');
 
-  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
-    themeProperties;
-
   useEffect(() => {
     if (target) setLatestTarget(target);
   }, []);
@@ -47,16 +44,6 @@ const TargetFormInput = ({
     setLatestTarget(Number(e.target.value));
   };
 
-  const targetColor = () => {
-    switch (dataType) {
-      case 'treesPlanted':
-        return primaryDarkColor;
-      case 'areaRestored':
-        return electricPurpleColor;
-      case 'areaConserved':
-        return mediumBlueColor;
-    }
-  };
   const targetContainerClass = useMemo(
     () =>
       check
@@ -68,9 +55,9 @@ const TargetFormInput = ({
   return (
     <div className={`${targetContainerClass} ${dataType}`}>
       <div className={targetModalStyle.switchContainer}>
-        <TargetModalIconLabel dataType={dataType} target={target} />
+        <TargetModalIconLabel dataType={dataType} />
         <TargetSwitch
-          switchColor={targetColor() ?? ''}
+          switchColor={targetColor(dataType) ?? ''}
           checked={check}
           onChange={handleTargetSwitch}
         />
@@ -78,7 +65,7 @@ const TargetFormInput = ({
       <TargetTextField
         type="number"
         variant="outlined"
-        focusColor={targetColor() ?? ''}
+        focusColor={targetColor(dataType) ?? ''}
         onChange={handleTargetTextField}
         value={latestTarget || ''}
         placeholder={tProfile('enterYourTarget')}

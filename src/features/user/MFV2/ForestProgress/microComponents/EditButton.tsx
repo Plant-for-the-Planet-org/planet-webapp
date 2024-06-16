@@ -1,9 +1,8 @@
 import { ForestProgressItemProps } from '../ForestProgressItem';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../../../../theme/themeProperties';
-
 import progressBarStyle from '../ForestProgress.module.scss';
 import { EditTargetIcon } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
+import { targetColor } from '../../../../../utils/myForestV2Utils';
 
 type EditButtonProp = Omit<
   ForestProgressItemProps,
@@ -12,19 +11,6 @@ type EditButtonProp = Omit<
 
 const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
   const tProfile = useTranslations('Profile.progressBar');
-  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
-    themeProperties;
-
-  const getIconColor = () => {
-    switch (dataType) {
-      case 'treesPlanted':
-        return primaryDarkColor;
-      case 'areaRestored':
-        return electricPurpleColor;
-      case 'areaConserved':
-        return mediumBlueColor;
-    }
-  };
 
   return (
     <div className={progressBarStyle.editTargetButtonContainer}>
@@ -32,7 +18,7 @@ const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
         className={progressBarStyle.editTargetContainer}
         onClick={handleOpen}
       >
-        <EditTargetIcon width={9} color={getIconColor()} />
+        <EditTargetIcon width={9} color={targetColor(dataType)} />
         <p className={`${progressBarStyle.editTargetLabel} editTargetLabel`}>
           {target > 0 ? tProfile('editTarget') : tProfile('setTarget')}
         </p>

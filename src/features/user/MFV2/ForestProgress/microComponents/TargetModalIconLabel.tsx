@@ -10,12 +10,11 @@ import { DataType } from '../ForestProgressItem';
 
 type TargetModalIconLabel = {
   dataType: DataType;
-  target: number;
 };
 
-const TargetModalIconLabel = ({ dataType, target }: TargetModalIconLabel) => {
+const TargetModalIconLabel = ({ dataType }: TargetModalIconLabel) => {
   const tProfile = useTranslations('Profile.progressBar');
-  const getIcon = useMemo(() => {
+  const getIcon = () => {
     switch (dataType) {
       case 'treesPlanted':
         return <TreesPlantedIcon width={16} />;
@@ -24,9 +23,8 @@ const TargetModalIconLabel = ({ dataType, target }: TargetModalIconLabel) => {
       case 'areaConserved':
         return <ConservedAreaIcon width={12} />;
     }
-  }, [dataType]);
-
-  const getLabel = useMemo(() => {
+  };
+  const getLabelText = () => {
     switch (dataType) {
       case 'treesPlanted':
         return tProfile('plantedTreesTarget');
@@ -35,15 +33,15 @@ const TargetModalIconLabel = ({ dataType, target }: TargetModalIconLabel) => {
       case 'areaConserved':
         return tProfile('areaConservedTarget');
     }
-  }, [dataType, target]);
+  };
   return (
     <div className={targetModalStyle.targetInputIconMainContainer}>
       <div
         className={`${targetModalStyle.targetInputIconContainer} targetInputIconContainer`}
       >
-        {getIcon}
+        {getIcon()}
       </div>
-      <div className={targetModalStyle.label}>{getLabel}</div>
+      <div className={targetModalStyle.label}>{getLabelText()}</div>
     </div>
   );
 };

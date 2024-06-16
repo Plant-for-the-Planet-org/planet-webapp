@@ -1,3 +1,6 @@
+import themeProperties from '../theme/themeProperties';
+import { DataType } from '../features/user/MFV2/ForestProgress/ForestProgressItem';
+
 export const getAchievedTarget = (
   target: number,
   gift: number,
@@ -16,5 +19,18 @@ export const getAchievedTarget = (
       const personalPercentage = (personal / total) * 100;
       return { giftPercentage, personalPercentage };
     }
+  }
+};
+
+export const targetColor = (dataType: DataType) => {
+  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
+    themeProperties;
+  switch (dataType) {
+    case 'treesPlanted':
+      return primaryDarkColor;
+    case 'areaRestored':
+      return electricPurpleColor;
+    case 'areaConserved':
+      return mediumBlueColor;
   }
 };
