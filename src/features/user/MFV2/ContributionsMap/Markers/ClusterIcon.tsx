@@ -7,7 +7,7 @@ import {
   UrbanRestorationClusterMarker,
   TreePlantingClusterMarker,
   ConservationClusterMarker,
-} from '../../../../../../public/assets/images/icons/ClusterMarkerIcons';
+} from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
 
 type ClusterIconProps = {
   classification: TreeProjectClassification | undefined;

@@ -1,17 +1,19 @@
 import { useMemo } from 'react';
-import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
-import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
-import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
-import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/Agroforestry';
-import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/UrbanRestoration';
-import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
-import themeProperties from '../../../../../theme/themeProperties';
-import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 import {
   ProjectPurpose,
   TreeProjectClassification,
   UnitTypes,
 } from '@planet-sdk/common';
+import themeProperties from '../../../../../theme/themeProperties';
+import {
+  NaturalRegeneration,
+  Mangroves,
+  ManagedRegeneration,
+  Agroforestry,
+  UrbanRestoration,
+  TreePlanting,
+  Conservation,
+} from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 
 interface ProjectTypeIconProps {
   purpose: ProjectPurpose;

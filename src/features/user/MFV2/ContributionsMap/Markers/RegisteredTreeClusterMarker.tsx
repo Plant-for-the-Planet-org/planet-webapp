@@ -1,7 +1,7 @@
 import { Marker } from 'react-map-gl-v7';
-import RegisteredTreeClusterMarkerIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/ClusterMarker/RegisteredTreeClusterMarkerIcon';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterMarkerProps } from './ClusterMarker';
+import { RegisteredTreeClusterMarkerIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
 
 type RegisteredTreeClusterMarkerProp = Omit<
   ClusterMarkerProps,

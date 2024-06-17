@@ -16,7 +16,7 @@ const ProfileLayout = () => {
   const router = useRouter();
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = React.useState<null | User>(null);
-  const { setUserInfo } = useMyForestV2();
+  const { setUserInfo, contributionsResult } = useMyForestV2();
 
   useEffect(() => {
     if (contextLoaded) {
@@ -46,7 +46,7 @@ const ProfileLayout = () => {
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        <ContributionsMap />
+        {contributionsResult?.stats ? <ContributionsMap /> : <ProfileLoader />}
       </section>
       <section id="progress-container" className={styles.progressContainer}>
         Progress

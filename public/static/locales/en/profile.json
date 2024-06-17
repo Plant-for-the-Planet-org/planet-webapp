@@ -67,6 +67,10 @@
       "copyLink": "Copy Link",
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
     },
+    "mapStats": {
+      "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
+      "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "
+    },
     "communityContributions": {
       "title": "Community Contributions",
       "tooltipText": "Community contributions are all tree, restoration or conservation donations that are dedicated to you, for instance by donating via your profile",

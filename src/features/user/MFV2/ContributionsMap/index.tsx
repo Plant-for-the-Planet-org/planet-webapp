@@ -6,6 +6,8 @@ import { NavigationControl } from 'react-map-gl-v7';
 import MapCredits from './Common/MapCredits';
 import Markers from './Markers';
 import { useRef, MutableRefObject } from 'react';
+import style from './Common/common.module.scss';
+import ContributionStats from './Common/ContributionStats';
 
 interface MapState {
   mapStyle: MapStyle;
@@ -49,17 +51,20 @@ function ContributionsMap() {
   }, []);
 
   return (
-    <Map
-      {...viewState}
-      {...mapState}
-      onMove={(e) => setViewState(e.viewState)}
-      attributionControl={false}
-      ref={mapRef}
-    >
-      <Markers mapRef={mapRef} viewport={viewState} />
-      <MapCredits />
-      <NavigationControl position="bottom-right" showCompass={false} />
-    </Map>
+    <div className={style.mapSubContainer}>
+      <Map
+        {...viewState}
+        {...mapState}
+        onMove={(e) => setViewState(e.viewState)}
+        attributionControl={false}
+        ref={mapRef}
+      >
+        <Markers mapRef={mapRef} viewport={viewState} />
+        <MapCredits />
+        <NavigationControl position="bottom-right" showCompass={false} />
+      </Map>
+      <ContributionStats />
+    </div>
   );
 }
 

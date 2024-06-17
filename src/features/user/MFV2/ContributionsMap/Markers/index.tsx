@@ -2,7 +2,7 @@ import { AnyProps, PointFeature } from 'supercluster';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import ClusterMarker from './ClusterMarker';
-import SinglePointMarkers from './SinglePointMarkers';
+import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { ViewportProps } from '../../../../common/types/map';
@@ -53,14 +53,14 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
             mapRef={mapRef}
           />
         ) : (
-          <SinglePointMarkers superclusterResponse={geoJson} />
+          <PointMarkers superclusterResponse={geoJson} />
         );
       })}
       {registrationSuperclusterResponse.map((geoJson) => {
         return geoJson.properties.cluster ? (
           <RegisteredTreeClusterMarker superclusterResponse={geoJson} />
         ) : (
-          <SinglePointMarkers superclusterResponse={geoJson} />
+          <PointMarkers superclusterResponse={geoJson} />
         );
       })}
     </>
