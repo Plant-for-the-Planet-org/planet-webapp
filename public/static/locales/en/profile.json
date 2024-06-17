@@ -55,7 +55,7 @@
       "copyLink": "Copy Link",
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
     },
-    "mapState": {
+    "mapStats": {
       "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
       "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "
     }

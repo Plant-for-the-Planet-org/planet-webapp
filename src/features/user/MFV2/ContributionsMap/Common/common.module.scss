@@ -3,9 +3,7 @@
 .mapCreditsContainer {
   position: absolute;
   right: 51px;
-  bottom: -3px;
-  margin-bottom: 10px;
-  z-index: 1;
+  bottom: 6px;
   cursor: pointer;
 }
 
@@ -51,6 +49,7 @@
   @include xsPhoneView {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
+    margin-bottom: 14px;
   }
 }
 
