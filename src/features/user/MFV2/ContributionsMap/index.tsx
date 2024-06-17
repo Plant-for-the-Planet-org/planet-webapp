@@ -5,6 +5,8 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7';
 import SinglePointMarkers from './Markers/SinglePointMarkers';
 import MapCredits from './Common/MapCredits';
+import style from './Common/common.module.scss';
+import ContributionStats from './Common/ContributionStats';
 
 interface MapState {
   mapStyle: MapStyle;
@@ -47,16 +49,19 @@ function ContributionsMap() {
   }, []);
 
   return (
-    <Map
-      {...viewState}
-      {...mapState}
-      onMove={(e) => setViewState(e.viewState)}
-      attributionControl={false}
-    >
-      <SinglePointMarkers />
-      <MapCredits />
-      <NavigationControl position="bottom-right" showCompass={false} />
-    </Map>
+    <div className={style.mapSubContainer}>
+      <Map
+        {...viewState}
+        {...mapState}
+        onMove={(e) => setViewState(e.viewState)}
+        attributionControl={false}
+      >
+        <SinglePointMarkers />
+        <MapCredits />
+        <NavigationControl position="bottom-right" showCompass={false} />
+      </Map>
+      <ContributionStats />
+    </div>
   );
 }
 

@@ -1,19 +1,24 @@
-import { Marker } from 'react-map-gl-v7';
 import { useMemo } from 'react';
-import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
-import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
-import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
-import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
-import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/Agroforestry';
-import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/UrbanRestoration';
-import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
-import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
+import { Marker } from 'react-map-gl-v7';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import style from '.././Common/common.module.scss';
-import { UnitTypes, ProjectPurpose } from '@planet-sdk/common';
-import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
-import { TreeProjectClassification } from '@planet-sdk/common';
+import {
+  UnitTypes,
+  ProjectPurpose,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import {
+  Conservation,
+  NaturalRegeneration,
+  ManagedRegeneration,
+  Mangroves,
+  Agroforestry,
+  UrbanRestoration,
+  TreePlanting,
+  OtherPlanting,
+  RegisteredTreeIcon,
+} from '../../../../../../public/assets/images/icons/MyForestMapIcons';
 
 interface ProjectTypeIconProps {
   purpose: ProjectPurpose;
