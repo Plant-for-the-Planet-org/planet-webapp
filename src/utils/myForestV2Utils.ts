@@ -1,428 +1,115 @@
-export const contribution = [
-  {
-    geometry: {
-      coordinates: [75.5417969889786, 24.33591112993029],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+import {
+  ExtractedData,
+  Accumulator,
+} from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
+import themeProperties from '../theme/themeProperties';
+import { PointFeature, AnyProps } from 'supercluster';
 
-        classification: 'natural-regeneration',
-        purpose: 'conservation',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [77.0076606125568, 23.96217716005674],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+export const getColor = (purpose, unitType) => {
+  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
+    themeProperties;
+  if (unitType === 'm2' && purpose === 'trees') {
+    return electricPurpleColor;
+  } else if (purpose === 'conservation') {
+    return mediumBlueColor;
+  } else {
+    return primaryDarkColor;
+  }
+};
 
-        classification: 'agroforestry',
-        purpose: 'conservation',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-25T07:47:14.000Z',
-          unitType: 'tree',
-        },
-        {
-          quantity: 1,
-          plantDate: '2024-01-2T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [76.68430834264984, 24.88466964545586],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+export const getClusterMarkerColors = (
+  maxContributingProject: ExtractedData | null,
+  remainingProjects: ExtractedData[]
+) => {
+  if (maxContributingProject) {
+    const { purpose, unitType } = maxContributingProject;
+    const mainProjectColor = getColor(purpose, unitType) ?? '';
+    let tertiaryProjectColor = '',
+      secondaryProjectColor = '';
+    const length = remainingProjects.length;
+    if (length === 0) {
+      tertiaryProjectColor = secondaryProjectColor = mainProjectColor;
+    } else if (length === 1) {
+      tertiaryProjectColor = getColor(
+        remainingProjects[0]?.purpose,
+        remainingProjects[0]?.unitType
+      );
+      secondaryProjectColor = mainProjectColor;
+    } else {
+      tertiaryProjectColor = getColor(
+        remainingProjects[0]?.purpose,
+        remainingProjects[0]?.unitType
+      );
+      secondaryProjectColor = getColor(
+        remainingProjects[1]?.purpose,
+        remainingProjects[1]?.unitType
+      );
+    }
 
-        classification: 'natural-regeneration',
-        purpose: 'restoration',
-        unitType: 'm2',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          date: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [75.68430834264984, 24.88466964545586],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+    return { tertiaryProjectColor, secondaryProjectColor, mainProjectColor };
+  }
+  return {
+    tertiaryProjectColor: '',
+    secondaryProjectColor: '',
+    mainProjectColor: '',
+  };
+};
 
-        classification: 'natural-regeneration',
-        purpose: 'restoration',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [2.9401695658488913, 27.67972285465011],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+export const extractAndClassifyProjectData = (
+  clusterChildren: PointFeature<AnyProps>[] | undefined
+) => {
+  const extractedData: ExtractedData[] = [];
 
-        classification: 'natural-regeneration',
-        purpose: 'trees',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [-61.7544674081132, -4.22496936369033],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+  // Extract required fields from each object
+  clusterChildren?.forEach((item) => {
+    const extractedItem = {
+      unitType: item.properties.projectInfo.unitType,
+      classification: item.properties.projectInfo.classification,
+      purpose: item.properties.projectInfo.purpose,
+      contributionCount: item.properties.contributionInfo.contributionCount,
+    };
+    extractedData.push(extractedItem);
+  });
 
-        classification: 'natural-regeneration',
-        purpose: 'trees',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
+  const { maxContributingObject } = extractedData.reduce(
+    (acc: Accumulator, item: ExtractedData | null) => {
+      if (item !== null && item.contributionCount > acc.maxContributionCount) {
+        return {
+          maxContributionCount: item.contributionCount,
+          maxContributingObject: item,
+        };
+      } else {
+        return acc;
+      }
     },
-  },
-  {
-    geometry: {
-      coordinates: [-62.193920500835894, -1.152554179542339],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+    { maxContributionCount: -Infinity, maxContributingObject: null }
+  );
+  // Loop through the array to find the object with the maximum contributionCount
+  const remainingProjects: ExtractedData[] = [];
 
-        classification: 'natural-regeneration',
-        purpose: 'restoration',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [-89.17634039401, 38.19575103180777],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+  extractedData.map((item) => {
+    if (
+      item.unitType !==
+        (maxContributingObject !== null && maxContributingObject.unitType) ||
+      item.purpose !==
+        (maxContributingObject !== null && maxContributingObject.purpose)
+    )
+      remainingProjects.push(item);
+  });
+  const uniqueCombinations = new Map();
 
-        classification: 'natural-regeneration',
-        purpose: 'conservation',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [-91.46149647616807, 37.849565470241245],
-      type: 'Point',
-    },
-    properties: {
-      type: 'contribution',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+  remainingProjects.forEach((obj) => {
+    const { unitType, purpose } = obj;
+    const key = unitType + '-' + purpose;
 
-        classification: 'natural-regeneration',
-        purpose: 'restoration',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          plantDate: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-];
+    if (!uniqueCombinations.has(key)) {
+      uniqueCombinations.set(key, obj);
+    }
+  });
 
-export const registeredTree = [
-  {
-    geometry: {
-      coordinates: [-66.42911246804579, -35.72302284656049],
-      type: 'Point',
-    },
-    properties: {
-      type: 'registration',
-      contributionCount: 1,
-      project: null,
-      contributions: [
-        {
-          quantity: 1,
-          date: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-  {
-    geometry: {
-      coordinates: [-64.14768267757763, -35.775590709939515],
-      type: 'Point',
-    },
-    properties: {
-      type: 'registration',
-      contributionCount: 1,
-      project: {
-        id: 'project_5e31028724223240553272',
-        name: 'Pai River Forest Restoration',
-        country: 'TH',
-        image: '5e31028724223240553272.jpeg',
-        tpo: {
-          image: '5ea4f8886e684518381889.png',
-          address: {
-            zipCode: '58130',
-            country: 'TH',
-            address: '99/1, M.5',
-            city: 'Pai, Mae Hong Son',
-          },
-          name: 'Conserve Natural Forests',
-          id: 'tpo_Z7R8SyXMcrPyxg2jhgyUiZ6H',
-          email: 'miguel@conservenaturalforests.org',
-          slug: 'conserve-natural-forests',
-        },
+  const uniqueObjects: ExtractedData[] = Array.from(
+    uniqueCombinations.values()
+  );
 
-        classification: 'natural-regeneration',
-        purpose: 'trees',
-        unitType: 'tree',
-      },
-      contributions: [
-        {
-          quantity: 1,
-          date: '2024-01-15T07:47:14.000Z',
-          unitType: 'tree',
-        },
-      ],
-    },
-  },
-];
+  return { uniqueObjects, maxContributingObject };
+};
