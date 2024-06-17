@@ -10,7 +10,7 @@ import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/
 import SocialMediaShareButton from './SocialMediaShareButton';
 import { useTranslations } from 'next-intl';
 import { ProfileV2Props } from '../../../../common/types/profile';
-import ProfileCardButton from '../ProfileCardButton';
+import WebappButton from '../../../../common/WebappButton';
 
 const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
@@ -35,13 +35,13 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
 
   return profileType === 'private' ? (
     <div className={styles.privateProfileActions}>
-      <ProfileCardButton
+      <WebappButton
         icon={<AllDonations />}
         text={t('feature.allDonations')}
         elementType={'link'}
         href={'/profile/history'}
       />
-      <ProfileCardButton
+      <WebappButton
         icon={<RedeemIcon />}
         text={t('feature.redeem')}
         onClick={handleRedeemModalOpen}
@@ -55,17 +55,17 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
     </div>
   ) : (
     <div className={styles.publicProfileActions}>
-      <ProfileCardButton
+      <WebappButton
         icon={<SupportUserIcon />}
         text={t('feature.supportUserText', {
           username: userProfile?.displayName.split(' ')[0],
         })}
-        color={'primary'}
+        variant="primary"
         elementType={'link'}
         href={`/s/${userProfile?.slug}`}
       />
       <div className={styles.websiteShareActions}>
-        <ProfileCardButton
+        <WebappButton
           icon={<WebsiteLinkIcon />}
           text={t('feature.website')}
           elementType={'link'}
