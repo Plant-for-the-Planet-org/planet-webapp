@@ -70,28 +70,32 @@
       "totalProject": "to {count, plural, =1 {# project} other {# projects}}",
       "tpoName": "By {tpo}",
       "projectName": "{name}",
-      "classification": "{classification}",
-      "shareFeature": {
-        "shareTextTitle": "Stop talking. Start planting.",
-        "textToShare": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
-        "shareVia": "Share via",
-        "copyLink": "Copy Link",
-        "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
-      },
-      "communityContributions": {
-        "title": "Community Contributions",
-        "tooltipText": "Community contributions are all tree, restoration or conservation donations that are dedicated to you, for instance by donating via your profile",
-        "mostRecentTabLabel": "Most recent",
-        "mostTreesTabLabel": "Most trees",
-        "restorationPurpose": "restored",
-        "conservationPurpose": "conserved",
-        "treesPurpose": "Trees",
-        "noContributionPrivateProfileText": "Oops! No contributions to show yet",
-        "noContributionPublicProfileText": "Make a donation to support {name}'s efforts"
-      },
-      "unitType": {
-        "m2": "m²"
-      }
+      "classification": "{classification}"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
+      "shareVia": "Share via",
+      "copyLink": "Copy Link",
+      "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
+    },
+    "mapStats": {
+      "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
+      "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "
+    },
+    "communityContributions": {
+      "title": "Community Contributions",
+      "tooltipText": "Community contributions are all tree, restoration or conservation donations that are dedicated to you, for instance by donating via your profile",
+      "mostRecentTabLabel": "Most recent",
+      "mostTreesTabLabel": "Most trees",
+      "restorationPurpose": "restored",
+      "conservationPurpose": "conserved",
+      "treesPurpose": "Trees",
+      "noContributionPrivateProfileText": "Oops! No contributions to show yet",
+      "noContributionPublicProfileText": "Make a donation to support {name}'s efforts"
+    },
+    "unitType": {
+      "m2": "m²"
     }
   }
 }

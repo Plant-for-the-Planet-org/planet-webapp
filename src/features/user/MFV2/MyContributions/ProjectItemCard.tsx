@@ -85,19 +85,21 @@ const ProjectItemCard = ({
               totalContributionUnits={totalContributionUnits}
               contributionUnitType={contributionUnitType}
             />
-            <DonateButton
-              {...(pageType === 'public' && supportedTreecounter !== undefined
-                ? { type: 'supported', supportedTreecounter }
-                : { type: 'unsupported' })}
-              projectPurpose={project.purpose}
-              buttonText={
-                pageType === 'public'
-                  ? tProfile('donate')
-                  : tProfile('donateAgain')
-              }
-              projectSlug={project.slug}
-              contributionUnitType={project.unitType}
-            />
+            {project.allowDonations === true && (
+              <DonateButton
+                {...(pageType === 'public' && supportedTreecounter !== undefined
+                  ? { type: 'supported', supportedTreecounter }
+                  : { type: 'unsupported' })}
+                projectPurpose={project.purpose}
+                buttonText={
+                  pageType === 'public'
+                    ? tProfile('donate')
+                    : tProfile('donateAgain')
+                }
+                projectSlug={project.slug}
+                contributionUnitType={project.unitType}
+              />
+            )}
           </div>
         </div>
       </section>
@@ -132,19 +134,21 @@ const ProjectItemCard = ({
               • {tProject('tpoName', { tpoName: project.tpoName })}
             </div>
           </div>
-          <DonateButton
-            {...(pageType === 'public' && supportedTreecounter !== undefined
-              ? { type: 'supported', supportedTreecounter }
-              : { type: 'unsupported' })}
-            projectPurpose={project.purpose}
-            buttonText={
-              pageType === 'public'
-                ? tProfile('donate')
-                : tProfile('donateAgain')
-            }
-            projectSlug={project.slug}
-            contributionUnitType={project.unitType}
-          />
+          {project.allowDonations === true && (
+            <DonateButton
+              {...(pageType === 'public' && supportedTreecounter !== undefined
+                ? { type: 'supported', supportedTreecounter }
+                : { type: 'unsupported' })}
+              projectPurpose={project.purpose}
+              buttonText={
+                pageType === 'public'
+                  ? tProfile('donate')
+                  : tProfile('donateAgain')
+              }
+              projectSlug={project.slug}
+              contributionUnitType={project.unitType}
+            />
+          )}
         </div>
       </section>
       {contributionCount > 1 && (

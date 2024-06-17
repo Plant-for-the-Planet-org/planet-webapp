@@ -1,24 +1,29 @@
 import { useMemo, useState } from 'react';
-import NaturalRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/NaturalRegeneration';
-import Mangroves from '../../../../../../public/assets/images/icons/myForestV2Icons/Mangroves';
-import ManagedRegeneration from '../../../../../../public/assets/images/icons/myForestV2Icons/ManagedRegeneration';
-import Agroforestry from '../../../../../../public/assets/images/icons/myForestV2Icons/Agroforestry';
-import UrbanRestoration from '../../../../../../public/assets/images/icons/myForestV2Icons/UrbanRestoration';
-import TreePlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/TreePlanting';
-import OtherPlanting from '../../../../../../public/assets/images/icons/myForestV2Icons/OtherPlanting';
-import themeProperties from '../../../../../theme/themeProperties';
 import { Marker } from 'react-map-gl-v7';
-import RegisteredTreeIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreeIcon';
-import { PointFeature } from 'supercluster';
+import themeProperties from '../../../../../theme/themeProperties';
+import style from '.././Common/common.module.scss';
+import {
+  UnitTypes,
+  ProjectPurpose,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import {
+  Conservation,
+  NaturalRegeneration,
+  ManagedRegeneration,
+  Mangroves,
+  Agroforestry,
+  UrbanRestoration,
+  TreePlanting,
+  OtherPlanting,
+  RegisteredTreeIcon,
+} from '../../../../../../public/assets/images/icons/MyForestMapIcons';
 import ContributionPopup from '../Popup/ContributionPopup';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
-import { UnitTypes, ProjectPurpose } from '@planet-sdk/common';
-import style from '../MyForestV2.module.scss';
-import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
-import { TreeProjectClassification } from '@planet-sdk/common';
+import { PointFeature } from 'supercluster';
 import {
-  DonationGeojson,
   RegistrationGeojson,
+  DonationGeojson,
 } from '../../../../common/Layout/MyForestContextV2';
 
 interface ProjectTypeIconProps {
