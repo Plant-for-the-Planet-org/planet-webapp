@@ -1,7 +1,7 @@
 import {
   ProjectStatIcon,
   CountryStatIcon,
-} from '../../../../../../public/assets/images/icons/MyForestMapIcons';
+} from '../../../../../../public/assets/images/icons/myForestMapIcons';
 import style from '../Common/common.module.scss';
 import { useTranslations } from 'next-intl';
 import { JSX } from 'react';

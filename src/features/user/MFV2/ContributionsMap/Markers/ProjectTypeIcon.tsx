@@ -1,0 +1,71 @@
+import { useMemo } from 'react';
+import {
+  ProjectPurpose,
+  TreeProjectClassification,
+  UnitTypes,
+} from '@planet-sdk/common';
+import themeProperties from '../../../../../theme/themeProperties';
+import {
+  NaturalRegeneration,
+  Mangroves,
+  ManagedRegeneration,
+  Agroforestry,
+  UrbanRestoration,
+  TreePlanting,
+  Conservation,
+} from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
+
+interface ProjectTypeIconProps {
+  purpose: ProjectPurpose;
+  classification: TreeProjectClassification | null;
+  unitType: UnitTypes;
+}
+const ProjectTypeIcon = ({
+  purpose,
+  classification,
+  unitType,
+}: ProjectTypeIconProps) => {
+  const getMarkerColor = (purpose: ProjectPurpose, unitType: UnitTypes) => {
+    switch (purpose) {
+      case 'conservation':
+        return themeProperties.mediumBlueColor;
+      case 'trees':
+        return unitType === 'm2'
+          ? themeProperties.electricPurpleColor
+          : themeProperties.primaryDarkColorX;
+      default:
+        return themeProperties.primaryDarkColorX;
+    }
+  };
+  const pointMarkerColor = useMemo(
+    () => getMarkerColor(purpose, unitType),
+    [purpose, unitType]
+  );
+  const IconProps = {
+    width: 42,
+    color: pointMarkerColor,
+  };
+
+  if (purpose === 'conservation') {
+    return <Conservation {...IconProps} />;
+  }
+
+  switch (classification) {
+    case 'natural-regeneration':
+      return <NaturalRegeneration {...IconProps} />;
+    case 'mangroves':
+      return <Mangroves {...IconProps} />;
+    case 'managed-regeneration':
+      return <ManagedRegeneration {...IconProps} />;
+    case 'agroforestry':
+      return <Agroforestry {...IconProps} />;
+    case 'urban-planting':
+      return <UrbanRestoration {...IconProps} />;
+    case 'large-scale-planting':
+    case 'other-planting':
+      return <TreePlanting {...IconProps} />;
+    default:
+      return null;
+  }
+};
+export default ProjectTypeIcon;

@@ -18,21 +18,22 @@ import {
   MapLocation,
   MyContributionsMapItem,
   Leaderboard,
-  ProjectQueryResult,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
 
 export interface RegistrationGeojson {
+  type: 'Feature';
+  geometry: Point;
+  properties: MyContributionsSingleRegistration;
+}
+
+export interface DonationGeojson {
+  type: 'Feature';
   geometry: Point;
   properties: {
     contributionInfo: MyContributionsSingleRegistration;
   };
-}
-
-export interface DonationGeojson {
-  projectInfo: ProjectQueryResult;
-  contributionInfo: MyContributionsSingleProject;
 }
 
 interface UserInfo {
@@ -118,6 +119,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
     contributionsForProject: MyContributionsSingleProject
   ) => {
     return {
+      type: 'Feature',
       geometry: project.geometry,
       properties: {
         projectInfo: project,
@@ -131,6 +133,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
     registration: MyContributionsSingleRegistration
   ) => {
     return {
+      type: 'Feature',
       geometry: registrationLocation.geometry,
       properties: registration,
     };

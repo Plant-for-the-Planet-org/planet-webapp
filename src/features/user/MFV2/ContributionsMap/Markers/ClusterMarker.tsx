@@ -1,125 +1,99 @@
 import { Marker } from 'react-map-gl-v7';
-import { useEffect, useState } from 'react';
-import ContributionClusterMarkerIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/ClusterMarker/ContributionClusterMarkerIcon';
+import { MutableRefObject, useEffect, useState } from 'react';
+import { PointFeature, AnyProps } from 'supercluster';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import themeProperties from '../../../../../theme/themeProperties';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
-import { ClusterFeature, PointFeature, AnyProps } from 'supercluster';
+import ClusterIcon from './ClusterIcon';
+import {
+  ProjectPurposeTypes,
+  TreeProjectClassification,
+  UnitTypes,
+} from '@planet-sdk/common';
+import {
+  getClusterMarkerColors,
+  extractAndClassifyProjectData,
+} from '../../../../../utils/myForestV2Utils';
+import { ViewportProps } from '../../../../common/types/map';
 
-const ClusterMarker = ({ geoJson, viewport, mapRef }) => {
+export interface ClusterMarkerProps {
+  superclusterResponse: PointFeature<AnyProps>;
+  viewport: ViewportProps;
+  mapRef: MutableRefObject<null>;
+}
+
+export type ExtractedData = {
+  unitType: UnitTypes;
+  classification: TreeProjectClassification;
+  purpose: ProjectPurposeTypes;
+  contributionCount: number;
+};
+
+const ClusterMarker = ({
+  superclusterResponse,
+  viewport,
+  mapRef,
+}: ClusterMarkerProps) => {
   const [clusterChildren, setClusterChildren] = useState<
-    (ClusterFeature<AnyProps> | PointFeature<AnyProps>)[]
-  >([]);
+    PointFeature<AnyProps>[] | undefined
+  >(undefined);
   const { donationGeojson } = useMyForestV2();
-  const { primaryDarkColor, electricPurple, mediumBlue } = themeProperties;
+  const [colors, setColors] = useState({
+    tertiaryProjectColor: '',
+    secondaryProjectColor: '',
+    mainProjectColor: '',
+  });
+
+  const [maxContributingProject, setMaxContributingProject] =
+    useState<ExtractedData | null>(null);
+  const [uniqueUnitTypePurposeProjects, setUniqueUnitTypePurposeProjects] =
+    useState<ExtractedData[]>([]);
+
   useEffect(() => {
-    if (geoJson && viewport && donationGeojson) {
+    if (superclusterResponse && viewport && donationGeojson) {
       const data = _getClusterGeojson(
         viewport,
         mapRef,
         donationGeojson,
-        geoJson.id
+        superclusterResponse.id
       );
       setClusterChildren(data);
     }
-  }, [viewport, geoJson]);
+  }, [viewport, superclusterResponse]);
 
-  const countProjectsByPurpose = (purpose) => {
-    return clusterChildren.filter(
-      (geojson) => geojson?.properties.projectInfo.purpose === purpose
-    ).length;
-  };
+  useEffect(() => {
+    const _colors = getClusterMarkerColors(
+      maxContributingProject,
+      uniqueUnitTypePurposeProjects
+    );
+    setColors(_colors);
+  }, [maxContributingProject, uniqueUnitTypePurposeProjects]);
 
-  const chooseColorForClusterMarker = () => {
-    const treeCount = countProjectsByPurpose('trees');
-    const restorationCount = countProjectsByPurpose('restoration');
-    const conservationCount = countProjectsByPurpose('conservation');
-
-    if (treeCount > 0 && restorationCount === 0 && conservationCount === 0) {
-      return [
-        `${primaryDarkColor}`,
-        `${primaryDarkColor}`,
-        `${primaryDarkColor}`,
-      ];
-    } else if (
-      treeCount === 0 &&
-      restorationCount > 0 &&
-      conservationCount === 0
-    ) {
-      return [`${electricPurple}`, `${electricPurple}`, `${electricPurple}`];
-    } else if (
-      treeCount === 0 &&
-      restorationCount === 0 &&
-      conservationCount > 0
-    ) {
-      return [`${mediumBlue}`, `${mediumBlue}`, `${mediumBlue}`];
-    } else if (treeCount > 0 && restorationCount > 0 && conservationCount > 0) {
-      // when cluster has all type of projects{restoration,conservation,treePlantation}
-      if (treeCount > restorationCount) {
-        if (treeCount > conservationCount) {
-          return [`${mediumBlue}`, `${electricPurple}`, `${primaryDarkColor}`];
-        } else {
-          return [`${primaryDarkColor}`, `${electricPurple}`, `${mediumBlue}`];
-        }
-      } else if (restorationCount > conservationCount) {
-        return [`${mediumBlue}`, `${primaryDarkColor}`, `${electricPurple}`];
-      } else {
-        return [`${electricPurple}`, `${primaryDarkColor}`, `${mediumBlue}`];
-      }
-    } else if (
-      treeCount > 0 &&
-      restorationCount === 0 &&
-      conservationCount > 0
-    ) {
-      if (treeCount > conservationCount) {
-        return [`${mediumBlue}`, `${primaryDarkColor}`, `${primaryDarkColor}`];
-      } else {
-        return [`${primaryDarkColor}`, `${mediumBlue}`, `${mediumBlue}`];
-      }
-    } else if (
-      treeCount === 0 &&
-      restorationCount > 0 &&
-      conservationCount > 0
-    ) {
-      if (restorationCount > conservationCount) {
-        return [`${mediumBlue}`, `${electricPurple}`, `${electricPurple}`];
-      } else {
-        return [`${electricPurple}`, `${mediumBlue}`, `${mediumBlue}`];
-      }
-    } else if (
-      treeCount > 0 &&
-      restorationCount > 0 &&
-      conservationCount === 0
-    ) {
-      if (treeCount > restorationCount) {
-        return [
-          `${electricPurple}`,
-          `${primaryDarkColor}`,
-          `${primaryDarkColor}`,
-        ];
-      } else {
-        return [
-          `${primaryDarkColor}`,
-          `${electricPurple}`,
-          `${electricPurple}`,
-        ];
-      }
+  useEffect(() => {
+    const projects = extractAndClassifyProjectData(clusterChildren);
+    if (projects) {
+      const { maxContributingObject, uniqueObjects } = projects;
+      setMaxContributingProject(maxContributingObject);
+      setUniqueUnitTypePurposeProjects(uniqueObjects);
     }
-    return ['', '', ''];
-  };
+  }, [clusterChildren]);
 
-  const [color1, color2, color3] = chooseColorForClusterMarker();
+  const { tertiaryProjectColor, secondaryProjectColor, mainProjectColor } =
+    colors;
+
+  const clusterMarkerColors = {
+    tertiaryProjectColor,
+    secondaryProjectColor,
+    mainProjectColor,
+  };
+  const longitude = superclusterResponse?.geometry.coordinates[0];
+  const latitude = superclusterResponse?.geometry.coordinates[1];
 
   return (
-    <Marker
-      longitude={geoJson?.geometry.coordinates[0]}
-      latitude={geoJson?.geometry.coordinates[1]}
-    >
-      <ContributionClusterMarkerIcon
-        color1={color1}
-        color2={color2}
-        color3={color3}
-        width={68}
+    <Marker longitude={longitude} latitude={latitude}>
+      <ClusterIcon
+        classification={maxContributingProject?.classification}
+        purpose={maxContributingProject?.purpose}
+        {...clusterMarkerColors}
       />
     </Marker>
   );

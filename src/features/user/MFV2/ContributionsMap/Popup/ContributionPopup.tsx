@@ -1,7 +1,7 @@
 import { Popup } from 'react-map-gl-v7';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { PointFeature } from 'supercluster';
+import { AnyProps, PointFeature } from 'supercluster';
 import { useTranslations, useLocale } from 'next-intl';
 import format from 'date-fns/format';
 import style from '../MyForestV2.module.scss';
@@ -13,11 +13,10 @@ import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { SetState } from '../../../../common/types/common';
-import { DonationGeojson } from '../../../../common/Layout/MyForestContextV2';
 import { CountryCode } from '@planet-sdk/common';
 
 interface ProjectProps {
-  superclusterResponse: PointFeature<DonationGeojson>;
+  superclusterResponse: PointFeature<AnyProps>;
 }
 const Projectimage = ({ superclusterResponse }: ProjectProps) => {
   const t = useTranslations('Profile');
@@ -180,7 +179,7 @@ const ContributionList = ({ superclusterResponse }: ProjectProps) => {
 };
 
 interface ContributionPopupProps {
-  superclusterResponse: PointFeature<DonationGeojson>;
+  superclusterResponse: PointFeature<AnyProps>;
   setShowPopUp: SetState<boolean>;
 }
 
@@ -195,7 +194,7 @@ const ContributionPopup = ({
       latitude={coordinates[1]}
       longitude={coordinates[0]}
       className={style.contributionPopup}
-      offset={30}
+      offset={35}
       closeButton={false}
     >
       <div

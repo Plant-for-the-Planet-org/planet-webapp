@@ -41,13 +41,12 @@ interface RegisterTreePopupProp {
 }
 const RegisterTreePopup = ({ superclusterResponse }: RegisterTreePopupProp) => {
   const { coordinates } = superclusterResponse.geometry;
-  const contributions =
-    superclusterResponse.properties.contributionInfo?.contributions;
+  const contributions = superclusterResponse.properties.contributions;
   return (
     <Popup
       latitude={coordinates[1]}
       longitude={coordinates[0]}
-      offset={34}
+      offset={40}
       className={style.registeredTreePopup}
       closeButton={false}
     >
