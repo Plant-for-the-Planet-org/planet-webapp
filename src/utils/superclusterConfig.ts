@@ -1,17 +1,17 @@
-import { ViewState } from '../features/common/types/map';
+import { ViewState, ViewportProps } from '../features/common/types/map';
 import {
   TestPointProps,
   TestClusterProps,
   Bound,
 } from '../features/common/types/map';
-import Supercluster, { PointFeature } from 'supercluster';
+import Supercluster, { AnyProps, PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
 import {
   MyContributionsSingleProject,
-  MyContributionsSingleRegistration,
   MyForestProject,
 } from '../features/common/types/myForestv2';
+import {} from '../features/common/Layout/MyForestContextV2';
 
 const _clusterConfig = {
   radius: 40,
@@ -31,17 +31,10 @@ const _clusterConfigV2 = {
   maxZoom: 3,
 };
 
-interface DonationGeojsonProp {
-  projectInfo: MyForestProject;
-  contributionInfo: MyContributionsSingleProject;
-}
-
 export const _getClusterGeojson = (
-  viewState: ViewState,
+  viewState: ViewportProps,
   mapRef: RefObject<MapRef>,
-  geoJson: PointFeature<
-    DonationGeojsonProp | MyContributionsSingleRegistration
-  >[],
+  geoJson: PointFeature<AnyProps>[],
   clusterId: string | number | undefined
 ) => {
   const supercluster = new Supercluster(_clusterConfigV2);

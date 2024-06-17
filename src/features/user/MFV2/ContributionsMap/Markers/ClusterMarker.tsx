@@ -1,11 +1,8 @@
 import { Marker } from 'react-map-gl-v7';
 import { MutableRefObject, useEffect, useState } from 'react';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import {
-  DonationGeojson,
-  useMyForestV2,
-} from '../../../../common/Layout/MyForestContextV2';
 import { PointFeature, AnyProps } from 'supercluster';
+import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import ClusterIcon from './ClusterIcon';
 import {
   ProjectPurposeTypes,
@@ -16,10 +13,11 @@ import {
   getClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestV2Utils';
+import { ViewportProps } from '../../../../common/types/map';
 
 export interface ClusterMarkerProps {
-  superclusterResponse: PointFeature<DonationGeojson>;
-  viewport: any;
+  superclusterResponse: PointFeature<AnyProps>;
+  viewport: ViewportProps;
   mapRef: MutableRefObject<null>;
 }
 
@@ -30,10 +28,6 @@ export type ExtractedData = {
   contributionCount: number;
 };
 
-export type Accumulator = {
-  maxContributionCount: number;
-  maxContributingObject: ExtractedData | null;
-};
 const ClusterMarker = ({
   superclusterResponse,
   viewport,
@@ -48,11 +42,12 @@ const ClusterMarker = ({
     secondaryProjectColor: '',
     mainProjectColor: '',
   });
+
   const [maxContributingProject, setMaxContributingProject] =
     useState<ExtractedData | null>(null);
-  const [remainingProjects, setRemainingProjects] = useState<ExtractedData[]>(
-    []
-  );
+  const [uniqueUnitTypePurposeProjects, setUniqueUnitTypePurposeProjects] =
+    useState<ExtractedData[]>([]);
+
   useEffect(() => {
     if (superclusterResponse && viewport && donationGeojson) {
       const data = _getClusterGeojson(
@@ -68,33 +63,37 @@ const ClusterMarker = ({
   useEffect(() => {
     const _colors = getClusterMarkerColors(
       maxContributingProject,
-      remainingProjects
+      uniqueUnitTypePurposeProjects
     );
     setColors(_colors);
-  }, [maxContributingProject, remainingProjects]);
+  }, [maxContributingProject, uniqueUnitTypePurposeProjects]);
 
   useEffect(() => {
     const projects = extractAndClassifyProjectData(clusterChildren);
     if (projects) {
-      setMaxContributingProject(projects.maxContributingObject);
-      setRemainingProjects(projects.uniqueObjects);
+      const { maxContributingObject, uniqueObjects } = projects;
+      setMaxContributingProject(maxContributingObject);
+      setUniqueUnitTypePurposeProjects(uniqueObjects);
     }
   }, [clusterChildren]);
 
   const { tertiaryProjectColor, secondaryProjectColor, mainProjectColor } =
     colors;
 
+  const clusterMarkerColors = {
+    tertiaryProjectColor,
+    secondaryProjectColor,
+    mainProjectColor,
+  };
+  const longitude = superclusterResponse?.geometry.coordinates[0];
+  const latitude = superclusterResponse?.geometry.coordinates[1];
+
   return (
-    <Marker
-      longitude={superclusterResponse?.geometry.coordinates[0]}
-      latitude={superclusterResponse?.geometry.coordinates[1]}
-    >
+    <Marker longitude={longitude} latitude={latitude}>
       <ClusterIcon
         classification={maxContributingProject?.classification}
         purpose={maxContributingProject?.purpose}
-        tertiaryProjectColor={tertiaryProjectColor}
-        secondaryProjectColor={secondaryProjectColor}
-        mainProjectColor={mainProjectColor}
+        {...clusterMarkerColors}
       />
     </Marker>
   );

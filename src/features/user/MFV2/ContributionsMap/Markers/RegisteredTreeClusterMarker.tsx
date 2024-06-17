@@ -11,11 +11,10 @@ type RegisteredTreeClusterMarkerProp = Omit<
 const RegisteredTreeClusterMarker = ({
   superclusterResponse,
 }: RegisteredTreeClusterMarkerProp) => {
+  const longitude = superclusterResponse?.geometry.coordinates[0];
+  const latitude = superclusterResponse?.geometry.coordinates[1];
   return (
-    <Marker
-      longitude={superclusterResponse?.geometry.coordinates[0]}
-      latitude={superclusterResponse?.geometry.coordinates[1]}
-    >
+    <Marker longitude={longitude} latitude={latitude}>
       <RegisteredTreeClusterMarkerIcon width={68} />
     </Marker>
   );

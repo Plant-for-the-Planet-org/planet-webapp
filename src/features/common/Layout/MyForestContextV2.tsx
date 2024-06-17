@@ -31,8 +31,10 @@ export interface RegistrationGeojson {
 export interface DonationGeojson {
   type: 'Feature';
   geometry: Point;
-  projectInfo: MyForestProject;
-  contributionInfo: MyContributionsSingleProject;
+  properties: {
+    projectInfo: MyForestProject;
+    contributionInfo: MyContributionsSingleProject;
+  };
 }
 
 interface UserInfo {

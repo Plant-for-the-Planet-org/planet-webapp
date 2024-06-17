@@ -5,7 +5,7 @@ interface ClusterMarkerIconProps {
   mainProjectColor: string;
 }
 
-export const Mangroves = ({
+export const MangrovesClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,
@@ -52,7 +52,7 @@ export const Mangroves = ({
   );
 };
 
-export const NaturalRegeneration = ({
+export const NaturalRegenerationClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,
@@ -86,7 +86,7 @@ export const NaturalRegeneration = ({
   );
 };
 
-export const ManagedRegeneration = ({
+export const ManagedRegenerationClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,
@@ -152,7 +152,7 @@ export const ManagedRegeneration = ({
   );
 };
 
-export const Agroforestry = ({
+export const AgroforestryClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,
@@ -199,7 +199,7 @@ export const Agroforestry = ({
   );
 };
 
-export const UrbanRestoration = ({
+export const UrbanRestorationClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,
@@ -245,7 +245,7 @@ export const UrbanRestoration = ({
   );
 };
 
-export const TreePlanting = ({
+export const TreePlantingClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,
@@ -291,7 +291,7 @@ export const TreePlanting = ({
   );
 };
 
-export const Conservation = ({
+export const ConservationClusterMarker = ({
   width,
   tertiaryProjectColor,
   secondaryProjectColor,

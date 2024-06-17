@@ -1,19 +1,22 @@
-import {
-  ExtractedData,
-  Accumulator,
-} from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
+import { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
+import { ExtractedData } from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
 import themeProperties from '../theme/themeProperties';
 import { PointFeature, AnyProps } from 'supercluster';
 
-export const getColor = (purpose, unitType) => {
-  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
+export type Accumulator = {
+  maxContributionCount: number;
+  maxContributingObject: ExtractedData | null;
+};
+
+export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
+  const { primaryDarkColorX, electricPurpleColor, mediumBlueColor } =
     themeProperties;
   if (unitType === 'm2' && purpose === 'trees') {
     return electricPurpleColor;
   } else if (purpose === 'conservation') {
     return mediumBlueColor;
   } else {
-    return primaryDarkColor;
+    return primaryDarkColorX;
   }
 };
 
@@ -71,6 +74,7 @@ export const extractAndClassifyProjectData = (
     extractedData.push(extractedItem);
   });
 
+  // Loop through the array to find the object with the maximum contributionCount
   const { maxContributingObject } = extractedData.reduce(
     (acc: Accumulator, item: ExtractedData | null) => {
       if (item !== null && item.contributionCount > acc.maxContributionCount) {
@@ -84,9 +88,9 @@ export const extractAndClassifyProjectData = (
     },
     { maxContributionCount: -Infinity, maxContributingObject: null }
   );
-  // Loop through the array to find the object with the maximum contributionCount
-  const remainingProjects: ExtractedData[] = [];
 
+  const remainingProjects: ExtractedData[] = [];
+  // store all project whose unitType and purpose are different than maxContributingProject
   extractedData.map((item) => {
     if (
       item.unitType !==
@@ -97,7 +101,7 @@ export const extractAndClassifyProjectData = (
       remainingProjects.push(item);
   });
   const uniqueCombinations = new Map();
-
+  // Loop through the array to find  the object with the unique purpose and unit type
   remainingProjects.forEach((obj) => {
     const { unitType, purpose } = obj;
     const key = unitType + '-' + purpose;
