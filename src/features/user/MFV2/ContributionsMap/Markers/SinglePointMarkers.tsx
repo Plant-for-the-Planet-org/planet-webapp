@@ -12,6 +12,7 @@ import style from '.././Common/common.module.scss';
 import { UnitTypes, ProjectPurpose } from '@planet-sdk/common';
 import Conservation from '../../../../../../public/assets/images/icons/myForestV2Icons/Conservation';
 import { TreeProjectClassification } from '@planet-sdk/common';
+import { AnyProps, PointFeature } from 'supercluster';
 
 interface ProjectTypeIconProps {
   purpose: ProjectPurpose;
@@ -19,6 +20,9 @@ interface ProjectTypeIconProps {
   unitType: UnitTypes;
 }
 
+interface SinglePointMarkersProps {
+  superclusterResponse: PointFeature<AnyProps>;
+}
 const ProjectTypeIcon = ({
   purpose,
   classification,
@@ -68,7 +72,9 @@ const ProjectTypeIcon = ({
   }
 };
 
-const SinglePointMarkers = ({ superclusterResponse }: any) => {
+const SinglePointMarkers = ({
+  superclusterResponse,
+}: SinglePointMarkersProps) => {
   return (
     <Marker
       longitude={superclusterResponse?.geometry.coordinates[0]}

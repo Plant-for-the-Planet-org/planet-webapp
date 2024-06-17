@@ -63,6 +63,9 @@ export const extractAndClassifyProjectData = (
 ) => {
   const extractedData: ExtractedData[] = [];
 
+  if (clusterChildren === undefined || clusterChildren.length === 0)
+    return { uniqueObjects: [], maxContributingObject: null };
+
   // Extract required fields from each object
   clusterChildren?.forEach((item) => {
     const extractedItem = {
