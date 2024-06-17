@@ -33,10 +33,10 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
   const tProfile = useTranslations('Profile.progressBar');
   const { tenantConfig } = useTenant();
   // states to manage modal
-  const [plantedTreesTarget, setPlantedTreesTarget] = useState(0);
+  const [treesPlantedTarget, setTreesPlanted] = useState(0);
   const [areaRestoredTarget, setAreaRestoredTarget] = useState(0);
   const [areaConservedTarget, setAreaConservedTarget] = useState(0);
-  const [isPlantedTreesTargetActive, setIsPlantedTreesTargetActive] = useState(
+  const [isTreesPlantedTargetActive, setIsTreesPlantedTargetActive] = useState(
     treeTarget > 0
   );
   const [isRestoredAreaTargetActive, setIsRestoredAreaTargetActive] = useState(
@@ -50,10 +50,10 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
   };
 
   useEffect(() => {
-    setIsPlantedTreesTargetActive(treeTarget > 0);
+    setIsTreesPlantedTargetActive(treeTarget > 0);
     setIsRestoredAreaTargetActive(restoreTarget > 0);
     setIsConservedAreaTargetActive(conservTarget > 0);
-    setPlantedTreesTarget(treeTarget);
+    setTreesPlanted(treeTarget);
     setAreaRestoredTarget(restoreTarget);
     setAreaConservedTarget(conservTarget);
   }, [open]);
@@ -63,7 +63,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
     if (contextLoaded && token && open && !isTargetModalLoading) {
       const bodyToSend = {
         targets: {
-          treesDonated: isPlantedTreesTargetActive ? plantedTreesTarget : 0,
+          treesDonated: isTreesPlantedTargetActive ? treesPlantedTarget : 0,
           areaRestored: isRestoredAreaTargetActive ? areaRestoredTarget : 0,
           areaConserved: isConservedAreaTargetActive ? areaConservedTarget : 0,
         },
@@ -88,7 +88,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
         setRefetchUserData(true);
         if (newUserInfo !== undefined) {
           setUserInfo(newUserInfo);
-          setPlantedTreesTarget(newUserInfo.targets.treesDonated ?? 0);
+          setTreesPlanted(newUserInfo.targets.treesDonated ?? 0);
           setAreaRestoredTarget(newUserInfo.targets.areaRestored ?? 0);
           setAreaConservedTarget(newUserInfo.targets.areaConserved ?? 0);
           setIsTargetModalLoading(false);
@@ -118,10 +118,10 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
           <TargetFormInput
             dataType={'treesPlanted'}
             target={treeTarget}
-            latestTarget={plantedTreesTarget}
-            setLatestTarget={setPlantedTreesTarget}
-            check={isPlantedTreesTargetActive}
-            setCheck={setIsPlantedTreesTargetActive}
+            latestTarget={treesPlantedTarget}
+            setLatestTarget={setTreesPlanted}
+            check={isTreesPlantedTargetActive}
+            setCheck={setIsTreesPlantedTargetActive}
           />
           <TargetFormInput
             dataType={'areaRestored'}

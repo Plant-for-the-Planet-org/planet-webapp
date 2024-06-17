@@ -108,7 +108,7 @@ const ForestProgress = () => {
     areaConserved,
   };
   return (
-    <div className={style.targetMainContainer}>
+    <div className={style.progressSection}>
       {isProgressEnabled ? (
         <ProgressBars {...progressBarsProps} />
       ) : (

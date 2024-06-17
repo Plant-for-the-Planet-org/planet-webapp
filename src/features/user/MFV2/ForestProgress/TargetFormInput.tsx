@@ -40,8 +40,12 @@ const TargetFormInput = ({
   const handleTargetTextField = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setCheck(Number(e.target.value) > 0 ? true : false);
-    setLatestTarget(Number(e.target.value));
+    const newValue = e.target.value;
+    setCheck(Number(newValue) > 0 ? true : false);
+    // Allow empty value or integer only
+    if (newValue === '' || /^[0-9]+$/.test(newValue)) {
+      setLatestTarget(Number(e.target.value));
+    }
   };
 
   const targetContainerClass = useMemo(

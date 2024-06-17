@@ -1,5 +1,5 @@
 import progressBarStyle from '../ForestProgress.module.scss';
-import { BarsProps } from '../ForestProgressItem';
+import { BarsProps } from './Bars';
 
 const GiftPercentageBar = ({
   personalPercentage,
