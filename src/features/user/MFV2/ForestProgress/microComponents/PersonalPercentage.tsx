@@ -1,4 +1,4 @@
-import progressBarStyle from '../ForestProgress.module.scss';
+import styles from '../ForestProgress.module.scss';
 import { BarsProps } from './Bars';
 
 const PersonalPercentageBar = ({
@@ -20,7 +20,7 @@ const PersonalPercentageBar = ({
           giftPercentage !== 0 || target > totalAchievment ? 0 : 5
         }px`,
       }}
-      className={`${progressBarStyle.personalPercentageBar} personalPercentageBar`}
+      className={`${styles.personalPercentageBar} personalPercentageBar`}
     ></div>
   );
 };

@@ -1,5 +1,5 @@
 import WebappButton from '../../../common/WebappButton';
-import targetBarStyle from './ForestProgress.module.scss';
+import styles from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface EmptyProgressProps {
@@ -9,8 +9,8 @@ interface EmptyProgressProps {
 const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
   const tProfile = useTranslations('Profile.progressBar');
   return (
-    <div className={targetBarStyle.emptyProgressContainer}>
-      <div className={targetBarStyle.setTargetLabel}>
+    <div className={styles.emptyProgressContainer}>
+      <div className={styles.emptyProgressInformation}>
         {tProfile('emptyProgressInformation')}
       </div>
       <WebappButton

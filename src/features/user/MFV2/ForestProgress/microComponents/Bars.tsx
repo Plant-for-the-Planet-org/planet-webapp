@@ -1,6 +1,6 @@
 import PersonalPercentageBar from './PersonalPercentage';
 import GiftPercentageBar from './GiftPercentageBar';
-import progressBarStyle from '../ForestProgress.module.scss';
+import styles from '../ForestProgress.module.scss';
 import { ProgressDataProps } from './ProgressData';
 
 export type BarsProps = Omit<ProgressDataProps, 'dataType'>;
@@ -25,8 +25,8 @@ const Bars = ({
     target,
   };
   return (
-    <div className={progressBarStyle.barMainContainer}>
-      <div className={progressBarStyle.barContainer}>
+    <div className={styles.barMainContainer}>
+      <div className={styles.barContainer}>
         <PersonalPercentageBar {...commonProps} />
         <GiftPercentageBar {...commonProps} />
       </div>

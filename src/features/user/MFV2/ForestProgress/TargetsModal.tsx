@@ -1,5 +1,5 @@
 import { Modal } from '@mui/material';
-import targetBarStyle from './ForestProgress.module.scss';
+import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -103,18 +103,13 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
   };
   return (
     <Modal open={open} onClose={handleClose}>
-      <div className={targetBarStyle.targetModalMainContainer}>
-        <button
-          className={targetBarStyle.crossIconContainer}
-          onClick={handleClose}
-        >
+      <div className={styles.targetModalMainContainer}>
+        <button className={styles.crossIconContainer} onClick={handleClose}>
           <CrossIcon />
         </button>
-        <div className={targetBarStyle.setTargetLabel}>
-          {tProfile('setTargets')}
-        </div>
+        <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
 
-        <div className={targetBarStyle.targetModalSubConatiner}>
+        <div className={styles.targetModalSubConatiner}>
           <TargetFormInput
             dataType={'treesPlanted'}
             target={treeTarget}
@@ -140,7 +135,7 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
             setCheck={setIsConservedAreaTargetActive}
           />
         </div>
-        <button className={targetBarStyle.saveButton} onClick={handleTargets}>
+        <button className={styles.saveButton} onClick={handleTargets}>
           {isTargetModalLoading ? (
             <div className={'spinner'}></div>
           ) : (

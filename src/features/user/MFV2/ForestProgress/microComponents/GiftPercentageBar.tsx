@@ -1,4 +1,4 @@
-import progressBarStyle from '../ForestProgress.module.scss';
+import styles from '../ForestProgress.module.scss';
 import { BarsProps } from './Bars';
 
 const GiftPercentageBar = ({
@@ -22,7 +22,7 @@ const GiftPercentageBar = ({
         borderTopLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
         borderBottomLeftRadius: `${personalPercentage === 0 ? 5 : 0}px`,
       }}
-      className={`${progressBarStyle.giftPercentageBar} giftPercentageBar`}
+      className={`${styles.giftPercentageBar} giftPercentageBar`}
     ></div>
   );
 };

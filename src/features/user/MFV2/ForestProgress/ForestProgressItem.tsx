@@ -1,4 +1,4 @@
-import progressBarStyle from './ForestProgress.module.scss';
+import styles from './ForestProgress.module.scss';
 import { getAchievedTarget } from '../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
@@ -30,7 +30,7 @@ const ForestProgressItem = ({
   );
 
   return (
-    <div className={`${progressBarStyle.progressMainContainer} ${dataType}`}>
+    <div className={`${styles.progressMainContainer} ${dataType}`}>
       {asPath === '/en/profile/mfv2' && (
         <EditButton
           handleOpen={handleOpen}

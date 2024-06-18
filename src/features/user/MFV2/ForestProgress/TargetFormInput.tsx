@@ -1,4 +1,4 @@
-import targetModalStyle from './ForestProgress.module.scss';
+import styles from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import { targetColor } from '../../../../utils/myForestV2Utils';
 import { ChangeEvent, useMemo, useEffect } from 'react';
@@ -50,15 +50,13 @@ const TargetFormInput = ({
 
   const targetContainerClass = useMemo(
     () =>
-      check
-        ? targetModalStyle.targetFormInputContainer
-        : targetModalStyle.deActivateTargetModal,
+      check ? styles.targetFormInputContainer : styles.deActivateTargetModal,
     [dataType, check, target]
   );
 
   return (
     <div className={`${targetContainerClass} ${dataType}`}>
-      <div className={targetModalStyle.switchContainer}>
+      <div className={styles.switchContainer}>
         <TargetModalIconLabel dataType={dataType} />
         <TargetSwitch
           switchColor={targetColor(dataType) ?? ''}

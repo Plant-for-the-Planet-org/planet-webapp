@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import targetModalStyle from '../ForestProgress.module.scss';
+import styles from '../ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import {
   TreesPlantedIcon,
@@ -36,13 +36,13 @@ const TargetModalIconLabel = ({ dataType }: TargetModalIconLabel) => {
     }
   };
   return (
-    <div className={targetModalStyle.targetInputIconMainContainer}>
+    <div className={styles.targetInputIconMainContainer}>
       <div
-        className={`${targetModalStyle.targetInputIconContainer} targetInputIconContainer`}
+        className={`${styles.targetInputIconContainer} targetInputIconContainer`}
       >
         <TargetModalIcon dataType={dataType} />
       </div>
-      <div className={targetModalStyle.label}>{getLabelText()}</div>
+      <div className={styles.label}>{getLabelText()}</div>
     </div>
   );
 };

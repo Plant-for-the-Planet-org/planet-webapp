@@ -6,7 +6,7 @@ import {
 import { DataType } from '../ForestProgressItem';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import progressBarStyle from '../ForestProgress.module.scss';
+import styles from '../ForestProgress.module.scss';
 import Bars from './Bars';
 
 export interface ProgressDataProps {
@@ -40,7 +40,7 @@ const GiftReceivedFromCommunity = ({
     <>
       {' '}
       {gift !== undefined && gift > 0 && (
-        <div className={progressBarStyle.communityReceived}>{label}</div>
+        <div className={styles.communityReceived}>{label}</div>
       )}
     </>
   );
@@ -117,13 +117,13 @@ const ProgressData = ({
   };
 
   return (
-    <div className={progressBarStyle.progressContainer}>
-      <div className={progressBarStyle.statisticsMainContainer}>
-        <div className={`${progressBarStyle.iconContainer} iconContainer`}>
+    <div className={styles.progressContainer}>
+      <div className={styles.statisticsMainContainer}>
+        <div className={`${styles.iconContainer} iconContainer`}>
           <ForestProgressIcon dataType={dataType} />
         </div>
-        <div className={progressBarStyle.statisticsContainer}>
-          <div className={progressBarStyle.stat}>{getLabel}</div>
+        <div className={styles.statisticsContainer}>
+          <div className={styles.stat}>{getLabel}</div>
           <Bars {...barProps} />
           <GiftReceivedFromCommunity {...giftReceivedProps} />
         </div>

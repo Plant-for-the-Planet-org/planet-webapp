@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import style from './ForestProgress.module.scss';
+import styles from './ForestProgress.module.scss';
 import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './EmptyProgress';
@@ -108,7 +108,7 @@ const ForestProgress = () => {
     areaConserved,
   };
   return (
-    <div className={style.progressSection}>
+    <div className={styles.progressSection}>
       {isProgressEnabled ? (
         <ProgressBars {...progressBarsProps} />
       ) : (
