@@ -54,6 +54,7 @@ const SharePlatforms = ({
 
       <div className={myProfilestyle.Xicon}>
         <button
+          type="button"
           onClick={() =>
             handleShare(
               `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&url=${linkToShare}&text=${textToShare}`
