@@ -7,7 +7,7 @@ import { DataType } from '../ForestProgressItem';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import styles from '../ForestProgress.module.scss';
-import Bars from './Bars';
+import StackedBarGraph from './StackedBarGraph';
 
 export interface ProgressDataProps {
   giftPercentage: number;
@@ -100,7 +100,7 @@ const ProgressData = ({
     }
   }, [dataType, target]);
 
-  const barProps = {
+  const graphProps = {
     personalPercentage,
     giftPercentage,
     gift,
@@ -124,7 +124,7 @@ const ProgressData = ({
         </div>
         <div className={styles.statisticsContainer}>
           <div className={styles.stat}>{getLabel}</div>
-          <Bars {...barProps} />
+          <StackedBarGraph {...graphProps} />
           <GiftReceivedFromCommunity {...giftReceivedProps} />
         </div>
       </div>

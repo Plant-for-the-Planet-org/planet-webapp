@@ -1,5 +1,5 @@
 import styles from '../ForestProgress.module.scss';
-import { BarsProps } from './Bars';
+import { StackedBarGraphProps } from './StackedBarGraph';
 
 const GiftPercentageBar = ({
   personalPercentage,
@@ -7,7 +7,7 @@ const GiftPercentageBar = ({
   target,
   gift,
   personal,
-}: BarsProps) => {
+}: StackedBarGraphProps) => {
   const totalAchievment = gift + personal;
   return (
     <div
