@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import styles from '../ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import {
@@ -6,12 +5,12 @@ import {
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
-import { DataType } from '../ForestProgressItem';
+import { ProgressDataType } from '../ForestProgressItem';
 
-type TargetModalIconLabel = {
-  dataType: DataType;
+type TargetFormInputLabelProps = {
+  dataType: ProgressDataType;
 };
-const TargetModalIcon = ({ dataType }: TargetModalIconLabel) => {
+const TargetModalIcon = ({ dataType }: TargetFormInputLabelProps) => {
   switch (dataType) {
     case 'treesPlanted':
       return <TreesPlantedIcon width={16} />;
@@ -22,7 +21,7 @@ const TargetModalIcon = ({ dataType }: TargetModalIconLabel) => {
   }
 };
 
-const TargetModalIconLabel = ({ dataType }: TargetModalIconLabel) => {
+const TargetFormInputLabel = ({ dataType }: TargetFormInputLabelProps) => {
   const tProfile = useTranslations('Profile.progressBar');
 
   const getLabelText = () => {
@@ -47,4 +46,4 @@ const TargetModalIconLabel = ({ dataType }: TargetModalIconLabel) => {
   );
 };
 
-export default TargetModalIconLabel;
+export default TargetFormInputLabel;

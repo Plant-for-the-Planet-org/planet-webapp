@@ -5,11 +5,14 @@ import { useRouter } from 'next/router';
 import EditButton from './microComponents/EditButton';
 import ProgressData from './microComponents/ProgressData';
 
-export type DataType = 'treesPlanted' | 'areaRestored' | 'areaConserved';
+export type ProgressDataType =
+  | 'treesPlanted'
+  | 'areaRestored'
+  | 'areaConserved';
 
 export interface ForestProgressItemProps {
   handleEditTargets: () => void;
-  dataType: DataType;
+  dataType: ProgressDataType;
   target: number;
   gift: number;
   personal: number;

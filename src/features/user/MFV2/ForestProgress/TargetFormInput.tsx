@@ -5,16 +5,16 @@ import { ChangeEvent, useMemo, useEffect } from 'react';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
 import { SetState } from '../../../common/types/common';
-import TargetModalIconLabel from './microComponents/TargetModalIconLabel';
-import { DataType } from './ForestProgressItem';
+import TargetFormInputLabel from './microComponents/TargetFormInputLabel';
+import { ProgressDataType } from './ForestProgressItem';
 
 type TargetFormInputProps = {
-  dataType: DataType;
+  dataType: ProgressDataType;
   target: number;
   latestTarget: number;
   setLatestTarget: SetState<number>;
-  check: boolean;
-  setCheck: SetState<boolean>;
+  checked: boolean;
+  setChecked: SetState<boolean>;
 };
 
 const TargetFormInput = ({
@@ -22,8 +22,8 @@ const TargetFormInput = ({
   target,
   latestTarget,
   setLatestTarget,
-  check,
-  setCheck,
+  checked,
+  setChecked,
 }: TargetFormInputProps) => {
   const tProfile = useTranslations('Profile.progressBar');
 
@@ -33,7 +33,7 @@ const TargetFormInput = ({
 
   const handleTargetSwitch = (e: ChangeEvent<HTMLInputElement>) => {
     if (target > 0) {
-      setCheck(e.target.checked);
+      setChecked(e.target.checked);
     }
   };
 
@@ -41,7 +41,7 @@ const TargetFormInput = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const newValue = e.target.value;
-    setCheck(Number(newValue) > 0 ? true : false);
+    setChecked(Number(newValue) > 0 ? true : false);
     // Allow empty value or integer only
     if (newValue === '' || /^[0-9]+$/.test(newValue)) {
       setLatestTarget(Number(e.target.value));
@@ -50,17 +50,17 @@ const TargetFormInput = ({
 
   const targetContainerClass = useMemo(
     () =>
-      check ? styles.targetFormInputContainer : styles.deActivateTargetModal,
-    [dataType, check, target]
+      checked ? styles.targetFormInputContainer : styles.deActivateTargetModal,
+    [dataType, checked, target]
   );
 
   return (
     <div className={`${targetContainerClass} ${dataType}`}>
       <div className={styles.switchContainer}>
-        <TargetModalIconLabel dataType={dataType} />
+        <TargetFormInputLabel dataType={dataType} />
         <TargetSwitch
           switchColor={targetColor(dataType) ?? ''}
-          checked={check}
+          checked={checked}
           onChange={handleTargetSwitch}
         />
       </div>

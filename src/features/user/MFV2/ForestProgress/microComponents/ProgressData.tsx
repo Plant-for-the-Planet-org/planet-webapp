@@ -3,7 +3,7 @@ import {
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
-import { DataType } from '../ForestProgressItem';
+import { ProgressDataType } from '../ForestProgressItem';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import styles from '../ForestProgress.module.scss';
@@ -14,11 +14,11 @@ export interface ProgressDataProps {
   personalPercentage: number;
   gift: number;
   personal: number;
-  dataType: DataType;
+  dataType: ProgressDataType;
   target: number;
 }
 
-const ForestProgressIcon = ({ dataType }: { dataType: DataType }) => {
+const ForestProgressIcon = ({ dataType }: { dataType: ProgressDataType }) => {
   switch (dataType) {
     case 'treesPlanted':
       return <TreesPlantedIcon width={19} />;
@@ -56,20 +56,18 @@ const ProgressData = ({
 }: ProgressDataProps) => {
   const tProfile = useTranslations('Profile.progressBar');
   const totalAchievment = gift + personal;
-  const getLabel = useMemo(() => {
+  const graphLabel = useMemo(() => {
     const isTargetSet = target > 0;
-    const targetAchievedUnit =
-      totalAchievment !== Math.floor(totalAchievment)
-        ? totalAchievment.toFixed(1)
-        : totalAchievment;
-    const hasDecimalPart = target !== Math.floor(target);
-    const _target = hasDecimalPart ? target.toFixed(1) : target;
+    const targetAchievedUnit = Number.isInteger(totalAchievment)
+      ? totalAchievment
+      : totalAchievment.toFixed(1);
+
     switch (dataType) {
       case 'treesPlanted':
         return isTargetSet
           ? tProfile('treePlantedAgainstTarget', {
               count: targetAchievedUnit,
-              total: _target,
+              total: target,
             })
           : tProfile('treePlanted', {
               count: targetAchievedUnit,
@@ -79,7 +77,7 @@ const ProgressData = ({
         return isTargetSet
           ? tProfile('restoredAreaAgainstTarget', {
               count: targetAchievedUnit,
-              unit: _target,
+              unit: target,
             })
           : tProfile('restoredArea', {
               unit: targetAchievedUnit,
@@ -89,7 +87,7 @@ const ProgressData = ({
         return isTargetSet
           ? tProfile('conservedAreaAgainstTarget', {
               count: targetAchievedUnit,
-              unit: _target,
+              unit: target,
             })
           : tProfile('conservedArea', {
               unit: targetAchievedUnit,
@@ -123,7 +121,7 @@ const ProgressData = ({
           <ForestProgressIcon dataType={dataType} />
         </div>
         <div className={styles.statisticsContainer}>
-          <div className={styles.stat}>{getLabel}</div>
+          <div className={styles.stat}>{graphLabel}</div>
           <StackedBarGraph {...graphProps} />
           <GiftReceivedFromCommunity {...giftReceivedProps} />
         </div>

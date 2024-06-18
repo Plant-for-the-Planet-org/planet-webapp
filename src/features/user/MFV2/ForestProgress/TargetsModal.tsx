@@ -115,24 +115,24 @@ const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
             target={treeTarget}
             latestTarget={treesPlantedTarget}
             setLatestTarget={setTreesPlanted}
-            check={isTreesPlantedTargetActive}
-            setCheck={setIsTreesPlantedTargetActive}
+            checked={isTreesPlantedTargetActive}
+            setChecked={setIsTreesPlantedTargetActive}
           />
           <TargetFormInput
             dataType={'areaRestored'}
             target={restoreTarget}
             latestTarget={areaRestoredTarget}
             setLatestTarget={setAreaRestoredTarget}
-            check={isRestoredAreaTargetActive}
-            setCheck={setIsRestoredAreaTargetActive}
+            checked={isRestoredAreaTargetActive}
+            setChecked={setIsRestoredAreaTargetActive}
           />
           <TargetFormInput
             dataType={'areaConserved'}
             target={conservTarget}
             latestTarget={areaConservedTarget}
             setLatestTarget={setAreaConservedTarget}
-            check={isConservedAreaTargetActive}
-            setCheck={setIsConservedAreaTargetActive}
+            checked={isConservedAreaTargetActive}
+            setChecked={setIsConservedAreaTargetActive}
           />
         </div>
         <button className={styles.saveButton} onClick={handleTargets}>
