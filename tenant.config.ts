@@ -97,7 +97,7 @@ export const defaultTenant: Tenant = {
         "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
       image:
         'https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg',
-      twitterHandle: '@trilliontrees',
+      twitterHandle: '',
       locale: 'en_US',
     },
     footerLinks: [

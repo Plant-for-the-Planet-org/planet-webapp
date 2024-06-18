@@ -56,7 +56,7 @@ const SharePlatforms = ({
         <button
           onClick={() =>
             handleShare(
-              `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
+              `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&url=${linkToShare}&text=${textToShare}`
             )
           }
         >
