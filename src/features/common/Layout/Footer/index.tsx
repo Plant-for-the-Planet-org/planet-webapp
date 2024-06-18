@@ -154,51 +154,6 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'twitterIcon'}>
-                  <a
-                    className={styles.social_button}
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://twitter.com/trilliontrees"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="46"
-                      height="46"
-                      viewBox="0 0 46 46"
-                    >
-                      <g
-                        id="Group_3318"
-                        data-name="Group 3318"
-                        transform="translate(-449.175 -500.555)"
-                      >
-                        <g
-                          className="iconFillNone"
-                          id="Ellipse_1309"
-                          data-name="Ellipse 1309"
-                          transform="translate(449.175 500.555)"
-                          strokeWidth="1"
-                        >
-                          <circle cx="23" cy="23" r="23" stroke="none" />
-                          <circle
-                            className="iconFillNone"
-                            cx="23"
-                            cy="23"
-                            r="22.5"
-                          />
-                        </g>
-                        <path
-                          className="iconFillColor"
-                          id="Icon_awesome-twitter"
-                          data-name="Icon awesome-twitter"
-                          d="M25.273,10.116c.018.246.018.492.018.738A16.171,16.171,0,0,1,8.865,27.01,16.513,16.513,0,0,1,0,24.461a12.14,12.14,0,0,0,1.394.07A11.685,11.685,0,0,0,8.561,22.1a5.772,5.772,0,0,1-5.4-3.938,7.4,7.4,0,0,0,1.09.088,6.2,6.2,0,0,0,1.519-.193,5.7,5.7,0,0,1-4.629-5.573v-.07a5.888,5.888,0,0,0,2.609.721A5.651,5.651,0,0,1,1.18,8.41a5.565,5.565,0,0,1,.786-2.865,16.5,16.5,0,0,0,11.9,5.942,6.309,6.309,0,0,1-.143-1.3A5.724,5.724,0,0,1,19.5,4.508,5.8,5.8,0,0,1,23.718,6.3,11.482,11.482,0,0,0,27.382,4.93a5.681,5.681,0,0,1-2.538,3.129,11.726,11.726,0,0,0,3.324-.879,12.3,12.3,0,0,1-2.9,2.936Z"
-                          transform="translate(458.175 510.046)"
-                        />
-                      </g>
-                    </svg>
-                  </a>
-                </button>
-
                 <button id={'instagramIcon'}>
                   <a
                     className={styles.social_button}
