@@ -11,7 +11,7 @@ const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
   return (
     <div className={targetBarStyle.emptyProgressContainer}>
       <div className={targetBarStyle.setTargetLabel}>
-        {tProfile('setTargetsEnvironmentalActions')}
+        {tProfile('emptyProgressInformation')}
       </div>
       <WebappButton
         variant="primary"

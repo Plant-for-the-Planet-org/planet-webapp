@@ -67,31 +67,31 @@ const ProgressData = ({
     switch (dataType) {
       case 'treesPlanted':
         return isTargetSet
-          ? tProfile('treePlantedWithTarget', {
+          ? tProfile('treePlantedAgainstTarget', {
               count: targetAchievedUnit,
               total: _target,
             })
-          : tProfile('treePlantedWithoutTarget', {
+          : tProfile('treePlanted', {
               count: targetAchievedUnit,
             });
 
       case 'areaRestored':
         return isTargetSet
-          ? tProfile('restoredAreaWithTarget', {
+          ? tProfile('restoredAreaAgainstTarget', {
               count: targetAchievedUnit,
               unit: _target,
             })
-          : tProfile('restoredAreaWithoutTarget', {
+          : tProfile('restoredArea', {
               unit: targetAchievedUnit,
             });
 
       case 'areaConserved':
         return isTargetSet
-          ? tProfile('conservedAreaWithTarget', {
+          ? tProfile('conservedAreaAgainstTarget', {
               count: targetAchievedUnit,
               unit: _target,
             })
-          : tProfile('conservedAreaWithoutTarget', {
+          : tProfile('conservedArea', {
               unit: targetAchievedUnit,
             });
 
