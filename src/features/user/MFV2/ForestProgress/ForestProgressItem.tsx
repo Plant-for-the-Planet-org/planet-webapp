@@ -8,7 +8,7 @@ import ProgressData from './microComponents/ProgressData';
 export type DataType = 'treesPlanted' | 'areaRestored' | 'areaConserved';
 
 export interface ForestProgressItemProps {
-  handleOpen: () => void;
+  handleEditTargets: () => void;
   dataType: DataType;
   target: number;
   gift: number;
@@ -16,7 +16,7 @@ export interface ForestProgressItemProps {
 }
 
 const ForestProgressItem = ({
-  handleOpen,
+  handleEditTargets,
   dataType,
   target,
   gift,
@@ -33,7 +33,7 @@ const ForestProgressItem = ({
     <div className={`${styles.progressMainContainer} ${dataType}`}>
       {asPath === '/en/profile/mfv2' && (
         <EditButton
-          handleOpen={handleOpen}
+          handleEditTargets={handleEditTargets}
           target={target}
           dataType={dataType}
         />

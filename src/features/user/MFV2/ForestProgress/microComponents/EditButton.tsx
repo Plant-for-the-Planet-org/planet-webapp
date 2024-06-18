@@ -9,12 +9,19 @@ type EditButtonProp = Omit<
   'gift' | 'personal' | 'checked'
 >;
 
-const EditButton = ({ handleOpen, target, dataType }: EditButtonProp) => {
+const EditButton = ({
+  handleEditTargets,
+  target,
+  dataType,
+}: EditButtonProp) => {
   const tProfile = useTranslations('Profile.progressBar');
 
   return (
     <div className={styles.editTargetButtonContainer}>
-      <button className={styles.editTargetContainer} onClick={handleOpen}>
+      <button
+        className={styles.editTargetContainer}
+        onClick={handleEditTargets}
+      >
         <EditTargetIcon width={9} color={targetColor(dataType)} />
         <p className={`${styles.editTargetLabel} editTargetLabel`}>
           {target > 0 ? tProfile('editTarget') : tProfile('setTarget')}

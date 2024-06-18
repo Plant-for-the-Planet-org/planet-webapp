@@ -6,14 +6,14 @@ import EmptyProgress from './EmptyProgress';
 import ForestProgressItem from './ForestProgressItem';
 
 interface ProgressBarsProps {
-  handleOpen: () => void;
+  handleEditTargets: () => void;
   treesDonated: number;
   areaRestored: number;
   areaConserved: number;
 }
 
 const ProgressBars = ({
-  handleOpen,
+  handleEditTargets,
   treesDonated,
   areaRestored,
   areaConserved,
@@ -28,7 +28,7 @@ const ProgressBars = ({
     <>
       {shouldShowBar(treeTarget, treesDonated) && (
         <ForestProgressItem
-          handleOpen={handleOpen}
+          handleEditTargets={handleEditTargets}
           dataType={'treesPlanted'}
           target={treeTarget}
           gift={contributionsResult?.stats.treesDonated.received ?? 0}
@@ -37,7 +37,7 @@ const ProgressBars = ({
       )}
       {shouldShowBar(restoreTarget, areaRestored) && (
         <ForestProgressItem
-          handleOpen={handleOpen}
+          handleEditTargets={handleEditTargets}
           dataType={'areaRestored'}
           target={restoreTarget}
           gift={contributionsResult?.stats.areaRestoredInM2.received ?? 0}
@@ -46,7 +46,7 @@ const ProgressBars = ({
       )}
       {shouldShowBar(conservTarget, areaConserved) && (
         <ForestProgressItem
-          handleOpen={handleOpen}
+          handleEditTargets={handleEditTargets}
           dataType={'areaConserved'}
           target={conservTarget}
           gift={contributionsResult?.stats.areaConservedInM2.received ?? 0}
@@ -58,9 +58,10 @@ const ProgressBars = ({
 };
 
 const ForestProgress = () => {
-  const [open, setOpen] = useState(false);
+  const [isEditingTargets, setIsEditingTargets] = useState(false);
+  const handleEditTargets = () => setIsEditingTargets(true);
+
   const [isProgressEnabled, setIsProgressEnabled] = useState(false);
-  const handleOpen = () => setOpen(true);
   const { treeTarget, conservTarget, restoreTarget, contributionsResult } =
     useMyForestV2();
 
@@ -102,7 +103,7 @@ const ForestProgress = () => {
   ]);
 
   const progressBarsProps = {
-    handleOpen,
+    handleEditTargets,
     treesDonated,
     areaRestored,
     areaConserved,
@@ -112,10 +113,10 @@ const ForestProgress = () => {
       {isProgressEnabled ? (
         <ProgressBars {...progressBarsProps} />
       ) : (
-        <EmptyProgress handleOpen={handleOpen} />
+        <EmptyProgress handleSetTargets={handleEditTargets} />
       )}
 
-      <TargetsModal open={open} setOpen={setOpen} />
+      <TargetsModal open={isEditingTargets} setOpen={setIsEditingTargets} />
     </div>
   );
 };

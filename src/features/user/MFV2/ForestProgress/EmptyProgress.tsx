@@ -3,10 +3,10 @@ import styles from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface EmptyProgressProps {
-  handleOpen: () => void;
+  handleSetTargets: () => void;
 }
 
-const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
+const EmptyProgress = ({ handleSetTargets }: EmptyProgressProps) => {
   const tProfile = useTranslations('Profile.progressBar');
   return (
     <div className={styles.emptyProgressContainer}>
@@ -16,7 +16,7 @@ const EmptyProgress = ({ handleOpen }: EmptyProgressProps) => {
       <WebappButton
         variant="primary"
         text={tProfile('setTargets')}
-        onClick={handleOpen}
+        onClick={handleSetTargets}
         elementType="button"
       />
     </div>
