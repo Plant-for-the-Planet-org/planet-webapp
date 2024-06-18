@@ -235,9 +235,8 @@ export default function ProjectSnippet({
             <div className={'perUnitCost'}>
               {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
-                {project.purpose === 'conservation'
-                  ? tDonate('perM2')
-                  : tDonate('perTree')}
+                {project.unitType === 'tree' && tDonate('perTree')}
+                {project.unitType === 'm2' && tDonate('perM2')}
               </span>
             </div>
           )}
