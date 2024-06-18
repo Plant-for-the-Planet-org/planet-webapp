@@ -55,7 +55,7 @@ const TargetFormInput = ({
   );
 
   return (
-    <div className={`${targetContainerClass} ${dataType}`}>
+    <div className={`${targetContainerClass} ${styles[dataType]}`}>
       <div className={styles.switchContainer}>
         <TargetFormInputLabel dataType={dataType} />
         <TargetSwitch

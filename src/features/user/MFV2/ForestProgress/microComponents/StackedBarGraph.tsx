@@ -1,34 +1,35 @@
-import PersonalPercentageBar from './PersonalPercentage';
-import GiftPercentageBar from './GiftPercentageBar';
 import styles from '../ForestProgress.module.scss';
 import { ProgressDataProps } from './ProgressData';
 
-export type StackedBarGraphProps = Omit<ProgressDataProps, 'dataType'>;
+export type StackedBarGraphProps = Omit<
+  ProgressDataProps,
+  'dataType' | 'gift' | 'personal'
+>;
 
 const StackedBarGraph = ({
   personalPercentage,
   giftPercentage,
-  gift,
-  personal,
   target,
 }: StackedBarGraphProps) => {
   const totalAchievedPercentage = giftPercentage + personalPercentage;
 
-  const hasDecimalPart =
-    totalAchievedPercentage !== Math.floor(totalAchievedPercentage);
+  const hasDecimalPart = Number.isInteger(totalAchievedPercentage);
 
-  const commonProps = {
-    personalPercentage,
-    giftPercentage,
-    gift,
-    personal,
-    target,
-  };
   return (
     <div className={styles.graphMainContainer}>
       <div className={styles.barContainer}>
-        <PersonalPercentageBar {...commonProps} />
-        <GiftPercentageBar {...commonProps} />
+        <div
+          style={{
+            width: `${personalPercentage}%`,
+          }}
+          className={styles.personalPercentageBar}
+        ></div>
+        <div
+          style={{
+            width: `${giftPercentage}%`,
+          }}
+          className={styles.giftPercentageBar}
+        ></div>
       </div>
       <div>
         {target > 0 &&

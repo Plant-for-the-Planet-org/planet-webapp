@@ -33,7 +33,7 @@ const ForestProgressItem = ({
   );
 
   return (
-    <div className={`${styles.progressMainContainer} ${dataType}`}>
+    <div className={`${styles.progressMainContainer} ${styles[dataType]}`}>
       {asPath === '/en/profile/mfv2' && (
         <EditButton
           handleEditTargets={handleEditTargets}

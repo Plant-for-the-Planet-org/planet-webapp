@@ -36,9 +36,7 @@ const TargetFormInputLabel = ({ dataType }: TargetFormInputLabelProps) => {
   };
   return (
     <div className={styles.targetInputIconMainContainer}>
-      <div
-        className={`${styles.targetInputIconContainer} targetInputIconContainer`}
-      >
+      <div className={styles.targetInputIconContainer}>
         <TargetModalIcon dataType={dataType} />
       </div>
       <div className={styles.label}>{getLabelText()}</div>

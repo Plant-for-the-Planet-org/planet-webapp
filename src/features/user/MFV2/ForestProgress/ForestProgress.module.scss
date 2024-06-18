@@ -60,6 +60,7 @@
   border-radius: 5px;
   display: flex;
   background-color: #fff;
+  overflow: hidden;
 }
 
 .communityReceived {
@@ -203,18 +204,6 @@
   right: 10px;
 }
 
-.personalPercentageBar {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-}
-
-.giftPercentageBar {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-//target initialize  copntainer style
-
 .emptyProgressContainer {
   width: 100%;
   height: 100%;
@@ -247,4 +236,49 @@
   color: #fff;
   border-radius: 12px;
   cursor: pointer;
+}
+
+.treesPlanted {
+  background: $greenHazeColor;
+  .targetInputIconContainer,
+  .iconContainer,
+  .personalPercentageBar {
+    background: $primaryDarkColor;
+  }
+  .giftPercentageBar {
+    background: $mintGreenColor;
+  }
+  .editTargetLabel {
+    color: $primaryDarkColor;
+  }
+}
+
+.areaRestored {
+  background: $amethystPurpleColor;
+  .targetInputIconContainer,
+  .iconContainer,
+  .personalPercentageBar {
+    background: $electricPurpleColor;
+  }
+  .giftPercentageBar {
+    background: $lavenderPurpleColor;
+  }
+  .editTargetLabel {
+    color: $electricPurpleColor;
+  }
+}
+
+.areaConserved {
+  background: $ceruleanBlueColor;
+  .targetInputIconContainer,
+  .iconContainer,
+  .personalPercentageBar {
+    background: $mediumBlueColor;
+  }
+  .giftPercentageBar {
+    background: $skyBlueColor;
+  }
+  .editTargetLabel {
+    color: $mediumBlueColor;
+  }
 }

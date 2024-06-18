@@ -23,7 +23,7 @@ const EditButton = ({
         onClick={handleEditTargets}
       >
         <EditTargetIcon width={9} color={targetColor(dataType)} />
-        <p className={`${styles.editTargetLabel} editTargetLabel`}>
+        <p className={styles.editTargetLabel}>
           {target > 0 ? tProfile('editTarget') : tProfile('setTarget')}
         </p>
       </button>

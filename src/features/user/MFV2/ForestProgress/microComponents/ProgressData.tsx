@@ -117,7 +117,7 @@ const ProgressData = ({
   return (
     <div className={styles.progressContainer}>
       <div className={styles.statisticsMainContainer}>
-        <div className={`${styles.iconContainer} iconContainer`}>
+        <div className={styles.iconContainer}>
           <ForestProgressIcon dataType={dataType} />
         </div>
         <div className={styles.statisticsContainer}>
