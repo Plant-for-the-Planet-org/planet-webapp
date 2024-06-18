@@ -747,3 +747,9 @@ input[type='number'] {
     font-size: 30px;
   }
 }
+
+.maplibregl-popup-anchor-bottom {
+  .maplibregl-popup-tip {
+    display: none;
+  }
+}

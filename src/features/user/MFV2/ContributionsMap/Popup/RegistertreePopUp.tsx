@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Popup } from 'react-map-gl-v7';
-import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestV2Icons/RegisteredTreePopupIcon';
+import { AnyProps, PointFeature } from 'supercluster';
+import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
 import style from '../MyForestV2.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { RegistrationGeojson } from '../../../../common/Layout/MyForestContextV2';
 import { SingleRegistration } from '../../../../common/types/myForestv2';
 
 type RegisteredTreeInfoProp = {
@@ -37,7 +37,7 @@ const RegisteredTreeInfo = ({ contributions }: RegisteredTreeInfoProp) => {
   );
 };
 interface RegisterTreePopupProp {
-  superclusterResponse: RegistrationGeojson;
+  superclusterResponse: PointFeature<AnyProps>;
 }
 const RegisterTreePopup = ({ superclusterResponse }: RegisterTreePopupProp) => {
   const { coordinates } = superclusterResponse.geometry;

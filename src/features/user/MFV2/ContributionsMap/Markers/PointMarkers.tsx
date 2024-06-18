@@ -4,7 +4,7 @@ import style from '.././Common/common.module.scss';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import { useState } from 'react';
 import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
-import ContributionPopup from '../Popup/ContributionPopup';
+import DonationPopup from '../Popup/DonationPopup';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
 
 interface PointMarkersProps {
@@ -22,7 +22,13 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
   const handleMouseLeave = () => {
     setTimeout(() => {
       setShowPopUp(false);
-    }, 3000);
+    }, 1500);
+  };
+
+  const donationPopupProps = {
+    superclusterResponse,
+    setShowPopUp,
+    handleMouseLeave,
   };
 
   return (
@@ -46,13 +52,8 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
         </>
       ) : (
         <>
-          {showPopup && (
-            <ContributionPopup
-              superclusterResponse={superclusterResponse}
-              setShowPopUp={setShowPopUp}
-            />
-          )}
-          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          {showPopup && <DonationPopup {...donationPopupProps} />}
+          <div onMouseEnter={handleMouseEnter}>
             <ProjectTypeIcon
               purpose={superclusterResponse.properties.projectInfo.purpose}
               classification={
