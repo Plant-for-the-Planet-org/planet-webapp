@@ -23,7 +23,6 @@ export default function GetAllProjectsMeta(): ReactElement {
       ) : null}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={config.meta.title} />
-      <meta name="twitter:site" content={config.meta.twitterHandle} />
       <meta name="twitter:url" content={config.tenantURL} />
       <meta name="twitter:description" content={config.meta.description} />
     </Head>
