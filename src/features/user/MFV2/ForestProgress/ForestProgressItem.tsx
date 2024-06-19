@@ -1,9 +1,9 @@
 import styles from './ForestProgress.module.scss';
 import { getAchievedTarget } from '../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
-import { useRouter } from 'next/router';
 import EditButton from './microComponents/EditButton';
 import ProgressData from './microComponents/ProgressData';
+import { ProfilePageType } from '../../../common/types/myForestv2';
 
 export type ProgressDataType =
   | 'treesPlanted'
@@ -16,6 +16,7 @@ export interface ForestProgressItemProps {
   target: number;
   gift: number;
   personal: number;
+  profilePageType: ProfilePageType;
 }
 
 const ForestProgressItem = ({
@@ -24,9 +25,8 @@ const ForestProgressItem = ({
   target,
   gift,
   personal,
+  profilePageType,
 }: ForestProgressItemProps) => {
-  const { asPath } = useRouter();
-
   const _getAchievedTarget = useMemo(
     () => getAchievedTarget(target, gift, personal),
     [target, gift, personal]
@@ -34,7 +34,7 @@ const ForestProgressItem = ({
 
   return (
     <div className={`${styles.progressMainContainer} ${styles[dataType]}`}>
-      {asPath === '/en/profile/mfv2' && (
+      {profilePageType === 'private' && (
         <EditButton
           handleEditTargets={handleEditTargets}
           target={target}

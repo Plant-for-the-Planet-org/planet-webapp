@@ -13,7 +13,7 @@ const StackedBarGraph = ({
 }: StackedBarGraphProps) => {
   const totalAchievedPercentage = giftPercentage + personalPercentage;
 
-  const hasDecimalPart = Number.isInteger(totalAchievedPercentage);
+  const isInteger = Number.isInteger(totalAchievedPercentage);
 
   return (
     <div className={styles.graphMainContainer}>
@@ -34,9 +34,9 @@ const StackedBarGraph = ({
       <div>
         {target > 0 &&
           `${
-            hasDecimalPart
-              ? totalAchievedPercentage.toFixed(1)
-              : totalAchievedPercentage
+            isInteger
+              ? totalAchievedPercentage
+              : totalAchievedPercentage.toFixed(1)
           }%`}
       </div>
     </div>

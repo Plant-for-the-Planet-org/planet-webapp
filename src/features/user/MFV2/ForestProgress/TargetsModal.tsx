@@ -16,23 +16,26 @@ import { useState } from 'react';
 interface TargetsModalProps {
   open: boolean;
   setOpen: SetState<boolean>;
+  treeTarget: number;
+  restoreTarget: number;
+  conservTarget: number;
 }
 
-const TargetsModal = ({ open, setOpen }: TargetsModalProps) => {
-  const {
-    setIsTargetModalLoading,
-    isTargetModalLoading,
-    treeTarget,
-    restoreTarget,
-    conservTarget,
-    setUserInfo,
-  } = useMyForestV2();
+const TargetsModal = ({
+  open,
+  setOpen,
+  treeTarget,
+  restoreTarget,
+  conservTarget,
+}: TargetsModalProps) => {
+  const { setUserInfo } = useMyForestV2();
   const { contextLoaded, token, logoutUser, setRefetchUserData } =
     useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const tProfile = useTranslations('Profile.progressBar');
   const { tenantConfig } = useTenant();
   // states to manage modal
+  const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
   const [treesPlantedTarget, setTreesPlanted] = useState(0);
   const [areaRestoredTarget, setAreaRestoredTarget] = useState(0);
   const [areaConservedTarget, setAreaConservedTarget] = useState(0);

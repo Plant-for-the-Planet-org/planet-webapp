@@ -29,23 +29,6 @@ const ForestProgressIcon = ({ dataType }: { dataType: ProgressDataType }) => {
   }
 };
 
-const GiftReceivedFromCommunity = ({
-  gift,
-  label,
-}: {
-  gift: number;
-  label: string;
-}) => {
-  return (
-    <>
-      {' '}
-      {gift !== undefined && gift > 0 && (
-        <div className={styles.communityReceived}>{label}</div>
-      )}
-    </>
-  );
-};
-
 const ProgressData = ({
   giftPercentage,
   personalPercentage,
@@ -109,10 +92,7 @@ const ProgressData = ({
     quantity: gift,
   });
 
-  const giftReceivedProps = {
-    label,
-    gift,
-  };
+  const isGiftAvailable = gift !== undefined && gift > 0;
 
   return (
     <div className={styles.progressContainer}>
@@ -123,7 +103,9 @@ const ProgressData = ({
         <div className={styles.statisticsContainer}>
           <div className={styles.stat}>{graphLabel}</div>
           <StackedBarGraph {...graphProps} />
-          <GiftReceivedFromCommunity {...giftReceivedProps} />
+          {isGiftAvailable && (
+            <div className={styles.communityReceived}>{label}</div>
+          )}
         </div>
       </div>
     </div>

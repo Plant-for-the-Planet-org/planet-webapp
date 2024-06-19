@@ -4,26 +4,39 @@ import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './EmptyProgress';
 import ForestProgressItem from './ForestProgressItem';
+import { ProfilePageType } from '../../../common/types/myForestv2';
 
-interface ProgressBarsProps {
-  handleEditTargets: () => void;
+type ProgressData = {
   treesDonated: number;
   areaRestored: number;
   areaConserved: number;
+};
+
+type ForestProgressProp = {
+  profilePageType: ProfilePageType;
+};
+interface ProgressBarsProps {
+  handleEditTargets: () => void;
+  progressData: ProgressData;
+  treeTarget: number;
+  restoreTarget: number;
+  conservTarget: number;
+  profilePageType: ProfilePageType;
 }
 
 const ProgressBars = ({
   handleEditTargets,
-  treesDonated,
-  areaRestored,
-  areaConserved,
+  progressData,
+  treeTarget,
+  restoreTarget,
+  conservTarget,
+  profilePageType,
 }: ProgressBarsProps) => {
-  const { contributionsResult, treeTarget, restoreTarget, conservTarget } =
-    useMyForestV2();
+  const { contributionStats } = useMyForestV2();
 
   const shouldShowBar = (target: number, contributedUnits: number): boolean =>
     contributedUnits > 0 || target > 0;
-
+  const { treesDonated, areaRestored, areaConserved } = progressData;
   return (
     <>
       {shouldShowBar(treeTarget, treesDonated) && (
@@ -31,8 +44,9 @@ const ProgressBars = ({
           handleEditTargets={handleEditTargets}
           dataType={'treesPlanted'}
           target={treeTarget}
-          gift={contributionsResult?.stats.treesDonated.received ?? 0}
-          personal={contributionsResult?.stats.treesDonated.personal ?? 0}
+          gift={contributionStats?.treesDonated.received ?? 0}
+          personal={contributionStats?.treesDonated.personal ?? 0}
+          profilePageType={profilePageType}
         />
       )}
       {shouldShowBar(restoreTarget, areaRestored) && (
@@ -40,8 +54,9 @@ const ProgressBars = ({
           handleEditTargets={handleEditTargets}
           dataType={'areaRestored'}
           target={restoreTarget}
-          gift={contributionsResult?.stats.areaRestoredInM2.received ?? 0}
-          personal={contributionsResult?.stats.areaRestoredInM2.personal ?? 0}
+          gift={contributionStats?.areaRestoredInM2.received ?? 0}
+          personal={contributionStats?.areaRestoredInM2.personal ?? 0}
+          profilePageType={profilePageType}
         />
       )}
       {shouldShowBar(conservTarget, areaConserved) && (
@@ -49,40 +64,43 @@ const ProgressBars = ({
           handleEditTargets={handleEditTargets}
           dataType={'areaConserved'}
           target={conservTarget}
-          gift={contributionsResult?.stats.areaConservedInM2.received ?? 0}
-          personal={contributionsResult?.stats.areaConservedInM2.personal ?? 0}
+          gift={contributionStats?.areaConservedInM2.received ?? 0}
+          personal={contributionStats?.areaConservedInM2.personal ?? 0}
+          profilePageType={profilePageType}
         />
       )}
     </>
   );
 };
 
-const ForestProgress = () => {
+const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const [isEditingTargets, setIsEditingTargets] = useState(false);
   const handleEditTargets = () => setIsEditingTargets(true);
 
   const [isProgressEnabled, setIsProgressEnabled] = useState(false);
-  const { treeTarget, conservTarget, restoreTarget, contributionsResult } =
-    useMyForestV2();
+  const { userInfo, contributionStats } = useMyForestV2();
 
-  const aggregateContributions = () => {
+  const aggregateProgressData = () => {
     const treesDonated =
-      (contributionsResult?.stats.treesDonated.personal ?? 0) +
-      (contributionsResult?.stats.treesDonated.received ?? 0) +
-      (contributionsResult?.stats.treesRegistered ?? 0);
+      (contributionStats?.treesDonated.personal ?? 0) +
+      (contributionStats?.treesDonated.received ?? 0) +
+      (contributionStats?.treesRegistered ?? 0);
     const areaRestored =
-      (contributionsResult?.stats.areaRestoredInM2.personal ?? 0) +
-      (contributionsResult?.stats.areaRestoredInM2.received ?? 0);
+      (contributionStats?.areaRestoredInM2.personal ?? 0) +
+      (contributionStats?.areaRestoredInM2.received ?? 0);
     const areaConserved =
-      (contributionsResult?.stats.areaConservedInM2.personal ?? 0) +
-      (contributionsResult?.stats.areaConservedInM2.received ?? 0);
+      (contributionStats?.areaConservedInM2.personal ?? 0) +
+      (contributionStats?.areaConservedInM2.received ?? 0);
     return { treesDonated, areaRestored, areaConserved };
   };
 
-  const contributions = useMemo(aggregateContributions, [contributionsResult]);
-  const { treesDonated, areaRestored, areaConserved } = contributions;
+  const progressData = useMemo(aggregateProgressData, [contributionStats]);
+  const treeTarget = userInfo?.targets.treesDonated ?? 0;
+  const restoreTarget = userInfo?.targets.areaRestored ?? 0;
+  const conservTarget = userInfo?.targets.areaConserved ?? 0;
 
   useEffect(() => {
+    const { treesDonated, areaRestored, areaConserved } = progressData;
     setIsProgressEnabled(
       !(
         treesDonated === 0 &&
@@ -93,20 +111,21 @@ const ForestProgress = () => {
         areaConserved === 0
       )
     );
-  }, [
-    treeTarget,
-    treesDonated,
-    restoreTarget,
-    areaRestored,
-    conservTarget,
-    areaConserved,
-  ]);
+  }, [treeTarget, restoreTarget, conservTarget, progressData]);
 
   const progressBarsProps = {
     handleEditTargets,
-    treesDonated,
-    areaRestored,
-    areaConserved,
+    progressData,
+    treeTarget,
+    restoreTarget,
+    conservTarget,
+    profilePageType,
+  };
+
+  const targets = {
+    treeTarget,
+    restoreTarget,
+    conservTarget,
   };
   return (
     <div className={styles.progressSection}>
@@ -116,7 +135,11 @@ const ForestProgress = () => {
         <EmptyProgress handleSetTargets={handleEditTargets} />
       )}
 
-      <TargetsModal open={isEditingTargets} setOpen={setIsEditingTargets} />
+      <TargetsModal
+        open={isEditingTargets}
+        setOpen={setIsEditingTargets}
+        {...targets}
+      />
     </div>
   );
 };

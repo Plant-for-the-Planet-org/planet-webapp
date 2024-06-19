@@ -6,9 +6,10 @@ import ProjectItemCard, { ProjectItemCardProps } from './ProjectItemCard';
 import RegistrationItemCard, {
   RegistrationItemCardProps,
 } from './RegistrationItemCard';
+import { ProfilePageType } from '../../../common/types/myForestv2';
 
 interface Props {
-  profilePageType: 'private' | 'public';
+  profilePageType: ProfilePageType;
   displayName: string;
 }
 

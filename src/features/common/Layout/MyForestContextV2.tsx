@@ -18,6 +18,7 @@ import {
   MapLocation,
   MyContributionsMapItem,
   Leaderboard,
+  ContributionStats,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
@@ -52,16 +53,9 @@ interface MyForestContextV2Interface {
   contributionsMap: Map<string, MyContributionsMapItem> | undefined;
   registrationGeojson: RegistrationGeojson[];
   donationGeojson: DonationGeojson[];
-  isTargetModalLoading: boolean;
-  setIsTargetModalLoading: SetState<boolean>;
-  treeTarget: number;
-  setTreeTarget: SetState<number>;
-  restoreTarget: number;
-  setRestoreTarget: SetState<number>;
-  conservTarget: number;
-  setConservTarget: SetState<number>;
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
+  contributionStats: ContributionStats | undefined;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -82,14 +76,13 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [isLeaderboardLoaded, setIsLeaderboardLoaded] = useState(false);
   const [contributionsMap, setContributionsMap] =
     useState<Map<string, MyContributionsMapItem>>();
+  const [contributionStats, setContributionStats] =
+    useState<ContributionStats>();
   const [registrationGeojson, setRegistrationGeojson] = useState<
     RegistrationGeojson[]
   >([]);
+
   const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
-  const [treeTarget, setTreeTarget] = useState(0);
-  const [restoreTarget, setRestoreTarget] = useState(0);
-  const [conservTarget, setConservTarget] = useState(0);
-  const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
 
@@ -101,14 +94,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
     profileId: `${userInfo?.profileId}`,
     slug: `${userInfo?.slug}`,
   });
-
-  useEffect(() => {
-    if (userInfo) {
-      setTreeTarget(userInfo.targets.treesDonated);
-      setRestoreTarget(userInfo.targets.areaRestored);
-      setConservTarget(userInfo.targets.areaConserved);
-    }
-  }, [userInfo]);
 
   useEffect(() => {
     if (_projectList.data) {
@@ -163,7 +148,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
       const _donationGeojson: DonationGeojson[] = [];
 
       setContributionsMap(contributionsResult.myContributionsMap);
-
+      setContributionStats(contributionsResult.stats);
       //iterate through contributionsMap and generate geojson for each contribution
       contributionsResult.myContributionsMap.forEach((item, key) => {
         if (item.type === 'project') {
@@ -205,16 +190,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsMap,
       registrationGeojson,
       donationGeojson,
-      isTargetModalLoading,
-      setIsTargetModalLoading,
-      treeTarget,
-      setTreeTarget,
-      restoreTarget,
-      setRestoreTarget,
-      conservTarget,
-      setConservTarget,
       userInfo,
       setUserInfo,
+      contributionStats,
     }),
     [
       projectListResult,
@@ -224,16 +202,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsMap,
       registrationGeojson,
       donationGeojson,
-      isTargetModalLoading,
-      setIsTargetModalLoading,
-      treeTarget,
-      setTreeTarget,
-      restoreTarget,
-      setRestoreTarget,
-      conservTarget,
-      setConservTarget,
       userInfo,
       setUserInfo,
+      contributionStats,
     ]
   );
 

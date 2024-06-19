@@ -6,7 +6,7 @@ import { targetColor } from '../../../../../utils/myForestV2Utils';
 
 type EditButtonProp = Omit<
   ForestProgressItemProps,
-  'gift' | 'personal' | 'checked'
+  'gift' | 'personal' | 'checked' | 'profilePageType'
 >;
 
 const EditButton = ({
