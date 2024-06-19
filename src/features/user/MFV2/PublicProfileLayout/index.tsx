@@ -74,7 +74,11 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        <ContributionsMap />
+        {contributionStats ? (
+          <ContributionsMap />
+        ) : (
+          <ProfileLoader height={350} />
+        )}
       </section>
       <section id="progress-container" className={styles.progressContainer}>
         {contributionStats ? (

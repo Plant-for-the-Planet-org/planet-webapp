@@ -25,7 +25,7 @@ const MapCredits = () => {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <InfoIcon height={24} />
+        <InfoIcon height={25} />
       </div>
       <Popover
         id="mouse-over-popover"
