@@ -5,12 +5,8 @@ import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './EmptyProgress';
 import ForestProgressItem from './ForestProgressItem';
 import { ProfilePageType } from '../../../common/types/myForestv2';
-
-type ProgressData = {
-  treesDonated: number;
-  areaRestored: number;
-  areaConserved: number;
-};
+import { checkProgressEnabled } from '../../../../utils/myForestV2Utils';
+import { ProgressData } from '../../../common/types/myForestv2';
 
 type ForestProgressProp = {
   profilePageType: ProfilePageType;
@@ -77,7 +73,6 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const [isEditingTargets, setIsEditingTargets] = useState(false);
   const handleEditTargets = () => setIsEditingTargets(true);
 
-  const [isProgressEnabled, setIsProgressEnabled] = useState(false);
   const { userInfo, contributionStats } = useMyForestV2();
 
   const aggregateProgressData = () => {
@@ -99,16 +94,17 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const restoreTarget = userInfo?.targets.areaRestored ?? 0;
   const conservTarget = userInfo?.targets.areaConserved ?? 0;
 
+  const [isProgressEnabled, setIsProgressEnabled] = useState(
+    checkProgressEnabled(progressData, treeTarget, restoreTarget, conservTarget)
+  );
+
   useEffect(() => {
-    const { treesDonated, areaRestored, areaConserved } = progressData;
     setIsProgressEnabled(
-      !(
-        treesDonated === 0 &&
-        treeTarget === 0 &&
-        areaRestored === 0 &&
-        restoreTarget === 0 &&
-        conservTarget === 0 &&
-        areaConserved === 0
+      checkProgressEnabled(
+        progressData,
+        treeTarget,
+        restoreTarget,
+        conservTarget
       )
     );
   }, [treeTarget, restoreTarget, conservTarget, progressData]);

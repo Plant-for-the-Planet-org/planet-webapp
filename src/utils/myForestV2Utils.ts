@@ -1,5 +1,6 @@
 import themeProperties from '../theme/themeProperties';
-import { DataType } from '../features/user/MFV2/ForestProgress/ForestProgressItem';
+import { ProgressDataType } from '../features/user/MFV2/ForestProgress/ForestProgressItem';
+import { ProgressData } from '../features/common/types/myForestv2';
 
 export const getAchievedTarget = (
   target: number,
@@ -22,7 +23,7 @@ export const getAchievedTarget = (
   }
 };
 
-export const targetColor = (dataType: DataType) => {
+export const targetColor = (dataType: ProgressDataType) => {
   const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
     themeProperties;
   switch (dataType) {
@@ -33,4 +34,20 @@ export const targetColor = (dataType: DataType) => {
     case 'areaConserved':
       return mediumBlueColor;
   }
+};
+
+export const checkProgressEnabled = (
+  progressData: ProgressData,
+  treeTarget: number,
+  restoreTarget: number,
+  conservTarget: number
+) => {
+  return !(
+    progressData.treesDonated === 0 &&
+    treeTarget === 0 &&
+    progressData.areaRestored === 0 &&
+    restoreTarget === 0 &&
+    conservTarget === 0 &&
+    progressData.areaConserved === 0
+  );
 };
