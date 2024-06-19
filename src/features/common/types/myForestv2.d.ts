@@ -173,9 +173,3 @@ export type Leaderboard = {
 };
 
 export type ProfilePageType = 'private' | 'public';
-
-export type ProgressData = {
-  treesDonated: number;
-  areaRestored: number;
-  areaConserved: number;
-};

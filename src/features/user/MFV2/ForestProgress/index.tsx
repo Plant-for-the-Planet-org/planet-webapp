@@ -1,28 +1,34 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ForestProgress.module.scss';
 import TargetsModal from './TargetsModal';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import EmptyProgress from './EmptyProgress';
 import ForestProgressItem from './ForestProgressItem';
 import { ProfilePageType } from '../../../common/types/myForestv2';
-import { checkProgressEnabled } from '../../../../utils/myForestV2Utils';
-import { ProgressData } from '../../../common/types/myForestv2';
+import {
+  checkProgressEnabled,
+  aggregateProgressData,
+} from '../../../../utils/myForestV2Utils';
 
 type ForestProgressProp = {
   profilePageType: ProfilePageType;
 };
 interface ProgressBarsProps {
   handleEditTargets: () => void;
-  progressData: ProgressData;
   treeTarget: number;
   restoreTarget: number;
   conservTarget: number;
   profilePageType: ProfilePageType;
+  treesDonated: number;
+  areaRestored: number;
+  areaConserved: number;
 }
 
 const ProgressBars = ({
   handleEditTargets,
-  progressData,
+  treesDonated,
+  areaRestored,
+  areaConserved,
   treeTarget,
   restoreTarget,
   conservTarget,
@@ -32,7 +38,7 @@ const ProgressBars = ({
 
   const shouldShowBar = (target: number, contributedUnits: number): boolean =>
     contributedUnits > 0 || target > 0;
-  const { treesDonated, areaRestored, areaConserved } = progressData;
+
   return (
     <>
       {shouldShowBar(treeTarget, treesDonated) && (
@@ -75,43 +81,48 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
 
   const { userInfo, contributionStats } = useMyForestV2();
 
-  const aggregateProgressData = () => {
-    const treesDonated =
-      (contributionStats?.treesDonated.personal ?? 0) +
-      (contributionStats?.treesDonated.received ?? 0) +
-      (contributionStats?.treesRegistered ?? 0);
-    const areaRestored =
-      (contributionStats?.areaRestoredInM2.personal ?? 0) +
-      (contributionStats?.areaRestoredInM2.received ?? 0);
-    const areaConserved =
-      (contributionStats?.areaConservedInM2.personal ?? 0) +
-      (contributionStats?.areaConservedInM2.received ?? 0);
-    return { treesDonated, areaRestored, areaConserved };
-  };
-
-  const progressData = useMemo(aggregateProgressData, [contributionStats]);
+  const { treesDonated, areaRestored, areaConserved } =
+    aggregateProgressData(contributionStats);
   const treeTarget = userInfo?.targets.treesDonated ?? 0;
   const restoreTarget = userInfo?.targets.areaRestored ?? 0;
   const conservTarget = userInfo?.targets.areaConserved ?? 0;
 
   const [isProgressEnabled, setIsProgressEnabled] = useState(
-    checkProgressEnabled(progressData, treeTarget, restoreTarget, conservTarget)
+    checkProgressEnabled(
+      treesDonated,
+      areaRestored,
+      areaConserved,
+      treeTarget,
+      restoreTarget,
+      conservTarget
+    )
   );
 
   useEffect(() => {
     setIsProgressEnabled(
       checkProgressEnabled(
-        progressData,
+        treesDonated,
+        areaRestored,
+        areaConserved,
         treeTarget,
         restoreTarget,
         conservTarget
       )
     );
-  }, [treeTarget, restoreTarget, conservTarget, progressData]);
+  }, [
+    treeTarget,
+    restoreTarget,
+    conservTarget,
+    treesDonated,
+    areaRestored,
+    areaConserved,
+  ]);
 
   const progressBarsProps = {
     handleEditTargets,
-    progressData,
+    treesDonated,
+    areaRestored,
+    areaConserved,
     treeTarget,
     restoreTarget,
     conservTarget,
