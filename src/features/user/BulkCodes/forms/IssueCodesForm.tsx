@@ -26,6 +26,8 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
+import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   handleError,
   APIError,
@@ -59,6 +61,8 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
+  const [hasTakenRecipientDataConsent, setHasTakenRecipientDataConsent] =
+    useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
 
   const notificationLocales = [
@@ -235,6 +239,16 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
+  const shouldDisableSubmission =
+    !(
+      user?.planetCash &&
+      !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+    ) ||
+    isProcessing ||
+    (localRecipients.length === 0 &&
+      (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0)) ||
+    (bulkMethod === 'import' && !hasTakenRecipientDataConsent);
+
   if (!isSubmitted) {
     return (
       <CenteredContainer>
@@ -294,8 +308,28 @@ const IssueCodesForm = (): ReactElement | null => {
               currency={planetCashAccount?.currency}
               units={getTotalUnits()}
               unit={project?.unit}
-              isImport={bulkMethod === 'import'}
             />
+            {bulkMethod === 'import' && (
+              <InlineFormDisplayGroup type="other">
+                <ToggleSwitch
+                  checked={hasTakenRecipientDataConsent}
+                  onChange={() => {
+                    setHasTakenRecipientDataConsent(
+                      !hasTakenRecipientDataConsent
+                    );
+                  }}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="recipientDataConsent"
+                />
+                <label
+                  htmlFor="recipientDataConsent"
+                  className={styles.recipientDataConsent}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {t('recipientDataConsent')}
+                </label>
+              </InlineFormDisplayGroup>
+            )}
           </div>
           <BulkCodesError />
           <form onSubmit={handleSubmit}>
@@ -304,19 +338,20 @@ const IssueCodesForm = (): ReactElement | null => {
               variant="contained"
               color="primary"
               className="formButton"
-              disabled={
-                !(
-                  user?.planetCash &&
-                  !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-                ) ||
-                isProcessing ||
-                (localRecipients.length === 0 &&
-                  (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-              }
+              disabled={shouldDisableSubmission}
             >
               {isProcessing ? t('issuingCodes') : t('issueCodes')}
             </Button>
           </form>
+          <div className={styles.issueCodeConsent}>
+            {t('chargeConsentText')}
+            {bulkMethod === 'import' && (
+              <>
+                <br />
+                {t('invalidEmailWarningText')}
+              </>
+            )}
+          </div>
         </StyledFormContainer>
       </CenteredContainer>
     );

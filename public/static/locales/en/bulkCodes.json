@@ -41,6 +41,7 @@
     "occasion": "Occasion",
     "notificationLanguage": "Notification language",
     "total": "Total",
+    "recipientDataConsent": "I have consent to submit data of the listed people to the Plant-for-the-Planet Platform.",
     "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
     "invalidEmailWarningText": "Please make sure that that Recipient Email is a valid email. Using dummy or invalid emails will lead to account suspension in accordance with Platform terms and conditions.",
     "projectRequired": "No project is selected.",
