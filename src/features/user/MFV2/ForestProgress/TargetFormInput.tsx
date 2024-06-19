@@ -32,7 +32,7 @@ const TargetFormInput = ({
   }, []);
 
   const handleTargetSwitch = (e: ChangeEvent<HTMLInputElement>) => {
-    if (target > 0) {
+    if (target || latestTarget > 0) {
       setChecked(e.target.checked);
     }
   };
