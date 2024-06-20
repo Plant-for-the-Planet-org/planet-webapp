@@ -70,7 +70,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const restoreTarget = userInfo?.targets.areaRestored ?? 0;
   const conservTarget = userInfo?.targets.areaConserved ?? 0;
 
-  const isDisabled = () => {
+  const isProgressBarDisabled = () => {
     return (
       treesDonated === 0 &&
       areaRestored === 0 &&
@@ -97,7 +97,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           <ProfileLoader height={350} />
         )}
       </section>
-      {isDisabled() ? (
+      {isProgressBarDisabled() ? (
         <></>
       ) : (
         <section id="progress-container" className={styles.progressContainer}>

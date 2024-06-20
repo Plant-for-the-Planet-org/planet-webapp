@@ -88,11 +88,11 @@ const ProgressData = ({
     personal,
     target,
   };
-  const label = tProfile('totalGiftFromCommunity', {
-    quantity: gift,
-  });
 
   const isGiftAvailable = gift !== undefined && gift > 0;
+  const giftLabel = tProfile('totalGiftFromCommunity', {
+    quantity: gift,
+  });
 
   return (
     <div className={styles.progressContainer}>
@@ -104,7 +104,7 @@ const ProgressData = ({
           <div className={styles.stat}>{graphLabel}</div>
           <StackedBarGraph {...graphProps} />
           {isGiftAvailable && (
-            <div className={styles.communityReceived}>{label}</div>
+            <div className={styles.communityReceived}>{giftLabel}</div>
           )}
         </div>
       </div>
