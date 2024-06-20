@@ -18,6 +18,7 @@ import {
   MyContributionsMapItem,
   Leaderboard,
   ProjectQueryResult,
+  ContributionStats,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
@@ -47,6 +48,7 @@ interface MyForestContextV2Interface {
   donationGeojson: PointFeature<DonationProperties>[];
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
+  contributionStats: ContributionStats | undefined;
 }
 
 const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
@@ -54,6 +56,9 @@ const MyForestContextV2 = createContext<MyForestContextV2Interface | null>(
 );
 
 export const MyForestProviderV2: FC = ({ children }) => {
+  const { setErrors } = useContext(ErrorHandlingContext);
+
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [projectListResult, setProjectListResult] =
     useState<ProjectListResponse>();
   const [contributionsResult, setContributionsResult] =
@@ -64,6 +69,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [isLeaderboardLoaded, setIsLeaderboardLoaded] = useState(false);
   const [contributionsMap, setContributionsMap] =
     useState<Map<string, MyContributionsMapItem>>();
+  const [contributionStats, setContributionStats] =
+    useState<ContributionStats>();
   const [registrationGeojson, setRegistrationGeojson] = useState<
     PointFeature<MyContributionsSingleRegistration>[]
   >([]);
@@ -71,10 +78,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [donationGeojson, setDonationGeojson] = useState<
     PointFeature<DonationProperties>[]
   >([]);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const { setErrors } = useContext(ErrorHandlingContext);
 
   const _projectList = trpc.myForestV2.projectList.useQuery();
+
   const _contributions = trpc.myForestV2.contributions.useQuery({
     profileId: `${userInfo?.profileId}`,
     slug: `${userInfo?.slug}`,
@@ -140,7 +146,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
       const _donationGeojson: PointFeature<DonationProperties>[] = [];
 
       setContributionsMap(contributionsResult.myContributionsMap);
-
+      setContributionStats(contributionsResult.stats);
       //iterate through contributionsMap and generate geojson for each contribution
       contributionsResult.myContributionsMap.forEach((item, key) => {
         if (item.type === 'project') {
@@ -184,6 +190,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
       donationGeojson,
       userInfo,
       setUserInfo,
+      contributionStats,
     }),
     [
       projectListResult,
@@ -195,6 +202,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
       donationGeojson,
       userInfo,
       setUserInfo,
+      contributionStats,
     ]
   );
 

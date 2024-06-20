@@ -7,12 +7,15 @@ import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { ViewportProps } from '../../../../common/types/map';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
-import { MyContributionsSingleRegistration } from '../../../../common/types/myForestv2';
+import {
+  MyContributionsSingleRegistration,
+  ProfilePageType,
+} from '../../../../common/types/myForestv2';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
   viewport: ViewportProps;
-  profilePageType: 'public' | 'private';
+  profilePageType: ProfilePageType;
   supportedTreecounter: string | undefined;
 }
 

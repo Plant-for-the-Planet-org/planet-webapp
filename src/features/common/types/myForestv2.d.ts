@@ -171,3 +171,5 @@ export type Leaderboard = {
   mostRecent: LeaderboardItem[];
   mostTrees: LeaderboardItem[];
 };
+
+export type ProfilePageType = 'private' | 'public';

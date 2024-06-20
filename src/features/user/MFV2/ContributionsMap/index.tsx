@@ -8,9 +8,10 @@ import Markers from './Markers';
 import { useRef, MutableRefObject } from 'react';
 import style from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
+import { ProfilePageType } from '../../../common/types/myForestv2';
 
 interface ContributionsMapProps {
-  profilePageType: 'public' | 'private';
+  profilePageType: ProfilePageType;
   supportedTreecounter?: string | undefined;
 }
 interface MapState {

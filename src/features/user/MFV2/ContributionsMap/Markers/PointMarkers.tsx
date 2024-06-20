@@ -7,13 +7,16 @@ import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons
 import DonationPopup from '../Popup/DonationPopup';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
-import { MyContributionsSingleRegistration } from '../../../../common/types/myForestv2';
+import {
+  MyContributionsSingleRegistration,
+  ProfilePageType,
+} from '../../../../common/types/myForestv2';
 
 interface PointMarkersProps {
   superclusterResponse: PointFeature<
     DonationProperties | MyContributionsSingleRegistration
   >;
-  profilePageType: 'public' | 'private';
+  profilePageType: ProfilePageType;
   supportedTreecounter: string | undefined;
 }
 

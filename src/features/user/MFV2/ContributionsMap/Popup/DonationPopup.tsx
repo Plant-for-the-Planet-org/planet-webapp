@@ -6,11 +6,12 @@ import ProjectInfoSection from './ProjectInfoSection';
 import ContributionInfoList from './ContributionInfoList';
 import PopupImageSection from './PopupImageSection';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
+import { ProfilePageType } from '../../../../common/types/myForestv2';
 
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;
   setShowPopUp: SetState<boolean>;
-  profilePageType: 'public' | 'private';
+  profilePageType: ProfilePageType;
   supportedTreecounter: string | undefined;
 }
 

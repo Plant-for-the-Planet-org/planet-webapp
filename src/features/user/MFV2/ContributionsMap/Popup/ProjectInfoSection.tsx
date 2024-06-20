@@ -6,10 +6,11 @@ import { CountryCode } from '@planet-sdk/common';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 import DonateButton from '../../MyContributions/DonateButton';
 import { PointFeature } from 'supercluster';
+import { ProfilePageType } from '../../../../common/types/myForestv2';
 
 interface ProjectInfoSectionProps {
   superclusterResponse: PointFeature<DonationProperties>;
-  profilePageType: 'public' | 'private';
+  profilePageType: ProfilePageType;
   supportedTreecounter?: string;
 }
 const ProjectInfoSection = ({
