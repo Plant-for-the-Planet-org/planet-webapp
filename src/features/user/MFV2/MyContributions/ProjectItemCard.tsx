@@ -93,8 +93,8 @@ const ProjectItemCard = ({
                 projectPurpose={project.purpose}
                 buttonText={
                   pageType === 'public'
-                    ? tProfile('donate')
-                    : tProfile('donateAgain')
+                    ? tProfile('donateAgain')
+                    : tProfile('donate')
                 }
                 projectSlug={project.slug}
                 contributionUnitType={project.unitType}
