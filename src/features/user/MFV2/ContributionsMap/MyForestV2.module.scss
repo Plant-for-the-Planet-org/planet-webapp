@@ -23,9 +23,20 @@
   }
 }
 
-//styles for contribution  popup
+.customDonateButton {
+  min-height: 1rem !important;
+  padding: 2px 5px !important;
+  font-size: 10px;
+  border-radius: 4px !important;
+}
 
-.contributionPopupContainer {
+.donation-popup {
+  > div {
+    display: none;
+  }
+}
+
+.donationPopupContainer {
   min-width: 235px;
   min-height: 154px;
   border-radius: 8px;
@@ -94,16 +105,9 @@
 }
 
 .popupDonateButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px 8px;
+  padding: 2px 8px !important;
   font-size: 10px;
   font-weight: 700;
-  color: #fff;
-  background: rgba(0, 122, 73, 1);
-  width: 53px;
-  height: 18px;
   border-radius: 4px;
   cursor: pointer;
 }

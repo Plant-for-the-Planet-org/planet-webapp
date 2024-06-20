@@ -9,6 +9,10 @@ import { useRef, MutableRefObject } from 'react';
 import style from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
 
+interface ContributionsMapProps {
+  pageType: 'public' | 'private';
+  supportedTreecounter?: string | undefined;
+}
 interface MapState {
   mapStyle: MapStyle;
   dragPan: boolean;
@@ -23,7 +27,10 @@ const EMPTY_STYLE = {
   layers: [] as MapStyle['layers'],
 } as const;
 
-function ContributionsMap() {
+function ContributionsMap({
+  pageType,
+  supportedTreecounter,
+}: ContributionsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   // mapState and viewState logic will need to be refined and move elsewhere (either context or props) once we fetch data from the API
   const [mapState, setMapState] = useState<MapState>({
@@ -59,7 +66,12 @@ function ContributionsMap() {
         attributionControl={false}
         ref={mapRef}
       >
-        <Markers mapRef={mapRef} viewport={viewState} />
+        <Markers
+          mapRef={mapRef}
+          viewport={viewState}
+          pageType={pageType}
+          supportedTreecounter={supportedTreecounter}
+        />
         <MapCredits />
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>

@@ -13,9 +13,15 @@ interface PointMarkersProps {
   superclusterResponse: PointFeature<
     DonationProperties | MyContributionsSingleRegistration
   >;
+  pageType: 'public' | 'private';
+  supportedTreecounter: string | undefined;
 }
 
-const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
+const PointMarkers = ({
+  superclusterResponse,
+  pageType,
+  supportedTreecounter,
+}: PointMarkersProps) => {
   if (!superclusterResponse) return null;
   const [showPopup, setShowPopUp] = useState(false);
 
@@ -34,14 +40,16 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
       superclusterResponse as PointFeature<DonationProperties>,
     setShowPopUp,
     handleMouseLeave,
+    pageType,
+    supportedTreecounter,
   };
 
   const isDonation = 'projectInfo' in superclusterResponse.properties;
 
   return (
     <Marker
-      longitude={superclusterResponse?.geometry.coordinates[0]}
-      latitude={superclusterResponse?.geometry.coordinates[1]}
+      longitude={superclusterResponse.geometry.coordinates[0]}
+      latitude={superclusterResponse.geometry.coordinates[1]}
       offset={[0, -15]}
     >
       {isDonation ? (

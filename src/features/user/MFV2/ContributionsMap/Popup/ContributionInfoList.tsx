@@ -26,7 +26,7 @@ const ContributionInfoList = ({
           <div className={style.contributionInfoContainer} key={key}>
             <p className={style.trees}>
               {' '}
-              {tProfile('myForestMapV.plantedTree', {
+              {tProfile('myForestMap.plantedTree', {
                 count: Number.isInteger(singleContribution.quantity)
                   ? singleContribution.quantity
                   : singleContribution.quantity.toFixed(2),
@@ -44,7 +44,7 @@ const ContributionInfoList = ({
 
       {contributionCount >= 4 && (
         <div className={style.totalContribution}>
-          {tProfile('myForestMapV.totalContribution', {
+          {tProfile('donatePopup.totalContribution', {
             count: Number(contributionCount) - 3,
           })}
         </div>

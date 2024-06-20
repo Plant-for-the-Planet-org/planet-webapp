@@ -60,15 +60,8 @@
       "registrationInfo": "Registered • {date}",
       "registrationInfoWithCountry": "Registered • {countryName} • {date}"
     },
-    "myForestMapV": {
-      "plantedTree": "{count, plural, =1 {# Tree} other {# Trees}}",
+    "donatePopup": {
       "totalContribution": "+{count, plural, =1 {# Contribution} other {# Contributions}}",
-      "treesPlanted": "Trees Planted",
-      "registered": "Registered",
-      "projects": "Projects",
-      "totalDonation": "{count, plural, =1 {# donation} other {# donations}} ",
-      "totalProject": "to {count, plural, =1 {# project} other {# projects}}",
-      "tpoName": "By {tpo}",
       "projectName": "{name}",
       "classification": "{classification}"
     },

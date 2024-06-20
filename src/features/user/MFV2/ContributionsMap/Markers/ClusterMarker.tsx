@@ -88,8 +88,8 @@ const ClusterMarker = ({
     secondaryProjectColor,
     mainProjectColor,
   };
-  const longitude = superclusterResponse?.geometry.coordinates[0];
-  const latitude = superclusterResponse?.geometry.coordinates[1];
+  const longitude = superclusterResponse.geometry.coordinates[0];
+  const latitude = superclusterResponse.geometry.coordinates[1];
 
   return (
     <Marker longitude={longitude} latitude={latitude}>

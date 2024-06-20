@@ -12,13 +12,20 @@ import { MyContributionsSingleRegistration } from '../../../../common/types/myFo
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
   viewport: ViewportProps;
+  pageType: 'public' | 'private';
+  supportedTreecounter: string | undefined;
 }
 
 type SuperclusterResponse =
   | PointFeature<DonationProperties | ClusterProperties>
   | PointFeature<MyContributionsSingleRegistration | ClusterProperties>;
 
-const Markers = ({ mapRef, viewport }: MarkersProps) => {
+const Markers = ({
+  mapRef,
+  viewport,
+  pageType,
+  supportedTreecounter,
+}: MarkersProps) => {
   const { registrationGeojson, donationGeojson } = useMyForestV2();
   const [donationSuperclusterResponse, setDonationSuperclusterResponse] =
     useState<SuperclusterResponse[] | undefined>([]);
@@ -66,6 +73,8 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
         ) : (
           <PointMarkers
             superclusterResponse={geoJson as PointFeature<DonationProperties>}
+            pageType={pageType}
+            supportedTreecounter={supportedTreecounter}
           />
         );
       })}
@@ -81,6 +90,8 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
             superclusterResponse={
               geoJson as PointFeature<MyContributionsSingleRegistration>
             }
+            pageType={pageType}
+            supportedTreecounter={supportedTreecounter}
           />
         );
       })}
@@ -89,5 +100,4 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
     <></>
   );
 };
-
 export default Markers;

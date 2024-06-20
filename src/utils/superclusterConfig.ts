@@ -36,12 +36,9 @@ export const _getClusterGeojson = (
   >[],
   clusterId: string | number | undefined
 ):
-  | (
-      | Supercluster.PointFeature<
-          MyContributionsSingleRegistration | DonationProperties
-        >
-      | Supercluster.PointFeature<ClusterProperties>
-    )[]
+  | Supercluster.PointFeature<
+      MyContributionsSingleRegistration | DonationProperties | ClusterProperties
+    >[]
   | undefined => {
   const supercluster = new Supercluster<
     MyContributionsSingleRegistration | DonationProperties,

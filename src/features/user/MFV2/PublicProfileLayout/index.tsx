@@ -23,7 +23,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
-  const { setUserInfo, contributionsResult } = useMyForestV2();
+  const { userInfo, setUserInfo, contributionsResult } = useMyForestV2();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
   async function loadPublicProfile(id: string) {
@@ -73,7 +73,14 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        {contributionsResult?.stats ? <ContributionsMap /> : <ProfileLoader />}
+        {contributionsResult?.stats ? (
+          <ContributionsMap
+            pageType={'public'}
+            supportedTreecounter={userInfo?.slug ?? ''}
+          />
+        ) : (
+          <ProfileLoader />
+        )}
       </section>
       <section id="progress-container" className={styles.progressContainer}>
         Progress
@@ -90,6 +97,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
                 ? profile.displayName.split(' ').slice(0, 1)[0]
                 : profile.displayName
             }
+            supportedTreecounter={userInfo?.slug ?? ''}
           />
         ) : null}
       </section>

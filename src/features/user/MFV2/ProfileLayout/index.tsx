@@ -46,7 +46,11 @@ const ProfileLayout = () => {
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        {contributionsResult?.stats ? <ContributionsMap /> : <ProfileLoader />}
+        {contributionsResult?.stats ? (
+          <ContributionsMap pageType="private" />
+        ) : (
+          <ProfileLoader />
+        )}
       </section>
       <section id="progress-container" className={styles.progressContainer}>
         Progress

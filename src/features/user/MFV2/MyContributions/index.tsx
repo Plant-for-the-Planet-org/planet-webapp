@@ -10,9 +10,14 @@ import RegistrationItemCard, {
 interface Props {
   profilePageType: 'private' | 'public';
   displayName: string;
+  supportedTreecounter?: string;
 }
 
-const MyContributions = ({ profilePageType, displayName }: Props) => {
+const MyContributions = ({
+  profilePageType,
+  displayName,
+  supportedTreecounter,
+}: Props) => {
   const { contributionsMap, projectListResult } = useMyForestV2();
   const [contributionListItems, setContributionsListItems] = useState<
     (
@@ -39,6 +44,7 @@ const MyContributions = ({ profilePageType, displayName }: Props) => {
               contributionDetails={item}
               project={projectListResult[key]}
               pageType={profilePageType}
+              supportedTreecounter={supportedTreecounter}
             />
           );
         }

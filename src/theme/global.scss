@@ -748,8 +748,6 @@ input[type='number'] {
   }
 }
 
-.maplibregl-popup-anchor-bottom {
-  .maplibregl-popup-tip {
-    display: none;
-  }
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  display: none !important;
 }

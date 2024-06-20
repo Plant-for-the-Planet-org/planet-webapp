@@ -5,19 +5,22 @@ import style from '../MyForestV2.module.scss';
 import { PointFeature } from 'supercluster';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
-const ProjectimageSection = ({
+const ProjectImageSection = ({
   superclusterResponse,
 }: {
   superclusterResponse: PointFeature<DonationProperties>;
 }) => {
-  const t = useTranslations('Profile');
-  const {
-    image,
-    classification,
-    name: projectName,
-    purpose,
-  } = superclusterResponse.properties.projectInfo;
+  const t = useTranslations('Profile.donatePopup');
+  const { image, classification, name, purpose } =
+    superclusterResponse.properties.projectInfo;
 
+  const truncateString = (str: string, maxLength: number) => {
+    if (str.length <= maxLength) {
+      return str;
+    }
+    return str.slice(0, maxLength) + '...';
+  };
+  const projectName = truncateString(name, 35);
   return (
     <div className={style.imageContainer}>
       <img
@@ -36,13 +39,14 @@ const ProjectimageSection = ({
             />
           </div>
           <div className={style.classification}>
-            {t('myForestMapV.classification', {
-              classification: classification,
+            {t('classification', {
+              classification:
+                purpose === 'conservation' ? purpose : classification,
             })}
           </div>
         </div>
         <div className={style.projectName}>
-          {t('myForestMapV.projectName', {
+          {t('projectName', {
             name: projectName,
           })}
         </div>
@@ -51,4 +55,4 @@ const ProjectimageSection = ({
   );
 };
 
-export default ProjectimageSection;
+export default ProjectImageSection;
