@@ -4,13 +4,13 @@ import style from '../MyForestV2.module.scss';
 import { SetState } from '../../../../common/types/common';
 import ProjectInfoSection from './ProjectInfoSection';
 import ContributionInfoList from './ContributionInfoList';
-import ProjectImageSection from './ProjectImageSection';
+import PopupImageSection from './PopupImageSection';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;
   setShowPopUp: SetState<boolean>;
-  handleMouseLeave: () => void;
+  handlePopupClose: () => void;
   pageType: 'public' | 'private';
   supportedTreecounter: string | undefined;
 }
@@ -18,7 +18,7 @@ interface DonationPopupProps {
 const DonationPopup = ({
   superclusterResponse,
   setShowPopUp,
-  handleMouseLeave,
+  handlePopupClose,
   pageType,
   supportedTreecounter,
 }: DonationPopupProps) => {
@@ -40,9 +40,9 @@ const DonationPopup = ({
       <div
         className={style.donationPopupContainer}
         onMouseEnter={() => setShowPopUp(true)}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={handlePopupClose}
       >
-        <ProjectImageSection superclusterResponse={superclusterResponse} />
+        <PopupImageSection superclusterResponse={superclusterResponse} />
         <ProjectInfoSection {...ProjectInfoSectionProps} />
         <ContributionInfoList superclusterResponse={superclusterResponse} />
       </div>

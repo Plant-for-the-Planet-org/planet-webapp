@@ -25,11 +25,11 @@ const PointMarkers = ({
   if (!superclusterResponse) return null;
   const [showPopup, setShowPopUp] = useState(false);
 
-  const handleMouseEnter = () => {
+  const handlePopupOpen = () => {
     setShowPopUp(true);
   };
 
-  const handleMouseLeave = () => {
+  const handlePopupClose = () => {
     setTimeout(() => {
       setShowPopUp(false);
     }, 1500);
@@ -39,7 +39,7 @@ const PointMarkers = ({
     superclusterResponse:
       superclusterResponse as PointFeature<DonationProperties>,
     setShowPopUp,
-    handleMouseLeave,
+    handlePopupClose,
     pageType,
     supportedTreecounter,
   };
@@ -54,8 +54,8 @@ const PointMarkers = ({
     >
       {isDonation ? (
         <>
-          {showPopup && <DonationPopup {...donationPopupProps} />}
-          <div onMouseEnter={handleMouseEnter}>
+          {true && <DonationPopup {...donationPopupProps} />}
+          <div onMouseEnter={handlePopupOpen}>
             <ProjectTypeIcon
               purpose={
                 (superclusterResponse as PointFeature<DonationProperties>)
@@ -75,11 +75,15 @@ const PointMarkers = ({
       ) : (
         <>
           {showPopup && (
-            <RegisterTreePopup superclusterResponse={superclusterResponse} />
+            <RegisterTreePopup
+              superclusterResponse={
+                superclusterResponse as PointFeature<MyContributionsSingleRegistration>
+              }
+            />
           )}
           <div
             className={style.registeredTreeMarkerContainer}
-            onMouseEnter={handleMouseEnter}
+            onMouseEnter={handlePopupOpen}
             onMouseLeave={() => setShowPopUp(false)}
           >
             <RegisteredTreeIcon />

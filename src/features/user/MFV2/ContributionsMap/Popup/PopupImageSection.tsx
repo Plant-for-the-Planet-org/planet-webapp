@@ -5,7 +5,7 @@ import style from '../MyForestV2.module.scss';
 import { PointFeature } from 'supercluster';
 import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
-const ProjectImageSection = ({
+const PopupImageSection = ({
   superclusterResponse,
 }: {
   superclusterResponse: PointFeature<DonationProperties>;
@@ -55,4 +55,4 @@ const ProjectImageSection = ({
   );
 };
 
-export default ProjectImageSection;
+export default PopupImageSection;
