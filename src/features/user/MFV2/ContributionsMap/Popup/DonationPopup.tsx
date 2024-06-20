@@ -10,7 +10,6 @@ import { DonationProperties } from '../../../../common/Layout/MyForestContextV2'
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;
   setShowPopUp: SetState<boolean>;
-  handlePopupClose: () => void;
   pageType: 'public' | 'private';
   supportedTreecounter: string | undefined;
 }
@@ -18,7 +17,6 @@ interface DonationPopupProps {
 const DonationPopup = ({
   superclusterResponse,
   setShowPopUp,
-  handlePopupClose,
   pageType,
   supportedTreecounter,
 }: DonationPopupProps) => {
@@ -34,13 +32,13 @@ const DonationPopup = ({
       latitude={coordinates[1]}
       longitude={coordinates[0]}
       className={style.contributionPopup}
-      offset={35}
+      offset={30}
       closeButton={false}
     >
       <div
         className={style.donationPopupContainer}
-        onMouseEnter={() => setShowPopUp(true)}
-        onMouseLeave={handlePopupClose}
+        onMouseOver={() => setShowPopUp(true)}
+        onMouseLeave={() => setShowPopUp(false)}
       >
         <PopupImageSection superclusterResponse={superclusterResponse} />
         <ProjectInfoSection {...ProjectInfoSectionProps} />
