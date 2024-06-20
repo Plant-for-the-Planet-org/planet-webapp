@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { trpc } from '../../../utils/trpc';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
-import { Point } from 'geojson';
 import {
   ProjectListResponse,
   MyForestProject,
@@ -18,22 +17,15 @@ import {
   MapLocation,
   MyContributionsMapItem,
   Leaderboard,
+  ProjectQueryResult,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
+import { PointFeature } from 'supercluster';
 
-export interface RegistrationGeojson {
-  type: 'Feature';
-  geometry: Point;
-  properties: MyContributionsSingleRegistration;
-}
-
-export interface DonationGeojson {
-  type: 'Feature';
-  geometry: Point;
-  properties: {
-    contributionInfo: MyContributionsSingleRegistration;
-  };
+export interface DonationProperties {
+  projectInfo: ProjectQueryResult;
+  contributionInfo: MyContributionsSingleProject;
 }
 
 interface UserInfo {
@@ -51,8 +43,8 @@ interface MyForestContextV2Interface {
   leaderboardResult: Leaderboard | undefined;
   isLeaderboardLoaded: boolean;
   contributionsMap: Map<string, MyContributionsMapItem> | undefined;
-  registrationGeojson: RegistrationGeojson[];
-  donationGeojson: DonationGeojson[];
+  registrationGeojson: PointFeature<MyContributionsSingleRegistration>[];
+  donationGeojson: PointFeature<DonationProperties>[];
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
 }
@@ -73,10 +65,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [contributionsMap, setContributionsMap] =
     useState<Map<string, MyContributionsMapItem>>();
   const [registrationGeojson, setRegistrationGeojson] = useState<
-    RegistrationGeojson[]
+    PointFeature<MyContributionsSingleRegistration>[]
   >([]);
 
-  const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
+  const [donationGeojson, setDonationGeojson] = useState<
+    PointFeature<DonationProperties>[]
+  >([]);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const { setErrors } = useContext(ErrorHandlingContext);
 
@@ -141,8 +135,9 @@ export const MyForestProviderV2: FC = ({ children }) => {
 
   useEffect(() => {
     if (contributionsResult) {
-      const _registrationGeojson: RegistrationGeojson[] = [];
-      const _donationGeojson: DonationGeojson[] = [];
+      const _registrationGeojson: PointFeature<MyContributionsSingleRegistration>[] =
+        [];
+      const _donationGeojson: PointFeature<DonationProperties>[] = [];
 
       setContributionsMap(contributionsResult.myContributionsMap);
 

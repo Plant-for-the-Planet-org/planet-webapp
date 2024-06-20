@@ -1,4 +1,4 @@
-import { AnyProps, PointFeature } from 'supercluster';
+import { ClusterProperties, PointFeature } from 'supercluster';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import ClusterMarker from './ClusterMarker';
@@ -6,18 +6,24 @@ import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import { ViewportProps } from '../../../../common/types/map';
+import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
+import { MyContributionsSingleRegistration } from '../../../../common/types/myForestv2';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
   viewport: ViewportProps;
 }
 
+type SuperclusterResponse =
+  | PointFeature<DonationProperties | ClusterProperties>
+  | PointFeature<MyContributionsSingleRegistration | ClusterProperties>;
+
 const Markers = ({ mapRef, viewport }: MarkersProps) => {
   const { registrationGeojson, donationGeojson } = useMyForestV2();
-  const [donationSuperclusterResponse, setDonationSuperclusteResponse] =
-    useState<PointFeature<AnyProps>[] | undefined>([]);
+  const [donationSuperclusterResponse, setDonationSuperclusterResponse] =
+    useState<SuperclusterResponse[] | undefined>([]);
   const [registrationSuperclusterResponse, setRegistrationSuperclusteResponse] =
-    useState<PointFeature<AnyProps>[] | undefined>([]);
+    useState<SuperclusterResponse[] | undefined>([]);
 
   useEffect(() => {
     if (donationGeojson && viewport) {
@@ -26,8 +32,9 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
         mapRef,
         donationGeojson,
         undefined
-      );
-      setDonationSuperclusteResponse(superclusterResponseForDonatedTree);
+      ) as PointFeature<DonationProperties | ClusterProperties>[];
+
+      setDonationSuperclusterResponse(superclusterResponseForDonatedTree);
     }
   }, [viewport, donationGeojson]);
 
@@ -38,7 +45,9 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
         mapRef,
         registrationGeojson,
         undefined
-      );
+      ) as PointFeature<
+        MyContributionsSingleRegistration | ClusterProperties
+      >[];
       setRegistrationSuperclusteResponse(superclusterResponseForRegisteredTree);
     }
   }, [viewport, registrationGeojson]);
@@ -46,21 +55,33 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
   return donationSuperclusterResponse && registrationSuperclusterResponse ? (
     <>
       {donationSuperclusterResponse.map((geoJson) => {
-        return geoJson.properties.cluster ? (
+        return (geoJson as PointFeature<ClusterProperties>).properties
+          .cluster ? (
           <ClusterMarker
-            superclusterResponse={geoJson}
+            key={geoJson.id}
+            superclusterResponse={geoJson as PointFeature<ClusterProperties>}
             viewport={viewport}
             mapRef={mapRef}
           />
         ) : (
-          <PointMarkers superclusterResponse={geoJson} />
+          <PointMarkers
+            superclusterResponse={geoJson as PointFeature<DonationProperties>}
+          />
         );
       })}
       {registrationSuperclusterResponse.map((geoJson) => {
-        return geoJson.properties.cluster ? (
-          <RegisteredTreeClusterMarker superclusterResponse={geoJson} />
+        return (geoJson as PointFeature<ClusterProperties>).properties
+          .cluster ? (
+          <RegisteredTreeClusterMarker
+            key={geoJson.id}
+            superclusterResponse={geoJson as PointFeature<ClusterProperties>}
+          />
         ) : (
-          <PointMarkers superclusterResponse={geoJson} />
+          <PointMarkers
+            superclusterResponse={
+              geoJson as PointFeature<MyContributionsSingleRegistration>
+            }
+          />
         );
       })}
     </>

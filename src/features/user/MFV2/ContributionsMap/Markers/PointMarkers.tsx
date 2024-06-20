@@ -1,14 +1,18 @@
 import { Marker } from 'react-map-gl-v7';
-import { AnyProps, PointFeature } from 'supercluster';
+import { PointFeature } from 'supercluster';
 import style from '.././Common/common.module.scss';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import { useState } from 'react';
 import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 import DonationPopup from '../Popup/DonationPopup';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
+import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
+import { MyContributionsSingleRegistration } from '../../../../common/types/myForestv2';
 
 interface PointMarkersProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<
+    DonationProperties | MyContributionsSingleRegistration
+  >;
 }
 
 const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
@@ -26,10 +30,13 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
   };
 
   const donationPopupProps = {
-    superclusterResponse,
+    superclusterResponse:
+      superclusterResponse as PointFeature<DonationProperties>,
     setShowPopUp,
     handleMouseLeave,
   };
+
+  const isDonation = 'projectInfo' in superclusterResponse.properties;
 
   return (
     <Marker
@@ -37,7 +44,27 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
       latitude={superclusterResponse?.geometry.coordinates[1]}
       offset={[0, -15]}
     >
-      {superclusterResponse?.properties.type === 'registration' ? (
+      {isDonation ? (
+        <>
+          {showPopup && <DonationPopup {...donationPopupProps} />}
+          <div onMouseEnter={handleMouseEnter}>
+            <ProjectTypeIcon
+              purpose={
+                (superclusterResponse as PointFeature<DonationProperties>)
+                  .properties.projectInfo.purpose
+              }
+              classification={
+                (superclusterResponse as PointFeature<DonationProperties>)
+                  .properties.projectInfo.classification
+              }
+              unitType={
+                (superclusterResponse as PointFeature<DonationProperties>)
+                  .properties.projectInfo.unitType
+              }
+            />
+          </div>
+        </>
+      ) : (
         <>
           {showPopup && (
             <RegisterTreePopup superclusterResponse={superclusterResponse} />
@@ -48,19 +75,6 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
             onMouseLeave={() => setShowPopUp(false)}
           >
             <RegisteredTreeIcon />
-          </div>
-        </>
-      ) : (
-        <>
-          {showPopup && <DonationPopup {...donationPopupProps} />}
-          <div onMouseEnter={handleMouseEnter}>
-            <ProjectTypeIcon
-              purpose={superclusterResponse.properties.projectInfo.purpose}
-              classification={
-                superclusterResponse.properties.projectInfo.classification
-              }
-              unitType={superclusterResponse.properties.projectInfo.unitType}
-            />
           </div>
         </>
       )}

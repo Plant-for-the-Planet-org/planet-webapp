@@ -2,8 +2,14 @@ import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
 import ProjectTypeIcon from '../../../../projects/components/ProjectTypeIcon';
 import style from '../MyForestV2.module.scss';
+import { PointFeature } from 'supercluster';
+import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
-const ProjectimageSection = ({ superclusterResponse }: any) => {
+const ProjectimageSection = ({
+  superclusterResponse,
+}: {
+  superclusterResponse: PointFeature<DonationProperties>;
+}) => {
   const t = useTranslations('Profile');
   const {
     image,

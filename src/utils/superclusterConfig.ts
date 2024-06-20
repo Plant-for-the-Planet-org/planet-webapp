@@ -1,17 +1,14 @@
-import { ViewState, ViewportProps } from '../features/common/types/map';
+import { ViewportProps } from '../features/common/types/map';
 import {
   TestPointProps,
   TestClusterProps,
   Bound,
 } from '../features/common/types/map';
-import Supercluster, { AnyProps, PointFeature } from 'supercluster';
+import Supercluster, { ClusterProperties, PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
-import {
-  MyContributionsSingleProject,
-  MyForestProject,
-} from '../features/common/types/myForestv2';
-import {} from '../features/common/Layout/MyForestContextV2';
+import { MyContributionsSingleRegistration } from '../features/common/types/myForestv2';
+import { DonationProperties } from '../features/common/Layout/MyForestContextV2';
 
 const _clusterConfig = {
   radius: 40,
@@ -34,22 +31,34 @@ const _clusterConfigV2 = {
 export const _getClusterGeojson = (
   viewState: ViewportProps,
   mapRef: RefObject<MapRef>,
-  geoJson: PointFeature<AnyProps>[],
+  geoJson: PointFeature<
+    MyContributionsSingleRegistration | DonationProperties
+  >[],
   clusterId: string | number | undefined
-) => {
-  const supercluster = new Supercluster(_clusterConfigV2);
+):
+  | (
+      | Supercluster.PointFeature<
+          MyContributionsSingleRegistration | DonationProperties
+        >
+      | Supercluster.PointFeature<ClusterProperties>
+    )[]
+  | undefined => {
+  const supercluster = new Supercluster<
+    MyContributionsSingleRegistration | DonationProperties,
+    {}
+  >(_clusterConfigV2);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {
     const map = mapRef.current.getMap();
-    const bounds = map.getBounds().toArray().flat();
-    const bound: Bound = bounds && [bounds[0], bounds[1], bounds[2], bounds[3]];
+    const bounds = map.getBounds().toArray().flat() as Bound;
     if (zoom && !clusterId) {
-      const _clusters = supercluster?.getClusters(bound, zoom);
+      const _clusters = supercluster.getClusters(bounds, zoom);
       return _clusters;
     }
     if (clusterId) {
       return supercluster.getLeaves(Number(clusterId));
     }
   }
+  return undefined;
 };

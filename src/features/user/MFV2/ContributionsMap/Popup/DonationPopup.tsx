@@ -1,13 +1,14 @@
 import { Popup } from 'react-map-gl-v7';
-import { AnyProps, PointFeature } from 'supercluster';
+import { PointFeature } from 'supercluster';
 import style from '../MyForestV2.module.scss';
 import { SetState } from '../../../../common/types/common';
 import ProjectInfoSection from './ProjectInfoSection';
 import ContributionInfoList from './ContributionInfoList';
 import ProjectimageSection from './ProjectImageSection';
+import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
 interface DonationPopupProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<DonationProperties>;
   setShowPopUp: SetState<boolean>;
   handleMouseLeave: () => void;
 }

@@ -2,8 +2,14 @@ import { useTranslations } from 'next-intl';
 import style from '../MyForestV2.module.scss';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
+import { PointFeature } from 'supercluster';
+import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
-const ContributionInfoList = ({ superclusterResponse }: ProjectProps) => {
+const ContributionInfoList = ({
+  superclusterResponse,
+}: {
+  superclusterResponse: PointFeature<DonationProperties>;
+}) => {
   const tProfile = useTranslations('Profile');
 
   const contributionCount =

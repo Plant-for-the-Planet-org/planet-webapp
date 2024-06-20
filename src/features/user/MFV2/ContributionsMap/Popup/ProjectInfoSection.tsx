@@ -9,8 +9,14 @@ import style from '../MyForestV2.module.scss';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { CountryCode } from '@planet-sdk/common';
+import { PointFeature } from 'supercluster';
+import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 
-const ProjectInfoSection = ({ superclusterResponse }: any) => {
+const ProjectInfoSection = ({
+  superclusterResponse,
+}: {
+  superclusterResponse: PointFeature<DonationProperties>;
+}) => {
   const { totalContributionUnits, contributionCount, latestContributions } =
     superclusterResponse.properties.contributionInfo;
   const { tpoName, guid, country } =
@@ -25,7 +31,8 @@ const ProjectInfoSection = ({ superclusterResponse }: any) => {
   const { embed } = useContext(ParamsContext);
   const { token, user } = useUserProps();
   const plantDate = Number(latestContributions[0].plantDate);
-  const _country: Lowercase<CountryCode> = country.toLocaleLowerCase();
+  const _country: Lowercase<CountryCode> =
+    country.toLocaleLowerCase() as Lowercase<CountryCode>;
 
   const handleDonation = (id: string, tenant: string) => {
     if (user) {

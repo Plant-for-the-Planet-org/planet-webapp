@@ -1,8 +1,11 @@
 import { Marker } from 'react-map-gl-v7';
 import { MutableRefObject, useEffect, useState } from 'react';
-import { PointFeature, AnyProps } from 'supercluster';
+import { PointFeature, ClusterProperties } from 'supercluster';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
+import {
+  DonationProperties,
+  useMyForestV2,
+} from '../../../../common/Layout/MyForestContextV2';
 import ClusterIcon from './ClusterIcon';
 import {
   ProjectPurposeTypes,
@@ -16,7 +19,7 @@ import {
 import { ViewportProps } from '../../../../common/types/map';
 
 export interface ClusterMarkerProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<ClusterProperties>;
   viewport: ViewportProps;
   mapRef: MutableRefObject<null>;
 }
@@ -34,7 +37,7 @@ const ClusterMarker = ({
   mapRef,
 }: ClusterMarkerProps) => {
   const [clusterChildren, setClusterChildren] = useState<
-    PointFeature<AnyProps>[] | undefined
+    PointFeature<DonationProperties>[] | undefined
   >(undefined);
   const { donationGeojson } = useMyForestV2();
   const [colors, setColors] = useState({
@@ -55,7 +58,7 @@ const ClusterMarker = ({
         mapRef,
         donationGeojson,
         superclusterResponse.id
-      );
+      ) as PointFeature<DonationProperties>[];
       setClusterChildren(data);
     }
   }, [viewport, superclusterResponse]);
