@@ -4,7 +4,10 @@ import DonateButton from './DonateButton';
 import ItemMobileHeader from './ItemMobileHeader';
 import ProjectTotalContributions from './ProjectTotalContributions';
 import styles from './MyContributions.module.scss';
-import { MyForestProject } from '../../../common/types/myForestv2';
+import {
+  MyForestProject,
+  ProfilePageType,
+} from '../../../common/types/myForestv2';
 import { MyContributionsSingleProject } from '../../../common/types/myForestv2';
 import { useTranslations } from 'next-intl';
 import { CountryCode } from '@planet-sdk/common';
@@ -16,7 +19,7 @@ import { ComponentProps } from 'react';
 interface Props {
   project: MyForestProject;
   contributionDetails: MyContributionsSingleProject;
-  pageType: 'public' | 'private';
+  pageType: ProfilePageType;
   supportedTreecounter?: string;
 }
 

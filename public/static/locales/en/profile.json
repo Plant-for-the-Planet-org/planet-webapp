@@ -67,6 +67,24 @@
       "copyLink": "Copy Link",
       "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
     },
+    "progressBar": {
+      "treePlanted": "{count, plural, =1 {# tree planted} other {# trees planted}}",
+      "treePlantedAgainstTarget": "{count, number} of {total, plural, =1 {# tree} other {# trees}} planted",
+      "restoredArea": "{unit, number} m² restored",
+      "restoredAreaAgainstTarget": "{count, number} of {unit, number} m² restored",
+      "conservedArea": "{unit, number} m² conserved",
+      "conservedAreaAgainstTarget": "{count, number} of {unit, number} m² conserved",
+      "totalGiftFromCommunity": "{quantity, number} from your community",
+      "editTarget": "Edit Target",
+      "setTarget": "Set Target",
+      "plantedTreesTarget": "Planted trees target",
+      "areaConservedTarget": "Area conserved target",
+      "areaRestoredTarget": "Area restored target",
+      "save": "Save",
+      "setTargets": "Set targets",
+      "emptyProgressInformation": "Set targets for planted trees, area conserved, and area restored",
+      "enterYourTarget": "Enter your target"
+    },
     "mapStats": {
       "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
       "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "

@@ -127,7 +127,7 @@ const CommunityContributions = ({
       )}
     </div>
   ) : (
-    <ProfileLoader />
+    <ProfileLoader height={250} />
   );
 };
 
