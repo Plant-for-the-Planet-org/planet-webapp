@@ -36,9 +36,9 @@ const TargetsModal = ({
   const { tenantConfig } = useTenant();
   // states to manage modal
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
-  const [treesPlantedTarget, setTreesPlanted] = useState(0);
-  const [areaRestoredTarget, setAreaRestoredTarget] = useState(0);
-  const [areaConservedTarget, setAreaConservedTarget] = useState(0);
+  const [treesPlantedTargetLocal, setTreesPlantedTargetLocal] = useState(0);
+  const [areaRestoredTargetLocal, setAreaRestoredTargetLocal] = useState(0);
+  const [areaConservedTargetLocal, setAreaConservedTargetLocal] = useState(0);
   const [isTreesPlantedTargetActive, setIsTreesPlantedTargetActive] = useState(
     treeTarget > 0
   );
@@ -56,9 +56,9 @@ const TargetsModal = ({
     setIsTreesPlantedTargetActive(treeTarget > 0);
     setIsRestoredAreaTargetActive(restoreTarget > 0);
     setIsConservedAreaTargetActive(conservTarget > 0);
-    setTreesPlanted(treeTarget);
-    setAreaRestoredTarget(restoreTarget);
-    setAreaConservedTarget(conservTarget);
+    setTreesPlantedTargetLocal(treeTarget);
+    setAreaRestoredTargetLocal(restoreTarget);
+    setAreaConservedTargetLocal(conservTarget);
   }, [open]);
 
   const handleTargets = async () => {
@@ -66,9 +66,15 @@ const TargetsModal = ({
     if (contextLoaded && token && open && !isTargetModalLoading) {
       const bodyToSend = {
         targets: {
-          treesDonated: isTreesPlantedTargetActive ? treesPlantedTarget : 0,
-          areaRestored: isRestoredAreaTargetActive ? areaRestoredTarget : 0,
-          areaConserved: isConservedAreaTargetActive ? areaConservedTarget : 0,
+          treesDonated: isTreesPlantedTargetActive
+            ? treesPlantedTargetLocal
+            : 0,
+          areaRestored: isRestoredAreaTargetActive
+            ? areaRestoredTargetLocal
+            : 0,
+          areaConserved: isConservedAreaTargetActive
+            ? areaConservedTargetLocal
+            : 0,
         },
       };
       try {
@@ -91,9 +97,9 @@ const TargetsModal = ({
         setRefetchUserData(true);
         if (newUserInfo !== undefined) {
           setUserInfo(newUserInfo);
-          setTreesPlanted(newUserInfo.targets.treesDonated ?? 0);
-          setAreaRestoredTarget(newUserInfo.targets.areaRestored ?? 0);
-          setAreaConservedTarget(newUserInfo.targets.areaConserved ?? 0);
+          setTreesPlantedTargetLocal(newUserInfo.targets.treesDonated ?? 0);
+          setAreaRestoredTargetLocal(newUserInfo.targets.areaRestored ?? 0);
+          setAreaConservedTargetLocal(newUserInfo.targets.areaConserved ?? 0);
           setIsTargetModalLoading(false);
           handleClose();
         }
@@ -115,25 +121,22 @@ const TargetsModal = ({
         <div className={styles.targetModalSubConatiner}>
           <TargetFormInput
             dataType={'treesPlanted'}
-            target={treeTarget}
-            latestTarget={treesPlantedTarget}
-            setLatestTarget={setTreesPlanted}
+            localTarget={treesPlantedTargetLocal}
+            setLocalTarget={setTreesPlantedTargetLocal}
             checked={isTreesPlantedTargetActive}
             setChecked={setIsTreesPlantedTargetActive}
           />
           <TargetFormInput
             dataType={'areaRestored'}
-            target={restoreTarget}
-            latestTarget={areaRestoredTarget}
-            setLatestTarget={setAreaRestoredTarget}
+            localTarget={areaRestoredTargetLocal}
+            setLocalTarget={setAreaRestoredTargetLocal}
             checked={isRestoredAreaTargetActive}
             setChecked={setIsRestoredAreaTargetActive}
           />
           <TargetFormInput
             dataType={'areaConserved'}
-            target={conservTarget}
-            latestTarget={areaConservedTarget}
-            setLatestTarget={setAreaConservedTarget}
+            localTarget={areaConservedTargetLocal}
+            setLocalTarget={setAreaConservedTargetLocal}
             checked={isConservedAreaTargetActive}
             setChecked={setIsConservedAreaTargetActive}
           />

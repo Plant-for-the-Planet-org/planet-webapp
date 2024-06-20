@@ -1,7 +1,7 @@
 import styles from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import { targetColor } from '../../../../utils/myForestV2Utils';
-import { ChangeEvent, useMemo, useEffect } from 'react';
+import { ChangeEvent, useMemo } from 'react';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
 import { SetState } from '../../../common/types/common';
@@ -10,29 +10,23 @@ import { ProgressDataType } from './ForestProgressItem';
 
 type TargetFormInputProps = {
   dataType: ProgressDataType;
-  target: number;
-  latestTarget: number;
-  setLatestTarget: SetState<number>;
+  localTarget: number;
+  setLocalTarget: SetState<number>;
   checked: boolean;
   setChecked: SetState<boolean>;
 };
 
 const TargetFormInput = ({
   dataType,
-  target,
-  latestTarget,
-  setLatestTarget,
+  localTarget,
+  setLocalTarget,
   checked,
   setChecked,
 }: TargetFormInputProps) => {
   const tProfile = useTranslations('Profile.progressBar');
 
-  useEffect(() => {
-    if (target) setLatestTarget(target);
-  }, []);
-
   const handleTargetSwitch = (e: ChangeEvent<HTMLInputElement>) => {
-    if (target || latestTarget > 0) {
+    if (localTarget > 0) {
       setChecked(e.target.checked);
     }
   };
@@ -44,16 +38,16 @@ const TargetFormInput = ({
     setChecked(Number(newValue) > 0 ? true : false);
     // Allow empty value or integer only
     if (newValue === '' || /^[0-9]+$/.test(newValue)) {
-      setLatestTarget(Number(e.target.value));
+      setLocalTarget(Number(e.target.value));
     }
   };
 
   const targetContainerClass = useMemo(
     () =>
       checked ? styles.targetFormInputContainer : styles.deActivateTargetModal,
-    [dataType, checked, target]
+    [dataType, checked]
   );
-  const isTargetSet = target > 0 || latestTarget > 0;
+  const isTargetSet = localTarget > 0;
   const isChecked = checked;
 
   return (
@@ -75,7 +69,7 @@ const TargetFormInput = ({
         variant="outlined"
         focusColor={targetColor(dataType) ?? ''}
         onChange={handleTargetTextField}
-        value={latestTarget || ''}
+        value={localTarget || ''}
         placeholder={tProfile('enterYourTarget')}
       />
     </div>
