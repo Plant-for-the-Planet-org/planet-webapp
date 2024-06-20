@@ -2,8 +2,13 @@ import themeProperties from '../theme/themeProperties';
 import { ProgressDataType } from '../features/user/MFV2/ForestProgress/ForestProgressItem';
 import { ContributionStats } from '../features/common/types/myForestv2';
 
-// helper function to calculate gift and recieved percentage for progress bar
-
+/**
+ * helper function to calculate gift and recieved percentage for progress bar
+ * @param target - specific target for the item
+ * @param gift - contributions from gifts received
+ * @param personal - contributions from donations made (including gifts given)
+ * @returns object containing giftPercentage and personalPercentage
+ */
 export const getAchievedTarget = (
   target: number,
   gift: number,
@@ -25,8 +30,11 @@ export const getAchievedTarget = (
   }
 };
 
-//helper function to get colors for target modal and progress bar based on data Type
-
+/**
+ * helper function to get colors for target modal and progress bar based on data type
+ * @param dataType - type of data shown in the graph (treesPlanted, areaRestored, areaConserved)
+ * @returns color based on the data type
+ */
 export const targetColor = (dataType: ProgressDataType) => {
   const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
     themeProperties;
@@ -40,8 +48,11 @@ export const targetColor = (dataType: ProgressDataType) => {
   }
 };
 
-//helper function to aggregate all personal and gift contributions for progress bar
-
+/**
+ * helper function to process / aggregate all personal and gift contributions for progress bars
+ * @param contributionStats - object containing all the contribution stats as returned by the API
+ * @returns object containing total trees donated, total area restored, and total area conserved
+ */
 export const aggregateProgressData = (
   contributionStats: ContributionStats | undefined
 ) => {
@@ -58,8 +69,16 @@ export const aggregateProgressData = (
   return { treesDonated, areaRestored, areaConserved };
 };
 
-// Determines whether the progress bar should be enabled based on current and target values for trees donated, area restored, and area conserved.
-
+/**
+ * Determines whether the progress bar should be enabled based on current and target values for trees donated, area restored, and area conserved.
+ * @param treesDonated
+ * @param areaRestored
+ * @param areaConserved
+ * @param treeTarget
+ * @param restoreTarget
+ * @param conservTarget
+ * @returns boolean indicating whether the progress bars should be shown
+ */
 export const checkProgressEnabled = (
   treesDonated: number,
   areaRestored: number,

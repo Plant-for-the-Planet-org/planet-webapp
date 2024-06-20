@@ -10,7 +10,7 @@ import { ProgressDataType } from '../ForestProgressItem';
 type TargetFormInputLabelProps = {
   dataType: ProgressDataType;
 };
-const TargetModalIcon = ({ dataType }: TargetFormInputLabelProps) => {
+const TargetFormInputIcon = ({ dataType }: TargetFormInputLabelProps) => {
   switch (dataType) {
     case 'treesPlanted':
       return <TreesPlantedIcon width={16} />;
@@ -37,7 +37,7 @@ const TargetFormInputLabel = ({ dataType }: TargetFormInputLabelProps) => {
   return (
     <div className={styles.targetInputIconMainContainer}>
       <div className={styles.targetInputIconContainer}>
-        <TargetModalIcon dataType={dataType} />
+        <TargetFormInputIcon dataType={dataType} />
       </div>
       <div className={styles.label}>{getLabelText()}</div>
     </div>
