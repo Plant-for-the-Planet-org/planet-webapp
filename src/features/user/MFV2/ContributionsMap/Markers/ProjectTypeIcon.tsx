@@ -13,6 +13,7 @@ import {
   UrbanRestoration,
   TreePlanting,
   Conservation,
+  OtherPlanting,
 } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 
 interface ProjectTypeIconProps {
@@ -62,8 +63,9 @@ const ProjectTypeIcon = ({
     case 'urban-planting':
       return <UrbanRestoration {...IconProps} />;
     case 'large-scale-planting':
-    case 'other-planting':
       return <TreePlanting {...IconProps} />;
+    case 'other-planting':
+      return <OtherPlanting {...IconProps} />;
     default:
       return null;
   }

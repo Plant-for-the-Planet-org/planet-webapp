@@ -7,6 +7,7 @@ import {
   UrbanRestorationClusterMarker,
   TreePlantingClusterMarker,
   ConservationClusterMarker,
+  OtherPlantingClusterMarker,
 } from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
 
 type ClusterIconProps = {
@@ -47,8 +48,9 @@ const ClusterIcon = ({
     case 'urban-planting':
       return <UrbanRestorationClusterMarker {...IconProps} />;
     case 'large-scale-planting':
-    case 'other-planting':
       return <TreePlantingClusterMarker {...IconProps} />;
+    case 'other-planting':
+      return <OtherPlantingClusterMarker {...IconProps} />;
     default:
       return null;
   }

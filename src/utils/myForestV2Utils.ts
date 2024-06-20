@@ -61,62 +61,34 @@ export const getClusterMarkerColors = (
 export const extractAndClassifyProjectData = (
   clusterChildren: PointFeature<AnyProps>[] | undefined
 ) => {
-  const extractedData: ExtractedData[] = [];
+  const uniqueProjectType = new Map<string, ExtractedData>();
+  let maxContributingProject: ExtractedData | null = null;
+  let maxContributionCount = -Infinity;
 
-  if (clusterChildren === undefined || clusterChildren.length === 0)
-    return { uniqueObjects: [], maxContributingObject: null };
+  if (!clusterChildren || clusterChildren.length === 0) {
+    return { arrayOfUniqueProjects: [], maxContributingProject: null };
+  }
 
   // Extract required fields from each object
-  clusterChildren?.forEach((item) => {
-    const extractedItem = {
+  clusterChildren.forEach((item) => {
+    const extractedItem: ExtractedData = {
       unitType: item.properties.projectInfo.unitType,
       classification: item.properties.projectInfo.classification,
       purpose: item.properties.projectInfo.purpose,
       contributionCount: item.properties.contributionInfo.contributionCount,
     };
-    extractedData.push(extractedItem);
-  });
 
-  // Loop through the array to find the object with the maximum contributionCount
-  const { maxContributingObject } = extractedData.reduce(
-    (acc: Accumulator, item: ExtractedData | null) => {
-      if (item !== null && item.contributionCount > acc.maxContributionCount) {
-        return {
-          maxContributionCount: item.contributionCount,
-          maxContributingObject: item,
-        };
-      } else {
-        return acc;
-      }
-    },
-    { maxContributionCount: -Infinity, maxContributingObject: null }
-  );
+    if (extractedItem.contributionCount > maxContributionCount) {
+      maxContributionCount = extractedItem.contributionCount;
+      maxContributingProject = extractedItem;
+    }
 
-  const remainingProjects: ExtractedData[] = [];
-  // store all project whose unitType and purpose are different than maxContributingProject
-  extractedData.map((item) => {
-    if (
-      item.unitType !==
-        (maxContributingObject !== null && maxContributingObject.unitType) ||
-      item.purpose !==
-        (maxContributingObject !== null && maxContributingObject.purpose)
-    )
-      remainingProjects.push(item);
-  });
-  const uniqueCombinations = new Map();
-  // Loop through the array to find  the object with the unique purpose and unit type
-  remainingProjects.forEach((obj) => {
-    const { unitType, purpose } = obj;
-    const key = unitType + '-' + purpose;
-
-    if (!uniqueCombinations.has(key)) {
-      uniqueCombinations.set(key, obj);
+    const key = `${extractedItem.unitType}-${extractedItem.contributionCount}`;
+    if (!uniqueProjectType.has(key)) {
+      uniqueProjectType.set(key, extractedItem);
     }
   });
 
-  const uniqueObjects: ExtractedData[] = Array.from(
-    uniqueCombinations.values()
-  );
-
-  return { uniqueObjects, maxContributingObject };
+  const arrayOfUniqueProjects = Array.from(uniqueProjectType.values());
+  return { arrayOfUniqueProjects, maxContributingProject };
 };
