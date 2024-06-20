@@ -9,12 +9,12 @@ import { PointFeature } from 'supercluster';
 
 interface ProjectInfoSectionProps {
   superclusterResponse: PointFeature<DonationProperties>;
-  pageType: 'public' | 'private';
+  profilePageType: 'public' | 'private';
   supportedTreecounter?: string;
 }
 const ProjectInfoSection = ({
   superclusterResponse,
-  pageType,
+  profilePageType,
   supportedTreecounter,
 }: ProjectInfoSectionProps) => {
   const { totalContributionUnits, contributionCount, latestContributions } =
@@ -44,14 +44,15 @@ const ProjectInfoSection = ({
           </div>
           <div>
             <DonateButton
-              {...(pageType === 'public' && supportedTreecounter !== undefined
+              {...(profilePageType === 'public' &&
+              supportedTreecounter !== undefined
                 ? { type: 'supported', supportedTreecounter }
                 : { type: 'unsupported' })}
               projectPurpose={purpose}
               buttonText={
-                pageType === 'private'
-                  ? tProfile('myContributions.donate')
-                  : tProfile('myContributions.donateAgain')
+                profilePageType === 'private'
+                  ? tProfile('myContributions.donateAgain')
+                  : tProfile('myContributions.donate')
               }
               projectSlug={slug}
               contributionUnitType={unitType}

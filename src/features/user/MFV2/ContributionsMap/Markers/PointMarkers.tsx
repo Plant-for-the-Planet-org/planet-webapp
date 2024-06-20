@@ -13,13 +13,13 @@ interface PointMarkersProps {
   superclusterResponse: PointFeature<
     DonationProperties | MyContributionsSingleRegistration
   >;
-  pageType: 'public' | 'private';
+  profilePageType: 'public' | 'private';
   supportedTreecounter: string | undefined;
 }
 
 const PointMarkers = ({
   superclusterResponse,
-  pageType,
+  profilePageType,
   supportedTreecounter,
 }: PointMarkersProps) => {
   if (!superclusterResponse) return null;
@@ -29,7 +29,7 @@ const PointMarkers = ({
     superclusterResponse:
       superclusterResponse as PointFeature<DonationProperties>,
     setShowPopUp,
-    pageType,
+    profilePageType,
     supportedTreecounter,
   };
 

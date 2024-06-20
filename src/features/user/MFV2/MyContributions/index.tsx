@@ -43,7 +43,7 @@ const MyContributions = ({
               key={key}
               contributionDetails={item}
               project={projectListResult[key]}
-              pageType={profilePageType}
+              profilePageType={profilePageType}
               supportedTreecounter={supportedTreecounter}
             />
           );

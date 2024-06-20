@@ -75,7 +75,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
       <section id="map-container" className={styles.mapContainer}>
         {contributionsResult?.stats ? (
           <ContributionsMap
-            pageType={'public'}
+            profilePageType="public"
             supportedTreecounter={userInfo?.slug ?? ''}
           />
         ) : (

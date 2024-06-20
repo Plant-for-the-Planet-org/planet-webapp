@@ -10,21 +10,21 @@ import { DonationProperties } from '../../../../common/Layout/MyForestContextV2'
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;
   setShowPopUp: SetState<boolean>;
-  pageType: 'public' | 'private';
+  profilePageType: 'public' | 'private';
   supportedTreecounter: string | undefined;
 }
 
 const DonationPopup = ({
   superclusterResponse,
   setShowPopUp,
-  pageType,
+  profilePageType,
   supportedTreecounter,
 }: DonationPopupProps) => {
   if (!superclusterResponse) return null;
   const { coordinates } = superclusterResponse.geometry;
   const ProjectInfoSectionProps = {
     superclusterResponse,
-    pageType,
+    profilePageType,
     supportedTreecounter,
   };
   return (

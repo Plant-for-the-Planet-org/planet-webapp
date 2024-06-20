@@ -10,7 +10,7 @@ import style from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
 
 interface ContributionsMapProps {
-  pageType: 'public' | 'private';
+  profilePageType: 'public' | 'private';
   supportedTreecounter?: string | undefined;
 }
 interface MapState {
@@ -28,7 +28,7 @@ const EMPTY_STYLE = {
 } as const;
 
 function ContributionsMap({
-  pageType,
+  profilePageType,
   supportedTreecounter,
 }: ContributionsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
@@ -69,7 +69,7 @@ function ContributionsMap({
         <Markers
           mapRef={mapRef}
           viewport={viewState}
-          pageType={pageType}
+          profilePageType={profilePageType}
           supportedTreecounter={supportedTreecounter}
         />
         <MapCredits />

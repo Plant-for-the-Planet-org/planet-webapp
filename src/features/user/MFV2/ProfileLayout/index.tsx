@@ -47,7 +47,7 @@ const ProfileLayout = () => {
       </section>
       <section id="map-container" className={styles.mapContainer}>
         {contributionsResult?.stats ? (
-          <ContributionsMap pageType="private" />
+          <ContributionsMap profilePageType="private" />
         ) : (
           <ProfileLoader />
         )}
