@@ -366,7 +366,6 @@ const IssueCodesForm = (): ReactElement | null => {
                 <label
                   htmlFor="recipientDataConsent"
                   className={styles.recipientDataConsent}
-                  style={{ cursor: 'pointer' }}
                 >
                   {t.rich('recipientDataConsent', {
                     privacyPolicyLink: (chunks) => (
