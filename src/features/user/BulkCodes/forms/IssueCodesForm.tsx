@@ -326,7 +326,30 @@ const IssueCodesForm = (): ReactElement | null => {
                   className={styles.recipientDataConsent}
                   style={{ cursor: 'pointer' }}
                 >
-                  {t('recipientDataConsent')}
+                  {t.rich('recipientDataConsent', {
+                    privacyPolicyLink: (chunks) => (
+                      <a
+                        target="_blank"
+                        href={`https://pp.eco/legal/${locale}/privacy`}
+                        rel="noreferrer"
+                        className="planet-links"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {chunks}
+                      </a>
+                    ),
+                    termsLink: (chunks) => (
+                      <a
+                        target="_blank"
+                        href={`https://pp.eco/legal/${locale}/terms`}
+                        rel="noreferrer"
+                        className="planet-links"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {chunks}
+                      </a>
+                    ),
+                  })}
                 </label>
               </InlineFormDisplayGroup>
             )}
@@ -348,7 +371,19 @@ const IssueCodesForm = (): ReactElement | null => {
             {bulkMethod === 'import' && (
               <>
                 <br />
-                {t('invalidEmailWarningText')}
+                {t.rich('invalidEmailWarningText', {
+                  termsLink: (chunks) => (
+                    <a
+                      target="_blank"
+                      href={`https://pp.eco/legal/${locale}/terms`}
+                      rel="noreferrer"
+                      className="planet-links"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {chunks}
+                    </a>
+                  ),
+                })}
               </>
             )}
           </div>
