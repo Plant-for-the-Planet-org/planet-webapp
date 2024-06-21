@@ -42,7 +42,7 @@
     "notificationLanguage": "Langue de notification",
     "total": "Total",
     "chargeConsentText": "En cliquant sur Issue Codes, vous acceptez que le montant susmentionné soit débité de votre compte.",
-    "invalidEmailWarningText": "Veuillez vous assurer que l'adresse électronique du destinataire est valide. L'utilisation d'e-mails factices ou non valides entraînera la suspension du compte conformément aux conditions générales de la plate-forme.",
+    "invalidEmailWarningText": "Veuillez vous assurer que l'adresse électronique du destinataire est valide. L'utilisation d'e-mails factices ou non valides entraînera la suspension du compte <termsLink>conformément aux conditions générales de la plate-forme.</termsLink>",
     "projectRequired": "Aucun projet n'est sélectionné.",
     "unitsPerCodeRequired": "Chaque code doit contenir au moins une unité.",
     "codeQuantityRequired": "Vous devez créer au moins un code.",

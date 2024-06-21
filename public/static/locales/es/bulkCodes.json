@@ -42,7 +42,7 @@
     "notificationLanguage": "Lengua de notificación",
     "total": "Total",
     "chargeConsentText": "Al hacer clic en Emitir códigos, acepta que se cargue en su cuenta el importe anterior.",
-    "invalidEmailWarningText": "Asegúrese de que la dirección de correo electrónico del destinatario es válida. El uso de correos electrónicos falsos o no válidos conllevará la suspensión de la cuenta de acuerdo con los términos y condiciones de la plataforma.",
+    "invalidEmailWarningText": "Asegúrese de que la dirección de correo electrónico del destinatario es válida. El uso de correos electrónicos falsos o no válidos conllevará la suspensión de la cuenta de acuerdo con los <termsLink>términos y condiciones de la plataforma.</termsLink>",
     "projectRequired": "No se selecciona ningún proyecto.",
     "unitsPerCodeRequired": "Cada código debe contener al menos 1 unidad.",
     "codeQuantityRequired": "Debe crear al menos 1 código.",
