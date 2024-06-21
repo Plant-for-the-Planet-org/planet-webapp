@@ -18,6 +18,12 @@
 }
 
 .contributionPopup {
+  > div:nth-child(1) {
+    display: none;
+  }
+}
+
+.contributionPopup {
   > div {
     padding: 0px;
   }
