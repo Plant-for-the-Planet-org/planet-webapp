@@ -1,7 +1,7 @@
 import { Marker } from 'react-map-gl-v7';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { PointFeature, AnyProps } from 'supercluster';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import ClusterIcon from './ClusterIcon';
 import {
@@ -50,7 +50,7 @@ const ClusterMarker = ({
 
   useEffect(() => {
     if (superclusterResponse && viewport && donationGeojson) {
-      const data = _getClusterGeojson(
+      const data = getClusterGeojson(
         viewport,
         mapRef,
         donationGeojson,

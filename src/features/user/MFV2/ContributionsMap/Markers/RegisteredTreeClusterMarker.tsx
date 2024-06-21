@@ -1,5 +1,4 @@
 import { Marker } from 'react-map-gl-v7';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterMarkerProps } from './ClusterMarker';
 import { RegisteredTreeClusterMarkerIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
 

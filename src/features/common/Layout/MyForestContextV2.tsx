@@ -21,22 +21,12 @@ import {
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
+import { PointFeature } from 'supercluster';
 
-export interface RegistrationGeojson {
-  type: 'Feature';
-  geometry: Point;
-  properties: MyContributionsSingleRegistration;
+export interface DonationProperties {
+  projectInfo: MyForestProject;
+  contributionInfo: MyContributionsSingleProject;
 }
-
-export interface DonationGeojson {
-  type: 'Feature';
-  geometry: Point;
-  properties: {
-    projectInfo: MyForestProject;
-    contributionInfo: MyContributionsSingleProject;
-  };
-}
-
 interface UserInfo {
   profileId: string;
   slug: string;
@@ -52,8 +42,8 @@ interface MyForestContextV2Interface {
   leaderboardResult: Leaderboard | undefined;
   isLeaderboardLoaded: boolean;
   contributionsMap: Map<string, MyContributionsMapItem> | undefined;
-  registrationGeojson: RegistrationGeojson[];
-  donationGeojson: DonationGeojson[];
+  registrationGeojson: PointFeature<MyContributionsSingleRegistration>[];
+  donationGeojson: PointFeature<DonationProperties>[];
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
 }
@@ -74,10 +64,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [contributionsMap, setContributionsMap] =
     useState<Map<string, MyContributionsMapItem>>();
   const [registrationGeojson, setRegistrationGeojson] = useState<
-    RegistrationGeojson[]
+    PointFeature<MyContributionsSingleRegistration>[]
   >([]);
 
-  const [donationGeojson, setDonationGeojson] = useState<DonationGeojson[]>([]);
+  const [donationGeojson, setDonationGeojson] = useState<
+    PointFeature<DonationProperties>[]
+  >([]);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const { setErrors } = useContext(ErrorHandlingContext);
 
@@ -126,7 +118,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
         projectInfo: project,
         contributionInfo: contributionsForProject,
       },
-    };
+    } as PointFeature<DonationProperties>;
   };
 
   const _generateRegistrationGeojson = (
@@ -137,13 +129,14 @@ export const MyForestProviderV2: FC = ({ children }) => {
       type: 'Feature',
       geometry: registrationLocation.geometry,
       properties: registration,
-    };
+    } as PointFeature<MyContributionsSingleRegistration>;
   };
 
   useEffect(() => {
     if (contributionsResult) {
-      const _registrationGeojson: RegistrationGeojson[] = [];
-      const _donationGeojson: DonationGeojson[] = [];
+      const _registrationGeojson: PointFeature<MyContributionsSingleRegistration>[] =
+        [];
+      const _donationGeojson: PointFeature<DonationProperties>[] = [];
 
       setContributionsMap(contributionsResult.myContributionsMap);
 

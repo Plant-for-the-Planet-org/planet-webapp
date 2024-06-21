@@ -8,6 +8,13 @@ export type Accumulator = {
   maxContributingObject: ExtractedData | null;
 };
 
+/**
+ * The getColor function determines the color associated with a specific project purpose and unit type.
+ * @param purpose
+ * @param unitType
+ * @returns  color
+ */
+
 export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
   const { primaryDarkColorX, electricPurpleColor, mediumBlueColor } =
     themeProperties;
@@ -20,32 +27,39 @@ export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
   }
 };
 
+/**
+ * The getClusterMarkerColors function determines the colors to be used for cluster markers based on the projects with the highest contribution and unique projects within the cluster
+ * @param maxContributingProject
+ * @param uniqueUnitTypePurposeProjects
+ * @returns tertiaryProjectColor, mainProjectColor, secondaryProjectColor
+ */
+
 export const getClusterMarkerColors = (
   maxContributingProject: ExtractedData | null,
-  remainingProjects: ExtractedData[]
+  uniqueUnitTypePurposeProjects: ExtractedData[]
 ) => {
   if (maxContributingProject) {
     const { purpose, unitType } = maxContributingProject;
     const mainProjectColor = getColor(purpose, unitType) ?? '';
     let tertiaryProjectColor = '',
       secondaryProjectColor = '';
-    const length = remainingProjects.length;
+    const length = uniqueUnitTypePurposeProjects.length;
     if (length === 0) {
       tertiaryProjectColor = secondaryProjectColor = mainProjectColor;
     } else if (length === 1) {
       tertiaryProjectColor = getColor(
-        remainingProjects[0]?.purpose,
-        remainingProjects[0]?.unitType
+        uniqueUnitTypePurposeProjects[0]?.purpose,
+        uniqueUnitTypePurposeProjects[0]?.unitType
       );
       secondaryProjectColor = mainProjectColor;
     } else {
       tertiaryProjectColor = getColor(
-        remainingProjects[0]?.purpose,
-        remainingProjects[0]?.unitType
+        uniqueUnitTypePurposeProjects[0]?.purpose,
+        uniqueUnitTypePurposeProjects[0]?.unitType
       );
       secondaryProjectColor = getColor(
-        remainingProjects[1]?.purpose,
-        remainingProjects[1]?.unitType
+        uniqueUnitTypePurposeProjects[1]?.purpose,
+        uniqueUnitTypePurposeProjects[1]?.unitType
       );
     }
 
@@ -57,6 +71,15 @@ export const getClusterMarkerColors = (
     mainProjectColor: '',
   };
 };
+
+//*The extractAndClassifyProjectData function processes an array of cluster child objects to extract and classify project data.
+//* It returns a list of unique projects and identifies the project with the maximum contribution count.
+
+/**
+ *
+ * @param clusterChildren
+ * @returns arrayOfUniqueProjects, maxContributingProject
+ */
 
 export const extractAndClassifyProjectData = (
   clusterChildren: PointFeature<AnyProps>[] | undefined
