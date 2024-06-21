@@ -1,17 +1,16 @@
 import { Marker } from 'react-map-gl-v7';
-import { ClusterMarkerProps } from './ClusterMarker';
 import { RegisteredTreeClusterMarkerIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
+import { ClusterProperties, PointFeature } from 'supercluster';
 
-type RegisteredTreeClusterMarkerProp = Omit<
-  ClusterMarkerProps,
-  'viewport' | 'mapRef'
->;
+type RegisteredTreeClusterMarkerProp = {
+  superclusterResponse: PointFeature<ClusterProperties>;
+};
 
 const RegisteredTreeClusterMarker = ({
   superclusterResponse,
 }: RegisteredTreeClusterMarkerProp) => {
-  const longitude = superclusterResponse?.geometry.coordinates[0];
-  const latitude = superclusterResponse?.geometry.coordinates[1];
+  const longitude = superclusterResponse.geometry.coordinates[0];
+  const latitude = superclusterResponse.geometry.coordinates[1];
   return (
     <Marker longitude={longitude} latitude={latitude}>
       <RegisteredTreeClusterMarkerIcon width={68} />

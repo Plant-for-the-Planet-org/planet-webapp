@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { trpc } from '../../../utils/trpc';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
-import { Point } from 'geojson';
 import {
   ProjectListResponse,
   MyForestProject,
@@ -18,15 +17,12 @@ import {
   MapLocation,
   MyContributionsMapItem,
   Leaderboard,
+  DonationProperties,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
 import { PointFeature } from 'supercluster';
 
-export interface DonationProperties {
-  projectInfo: MyForestProject;
-  contributionInfo: MyContributionsSingleProject;
-}
 interface UserInfo {
   profileId: string;
   slug: string;

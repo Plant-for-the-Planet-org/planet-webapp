@@ -1,29 +1,41 @@
-import { AnyProps, PointFeature } from 'supercluster';
+import { PointFeature, ClusterProperties } from 'supercluster';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import ClusterMarker from './ClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
+import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
+import { ViewportProps } from '../../../../common/types/map';
 import {
   DonationProperties,
-  useMyForestV2,
-} from '../../../../common/Layout/MyForestContextV2';
-import { ViewportProps } from '../../../../common/types/map';
-import { MyContributionsSingleRegistration } from '../../../../common/types/myForestv2';
+  DonationSuperclusterProperties,
+  MyContributionsSingleRegistration,
+  RegistrationSuperclusterProperties,
+} from '../../../../common/types/myForestv2';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
   viewport: ViewportProps;
 }
 
+const isCluster = (
+  geoJson: PointFeature<
+    | DonationSuperclusterProperties
+    | RegistrationSuperclusterProperties
+    | ClusterProperties
+  >
+): geoJson is PointFeature<ClusterProperties> => {
+  return (geoJson.properties as ClusterProperties).cluster !== undefined;
+};
+
 const Markers = ({ mapRef, viewport }: MarkersProps) => {
   const { registrationGeojson, donationGeojson } = useMyForestV2();
   const [donationSuperclusterResponse, setDonationSuperclusterResponse] =
-    useState<PointFeature<DonationProperties>[]>([]);
+    useState<PointFeature<DonationSuperclusterProperties>[]>([]);
   const [
     registrationSuperclusterResponse,
     setRegistrationSuperclusterResponse,
-  ] = useState<PointFeature<MyContributionsSingleRegistration>[]>([]);
+  ] = useState<PointFeature<RegistrationSuperclusterProperties>[]>([]);
 
   useEffect(() => {
     if (donationGeojson && viewport) {
@@ -32,7 +44,7 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
         mapRef,
         donationGeojson,
         undefined
-      ) as PointFeature<DonationProperties>[];
+      ) as PointFeature<DonationSuperclusterProperties>[];
       setDonationSuperclusterResponse(superclusterResponseForDonatedTree);
     }
   }, [viewport, donationGeojson]);
@@ -44,17 +56,16 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
         mapRef,
         registrationGeojson,
         undefined
-      ) as PointFeature<MyContributionsSingleRegistration>[];
+      ) as PointFeature<RegistrationSuperclusterProperties>[];
       setRegistrationSuperclusterResponse(
         superclusterResponseForRegisteredTree
       );
     }
   }, [viewport, registrationGeojson]);
-
   return donationSuperclusterResponse && registrationSuperclusterResponse ? (
     <>
       {donationSuperclusterResponse.map((geoJson, key) => {
-        return geoJson.properties.cluster ? (
+        return isCluster(geoJson) ? (
           <ClusterMarker
             key={geoJson.id}
             superclusterResponse={geoJson}
@@ -62,17 +73,25 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
             mapRef={mapRef}
           />
         ) : (
-          <PointMarkers superclusterResponse={geoJson} key={key} />
+          <PointMarkers
+            superclusterResponse={geoJson as PointFeature<DonationProperties>}
+            key={key}
+          />
         );
       })}
       {registrationSuperclusterResponse.map((geoJson, key) => {
-        return geoJson.properties.cluster ? (
+        return isCluster(geoJson) ? (
           <RegisteredTreeClusterMarker
-            superclusterResponse={geoJson}
             key={geoJson.id}
+            superclusterResponse={geoJson}
           />
         ) : (
-          <PointMarkers superclusterResponse={geoJson} key={key} />
+          <PointMarkers
+            superclusterResponse={
+              geoJson as PointFeature<MyContributionsSingleRegistration>
+            }
+            key={key}
+          />
         );
       })}
     </>

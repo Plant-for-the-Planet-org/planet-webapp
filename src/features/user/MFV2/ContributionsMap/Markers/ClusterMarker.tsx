@@ -1,30 +1,31 @@
 import { Marker } from 'react-map-gl-v7';
 import { MutableRefObject, useEffect, useState } from 'react';
-import { PointFeature, AnyProps } from 'supercluster';
+import { PointFeature } from 'supercluster';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import ClusterIcon from './ClusterIcon';
-import {
-  ProjectPurposeTypes,
-  TreeProjectClassification,
-  UnitTypes,
-} from '@planet-sdk/common';
+import { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 import {
   getClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestV2Utils';
 import { ViewportProps } from '../../../../common/types/map';
+import {
+  DonationProperties,
+  DonationSuperclusterProperties,
+} from '../../../../common/types/myForestv2';
+import { ProjectPurpose } from './ProjectTypeIcon';
 
 export interface ClusterMarkerProps {
-  superclusterResponse: PointFeature<AnyProps>;
+  superclusterResponse: PointFeature<DonationSuperclusterProperties>;
   viewport: ViewportProps;
   mapRef: MutableRefObject<null>;
 }
 
-export type ExtractedData = {
+export type ExtractedProjectData = {
   unitType: UnitTypes;
-  classification: TreeProjectClassification;
-  purpose: ProjectPurposeTypes;
+  classification: TreeProjectClassification | undefined | null;
+  purpose: ProjectPurpose;
   contributionCount: number;
 };
 
@@ -34,8 +35,8 @@ const ClusterMarker = ({
   mapRef,
 }: ClusterMarkerProps) => {
   const [clusterChildren, setClusterChildren] = useState<
-    PointFeature<AnyProps>[] | undefined
-  >(undefined);
+    PointFeature<DonationProperties>[]
+  >([]);
   const { donationGeojson } = useMyForestV2();
   const [colors, setColors] = useState({
     tertiaryProjectColor: '',
@@ -44,9 +45,9 @@ const ClusterMarker = ({
   });
 
   const [maxContributingProject, setMaxContributingProject] =
-    useState<ExtractedData | null>(null);
+    useState<ExtractedProjectData | null>(null);
   const [uniqueUnitTypePurposeProjects, setUniqueUnitTypePurposeProjects] =
-    useState<ExtractedData[]>([]);
+    useState<ExtractedProjectData[]>([]);
 
   useEffect(() => {
     if (superclusterResponse && viewport && donationGeojson) {
@@ -55,7 +56,8 @@ const ClusterMarker = ({
         mapRef,
         donationGeojson,
         superclusterResponse.id
-      );
+      ) as PointFeature<DonationProperties>[];
+
       setClusterChildren(data);
     }
   }, [viewport, superclusterResponse]);
@@ -85,8 +87,8 @@ const ClusterMarker = ({
     secondaryProjectColor,
     mainProjectColor,
   };
-  const longitude = superclusterResponse?.geometry.coordinates[0];
-  const latitude = superclusterResponse?.geometry.coordinates[1];
+  const longitude = superclusterResponse.geometry.coordinates[0];
+  const latitude = superclusterResponse.geometry.coordinates[1];
 
   return (
     <Marker longitude={longitude} latitude={latitude}>

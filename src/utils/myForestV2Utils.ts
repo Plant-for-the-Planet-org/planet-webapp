@@ -1,11 +1,12 @@
 import { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
-import { ExtractedData } from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
+import { ExtractedProjectData } from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
 import themeProperties from '../theme/themeProperties';
-import { PointFeature, AnyProps } from 'supercluster';
+import { PointFeature } from 'supercluster';
+import { DonationProperties } from '../features/common/types/myForestv2';
 
 export type Accumulator = {
   maxContributionCount: number;
-  maxContributingObject: ExtractedData | null;
+  maxContributingObject: ExtractedProjectData | null;
 };
 
 /**
@@ -35,8 +36,8 @@ export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
  */
 
 export const getClusterMarkerColors = (
-  maxContributingProject: ExtractedData | null,
-  uniqueUnitTypePurposeProjects: ExtractedData[]
+  maxContributingProject: ExtractedProjectData | null,
+  uniqueUnitTypePurposeProjects: ExtractedProjectData[]
 ) => {
   if (maxContributingProject) {
     const { purpose, unitType } = maxContributingProject;
@@ -78,23 +79,23 @@ export const getClusterMarkerColors = (
 /**
  *
  * @param clusterChildren
- * @returns arrayOfUniqueProjects, maxContributingProject
+ * @returns uniqueProjects, maxContributingProject
  */
 
 export const extractAndClassifyProjectData = (
-  clusterChildren: PointFeature<AnyProps>[] | undefined
+  clusterChildren: PointFeature<DonationProperties>[] | undefined
 ) => {
-  const uniqueProjectType = new Map<string, ExtractedData>();
-  let maxContributingProject: ExtractedData | null = null;
+  const uniqueProjectType = new Map<string, ExtractedProjectData>();
+  let maxContributingProject = null;
   let maxContributionCount = -Infinity;
 
   if (!clusterChildren || clusterChildren.length === 0) {
-    return { arrayOfUniqueProjects: [], maxContributingProject: null };
+    return { uniqueProjects: [], maxContributingProject: null };
   }
 
   // Extract required fields from each object
   clusterChildren.forEach((item) => {
-    const extractedItem: ExtractedData = {
+    const extractedItem: ExtractedProjectData = {
       unitType: item.properties.projectInfo.unitType,
       classification: item.properties.projectInfo.classification,
       purpose: item.properties.projectInfo.purpose,
@@ -112,6 +113,6 @@ export const extractAndClassifyProjectData = (
     }
   });
 
-  const arrayOfUniqueProjects = Array.from(uniqueProjectType.values());
-  return { arrayOfUniqueProjects, maxContributingProject };
+  const uniqueProjects = Array.from(uniqueProjectType.values());
+  return { uniqueProjects, maxContributingProject };
 };

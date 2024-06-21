@@ -5,6 +5,7 @@ import {
   EcosystemTypes,
   TreeProjectClassification,
 } from '@planet-sdk/common';
+import { ClusterProperties } from 'supercluster';
 
 export type ContributionStats = {
   giftsReceivedCount: number;
@@ -171,3 +172,15 @@ export type Leaderboard = {
   mostRecent: LeaderboardItem[];
   mostTrees: LeaderboardItem[];
 };
+
+export interface DonationProperties {
+  projectInfo: MyForestProject;
+  contributionInfo: MyContributionsSingleProject;
+}
+export type DonationSuperclusterProperties =
+  | DonationProperties
+  | ClusterProperties;
+
+export type RegistrationSuperclusterProperties =
+  | MyContributionsSingleRegistration
+  | ClusterProperties;
