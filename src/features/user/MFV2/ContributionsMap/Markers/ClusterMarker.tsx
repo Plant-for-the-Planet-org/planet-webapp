@@ -73,9 +73,9 @@ const ClusterMarker = ({
   useEffect(() => {
     const projects = extractAndClassifyProjectData(clusterChildren);
     if (projects) {
-      const { maxContributingProject, arrayOfUniqueProjects } = projects;
+      const { maxContributingProject, uniqueProjects } = projects;
       setMaxContributingProject(maxContributingProject);
-      setUniqueUnitTypePurposeProjects(arrayOfUniqueProjects);
+      setUniqueUnitTypePurposeProjects(uniqueProjects);
     }
   }, [clusterChildren]);
 
