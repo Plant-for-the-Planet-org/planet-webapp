@@ -42,7 +42,7 @@
     "notificationLanguage": "Jazyk oznámení",
     "total": "Celkem",
     "chargeConsentText": "Kliknutím na Kódy vydání, souhlasíte s tím, že výše uvedená částka bude naúčtována na váš účet.",
-    "invalidEmailWarningText": "Ujistěte se, že příjemce_email je platný e-mail. Používání fiktivních nebo neplatných e-mailů povede k pozastavení účtu v souladu s podmínkami Platformy.",
+    "invalidEmailWarningText": "Ujistěte se, že příjemce_email je platný e-mail. Používání fiktivních nebo neplatných e-mailů povede k pozastavení účtu v souladu s <termsLink>podmínkami Platformy.</termsLink>",
     "projectRequired": "Není vybrán žádný projekt.",
     "unitsPerCodeRequired": "Každý kód by měl obsahovat alespoň 1 jednotku.",
     "codeQuantityRequired": "Musíte vytvořit alespoň 1 kód.",

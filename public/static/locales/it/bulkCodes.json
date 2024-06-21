@@ -42,7 +42,7 @@
     "notificationLanguage": "Lingua di notifica",
     "total": "Totale",
     "chargeConsentText": "Facendo clic su Codici di emissione, si accetta che l'importo sopra indicato venga addebitato sul proprio conto.",
-    "invalidEmailWarningText": "Assicurarsi che l'e-mail del destinatario sia un'e-mail valida. L'utilizzo di e-mail fittizie o non valide comporterà la sospensione dell'account in conformità ai termini e alle condizioni della piattaforma.",
+    "invalidEmailWarningText": "Assicurarsi che l'e-mail del destinatario sia un'e-mail valida. L'utilizzo di e-mail fittizie o non valide comporterà la sospensione dell'account in conformità ai <termsLink>termini e alle condizioni della piattaforma.</termsLink>",
     "projectRequired": "Non è stato selezionato alcun progetto.",
     "unitsPerCodeRequired": "Ogni codice deve contenere almeno 1 unità.",
     "codeQuantityRequired": "È necessario creare almeno 1 codice.",
