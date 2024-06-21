@@ -1,0 +1,284 @@
+@import '../../../../theme/theme';
+
+.progressSection {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  @include xsPhoneView {
+    flex-wrap: wrap;
+  }
+  @include smTabletView {
+    flex-wrap: wrap;
+  }
+  @include mdTabletView {
+    flex-wrap: nowrap;
+  }
+}
+
+.progressMainContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: 84px;
+  border-radius: 8px;
+  position: relative;
+  padding: 20px 16px 11px 16px;
+}
+
+.progressContainer {
+  width: 100%;
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  justify-content: end;
+  line-height: 16px;
+}
+
+.iconContainer {
+  width: 31px;
+  height: 31px;
+  border-radius: 4px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graphMainContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.barContainer {
+  height: 6px;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.communityReceived {
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.statisticsMainContainer {
+  display: flex;
+  width: 100%;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  line-height: 9px;
+}
+
+.statisticsContainer {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  .stat {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+.editTargetContainer {
+  display: flex;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.editTargetLabel {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 8px;
+}
+
+//tree target modal
+
+.crossIconContainer {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  cursor: pointer;
+}
+
+.targetModalMainContainer {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 398px;
+  height: 524px;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.saveButton {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(0deg, #008f5c 0%, #008f5c 100%);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.targetModalSubConatiner {
+  display: flex;
+  gap: 14px;
+  flex-direction: column;
+}
+
+.deActivateTargetModal {
+  background: #f2f2f2;
+  .targetInputIconContainer {
+    background: #828282;
+  }
+}
+
+.deActivateTargetModal,
+.targetFormInputContainer {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.switchContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.targetInputIconMainContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  .label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+.targetInputIconContainer {
+  width: 24px;
+  height: 24px;
+  border-radius: 3.1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.setTargetLabel {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.editTargetButtonContainer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.emptyProgressContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 20px 20px 21px 40px;
+  border-radius: 24px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  @include xsPhoneView {
+    justify-content: center;
+    gap: 10px;
+  }
+  .emptyProgressInformation {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: $fontSixteen;
+    font-weight: 400;
+  }
+}
+
+.setTargetButton {
+  width: 147px;
+  height: 45px;
+  background: linear-gradient(0deg, #008f5c 0%, #008f5c 100%);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.treesPlanted {
+  background: $greenHazeColor;
+  .targetInputIconContainer,
+  .iconContainer,
+  .personalPercentageBar {
+    background: $primaryDarkColor;
+  }
+  .giftPercentageBar {
+    background: $mintGreenColor;
+  }
+  .editTargetLabel {
+    color: $primaryDarkColor;
+  }
+}
+
+.areaRestored {
+  background: $amethystPurpleColor;
+  .targetInputIconContainer,
+  .iconContainer,
+  .personalPercentageBar {
+    background: $electricPurpleColor;
+  }
+  .giftPercentageBar {
+    background: $lavenderPurpleColor;
+  }
+  .editTargetLabel {
+    color: $electricPurpleColor;
+  }
+}
+
+.areaConserved {
+  background: $ceruleanBlueColor;
+  .targetInputIconContainer,
+  .iconContainer,
+  .personalPercentageBar {
+    background: $mediumBlueColor;
+  }
+  .giftPercentageBar {
+    background: $skyBlueColor;
+  }
+  .editTargetLabel {
+    color: $mediumBlueColor;
+  }
+}

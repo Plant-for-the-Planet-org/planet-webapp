@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
@@ -16,7 +17,7 @@ const ProfileLayout = () => {
   const router = useRouter();
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = React.useState<null | User>(null);
-  const { setUserInfo, contributionsResult } = useMyForestV2();
+  const { setUserInfo, contributionStats, userInfo } = useMyForestV2();
 
   useEffect(() => {
     if (contextLoaded) {
@@ -42,14 +43,22 @@ const ProfileLayout = () => {
         {profile ? (
           <ProfileCard userProfile={profile} profileType="private" />
         ) : (
-          <ProfileLoader />
+          <ProfileLoader height={350} />
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        {contributionsResult?.stats ? <ContributionsMap /> : <ProfileLoader />}
+        {contributionStats ? (
+          <ContributionsMap />
+        ) : (
+          <ProfileLoader height={350} />
+        )}
       </section>
       <section id="progress-container" className={styles.progressContainer}>
-        Progress
+        {contributionStats && userInfo ? (
+          <ForestProgress profilePageType="private" />
+        ) : (
+          <ProfileLoader height={116} />
+        )}
       </section>
       <section
         id="my-contributions-container"
@@ -69,7 +78,7 @@ const ProfileLayout = () => {
         {profile ? (
           <CommunityContributions userProfile={profile} profileType="private" />
         ) : (
-          <ProfileLoader />
+          <ProfileLoader height={350} />
         )}
       </section>
     </article>

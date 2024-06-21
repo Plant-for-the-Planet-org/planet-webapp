@@ -184,3 +184,4 @@ export type DonationSuperclusterProperties =
 export type RegistrationSuperclusterProperties =
   | MyContributionsSingleRegistration
   | ClusterProperties;
+export type ProfilePageType = 'private' | 'public';

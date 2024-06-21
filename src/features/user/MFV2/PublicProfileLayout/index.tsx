@@ -2,6 +2,7 @@ import styles from './PublicProfileLayout.module.scss';
 import ProfileCard from '../ProfileCard';
 import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
+import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import CommunityContributions from '../CommunityContributions';
 import { useState, useEffect, useContext } from 'react';
@@ -12,6 +13,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
+import { aggregateProgressData } from '../../../../utils/myForestV2Utils';
 
 interface Props {
   tenantConfigId: string;
@@ -23,7 +25,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
-  const { setUserInfo, contributionsResult } = useMyForestV2();
+  const { userInfo, setUserInfo, contributionStats } = useMyForestV2();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
   async function loadPublicProfile(id: string) {
@@ -62,6 +64,22 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
       loadPublicProfile(router.query.profile as string);
     }
   }, [contextLoaded, user, router]);
+  const { treesDonated, areaRestored, areaConserved } =
+    aggregateProgressData(contributionStats);
+  const treeTarget = userInfo?.targets.treesDonated ?? 0;
+  const restoreTarget = userInfo?.targets.areaRestored ?? 0;
+  const conservTarget = userInfo?.targets.areaConserved ?? 0;
+
+  const isProgressBarDisabled = () => {
+    return (
+      treesDonated === 0 &&
+      areaRestored === 0 &&
+      areaConserved === 0 &&
+      treeTarget === 0 &&
+      restoreTarget === 0 &&
+      conservTarget === 0
+    );
+  };
 
   return (
     <article className={styles.publicProfileLayout}>
@@ -69,15 +87,28 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         {profile ? (
           <ProfileCard userProfile={profile} profileType="public" />
         ) : (
-          <ProfileLoader />
+          <ProfileLoader height={350} />
         )}
       </section>
       <section id="map-container" className={styles.mapContainer}>
-        {contributionsResult?.stats ? <ContributionsMap /> : <ProfileLoader />}
+        {contributionStats ? (
+          <ContributionsMap />
+        ) : (
+          <ProfileLoader height={350} />
+        )}
       </section>
-      <section id="progress-container" className={styles.progressContainer}>
-        Progress
-      </section>
+      {isProgressBarDisabled() ? (
+        <></>
+      ) : (
+        <section id="progress-container" className={styles.progressContainer}>
+          {contributionStats ? (
+            <ForestProgress profilePageType="public" />
+          ) : (
+            <ProfileLoader height={116} />
+          )}
+        </section>
+      )}
+
       <section
         id="my-contributions-container"
         className={styles.myContributionsContainer}
@@ -104,7 +135,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
               profileType="public"
             />
           ) : (
-            <ProfileLoader />
+            <ProfileLoader height={350} />
           )}
         </section>
       ) : null}
