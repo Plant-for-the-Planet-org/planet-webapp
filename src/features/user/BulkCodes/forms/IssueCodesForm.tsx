@@ -4,6 +4,8 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
+  useMemo,
 } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField, MenuItem } from '@mui/material';
@@ -239,15 +241,53 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const shouldDisableSubmission =
-    !(
-      user?.planetCash &&
-      !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-    ) ||
-    isProcessing ||
-    (localRecipients.length === 0 &&
-      (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0)) ||
-    (bulkMethod === 'import' && !hasTakenRecipientDataConsent);
+  const shouldDisableSubmission = useMemo(() => {
+    const hasSufficientFunds =
+      user?.planetCash != null &&
+      user.planetCash.balance + user.planetCash.creditLimit > 0;
+    const hasEnteredRequiredData =
+      localRecipients.length > 0 ||
+      (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+    const needsConsent =
+      bulkMethod === 'import' && !hasTakenRecipientDataConsent;
+
+    return (
+      hasSufficientFunds &&
+      !isProcessing &&
+      hasEnteredRequiredData &&
+      !needsConsent
+    );
+  }, [
+    user,
+    bulkMethod,
+    codeQuantity,
+    unitsPerCode,
+    unitsPerCode,
+    hasTakenRecipientDataConsent,
+    isProcessing,
+    localRecipients,
+  ]);
+
+  const renderInvalidEmailWarning = useCallback(() => {
+    return (
+      <>
+        <br />
+        {t.rich('invalidEmailWarningText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </>
+    );
+  }, [locale, t]);
 
   if (!isSubmitted) {
     return (
@@ -318,7 +358,9 @@ const IssueCodesForm = (): ReactElement | null => {
                       !hasTakenRecipientDataConsent
                     );
                   }}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  inputProps={{
+                    'aria-label': 'Consent to submit recipient name and email',
+                  }}
                   id="recipientDataConsent"
                 />
                 <label
@@ -368,24 +410,7 @@ const IssueCodesForm = (): ReactElement | null => {
           </form>
           <div className={styles.issueCodeConsent}>
             {t('chargeConsentText')}
-            {bulkMethod === 'import' && (
-              <>
-                <br />
-                {t.rich('invalidEmailWarningText', {
-                  termsLink: (chunks) => (
-                    <a
-                      target="_blank"
-                      href={`https://pp.eco/legal/${locale}/terms`}
-                      rel="noreferrer"
-                      className="planet-links"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {chunks}
-                    </a>
-                  ),
-                })}
-              </>
-            )}
+            {bulkMethod === 'import' && renderInvalidEmailWarning()}
           </div>
         </StyledFormContainer>
       </CenteredContainer>
