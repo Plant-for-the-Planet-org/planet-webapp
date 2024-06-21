@@ -10,16 +10,16 @@ import { ProfilePageType } from '../../../../common/types/myForestv2';
 
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;
-  setShowPopUp: SetState<boolean>;
   profilePageType: ProfilePageType;
   supportedTreecounter: string | undefined;
+  setIsCursorOnPopup: SetState<boolean>;
 }
 
 const DonationPopup = ({
   superclusterResponse,
-  setShowPopUp,
   profilePageType,
   supportedTreecounter,
+  setIsCursorOnPopup,
 }: DonationPopupProps) => {
   if (!superclusterResponse) return null;
   const { coordinates } = superclusterResponse.geometry;
@@ -38,8 +38,8 @@ const DonationPopup = ({
     >
       <div
         className={style.donationPopupContainer}
-        onMouseOver={() => setShowPopUp(true)}
-        onMouseLeave={() => setShowPopUp(false)}
+        onMouseEnter={() => setIsCursorOnPopup(true)}
+        onMouseLeave={() => setIsCursorOnPopup(false)}
       >
         <PopupImageSection superclusterResponse={superclusterResponse} />
         <ProjectInfoSection {...ProjectInfoSectionProps} />
