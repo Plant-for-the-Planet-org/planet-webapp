@@ -77,15 +77,18 @@
 
 .projectSummary {
   .additionalProjectInfo {
-    font-size: $fontSmall;
-    color: #4f4f4f;
+    margin-top: 4px;
   }
 }
 
+.additionalProjectInfo {
+  font-size: $fontXSmall;
+  color: #4f4f4f;
+}
+
 .projectTotalContributions {
-  font-size: $fontMedium;
+  font-size: $fontSixteen;
   font-weight: 700;
-  color: #333;
 }
 
 .donationButton {
@@ -106,29 +109,16 @@
 .registrationSummary {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 
   .registeredTreeCount {
     font-weight: 700;
     font-size: $fontSixteen;
-    color: #4f4f4f;
   }
 
   .registrationInfo {
     font-size: $fontXSmall;
     color: #4f4f4f;
-  }
-
-  @include smTabletView {
-    .registeredTreeCount {
-      font-weight: 700;
-      font-size: $fontMedium;
-      color: #333;
-    }
-
-    .registrationInfo {
-      font-size: $fontSmall;
-    }
   }
 }
 
@@ -226,7 +216,7 @@
   }
 
   @include lgLaptopView {
-    padding: 0 24px 0 36px;
+    padding: 0 0 0 36px;
   }
 }
 
@@ -246,7 +236,7 @@
   }
   .projectName {
     font-weight: 700;
-    font-size: $fontMedium;
+    font-size: $fontSixteen;
   }
 
   &.dark {
@@ -257,9 +247,6 @@
       svg > path {
         fill: $primaryDarkColor;
       }
-    }
-    .projectName {
-      color: #333;
     }
   }
 
@@ -300,7 +287,6 @@
     margin: auto 16px 16px;
 
     .projectName {
-      font-size: $fontSixteen;
       font-weight: 600;
     }
 
@@ -364,16 +350,6 @@
         flex-direction: column;
         gap: 3px;
       }
-
-      .projectTotalContributions {
-        font-size: $fontSixteen;
-        color: #4f4f4f;
-      }
-
-      .additionalProjectInfo {
-        font-size: $fontXSmall;
-        color: #4f4f4f;
-      }
     }
   }
 
@@ -391,6 +367,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 8px;
     }
 
     .totalContributionsAndCTA {
