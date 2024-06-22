@@ -97,21 +97,21 @@ export const extractAndClassifyProjectData = (
 
   // Extract required fields from each object
   clusterChildren.forEach((item) => {
-    const extractedItem: ExtractedProjectData = {
+    const extractedProjectData: ExtractedProjectData = {
       unitType: item.properties.projectInfo.unitType,
       classification: item.properties.projectInfo.classification,
       purpose: item.properties.projectInfo.purpose,
       contributionCount: item.properties.contributionInfo.contributionCount,
     };
 
-    if (extractedItem.contributionCount > maxContributionCount) {
-      maxContributionCount = extractedItem.contributionCount;
-      maxContributingProject = extractedItem;
+    if (extractedProjectData.contributionCount > maxContributionCount) {
+      maxContributionCount = extractedProjectData.contributionCount;
+      maxContributingProject = extractedProjectData;
     }
 
-    const key = `${extractedItem.unitType}-${extractedItem.contributionCount}`;
+    const key = `${extractedProjectData.unitType}-${extractedProjectData.contributionCount}`;
     if (!uniqueProjectType.has(key)) {
-      uniqueProjectType.set(key, extractedItem);
+      uniqueProjectType.set(key, extractedProjectData);
     }
   });
 

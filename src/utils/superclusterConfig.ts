@@ -3,7 +3,7 @@ import { Bound } from '../features/common/types/map';
 import Supercluster, { PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
-import { DonationProperties } from '../features/common/Layout/MyForestContextV2';
+import { DonationProperties } from '../features/common/types/myForestv2';
 import { MyContributionsSingleRegistration } from '../features/common/types/myForestv2';
 
 const clusterConfigV2 = {
