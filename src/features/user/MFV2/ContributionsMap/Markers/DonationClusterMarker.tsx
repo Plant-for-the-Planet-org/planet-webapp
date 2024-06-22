@@ -6,7 +6,7 @@ import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import ClusterIcon from './ClusterIcon';
 import { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 import {
-  getClusterMarkerColors,
+  getDonationClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestV2Utils';
 import { ViewportProps } from '../../../../common/types/map';
@@ -17,7 +17,7 @@ import {
 import { ProjectPurpose } from './ProjectTypeIcon';
 import style from '../Common/common.module.scss';
 
-export interface ClusterMarkerProps {
+export interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
   viewport: ViewportProps;
   mapRef: MutableRefObject<null>;
@@ -30,11 +30,11 @@ export type ExtractedProjectData = {
   contributionCount: number;
 };
 
-const ClusterMarker = ({
+const DonationClusterMarker = ({
   superclusterResponse,
   viewport,
   mapRef,
-}: ClusterMarkerProps) => {
+}: DonationClusterMarkerProps) => {
   const [clusterChildren, setClusterChildren] = useState<
     PointFeature<DonationProperties>[]
   >([]);
@@ -64,7 +64,7 @@ const ClusterMarker = ({
   }, [viewport, superclusterResponse]);
 
   useEffect(() => {
-    const _colors = getClusterMarkerColors(
+    const _colors = getDonationClusterMarkerColors(
       maxContributingProject,
       uniqueUnitTypePurposeProjects
     );
@@ -109,4 +109,4 @@ const ClusterMarker = ({
   );
 };
 
-export default ClusterMarker;
+export default DonationClusterMarker;

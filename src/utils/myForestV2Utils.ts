@@ -1,5 +1,5 @@
 import { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
-import { ExtractedProjectData } from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
+import { ExtractedProjectData } from '../features/user/MFV2/ContributionsMap/Markers/DonationClusterMarker';
 import themeProperties from '../theme/themeProperties';
 import { PointFeature } from 'supercluster';
 import { DonationProperties } from '../features/common/types/myForestv2';
@@ -37,7 +37,7 @@ export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
  * @returns object containing tertiaryProjectColor, mainProjectColor, secondaryProjectColor
  */
 
-export const getClusterMarkerColors = (
+export const getDonationClusterMarkerColors = (
   maxContributingProject: ExtractedProjectData | null,
   uniqueUnitTypePurposeProjects: ExtractedProjectData[]
 ) => {

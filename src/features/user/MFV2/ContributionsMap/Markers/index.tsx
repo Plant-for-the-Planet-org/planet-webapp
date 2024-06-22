@@ -1,7 +1,7 @@
 import { PointFeature, ClusterProperties } from 'supercluster';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import ClusterMarker from './ClusterMarker';
+import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
@@ -66,7 +66,7 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
     <>
       {donationSuperclusterResponse.map((geoJson, key) => {
         return isCluster(geoJson) ? (
-          <ClusterMarker
+          <DonationClusterMarker
             key={geoJson.id}
             superclusterResponse={geoJson}
             viewport={viewport}
