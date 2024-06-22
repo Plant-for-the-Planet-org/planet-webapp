@@ -30,7 +30,6 @@ const ClusterIcon = ({
     tertiaryProjectColor,
     secondaryProjectColor,
     mainProjectColor,
-    width: 55,
   };
 
   if (purpose === 'conservation') {

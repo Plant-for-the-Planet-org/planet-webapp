@@ -1,25 +1,16 @@
-import { IconProps } from '../../../../../src/features/common/types/common';
-
 interface ClusterMarkerIconProps {
-  width: number;
   tertiaryProjectColor: string;
   secondaryProjectColor: string;
   mainProjectColor: string;
 }
 
 export const MangrovesClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -55,18 +46,12 @@ export const MangrovesClusterMarker = ({
 };
 
 export const NaturalRegenerationClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -89,18 +74,12 @@ export const NaturalRegenerationClusterMarker = ({
 };
 
 export const ManagedRegenerationClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -155,18 +134,12 @@ export const ManagedRegenerationClusterMarker = ({
 };
 
 export const AgroforestryClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -202,18 +175,12 @@ export const AgroforestryClusterMarker = ({
 };
 
 export const UrbanRestorationClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -248,18 +215,12 @@ export const UrbanRestorationClusterMarker = ({
 };
 
 export const TreePlantingClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -294,18 +255,12 @@ export const TreePlantingClusterMarker = ({
 };
 
 export const ConservationClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}
@@ -339,14 +294,9 @@ export const ConservationClusterMarker = ({
   );
 };
 
-export const RegisteredTreeClusterMarkerIcon = ({ width }: IconProps) => {
+export const RegisteredTreeClusterMarkerIcon = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      viewBox="0 0 68 75"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 75" fill="none">
       <path
         d="M53.4995 15.3797L53.4995 15.3798C61.5002 23.2119 61.5002 35.9083 53.4995 43.7413L39.7606 57.1923C39.3415 57.6026 38.6585 57.6026 38.2394 57.1923L24.5005 43.7413C16.4999 35.9084 16.4998 23.2131 24.5002 15.3801L24.5004 15.3799C24.5065 15.3739 24.5124 15.3678 24.5181 15.3617C32.5262 7.54009 45.499 7.54611 53.4995 15.3797ZM24.6306 14.8849C24.663 14.9986 24.6566 15.1237 24.6029 15.2363C24.6556 15.1243 24.6625 14.9989 24.6306 14.8849ZM23.7961 15.378C23.8824 15.4655 24.0036 15.5225 24.1503 15.5225C24.0019 15.5225 23.8811 15.4657 23.7955 15.3786C23.7957 15.3784 23.7959 15.3782 23.7961 15.378Z"
         stroke="#007A49"
@@ -418,18 +368,12 @@ export const RegisteredTreeClusterMarkerIcon = ({ width }: IconProps) => {
 };
 
 export const OtherPlantingClusterMarker = ({
-  width,
   tertiaryProjectColor,
   secondaryProjectColor,
   mainProjectColor,
 }: ClusterMarkerIconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 55 50"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 55 50" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M48.3536 6.50324L48.3537 6.50328C56.5488 14.4991 56.5488 27.4603 48.3536 35.457L34.2876 49.1825C33.8537 49.6058 33.1463 49.6058 32.7124 49.1825L18.6464 35.457C10.4513 27.4604 10.4512 14.5003 18.646 6.50358C18.6523 6.49749 18.6583 6.4913 18.6641 6.48501C26.8676 -1.50108 40.1578 -1.495 48.3536 6.50324ZM18.2967 6.6454C18.1477 6.6454 18.0267 6.58836 17.9412 6.50092C17.9413 6.50083 17.9414 6.50073 17.9415 6.50064C18.0274 6.58828 18.1486 6.6454 18.2967 6.6454Z"
         stroke={tertiaryProjectColor}

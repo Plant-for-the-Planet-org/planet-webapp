@@ -28,18 +28,21 @@ const PointMarkers = ({ superclusterResponse }: PointMarkersProps) => {
     <Marker
       longitude={geometry.coordinates[0]}
       latitude={geometry.coordinates[1]}
-      offset={[0, -15]}
+      offset={[0, 0]}
+      anchor="bottom"
     >
       {isRegistration(properties) ? (
         <div className={style.registeredTreeMarkerContainer}>
           <RegisteredTreeIcon />
         </div>
       ) : (
-        <ProjectTypeIcon
-          purpose={properties.projectInfo.purpose}
-          classification={properties.projectInfo.classification}
-          unitType={properties.projectInfo.unitType}
-        />
+        <div className={style.pointMarkerContainer}>
+          <ProjectTypeIcon
+            purpose={properties.projectInfo.purpose}
+            classification={properties.projectInfo.classification}
+            unitType={properties.projectInfo.unitType}
+          />
+        </div>
       )}
     </Marker>
   );

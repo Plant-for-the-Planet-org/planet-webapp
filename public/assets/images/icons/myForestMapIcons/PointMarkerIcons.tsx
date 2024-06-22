@@ -1,8 +1,8 @@
 import { IconProps } from '../../../../../src/features/common/types/common';
 
-export const Agroforestry = ({ width, color }: IconProps) => {
+export const Agroforestry = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
       <path
         fill={color}
         d="M6.2 6.022a20.257 20.257 0 0 0 0 29.077l13.739 13.45c.613.601 1.607.601 2.22 0L35.9 35.1a20.257 20.257 0 0 0 0-29.077c-8.202-8.03-21.499-8.03-29.7 0Z"
@@ -15,9 +15,9 @@ export const Agroforestry = ({ width, color }: IconProps) => {
   );
 };
 
-export const Conservation = ({ width, color }: IconProps) => {
+export const Conservation = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
       <path
         fill={color}
         fillRule="evenodd"
@@ -39,14 +39,9 @@ export const Conservation = ({ width, color }: IconProps) => {
   );
 };
 
-export const ManagedRegeneration = ({ width, color }: IconProps) => {
+export const ManagedRegeneration = ({ color }: IconProps) => {
   return (
-    <svg
-      width={width}
-      viewBox="0 0 42 49"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 42 49" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -93,14 +88,9 @@ export const ManagedRegeneration = ({ width, color }: IconProps) => {
   );
 };
 
-export const Mangroves = ({ width, color }: IconProps) => {
+export const Mangroves = ({ color }: IconProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      viewBox="0 0 42 49"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 49" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -117,13 +107,12 @@ export const Mangroves = ({ width, color }: IconProps) => {
   );
 };
 
-export const NaturalRegeneration = ({ width, color }: IconProps) => {
+export const NaturalRegeneration = ({ color }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlSpace="preserve"
       viewBox="0 0 42 49"
-      width={width}
     >
       <path
         d="M6.2 6C-2 14-2 27 6.2 35.1l13.7 13.5c.6.6 1.6.6 2.2 0l13.7-13.5c8.2-8 8.2-21 0-29.1-8.2-8-21.4-8-29.6 0-.1 0 0 0 0 0z"
@@ -143,19 +132,52 @@ export const NaturalRegeneration = ({ width, color }: IconProps) => {
   );
 };
 
-export const OtherPlanting = ({ width, color }: IconProps) => {
+export const OtherPlanting = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} fill="none">
-      <path
-        fill={color}
-        fillRule="evenodd"
-        d="M6.2 6.022a20.257 20.257 0 0 0 0 29.077l13.739 13.45c.613.601 1.607.601 2.22 0L35.9 35.1a20.257 20.257 0 0 0 0-29.077c-8.202-8.03-21.499-8.03-29.7 0Z"
-        clipRule="evenodd"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+      <g filter="url(#a)">
+        <path
+          fill={color}
+          fillRule="evenodd"
+          d="M13.1 10.015a13.504 13.504 0 0 0 0 19.384l9.16 8.967c.409.4 1.071.4 1.48 0L32.9 29.4a13.504 13.504 0 0 0 0-19.384c-5.468-5.353-14.333-5.353-19.8 0Z"
+          clipRule="evenodd"
+        />
+      </g>
       <path
         fill="#fff"
-        d="M26.008 31.744h-.986c-1.042-.68-2.76-1.096-3.489-1.221v-4.579c.326.08.659.122 1 .122 1.458 0 2.748-.732 3.289-1.868.067-.141.243-.227.423-.207l.051.007c.232.04.47.059.714.059 1.952 0 3.54-1.33 3.54-2.964 0-1.386-1.118-2.567-2.72-2.886l-.024-.003c-.146-.026-.263-.121-.298-.243a.288.288 0 0 1 .09-.302c.51-.525.788-1.188.788-1.868 0-1.634-1.588-2.964-3.54-2.964-.157 0-.314.01-.467.027-.211.022-.411-.102-.443-.28l-.004-.03c-.003-.016-.003-.032-.003-.048 0-1.635-1.594-2.965-3.546-2.965-1.953 0-3.542 1.33-3.542 2.965 0 .016 0 .032-.004.049l-.004.03c-.031.18-.231.305-.443.279a4.362 4.362 0 0 0-.466-.027c-1.953 0-3.54 1.33-3.54 2.964 0 .677.278 1.336.784 1.862.09.082.125.197.094.308a.374.374 0 0 1-.302.246l-.016.004c-1.607.315-2.728 1.5-2.728 2.885 0 1.635 1.588 2.964 3.54 2.964.243 0 .482-.02.713-.059l.028-.003c.18-.02.376.062.447.203.54 1.133 1.83 1.868 3.289 1.868.34 0 .678-.04 1-.121v4.575c-.283.052-2.306.436-3.498 1.221h-.978c-.22 0-.396.148-.396.331 0 .184.177.332.396.332h11.251c.22 0 .396-.148.396-.331 0-.184-.176-.332-.396-.332Z"
+        d="M26.306 27.163h-.657c-.695-.453-1.84-.731-2.326-.814v-3.053c.217.053.439.081.666.081.972 0 1.832-.488 2.193-1.245.044-.094.162-.151.282-.138l.034.004c.154.027.314.04.476.04 1.301 0 2.36-.887 2.36-1.976 0-.924-.745-1.712-1.814-1.924l-.016-.002c-.096-.018-.175-.081-.198-.162a.192.192 0 0 1 .06-.201c.34-.35.525-.793.525-1.245 0-1.09-1.058-1.977-2.36-1.977-.104 0-.209.007-.31.018-.142.015-.275-.068-.296-.186l-.003-.02c-.002-.01-.002-.022-.002-.033 0-1.09-1.063-1.976-2.364-1.976-1.302 0-2.361.887-2.361 1.976 0 .011 0 .022-.003.033l-.003.02c-.02.12-.154.203-.295.186a2.908 2.908 0 0 0-.311-.018c-1.301 0-2.36.887-2.36 1.976 0 .451.186.891.523 1.241a.2.2 0 0 1 .063.206.25.25 0 0 1-.202.164l-.01.002c-1.072.21-1.82 1-1.82 1.924 0 1.09 1.06 1.976 2.36 1.976.163 0 .322-.013.476-.04l.019-.002c.12-.013.25.042.298.136.36.755 1.22 1.245 2.192 1.245.228 0 .452-.026.667-.08v3.05c-.188.035-1.537.29-2.332.814h-.652c-.146 0-.264.098-.264.22 0 .123.118.222.264.222h7.501c.146 0 .264-.099.264-.221 0-.123-.118-.221-.264-.221Z"
       />
+      <defs>
+        <filter
+          id="a"
+          width={44.945}
+          height={49.612}
+          x={0.528}
+          y={0.069}
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity={0} result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          />
+          <feOffset dy={2.542} />
+          <feGaussianBlur stdDeviation={4.236} />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix values="0 0 0 0 0.0811932 0 0 0 0 0.0811932 0 0 0 0 0.092806 0 0 0 0.15 0" />
+          <feBlend
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_1960_12889"
+          />
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_1960_12889"
+            result="shape"
+          />
+        </filter>
+      </defs>
     </svg>
   );
 };
@@ -191,14 +213,9 @@ export const RegisteredTreeIcon = () => {
   );
 };
 
-export const TreePlanting = ({ width, color }: IconProps) => {
+export const TreePlanting = ({ color }: IconProps) => {
   return (
-    <svg
-      width={width}
-      fill="none"
-      viewBox="0 0 43 49"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg fill="none" viewBox="0 0 43 49" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M6.19909 6.02249C6.19926 6.02249 6.19934 6.0227 6.19922 6.02282C-2.00141 14.0519 -2.0013 27.0696 6.19955 35.0986L19.9385 48.5495C20.5519 49.1502 21.5457 49.1502 22.1592 48.5495L35.8981 35.0986C44.0991 27.0695 44.0991 14.0507 35.8981 6.02249C27.6972 -2.00739 14.4 -2.0075 6.19896 6.02217C6.19884 6.02228 6.19892 6.02249 6.19909 6.02249Z"
         fill={color}
@@ -224,9 +241,9 @@ export const TreePlanting = ({ width, color }: IconProps) => {
   );
 };
 
-export const UrbanRestoration = ({ width, color }: IconProps) => {
+export const UrbanRestoration = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
       <path
         fill={color}
         fillRule="evenodd"

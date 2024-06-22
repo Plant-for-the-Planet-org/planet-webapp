@@ -1,4 +1,4 @@
-import { Marker } from 'react-map-gl-v7';
+import { Marker } from 'react-map-gl-v7/maplibre';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { PointFeature } from 'supercluster';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
@@ -15,6 +15,7 @@ import {
   DonationSuperclusterProperties,
 } from '../../../../common/types/myForestv2';
 import { ProjectPurpose } from './ProjectTypeIcon';
+import style from '../Common/common.module.scss';
 
 export interface ClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
@@ -91,12 +92,19 @@ const ClusterMarker = ({
   const latitude = superclusterResponse.geometry.coordinates[1];
 
   return (
-    <Marker longitude={longitude} latitude={latitude}>
-      <ClusterIcon
-        classification={maxContributingProject?.classification}
-        purpose={maxContributingProject?.purpose}
-        {...clusterMarkerColors}
-      />
+    <Marker
+      longitude={longitude}
+      latitude={latitude}
+      offset={[0, 0]}
+      anchor="bottom"
+    >
+      <div className={style.clusterMarkerContainer}>
+        <ClusterIcon
+          classification={maxContributingProject?.classification}
+          purpose={maxContributingProject?.purpose}
+          {...clusterMarkerColors}
+        />
+      </div>
     </Marker>
   );
 };

@@ -41,7 +41,6 @@ const ProjectTypeIcon = ({
     [purpose, unitType]
   );
   const IconProps = {
-    width: 42,
     color: pointMarkerColor,
   };
 

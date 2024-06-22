@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Map, { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { NavigationControl } from 'react-map-gl-v7';
+import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import MapCredits from './Common/MapCredits';
 import Markers from './Markers';
 import { useRef, MutableRefObject } from 'react';
