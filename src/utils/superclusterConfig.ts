@@ -1,34 +1,36 @@
-import { ViewState } from '../features/common/types/map';
-import {
-  TestPointProps,
-  TestClusterProps,
-  Bound,
-} from '../features/common/types/map';
+import { ViewportProps } from '../features/common/types/map';
+import { Bound } from '../features/common/types/map';
 import Supercluster, { PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
+import { DonationProperties } from '../features/common/types/myForestv2';
+import { MyContributionsSingleRegistration } from '../features/common/types/myForestv2';
 
-const _clusterConfig = {
+const clusterConfigV2 = {
   radius: 40,
   maxZoom: 3,
-  map: (props: TestPointProps): TestClusterProps => ({
-    totalTrees: props.quantity,
-  }),
-  reduce: (accumulator: any, props: any) => {
-    if (props.totalTrees) {
-      accumulator.totalTrees =
-        Number(accumulator.totalTrees) + Number(props.totalTrees);
-    }
-  },
 };
 
-export const _getClusterGeojson = (
-  viewState: ViewState,
+/**
+ * The getClusterGeojson function is designed to work with map clustering using the Supercluster library.
+ * It takes in a view state, a map reference, a set of GeoJSON points, and an optional cluster ID.
+ * It returns either the clusters within the current map bounds and zoom level or the leaves (points) of a specified cluster.
+ * @param viewState
+ * @param mapRef
+ * @param geoJson
+ * @param clusterId
+ * @returns cluster, cluster children
+ */ export const getClusterGeojson = (
+  viewState: ViewportProps,
   mapRef: RefObject<MapRef>,
-  geoJson: PointFeature<TestPointProps>[],
+  geoJson: PointFeature<
+    DonationProperties | MyContributionsSingleRegistration
+  >[],
   clusterId: string | number | undefined
 ) => {
-  const supercluster = new Supercluster(_clusterConfig);
+  const supercluster = new Supercluster<
+    DonationProperties | MyContributionsSingleRegistration
+  >(clusterConfigV2);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {
@@ -36,11 +38,13 @@ export const _getClusterGeojson = (
     const bounds = map.getBounds().toArray().flat();
     const bound: Bound = bounds && [bounds[0], bounds[1], bounds[2], bounds[3]];
     if (zoom && !clusterId) {
-      const _clusters = supercluster?.getClusters(bound, zoom);
-      return _clusters;
+      const clusters = supercluster?.getClusters(bound, zoom);
+      return clusters;
     }
     if (clusterId) {
-      return supercluster.getLeaves(Number(clusterId));
+      return supercluster.getLeaves(
+        Number(clusterId)
+      ) as PointFeature<DonationProperties>[];
     }
   }
 };
