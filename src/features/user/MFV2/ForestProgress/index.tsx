@@ -47,7 +47,10 @@ const ProgressBars = ({
           dataType={'treesPlanted'}
           target={treeTarget}
           gift={contributionStats?.treesDonated.received ?? 0}
-          personal={contributionStats?.treesDonated.personal ?? 0}
+          personal={
+            (contributionStats?.treesDonated.personal ?? 0) +
+            (contributionStats?.treesRegistered ?? 0)
+          }
           profilePageType={profilePageType}
         />
       )}
