@@ -35,6 +35,7 @@ const DonationPopup = ({
       className={style.contributionPopup}
       offset={30}
       closeButton={false}
+      anchor="bottom"
     >
       <div
         className={style.donationPopupContainer}
