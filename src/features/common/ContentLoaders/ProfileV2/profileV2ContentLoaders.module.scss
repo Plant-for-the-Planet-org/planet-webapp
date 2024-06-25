@@ -1,17 +1,5 @@
 @import '../../../../theme/theme';
 
 .profileCardSkeleton {
-    margin-top: -3.5px;
-    span {
-        border-radius: 16px;
-    }
-    
-}
-
-@include mdTabletView {
-   .profileCardSkeleton {
-    span {
-        border-radius: 24px;
-    }
-   }
+  margin-top: -3.5px;
 }

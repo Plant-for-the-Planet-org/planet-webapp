@@ -21,15 +21,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  canvas {
-    border-top-right-radius: 14px;
-    border-top-left-radius: 14px;
-  }
-  @include xsPhoneView {
-    canvas {
-      border-radius: 0px;
-    }
-  }
 }
 
 .pointMarkerContainer {
@@ -51,8 +42,6 @@
 .contributionStatsContainer {
   background: #f0f6f5;
   width: 100%;
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
   padding-top: 12px;
   padding-bottom: 12px;
   display: flex;
@@ -61,8 +50,6 @@
   grid-area: 16px;
   justify-content: center;
   @include xsPhoneView {
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
     margin-bottom: 14px;
   }
 }

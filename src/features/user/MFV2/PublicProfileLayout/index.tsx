@@ -25,7 +25,14 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
-  const { userInfo, setUserInfo, contributionStats } = useMyForestV2();
+  const {
+    userInfo,
+    setUserInfo,
+    contributionStats,
+    isContributionsLoaded,
+    isProjectsListLoaded,
+    isLeaderboardLoaded,
+  } = useMyForestV2();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
   async function loadPublicProfile(id: string) {
@@ -81,27 +88,43 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     );
   };
 
+  const isProfileLoaded = profile !== null && profile !== undefined;
+  const isContributionsDataLoaded =
+    isContributionsLoaded && isProjectsListLoaded;
+  const isProgressDataLoaded =
+    isContributionsLoaded && profile !== null && profile !== undefined;
+
   return (
     <article className={styles.publicProfileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
-        {profile ? (
+        {isProfileLoaded ? (
           <ProfileCard userProfile={profile} profilePageType="public" />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={450} />
         )}
       </section>
-      <section id="map-container" className={styles.mapContainer}>
-        {contributionStats ? (
+      <section
+        id="map-container"
+        className={`${styles.mapContainer} ${
+          !isContributionsDataLoaded ? styles.loading : ''
+        }`}
+      >
+        {isContributionsDataLoaded ? (
           <ContributionsMap />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={450} />
         )}
       </section>
       {isProgressBarDisabled() ? (
         <></>
       ) : (
-        <section id="progress-container" className={styles.progressContainer}>
-          {contributionStats ? (
+        <section
+          id="progress-container"
+          className={`${styles.progressContainer} ${
+            !isProgressDataLoaded ? styles.loading : ''
+          }`}
+        >
+          {isProgressDataLoaded ? (
             <ForestProgress profilePageType="public" />
           ) : (
             <ProfileLoader height={116} />
@@ -111,18 +134,25 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
 
       <section
         id="my-contributions-container"
-        className={styles.myContributionsContainer}
+        className={`${styles.myContributionsContainer} ${
+          !isContributionsDataLoaded ? styles.loading : ''
+        }`}
       >
-        {profile ? (
+        {isContributionsDataLoaded && profile ? (
           <MyContributions profilePageType="public" userProfile={profile} />
-        ) : null}
+        ) : (
+          <ProfileLoader height={350} />
+        )}
       </section>
       {showLeaderboard ? (
         <section
           id="community-contributions-container"
-          className={styles.communityContributionsContainer}
+          className={`
+						${styles.communityContributionsContainer} ${
+            !isLeaderboardLoaded ? styles.loading : ''
+          }`}
         >
-          {profile ? (
+          {isLeaderboardLoaded && profile ? (
             <CommunityContributions
               userProfile={profile}
               profilePageType="public"
@@ -132,9 +162,9 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           )}
         </section>
       ) : null}
-      <section id="info-cta-container" className={styles.infoAndCtaContainer}>
+      {/* <section id="info-cta-container" className={styles.infoAndCtaContainer}>
         Additional information and CTAs - Become a member, Treegame, SDG Slider
-      </section>
+      </section> */}
     </article>
   );
 };
