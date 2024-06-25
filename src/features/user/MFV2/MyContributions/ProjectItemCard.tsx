@@ -19,7 +19,7 @@ import { ComponentProps } from 'react';
 interface Props {
   project: MyForestProject;
   contributionDetails: MyContributionsSingleProject;
-  pageType: ProfilePageType;
+  profilePageType: ProfilePageType;
   supportedTreecounter?: string;
 }
 
@@ -28,7 +28,7 @@ export type ProjectItemCardProps = ComponentProps<typeof ProjectItemCard>;
 const ProjectItemCard = ({
   project,
   contributionDetails,
-  pageType,
+  profilePageType,
   supportedTreecounter,
 }: Props) => {
   // Mobile version - ItemMobileHeader, ProjectTotalContributions, DonateButton, country/tpo (not components), project contribution list (if multiple contributions)
@@ -47,7 +47,7 @@ const ProjectItemCard = ({
   const giftDetails =
     contributionCount === 1 ? latestContributions[0].giftDetails : null;
 
-  const lastThreeContributions = latestContributions.slice(0, 3);
+  const lastTwoContributions = latestContributions.slice(0, 2);
 
   const imageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -90,12 +90,13 @@ const ProjectItemCard = ({
             />
             {project.allowDonations === true && (
               <DonateButton
-                {...(pageType === 'public' && supportedTreecounter !== undefined
+                {...(profilePageType === 'public' &&
+                supportedTreecounter !== undefined
                   ? { type: 'supported', supportedTreecounter }
                   : { type: 'unsupported' })}
                 projectPurpose={project.purpose}
                 buttonText={
-                  pageType === 'public'
+                  profilePageType === 'public'
                     ? tProfile('donate')
                     : tProfile('donateAgain')
                 }
@@ -139,12 +140,13 @@ const ProjectItemCard = ({
           </div>
           {project.allowDonations === true && (
             <DonateButton
-              {...(pageType === 'public' && supportedTreecounter !== undefined
+              {...(profilePageType === 'public' &&
+              supportedTreecounter !== undefined
                 ? { type: 'supported', supportedTreecounter }
                 : { type: 'unsupported' })}
               projectPurpose={project.purpose}
               buttonText={
-                pageType === 'public'
+                profilePageType === 'public'
                   ? tProfile('donate')
                   : tProfile('donateAgain')
               }
@@ -156,17 +158,17 @@ const ProjectItemCard = ({
       </section>
       {contributionCount > 1 && (
         <section className={`${styles.sectionTwo} ${styles[projectType]}`}>
-          {lastThreeContributions.map((contribution, index) => (
+          {lastTwoContributions.map((contribution, index) => (
             <ContributionSummary
               key={index}
               contribution={contribution}
               purpose={project.purpose}
             />
           ))}
-          {contributionCount > 3 && (
+          {contributionCount > 2 && (
             <ContributionCountOverflow
               contributionCount={contributionCount}
-              displayedCount={3}
+              displayedCount={2}
             />
           )}
         </section>

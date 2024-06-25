@@ -8,14 +8,15 @@
     'profileContainer'
     'mapContainer'
     'progressContainer'
-    'myContributionsContainer'
-    'communityContributionsContainer';
+    'communityContributionsContainer'
+    'myContributionsContainer';
   gap: 16px;
 
   > section {
     border-radius: 16px;
     background-color: $backgroundColor;
     margin: 0 20px;
+    overflow: hidden;
   }
 
   // heights are temporary values and may not be needed
@@ -30,7 +31,12 @@
     height: 435px;
     grid-area: mapContainer;
     border: 4px solid #fff;
+
     @include xsPhoneView {
+      border: none;
+    }
+
+    &.loading {
       border: none;
     }
   }
@@ -38,18 +44,30 @@
   .progressContainer {
     grid-area: progressContainer;
     padding: 16px;
+
+    &.loading {
+      padding: 0;
+    }
   }
 
   .myContributionsContainer {
     grid-area: myContributionsContainer;
     border: 4px solid #fff;
     overflow: hidden;
+
+    &.loading {
+      border: none;
+    }
   }
 
   .communityContributionsContainer {
     grid-area: communityContributionsContainer;
     border: 4px solid #fff;
     overflow: hidden;
+
+    &.loading {
+      border: none;
+    }
   }
 }
 
@@ -77,8 +95,11 @@
       border-radius: 24px;
     }
 
+    .mapContainer {
+      height: 450px;
+    }
+
     .profileContainer,
-    .mapContainer,
     .progressContainer,
     .myContributionsContainer,
     .communityContributionsContainer {
