@@ -32,6 +32,21 @@
   }
 }
 
+.pointMarkerContainer {
+  width: 26px;
+  height: 36px;
+}
+
+.clusterMarkerContainer {
+  width: 35px;
+  height: 36px;
+}
+
+.registeredTreeClusterMarkerContainer {
+  width: 41px;
+  height: 36px;
+}
+
 //style for contribution statistics
 .contributionStatsContainer {
   background: #f0f6f5;
@@ -96,6 +111,6 @@
   color: #2f3336;
 }
 .registeredTreeMarkerContainer {
-  width: 42px;
-  height: 49px;
+  width: 26px;
+  height: 36px;
 }

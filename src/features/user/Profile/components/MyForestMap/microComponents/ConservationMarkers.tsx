@@ -2,7 +2,7 @@ import { ConservAreaClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import { useEffect, useState, ReactElement } from 'react';
 import { ClusterMarkerProps, Cluster } from '../../../../../common/types/map';
-import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
+import { _getClusterGeojson } from '../../../../../../utils/superclusterConfigV1';
 import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 
 const ConservationMarker = ({

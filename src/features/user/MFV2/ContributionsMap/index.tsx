@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import Map, { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { NavigationControl } from 'react-map-gl-v7';
-import SinglePointMarkers from './Markers/SinglePointMarkers';
+import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import MapCredits from './Common/MapCredits';
+import Markers from './Markers';
+import { useRef, MutableRefObject } from 'react';
 import style from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
 
@@ -23,6 +24,7 @@ const EMPTY_STYLE = {
 } as const;
 
 function ContributionsMap() {
+  const mapRef: MutableRefObject<null> = useRef(null);
   // mapState and viewState logic will need to be refined and move elsewhere (either context or props) once we fetch data from the API
   const [mapState, setMapState] = useState<MapState>({
     mapStyle: EMPTY_STYLE,
@@ -55,8 +57,9 @@ function ContributionsMap() {
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         attributionControl={false}
+        ref={mapRef}
       >
-        <SinglePointMarkers />
+        <Markers mapRef={mapRef} viewport={viewState} />
         <MapCredits />
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
