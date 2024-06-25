@@ -6,14 +6,10 @@ import ProjectItemCard, { ProjectItemCardProps } from './ProjectItemCard';
 import RegistrationItemCard, {
   RegistrationItemCardProps,
 } from './RegistrationItemCard';
-import { ProfilePageType } from '../../../common/types/myForestv2';
+import NoContributions from '../CommunityContributions/NoContributions';
+import { ProfileV2Props } from '../../../common/types/profile';
 
-interface Props {
-  profilePageType: ProfilePageType;
-  displayName: string;
-}
-
-const MyContributions = ({ profilePageType, displayName }: Props) => {
+const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
   const { contributionsMap, projectListResult } = useMyForestV2();
   const [contributionListItems, setContributionsListItems] = useState<
     (
@@ -50,8 +46,25 @@ const MyContributions = ({ profilePageType, displayName }: Props) => {
 
   return (
     <div className={styles.myContributions}>
-      <ListHeader profilePageType={profilePageType} displayName={displayName} />
-      <div className={styles.myContributionsList}>{contributionListItems}</div>
+      <ListHeader
+        profilePageType={profilePageType}
+        displayName={
+          userProfile.type === 'individual'
+            ? userProfile.displayName.split(' ').slice(0, 1)[0]
+            : userProfile.displayName
+        }
+      />
+      {contributionListItems.length > 0 ? (
+        <div className={styles.myContributionsList}>
+          {contributionListItems}
+        </div>
+      ) : (
+        <NoContributions
+          {...(profilePageType === 'private'
+            ? { profilePageType: 'private', userProfile: userProfile }
+            : { profilePageType: 'public', userProfile: userProfile })}
+        />
+      )}
     </div>
   );
 };

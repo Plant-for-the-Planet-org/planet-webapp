@@ -114,14 +114,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         className={styles.myContributionsContainer}
       >
         {profile ? (
-          <MyContributions
-            profilePageType="public"
-            displayName={
-              profile.type === 'individual'
-                ? profile.displayName.split(' ').slice(0, 1)[0]
-                : profile.displayName
-            }
-          />
+          <MyContributions profilePageType="public" userProfile={profile} />
         ) : null}
       </section>
       {showLeaderboard ? (

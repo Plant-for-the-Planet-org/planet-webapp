@@ -3,20 +3,16 @@
 .myContributions {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-
-  @include smTabletView {
-    gap: 20px;
-  }
 }
 
 .myContributionsList {
-  margin: 0 12px 16px;
+  margin: 16px 12px 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 
   @include smTabletView {
+    margin-top: 20px;
     gap: 12px;
     max-height: 600px;
     overflow-y: scroll;

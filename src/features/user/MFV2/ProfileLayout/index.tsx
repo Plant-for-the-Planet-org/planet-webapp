@@ -65,10 +65,7 @@ const ProfileLayout = () => {
         className={styles.myContributionsContainer}
       >
         {profile ? (
-          <MyContributions
-            profilePageType="private"
-            displayName={profile.displayName}
-          />
+          <MyContributions profilePageType="private" userProfile={profile} />
         ) : null}
       </section>
       <section
