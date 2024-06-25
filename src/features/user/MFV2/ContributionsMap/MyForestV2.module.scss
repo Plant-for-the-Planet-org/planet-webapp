@@ -32,8 +32,9 @@
 .customDonateButton {
   min-height: 1rem !important;
   padding: 2px 5px !important;
-  font-size: 10px;
+  font-size: 0.1em;
   border-radius: 4px !important;
+  white-space: wrap;
 }
 
 .donation-popup {
@@ -87,6 +88,8 @@
   font-size: 10px;
   line-height: 166%;
   gap: 5px;
+  flex-wrap: wrap;
+  column-gap: 3px;
   > .trees {
     font-weight: 700;
   }
