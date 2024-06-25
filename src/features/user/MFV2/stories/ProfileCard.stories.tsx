@@ -34,6 +34,11 @@ const privateUserProfile: User = {
     received: 419,
     target: 100000000,
   },
+  targets: {
+    treesDonated: 0,
+    areaRestored: 0,
+    areaConserved: 0,
+  },
   supportedProfile: null,
   id: 'tpo_gEZeQNxNhxZZ54zvYzCofsCr',
   isPrivate: true,
@@ -73,6 +78,11 @@ const publicUserProfile: UserPublicProfile = {
     received: 0.0,
     target: 0.0,
   },
+  targets: {
+    treesDonated: 0,
+    areaRestored: 0,
+    areaConserved: 0,
+  },
   supportedProfile: null,
   id: 'prf_n06cLhehvsBEpbyiVDorLP6f',
   bio: 'planting trees',
@@ -82,13 +92,13 @@ const publicUserProfile: UserPublicProfile = {
 export const PrivateProfileCard: Story = {
   args: {
     userProfile: privateUserProfile,
-    profileType: 'private',
+    profilePageType: 'private',
   },
 };
 
 export const PublicProfileCard: Story = {
   args: {
     userProfile: publicUserProfile,
-    profileType: 'public',
+    profilePageType: 'public',
   },
 };

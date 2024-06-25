@@ -39,7 +39,7 @@ const MyContributions = ({ profilePageType, displayName }: Props) => {
               key={key}
               contributionDetails={item}
               project={projectListResult[key]}
-              pageType={profilePageType}
+              profilePageType={profilePageType}
             />
           );
         }

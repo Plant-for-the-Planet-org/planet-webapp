@@ -62,7 +62,7 @@ const ContributionsList = ({
 };
 
 const CommunityContributions = ({
-  profileType,
+  profilePageType,
   userProfile,
 }: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState<TabOptions>('most-recent');
@@ -120,9 +120,9 @@ const CommunityContributions = ({
         <ContributionsList contributionList={contributionList} />
       ) : (
         <NoContributions
-          {...(profileType === 'private'
-            ? { profileType: 'private', userProfile: userProfile }
-            : { profileType: 'public', userProfile: userProfile })}
+          {...(profilePageType === 'private'
+            ? { profilePageType: 'private', userProfile: userProfile }
+            : { profilePageType: 'public', userProfile: userProfile })}
         />
       )}
     </div>

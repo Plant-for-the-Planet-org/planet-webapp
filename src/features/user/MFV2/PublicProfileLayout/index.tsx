@@ -85,7 +85,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     <article className={styles.publicProfileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
         {profile ? (
-          <ProfileCard userProfile={profile} profileType="public" />
+          <ProfileCard userProfile={profile} profilePageType="public" />
         ) : (
           <ProfileLoader height={350} />
         )}
@@ -132,7 +132,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           {profile ? (
             <CommunityContributions
               userProfile={profile}
-              profileType="public"
+              profilePageType="public"
             />
           ) : (
             <ProfileLoader height={350} />

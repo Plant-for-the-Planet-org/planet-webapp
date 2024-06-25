@@ -19,7 +19,7 @@ import { ComponentProps } from 'react';
 interface Props {
   project: MyForestProject;
   contributionDetails: MyContributionsSingleProject;
-  pageType: ProfilePageType;
+  profilePageType: ProfilePageType;
   supportedTreecounter?: string;
 }
 
@@ -28,7 +28,7 @@ export type ProjectItemCardProps = ComponentProps<typeof ProjectItemCard>;
 const ProjectItemCard = ({
   project,
   contributionDetails,
-  pageType,
+  profilePageType,
   supportedTreecounter,
 }: Props) => {
   // Mobile version - ItemMobileHeader, ProjectTotalContributions, DonateButton, country/tpo (not components), project contribution list (if multiple contributions)
@@ -90,12 +90,13 @@ const ProjectItemCard = ({
             />
             {project.allowDonations === true && (
               <DonateButton
-                {...(pageType === 'public' && supportedTreecounter !== undefined
+                {...(profilePageType === 'public' &&
+                supportedTreecounter !== undefined
                   ? { type: 'supported', supportedTreecounter }
                   : { type: 'unsupported' })}
                 projectPurpose={project.purpose}
                 buttonText={
-                  pageType === 'public'
+                  profilePageType === 'public'
                     ? tProfile('donate')
                     : tProfile('donateAgain')
                 }
@@ -139,12 +140,13 @@ const ProjectItemCard = ({
           </div>
           {project.allowDonations === true && (
             <DonateButton
-              {...(pageType === 'public' && supportedTreecounter !== undefined
+              {...(profilePageType === 'public' &&
+              supportedTreecounter !== undefined
                 ? { type: 'supported', supportedTreecounter }
                 : { type: 'unsupported' })}
               projectPurpose={project.purpose}
               buttonText={
-                pageType === 'public'
+                profilePageType === 'public'
                   ? tProfile('donate')
                   : tProfile('donateAgain')
               }

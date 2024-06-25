@@ -41,7 +41,7 @@ const ProfileLayout = () => {
     <article className={styles.profileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
         {profile ? (
-          <ProfileCard userProfile={profile} profileType="private" />
+          <ProfileCard userProfile={profile} profilePageType="private" />
         ) : (
           <ProfileLoader height={350} />
         )}
@@ -76,7 +76,10 @@ const ProfileLayout = () => {
         className={styles.communityContributionsContainer}
       >
         {profile ? (
-          <CommunityContributions userProfile={profile} profileType="private" />
+          <CommunityContributions
+            userProfile={profile}
+            profilePageType="private"
+          />
         ) : (
           <ProfileLoader height={350} />
         )}
