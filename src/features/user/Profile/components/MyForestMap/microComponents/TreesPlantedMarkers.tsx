@@ -8,7 +8,7 @@ import {
   TestClusterProps,
   TestPointProps,
 } from '../../../../../common/types/map';
-import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
+import { _getClusterGeojson } from '../../../../../../utils/superclusterConfigV1';
 import { ClusterFeature, PointFeature } from 'supercluster';
 import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 

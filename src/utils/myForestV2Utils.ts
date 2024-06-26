@@ -1,14 +1,22 @@
 import { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
-import { ExtractedData } from '../features/user/MFV2/ContributionsMap/Markers/ClusterMarker';
-import { PointFeature, AnyProps } from 'supercluster';
+import { ExtractedProjectData } from '../features/user/MFV2/ContributionsMap/Markers/DonationClusterMarker';
 import themeProperties from '../theme/themeProperties';
+import { PointFeature } from 'supercluster';
+import { DonationProperties } from '../features/common/types/myForestv2';
 import { ProgressDataType } from '../features/user/MFV2/ForestProgress/ForestProgressItem';
 import { ContributionStats } from '../features/common/types/myForestv2';
 
 export type Accumulator = {
   maxContributionCount: number;
-  maxContributingObject: ExtractedData | null;
+  maxContributingObject: ExtractedProjectData | null;
 };
+
+/**
+ * The getColor function determines the color associated with a specific project purpose and unit type.
+ * @param purpose
+ * @param unitType
+ * @returns  color
+ */
 
 export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
   const { primaryDarkColorX, electricPurpleColor, mediumBlueColor } =
@@ -22,32 +30,39 @@ export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
   }
 };
 
-export const getClusterMarkerColors = (
-  maxContributingProject: ExtractedData | null,
-  remainingProjects: ExtractedData[]
+/**
+ * The getClusterMarkerColors function determines the colors to be used for cluster markers based on the projects with the highest contribution and unique projects within the cluster
+ * @param maxContributingProject
+ * @param uniqueUnitTypePurposeProjects
+ * @returns object containing tertiaryProjectColor, mainProjectColor, secondaryProjectColor
+ */
+
+export const getDonationClusterMarkerColors = (
+  maxContributingProject: ExtractedProjectData | null,
+  uniqueUnitTypePurposeProjects: ExtractedProjectData[]
 ) => {
   if (maxContributingProject) {
     const { purpose, unitType } = maxContributingProject;
     const mainProjectColor = getColor(purpose, unitType) ?? '';
     let tertiaryProjectColor = '',
       secondaryProjectColor = '';
-    const length = remainingProjects.length;
+    const length = uniqueUnitTypePurposeProjects.length;
     if (length === 0) {
       tertiaryProjectColor = secondaryProjectColor = mainProjectColor;
     } else if (length === 1) {
       tertiaryProjectColor = getColor(
-        remainingProjects[0]?.purpose,
-        remainingProjects[0]?.unitType
+        uniqueUnitTypePurposeProjects[0]?.purpose,
+        uniqueUnitTypePurposeProjects[0]?.unitType
       );
       secondaryProjectColor = mainProjectColor;
     } else {
       tertiaryProjectColor = getColor(
-        remainingProjects[0]?.purpose,
-        remainingProjects[0]?.unitType
+        uniqueUnitTypePurposeProjects[0]?.purpose,
+        uniqueUnitTypePurposeProjects[0]?.unitType
       );
       secondaryProjectColor = getColor(
-        remainingProjects[1]?.purpose,
-        remainingProjects[1]?.unitType
+        uniqueUnitTypePurposeProjects[1]?.purpose,
+        uniqueUnitTypePurposeProjects[1]?.unitType
       );
     }
 
@@ -60,67 +75,48 @@ export const getClusterMarkerColors = (
   };
 };
 
-export const extractAndClassifyProjectData = (
-  clusterChildren: PointFeature<AnyProps>[] | undefined
-) => {
-  const extractedData: ExtractedData[] = [];
+//*The extractAndClassifyProjectData function processes an array of cluster child objects to extract and classify project data.
+//* It returns a list of unique projects and identifies the project with the maximum contribution count.
 
-  if (clusterChildren === undefined || clusterChildren.length === 0)
-    return { uniqueObjects: [], maxContributingObject: null };
+/**
+ *
+ * @param clusterChildren
+ * @returns object containing uniqueProjects, maxContributingProject
+ */
+
+export const extractAndClassifyProjectData = (
+  clusterChildren: PointFeature<DonationProperties>[] | undefined
+) => {
+  const uniqueProjectType = new Map<string, ExtractedProjectData>();
+  let maxContributingProject = null;
+  let maxContributionCount = -Infinity;
+
+  if (!clusterChildren || clusterChildren.length === 0) {
+    return { uniqueProjects: [], maxContributingProject: null };
+  }
 
   // Extract required fields from each object
-  clusterChildren?.forEach((item) => {
-    const extractedItem = {
+  clusterChildren.forEach((item) => {
+    const extractedProjectData: ExtractedProjectData = {
       unitType: item.properties.projectInfo.unitType,
       classification: item.properties.projectInfo.classification,
       purpose: item.properties.projectInfo.purpose,
       contributionCount: item.properties.contributionInfo.contributionCount,
     };
-    extractedData.push(extractedItem);
-  });
 
-  // Loop through the array to find the object with the maximum contributionCount
-  const { maxContributingObject } = extractedData.reduce(
-    (acc: Accumulator, item: ExtractedData | null) => {
-      if (item !== null && item.contributionCount > acc.maxContributionCount) {
-        return {
-          maxContributionCount: item.contributionCount,
-          maxContributingObject: item,
-        };
-      } else {
-        return acc;
-      }
-    },
-    { maxContributionCount: -Infinity, maxContributingObject: null }
-  );
+    if (extractedProjectData.contributionCount > maxContributionCount) {
+      maxContributionCount = extractedProjectData.contributionCount;
+      maxContributingProject = extractedProjectData;
+    }
 
-  const remainingProjects: ExtractedData[] = [];
-  // store all project whose unitType and purpose are different than maxContributingProject
-  extractedData.map((item) => {
-    if (
-      item.unitType !==
-        (maxContributingObject !== null && maxContributingObject.unitType) ||
-      item.purpose !==
-        (maxContributingObject !== null && maxContributingObject.purpose)
-    )
-      remainingProjects.push(item);
-  });
-  const uniqueCombinations = new Map();
-  // Loop through the array to find  the object with the unique purpose and unit type
-  remainingProjects.forEach((obj) => {
-    const { unitType, purpose } = obj;
-    const key = unitType + '-' + purpose;
-
-    if (!uniqueCombinations.has(key)) {
-      uniqueCombinations.set(key, obj);
+    const key = `${extractedProjectData.unitType}-${extractedProjectData.contributionCount}`;
+    if (!uniqueProjectType.has(key)) {
+      uniqueProjectType.set(key, extractedProjectData);
     }
   });
 
-  const uniqueObjects: ExtractedData[] = Array.from(
-    uniqueCombinations.values()
-  );
-
-  return { uniqueObjects, maxContributingObject };
+  const uniqueProjects = Array.from(uniqueProjectType.values());
+  return { uniqueProjects, maxContributingProject };
 };
 
 /**

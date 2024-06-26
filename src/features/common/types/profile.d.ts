@@ -16,12 +16,12 @@ export interface ProfileProps {
 
 export type PrivateProfileV2Props = {
   userProfile: User;
-  profileType: 'private';
+  profilePageType: 'private';
 };
 
 export type PublicProfileV2Props = {
   userProfile: UserPublicProfile;
-  profileType: 'public';
+  profilePageType: 'public';
 };
 
 export type ProfileV2Props = PrivateProfileV2Props | PublicProfileV2Props;

@@ -7,12 +7,12 @@ import { ProfileV2Props } from '../../../common/types/profile';
 import WebappButton from '../../../common/WebappButton';
 import styles from './communityContributions.module.scss';
 
-const NoContributions = ({ profileType, userProfile }: ProfileV2Props) => {
+const NoContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
   const t = useTranslations('Profile');
   return (
     <div className={styles.noContributionsContainer}>
       <NoContributionsIcon />
-      {profileType === 'private' ? (
+      {profilePageType === 'private' ? (
         <span className={styles.noContributionsMessage}>
           {t('communityContributions.noContributionPrivateProfileText')}
         </span>

@@ -3,7 +3,7 @@ import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../../common/types/map';
 import { useMyForest } from '../../../../../common/Layout/MyForestContext';
-import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
+import { _getClusterGeojson } from '../../../../../../utils/superclusterConfigV1';
 import { useContext, useEffect } from 'react';
 import { PopUpDonationIcon } from '../../../../../../../public/assets/images/ProfilePageIcons';
 import { MutableRefObject } from 'react';

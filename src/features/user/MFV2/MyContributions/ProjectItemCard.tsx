@@ -47,7 +47,7 @@ const ProjectItemCard = ({
   const giftDetails =
     contributionCount === 1 ? latestContributions[0].giftDetails : null;
 
-  const lastThreeContributions = latestContributions.slice(0, 3);
+  const lastTwoContributions = latestContributions.slice(0, 2);
 
   const imageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -158,17 +158,17 @@ const ProjectItemCard = ({
       </section>
       {contributionCount > 1 && (
         <section className={`${styles.sectionTwo} ${styles[projectType]}`}>
-          {lastThreeContributions.map((contribution, index) => (
+          {lastTwoContributions.map((contribution, index) => (
             <ContributionSummary
               key={index}
               contribution={contribution}
               purpose={project.purpose}
             />
           ))}
-          {contributionCount > 3 && (
+          {contributionCount > 2 && (
             <ContributionCountOverflow
               contributionCount={contributionCount}
-              displayedCount={3}
+              displayedCount={2}
             />
           )}
         </section>

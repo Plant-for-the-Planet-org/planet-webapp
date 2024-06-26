@@ -17,7 +17,12 @@ const ProfileLayout = () => {
   const router = useRouter();
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = React.useState<null | User>(null);
-  const { setUserInfo, contributionStats, userInfo } = useMyForestV2();
+  const {
+    setUserInfo,
+    isContributionsLoaded,
+    isProjectsListLoaded,
+    isLeaderboardLoaded,
+  } = useMyForestV2();
 
   useEffect(() => {
     if (contextLoaded) {
@@ -37,24 +42,40 @@ const ProfileLayout = () => {
     }
   }, [contextLoaded, profile, router]);
 
+  const isProfileLoaded = profile !== null && profile !== undefined;
+  const isContributionsDataLoaded =
+    isContributionsLoaded && isProjectsListLoaded;
+  const isProgressDataLoaded =
+    isContributionsLoaded && profile !== null && profile !== undefined;
+
   return (
     <article className={styles.profileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
-        {profile ? (
-          <ProfileCard userProfile={profile} profileType="private" />
+        {isProfileLoaded ? (
+          <ProfileCard userProfile={profile} profilePageType="private" />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={450} />
         )}
       </section>
-      <section id="map-container" className={styles.mapContainer}>
-        {contributionStats ? (
+      <section
+        id="map-container"
+        className={`${styles.mapContainer} ${
+          !isContributionsDataLoaded ? styles.loading : ''
+        }`}
+      >
+        {isContributionsDataLoaded ? (
           <ContributionsMap profilePageType="private" />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={450} />
         )}
       </section>
-      <section id="progress-container" className={styles.progressContainer}>
-        {contributionStats && userInfo ? (
+      <section
+        id="progress-container"
+        className={`${styles.progressContainer} ${
+          !isProgressDataLoaded ? styles.loading : ''
+        }`}
+      >
+        {isProgressDataLoaded ? (
           <ForestProgress profilePageType="private" />
         ) : (
           <ProfileLoader height={116} />
@@ -62,21 +83,28 @@ const ProfileLayout = () => {
       </section>
       <section
         id="my-contributions-container"
-        className={styles.myContributionsContainer}
+        className={`${styles.myContributionsContainer} ${
+          !isContributionsDataLoaded ? styles.loading : ''
+        }`}
       >
-        {profile ? (
-          <MyContributions
-            profilePageType="private"
-            displayName={profile.displayName}
-          />
-        ) : null}
+        {isContributionsDataLoaded && profile ? (
+          <MyContributions profilePageType="private" userProfile={profile} />
+        ) : (
+          <ProfileLoader height={350} />
+        )}
       </section>
       <section
         id="community-contributions-container"
-        className={styles.communityContributionsContainer}
+        className={`
+					${styles.communityContributionsContainer} ${
+          !isLeaderboardLoaded ? styles.loading : ''
+        }`}
       >
-        {profile ? (
-          <CommunityContributions userProfile={profile} profileType="private" />
+        {isLeaderboardLoaded && profile ? (
+          <CommunityContributions
+            userProfile={profile}
+            profilePageType="private"
+          />
         ) : (
           <ProfileLoader height={350} />
         )}

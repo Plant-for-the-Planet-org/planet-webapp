@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl';
 import { ProfileV2Props } from '../../../../common/types/profile';
 import WebappButton from '../../../../common/WebappButton';
 
-const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
+const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const t = useTranslations('Profile');
 
@@ -33,7 +33,7 @@ const ProfileActions = ({ profileType, userProfile }: ProfileV2Props) => {
     return profileURL;
   };
 
-  return profileType === 'private' ? (
+  return profilePageType === 'private' ? (
     <div className={styles.privateProfileActions}>
       <WebappButton
         icon={<AllDonations />}

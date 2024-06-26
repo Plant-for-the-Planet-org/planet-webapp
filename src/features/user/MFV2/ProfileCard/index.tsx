@@ -11,9 +11,9 @@ import Link from 'next/link';
 import { ProfileV2Props } from '../../../common/types/profile';
 import ProfileActions from './ProfileActions';
 
-const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
+const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
-  const isPrivateAccount = profileType === 'private';
+  const isPrivateAccount = profilePageType === 'private';
   const userImageUrl = userProfile?.image
     ? getImageUrl('profile', 'avatar', userProfile.image)
     : '';
@@ -48,10 +48,10 @@ const ProfileCard = ({ userProfile, profileType }: ProfileV2Props) => {
           </p>
         </div>
 
-        {profileType === 'private' ? (
-          <ProfileActions profileType="private" userProfile={userProfile} />
+        {profilePageType === 'private' ? (
+          <ProfileActions profilePageType="private" userProfile={userProfile} />
         ) : (
-          <ProfileActions profileType="public" userProfile={userProfile} />
+          <ProfileActions profilePageType="public" userProfile={userProfile} />
         )}
       </div>
     </div>

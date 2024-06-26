@@ -1,86 +1,91 @@
 @import '../../../../theme/theme';
 
 .profileCardContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    min-height: 300px;
-}   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 300px;
+}
 
 .profileBackground {
-    background-image: url('../../../../../public/assets/images/profileBackground.jpg');
-    width: 100%;
-    border-radius: 24px 24px 0px 0px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 8rem;
+  background-image: url('../../../../../public/assets/images/profileBackground.jpg');
+  width: 100%;
+  border-radius: 24px 24px 0px 0px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 8rem;
+
+  @include mdTabletView {
+    flex: 1;
+  }
 }
 
 .profilePicture {
-    margin-top: -3.5em;
-    z-index: 10;
-    border-radius: 50%;
-    background-color: #fff;
-    border: 4.677px solid #FFF;
-    width: 6rem;
-    height: 6rem;
+  margin-top: -3.5em;
+  z-index: 10;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 4.677px solid #fff;
+  width: 6rem;
+  height: 6rem;
 
-    svg, >div {
-        width: 100%;
-        height: 100%;
-    }
-
+  svg,
+  > div {
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.profileDetailsContainer{
-    width: 100%;
-    padding: 0 14px 24px 14px;
-
+.profileDetailsContainer {
+  width: 100%;
+  padding: 0 14px 24px;
 }
 
 .profileNameAndDescriptionContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
 
-    h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        white-space: nowrap;
-        text-transform: capitalize;
-    }
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    white-space: nowrap;
+    text-transform: capitalize;
+  }
 
-    p {
-        font-size: 0.75rem;
-        text-align: center;
-    }
-
+  p {
+    font-size: 0.75rem;
+    text-align: center;
+  }
 }
 
 .editProfileIcon {
-    background: linear-gradient(0deg, rgba(33, 150, 83, 0.20) 0%, rgba(33, 150, 83, 0.20) 100%), #FFF;
-    width: 2.25rem;
-    height: 2.25rem;
-    padding: 9px;
-    margin-left: auto;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;  
-    margin-top: -2rem;
+  background: linear-gradient(
+      0deg,
+      rgba(33, 150, 83, 0.2) 0%,
+      rgba(33, 150, 83, 0.2) 100%
+    ),
+    #fff;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 9px;
+  margin-left: auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: -2rem;
 }
 
-
-
 @include xsPhoneView {
-   .profileNameAndDescriptionContainer {
+  .profileNameAndDescriptionContainer {
     h2 {
-        font-size: 1.5rem;
-        margin-top: 0;
+      font-size: 1.5rem;
+      margin-top: 0;
     }
-   }
+  }
 }
