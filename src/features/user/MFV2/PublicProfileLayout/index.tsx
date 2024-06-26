@@ -21,7 +21,7 @@ interface Props {
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ tenantConfigId }: Props) => {
-  const showLeaderboard = true;
+  const showLeaderboard = false;
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
@@ -95,7 +95,11 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     isContributionsLoaded && profile !== null && profile !== undefined;
 
   return (
-    <article className={styles.publicProfileLayout}>
+    <article
+      className={`${styles.publicProfileLayout} ${
+        !showLeaderboard ? styles.noLeaderboard : ''
+      }`}
+    >
       <section id="profile-container" className={styles.profileContainer}>
         {isProfileLoaded ? (
           <ProfileCard userProfile={profile} profilePageType="public" />
