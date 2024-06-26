@@ -2,7 +2,7 @@ import { IconProps } from '../../../../../src/features/common/types/common';
 
 export const Agroforestry = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
       <g filter="url(#a)">
         <path
           fill={color}
@@ -59,7 +59,7 @@ export const Agroforestry = ({ color }: IconProps) => {
 
 export const Conservation = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
       <path
         fill={color}
         fillRule="evenodd"
@@ -176,7 +176,7 @@ export const NaturalRegeneration = ({ color }: IconProps) => {
 
 export const OtherPlanting = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
       <g filter="url(#a)">
         <path
           fill={color}
@@ -285,7 +285,7 @@ export const TreePlanting = ({ color }: IconProps) => {
 
 export const UrbanRestoration = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
       <path
         fill={color}
         fillRule="evenodd"
