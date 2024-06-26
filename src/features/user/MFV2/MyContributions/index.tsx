@@ -8,13 +8,6 @@ import RegistrationItemCard, {
 } from './RegistrationItemCard';
 import NoContributions from '../CommunityContributions/NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
-import { ProfilePageType } from '../../../common/types/myForestv2';
-
-interface Props {
-  profilePageType: ProfilePageType;
-  displayName: string;
-  supportedTreecounter?: string;
-}
 
 const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
   const { contributionsMap, projectListResult } = useMyForestV2();

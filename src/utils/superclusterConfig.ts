@@ -1,33 +1,14 @@
-import {
-  TestClusterProps,
-  TestPointProps,
-  ViewportProps,
-} from '../features/common/types/map';
+import { ViewportProps } from '../features/common/types/map';
 import { Bound } from '../features/common/types/map';
 import Supercluster, { ClusterProperties, PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
 import {
   DonationProperties,
-  MyContributionsSingleProject,
   MyContributionsSingleRegistration,
-  MyForestProject,
 } from '../features/common/types/myForestv2';
 import {} from '../features/common/Layout/MyForestContextV2';
 
-const _clusterConfig = {
-  radius: 40,
-  maxZoom: 3,
-  map: (props: TestPointProps): TestClusterProps => ({
-    totalTrees: props.quantity,
-  }),
-  reduce: (accumulator: any, props: any) => {
-    if (props.totalTrees) {
-      accumulator.totalTrees =
-        Number(accumulator.totalTrees) + Number(props.totalTrees);
-    }
-  },
-};
 const _clusterConfigV2 = {
   radius: 40,
   maxZoom: 3,

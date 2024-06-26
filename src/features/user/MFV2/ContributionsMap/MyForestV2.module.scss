@@ -77,9 +77,7 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 10px;
-  > .projectInfoContainer {
-    width: 100%;
-  }
+  flex-direction: column;
 }
 
 .donationContainer {
@@ -100,7 +98,7 @@
   display: inline;
   font-size: 10px;
   font-weight: 400;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
