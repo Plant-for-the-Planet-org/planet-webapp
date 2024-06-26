@@ -1,9 +1,5 @@
 import { useMemo } from 'react';
-import {
-  ProjectPurpose,
-  TreeProjectClassification,
-  UnitTypes,
-} from '@planet-sdk/common';
+import { TreeProjectClassification } from '@planet-sdk/common';
 import themeProperties from '../../../../../theme/themeProperties';
 import {
   NaturalRegeneration,
@@ -13,8 +9,11 @@ import {
   UrbanRestoration,
   TreePlanting,
   Conservation,
+  OtherPlanting,
 } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 
+export type ProjectPurpose = 'conservation' | 'trees';
+export type UnitTypes = 'tree' | 'm2';
 interface ProjectTypeIconProps {
   purpose: ProjectPurpose;
   classification: TreeProjectClassification | null;
@@ -42,7 +41,6 @@ const ProjectTypeIcon = ({
     [purpose, unitType]
   );
   const IconProps = {
-    width: 42,
     color: pointMarkerColor,
   };
 
@@ -62,8 +60,9 @@ const ProjectTypeIcon = ({
     case 'urban-planting':
       return <UrbanRestoration {...IconProps} />;
     case 'large-scale-planting':
-    case 'other-planting':
       return <TreePlanting {...IconProps} />;
+    case 'other-planting':
+      return <OtherPlanting {...IconProps} />;
     default:
       return null;
   }

@@ -1,44 +1,43 @@
-import { Marker } from 'react-map-gl-v7';
+import { Marker } from 'react-map-gl-v7/maplibre';
 import { MutableRefObject, useEffect, useState } from 'react';
-import { PointFeature, ClusterProperties } from 'supercluster';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import {
-  DonationProperties,
-  useMyForestV2,
-} from '../../../../common/Layout/MyForestContextV2';
+import { PointFeature } from 'supercluster';
+import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
 import ClusterIcon from './ClusterIcon';
+import { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 import {
-  ProjectPurposeTypes,
-  TreeProjectClassification,
-  UnitTypes,
-} from '@planet-sdk/common';
-import {
-  getClusterMarkerColors,
+  getDonationClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestV2Utils';
 import { ViewportProps } from '../../../../common/types/map';
+import {
+  DonationProperties,
+  DonationSuperclusterProperties,
+} from '../../../../common/types/myForestv2';
+import { ProjectPurpose } from './ProjectTypeIcon';
+import style from '../Common/common.module.scss';
 
-export interface ClusterMarkerProps {
-  superclusterResponse: PointFeature<ClusterProperties>;
+export interface DonationClusterMarkerProps {
+  superclusterResponse: PointFeature<DonationSuperclusterProperties>;
   viewport: ViewportProps;
   mapRef: MutableRefObject<null>;
 }
 
-export type ExtractedData = {
+export type ExtractedProjectData = {
   unitType: UnitTypes;
-  classification: TreeProjectClassification;
-  purpose: ProjectPurposeTypes;
+  classification: TreeProjectClassification | undefined | null;
+  purpose: ProjectPurpose;
   contributionCount: number;
 };
 
-const ClusterMarker = ({
+const DonationClusterMarker = ({
   superclusterResponse,
   viewport,
   mapRef,
-}: ClusterMarkerProps) => {
+}: DonationClusterMarkerProps) => {
   const [clusterChildren, setClusterChildren] = useState<
-    PointFeature<DonationProperties>[] | undefined
-  >(undefined);
+    PointFeature<DonationProperties>[]
+  >([]);
   const { donationGeojson } = useMyForestV2();
   const [colors, setColors] = useState({
     tertiaryProjectColor: '',
@@ -47,24 +46,25 @@ const ClusterMarker = ({
   });
 
   const [maxContributingProject, setMaxContributingProject] =
-    useState<ExtractedData | null>(null);
+    useState<ExtractedProjectData | null>(null);
   const [uniqueUnitTypePurposeProjects, setUniqueUnitTypePurposeProjects] =
-    useState<ExtractedData[]>([]);
+    useState<ExtractedProjectData[]>([]);
 
   useEffect(() => {
     if (superclusterResponse && viewport && donationGeojson) {
-      const data = _getClusterGeojson(
+      const data = getClusterGeojson(
         viewport,
         mapRef,
         donationGeojson,
         superclusterResponse.id
       ) as PointFeature<DonationProperties>[];
+
       setClusterChildren(data);
     }
   }, [viewport, superclusterResponse]);
 
   useEffect(() => {
-    const _colors = getClusterMarkerColors(
+    const _colors = getDonationClusterMarkerColors(
       maxContributingProject,
       uniqueUnitTypePurposeProjects
     );
@@ -74,9 +74,9 @@ const ClusterMarker = ({
   useEffect(() => {
     const projects = extractAndClassifyProjectData(clusterChildren);
     if (projects) {
-      const { maxContributingObject, uniqueObjects } = projects;
-      setMaxContributingProject(maxContributingObject);
-      setUniqueUnitTypePurposeProjects(uniqueObjects);
+      const { maxContributingProject, uniqueProjects } = projects;
+      setMaxContributingProject(maxContributingProject);
+      setUniqueUnitTypePurposeProjects(uniqueProjects);
     }
   }, [clusterChildren]);
 
@@ -92,14 +92,21 @@ const ClusterMarker = ({
   const latitude = superclusterResponse.geometry.coordinates[1];
 
   return (
-    <Marker longitude={longitude} latitude={latitude}>
-      <ClusterIcon
-        classification={maxContributingProject?.classification}
-        purpose={maxContributingProject?.purpose}
-        {...clusterMarkerColors}
-      />
+    <Marker
+      longitude={longitude}
+      latitude={latitude}
+      offset={[0, 0]}
+      anchor="bottom"
+    >
+      <div className={style.clusterMarkerContainer}>
+        <ClusterIcon
+          classification={maxContributingProject?.classification}
+          purpose={maxContributingProject?.purpose}
+          {...clusterMarkerColors}
+        />
+      </div>
     </Marker>
   );
 };
 
-export default ClusterMarker;
+export default DonationClusterMarker;

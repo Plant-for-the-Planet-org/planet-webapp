@@ -21,23 +21,27 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  canvas {
-    border-top-right-radius: 14px;
-    border-top-left-radius: 14px;
-  }
-  @include xsPhoneView {
-    canvas {
-      border-radius: 0px;
-    }
-  }
+}
+
+.pointMarkerContainer {
+  width: 26px;
+  height: 36px;
+}
+
+.clusterMarkerContainer {
+  width: 35px;
+  height: 36px;
+}
+
+.registeredTreeClusterMarkerContainer {
+  width: 41px;
+  height: 36px;
 }
 
 //style for contribution statistics
 .contributionStatsContainer {
   background: #f0f6f5;
   width: 100%;
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
   padding-top: 12px;
   padding-bottom: 12px;
   display: flex;
@@ -46,8 +50,6 @@
   grid-area: 16px;
   justify-content: center;
   @include xsPhoneView {
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
     margin-bottom: 14px;
   }
 }
@@ -76,12 +78,11 @@
   align-items: center;
 }
 .stats {
-  height: 100%;
   font-size: 12px;
   font-weight: 400;
   line-height: normal;
-  padding-top: 3px;
 }
+
 .donationStatInfoContainer {
   cursor: pointer;
   margin-top: 2px;
@@ -97,6 +98,6 @@
   color: #2f3336;
 }
 .registeredTreeMarkerContainer {
-  width: 42px;
-  height: 49px;
+  width: 26px;
+  height: 36px;
 }

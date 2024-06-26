@@ -5,7 +5,6 @@ import { ProfileV2Props } from '../../../common/types/profile';
 import ContributionListItem from './ContributionListItem';
 import CustomTooltip from './CustomTooltip';
 import { LeaderboardItem } from '../../../common/types/myForestv2';
-import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
@@ -62,11 +61,11 @@ const ContributionsList = ({
 };
 
 const CommunityContributions = ({
-  profileType,
+  profilePageType,
   userProfile,
 }: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState<TabOptions>('most-recent');
-  const { leaderboardResult, isLeaderboardLoaded } = useMyForestV2();
+  const { leaderboardResult } = useMyForestV2();
   //stores list for tabSelected
   const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
     []
@@ -86,7 +85,7 @@ const CommunityContributions = ({
     setContributionList(leaderboardResult?.mostRecent || []);
   }, [leaderboardResult]);
 
-  return isLeaderboardLoaded ? (
+  return (
     <div className={styles.communityContributions}>
       <div className={styles.header}>
         <div className={styles.infoIcon}>
@@ -120,14 +119,12 @@ const CommunityContributions = ({
         <ContributionsList contributionList={contributionList} />
       ) : (
         <NoContributions
-          {...(profileType === 'private'
-            ? { profileType: 'private', userProfile: userProfile }
-            : { profileType: 'public', userProfile: userProfile })}
+          {...(profilePageType === 'private'
+            ? { profilePageType: 'private', userProfile: userProfile }
+            : { profilePageType: 'public', userProfile: userProfile })}
         />
       )}
     </div>
-  ) : (
-    <ProfileLoader height={250} />
   );
 };
 

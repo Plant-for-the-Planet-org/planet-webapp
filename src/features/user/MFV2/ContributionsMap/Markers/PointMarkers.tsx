@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 import DonationPopup from '../Popup/DonationPopup';
 import RegisterTreePopup from '../Popup/RegistertreePopUp';
-import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
 import {
+  DonationProperties,
   MyContributionsSingleRegistration,
   ProfilePageType,
 } from '../../../../common/types/myForestv2';
@@ -18,6 +18,14 @@ interface PointMarkersProps {
   >;
   profilePageType: ProfilePageType;
   supportedTreecounter: string | undefined;
+}
+
+function isRegistration(
+  properties: DonationProperties | MyContributionsSingleRegistration
+): properties is MyContributionsSingleRegistration {
+  return (
+    (properties as MyContributionsSingleRegistration).type === 'registration'
+  );
 }
 
 const PointMarkers = ({
@@ -37,8 +45,6 @@ const PointMarkers = ({
     setIsCursorOnPopup,
   };
 
-  const isDonation = 'projectInfo' in superclusterResponse.properties;
-
   return (
     <div
       onMouseLeave={() => setIsCursorOnMarker(false)}
@@ -47,29 +53,10 @@ const PointMarkers = ({
       <Marker
         longitude={superclusterResponse.geometry.coordinates[0]}
         latitude={superclusterResponse.geometry.coordinates[1]}
-        offset={[0, -15]}
+        offset={[0, 0]}
+        anchor="bottom"
       >
-        {isDonation ? (
-          <>
-            {(isCursorOnMarker || isCursorOnPopup) && (
-              <DonationPopup {...donationPopupProps} />
-            )}
-            <ProjectTypeIcon
-              purpose={
-                (superclusterResponse as PointFeature<DonationProperties>)
-                  .properties.projectInfo.purpose
-              }
-              classification={
-                (superclusterResponse as PointFeature<DonationProperties>)
-                  .properties.projectInfo.classification
-              }
-              unitType={
-                (superclusterResponse as PointFeature<DonationProperties>)
-                  .properties.projectInfo.unitType
-              }
-            />
-          </>
-        ) : (
+        {isRegistration(superclusterResponse.properties) ? (
           <>
             {(isCursorOnMarker || isCursorOnPopup) && (
               <RegisterTreePopup
@@ -80,6 +67,28 @@ const PointMarkers = ({
             )}
             <div className={style.registeredTreeMarkerContainer}>
               <RegisteredTreeIcon />
+            </div>
+          </>
+        ) : (
+          <>
+            {(isCursorOnMarker || isCursorOnPopup) && (
+              <DonationPopup {...donationPopupProps} />
+            )}
+            <div className={style.pointMarkerContainer}>
+              <ProjectTypeIcon
+                purpose={
+                  (superclusterResponse as PointFeature<DonationProperties>)
+                    .properties.projectInfo.purpose
+                }
+                classification={
+                  (superclusterResponse as PointFeature<DonationProperties>)
+                    .properties.projectInfo.classification
+                }
+                unitType={
+                  (superclusterResponse as PointFeature<DonationProperties>)
+                    .properties.projectInfo.unitType
+                }
+              />
             </div>
           </>
         )}

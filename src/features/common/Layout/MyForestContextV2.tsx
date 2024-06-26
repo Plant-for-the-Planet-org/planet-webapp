@@ -17,17 +17,12 @@ import {
   MapLocation,
   MyContributionsMapItem,
   Leaderboard,
-  ProjectQueryResult,
+  DonationProperties,
   ContributionStats,
 } from '../types/myForestv2';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 import { SetState } from '../types/common';
 import { PointFeature } from 'supercluster';
-
-export interface DonationProperties {
-  projectInfo: ProjectQueryResult;
-  contributionInfo: MyContributionsSingleProject;
-}
 
 interface UserInfo {
   profileId: string;
@@ -43,6 +38,8 @@ interface MyForestContextV2Interface {
   contributionsResult: ContributionsResponse | undefined;
   leaderboardResult: Leaderboard | undefined;
   isLeaderboardLoaded: boolean;
+  isProjectsListLoaded: boolean;
+  isContributionsLoaded: boolean;
   contributionsMap: Map<string, MyContributionsMapItem> | undefined;
   registrationGeojson: PointFeature<MyContributionsSingleRegistration>[];
   donationGeojson: PointFeature<DonationProperties>[];
@@ -63,10 +60,10 @@ export const MyForestProviderV2: FC = ({ children }) => {
     useState<ProjectListResponse>();
   const [contributionsResult, setContributionsResult] =
     useState<ContributionsResponse>();
-  const [leaderboardResult, setLeaderboardResult] = useState<
-    Leaderboard | undefined
-  >();
+  const [leaderboardResult, setLeaderboardResult] = useState<Leaderboard>();
   const [isLeaderboardLoaded, setIsLeaderboardLoaded] = useState(false);
+  const [isProjectsListLoaded, setIsProjectsListLoaded] = useState(false);
+  const [isContributionsLoaded, setIsContributionsLoaded] = useState(false);
   const [contributionsMap, setContributionsMap] =
     useState<Map<string, MyContributionsMapItem>>();
   const [contributionStats, setContributionStats] =
@@ -93,6 +90,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
   useEffect(() => {
     if (_projectList.data) {
       updateStateWithTrpcData(_projectList, setProjectListResult, setErrors);
+      setIsProjectsListLoaded(true);
     }
   }, [_projectList.data]);
 
@@ -103,6 +101,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
         setContributionsResult,
         setErrors
       );
+      setIsContributionsLoaded(true);
     }
   }, [_contributions.data]);
 
@@ -125,7 +124,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
         projectInfo: project,
         contributionInfo: contributionsForProject,
       },
-    };
+    } as PointFeature<DonationProperties>;
   };
 
   const _generateRegistrationGeojson = (
@@ -136,7 +135,7 @@ export const MyForestProviderV2: FC = ({ children }) => {
       type: 'Feature',
       geometry: registrationLocation.geometry,
       properties: registration,
-    };
+    } as PointFeature<MyContributionsSingleRegistration>;
   };
 
   useEffect(() => {
@@ -185,6 +184,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsResult,
       leaderboardResult,
       isLeaderboardLoaded,
+      isProjectsListLoaded,
+      isContributionsLoaded,
       contributionsMap,
       registrationGeojson,
       donationGeojson,
@@ -197,6 +198,8 @@ export const MyForestProviderV2: FC = ({ children }) => {
       contributionsResult,
       leaderboardResult,
       isLeaderboardLoaded,
+      isProjectsListLoaded,
+      isContributionsLoaded,
       contributionsMap,
       registrationGeojson,
       donationGeojson,
