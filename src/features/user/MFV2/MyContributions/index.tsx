@@ -36,7 +36,9 @@ const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
               contributionDetails={item}
               project={projectListResult[key]}
               profilePageType={profilePageType}
-              supportedTreecounter={userProfile?.slug}
+              {...(profilePageType === 'public'
+                ? { supportedTreecounter: userProfile.slug }
+                : {})}
             />
           );
         }
