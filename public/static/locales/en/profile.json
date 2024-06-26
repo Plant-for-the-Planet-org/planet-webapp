@@ -18,6 +18,7 @@
     },
     "myForestMap": {
       "plantedTree": "{count, plural, =1 {# Tree} other {# Trees}}",
+      "savedArea": "{area} m²",
       "treesPlanted": "Trees Planted",
       "restored": "Restored",
       "registered": "Registered",

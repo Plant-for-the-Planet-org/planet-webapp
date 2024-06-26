@@ -18,7 +18,7 @@ const ProjectInfoSection = ({
   profilePageType,
   supportedTreecounter,
 }: ProjectInfoSectionProps) => {
-  const { totalContributionUnits } =
+  const { totalContributionUnits, contributionUnitType } =
     superclusterResponse.properties.contributionInfo;
   const { tpoName, country, purpose, slug, unitType } =
     superclusterResponse.properties.projectInfo;
@@ -27,15 +27,22 @@ const ProjectInfoSection = ({
   const _country: Lowercase<CountryCode> =
     country.toLocaleLowerCase() as Lowercase<CountryCode>;
 
-  return (
-    <div className={style.projectInfoMainContainer}>
-      <p className={style.trees}>
-        {tProfile('myForestMap.plantedTree', {
+  const totalContributedUnits =
+    contributionUnitType === 'tree'
+      ? tProfile('myForestMap.plantedTree', {
           count: Number.isInteger(totalContributionUnits)
             ? totalContributionUnits
             : totalContributionUnits.toFixed(2),
-        })}
-      </p>
+        })
+      : tProfile('myForestMap.savedArea', {
+          area: Number.isInteger(totalContributionUnits)
+            ? totalContributionUnits
+            : totalContributionUnits.toFixed(2),
+        });
+
+  return (
+    <div className={style.projectInfoMainContainer}>
+      <p className={style.trees}>{totalContributedUnits}</p>
       <div className={style.countryAndTpo}>
         <span>{tCountry(_country)}</span>
         <span className={style.seperator}>•</span>
