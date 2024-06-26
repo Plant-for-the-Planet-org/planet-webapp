@@ -3,10 +3,11 @@ import { PointFeature } from 'supercluster';
 import style from '../MyForestV2.module.scss';
 import { SetState } from '../../../../common/types/common';
 import ProjectInfoSection from './ProjectInfoSection';
-import ContributionInfoList from './ContributionInfoList';
 import PopupImageSection from './PopupImageSection';
-import { DonationProperties } from '../../../../common/Layout/MyForestContextV2';
-import { ProfilePageType } from '../../../../common/types/myForestv2';
+import {
+  ProfilePageType,
+  DonationProperties,
+} from '../../../../common/types/myForestv2';
 
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;
@@ -44,7 +45,6 @@ const DonationPopup = ({
       >
         <PopupImageSection superclusterResponse={superclusterResponse} />
         <ProjectInfoSection {...ProjectInfoSectionProps} />
-        <ContributionInfoList superclusterResponse={superclusterResponse} />
       </div>
     </Popup>
   );

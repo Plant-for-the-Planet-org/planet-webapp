@@ -30,21 +30,6 @@ const PopupImageSection = ({
         className={style.popupProjctImage}
       />
       <div className={style.projectImageInfoContainer}>
-        <div className={style.classificationContainer}>
-          <div className={style.classificationIcon}>
-            <ProjectTypeIcon
-              projectType={
-                purpose === 'conservation' ? purpose : classification
-              }
-            />
-          </div>
-          <div className={style.classification}>
-            {t('classification', {
-              classification:
-                purpose === 'conservation' ? purpose : classification,
-            })}
-          </div>
-        </div>
         <div className={style.projectName}>
           {t('projectName', {
             name: projectName,
