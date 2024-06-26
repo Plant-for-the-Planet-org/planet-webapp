@@ -4,7 +4,7 @@ import {
   ViewportProps,
 } from '../features/common/types/map';
 import { Bound } from '../features/common/types/map';
-import Supercluster, { PointFeature } from 'supercluster';
+import Supercluster, { ClusterProperties, PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
 import {
