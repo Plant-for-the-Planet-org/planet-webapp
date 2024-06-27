@@ -5,7 +5,7 @@ import ProjectTypeIcon from './ProjectTypeIcon';
 import { useState } from 'react';
 import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 import DonationPopup from '../Popup/DonationPopup';
-import RegisterTreePopup from '../Popup/RegistertreePopUp';
+import RegisteredTreesPopup from '../Popup/RegisteredTreesPopup';
 import {
   DonationProperties,
   MyContributionsSingleRegistration,
@@ -59,7 +59,7 @@ const PointMarkers = ({
         {isRegistration(superclusterResponse.properties) ? (
           <>
             {(isCursorOnMarker || isCursorOnPopup) && (
-              <RegisterTreePopup
+              <RegisteredTreesPopup
                 superclusterResponse={
                   superclusterResponse as PointFeature<MyContributionsSingleRegistration>
                 }
