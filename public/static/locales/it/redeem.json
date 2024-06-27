@@ -10,6 +10,7 @@
     "invalidType": "Tipo non valido, si prega di controllare di nuovo il link",
     "redeeming": "Riscatto:",
     "invalidCode": "Questo codice non è valido.",
+    "selfGiftMessage": "Non è possibile riscattare un regalo/codice emesso da voi stessi",
     "alreadyRedeemed": "Il codice è già stato riscattato",
     "redeemCode": "Codice di riscatto",
     "redeemingCode": "Codice di riscatto...",

@@ -10,6 +10,7 @@
     "invalidType": "Neplatný typ, prosím zkontrolujte odkaz znovu",
     "redeeming": "Uplatnění:",
     "invalidCode": "Tento kód je neplatný.",
+    "selfGiftMessage": "Dárek/kód, který jste sami vydali, nelze uplatnit",
     "alreadyRedeemed": "Kód již byl uplatněn",
     "redeemCode": "Použít kód",
     "redeemingCode": "Uplatnění kódu...",
