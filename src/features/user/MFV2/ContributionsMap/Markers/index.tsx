@@ -1,4 +1,4 @@
-import { PointFeature, ClusterProperties } from 'supercluster';
+import { ClusterProperties, PointFeature } from 'supercluster';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import DonationClusterMarker from './DonationClusterMarker';
@@ -10,12 +10,15 @@ import {
   DonationProperties,
   DonationSuperclusterProperties,
   MyContributionsSingleRegistration,
+  ProfilePageType,
   RegistrationSuperclusterProperties,
 } from '../../../../common/types/myForestv2';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
   viewport: ViewportProps;
+  profilePageType: ProfilePageType;
+  supportedTreecounter: string | undefined;
 }
 
 const isCluster = (
@@ -28,7 +31,12 @@ const isCluster = (
   return (geoJson.properties as ClusterProperties).cluster !== undefined;
 };
 
-const Markers = ({ mapRef, viewport }: MarkersProps) => {
+const Markers = ({
+  mapRef,
+  viewport,
+  profilePageType,
+  supportedTreecounter,
+}: MarkersProps) => {
   const { registrationGeojson, donationGeojson } = useMyForestV2();
   const [donationSuperclusterResponse, setDonationSuperclusterResponse] =
     useState<PointFeature<DonationSuperclusterProperties>[]>([]);
@@ -76,6 +84,8 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
           <PointMarkers
             superclusterResponse={geoJson as PointFeature<DonationProperties>}
             key={key}
+            profilePageType={profilePageType}
+            supportedTreecounter={supportedTreecounter}
           />
         );
       })}
@@ -91,6 +101,8 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
               geoJson as PointFeature<MyContributionsSingleRegistration>
             }
             key={key}
+            profilePageType={profilePageType}
+            supportedTreecounter={supportedTreecounter}
           />
         );
       })}
@@ -99,5 +111,4 @@ const Markers = ({ mapRef, viewport }: MarkersProps) => {
     <></>
   );
 };
-
 export default Markers;

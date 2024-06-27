@@ -110,7 +110,10 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
         }`}
       >
         {isContributionsDataLoaded ? (
-          <ContributionsMap />
+          <ContributionsMap
+            profilePageType="public"
+            supportedTreecounter={userInfo?.slug ?? ''}
+          />
         ) : (
           <ProfileLoader height={450} />
         )}

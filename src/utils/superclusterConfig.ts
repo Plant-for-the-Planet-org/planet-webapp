@@ -1,10 +1,13 @@
 import { ViewportProps } from '../features/common/types/map';
 import { Bound } from '../features/common/types/map';
-import Supercluster, { PointFeature } from 'supercluster';
+import Supercluster, { ClusterProperties, PointFeature } from 'supercluster';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
-import { DonationProperties } from '../features/common/types/myForestv2';
-import { MyContributionsSingleRegistration } from '../features/common/types/myForestv2';
+import {
+  DonationProperties,
+  MyContributionsSingleRegistration,
+} from '../features/common/types/myForestv2';
+import {} from '../features/common/Layout/MyForestContextV2';
 
 const clusterConfigV2 = {
   radius: 40,
@@ -27,19 +30,23 @@ const clusterConfigV2 = {
     DonationProperties | MyContributionsSingleRegistration
   >[],
   clusterId: string | number | undefined
-) => {
+):
+  | Supercluster.PointFeature<
+      MyContributionsSingleRegistration | DonationProperties | ClusterProperties
+    >[]
+  | undefined => {
   const supercluster = new Supercluster<
-    DonationProperties | MyContributionsSingleRegistration
+    MyContributionsSingleRegistration | DonationProperties,
+    {}
   >(clusterConfigV2);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {
     const map = mapRef.current.getMap();
-    const bounds = map.getBounds().toArray().flat();
-    const bound: Bound = bounds && [bounds[0], bounds[1], bounds[2], bounds[3]];
+    const bounds = map.getBounds().toArray().flat() as Bound;
     if (zoom && !clusterId) {
-      const clusters = supercluster?.getClusters(bound, zoom);
-      return clusters;
+      const _clusters = supercluster?.getClusters(bounds, zoom);
+      return _clusters;
     }
     if (clusterId) {
       return supercluster.getLeaves(
@@ -47,4 +54,5 @@ const clusterConfigV2 = {
       ) as PointFeature<DonationProperties>[];
     }
   }
+  return undefined;
 };

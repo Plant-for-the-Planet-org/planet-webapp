@@ -64,7 +64,7 @@ const ProfileLayout = () => {
         }`}
       >
         {isContributionsDataLoaded ? (
-          <ContributionsMap />
+          <ContributionsMap profilePageType="private" />
         ) : (
           <ProfileLoader height={450} />
         )}
