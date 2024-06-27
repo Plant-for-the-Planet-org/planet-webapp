@@ -10,6 +10,7 @@
     "invalidType": "Type non valide, vérifier à nouveau le lien",
     "redeeming": "La rédemption :",
     "invalidCode": "Ce code n'est pas valide.",
+    "selfGiftMessage": "Vous ne pouvez pas échanger un cadeau/code émis par vous-même",
     "alreadyRedeemed": "Le code a déjà été utilisé",
     "redeemCode": "Code d'échange",
     "redeemingCode": "Code d'échange...",
