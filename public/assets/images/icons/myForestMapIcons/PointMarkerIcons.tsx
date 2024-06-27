@@ -2,7 +2,12 @@ import { IconProps } from '../../../../../src/features/common/types/common';
 
 export const Agroforestry = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 42 49"
+      height={42}
+    >
       <g filter="url(#a)">
         <path
           fill={color}
