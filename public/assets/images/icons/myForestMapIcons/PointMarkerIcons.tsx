@@ -176,7 +176,12 @@ export const NaturalRegeneration = ({ color }: IconProps) => {
 
 export const OtherPlanting = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 42 49"
+      height={42}
+    >
       <g filter="url(#a)">
         <path
           fill={color}
@@ -192,8 +197,6 @@ export const OtherPlanting = ({ color }: IconProps) => {
       <defs>
         <filter
           id="a"
-          width={44.945}
-          height={49.612}
           x={0.528}
           y={0.069}
           colorInterpolationFilters="sRGB"
