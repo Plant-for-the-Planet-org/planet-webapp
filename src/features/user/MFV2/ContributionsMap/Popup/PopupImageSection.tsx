@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
-import style from '../MyForestV2.module.scss';
+import style from '../ContributionsMap.module.scss';
 import { PointFeature } from 'supercluster';
 import { DonationProperties } from '../../../../common/types/myForestv2';
 

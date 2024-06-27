@@ -1,6 +1,6 @@
 import { Popup } from 'react-map-gl-v7';
 import { PointFeature } from 'supercluster';
-import style from '../MyForestV2.module.scss';
+import style from '../ContributionsMap.module.scss';
 import { SetState } from '../../../../common/types/common';
 import ProjectInfoSection from './ProjectInfoSection';
 import PopupImageSection from './PopupImageSection';

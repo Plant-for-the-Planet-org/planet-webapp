@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import style from '../MyForestV2.module.scss';
+import style from '../ContributionsMap.module.scss';
 import { CountryCode } from '@planet-sdk/common';
 import DonateButton from '../../MyContributions/DonateButton';
 import { PointFeature } from 'supercluster';

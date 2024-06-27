@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Popup } from 'react-map-gl-v7';
 import { PointFeature } from 'supercluster';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
-import style from '../MyForestV2.module.scss';
+import style from '../ContributionsMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import {
   MyContributionsSingleRegistration,
