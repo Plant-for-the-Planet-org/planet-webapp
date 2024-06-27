@@ -66,7 +66,6 @@ const ProjectInfoSection = ({
           }
           projectSlug={slug}
           contributionUnitType={unitType}
-          customClass={style.customDonateButton}
         />
       </div>
     </div>

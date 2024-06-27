@@ -18,7 +18,7 @@ type DonateButtonProps = (SupportedDonationButton | RegularDonationButton) & {
   projectSlug: string;
   contributionUnitType: 'tree' | 'm2';
   buttonText: string;
-  customClass?: string;
+  customButtonClasses?: string;
 };
 
 const DonateButton = (props: DonateButtonProps) => {
@@ -28,7 +28,7 @@ const DonateButton = (props: DonateButtonProps) => {
     projectSlug,
     contributionUnitType,
     buttonText,
-    customClass,
+    customButtonClasses,
   } = props;
 
   const { tenantConfig } = useTenant();
@@ -41,7 +41,7 @@ const DonateButton = (props: DonateButtonProps) => {
       : contributionUnitType === 'm2'
       ? styles.restoration
       : styles.trees
-  } ${customClass || ''}`;
+  } ${customButtonClasses || ''}`;
 
   // Construct donate link
   const donateLink = getDonationUrl(

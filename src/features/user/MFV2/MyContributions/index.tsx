@@ -52,9 +52,9 @@ const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
       <ListHeader
         profilePageType={profilePageType}
         displayName={
-          userProfile?.type === 'individual'
-            ? userProfile?.displayName.split(' ').slice(0, 1)[0]
-            : userProfile?.displayName
+          userProfile.type === 'individual'
+            ? userProfile.displayName.split(' ').slice(0, 1)[0]
+            : userProfile.displayName
         }
       />
       {contributionListItems.length > 0 ? (
