@@ -9,7 +9,7 @@ import {
 } from '../features/common/types/myForestv2';
 import {} from '../features/common/Layout/MyForestContextV2';
 
-const _clusterConfigV2 = {
+const clusterConfigV2 = {
   radius: 40,
   maxZoom: 3,
 };
@@ -38,7 +38,7 @@ const _clusterConfigV2 = {
   const supercluster = new Supercluster<
     MyContributionsSingleRegistration | DonationProperties,
     {}
-  >(_clusterConfigV2);
+  >(clusterConfigV2);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {

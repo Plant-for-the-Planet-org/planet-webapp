@@ -58,7 +58,7 @@ const PointMarkers = ({
       >
         {isRegistration(superclusterResponse.properties) ? (
           <>
-            {(isCursorOnMarker || isCursorOnPopup) && (
+            {isCursorOnMarker && (
               <RegisteredTreesPopup
                 superclusterResponse={
                   superclusterResponse as PointFeature<MyContributionsSingleRegistration>
