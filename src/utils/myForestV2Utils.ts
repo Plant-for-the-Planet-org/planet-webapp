@@ -46,7 +46,7 @@ export const getDonationClusterMarkerColors = (
     const mainProjectColor = getColor(purpose, unitType) ?? '';
     let tertiaryProjectColor = '',
       secondaryProjectColor = '';
-    const length = uniqueUnitTypePurposeProjects.length;
+    const length = uniqueUnitTypePurposeProjects?.length || 0;
     if (length === 0) {
       tertiaryProjectColor = secondaryProjectColor = mainProjectColor;
     } else if (length === 1) {
@@ -87,9 +87,9 @@ export const getDonationClusterMarkerColors = (
 export const extractAndClassifyProjectData = (
   clusterChildren: PointFeature<DonationProperties>[] | undefined
 ) => {
-  const uniqueProjectType = new Map<string, ExtractedProjectData>();
-  let maxContributingProject = null;
+  let maxContributingProject: ExtractedProjectData | null = null;
   let maxContributionCount = -Infinity;
+  const remainingProjects: ExtractedProjectData[] = [];
 
   if (!clusterChildren || clusterChildren.length === 0) {
     return { uniqueProjects: [], maxContributingProject: null };
@@ -109,13 +109,29 @@ export const extractAndClassifyProjectData = (
       maxContributingProject = extractedProjectData;
     }
 
-    const key = `${extractedProjectData.unitType}-${extractedProjectData.contributionCount}`;
-    if (!uniqueProjectType.has(key)) {
-      uniqueProjectType.set(key, extractedProjectData);
+    // Loop through the array to find the object with the unique purpose and unit type
+    if (
+      extractedProjectData.unitType !==
+        (maxContributingProject !== null && maxContributingProject.unitType) ||
+      extractedProjectData.purpose !==
+        (maxContributingProject !== null && maxContributingProject.purpose)
+    ) {
+      remainingProjects.push(extractedProjectData);
     }
   });
 
-  const uniqueProjects = Array.from(uniqueProjectType.values());
+  const uniqueCombinations = new Map();
+  // Loop through the array to find  the object with the unique purpose and unit type
+  remainingProjects.forEach((obj) => {
+    const { unitType, purpose } = obj;
+    const key = unitType + '-' + purpose;
+
+    if (!uniqueCombinations.has(key)) {
+      uniqueCombinations.set(key, obj);
+    }
+  });
+
+  const uniqueProjects = Array.from(uniqueCombinations.values());
   return { uniqueProjects, maxContributingProject };
 };
 
