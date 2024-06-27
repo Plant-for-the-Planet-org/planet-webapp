@@ -4,6 +4,8 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
+  useMemo,
 } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField, MenuItem } from '@mui/material';
@@ -235,6 +237,69 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
+  const shouldDisableSubmission = useMemo(() => {
+    const hasSufficientFunds =
+      user?.planetCash != null &&
+      user.planetCash.balance + user.planetCash.creditLimit > 0;
+    const hasEnteredRequiredData =
+      localRecipients.length > 0 ||
+      (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+
+    return hasSufficientFunds && !isProcessing && hasEnteredRequiredData;
+  }, [user, localRecipients, codeQuantity, unitsPerCode, isProcessing]);
+
+  const renderInvalidEmailWarning = useCallback(() => {
+    return (
+      <>
+        {t.rich('invalidEmailWarningText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+        <br />
+      </>
+    );
+  }, [locale, t]);
+
+  const renderTermsAndPrivacyText = useCallback(() => {
+    return (
+      <>
+        {t.rich('termsAndPrivacyText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+          privacyPolicyLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/privacy`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </>
+    );
+  }, [locale, t]);
+
   if (!isSubmitted) {
     return (
       <CenteredContainer>
@@ -294,7 +359,6 @@ const IssueCodesForm = (): ReactElement | null => {
               currency={planetCashAccount?.currency}
               units={getTotalUnits()}
               unit={project?.unit}
-              isImport={bulkMethod === 'import'}
             />
           </div>
           <BulkCodesError />
@@ -304,19 +368,17 @@ const IssueCodesForm = (): ReactElement | null => {
               variant="contained"
               color="primary"
               className="formButton"
-              disabled={
-                !(
-                  user?.planetCash &&
-                  !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-                ) ||
-                isProcessing ||
-                (localRecipients.length === 0 &&
-                  (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-              }
+              disabled={shouldDisableSubmission}
             >
               {isProcessing ? t('issuingCodes') : t('issueCodes')}
             </Button>
           </form>
+          <div className={styles.issueCodeTermsAndWarnings}>
+            {t('chargeConsentText')}
+            <br />
+            {bulkMethod === 'import' && renderInvalidEmailWarning()}
+            {renderTermsAndPrivacyText()}
+          </div>
         </StyledFormContainer>
       </CenteredContainer>
     );

@@ -10,6 +10,7 @@
     "invalidType": "Tipo inválido, por favor, compruebe el enlace de nuevo",
     "redeeming": "Redentor:",
     "invalidCode": "Este código no es válido.",
+    "selfGiftMessage": "No puede canjear un regalo/código emitido por usted mismo",
     "alreadyRedeemed": "El código ya ha sido canjeado",
     "redeemCode": "Canjear código",
     "redeemingCode": "Canjear código...",

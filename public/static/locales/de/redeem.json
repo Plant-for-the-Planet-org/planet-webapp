@@ -10,7 +10,7 @@
     "invalidType": "Ungültiger Typ, bitte überprüfen Sie den Link erneut",
     "redeeming": "Einlösen:",
     "invalidCode": "Dieser Code ist ungültig.",
-    "selfGiftMessage": "Man kann Codes oder Geschenke, die man selbst erstellt hat, nicht selbst einlösen.",
+    "selfGiftMessage": "Du kannst kein Geschenk/keinen Code, den du selbst erzeugt hast einlösen.",
     "alreadyRedeemed": "Der Code wurde bereits eingelöst",
     "redeemCode": "Code einlösen",
     "redeemingCode": "Löse Code ein...",
