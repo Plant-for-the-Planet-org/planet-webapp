@@ -10,10 +10,10 @@ import {
   SingleRegistration,
 } from '../../../../common/types/myForestv2';
 
-type RegisteredTreeInfoProp = {
+type RegisteredTreesInfoProps = {
   contributions: SingleRegistration[];
 };
-const RegisteredTreeInfo = ({ contributions }: RegisteredTreeInfoProp) => {
+const RegisteredTreesInfo = ({ contributions }: RegisteredTreesInfoProps) => {
   const tProfile = useTranslations('Profile.myForestMap');
   return (
     <>
@@ -39,10 +39,12 @@ const RegisteredTreeInfo = ({ contributions }: RegisteredTreeInfoProp) => {
     </>
   );
 };
-interface RegisterTreePopupProp {
+interface RegisteredTreesPopupProps {
   superclusterResponse: PointFeature<MyContributionsSingleRegistration>;
 }
-const RegisterTreePopup = ({ superclusterResponse }: RegisterTreePopupProp) => {
+const RegisteredTreesPopup = ({
+  superclusterResponse,
+}: RegisteredTreesPopupProps) => {
   const { coordinates } = superclusterResponse.geometry;
   const contributions = superclusterResponse.properties.contributions;
   return (
@@ -53,12 +55,12 @@ const RegisterTreePopup = ({ superclusterResponse }: RegisterTreePopupProp) => {
       className={style.registeredTreePopup}
       closeButton={false}
     >
-      <div className={style.registeredTreePopupContainer}>
+      <div className={style.registeredTreesPopupContainer}>
         <RegisteredTreePopupIcon />
-        <RegisteredTreeInfo contributions={contributions} />
+        <RegisteredTreesInfo contributions={contributions} />
       </div>
     </Popup>
   );
 };
 
-export default RegisterTreePopup;
+export default RegisteredTreesPopup;
