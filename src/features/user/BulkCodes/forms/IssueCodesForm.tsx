@@ -28,8 +28,6 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   handleError,
   APIError,
@@ -63,8 +61,6 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
-  const [hasTakenRecipientDataConsent, setHasTakenRecipientDataConsent] =
-    useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
 
   const notificationLocales = [
@@ -248,35 +244,50 @@ const IssueCodesForm = (): ReactElement | null => {
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
-    const needsConsent =
-      bulkMethod === 'import' && !hasTakenRecipientDataConsent;
 
-    return (
-      hasSufficientFunds &&
-      !isProcessing &&
-      hasEnteredRequiredData &&
-      !needsConsent
-    );
-  }, [
-    user,
-    bulkMethod,
-    codeQuantity,
-    unitsPerCode,
-    unitsPerCode,
-    hasTakenRecipientDataConsent,
-    isProcessing,
-    localRecipients,
-  ]);
+    return hasSufficientFunds && !isProcessing && hasEnteredRequiredData;
+  }, [user, localRecipients, codeQuantity, unitsPerCode, isProcessing]);
 
   const renderInvalidEmailWarning = useCallback(() => {
     return (
       <>
-        <br />
         {t.rich('invalidEmailWarningText', {
           termsLink: (chunks) => (
             <a
               target="_blank"
               href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+        <br />
+      </>
+    );
+  }, [locale, t]);
+
+  const renderTermsAndPrivacyText = useCallback(() => {
+    return (
+      <>
+        {t.rich('termsAndPrivacyText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+          privacyPolicyLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/privacy`}
               rel="noreferrer"
               className="planet-links"
               onClick={(e) => e.stopPropagation()}
@@ -349,51 +360,6 @@ const IssueCodesForm = (): ReactElement | null => {
               units={getTotalUnits()}
               unit={project?.unit}
             />
-            {bulkMethod === 'import' && (
-              <InlineFormDisplayGroup type="other">
-                <ToggleSwitch
-                  checked={hasTakenRecipientDataConsent}
-                  onChange={() => {
-                    setHasTakenRecipientDataConsent(
-                      !hasTakenRecipientDataConsent
-                    );
-                  }}
-                  inputProps={{
-                    'aria-label': 'Consent to submit recipient name and email',
-                  }}
-                  id="recipientDataConsent"
-                />
-                <label
-                  htmlFor="recipientDataConsent"
-                  className={styles.recipientDataConsent}
-                >
-                  {t.rich('recipientDataConsent', {
-                    privacyPolicyLink: (chunks) => (
-                      <a
-                        target="_blank"
-                        href={`https://pp.eco/legal/${locale}/privacy`}
-                        rel="noreferrer"
-                        className="planet-links"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {chunks}
-                      </a>
-                    ),
-                    termsLink: (chunks) => (
-                      <a
-                        target="_blank"
-                        href={`https://pp.eco/legal/${locale}/terms`}
-                        rel="noreferrer"
-                        className="planet-links"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {chunks}
-                      </a>
-                    ),
-                  })}
-                </label>
-              </InlineFormDisplayGroup>
-            )}
           </div>
           <BulkCodesError />
           <form onSubmit={handleSubmit}>
@@ -407,9 +373,11 @@ const IssueCodesForm = (): ReactElement | null => {
               {isProcessing ? t('issuingCodes') : t('issueCodes')}
             </Button>
           </form>
-          <div className={styles.issueCodeConsent}>
+          <div className={styles.issueCodeTermsAndWarnings}>
             {t('chargeConsentText')}
+            <br />
             {bulkMethod === 'import' && renderInvalidEmailWarning()}
+            {renderTermsAndPrivacyText()}
           </div>
         </StyledFormContainer>
       </CenteredContainer>
