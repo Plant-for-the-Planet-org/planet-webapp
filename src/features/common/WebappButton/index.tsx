@@ -38,11 +38,7 @@ function WebappButton({
           {otherProps.icon !== undefined && (
             <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
           )}
-          <div
-            className={`${styles.webappButtonLabel} ${otherProps.buttonClasses}`}
-          >
-            {otherProps.text}
-          </div>
+          <div className={styles.webappButtonLabel}>{otherProps.text}</div>
         </button>
       </Link>
     );
