@@ -39,6 +39,7 @@ const ProgressData = ({
 }: ProgressDataProps) => {
   const tProfile = useTranslations('Profile.progressBar');
   const totalAchievment = gift + personal;
+
   const graphLabel = useMemo(() => {
     const isTargetSet = target > 0;
     const targetAchievedUnit = Number.isInteger(totalAchievment)
@@ -79,7 +80,7 @@ const ProgressData = ({
       default:
         return '';
     }
-  }, [dataType, target]);
+  }, [dataType, target, totalAchievment, tProfile]);
 
   const graphProps = {
     personalPercentage,
