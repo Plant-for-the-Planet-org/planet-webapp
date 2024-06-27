@@ -9,6 +9,7 @@ import {
   MyContributionsSingleRegistration,
   SingleRegistration,
 } from '../../../../common/types/myForestv2';
+import { SetState } from '../../../../common/types/common';
 
 type RegisteredTreesInfoProps = {
   contributions: SingleRegistration[];
@@ -41,9 +42,11 @@ const RegisteredTreesInfo = ({ contributions }: RegisteredTreesInfoProps) => {
 };
 interface RegisteredTreesPopupProps {
   superclusterResponse: PointFeature<MyContributionsSingleRegistration>;
+  setIsCursorOnPopup: SetState<boolean>;
 }
 const RegisteredTreesPopup = ({
   superclusterResponse,
+  setIsCursorOnPopup,
 }: RegisteredTreesPopupProps) => {
   const { coordinates } = superclusterResponse.geometry;
   const contributions = superclusterResponse.properties.contributions;
@@ -56,7 +59,11 @@ const RegisteredTreesPopup = ({
       closeButton={false}
       anchor="bottom"
     >
-      <div className={style.registeredTreesPopupContainer}>
+      <div
+        className={style.registeredTreesPopupContainer}
+        onMouseEnter={() => setIsCursorOnPopup(true)}
+        onMouseLeave={() => setIsCursorOnPopup(false)}
+      >
         <RegisteredTreePopupIcon />
         <RegisteredTreesInfo contributions={contributions} />
       </div>
