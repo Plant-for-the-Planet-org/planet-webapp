@@ -3,13 +3,12 @@
   > div {
     border-radius: 8px;
   }
-}
-
-.contributionPopup {
   > div:nth-child(1) {
     display: none;
   }
+}
 
+.contributionPopup {
   > div {
     padding: 0px;
   }
@@ -98,6 +97,10 @@
   align-items: center;
 }
 
+.registeredTreePopup {
+  box-shadow: 2.889px 5.778px 11.556px 0px rgba(0, 0, 0, 0.1);
+}
+
 .registeredTrees {
   font-size: 14px;
   font-weight: 700;
@@ -105,14 +108,13 @@
 }
 
 .registeredTreeLabel {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   line-height: 120%;
 }
 
 .registeredTreeDate {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
-  color: rgba(130, 130, 130, 1);
 }
 
