@@ -3,34 +3,36 @@ import React, { ReactElement } from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
+import {
+  TenantScore,
+  TreesDonated,
+} from '../../../../features/common/types/leaderboard';
 
 interface Props {
-  tenantScore: any;
+  tenantScore: TenantScore;
+  treesDonated: TreesDonated;
 }
-export default function Stats({ tenantScore }: Props): ReactElement {
-  const [infoExpanded, setInfoExpanded] = React.useState(null);
-  const { t, i18n, ready } = useTranslation([
-    'leaderboard',
-    'common',
-    'planet',
-  ]);
+export default function Stats({ tenantScore, treesDonated }: Props): ReactElement {
+  const [infoExpanded, setInfoExpanded] = React.useState<String | null>(null);
+  const tPlanet = useTranslations('Planet');
+  const locale = useLocale();
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
   };
 
   const { theme } = React.useContext(ThemeContext);
-  return ready ? (
+  return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>
-            {localizedAbbreviatedNumber(i18n.language, Number(63356788), 2)}
+            {localizedAbbreviatedNumber(locale, Number(treesDonated.trees_since_2019), 2)}
           </h2>
-          <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
+          <h3 className={styles.statText}>{tPlanet('treesDonated')}</h3>
           <button
             id={'donatedStats'}
             onClick={() => {
@@ -44,13 +46,9 @@ export default function Stats({ tenantScore }: Props): ReactElement {
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(tenantScore.total),
-              2
-            )}
+            {localizedAbbreviatedNumber(locale, Number(tenantScore.total), 2)}
           </h2>
-          <h3 className={styles.statText}>{t('planet:plantedGlobally')}</h3>
+          <h3 className={styles.statText}>{tPlanet('plantedGlobally')}</h3>
           <button
             id={'globalStats'}
             onClick={() => {
@@ -67,9 +65,9 @@ export default function Stats({ tenantScore }: Props): ReactElement {
             className={styles.statNumber}
             style={{ color: styles.dangerColor }}
           >
-            {localizedAbbreviatedNumber(i18n.language, Number(10000000000), 2)}
+            {localizedAbbreviatedNumber(locale, Number(10000000000), 2)}
           </h2>
-          <h3 className={styles.statText}>{t('planet:forestLoss')}</h3>
+          <h3 className={styles.statText}>{tPlanet('forestLoss')}</h3>
           <button
             id={'lossStats'}
             onClick={() => {
@@ -98,7 +96,5 @@ export default function Stats({ tenantScore }: Props): ReactElement {
         </Modal>
       ) : null}
     </div>
-  ) : (
-    <></>
   );
 }

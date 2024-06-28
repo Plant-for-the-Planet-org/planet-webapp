@@ -7,6 +7,7 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../ProjectTypeIcon';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import { useLocale } from 'next-intl';
 
 type PopupClosedData = {
   show: false;
@@ -32,6 +33,7 @@ export default function Markers({
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
+  const locale = useLocale();
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
@@ -45,6 +47,20 @@ export default function Markers({
       ? 'topUnapproved'
       : 'notDonatable';
   };
+  const goToProject = (projectSlug: string): void => {
+    router.push(
+      `/${locale}/${projectSlug}/${
+        embed === 'true'
+          ? `${
+              callbackUrl != undefined
+                ? `?embed=true&callback=${callbackUrl}`
+                : '?embed=true'
+            }`
+          : ''
+      }`
+    );
+  };
+
   return (
     <>
       {searchedProject.map((projectMarker, index) => (
@@ -60,32 +76,8 @@ export default function Markers({
               className={`${styles.marker} ${
                 styles[markerBackgroundColor(projectMarker.properties)]
               }`}
-              onClick={() => {
-                router.push(
-                  `/${projectMarker.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`
-                );
-              }}
-              onKeyDown={() => {
-                router.push(
-                  `/${projectMarker.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`
-                );
-              }}
+              onClick={() => goToProject(projectMarker.properties.slug)}
+              onKeyDown={() => goToProject(projectMarker.properties.slug)}
               role="button"
               tabIndex={0}
               onMouseOver={() => {
@@ -131,32 +123,10 @@ export default function Markers({
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
-                router.push(
-                  `/${popupData.project.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`
-                );
+                goToProject(popupData.project.properties.slug);
               }
             }}
-            onKeyDown={() => {
-              router.push(
-                `/${popupData.project.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`
-              );
-            }}
+            onKeyDown={() => goToProject(popupData.project.properties.slug)}
             role="button"
             tabIndex={0}
             onMouseLeave={() => {

@@ -9,9 +9,6 @@ on:
     branches:
       - develop
       - feature/redesign-explore-btn
-      - feature/redesign-image-slider
-      - feature/explore-btn
-      - feature/design-project-info-container
 # List of jobs
 jobs:
   chromatic-deployment:

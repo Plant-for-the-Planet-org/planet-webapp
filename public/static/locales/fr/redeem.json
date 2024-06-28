@@ -1,11 +1,22 @@
 {
-  "myPlantedTreesByOrg": "Mon {{formattedNumber}} arbre sera planté par {{tpoName}}",
-  "myPlantedTreesByOrg_plural": "Mes {{formattedNumber}} arbres seront plantés par {{tpoName}}",
-  "congratulations": "Félicitations !",
-  "addToMyTrees": "Ajouter à mes arbres",
-  "validateCode": "Valider le code",
-  "enterRedeemCode": "Veuillez entrer un code pour le rachat",
-  "validating": "Validation",
-  "invalidType": "Type non valide, vérifier à nouveau le lien",
-  "redeemDescription": "Échangez votre bon d'arbre et d'autres codes."
+  "Redeem": {
+    "myPlantedTreesByOrg": "Mon {formattedNumber} arbre sera planté par {tpoName}",
+    "myPlantedTreesByOrg_plural": "Mes {formattedNumber} arbres seront plantés par {tpoName}",
+    "congratulations": "Félicitations !",
+    "addToMyTrees": "Ajouter à mes arbres",
+    "validateCode": "Valider le code",
+    "enterRedeemCode": "Veuillez entrer un code pour le rachat",
+    "validating": "Validation",
+    "invalidType": "Type non valide, vérifier à nouveau le lien",
+    "redeeming": "La rédemption :",
+    "invalidCode": "Ce code n'est pas valide.",
+    "selfGiftMessage": "Vous ne pouvez pas échanger un cadeau/code émis par vous-même",
+    "alreadyRedeemed": "Le code a déjà été utilisé",
+    "redeemCode": "Code d'échange",
+    "redeemingCode": "Code d'échange...",
+    "redeem": "Racheter",
+    "redeemDescription": "Échangez votre bon d'arbre et d'autres codes.",
+    "successfullyRedeemed": "Remboursé avec succès",
+    "redeemAnotherCode": "Utiliser un autre code"
+  }
 }

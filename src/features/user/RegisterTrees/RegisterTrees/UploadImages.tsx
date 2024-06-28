@@ -7,7 +7,7 @@ import {
 } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError, Image } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -26,7 +26,7 @@ export default function UploadImages({
 }: Props): ReactElement {
   const [uploadedImages, setUploadedImages] = React.useState<Image[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { t, ready } = useTranslation(['me', 'common']);
+  const t = useTranslations('Me');
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -103,7 +103,7 @@ export default function UploadImages({
     }
   };
 
-  return ready ? (
+  return (
     <>
       {/* Change to field array of react hook form  */}
       {uploadedImages && uploadedImages.length > 0 ? (
@@ -146,14 +146,12 @@ export default function UploadImages({
             {isUploadingData ? (
               <div className={'spinner'}></div>
             ) : (
-              t('me:uploadPhotos')
+              t('uploadPhotos')
             )}
           </Button>
-          <p style={{ marginTop: '18px' }}>{t('me:dragHere')}</p>
+          <p style={{ marginTop: '18px' }}>{t('dragHere')}</p>
         </label>
       </div>
     </>
-  ) : (
-    <></>
   );
 }

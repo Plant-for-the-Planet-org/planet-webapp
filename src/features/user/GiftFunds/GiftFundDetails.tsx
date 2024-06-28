@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Divider, Grid, styled } from '@mui/material';
 import { GiftFund } from '@planet-sdk/common';
 
@@ -10,7 +10,7 @@ interface Props {
 
 const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
   const { user } = useUserProps();
-  const { t, ready } = useTranslation('giftfunds');
+  const t = useTranslations('Giftfunds');
 
   const StyledContainer = styled('article')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
@@ -36,7 +36,7 @@ const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
     },
   }));
 
-  if (ready && user?.planetCash) {
+  if (user?.planetCash) {
     return (
       <>
         <Grid

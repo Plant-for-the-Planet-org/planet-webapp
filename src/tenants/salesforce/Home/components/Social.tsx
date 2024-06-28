@@ -21,8 +21,7 @@ export default function Social() {
     url +
     '&text=' +
     title +
-    '&via=' +
-    handle.replace('@', '');
+    (handle ? '&via=' + handle.replace('@', '') : '');
 
   return (
     <section className={styles.socialSection}>

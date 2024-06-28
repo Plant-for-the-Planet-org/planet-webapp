@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from './index.module.scss';
 import {
   PlantLocationDetailsApiResponse,
@@ -20,14 +20,15 @@ type ListOfSpeciesPlantedProp = {
 };
 
 const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
-  const { t, i18n } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
+  const locale = useLocale();
   return (
     <div className={styles.topContainer}>
       {selectedLayer.treeCount && (
         <div className={styles.leftContainer}>
           <p className={styles.title}>{t('speciesPlanted')}</p>
           <p>
-            {getFormattedNumber(i18n.language, selectedLayer.treeCount)}&nbsp;
+            {getFormattedNumber(locale, selectedLayer.treeCount)}&nbsp;
             {t('trees')}
           </p>
         </div>
@@ -39,7 +40,7 @@ const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
           </div>
           <p>
             {getFormattedNumber(
-              i18n.language,
+              locale,
               Number((selectedLayer?.density * 1000).toFixed(1))
             )}
             &nbsp;
@@ -54,7 +55,8 @@ const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
 const ListOfSpeciesPlanted = ({
   plantLocationDetails,
 }: ListOfSpeciesPlantedProp) => {
-  const { t, i18n } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
+  const locale = useLocale();
   return plantLocationDetails?.plantedSpecies !== null ? (
     <div className={styles.midContainer}>
       <div className={styles.title}>
@@ -71,7 +73,7 @@ const ListOfSpeciesPlanted = ({
             >
               <div className={styles.speciesName}>{species.scientificName}</div>
               <div className={styles.count}>
-                {getFormattedNumber(i18n.language, species.treeCount)}
+                {getFormattedNumber(locale, species.treeCount)}
               </div>
               <div className={styles.totalPercentage}>
                 {(
@@ -93,7 +95,7 @@ const ListOfSpeciesPlanted = ({
 const SampleTreesInfo = ({
   plantLocationDetails,
 }: ListOfSpeciesPlantedProp) => {
-  const { t } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
   return plantLocationDetails?.samplePlantLocations ? (
     <>
       {' '}

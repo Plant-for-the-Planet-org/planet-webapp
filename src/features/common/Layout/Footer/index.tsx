@@ -4,14 +4,15 @@ import World from '../../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
-  const { t, i18n, ready } = useTranslation(['common']);
+  const t = useTranslations('Common');
+  const locale = useLocale();
   const { tenantConfig } = useTenant();
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
@@ -26,52 +27,52 @@ export default function Footer(): ReactElement | null {
 
   const FooterLinks = {
     shop: {
-      title: ready ? t('common:shop') : '',
+      title: t('shop'),
       link: `https://www.thegoodshop.org/de`,
     },
     privacy: {
-      title: ready ? t('common:privacy') : '',
-      link: `https://pp.eco/legal/${i18n.language}/privacy`,
+      title: t('privacy'),
+      link: `https://pp.eco/legal/${locale}/privacy`,
     },
     terms: {
-      title: ready ? t('common:terms') : '',
-      link: `https://pp.eco/legal/${i18n.language}/terms`,
+      title: t('terms'),
+      link: `https://pp.eco/legal/${locale}/terms`,
     },
     imprint: {
-      title: ready ? t('common:imprint') : '',
-      link: `https://pp.eco/legal/${i18n.language}/imprint`,
+      title: t('imprint'),
+      link: `https://pp.eco/legal/${locale}/imprint`,
     },
     contact: {
-      title: ready ? t('common:contact') : '',
+      title: t('contact'),
       link: 'mailto:support@plant-for-the-planet.org',
     },
     downloads: {
-      title: ready ? t('common:downloads') : '',
-      link: `https://www.plant-for-the-planet.org/${i18n.language}/download`,
+      title: t('downloads'),
+      link: `https://www.plant-for-the-planet.org/${locale}/download`,
     },
     annualReports: {
-      title: ready ? t('common:annualReports') : '',
+      title: t('annualReports'),
       link: `https://www.plant-for-the-planet.org/annual-reports`,
     },
     team: {
-      title: ready ? t('common:team') : '',
+      title: t('team'),
       link: `https://www.plant-for-the-planet.org/team`,
     },
     jobs: {
-      title: ready ? t('common:jobs') : '',
-      link: `https://www.plant-for-the-planet.org/${i18n.language}/careers`,
+      title: t('jobs'),
+      link: `https://www.plant-for-the-planet.org/${locale}/careers`,
     },
     supportUs: {
-      title: ready ? t('common:supportUs') : '',
-      link: `https://www.plant-for-the-planet.org/${i18n.language}/donation`,
+      title: t('supportUs'),
+      link: `https://www.plant-for-the-planet.org/${locale}/donation`,
     },
     blogs: {
-      title: ready ? t('common:blogs') : '',
-      link: `https://blog.plant-for-the-planet.org/${i18n.language}`,
+      title: t('blogs'),
+      link: `https://blog.plant-for-the-planet.org/${locale}`,
     },
     faqs: {
-      title: ready ? t('common:faqs') : '',
-      link: `https://www.plant-for-the-planet.org/${i18n.language}/faq`,
+      title: t('faqs'),
+      link: `https://www.plant-for-the-planet.org/${locale}/faq`,
     },
   };
 
@@ -89,7 +90,7 @@ export default function Footer(): ReactElement | null {
     }
   }, []);
 
-  return ready ? (
+  return (
     <footer>
       <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
@@ -104,7 +105,7 @@ export default function Footer(): ReactElement | null {
               >
                 <World />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(i18n.language)} · ${selectedCurrency}`}
+                  {`${getLanguageName(locale)} · ${selectedCurrency}`}
                 </p>
               </button>
               <div className={styles.footer_social_container}>
@@ -147,51 +148,6 @@ export default function Footer(): ReactElement | null {
                           data-name="Icon awesome-facebook-f"
                           d="M18.446,18.32l.9-5.894H13.695V8.6c0-1.613.79-3.184,3.323-3.184h2.571V.4A31.354,31.354,0,0,0,15.025,0c-4.658,0-7.7,2.823-7.7,7.933v4.492H2.146V18.32H7.323V32.568h6.372V18.32Z"
                           transform="translate(406.195 515.704)"
-                        />
-                      </g>
-                    </svg>
-                  </a>
-                </button>
-
-                <button id={'twitterIcon'}>
-                  <a
-                    className={styles.social_button}
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://twitter.com/trilliontrees"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="46"
-                      height="46"
-                      viewBox="0 0 46 46"
-                    >
-                      <g
-                        id="Group_3318"
-                        data-name="Group 3318"
-                        transform="translate(-449.175 -500.555)"
-                      >
-                        <g
-                          className="iconFillNone"
-                          id="Ellipse_1309"
-                          data-name="Ellipse 1309"
-                          transform="translate(449.175 500.555)"
-                          strokeWidth="1"
-                        >
-                          <circle cx="23" cy="23" r="23" stroke="none" />
-                          <circle
-                            className="iconFillNone"
-                            cx="23"
-                            cy="23"
-                            r="22.5"
-                          />
-                        </g>
-                        <path
-                          className="iconFillColor"
-                          id="Icon_awesome-twitter"
-                          data-name="Icon awesome-twitter"
-                          d="M25.273,10.116c.018.246.018.492.018.738A16.171,16.171,0,0,1,8.865,27.01,16.513,16.513,0,0,1,0,24.461a12.14,12.14,0,0,0,1.394.07A11.685,11.685,0,0,0,8.561,22.1a5.772,5.772,0,0,1-5.4-3.938,7.4,7.4,0,0,0,1.09.088,6.2,6.2,0,0,0,1.519-.193,5.7,5.7,0,0,1-4.629-5.573v-.07a5.888,5.888,0,0,0,2.609.721A5.651,5.651,0,0,1,1.18,8.41a5.565,5.565,0,0,1,.786-2.865,16.5,16.5,0,0,0,11.9,5.942,6.309,6.309,0,0,1-.143-1.3A5.724,5.724,0,0,1,19.5,4.508,5.8,5.8,0,0,1,23.718,6.3,11.482,11.482,0,0,0,27.382,4.93a5.681,5.681,0,0,1-2.538,3.129,11.726,11.726,0,0,0,3.324-.879,12.3,12.3,0,0,1-2.9,2.936Z"
-                          transform="translate(458.175 510.046)"
                         />
                       </g>
                     </svg>
@@ -426,9 +382,7 @@ export default function Footer(): ReactElement | null {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <p className={styles.unep_logo_text}>
-                  {t('common:supportsUNEP')}{' '}
-                </p>
+                <p className={styles.unep_logo_text}>{t('supportsUNEP')} </p>
                 <UNEPLogo />
               </a>
             </button>
@@ -458,5 +412,5 @@ export default function Footer(): ReactElement | null {
         />
       </div>
     </footer>
-  ) : null;
+  );
 }

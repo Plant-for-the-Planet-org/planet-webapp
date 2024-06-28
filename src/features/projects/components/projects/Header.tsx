@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
@@ -19,8 +19,8 @@ function Header({
   setSearchMode,
   projects,
 }: Props): ReactElement {
-  const { t, ready } = useTranslation(['donate']);
-  return ready ? (
+  const t = useTranslations('Donate');
+  return (
     <div className={'header'}>
       {showTopProjectsList ? (
         <div className={'tabButtonContainer'}>
@@ -30,7 +30,7 @@ function Header({
                 selectedTab === 'top' ? 'tabButtonSelected' : 'tabButtonText'
               }
             >
-              {t('donate:topProjects')}
+              {t('topProjects')}
             </div>
             {selectedTab === 'top' ? (
               <div className={'tabButtonSelectedIndicator'} />
@@ -43,7 +43,7 @@ function Header({
                 selectedTab === 'all' ? 'tabButtonSelected' : 'tabButtonText'
               }
             >
-              {t('donate:allCountProjects', {
+              {t('allCountProjects', {
                 projectCount: projects.length,
               })}
             </div>
@@ -53,7 +53,7 @@ function Header({
           </div>
         </div>
       ) : (
-        <p className={'headerText'}>{t('donate:stopTalkingStartPlanting')}</p>
+        <p className={'headerText'}>{t('stopTalkingStartPlanting')}</p>
       )}
 
       <button
@@ -65,8 +65,6 @@ function Header({
         <SearchIcon />
       </button>
     </div>
-  ) : (
-    <></>
   );
 }
 

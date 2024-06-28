@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { CounterItem } from './components/CounterItem';
 import styles from './index.module.scss';
@@ -14,7 +14,7 @@ import {
 
 export const Counter = () => {
   const { project, fromDate, toDate } = useAnalytics();
-  const { t } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
 
   const [totalTreesPlanted, setTotalTreesPlanted] = useState<number | null>(
     null

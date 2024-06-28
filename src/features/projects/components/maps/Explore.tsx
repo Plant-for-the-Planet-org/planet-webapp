@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
@@ -56,7 +56,7 @@ export default function Explore(): ReactElement {
     exploreProjects,
   } = useProjectProps();
 
-  const { t } = useTranslation(['maps']);
+  const t = useTranslations('Maps');
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
@@ -179,7 +179,7 @@ export default function Explore(): ReactElement {
         }`,
         undefined,
         {
-          shallow: true,
+          shallow: true, //As Explore is only shown on the index route, we don't want to reload the page
         }
       );
     }
@@ -234,7 +234,7 @@ export default function Explore(): ReactElement {
               onClick={() => setExploreExpanded(true)}
               className={styles.exploreText}
             >
-              {t('maps:explore')}
+              {t('explore')}
             </p>
           )}
         </div>
@@ -307,7 +307,7 @@ export default function Explore(): ReactElement {
                         name="deforestation"
                       />
                     }
-                    label={t('maps:deforestation')}
+                    label={t('deforestation')}
                   />
                   <div
                     onClick={() => {
@@ -364,13 +364,13 @@ export default function Explore(): ReactElement {
                         name="projects"
                       />
                     }
-                    label={t('maps:projects')}
+                    label={t('projects')}
                   />
                 </div>
               </FormGroup>
               {/* </div> */}
               <div className={styles.exploreCaption}>
-                <p>{t('maps:3trilliontrees')}</p>
+                <p>{t('3trilliontrees')}</p>
               </div>
             </div>
           </>

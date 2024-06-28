@@ -1,5 +1,5 @@
 import { differenceInDays, format } from 'date-fns';
-import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import themeProperties from '../../../../../../theme/themeProperties';
@@ -77,10 +77,8 @@ export const getTimeFrames = (toDate: Date, fromDate: Date) => {
 };
 
 export const TreePlanted = () => {
-  const {
-    i18n: { language },
-    t,
-  } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
+  const locale = useLocale();
 
   const [series, setSeries] = useState<ApexOptions['series']>([
     {
@@ -202,7 +200,7 @@ export const TreePlanted = () => {
       labels: {
         show: true,
         formatter: function (val) {
-          return getFormattedNumber(language, val);
+          return getFormattedNumber(locale, val);
         },
       },
     },

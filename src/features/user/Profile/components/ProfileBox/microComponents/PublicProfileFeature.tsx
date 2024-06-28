@@ -3,7 +3,7 @@ import myProfileStyle from '../../../styles/MyProfile.module.scss';
 import { SupportSvg } from '../../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../../theme/themeProperties';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { User } from '@planet-sdk/common';
 import LinkIcon from '@mui/icons-material/Link';
 
@@ -15,7 +15,7 @@ export const PublicProfileFeature = ({
   profile,
 }: NormalUserPublicProfileFeatureProps) => {
   const router = useRouter();
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const { light } = theme;
   const handleSupport = (): void => {
     router.push(`/s/${profile?.slug}`);
@@ -38,7 +38,7 @@ export const PublicProfileFeature = ({
           startIcon={<SupportSvg color={`${light.light}`} />}
           onClick={handleSupport}
         >
-          {t('profile:myPublicProfile.support')}
+          {t('myPublicProfile.support')}
         </Button>
       )}
 
@@ -49,7 +49,7 @@ export const PublicProfileFeature = ({
           onClick={handleShareUrl}
           startIcon={<LinkIcon />}
         >
-          {t('profile:myPublicProfile.link')}
+          {t('myPublicProfile.link')}
         </Button>
       )}
     </>

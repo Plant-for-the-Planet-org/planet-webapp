@@ -104,7 +104,38 @@ export async function getTenantSlug(host: string) {
     }
   });
 
-  console.log('tenant', tenant, host);
+  console.log('tenant', tenant?.config.slug, host);
 
   return tenant?.config.slug ?? DEFAULT_TENANT;
+}
+
+/**
+ * Returns tenant slug and supported languages. Can be modified to return a brief set of info in the future.
+ */
+export async function getTenantConciseInfo(host: string) {
+  const tenants = await getTenantConfigList();
+  console.log('Fetched tenants from API');
+
+  const tenant =
+    tenants?.find((tenant) => {
+      if (tenant.config.customDomain) {
+        const urlObj = new URL(tenant.config.customDomain);
+        return urlObj.host === host;
+      } else {
+        const urlObj = new URL(tenant.config.appDomain);
+        return urlObj.host === host;
+      }
+    }) || tenants?.find((tenant) => tenant.config.slug === DEFAULT_TENANT);
+
+  console.log(`tenantConciseInfo for ${host}:`, {
+    slug: tenant?.config.slug,
+    supportedLanguages: tenant?.config.languages,
+    customDomain: tenant?.config.customDomain,
+    appDomain: tenant?.config.appDomain,
+  });
+
+  return {
+    slug: tenant?.config.slug ?? DEFAULT_TENANT,
+    supportedLanguages: Object.values(tenant?.config.languages ?? { 0: 'en' }),
+  };
 }

@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import Button from '@mui/material/Button';
 import { SerializedError } from '@planet-sdk/common';
 
@@ -18,7 +18,7 @@ export const RedeemFailed = ({
   redeemAnotherCode,
   closeRedeem,
 }: RedeemFailedProps): ReactElement => {
-  const { t } = useTranslation(['redeem']);
+  const t = useTranslations('Redeem');
 
   return (
     <div className={styles.routeRedeemModal}>
@@ -34,7 +34,7 @@ export const RedeemFailed = ({
       </div>
       <div className={styles.redeemCodeButtonContainer}>
         <Button variant="contained" onClick={redeemAnotherCode}>
-          {t('redeem:redeemAnotherCode')}
+          {t('redeemAnotherCode')}
         </Button>
       </div>
     </div>

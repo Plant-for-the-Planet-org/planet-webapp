@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
@@ -61,7 +61,7 @@ export const PauseModal = ({
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -126,7 +126,7 @@ export const PauseModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('me:pauseDonationConfirmation')}</h4>
+              <h4>{t('pauseDonationConfirmation')}</h4>
               <button
                 onClick={handlePauseModalClose}
                 onKeyPress={handlePauseModalClose}
@@ -138,7 +138,7 @@ export const PauseModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:pauseDonationDescription')}</p>
+              <p>{t('pauseDonationDescription')}</p>
             </div>
           </div>
           <FormControl variant="standard" component="fieldset">
@@ -166,13 +166,13 @@ export const PauseModal = ({
                 key={2}
                 value={'pauseUntilResume'}
                 control={<GreenRadio />}
-                label={t('me:pauseUntilResume')}
+                label={t('pauseUntilResume')}
               />
               <FormControlLabel
                 key={3}
                 value={'pauseUntilDate'}
                 control={<GreenRadio />}
-                label={t('me:pauseUntilDate')}
+                label={t('pauseUntilDate')}
               />
             </RadioGroup>
             {showCalender ? (

@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import myForestStyles from '../../../styles/MyForest.module.scss';
@@ -16,8 +16,9 @@ const PlantedTreesContributions = ({
   handleFetchNextPage,
   hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
-  const { asPath } = useRouter();
-  const { t } = useTranslation(['profile']);
+  const router = useRouter();
+  const t = useTranslations('Profile');
+  const locale = useLocale();
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const { treePlantationContribution, additionalInfoRelatedToContributions } =
     useMyForest();
@@ -30,13 +31,17 @@ const PlantedTreesContributions = ({
 
   const _checkConditions = () => {
     switch (true) {
-      case userProfile?.type === 'tpo' && asPath === '/profile': // tpo private profile
+      case userProfile?.type === 'tpo' &&
+        router.asPath === `/${locale}/profile`: // tpo private profile
         return true;
-      case userProfile?.type !== 'tpo' && asPath === '/profile': // normal user private profile
+      case userProfile?.type !== 'tpo' &&
+        router.asPath === `/${locale}/profile`: // normal user private profile
         return true;
-      case userProfile?.type === 'tpo' && asPath !== '/profile': // tpo public profile
+      case userProfile?.type === 'tpo' &&
+        router.asPath !== `/${locale}/profile`: // tpo public profile
         return false;
-      case userProfile?.type !== 'tpo' && asPath !== '/profile': //  normal user public profile
+      case userProfile?.type !== 'tpo' &&
+        router.asPath !== `/${locale}/profile`: //  normal user public profile
         return true;
       default:
         return null;
@@ -85,7 +90,7 @@ const PlantedTreesContributions = ({
       >
         {_checkConditions() && (
           <div className={myForestStyles.donationList}>
-            {asPath === '/profile' ? (
+            {router.asPath === `/${locale}/profile` ? (
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"
@@ -93,7 +98,7 @@ const PlantedTreesContributions = ({
                   onClick={handleAddTargetModalOpen}
                   className={myForestStyles.customEditButton}
                 >
-                  {t('profile:myTreeCounter.editTarget')}
+                  {t('myTreeCounter.editTarget')}
                 </Button>
               </div>
             ) : (
@@ -101,7 +106,7 @@ const PlantedTreesContributions = ({
             )}
 
             <div className={myForestStyles.text}>
-              {t('profile:myContributions.treesPlantedAndAreaRestored')}
+              {t('myContributions.treesPlantedAndAreaRestored')}
               <p className={myForestStyles.hrLine} />
             </div>
             <ContributedProjectList

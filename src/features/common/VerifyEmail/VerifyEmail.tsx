@@ -1,17 +1,17 @@
 import React, { ReactElement, useContext } from 'react';
 import styles from './VerifyEmail.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import VerifyEmailIcon from '../../../../public/assets/images/icons/VerifyEmail';
 import { useUserProps } from '../Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 
 function VerifyEmailComponent(): ReactElement {
-  const { t, ready } = useTranslation(['common']);
+  const t = useTranslations('Common');
 
   const { loginWithRedirect } = useUserProps();
   const { theme } = useContext(ThemeContext);
-  return ready ? (
+  return (
     <div
       className={styles.verifyEmailSection}
       style={{
@@ -26,13 +26,11 @@ function VerifyEmailComponent(): ReactElement {
       }}
     >
       <VerifyEmailIcon />
-      <h2 className={styles.verifyEmailText}>
-        {t('common:verifyEmailHeader')}
-      </h2>
-      {t('common:verifyEmailText')}
+      <h2 className={styles.verifyEmailText}>{t('verifyEmailHeader')}</h2>
+      {t('verifyEmailText')}
 
       <span style={{ fontStyle: 'italic', marginTop: '12px' }}>
-        {t('common:verifyEmailInfo')}
+        {t('verifyEmailInfo')}
       </span>
       <button
         id={'verifyEmail'}
@@ -45,11 +43,9 @@ function VerifyEmailComponent(): ReactElement {
         className={'primaryButton'}
         style={{ marginTop: '10px' }}
       >
-        {t('common:continueToLogin')}
+        {t('continueToLogin')}
       </button>
     </div>
-  ) : (
-    <></>
   );
 }
 
