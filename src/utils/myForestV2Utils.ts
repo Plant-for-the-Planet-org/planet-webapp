@@ -86,7 +86,10 @@ export const getDonationClusterMarkerColors = (
 
 export const extractAndClassifyProjectData = (
   clusterChildren: PointFeature<DonationProperties>[] | undefined
-) => {
+): {
+  maxContributingProject: ExtractedProjectData | null;
+  uniqueProjects: ExtractedProjectData[];
+} => {
   let maxContributingProject: ExtractedProjectData | null = null;
   let maxContributionCount = -Infinity;
   const remainingProjects: ExtractedProjectData[] = [];
@@ -120,7 +123,7 @@ export const extractAndClassifyProjectData = (
     }
   });
 
-  const uniqueCombinations = new Map();
+  const uniqueCombinations = new Map<string, ExtractedProjectData>();
   // Loop through the array to find  the object with the unique purpose and unit type
   remainingProjects.forEach((obj) => {
     const { unitType, purpose } = obj;
