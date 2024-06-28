@@ -12,7 +12,7 @@
     'progressContainer'
     'communityContributionsContainer'
     'myContributionsContainer'
-    /* 'infoAndCtaContainer' */;
+    'infoAndCtaContainer';
   gap: 16px;
 
   &.noLeaderboard {
@@ -21,7 +21,7 @@
       'mapContainer'
       'progressContainer'
       'myContributionsContainer'
-      /* 'infoAndCtaContainer' */;
+      'infoAndCtaContainer';
   }
 
   > section {
@@ -108,7 +108,7 @@
         'profileContainer mapContainer mapContainer mapContainer'
         'progressContainer progressContainer progressContainer progressContainer'
         'myContributionsContainer myContributionsContainer myContributionsContainer myContributionsContainer'
-        /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+        'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
     }
 
     > section {
@@ -144,7 +144,7 @@
         'profileContainer mapContainer mapContainer mapContainer'
         'progressContainer progressContainer progressContainer progressContainer'
         'myContributionsContainer myContributionsContainer myContributionsContainer myContributionsContainer'
-        /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+        'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
     }
   }
 }

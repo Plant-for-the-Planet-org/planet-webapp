@@ -14,6 +14,7 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestV2Utils';
+import InfoAndCta from '../InfoAndCTA';
 
 interface Props {
   tenantConfigId: string;
@@ -169,9 +170,9 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           )}
         </section>
       ) : null}
-      {/* <section id="info-cta-container" className={styles.infoAndCtaContainer}>
-        Additional information and CTAs - Become a member, Treegame, SDG Slider
-      </section> */}
+      <section id="info-cta-container" className={styles.infoAndCtaContainer}>
+        <InfoAndCta />
+      </section>
     </article>
   );
 };
