@@ -3,7 +3,7 @@ import MailIcon from '../icons/MailIcon';
 import { ViewProfileIcon } from '../icons/ViewProfileIcon';
 import WebsiteLinkIcon from '../icons/WebsiteLinkIcon';
 import styles from './ProjectInfo.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import SingleContactDetail from './SingleContactDetail';
 
@@ -20,7 +20,7 @@ const ContactDetails = ({
   location,
   email,
 }: Props) => {
-  const { t } = useTranslation(['donate']);
+  const t = useTranslations('Donate');
 
   const extractWebsiteURLTitle = () => {
     return websiteURL
@@ -39,7 +39,7 @@ const ContactDetails = ({
           color={`${'var(--primary-font-color)'}`}
         />
       ),
-      title: t('donate:viewProfile'),
+      title: t('viewProfile'),
       link: publicProfileURL,
     },
     {
@@ -68,7 +68,7 @@ const ContactDetails = ({
 
   return (
     <div className={styles.contactDetailsContainer}>
-      <SingleProjectInfoItem title={t('donate:contactDetails')}>
+      <SingleProjectInfoItem title={t('contactDetails')}>
         <div className={styles.contactText}>
           {contactDetails.map((contact, index) => (
             <SingleContactDetail contactInfo={contact} key={index} />

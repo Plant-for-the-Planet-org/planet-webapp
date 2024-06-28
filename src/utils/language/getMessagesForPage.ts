@@ -3,6 +3,7 @@ import { AbstractIntlMessages } from 'next-intl';
 
 // Update this when a new file is added
 type TRANSLATION_FILE_NAMES =
+  | 'allProjects'
   | 'bulkCodes'
   | 'common'
   | 'country'
@@ -18,6 +19,7 @@ type TRANSLATION_FILE_NAMES =
   | 'planet'
   | 'planetcash'
   | 'profile'
+  | 'projectDetails'
   | 'redeem'
   | 'registerTrees'
   | 'tenants'

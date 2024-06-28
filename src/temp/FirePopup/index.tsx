@@ -4,8 +4,8 @@ import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
 import InfoIconPopup from '../components/InfoIconPopup';
-import { Trans, useTranslation } from 'next-i18next';
 import RightArrowIcon from '../icons/RightArrowIcon';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   isOpen: boolean;
@@ -17,7 +17,7 @@ export default function FirePopup({ isOpen }: Props) {
   const anchorRef = React.useRef(null);
   const [arrowRef, setArrowRef] = React.useState<HTMLSpanElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
-  const { t } = useTranslation('projectDetails');
+  const t = useTranslations('ProjectDetails');
 
   return (
     <>
@@ -63,15 +63,15 @@ export default function FirePopup({ isOpen }: Props) {
           <div className={styles.popupText}>
             <p className={styles.coordinates}>18.71122, -87.71138</p>
             <p>
-              <Trans i18nKey="highAlertConfidenceText">
-                <span>High</span> alert confidence
-              </Trans>
+              {t.rich('highAlertConfidenceText', {
+                important: (chunks) => <span>{chunks}</span>,
+              })}
             </p>
             <div className={styles.setUpAlertsContainer}>
               <p className={styles.setUpAlerts}>
-                <Trans i18nKey="setUpAlertsText">
-                  Set up alerts with <span>FireAlert</span>
-                </Trans>
+                {t.rich('setUpAlertsText', {
+                  important: (chunks) => <span>{chunks}</span>,
+                })}
               </p>
               <RightArrowIcon width={5} color={'#4F4F4F'} />
             </div>

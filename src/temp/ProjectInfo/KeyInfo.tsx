@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import styles from './ProjectInfo.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import formatDate from '../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import InfoIconPopup from '../components/InfoIconPopup';
@@ -23,7 +23,9 @@ const KeyInfo = ({
   employees,
   plantingSeasons,
 }: Props) => {
-  const { t } = useTranslation(['manageProjects', 'common', 'projectDetails']);
+  const tCommon = useTranslations('Common');
+  const tManageProjects = useTranslations('ManageProjects');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   const addZeroToDate = (val: string) => {
     const arr = val.split('-');
@@ -47,24 +49,24 @@ const KeyInfo = ({
         <SingleProjectInfoItem
           title={
             <h2 className={styles.abandonmentTitle}>
-              {t('manageProjects:abandonment')}
+              {tManageProjects('abandonment')}
               <InfoIconPopup
                 height={10}
                 width={10}
                 color={`${'rgba(var(--secondary-divider-color-new))'}`}
               >
                 <div className={styles.infoIconPopupContainer}>
-                  {t('manageProjects:yearAbandonedInfo')}
+                  {tManageProjects('yearAbandonedInfo')}
                 </div>
               </InfoIconPopup>
             </h2>
           }
         >
           <p>
-            {t('common:approx')} {abandonment}
+            {tCommon('approx')} {abandonment}
           </p>
         </SingleProjectInfoItem>
-        <SingleProjectInfoItem title={t('projectDetails:firstTreePlanted')}>
+        <SingleProjectInfoItem title={tProjectDetails('firstTreePlanted')}>
           <time>
             {firstTree.length > 0 &&
               formatDate(
@@ -78,20 +80,20 @@ const KeyInfo = ({
       </div>
       <div className={styles.seperator}></div>
       <div className={styles.singleRowInfoContainer}>
-        <SingleProjectInfoItem title={t('manageProjects:plantingDensity')}>
+        <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
           <>
             {plantingDensity}
             {maxPlantingDensity !== null
-              ? `-${maxPlantingDensity} ${t('manageProjects:treePerHa')}`
-              : ` ${t('manageProjects:treePerHa')}`}
+              ? `-${maxPlantingDensity} ${tManageProjects('treePerHa')}`
+              : ` ${tManageProjects('treePerHa')}`}
           </>
         </SingleProjectInfoItem>
-        <SingleProjectInfoItem title={t('manageProjects:employees')}>
+        <SingleProjectInfoItem title={tManageProjects('employees')}>
           <p>{employees}</p>
         </SingleProjectInfoItem>
       </div>
       <div className={styles.seperator}></div>
-      <SingleProjectInfoItem title={t('projectDetails:plantingSeasons')}>
+      <SingleProjectInfoItem title={tProjectDetails('plantingSeasons')}>
         <PlantingSeasons plantingSeasons={plantingSeasons} />
       </SingleProjectInfoItem>
     </div>

@@ -1,6 +1,8 @@
 {
-  "currentForests": "Current Forests",
-  "restorationPotential": "Restoration Potential",
-  "deforestation": "Deforestation",
-  "projects": "Projects"
+  "AllProjects": {
+    "currentForests": "Current Forests",
+    "restorationPotential": "Restoration Potential",
+    "deforestation": "Deforestation",
+    "projects": "Projects"
+  }
 }

@@ -1,4 +1,4 @@
-import { Trans, useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import styles from './ReviewReports.module.scss';
 import DownloadReportIcon from '../icons/DownloadReportIcon';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -13,12 +13,15 @@ interface Props {
 }
 
 const SingleReview = ({ singleReview }: Props) => {
-  const { t } = useTranslation(['common', 'manageProjects', 'projectDetails']);
+  const tCommon = useTranslations('Common');
+  const tProjectDetails = useTranslations('ProjectDetails');
+
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
       locale: localeMapForDate[localStorage.getItem('language') || 'en'],
     });
   };
+
   return (
     <div className={styles.singleReviewContainer}>
       <div className={styles.reviewInfoContainer}>
@@ -30,21 +33,23 @@ const SingleReview = ({ singleReview }: Props) => {
           }}
         />
         <p>
-          <Trans i18nKey="common:reviewInfo">
-            The project was inspected in a multiday field review in{' '}
-            {displayDate(singleReview.issueMonth)} and fullfills our{' '}
-            <a
-              target="_blank"
-              href="https://www.plant-for-the-planet.org/standards/"
-              rel="noreferrer"
-            >
-              standards.
-            </a>
-          </Trans>
+          {tCommon.rich('reviewInfo', {
+            reviewMonth: displayDate(singleReview.issueMonth),
+            standardsLink: (chunks) => (
+              <a
+                target="_blank"
+                href={tCommon('standardsLink')}
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </div>
       <div className={styles.downloadReportContainer}>
-        <p>{t('projectDetails:report')}</p>
+        <p>{tProjectDetails('report')}</p>
         <a
           target="_blank"
           rel="noopener noreferrer"

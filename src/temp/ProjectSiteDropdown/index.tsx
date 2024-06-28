@@ -3,7 +3,7 @@ import SiteIcon from '../icons/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownUpArrow from '../icons/DropdownUpArrow';
 import DropdownDownArrow from '../icons/DropdownDownArrow';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface SiteType {
   name: string;
@@ -18,7 +18,7 @@ interface Props {
 const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
   const [selectedSite, setSelectedSite] = useState(selectedOption);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
-  const { t } = useTranslation('manageProjects');
+  const t = useTranslations('ManageProjects');
 
   const getId = (selected: string) => {
     let id;

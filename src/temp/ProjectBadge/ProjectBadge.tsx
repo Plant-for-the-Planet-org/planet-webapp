@@ -4,7 +4,7 @@ import OffSiteReviewedIcon from '../icons/OffSiteReviewedIcon';
 import FieldReviewedIcon from '../icons/FieldReviewedIcon';
 import styles from './Badge.module.scss';
 import TopProjectIcon from '../icons/TopProjectIcon';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   isApproved: boolean;
@@ -18,7 +18,8 @@ interface TitleAndIconReturnType {
 }
 
 const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
-  const { t } = useTranslation(['common', 'projectDetails']);
+  const tCommon = useTranslations('Common');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   const getTitleAndIcon = (
     isApproved: boolean,
@@ -29,30 +30,30 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
       if (!allowDonations) {
         return {
           icon: <NewInfoIcon width={10} height={10} color={'var(--light)'} />,
-          title: t('common:notDonatable'),
+          title: tCommon('notDonatable'),
         };
       }
 
       if (isTopProject && isApproved) {
         return {
           icon: <TopProjectIcon color={'var(--light)'} width={11} />,
-          title: t('common:topProject'),
+          title: tCommon('topProject'),
         };
       }
 
       if (!isTopProject && isApproved) {
         return {
           icon: <FieldReviewedIcon width={10} color={'var(--light)'} />,
-          title: t('projectDetails:fieldReviewed'),
+          title: tProjectDetails('fieldReviewed'),
         };
       }
       if (!isTopProject && !isApproved) {
         return {
           icon: <OffSiteReviewedIcon width={10} color={'var(--light)'} />,
-          title: t('projectDetails:offSiteReviewed'),
+          title: tProjectDetails('offSiteReviewed'),
         };
       }
-    }, [isApproved, isTopProject, allowDonations, t]);
+    }, [isApproved, isTopProject, allowDonations, tCommon, tProjectDetails]);
   };
 
   const { icon, title } =
