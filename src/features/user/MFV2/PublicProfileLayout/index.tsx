@@ -5,7 +5,7 @@ import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import CommunityContributions from '../CommunityContributions';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import { handleError, APIError } from '@planet-sdk/common';
@@ -77,7 +77,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const restoreTarget = userInfo?.targets.areaRestored ?? 0;
   const conservTarget = userInfo?.targets.areaConserved ?? 0;
 
-  const isProgressBarDisabled = () => {
+  const isProgressBarDisabled = useMemo(() => {
     return (
       treesDonated === 0 &&
       areaRestored === 0 &&
@@ -86,7 +86,14 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
       restoreTarget === 0 &&
       conservTarget === 0
     );
-  };
+  }, [
+    treesDonated,
+    areaRestored,
+    areaConserved,
+    treeTarget,
+    restoreTarget,
+    conservTarget,
+  ]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;
   const isContributionsDataLoaded =
@@ -98,7 +105,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     <article
       className={`${styles.publicProfileLayout} ${
         !showLeaderboard ? styles.noLeaderboard : ''
-      }`}
+      } ${isProgressBarDisabled ? styles.noProgress : ''}`}
     >
       <section id="profile-container" className={styles.profileContainer}>
         {isProfileLoaded ? (
@@ -122,7 +129,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           <ProfileLoader height={450} />
         )}
       </section>
-      {isProgressBarDisabled() ? (
+      {isProgressBarDisabled ? (
         <></>
       ) : (
         <section
