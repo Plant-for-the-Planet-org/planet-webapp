@@ -1,5 +1,12 @@
-import React, { FormEvent, ReactElement, useContext, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import React, {
+  FormEvent,
+  ReactElement,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
+import { useTranslation, Trans } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
@@ -196,7 +203,7 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const getTotalAmount = (): number | undefined => {
+  const totalAmount = useMemo((): number | undefined => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project
         ? Math.round(
@@ -215,7 +222,70 @@ const IssueCodesForm = (): ReactElement | null => {
             100
         : undefined;
     }
-  };
+  }, [bulkMethod, project, codeQuantity, unitsPerCode, localRecipients]);
+
+  const shouldDisableSubmission = useMemo(() => {
+    const hasSufficientFunds =
+      user?.planetCash != null &&
+      user.planetCash.balance + user.planetCash.creditLimit > 0;
+    const hasEnteredRequiredData =
+      localRecipients.length > 0 ||
+      (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+
+    return (
+      !hasSufficientFunds ||
+      isProcessing ||
+      !hasEnteredRequiredData ||
+      !totalAmount ||
+      totalAmount <= 0
+    );
+  }, [
+    user,
+    localRecipients,
+    codeQuantity,
+    unitsPerCode,
+    isProcessing,
+    totalAmount,
+  ]);
+
+  const renderInvalidEmailWarning = useCallback(() => {
+    return (
+      <>
+        {t('bulkCodes:invalidEmailWarningText')}
+        <br />
+      </>
+    );
+  }, [i18n.language, t]);
+
+  const renderTermsAndPrivacyText = useCallback(() => {
+    return (
+      <>
+        <Trans key={'bulkCodes:termsAndPrivacyText'}>
+          Read more about our{' '}
+          <a
+            target="_blank"
+            href={`https://pp.eco/legal/${i18n.language}/terms`}
+            rel="noreferrer"
+            className="planet-links"
+            onClick={(e) => e.stopPropagation()}
+          >
+            terms and conditions
+          </a>{' '}
+          and the{' '}
+          <a
+            target="_blank"
+            href={`https://pp.eco/legal/${i18n.language}/privacy`}
+            rel="noreferrer"
+            className="planet-links"
+            onClick={(e) => e.stopPropagation()}
+          >
+            privacy policy
+          </a>
+          .
+        </Trans>
+      </>
+    );
+  }, [i18n.language, t]);
 
   if (ready) {
     if (!isSubmitted) {
@@ -256,11 +326,10 @@ const IssueCodesForm = (): ReactElement | null => {
                 />
               )}
               <BulkGiftTotal
-                amount={getTotalAmount()}
+                amount={totalAmount}
                 currency={planetCashAccount?.currency}
                 units={getTotalUnits()}
                 unit={project?.unit}
-                isImport={bulkMethod === 'import'}
               />
             </div>
 
@@ -272,24 +341,19 @@ const IssueCodesForm = (): ReactElement | null => {
                 variant="contained"
                 color="primary"
                 className="formButton"
-                disabled={
-                  !(
-                    user?.planetCash &&
-                    !(
-                      user.planetCash.balance + user.planetCash.creditLimit <=
-                      0
-                    )
-                  ) ||
-                  isProcessing ||
-                  (localRecipients.length === 0 &&
-                    (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-                }
+                disabled={shouldDisableSubmission}
               >
                 {isProcessing
                   ? t('bulkCodes:issuingCodes')
                   : t('bulkCodes:issueCodes')}
               </Button>
             </form>
+            <div className={styles.issueCodeTermsAndWarnings}>
+              {t('bulkCodes:chargeConsentText')}
+              <br />
+              {bulkMethod === 'import' && renderInvalidEmailWarning()}
+              {renderTermsAndPrivacyText()}
+            </div>
           </StyledFormContainer>
         </CenteredContainer>
       );
