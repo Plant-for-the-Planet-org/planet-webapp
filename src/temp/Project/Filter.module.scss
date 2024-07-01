@@ -1,24 +1,22 @@
+@import '../../theme/theme';
+
 .projectListMainContainer {
   max-width: 182px;
-  height: 100%;
-  background: rgba(255, 255, 255, 1);
+  background: $backgroundColor;
   padding: 16px;
   margin-top: 10px;
   border-radius: 12px;
-  > .container {
-    height: 100%;
-  }
 }
 
 .projectName {
-  font-size: 10px;
+  font-size: $fontXXSmall;
   text-transform: capitalize;
   line-height: normal;
 }
 
 .filterSelected {
   font-weight: 700;
-  font-size: 10px;
+  font-size: $fontXXSmall;
 }
 
 .filterButton {

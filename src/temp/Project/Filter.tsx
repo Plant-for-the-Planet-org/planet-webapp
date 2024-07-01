@@ -11,6 +11,7 @@ export type Classification =
   | 'managed-regeneration'
   | 'urban-planting'
   | 'other-planting';
+
 interface FilterProps {
   filterApplied: Classification | undefined;
   setFilterApplied: (newValue: Classification | undefined) => void;
@@ -24,8 +25,10 @@ export const FilterDropDown = ({
 }: FilterProps) => {
   const tAllProjects = useTranslations('AllProjects');
 
-  const handleClick = (singleFilter: Classification | undefined): void => {
-    setFilterApplied(singleFilter);
+  const handleFilterSelection = (
+    filterItem: Classification | undefined
+  ): void => {
+    setFilterApplied(filterItem);
   };
 
   return (
@@ -34,7 +37,7 @@ export const FilterDropDown = ({
         <div className={style.projectListMainContainer}>
           <button
             className={style.filterButton}
-            onClick={() => handleClick(undefined)}
+            onClick={() => handleFilterSelection(undefined)}
           >
             <div
               className={
@@ -48,21 +51,21 @@ export const FilterDropDown = ({
             <hr className={style.hrLine} />
           </button>
           <div className={style.container}>
-            {availableFilters.map((singleFilter, index) => {
+            {availableFilters.map((filterItem, index) => {
               return (
                 <button
                   key={index}
                   className={style.filterButton}
-                  onClick={() => handleClick(singleFilter)}
+                  onClick={() => handleFilterSelection(filterItem)}
                 >
                   <div
                     className={
-                      filterApplied === singleFilter
+                      filterApplied === filterItem
                         ? style.filterSelected
                         : style.projectName
                     }
                   >
-                    {tAllProjects(`classificationTypes.${singleFilter}`)}
+                    {tAllProjects(`classificationTypes.${filterItem}`)}
                   </div>
                   {index !== availableFilters.length - 1 && (
                     <hr className={style.hrLine} />
@@ -84,13 +87,14 @@ const Filter = ({
   setFilterApplied,
   availableFilters,
 }: FilterProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   return (
     <div>
-      <Button onClick={() => setIsOpen(!isOpen)}>
-        <FilterIcon width={'16px'} />
-      </Button>
-      {isOpen && (
+      <Button
+        onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+        startIcon={<FilterIcon width={'16px'} />}
+      />
+      {isFilterDropdownOpen && (
         <FilterDropDown
           filterApplied={filterApplied}
           setFilterApplied={setFilterApplied}

@@ -1,6 +1,6 @@
 {
   "ProjectDetails": {
-    "allProjects": "All Projects(<projectCountContainer>{noOfProjects}</projectCountContainer>)",
+    "allProjects": "All(<projectCountContainer>{noOfProjects}</projectCountContainer>)",
     "searchProject": "Search Project",
     "topProjects": "Top Projects(<projectCountContainer>{noOfProjects}</projectCountContainer>)",
     "list": "List",

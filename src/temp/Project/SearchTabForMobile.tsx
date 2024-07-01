@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import style from '../Project/Search.module.scss';
 import ProjectListTabForMobile from './ProjectListTabForMobile';
 import ProjectSelectionFeatures from './ProjectSelectionFeatures';
-import LocationAndList from './LocationAndList';
+import LocationListTabs from './LocationAndListTabs';
 import { FilterDropDown } from './Filter';
 import { Classification } from './Filter';
 
@@ -36,7 +36,7 @@ export const SearchTabForMobile = ({
           setIsFilterOpen={setIsFilterOpen}
           isFilterOpen={isFilterOpen}
         />
-        <LocationAndList setIsFilterOpen={setIsFilterOpen} />
+        <LocationListTabs setIsFilterOpen={setIsFilterOpen} />
       </div>
       {isFilterOpen && (
         <FilterDropDown

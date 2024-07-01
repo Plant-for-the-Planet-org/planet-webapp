@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { SearchTextField } from './CustomSearchTextField';
 import CrossIcon from '../icons/CrossIcon';
 import style from './Search.module.scss';
@@ -15,6 +15,13 @@ const ActiveSearchField = ({
 }: ActiveSearchFieldProps) => {
   const [input, setInput] = useState('');
   const t = useTranslations('ProjectDetails');
+
+  const resetSearchTab = () => {
+    setInput('');
+    setIsSearching(false);
+    setIsFilterOpen(false);
+  };
+
   return (
     <>
       <button className={style.activeSearchIcon}>
@@ -25,20 +32,13 @@ const ActiveSearchField = ({
         variant="standard"
         placeholder={t('searchProject')}
         value={input}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setInput(event.target.value);
         }}
       />
 
-      <button
-        onClick={() => {
-          setInput('');
-          setIsSearching(false);
-          setIsFilterOpen(false);
-        }}
-        className={style.crossIcon}
-      >
-        <CrossIcon width={'18px'} />
+      <button onClick={resetSearchTab} className={style.crossIcon}>
+        <CrossIcon width={18} />
       </button>
     </>
   );

@@ -41,7 +41,6 @@ const SearchProject = ({
             <Tabs
               value={value}
               onChange={handleChange}
-              aria-label="icon position tabs example"
               TabIndicatorProps={{
                 sx: { backgroundColor: `${primaryColorNew}` },
               }}

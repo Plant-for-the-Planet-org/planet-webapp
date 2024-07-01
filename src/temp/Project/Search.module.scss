@@ -1,12 +1,11 @@
 @import '../../theme/theme';
 .searchBarMainConatiner {
   background-color: $light;
-  width: 100%;
   height: 47px;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  max-width: 350px;
+  max-width: max-content;
   justify-content: space-between;
 }
 
@@ -55,67 +54,28 @@
 .projectListTabs {
   display: flex;
   border: none;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 2px solid $primaryColorNew;
 }
 
-.activeTopProjectButton,
-.topProjectButton {
-  width: 96px;
+.projectActiveButton,
+.projectInActiveButton {
+  padding: 8px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 4px;
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
-  border: 2px solid $primaryColorNew;
   > .starIconContainer {
-    margin-top: 4px;
+    margin-top: 3px;
   }
-}
-
-.activeTopProjectButton {
-  background: $primaryColorNew;
-  color: $light;
-}
-
-.topProjectButton {
-  background: $light;
-}
-
-.activeTopProjectLabelConatiner,
-.topProjectLabelConatiner {
-  display: flex;
-  > .topProjectLable {
-    font-size: $fontXXXSmallNew;
-    font-weight: 700;
-    display: flex;
-    .projectCount {
-      font-weight: 400;
-      margin-left: 2px;
-    }
-  }
-  .noOfProject {
-    font-size: $fontXXXSmallNew;
-    font-weight: 400;
-    margin-left: 2px;
-  }
-}
-.activeAllProjectButton,
-.allProjectButton {
-  width: 51px;
-  height: inherit;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid $primaryColorNew;
-  > .allProjectLabel {
+  > .label {
     font-weight: 700;
     font-size: $fontXXXSmallNew;
     display: flex;
     .projectCount {
       font-weight: 400;
-      margin-left: 2px;
+      margin-left: 1px;
     }
   }
   .noOfProject {
@@ -125,12 +85,12 @@
   }
 }
 
-.activeAllProjectButton {
+.projectActiveButton {
   background: $primaryColorNew;
   color: $light;
 }
 
-.allProjectButton {
+.projectInActiveButton {
   background: $light;
 }
 
@@ -146,39 +106,21 @@
   border: 2px solid $primaryColorNew;
   display: flex;
 }
-.activeListButton,
-.listButton {
+.activeButton,
+.inActiveButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3.25px;
-  width: 51px;
-  > .listLable {
-    font-weight: 800;
-    font-size: $fontXXXSmallNew;
-  }
-}
-.activeListButton {
-  background: $primaryColorNew;
-  color: $light;
-}
-
-.activeLocationButton,
-.locationButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 2px;
   gap: 7px;
-  width: 51px;
-
-  > .mapLable {
-    font-size: $fontXXXSmallNew;
-    font-weight: 700;
-  }
+  padding: 8px;
 }
 
-.activeLocationButton {
+.label {
+  font-weight: 700;
+  font-size: $fontXXXSmallNew;
+}
+
+.activeButton {
   background: $primaryColorNew;
   color: $light;
 }

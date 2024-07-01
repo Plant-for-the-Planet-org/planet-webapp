@@ -2,6 +2,7 @@ import StarIcon from '../icons/StarIcon';
 import style from '../Project/Search.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
+import { ReactNode } from 'react';
 
 type ProjectCollection = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
@@ -10,7 +11,11 @@ interface ProjectListTabForMobileProps {
   setTabSelected: (value: ProjectCollection) => void;
   setIsFilterOpen: (value: boolean) => void;
 }
-
+interface TabItemProps {
+  tab: 'topProjects' | 'allProjects';
+  icon: ReactNode | undefined;
+  label: ReactNode;
+}
 const ProjectListTabForMobile = ({
   numberOfProject,
   tabSelected,
@@ -20,20 +25,32 @@ const ProjectListTabForMobile = ({
   const { light, dark } = themeProperties;
   const t = useTranslations('ProjectDetails');
 
-  return (
-    <div className={style.projectListTabs}>
+  const selectTab = (tab: 'topProjects' | 'allProjects') => {
+    setTabSelected(tab);
+    setIsFilterOpen(false);
+  };
+
+  const TabItem = ({ tab, icon, label }: TabItemProps) => {
+    return (
       <button
         className={
-          tabSelected === 'topProjects'
-            ? style.activeTopProjectButton
-            : style.topProjectButton
+          tabSelected === tab
+            ? style.projectActiveButton
+            : style.projectInActiveButton
         }
-        onClick={() => {
-          setTabSelected('topProjects');
-          setIsFilterOpen(false);
-        }}
+        onClick={() => selectTab(tab)}
       >
-        <div className={style.starIconContainer}>
+        <div className={style.starIconContainer}>{icon}</div>
+        <div className={style.label}>{label}</div>
+      </button>
+    );
+  };
+
+  return (
+    <div className={style.projectListTabs}>
+      <TabItem
+        tab={'topProjects'}
+        icon={
           <StarIcon
             width={'12px'}
             color={
@@ -42,44 +59,24 @@ const ProjectListTabForMobile = ({
                 : `${dark.darkNew}`
             }
           />
-        </div>
-        <div
-          className={
-            tabSelected === 'topProjects'
-              ? style.activeTopProjectLabelConatiner
-              : style.topProjectLabelConatiner
-          }
-        >
-          <div className={style.topProjectLable}>
-            {t.rich('topProjects', {
-              noOfProjects: numberOfProject,
-              projectCountContainer: (chunks) => (
-                <span className={style.projectCount}>{chunks}</span>
-              ),
-            })}
-          </div>
-        </div>
-      </button>
-      <button
-        className={
-          tabSelected === 'allProjects'
-            ? style.activeAllProjectButton
-            : style.allProjectButton
         }
-        onClick={() => {
-          setIsFilterOpen(false);
-          setTabSelected('allProjects');
-        }}
-      >
-        <div className={style.allProjectLabel}>
-          {t.rich('allProjects', {
-            noOfProjects: numberOfProject,
-            projectCountContainer: (chunks) => (
-              <span className={style.projectCount}>{chunks}</span>
-            ),
-          })}
-        </div>
-      </button>
+        label={t.rich('topProjects', {
+          noOfProjects: numberOfProject,
+          projectCountContainer: (chunks) => (
+            <span className={style.projectCount}>{chunks}</span>
+          ),
+        })}
+      />
+      <TabItem
+        tab={'allProjects'}
+        icon={undefined}
+        label={t.rich('allProjects', {
+          noOfProjects: numberOfProject,
+          projectCountContainer: (chunks) => (
+            <span className={style.projectCount}>{chunks}</span>
+          ),
+        })}
+      />
     </div>
   );
 };
