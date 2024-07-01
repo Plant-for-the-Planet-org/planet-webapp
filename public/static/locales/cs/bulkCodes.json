@@ -1,80 +1,118 @@
 {
-  "bulkCodesTitle": "Vydání hromadných kódů",
-  "partnerSignupInfo": "Použití této funkce společnostmi podléhá partnerství se společností Plant-for-the-Planet. Kontaktujte prosím <2>partner@plant-for-the-planet.org</2> pro podrobnosti.",
-  "bulkCodesDescription1": "Pomocí PlanetCash můžete generovat tisíce kódů v jedné operaci.",
-  "bulkCodesDescription2": "Tuto funkci můžete použít k vytvoření kódů pro vlastní certifikáty, dárkové karty, dary jménem uživatelů a uplatnitelné kódy, které můžete přiřadit k vašim produktům.",
-  "tabCreationMethod": "Metoda tvorby",
-  "tabSelectProject": "Zvolte projekt",
-  "tabIssueCodes": "Kódy vydání",
-  "issueCodes": "Kódy vydání",
-  "issuingCodes": "Vydávání kódů...",
-  "importMethodText": {
-    "title": "Importovat soubor",
-    "subtitle": "Tuto metodu použijte, pokud jedno z následujících kritérií odpovídá vašemu případu použití:",
-    "details": ["Chci uvést jméno příjemce nebo e-mail pro každý kód.", "Chci, aby Plant-for-the-Planet po vygenerování automaticky odeslal příjemcům e-mail (volitelné).", "Chci vydat kódy pro různé počty stromů."]
-  },
-  "genericMethodText": {
-    "title": "Vytvoření obecných kódů",
-    "subtitle": "Tuto metodu použijte, pokud následující kritéria odpovídají vašemu případu použití:",
-    "details": ["Všechny kódy budou mít stejnou hodnotu.", "Chci vygenerovat řadu kódů pro libovolné příjemce.", "Jména a e-maily nelze s kódem asociovat."]
-  },
-  "projectName": "Název projektu",
-  "costPerUnit": "Cena za jednotku",
-  "labelComment": "Komentář [Soukromé]",
-  "unitOfMeasurement": "Měrná jednotka",
-  "units": {
-    "ha": "ha",
-    "tree": " strom",
-    "m2": "m²"
-  },
-  "unitsPerCode": "Jednotky za kód*",
-  "totalNumberOfCodes": "Celkový počet kódů*",
-  "occasion": "Příležitost",
-  "total": "Celkem",
-  "chargeConsentText": "Kliknutím na Kódy vydání, souhlasíte s tím, že výše uvedená částka bude naúčtována na váš účet.",
-  "invalidEmailWarningText": "Ujistěte se, že příjemce_email je platný e-mail. Používání fiktivních nebo neplatných e-mailů povede k pozastavení účtu v souladu s podmínkami Platformy.",
-  "projectRequired": "Není vybrán žádný projekt.",
-  "unitsPerCodeRequired": "Každý kód by měl obsahovat alespoň 1 jednotku.",
-  "codeQuantityRequired": "Musíte vytvořit alespoň 1 kód.",
-  "unitsPerCodeInvalidRange": "Jeden kód může obsahovat maximálně 1000 jednotek.",
-  "codeQuantityInvalidRange": "Maximálně lze vytvořit 5000 kódů.",
-  "featureAvailability": "Tato funkce je k dispozici pouze pro partnerské projekty.",
-  "planetCashDisabled": "PlanetCash není aktivován. Chcete-li tuto funkci používat, aktivujte PlanetCash.",
-  "insufficientPCashBalance": "Nedostatečný balanc.",
-  "addBalanceGeneric": "Kliknutím sem přidáte finanční prostředky.",
-  "instructionsUploadCSV": {
-    "empty": "Přetáhněte /kliknutím vyberte soubor.xslx/.csv pro nahrání.",
-    "error": "Zkontrolujte prosím problémy a přetáhněte sem soubor .xslx / .csv, který chcete nahrát.",
-    "processing": "Počkejte prosím, než analyzujeme váš soubor...",
-    "success": "Pokračujte nebo přetáhněte soubor .xlsx nebo .csv sem, abyste nahradili aktuální soubor."
-  },
-  "statusUploadCSV": {
-    "error": "Chyba",
-    "success": "Analýza souborů dokončena"
-  },
-  "errorUploadCSV": {
-    "fileInvalidType": "Povoleny jsou pouze soubory.csv a .xslx.",
-    "tooManyFiles": "Nahrajte prosím pouze jeden soubor.",
-    "fileTooSmall": "Nahraný soubor se zdá být prázdný.",
-    "fileTooLarge": "Nahraný soubor musí být 5 MB nebo méně.",
-    "missingColumns": "Nahraný soubor neobsahuje následující sloupce: ",
-    "noRecipientData": "Nebyla nalezena žádná data příjemce.",
-    "tooManyRecipients": "V jedné transakci lze zpracovat maximálně 1000 příjemců.",
-    "unitsNotProvided": "Jednotky chybí/neplatné pro některé příjemce.",
-    "notifyNotPossible": "U některých příjemců, kteří mají být upozorněni, chybí e-mail a jméno.",
-    "instructionRowError": "Došlo k chybě v prvním řádku. Zkontrolujte, zda jste pokyny smazali, nebo zda existují další údaje.",
-    "invalidEmails": "recipient_email obsahuje figuríny/neplatné e-maily v následujících řádcích: {{rowList}}. Odstraňte prosím neplatné e-maily nebo přidejte platné e-maily.",
-    "generalError": "Něco se pokazilo. Zkuste to prosím o chvíli."
-  },
-  "successUploadCSV": {
-    "ignoredColumns": "Další sloupce byly ignorovány"
-  },
-  "importInstructions": "Přečtěte si <2>dokumentaci zde</2>, stáhněte si <5>šablonu aplikace Excel zde</5>, a <8>šablonu CSV zde</8>.",
-  "donationSuccess": "Váš dar byl úspěšný. Přesměrování na zobrazení podrobností o darování brzy...",
-  "donationError": {
-    "planet_cash_insufficient_credit": "Dostupný kredit = {{availableBalance}}. Chcete-li provést tento dar, nahrajte zůstatek na svém účtu PlanetCash.",
-    "default": "Něco se pokazilo. Zkuste to prosím po chvíli.",
-    "planet_cash_payment_failure": "Transakce selhala. {{reason}}",
-    "planet_cash_invalid_project": "Nelze darovat vybranému projektu."
+  "BulkCodes": {
+    "bulkCodesTitle": "Vydání hromadných kódů",
+    "partnerSignupInfo": "Použití této funkce společnostmi podléhá partnerství se společností Plant-for-the-Planet. Kontaktujte prosím <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink> pro podrobnosti.",
+    "bulkCodesDescription1": "Pomocí PlanetCash můžete generovat tisíce kódů v jedné operaci.",
+    "bulkCodesDescription2": "Tuto funkci můžete použít k vytvoření kódů pro vlastní certifikáty, dárkové karty, dary jménem uživatelů a uplatnitelné kódy, které můžete přiřadit k vašim produktům.",
+    "tabCreationMethod": "Metoda tvorby",
+    "tabSelectProject": "Zvolte projekt",
+    "tabIssueCodes": "Kódy vydání",
+    "issueCodes": "Kódy vydání",
+    "issuingCodes": "Vydávání kódů...",
+    "importMethodText": {
+      "title": "Importovat soubor",
+      "subtitle": "Tuto metodu použijte, pokud jedno z následujících kritérií odpovídá vašemu případu použití:",
+      "details": {
+        "line1": "Chci uvést jméno příjemce nebo e-mail pro každý kód.",
+        "line2": "Chci, aby Plant-for-the-Planet po vygenerování automaticky odeslal příjemcům e-mail (volitelné).",
+        "line3": "Chci vydat kódy pro různé počty stromů."
+      }
+    },
+    "genericMethodText": {
+      "title": "Vytvoření obecných kódů",
+      "subtitle": "Tuto metodu použijte, pokud následující kritéria odpovídají vašemu případu použití:",
+      "details": {
+        "line1": "Všechny kódy budou mít stejnou hodnotu.",
+        "line2": "Chci vygenerovat řadu kódů pro libovolné příjemce.",
+        "line3": "Jména a e-maily nelze s kódem asociovat."
+      }
+    },
+    "projectName": "Název projektu",
+    "costPerUnit": "Cena za jednotku",
+    "labelComment": "Komentář [Soukromé]",
+    "unitOfMeasurement": "Měrná jednotka",
+    "units": {
+      "ha": "ha",
+      "tree": " strom",
+      "m2": "m²"
+    },
+    "unitsPerCode": "Jednotky za kód*",
+    "totalNumberOfCodes": "Celkový počet kódů*",
+    "occasion": "Příležitost",
+    "notificationLanguage": "Jazyk oznámení",
+    "total": "Celkem",
+    "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+    "invalidEmailWarningText": "Please make sure that the Recipient Email is a valid email. Using dummy or invalid emails will lead to account suspension.",
+    "termsAndPrivacyText": "Read more about our <termsLink>terms and conditions</termsLink> and the <privacyPolicyLink>privacy policy</privacyPolicyLink>.",
+    "projectRequired": "Není vybrán žádný projekt.",
+    "unitsPerCodeRequired": "Každý kód by měl obsahovat alespoň 1 jednotku.",
+    "codeQuantityRequired": "Musíte vytvořit alespoň 1 kód.",
+    "unitsPerCodeInvalidRange": "Jeden kód může obsahovat maximálně 1000 jednotek.",
+    "codeQuantityInvalidRange": "Maximálně lze vytvořit 5000 kódů.",
+    "featureAvailability": "Tato funkce je k dispozici pouze pro partnerské projekty.",
+    "planetCashDisabled": "PlanetCash není aktivován. Chcete-li tuto funkci používat, aktivujte PlanetCash.",
+    "insufficientPCashBalance": "Nedostatečný balanc.",
+    "addBalanceGeneric": "Kliknutím sem přidáte finanční prostředky.",
+    "instructionsUploadCSV": {
+      "empty": "Přetáhněte /kliknutím vyberte soubor.xslx/.csv pro nahrání.",
+      "error": "Zkontrolujte prosím problémy a přetáhněte sem soubor .xslx / .csv, který chcete nahrát.",
+      "processing": "Počkejte prosím, než analyzujeme váš soubor...",
+      "success": "Pokračujte nebo přetáhněte soubor .xlsx nebo .csv sem, abyste nahradili aktuální soubor."
+    },
+    "statusUploadCSV": {
+      "error": "Chyba",
+      "success": "Analýza souborů dokončena"
+    },
+    "errorUploadCSV": {
+      "fileInvalidType": "Povoleny jsou pouze soubory.csv a .xslx.",
+      "tooManyFiles": "Nahrajte prosím pouze jeden soubor.",
+      "fileTooSmall": "Nahraný soubor se zdá být prázdný.",
+      "fileTooLarge": "Nahraný soubor musí být 5 MB nebo méně.",
+      "missingColumns": "Nahraný soubor neobsahuje následující sloupce: ",
+      "noRecipientData": "Nebyla nalezena žádná data příjemce.",
+      "tooManyRecipients": "V jedné transakci lze zpracovat maximálně 1000 příjemců.",
+      "unitsNotProvided": "Jednotky chybí/neplatné pro některé příjemce.",
+      "notifyNotPossible": "U některých příjemců, kteří mají být upozorněni, chybí e-mail a jméno.",
+      "instructionRowError": "Došlo k chybě v prvním řádku. Zkontrolujte, zda jste pokyny smazali, nebo zda existují další údaje.",
+      "invalidEmails": "recipient_email obsahuje figuríny/neplatné e-maily v následujících řádcích: {rowList}. Odstraňte prosím neplatné e-maily nebo přidejte platné e-maily.",
+      "generalError": "Něco se pokazilo. Zkuste to prosím o chvíli."
+    },
+    "errorAddRecipient": {
+      "unitsNotProvided": "Povinné",
+      "requiredForNotifications": "Povinné (pro příjemce e-mailu)",
+      "emailInvalid": "Neplatný e-mail"
+    },
+    "successUploadCSV": {
+      "ignoredColumns": "Další sloupce byly ignorovány"
+    },
+    "importInstructions": "Přečtěte si <docsLink>dokumentaci zde</docsLink>, stáhněte si <excelLink>šablonu aplikace Excel zde</excelLink>, a <csvLink>šablonu CSV zde</csvLink>.",
+    "tableHeaders": {
+      "recipient_name": "Jméno příjemce",
+      "recipient_email": "E-mail příjemce",
+      "recipient_notify": "Odeslat e-mail?",
+      "units": "Jednotky",
+      "recipient_message": "Zpráva"
+    },
+    "tableHeaderHelpText": {
+      "recipient_name": "Volitelně. Jméno příjemce, které se zobrazí na certifikátu a v případě volby i v poště zaslané příjemci. Povinné, pokud chcete odesílat e-maily.",
+      "recipient_email": "Volitelně. Povinné pro zaslání certifikátu příjemci e-mailem.",
+      "recipient_notify": "Volitelně. Pokud chcete, aby Plant-for-the-Planet automaticky informoval příjemce e-mailem, vyberte možnost Ano.",
+      "units": "Povinné. Počet stromů, které jsou předány příjemci, např. 5 za 5 stromů",
+      "recipient_message": "Volitelně. Zpráva pro příjemce, která je zahrnuta do e-mailu, pokud je možnost notify yes. Pokud není uvedena, bude odeslána výchozí zpráva."
+    },
+    "donationSuccess": "Váš dar byl úspěšný. Přesměrování na zobrazení podrobností o darování brzy...",
+    "donationError": {
+      "planet_cash_insufficient_credit": "Dostupný kredit = {availableBalance}. Chcete-li provést tento dar, nahrajte zůstatek na svém účtu PlanetCash.",
+      "default": "Něco se pokazilo. Zkuste to prosím po chvíli.",
+      "planet_cash_payment_failure": "Transakce selhala. {reason}",
+      "planet_cash_invalid_project": "Nelze darovat vybranému projektu."
+    },
+    "titleAddRecipientButton": "Přidání příjemce do tabulky",
+    "notifyRecipientOptions": {
+      "yes": "Ano",
+      "no": "Ne"
+    },
+    "fileUploadWarning": "Tím se odstraní stávající údaje o příjemci, chcete pokračovat?",
+    "unsavedDataWarning": "Některá data příjemce nejsou uložena. Chcete pokračovat? Neuložená data budou ztracena"
   }
 }

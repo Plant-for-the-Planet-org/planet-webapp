@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -51,9 +51,9 @@ interface NavLinkType {
 }
 
 function LanguageSwitcher() {
-  const { i18n, ready } = useTranslation(['common', 'me']);
+  const locale = useLocale();
 
-  const [language, setLanguage] = useState(i18n.language);
+  const [language, setLanguage] = useState(locale);
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
@@ -83,7 +83,7 @@ function LanguageSwitcher() {
     }
   }, []);
 
-  return ready ? (
+  return (
     <>
       <div className={styles.navlink}>
         <GlobeIcon />
@@ -93,9 +93,7 @@ function LanguageSwitcher() {
             setOpenModal(true); // open language and country change modal
           }}
         >
-          {`${
-            i18n.language ? i18n.language.toUpperCase() : ''
-          } • ${selectedCurrency}`}
+          {`${locale ? locale.toUpperCase() : ''} • ${selectedCurrency}`}
         </button>
       </div>
       <SelectLanguageAndCountry
@@ -106,8 +104,6 @@ function LanguageSwitcher() {
         setSelectedCountry={setSelectedCountry}
       />
     </>
-  ) : (
-    <></>
   );
 }
 interface NavLinkProps {
@@ -129,6 +125,7 @@ function NavLink({
   user,
 }: NavLinkProps) {
   const [isSubMenuActive, setisSubMenuActive] = useState(false);
+  const locale = useLocale();
   useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
@@ -161,12 +158,12 @@ function NavLink({
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
-            router.push(link.path);
+            router.push(`/${locale}${link.path}`);
             setactiveLink(link.path);
             setActiveSubMenu('');
           } else {
             if (link.hideSubMenu && link.path) {
-              router.push(link.path);
+              router.push(`/${locale}${link.path}`);
             } else {
               setisSubMenuActive(!isSubMenuActive);
             }
@@ -207,7 +204,7 @@ function NavLink({
                   //this is to shift to the submenu pages
                   link.path && setactiveLink(link.path);
                   setActiveSubMenu(subLink.path);
-                  router.push(subLink.path);
+                  router.push(`/${locale}${subLink.path}`);
                 }}
               >
                 {subLink.title}
@@ -221,8 +218,8 @@ function NavLink({
 }
 
 const UserLayout: FC = ({ children }) => {
-  const { t } = useTranslation(['common', 'me']);
-  // const { asPath } = useRouter();
+  const t = useTranslations('Me');
+  const locale = useLocale();
   const router = useRouter();
   const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
     useUserProps();
@@ -232,7 +229,7 @@ const UserLayout: FC = ({ children }) => {
   const navLinks: NavLinkType[] = [
     {
       key: 1,
-      title: t('me:profile'),
+      title: t('profile'),
       path: '/profile',
       icon: <UserIcon />,
       // Localize with translations if you ever activate this!!
@@ -253,30 +250,30 @@ const UserLayout: FC = ({ children }) => {
     },
     {
       key: 2,
-      title: t('me:registerTrees'),
+      title: t('registerTrees'),
       path: '/profile/register-trees',
       icon: <RegisterTreeIcon />,
     },
     {
       key: 3,
-      title: t('me:payments'),
+      title: t('payments'),
       // path: '/profile/history',
       icon: <DonateIcon />,
-      flag: t('me:new'),
+      flag: t('new'),
       // hideSubMenu: true,
       subMenu: [
         {
-          title: t('me:history'),
+          title: t('history'),
           path: '/profile/history',
           // hideItem: true,
         },
         {
-          title: t('me:recurrency'),
+          title: t('recurrency'),
           path: '/profile/recurrency',
           // hideItem: true,
         },
         {
-          title: t('me:managePayouts.menuText'),
+          title: t('managePayouts.menuText'),
           path: '/profile/payouts',
           hideItem: !(user?.type === 'tpo'),
         },
@@ -305,28 +302,28 @@ const UserLayout: FC = ({ children }) => {
     // },
     {
       key: 4,
-      title: t('treeMapper'),
+      title: t('treemapper'),
       // path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
-      flag: t('me:beta'),
+      flag: t('beta'),
       subMenu: [
         {
-          title: t('me:plantLocations'),
+          title: t('plantLocations'),
           path: '/profile/treemapper',
           // hideItem: true,
         },
         {
-          title: t('me:mySpecies'),
+          title: t('mySpecies'),
           path: '/profile/treemapper/my-species',
           hideItem: !(user?.type === 'tpo'),
         },
         {
-          title: t('me:import'),
+          title: t('import'),
           path: '/profile/treemapper/import',
           hideItem: !(user?.type === 'tpo'),
         },
         {
-          title: t('me:dataExplorer'),
+          title: t('dataExplorer'),
           path: '/profile/treemapper/data-explorer',
           hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
         },
@@ -334,28 +331,28 @@ const UserLayout: FC = ({ children }) => {
     },
     {
       key: 5,
-      title: t('me:projects'),
+      title: t('projects'),
       path: '/profile/projects',
       icon: <MapIcon />,
       accessLevel: ['tpo'],
     },
     {
       key: 6,
-      title: t('me:planetcash.menuText'),
+      title: t('planetcash.menuText'),
       icon: <PlanetCashIcon />,
-      flag: t('me:new'),
+      flag: t('new'),
       subMenu: [
         {
-          title: t('me:planetcash.submenuText'),
+          title: t('planetcash.submenuText'),
           path: '/profile/planetcash',
         },
         {
-          title: t('me:bulkCodes'),
+          title: t('bulkCodes'),
           path: '/profile/bulk-codes',
-          flag: t('me:beta'),
+          flag: t('beta'),
         },
         {
-          title: t('me:giftFund'),
+          title: t('giftFund'),
           path: '/profile/giftfund',
           //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
           hideItem:
@@ -367,49 +364,49 @@ const UserLayout: FC = ({ children }) => {
     },
     /* {
       key: 6,
-      title: t('me:bulkCodes'),
+      title: t('bulkCodes'),
       path: '/profile/bulk-codes',
       icon: <GiftIcon />,
       hasRelatedLinks: true,
     }, */
     {
       key: 7,
-      title: t('me:widgets'),
+      title: t('widgets'),
       icon: <WidgetIcon />,
       subMenu: [
         {
-          title: t('me:embedWidget'),
+          title: t('embedWidget'),
           path: '/profile/widgets',
           // hideItem: true,
         },
         {
-          title: t('me:donationLink'),
+          title: t('donationLink'),
           path: '/profile/donation-link',
-          flag: t('me:new'),
+          flag: t('new'),
           // hideItem: true,
         },
       ],
     },
     {
       key: 8,
-      title: t('me:settings'),
+      title: t('settings'),
       icon: <SettingsIcon />,
       subMenu: [
         {
-          title: t('me:editProfile'),
+          title: t('editProfile'),
           path: '/profile/edit',
         },
         {
-          title: t('me:switchUser'),
+          title: t('switchUser'),
           path: '/profile/impersonate-user',
           hideItem: isImpersonationModeOn || !user?.allowedToSwitch,
         },
         {
-          title: t('me:apiKey'),
+          title: t('apiKey'),
           path: '/profile/api-key',
         },
         {
-          title: t('me:deleteProfile'),
+          title: t('deleteProfile'),
           path: '/profile/delete-account',
         },
         // Localize with translations if you ever activate this!!
@@ -429,7 +426,7 @@ const UserLayout: FC = ({ children }) => {
     if (router) {
       for (const link of navLinks) {
         //checks whether the path belongs to menu or Submenu
-        if (router.asPath === link.path) {
+        if (link.path && router.asPath === `/${locale}${link.path}`) {
           setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find(
@@ -454,15 +451,9 @@ const UserLayout: FC = ({ children }) => {
 
   useEffect(() => {
     if (contextLoaded) {
-      //checks whether user is login
-      if (router.asPath) {
-        if (router.query.slug) {
-          // router.push(`${router.pathname.replace('/_sites/[slug]', '')}`);
-        } else {
-          localStorage.setItem('redirectLink', router.asPath);
-        }
-      }
+      //Redirects the user to the desired page after login
       if (!user) {
+        if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
         router.push('/login');
       }
     }

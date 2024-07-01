@@ -4,8 +4,10 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
+  useMemo,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
@@ -35,7 +37,8 @@ import {
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
-  const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
+  const t = useTranslations('BulkCodes');
+  const locale = useLocale();
   const router = useRouter();
   const {
     project,
@@ -102,14 +105,15 @@ const IssueCodesForm = (): ReactElement | null => {
   };
 
   useEffect(() => {
-    if (i18n.language) {
-      setNotificationLocale(i18n.language === 'de' ? 'de' : 'en');
+    if (locale) {
+      setNotificationLocale(locale === 'de' ? 'de' : 'en');
     }
-  }, [i18n.language]);
+  }, [locale]);
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (isAddingRecipient || isEditingRecipient) {
-      const shouldSubmit = confirm(t('bulkCodes:unsavedDataWarning'));
+      const shouldSubmit = confirm(t('unsavedDataWarning'));
       if (!shouldSubmit) return;
     }
 
@@ -174,35 +178,27 @@ const IssueCodesForm = (): ReactElement | null => {
           switch (error.message) {
             case 'planet_cash_invalid_project':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_invalid_project'
-                ),
+                message: t('donationError.planet_cash_invalid_project'),
               });
               break;
 
             case 'planet_cash_insufficient_credit':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_insufficient_credit',
-                  {
-                    availableBalance: getFormatedCurrency(
-                      i18n.language,
-                      planetCashAccount?.currency as string,
-                      error.parameters && error.parameters['available_credit']
-                    ),
-                  }
-                ),
+                message: t('donationError.planet_cash_insufficient_credit', {
+                  availableBalance: getFormatedCurrency(
+                    locale,
+                    planetCashAccount?.currency as string,
+                    error.parameters && error.parameters['available_credit']
+                  ),
+                }),
               });
               break;
 
             case 'planet_cash_payment_failure':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_payment_failure',
-                  {
-                    reason: error.parameters && error.parameters['reason'],
-                  }
-                ),
+                message: t('donationError.planet_cash_payment_failure', {
+                  reason: error.parameters && error.parameters['reason'],
+                }),
               });
               break;
 
@@ -216,7 +212,7 @@ const IssueCodesForm = (): ReactElement | null => {
       }
     } else {
       setIsProcessing(false);
-      setErrors([{ message: t('bulkCodes:projectRequired') }]);
+      setErrors([{ message: t('projectRequired') }]);
     }
   };
 
@@ -240,110 +236,160 @@ const IssueCodesForm = (): ReactElement | null => {
         : undefined;
     }
   };
-  if (ready) {
-    if (!isSubmitted) {
-      return (
-        <CenteredContainer>
-          <StyledFormContainer className="IssueCodesForm" component={'section'}>
-            <div className="inputContainer">
-              <ProjectSelector
-                projectList={projectList || []}
-                project={project}
-                active={false}
-                planetCashAccount={planetCashAccount}
-              />
-              <TextField
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-                label={t('bulkCodes:labelComment')}
-              />
-              <TextField
-                onChange={(e) => setOccasion(e.target.value)}
-                value={occasion}
-                label={t('bulkCodes:occasion')}
-              />
-              {bulkMethod === 'import' && (
-                <TextField
-                  label={t('bulkCodes:notificationLanguage')}
-                  variant="outlined"
-                  select
-                  value={notificationLocale}
-                  onChange={(event) =>
-                    setNotificationLocale(event.target.value as string)
-                  }
-                >
-                  {notificationLocales.map((locale) => (
-                    <MenuItem key={locale.langCode} value={locale.langCode}>
-                      {locale.languageName}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-              {bulkMethod === 'generic' && (
-                <GenericCodesPartial
-                  codeQuantity={codeQuantity}
-                  unitsPerCode={unitsPerCode}
-                  setCodeQuantity={setCodeQuantity}
-                  setUnitsPerCode={setUnitsPerCode}
-                />
-              )}
-              {bulkMethod === 'import' && (
-                <RecipientsUploadForm
-                  setLocalRecipients={setLocalRecipients}
-                  localRecipients={localRecipients}
-                  setIsAddingRecipient={setIsAddingRecipient}
-                  setIsEditingRecipient={setIsEditingRecipient}
-                />
-              )}
-              <BulkGiftTotal
-                amount={getTotalAmount()}
-                currency={planetCashAccount?.currency}
-                units={getTotalUnits()}
-                unit={project?.unit}
-                isImport={bulkMethod === 'import'}
-              />
-            </div>
 
-            <BulkCodesError />
+  const shouldDisableSubmission = useMemo(() => {
+    const hasSufficientFunds =
+      user?.planetCash != null &&
+      user.planetCash.balance + user.planetCash.creditLimit > 0;
+    const hasEnteredRequiredData =
+      localRecipients.length > 0 ||
+      (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
 
-            <form onSubmit={handleSubmit}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className="formButton"
-                disabled={
-                  !(
-                    user?.planetCash &&
-                    !(
-                      user.planetCash.balance + user.planetCash.creditLimit <=
-                      0
-                    )
-                  ) ||
-                  isProcessing ||
-                  (localRecipients.length === 0 &&
-                    (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
+    return hasSufficientFunds && !isProcessing && hasEnteredRequiredData;
+  }, [user, localRecipients, codeQuantity, unitsPerCode, isProcessing]);
+
+  const renderInvalidEmailWarning = useCallback(() => {
+    return (
+      <>
+        {t.rich('invalidEmailWarningText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+        <br />
+      </>
+    );
+  }, [locale, t]);
+
+  const renderTermsAndPrivacyText = useCallback(() => {
+    return (
+      <>
+        {t.rich('termsAndPrivacyText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+          privacyPolicyLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/privacy`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </>
+    );
+  }, [locale, t]);
+
+  if (!isSubmitted) {
+    return (
+      <CenteredContainer>
+        <StyledFormContainer className="IssueCodesForm" component={'section'}>
+          <div className="inputContainer">
+            <ProjectSelector
+              projectList={projectList || []}
+              project={project}
+              active={false}
+              planetCashAccount={planetCashAccount}
+            />
+            <TextField
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+              label={t('labelComment')}
+            />
+            <TextField
+              onChange={(e) => setOccasion(e.target.value)}
+              value={occasion}
+              label={t('occasion')}
+            />
+            {bulkMethod === 'import' && (
+              <TextField
+                label={t('notificationLanguage')}
+                variant="outlined"
+                select
+                value={notificationLocale}
+                onChange={(event) =>
+                  setNotificationLocale(event.target.value as string)
                 }
               >
-                {isProcessing
-                  ? t('bulkCodes:issuingCodes')
-                  : t('bulkCodes:issueCodes')}
-              </Button>
-            </form>
-          </StyledFormContainer>
-        </CenteredContainer>
-      );
-    } else {
-      return (
-        <div className={styles.successMessage}>
-          {t('bulkCodes:donationSuccess')}
-          <span className={styles.spinner}></span>
-        </div>
-      );
-    }
+                {notificationLocales.map((locale) => (
+                  <MenuItem key={locale.langCode} value={locale.langCode}>
+                    {locale.languageName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+            {bulkMethod === 'generic' && (
+              <GenericCodesPartial
+                codeQuantity={codeQuantity}
+                unitsPerCode={unitsPerCode}
+                setCodeQuantity={setCodeQuantity}
+                setUnitsPerCode={setUnitsPerCode}
+              />
+            )}
+            {bulkMethod === 'import' && (
+              <RecipientsUploadForm
+                setLocalRecipients={setLocalRecipients}
+                localRecipients={localRecipients}
+                setIsAddingRecipient={setIsAddingRecipient}
+                setIsEditingRecipient={setIsEditingRecipient}
+              />
+            )}
+            <BulkGiftTotal
+              amount={getTotalAmount()}
+              currency={planetCashAccount?.currency}
+              units={getTotalUnits()}
+              unit={project?.unit}
+            />
+          </div>
+          <BulkCodesError />
+          <form onSubmit={handleSubmit}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="formButton"
+              disabled={shouldDisableSubmission}
+            >
+              {isProcessing ? t('issuingCodes') : t('issueCodes')}
+            </Button>
+          </form>
+          <div className={styles.issueCodeTermsAndWarnings}>
+            {t('chargeConsentText')}
+            <br />
+            {bulkMethod === 'import' && renderInvalidEmailWarning()}
+            {renderTermsAndPrivacyText()}
+          </div>
+        </StyledFormContainer>
+      </CenteredContainer>
+    );
+  } else {
+    return (
+      <div className={styles.successMessage}>
+        {t('donationSuccess')}
+        <span className={styles.spinner}></span>
+      </div>
+    );
   }
-
-  return null;
 };
 
 export default IssueCodesForm;

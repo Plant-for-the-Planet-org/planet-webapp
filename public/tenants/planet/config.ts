@@ -1,4 +1,4 @@
- const config = {
+const config = {
   tenantName: 'planet',
   tenantURL: 'www.plant-for-the-planet.org',
   tenantGoal: null,
@@ -13,7 +13,7 @@
     secondaryFontFamily:
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
   },
-  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR','cs'],
+  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR', 'cs'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `https://cdn.plant-for-the-planet.org/logo/svg/planet.svg`,
@@ -91,7 +91,7 @@
     description:
       "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
-    twitterHandle: '@trilliontrees',
+    twitterHandle: '',
     locale: 'en_US',
   },
   footerLinks: [

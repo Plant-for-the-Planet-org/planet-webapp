@@ -5,7 +5,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
@@ -25,7 +25,7 @@ interface TransactionsProps {
 const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const { token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);

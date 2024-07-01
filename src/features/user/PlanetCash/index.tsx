@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import { Trans, useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -36,7 +36,8 @@ export default function PlanetCash({
   step,
   setProgress,
 }: PlanetCashProps): ReactElement | null {
-  const { t, ready, i18n } = useTranslation('planetcash');
+  const t = useTranslations('Planetcash');
+  const locale = useLocale();
   const { tenantConfig } = useTenant();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded, logoutUser } = useUserProps();
@@ -124,7 +125,7 @@ export default function PlanetCash({
     }
   };
   useEffect(() => {
-    if (ready && accounts) {
+    if (accounts) {
       if (!accounts.length) {
         setTabConfig([
           {
@@ -147,31 +148,30 @@ export default function PlanetCash({
           },
         ]);
     }
-  }, [ready, accounts, i18n.language]);
+  }, [accounts, locale]);
 
-  return ready ? (
+  return (
     <DashboardView
       title={t('title')}
       subtitle={
         <div>
           <p>
-            <Trans i18nKey="planetcash:partnerSignupInfo">
-              Use of this feature by Companies is subject to partnership with
-              Plant-for-the-Planet. Please contact{' '}
-              <a
-                className="planet-links"
-                href="mailto:partner@plant-for-the-planet.org"
-              >
-                partner@plant-for-the-planet.org
-              </a>{' '}
-              for details.
-            </Trans>
+            {t.rich('partnerSignupInfo', {
+              partnerEmailLink: (chunks) => (
+                <a
+                  className="planet-links"
+                  href="mailto:partner@plant-for-the-planet.org"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
           <p>
             {t('description')}{' '}
             <a
               className="planet-links"
-              href={`https://pp.eco/${i18n.language}/planetcash/`}
+              href={`https://pp.eco/${locale}/planetcash/`}
               target="_blank"
               rel="noreferrer"
             >
@@ -180,7 +180,7 @@ export default function PlanetCash({
             <br />
             <a
               className="planet-links"
-              href={`https://pp.eco/legal/${i18n.language}/terms`}
+              href={`https://pp.eco/legal/${locale}/terms`}
               target="_blank"
               rel="noreferrer"
             >
@@ -194,5 +194,5 @@ export default function PlanetCash({
         {renderStep()}
       </TabbedView>
     </DashboardView>
-  ) : null;
+  );
 }

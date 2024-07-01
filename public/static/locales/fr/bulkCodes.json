@@ -1,1 +1,118 @@
-{ }
+{
+  "BulkCodes": {
+    "bulkCodesTitle": "Délivrer des certificats et des codes d'arbres",
+    "partnerSignupInfo": "L'utilisation de cette fonction par les entreprises est soumise à un partenariat avec Plant-for-the-Planet. Veuillez contacter <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink> pour plus de détails.",
+    "bulkCodesDescription1": "PlanetCash vous permet de générer des milliers de codes en une seule opération. La génération de certificats d'arbre augmentera votre nombre d'arbres.",
+    "bulkCodesDescription2": "Vous pouvez utiliser cette fonction pour créer des codes pour des certificats personnalisés, des cartes-cadeaux, des dons au nom des utilisateurs et des codes remboursables que vous pouvez associer à vos produits.",
+    "tabCreationMethod": "Méthode de création",
+    "tabSelectProject": "Sélectionner un projet",
+    "tabIssueCodes": "Codes d'émission",
+    "issueCodes": "Codes d'émission",
+    "issuingCodes": "Délivrer des codes...",
+    "importMethodText": {
+      "title": "Créer des certificats d'arbre personnalisés",
+      "subtitle": "Utilisez cette méthode (pour un maximum de 1000 destinataires par transaction) si l'un des critères suivants correspond à votre cas d'utilisation :",
+      "details": {
+        "line1": "Je souhaite fournir le nom ou l'e-mail du destinataire pour chaque code.",
+        "line2": "Je souhaite que Plant-for-the-Planet envoie automatiquement un courrier électronique aux destinataires une fois qu'il a été généré (facultatif).",
+        "line3": "Je souhaite émettre des codes pour différents nombres d'arbres."
+      }
+    },
+    "genericMethodText": {
+      "title": "Créer des codes génériques",
+      "subtitle": "Utilisez cette méthode si les critères suivants correspondent à votre cas d'utilisation :",
+      "details": {
+        "line1": "Tous les codes auront la même valeur.",
+        "line2": "Je souhaite générer un certain nombre de codes pour des destinataires arbitraires.",
+        "line3": "Les noms et les adresses électroniques ne peuvent pas être associés au code."
+      }
+    },
+    "projectName": "Nom du projet",
+    "costPerUnit": "Coût par unité",
+    "labelComment": "Commentaire [Privé]",
+    "unitOfMeasurement": "Unité de mesure",
+    "units": {
+      "ha": "ha",
+      "tree": "arbre",
+      "m2": "m²"
+    },
+    "unitsPerCode": "Unités par code*",
+    "totalNumberOfCodes": "Nombre total de codes*",
+    "occasion": "Occasion",
+    "notificationLanguage": "Langue de notification",
+    "total": "Total",
+    "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+    "invalidEmailWarningText": "Please make sure that the Recipient Email is a valid email. Using dummy or invalid emails will lead to account suspension.",
+    "termsAndPrivacyText": "Read more about our <termsLink>terms and conditions</termsLink> and the <privacyPolicyLink>privacy policy</privacyPolicyLink>.",
+    "projectRequired": "Aucun projet n'est sélectionné.",
+    "unitsPerCodeRequired": "Chaque code doit contenir au moins une unité.",
+    "codeQuantityRequired": "Vous devez créer au moins un code.",
+    "unitsPerCodeInvalidRange": "Un code peut contenir un maximum de 1000 unités.",
+    "codeQuantityInvalidRange": "Un maximum de 5000 codes peut être créé.",
+    "featureAvailability": "Cette fonction n'est disponible que pour les projets de partenaires.",
+    "planetCashDisabled": "PlanetCash n'est pas activé. Veuillez activer PlanetCash pour utiliser cette fonction.",
+    "insufficientPCashBalance": "Solde insuffisant.",
+    "addBalanceGeneric": "Cliquez ici pour ajouter des fonds.",
+    "instructionsUploadCSV": {
+      "empty": "Glisser-déposer / cliquer pour sélectionner un fichier .xslx / .csv à télécharger.",
+      "error": "Veuillez vérifier les problèmes et faire glisser le fichier .xslx / .csv ici pour le télécharger.",
+      "processing": "Veuillez patienter pendant que nous analysons votre dossier...",
+      "success": "Continuer ou faire glisser le fichier .xlsx ou .csv ici pour remplacer le fichier actuel."
+    },
+    "statusUploadCSV": {
+      "error": "Erreur",
+      "success": "Analyse du fichier terminée"
+    },
+    "errorUploadCSV": {
+      "fileInvalidType": "Seuls les fichiers .csv et .xslx sont autorisés.",
+      "tooManyFiles": "Veuillez ne télécharger qu'un seul fichier.",
+      "fileTooSmall": "Le fichier téléchargé semble être vide.",
+      "fileTooLarge": "Le fichier téléchargé ne doit pas dépasser 5 Mo.",
+      "missingColumns": "Le fichier téléchargé ne contient pas les colonnes suivantes : ",
+      "noRecipientData": "Aucune donnée sur les destinataires n'a été trouvée.",
+      "tooManyRecipients": "Un maximum de 1000 destinataires peut être traité en une seule transaction.",
+      "unitsNotProvided": "Les unités sont manquantes/invalides pour certains bénéficiaires.",
+      "notifyNotPossible": "L'adresse électronique et le nom manquent pour certains destinataires à notifier.",
+      "instructionRowError": "Une erreur s'est produite sur la première ligne. Veuillez vérifier si vous avez supprimé les instructions ou s'il y a des données supplémentaires.",
+      "invalidEmails": "recipient_email contient des e-mails factices/invalides sur les lignes suivantes : {rowList}. Veuillez supprimer les courriels non valides ou ajouter des courriels valides.",
+      "generalError": "Un problème s'est produit. Veuillez réessayer après un certain temps."
+    },
+    "errorAddRecipient": {
+      "unitsNotProvided": "Obligatoire",
+      "requiredForNotifications": "Obligatoire (pour les destinataires du courrier électronique)",
+      "emailInvalid": "Courriel non valide"
+    },
+    "successUploadCSV": {
+      "ignoredColumns": "Les colonnes supplémentaires ont été ignorées"
+    },
+    "importInstructions": "Veuillez consulter la documentation <docsLink>ici</docsLink>, télécharger le modèle Excel <excelLink>ici</excelLink>, et le modèle CSV <csvLink>ici.</csvLink>",
+    "tableHeaders": {
+      "recipient_name": "Nom du bénéficiaire",
+      "recipient_email": "Courriel du destinataire",
+      "recipient_notify": "Envoyer un courriel ?",
+      "units": "Unités",
+      "recipient_message": "Message"
+    },
+    "tableHeaderHelpText": {
+      "recipient_name": "Facultatif. Nom du destinataire, figurant sur le certificat et, en cas d'acceptation, dans le courrier envoyé au destinataire. Obligatoire si vous souhaitez envoyer des courriers électroniques.",
+      "recipient_email": "Facultatif. Requis pour envoyer le certificat au destinataire par courrier électronique.",
+      "recipient_notify": "Optionnel. Sélectionnez Oui si vous souhaitez que Plant-for-the-Planet informe automatiquement le destinataire par courrier électronique.",
+      "units": "Obligatoire. Nombre d'arbres remis au bénéficiaire, par exemple 5 pour 5 arbres",
+      "recipient_message": "Facultatif. Message destiné au destinataire qui est inclus dans le courrier électronique si le mot \"notify\" (notifier) a la valeur \"yes\" (oui). Un message par défaut sera envoyé s'il n'est pas fourni."
+    },
+    "donationSuccess": "Votre don a été effectué avec succès. Nous vous redirigeons vers les détails de votre don sous peu...",
+    "donationError": {
+      "planet_cash_insufficient_credit": "Crédit disponible = {availableBalance} Veuillez charger le solde de votre compte PlanetCash pour effectuer ce don.",
+      "default": "Un problème s'est produit. Veuillez réessayer après un certain temps.",
+      "planet_cash_payment_failure": "La transaction a échoué. {reason}",
+      "planet_cash_invalid_project": "Vous ne pouvez pas faire de don au projet sélectionné."
+    },
+    "titleAddRecipientButton": "Ajouter un destinataire au tableau",
+    "notifyRecipientOptions": {
+      "yes": "Oui",
+      "no": "Non"
+    },
+    "fileUploadWarning": "Cette opération supprimera vos données de destinataire existantes. Voulez-vous continuer ?",
+    "unsavedDataWarning": "Certaines données du destinataire ne sont pas sauvegardées. Souhaitez-vous continuer ? Les données non sauvegardées seront perdues"
+  }
+}

@@ -5,7 +5,7 @@ import { SmallSlider } from './CustomSlider';
 import PlayIcon from '../icons/PlayIcon';
 import CustomButton from './CustomButton';
 import MayLayerOptions from './MapLayerOptions';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface ExploreProjectProps {
   label: string | string[];
@@ -92,7 +92,7 @@ export const YearRangeSlider = () => {
 };
 
 const ExploreProject = () => {
-  const { t } = useTranslation(['maps']);
+  const t = useTranslations('Maps');
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -100,7 +100,7 @@ const ExploreProject = () => {
         startIcon={<ExploreIcon width={'19px'} />}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {t('maps:explore')}
+        {t('explore')}
       </CustomButton>
 
       {isOpen && <MayLayerOptions />}

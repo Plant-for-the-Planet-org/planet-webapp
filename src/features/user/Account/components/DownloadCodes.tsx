@@ -3,7 +3,7 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { unparse } from 'papaparse';
 import styles from '../AccountHistory.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
@@ -12,7 +12,7 @@ interface DownloadCodesProps {
 }
 
 const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
-  const [t] = useTranslation('me');
+  const t = useTranslations('Me');
   const [isDownloading, setIsDownloading] = useState(false);
   const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);

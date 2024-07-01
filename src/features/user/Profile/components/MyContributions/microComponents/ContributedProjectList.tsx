@@ -1,5 +1,5 @@
 import myForestStyles from '../../../styles/MyForest.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
 import ContributedToProject from './ContributedToProject';
@@ -22,7 +22,7 @@ const ContributedProjectList = ({
 }: ContributedProjectListProps): ReactElement => {
   const { isConservedButtonActive, isProcessing, setIsProcessing } =
     useMyForest();
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   return contributionProjectList ? (
     <div className={myForestStyles.donationlistContainer}>
       {contributionProjectList.map((singlePage) => {
@@ -74,8 +74,8 @@ const ContributedProjectList = ({
             }}
           >
             {isProcessing
-              ? t('profile:myContributions.loadingContribution')
-              : t('profile:myContributions.loadMoreContribution')}
+              ? t('myContributions.loadingContribution')
+              : t('myContributions.loadMoreContribution')}
           </Button>
         </div>
       )}

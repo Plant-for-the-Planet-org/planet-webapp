@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Button, Switch, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -41,7 +41,9 @@ const DonationLinkForm = ({
     languageName: 'Automatic Selection',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
-  const { t, ready } = useTranslation(['donationLink', 'country', 'me']);
+  const tDonationLink = useTranslations('DonationLink');
+  const tCountry = useTranslations('Country');
+  const tMe = useTranslations('Me');
   const [localProject, setLocalProject] = useState<ProjectOption | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user?.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
@@ -91,14 +93,14 @@ const DonationLinkForm = ({
   useEffect(() => {
     const autoLanguage = {
       langCode: 'auto',
-      languageName: `${t('donationLink:automaticSelection')}`,
+      languageName: `${tDonationLink('automaticSelection')}`,
     };
     if (!supportedLanguages.find((obj2) => obj2.langCode === 'auto'))
       supportedLanguages.unshift(autoLanguage as LanguageType);
 
     const autoCountry = {
       code: 'auto',
-      label: `${t('country:auto')}`,
+      label: tCountry('auto'),
       phone: '',
     } as const;
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
@@ -116,22 +118,22 @@ const DonationLinkForm = ({
       const linkSource = qrCode;
       const downloadLink = document.createElement('a');
       downloadLink.href = linkSource;
-      downloadLink.download = t('donationLink:qrCodeFileName');
+      downloadLink.download = tDonationLink('qrCodeFileName');
       downloadLink.click();
     }
   };
 
-  if (isArrayUpdated && ready && user) {
+  if (isArrayUpdated && user) {
     return (
       <StyledForm>
         <div className="inputContainer">
           <div className={styles.formSection}>
             <div className={styles.formHeader}>
-              {t('donationLink:countryLanguageTitle')}
+              {tDonationLink('countryLanguageTitle')}
             </div>
             <InlineFormDisplayGroup>
               <AutoCompleteCountry
-                label={t('donationLink:labelCountry')}
+                label={tDonationLink('labelCountry')}
                 name="country"
                 defaultValue={'auto'}
                 onChange={setCountry}
@@ -152,8 +154,8 @@ const DonationLinkForm = ({
                   <TextField
                     {...params}
                     name="languagedropdown"
-                    label={t('donationLink:labelLanguages')}
-                    placeholder={t('donationLink:languages')}
+                    label={tDonationLink('labelLanguages')}
+                    placeholder={tDonationLink('languages')}
                   />
                 )}
                 renderOption={(props, option) => (
@@ -177,7 +179,7 @@ const DonationLinkForm = ({
           </div>
           <div className={styles.formSection}>
             <div className={styles.formHeader}>
-              {t('donationLink:projectTitle')}
+              {tDonationLink('projectTitle')}
             </div>
             <ProjectSelectAutocomplete
               handleProjectChange={handleProjectChange}
@@ -188,10 +190,10 @@ const DonationLinkForm = ({
           </div>
           <div className={styles.formSection}>
             <div className={styles.formHeader}>
-              {t('donationLink:treeCounterTitle')}
+              {tDonationLink('treeCounterTitle')}
             </div>
             <InlineFormDisplayGroup type="other">
-              <h6>{t('donationLink:treeCounterSubtitle')}</h6>
+              <h6>{tDonationLink('treeCounterSubtitle')}</h6>
               <Switch
                 id="treeCounter"
                 name="treeCounter"
@@ -203,12 +205,12 @@ const DonationLinkForm = ({
               />
             </InlineFormDisplayGroup>
             {user.isPrivate && (
-              <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
+              <h6>{tDonationLink('treeCounterPrivateAccountSubtitle')}</h6>
             )}
           </div>
           <InlineFormDisplayGroup type="other">
             <div className={styles.formHeader}>
-              {t('donationLink:testingTitle')}
+              {tDonationLink('testingTitle')}
             </div>
             <Switch
               id="testing"
@@ -222,9 +224,9 @@ const DonationLinkForm = ({
           </InlineFormDisplayGroup>
           {isTesting && (
             <>
-              <h6> {t('donationLink:testingModeSubtitle1')}</h6>
+              <h6> {tDonationLink('testingModeSubtitle1')}</h6>
               <h6>
-                {t('donationLink:testingModeSubtitle2')}{' '}
+                {tDonationLink('testingModeSubtitle2')}{' '}
                 <a
                   className="planet-links"
                   href="https://stripe.com/docs/testing"
@@ -237,9 +239,7 @@ const DonationLinkForm = ({
             </>
           )}
           <div className={styles.formSection}>
-            <div className={styles.formHeader}>
-              {t('donationLink:urlTitle')}
-            </div>
+            <div className={styles.formHeader}>{tDonationLink('urlTitle')}</div>
             <InlineFormDisplayGroup type="other">
               <TextField
                 id="donation-url"
@@ -259,14 +259,14 @@ const DonationLinkForm = ({
                 color="primary"
                 onClick={() => window.open(donationUrl, '_blank')}
               >
-                {t('donationLink:preview')}
+                {tDonationLink('preview')}
               </Button>
             </div>
           </div>
           {qrCode && (
             <div className={styles.formSection}>
               <div className={styles.formHeader}>
-                {t('donationLink:qrCodeTitle')}
+                {tDonationLink('qrCodeTitle')}
               </div>
               <img
                 className={styles.qrContainer}
@@ -280,7 +280,7 @@ const DonationLinkForm = ({
                   color="primary"
                   onClick={downloadBase64File}
                 >
-                  {t('me:download')}
+                  {tMe('download')}
                 </Button>
               </div>
             </div>
@@ -288,7 +288,7 @@ const DonationLinkForm = ({
         </div>
         {isLinkUpdated && (
           <CustomSnackbar
-            snackbarText={t('donationLink:linkAndQRCodeUpdatedMessage')}
+            snackbarText={tDonationLink('linkAndQRCodeUpdatedMessage')}
             isVisible={isLinkUpdated}
             handleClose={handleSnackbarClose}
           />

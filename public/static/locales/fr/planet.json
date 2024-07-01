@@ -1,14 +1,16 @@
 {
-  "treesDonated": "Arbres donnés depuis 2019",
-  "plantedByTPO": "Planté par plus de {{projects}}+ projets participants",
-  "plantedGlobally": "Arbres qui nous sont signalés depuis 2006",
-  "forestLoss": "Perte nette d'arbres par an",
-  "estimateOf": "Estimation de la perte annuelle d'arbres par",
-  "globallySince": "Nombre d'arbres signalés à la Campagne pour un milliard d'arbres (plus tard Campagne pour un milliard d'arbres) depuis sa création par le PNUE en 2006",
-  "restoreTrees": "Comment restaurer un trillion d'arbres ?",
-  "watchVideo": "Voir la vidéo",
-  "selectProjects": "Comment nous sélectionnons les projets",
-  "learnMore": "En savoir plus",
-  "treesDonatedDescription": "Tous les dons d'arbres traités par Plant-for-the-Planet depuis 2019. Comprend les arbres donnés directement par le biais de nos applis ainsi que les grands dons privés et d'entreprise. Ces dons ne sont pas tous allés à des projets gérés directement par Plant-for-the-Planet, mais à toutes les organisations de restauration participantes. Il se peut que certains arbres donnés ne soient pas encore plantés.",
-  "treesPlantedDescription": "Tous les arbres donnés par le biais de Plant-for-the-Planet et les autres arbres déclarés comme étant plantés par les organisations de restauration participantes"
+  "Planet": {
+    "treesDonated": "Arbres donnés depuis 2019",
+    "plantedByTPO": "Planté par plus de {projects}+ projets participants",
+    "plantedGlobally": "Arbres qui nous sont signalés depuis 2006",
+    "forestLoss": "Perte nette d'arbres par an",
+    "estimateOf": "Estimation de la perte annuelle d'arbres par",
+    "globallySince": "Nombre d'arbres signalés à la Campagne pour un milliard d'arbres (plus tard Campagne pour un milliard d'arbres) depuis sa création par le PNUE en 2006",
+    "restoreTrees": "Comment restaurer un trillion d'arbres ?",
+    "watchVideo": "Voir la vidéo",
+    "selectProjects": "Comment nous sélectionnons les projets",
+    "learnMore": "En savoir plus",
+    "treesDonatedDescription": "Tous les dons d'arbres traités par Plant-for-the-Planet depuis 2019. Comprend les arbres donnés directement par le biais de nos applis ainsi que les grands dons privés et d'entreprise. Ces dons ne sont pas tous allés à des projets gérés directement par Plant-for-the-Planet, mais à toutes les organisations de restauration participantes. Il se peut que certains arbres donnés ne soient pas encore plantés.",
+    "treesPlantedDescription": "Tous les arbres donnés par le biais de Plant-for-the-Planet et les autres arbres déclarés comme étant plantés par les organisations de restauration participantes"
+  }
 }

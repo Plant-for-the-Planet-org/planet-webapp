@@ -1,11 +1,13 @@
 {
-  "selectLocationMap": "Sélectionner un lieu sur la carte",
-  "requiredNumberOfTrees": "Le nombre d'arbres est requis",
-  "numberOfTrees": "Nombre d'arbres",
-  "datePlanted": "Date de plantation",
-  "treeSpecies": "Espèces d'arbres",
-  "speciesRequired": "L'espèce est obligatoire",
-  "drawPolygonMap": "Dessiner un polygone sur la carte",
-  "clickMapMark": "Cliquer sur la carte pour marquer un lieu",
-  "next": "Suivant"
+  "RegisterTrees": {
+    "selectLocationMap": "Sélectionner un lieu sur la carte",
+    "requiredNumberOfTrees": "Le nombre d'arbres est requis",
+    "numberOfTrees": "Nombre d'arbres",
+    "datePlanted": "Date de plantation",
+    "treeSpecies": "Espèces d'arbres",
+    "speciesRequired": "L'espèce est obligatoire",
+    "drawPolygonMap": "Dessiner un polygone sur la carte",
+    "clickMapMark": "Cliquer sur la carte pour marquer un lieu",
+    "next": "Suivant"
+  }
 }

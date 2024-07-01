@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import styles from './index.module.scss';
 import { Grid } from '@mui/material';
 
@@ -13,7 +13,7 @@ const ONE_BILLION = ONE_MILLION * 1000;
 const ONE_TRILLION = ONE_BILLION * 1000;
 
 export const CounterItem = ({ quantity, label }: Props) => {
-  const { t } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
 
   function formatNumber(num: number) {
     if (num >= ONE_TRILLION) {

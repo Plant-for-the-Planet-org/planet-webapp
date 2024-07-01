@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './ErrorPopup.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../ErrorHandlingContext';
 
 export default function ErrorPopup(): ReactElement {
-  const { t, ready } = useTranslation(['common']);
+  const t = useTranslations('Common');
   const { errors, setErrors } = useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -31,10 +31,20 @@ export default function ErrorPopup(): ReactElement {
     }
   };
 
+  const processErrorMessage = (errorMessage: string) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const translatedError = t(errorMessage);
+    if (translatedError.startsWith('Common.')) {
+      return errorMessage;
+    } else {
+      return translatedError;
+    }
+  };
+
   return (
     <>
-      {ready &&
-        errors &&
+      {errors &&
         errors.length > 0 &&
         errors.map((err, index) => {
           return (
@@ -46,7 +56,9 @@ export default function ErrorPopup(): ReactElement {
               >
                 <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
               </button>
-              <div className={styles.errorContent}>{t(err.message)}</div>
+              <div className={styles.errorContent}>
+                {processErrorMessage(err.message)}
+              </div>
             </div>
           );
         })}

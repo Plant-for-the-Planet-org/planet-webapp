@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -42,7 +42,8 @@ export default function ManagePayouts({
   setProgress,
   isEdit,
 }: ManagePayoutsProps): ReactElement | null {
-  const { t, ready, i18n } = useTranslation('managePayouts');
+  const t = useTranslations('ManagePayouts');
+  const locale = useLocale();
   const { tenantConfig } = useTenant();
   const router = useRouter();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -102,7 +103,7 @@ export default function ManagePayouts({
   }, [contextLoaded, token, user]);
 
   useEffect(() => {
-    if (ready && user && user.type === 'tpo') {
+    if (user && user.type === 'tpo') {
       setTabConfig([
         {
           label: t('tabOverview'),
@@ -121,7 +122,7 @@ export default function ManagePayouts({
         },
       ]);
     }
-  }, [ready, user, i18n.language]);
+  }, [user, locale]);
 
   const renderStep = () => {
     switch (step) {
@@ -140,11 +141,11 @@ export default function ManagePayouts({
     }
   };
 
-  return ready ? (
+  return (
     <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
       <TabbedView step={step} tabItems={tabConfig}>
         {renderStep()}
       </TabbedView>
     </DashboardView>
-  ) : null;
+  );
 }

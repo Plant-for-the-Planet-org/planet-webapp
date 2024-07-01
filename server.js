@@ -7,9 +7,6 @@ const url = require('url');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
-// const i18next = require('./i18n');
-// const nextI18NextMiddleware = require('next-i18next/middleware').default;
-
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
 
@@ -35,9 +32,6 @@ if (!dev && cluster.isMaster) {
 
   nextApp.prepare().then(async () => {
     const server = express();
-
-    // await i18next.initPromise;
-    // server.use(nextI18NextMiddleware(i18next));
 
     if (!dev) {
       // Enforce SSL & HSTS in production

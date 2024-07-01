@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './ProjectMapTabs.module.scss';
 import SingleTab from './SingleTab';
 import SatelliteAnalysisIcon from '../icons/SatelliteAnalysisIcon';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import FieldDataIcon from '../icons/FieldDataIcon';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 
@@ -25,7 +25,9 @@ const Tabs = ({ selected }: TabsProps) => {
     return false;
   };
 
-  const { t } = useTranslation(['maps', 'projectDetails']);
+  const tProjectDetails = useTranslations('ProjectDetails');
+  const tMaps = useTranslations('Maps');
+
   return (
     <div className={styles.tabsContainer}>
       <SingleTab
@@ -38,7 +40,7 @@ const Tabs = ({ selected }: TabsProps) => {
             }
           />
         }
-        title={t('projectDetails:satelliteAnalysis')}
+        title={tProjectDetails('satelliteAnalysis')}
         isSelected={selectedMode === 'satellite'}
         onClickHandler={() => setSelectedMode('satellite')}
       />
@@ -59,7 +61,7 @@ const Tabs = ({ selected }: TabsProps) => {
             }
           />
         }
-        title={t('maps:fieldData')}
+        title={tMaps('fieldData')}
         isSelected={selectedMode === 'field'}
         onClickHandler={() => setSelectedMode('field')}
       />
@@ -80,7 +82,7 @@ const Tabs = ({ selected }: TabsProps) => {
             }
           />
         }
-        title={t('maps:timeTravel')}
+        title={tMaps('timeTravel')}
         isSelected={selectedMode === 'timeTravel'}
         onClickHandler={() => setSelectedMode('timeTravel')}
       />

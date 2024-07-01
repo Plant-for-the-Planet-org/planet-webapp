@@ -1,5 +1,5 @@
 import styles from './ProjectInfo.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 interface Props {
   mainChallengeText: string;
@@ -20,41 +20,38 @@ const AdditionalInfo = ({
   siteOwnershipType,
   acquiredSince,
 }: Props) => {
-  const { t, ready } = useTranslation([
-    'manageProjects',
-    'common',
-    'projectDetails',
-  ]);
+  const tManageProjects = useTranslations('ManageProjects');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   const siteOwners = [
     {
       id: 1,
-      title: ready ? t('projectDetails:privateProperty') : '',
+      title: tProjectDetails('privateProperty'),
       value: 'private',
     },
     {
       id: 2,
-      title: ready ? t('projectDetails:publicProperty') : '',
+      title: tProjectDetails('publicProperty'),
       value: 'public-property',
     },
     {
       id: 3,
-      title: ready ? t('manageProjects:siteOwnerSmallHolding') : '',
+      title: tManageProjects('siteOwnerSmallHolding'),
       value: 'smallholding',
     },
     {
       id: 4,
-      title: ready ? t('manageProjects:siteOwnerCommunal') : '',
+      title: tManageProjects('siteOwnerCommunal'),
       value: 'communal-land',
     },
     {
       id: 5,
-      title: ready ? t('manageProjects:siteOwnerOwned') : '',
+      title: tManageProjects('siteOwnerOwned'),
       value: 'owned-by-owner',
     },
     {
       id: 6,
-      title: ready ? t('manageProjects:siteOwnerOther') : '',
+      title: tManageProjects('siteOwnerOther'),
       value: 'other',
     },
   ];
@@ -66,16 +63,16 @@ const AdditionalInfo = ({
         translatedTitle = siteOwner.title;
       }
     });
-    return `${translatedTitle} · ${t('manageProjects:since')} ${acquiredSince}`;
+    return `${translatedTitle} · ${tManageProjects('since')} ${acquiredSince}`;
   };
 
   const moreInfoContent = [
     {
-      title: `${t('manageProjects:mainChallenge')}`,
+      title: `${tManageProjects('mainChallenge')}`,
       content: <div className={styles.infoDetail}>{mainChallengeText}</div>,
     },
     {
-      title: `${t('manageProjects:siteOwnership')}`,
+      title: `${tManageProjects('siteOwnership')}`,
       content: (
         <>
           <div className={styles.siteOwnershipLabelContainer}>
@@ -88,17 +85,17 @@ const AdditionalInfo = ({
       ),
     },
     {
-      title: `${t('manageProjects:causeOfDegradation')}`,
+      title: `${tManageProjects('causeOfDegradation')}`,
       content: (
         <div className={styles.infoDetail}>{causeOfDegradationText}</div>
       ),
     },
     {
-      title: `${t('manageProjects:whyThisSite')}`,
+      title: `${tManageProjects('whyThisSite')}`,
       content: <div className={styles.infoDetail}>{whyThisSiteText}</div>,
     },
     {
-      title: `${t('manageProjects:longTermProtection')}`,
+      title: `${tManageProjects('longTermProtection')}`,
       content: (
         <div className={styles.infoDetail}>{longTermProtectionText}</div>
       ),

@@ -1,6 +1,6 @@
 import { useState, ReactElement } from 'react';
 import ProfileMainContainer from './microComponents/ProfileMainContainer';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import UserInfo from './microComponents/UserInfo';
 import { ProfileProps } from '../../../../common/types/profile';
 import UserFeatures from './microComponents/UserFeatures';
@@ -8,18 +8,16 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 
 const Profile = ({ userProfile }: ProfileProps): ReactElement => {
   const { tenantConfig } = useTenant();
-  const { t, ready } = useTranslation(['donate']);
+  const t = useTranslations('Donate');
   const [showSocialButton, setShowSocialButton] = useState(false);
 
   const handleShare = () => {
     if (navigator?.share) {
       navigator
         ?.share({
-          title: ready ? t('donate:shareTextTitle') : '',
+          title: t('shareTextTitle'),
           url: `${process.env.SCHEME}://${tenantConfig.config.tenantURL}/t/${userProfile.slug}`,
-          text: ready
-            ? t('donate:textToShare', { name: userProfile.displayName })
-            : '',
+          text: t('textToShare', { name: userProfile.displayName }),
         })
         .then(() => {
           console.log('thanks for sharing');

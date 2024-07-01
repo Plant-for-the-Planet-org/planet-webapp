@@ -3,7 +3,7 @@ import CreateAccountForm from '../components/CreateAccountForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 
 const initialAllowedCountries: CountryType[] = [
@@ -17,7 +17,7 @@ const CreateAccount = (): ReactElement | null => {
     CountryType[] | null
   >(null);
   const { accounts, isPlanetCashActive } = usePlanetCash();
-  const { t, ready } = useTranslation('planetcash');
+  const t = useTranslations('Planetcash');
 
   // Prevents creating a duplicate planetcash account for a country.
   // This condition cannot currently happen, as the frontend prevents users from creating multiple planet cash accounts
@@ -44,9 +44,7 @@ const CreateAccount = (): ReactElement | null => {
         />
       </CenteredContainer>
     ) : (
-      <CenteredContainer>
-        {ready && t('accountQuotaReachedText')}
-      </CenteredContainer>
+      <CenteredContainer>{t('accountQuotaReachedText')}</CenteredContainer>
     );
   }
 
