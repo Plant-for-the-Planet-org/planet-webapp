@@ -364,3 +364,86 @@ export const NoContributionsIcon = () => {
     </svg>
   );
 };
+
+export const CarouselNextIcon = ({ color }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="57"
+      height="57"
+      viewBox="0 0 57 57"
+      fill="none"
+    >
+      <g filter="url(#filter0_d_2139_2767)">
+        <rect
+          x="37"
+          y="37"
+          width="28"
+          height="28"
+          rx="14"
+          transform="rotate(180 37 37)"
+          fill={color}
+        />
+        <path
+          d="M16.4375 22.125C15.9543 22.125 15.5625 22.5168 15.5625 23C15.5625 23.4832 15.9543 23.875 16.4375 23.875V22.125ZM30.1812 23.6187C30.5229 23.277 30.5229 22.723 30.1812 22.3813L24.6128 16.8128C24.271 16.4711 23.717 16.4711 23.3753 16.8128C23.0336 17.1545 23.0336 17.7085 23.3753 18.0503L28.3251 23L23.3753 27.9497C23.0336 28.2915 23.0336 28.8455 23.3753 29.1872C23.717 29.5289 24.271 29.5289 24.6128 29.1872L30.1812 23.6187ZM16.4375 23.875H29.5625V22.125H16.4375V23.875Z"
+          fill="white"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_2139_2767"
+          x="0.250002"
+          y="0.250002"
+          width="56"
+          height="56"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dx="5.25" dy="5.25" />
+          <feGaussianBlur stdDeviation="7" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_2139_2767"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_2139_2767"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  );
+};
+
+export const CarouselPrevIcon = ({ color }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+    >
+      <rect width="28" height="28" rx="14" fill={color} />
+      <path
+        d="M20.5625 14.875C21.0457 14.875 21.4375 14.4832 21.4375 14C21.4375 13.5168 21.0457 13.125 20.5625 13.125L20.5625 14.875ZM6.81878 13.3813C6.47707 13.723 6.47707 14.277 6.81878 14.6187L12.3872 20.1872C12.729 20.5289 13.283 20.5289 13.6247 20.1872C13.9664 19.8455 13.9664 19.2915 13.6247 18.9497L8.67494 14L13.6247 9.05025C13.9664 8.70854 13.9664 8.15453 13.6247 7.81282C13.283 7.47111 12.729 7.47111 12.3872 7.81282L6.81878 13.3813ZM20.5625 13.125L7.4375 13.125L7.4375 14.875L20.5625 14.875L20.5625 13.125Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
