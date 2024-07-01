@@ -1,6 +1,6 @@
 import StarIcon from '../icons/StarIcon';
 import style from '../Project/Search.module.scss';
-import { Trans } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 
 type ProjectCollection = 'topProjects' | 'allProjects';
@@ -18,6 +18,8 @@ const ProjectListTabForMobile = ({
   setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
   const { light, dark } = themeProperties;
+  const t = useTranslations('ProjectDetails');
+
   return (
     <div className={style.projectListTabs}>
       <button
@@ -49,9 +51,12 @@ const ProjectListTabForMobile = ({
           }
         >
           <div className={style.topProjectLable}>
-            <Trans i18nKey="topProjects">
-              Top Projects<p>({{ noOfProjects: `${numberOfProject}` }})</p>
-            </Trans>
+            {t.rich('topProjects', {
+              noOfProjects: numberOfProject,
+              projectCountContainer: (chunks) => (
+                <span className={style.projectCount}>{chunks}</span>
+              ),
+            })}
           </div>
         </div>
       </button>
@@ -67,9 +72,12 @@ const ProjectListTabForMobile = ({
         }}
       >
         <div className={style.allProjectLabel}>
-          <Trans i18nKey="all">
-            All<p>({{ noOfProjects: `${numberOfProject}` }})</p>
-          </Trans>
+          {t.rich('allProjects', {
+            noOfProjects: numberOfProject,
+            projectCountContainer: (chunks) => (
+              <span className={style.projectCount}>{chunks}</span>
+            ),
+          })}
         </div>
       </button>
     </div>

@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 import { useState } from 'react';
 import style from '../Project/Search.module.scss';
@@ -9,7 +9,7 @@ interface LocationAndListProps {
   setIsFilterOpen: (value: boolean) => void;
 }
 const LocationAndList = ({ setIsFilterOpen }: LocationAndListProps) => {
-  const { t } = useTranslation(['projectDetails']);
+  const t = useTranslations('ProjectDetails');
   const { dark, light } = themeProperties;
   const [secondTabSelected, setSecondTabSelected] = useState<'list' | 'map'>(
     'list'
@@ -37,7 +37,7 @@ const LocationAndList = ({ setIsFilterOpen }: LocationAndListProps) => {
             }
           />
         </div>
-        <div className={style.listLable}>{t('projectDetails:list')}</div>
+        <div className={style.listLable}>{t('list')}</div>
       </button>
       <button
         className={
@@ -59,7 +59,7 @@ const LocationAndList = ({ setIsFilterOpen }: LocationAndListProps) => {
             height={'13px'}
           />
         </div>
-        <div className={style.mapLable}>{t('projectDetails:map')}</div>
+        <div className={style.mapLable}>{t('map')}</div>
       </button>
     </div>
   );

@@ -88,7 +88,7 @@
     font-size: $fontXXXSmallNew;
     font-weight: 700;
     display: flex;
-    p {
+    .projectCount {
       font-weight: 400;
       margin-left: 2px;
     }
@@ -113,7 +113,7 @@
     font-weight: 700;
     font-size: $fontXXXSmallNew;
     display: flex;
-    p {
+    .projectCount {
       font-weight: 400;
       margin-left: 2px;
     }
@@ -197,7 +197,7 @@
 .projectLabel {
   display: flex;
   margin-left: 7px;
-  .noOfProjects {
+  .projectCount {
     margin-left: 4px;
   }
 }

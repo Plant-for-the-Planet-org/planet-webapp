@@ -1,7 +1,7 @@
 import FilterIcon from '../icons/FilterIcon';
 import { Button } from '@mui/material';
 import style from './Filter.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 export type Classification =
@@ -22,12 +22,7 @@ export const FilterDropDown = ({
   setFilterApplied,
   availableFilters,
 }: FilterProps) => {
-  const { t } = useTranslation([
-    'projectDetails',
-    'donate',
-    'manageProjects',
-    'allProjects',
-  ]);
+  const tAllProjects = useTranslations('AllProjects');
 
   const handleClick = (singleFilter: Classification | undefined): void => {
     setFilterApplied(singleFilter);
@@ -48,7 +43,7 @@ export const FilterDropDown = ({
                   : style.projectName
               }
             >
-              {t('allProjects:classificationTypes.all')}
+              {tAllProjects('classificationTypes.all')}
             </div>
             <hr className={style.hrLine} />
           </button>
@@ -67,7 +62,7 @@ export const FilterDropDown = ({
                         : style.projectName
                     }
                   >
-                    {t(`allProjects:classificationTypes.${singleFilter}`)}
+                    {tAllProjects(`classificationTypes.${singleFilter}`)}
                   </div>
                   {index !== availableFilters.length - 1 && (
                     <hr className={style.hrLine} />

@@ -3,7 +3,7 @@ import { SearchTextField } from './CustomSearchTextField';
 import CrossIcon from '../icons/CrossIcon';
 import style from './Search.module.scss';
 import SearchIcon from '../icons/SearchIcon';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface ActiveSearchFieldProps {
   setIsSearching: (value: boolean) => void;
@@ -14,7 +14,7 @@ const ActiveSearchField = ({
   setIsFilterOpen,
 }: ActiveSearchFieldProps) => {
   const [input, setInput] = useState('');
-  const { t } = useTranslation(['projectDetails']);
+  const t = useTranslations('ProjectDetails');
   return (
     <>
       <button className={style.activeSearchIcon}>
@@ -23,7 +23,7 @@ const ActiveSearchField = ({
       <SearchTextField
         id="standard-search"
         variant="standard"
-        placeholder={t('projectDetails:searchProject')}
+        placeholder={t('searchProject')}
         value={input}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setInput(event.target.value);

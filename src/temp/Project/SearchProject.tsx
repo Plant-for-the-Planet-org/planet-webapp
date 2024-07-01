@@ -4,7 +4,7 @@ import SearchIcon from '../icons/SearchIcon';
 import StarIcon from '../icons/StarIcon';
 import Tabs from '@mui/material/Tabs';
 import style from './Search.module.scss';
-import { Trans } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import CustomTab from './CustomTab';
 import themeProperties from '../../theme/themeProperties';
 import ActiveSearchField from './ActiveSearchField';
@@ -18,6 +18,7 @@ const SearchProject = ({
   setFilterApplied,
   availableFilters,
 }: SearchTabProps) => {
+  const t = useTranslations('ProjectDetails');
   const [isSearching, setIsSearching] = useState(false);
   const [value, setValue] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -53,28 +54,28 @@ const SearchProject = ({
                   />
                 }
                 label={
-                  <Trans i18nKey={'topProject'}>
-                    <div className={style.projectLabel}>
-                      Top Projects
-                      <p className={style.noOfProjects}>
-                        ({{ noOfProjects: '34' }})
-                      </p>
-                    </div>
-                  </Trans>
+                  <div className={style.projectLabel}>
+                    {t.rich('topProjects', {
+                      noOfProjects: '34',
+                      projectCountContainer: (chunks) => (
+                        <span className={style.projectCount}>{chunks}</span>
+                      ),
+                    })}
+                  </div>
                 }
                 sx={{ fontWeight: '700' }}
               />
               <CustomTab
                 sx={{ fontWeight: '700' }}
                 label={
-                  <Trans i18nKey={'all'}>
-                    <div className={style.projectLabel}>
-                      All
-                      <p className={style.noOfProjects}>
-                        ({{ noOfProjects: '556' }})
-                      </p>
-                    </div>
-                  </Trans>
+                  <div className={style.projectLabel}>
+                    {t.rich('allProjects', {
+                      noOfProjects: '556',
+                      projectCountContainer: (chunks) => (
+                        <span className={style.projectCount}>{chunks}</span>
+                      ),
+                    })}
+                  </div>
                 }
               />
             </Tabs>
