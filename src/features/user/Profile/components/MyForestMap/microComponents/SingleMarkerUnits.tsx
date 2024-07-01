@@ -1,5 +1,5 @@
 import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 export interface SingleMarkerUnitsProps {
   isNormalTreeDonation: boolean;
@@ -20,31 +20,21 @@ const SingleMarkerUnits = ({
   isGiftContribution,
   isMergeContribution,
 }: SingleMarkerUnitsProps) => {
-  const { t, ready } = useTranslation(['profile']);
-  return ready ? (
+  const t = useTranslations('Profile');
+  return (
     <div className={MyForestMapStyle.trees}>
-      {t(
-        isConservation || isRestorationTreePlantation
-          ? 'profile:myForestMap.area'
-          : '',
-        {
+      {(isConservation || isRestorationTreePlantation) &&
+        t('myForestMap.area', {
           areaConserved: units,
-        }
-      )}
-      {t(
-        isNormalTreeDonation ||
-          isRegisteredTree ||
-          isGiftContribution ||
-          isMergeContribution
-          ? 'profile:myForestMap.plantedTree'
-          : '',
-        {
+        })}
+      {(isNormalTreeDonation ||
+        isRegisteredTree ||
+        isGiftContribution ||
+        isMergeContribution) &&
+        t('myForestMap.plantedTree', {
           count: units,
-        }
-      )}
+        })}
     </div>
-  ) : (
-    <></>
   );
 };
 

@@ -1,6 +1,6 @@
 import { ProjectExpense } from '@planet-sdk/common';
 import styles from './ProjectInfo.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import DownloadIcon from '../icons/DownloadIcon';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import ExternalCertificationItem from './ExternalCertificationItem';
@@ -18,19 +18,20 @@ const ProjectDownloads = ({
   spendings,
   progressReports,
 }: ExternalCertificationProps) => {
-  const { t } = useTranslation(['manageProjects', 'projectDetails']);
+  const tManageProjects = useTranslations('ManageProjects');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   const certificationContent = [
     {
-      title: `${t('manageProjects:externalCertifications')}`,
+      title: `${tManageProjects('externalCertifications')}`,
       content: <ExternalCertificationItem certification={certification} />,
     },
     {
-      title: `${t('manageProjects:projectSpending')}`,
+      title: `${tManageProjects('projectSpending')}`,
       content: <ProjectSpendingItem spendings={spendings} />,
     },
     {
-      title: `${t('projectDetails:progressReports')}`,
+      title: `${tProjectDetails('progressReports')}`,
       content: <ProgressReportItem progressReports={progressReports} />,
     },
   ];

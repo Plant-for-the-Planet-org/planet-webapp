@@ -1,14 +1,16 @@
 {
-  "treesDonated": "Árvores doadas desde 2019",
-  "plantedByTPO": "Plantado pelas {{projects}}+ organizações participantes",
-  "plantedGlobally": "Árvores registradas na plataforma desde 2006",
-  "forestLoss": "Perda florestal líquida nos últimos 12 meses",
-  "estimateOf": "Estimativa da perda anual de árvores por",
-  "globallySince": "Número de árvores auto-reportadas à Campanha do Bilhão de Árvores (posteriormente Campanha do Trilhão de Árvores) desde a sua fundação pelo PNUMA em 2006",
-  "restoreTrees": "Como é que restauramos um trilião de árvores?",
-  "watchVideo": "Ver vídeo",
-  "selectProjects": "Como selecionamos os projetos",
-  "learnMore": "Saiba mais",
-  "treesDonatedDescription": "Todas as doações de árvores processadas pela Plant-for-the-Planet desde 2019. Inclui árvores doadas diretamente através de nossas aplicações, assim como grandes doações privadas e corporativas. Estas doações não foram todas para projectos geridos diretamente pela Plant-for-the-Planet, mas para todas as organizações de restauração participantes. Algumas árvores doadas podem ainda não ter sido plantadas.",
-  "treesPlantedDescription": "Todas as árvores doadas através de Plant-for-the-Planet e outras árvores reportadas como plantadas pelas organizações de restauração participantes."
+  "Planet": {
+    "treesDonated": "Árvores doadas desde 2019",
+    "plantedByTPO": "Plantado pelas {projects}+ organizações participantes",
+    "plantedGlobally": "Árvores registradas na plataforma desde 2006",
+    "forestLoss": "Perda florestal líquida nos últimos 12 meses",
+    "estimateOf": "Estimativa da perda anual de árvores por",
+    "globallySince": "Número de árvores auto-reportadas à Campanha do Bilhão de Árvores (posteriormente Campanha do Trilhão de Árvores) desde a sua fundação pelo PNUMA em 2006",
+    "restoreTrees": "Como é que restauramos um trilião de árvores?",
+    "watchVideo": "Ver vídeo",
+    "selectProjects": "Como selecionamos os projetos",
+    "learnMore": "Saiba mais",
+    "treesDonatedDescription": "Todas as doações de árvores processadas pela Plant-for-the-Planet desde 2019. Inclui árvores doadas diretamente através de nossas aplicações, assim como grandes doações privadas e corporativas. Estas doações não foram todas para projectos geridos diretamente pela Plant-for-the-Planet, mas para todas as organizações de restauração participantes. Algumas árvores doadas podem ainda não ter sido plantadas.",
+    "treesPlantedDescription": "Todas as árvores doadas através de Plant-for-the-Planet e outras árvores reportadas como plantadas pelas organizações de restauração participantes."
+  }
 }

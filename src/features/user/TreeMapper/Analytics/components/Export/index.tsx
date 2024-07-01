@@ -15,7 +15,7 @@ import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
@@ -44,7 +44,7 @@ const dialogSx: SxProps = {
 };
 
 export const Export = () => {
-  const { t, ready } = useTranslation('treemapperAnalytics');
+  const t = useTranslations('TreemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
   const { userLang } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -193,7 +193,7 @@ export const Export = () => {
     setProjectType(projType);
   };
 
-  return ready ? (
+  return (
     <Container
       leftElement={<h3 className={styles.title}>{t('exportData')}</h3>}
     >
@@ -218,7 +218,7 @@ export const Export = () => {
             }
           >
             <MuiDatePicker
-              label={t('treemapperAnalytics:from')}
+              label={t('from')}
               value={localFromDate}
               onChange={setLocalFromDate}
               renderInput={(props) => (
@@ -240,7 +240,7 @@ export const Export = () => {
             }
           >
             <MuiDatePicker
-              label={t('treemapperAnalytics:from')}
+              label={t('to')}
               value={localToDate}
               onChange={setLocalToDate}
               renderInput={(props) => (
@@ -262,5 +262,5 @@ export const Export = () => {
         </div>
       </div>
     </Container>
-  ) : null;
+  );
 };

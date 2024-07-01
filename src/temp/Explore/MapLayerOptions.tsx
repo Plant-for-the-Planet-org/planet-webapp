@@ -4,12 +4,14 @@ import { MapLayerToggle } from './ExploreProject';
 import InfoIcon from '../icons/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
 import { YearRangeSlider } from './ExploreProject';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 
 const MayLayerOptions = () => {
   const [checked, setChecked] = useState(false);
-  const { t } = useTranslation(['allProjects', 'maps']);
+  const tAllProjects = useTranslations('AllProjects');
+  const tMaps = useTranslations('Maps');
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
@@ -24,7 +26,7 @@ const MayLayerOptions = () => {
         <div>
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
-            label={t('allProjects:currentForests')}
+            label={tAllProjects('currentForests')}
             switchComponent={
               <StyledSwitch customColor={`${primaryColorNew}`} />
             }
@@ -32,7 +34,7 @@ const MayLayerOptions = () => {
           <div className={style.hrLine} />
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
-            label={t('allProjects:restorationPotential')}
+            label={tAllProjects('restorationPotential')}
             switchComponent={
               <StyledSwitch customColor={`${restorationToggleColorNew}`} />
             }
@@ -40,7 +42,7 @@ const MayLayerOptions = () => {
           <div className={style.hrLine} />
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
-            label={t('allProjects:deforestation')}
+            label={tAllProjects('deforestation')}
             switchComponent={
               <StyledSwitch
                 customColor={`${deforestrationToggleColorNew}`}
@@ -52,12 +54,12 @@ const MayLayerOptions = () => {
           <div className={style.hrLine} />
           <MapLayerToggle
             infoIcon={undefined}
-            label={t('allProjects:projects')}
+            label={tAllProjects('projects')}
             switchComponent={<StyledSwitch />}
           />
         </div>
         <div className={style.exploreDescription}>
-          {t('maps:3trilliontrees')}
+          {tMaps('3trilliontrees')}
         </div>
       </div>
     </div>

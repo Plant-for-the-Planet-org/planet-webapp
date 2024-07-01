@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ReviewReports.module.scss';
 import SingleReview from './SingleReview';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Review } from '@planet-sdk/common';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ProjectReview = ({ reviews }: Props) => {
-  const { t } = useTranslation('manageProjects');
+  const t = useTranslations('ManageProjects');
   return (
     <div className={styles.reviewReportsContainer}>
       <h6>{t('review')}</h6>

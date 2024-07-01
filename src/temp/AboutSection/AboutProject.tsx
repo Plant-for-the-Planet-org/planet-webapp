@@ -1,6 +1,6 @@
 import styles from './AboutProject.module.scss';
 import { useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import ToggleDescriptionButton from './ToggleDescriptionButton';
 
 interface Props {
@@ -17,11 +17,11 @@ const AboutProject = ({ description, wordCount }: Props) => {
     ? descriptionWords.slice(0, wordCount - 1).join(' ')
     : description;
   const endText = descriptionWords.slice(wordCount - 1).join(' ');
-  const { t } = useTranslation(['projectDetails', 'donate']);
+  const tDonate = useTranslations('Donate');
 
   return (
     <div className={styles.projectDescription}>
-      <div className={styles.infoTitle}>{t('donate:aboutProject')}</div>
+      <div className={styles.infoTitle}>{tDonate('aboutProject')}</div>
       <div className={styles.infoText}>
         {startingText} {hasOverflow && !isExpanded && <span>...</span>}
         {hasOverflow && (

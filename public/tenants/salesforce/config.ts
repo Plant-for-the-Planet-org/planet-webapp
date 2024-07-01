@@ -48,7 +48,7 @@ const config = {
     description:
       'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
     image: `https://trees.salesforce.com/tenants/salesforce/images/trees-share.jpg`,
-    twitterHandle: '@trilliontrees',
+    twitterHandle: '',
     locale: 'en_US',
   },
   footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],

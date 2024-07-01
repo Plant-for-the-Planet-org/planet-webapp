@@ -8,7 +8,7 @@ import {
   Feature,
   FeatureCollection,
 } from '../../../../../../../common/types/dataExplorer';
-import { TFunction } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   handleProjectTypeChange: (projType: ProjectType | null) => void;
@@ -18,7 +18,6 @@ interface Props {
   projectSites: FeatureCollection | null;
   projectSite: Feature | null;
   handleSiteChange: (site: Feature | null) => void;
-  t: TFunction;
 }
 
 const LeftElements = ({
@@ -29,8 +28,8 @@ const LeftElements = ({
   projectSites,
   projectSite,
   handleSiteChange,
-  t,
 }: Props) => {
+  const t = useTranslations('TreemapperAnalytics');
   return (
     <div className={styles.container}>
       <SitesSelectorAutocomplete

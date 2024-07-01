@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { TextField } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -49,6 +49,7 @@ import {
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import PlantLocationDetails from './components/PlantLocationDetails';
 import MyForestMapCredit from '../../../../Profile/components/MyForestMap/microComponents/MyForestMapCredit';
+import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -96,7 +97,7 @@ function isDateBetween(
 export const MapContainer = () => {
   const { project, fromDate, toDate } = useAnalytics();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { t, ready } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
 
   const mapRef: MutableRefObject<null> = useRef(null);
   const [mapState, setMapState] = useState({
@@ -291,17 +292,21 @@ export const MapContainer = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (project && species) {
-      if (queryType === QueryType.DATE) {
-        if (!isDateBetween(search, fromDate, toDate)) {
-          setErrors([{ message: t('searchDateError') }]);
-          return;
+  useDebouncedEffect(
+    () => {
+      if (project && species) {
+        if (queryType === QueryType.DATE) {
+          if (!isDateBetween(search, fromDate, toDate)) {
+            setErrors([{ message: t('searchDateError') }]);
+            return;
+          }
         }
+        fetchProjectLocations();
       }
-      fetchProjectLocations();
-    }
-  }, [project, species, queryType, fromDate, toDate]);
+    },
+    500,
+    [project, species, queryType, fromDate, toDate]
+  );
 
   // Set the map style to the default style
   // Currently this only shows Intervention
@@ -387,7 +392,7 @@ export const MapContainer = () => {
   const _handleViewport = (newViewport: ViewportProps) =>
     setViewport({ ...viewport, ...newViewport });
 
-  return ready ? (
+  return (
     <Container
       leftElement={
         <LeftControls
@@ -399,7 +404,6 @@ export const MapContainer = () => {
             projectSites,
             projectSite,
             handleSiteChange,
-            t,
           }}
         />
       }
@@ -482,7 +486,5 @@ export const MapContainer = () => {
         )}
       </div>
     </Container>
-  ) : (
-    <></>
   );
 };

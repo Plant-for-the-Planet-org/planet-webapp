@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -15,59 +15,60 @@ interface Props {
 }
 
 function ProjectInfo({ project }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+  const tCommon = useTranslations('Common');
+  const tManageProjects = useTranslations('ManageProjects');
+  const locale = useLocale();
 
   const seasons = [
-    { id: 0, title: ready ? t('common:january') : '' },
-    { id: 1, title: ready ? t('common:february') : '' },
-    { id: 2, title: ready ? t('common:march') : '' },
-    { id: 3, title: ready ? t('common:april') : '' },
-    { id: 4, title: ready ? t('common:may') : '' },
-    { id: 5, title: ready ? t('common:june') : '' },
-    { id: 6, title: ready ? t('common:july') : '' },
-    { id: 7, title: ready ? t('common:august') : '' },
-    { id: 8, title: ready ? t('common:september') : '' },
-    { id: 9, title: ready ? t('common:october') : '' },
-    { id: 10, title: ready ? t('common:november') : '' },
-    { id: 11, title: ready ? t('common:december') : '' },
+    { id: 0, title: tCommon('january') },
+    { id: 1, title: tCommon('february') },
+    { id: 2, title: tCommon('march') },
+    { id: 3, title: tCommon('april') },
+    { id: 4, title: tCommon('may') },
+    { id: 5, title: tCommon('june') },
+    { id: 6, title: tCommon('july') },
+    { id: 7, title: tCommon('august') },
+    { id: 8, title: tCommon('september') },
+    { id: 9, title: tCommon('october') },
+    { id: 10, title: tCommon('november') },
+    { id: 11, title: tCommon('december') },
   ];
 
   const siteOwners = [
     {
       id: 1,
-      title: ready ? t('manageProjects:siteOwnerPrivate') : '',
+      title: tManageProjects('siteOwnerPrivate'),
       value: 'private',
     },
     {
       id: 2,
-      title: ready ? t('manageProjects:siteOwnerPublic') : '',
+      title: tManageProjects('siteOwnerPublic'),
       value: 'public-property',
     },
     {
       id: 3,
-      title: ready ? t('manageProjects:siteOwnerSmallHolding') : '',
+      title: tManageProjects('siteOwnerSmallHolding'),
       value: 'smallholding',
     },
     {
       id: 4,
-      title: ready ? t('manageProjects:siteOwnerCommunal') : '',
+      title: tManageProjects('siteOwnerCommunal'),
       value: 'communal-land',
     },
     {
       id: 5,
-      title: ready ? t('manageProjects:siteOwnerOwned') : '',
+      title: tManageProjects('siteOwnerOwned'),
       value: 'owned-by-owner',
     },
     {
       id: 6,
-      title: ready ? t('manageProjects:siteOwnerOther') : '',
+      title: tManageProjects('siteOwnerOther'),
       value: 'other',
     },
   ];
   const [ownerTypes, setOwnerTypes] = React.useState<string[]>([]);
   React.useEffect(() => {
     if (
-      ready &&
       project.purpose === 'trees' &&
       project.metadata.siteOwnerType &&
       project.metadata.siteOwnerType.length > 0
@@ -86,11 +87,10 @@ function ProjectInfo({ project }: Props): ReactElement {
 
       setOwnerTypes(updatedSiteOwners);
     }
-  }, [ready, i18n.language]);
+  }, [locale]);
 
   React.useEffect(() => {
     if (
-      ready &&
       project.purpose === 'conservation' &&
       project.metadata.landOwnershipType &&
       project.metadata.landOwnershipType.length > 0
@@ -109,7 +109,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
       setOwnerTypes(updatedSiteOwners);
     }
-  }, [ready, i18n.language]);
+  }, [locale]);
 
   const expenseAmount = project.expenses.map((expense) => expense.amount);
   const calculatePercentage = (amount: number) => {
@@ -134,7 +134,7 @@ function ProjectInfo({ project }: Props): ReactElement {
     return newDateArr.join('-');
   };
 
-  return ready ? (
+  return (
     <div className={styles.projectInfoContainer}>
       <div className={styles.projectMoreInfoHalfContainer}>
         {project.purpose === 'trees' &&
@@ -142,7 +142,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.yearAbandoned !== 0 && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:abandonment')}
+                {tManageProjects('abandonment')}
                 <div
                   style={{
                     position: 'absolute',
@@ -157,13 +157,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                       className={styles.popoverContent}
                       style={{ left: '-140px' }}
                     >
-                      <p>{t('manageProjects:yearAbandonedInfo')}</p>
+                      <p>{tManageProjects('yearAbandonedInfo')}</p>
                     </div>
                   </div>
                 </div>
               </div>
               <div className={styles.infoText}>
-                {t('common:approx')} {project.metadata.yearAbandoned}
+                {tCommon('approx')} {project.metadata.yearAbandoned}
               </div>
             </div>
           )}
@@ -171,7 +171,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.firstTreePlanted !== null && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:labelRestorationStarted')}
+                {tManageProjects('labelRestorationStarted')}
               </div>
               <div className={styles.infoText}>
                 {formatDate(
@@ -189,15 +189,15 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.plantingDensity !== null && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:plantingDensity')}
+                {tManageProjects('plantingDensity')}
               </div>
               <div className={styles.infoText}>
                 {project.metadata.plantingDensity}
                 {project.metadata.maxPlantingDensity !== null
-                  ? `-${project.metadata.maxPlantingDensity} ${t(
-                      'manageProjects:treePerHa'
+                  ? `-${project.metadata.maxPlantingDensity} ${tManageProjects(
+                      'treePerHa'
                     )}`
-                  : ` ${t('manageProjects:treePerHa')}`}
+                  : ` ${tManageProjects('treePerHa')}`}
               </div>
             </div>
           )}
@@ -206,7 +206,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.employeesCount !== 0 && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:employees')}
+                {tManageProjects('employees')}
               </div>
               <div className={styles.infoText}>
                 {project.metadata.employeesCount}
@@ -220,7 +220,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         project.metadata.activitySeasons.length > 0 && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:protectionSeasons')}
+              {tManageProjects('protectionSeasons')}
             </div>
             <div className={styles.infoText}>
               {project.metadata.activitySeasons.map(
@@ -229,7 +229,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     <React.Fragment key={seasons[season - 1].title}>
                       {seasons[season - 1].title}
                       {index === activitySeasons.length - 2 ? (
-                        <> {t('manageProjects:and')} </>
+                        <> {tManageProjects('and')} </>
                       ) : index === activitySeasons.length - 1 ? (
                         '.'
                       ) : (
@@ -248,7 +248,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         project.metadata.plantingSeasons.length > 0 && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:labelRestorationSeasons')}
+              {tManageProjects('labelRestorationSeasons')}
             </div>
             <div className={styles.infoText}>
               {project.metadata.plantingSeasons.map(
@@ -257,7 +257,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     <React.Fragment key={seasons[season - 1].title}>
                       {seasons[season - 1].title}
                       {index === plantingSeasons.length - 2 ? (
-                        <> {t('manageProjects:and')} </>
+                        <> {tManageProjects('and')} </>
                       ) : index === plantingSeasons.length - 1 ? (
                         '.'
                       ) : (
@@ -275,12 +275,12 @@ function ProjectInfo({ project }: Props): ReactElement {
         project.metadata.mainInterventions.length > 0 && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:labelMainInterventions')}
+              {tManageProjects('labelMainInterventions')}
             </div>
             <div className={styles.infoText}>
               {project.metadata.mainInterventions
                 .map((intervention) =>
-                  t(`manageProjects:interventionTypes.${intervention}`)
+                  tManageProjects(`interventionTypes.${intervention}`)
                 )
                 .join(', ')}
             </div>
@@ -290,7 +290,7 @@ function ProjectInfo({ project }: Props): ReactElement {
       {project.metadata.mainChallenge !== null && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
-            {t('manageProjects:mainChallenge')}
+            {tManageProjects('mainChallenge')}
           </div>
           <div className={styles.infoText}>
             {project.metadata.mainChallenge}
@@ -303,7 +303,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           <div style={{ display: 'flex' }}>
             <div className={styles.projectMoreInfo}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:siteOwnership')}
+                {tManageProjects('siteOwnership')}
               </div>
               <div className={styles.infoText}>
                 {ownerTypes.map((ownerType, index) => {
@@ -311,7 +311,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     <React.Fragment key={ownerType}>
                       {ownerType}
                       {index === ownerTypes.length - 2 ? (
-                        <> {t('manageProjects:and')} </>
+                        <> {tManageProjects('and')} </>
                       ) : index === ownerTypes.length - 1 ? (
                         '.'
                       ) : (
@@ -329,9 +329,9 @@ function ProjectInfo({ project }: Props): ReactElement {
                   {project.metadata.acquisitionYear !== null && (
                     <>
                       {project.metadata.siteOwnerName === null ? (
-                        <> {t('manageProjects:Since')} </>
+                        <> {tManageProjects('Since')} </>
                       ) : (
-                        <> {t('manageProjects:since')} </>
+                        <> {tManageProjects('since')} </>
                       )}{' '}
                       {project.metadata.acquisitionYear}
                     </>
@@ -349,7 +349,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           <div style={{ display: 'flex' }}>
             <div className={styles.projectMoreInfo}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:siteOwnership')}
+                {tManageProjects('siteOwnership')}
               </div>
               <div className={styles.infoText}>
                 {ownerTypes.map((ownerType, index) => {
@@ -357,7 +357,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     <React.Fragment key={ownerType}>
                       {ownerType}
                       {index === ownerTypes.length - 2 ? (
-                        <> {t('manageProjects:and')} </>
+                        <> {tManageProjects('and')} </>
                       ) : index === ownerTypes.length - 1 ? (
                         '.'
                       ) : (
@@ -374,9 +374,9 @@ function ProjectInfo({ project }: Props): ReactElement {
                   {project.metadata.acquisitionYear !== null && (
                     <>
                       {project.metadata.siteOwnerName ? (
-                        <> {t('manageProjects:Since')} </>
+                        <> {tManageProjects('Since')} </>
                       ) : (
-                        <> {t('manageProjects:since')} </>
+                        <> {tManageProjects('since')} </>
                       )}{' '}
                       {project.metadata.acquisitionYear}
                     </>
@@ -393,7 +393,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         project.metadata.degradationCause !== null && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:causeOfDegradation')}
+              {tManageProjects('causeOfDegradation')}
             </div>
             <div className={styles.infoText}>
               {project.metadata.degradationCause}
@@ -404,7 +404,7 @@ function ProjectInfo({ project }: Props): ReactElement {
       {project.metadata.motivation !== null && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
-            {t('manageProjects:whyThisSite')}
+            {tManageProjects('whyThisSite')}
           </div>
           <div className={styles.infoText}>{project.metadata.motivation}</div>
         </div>
@@ -413,7 +413,7 @@ function ProjectInfo({ project }: Props): ReactElement {
       {project.metadata.longTermPlan !== null && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
-            {t('manageProjects:longTermProtection')}
+            {tManageProjects('longTermProtection')}
           </div>
           <div className={styles.infoText}>{project.metadata.longTermPlan}</div>
         </div>
@@ -422,7 +422,7 @@ function ProjectInfo({ project }: Props): ReactElement {
       {project.certificates.length > 0 && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
-            {t('manageProjects:externalCertifications')}
+            {tManageProjects('externalCertifications')}
           </div>
 
           {project.certificates.map((certificate) => {
@@ -435,7 +435,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                   rel="noopener noreferrer"
                   href={getPDFFile('projectCertificate', certificate.pdf)}
                 >
-                  {t('common:view')}
+                  {tCommon('view')}
                 </a>
               </div>
             );
@@ -446,7 +446,7 @@ function ProjectInfo({ project }: Props): ReactElement {
       {project.expenses.length > 0 && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
-            {t('manageProjects:projectSpendingFinancial')}
+            {tManageProjects('projectSpendingFinancial')}
           </div>
 
           {project.expenses.map((expense) => {
@@ -477,7 +477,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                   ></div>
 
                   <span style={{ flexGrow: 1, textAlign: 'center', zIndex: 2 }}>
-                    {getFormatedCurrency(i18n.language, 'EUR', expense.amount)}
+                    {getFormatedCurrency(locale, 'EUR', expense.amount)}
                   </span>
 
                   <a
@@ -487,7 +487,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     href={getPDFFile('projectExpense', expense.pdf)}
                     style={{ zIndex: 2 }}
                   >
-                    {t('common:view')}
+                    {tCommon('view')}
                   </a>
                 </div>
               </div>
@@ -496,8 +496,6 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
     </div>
-  ) : (
-    <></>
   );
 }
 

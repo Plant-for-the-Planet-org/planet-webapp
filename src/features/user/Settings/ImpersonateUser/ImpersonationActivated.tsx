@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import styles from './ImpersonateUser.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -9,21 +9,21 @@ const ImpersonationActivated = () => {
   const { user, isImpersonationModeOn, setIsImpersonationModeOn, loadUser } =
     useUserProps();
 
-  const { push } = useRouter();
+  const router = useRouter();
 
   const exitImpersonation = () => {
     setIsImpersonationModeOn(false);
     localStorage.removeItem('impersonationData');
-    push(`/profile/impersonate-user`);
+    router.push(`/profile/impersonate-user`);
     loadUser();
   };
 
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
 
   return user && isImpersonationModeOn ? (
     <div className={styles.impersonationAlertContainer}>
       <div className={styles.impersonatingText}>
-        {t('me:targetUser', { impersonatedEmail: `<${user?.email}>` })}
+        {t('targetUser', { impersonatedEmail: `<${user?.email}>` })}
       </div>
 
       <div
@@ -33,7 +33,7 @@ const ImpersonationActivated = () => {
         <div>
           <LogoutIcon />
         </div>
-        <div className={styles.exit}>{t('me:exitImpersonation')}</div>
+        <div className={styles.exit}>{t('exitImpersonation')}</div>
       </div>
     </div>
   ) : null;

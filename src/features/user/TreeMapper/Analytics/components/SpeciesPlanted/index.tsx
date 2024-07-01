@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 import styles from './index.module.scss';
@@ -25,10 +25,8 @@ const getDownloadIcon = () => {
 };
 
 export const SpeciesPlanted = () => {
-  const {
-    i18n: { language },
-    t,
-  } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
+  const locale = useLocale();
 
   const { project, fromDate, toDate } = useAnalytics();
 
@@ -146,7 +144,7 @@ export const SpeciesPlanted = () => {
       labels: {
         show: true,
         formatter: function (val) {
-          return getFormattedNumber(language, val);
+          return getFormattedNumber(locale, val);
         },
       },
     },

@@ -3,8 +3,7 @@ import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
-import { useTranslation } from 'next-i18next';
-import { TFunction } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TransferDetails from './TransferDetails';
 import {
@@ -26,7 +25,9 @@ export function RecordHeader({
   index,
   isPlanetCash = false,
 }: HeaderProps): ReactElement {
-  const { t, i18n } = useTranslation(['me', 'common']);
+  const tMe = useTranslations('Me');
+  const locale = useLocale();
+  const tCommon = useTranslations('Common');
   const getRecordTitle = (): ReactElement => {
     let title: string;
     const BULLET_SEPARATOR = '\u2022';
@@ -38,11 +39,11 @@ export function RecordHeader({
           record.unitType || (record.purpose === 'trees' ? 'tree' : 'm2');
         // Sample title 1 => 5 Tree Gift . Yucatan,
         // Sample title 2 => 2 m² Donation . Sumatra
-        title = `${getFormattedNumber(i18n.language, record.quantity)} ${t(
-          `common:${displayedUnit}`,
+        title = `${getFormattedNumber(locale, record.quantity)} ${tCommon(
+          displayedUnit,
           { count: 1 }
         )} ${
-          record.details.giftRecipient ? t('me:gift') : t('me:donation')
+          record.details.giftRecipient ? tMe('gift') : tMe('donation')
         } ${BULLET_SEPARATOR} ${record.details.project}`;
         break;
       case 'bouquet':
@@ -51,7 +52,7 @@ export function RecordHeader({
         break;
       case 'planet-cash':
       default:
-        title = t(`me:${record.type}`);
+        title = tMe(record.type);
         break;
     }
 
@@ -81,14 +82,10 @@ export function RecordHeader({
       <div className={styles.right}>
         <p className={`${styles.top} ${styles[netAmountStatus]}`}>
           {netAmountStatus === 'outgoing' && '-'}
-          {getFormatedCurrency(
-            i18n.language,
-            record.currency,
-            record.netAmount
-          )}
+          {getFormatedCurrency(locale, record.currency, record.netAmount)}
         </p>
         <p className={`${styles.recordStatus} ${styles[record.status]}`}>
-          {t(`me:${record.status}`)}
+          {tMe(record.status)}
         </p>
       </div>
     </div>
@@ -100,40 +97,42 @@ interface DetailProps {
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
-  const { t, i18n } = useTranslation(['me', 'common']);
+  const tMe = useTranslations('Me');
+  const tCommon = useTranslations('Common');
+  const locale = useLocale();
 
   return (
     <>
       {record.status && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:status')}</p>
-          <p>{t(record.status)}</p>
+          <p className={styles.title}>{tMe('status')}</p>
+          <p>{tMe(record.status)}</p>
         </div>
       )}
       {record.created && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:created')}</p>
+          <p className={styles.title}>{tMe('created')}</p>
           <p>{formatDate(record.created)}</p>
         </div>
       )}
       {record.lastUpdate && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:lastUpdate')}</p>
+          <p className={styles.title}>{tMe('lastUpdate')}</p>
           <p>{formatDate(record.lastUpdate)}</p>
         </div>
       )}
       {record.details?.paymentDate && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:paymentDate')}</p>
+          <p className={styles.title}>{tMe('paymentDate')}</p>
           <p>{formatDate(record.details?.paymentDate)}</p>
         </div>
       )}
       {record.details?.paidAmount && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:paidAmount')}</p>
+          <p className={styles.title}>{tMe('paidAmount')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.paidAmount
             )}
@@ -142,10 +141,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.totalAmount && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:totalAmount')}</p>
+          <p className={styles.title}>{tMe('totalAmount')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.totalAmount
             )}
@@ -154,19 +153,19 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.donorName && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:donorName')}</p>
+          <p className={styles.title}>{tMe('donorName')}</p>
           <p>{record.details.donorName}</p>
         </div>
       )}
       {record.details?.method && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:method')}</p>
-          <p>{t(record.details.method)}</p>
+          <p className={styles.title}>{tMe('method')}</p>
+          <p>{tMe(record.details.method)}</p>
         </div>
       )}
       {record.details?.project && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:project')}</p>
+          <p className={styles.title}>{tMe('project')}</p>
           {record.projectGuid ? (
             <a title={record.details.project} href={`/${record.projectGuid}`}>
               {record.details.project.length > 42
@@ -184,26 +183,27 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.refundAmount && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:refundAmount')}</p>
+          <p className={styles.title}>{tMe('refundAmount')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.refundAmount
             )}
           </p>
         </div>
       )}
-      {record.details?.unitCost ? (
+      {(record.unitType === 'tree' || record.unitType === 'm2') &&
+      record.details?.unitCost ? (
         <div className={styles.singleDetail}>
           <p className={styles.title}>
-            {t('me:unitCost', {
-              unitType: t(`common:${record.unitType}`, { count: 1 }),
+            {tMe('unitCost', {
+              unitType: tCommon(record.unitType, { count: 1 }),
             })}
           </p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.unitCost
             )}
@@ -220,16 +220,16 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )} */}
       {record.reference && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:reference')}</p>
+          <p className={styles.title}>{tMe('reference')}</p>
           <p>{record.reference}</p>
         </div>
       )}
       {record.details?.fees?.disputeFee && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:disputeFee')}</p>
+          <p className={styles.title}>{tMe('disputeFee')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.fees.disputeFee
             )}
@@ -238,10 +238,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.fees?.planetFee && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:planetFee')}</p>
+          <p className={styles.title}>{tMe('planetFee')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.fees.planetFee
             )}
@@ -250,10 +250,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.fees?.transactionFee && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:transactionFee')}</p>
+          <p className={styles.title}>{tMe('transactionFee')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.fees.transactionFee
             )}
@@ -262,10 +262,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.fees?.transferFee && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('me:transferFee')}</p>
+          <p className={styles.title}>{tMe('transferFee')}</p>
           <p>
             {getFormatedCurrency(
-              i18n.language,
+              locale,
               record.currency,
               record.details.fees.transferFee
             )}
@@ -274,13 +274,13 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.giftOccasion && (
         <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
-          <p className={styles.title}>{t('me:giftOccasion')}</p>
+          <p className={styles.title}>{tMe('giftOccasion')}</p>
           <p>{record.details.giftOccasion}</p>
         </div>
       )}
       {record.details?.giftComment && (
         <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
-          <p className={styles.title}>{t('me:giftComment')}</p>
+          <p className={styles.title}>{tMe('giftComment')}</p>
           <p>{record.details.giftComment}</p>
         </div>
       )}
@@ -288,16 +288,14 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   );
 }
 
-export const showStatusNote = (
-  record: PaymentHistoryRecord,
-  t: TFunction
-): ReactElement => {
+export const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
+  const t = useTranslations('Me');
   const showDonationNote = (): string => {
     switch (record.details.method) {
       case 'stripe-sofort':
       case 'stripe-sepa_debit':
       case 'offline-offline':
-        return t(`me:donationNote.${record.details.method}`);
+        return t(`donationNote.${record.details.method}`);
       default:
         return '';
     }
@@ -307,7 +305,7 @@ export const showStatusNote = (
       return <p className={styles.donationNote}>{showDonationNote()}</p>;
     case 'in-dispute':
       return (
-        <p className={styles.donationNote}>{t('me:donationNote.in-dispute')}</p>
+        <p className={styles.donationNote}>{t('donationNote.in-dispute')}</p>
       );
     default:
       return <></>;
@@ -319,7 +317,7 @@ interface BankDetailsProps {
 }
 
 export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   return (
     <>
       {recipientBank?.bankName && (
@@ -407,7 +405,7 @@ export default function AccountRecord({
   record,
   isModal = false,
 }: Props): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
 
   const outerDivClasses = isModal
     ? styles.recordModal
@@ -415,7 +413,7 @@ export default function AccountRecord({
 
   const showCertificate = useMemo(() => {
     if (
-      (shouldEnableCertificate(record.purpose, record.unitType) &&
+      (shouldEnableCertificate(record.purpose) &&
         (record?.details?.donorCertificate ||
           record?.details?.giftCertificate)) ||
       record?.details?.taxDeductibleReceipt
@@ -463,7 +461,7 @@ export default function AccountRecord({
             {record.details?.account && (
               <TransferDetails account={record.details.account} />
             )}
-            {showStatusNote(record, t)}
+            {showStatusNote(record)}
             {showCertificate && (
               <>
                 <div className={styles.title}>{t('downloads')}</div>

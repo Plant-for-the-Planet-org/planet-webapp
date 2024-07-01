@@ -1,7 +1,7 @@
 import SharePlatforms from './SharePlatforms';
 import { Button } from '@mui/material';
 import { ShareSvg } from '../../../../../../../public/assets/images/ProfilePageIcons';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { UserFeaturesProps } from '../../../../../common/types/profile';
 import theme from '../../../../../../theme/themeProperties';
 import myProfileStyle from '../../../styles/MyProfile.module.scss';
@@ -12,7 +12,7 @@ const Share = ({
   handleShare,
 }: UserFeaturesProps) => {
   const { light } = theme;
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   return (
     <>
       {showSocialButton ? (
@@ -27,7 +27,7 @@ const Share = ({
           onClick={handleShare}
           className={myProfileStyle.shareButton}
         >
-          {showSocialButton ? '' : t('profile:feature.share')}
+          {showSocialButton ? '' : t('feature.share')}
         </Button>
       )}
     </>

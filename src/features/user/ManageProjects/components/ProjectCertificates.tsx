@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useDropzone } from 'react-dropzone';
 import {
   deleteAuthenticatedRequest,
@@ -56,7 +56,7 @@ function ProjectCertificates({
   setIsUploadingData,
   userLang,
 }: ProjectCertificatesProps): ReactElement {
-  const { t, ready } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -165,9 +165,9 @@ function ProjectCertificates({
     },
     onDropRejected: (err) => {
       if (err[0].errors[0].code === 'file-too-large') {
-        setErrorMessage(t('manageProjects:fileSizeLimit'));
+        setErrorMessage(t('fileSizeLimit'));
       } else if (err[0].errors[0].code === 'file-invalid-type') {
-        setErrorMessage(t('manageProjects:filePDFOnly'));
+        setErrorMessage(t('filePDFOnly'));
       }
     },
   });
@@ -198,11 +198,11 @@ function ProjectCertificates({
   const tenYearsAgo = new Date();
   tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
 
-  return ready ? (
+  return (
     <div className={styles.certificateContainer}>
       {showToggle && (
         <FormControlLabel
-          label={t('manageProjects:isCertified')}
+          label={t('isCertified')}
           labelPlacement="end"
           control={
             <Switch
@@ -231,7 +231,7 @@ function ProjectCertificates({
                 <div className={styles.reportPDFDetails}>
                   <p style={{ fontWeight: 'bold' }}>
                     {' '}
-                    {t('manageProjects:certifiedBy')} {report.certifierName}{' '}
+                    {t('certifiedBy')} {report.certifierName}{' '}
                   </p>
                   <p>{report.issueDate} </p>
                 </div>
@@ -261,7 +261,7 @@ function ProjectCertificates({
               defaultValue=""
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('manageProjects:certifierName')}
+                  label={t('certifierName')}
                   variant="outlined"
                   onChange={onChange}
                   onBlur={onBlur}
@@ -287,12 +287,12 @@ function ProjectCertificates({
                 name="issueDate"
                 control={control}
                 rules={{
-                  required: t('manageProjects:certificationDateValidation'),
+                  required: t('certificationDateValidation'),
                 }}
                 defaultValue={new Date()}
                 render={({ field: { onChange, value } }) => (
                   <MuiDatePicker
-                    label={t('manageProjects:issueDate')}
+                    label={t('issueDate')}
                     renderInput={(props) => (
                       <TextField
                         {...props}
@@ -326,12 +326,8 @@ function ProjectCertificates({
           {errors.certifierName || errors.issueDate || certifierName === '' ? (
             <div style={{ opacity: 0.35 }}>
               <div className={styles.fileUploadContainer}>
-                <Button variant="contained">
-                  {t('manageProjects:uploadCertificate')}
-                </Button>
-                <p style={{ marginTop: '18px' }}>
-                  {t('manageProjects:dragIn')}
-                </p>
+                <Button variant="contained">{t('uploadCertificate')}</Button>
+                <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
               </div>
             </div>
           ) : (
@@ -339,11 +335,9 @@ function ProjectCertificates({
               <div className={styles.fileUploadContainer}>
                 <Button variant="contained">
                   <input {...getInputProps()} />
-                  {t('manageProjects:uploadCertificate')}
+                  {t('uploadCertificate')}
                 </Button>
-                <p style={{ marginTop: '18px' }}>
-                  {t('manageProjects:dragInPdf')}
-                </p>
+                <p style={{ marginTop: '18px' }}>{t('dragInPdf')}</p>
               </div>
             </div>
           )}
@@ -357,16 +351,12 @@ function ProjectCertificates({
           className={styles.formFieldLarge}
           onClick={() => setShowForm(true)}
         >
-          <p className={styles.inlineLinkButton}>
-            {t('manageProjects:addCertificate')}
-          </p>
+          <p className={styles.inlineLinkButton}>{t('addCertificate')}</p>
         </div>
       ) : (
         <></>
       )}
     </div>
-  ) : (
-    <></>
   );
 }
 

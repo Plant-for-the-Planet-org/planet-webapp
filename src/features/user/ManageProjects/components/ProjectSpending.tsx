@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -60,7 +60,8 @@ export default function ProjectSpending({
   userLang,
   projectGUID,
 }: ProjectSpendingProps): ReactElement {
-  const { t, ready } = useTranslation(['manageProjects', 'common']);
+  const tManageProjects = useTranslations('ManageProjects');
+  const tCommon = useTranslations('Common');
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const {
     formState: { errors, isDirty },
@@ -137,9 +138,9 @@ export default function ProjectSpending({
     },
     onDropRejected: (err) => {
       if (err[0].errors[0].code === 'file-too-large') {
-        setErrorMessage(t('manageProjects:fileSizeLimit'));
+        setErrorMessage(tManageProjects('fileSizeLimit'));
       } else if (err[0].errors[0].code === 'file-invalid-type') {
-        setErrorMessage(t('manageProjects:filePDFOnly'));
+        setErrorMessage(tManageProjects('filePDFOnly'));
       }
     },
   });
@@ -189,7 +190,7 @@ export default function ProjectSpending({
 
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-  return ready ? (
+  return (
     <CenteredContainer>
       <StyledForm>
         {uploadedFiles && uploadedFiles.length > 0 ? (
@@ -247,7 +248,7 @@ export default function ProjectSpending({
                   control={control}
                   defaultValue={new Date()}
                   rules={{
-                    required: t('manageProjects:spendingYearValidation'),
+                    required: tManageProjects('spendingYearValidation'),
                   }}
                   render={({ field: { onChange, value } }) => (
                     <MuiDatePicker
@@ -255,7 +256,7 @@ export default function ProjectSpending({
                       openTo="year"
                       value={value}
                       onChange={onChange}
-                      label={t('manageProjects:spendingYear')}
+                      label={tManageProjects('spendingYear')}
                       renderInput={(props) => (
                         <TextField
                           {...props}
@@ -279,12 +280,12 @@ export default function ProjectSpending({
                 name="amount"
                 control={control}
                 rules={{
-                  required: t('manageProjects:spendingAmountValidation'),
+                  required: tManageProjects('spendingAmountValidation'),
                   validate: (value) => value > 0,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('manageProjects:spendingAmount')}
+                    label={tManageProjects('spendingAmount')}
                     placeholder="0"
                     type="number"
                     variant="outlined"
@@ -315,10 +316,10 @@ export default function ProjectSpending({
               <div style={{ opacity: 0.35 }}>
                 <div className={styles.fileUploadContainer}>
                   <Button variant="contained">
-                    {t('manageProjects:uploadReport')}
+                    {tManageProjects('uploadReport')}
                   </Button>
                   <p style={{ marginTop: '18px' }}>
-                    {t('manageProjects:dragInPdf')}
+                    {tManageProjects('dragInPdf')}
                   </p>
                 </div>
               </div>
@@ -327,10 +328,10 @@ export default function ProjectSpending({
                 <div className={styles.fileUploadContainer}>
                   <Button variant="contained">
                     <input {...getInputProps()} />
-                    {t('manageProjects:uploadReport')}
+                    {tManageProjects('uploadReport')}
                   </Button>
                   <p style={{ marginTop: '18px' }}>
-                    {t('manageProjects:dragInPdf')}
+                    {tManageProjects('dragInPdf')}
                   </p>
                 </div>
               </div>
@@ -342,7 +343,7 @@ export default function ProjectSpending({
             onClick={() => setShowForm(true)}
           >
             <p className={styles.inlineLinkButton}>
-              {t('manageProjects:addAnotherYear')}
+              {tManageProjects('addAnotherYear')}
             </p>
           </div>
         )}
@@ -360,7 +361,7 @@ export default function ProjectSpending({
             className="formButton"
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToSites')}</p>
+            <p>{tManageProjects('backToSites')}</p>
           </Button>
 
           <Button
@@ -377,7 +378,7 @@ export default function ProjectSpending({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('common:continue')
+              tCommon('continue')
             )}
           </Button>
 
@@ -386,12 +387,10 @@ export default function ProjectSpending({
             variant="contained"
             onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
           >
-            {t('manageProjects:skip')}
+            {tManageProjects('skip')}
           </Button>
         </div>
       </StyledForm>
     </CenteredContainer>
-  ) : (
-    <></>
   );
 }

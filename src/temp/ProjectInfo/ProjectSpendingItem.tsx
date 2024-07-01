@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ProjectInfo.module.scss';
 import { ProjectExpense } from '@planet-sdk/common';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
-import { useTranslation } from 'next-i18next';
+import { useLocale } from 'next-intl';
 import DownloadButton from './DownloadButton';
 import DownloadsLabel from './DownloadsLabel';
 
@@ -13,7 +13,7 @@ interface Props {
 const ProjectSpendingItem = ({ spendings }: Props) => {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 481;
-  const { i18n } = useTranslation();
+  const locale = useLocale();
 
   return (
     <div className={styles.spendingsContainer}>
@@ -31,7 +31,7 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
             </DownloadsLabel>
           )}
 
-          <div>{getFormatedCurrency(i18n.language, 'EUR', expense.amount)}</div>
+          <div>{getFormatedCurrency(locale, 'EUR', expense.amount)}</div>
 
           <DownloadButton />
         </div>
