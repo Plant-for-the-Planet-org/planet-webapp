@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import CustomControlledCarousel from '../../../../common/CustomControlledCarousel';
 import sdgElements from './SDGCardsData';
+import { useTranslations } from 'next-intl';
 
 const SDGCardList = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const t = useTranslations('Profile');
   const settings = {
     infinite: true,
     slidesToShow: 7,
@@ -63,9 +65,7 @@ const SDGCardList = () => {
   return (
     <CustomControlledCarousel
       carouselData={sdgElements}
-      carouselTitle={
-        'Restoring Ecosystems & Fighting the Climate Crisis for the SDGs'
-      }
+      carouselTitle={t('infoAndCtaContainer.sdgCardsSectionHeading')}
       settings={settings}
       currentSlide={currentSlide}
       setCurrentSlide={setCurrentSlide}
