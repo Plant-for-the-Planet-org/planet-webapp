@@ -365,83 +365,48 @@ export const NoContributionsIcon = () => {
   );
 };
 
-export const CarouselNextIcon = ({ color }) => {
+export const CarouselNextIcon = ({ color }: IconProps) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="57"
-      height="57"
-      viewBox="0 0 57 57"
-      fill="none"
-    >
-      <g filter="url(#filter0_d_2139_2767)">
-        <rect
-          x="37"
-          y="37"
-          width="28"
-          height="28"
-          rx="14"
-          transform="rotate(180 37 37)"
-          fill={color}
-        />
-        <path
-          d="M16.4375 22.125C15.9543 22.125 15.5625 22.5168 15.5625 23C15.5625 23.4832 15.9543 23.875 16.4375 23.875V22.125ZM30.1812 23.6187C30.5229 23.277 30.5229 22.723 30.1812 22.3813L24.6128 16.8128C24.271 16.4711 23.717 16.4711 23.3753 16.8128C23.0336 17.1545 23.0336 17.7085 23.3753 18.0503L28.3251 23L23.3753 27.9497C23.0336 28.2915 23.0336 28.8455 23.3753 29.1872C23.717 29.5289 24.271 29.5289 24.6128 29.1872L30.1812 23.6187ZM16.4375 23.875H29.5625V22.125H16.4375V23.875Z"
-          fill="white"
-        />
-      </g>
-      <defs>
-        <filter
-          id="filter0_d_2139_2767"
-          x="0.250002"
-          y="0.250002"
-          width="56"
-          height="56"
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset dx="5.25" dy="5.25" />
-          <feGaussianBlur stdDeviation="7" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_2139_2767"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_dropShadow_2139_2767"
-            result="shape"
-          />
-        </filter>
-      </defs>
-    </svg>
-  );
-};
-
-export const CarouselPrevIcon = ({ color }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
       width="28"
       height="28"
       viewBox="0 0 28 28"
       fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="28"
+        y="28"
+        width="28"
+        height="28"
+        rx="14"
+        transform="rotate(180 28 28)"
+        fill={color}
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M15.5179 8.23864L20.7588 13.4239C21.0804 13.7421 21.0804 14.2579 20.7588 14.5761L15.5179 19.7614C15.1963 20.0795 14.6748 20.0795 14.3532 19.7614C14.0316 19.4432 14.0316 18.9273 14.3532 18.6091L18.1883 14.8148H7.82353C7.36871 14.8148 7 14.45 7 14C7 13.55 7.36871 13.1852 7.82353 13.1852H18.1883L14.3532 9.39091C14.0316 9.07272 14.0316 8.55683 14.3532 8.23864C14.6748 7.92045 15.1963 7.92045 15.5179 8.23864Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
+export const CarouselPrevIcon = ({ color }: IconProps) => {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <rect width="28" height="28" rx="14" fill={color} />
       <path
-        d="M20.5625 14.875C21.0457 14.875 21.4375 14.4832 21.4375 14C21.4375 13.5168 21.0457 13.125 20.5625 13.125L20.5625 14.875ZM6.81878 13.3813C6.47707 13.723 6.47707 14.277 6.81878 14.6187L12.3872 20.1872C12.729 20.5289 13.283 20.5289 13.6247 20.1872C13.9664 19.8455 13.9664 19.2915 13.6247 18.9497L8.67494 14L13.6247 9.05025C13.9664 8.70854 13.9664 8.15453 13.6247 7.81282C13.283 7.47111 12.729 7.47111 12.3872 7.81282L6.81878 13.3813ZM20.5625 13.125L7.4375 13.125L7.4375 14.875L20.5625 14.875L20.5625 13.125Z"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.4821 19.7614L7.24121 14.5761C6.9196 14.2579 6.9196 13.7421 7.24121 13.4239L12.4821 8.23864C12.8037 7.92045 13.3252 7.92045 13.6468 8.23864C13.9684 8.55683 13.9684 9.07272 13.6468 9.39091L9.8117 13.1852L20.1765 13.1852C20.6313 13.1852 21 13.55 21 14C21 14.45 20.6313 14.8148 20.1765 14.8148L9.8117 14.8148L13.6468 18.6091C13.9684 18.9273 13.9684 19.4432 13.6468 19.7614C13.3252 20.0795 12.8037 20.0795 12.4821 19.7614Z"
         fill="white"
       />
     </svg>

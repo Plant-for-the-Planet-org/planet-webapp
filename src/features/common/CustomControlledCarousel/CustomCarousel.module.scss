@@ -1,0 +1,28 @@
+.customCarouselContainer {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+}
+
+.carouselHeader {
+    display: flex;
+}
+
+.titleContainer {
+    text-align: center;
+    flex: 3;
+    font-size: 22px;
+}
+
+.arrowContainer {
+    display: flex;
+    gap: 14px;
+    button {
+        filter: drop-shadow(5.25px 5.25px 14px rgba(0, 0, 0, 0.25));
+    }
+
+    svg {
+        overflow: visible;
+        width: 100%;
+    }
+}

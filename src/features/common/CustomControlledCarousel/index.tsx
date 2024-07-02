@@ -6,6 +6,7 @@ import {
   CarouselNextIcon,
   CarouselPrevIcon,
 } from '../../../../public/assets/images/icons/ProfilePageV2Icons';
+import styles from './CustomCarousel.module.scss';
 
 const SampleArrow = (props) => {
   const { onClick, disabled, direction } = props;
@@ -39,11 +40,11 @@ const CustomControlledCarousel = ({
   const sliderRef = useRef(null);
 
   const settings = {
-    dots: true,
     infinite: false,
     slidesToShow: 5,
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
+    swipeToSlide: true,
   };
 
   useEffect(() => {
@@ -69,25 +70,19 @@ const CustomControlledCarousel = ({
   };
 
   return (
-    <div>
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}
-      >
-        <h2 style={{ marginRight: '10px' }}>{carouselTitle}</h2>
-        <SampleArrow
-          onClick={slidePrev}
-          disabled={currentSlide === 0}
-          direction="prev"
-        />
-        <SampleArrow
-          onClick={slideNext}
-          // to fix
-          disabled={
-            sliderRef.current?.innerSlider?.state.currentSlide >=
-            sliderRef.current?.innerSlider?.state.slideCount - 1
-          }
-          direction="next"
-        />
+    <div className={styles.customCarouselContainer}>
+      <div className={styles.carouselHeader}>
+        <div className={styles.titleContainer}>
+          <h2>{carouselTitle}</h2>
+        </div>
+        <div className={styles.arrowContainer}>
+          <SampleArrow
+            onClick={slidePrev}
+            disabled={currentSlide === 0}
+            direction="prev"
+          />
+          <SampleArrow onClick={slideNext} direction="next" />
+        </div>
       </div>
       <Slider ref={sliderRef} {...settings}>
         {carouselData.map((item) => item)}
