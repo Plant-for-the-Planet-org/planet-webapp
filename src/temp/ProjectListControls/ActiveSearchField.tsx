@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from 'react';
-import { SearchTextField } from './CustomSearchTextField';
+import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../icons/CrossIcon';
 import style from './Search.module.scss';
 import SearchIcon from '../icons/SearchIcon';
@@ -14,7 +14,7 @@ const ActiveSearchField = ({
   setIsFilterOpen,
 }: ActiveSearchFieldProps) => {
   const [input, setInput] = useState('');
-  const t = useTranslations('ProjectDetails');
+  const t = useTranslations('AllProjects');
 
   const resetSearchTab = () => {
     setInput('');

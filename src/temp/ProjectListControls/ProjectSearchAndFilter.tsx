@@ -1,16 +1,16 @@
 import SearchIcon from '../icons/SearchIcon';
 import FilterIcon from '../icons/FilterIcon';
-import style from '../Project/Search.module.scss';
+import style from './Search.module.scss';
 
-interface ProjectSelectionFeaturesProps {
+interface ProjectSearchAndFilterProps {
   isFilterOpen: boolean;
   setIsFilterOpen: (value: boolean) => void;
 }
 
-const ProjectSelectionFeatures = ({
+const ProjectSearchAndFilter = ({
   setIsFilterOpen,
   isFilterOpen,
-}: ProjectSelectionFeaturesProps) => {
+}: ProjectSearchAndFilterProps) => {
   return (
     <div className={style.projectFeaturesMobile}>
       <button>
@@ -23,4 +23,4 @@ const ProjectSelectionFeatures = ({
   );
 };
 
-export default ProjectSelectionFeatures;
+export default ProjectSearchAndFilter;

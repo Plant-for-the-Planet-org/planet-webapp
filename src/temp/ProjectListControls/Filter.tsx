@@ -34,7 +34,7 @@ export const FilterDropDown = ({
   return (
     <>
       {availableFilters.length > 0 ? (
-        <div className={style.projectListMainContainer}>
+        <div className={style.filterListContainer}>
           <button
             className={style.filterButton}
             onClick={() => handleFilterSelection(undefined)}
@@ -50,7 +50,7 @@ export const FilterDropDown = ({
             </div>
             <hr className={style.hrLine} />
           </button>
-          <div className={style.container}>
+          <div>
             {availableFilters.map((filterItem, index) => {
               return (
                 <button

@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
-import style from '../Project/Search.module.scss';
+import style from './Search.module.scss';
 import ProjectListTabForMobile from './ProjectListTabForMobile';
-import ProjectSelectionFeatures from './ProjectSelectionFeatures';
-import LocationListTabs from './LocationAndListTabs';
+import ProjectSearchAndFilter from './ProjectSearchAndFilter';
+import ViewModeTabs from './ViewModeTabs';
 import { FilterDropDown } from './Filter';
-import { Classification } from './Filter';
+import { ProjectListControlsProps } from '.';
 
-export interface SearchTabForMobileProps {
-  filterApplied: Classification | undefined;
-  setFilterApplied: (newValue: Classification | undefined) => void;
-  availableFilters: Classification[];
-  numberOfProject: number;
-}
-
-export const SearchTabForMobile = ({
+const ProjectListControlForMobile = ({
   filterApplied,
   setFilterApplied,
   availableFilters,
-  numberOfProject,
-}: SearchTabForMobileProps) => {
+  projectCount,
+  topProjectCount,
+}: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
     'topProjects'
@@ -27,16 +21,17 @@ export const SearchTabForMobile = ({
     <>
       <div className={style.searchTabForMobile}>
         <ProjectListTabForMobile
-          numberOfProject={numberOfProject}
+          projectCount={projectCount}
+          topProjectCount={topProjectCount}
           tabSelected={tabSelected}
           setTabSelected={setTabSelected}
           setIsFilterOpen={setIsFilterOpen}
         />
-        <ProjectSelectionFeatures
+        <ProjectSearchAndFilter
           setIsFilterOpen={setIsFilterOpen}
           isFilterOpen={isFilterOpen}
         />
-        <LocationListTabs setIsFilterOpen={setIsFilterOpen} />
+        <ViewModeTabs setIsFilterOpen={setIsFilterOpen} />
       </div>
       {isFilterOpen && (
         <FilterDropDown
@@ -49,4 +44,4 @@ export const SearchTabForMobile = ({
   );
 };
 
-export default SearchTabForMobile;
+export default ProjectListControlForMobile;

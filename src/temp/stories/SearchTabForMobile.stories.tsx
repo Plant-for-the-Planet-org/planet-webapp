@@ -1,7 +1,7 @@
-import SearchTabForMobile from '../Project/SearchTabForMobile';
+import SearchTabForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FilterState } from './ProjectFilter.stories';
-import { Classification } from '../Project/Filter';
+import { Classification } from '../ProjectListControls/Filter';
 
 const meta: Meta<typeof SearchTabForMobile> = {
   component: SearchTabForMobile,
@@ -28,7 +28,8 @@ const setFilterApplied = (value: Classification | undefined) => {
 
 export const Default: Story = {
   args: {
-    numberOfProject: 56,
+    topProjectCount: 56,
+    projectCount: 20,
     filterApplied: filterState.filterApplied,
     setFilterApplied: setFilterApplied,
     availableFilters: filterState.availableFilters,

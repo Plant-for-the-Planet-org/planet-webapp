@@ -5,20 +5,28 @@ import StarIcon from '../icons/StarIcon';
 import Tabs from '@mui/material/Tabs';
 import style from './Search.module.scss';
 import { useTranslations } from 'next-intl';
-import CustomTab from './CustomTab';
+import CustomMuiTab from './CustomMuiTab';
 import themeProperties from '../../theme/themeProperties';
 import ActiveSearchField from './ActiveSearchField';
 import { FilterDropDown } from './Filter';
-import { SearchTabForMobileProps } from './SearchTabForMobile';
+import { Classification } from './Filter';
 
-type SearchTabProps = Omit<SearchTabForMobileProps, 'numberOfProject'>;
+export interface ProjectListControlsProps {
+  filterApplied: Classification | undefined;
+  setFilterApplied: (newValue: Classification | undefined) => void;
+  availableFilters: Classification[];
+  projectCount: number;
+  topProjectCount: number;
+}
 
-const SearchProject = ({
+const ProjectListControls = ({
   filterApplied,
   setFilterApplied,
   availableFilters,
-}: SearchTabProps) => {
-  const t = useTranslations('ProjectDetails');
+  projectCount,
+  topProjectCount,
+}: ProjectListControlsProps) => {
+  const t = useTranslations('AllProjects');
   const [isSearching, setIsSearching] = useState(false);
   const [value, setValue] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -45,7 +53,7 @@ const SearchProject = ({
                 sx: { backgroundColor: `${primaryColorNew}` },
               }}
             >
-              <CustomTab
+              <CustomMuiTab
                 icon={
                   <StarIcon
                     width={'16px'}
@@ -55,7 +63,7 @@ const SearchProject = ({
                 label={
                   <div className={style.projectLabel}>
                     {t.rich('topProjects', {
-                      noOfProjects: '34',
+                      noOfProjects: topProjectCount,
                       projectCountContainer: (chunks) => (
                         <span className={style.projectCount}>{chunks}</span>
                       ),
@@ -64,12 +72,12 @@ const SearchProject = ({
                 }
                 sx={{ fontWeight: '700' }}
               />
-              <CustomTab
+              <CustomMuiTab
                 sx={{ fontWeight: '700' }}
                 label={
                   <div className={style.projectLabel}>
                     {t.rich('allProjects', {
-                      noOfProjects: '556',
+                      noOfProjects: projectCount,
                       projectCountContainer: (chunks) => (
                         <span className={style.projectCount}>{chunks}</span>
                       ),
@@ -108,4 +116,4 @@ const SearchProject = ({
   );
 };
 
-export default SearchProject;
+export default ProjectListControls;

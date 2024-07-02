@@ -38,6 +38,7 @@ const themeProperties = {
     dividerColor: '#d5d5d5',
     secondaryColor: '#ecb641',
     highlightBackground: '#4d5153',
+    backgroundColor: '#fff',
     light: '#fff',
     dark: '#000',
     dangerColor: '#e74c3c',

@@ -1,14 +1,14 @@
-import SearchProject from '../Project/SearchProject';
+import ProjectListControls from '../ProjectListControls';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FilterState } from './ProjectFilter.stories';
-import { Classification } from '../Project/Filter';
+import { Classification } from '../ProjectListControls/Filter';
 
-const meta: Meta<typeof SearchProject> = {
-  component: SearchProject,
+const meta: Meta<typeof ProjectListControls> = {
+  component: ProjectListControls,
 };
 
 export default meta;
-type Story = StoryObj<typeof SearchProject>;
+type Story = StoryObj<typeof ProjectListControls>;
 
 const filterState: FilterState = {
   availableFilters: [
@@ -31,5 +31,7 @@ export const Default: Story = {
     filterApplied: filterState.filterApplied,
     setFilterApplied: setFilterApplied,
     availableFilters: filterState.availableFilters,
+    topProjectCount: 20,
+    projectCount: 10,
   },
 };

@@ -2,7 +2,7 @@ import { Tab, styled } from '@mui/material';
 import themeProperties from '../../theme/themeProperties';
 
 const { light, primaryColorNew } = themeProperties;
-const CustomTab = styled(Tab)(() => ({
+const CustomMuiTab = styled(Tab)(() => ({
   flexDirection: 'row',
   textTransform: 'none',
   padding: '14px 0px',
@@ -13,4 +13,4 @@ const CustomTab = styled(Tab)(() => ({
   },
 }));
 
-export default CustomTab;
+export default CustomMuiTab;

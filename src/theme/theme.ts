@@ -83,7 +83,7 @@ const getGlobalStyles = async () => {
       --divider-color: ${light.dividerColor};
       --secondary-color: ${light.secondaryColor};
       --background-color-dark: ${light.backgroundColorDark};
-      --background-color: ${light.light};
+      --background-color: ${light.backgroundColor};
       --highlight-background: ${light.highlightBackground};
       --light: ${light.light};
       --dark: ${light.dark};

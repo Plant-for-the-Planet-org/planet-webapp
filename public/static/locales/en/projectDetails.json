@@ -1,10 +1,5 @@
 {
   "ProjectDetails": {
-    "allProjects": "All (<projectCountContainer>{noOfProjects}</projectCountContainer>)",
-    "searchProject": "Search Project",
-    "topProjects": "Top Projects (<projectCountContainer>{noOfProjects}</projectCountContainer>)",
-    "list": "List",
-    "map": "Map",
     "satelliteAnalysis": "Satellite Analysis",
     "diveIntoTheProject": "Dive into the project",
     "firePopupText": "We only display fires that occurred within the past 12 months.",

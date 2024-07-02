@@ -12,6 +12,11 @@
       "urban-planting": "Urban Planting",
       "other-planting": "Other Planting",
       "all": "All Projects"
-    }
+    },
+    "allProjects": "All (<projectCountContainer>{noOfProjects}</projectCountContainer>)",
+    "searchProject": "Search Project",
+    "topProjects": "Top Projects (<projectCountContainer>{noOfProjects}</projectCountContainer>)",
+    "list": "List",
+    "map": "Map"
   }
 }

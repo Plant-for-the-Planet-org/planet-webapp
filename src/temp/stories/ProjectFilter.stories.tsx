@@ -1,4 +1,4 @@
-import Filter, { Classification } from '../Project/Filter';
+import Filter, { Classification } from '../ProjectListControls/Filter';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Filter> = {

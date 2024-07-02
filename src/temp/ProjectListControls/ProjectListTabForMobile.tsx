@@ -1,12 +1,13 @@
 import StarIcon from '../icons/StarIcon';
-import style from '../Project/Search.module.scss';
+import style from './Search.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 import { ReactNode } from 'react';
 
 type ProjectCollection = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
-  numberOfProject: number;
+  projectCount: number;
+  topProjectCount: number;
   tabSelected: ProjectCollection;
   setTabSelected: (value: ProjectCollection) => void;
   setIsFilterOpen: (value: boolean) => void;
@@ -17,13 +18,14 @@ interface TabItemProps {
   label: ReactNode;
 }
 const ProjectListTabForMobile = ({
-  numberOfProject,
+  projectCount,
+  topProjectCount,
   tabSelected,
   setTabSelected,
   setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
   const { light, dark } = themeProperties;
-  const t = useTranslations('ProjectDetails');
+  const t = useTranslations('AllProjects');
 
   const selectTab = (tab: 'topProjects' | 'allProjects') => {
     setTabSelected(tab);
@@ -61,7 +63,7 @@ const ProjectListTabForMobile = ({
           />
         }
         label={t.rich('topProjects', {
-          noOfProjects: numberOfProject,
+          noOfProjects: topProjectCount,
           projectCountContainer: (chunks) => (
             <span className={style.projectCount}>{chunks}</span>
           ),
@@ -71,7 +73,7 @@ const ProjectListTabForMobile = ({
         tab={'allProjects'}
         icon={undefined}
         label={t.rich('allProjects', {
-          noOfProjects: numberOfProject,
+          noOfProjects: projectCount,
           projectCountContainer: (chunks) => (
             <span className={style.projectCount}>{chunks}</span>
           ),

@@ -1,37 +1,35 @@
 import themeProperties from '../../theme/themeProperties';
 import { useState, ReactNode } from 'react';
-import style from '../Project/Search.module.scss';
+import style from './Search.module.scss';
 import ListIcon from '../icons/ListIcon';
 import LocationIcon from '../icons/LocationIcon';
 
-interface LocationListTabsProps {
+interface ViewModeTabsProps {
   setIsFilterOpen: (value: boolean) => void;
 }
 
 interface TabItemProps {
-  tab: 'list' | 'map';
+  selectedTab: 'list' | 'map';
   icon: ReactNode;
   label: 'list' | 'map';
 }
-const LocationListTabs = ({ setIsFilterOpen }: LocationListTabsProps) => {
+const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
   const { dark, light } = themeProperties;
-  const [secondTabSelected, setSecondTabSelected] = useState<'list' | 'map'>(
-    'list'
-  );
+  const [selectedMode, setSelectedMode] = useState<'list' | 'map'>('list');
   const selectTab = (tab: 'list' | 'map') => {
     setIsFilterOpen(false);
-    setSecondTabSelected(tab);
+    setSelectedMode(tab);
   };
 
-  const TabItem = ({ tab, icon, label }: TabItemProps) => {
+  const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
     return (
       <button
         className={`${
-          secondTabSelected === tab
+          selectedMode === selectedTab
             ? style.selectedTabButton
             : style.unselectedTabButton
         }`}
-        onClick={() => selectTab(tab)}
+        onClick={() => selectTab(selectedTab)}
       >
         {icon}
         <div className={style.label}>{label}</div>
@@ -42,27 +40,25 @@ const LocationListTabs = ({ setIsFilterOpen }: LocationListTabsProps) => {
   return (
     <div className={style.tabContainer}>
       <TabItem
-        tab="list"
+        selectedTab="list"
         icon={
           <ListIcon
             width={14}
             color={
-              secondTabSelected === 'list'
-                ? `${light.light}`
-                : `${dark.darkNew}`
+              selectedMode === 'list' ? `${light.light}` : `${dark.darkNew}`
             }
           />
         }
         label={'list'}
       />
       <TabItem
-        tab="map"
+        selectedTab="map"
         icon={
           <LocationIcon
             width={9}
             height={13}
             color={
-              secondTabSelected === 'map' ? `${light.light}` : `${dark.darkNew}`
+              selectedMode === 'map' ? `${light.light}` : `${dark.darkNew}`
             }
           />
         }
@@ -72,4 +68,4 @@ const LocationListTabs = ({ setIsFilterOpen }: LocationListTabsProps) => {
   );
 };
 
-export default LocationListTabs;
+export default ViewModeTabs;
