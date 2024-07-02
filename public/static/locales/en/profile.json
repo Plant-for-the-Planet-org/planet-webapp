@@ -108,6 +108,28 @@
     },
     "unitType": {
       "m2": "m²"
+    }, 
+    "infoAndCtaContainer": {
+      "sdgCardsSectionHeading": "Restoring Ecosystems & Fighting the Climate Crisis for the SDGs",
+      "sdgCardTitle": {
+        "noPoverty": "no poverty",
+        "zeroHunger": "zero hunger",
+        "goodHealthAndWellBeing": "Good health and Well-being",
+        "qualityEducation": "Quality Education",
+        "genderEquality": "Gender equality",
+        "cleanWater": "CLEANWATER AND SANITATION",
+        "cleanEnergy": "AFFORDABLE AND CLEAN ENERGY",
+        "economicGrowth": "decent work and economic growth",
+        "industryInfrastructureAndInnovation": "INDUSTRY, INNOVATION AND INFRASTRUCTURE", 
+        "reducedInequalities": "recent inequalities",
+        "sustainableCities": "SUSTAINABLE CITIES AND COMMUNITIES",
+        "responsibleConsumptionAndProduction": "RESPONSIBLE CONSUMPTION AND PRODUCTION",
+        "climateAction": "climate action",
+        "lifeBelowWater": "life below water",
+        "lifeOnLand": "life on land",
+        "peace": "PEACE, JUSTICE AND STRONG INSTITUTIONS",
+        "partnership": "PARTNERSHIPS FOR THE GOALS"
+      }
     }
   }
 }

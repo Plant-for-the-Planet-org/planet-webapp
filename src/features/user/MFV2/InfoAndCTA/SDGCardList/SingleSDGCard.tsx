@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../InfoAndCta.module.scss';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   title: string;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const SingleSDGCard = ({ title, icon, index, color }: Props) => {
+  const t = useTranslations('Profile');
   return (
     <div
       className={styles.singleSDGCardContainer}
@@ -18,7 +20,9 @@ const SingleSDGCard = ({ title, icon, index, color }: Props) => {
         <span className={styles.singleCardIndex}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <h3 className={styles.singleCardTitle}>{title}</h3>
+        <h3 className={styles.singleCardTitle}>
+          {t(`infoAndCtaContainer.sdgCardTitle.${title}`)}
+        </h3>
       </div>
       <div className={styles.singleCardIcon}>{icon}</div>
     </div>
