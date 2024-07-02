@@ -8,3 +8,42 @@
 .donorCircleInvitationContainer, .SDGCardListContainer {
     width: 100%;
 }
+
+.singleSDGCardContainer {
+    height: 130px;
+    width: 130px;
+    display: flex;
+    flex-direction: column;
+    color: #FFF;   
+    gap: 2.37px; 
+    padding: 8.2px 15.1px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: space-between;    
+    text-align: center;
+}
+
+.singleCardIndex {
+    font-weight: 700;
+    font-size: 16.72px;
+}
+
+.singleCardTitle {
+    font-size: 10px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.singleCardIcon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    padding-bottom: 10px;
+    max-height: 48px;
+    max-width: 48px;
+    svg {
+       width: 100%;
+       height: 100%;
+    }
+}
