@@ -75,7 +75,7 @@ const CustomControlledCarousel = ({
         },
       },
       {
-        breakpoint: 430,
+        breakpoint: 460,
         settings: {
           centerMode: false,
           slidesToShow: 1,
