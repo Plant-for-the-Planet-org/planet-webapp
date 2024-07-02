@@ -1,4 +1,3 @@
-import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 import { useState, ReactNode } from 'react';
 import style from '../Project/Search.module.scss';
@@ -15,7 +14,6 @@ interface TabItemProps {
   label: 'list' | 'map';
 }
 const LocationListTabs = ({ setIsFilterOpen }: LocationListTabsProps) => {
-  const t = useTranslations('ProjectDetails');
   const { dark, light } = themeProperties;
   const [secondTabSelected, setSecondTabSelected] = useState<'list' | 'map'>(
     'list'
@@ -29,7 +27,9 @@ const LocationListTabs = ({ setIsFilterOpen }: LocationListTabsProps) => {
     return (
       <button
         className={`${
-          secondTabSelected === tab ? style.activeButton : style.inActiveButton
+          secondTabSelected === tab
+            ? style.selectedTabButton
+            : style.unselectedTabButton
         }`}
         onClick={() => selectTab(tab)}
       >
@@ -40,7 +40,7 @@ const LocationListTabs = ({ setIsFilterOpen }: LocationListTabsProps) => {
   };
 
   return (
-    <div className={style.listAndLocationContainer}>
+    <div className={style.tabContainer}>
       <TabItem
         tab="list"
         icon={

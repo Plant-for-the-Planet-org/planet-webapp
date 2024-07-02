@@ -35,8 +35,8 @@ const ProjectListTabForMobile = ({
       <button
         className={
           tabSelected === tab
-            ? style.projectActiveButton
-            : style.projectInActiveButton
+            ? style.selectedTabButton
+            : style.unselectedTabButton
         }
         onClick={() => selectTab(tab)}
       >
@@ -47,7 +47,7 @@ const ProjectListTabForMobile = ({
   };
 
   return (
-    <div className={style.projectListTabs}>
+    <div className={style.tabContainer}>
       <TabItem
         tab={'topProjects'}
         icon={

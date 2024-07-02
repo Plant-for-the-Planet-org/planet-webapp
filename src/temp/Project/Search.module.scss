@@ -51,16 +51,15 @@
   max-width: 328px;
 }
 
-.projectListTabs {
-  display: flex;
-  border: none;
+.tabContainer {
   border-radius: 5px;
-  overflow: hidden;
   border: 2px solid $primaryColorNew;
+  display: flex;
+  overflow: hidden;
 }
 
-.projectActiveButton,
-.projectInActiveButton {
+.selectedTabButton,
+.unselectedTabButton {
   padding: 8px;
   display: flex;
   justify-content: center;
@@ -85,12 +84,12 @@
   }
 }
 
-.projectActiveButton {
+.selectedTabButton {
   background: $primaryColorNew;
   color: $light;
 }
 
-.projectInActiveButton {
+.unselectedTabButton {
   background: $light;
 }
 
@@ -101,28 +100,9 @@
   width: 50px;
 }
 
-.listAndLocationContainer {
-  border-radius: 5px;
-  border: 2px solid $primaryColorNew;
-  display: flex;
-}
-.activeButton,
-.inActiveButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 7px;
-  padding: 8px;
-}
-
 .label {
   font-weight: 700;
   font-size: $fontXXXSmallNew;
-}
-
-.activeButton {
-  background: $primaryColorNew;
-  color: $light;
 }
 
 .iconsContainer {
