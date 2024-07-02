@@ -108,6 +108,9 @@
 
 .singleInvitationCardContainer {
     flex:1;
+    img {
+        width: 100%;
+    }
 }
 
 .singleInvitationCardTitle {
@@ -135,7 +138,7 @@
 
     .inviationCardsContainer {
         flex-direction: column;
-        gap: 10px
+        gap: 10px;
     }
 
     .donorCircleInvitationHeader {
@@ -143,11 +146,15 @@
         gap: 10px;
         align-items: center;
         justify-content: center;
+        .headerTitle {
+            text-align: center;
+        }
     }
 
     .singleInvitationCardTitle {
         font-size: 20px;
         max-width: 100%;
+        margin-top: 10px;
     }
 
     .singleInvitationCardText {
