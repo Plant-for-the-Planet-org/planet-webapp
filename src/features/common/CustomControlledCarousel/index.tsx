@@ -45,6 +45,43 @@ const CustomControlledCarousel = ({
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
     swipeToSlide: true,
+    responsive: [
+      {
+        breakpoint: 850,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 700,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 620,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 570,
+        settings: {
+          slidesToShow: 1,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 430,
+        settings: {
+          centerMode: false,
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   useEffect(() => {
