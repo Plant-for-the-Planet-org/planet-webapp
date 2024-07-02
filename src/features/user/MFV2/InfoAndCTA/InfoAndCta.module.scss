@@ -9,6 +9,12 @@
     width: 100%;
 }
 
+.donorCircleInvitationContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
 .singleSDGCardContainer {
     height: 130px;
     width: 130px;
@@ -92,3 +98,60 @@
         font-weight: 600;
     }
 }
+
+.inviationCardsContainer {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    justify-content: center;
+}
+
+.singleInvitationCardContainer {
+    flex:1;
+}
+
+.singleInvitationCardTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    max-width: 250px;
+
+    @media screen and (max-width: 900px) {
+        font-size: 16px;
+    } 
+}
+
+.singleInvitationCardText {
+    font-size: 14px;
+    color: #333;
+    max-width: 250px;
+
+    @media screen and (max-width: 900px) {
+        font-size: 12px;
+    } 
+}
+
+@media screen and (max-width: 700px) {
+
+    .inviationCardsContainer {
+        flex-direction: column;
+        gap: 10px
+    }
+
+    .donorCircleInvitationHeader {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .singleInvitationCardTitle {
+        font-size: 20px;
+        max-width: 100%;
+    }
+
+    .singleInvitationCardText {
+        font-size: 18px;
+        max-width: 100%;
+    }
+} 

@@ -1,10 +1,24 @@
 import React from 'react';
 import styles from '../InfoAndCta.module.scss';
+import DonorCircleInvitationHeader from './DonorCircleInvitationHeader';
+import donorCircleCardsData from './donorCircleCardsData';
+import SingleInvitationCard from './SingleInvitationCard';
 
 const DonorCircleInvitation = () => {
   return (
     <div className={styles.donorCircleInvitationContainer}>
-      <h2 className={styles.headerTitle}>DonorCircleInvitationContainer</h2>
+      <DonorCircleInvitationHeader />
+      <div className={styles.inviationCardsContainer}>
+        {donorCircleCardsData.map((item, index) => (
+          <SingleInvitationCard
+            image={item.image}
+            title={item.title}
+            subtext={item.subtext}
+            link={item.link}
+            key={index}
+          />
+        ))}
+      </div>
     </div>
   );
 };
