@@ -4,10 +4,11 @@ import CrossIcon from '../icons/CrossIcon';
 import style from './Search.module.scss';
 import SearchIcon from '../icons/SearchIcon';
 import { useTranslations } from 'next-intl';
+import { SetState } from '../../features/common/types/common';
 
 interface ActiveSearchFieldProps {
-  setIsSearching: (value: boolean) => void;
-  setIsFilterOpen: (value: boolean) => void;
+  setIsSearching: SetState<boolean>;
+  setIsFilterOpen: SetState<boolean>;
 }
 const ActiveSearchField = ({
   setIsSearching,
