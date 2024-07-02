@@ -30,59 +30,19 @@ const SampleArrow = (props) => {
 interface CustomControlledCarouselProps {
   carouselTitle: string;
   carouselData: ReactElement[];
+  settings: any;
+  currentSlide: number;
+  setCurrentSlide: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CustomControlledCarousel = ({
   carouselTitle,
   carouselData,
+  settings,
+  currentSlide,
+  setCurrentSlide,
 }: CustomControlledCarouselProps) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
-
-  const settings = {
-    infinite: false,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    afterChange: (current: number) => setCurrentSlide(current),
-    swipeToSlide: true,
-    responsive: [
-      {
-        breakpoint: 850,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 700,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 620,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        },
-      },
-      {
-        breakpoint: 570,
-        settings: {
-          slidesToShow: 1,
-          centerMode: true,
-        },
-      },
-      {
-        breakpoint: 460,
-        settings: {
-          centerMode: false,
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
 
   useEffect(() => {
     if (sliderRef.current) {
