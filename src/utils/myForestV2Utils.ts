@@ -145,23 +145,23 @@ export const extractAndClassifyProjectData = (
  * @param personal - contributions from donations made (including gifts given)
  * @returns object containing giftPercentage and personalPercentage
  */
-export const getAchievedTarget = (
+export const calculateGraphSegmentLengths = (
   target: number,
   gift: number,
   personal: number
-): { giftPercentage: number; personalPercentage: number } => {
+): { giftSegmentPercentage: number; personalSegmentPercentage: number } => {
   if (target > gift + personal) {
-    const giftPercentage = (gift / target) * 100;
-    const personalPercentage = (personal / target) * 100;
-    return { giftPercentage, personalPercentage };
+    const giftSegmentPercentage = (gift / target) * 100;
+    const personalSegmentPercentage = (personal / target) * 100;
+    return { giftSegmentPercentage, personalSegmentPercentage };
   } else {
     const total = gift + personal;
     if (total === 0) {
-      return { giftPercentage: 0, personalPercentage: 0 };
+      return { giftSegmentPercentage: 0, personalSegmentPercentage: 0 };
     } else {
-      const giftPercentage = (gift / total) * 100;
-      const personalPercentage = (personal / total) * 100;
-      return { giftPercentage, personalPercentage };
+      const giftSegmentPercentage = (gift / total) * 100;
+      const personalSegmentPercentage = (personal / total) * 100;
+      return { giftSegmentPercentage, personalSegmentPercentage };
     }
   }
 };

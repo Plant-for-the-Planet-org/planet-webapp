@@ -7,8 +7,8 @@ export type StackedBarGraphProps = Omit<
 >;
 
 const StackedBarGraph = ({
-  personalPercentage,
-  giftPercentage,
+  personalSegmentPercentage,
+  giftSegmentPercentage,
   target,
 }: StackedBarGraphProps) => {
   const totalAchievedPercentage = giftPercentage + personalPercentage;
