@@ -82,3 +82,13 @@
         max-width: 60px;
      }
 }
+
+.donorCircleInvitationHeader {
+    display: flex;
+    justify-content: space-between;
+
+    .headerTitle {
+        font-size: 22px;
+        font-weight: 600;
+    }
+}
