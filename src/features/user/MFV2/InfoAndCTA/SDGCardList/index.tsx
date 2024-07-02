@@ -5,17 +5,28 @@ import sdgElements from './SDGCardsData';
 const SDGCardList = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const settings = {
-    infinite: false,
-    slidesToShow: 5,
+    infinite: true,
+    slidesToShow: 7,
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
     swipeToSlide: true,
     responsive: [
       {
+        breakpoint: 1100,
+        settings: {
+          slidesToShow: 6,
+        },
+      },
+      {
+        breakpoint: 990,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
         breakpoint: 850,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1,
         },
       },
       {
@@ -40,7 +51,7 @@ const SDGCardList = () => {
         },
       },
       {
-        breakpoint: 460,
+        breakpoint: 380,
         settings: {
           centerMode: false,
           slidesToShow: 1,
