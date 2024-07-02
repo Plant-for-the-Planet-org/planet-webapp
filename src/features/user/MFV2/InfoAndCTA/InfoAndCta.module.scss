@@ -115,6 +115,10 @@
     flex:1;
     img {
         width: 100%;
+        transition: transform 0.2s ease-in-out;
+    }
+    img:hover {
+        transform: scale(1.02);
     }
 }
 
