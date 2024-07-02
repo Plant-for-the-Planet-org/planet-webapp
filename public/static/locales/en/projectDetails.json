@@ -1,8 +1,8 @@
 {
   "ProjectDetails": {
-    "allProjects": "All(<projectCountContainer>{noOfProjects}</projectCountContainer>)",
+    "allProjects": "All (<projectCountContainer>{noOfProjects}</projectCountContainer>)",
     "searchProject": "Search Project",
-    "topProjects": "Top Projects(<projectCountContainer>{noOfProjects}</projectCountContainer>)",
+    "topProjects": "Top Projects (<projectCountContainer>{noOfProjects}</projectCountContainer>)",
     "list": "List",
     "map": "Map",
     "satelliteAnalysis": "Satellite Analysis",
