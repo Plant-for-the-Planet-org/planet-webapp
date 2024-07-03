@@ -45,9 +45,13 @@ const PointMarkers = ({
     setIsCursorOnPopup,
   };
 
+  const handleMouseLeaveFromMarker = () => {
+    setTimeout(() => setIsCursorOnMarker(false), 2000);
+  };
+
   return (
     <div
-      onMouseLeave={() => setIsCursorOnMarker(false)}
+      onMouseLeave={handleMouseLeaveFromMarker}
       onMouseEnter={() => setIsCursorOnMarker(true)}
     >
       <Marker
