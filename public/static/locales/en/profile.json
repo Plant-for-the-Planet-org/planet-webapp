@@ -129,7 +129,17 @@
         "lifeOnLand": "life on land",
         "peace": "PEACE, JUSTICE AND STRONG INSTITUTIONS",
         "partnership": "PARTNERSHIPS FOR THE GOALS"
-      }
+      },
+      "pfpDonorCircleMember": "Plant-for-the-Planet donor circle member",
+      "becomeAMember": "Become a Member",
+      "youthEmpowermentTitle": "Youth Empowerment",
+      "youthEmpowermentSubtext": "children & youth to fight the climate crisis",
+      "restorationToolsTitle": "Restoration Tools",
+      "restorationToolsSubtext": "to fund, restore, monitor & conserve forests",
+      "restorationAdviceTitle": "Restoration Advice",
+      "restorationAdviceSubtext": "& Research",
+      "restorationAndConservationTitle": "Forest Restoration & Conservation",
+      "restorationAndConservationSubtext": "in Mexico, Ghana & Spain"
     }
   }
 }
