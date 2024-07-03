@@ -5,7 +5,6 @@ import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForestV2 } from '../../../../common/Layout/MyForestContextV2';
-import { ViewportProps } from '../../../../common/types/map';
 import {
   DonationProperties,
   DonationSuperclusterProperties,
@@ -13,10 +12,14 @@ import {
   ProfilePageType,
   RegistrationSuperclusterProperties,
 } from '../../../../common/types/myForestv2';
+import * as turf from '@turf/turf';
+import { SetState } from '../../../../common/types/common';
+import { ViewState } from 'react-map-gl-v7/maplibre';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
-  viewport: ViewportProps;
+  viewState: ViewState;
+  setViewState: SetState<ViewState>;
   profilePageType: ProfilePageType;
   supportedTreecounter: string | undefined;
 }
@@ -33,7 +36,8 @@ const isCluster = (
 
 const Markers = ({
   mapRef,
-  viewport,
+  viewState,
+  setViewState,
   profilePageType,
   supportedTreecounter,
 }: MarkersProps) => {
@@ -44,23 +48,24 @@ const Markers = ({
     registrationSuperclusterResponse,
     setRegistrationSuperclusterResponse,
   ] = useState<PointFeature<RegistrationSuperclusterProperties>[]>([]);
+  const [isCenteredOnce, setIsCenteredOnce] = useState(false);
 
   useEffect(() => {
-    if (donationGeojson && viewport) {
+    if (donationGeojson && viewState) {
       const superclusterResponseForDonatedTree = getClusterGeojson(
-        viewport,
+        viewState,
         mapRef,
         donationGeojson,
         undefined
       ) as PointFeature<DonationSuperclusterProperties>[];
       setDonationSuperclusterResponse(superclusterResponseForDonatedTree);
     }
-  }, [viewport, donationGeojson]);
+  }, [viewState, donationGeojson]);
 
   useEffect(() => {
-    if (registrationGeojson && viewport) {
+    if (registrationGeojson && viewState) {
       const superclusterResponseForRegisteredTree = getClusterGeojson(
-        viewport,
+        viewState,
         mapRef,
         registrationGeojson,
         undefined
@@ -69,7 +74,49 @@ const Markers = ({
         superclusterResponseForRegisteredTree
       );
     }
-  }, [viewport, registrationGeojson]);
+  }, [viewState, registrationGeojson]);
+
+  // Centers the map after the initial data is loaded
+  useEffect(() => {
+    if (!isCenteredOnce) {
+      const combinedSuperclusterResponse = [
+        ...donationSuperclusterResponse,
+        ...registrationSuperclusterResponse,
+      ];
+
+      if (combinedSuperclusterResponse.length === 0) {
+        return;
+      }
+
+      const markersGeojson = {
+        type: 'FeatureCollection',
+        features: combinedSuperclusterResponse.filter(
+          (feature) =>
+            feature.geometry &&
+            feature.geometry.type === 'Point' &&
+            Array.isArray(feature.geometry.coordinates) &&
+            feature.geometry.coordinates.length === 2
+        ),
+      };
+
+      // Find the center
+      const centerPoint = turf.center(markersGeojson);
+      setViewState({
+        ...viewState,
+        latitude: centerPoint.geometry?.coordinates[1] || 0,
+        longitude: centerPoint.geometry?.coordinates[0] || 0,
+      });
+      setIsCenteredOnce(true);
+    }
+  }, [
+    donationSuperclusterResponse,
+    registrationSuperclusterResponse,
+    isCenteredOnce,
+    setIsCenteredOnce,
+    viewState,
+    setViewState,
+  ]);
+
   return donationSuperclusterResponse && registrationSuperclusterResponse ? (
     <>
       {donationSuperclusterResponse.map((geoJson, key) => {
@@ -77,7 +124,7 @@ const Markers = ({
           <DonationClusterMarker
             key={geoJson.id}
             superclusterResponse={geoJson}
-            viewport={viewport}
+            viewState={viewState}
             mapRef={mapRef}
           />
         ) : (

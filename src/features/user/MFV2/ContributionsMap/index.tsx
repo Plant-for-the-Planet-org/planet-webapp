@@ -9,6 +9,7 @@ import { useRef, MutableRefObject } from 'react';
 import style from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
 import { ProfilePageType } from '../../../common/types/myForestv2';
+import { ViewState } from 'react-map-gl-v7';
 
 interface ContributionsMapProps {
   profilePageType: ProfilePageType;
@@ -42,10 +43,13 @@ function ContributionsMap({
     maxZoom: 15,
   });
 
-  const [viewState, setViewState] = useState({
+  const [viewState, setViewState] = useState<ViewState>({
     longitude: 0,
     latitude: 0,
     zoom: 1,
+    bearing: 0,
+    pitch: 0,
+    padding: { top: 0, bottom: 0, left: 0, right: 0 },
   });
 
   useEffect(() => {
@@ -69,7 +73,8 @@ function ContributionsMap({
       >
         <Markers
           mapRef={mapRef}
-          viewport={viewState}
+          viewState={viewState}
+          setViewState={setViewState}
           profilePageType={profilePageType}
           supportedTreecounter={supportedTreecounter}
         />
