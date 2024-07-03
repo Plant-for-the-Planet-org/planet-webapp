@@ -8,11 +8,23 @@ const SDGCardList = () => {
   const t = useTranslations('Profile');
   const settings = {
     infinite: true,
-    slidesToShow: 7,
+    slidesToShow: 9,
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
     swipeToSlide: true,
     responsive: [
+      {
+        breakpoint: 1360,
+        settings: {
+          slidesToShow: 8,
+        },
+      },
+      {
+        breakpoint: 1230,
+        settings: {
+          slidesToShow: 7,
+        },
+      },
       {
         breakpoint: 1100,
         settings: {
