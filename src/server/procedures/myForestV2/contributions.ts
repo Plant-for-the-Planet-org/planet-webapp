@@ -329,20 +329,25 @@ function populateContributedCountries(
 }
 
 function getLatestPlantDate(value: MyContributionsMapItem): Date {
-  if (
-    value.type === 'project' &&
-    value.latestContributions &&
-    value.latestContributions.length > 0
-  ) {
-    return new Date(value.latestContributions[0].plantDate);
-  } else if (
-    value.type === 'registration' &&
-    value.contributions &&
-    value.contributions.length > 0
-  ) {
-    return new Date(value.contributions[0].plantDate);
-  } else {
-    return new Date(0); // Return earliest possible date if no plantDate found to make items without a date appear last
+  try {
+    if (
+      value.type === 'project' &&
+      value.latestContributions &&
+      value.latestContributions.length > 0
+    ) {
+      return new Date(value.latestContributions[0].plantDate);
+    } else if (
+      value.type === 'registration' &&
+      value.contributions &&
+      value.contributions.length > 0
+    ) {
+      return new Date(value.contributions[0].plantDate);
+    } else {
+      return new Date(0); // Return earliest possible date if no plantDate found to make items without a date appear last
+    }
+  } catch (e) {
+    console.log(e);
+    return new Date(0);
   }
 }
 
