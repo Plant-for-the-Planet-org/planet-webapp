@@ -46,7 +46,7 @@ const PointMarkers = ({
   };
 
   const handleMouseLeaveFromMarker = () => {
-    setTimeout(() => setIsCursorOnMarker(false), 2000);
+    setTimeout(() => setIsCursorOnMarker(false), 800);
   };
 
   return (
