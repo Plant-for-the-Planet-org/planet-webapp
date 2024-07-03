@@ -21,7 +21,9 @@ const CommonHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
   return (
     <div
-      className={`navContainer ${isImpersonationModeOn && `impersonationMode`}`}
+      className={`navContainer ${
+        isImpersonationModeOn ? 'impersonationMode' : ''
+      }`}
     >
       <BrandLogo />
       <MenuItems />
