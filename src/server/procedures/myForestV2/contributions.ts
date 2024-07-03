@@ -43,7 +43,7 @@ function initializeStats(): ContributionStats {
 /**
  * @returns List of projects (with basic details - purpose, id, guid) that are eligible to receive donations
  */
-async function fetchProjects() {
+async function fetchProjects(): Promise<BriefProjectQueryResult[]> {
   const projects = await prisma.$queryRaw<BriefProjectQueryResult[]>`
 			SELECT 
 				id,
@@ -62,7 +62,9 @@ async function fetchProjects() {
   return projects;
 }
 
-async function fetchContributions(profileIds: number[]) {
+async function fetchContributions(
+  profileIds: number[]
+): Promise<ContributionsQueryResult[]> {
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
 			SELECT 
 				c.guid,
@@ -94,7 +96,7 @@ async function fetchContributions(profileIds: number[]) {
   return contributions;
 }
 
-async function fetchGifts(profileIds: number[]) {
+async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
 			SELECT 
 				round((g.value)/100, 2) as quantity, 
@@ -128,7 +130,7 @@ function handleRegistrationContribution(
   myContributionsMap: Map<string, MyContributionsMapItem>,
   registrationLocationsMap: Map<string, MapLocation>,
   project: BriefProjectQueryResult | null
-) {
+): void {
   // Updates myContributionsMap
   myContributionsMap.set(contribution.guid, {
     type: 'registration',
@@ -173,7 +175,7 @@ function handleDonationContribution(
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
   projectLocationsMap: Map<string, MapLocation>
-) {
+): void {
   // Initialize data
   const donationData: SingleDonation = {
     dataType: 'donation',
@@ -253,7 +255,7 @@ function handleGiftContribution(
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
   projectLocationsMap: Map<string, MapLocation>
-) {
+): void {
   // Initialize data
   const giftData: SingleGiftReceived = {
     dataType: 'receivedGift',
@@ -304,7 +306,7 @@ function handleGiftContribution(
 
 function mergeAndSortLatestContributions(
   singleProject: MyContributionsSingleProject
-) {
+): void {
   singleProject.latestContributions = [
     ...(singleProject.latestDonations || []),
     ...(singleProject.latestGifts || []),
@@ -321,7 +323,7 @@ function populateContributedCountries(
   country: string | undefined,
   projectCountry: string | undefined,
   contributedCountries: ContributionStats['contributedCountries']
-) {
+): void {
   const contributedCountry = country || projectCountry;
   if (contributedCountry) contributedCountries.add(contributedCountry);
 }
