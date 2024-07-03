@@ -21,8 +21,7 @@ const CommonHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
   return (
     <div
-      className={`mainNavContainer`}
-      style={{ top: isImpersonationModeOn ? 49 : 0 }}
+      className={`navContainer ${isImpersonationModeOn && `impersonationMode`}`}
     >
       <BrandLogo />
       <MenuItems />
@@ -56,10 +55,10 @@ export default function NavbarComponent() {
   return embed === 'true' ? (
     <></>
   ) : tenantConfig ? (
-    <>
+    <div className="mainNavContainer">
       <ImpersonationStatusHeader />
       <CommonHeader />
-    </>
+    </div>
   ) : (
     <></>
   );

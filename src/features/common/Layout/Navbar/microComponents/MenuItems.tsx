@@ -7,17 +7,17 @@ import { useState, useEffect } from 'react';
 import AboutUsSubMenu from './AboutUsSubMenu';
 import { SetState } from '../../../types/common';
 
-type Submenu = Omit<SingleLink, 'loggedInTitle' | 'subMenu'>;
-interface SingleLink {
+type Submenu = Omit<navLinkOptions, 'subMenu' | 'loggedInTitle'>;
+interface navLinkOptions {
   title: string;
   onclick: string;
   visible: boolean;
-  subMenu: Submenu[];
+  subMenu: Submenu;
   loggedInTitle: string | undefined;
 }
-interface MenuItem {
-  link: string;
-  SingleLink: SingleLink;
+interface MenuItemProps {
+  navLink: string;
+  navLinkOptions: navLinkOptions;
   isMobile: boolean;
   menu: boolean;
   setMenu: SetState<boolean>;
@@ -36,10 +36,17 @@ const useWidth = () => {
   return width;
 };
 
-const MenuItem = ({ link, SingleLink, isMobile, menu, setMenu }: MenuItem) => {
+const MenuItem = ({
+  navLink,
+  navLinkOptions,
+  isMobile,
+  menu,
+  setMenu,
+}: MenuItemProps) => {
   const router = useRouter();
   const t = useTranslations('Common');
-  const hasSubMenu = SingleLink.subMenu && SingleLink.subMenu.length > 0;
+  const hasSubMenu =
+    navLinkOptions.subMenu && navLinkOptions.subMenu.length > 0;
 
   const handleClick = () => {
     if (isMobile && hasSubMenu) {
@@ -60,46 +67,55 @@ const MenuItem = ({ link, SingleLink, isMobile, menu, setMenu }: MenuItem) => {
   };
 
   const isActive = () => {
-    if (link === 'donate') {
-      return (
-        router.pathname === '/' ||
-        router.pathname === '/[p]' ||
-        router.pathname === '/[p]/[id]' ||
-        router.pathname === '/sites/[slug]/[locale]' ||
-        router.pathname === '/sites/[slug]/[locale]/[p]' ||
-        router.pathname === '/sites/[slug]/[locale]/[p]/[id]'
-      );
+    const donatePaths = [
+      '/',
+      '/[p]',
+      '/[p]/[id]',
+      '/sites/[slug]/[locale]',
+      '/sites/[slug]/[locale]/[p]',
+      '/sites/[slug]/[locale]/[p]/[id]',
+    ];
+
+    const linkPaths = {
+      home: '/sites/[slug]/[locale]/home',
+      leaderboard: '/sites/[slug]/[locale]/all',
+      homeRoot: '/sites/[slug]/[locale]',
+    };
+
+    if (navLink === 'donate') {
+      return donatePaths.includes(router.pathname);
     } else {
       return (
-        (router.pathname === '/sites/[slug]/[locale]' && link === 'home') ||
-        (router.pathname === '/sites/[slug]/[locale]/all' &&
-          link === 'leaderboard')
+        (router.pathname === linkPaths.home && navLink === 'home') ||
+        (router.pathname === linkPaths.leaderboard &&
+          navLink === 'leaderboard') ||
+        (router.pathname === linkPaths.homeRoot && navLink === 'home')
       );
     }
   };
 
-  return SingleLink.visible ? (
+  return navLinkOptions.visible ? (
     <div
       className={`${hasSubMenu ? 'subMenu' : ''}`}
       onClick={handleClick}
       onMouseOver={handleMouseOver}
       onMouseLeave={handleMouseLeave}
-      key={link}
+      key={navLink}
     >
       <Link
         prefetch={false}
-        href={isMobile && hasSubMenu ? router.asPath : SingleLink.onclick}
+        href={isMobile && hasSubMenu ? router.asPath : navLinkOptions.onclick}
       >
-        {SingleLink.title !== 'signIn' && (
+        {navLinkOptions.title !== 'signIn' && (
           <div className={`linkContainer`}>
             <p className={isActive() ? 'active_icon' : ''}>
-              {t(SingleLink.title)}
+              {t(navLinkOptions.title)}
             </p>
           </div>
         )}
       </Link>
       <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
-        {hasSubMenu && <AboutUsSubMenu subMenu={SingleLink.subMenu} />}
+        {hasSubMenu && <AboutUsSubMenu subMenu={navLinkOptions.subMenu} />}
       </div>
     </div>
   ) : null;
@@ -110,8 +126,8 @@ const MenuItems = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [menu, setMenu] = useState(false);
   const links = Object.keys(tenantConfig?.config?.header?.items || {});
-
   const width = useWidth();
+
   useEffect(() => {
     setIsMobile(width < 768);
   }, [width]);
@@ -119,14 +135,15 @@ const MenuItems = () => {
   return tenantConfig ? (
     <div className={'menuItems'}>
       {links
-        .filter((link) => link !== 'shop')
-        .map((link) => {
-          const SingleLink = tenantConfig.config.header.items[link];
+        .filter((navLink) => navLink !== 'shop' && navLink !== 'me')
+        .map((navLink) => {
+          const navLinkOptions = tenantConfig.config.header.items[navLink];
+
           return (
             <MenuItem
-              key={link}
-              link={link}
-              SingleLink={SingleLink}
+              key={navLink}
+              navLink={navLink}
+              navLinkOptions={navLinkOptions}
               isMobile={isMobile}
               menu={menu}
               setMenu={setMenu}

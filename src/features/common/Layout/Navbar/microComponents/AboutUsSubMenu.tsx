@@ -8,7 +8,7 @@ export interface SubMenu {
   visible: boolean;
 }
 export interface AboutUsSubMenuProp {
-  subMenu: SubMenu[];
+  subMenu: SubMenu;
 }
 
 const AboutUsSubMenu = ({ subMenu }: AboutUsSubMenuProp) => {
