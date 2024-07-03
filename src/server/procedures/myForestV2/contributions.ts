@@ -326,6 +326,41 @@ function populateContributedCountries(
   if (contributedCountry) contributedCountries.add(contributedCountry);
 }
 
+function getLatestPlantDate(value: MyContributionsMapItem): Date {
+  if (
+    value.type === 'project' &&
+    value.latestContributions &&
+    value.latestContributions.length > 0
+  ) {
+    return new Date(value.latestContributions[0].plantDate);
+  } else if (
+    value.type === 'registration' &&
+    value.contributions &&
+    value.contributions.length > 0
+  ) {
+    return new Date(value.contributions[0].plantDate);
+  } else {
+    return new Date(0); // Return earliest possible date if no plantDate found to make items without a date appear last
+  }
+}
+
+function getSortedContributionsMap(
+  myContributionsMap: Map<string, MyContributionsMapItem>
+): Map<string, MyContributionsMapItem> {
+  // Convert map to array of entries
+  const entries = Array.from(myContributionsMap.entries());
+
+  // Sort entries by plantDate of first contribution or latestContribution
+  entries.sort(([_keyA, valueA], [_keyB, valueB]) => {
+    const dateA = getLatestPlantDate(valueA);
+    const dateB = getLatestPlantDate(valueB);
+    return dateB.getTime() - dateA.getTime(); // Sort in descending order (most recent first)
+  });
+
+  // Create a new sorted map
+  return new Map(entries);
+}
+
 export const contributionsProcedure = procedure
   .input(
     z.object({
@@ -437,11 +472,14 @@ export const contributionsProcedure = procedure
       }
     });
 
+    const sortedContributionsMap =
+      getSortedContributionsMap(myContributionsMap);
+
     console.log(new Date().toLocaleString(), 'ending contributionsProcedure');
 
     return {
       stats,
-      myContributionsMap,
+      myContributionsMap: sortedContributionsMap,
       registrationLocationsMap,
       projectLocationsMap,
     };
