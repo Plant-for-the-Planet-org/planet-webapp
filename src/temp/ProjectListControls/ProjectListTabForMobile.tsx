@@ -13,7 +13,7 @@ interface ProjectListTabForMobileProps {
   setIsFilterOpen: (value: boolean) => void;
 }
 interface TabItemProps {
-  tab: 'topProjects' | 'allProjects';
+  selectedTab: 'topProjects' | 'allProjects';
   icon: ReactNode | undefined;
   label: ReactNode;
 }
@@ -32,15 +32,15 @@ const ProjectListTabForMobile = ({
     setIsFilterOpen(false);
   };
 
-  const TabItem = ({ tab, icon, label }: TabItemProps) => {
+  const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
     return (
       <button
         className={
-          tabSelected === tab
+          tabSelected === selectedTab
             ? style.selectedTabButton
             : style.unselectedTabButton
         }
-        onClick={() => selectTab(tab)}
+        onClick={() => selectTab(selectedTab)}
       >
         <div className={style.starIconContainer}>{icon}</div>
         <div className={style.label}>{label}</div>
@@ -51,7 +51,7 @@ const ProjectListTabForMobile = ({
   return (
     <div className={style.tabContainer}>
       <TabItem
-        tab={'topProjects'}
+        selectedTab="topProjects"
         icon={
           <StarIcon
             width={'12px'}
@@ -70,7 +70,7 @@ const ProjectListTabForMobile = ({
         })}
       />
       <TabItem
-        tab={'allProjects'}
+        selectedTab="allProjects"
         icon={undefined}
         label={t.rich('allProjects', {
           noOfProjects: projectCount,

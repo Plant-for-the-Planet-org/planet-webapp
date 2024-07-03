@@ -38,7 +38,7 @@ const ProjectListControls = ({
   };
   return (
     <>
-      <div className={style.searchBarMainConatiner}>
+      <div className={style.searchBarMainContainer}>
         {isSearching ? (
           <ActiveSearchField
             setIsSearching={setIsSearching}

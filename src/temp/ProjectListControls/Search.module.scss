@@ -1,5 +1,5 @@
 @import '../../theme/theme';
-.searchBarMainConatiner {
+.searchBarMainContainer {
   background-color: $light;
   height: 47px;
   border-radius: 12px;
@@ -60,7 +60,7 @@
 
 .selectedTabButton,
 .unselectedTabButton {
-  padding: 8px;
+  padding: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,7 +72,7 @@
   }
   > .label {
     font-weight: 700;
-    font-size: $fontXXXSmallNew;
+    font-size: $fontXXSmall;
     display: flex;
     .projectCount {
       font-weight: 400;
@@ -80,7 +80,7 @@
   }
   .noOfProject {
     font-weight: 400;
-    font-size: $fontXXXSmallNew;
+    font-size: $fontXXSmall;
     margin-left: 1px;
   }
 }
@@ -103,7 +103,7 @@
 
 .label {
   font-weight: 700;
-  font-size: $fontXXXSmallNew;
+  font-size: $fontXXSmall;
 }
 
 .iconsContainer {
