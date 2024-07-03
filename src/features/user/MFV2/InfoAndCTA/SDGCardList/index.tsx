@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomControlledCarousel from '../../../../common/CustomControlledCarousel';
-import sdgElements from './SDGCardsData';
 import { useTranslations } from 'next-intl';
+import SDGElements from './SDGCardsData';
 
 const SDGCardList = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -74,9 +74,11 @@ const SDGCardList = () => {
     ],
   };
 
+  const sdgCardsDataArray = SDGElements();
+
   return (
     <CustomControlledCarousel
-      carouselData={sdgElements}
+      carouselData={sdgCardsDataArray}
       carouselTitle={t('infoAndCtaContainer.sdgCardsSectionHeading')}
       settings={settings}
       currentSlide={currentSlide}

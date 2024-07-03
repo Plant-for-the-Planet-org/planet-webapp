@@ -20,9 +20,7 @@ const SingleSDGCard = ({ title, icon, index, color }: Props) => {
         <span className={styles.singleCardIndex}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <h3 className={styles.singleCardTitle}>
-          {t(`infoAndCtaContainer.sdgCardTitle.${title}`)}
-        </h3>
+        <h3 className={styles.singleCardTitle}>{title}</h3>
       </div>
       <div className={styles.singleCardIcon}>{icon}</div>
     </div>
