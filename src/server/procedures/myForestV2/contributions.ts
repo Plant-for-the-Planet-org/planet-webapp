@@ -13,6 +13,8 @@ import {
   MapLocation,
   SingleDonation,
   SingleGiftReceived,
+  SingleRegistration,
+  MySingleContribution,
 } from '../../../features/common/types/myForestv2';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
 import { fetchProfile } from '../../utils/fetchProfile';
@@ -329,25 +331,30 @@ function populateContributedCountries(
 }
 
 function getLatestPlantDate(value: MyContributionsMapItem): Date {
-  try {
-    if (
-      value.type === 'project' &&
-      value.latestContributions &&
-      value.latestContributions.length > 0
-    ) {
-      return new Date(value.latestContributions[0].plantDate);
-    } else if (
-      value.type === 'registration' &&
-      value.contributions &&
-      value.contributions.length > 0
-    ) {
-      return new Date(value.contributions[0].plantDate);
-    } else {
-      return new Date(0); // Return earliest possible date if no plantDate found to make items without a date appear last
+  const EARLIEST_DATE = new Date(0); // Earliest possible date
+
+  const getPlantDate = (
+    contributions: SingleRegistration[] | MySingleContribution[]
+  ): Date => {
+    try {
+      if (!contributions || contributions.length === 0) {
+        return EARLIEST_DATE;
+      }
+      const plantDate = contributions[0].plantDate;
+      return plantDate ? new Date(plantDate) : EARLIEST_DATE;
+    } catch (error) {
+      console.error('Error parsing plant date:', error);
+      return EARLIEST_DATE;
     }
-  } catch (e) {
-    console.log(e);
-    return new Date(0);
+  };
+
+  switch (value.type) {
+    case 'project':
+      return getPlantDate(value.latestContributions);
+    case 'registration':
+      return getPlantDate(value.contributions);
+    default:
+      return EARLIEST_DATE;
   }
 }
 
@@ -357,11 +364,11 @@ function getSortedContributionsMap(
   // Convert map to array of entries
   const entries = Array.from(myContributionsMap.entries());
 
-  // Sort entries by plantDate of first contribution or latestContribution
+  // Sort entries by plantDate of first contribution or latestContribution (descending order)
   entries.sort(([_keyA, valueA], [_keyB, valueB]) => {
     const dateA = getLatestPlantDate(valueA);
     const dateB = getLatestPlantDate(valueB);
-    return dateB.getTime() - dateA.getTime(); // Sort in descending order (most recent first)
+    return dateB.getTime() - dateA.getTime();
   });
 
   // Create a new sorted map
