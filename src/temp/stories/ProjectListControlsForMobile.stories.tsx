@@ -1,14 +1,14 @@
-import SearchTabForMobile from '../ProjectListControls/ProjectListControlForMobile';
+import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FilterState } from './ProjectFilter.stories';
 import { Classification } from '../ProjectListControls/Filter';
 
-const meta: Meta<typeof SearchTabForMobile> = {
-  component: SearchTabForMobile,
+const meta: Meta<typeof ProjectListControlForMobile> = {
+  component: ProjectListControlForMobile,
 };
 
 export default meta;
-type Story = StoryObj<typeof SearchTabForMobile>;
+type Story = StoryObj<typeof ProjectListControlForMobile>;
 
 const filterState: FilterState = {
   availableFilters: [
