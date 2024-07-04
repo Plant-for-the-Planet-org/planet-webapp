@@ -17,8 +17,10 @@ const PublicProfileActionCard = ({ link, image, title, subtext }: Props) => {
       rel="noreferrer"
     >
       <img src={image} alt={title} />
-      <h3 className={styles.singleProfileActionCardTitle}>{title}</h3>
-      <p className={styles.singleProfileActionCardText}>{subtext}</p>
+      <div className={styles.profileCardTextContainer}>
+        <h3 className={styles.singleProfileActionCardTitle}>{title}</h3>
+        <p className={styles.singleProfileActionCardText}>{subtext}</p>
+      </div>
     </a>
   );
 };

@@ -91,7 +91,7 @@
     display: flex;
     gap: 12px;
     width: 100%;
-    justify-content: center;
+    justify-content: center;    
 }
 
 .singleProfileActionCardContainer {
@@ -99,17 +99,23 @@
     img {
         width: 100%;
         transition: transform 0.2s ease-in-out;
+        min-height: 107px;
     }
     img:hover {
         transform: scale(1.02);
     }
 }
 
+.profileCardTextContainer {
+    max-width: 250px;
+    padding: 0 18px;
+
+}
+
 .singleProfileActionCardTitle {
     font-size: 18px;
     font-weight: 700;
     color: #333;
-    max-width: 250px;
 
     @media screen and (max-width: 900px) {
         font-size: 16px;
@@ -119,7 +125,6 @@
 .singleProfileActionCardText {
     font-size: 14px;
     color: #333;
-    max-width: 250px;
 
     @media screen and (max-width: 900px) {
         font-size: 12px;
@@ -141,6 +146,10 @@
         .headerTitle {
             text-align: center;
         }
+    }
+
+    .profileCardTextContainer {
+        max-width: 100%;
     }
 
     .singleProfileActionCardTitle {
