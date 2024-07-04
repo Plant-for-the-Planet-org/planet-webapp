@@ -15,7 +15,7 @@ const DonorCircleInvitationHeader = () => {
         href="https://www.plant-for-the-planet.org/donor-circle/"
         elementType="link"
         target="_blank"
-        text={t('infoAndCtaContainer.becomeAMember')}
+        text={t('infoAndCtaContainer.publicProfileActions.becomeAMember')}
         buttonClasses={styles.customJoinDonorCircleButton}
       />
     </div>

@@ -11,27 +11,43 @@ const DonorCircleInvitation = () => {
     {
       link: 'https://www.plant-for-the-planet.org/children-youth/',
       image: '/assets/images/donorCircleInvitationImages/youthEmpowerment.png',
-      title: t('infoAndCtaContainer.youthEmpowermentTitle'),
-      subtext: t('infoAndCtaContainer.youthEmpowermentSubtext'),
+      title: t(
+        'infoAndCtaContainer.publicProfileActions.youthEmpowermentTitle'
+      ),
+      subtext: t(
+        'infoAndCtaContainer.publicProfileActions.youthEmpowermentSubtext'
+      ),
     },
     {
       link: 'https://www.plant-for-the-planet.org/restoration-organizations/',
       image: '/assets/images/donorCircleInvitationImages/restorationTools.png',
-      title: t('infoAndCtaContainer.restorationToolsTitle'),
-      subtext: t('infoAndCtaContainer.restorationToolsSubtext'),
+      title: t(
+        'infoAndCtaContainer.publicProfileActions.restorationToolsTitle'
+      ),
+      subtext: t(
+        'infoAndCtaContainer.publicProfileActions.restorationToolsSubtext'
+      ),
     },
     {
       link: 'https://www.plant-for-the-planet.org/advice/',
       image: '/assets/images/donorCircleInvitationImages/restorationAdvice.png',
-      title: t('infoAndCtaContainer.restorationAdviceTitle'),
-      subtext: t('infoAndCtaContainer.restorationAdviceSubtext'),
+      title: t(
+        'infoAndCtaContainer.publicProfileActions.restorationAdviceTitle'
+      ),
+      subtext: t(
+        'infoAndCtaContainer.publicProfileActions.restorationAdviceSubtext'
+      ),
     },
     {
       link: 'https://plant-for-the-planet.org/yucatan/',
       image:
         '/assets/images/donorCircleInvitationImages/forestRestorationAndConservation.png',
-      title: t('infoAndCtaContainer.restorationAndConservationTitle'),
-      subtext: t('infoAndCtaContainer.restorationAndConservationSubtext'),
+      title: t(
+        'infoAndCtaContainer.publicProfileActions.restorationAndConservationTitle'
+      ),
+      subtext: t(
+        'infoAndCtaContainer.publicProfileActions.restorationAndConservationSubtext'
+      ),
     },
   ];
 
