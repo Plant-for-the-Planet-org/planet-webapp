@@ -31,4 +31,8 @@
         overflow: visible;
         width: 100%;
     }
+
+    @media screen and (min-width: 1101px) {
+        display: none;
+    }
 }
