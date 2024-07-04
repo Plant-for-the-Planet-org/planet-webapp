@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CustomControlledCarousel from '../../../../common/CustomControlledCarousel';
+import CarouselSlider from '../../../../common/CarouselSlider';
 import { useTranslations } from 'next-intl';
 import styles from '../InfoAndCta.module.scss';
 
@@ -86,7 +86,7 @@ const SDGCardList = () => {
   ));
 
   return (
-    <CustomControlledCarousel
+    <CarouselSlider
       carouselData={sdgCardsDataArray}
       carouselTitle={t('infoAndCtaContainer.sdgCardsSectionHeading')}
       settings={settings}
