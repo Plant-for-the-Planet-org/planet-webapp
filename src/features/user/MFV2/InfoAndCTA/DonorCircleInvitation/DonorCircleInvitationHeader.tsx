@@ -16,7 +16,6 @@ const DonorCircleInvitationHeader = () => {
         elementType="link"
         target="_blank"
         text={t('infoAndCtaContainer.publicProfileActions.becomeAMember')}
-        buttonClasses={styles.customJoinDonorCircleButton}
       />
     </div>
   );
