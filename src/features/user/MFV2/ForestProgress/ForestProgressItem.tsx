@@ -1,5 +1,5 @@
 import styles from './ForestProgress.module.scss';
-import { getAchievedTarget } from '../../../../utils/myForestV2Utils';
+import { calculateGraphSegmentLengths } from '../../../../utils/myForestV2Utils';
 import { useMemo } from 'react';
 import EditButton from './microComponents/EditButton';
 import ProgressData from './microComponents/ProgressData';
@@ -28,7 +28,7 @@ const ForestProgressItem = ({
   profilePageType,
 }: ForestProgressItemProps) => {
   const _getAchievedTarget = useMemo(
-    () => getAchievedTarget(target, gift, personal),
+    () => calculateGraphSegmentLengths(target, gift, personal),
     [target, gift, personal]
   );
 
@@ -43,9 +43,11 @@ const ForestProgressItem = ({
       )}
 
       <ProgressData
-        giftPercentage={Number(_getAchievedTarget.giftPercentage.toFixed(1))}
-        personalPercentage={Number(
-          _getAchievedTarget.personalPercentage.toFixed(1)
+        giftSegmentPercentage={Number(
+          _getAchievedTarget.giftSegmentPercentage.toFixed(1)
+        )}
+        personalSegmentPercentage={Number(
+          _getAchievedTarget.personalSegmentPercentage.toFixed(1)
         )}
         gift={Number(gift?.toFixed(1))}
         personal={Number(personal?.toFixed(1))}

@@ -54,10 +54,8 @@ const RegisteredTreesPopup = ({
     <Popup
       latitude={coordinates[1]}
       longitude={coordinates[0]}
-      offset={20}
       className={style.registeredTreePopup}
       closeButton={false}
-      anchor="bottom"
     >
       <div
         className={style.registeredTreesPopupContainer}

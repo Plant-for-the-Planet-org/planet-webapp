@@ -1,4 +1,4 @@
-import { Marker } from 'react-map-gl-v7/maplibre';
+import { Marker, ViewState } from 'react-map-gl-v7/maplibre';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { PointFeature } from 'supercluster';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
@@ -9,7 +9,6 @@ import {
   getDonationClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestV2Utils';
-import { ViewportProps } from '../../../../common/types/map';
 import {
   DonationProperties,
   DonationSuperclusterProperties,
@@ -19,7 +18,7 @@ import style from '../Common/common.module.scss';
 
 export interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
-  viewport: ViewportProps;
+  viewState: ViewState;
   mapRef: MutableRefObject<null>;
 }
 
@@ -32,7 +31,7 @@ export type ExtractedProjectData = {
 
 const DonationClusterMarker = ({
   superclusterResponse,
-  viewport,
+  viewState,
   mapRef,
 }: DonationClusterMarkerProps) => {
   const [clusterChildren, setClusterChildren] = useState<
@@ -51,9 +50,9 @@ const DonationClusterMarker = ({
     useState<ExtractedProjectData[]>([]);
 
   useEffect(() => {
-    if (superclusterResponse && viewport && donationGeojson) {
+    if (superclusterResponse && viewState && donationGeojson) {
       const data = getClusterGeojson(
-        viewport,
+        viewState,
         mapRef,
         donationGeojson,
         superclusterResponse.id
@@ -61,7 +60,7 @@ const DonationClusterMarker = ({
 
       setClusterChildren(data);
     }
-  }, [viewport, superclusterResponse]);
+  }, [viewState, superclusterResponse]);
 
   useEffect(() => {
     const _colors = getDonationClusterMarkerColors(
