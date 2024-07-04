@@ -1,5 +1,5 @@
 import { ClusterProperties, PointFeature } from 'supercluster';
-import { MutableRefObject, useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
@@ -48,7 +48,7 @@ const Markers = ({
     registrationSuperclusterResponse,
     setRegistrationSuperclusterResponse,
   ] = useState<PointFeature<RegistrationSuperclusterProperties>[]>([]);
-  const [isCenteredOnce, setIsCenteredOnce] = useState(false);
+  const hasCentered = useRef(false);
 
   useEffect(() => {
     if (donationGeojson && viewState) {
@@ -78,42 +78,48 @@ const Markers = ({
 
   // Centers the map after the initial data is loaded
   useEffect(() => {
-    if (!isCenteredOnce) {
+    if (
+      !hasCentered.current &&
+      donationSuperclusterResponse.length +
+        registrationSuperclusterResponse.length >
+        0
+    ) {
       const combinedSuperclusterResponse = [
         ...donationSuperclusterResponse,
         ...registrationSuperclusterResponse,
       ];
 
-      if (combinedSuperclusterResponse.length === 0) {
-        return;
+      const validFeatures = combinedSuperclusterResponse.filter(
+        (feature) =>
+          feature.geometry &&
+          feature.geometry.type === 'Point' &&
+          Array.isArray(feature.geometry.coordinates) &&
+          feature.geometry.coordinates.length === 2
+      );
+
+      if (validFeatures.length > 0) {
+        const markersGeojson = {
+          type: 'FeatureCollection',
+          features: validFeatures,
+        };
+
+        // Find the center
+        try {
+          const centerPoint = turf.center(markersGeojson);
+          setViewState((prevState) => ({
+            ...prevState,
+            latitude: centerPoint.geometry?.coordinates[1] || 0,
+            longitude: centerPoint.geometry?.coordinates[0] || 0,
+          }));
+        } catch (e) {
+          console.error('Error while centering the map', e);
+        }
       }
-
-      const markersGeojson = {
-        type: 'FeatureCollection',
-        features: combinedSuperclusterResponse.filter(
-          (feature) =>
-            feature.geometry &&
-            feature.geometry.type === 'Point' &&
-            Array.isArray(feature.geometry.coordinates) &&
-            feature.geometry.coordinates.length === 2
-        ),
-      };
-
-      // Find the center
-      const centerPoint = turf.center(markersGeojson);
-      setViewState({
-        ...viewState,
-        latitude: centerPoint.geometry?.coordinates[1] || 0,
-        longitude: centerPoint.geometry?.coordinates[0] || 0,
-      });
-      setIsCenteredOnce(true);
+      hasCentered.current = true;
     }
   }, [
     donationSuperclusterResponse,
     registrationSuperclusterResponse,
-    isCenteredOnce,
-    setIsCenteredOnce,
-    viewState,
     setViewState,
   ]);
 
