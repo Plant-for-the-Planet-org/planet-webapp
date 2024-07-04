@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../InfoAndCta.module.scss';
-import PublicProfileActionsHeader from './ PublicProfileActionsHeader';
+import PublicProfileActionsHeader from './PublicProfileActionsHeader';
 import PublicProfileActionCard from './PublicProfileActionCard';
 import { useTranslations } from 'next-intl';
 
