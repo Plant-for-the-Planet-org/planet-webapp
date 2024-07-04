@@ -15,12 +15,6 @@ const SDGCardList = () => {
     arrows: false,
     responsive: [
       {
-        breakpoint: 1360,
-        settings: {
-          slidesToShow: 8,
-        },
-      },
-      {
         breakpoint: 1230,
         settings: {
           slidesToShow: 7,
