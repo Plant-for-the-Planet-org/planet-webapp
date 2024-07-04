@@ -15,6 +15,15 @@
     'infoAndCtaContainer';
   gap: 16px;
 
+  &.noProgress {
+    grid-template-areas:
+      'profileContainer'
+      'mapContainer'
+      'communityContributionsContainer'
+      'myContributionsContainer'
+      /* 'infoAndCtaContainer' */;
+  }
+
   &.noLeaderboard {
     grid-template-areas:
       'profileContainer'
@@ -100,7 +109,14 @@
       'profileContainer mapContainer mapContainer mapContainer'
       'progressContainer progressContainer progressContainer progressContainer'
       'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
-      'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+      /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+
+    &.noProgress {
+      grid-template-areas:
+        'profileContainer mapContainer mapContainer mapContainer'
+        'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
+        /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+    }
 
     &.noLeaderboard {
       grid-template-areas:
@@ -136,7 +152,14 @@
       'profileContainer mapContainer mapContainer mapContainer'
       'progressContainer progressContainer progressContainer progressContainer'
       'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
-      'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+      /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+
+    &.noProgress {
+      grid-template-areas:
+        'profileContainer mapContainer mapContainer mapContainer'
+        'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
+        /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+    }
 
     &.noLeaderboard {
       grid-template-areas:

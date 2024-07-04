@@ -13,6 +13,8 @@ import {
   MapLocation,
   SingleDonation,
   SingleGiftReceived,
+  SingleRegistration,
+  MySingleContribution,
 } from '../../../features/common/types/myForestv2';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
 import { fetchProfile } from '../../utils/fetchProfile';
@@ -43,7 +45,7 @@ function initializeStats(): ContributionStats {
 /**
  * @returns List of projects (with basic details - purpose, id, guid) that are eligible to receive donations
  */
-async function fetchProjects() {
+async function fetchProjects(): Promise<BriefProjectQueryResult[]> {
   const projects = await prisma.$queryRaw<BriefProjectQueryResult[]>`
 			SELECT 
 				id,
@@ -62,7 +64,9 @@ async function fetchProjects() {
   return projects;
 }
 
-async function fetchContributions(profileIds: number[]) {
+async function fetchContributions(
+  profileIds: number[]
+): Promise<ContributionsQueryResult[]> {
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
 			SELECT 
 				c.guid,
@@ -94,7 +98,7 @@ async function fetchContributions(profileIds: number[]) {
   return contributions;
 }
 
-async function fetchGifts(profileIds: number[]) {
+async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
 			SELECT 
 				round((g.value)/100, 2) as quantity, 
@@ -128,7 +132,7 @@ function handleRegistrationContribution(
   myContributionsMap: Map<string, MyContributionsMapItem>,
   registrationLocationsMap: Map<string, MapLocation>,
   project: BriefProjectQueryResult | null
-) {
+): void {
   // Updates myContributionsMap
   myContributionsMap.set(contribution.guid, {
     type: 'registration',
@@ -173,7 +177,7 @@ function handleDonationContribution(
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
   projectLocationsMap: Map<string, MapLocation>
-) {
+): void {
   // Initialize data
   const donationData: SingleDonation = {
     dataType: 'donation',
@@ -253,7 +257,7 @@ function handleGiftContribution(
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
   projectLocationsMap: Map<string, MapLocation>
-) {
+): void {
   // Initialize data
   const giftData: SingleGiftReceived = {
     dataType: 'receivedGift',
@@ -304,7 +308,7 @@ function handleGiftContribution(
 
 function mergeAndSortLatestContributions(
   singleProject: MyContributionsSingleProject
-) {
+): void {
   singleProject.latestContributions = [
     ...(singleProject.latestDonations || []),
     ...(singleProject.latestGifts || []),
@@ -321,9 +325,54 @@ function populateContributedCountries(
   country: string | undefined,
   projectCountry: string | undefined,
   contributedCountries: ContributionStats['contributedCountries']
-) {
+): void {
   const contributedCountry = country || projectCountry;
   if (contributedCountry) contributedCountries.add(contributedCountry);
+}
+
+function getLatestPlantDate(value: MyContributionsMapItem): Date {
+  const EARLIEST_DATE = new Date(0); // Earliest possible date
+
+  const getPlantDate = (
+    contributions: SingleRegistration[] | MySingleContribution[]
+  ): Date => {
+    try {
+      if (!contributions || contributions.length === 0) {
+        return EARLIEST_DATE;
+      }
+      const plantDate = contributions[0].plantDate;
+      return plantDate ? new Date(plantDate) : EARLIEST_DATE;
+    } catch (error) {
+      console.error('Error parsing plant date:', error);
+      return EARLIEST_DATE;
+    }
+  };
+
+  switch (value.type) {
+    case 'project':
+      return getPlantDate(value.latestContributions);
+    case 'registration':
+      return getPlantDate(value.contributions);
+    default:
+      return EARLIEST_DATE;
+  }
+}
+
+function getSortedContributionsMap(
+  myContributionsMap: Map<string, MyContributionsMapItem>
+): Map<string, MyContributionsMapItem> {
+  // Convert map to array of entries
+  const entries = Array.from(myContributionsMap.entries());
+
+  // Sort entries by plantDate of first contribution or latestContribution (descending order)
+  entries.sort(([_keyA, valueA], [_keyB, valueB]) => {
+    const dateA = getLatestPlantDate(valueA);
+    const dateB = getLatestPlantDate(valueB);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  // Create a new sorted map
+  return new Map(entries);
 }
 
 export const contributionsProcedure = procedure
@@ -437,11 +486,14 @@ export const contributionsProcedure = procedure
       }
     });
 
+    const sortedContributionsMap =
+      getSortedContributionsMap(myContributionsMap);
+
     console.log(new Date().toLocaleString(), 'ending contributionsProcedure');
 
     return {
       stats,
-      myContributionsMap,
+      myContributionsMap: sortedContributionsMap,
       registrationLocationsMap,
       projectLocationsMap,
     };

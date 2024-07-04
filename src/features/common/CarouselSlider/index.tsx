@@ -6,9 +6,13 @@ import {
   CarouselNextIcon,
   CarouselPrevIcon,
 } from '../../../../public/assets/images/icons/ProfilePageV2Icons';
-import styles from './CustomCarousel.module.scss';
+import styles from './CarouselSlider.module.scss';
 
-const SampleArrow = (props) => {
+const CarouselArrow = (props: {
+  onClick: () => void;
+  disabled?: boolean;
+  direction: string;
+}) => {
   const { onClick, disabled, direction } = props;
   return (
     <button
@@ -27,7 +31,7 @@ const SampleArrow = (props) => {
   );
 };
 
-interface CustomControlledCarouselProps {
+interface CarouselSliderProps {
   carouselTitle: string;
   carouselData: ReactElement[];
   settings: any;
@@ -35,14 +39,14 @@ interface CustomControlledCarouselProps {
   setCurrentSlide: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const CustomControlledCarousel = ({
+const CarouselSlider = ({
   carouselTitle,
   carouselData,
   settings,
   currentSlide,
   setCurrentSlide,
-}: CustomControlledCarouselProps) => {
-  const sliderRef = useRef(null);
+}: CarouselSliderProps) => {
+  const sliderRef = useRef<Slider | null>(null);
 
   useEffect(() => {
     if (sliderRef.current) {
@@ -67,18 +71,18 @@ const CustomControlledCarousel = ({
   };
 
   return (
-    <div className={styles.customCarouselContainer}>
+    <div className={styles.carouselSliderContainer}>
       <div className={styles.carouselHeader}>
         <div className={styles.titleContainer}>
           <h2>{carouselTitle}</h2>
         </div>
         <div className={styles.arrowContainer}>
-          <SampleArrow
+          <CarouselArrow
             onClick={slidePrev}
             disabled={currentSlide === 0}
             direction="prev"
           />
-          <SampleArrow onClick={slideNext} direction="next" />
+          <CarouselArrow onClick={slideNext} direction="next" />
         </div>
       </div>
       <Slider ref={sliderRef} {...settings}>
@@ -88,4 +92,4 @@ const CustomControlledCarousel = ({
   );
 };
 
-export default CustomControlledCarousel;
+export default CarouselSlider;

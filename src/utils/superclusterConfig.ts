@@ -1,4 +1,3 @@
-import { ViewportProps } from '../features/common/types/map';
 import { Bound } from '../features/common/types/map';
 import Supercluster, { ClusterProperties, PointFeature } from 'supercluster';
 import { RefObject } from 'react';
@@ -8,6 +7,7 @@ import {
   MyContributionsSingleRegistration,
 } from '../features/common/types/myForestv2';
 import {} from '../features/common/Layout/MyForestContextV2';
+import { ViewState } from 'react-map-gl-v7/maplibre';
 
 const clusterConfigV2 = {
   radius: 40,
@@ -24,7 +24,7 @@ const clusterConfigV2 = {
  * @param clusterId
  * @returns cluster, cluster children
  */ export const getClusterGeojson = (
-  viewState: ViewportProps,
+  viewState: ViewState,
   mapRef: RefObject<MapRef>,
   geoJson: PointFeature<
     DonationProperties | MyContributionsSingleRegistration

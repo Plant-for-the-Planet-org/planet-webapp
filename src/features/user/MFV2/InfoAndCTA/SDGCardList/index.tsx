@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import CustomControlledCarousel from '../../../../common/CustomControlledCarousel';
-import sdgElements from './SDGCardsData';
+import CarouselSlider from '../../../../common/CarouselSlider';
 import { useTranslations } from 'next-intl';
+import styles from '../InfoAndCta.module.scss';
 
 const SDGCardList = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const t = useTranslations('Profile');
   const settings = {
-    infinite: true,
-    slidesToShow: 7,
+    infinite: false,
+    slidesToShow: 8,
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
     swipeToSlide: true,
+    arrows: false,
     responsive: [
+      {
+        breakpoint: 1230,
+        settings: {
+          slidesToShow: 7,
+        },
+      },
       {
         breakpoint: 1100,
         settings: {
@@ -62,9 +69,25 @@ const SDGCardList = () => {
     ],
   };
 
+  const sdgCardImageLinks = [
+    '/assets/images/sdgCards/Goal-04.png',
+    '/assets/images/sdgCards/Goal-08.png',
+    '/assets/images/sdgCards/Goal-09.png',
+    '/assets/images/sdgCards/Goal-10.png',
+    '/assets/images/sdgCards/Goal-13.png',
+    '/assets/images/sdgCards/Goal-15.png',
+    '/assets/images/sdgCards/Goal-17.png',
+  ];
+
+  const sdgCardsDataArray = sdgCardImageLinks.map((item, index) => (
+    <div className={styles.singleSDGCardContainer} key={index}>
+      <img src={item} alt="SDG card" />
+    </div>
+  ));
+
   return (
-    <CustomControlledCarousel
-      carouselData={sdgElements}
+    <CarouselSlider
+      carouselData={sdgCardsDataArray}
       carouselTitle={t('infoAndCtaContainer.sdgCardsSectionHeading')}
       settings={settings}
       currentSlide={currentSlide}

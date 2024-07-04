@@ -16,36 +16,19 @@
 }
 
 .singleSDGCardContainer {
-    height: 130px;
-    width: 130px;
     display: flex;
     flex-direction: column;
     color: #FFF;   
     gap: 2.37px; 
     padding: 8.2px 15.1px;
-    border-radius: 10px;
     align-items: center;
     justify-content: space-between;    
     text-align: center;
 
-    @media screen and (max-width: 700px) {
-        height: 150px;
-        width: 150px;
-    }
-
-    @media screen and (max-width: 620px) {
-        height: 200px;
-        width: 200px;
-    }
-
-    @media screen and (max-width: 460px) {
-        height: 150px;
-        width: 150px;
-    }
-
-    @media screen and (max-width: 380px) {
+    img {
+        height: 100%;
         width: 100%;
-        height: 250px;
+        border-radius: 10px;
     }
 }
 
