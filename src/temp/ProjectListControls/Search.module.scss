@@ -7,6 +7,10 @@
   align-items: center;
   max-width: max-content;
   justify-content: space-between;
+  min-width: 288px;
+  @include xsPhoneView {
+    height: 44px;
+  }
 }
 
 .searchBarContainer {
@@ -60,7 +64,7 @@
 
 .selectedTabButton,
 .unselectedTabButton {
-  padding: 5px;
+  padding: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
