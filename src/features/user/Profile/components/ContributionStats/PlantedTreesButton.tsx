@@ -10,7 +10,7 @@ export interface PlantedTreesButtonProps {
 }
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
-  const { light, primaryDarkColorX } = theme;
+  const { light, primaryColorNew } = theme;
   const { isTreePlantedButtonActive } = useMyForest();
   const t = useTranslations('Profile');
   const locale = useLocale();
@@ -29,7 +29,7 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
             color={
               isTreePlantedButtonActive
                 ? `${light.light}`
-                : `${primaryDarkColorX}`
+                : `${primaryColorNew}`
             }
           />
         </div>
