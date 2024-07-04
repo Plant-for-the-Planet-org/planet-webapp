@@ -91,7 +91,9 @@ const CommunityContributions = ({
         <div className={styles.infoIcon}>
           <CustomTooltip height={15} width={15} color={'#828282'}>
             <div className={styles.infoIconPopupContainer}>
-              {t('communityContributions.tooltipText')}
+              {profilePageType === 'private'
+                ? t('communityContributions.tooltipText')
+                : t('communityContributions.tooltipTextPublic')}
             </div>
           </CustomTooltip>
         </div>
