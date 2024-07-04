@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from '../InfoAndCta.module.scss';
-import DonorCircleInvitationHeader from './DonorCircleInvitationHeader';
-import SingleInvitationCard from './SingleInvitationCard';
+import PublicProfileActionsHeader from './PublicProfileActionsHeader';
+import SingleProfileActionCard from './SingleProfileActionCard';
 import { useTranslations } from 'next-intl';
 
-const DonorCircleInvitation = () => {
+const PublicProfileActions = () => {
   const t = useTranslations('Profile');
 
   const donorCircleCardsData = [
@@ -52,11 +52,11 @@ const DonorCircleInvitation = () => {
   ];
 
   return (
-    <div className={styles.donorCircleInvitationContainer}>
-      <DonorCircleInvitationHeader />
-      <div className={styles.inviationCardsContainer}>
+    <div className={styles.publicProfileActionCard}>
+      <PublicProfileActionsHeader />
+      <div className={styles.publicProfileActionsContainer}>
         {donorCircleCardsData.map((item, index) => (
-          <SingleInvitationCard
+          <SingleProfileActionCard
             image={item.image}
             title={item.title}
             subtext={item.subtext}
@@ -69,4 +69,4 @@ const DonorCircleInvitation = () => {
   );
 };
 
-export default DonorCircleInvitation;
+export default PublicProfileActions;
