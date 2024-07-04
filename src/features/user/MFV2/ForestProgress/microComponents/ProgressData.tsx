@@ -10,8 +10,8 @@ import styles from '../ForestProgress.module.scss';
 import StackedBarGraph from './StackedBarGraph';
 
 export interface ProgressDataProps {
-  giftPercentage: number;
-  personalPercentage: number;
+  giftSegmentPercentage: number;
+  personalSegmentPercentage: number;
   gift: number;
   personal: number;
   dataType: ProgressDataType;
@@ -30,8 +30,8 @@ const ForestProgressIcon = ({ dataType }: { dataType: ProgressDataType }) => {
 };
 
 const ProgressData = ({
-  giftPercentage,
-  personalPercentage,
+  giftSegmentPercentage,
+  personalSegmentPercentage,
   gift,
   personal,
   dataType,
@@ -83,8 +83,8 @@ const ProgressData = ({
   }, [dataType, target, totalAchievment, tProfile]);
 
   const graphProps = {
-    personalPercentage,
-    giftPercentage,
+    personalSegmentPercentage,
+    giftSegmentPercentage,
     gift,
     personal,
     target,
