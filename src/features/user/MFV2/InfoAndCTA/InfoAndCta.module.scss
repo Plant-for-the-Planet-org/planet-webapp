@@ -5,11 +5,11 @@
     flex-direction: column;
 }
 
-.donorCircleInvitationContainer, .SDGCardListContainer {
+.publicProfileActionContainer, .SDGCardListContainer {
     width: 100%;
 }
 
-.donorCircleInvitationContainer {
+.publicProfileActionContainer {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -94,7 +94,7 @@
      }
 }
 
-.donorCircleInvitationHeader {
+.publicProfileActionsHeader {
     display: flex;
     justify-content: space-between;
 
@@ -104,14 +104,14 @@
     }
 }
 
-.inviationCardsContainer {
+.publicProfileActionCardsContainer {
     display: flex;
     gap: 12px;
     width: 100%;
     justify-content: center;
 }
 
-.singleInvitationCardContainer {
+.singleProfileActionCardContainer {
     flex:1;
     img {
         width: 100%;
@@ -122,7 +122,7 @@
     }
 }
 
-.singleInvitationCardTitle {
+.singleProfileActionCardTitle {
     font-size: 18px;
     font-weight: 700;
     color: #333;
@@ -133,7 +133,7 @@
     } 
 }
 
-.singleInvitationCardText {
+.singleProfileActionCardText {
     font-size: 14px;
     color: #333;
     max-width: 250px;
@@ -145,12 +145,12 @@
 
 @media screen and (max-width: 700px) {
 
-    .inviationCardsContainer {
+    .publicProfileActionCardsContainer {
         flex-direction: column;
         gap: 10px;
     }
 
-    .donorCircleInvitationHeader {
+    .publicProfileActionsHeader {
         flex-direction: column;
         gap: 10px;
         align-items: center;
@@ -160,13 +160,13 @@
         }
     }
 
-    .singleInvitationCardTitle {
+    .singleProfileActionCardTitle {
         font-size: 20px;
         max-width: 100%;
         margin-top: 10px;
     }
 
-    .singleInvitationCardText {
+    .singleProfileActionCardText {
         font-size: 18px;
         max-width: 100%;
     }

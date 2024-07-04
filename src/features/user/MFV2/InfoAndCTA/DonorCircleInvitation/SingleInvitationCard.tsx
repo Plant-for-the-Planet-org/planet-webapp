@@ -8,19 +8,19 @@ interface Props {
   subtext: string;
 }
 
-const SingleInvitationCard = ({ link, image, title, subtext }: Props) => {
+const PublicProfileActionCard = ({ link, image, title, subtext }: Props) => {
   return (
     <a
-      className={styles.singleInvitationCardContainer}
+      className={styles.singleProfileActionCardContainer}
       href={link}
       target="_blank"
       rel="noreferrer"
     >
       <img src={image} alt={title} />
-      <h3 className={styles.singleInvitationCardTitle}>{title}</h3>
-      <p className={styles.singleInvitationCardText}>{subtext}</p>
+      <h3 className={styles.singleProfileActionCardTitle}>{title}</h3>
+      <p className={styles.singleProfileActionCardText}>{subtext}</p>
     </a>
   );
 };
 
-export default SingleInvitationCard;
+export default PublicProfileActionCard;

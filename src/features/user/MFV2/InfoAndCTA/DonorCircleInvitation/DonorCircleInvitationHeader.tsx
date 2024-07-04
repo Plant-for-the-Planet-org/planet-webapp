@@ -3,10 +3,10 @@ import styles from '../InfoAndCta.module.scss';
 import WebappButton from '../../../../common/WebappButton';
 import { useTranslations } from 'next-intl';
 
-const DonorCircleInvitationHeader = () => {
+const PublicProfileActionsHeader = () => {
   const t = useTranslations('Profile');
   return (
-    <div className={styles.donorCircleInvitationHeader}>
+    <div className={styles.publicProfileActionsHeader}>
       <h2 className={styles.headerTitle}>
         {t('infoAndCtaContainer.pfpDonorCircleMember')}
       </h2>
@@ -21,4 +21,4 @@ const DonorCircleInvitationHeader = () => {
   );
 };
 
-export default DonorCircleInvitationHeader;
+export default PublicProfileActionsHeader;
