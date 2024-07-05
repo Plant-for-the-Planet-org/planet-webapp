@@ -349,6 +349,7 @@ export default function EditProfileForm() {
               {...getRootProps()}
               className={styles.uploadProfilePicButton}
               aria-label="upload profile picture"
+              type="button"
             >
               <div className={styles.profilePicButtonText}>
                 <input {...getInputProps()} />
@@ -360,6 +361,7 @@ export default function EditProfileForm() {
               className={styles.deleteProfilePicButton}
               onClick={(event) => deleteProfilePicture(event)}
               aria-label="delete profile picture"
+              type="button"
             >
               <div className={styles.profilePicButtonText}>
                 <Delete color="#828282" />
