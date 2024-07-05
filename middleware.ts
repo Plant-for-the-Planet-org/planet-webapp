@@ -88,7 +88,18 @@ export default async function middleware(req: NextRequest) {
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
 
-  console.log('isLocaleMissing', isLocaleMissing);
+  const paramLocale = url.searchParams.get('locale');
+  const hasEmbedParam = url.searchParams.has('embed');
+  const pathLocale = url.pathname.split('/')[1];
+  const queryString = url.searchParams.toString();
+  //If the 'embed' parameter is present and the 'locale' parameter is set
+  //and different from the locale in the path, redirect to a new URL with the paramLocale
+  if (hasEmbedParam && paramLocale && paramLocale !== pathLocale) {
+    const newUrl = new URL(`/${paramLocale}?${queryString}`, req.url);
+    if (newUrl.href !== req.url) {
+      return NextResponse.redirect(newUrl);
+    }
+  }
 
   if (isLocaleMissing) {
     const locale = getLocale(req, commonSupportedLocales);
