@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import Slider from 'react-slick';
+import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {
@@ -34,7 +34,7 @@ const CarouselArrow = (props: {
 interface CarouselSliderProps {
   carouselTitle: string;
   carouselData: ReactElement[];
-  settings: any;
+  settings: Settings;
   currentSlide: number;
   setCurrentSlide: React.Dispatch<React.SetStateAction<number>>;
   totalSlides: number;
@@ -72,7 +72,7 @@ const CarouselSlider = ({
   useEffect(() => {
     if (sliderRef.current) {
       const slider = sliderRef.current;
-      const slideCount = slider.innerSlider.props.children.length;
+      const slideCount = slider.innerSlider?.props.children.length || 0;
       if (currentSlide >= slideCount - 1) {
         setCurrentSlide(slideCount - 1);
       }
