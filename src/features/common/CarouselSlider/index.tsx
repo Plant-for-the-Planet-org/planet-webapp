@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import Slider, { Settings } from 'react-slick';
+import Slider, { InnerSlider, Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {
@@ -7,6 +7,12 @@ import {
   CarouselPrevIcon,
 } from '../../../../public/assets/images/icons/ProfilePageV2Icons';
 import styles from './CarouselSlider.module.scss';
+
+interface ExtendedInnerSlider extends InnerSlider {
+  props: Settings & {
+    children: React.ReactNode[]; // Override the type of children in Settings
+  };
+}
 
 const CarouselArrow = (props: {
   onClick: () => void;
@@ -49,7 +55,6 @@ const CarouselSlider = ({
   totalSlides,
 }: CarouselSliderProps) => {
   const sliderRef = useRef<Slider | null>(null);
-  // Index of the first item on the last possible slide
   const [finalSlideStartIndex, setFinalSlideStartIndex] = useState(0);
 
   useEffect(() => {
@@ -57,22 +62,27 @@ const CarouselSlider = ({
     let slidesVisibleOnScroll;
     if (screenWidth > 1100) {
       slidesVisibleOnScroll =
-        sliderRef.current.innerSlider.props.children.length;
+        (sliderRef.current?.innerSlider as ExtendedInnerSlider).props?.children
+          ?.length || 1;
     } else {
+      if (!settings.responsive) return;
       for (const responsiveSetting of settings.responsive) {
         if (screenWidth <= responsiveSetting.breakpoint) {
-          slidesVisibleOnScroll = responsiveSetting.settings.slidesToShow;
+          slidesVisibleOnScroll = (responsiveSetting.settings as Settings)
+            .slidesToShow;
         }
       }
     }
-
-    setFinalSlideStartIndex(totalSlides - slidesVisibleOnScroll);
+    if (slidesVisibleOnScroll) {
+      setFinalSlideStartIndex(totalSlides - slidesVisibleOnScroll);
+    }
   }, []);
 
   useEffect(() => {
     if (sliderRef.current) {
       const slider = sliderRef.current;
-      const slideCount = slider.innerSlider?.props.children.length || 0;
+      const slideCount =
+        (slider.innerSlider as ExtendedInnerSlider)?.props.children.length || 0;
       if (currentSlide >= slideCount - 1) {
         setCurrentSlide(slideCount - 1);
       }
