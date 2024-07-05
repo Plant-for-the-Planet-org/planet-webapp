@@ -122,6 +122,15 @@
         "restorationAdviceSubtext": "& Research",
         "restorationAndConservationTitle": "Forest Restoration & Conservation",
         "restorationAndConservationSubtext": "in Mexico, Ghana & Spain"
+      },
+      "sdgCardAlternativeText": {
+        "qualityEducation": "Quality Education",
+        "economicGrowth": "Decent work and economic growth",
+        "industryInfrastructureAndInnovation": "Industry, innovation and infrastructure", 
+        "reducedInequalities": "Recent inequalities",
+        "climateAction": "Climate action",
+        "lifeOnLand": "Life on land",
+        "partnership": "Partnerships for the goals"
       }
     }
   }

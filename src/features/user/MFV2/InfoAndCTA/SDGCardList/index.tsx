@@ -65,18 +65,41 @@ const SDGCardList = () => {
   };
 
   const sdgCardImageLinks = [
-    '/assets/images/sdgCards/Goal-04.png',
-    '/assets/images/sdgCards/Goal-08.png',
-    '/assets/images/sdgCards/Goal-09.png',
-    '/assets/images/sdgCards/Goal-10.png',
-    '/assets/images/sdgCards/Goal-13.png',
-    '/assets/images/sdgCards/Goal-15.png',
-    '/assets/images/sdgCards/Goal-17.png',
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.qualityEducation'),
+      link: '/assets/images/sdgCards/Goal-04.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.economicGrowth'),
+      link: '/assets/images/sdgCards/Goal-08.png',
+    },
+    {
+      key: t(
+        'infoAndCtaContainer.sdgCardAlternativeText.industryInfrastructureAndInnovation'
+      ),
+      link: '/assets/images/sdgCards/Goal-09.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.reducedInequalities'),
+      link: '/assets/images/sdgCards/Goal-10.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.climateAction'),
+      link: '/assets/images/sdgCards/Goal-13.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.lifeOnLand'),
+      link: '/assets/images/sdgCards/Goal-15.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.partnership'),
+      link: '/assets/images/sdgCards/Goal-17.png',
+    },
   ];
 
-  const sdgCardsDataArray = sdgCardImageLinks.map((item, index) => (
-    <div className={styles.singleSDGCardContainer} key={index}>
-      <img src={item} alt="SDG card" />
+  const sdgCardsDataArray = sdgCardImageLinks.map((item) => (
+    <div className={styles.singleSDGCardContainer} key={item.key}>
+      <img src={item.link} alt={item.key} />
     </div>
   ));
 
