@@ -8,18 +8,12 @@ const SDGCardList = () => {
   const t = useTranslations('Profile');
   const settings = {
     infinite: false,
-    slidesToShow: 8,
+    slidesToShow: 7,
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
     swipeToSlide: true,
     arrows: false,
     responsive: [
-      {
-        breakpoint: 1230,
-        settings: {
-          slidesToShow: 7,
-        },
-      },
       {
         breakpoint: 1100,
         settings: {
@@ -36,6 +30,7 @@ const SDGCardList = () => {
         breakpoint: 850,
         settings: {
           slidesToShow: 4,
+          slidesToScroll: 4,
         },
       },
       {
@@ -92,6 +87,7 @@ const SDGCardList = () => {
       settings={settings}
       currentSlide={currentSlide}
       setCurrentSlide={setCurrentSlide}
+      totalSlides={sdgCardImageLinks.length}
     />
   );
 };
