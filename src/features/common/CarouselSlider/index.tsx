@@ -50,7 +50,7 @@ const CarouselSlider = ({
 }: CarouselSliderProps) => {
   const sliderRef = useRef<Slider | null>(null);
   // Index of the first item on the last possible slide
-  const [lastVisibleSlideIndex, setLastVisibleSlideIndex] = useState(0);
+  const [finalSlideStartIndex, setFinalSlideStartIndex] = useState(0);
 
   useEffect(() => {
     const screenWidth = window.innerWidth;
@@ -66,7 +66,7 @@ const CarouselSlider = ({
       }
     }
 
-    setLastVisibleSlideIndex(totalSlides - slidesVisibleOnScroll);
+    setFinalSlideStartIndex(totalSlides - slidesVisibleOnScroll);
   }, []);
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const CarouselSlider = ({
           <CarouselArrow
             onClick={slideNext}
             direction="next"
-            disabled={lastVisibleSlideIndex == currentSlide}
+            disabled={finalSlideStartIndex == currentSlide}
           />
         </div>
       </div>
