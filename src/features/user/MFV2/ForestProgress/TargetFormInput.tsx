@@ -58,11 +58,13 @@ const TargetFormInput = ({
     >
       <div className={styles.switchContainer}>
         <TargetFormInputLabel dataType={dataType} />
-        <TargetSwitch
-          switchColor={targetColor(dataType) ?? ''}
-          checked={checked}
-          onChange={handleTargetSwitch}
-        />
+        {localTarget > 0 && (
+          <TargetSwitch
+            switchColor={targetColor(dataType) ?? ''}
+            checked={checked}
+            onChange={handleTargetSwitch}
+          />
+        )}
       </div>
       <TargetTextField
         type="number"
