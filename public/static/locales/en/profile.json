@@ -108,6 +108,30 @@
     },
     "unitType": {
       "m2": "m²"
+    }, 
+    "infoAndCtaContainer": {
+      "sdgCardsSectionHeading": "Restoring Ecosystems & Fighting the Climate Crisis for the SDGs",
+      "pfpDonorCircleMember": "Plant-for-the-Planet donor circle member",
+      "publicProfileActions": {
+        "becomeAMember": "Become a Member",
+        "youthEmpowermentTitle": "Youth Empowerment",
+        "youthEmpowermentSubtext": "children & youth to fight the climate crisis",
+        "restorationToolsTitle": "Restoration Tools",
+        "restorationToolsSubtext": "to fund, restore, monitor & conserve forests",
+        "restorationAdviceTitle": "Restoration Advice",
+        "restorationAdviceSubtext": "& Research",
+        "restorationAndConservationTitle": "Forest Restoration & Conservation",
+        "restorationAndConservationSubtext": "in Mexico, Ghana & Spain"
+      },
+      "sdgCardAlternativeText": {
+        "qualityEducation": "Quality Education",
+        "economicGrowth": "Decent work and economic growth",
+        "industryInfrastructureAndInnovation": "Industry, innovation and infrastructure", 
+        "reducedInequalities": "Recent inequalities",
+        "climateAction": "Climate action",
+        "lifeOnLand": "Life on land",
+        "partnership": "Partnerships for the goals"
+      }
     }
   }
 }
