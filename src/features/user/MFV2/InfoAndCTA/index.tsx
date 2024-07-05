@@ -1,12 +1,12 @@
 import React from 'react';
-import DonorCircleInvitation from './DonorCircleInvitation';
 import SDGCardList from './SDGCardList';
 import styles from './InfoAndCta.module.scss';
+import PublicProfileActions from './PublicProfileActions';
 
 const InfoAndCta = () => {
   return (
     <div className={styles.infoAndCtaContainer}>
-      <DonorCircleInvitation />
+      <PublicProfileActions />
       {/* treegame embedd */}
       <SDGCardList />
     </div>

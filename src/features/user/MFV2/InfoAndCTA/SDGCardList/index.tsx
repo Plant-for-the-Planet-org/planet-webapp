@@ -8,18 +8,12 @@ const SDGCardList = () => {
   const t = useTranslations('Profile');
   const settings = {
     infinite: false,
-    slidesToShow: 8,
+    slidesToShow: 7,
     slidesToScroll: 1,
     afterChange: (current: number) => setCurrentSlide(current),
     swipeToSlide: true,
     arrows: false,
     responsive: [
-      {
-        breakpoint: 1230,
-        settings: {
-          slidesToShow: 7,
-        },
-      },
       {
         breakpoint: 1100,
         settings: {
@@ -36,6 +30,7 @@ const SDGCardList = () => {
         breakpoint: 850,
         settings: {
           slidesToShow: 4,
+          slidesToScroll: 4,
         },
       },
       {
@@ -70,18 +65,41 @@ const SDGCardList = () => {
   };
 
   const sdgCardImageLinks = [
-    '/assets/images/sdgCards/Goal-04.png',
-    '/assets/images/sdgCards/Goal-08.png',
-    '/assets/images/sdgCards/Goal-09.png',
-    '/assets/images/sdgCards/Goal-10.png',
-    '/assets/images/sdgCards/Goal-13.png',
-    '/assets/images/sdgCards/Goal-15.png',
-    '/assets/images/sdgCards/Goal-17.png',
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.qualityEducation'),
+      link: '/assets/images/sdgCards/Goal-04.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.economicGrowth'),
+      link: '/assets/images/sdgCards/Goal-08.png',
+    },
+    {
+      key: t(
+        'infoAndCtaContainer.sdgCardAlternativeText.industryInfrastructureAndInnovation'
+      ),
+      link: '/assets/images/sdgCards/Goal-09.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.reducedInequalities'),
+      link: '/assets/images/sdgCards/Goal-10.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.climateAction'),
+      link: '/assets/images/sdgCards/Goal-13.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.lifeOnLand'),
+      link: '/assets/images/sdgCards/Goal-15.png',
+    },
+    {
+      key: t('infoAndCtaContainer.sdgCardAlternativeText.partnership'),
+      link: '/assets/images/sdgCards/Goal-17.png',
+    },
   ];
 
-  const sdgCardsDataArray = sdgCardImageLinks.map((item, index) => (
-    <div className={styles.singleSDGCardContainer} key={index}>
-      <img src={item} alt="SDG card" />
+  const sdgCardsDataArray = sdgCardImageLinks.map((item) => (
+    <div className={styles.singleSDGCardContainer} key={item.key}>
+      <img src={item.link} alt={item.key} />
     </div>
   ));
 
@@ -92,6 +110,7 @@ const SDGCardList = () => {
       settings={settings}
       currentSlide={currentSlide}
       setCurrentSlide={setCurrentSlide}
+      totalSlides={sdgCardImageLinks.length}
     />
   );
 };
