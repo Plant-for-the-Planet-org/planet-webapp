@@ -54,7 +54,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
       <SocialMediaShareButton userProfile={userProfile} />
     </div>
   ) : (
-    <div className={styles.publicProfileActions}>
+    <div className={styles.profileCardPublicActions}>
       <WebappButton
         icon={<SupportUserIcon />}
         text={t('feature.supportUserText', {
