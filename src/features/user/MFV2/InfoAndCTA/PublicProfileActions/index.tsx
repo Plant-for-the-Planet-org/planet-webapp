@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 const PublicProfileActions = () => {
   const t = useTranslations('Profile');
 
-  const donorCircleCardsData = [
+  const actionCardsData = [
     {
       link: 'https://www.plant-for-the-planet.org/children-youth/',
       image: '/assets/images/publicProfileActionsImages/youthEmpowerment.png',
@@ -55,7 +55,7 @@ const PublicProfileActions = () => {
     <div className={styles.publicProfileActionContainer}>
       <PublicProfileActionsHeader />
       <div className={styles.publicProfileActionCardsContainer}>
-        {donorCircleCardsData.map((item, index) => (
+        {actionCardsData.map((item, index) => (
           <PublicProfileActionCard
             image={item.image}
             title={item.title}
