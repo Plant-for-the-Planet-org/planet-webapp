@@ -1,9 +1,22 @@
 {
-  "congratulations": "Parabéns!",
-  "addToMyTrees": "Adicionar às minhas árvores",
-  "validateCode": "Validar Código",
-  "enterRedeemCode": "Por favor, digite um código para resgatar",
-  "validating": "Validação",
-  "invalidType": "Tipo inválido, por favor verifique o link novamente",
-  "redeemDescription": "Resgate o seu voucher de árvore e outros códigos."
+  "Redeem": {
+    "myPlantedTreesByOrg": "Minha árvore {formattedNumber} será plantada por {tpoName}",
+    "myPlantedTreesByOrg_plural": "Minhas árvores {formattedNumber} serão plantadas por {tpoName}",
+    "congratulations": "Parabéns!",
+    "addToMyTrees": "Adicionar às minhas árvores",
+    "validateCode": "Validar Código",
+    "enterRedeemCode": "Por favor, digite um código para resgatar",
+    "validating": "Validação",
+    "invalidType": "Tipo inválido, por favor verifique o link novamente",
+    "redeeming": "Redenção:",
+    "invalidCode": "Esse código é inválido.",
+    "selfGiftMessage": "Não é possível resgatar um presente/código emitido por você mesmo",
+    "alreadyRedeemed": "O código já foi resgatado",
+    "redeemCode": "Código de resgate",
+    "redeemingCode": "Código de resgate...",
+    "redeem": "Resgatar",
+    "redeemDescription": "Resgate o seu voucher de árvore e outros códigos.",
+    "successfullyRedeemed": "Resgatado com sucesso",
+    "redeemAnotherCode": "Resgatar outro código"
+  }
 }

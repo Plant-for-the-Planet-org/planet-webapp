@@ -1,8 +1,9 @@
-import tenantConfig from '../../../../../tenant.config';
+import { useTenant } from '../../../common/Layout/TenantContext';
 import PlayButton from '../../../common/LandingVideo/PlayButton';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { SetState } from '../../../common/types/common';
 import MapLayout from '../ProjectsMap';
+import { useRouter } from 'next/router';
 
 interface Props {
   setshowVideo: SetState<boolean>;
@@ -10,14 +11,25 @@ interface Props {
 
 const MapHolder = ({ setshowVideo }: Props) => {
   const { project, projects } = useProjectProps();
-  const config = tenantConfig();
+  const { tenantConfig } = useTenant();
+  const router = useRouter();
+
+  const showMapLayout =
+    router.pathname === '/' ||
+    router.pathname === '/[p]' ||
+    router.pathname === '/[p]/[id]' ||
+    router.pathname === '/sites/[slug]/[locale]' ||
+    router.pathname === '/sites/[slug]/[locale]/[p]' ||
+    (router.pathname === '/sites/[slug]/[locale]/[p]/[id]' &&
+      (project !== null || projects !== null));
 
   return (
     <>
-      {project !== null || projects !== null ? <MapLayout /> : null}
+      {showMapLayout ? <MapLayout /> : null}
       <div
         style={
-          config.tenantName === 'planet' || config.tenantName === 'ttc'
+          tenantConfig.config.slug === 'planet' ||
+          tenantConfig.config.slug === 'ttc'
             ? {}
             : { display: 'none' }
         }

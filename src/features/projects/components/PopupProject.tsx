@@ -1,6 +1,6 @@
 import React, { ReactElement, RefObject } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
@@ -21,7 +21,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   project: TreeProjectConcise | ConservationProjectConcise;
@@ -32,9 +32,14 @@ export default function PopupProject({
   project,
   buttonRef,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const tDonate = useTranslations('Donate');
+  const tCommon = useTranslations('Common');
+  const tCountry = useTranslations('Country');
+  const tManageProjects = useTranslations('ManageProjects');
+  const locale = useLocale();
   const { token } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
+  const { tenantConfig } = useTenant();
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -50,7 +55,7 @@ export default function PopupProject({
   }
 
   const handleDonationOpen = () => {
-    const url = getDonationUrl(project.slug, token);
+    const url = getDonationUrl(tenantConfig.id, project.slug, token);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
@@ -71,9 +76,7 @@ export default function PopupProject({
     popupId: 'popupProjectInfoPopover',
   });
 
-  const config = tenantConfig();
-
-  return ready ? (
+  return (
     <div className={'singleProject'}>
       <div className={'projectImage'}>
         {project.image && typeof project.image !== 'undefined' ? (
@@ -102,14 +105,13 @@ export default function PopupProject({
             <div>
               {project.ecosystem !== null && (
                 <div className={'projectEcosystem'}>
-                  {t(`manageProjects:ecosystemTypes.${project.ecosystem}`)}
+                  {tManageProjects(`ecosystemTypes.${project.ecosystem}`)}
                   {project.purpose === 'trees' && ' /'}
                 </div>
               )}
               {project.purpose === 'trees' && (
                 <div className={'projectType'}>
-                  {project.classification &&
-                    t(`donate:${project.classification}`)}
+                  {project.classification && tDonate(project.classification)}
                 </div>
               )}
             </div>
@@ -142,20 +144,20 @@ export default function PopupProject({
               {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
-                    i18n.language,
+                    locale,
                     Number(project.countPlanted),
                     1
                   )}{' '}
                   {project.unitType === 'tree'
-                    ? t('common:tree', {
+                    ? tCommon('tree', {
                         count: Number(project.countPlanted),
                       })
-                    : t('common:m2')}{' '}
+                    : tCommon('m2')}{' '}
                   •{' '}
                 </>
               )}
               <span style={{ fontWeight: 400 }}>
-                {t('country:' + project.country.toLowerCase())}
+                {tCountry(project.country.toLowerCase())}
               </span>
             </div>
           </div>
@@ -180,23 +182,19 @@ export default function PopupProject({
                 }}
               >
                 <div className="projectInfoPopupContainer">
-                  {config.tenantName === 'salesforce'
-                    ? `${t('common:salesforceDisabledDonateButtonText')}`
-                    : `${t('common:disabledDonateButtonText')}`}
+                  {tenantConfig.config.slug === 'salesforce'
+                    ? `${tCommon('salesforceDisabledDonateButtonText')}`
+                    : `${tCommon('disabledDonateButtonText')}`}
                 </div>
               </HoverPopover>
-              {t('common:notDonatable')}
+              {tCommon('notDonatable')}
             </div>
           ) : (
             <div className={'perUnitCost'}>
-              {getFormatedCurrency(
-                i18n.language,
-                project.currency,
-                project.unitCost
-              )}{' '}
+              {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
-                {project.unitType === 'tree' && t('donate:perTree')}
-                {project.unitType === 'm2' && t('donate:perM2')}
+                {project.unitType === 'tree' && tDonate('perTree')}
+                {project.unitType === 'm2' && tDonate('perM2')}
               </span>
             </div>
           )}
@@ -210,7 +208,7 @@ export default function PopupProject({
                 onClick={handleDonationOpen}
                 className={`donateButton ${donateButtonBackgroundColor}`}
               >
-                {t('common:donate')}
+                {tCommon('donate')}
               </button>
             ) : null}
           </div>
@@ -228,12 +226,10 @@ export default function PopupProject({
           }`,
         }}
       >
-        {t('common:by', {
+        {tCommon('by', {
           tpoName: project.tpo.name,
         })}
       </div>
     </div>
-  ) : (
-    <></>
   );
 }

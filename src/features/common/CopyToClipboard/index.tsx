@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -14,14 +14,14 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 interface Props {
   text: string;
-  isButton: boolean;
+  isButton?: boolean;
 }
 
 export default function CopyToClipboard({
   text,
   isButton,
 }: Props): ReactElement {
-  const { t } = useTranslation(['common']);
+  const t = useTranslations('Common');
   const [open, setOpen] = useState(false);
 
   const handleClick = async () => {

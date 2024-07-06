@@ -1,5 +1,5 @@
 import style from './CarbonCapture.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations, useLocale } from 'next-intl';
 import { getFormattedNumber } from '../../utils/getFormattedNumber';
 
 interface CO2BarGraphProps {
@@ -56,46 +56,45 @@ export const CO2CaptureData = ({
   byProject,
   sitePotential,
 }: CO2BarGraphProps) => {
-  const { t, i18n } = useTranslation(['projectDetails']);
+  const t = useTranslations('ProjectDetails');
+  const locale = useLocale();
   return (
     <div className={style.carbonCaptureDataContainerMain}>
       <div>
         <p className={style.beforeIntervationData}>
-          {t('projectDetails:co₂Quantity', {
-            quantity: getFormattedNumber(i18n.language, beforeIntervation),
+          {t('co₂Quantity', {
+            quantity: getFormattedNumber(locale, beforeIntervation),
           })}
         </p>
         <p className={style.beforeIntervationLabel}>
-          {t('projectDetails:beforeIntervention')}
+          {t('beforeIntervention')}
         </p>
         <p className={style.beforeIntervationDate}>
-          {t('projectDetails:before', {
+          {t('before', {
             date: 2018,
           })}
         </p>
       </div>
       <div>
         <p className={style.byProjectData}>
-          {t('projectDetails:byProjectCO₂Quantity', {
-            quantity: getFormattedNumber(i18n.language, byProject),
+          {t('byProjectCO₂Quantity', {
+            quantity: getFormattedNumber(locale, byProject),
           })}
         </p>
-        <p className={style.byProjectLabel}>{t('projectDetails:byProject')}</p>
+        <p className={style.byProjectLabel}>{t('byProject')}</p>
         <p className={style.byProjectDate}>
-          {t('projectDetails:since', {
+          {t('since', {
             date: 2018,
           })}
         </p>
       </div>
       <div className={style.sitePotentialDataContainer}>
         <p className={style.sitePotentialData}>
-          {t('projectDetails:co₂Quantity', {
-            quantity: getFormattedNumber(i18n.language, sitePotential),
+          {t('co₂Quantity', {
+            quantity: getFormattedNumber(locale, sitePotential),
           })}
         </p>
-        <p className={style.sitePotentialLabel}>
-          {t('projectDetails:sitePotential')}
-        </p>
+        <p className={style.sitePotentialLabel}>{t('sitePotential')}</p>
       </div>
     </div>
   );

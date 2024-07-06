@@ -9,10 +9,11 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Properties } from '../../common/types/project';
 import { Geometry } from '@turf/turf';
+import { useTenant } from '../../common/Layout/TenantContext';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 
@@ -26,7 +27,10 @@ function SingleProject({ project }: { project: Properties }) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const tDonate = useTranslations('Donate');
+  const tCommon = useTranslations('Common');
+  const tCountry = useTranslations('Country');
+  const locale = useLocale();
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -48,17 +52,17 @@ function SingleProject({ project }: { project: Properties }) {
           {project.country === null ? (
             <></>
           ) : (
-            t('country:' + (project.country || '').toLowerCase())
+            tCountry((project.country || '').toLowerCase())
           )}
         </p>
         {project.purpose === 'trees' ? (
           <p>
             {localizedAbbreviatedNumber(
-              i18n.language,
+              locale,
               Number(project.countPlanted),
               1
             )}{' '}
-            {t('common:tree', { count: Number(project.countPlanted) })}
+            {tCommon('tree', { count: Number(project.countPlanted) })}
           </p>
         ) : (
           <></>
@@ -69,13 +73,13 @@ function SingleProject({ project }: { project: Properties }) {
             <div className={styles.projectLabel}>🛰 ️TreeMapper</div>
           )} */}
           {project.isFeatured ? (
-            <div className={styles.projectLabel}>🌟 {t('common:featured')}</div>
+            <div className={styles.projectLabel}>🌟 {tCommon('featured')}</div>
           ) : (
             ''
           )}
           {project.allowDonations ? (
             <div className={styles.projectLabel}>
-              💸 {t('donate:acceptingDonations')}
+              💸 {tDonate('acceptingDonations')}
             </div>
           ) : (
             ''
@@ -84,10 +88,10 @@ function SingleProject({ project }: { project: Properties }) {
       </div>
       <div className={styles.projectLinksContainer}>
         <Link href={'/' + project.id}>
-          <button className={styles.secondaryLink}>{t('common:view')}</button>
+          <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
         <Link href={`/profile/projects/${project.id}?type=basic-details`}>
-          <button className={styles.primaryLink}>{t('common:edit')}</button>
+          <button className={styles.primaryLink}>{tCommon('edit')}</button>
         </Link>
       </div>
     </div>
@@ -95,7 +99,9 @@ function SingleProject({ project }: { project: Properties }) {
 }
 
 export default function ProjectsContainer() {
-  const { t, ready } = useTranslation(['donate', 'manageProjects']);
+  const tDonate = useTranslations('Donate');
+  const tManageProjects = useTranslations('ManageProjects');
+  const { tenantConfig } = useTenant();
   const [projects, setProjects] = React.useState<UserProjectsType[]>([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -105,6 +111,7 @@ export default function ProjectsContainer() {
     if (user) {
       try {
         const projects = await getAuthenticatedRequest<UserProjectsType[]>(
+          tenantConfig?.id,
           '/app/profile/projects?version=1.2',
           token,
           logoutUser
@@ -124,52 +131,52 @@ export default function ProjectsContainer() {
     }
   }, [contextLoaded, token]);
 
-  return ready ? (
+  return (
     <DashboardView
-      title={t('manageProjects:manageProject')}
+      title={tManageProjects('manageProject')}
       subtitle={
         <div>
-          <p>{t('manageProjects:descriptionForManageProjects')}</p>
+          <p>{tManageProjects('descriptionForManageProjects')}</p>
         </div>
       }
     >
       <SingleColumnView>
+        <div className={styles.headerCTAs}>
+          <Link href="/profile/projects/new-project">
+            <button
+              // id={'addProjectBut'}
+              className="primaryButton"
+            >
+              {tManageProjects('addProject')}
+            </button>
+          </Link>
+          <Link href="/profile/payouts">
+            <button className="primaryButton">
+              {tManageProjects('managePayoutsButton')}
+            </button>
+          </Link>
+        </div>
 
-          <div className={styles.headerCTAs}>
-            <Link href="/profile/projects/new-project">
-              <button
-                // id={'addProjectBut'}
-                className="primaryButton"
-              >
-                {t('manageProjects:addProject')}
-              </button>
-            </Link>
-            <Link href="/profile/payouts">
-              <button className="primaryButton">
-                {t('manageProjects:managePayoutsButton')}
-              </button>
-            </Link>
-          </div>
-
-          <div className={styles.projectsContainer} id="projectsContainer">
-            {loader && <GlobeContentLoader />}
-            {projects?.length < 1 && !loader ? (
-              <div className={styles.projectNotFound}>
-                <LazyLoad>
-                  <NotFound className={styles.projectNotFoundImage} />
-                  <h5>{t('donate:noProjectsFound')}</h5>
-                </LazyLoad>
-              </div>
-            ) : (
-              <div className={styles.listProjects}>
-                {projects.map((project, index) => {
-                  return <SingleProject key={index} project={project.properties} />;
-                })}
-              </div>
-            )}
-          </div>
-
+        <div className={styles.projectsContainer} id="projectsContainer">
+          {loader && <GlobeContentLoader />}
+          {projects?.length < 1 && !loader ? (
+            <div className={styles.projectNotFound}>
+              <LazyLoad>
+                <NotFound className={styles.projectNotFoundImage} />
+                <h5>{tDonate('noProjectsFound')}</h5>
+              </LazyLoad>
+            </div>
+          ) : (
+            <div className={styles.listProjects}>
+              {projects.map((project, index) => {
+                return (
+                  <SingleProject key={index} project={project.properties} />
+                );
+              })}
+            </div>
+          )}
+        </div>
       </SingleColumnView>
     </DashboardView>
-  ) : null;
+  );
 }

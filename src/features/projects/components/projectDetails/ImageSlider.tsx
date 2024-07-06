@@ -1,7 +1,8 @@
-import React, { ReactElement } from 'react';
+import { useState, useEffect } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './../../styles/ProjectDetails.module.scss';
+import { Story } from 'react-insta-stories/dist/interfaces';
 
 export type SliderImage = {
   image?: string;
@@ -21,19 +22,18 @@ export default function ImageSlider({
   imageSize,
   type,
 }: Props) {
-  const [slider, setSlider] = React.useState<ReactElement>();
-  const projectImages: { content: () => ReactElement }[] = [];
+  const [slider, setSlider] = useState<Story[]>([]);
 
   const loadImageSource = (imageName: string): string => {
     const ImageSource = getImageUrl(type, imageSize, imageName);
     return ImageSource;
   };
 
-  React.useEffect(() => {
+  const setupSlider = () => {
+    const projectImages: Story[] = [];
     images.forEach((sliderImage) => {
       if (sliderImage.image) {
         const imageURL = loadImageSource(sliderImage.image);
-
         projectImages.push({
           content: () => (
             <div
@@ -54,19 +54,26 @@ export default function ImageSlider({
         });
       }
     });
+    setSlider(projectImages);
+  };
+
+  useEffect(() => {
+    if (images.length > 0) {
+      setupSlider();
+    }
   }, [images]);
 
-  React.useEffect(() => {
-    setSlider(
-      <Stories
-        stories={projectImages}
-        defaultInterval={7000}
-        width="100%"
-        height={height}
-        loop={true}
-      />
-    );
-  }, [images]);
+  if (slider.length === 0) {
+    return null;
+  }
 
-  return <>{slider}</>;
+  return (
+    <Stories
+      stories={slider}
+      defaultInterval={7000}
+      width="100%"
+      height={height}
+      loop={true}
+    />
+  );
 }

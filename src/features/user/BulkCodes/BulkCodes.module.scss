@@ -52,6 +52,12 @@
   text-decoration: underline;
 }
 
+.issueCodeTermsAndWarnings {
+  font-size: $fontSmall;
+  font-style: italic;
+  color: $highlightBackground;
+}
+
 .spinner {
   border: 2px solid #689f38;
   border-radius: 50%;

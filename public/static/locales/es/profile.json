@@ -1,0 +1,49 @@
+{
+  "Profile": {
+    "myProfile": {
+      "memberSince": "Miembro desde {date}",
+      "userDescription": "{bio}"
+    },
+    "feature": {
+      "redeem": "Canjear",
+      "registerTree": "Árbol de registro",
+      "share": "Compartir"
+    },
+    "myPublicProfile": {
+      "support": "Apoyo",
+      "link": "Enlace"
+    },
+    "myForestMap": {
+      "plantedTree": "{count, plural,   =1 {# Árbol} other {# Árboles}}",
+      "treesPlanted": "Árboles plantados",
+      "restored": "Restaurado",
+      "registered": "Registrado",
+      "conservation": "Conservación",
+      "projects": "Proyectos",
+      "countries": "Países",
+      "donations": "Donaciones",
+      "area": "{areaConserved} m²",
+      "zoomIn": "ampliar para más detalles",
+      "totalDonation": "{count, plural, =1 {# donación} other {# donaciones}} ",
+      "totalProject": "a {count, plural, =1 {# proyecto} other {# proyectos}}",
+      "tpoName": "Por {tpo}"
+    },
+    "myTreeCounter": {
+      "treesPlanted": "Árboles plantados",
+      "editTarget": "Editar objetivo"
+    },
+    "myContributions": {
+      "treesPlantedAndAreaRestored": "Árboles plantados y zonas restauradas",
+      "treeRegistered": "{count, plural, =1 {# Árbol registrado} other {# Árboles registrados}}",
+      "receivedFrom": "Recibido de {name}",
+      "loadMoreContribution": "Cargar más contribuciones",
+      "loadingContribution": "Cargando Contribution....",
+      "donate": "Donar",
+      "donateAgain": "Donar de nuevo",
+      "conservedSmall": "conservado",
+      "restoredSmall": "restaurado",
+      "areaType": "{areaConserved} m² {type}",
+      "areaConserved": "Zonas conservadas"
+    }
+  }
+}

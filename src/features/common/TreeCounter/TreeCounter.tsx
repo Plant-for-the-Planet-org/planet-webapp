@@ -1,19 +1,31 @@
 import MuiCircularProgress, {
   CircularProgressProps,
 } from '@mui/material/CircularProgress';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
-import { useTranslation } from 'next-i18next';
-import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
+import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
-import themeProperties from '../../../theme/themeProperties';
-import { ThemeContext } from '../../../theme/themeContext';
 import { styled } from '@mui/material/styles';
+import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
+import HomeTreeCounter from './legacy/TreeCounterData';
+import theme from '../../../theme/themeProperties';
+import { _tenants } from '../../../utils/constants/HomeTreeCounter';
+import { useTenant } from '../Layout/TenantContext';
+
+const { primaryDarkColorX, light } = theme;
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: '#fff',
+    color: `${light.light}`,
+    animationDuration: '550ms',
+  },
+  '& > svg > circle': {
+    strokeLinecap: 'round',
+  },
+});
+const XCircularProgress = styled(MuiCircularProgress)({
+  '&.MuiCircularProgress-root': {
+    color: `${primaryDarkColorX}`,
     animationDuration: '550ms',
   },
   '& > svg > circle': {
@@ -21,12 +33,24 @@ const CircularProgress = styled(MuiCircularProgress)({
   },
 });
 
-function FacebookCircularProgress(props: CircularProgressProps) {
+export function ProfileCircularProgress(props: CircularProgressProps) {
   return (
-    <div style={{ position: 'relative' }}>
+    <div className={treeCounterStyles.circularProgressContainer}>
       <CircularProgress
         variant="determinate"
-        size={320}
+        size={330}
+        thickness={3}
+        {...props}
+      />
+    </div>
+  );
+}
+export function HomeCircularProgress(props: CircularProgressProps) {
+  return (
+    <div className={treeCounterStyles.circularProgressContainer}>
+      <XCircularProgress
+        variant="determinate"
+        size={342}
         thickness={3}
         {...props}
       />
@@ -34,17 +58,54 @@ function FacebookCircularProgress(props: CircularProgressProps) {
   );
 }
 
-export default function TpoProfile(props: any) {
-  const [progress, setProgress] = useState(0);
-  const { theme } = useContext(ThemeContext);
+interface TpoProfileInterface {
+  handleAddTargetModalOpen: () => void;
+  planted: number;
+  restoredAreaUnit: number;
+  target: number;
+}
 
-  const { t, i18n, ready } = useTranslation(['me']);
+export default function TpoProfile(props: TpoProfileInterface) {
+  const [progress, setProgress] = useState(0);
+  const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const t = useTranslations('Me');
+  const locale = useLocale();
+  const { tenantConfig } = useTenant();
+
+  const _isTreeTarget = () => {
+    if (props?.target !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const svgHeight = screenSize.width < 400 ? 15 : 33;
+  const svgWidth = screenSize.width < 400 ? 20 : 43;
+
   useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
       percentage = (props.planted / props.target) * 100;
     } else {
-      if (props.planted === '0.00' || props.planted === 0.0) percentage = 0.1;
+      if (String(props.planted) === '0.00' || props.planted === 0.0)
+        percentage = 0.1;
       else percentage = 100;
     }
     if (percentage > 100) {
@@ -64,81 +125,68 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
-  return ready ? (
+  useEffect(() => {
+    const _tenantHasHomeTreeCounter = _tenants.some((tenant) => {
+      return tenantConfig.config.slug === tenant;
+    });
+    if (_tenantHasHomeTreeCounter) setIsHomeTreeCounter(true);
+  }, [isHomeTreeCounter]);
+  return (
     <div className={treeCounterStyles.treeCounter}>
-      <FacebookCircularProgress value={progress} />
-      <div className={treeCounterStyles.backgroundCircle} />
-      <div className={treeCounterStyles.treeCounterData}>
-        <div className={treeCounterStyles.treeCounterDataField}>
-          <h1>
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(props.planted),
-              1
-            )}
-          </h1>
-          <h2>
-            {t('me:treesPlanted_plural', {
-              count: Number(props.planted),
-              treeCount: getFormattedNumber(
-                i18n.language,
-                Number(props.planted)
-              ),
-            })}
-          </h2>
-        </div>
+      {isHomeTreeCounter ? (
+        <ProfileCircularProgress value={progress} />
+      ) : (
+        <HomeCircularProgress value={progress} />
+      )}
 
-        {props.target ? (
-          <div className={treeCounterStyles.treeCounterDataField}>
-            <h1>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(props.target),
-                1
-              )}
-            </h1>
-            <div className={treeCounterStyles.target}>
-              <h2
-                className={
-                  props.authenticatedType === 'public'
-                    ? treeCounterStyles.targetText
-                    : treeCounterStyles.targetTextForPrivate
-                }
-              >
-                {t('me:target')}
-              </h2>
-              {props.authenticatedType === 'private' && (
-                <button
-                  id={'treeCounterEdit'}
-                  className={treeCounterStyles.editTragetContainer}
-                  onClick={() => props.handleAddTargetModalOpen()}
-                >
-                  <EditIcon color="white"></EditIcon>
-                </button>
-              )}
-            </div>
+      <div
+        className={
+          isHomeTreeCounter
+            ? treeCounterStyles.backgroundCircle
+            : treeCounterStyles.backgroundCircleForTenant
+        }
+      />
+
+      {isHomeTreeCounter ? (
+        <HomeTreeCounter planted={props?.planted} target={props.target} />
+      ) : (
+        <div className={treeCounterStyles.treeCounterData}>
+          <div>
+            <PlantedTressBlackSvg
+              color={'#4F4F4F'}
+              height={svgHeight}
+              width={svgWidth}
+            />
           </div>
-        ) : null}
-
-        {props.authenticatedType === 'private' && props.target === 0 && (
-          <button
-            id={'addTarget'}
-            onClick={() => props.handleAddTargetModalOpen()}
-            className={treeCounterStyles.addTargetButton}
-          >
-            <p
-              style={{
-                color:
-                  theme === 'theme-light'
-                    ? themeProperties.light.light
-                    : themeProperties.dark.dark,
-              }}
-            >
-              {t('me:addTarget')}{' '}
-            </p>
-          </button>
-        )}
-      </div>
+          <div className={treeCounterStyles.dataContainer}>
+            {_isTreeTarget() ? (
+              t('treesOfTrees', {
+                count1: localizedAbbreviatedNumber(
+                  locale,
+                  Number(props.planted - props.restoredAreaUnit),
+                  2
+                ),
+                count2: localizedAbbreviatedNumber(
+                  locale,
+                  Number(props.target),
+                  1
+                ),
+              })
+            ) : (
+              <div>
+                {localizedAbbreviatedNumber(
+                  locale,
+                  Number(props.planted - props.restoredAreaUnit),
+                  2
+                )}
+              </div>
+            )}
+          </div>
+          <div className={treeCounterStyles.treesPlanted}>
+            {t('treesPlanted')}
+          </div>
+        </div>
+      )}
     </div>
-  ) : null;
+  );
 }

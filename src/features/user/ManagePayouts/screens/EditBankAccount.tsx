@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
@@ -14,16 +14,18 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { BankAccount } from '../../../common/types/payouts';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
   const { token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
-  const { t, ready } = useTranslation('managePayouts');
+  const t = useTranslations('ManagePayouts');
 
   const closeSnackbar = (): void => {
     setIsAccountUpdated(false);
@@ -40,6 +42,7 @@ const EditBankAccount = (): ReactElement | null => {
 
     try {
       const res = await putAuthenticatedRequest<BankAccount>(
+        tenantConfig?.id,
         `/app/accounts/${accountToEdit?.id}`,
         accountData,
         token,
@@ -126,7 +129,7 @@ const EditBankAccount = (): ReactElement | null => {
     }
   }, [accounts, router.query.id]);
 
-  return accountToEdit !== null && payoutMinAmounts && ready ? (
+  return accountToEdit !== null && payoutMinAmounts ? (
     <CenteredContainer>
       <FormHeader>
         <Link href="/profile/payouts">

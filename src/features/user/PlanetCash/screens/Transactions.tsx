@@ -5,7 +5,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
@@ -16,6 +16,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError, APIError } from '@planet-sdk/common';
 import { PaymentHistory } from '../../../common/types/payments';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -24,8 +25,9 @@ interface TransactionsProps {
 const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const { token, contextLoaded, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
@@ -62,6 +64,7 @@ const Transactions = ({
 
         const newTransactionHistory =
           await getAuthenticatedRequest<PaymentHistory>(
+            tenantConfig?.id,
             apiUrl,
             token,
             logoutUser

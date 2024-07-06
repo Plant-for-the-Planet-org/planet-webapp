@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import DownloadCodes from './DownloadCodes';
 import { PaymentDetails } from '../../../common/types/payments';
 import styles from '../AccountHistory.module.scss';
@@ -11,15 +11,8 @@ interface CertificatesProps {
   unitType: UnitTypes;
 }
 
-export const shouldEnableCertificate = (
-  purpose: ProjectPurpose,
-  unitType: UnitTypes
-) => {
-  if (
-    purpose === 'conservation' ||
-    purpose === 'bouquet' ||
-    (purpose === 'trees' && unitType === 'm2')
-  ) {
+export const shouldEnableCertificate = (purpose: ProjectPurpose) => {
+  if (purpose === 'bouquet') {
     return false;
   } else {
     return true;
@@ -31,7 +24,7 @@ export default function Certificates({
   purpose,
   unitType,
 }: CertificatesProps): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
 
   return (
     <>

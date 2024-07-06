@@ -1,19 +1,20 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-
-const config = tenantConfig();
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   setCurrencyCode: Function;
 }
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
-  const { i18n, t } = useTranslation(['common', 'maps']);
+  const { tenantConfig } = useTenant();
+  const tCommon = useTranslations('Common');
+  const tMaps = useTranslations('Maps');
+  const locale = useLocale();
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
@@ -44,26 +45,25 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {config.darkModeEnabled && <DarkModeSwitch />}
+        {/* {tenantConfig.config.darkModeEnabled && <DarkModeSwitch />} */}
         {isEmbed ? null : (
           <div
             onClick={() => {
               setLanguageModalOpen(true);
             }}
           >
-            {`🌐 ${
-              i18n.language ? i18n.language.toUpperCase() : ''
-            } • ${selectedCurrency}`}
+            {`🌐 ${locale ? locale.toUpperCase() : ''} • ${selectedCurrency}`}
           </div>
         )}
-        {(process.env.TENANT === 'ttc' || process.env.TENANT === 'planet') &&
+        {(tenantConfig.config.slug === 'ttc' ||
+          tenantConfig.config.slug === 'planet') &&
         !isEmbed ? (
           <a
             rel="noopener noreferrer"
             href={`https://www.thegoodshop.org/de/shop/`}
             target={'_blank'}
           >
-            {t('common:shop')}
+            {tCommon('shop')}
           </a>
         ) : null}
 
@@ -72,33 +72,33 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
           href={`https://status.pp.eco/`}
           target={isEmbed ? '_top' : '_blank'}
         >
-          {t('common:status')}
+          {tCommon('status')}
         </a>
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
-            href={`https://pp.eco/legal/${i18n.language}/imprint`}
+            href={`https://pp.eco/legal/${locale}/imprint`}
             target={'_blank'}
           >
-            {t('common:imprint')}
+            {tCommon('imprint')}
           </a>
         )}
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
-            href={`https://pp.eco/legal/${i18n.language}/privacy`}
+            href={`https://pp.eco/legal/${locale}/privacy`}
             target={'_blank'}
           >
-            {t('common:privacy')}
+            {tCommon('privacy')}
           </a>
         )}
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
-            href={`https://pp.eco/legal/${i18n.language}/terms`}
+            href={`https://pp.eco/legal/${locale}/terms`}
             target={'_blank'}
           >
-            {t('common:terms')}
+            {tCommon('terms')}
           </a>
         )}
         <a
@@ -111,12 +111,12 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         >
           <div style={{ width: 'fit-content' }}>
             <div className={styles.popover}>
-              {t('common:mapInfo')}
+              {tCommon('mapInfo')}
               <div
                 className={styles.popoverContent}
                 style={{ left: '-270px', top: '-240px' }}
               >
-                <b>{t('maps:baseLayer')}</b>
+                <b>{tMaps('baseLayer')}</b>
                 <p>
                   Esri Community Maps Contributors, Esri, HERE, Garmin,
                   METI/NASA, USGS{' '}
@@ -126,7 +126,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                   DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
                   Community
                 </p>
-                <b>{t('maps:satelliteImagery')}</b>
+                <b>{tMaps('satelliteImagery')}</b>
                 <p>Image courtesy of Planet Labs, Inc</p>
                 <p>Copernicus Sentinel data 2017-2021</p>
                 <p>Landsat-8 image courtesy of the U.S. Geological Survey</p>
@@ -140,7 +140,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             href="mailto:support@plant-for-the-planet.org"
             target={'_blank'}
           >
-            {t('common:contact')}
+            {tCommon('contact')}
           </a>
         )}
 

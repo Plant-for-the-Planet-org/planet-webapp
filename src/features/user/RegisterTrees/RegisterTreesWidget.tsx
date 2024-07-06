@@ -8,7 +8,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from 'react-map-gl';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
@@ -18,7 +18,9 @@ import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
-import SingleContribution from './RegisterTrees/SingleContribution';
+import SingleContribution, {
+  ContributionProperties,
+} from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -27,6 +29,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { useTenant } from '../../common/Layout/TenantContext';
+import { ViewportProps } from '../../common/types/map';
+import {
+  RegisterTreesFormProps,
+  RegisterTreeGeometry,
+  ProjectGeoJsonProps,
+} from '../../common/types/map';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -50,19 +59,14 @@ const dialogSx: SxProps = {
   },
 };
 
-interface RegisterTreesFormProps {
-  setContributionGUID: React.Dispatch<React.SetStateAction<string>>;
-  setContributionDetails: React.Dispatch<React.SetStateAction<{}>>;
-  setRegistered: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 function RegisterTreesForm({
   setContributionGUID,
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
-  const { t, ready } = useTranslation(['me', 'common']);
+  const { user, token, contextLoaded, logoutUser, setRefetchUserData } =
+    useUserProps();
+  const t = useTranslations('Me');
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
@@ -72,14 +76,18 @@ function RegisterTreesForm({
     mapStyle: EMPTY_STYLE,
   });
   const [isMultiple, setIsMultiple] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState<null | string>(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState();
-  const [geometry, setGeometry] = React.useState();
-  const [viewport, setViewPort] = React.useState({
+  const [plantLocation, setplantLocation] = React.useState<
+    number[] | undefined
+  >(undefined);
+  const [geometry, setGeometry] = React.useState<
+    RegisterTreeGeometry | undefined
+  >(undefined);
+  const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
     width: '100%',
     latitude: defaultMapCenter[0],
@@ -87,18 +95,21 @@ function RegisterTreesForm({
     zoom: defaultZoom,
   });
   const [userLang, setUserLang] = React.useState('en');
-  const [userLocation, setUserLocation] = React.useState();
-  const [projects, setProjects] = React.useState([]);
+  const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
+  const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const [isStyleReady, setIsStyleReady] = React.useState(false);
+  const { tenantConfig } = useTenant();
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
       if (style) {
         setMapState({ ...mapState, mapStyle: style });
+        setIsStyleReady(true);
       }
     });
-  }, []);
+  }, [isStyleReady]);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -150,7 +161,9 @@ function RegisterTreesForm({
     defaultValues: defaultBasicDetails,
   });
 
-  const onTreeCountChange = (e: any) => {
+  const onTreeCountChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {
@@ -158,11 +171,14 @@ function RegisterTreesForm({
     }
   };
 
-  const submitRegisterTrees = async (data: any) => {
-    if (data.treeCount < 10000000) {
+  const submitRegisterTrees = async (data: FormData): Promise<void> => {
+    const treeCount = parseInt(data.treeCount);
+    if (treeCount < 10000000) {
       if (
         geometry &&
-        (geometry.type === 'Point' || geometry.features?.length >= 1)
+        (geometry.type === 'Point' ||
+          (geometry.features?.length !== undefined &&
+            geometry.features?.length >= 1))
       ) {
         setIsUploadingData(true);
         const submitData = {
@@ -173,7 +189,8 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest(
+          const res = await postAuthenticatedRequest<ContributionProperties>(
+            tenantConfig?.id,
             `/app/contributions`,
             submitData,
             token,
@@ -184,22 +201,23 @@ function RegisterTreesForm({
           setContributionDetails(res);
           setIsUploadingData(false);
           setRegistered(true);
+          setRefetchUserData(true);
         } catch (err) {
           setIsUploadingData(false);
           setErrors(handleError(err as APIError));
           setRegistered(false);
         }
       } else {
-        setErrorMessage(ready ? t('me:locationMissing') : '');
+        setErrorMessage(t('locationMissing'));
       }
     } else {
-      setErrorMessage(ready ? t('me:wentWrong') : '');
+      setErrorMessage(t('wentWrong'));
     }
   };
-
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest(
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser
@@ -218,7 +236,6 @@ function RegisterTreesForm({
   }, [contextLoaded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
-
   const _onViewportChange = (view: any) => setViewPort({ ...view });
   return (
     <>
@@ -228,19 +245,19 @@ function RegisterTreesForm({
           onSubmit={handleSubmit(submitRegisterTrees)}
         >
           <div className={styles.note}>
-            <p>{t('me:registerTreesDescription')}</p>
+            <p>{t('registerTreesDescription')}</p>
           </div>
           <InlineFormDisplayGroup>
             <Controller
               name="treeCount"
               control={control}
               rules={{
-                required: t('me:treesRequired'),
+                required: t('treesRequired'),
                 validate: (value) => parseInt(value, 10) >= 1,
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('me:noOfTrees')}
+                  label={t('noOfTrees')}
                   variant="outlined"
                   onChange={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -253,7 +270,7 @@ function RegisterTreesForm({
                   helperText={
                     errors && errors.treeCount && errors.treeCount.message
                       ? errors.treeCount.message
-                      : t('me:moreThanOne')
+                      : t('moreThanOne')
                   }
                 />
               )}
@@ -272,7 +289,7 @@ function RegisterTreesForm({
                 defaultValue={new Date()}
                 render={({ field: { onChange, value } }) => (
                   <MuiDatePicker
-                    label={t('me:datePlanted')}
+                    label={t('datePlanted')}
                     value={value}
                     onChange={onChange}
                     renderInput={(props) => <TextField {...props} />}
@@ -291,10 +308,10 @@ function RegisterTreesForm({
           <Controller
             name="species"
             control={control}
-            rules={{ required: t('me:speciesIsRequired') }}
+            rules={{ required: t('speciesIsRequired') }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('me:treeSpecies')}
+                label={t('treeSpecies')}
                 variant="outlined"
                 onChange={onChange}
                 value={value}
@@ -310,7 +327,7 @@ function RegisterTreesForm({
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('me:project')}
+                  label={t('project')}
                   variant="outlined"
                   select
                   onChange={onChange}
@@ -335,20 +352,20 @@ function RegisterTreesForm({
           )}
           <div className={styles.mapNote}>
             {isMultiple ? (
-              <p>{t('me:drawPolygon')}</p>
+              <p>{t('drawPolygon')}</p>
             ) : (
-              <p>{t('me:selectLocation')}</p>
+              <p>{t('selectLocation')}</p>
             )}
           </div>
           <div className={`${styles.locationMap}`}>
-            {isMultiple ? (
+            {isMultiple && isStyleReady ? (
               <DrawMap setGeometry={setGeometry} userLocation={userLocation} />
             ) : (
               <MapGL
                 {...mapState}
                 {...viewport}
                 onViewportChange={_onViewportChange}
-                onStateChange={_onStateChange}
+                onViewStateChange={_onStateChange}
                 onClick={(event) => {
                   setplantLocation(event.lngLat);
                   setGeometry({
@@ -386,11 +403,12 @@ function RegisterTreesForm({
               </MapGL>
             )}
           </div>
-          {/* {errorMessage !== '' ? ( */}
-          <div className={styles.center}>
-            <p className={styles.formErrors}>{`${errorMessage}`}</p>
-          </div>
-          {/* ) : null} */}
+          {errorMessage !== null && (
+            <div className={styles.center}>
+              <p className={styles.formErrors}>{`${errorMessage}`}</p>
+            </div>
+          )}
+
           <div>
             <Button
               id={'RegTressSubmit'}
@@ -402,7 +420,7 @@ function RegisterTreesForm({
               {isUploadingData ? (
                 <div className={'spinner'}></div>
               ) : (
-                t('me:registerButton')
+                t('registerButton')
               )}
             </Button>
           </div>
@@ -417,20 +435,20 @@ type FormData = {
   species: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: any;
+  geometry: RegisterTreeGeometry | undefined;
 };
 
 export default function RegisterTreesWidget() {
-  const { user, token } = useUserProps();
+  const { token } = useUserProps();
   const [contributionGUID, setContributionGUID] = React.useState('');
-  const [contributionDetails, setContributionDetails] = React.useState({});
+  const [contributionDetails, setContributionDetails] =
+    React.useState<ContributionProperties | null>(null);
   const [registered, setRegistered] = React.useState(false);
 
   const ContributionProps = {
     token,
-    contribution: contributionDetails,
+    contribution: contributionDetails !== null ? contributionDetails : null,
     contributionGUID,
-    slug: user.slug,
   };
 
   return (

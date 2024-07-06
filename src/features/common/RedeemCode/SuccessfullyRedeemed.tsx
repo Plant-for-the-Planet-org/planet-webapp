@@ -1,7 +1,7 @@
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import { RedeemedCodeData } from '../types/redeem';
-import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
+import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import Button from '@mui/material/Button';
@@ -17,7 +17,9 @@ export const SuccessfullyRedeemed = ({
   redeemAnotherCode,
   closeRedeem,
 }: SuccessfullyRedeemedProps): ReactElement => {
-  const { t, i18n } = useTranslation(['common', 'redeem']);
+  const tCommon = useTranslations('Common');
+  const tRedeem = useTranslations('Redeem');
+  const locale = useLocale();
 
   return (
     <div className={styles.routeRedeemModal}>
@@ -28,21 +30,21 @@ export const SuccessfullyRedeemed = ({
       </div>
 
       <div className={styles.codeTreeCount}>
-        {getFormattedNumber(i18n.language, Number(redeemedCodeData?.units))}
+        {getFormattedNumber(locale, Number(redeemedCodeData?.units))}
         <span>
-          {t('common:tree', {
+          {tCommon('tree', {
             count: Number(redeemedCodeData?.units),
           })}
         </span>
       </div>
 
       <div className={styles.codeTreeCount}>
-        <span>{t('redeem:successfullyRedeemed')}</span>
+        <span>{tRedeem('successfullyRedeemed')}</span>
       </div>
 
       <div className={styles.redeemCodeButtonContainer}>
         <Button variant="contained" onClick={redeemAnotherCode}>
-          {t('redeem:redeemAnotherCode')}
+          {tRedeem('redeemAnotherCode')}
         </Button>
       </div>
     </div>

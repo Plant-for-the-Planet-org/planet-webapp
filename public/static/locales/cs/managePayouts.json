@@ -1,73 +1,76 @@
 {
-  "title": "Správa plateb",
-  "description": "Udržujte své platební údaje aktualizované (např. rozvrh, bankovní údaje), abyste usnadnili hladký průběh plateb",
-  "tabPayoutSchedule": "Plán plateb",
-  "tabAddBankDetails": "Přidat bankovní údaje",
-  "tabOverview": "Přehled",
-  "payoutInformation1": "Výplaty jsou zpracovávány automaticky každý rok, nebo když organizace sbírá 30 000 EUR nebo ekvivalent v jiné měně.",
-  "payoutInformation2": "Výplaty vydává Nadace Plant-for-the-Planet Foundation a její sesterské organizace, např.: Plant-for-the-Planet USA, Plant-for-the-Planet Švýcarsko atd.",
-  "payoutInformation3": "Pokud splňujete kritéria minimální částky 1 500 EUR, můžete upravit výplatní plán a přijímat časté výplaty.",
-  "supportInformation": "Pokud máte výjimečný případ, kontaktujte prosím<1></1> <2>support@plant-for-the-planet.org</2>.",
-  "scheduleFrequencies": {
-    "monthly": "Měsíčně",
-    "quarterly": "Čtvrtletně",
-    "semiannually": "Půlročně",
-    "annually": "Ročně",
-    "manual": "Ruční"
-  },
-  "defaultCurrency": "Výchozí",
-  "labels": {
-    "currency": "Měna",
-    "scheduleFrequency": "Frekvence plateb",
-    "payoutMinAmount": "Minimální částka výplaty",
-    "bankName": "Název banky",
-    "bankAddress": "Adresa banky",
-    "holderName": "Jméno majitele účtu",
-    "holderAddress": "Adresa majitele účtu",
-    "remarks": "Další podrobnosti",
-    "accountNumber": "IBAN /Číslo účtu",
-    "routingNumber": "ABA/Směrovací číslo (pouze USA)",
-    "bic": "BIC/SWIFT",
-    "branchCode": "Kód pobočky"
-  },
-  "errors": {
-    "scheduleFrequencyRequired": "Frekvence plateb je povinná",
-    "payoutMinAmountRequired": "Minimální částka výplaty je povinná",
-    "payoutMinAmountTooLow": "Minimální částka výplaty by měla být alespoň {{currency}} {{minAmount}}",
-    "bankNameRequired": "Název banky je povinný.",
-    "bankAddressRequired": "Adresa banky je povinná.",
-    "holderNameRequired": "Jméno držitele je povinné.",
-    "holderAddressRequired": "Adresa držitele je povinná.",
-    "accountNumberRequired": "Číslo účtu je povinné.",
-    "bicRequired": "BIC / SWIFT kód je povinný.",
-    "noAccountFound": "Nebyl načten žádný účet"
-  },
-  "placeholders": {
-    "payoutMinAmount": "Mělo by být alespoň {{currency}} {{minAmount}}",
-    "bankName": "např. Century Bank LLC",
-    "bankAddress": "např. 1 West St, Hamington Way, MA, 10311, USA",
-    "holderName": "např. John Doe",
-    "holderAddress": "např. 21 Penn Avenue, MA 10317 USA",
-    "remarks": "např. Při převodu uveďte ref acct=1237."
-  },
-  "helperText": {
-    "currency": "Pokud se jedná o standardní bankovní účet, vyberte možnost „Výchozí“. Pokud potřebujete poskytnout zvláštní údaje o měně, vyberte ji zde a uveďte podrobnosti. Pro výplatu použijeme také standardní minimální částky.",
-    "remarks": "Zde uveďte další podrobnosti, například bankovní údaje zprostředkovatele, počítače (kódy účelu) nebo jiné reference."
-  },
-  "saveButton": "Uložit",
-  "accountError": {
-    "min_amount_range": "Minimální částka výplaty musí být alespoň {{currency}} {{min}}.",
-    "min_amount_forbidden": "Pro výchozí účet nemůžete zadat minimální výši výplaty.",
-    "account_duplicate": "Již existuje {{currency}} účet.",
-    "default": "Při vytváření účtu se něco pokazilo. Zkuste to prosím po chvíli."
-  },
-  "accountCreationSuccess": "Údaje o vašem účtu byly úspěšně uloženy.",
-  "accountUpdationSuccess": "Údaje o vašem účtu byly úspěšně aktualizovány.",
-  "scheduleSaveSuccess": "Váš plán výplaty byl úspěšně uložen.",
-  "editAccountButton": "Upravit účet",
-  "accountTitleText": "Převod pro {{currency}}",
-  "addBankDetailsButton": "Přidat bankovní údaje",
-  "noBankAccountText": "Zatím jste nepřidali žádné bankovní údaje.",
-  "editBankAccountTitle": "Upravit účet",
-  "minPayoutText": "Min. Výplata: {{amount}}"
+  "ManagePayouts": {
+    "title": "Správa plateb",
+    "description": "Udržujte své platební údaje aktualizované (např. rozvrh, bankovní údaje), abyste usnadnili hladký průběh plateb",
+    "tabPayoutSchedule": "Plán plateb",
+    "tabAddBankDetails": "Přidat bankovní údaje",
+    "tabOverview": "Přehled",
+    "payoutInformation1": "Výplaty jsou zpracovávány automaticky každý rok, nebo když organizace sbírá 30 000 EUR nebo ekvivalent v jiné měně.",
+    "payoutInformation2": "Výplaty vydává Nadace Plant-for-the-Planet Foundation a její sesterské organizace, např.: Plant-for-the-Planet USA, Plant-for-the-Planet Švýcarsko atd.",
+    "payoutInformation3": "Pokud splňujete kritéria minimální částky 1 500 EUR, můžete upravit výplatní plán a přijímat časté výplaty.",
+    "supportInformation": "Pokud máte výjimečný případ, kontaktujte prosím <supportLink>support@plant-for-the-planet.org</supportLink>.",
+    "scheduleFrequencies": {
+      "monthly": "Měsíčně",
+      "quarterly": "Čtvrtletně",
+      "semiannually": "Půlročně",
+      "annually": "Ročně",
+      "manual": "Ruční"
+    },
+    "defaultCurrency": "Výchozí",
+    "labels": {
+      "currency": "Měna",
+      "scheduleFrequency": "Frekvence plateb",
+      "payoutMinAmount": "Minimální částka výplaty",
+      "bankName": "Název banky",
+      "bankAddress": "Adresa banky",
+      "bankCountry": "Banka Země",
+      "holderName": "Jméno majitele účtu",
+      "holderAddress": "Adresa majitele účtu",
+      "remarks": "Další podrobnosti",
+      "accountNumber": "IBAN /Číslo účtu",
+      "routingNumber": "ABA/Směrovací číslo (pouze USA)",
+      "bic": "BIC/SWIFT",
+      "branchCode": "Kód pobočky"
+    },
+    "errors": {
+      "scheduleFrequencyRequired": "Frekvence plateb je povinná",
+      "payoutMinAmountRequired": "Minimální částka výplaty je povinná",
+      "payoutMinAmountTooLow": "Minimální částka výplaty by měla být alespoň {currency} {minAmount}",
+      "bankNameRequired": "Název banky je povinný.",
+      "bankAddressRequired": "Adresa banky je povinná.",
+      "holderNameRequired": "Jméno držitele je povinné.",
+      "holderAddressRequired": "Adresa držitele je povinná.",
+      "accountNumberRequired": "Číslo účtu je povinné.",
+      "bicRequired": "BIC / SWIFT kód je povinný.",
+      "noAccountFound": "Nebyl načten žádný účet"
+    },
+    "placeholders": {
+      "payoutMinAmount": "Mělo by být alespoň {currency} {minAmount}",
+      "bankName": "např. Century Bank LLC",
+      "bankAddress": "např. 1 West St, Hamington Way, MA, 10311, USA",
+      "holderName": "např. John Doe",
+      "holderAddress": "např. 21 Penn Avenue, MA 10317 USA",
+      "remarks": "např. Při převodu uveďte ref acct=1237."
+    },
+    "helperText": {
+      "currency": "Pokud se jedná o standardní bankovní účet, vyberte možnost „Výchozí“. Pokud potřebujete poskytnout zvláštní údaje o měně, vyberte ji zde a uveďte podrobnosti. Pro výplatu použijeme také standardní minimální částky.",
+      "remarks": "Zde uveďte další podrobnosti, například bankovní údaje zprostředkovatele, počítače (kódy účelu) nebo jiné reference."
+    },
+    "saveButton": "Uložit",
+    "accountError": {
+      "min_amount_range": "Minimální částka výplaty musí být alespoň {currency} {min}.",
+      "min_amount_forbidden": "Pro výchozí účet nemůžete zadat minimální výši výplaty.",
+      "account_duplicate": "Již existuje {currency} účet.",
+      "default": "Při vytváření účtu se něco pokazilo. Zkuste to prosím po chvíli."
+    },
+    "accountCreationSuccess": "Údaje o vašem účtu byly úspěšně uloženy.",
+    "accountUpdationSuccess": "Údaje o vašem účtu byly úspěšně aktualizovány.",
+    "scheduleSaveSuccess": "Váš plán výplaty byl úspěšně uložen.",
+    "editAccountButton": "Upravit účet",
+    "accountTitleText": "Převod pro {currency}",
+    "addBankDetailsButton": "Přidat bankovní údaje",
+    "noBankAccountText": "Zatím jste nepřidali žádné bankovní údaje.",
+    "editBankAccountTitle": "Upravit účet",
+    "minPayoutText": "Min. Výplata: {amount}"
+  }
 }

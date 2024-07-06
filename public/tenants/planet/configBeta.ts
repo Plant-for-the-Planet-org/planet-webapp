@@ -32,7 +32,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: true,
       },
       leaderboard: {
@@ -52,7 +52,7 @@ const config = {
     description:
       "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
-    twitterHandle: '@trilliontrees',
+    twitterHandle: '',
     locale: 'en_US',
   },
   footerLinks: [

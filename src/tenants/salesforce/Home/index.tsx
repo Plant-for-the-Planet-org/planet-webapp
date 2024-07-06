@@ -8,13 +8,11 @@ import ContentSection from './components/ContentSection';
 import ClimateAction from './components/ClimateAction';
 import Social from './components/Social';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from '../../../features/common/Layout/TenantContext';
 import {
   LeaderBoardList,
   TenantScore,
 } from '../../../features/common/types/leaderboard';
-
-const config = tenantConfig();
 
 interface Props {
   leaderboard: LeaderBoardList | null;
@@ -22,10 +20,12 @@ interface Props {
 }
 
 export default function About({ tenantScore, leaderboard }: Props) {
+  const { tenantConfig } = useTenant();
+
   return (
     <>
       <Head>
-        <title>{`Home | ${config.meta.title}`}</title>
+        <title>{`Home | ${tenantConfig.config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} />

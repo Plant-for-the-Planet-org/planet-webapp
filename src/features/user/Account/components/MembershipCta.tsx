@@ -1,17 +1,15 @@
 import MuiButton from '../../../common/InputTypes/MuiButton';
 import PlanetLogo from '../../../../../public/assets/images/PlanetLogo';
 import styles from '../AccountHistory.module.scss';
-import { useTranslation, Trans } from 'next-i18next';
-import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface Props {
   placement: 'top' | 'right';
 }
 
 const MembershipCta = ({ placement }: Props) => {
-  const { t } = useTranslation('me');
-  const { token } = useUserProps();
+  const t = useTranslations('Me');
+  const locale = useLocale();
 
   return (
     <a
@@ -20,18 +18,24 @@ const MembershipCta = ({ placement }: Props) => {
           ? styles.membershipCtaTop
           : styles.membershipCtaRight
       }`}
-      href={getDonationUrl('proj_LOxkf5GYI054Fi0HcEUF3dKu', token)}
+      href={
+        locale === 'de'
+          ? 'https://www.plant-for-the-planet.org/de/foerdermitgliedschaft/'
+          : 'https://www.plant-for-the-planet.org/donor-circle/'
+      }
     >
+      <div className={styles.overlay}></div>
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
         <p className={styles.membershipCtaCopy}>
-          <Trans i18nKey="me:membershipCtaCopy">
-            Support us{' '}
-            <span className={styles.highlighted}>by becoming a member</span>
-          </Trans>
+          {t.rich('membershipCtaCopy', {
+            highlight: (chunks) => (
+              <span className={styles.highlighted}>{chunks}</span>
+            ),
+          })}
         </p>
         <MuiButton variant="contained" component="div">
-          {t('me:membershipCtaButtonText')}
+          {t('membershipCtaButtonText')}
         </MuiButton>
       </div>
     </a>

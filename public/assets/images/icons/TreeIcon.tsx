@@ -1,12 +1,12 @@
 import React from 'react';
 import { IconProps } from '../../../../src/features/common/types/common';
 
-function TreeIcon({ color = '#68B030' }: IconProps) {
+function TreeIcon({ color = '#68B030', width, height }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="19"
-      height="19.25"
+      width={width}
+      height={height}
       viewBox="0 0 19 19.25"
     >
       <g

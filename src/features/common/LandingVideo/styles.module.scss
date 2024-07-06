@@ -149,7 +149,7 @@
 @include mdTabletView {
   .playButton,
   .embed_playButton {
-    right: 125px;
+    right: 20px;
     flex-direction: row;
 
     &.playButton--reduce-right-offset {

@@ -1,0 +1,49 @@
+{
+  "Profile": {
+    "myProfile": {
+      "memberSince": "Mitglied seit {date}",
+      "userDescription": "{bio}"
+    },
+    "feature": {
+      "redeem": "Einlösen",
+      "registerTree": "Baum registrieren",
+      "share": "Teilen"
+    },
+    "myPublicProfile": {
+      "support": "Support",
+      "link": "Link"
+    },
+    "myForestMap": {
+      "plantedTree": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "treesPlanted": "Gepflanzte Bäume",
+      "restored": "Wiederhergestellt",
+      "registered": "Registriert",
+      "conservation": "Naturschutz",
+      "projects": "Projekte",
+      "countries": "Länder",
+      "donations": "Spenden",
+      "area": "{areaConserved}  m²",
+      "zoomIn": "Für weitere Details heranzoomen",
+      "totalDonation": "{count, plural, =1 {# Spende} other {# Spenden}} ",
+      "totalProject": "für {count, plural, =1 {# Projeckt} other {# Projeckte}}",
+      "tpoName": "By {tpo}"
+    },
+    "myTreeCounter": {
+      "treesPlanted": "Bäume gepflanzt",
+      "editTarget": "Ziel bearbeiten"
+    },
+    "myContributions": {
+      "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete wiederhergestellt",
+      "treeRegistered": "{count, plural, =1 {# Baum registriert} other {# Bäume registriert}}",
+      "receivedFrom": "Empfangen von {name}",
+      "loadMoreContribution": "Lade weitere Beiträge",
+      "loadingContribution": "Lade Beiträge....",
+      "donate": "Spenden",
+      "donateAgain": "Erneut spenden",
+      "conservedSmall": "geschützt",
+      "restoredSmall": "wiederhergestellt",
+      "areaType": "{areaConserved} m² {type}",
+      "areaConserved": "Geschütze Fläche"
+    }
+  }
+}
