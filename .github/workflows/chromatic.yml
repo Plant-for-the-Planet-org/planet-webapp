@@ -9,6 +9,7 @@ on:
     branches:
       - develop
       - feature/redesign-explore-btn
+      - feature/carbon_capture_modal
       - feature/merge-from-develop
 # List of jobs
 jobs:

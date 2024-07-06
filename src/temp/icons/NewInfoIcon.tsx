@@ -1,12 +1,11 @@
 import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const NewInfoIcon = ({ height, width, color }: IconProps) => {
+const NewInfoIcon = ({ width, color }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width}
-      height={height}
       viewBox="0 0 10 10"
       fill="none"
     >
