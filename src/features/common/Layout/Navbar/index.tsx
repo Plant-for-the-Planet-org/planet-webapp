@@ -9,7 +9,7 @@ import MenuItems from './microComponents/MenuItems';
 const ImpersonationStatusHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
   return isImpersonationModeOn ? (
-    <div className="impersonationAlertContainer" style={{ top: -142 }}>
+    <div className="impersonationAlertContainer">
       <ImpersonationActivated />
     </div>
   ) : (

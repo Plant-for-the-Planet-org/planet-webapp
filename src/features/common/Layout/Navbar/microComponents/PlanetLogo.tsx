@@ -1,33 +1,17 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { useTranslations } from 'next-intl';
 
-const PlanetLogo = () => {
+const PlanetLogo = ({ isMobile }: { isMobile: boolean }) => {
   const t = useTranslations('Common');
   const { theme } = useContext(ThemeContext);
-  const [isMobile, setIsMobile] = useState(
-    window.matchMedia('(max-width: 481px)').matches
-  );
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 481px)');
-
-    const handleResize = () => {
-      setIsMobile(mediaQuery.matches);
-    };
-    handleResize();
-    mediaQuery.addEventListener('change', handleResize);
-    return () => {
-      mediaQuery.removeEventListener('change', handleResize);
-    };
-  }, []);
 
   return (
     <div className={`${isMobile ? `planetLogoContainerForMobile` : ''}`}>
       {theme === 'theme-light' ? (
         <a href="https://www.plant-for-the-planet.org">
           <img
-            className={'tenantLogo'}
+            className={'planetLogo'}
             src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
             alt={t('about_pftp')}
           />
@@ -35,7 +19,7 @@ const PlanetLogo = () => {
       ) : (
         <a href="https://www.plant-for-the-planet.org">
           <img
-            className={'tenantLogo'}
+            className={'planetLogo'}
             src={`/assets/images/PlanetDarkLogo.svg`}
             alt={t('about_pftp')}
           />

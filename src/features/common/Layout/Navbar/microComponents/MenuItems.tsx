@@ -6,13 +6,14 @@ import UserIcon from './UserIcon';
 import { useState, useEffect } from 'react';
 import AboutUsSubMenu from './AboutUsSubMenu';
 import { SetState } from '../../../types/common';
+import { useMobileDetection } from '../../../../../utils/navbarUtils';
 
 type Submenu = Omit<navLinkOptions, 'subMenu' | 'loggedInTitle'>;
 interface navLinkOptions {
   title: string;
   onclick: string;
   visible: boolean;
-  subMenu: Submenu;
+  subMenu: Submenu[];
   loggedInTitle: string | undefined;
 }
 interface MenuItemProps {
@@ -22,19 +23,6 @@ interface MenuItemProps {
   menu: boolean;
   setMenu: SetState<boolean>;
 }
-
-const useWidth = () => {
-  const [width, setWidth] = useState(0);
-  const handleResize = () => setWidth(window.innerWidth);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return width;
-};
 
 const MenuItem = ({
   navLink,
@@ -126,11 +114,13 @@ const MenuItems = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [menu, setMenu] = useState(false);
   const links = Object.keys(tenantConfig?.config?.header?.items || {});
-  const width = useWidth();
 
   useEffect(() => {
-    setIsMobile(width < 768);
-  }, [width]);
+    const maxWidth = 768;
+    useMobileDetection(maxWidth, (isMobile: boolean) => {
+      setIsMobile(isMobile);
+    });
+  }, [isMobile]);
 
   return tenantConfig ? (
     <div className={'menuItems'}>
