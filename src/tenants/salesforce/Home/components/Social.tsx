@@ -1,18 +1,18 @@
 import styles from './../styles/Social.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
-import tenantConfig from '../../../../../tenant.config';
-
-const config = tenantConfig();
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function Social() {
+  const { tenantConfig } = useTenant();
+
   const url = encodeURI(
-    config.tenantURL.indexOf('http://') == 0 ||
-      config.tenantURL.indexOf('https://') == 0
-      ? config.tenantURL + '/home'
-      : 'https://' + config.tenantURL + '/home'
+    tenantConfig.config.slug.indexOf('http://') == 0 ||
+      tenantConfig.config.slug.indexOf('https://') == 0
+      ? tenantConfig.config.slug + '/home'
+      : 'https://' + tenantConfig.config.slug + '/home'
   );
-  const title = encodeURI(config.meta.title);
-  const handle = config.meta.twitterHandle;
+  const title = encodeURI(tenantConfig.config.meta.title);
+  const handle = tenantConfig.config.meta.twitterHandle;
   const fbLink = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
   const liLink =
     'https://www.linkedin.com/shareArticle?url=' + url + '&title=' + title;
@@ -21,8 +21,7 @@ export default function Social() {
     url +
     '&text=' +
     title +
-    '&via=' +
-    handle.replace('@', '');
+    (handle ? '&via=' + handle.replace('@', '') : '');
 
   return (
     <section className={styles.socialSection}>

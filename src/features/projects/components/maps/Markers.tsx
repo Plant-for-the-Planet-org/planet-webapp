@@ -7,27 +7,24 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../ProjectTypeIcon';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import { useLocale } from 'next-intl';
 
 type PopupClosedData = {
   show: false;
 };
-
 type PopupOpenData = {
   show: true;
   lat: number;
   long: number;
   project: MapProject;
 };
-
 export type PopupData = PopupClosedData | PopupOpenData;
-
 interface Props {
   searchedProject: MapProject[];
   setPopupData: SetState<PopupData>;
   popupData: PopupData;
   isMobile: boolean;
 }
-
 export default function Markers({
   searchedProject,
   setPopupData,
@@ -36,11 +33,10 @@ export default function Markers({
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
-
+  const locale = useLocale();
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -51,6 +47,20 @@ export default function Markers({
       ? 'topUnapproved'
       : 'notDonatable';
   };
+  const goToProject = (projectSlug: string): void => {
+    router.push(
+      `/${locale}/${projectSlug}/${
+        embed === 'true'
+          ? `${
+              callbackUrl != undefined
+                ? `?embed=true&callback=${callbackUrl}`
+                : '?embed=true'
+            }`
+          : ''
+      }`
+    );
+  };
+
   return (
     <>
       {searchedProject.map((projectMarker, index) => (
@@ -66,40 +76,8 @@ export default function Markers({
               className={`${styles.marker} ${
                 styles[markerBackgroundColor(projectMarker.properties)]
               }`}
-              onClick={() => {
-                router.push(
-                  `/${projectMarker.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
-                );
-              }}
-              onKeyPress={() => {
-                router.push(
-                  `/${projectMarker.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
-                );
-              }}
+              onClick={() => goToProject(projectMarker.properties.slug)}
+              onKeyDown={() => goToProject(projectMarker.properties.slug)}
               role="button"
               tabIndex={0}
               onMouseOver={() => {
@@ -145,40 +123,10 @@ export default function Markers({
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
-                router.push(
-                  `/${popupData.project.properties.slug}/${
-                    embed === 'true'
-                      ? `${
-                          callbackUrl != undefined
-                            ? `?embed=true&callback=${callbackUrl}`
-                            : '?embed=true'
-                        }`
-                      : ''
-                  }`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
-                );
+                goToProject(popupData.project.properties.slug);
               }
             }}
-            onKeyPress={() => {
-              router.push(
-                `/${popupData.project.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
-                }
-              );
-            }}
+            onKeyDown={() => goToProject(popupData.project.properties.slug)}
             role="button"
             tabIndex={0}
             onMouseLeave={() => {

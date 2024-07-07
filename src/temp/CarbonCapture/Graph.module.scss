@@ -1,76 +1,74 @@
 @import '../../theme/theme';
 
 .tooltipContainer {
-    min-width: 100px;
-    .header {
-        padding: 10px 10px 8px 10px;
-        .title {
-            color: #333; //to be replaced
-            font-size: $fontSmall;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-        .subtitle {
-            font-size: $fontXXXSmallNew;
-            font-weight: 400;
-        }
+  min-width: 100px;
+  .header {
+    padding: 10px 10px 8px 10px;
+    .title {
+      color: #333; //to be replaced
+      font-size: $fontSmall;
+      font-weight: 500;
+      margin-bottom: 5px;
     }
-    .body {
-        background-color: rgba(var(--primary-color-new), 0.10);
-        padding: 4px 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .yoyValue {
-            color: $secondaryColorNew;
-            font-weight: 700;
-            font-size: $fontXXSmallNew;
-        }
-        .date {
-            font-size: 6px; //to be replaced
-            font-weight: 500;
-            color: $dark;
-            opacity: 0.5;
-        }
+    .subtitle {
+      font-size: $fontXXXSmallNew;
+      font-weight: 400;
     }
+  }
+  .body {
+    background-color: rgba(var(--primary-color-new), 0.1);
+    padding: 4px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .yoyValue {
+      color: $secondaryColorNew;
+      font-weight: 700;
+      font-size: $fontXXSmallNew;
+    }
+    .date {
+      font-size: 6px; //to be replaced
+      font-weight: 500;
+      color: $dark;
+      opacity: 0.5;
+    }
+  }
 }
 
 .container {
-    width: 100%;
-    max-width: 338px;
+  width: 100%;
+  max-width: 338px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .graphHeading {
+    font-size: $fontXXSmall;
+    color: #2f3336; //to be replaced
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    .graphHeading {
-        font-size: $fontXXSmall;
-        color: #2F3336; //to be replaced
-        display: flex;
-        align-items: center;
-        padding:0 15px;
-        gap: 2px;
-        font-weight: 700;
-        p {
-            font-weight: 400;
-        }
-       
+    padding: 0 15px;
+    gap: 2px;
+    p {
+      font-weight: 400;
     }
-    .graphSubheading {
-        color: #BDBDBD; //to be replaced
-        font-size: $fontXXXSmallNew;
-        text-transform: lowercase;
-        padding:0 15px;
-    }
+  }
+  .graphSubheading {
+    color: #bdbdbd; //to be replaced
+    font-size: $fontXXXSmallNew;
+    text-transform: lowercase;
+    padding: 0 15px;
+  }
 }
 
 .titleContainer {
-    width: 100%;
-    max-width: 300px;
+  width: 100%;
+  max-width: 300px;
 }
 .newInfoIcon {
-    margin-left: auto;
-    margin-right: 6px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  margin-left: auto;
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }

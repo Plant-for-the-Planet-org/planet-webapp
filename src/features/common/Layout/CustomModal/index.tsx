@@ -1,6 +1,6 @@
 import Modal from '@mui/material/Modal';
 import React from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import styles from './CustomModal.module.scss';
 
 interface Props {
@@ -20,7 +20,7 @@ export default function CustomModal({
   modalTitle,
   modalSubtitle,
 }: Props) {
-  const { t } = useTranslation(['editProfile']);
+  const t = useTranslations('EditProfile');
   return (
     <Modal open={isOpen} hideBackdrop className={'modalContainer'}>
       <div className={styles.modal}>
@@ -47,7 +47,7 @@ export default function CustomModal({
             className={styles.cancelButton}
             onClick={handleCancel}
           >
-            {t('editProfile:cancel')}
+            {t('cancel')}
           </button>
         </div>
       </div>

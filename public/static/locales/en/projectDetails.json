@@ -1,10 +1,28 @@
 {
+  "ProjectDetails": {
     "satelliteAnalysis": "Satellite Analysis",
-    "co2CapturePerHa": "CO₂ Captured <p>(per ha.)</p>",
+    "diveIntoTheProject": "Dive into the project",
+    "firePopupText": "We only display fires that occurred within the past 12 months.",
+    "fieldReviewed": "Field Reviewed",
+    "offSiteReviewed": "Off-Site reviewed",
+    "report": "Report",
+    "seeLess": "see less",
+    "seeMore": "see more",
+    "forestFire": "Forest Fire",
+    "hoursAgo": "{hours}h ago",
+    "highAlertConfidenceText": "<important>High</important> alert confidence",
+    "setUpAlertsText": "Set up alerts with <important>FireAlert</important>",
+    "firstTreePlanted": "First tree planted",
+    "plantingSeasons": "planting seasons",
+    "privateProperty": "private property",
+    "publicProperty": "public property",
+    "progressReports": "progress reports",
+    "co2CapturePerHa": "<captureContainer>CO₂ Captured</captureContainer>(per ha.)",
     "comparedToRegionalAverage": "Compared to regional average",
     "co2Removed": "CO₂ removed",
     "biomass": "Biomass",
     "yoy": "YoY",
     "projectLaunch": "Project Launch",
     "canopyCover": "Canopy Cover"
+  }
 }

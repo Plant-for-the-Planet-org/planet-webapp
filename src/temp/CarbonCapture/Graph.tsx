@@ -4,7 +4,7 @@ import styles from './Graph.module.scss';
 import ReactDOMServer from 'react-dom/server';
 import NewInfoIcon from '../icons/NewInfoIcon';
 import { ApexOptions } from 'apexcharts';
-import { Trans, useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface TooltipProps {
   headerTitle: string;
@@ -19,7 +19,7 @@ export const Tooltip = ({
   yoyValue,
   date,
 }: TooltipProps) => {
-  const { t } = useTranslation('projectDetails');
+  const t = useTranslations('ProjectDetails');
   return (
     <div className={styles.tooltipContainer}>
       <div className={styles.header}>
@@ -62,7 +62,7 @@ const Graph = ({
   series2Values,
   tooltip,
 }: GraphProps) => {
-  const { t } = useTranslation('projectDetails');
+  const t = useTranslations('ProjectDetails');
   const [xaxisOptions, setXaxisOptions] = useState<
     (number | (string | number)[])[]
   >([]);
@@ -205,13 +205,13 @@ const Graph = ({
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <h5 className={styles.graphHeading}>
-          {title === 'co2CapturePerHa' ? (
-            <Trans i18nKey="co2CapturePerHa">
-              CO₂ Captured<p>(per ha.)</p>
-            </Trans>
-          ) : (
-            t(`${title}`)
-          )}
+          {title === 'co2CapturePerHa'
+            ? t.rich('co2CapturePerHa', {
+                captureContainer: (chunk) => (
+                  <span style={{ fontWeight: '700' }}>{chunk}</span>
+                ),
+              })
+            : t(`${title}`)}
           <div className={styles.newInfoIcon}>
             <NewInfoIcon height={17} width={17} color={'#BDBDBD'} />
           </div>

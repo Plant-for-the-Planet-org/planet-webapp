@@ -21,7 +21,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -35,6 +35,7 @@ import {
   ProfileProjectConservation,
   ImagesScopeProjects,
 } from '../../../common/types/project';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function ProjectMedia({
   handleBack,
@@ -44,7 +45,7 @@ export default function ProjectMedia({
   setProjectDetails,
   projectGUID,
 }: ProjectMediaProps): ReactElement {
-  const { t, ready } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
@@ -56,8 +57,8 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
-
-  const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
+  const { tenantConfig } = useTenant();
+  const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
@@ -67,6 +68,7 @@ export default function ProjectMedia({
       // Fetch images of the project
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest<ImagesScopeProjects>(
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -94,6 +96,7 @@ export default function ProjectMedia({
 
     try {
       const res = await postAuthenticatedRequest<UploadImage>(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
@@ -140,9 +143,9 @@ export default function ProjectMedia({
     },
     onDropRejected: (err) => {
       if (err[0].errors[0].code === 'file-too-large') {
-        setErrorMessage(t('manageProjects:fileSizeLimit'));
+        setErrorMessage(t('fileSizeLimit'));
       } else if (err[0].errors[0].code === 'file-invalid-type') {
-        setErrorMessage(t('manageProjects:fileImageOnly'));
+        setErrorMessage(t('fileImageOnly'));
       }
     },
   });
@@ -150,6 +153,7 @@ export default function ProjectMedia({
   const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         token,
         logoutUser
@@ -172,7 +176,13 @@ export default function ProjectMedia({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(
+        tenantConfig?.id,
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
@@ -191,6 +201,7 @@ export default function ProjectMedia({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
@@ -222,6 +233,7 @@ export default function ProjectMedia({
 
     try {
       const res = await putAuthenticatedRequest<UploadImage>(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
@@ -237,7 +249,7 @@ export default function ProjectMedia({
       setErrors(handleError(err as APIError));
     }
   };
-  return ready ? (
+  return (
     <CenteredContainer>
       <StyledForm>
         <div
@@ -255,12 +267,12 @@ export default function ProjectMedia({
               pattern: {
                 value:
                   /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
-                message: t('manageProjects:youtubeURLValidation'),
+                message: t('youtubeURLValidation'),
               },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('manageProjects:youtubeURL')}
+                label={t('youtubeURL')}
                 variant="outlined"
                 onChange={onChange}
                 value={value}
@@ -285,7 +297,7 @@ export default function ProjectMedia({
                     <input
                       onBlur={(e) => uploadCaption(image.id, index, e)}
                       type="text"
-                      placeholder={t('manageProjects:addCaption')}
+                      placeholder={t('addCaption')}
                       defaultValue=""
                     />
 
@@ -318,9 +330,9 @@ export default function ProjectMedia({
             <label htmlFor="upload" className={styles.fileUploadContainer}>
               <Button variant="contained">
                 <input {...getInputProps()} />
-                {t('manageProjects:uploadPhotos')}
+                {t('uploadPhotos')}
               </Button>
-              <p style={{ marginTop: '18px' }}>{t('manageProjects:dragIn')}</p>
+              <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
             </label>
 
             {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
@@ -339,7 +351,7 @@ export default function ProjectMedia({
             className="formButton"
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToBasic')}</p>
+            <p>{t('backToBasic')}</p>
           </Button>
 
           <Button
@@ -352,7 +364,7 @@ export default function ProjectMedia({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('manageProjects:saveAndContinue')
+              t('saveAndContinue')
             )}
           </Button>
           <Button
@@ -360,12 +372,10 @@ export default function ProjectMedia({
             variant="contained"
             className="formButton"
           >
-            {t('manageProjects:skip')}
+            {t('skip')}
           </Button>
         </div>
       </StyledForm>
     </CenteredContainer>
-  ) : (
-    <></>
   );
 }

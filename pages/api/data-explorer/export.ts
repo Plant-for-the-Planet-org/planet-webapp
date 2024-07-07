@@ -47,7 +47,7 @@ handler.post(async (req, response) => {
 
     response.status(200).json({ data: res });
   } catch (err) {
-    console.log(err);
+    console.error('Error fetching export data:', err);
   } finally {
     await db.quit();
   }

@@ -1,6 +1,21 @@
 import { DateString } from './common';
-import { Polygon, Point } from 'geojson';
 import { Links } from './payments';
+import { Polygon, Point } from 'geojson';
+
+export interface Geometry {
+  coordinates: number[][][];
+  type: string;
+  properties: Properties;
+}
+export interface GeometryOfSinglePlant {
+  coordinates: number[];
+  type: string;
+  properties: Properties;
+}
+
+export interface Properties {
+  id: string;
+}
 
 export interface PlantLocationBase {
   hid: string;
@@ -23,7 +38,6 @@ export interface PlantLocationBase {
   status: string | null; // currently always null. Should we do something here?
   statusReason: string | null; // currently always null. Should we do something here?
 }
-
 export interface PlantLocationSingle extends PlantLocationBase {
   type: 'single';
   scientificName: string | null;
@@ -32,6 +46,7 @@ export interface PlantLocationSingle extends PlantLocationBase {
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
+  sampleTrees: SamplePlantLocation[];
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
@@ -43,7 +58,8 @@ export interface PlantLocationMulti extends PlantLocationBase {
   samplePlantLocations: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
-  geometry: Polygon;
+  geometry: Point | Polygon;
+  sampleTrees: SamplePlantLocation[];
 }
 
 export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
@@ -63,6 +79,7 @@ export interface SamplePlantLocation
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
+  sampleTrees?: PlantLocation[];
 }
 
 export interface Metadata {

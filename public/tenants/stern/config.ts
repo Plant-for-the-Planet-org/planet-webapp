@@ -15,13 +15,13 @@ const config = {
     title: 'Stern ❤️ Baeume',
     description:
       'Mit Plant-for-the-Planet pflanzen wir weltweit Bäume. So entsteht unser globaler sternWald. Pro verkauftem Exemplar der KeinGradWeiter-Ausgabe spendet die Redaktion einen Baum.',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'de_DE',
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/stern.svg`,
+    tenantLogoURL: `https://cdn.plant-for-the-planet.org/logo/svg/stern.svg`,
     tenantLogoLink: 'https://www.stern.de',
     items: {
       home: {
@@ -36,7 +36,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: false,
       },
       leaderboard: {

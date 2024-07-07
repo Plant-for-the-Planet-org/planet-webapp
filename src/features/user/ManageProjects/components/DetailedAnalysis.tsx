@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import ProjectCertificates from './ProjectCertificates';
@@ -28,6 +28,7 @@ import {
   ProfileProjectConservation,
   InterventionOption,
 } from '../../../common/types/project';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -100,43 +101,45 @@ export default function DetailedAnalysis({
   projectGUID,
   purpose,
 }: DetailedAnalysisProps): ReactElement {
-  const { t, ready } = useTranslation(['manageProjects', 'common']);
+  const tManageProjects = useTranslations('ManageProjects');
+  const tCommon = useTranslations('Common');
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const [siteOwners, setSiteOwners] = React.useState<SiteOwners[]>([
     {
       id: 1,
-      title: ready ? t('manageProjects:siteOwnerPrivate') : '',
+      title: tManageProjects('siteOwnerPrivate'),
       value: 'private',
       isSet: false,
     },
     {
       id: 2,
-      title: ready ? t('manageProjects:siteOwnerPublic') : '',
+      title: tManageProjects('siteOwnerPublic'),
       value: 'public-property',
       isSet: false,
     },
     {
       id: 3,
-      title: ready ? t('manageProjects:siteOwnerSmallHolding') : '',
+      title: tManageProjects('siteOwnerSmallHolding'),
       value: 'smallholding',
       isSet: false,
     },
     {
       id: 4,
-      title: ready ? t('manageProjects:siteOwnerCommunal') : '',
+      title: tManageProjects('siteOwnerCommunal'),
       value: 'communal-land',
       isSet: false,
     },
     {
       id: 5,
-      title: ready ? t('manageProjects:siteOwnerOwned') : '',
+      title: tManageProjects('siteOwnerOwned'),
       value: 'owned-by-owner',
       isSet: false,
     },
     {
       id: 6,
-      title: ready ? t('manageProjects:siteOwnerOther') : '',
+      title: tManageProjects('siteOwnerOther'),
       value: 'other',
       isSet: false,
     },
@@ -146,18 +149,18 @@ export default function DetailedAnalysis({
   const [plantingSeasons, setPlantingSeasons] = React.useState<
     PlantingSeason[]
   >([
-    { id: 1, title: ready ? t('common:january') : '', isSet: false },
-    { id: 2, title: ready ? t('common:february') : '', isSet: false },
-    { id: 3, title: ready ? t('common:march') : '', isSet: false },
-    { id: 4, title: ready ? t('common:april') : '', isSet: false },
-    { id: 5, title: ready ? t('common:may') : '', isSet: false },
-    { id: 6, title: ready ? t('common:june') : '', isSet: false },
-    { id: 7, title: ready ? t('common:july') : '', isSet: false },
-    { id: 8, title: ready ? t('common:august') : '', isSet: false },
-    { id: 9, title: ready ? t('common:september') : '', isSet: false },
-    { id: 10, title: ready ? t('common:october') : '', isSet: false },
-    { id: 11, title: ready ? t('common:november') : '', isSet: false },
-    { id: 12, title: ready ? t('common:december') : '', isSet: false },
+    { id: 1, title: tCommon('january'), isSet: false },
+    { id: 2, title: tCommon('february'), isSet: false },
+    { id: 3, title: tCommon('march'), isSet: false },
+    { id: 4, title: tCommon('april'), isSet: false },
+    { id: 5, title: tCommon('may'), isSet: false },
+    { id: 6, title: tCommon('june'), isSet: false },
+    { id: 7, title: tCommon('july'), isSet: false },
+    { id: 8, title: tCommon('august'), isSet: false },
+    { id: 9, title: tCommon('september'), isSet: false },
+    { id: 10, title: tCommon('october'), isSet: false },
+    { id: 11, title: tCommon('november'), isSet: false },
+    { id: 12, title: tCommon('december'), isSet: false },
   ]);
 
   const [interventionOptions, setInterventionOptions] = React.useState<
@@ -364,7 +367,13 @@ export default function DetailedAnalysis({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(
+        tenantConfig?.id,
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
       setProjectDetails(res);
       setIsUploadingData(false);
       setIsInterventionsMissing(null);
@@ -513,7 +522,7 @@ export default function DetailedAnalysis({
     }
   }, [projectDetails]);
 
-  return ready ? (
+  return (
     <CenteredContainer>
       <StyledForm>
         <div className="inputContainer">
@@ -537,7 +546,7 @@ export default function DetailedAnalysis({
                         views={['year']}
                         value={value}
                         onChange={onChange}
-                        label={t('manageProjects:yearOfAbandonment')}
+                        label={tManageProjects('yearOfAbandonment')}
                         renderInput={(props) => (
                           <TextField
                             required
@@ -545,7 +554,7 @@ export default function DetailedAnalysis({
                             InputProps={{
                               endAdornment: (
                                 <Tooltip
-                                  title={t('manageProjects:yearAbandonedInfo')}
+                                  title={tManageProjects('yearAbandonedInfo')}
                                   arrow
                                 >
                                   <span className={styles.tooltipIcon}>
@@ -580,7 +589,7 @@ export default function DetailedAnalysis({
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
-                        label={t('manageProjects:labelRestorationStarted')}
+                        label={tManageProjects('labelRestorationStarted')}
                         value={value}
                         onChange={onChange}
                         renderInput={(props) => (
@@ -605,15 +614,15 @@ export default function DetailedAnalysis({
                 name="areaProtected"
                 control={control}
                 rules={{
-                  required: t('manageProjects:validation', {
-                    fieldName: t('manageProjects:areaProtected'),
+                  required: tManageProjects('validation', {
+                    fieldName: tManageProjects('areaProtected'),
                   }),
                   validate: (value) => (value ? parseInt(value, 10) > 0 : true),
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     required
-                    label={t('manageProjects:areaProtected')}
+                    label={tManageProjects('areaProtected')}
                     variant="outlined"
                     type="number"
                     onBlur={onBlur}
@@ -631,7 +640,7 @@ export default function DetailedAnalysis({
                     InputProps={{
                       endAdornment: (
                         <Tooltip
-                          title={t('manageProjects:areaProtectedInfo')}
+                          title={tManageProjects('areaProtectedInfo')}
                           arrow
                         >
                           <span className={styles.tooltipIcon}>
@@ -655,13 +664,13 @@ export default function DetailedAnalysis({
                   name="startingProtectionYear"
                   control={control}
                   rules={{
-                    required: t('manageProjects:validation', {
-                      fieldName: t('manageProjects:date'),
+                    required: tManageProjects('validation', {
+                      fieldName: tManageProjects('date'),
                     }),
                   }}
                   render={({ field: { value, onChange } }) => (
                     <MuiDatePicker
-                      label={t('manageProjects:protectionStartedIN')}
+                      label={tManageProjects('protectionStartedIN')}
                       value={value}
                       onChange={onChange}
                       renderInput={(props) => (
@@ -697,15 +706,15 @@ export default function DetailedAnalysis({
               name="employeesCount"
               control={control}
               rules={{
-                required: t('manageProjects:validation', {
-                  fieldName: t('manageProjects:employeeCount'),
+                required: tManageProjects('validation', {
+                  fieldName: tManageProjects('employeeCount'),
                 }),
                 validate: (value) => parseInt(value, 10) > 0,
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
                   required
-                  label={t('manageProjects:employeeCount')}
+                  label={tManageProjects('employeeCount')}
                   variant="outlined"
                   onChange={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9]./g, '');
@@ -721,7 +730,7 @@ export default function DetailedAnalysis({
                   InputProps={{
                     endAdornment: (
                       <Tooltip
-                        title={t('manageProjects:employeesCountInfo')}
+                        title={tManageProjects('employeesCountInfo')}
                         arrow
                       >
                         <span className={styles.tooltipIcon}>
@@ -745,13 +754,13 @@ export default function DetailedAnalysis({
                 name="acquisitionYear"
                 control={control}
                 rules={{
-                  required: t('manageProjects:validation', {
-                    fieldName: t('manageProjects:acquisitionYear'),
+                  required: tManageProjects('validation', {
+                    fieldName: tManageProjects('acquisitionYear'),
                   }),
                 }}
                 render={({ field: { onChange, value } }) => (
                   <MuiDatePicker
-                    label={t('manageProjects:acquisitionYear')}
+                    label={tManageProjects('acquisitionYear')}
                     value={value}
                     onChange={onChange}
                     renderInput={(props) => (
@@ -784,7 +793,7 @@ export default function DetailedAnalysis({
           <div className={styles.multiSelectContainer}>
             <div className={styles.multiSelectField}>
               <p className={styles.multiSelectLabel}>
-                {t('manageProjects:labelMainInterventions') + '*'}
+                {tManageProjects('labelMainInterventions') + '*'}
               </p>
               {interventionOptions.map(([intervention, isSet]) => {
                 return (
@@ -813,7 +822,7 @@ export default function DetailedAnalysis({
                       </svg>
                     </div>
                     <p style={{ color: 'var(--dark)' }}>
-                      {t(`manageProjects:interventionTypes.${intervention}`)}
+                      {tManageProjects(`interventionTypes.${intervention}`)}
                     </p>
                   </div>
                 );
@@ -821,7 +830,7 @@ export default function DetailedAnalysis({
             </div>
             {isInterventionsMissing === true && (
               <span className={styles.formErrors}>
-                {t('manageProjects:missingInterventionsError')}
+                {tManageProjects('missingInterventionsError')}
               </span>
             )}
           </div>
@@ -829,8 +838,8 @@ export default function DetailedAnalysis({
             <p className={styles.multiSelectLabel}>
               {' '}
               {purpose === 'trees'
-                ? t('manageProjects:labelRestorationSeasons')
-                : t('manageProjects:protectionSeasons')}{' '}
+                ? tManageProjects('labelRestorationSeasons')
+                : tManageProjects('protectionSeasons')}{' '}
             </p>
             {plantingSeasons.map((month) => {
               return (
@@ -878,12 +887,12 @@ export default function DetailedAnalysis({
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
-                      label={t('manageProjects:plantingDensity')}
+                      label={tManageProjects('plantingDensity')}
                       variant="outlined"
                       InputProps={{
                         endAdornment: (
                           <p className={styles.inputEndAdornment}>
-                            {t('manageProjects:treePerHa')}
+                            {tManageProjects('treePerHa')}
                           </p>
                         ),
                       }}
@@ -913,17 +922,17 @@ export default function DetailedAnalysis({
                   rules={{
                     min: {
                       value: minDensity || 0,
-                      message: t('manageProjects:errorForMaxPlantingDensity'),
+                      message: tManageProjects('errorForMaxPlantingDensity'),
                     },
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
-                      label={t('manageProjects:maxPlantingDensity')}
+                      label={tManageProjects('maxPlantingDensity')}
                       variant="outlined"
                       InputProps={{
                         endAdornment: (
                           <p className={styles.inputEndAdornment}>
-                            {t('manageProjects:treePerHa')}
+                            {tManageProjects('treePerHa')}
                           </p>
                         ),
                       }}
@@ -963,7 +972,7 @@ export default function DetailedAnalysis({
                       views={['year']}
                       value={value}
                       onChange={onChange}
-                      label={t('manageProjects:yearOfDegradation')}
+                      label={tManageProjects('yearOfDegradation')}
                       renderInput={(props) => <TextField {...props} />}
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
@@ -983,12 +992,12 @@ export default function DetailedAnalysis({
               rules={{
                 maxLength: {
                   value: 300,
-                  message: t('manageProjects:max300Chars'),
+                  message: tManageProjects('max300Chars'),
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('manageProjects:forestProtectionType')}
+                  label={tManageProjects('forestProtectionType')}
                   variant="outlined"
                   multiline
                   minRows={2}
@@ -1008,12 +1017,12 @@ export default function DetailedAnalysis({
                 rules={{
                   maxLength: {
                     value: 300,
-                    message: t('manageProjects:max300Chars'),
+                    message: tManageProjects('max300Chars'),
                   },
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('manageProjects:causeOfDegradation')}
+                    label={tManageProjects('causeOfDegradation')}
                     variant="outlined"
                     multiline
                     minRows={2}
@@ -1032,7 +1041,7 @@ export default function DetailedAnalysis({
                     }
                     InputProps={{
                       endAdornment: (
-                        <Tooltip title={t('manageProjects:max300Chars')} arrow>
+                        <Tooltip title={tManageProjects('max300Chars')} arrow>
                           <span className={styles.tooltipIcon}>
                             <InfoIcon />
                           </span>
@@ -1050,12 +1059,12 @@ export default function DetailedAnalysis({
               rules={{
                 maxLength: {
                   value: 300,
-                  message: t('manageProjects:max300Chars'),
+                  message: tManageProjects('max300Chars'),
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('manageProjects:conservationImpacts')}
+                  label={tManageProjects('conservationImpacts')}
                   variant="outlined"
                   multiline
                   minRows={2}
@@ -1083,12 +1092,12 @@ export default function DetailedAnalysis({
             rules={{
               maxLength: {
                 value: 300,
-                message: t('manageProjects:max300Chars'),
+                message: tManageProjects('max300Chars'),
               },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('manageProjects:mainChallenge')}
+                label={tManageProjects('mainChallenge')}
                 variant="outlined"
                 multiline
                 minRows={2}
@@ -1103,10 +1112,7 @@ export default function DetailedAnalysis({
                 }
                 InputProps={{
                   endAdornment: (
-                    <Tooltip
-                      title={t('manageProjects:mainChallengeInfo')}
-                      arrow
-                    >
+                    <Tooltip title={tManageProjects('mainChallengeInfo')} arrow>
                       <span className={styles.tooltipIcon}>
                         <InfoIcon />
                       </span>
@@ -1123,12 +1129,12 @@ export default function DetailedAnalysis({
             rules={{
               maxLength: {
                 value: 300,
-                message: t('manageProjects:max300Chars'),
+                message: tManageProjects('max300Chars'),
               },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('manageProjects:whyThisSite')}
+                label={tManageProjects('whyThisSite')}
                 variant="outlined"
                 multiline
                 minRows={2}
@@ -1142,7 +1148,7 @@ export default function DetailedAnalysis({
                 }
                 InputProps={{
                   endAdornment: (
-                    <Tooltip title={t('manageProjects:max300Chars')} arrow>
+                    <Tooltip title={tManageProjects('max300Chars')} arrow>
                       <span className={styles.tooltipIcon}>
                         <InfoIcon />
                       </span>
@@ -1158,12 +1164,12 @@ export default function DetailedAnalysis({
             rules={{
               maxLength: {
                 value: 300,
-                message: t('manageProjects:max300Chars'),
+                message: tManageProjects('max300Chars'),
               },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('manageProjects:longTermPlan')}
+                label={tManageProjects('longTermPlan')}
                 variant="outlined"
                 multiline
                 minRows={2}
@@ -1181,7 +1187,7 @@ export default function DetailedAnalysis({
           />
           <div className={styles.multiSelectField}>
             <p className={styles.multiSelectLabel}>
-              {t('manageProjects:siteOwner')}
+              {tManageProjects('siteOwner')}
             </p>
             {siteOwners.map((owner) => {
               return (
@@ -1220,7 +1226,7 @@ export default function DetailedAnalysis({
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('manageProjects:ownerName')}
+                label={tManageProjects('ownerName')}
                 variant="outlined"
                 onChange={onChange}
                 value={value}
@@ -1243,7 +1249,7 @@ export default function DetailedAnalysis({
             className="formButton"
             startIcon={<BackArrow />}
           >
-            <p>{t('manageProjects:backToMedia')}</p>
+            <p>{tManageProjects('backToMedia')}</p>
           </Button>
 
           <Button
@@ -1255,7 +1261,7 @@ export default function DetailedAnalysis({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('manageProjects:saveAndContinue')
+              tManageProjects('saveAndContinue')
             )}
           </Button>
 
@@ -1264,12 +1270,10 @@ export default function DetailedAnalysis({
             variant="contained"
             onClick={() => handleNext(ProjectCreationTabs.PROJECT_SITES)}
           >
-            {t('manageProjects:skip')}
+            {tManageProjects('skip')}
           </Button>
         </div>
       </StyledForm>
     </CenteredContainer>
-  ) : (
-    <></>
   );
 }

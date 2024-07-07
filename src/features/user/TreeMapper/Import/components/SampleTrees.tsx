@@ -3,13 +3,14 @@ import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import {
   Measurements,
   SampleTree,
@@ -34,11 +35,13 @@ export default function SampleTrees({
   plantLocation,
   userLang,
 }: Props): ReactElement {
-  const { t, ready } = useTranslation(['treemapper', 'common', 'bulkCodes']);
+  const tTreemapper = useTranslations('Treemapper');
+  const tBulkCodes = useTranslations('BulkCodes');
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+  const { tenantConfig } = useTenant();
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
 
@@ -116,11 +119,9 @@ export default function SampleTrees({
             } else {
               setParseError({
                 type: 'missingColumns',
-                message: ready
-                  ? `${t(
-                      'bulkCodes:errorUploadCSV.missingColumns'
-                    )} ${headerValidity.missingColumns.join(', ')}`
-                  : '',
+                message: `${tBulkCodes(
+                  'errorUploadCSV.missingColumns'
+                )} ${headerValidity.missingColumns.join(', ')}`,
               });
             }
           },
@@ -141,6 +142,7 @@ export default function SampleTrees({
 
     try {
       const res: SampleTree = await postAuthenticatedRequest(
+        tenantConfig?.id,
         `/treemapper/plantLocations`,
         sampleTree,
         token,
@@ -234,13 +236,13 @@ export default function SampleTrees({
   return (
     <>
       <div className={styles.formFieldLarge}>
-        {t('treemapper:downloadExplanation')}
+        {tTreemapper('downloadExplanation')}
         <a
           href={url}
           download="Sample CSV Template"
           className={styles.downloadLink}
         >
-          {t('treemapper:downloadCSVTemplate')}
+          {tTreemapper('downloadCSVTemplate')}
         </a>
       </div>
 
@@ -255,16 +257,16 @@ export default function SampleTrees({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('treemapper:importCSV')
+              tTreemapper('importCSV')
             )}
           </Button>
-          <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatCSV')}</p>
+          <p style={{ marginTop: '18px' }}>{tTreemapper('fileFormatCSV')}</p>
         </label>
       </div>
       {parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}
       {hasIgnoredColumns && (
         <p style={{ color: '#e53935' }}>
-          {t('treemapper:ignoredColumnsWarning')}
+          {tTreemapper('ignoredColumnsWarning')}
         </p>
       )}
       <div className={styles.sampleTreeContainer}>
@@ -301,8 +303,8 @@ export default function SampleTrees({
         className={styles.addSpeciesButton}
       >
         {fields.length === 0
-          ? t('treemapper:addSampleTree')
-          : t('treemapper:addAnotherSampleTree')}
+          ? tTreemapper('addSampleTree')
+          : tTreemapper('addAnotherSampleTree')}
       </div>
       <div className={styles.formField}>
         <div className={styles.formFieldHalf}>
@@ -314,7 +316,7 @@ export default function SampleTrees({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('treemapper:continue')
+              tTreemapper('continue')
             )}
           </Button>
         </div>
@@ -327,7 +329,7 @@ export default function SampleTrees({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('treemapper:skip')
+              tTreemapper('skip')
             )}
           </Button>
         </div>

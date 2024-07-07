@@ -22,7 +22,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useTranslation, Trans } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   handleError,
@@ -37,6 +37,7 @@ import {
   AddressType,
 } from '../../common/types/geocoder';
 import { ExtendedCountryCode } from '../../common/types/country';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -57,13 +58,15 @@ type FormData = Omit<
 
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
-  const { i18n, t, ready } = useTranslation('editProfile');
+  const t = useTranslations('EditProfile');
+  const locale = useLocale();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState<
     AddressSuggestionsType[]
   >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
+  const { tenantConfig } = useTenant();
 
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -126,11 +129,11 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            router.push(`/t/${user.slug}`);
+            router.push('/profile');
           }
         }
       } else {
-        router.push('/', undefined, { shallow: true });
+        router.push('/');
       }
     }
     if (contextLoaded) {
@@ -173,11 +176,15 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest<User>(`/app/profile`, bodyToSend);
+      const res = await postRequest<User>(
+        tenantConfig?.id,
+        `/app/profile`,
+        bodyToSend
+      );
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
-      setSnackbarMessage(ready ? t('profileCreated') : '');
+      setSnackbarMessage(t('profileCreated'));
       setSeverity('success');
       handleSnackbarOpen();
 
@@ -200,18 +207,18 @@ export default function CompleteSignup(): ReactElement | null {
   const profileTypes = [
     {
       id: 1,
-      title: ready ? t('individual') : '',
+      title: t('individual'),
       value: 'individual',
     },
     {
       id: 2,
-      title: ready ? t('organization') : '',
+      title: t('organization'),
       value: 'organization',
     },
-    { id: 3, title: ready ? t('tpo') : '', value: 'tpo' },
+    { id: 3, title: t('tpo'), value: 'tpo' },
     {
       id: 4,
-      title: ready ? t('education') : '',
+      title: t('education'),
       value: 'education',
     },
   ] as const;
@@ -248,7 +255,7 @@ export default function CompleteSignup(): ReactElement | null {
     return null;
   }
   if (contextLoaded && token && user === null) {
-    return ready ? (
+    return (
       <div
         className={styles.signupPage}
         style={{
@@ -272,7 +279,7 @@ export default function CompleteSignup(): ReactElement | null {
             {/* header */}
             <div className={styles.header}>
               <div
-                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+                onClick={() => logoutUser(`${window.location.origin}/`)}
                 className={styles.headerBackIcon}
               >
                 <CancelIcon color={styles.primaryFontColor} />
@@ -575,17 +582,18 @@ export default function CompleteSignup(): ReactElement | null {
               <div className={styles.inlineToggleGroup}>
                 <div className={styles.mainText}>
                   <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                    <Trans i18nKey="termAndCondition">
-                      <a
-                        className={styles.termsLink}
-                        rel="noopener noreferrer"
-                        href={`https://pp.eco/legal/${i18n.language}/terms`}
-                        target={'_blank'}
-                      >
-                        Terms and Conditions
-                      </a>{' '}
-                      of the Plant-for-the-Planet platform.
-                    </Trans>
+                    {t.rich('termAndCondition', {
+                      termsLink: (chunks) => (
+                        <a
+                          className={styles.termsLink}
+                          rel="noopener noreferrer"
+                          href={`https://pp.eco/legal/${locale}/terms`}
+                          target={'_blank'}
+                        >
+                          {chunks}
+                        </a>
+                      ),
+                    })}
                   </label>
                 </div>
                 <ToggleSwitch
@@ -637,7 +645,7 @@ export default function CompleteSignup(): ReactElement | null {
           </div>
         </Snackbar>
       </div>
-    ) : null;
+    );
   }
   return null;
 }

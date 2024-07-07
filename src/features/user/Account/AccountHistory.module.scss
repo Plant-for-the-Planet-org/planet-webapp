@@ -198,6 +198,16 @@
     background-color: #ffccc7;
   }
 }
+
+.recordTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 .noCursor {
   cursor: default;
 }
@@ -555,7 +565,7 @@
   width: 100%;
   height: 200px;
   border-radius: 10px;
-  background-image: url('/assets/images/membership-background-landscape.png');
+  background-image: url('/assets/images/membership-bg-image.jpg');
   background-position: center;
   background-size: cover;
   display: flex;
@@ -564,11 +574,26 @@
   align-items: flex-start;
   gap: 8px;
   padding: 20px;
+  position: relative;
+  .overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
+  .logo {
+    z-index: 2;
+  }
   .membershipCtaContent {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    z-index: 2;
   }
   &.membershipCtaRight {
     display: none;
@@ -773,7 +798,6 @@
 
   .membershipCta {
     height: 250px;
-    background-image: url('/assets/images/membership-background-portrait.png');
     .logo {
       align-self: flex-end;
     }

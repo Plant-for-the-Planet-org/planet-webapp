@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
@@ -10,6 +10,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError, User } from '@planet-sdk/common';
 import { AlertColor } from '@mui/lab';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   embedModalOpen: boolean;
@@ -26,13 +27,14 @@ export default function EmbedModal({
   embedModalOpen,
   setEmbedModalOpen,
 }: Props) {
-  const { t, ready } = useTranslation(['editProfile']);
+  const t = useTranslations('EditProfile');
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [severity, setSeverity] = React.useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
   const { setUser, contextLoaded, token, logoutUser } = useUserProps();
@@ -58,13 +60,14 @@ export default function EmbedModal({
     if (contextLoaded && token) {
       try {
         const res = await putAuthenticatedRequest<User>(
+          tenantConfig?.id,
           `/app/profile`,
           bodyToSend,
           token,
           logoutUser
         );
         setSeverity('success');
-        setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
+        setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();
         setEmbedModalOpen(false);
         setIsUploadingData(false);
@@ -89,10 +92,10 @@ export default function EmbedModal({
           <div className={styles.headerDiv}>
             <div className={styles.editProfileText}>
               {' '}
-              <b> {t('editProfile:changeAccountToPublic')} </b>
+              <b> {t('changeAccountToPublic')} </b>
             </div>
             <div className={styles.accountPrivacyChangeText}>
-              {t('editProfile:accountPrivacyChangeText')}
+              {t('accountPrivacyChangeText')}
             </div>
           </div>
           {/* <div className={styles.isPrivateAccountDiv}>
@@ -118,7 +121,7 @@ export default function EmbedModal({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('editProfile:continue')
+                t('continue')
               )}
             </button>
             <button
@@ -129,7 +132,7 @@ export default function EmbedModal({
                 router.back();
               }}
             >
-              {t('editProfile:cancel')}
+              {t('cancel')}
             </button>
           </div>
         </div>

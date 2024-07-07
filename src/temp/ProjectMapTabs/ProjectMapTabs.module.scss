@@ -17,7 +17,7 @@ top: 100px;;
 z-index: 10;
 color: $dark;
 }
-.option { 
+.singleTabOption { 
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -30,10 +30,10 @@ color: $dark;
     gap:6px;
   }
   
-  .option svg {
+  .singleTabOption svg {
     height: 18px;
   }
-  .option p {
+  .singleTabOption p {
     display: none;
   }
 
@@ -49,7 +49,7 @@ color: $dark;
     height: 30px;
     position: absolute;
     top: 20%;
-    background: #0000004d;
+    opacity: 0.3;
   }
 
   .showSeparator1{
@@ -90,7 +90,7 @@ color: $dark;
     .tabsContainer {
       right: auto;
     }
-    .option {
+    .singleTabOption {
      width: 150px;
       p {
         display: block;

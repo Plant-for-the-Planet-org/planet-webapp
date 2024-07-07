@@ -3,7 +3,7 @@ import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -15,6 +15,7 @@ import {
 } from '../../../common/types/country';
 import { useRouter } from 'next/router';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -25,7 +26,8 @@ const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
-  const { t, ready } = useTranslation(['planetcash', 'country']);
+  const tPlanetCash = useTranslations('Planetcash');
+  const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,6 +35,7 @@ const CreateAccountForm = ({
   const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
+  const { tenantConfig } = useTenant();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,6 +44,7 @@ const CreateAccountForm = ({
 
     try {
       const res = await postAuthenticatedRequest(
+        tenantConfig?.id,
         '/app/planetCash',
         data,
         token,
@@ -61,15 +65,15 @@ const CreateAccountForm = ({
         switch (error.message) {
           case 'duplicate_account':
             _serializedErrors.push({
-              message: t('accountError.duplicate_account', {
-                country: t(`country:${country?.toLowerCase()}`),
+              message: tPlanetCash('accountError.duplicate_account', {
+                country: tCountry(country?.toLowerCase()),
               }),
             });
             break;
 
           case 'active_account_exists':
             _serializedErrors.push({
-              message: t('accountError.active_account_exists'),
+              message: tPlanetCash('accountError.active_account_exists'),
             });
             break;
 
@@ -87,50 +91,47 @@ const CreateAccountForm = ({
     setIsAccountCreated(false);
   };
 
-  if (ready) {
-    return (
-      <>
-        <FormHeader>
-          <h2 className="formTitle">{t('createAccountTitleText')}</h2>
-        </FormHeader>
-        <StyledForm onSubmit={onSubmit}>
-          <div className="inputContainer">
-            <AutoCompleteCountry
-              label={t('labelCountry')}
-              name="country"
-              defaultValue={allowedCountries[0].code}
-              onChange={setCountry}
-              countries={allowedCountries}
-            />
-          </div>
-          <p>{t('planetCashTerms1')}</p>
-          <p>{t('planetCashTerms2')}</p>
-          <p>{t('planetCashTerms3')}</p>
-          <Button
-            variant="contained"
-            color="primary"
-            className="formButton"
-            type="submit"
-            disabled={isProcessing}
-          >
-            {isProcessing ? (
-              <CircularProgress color="primary" size={24} />
-            ) : (
-              t('createPlanetCashButton')
-            )}
-          </Button>
-        </StyledForm>
-        {isAccountCreated && (
-          <CustomSnackbar
-            snackbarText={t('accountCreationSuccess')}
-            isVisible={isAccountCreated}
-            handleClose={closeSnackbar}
+  return (
+    <>
+      <FormHeader>
+        <h2 className="formTitle">{tPlanetCash('createAccountTitleText')}</h2>
+      </FormHeader>
+      <StyledForm onSubmit={onSubmit}>
+        <div className="inputContainer">
+          <AutoCompleteCountry
+            label={tPlanetCash('labelCountry')}
+            name="country"
+            defaultValue={allowedCountries[0].code}
+            onChange={setCountry}
+            countries={allowedCountries}
           />
-        )}
-      </>
-    );
-  }
-  return null;
+        </div>
+        <p>{tPlanetCash('planetCashTerms1')}</p>
+        <p>{tPlanetCash('planetCashTerms2')}</p>
+        <p>{tPlanetCash('planetCashTerms3')}</p>
+        <Button
+          variant="contained"
+          color="primary"
+          className="formButton"
+          type="submit"
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            tPlanetCash('createPlanetCashButton')
+          )}
+        </Button>
+      </StyledForm>
+      {isAccountCreated && (
+        <CustomSnackbar
+          snackbarText={tPlanetCash('accountCreationSuccess')}
+          isVisible={isAccountCreated}
+          handleClose={closeSnackbar}
+        />
+      )}
+    </>
+  );
 };
 
 export default CreateAccountForm;
