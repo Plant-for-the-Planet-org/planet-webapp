@@ -21,7 +21,7 @@
       'mapContainer'
       'communityContributionsContainer'
       'myContributionsContainer'
-      /* 'infoAndCtaContainer' */;
+      'infoAndCtaContainer';
   }
 
   &.noLeaderboard {
@@ -31,6 +31,14 @@
       'progressContainer'
       'myContributionsContainer'
       'infoAndCtaContainer';
+
+    &.noProgress {
+      grid-template-areas:
+        'profileContainer'
+        'mapContainer'
+        'myContributionsContainer'
+        'infoAndCtaContainer';
+    }
   }
 
   > section {
@@ -104,26 +112,35 @@
 
 @include mdTabletView {
   .publicProfileLayout {
-    grid-template-columns: 19fr 1fr 10fr 10fr;
+    grid-template-columns: 19fr 21fr;
     grid-template-areas:
-      'profileContainer mapContainer mapContainer mapContainer'
-      'progressContainer progressContainer progressContainer progressContainer'
-      'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
-      /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+      'profileContainer mapContainer'
+      'progressContainer progressContainer'
+      'communityContributionsContainer communityContributionsContainer'
+      'myContributionsContainer myContributionsContainer'
+      'infoAndCtaContainer infoAndCtaContainer';
 
     &.noProgress {
       grid-template-areas:
-        'profileContainer mapContainer mapContainer mapContainer'
-        'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
-        /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+        'profileContainer mapContainer'
+        'communityContributionsContainer communityContributionsContainer'
+        'myContributionsContainer myContributionsContainer'
+        'infoAndCtaContainer infoAndCtaContainer';
     }
 
     &.noLeaderboard {
       grid-template-areas:
-        'profileContainer mapContainer mapContainer mapContainer'
-        'progressContainer progressContainer progressContainer progressContainer'
-        'myContributionsContainer myContributionsContainer myContributionsContainer myContributionsContainer'
-        'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+        'profileContainer mapContainer'
+        'progressContainer progressContainer'
+        'myContributionsContainer myContributionsContainer'
+        'infoAndCtaContainer infoAndCtaContainer';
+
+      &.noProgress {
+        grid-template-areas:
+          'profileContainer mapContainer'
+          'myContributionsContainer myContributionsContainer'
+          'infoAndCtaContainer infoAndCtaContainer';
+      }
     }
 
     > section {
@@ -152,13 +169,13 @@
       'profileContainer mapContainer mapContainer mapContainer'
       'progressContainer progressContainer progressContainer progressContainer'
       'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
-      /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+      'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
 
     &.noProgress {
       grid-template-areas:
         'profileContainer mapContainer mapContainer mapContainer'
         'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer'
-        /* 'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer' */;
+        'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
     }
 
     &.noLeaderboard {
@@ -167,6 +184,13 @@
         'progressContainer progressContainer progressContainer progressContainer'
         'myContributionsContainer myContributionsContainer myContributionsContainer myContributionsContainer'
         'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+
+      &.noProgress {
+        grid-template-areas:
+          'profileContainer mapContainer mapContainer mapContainer'
+          'myContributionsContainer myContributionsContainer myContributionsContainer myContributionsContainer'
+          'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
+      }
     }
   }
 }
