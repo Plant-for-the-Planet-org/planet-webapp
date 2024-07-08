@@ -358,15 +358,24 @@ export default function ManageProjects({
         projectGUID ? (
           t('onlyEnglish')
         ) : (
-          <div className={styles.addProjectTitle}>
+          <div>
             <div>{t('addProjetDescription')}</div>
-            <div className={styles.editProjectInfo}>
-              <div className={styles.note}>{t('important')}</div>
-              <div>{t('englishOnly')}</div>
+            <div>
+              {t.rich('createProjectsEnglishOnly', {
+                importantContainer: (chunk) => <strong>{chunk}</strong>,
+              })}
             </div>
             <div>
-              {' '}
-              {t('addProjetContact')} <span>{t('supportLink')}</span>{' '}
+              {t.rich('contactSupportEmail', {
+                supportLink: (chunk) => (
+                  <a
+                    className={styles.supportContactMessage}
+                    href="mailto:support@plant-for-the-planet.org"
+                  >
+                    {chunk}
+                  </a>
+                ),
+              })}
             </div>
           </div>
         )

@@ -49,6 +49,9 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   '& .helpText': {
     fontStyle: 'italic',
   },
+  '& .helpText a': {
+    color: `var(--primary-color)`,
+  },
 }));
 
 const SingleDetail = styled('div')(({ theme }) => ({
@@ -140,9 +143,15 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
             </div>
           </Grid>
         )}
-        {!account.isActive && (
+        {account.isActive && (
           <Grid item xs={12}>
-            <p className="helpText">{t('accountInactiveHelpText')}</p>
+            <p className="helpText">
+              {t.rich('accountInactiveHelpText', {
+                supportLink: (chunk) => (
+                  <a href="mailto:support@plant-for-the-planet.org">{chunk}</a>
+                ),
+              })}
+            </p>
           </Grid>
         )}
       </Grid>

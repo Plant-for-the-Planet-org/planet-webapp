@@ -305,7 +305,18 @@ export const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
       return <p className={styles.donationNote}>{showDonationNote()}</p>;
     case 'in-dispute':
       return (
-        <p className={styles.donationNote}>{t('donationNote.in-dispute')}</p>
+        <p className={styles.donationNote}>
+          {t.rich('donationNote.in-dispute', {
+            supportLink: (chunk) => (
+              <a
+                className={styles.supportLink}
+                href="mailto:support@plant-for-the-planet.org"
+              >
+                {chunk}
+              </a>
+            ),
+          })}
+        </p>
       );
     default:
       return <></>;

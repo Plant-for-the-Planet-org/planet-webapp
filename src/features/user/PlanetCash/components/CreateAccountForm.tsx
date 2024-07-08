@@ -108,7 +108,18 @@ const CreateAccountForm = ({
         </div>
         <p>{tPlanetCash('planetCashTerms1')}</p>
         <p>{tPlanetCash('planetCashTerms2')}</p>
-        <p>{tPlanetCash('planetCashTerms3')}</p>
+        <p>
+          {tPlanetCash.rich('planetCashTerms3', {
+            supportLink: (chunk) => (
+              <a
+                style={{ color: `var(--primary-color)` }}
+                href="mailto:support@plant-for-the-planet.org"
+              >
+                {chunk}
+              </a>
+            ),
+          })}
+        </p>
         <Button
           variant="contained"
           color="primary"
