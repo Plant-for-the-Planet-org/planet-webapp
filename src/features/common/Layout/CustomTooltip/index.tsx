@@ -1,10 +1,8 @@
-//TEMP FILE: TO BE REMOVED
-
 import React from 'react';
 import { bindHover, bindPopover } from 'material-ui-popup-state';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { usePopupState } from 'material-ui-popup-state/hooks';
-import { IconProps } from '../../../common/types/common';
+import { IconProps } from '../../types/common';
 
 interface Props {
   height: number;

@@ -3,7 +3,7 @@ import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
 import ContributionListItem from './ContributionListItem';
-import CustomTooltip from './CustomTooltip';
+import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { LeaderboardItem } from '../../../common/types/myForestv2';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
@@ -89,7 +89,7 @@ const CommunityContributions = ({
     <div className={styles.communityContributions}>
       <div className={styles.header}>
         <div className={styles.infoIcon}>
-          <CustomTooltip height={15} width={15} color={'#828282'}>
+          <CustomTooltip height={15} width={14} color={'#828282'}>
             <div className={styles.infoIconPopupContainer}>
               {profilePageType === 'private'
                 ? t('communityContributions.tooltipText')
