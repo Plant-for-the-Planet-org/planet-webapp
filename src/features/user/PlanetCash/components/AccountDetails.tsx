@@ -48,9 +48,9 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   },
   '& .helpText': {
     fontStyle: 'italic',
-  },
-  '& .helpText a': {
-    color: `var(--primary-color)`,
+    a: {
+      color: `var(--primary-color)`,
+    },
   },
 }));
 
@@ -143,7 +143,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
             </div>
           </Grid>
         )}
-        {account.isActive && (
+        {!account.isActive && (
           <Grid item xs={12}>
             <p className="helpText">
               {t.rich('accountInactiveHelpText', {
