@@ -207,15 +207,13 @@
 }
 
 .profileImageButton {
-  height: 50px;
-  width: 50px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  @include xsPhoneView {
-    height: 40px;
-  }
   > img {
     border-radius: 50%;
+    @include xsPhoneView {
+      height: 42px;
+    }
   }
 }

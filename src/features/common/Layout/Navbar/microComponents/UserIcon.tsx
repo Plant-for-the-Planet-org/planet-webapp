@@ -10,22 +10,29 @@ const UserIcon = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth0();
 
-  return user ? (
-    <button
-      className="profileImageButton"
-      onClick={() => router.push(`/profile`)}
-    >
-      {user.image ? (
-        <img src={getImageUrl('profile', 'avatar', user.image)} />
-      ) : (
-        <DefaultProfileImageIcon width={'110px'} />
-      )}
-    </button>
-  ) : !isAuthenticated ? (
-    <SignInButton />
-  ) : (
-    <></>
-  );
+  if (!isAuthenticated) {
+    return <SignInButton />;
+  }
+
+  if (user) {
+    return (
+      <button
+        className="profileImageButton"
+        onClick={() => router.push(`/profile`)}
+      >
+        {user.image ? (
+          <img
+            src={getImageUrl('profile', 'avatar', user.image)}
+            alt="Profile"
+          />
+        ) : (
+          <DefaultProfileImageIcon width={'110px'} />
+        )}
+      </button>
+    );
+  }
+
+  return <></>;
 };
 
 export default UserIcon;

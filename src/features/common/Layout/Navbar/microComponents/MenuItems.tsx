@@ -33,6 +33,7 @@ const MenuItem = ({
 }: MenuItemProps) => {
   const router = useRouter();
   const t = useTranslations('Common');
+  const { tenantConfig } = useTenant();
   const hasSubMenu =
     navLinkOptions.subMenu && navLinkOptions.subMenu.length > 0;
 
@@ -55,6 +56,8 @@ const MenuItem = ({
   };
 
   const isActive = () => {
+    const { slug } = tenantConfig.config;
+    const { pathname } = router;
     const donatePaths = [
       '/',
       '/[p]',
@@ -67,19 +70,26 @@ const MenuItem = ({
     const linkPaths = {
       home: '/sites/[slug]/[locale]/home',
       leaderboard: '/sites/[slug]/[locale]/all',
-      homeRoot: '/sites/[slug]/[locale]',
     };
 
-    if (navLink === 'donate') {
-      return donatePaths.includes(router.pathname);
-    } else {
-      return (
-        (router.pathname === linkPaths.home && navLink === 'home') ||
-        (router.pathname === linkPaths.leaderboard &&
-          navLink === 'leaderboard') ||
-        (router.pathname === linkPaths.homeRoot && navLink === 'home')
-      );
+    const isDonatePath = donatePaths.includes(pathname);
+    const isHomePath = pathname === linkPaths.home && navLink === 'home';
+    const isLeaderboardPath =
+      pathname === linkPaths.leaderboard && navLink === 'leaderboard';
+    const isPlanetHome =
+      slug === 'planet' &&
+      pathname === '/sites/[slug]/[locale]' &&
+      navLink === 'home';
+
+    if (isPlanetHome) {
+      return true;
     }
+
+    if (navLink === 'donate') {
+      return isDonatePath;
+    }
+
+    return isHomePath || isLeaderboardPath;
   };
 
   return navLinkOptions.visible ? (
