@@ -1,6 +1,11 @@
 @import '../../../theme/theme';
 
+.webappButtonLink {
+  max-width: 100%;
+}
+
 .webappButton {
+  max-width: 100%;
   padding: 6px 16px;
   display: flex;
   align-items: center;
@@ -44,7 +49,8 @@
   font-weight: 700;
   color: #2f3336;
   cursor: pointer;
-  line-height: 1;
+  line-height: 1.2;
+  text-wrap: wrap;
 }
 
 .primaryWebappButton {
