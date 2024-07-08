@@ -8,7 +8,7 @@ const BrandLogo = () => {
     window.matchMedia('(max-width: 481px)').matches
   );
   useEffect(() => {
-    const maxWidth = 481;
+    const maxWidth = '481px';
     useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });

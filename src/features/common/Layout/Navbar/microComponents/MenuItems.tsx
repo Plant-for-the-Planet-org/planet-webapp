@@ -13,8 +13,8 @@ interface navLinkOptions {
   title: string;
   onclick: string;
   visible: boolean;
-  subMenu: Submenu[];
-  loggedInTitle: string | undefined;
+  subMenu?: Submenu[];
+  loggedInTitle?: string | undefined;
 }
 interface MenuItemProps {
   navLink: string;
@@ -116,11 +116,11 @@ const MenuItems = () => {
   const links = Object.keys(tenantConfig?.config?.header?.items || {});
 
   useEffect(() => {
-    const maxWidth = 768;
+    const maxWidth = '768px';
     useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
-  }, [isMobile]);
+  }, []);
 
   return tenantConfig ? (
     <div className={'menuItems'}>

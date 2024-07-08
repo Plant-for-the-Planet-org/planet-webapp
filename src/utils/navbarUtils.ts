@@ -1,9 +1,8 @@
 export const useMobileDetection = (
-  maxWidth: number,
+  maxWidth: string,
   callback: (value: boolean) => void
 ) => {
   const mediaQuery = window.matchMedia(`(max-width:${maxWidth} )`);
-
   const handleResize = () => {
     callback(mediaQuery.matches);
   };
