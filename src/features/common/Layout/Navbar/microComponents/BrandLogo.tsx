@@ -12,7 +12,7 @@ const BrandLogo = () => {
     useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
-  }, [isMobile]);
+  }, []);
   return (
     <div className={'brandLogos'}>
       <SecondaryLogo isMobile={isMobile} />

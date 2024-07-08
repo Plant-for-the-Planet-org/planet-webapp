@@ -8,31 +8,28 @@ import SignInButton from './SignInButton';
 const UserIcon = () => {
   const { user } = useUserProps();
   const router = useRouter();
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isLoading) {
     return <SignInButton />;
   }
 
-  if (user) {
-    return (
-      <button
-        className="profileImageButton"
-        onClick={() => router.push(`/profile`)}
-      >
-        {user.image ? (
-          <img
-            src={getImageUrl('profile', 'avatar', user.image)}
-            alt="Profile"
-          />
-        ) : (
-          <DefaultProfileImageIcon width={'110px'} />
-        )}
-      </button>
-    );
+  if (!user) {
+    return <></>;
   }
 
-  return <></>;
+  return (
+    <button
+      className="profileImageButton"
+      onClick={() => router.push(`/profile`)}
+    >
+      {user.image ? (
+        <img src={getImageUrl('profile', 'avatar', user.image)} alt="Profile" />
+      ) : (
+        <DefaultProfileImageIcon width={'110px'} />
+      )}
+    </button>
+  );
 };
 
 export default UserIcon;
