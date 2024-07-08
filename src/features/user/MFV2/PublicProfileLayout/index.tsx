@@ -22,7 +22,6 @@ interface Props {
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ tenantConfigId }: Props) => {
-  const showLeaderboard = false;
   const [profile, setProfile] = useState<null | UserPublicProfile>();
   const { user, contextLoaded } = useUserProps();
   const router = useRouter();
@@ -78,6 +77,8 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   const restoreTarget = userInfo?.targets.areaRestored ?? 0;
   const conservTarget = userInfo?.targets.areaConserved ?? 0;
 
+  const canShowLeaderboard = profile?.exposeCommunity ?? false;
+
   const isProgressBarDisabled = useMemo(() => {
     return (
       treesDonated === 0 &&
@@ -105,7 +106,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
   return (
     <article
       className={`${styles.publicProfileLayout} ${
-        !showLeaderboard ? styles.noLeaderboard : ''
+        !canShowLeaderboard ? styles.noLeaderboard : ''
       } ${isProgressBarDisabled ? styles.noProgress : ''}`}
     >
       <section id="profile-container" className={styles.profileContainer}>
@@ -159,7 +160,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           <ProfileLoader height={350} />
         )}
       </section>
-      {showLeaderboard ? (
+      {canShowLeaderboard ? (
         <section
           id="community-contributions-container"
           className={`

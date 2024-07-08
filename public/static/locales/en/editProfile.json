@@ -45,7 +45,7 @@
       "website": "Website",
       "isPublic": "Make profile public",
       "subscribe": "Subscribe to news via email",
-      "showLeaderboard": "Show my leaderboard",
+      "exposeCommunity": "Show my leaderboard",
       "showTreegame": "Show TreeGame"
     },
     "validationErrors": {
