@@ -362,14 +362,14 @@ export default function ManageProjects({
             <div>{t('addProjetDescription')}</div>
             <div>
               {t.rich('createProjectsEnglishOnly', {
-                importantContainer: (chunk) => <strong>{chunk}</strong>,
+                noteLabel: (chunk) => <strong>{chunk}</strong>,
               })}
             </div>
             <div>
               {t.rich('contactSupportEmail', {
                 supportLink: (chunk) => (
                   <a
-                    className={styles.supportContactMessage}
+                    className="planet-links"
                     href="mailto:support@plant-for-the-planet.org"
                   >
                     {chunk}

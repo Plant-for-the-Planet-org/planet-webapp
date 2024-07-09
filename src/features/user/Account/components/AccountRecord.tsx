@@ -309,7 +309,7 @@ export const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
           {t.rich('donationNote.in-dispute', {
             supportLink: (chunk) => (
               <a
-                className={styles.supportLink}
+                className="planet-links"
                 href="mailto:support@plant-for-the-planet.org"
               >
                 {chunk}

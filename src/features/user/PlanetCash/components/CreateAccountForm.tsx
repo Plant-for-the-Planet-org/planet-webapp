@@ -112,7 +112,7 @@ const CreateAccountForm = ({
           {tPlanetCash.rich('planetCashTerms3', {
             supportLink: (chunk) => (
               <a
-                style={{ color: `var(--primary-color)` }}
+                className="planet-links"
                 href="mailto:support@plant-for-the-planet.org"
               >
                 {chunk}

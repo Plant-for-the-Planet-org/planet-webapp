@@ -218,7 +218,7 @@
     "landOwnershipType": "Land Ownership Type",
     "restorationProject": "Restoration Project",
     "addProjetDescription": "You're few steps away from showcasing your work on the Plant-for-the-Planet platform.",
-    "createProjectsEnglishOnly": "<importantContainer>Important:</importantContainer>Please create projects in English only.",
+    "createProjectsEnglishOnly": "<noteLabel>Important:</noteLabel>Please create projects in English only.",
     "contactSupportEmail": "If you need any help contact us at <supportLink>support@plant-for-the-planet.org</supportLink> ",
     "wrongCoordinates": "Wrong Coordinates",
     "actionInfo": "The actions your organization is taking to conserve the ecosystem.",
