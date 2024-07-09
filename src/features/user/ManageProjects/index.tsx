@@ -18,7 +18,6 @@ import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
-import styles from '../../../../src/features/user/ManageProjects/StepForm.module.scss';
 import {
   ManageProjectsProps,
   ProfileProjectTrees,
