@@ -36,6 +36,7 @@ import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import { useRouter } from 'next/router';
 import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import themeProperties from '../../../../theme/themeProperties';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -701,7 +702,11 @@ export default function EditProfileForm() {
             >
               {t('fieldLabels.exposeCommunity')}
               <div className={styles.infoIcon}>
-                <CustomTooltip height={15} width={14} color={'#828282'}>
+                <CustomTooltip
+                  height={15}
+                  width={14}
+                  color={themeProperties.mediumGrayColor}
+                >
                   <div className={styles.infoIconPopupContainer}>
                     {t('leaderboardTooltipExplanation')}
                   </div>

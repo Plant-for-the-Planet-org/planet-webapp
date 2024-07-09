@@ -47,18 +47,18 @@ const TargetFormInput = ({
       checked ? styles.targetFormInputContainer : styles.deActivateTargetModal,
     [dataType, checked]
   );
-  const isTargetSet = localTarget > 0;
+  const isLocalTargetSet = localTarget > 0;
   const isChecked = checked;
 
   return (
     <div
       className={`${targetContainerClass} ${
-        isTargetSet && isChecked && styles[dataType]
+        isLocalTargetSet && isChecked && styles[dataType]
       }`}
     >
       <div className={styles.switchContainer}>
         <TargetFormInputLabel dataType={dataType} />
-        {localTarget > 0 && (
+        {isLocalTargetSet && (
           <TargetSwitch
             switchColor={targetColor(dataType) ?? ''}
             checked={checked}
