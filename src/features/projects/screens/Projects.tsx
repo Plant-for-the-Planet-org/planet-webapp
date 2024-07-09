@@ -73,16 +73,15 @@ function ProjectsList({
     projects: MapProject[],
     type: string
   ): MapProject[] | undefined {
-    if (type === 'top') {
-      return projects.filter(
-        (project) =>
-          project.properties.purpose === 'trees' &&
-          project.properties.isApproved === true &&
-          project.properties.isTopProject === true
-      );
-    } else if (type === 'all') {
-      return projects;
-    } else if (type === 'all_sorted') {
+    if (type === 'top' || type === 'all_sorted') {
+      if (type === 'top') {
+        projects = projects.filter(
+          (project) =>
+            project.properties.purpose === 'trees' &&
+            project.properties.isApproved === true &&
+            project.properties.isTopProject === true
+        );
+      }
       const donatableProjects = projects.filter(
         (project) => project.properties.allowDonations === true
       );
@@ -90,6 +89,8 @@ function ProjectsList({
         (project) => project.properties.allowDonations === false
       );
       return [...donatableProjects, ...nonDonatableProjects];
+    } else if (type === 'all') {
+      return projects;
     }
   }
 
