@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
+import React from 'react';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -38,24 +39,27 @@ const HeaderTabs = ({ tabSelected, handleTabChange }: HeaderTabsProps) => {
 
 const ContributionsList = ({
   contributionList,
+  tabSelected,
 }: {
   contributionList: LeaderboardItem[];
+  tabSelected: TabOptions;
 }) => {
   if (contributionList.length === 0) return null;
 
   return (
     <ul className={styles.leaderboardList}>
       {contributionList.map((item, index) => (
-        <>
+        <React.Fragment
+          key={`${tabSelected}-${item.units}-${item.unitType}-${index}`}
+        >
           <ContributionListItem
-            key={index}
             name={item.name}
             units={item.units}
             unitType={item.unitType}
             purpose={item.purpose}
           />
           <div className={styles.horizontalLine}></div>
-        </>
+        </React.Fragment>
       ))}
     </ul>
   );
@@ -123,7 +127,10 @@ const CommunityContributions = ({
         />
       </div>
       {contributionList.length > 0 ? (
-        <ContributionsList contributionList={contributionList} />
+        <ContributionsList
+          contributionList={contributionList}
+          tabSelected={tabSelected}
+        />
       ) : (
         <NoContributions
           {...(profilePageType === 'private'
