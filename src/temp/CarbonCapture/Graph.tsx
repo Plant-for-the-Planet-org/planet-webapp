@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 import NewInfoIcon from '../icons/NewInfoIcon';
 import { ApexOptions } from 'apexcharts';
 import { useTranslations } from 'next-intl';
+import themeProperties from '../../theme/themeProperties';
 
 interface TooltipProps {
   headerTitle: string;
@@ -19,7 +20,6 @@ export const Tooltip = ({
   yoyValue,
   date,
 }: TooltipProps) => {
-  const t = useTranslations('ProjectDetails');
   return (
     <div className={styles.tooltipContainer}>
       <div className={styles.header}>
@@ -27,9 +27,7 @@ export const Tooltip = ({
         <p className={styles.subtitle}>{subTitle}</p>
       </div>
       <div className={styles.body}>
-        <p className={styles.yoyValue}>
-          {yoyValue} {t('yoy')}
-        </p>
+        <p className={styles.yoyValue}>{yoyValue}</p>
         <p className={styles.date}>{date}</p>
       </div>
     </div>
@@ -40,8 +38,8 @@ interface GraphProps {
   title: string;
   subtitle: string;
   years: number[];
-  series1Values: number[];
-  series2Values: number[];
+  carbonRemoved: number[];
+  biomass: number[];
   tooltip: {
     heading: string;
     unit: string;
@@ -58,15 +56,15 @@ const Graph = ({
   title,
   subtitle,
   years,
-  series1Values,
-  series2Values,
+  carbonRemoved,
+  biomass,
   tooltip,
 }: GraphProps) => {
   const t = useTranslations('ProjectDetails');
   const [xaxisOptions, setXaxisOptions] = useState<
     (number | (string | number)[])[]
   >([]);
-
+  const { light, primaryDarkColorX } = themeProperties;
   useEffect(() => {
     const newOptions = years.map((year, index) => {
       if (index === 1) {
@@ -97,22 +95,26 @@ const Graph = ({
     tooltip: {
       custom: function ({ dataPointIndex, w }: CustomTooltipProps) {
         const getToolTip = () => {
+          const headingTranslation = t(`${tooltip.heading}`);
+          const subHeadingTranslation = t(`${tooltip.subheading}`);
+          const yoyTranslation = t('yoy', {
+            value: 4,
+          });
           const dataPoint = xaxisOptions[dataPointIndex];
           const year = Array.isArray(dataPoint) ? dataPoint[0] : dataPoint;
+
+          const headerTitle = `${w.globals.series[0][dataPointIndex]}${tooltip.unit} ${headingTranslation}`;
+          const subTitle = subHeadingTranslation
+            ? `${w.globals.series[1][dataPointIndex]}${tooltip.unit} ${subHeadingTranslation}`
+            : '';
+          const date = year.toString();
+
           return (
             <Tooltip
-              headerTitle={`${w.globals.series[0][dataPointIndex]}${
-                tooltip.unit
-              } ${t(`${tooltip.heading}`)}`}
-              subTitle={
-                tooltip.subheading
-                  ? `${w.globals.series[1][dataPointIndex]}${tooltip.unit} ${t(
-                      `${tooltip.subheading}`
-                    )}`
-                  : ''
-              }
-              yoyValue={'+4%'}
-              date={year.toString()}
+              headerTitle={headerTitle}
+              subTitle={subTitle}
+              yoyValue={yoyTranslation}
+              date={date}
             />
           );
         };
@@ -123,8 +125,8 @@ const Graph = ({
     },
     markers: {
       size: 0,
-      colors: ['#fff', 'transparent'],
-      strokeColors: ['#219653', 'transparent'],
+      colors: [`${light.light}`, 'transparent'],
+      strokeColors: [`${primaryDarkColorX}`, 'transparent'],
       strokeOpacity: [1, 1],
       strokeWidth: 2.2,
       hover: {
@@ -153,7 +155,7 @@ const Graph = ({
         },
         minHeight: 35,
         style: {
-          colors: '#4F4F4F',
+          colors: `${light.grayFontColorNew}`,
           fontSize: 10,
         },
       },
@@ -182,7 +184,7 @@ const Graph = ({
         {
           x: xaxisOptions[1],
           strokeDashArray: 0,
-          borderColor: '#219653',
+          borderColor: `${primaryDarkColorX}`,
         },
       ],
     },
@@ -190,14 +192,14 @@ const Graph = ({
   const series = [
     {
       name: 'series1',
-      data: series1Values,
-      color: '#219653',
+      data: carbonRemoved,
+      color: `${primaryDarkColorX}`,
       zIndex: 2,
     },
     {
       name: 'series2',
-      data: series2Values,
-      color: '#BDBDBD',
+      data: biomass,
+      color: `${light.dividerColorNew}`,
       zIndex: 1,
     },
   ];
@@ -207,13 +209,15 @@ const Graph = ({
         <h5 className={styles.graphHeading}>
           {title === 'co2CapturePerHa'
             ? t.rich('co2CapturePerHa', {
-                captureContainer: (chunk) => (
-                  <span style={{ fontWeight: '700' }}>{chunk}</span>
-                ),
+                captureContainer: (chunk) => <span>{chunk}</span>,
               })
             : t(`${title}`)}
           <div className={styles.newInfoIcon}>
-            <NewInfoIcon height={17} width={17} color={'#BDBDBD'} />
+            <NewInfoIcon
+              height={17}
+              width={17}
+              color={`${light.dividerColorNew}`}
+            />
           </div>
         </h5>
         <p className={styles.graphSubheading}> {t(`${subtitle}`)}</p>
@@ -225,7 +229,6 @@ const Graph = ({
           type="area"
           height={153}
           width={'100%'}
-          style={{ display: 'flex', justifyContent: 'center' }}
         />
       </div>
       <div id="html-dist"></div>

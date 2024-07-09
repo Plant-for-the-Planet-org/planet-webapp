@@ -21,7 +21,7 @@
     "comparedToRegionalAverage": "Compared to regional average",
     "co2Removed": "CO₂ removed",
     "biomass": "Biomass",
-    "yoy": "YoY",
+    "yoy": "+{value}% YoY",
     "projectLaunch": "Project Launch",
     "canopyCover": "Canopy Cover"
   }

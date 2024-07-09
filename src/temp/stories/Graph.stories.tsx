@@ -15,8 +15,8 @@ export const Preview: Story = {
     years: years,
     title: 'co2CapturePerHa',
     subtitle: 'comparedToRegionalAverage',
-    series1Values: [21.4, 21.27, 20.78, 21.7, 21.78],
-    series2Values: [22.54, 22.65, 21.8, 21.85, 22.03],
+    carbonRemoved: [23.4, 23.27, 23.78, 23.7, 23.78],
+    biomass: [22.54, 22.65, 21.8, 21.85, 22.03],
     tooltip: {
       heading: 'co2Removed',
       unit: 't',
