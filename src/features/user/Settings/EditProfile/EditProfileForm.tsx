@@ -291,13 +291,12 @@ export default function EditProfileForm() {
 
   const saveProfile = async (data: FormData) => {
     setIsUploadingData(true);
-    const { isPublic, exposeCommunity, ...otherData } = data;
+    const { isPublic, ...otherData } = data;
 
     const bodyToSend = {
       ...otherData,
       country: country,
       isPrivate: !isPublic,
-      ...(exposeCommunity ? { exposeCommunity: exposeCommunity } : {}),
       ...(type !== 'tpo' ? { type: type } : {}),
     };
 
