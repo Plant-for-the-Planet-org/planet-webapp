@@ -57,7 +57,7 @@
     margin: 0;
     border-radius: 0;
     border: none;
-    height: 435px;
+    min-height: 435px;
     grid-area: mapContainer;
   }
 
@@ -148,7 +148,7 @@
     }
 
     .mapContainer {
-      height: 450px;
+      min-height: 450px;
       border-radius: 24px;
     }
 

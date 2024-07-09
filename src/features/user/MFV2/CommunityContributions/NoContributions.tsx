@@ -25,9 +25,13 @@ const NoContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
           </span>
           <WebappButton
             icon={<SupportUserIcon />}
-            text={t('feature.supportUserText', {
-              username: userProfile?.displayName.split(' ')[0],
-            })}
+            text={
+              userProfile.type === 'individual'
+                ? t('feature.supportUserTextIndividual', {
+                    username: userProfile?.displayName.split(' ')[0],
+                  })
+                : t('feature.supportUserTextGeneric')
+            }
             variant="primary"
             elementType={'link'}
             href={`/s/${userProfile?.slug}`}

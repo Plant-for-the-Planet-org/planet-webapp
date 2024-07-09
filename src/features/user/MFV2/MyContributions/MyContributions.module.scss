@@ -200,7 +200,7 @@
   }
 
   @include smTabletView {
-    height: 120px;
+    min-height: 120px;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
@@ -212,13 +212,18 @@
     }
 
     .headerTitle {
-      margin-bottom: 50px;
       text-align: left;
+      align-self: center;
     }
   }
 
   @include lgLaptopView {
     padding: 0 0 0 36px;
+
+    .headerTitle {
+      align-self: flex-end;
+      margin-bottom: 50px;
+    }
   }
 }
 

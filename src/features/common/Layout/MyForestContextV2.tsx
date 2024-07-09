@@ -61,9 +61,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const [contributionsResult, setContributionsResult] =
     useState<ContributionsResponse>();
   const [leaderboardResult, setLeaderboardResult] = useState<Leaderboard>();
-  const [isLeaderboardLoaded, setIsLeaderboardLoaded] = useState(false);
-  const [isProjectsListLoaded, setIsProjectsListLoaded] = useState(false);
-  const [isContributionsLoaded, setIsContributionsLoaded] = useState(false);
   const [contributionsMap, setContributionsMap] =
     useState<Map<string, MyContributionsMapItem>>();
   const [contributionStats, setContributionStats] =
@@ -76,23 +73,40 @@ export const MyForestProviderV2: FC = ({ children }) => {
     PointFeature<DonationProperties>[]
   >([]);
 
-  const _projectList = trpc.myForestV2.projectList.useQuery();
+  const _projectList = trpc.myForestV2.projectList.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
-  const _contributions = trpc.myForestV2.contributions.useQuery({
-    profileId: `${userInfo?.profileId}`,
-    slug: `${userInfo?.slug}`,
-  });
-  const _leaderboard = trpc.myForestV2.leaderboard.useQuery({
-    profileId: `${userInfo?.profileId}`,
-    slug: `${userInfo?.slug}`,
-  });
+  const _contributions = trpc.myForestV2.contributions.useQuery(
+    {
+      profileId: `${userInfo?.profileId}`,
+      slug: `${userInfo?.slug}`,
+    },
+    {
+      enabled: !!userInfo?.profileId && !!userInfo?.slug,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    }
+  );
+
+  const _leaderboard = trpc.myForestV2.leaderboard.useQuery(
+    {
+      profileId: `${userInfo?.profileId}`,
+      slug: `${userInfo?.slug}`,
+    },
+    {
+      enabled: !!userInfo?.profileId && !!userInfo?.slug,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    }
+  );
 
   useEffect(() => {
     if (_projectList.data) {
       updateStateWithTrpcData(_projectList, setProjectListResult, setErrors);
-      setIsProjectsListLoaded(true);
     }
-  }, [_projectList.data]);
+  }, [_projectList.data, _projectList.error]);
 
   useEffect(() => {
     if (_contributions.data) {
@@ -101,16 +115,14 @@ export const MyForestProviderV2: FC = ({ children }) => {
         setContributionsResult,
         setErrors
       );
-      setIsContributionsLoaded(true);
     }
-  }, [_contributions.data]);
+  }, [_contributions.data, _contributions.error]);
 
   useEffect(() => {
     if (_leaderboard.data) {
       updateStateWithTrpcData(_leaderboard, setLeaderboardResult, setErrors);
-      setIsLeaderboardLoaded(true);
     }
-  }, [_leaderboard?.data]);
+  }, [_leaderboard?.data, _leaderboard?.error]);
 
   //format geojson
   const _generateDonationGeojson = (
@@ -183,9 +195,10 @@ export const MyForestProviderV2: FC = ({ children }) => {
       projectListResult,
       contributionsResult,
       leaderboardResult,
-      isLeaderboardLoaded,
-      isProjectsListLoaded,
-      isContributionsLoaded,
+      isLeaderboardLoaded: !_leaderboard.isLoading && !_leaderboard.isError,
+      isProjectsListLoaded: !_projectList.isLoading && !_projectList.isError,
+      isContributionsLoaded:
+        !_contributions.isLoading && !_contributions.isError,
       contributionsMap,
       registrationGeojson,
       donationGeojson,
@@ -197,9 +210,12 @@ export const MyForestProviderV2: FC = ({ children }) => {
       projectListResult,
       contributionsResult,
       leaderboardResult,
-      isLeaderboardLoaded,
-      isProjectsListLoaded,
-      isContributionsLoaded,
+      _leaderboard.isLoading,
+      _leaderboard.isError,
+      _projectList.isLoading,
+      _projectList.isError,
+      _contributions.isLoading,
+      _contributions.isError,
       contributionsMap,
       registrationGeojson,
       donationGeojson,
