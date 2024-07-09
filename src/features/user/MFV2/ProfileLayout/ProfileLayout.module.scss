@@ -83,13 +83,14 @@
   }
 }
 
-@include mdTabletView {
+@include lgLaptopView {
   .profileLayout {
-    grid-template-columns: 19fr 1fr 10fr 10fr;
+    grid-template-columns: 3fr 5fr;
     grid-template-areas:
-      'profileContainer mapContainer mapContainer mapContainer'
-      'progressContainer progressContainer progressContainer progressContainer'
-      'myContributionsContainer myContributionsContainer communityContributionsContainer communityContributionsContainer';
+      'profileContainer mapContainer'
+      'progressContainer progressContainer'
+      'communityContributionsContainer communityContributionsContainer'
+      'myContributionsContainer myContributionsContainer';
 
     > section {
       border-radius: 24px;
@@ -97,6 +98,7 @@
 
     .mapContainer {
       height: 450px;
+      border-radius: 24px;
     }
 
     .profileContainer,
@@ -108,7 +110,7 @@
   }
 }
 
-@include lgLaptopView {
+@include xlDesktopView {
   .profileLayout {
     grid-template-columns: 3fr 1fr 2fr 2fr;
     grid-template-areas:

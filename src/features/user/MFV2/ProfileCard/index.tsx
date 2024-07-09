@@ -15,7 +15,7 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
   const isPrivateAccount = profilePageType === 'private';
   const userImageUrl = userProfile?.image
-    ? getImageUrl('profile', 'avatar', userProfile.image)
+    ? getImageUrl('profile', 'thumb', userProfile.image)
     : '';
 
   return (

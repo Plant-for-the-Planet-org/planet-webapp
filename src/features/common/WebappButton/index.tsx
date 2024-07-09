@@ -31,7 +31,11 @@ function WebappButton({
 
   if (otherProps.elementType === 'link') {
     return (
-      <Link href={otherProps.href} target={otherProps.target || '_self'}>
+      <Link
+        href={otherProps.href}
+        target={otherProps.target || '_self'}
+        className={styles.webappButtonLink}
+      >
         <button
           className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
         >

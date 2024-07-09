@@ -32,10 +32,11 @@ import { APIError, handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
-// import CustomTooltip from './CustomTooltip';
+import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import { useRouter } from 'next/router';
 import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import themeProperties from '../../../../theme/themeProperties';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -54,7 +55,7 @@ type FormData = {
   name: string;
   url: string;
   zipCode: string;
-  showLeaderboard: boolean;
+  exposeCommunity: boolean;
   showTreegame: boolean;
 };
 
@@ -88,6 +89,7 @@ export default function EditProfileForm() {
       bio: user?.bio ? user.bio : '',
       url: user?.url ? user.url : '',
       name: user?.type !== 'individual' && user?.name ? user.name : '',
+      exposeCommunity: user?.exposeCommunity === true ? true : false,
     };
   }, [user]);
 
@@ -349,6 +351,7 @@ export default function EditProfileForm() {
               {...getRootProps()}
               className={styles.uploadProfilePicButton}
               aria-label="upload profile picture"
+              type="button"
             >
               <div className={styles.profilePicButtonText}>
                 <input {...getInputProps()} />
@@ -360,6 +363,7 @@ export default function EditProfileForm() {
               className={styles.deleteProfilePicButton}
               onClick={(event) => deleteProfilePicture(event)}
               aria-label="delete profile picture"
+              type="button"
             >
               <div className={styles.profilePicButtonText}>
                 <Delete color="#828282" />
@@ -689,16 +693,20 @@ export default function EditProfileForm() {
               )}
             />
           </InlineFormDisplayGroup>
-          {/* <div className={styles.horizontalLine} />
+          <div className={styles.horizontalLine} />
           <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="show-leaderboard"
+              htmlFor="expose-community"
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
-              {t('fieldLabels.showLeaderboard')}
+              {t('fieldLabels.exposeCommunity')}
               <div className={styles.infoIcon}>
-                <CustomTooltip height={15} width={14} color={'#828282'}>
+                <CustomTooltip
+                  height={15}
+                  width={14}
+                  color={themeProperties.mediumGrayColor}
+                >
                   <div className={styles.infoIconPopupContainer}>
                     {t('leaderboardTooltipExplanation')}
                   </div>
@@ -707,20 +715,19 @@ export default function EditProfileForm() {
             </label>
 
             <Controller
-              name="showLeaderboard"
+              name="exposeCommunity"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <NewToggleSwitch
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="show-leaderboard"
-                  disabled={true}
+                  id="expose-community"
                 />
               )}
             />
           </InlineFormDisplayGroup>
-          <div className={styles.horizontalLine} />
+          {/* <div className={styles.horizontalLine} />
           <InlineFormDisplayGroup type="other">
             <label
               htmlFor="show-treegame"

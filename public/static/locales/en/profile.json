@@ -98,6 +98,7 @@
     "communityContributions": {
       "title": "Community Contributions",
       "tooltipText": "Community contributions are all tree, restoration or conservation donations that are dedicated to you, for instance by donating via your profile",
+      "tooltipTextPublic": "Community contributions are all tree, restoration or conservation donations that are dedicated to this profile",
       "mostRecentTabLabel": "Most recent",
       "mostTreesTabLabel": "Most trees",
       "restorationPurpose": "restored",

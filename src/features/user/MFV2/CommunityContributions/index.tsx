@@ -3,11 +3,13 @@ import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
 import ContributionListItem from './ContributionListItem';
-import CustomTooltip from './CustomTooltip';
+import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { LeaderboardItem } from '../../../common/types/myForestv2';
 import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
+import themeProperties from '../../../../theme/themeProperties';
+import React from 'react';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -37,24 +39,27 @@ const HeaderTabs = ({ tabSelected, handleTabChange }: HeaderTabsProps) => {
 
 const ContributionsList = ({
   contributionList,
+  tabSelected,
 }: {
   contributionList: LeaderboardItem[];
+  tabSelected: TabOptions;
 }) => {
   if (contributionList.length === 0) return null;
 
   return (
     <ul className={styles.leaderboardList}>
       {contributionList.map((item, index) => (
-        <>
+        <React.Fragment
+          key={`${tabSelected}-${item.units}-${item.unitType}-${index}`}
+        >
           <ContributionListItem
-            key={index}
             name={item.name}
             units={item.units}
             unitType={item.unitType}
             purpose={item.purpose}
           />
           <div className={styles.horizontalLine}></div>
-        </>
+        </React.Fragment>
       ))}
     </ul>
   );
@@ -89,9 +94,15 @@ const CommunityContributions = ({
     <div className={styles.communityContributions}>
       <div className={styles.header}>
         <div className={styles.infoIcon}>
-          <CustomTooltip height={15} width={15} color={'#828282'}>
+          <CustomTooltip
+            height={15}
+            width={14}
+            color={themeProperties.mediumGrayColor}
+          >
             <div className={styles.infoIconPopupContainer}>
-              {t('communityContributions.tooltipText')}
+              {profilePageType === 'private'
+                ? t('communityContributions.tooltipText')
+                : t('communityContributions.tooltipTextPublic')}
             </div>
           </CustomTooltip>
         </div>
@@ -116,7 +127,10 @@ const CommunityContributions = ({
         />
       </div>
       {contributionList.length > 0 ? (
-        <ContributionsList contributionList={contributionList} />
+        <ContributionsList
+          contributionList={contributionList}
+          tabSelected={tabSelected}
+        />
       ) : (
         <NoContributions
           {...(profilePageType === 'private'
