@@ -9,7 +9,8 @@
       "registerTree": "Register Tree",
       "share": "Share",
       "allDonations": "All Donations",
-      "supportUserText": "Support {username} by donating",
+      "supportUserTextIndividual": "Support {username} by donating",
+      "supportUserTextGeneric": "Support them by donating",
       "website": "My Website"
     },
     "myPublicProfile": {
@@ -109,7 +110,7 @@
     },
     "unitType": {
       "m2": "m²"
-    }, 
+    },
     "infoAndCtaContainer": {
       "sdgCardsSectionHeading": "Restoring Ecosystems & Fighting the Climate Crisis for the SDGs",
       "pfpDonorCircleMember": "Plant-for-the-Planet donor circle member",
@@ -127,7 +128,7 @@
       "sdgCardAlternativeText": {
         "qualityEducation": "Quality Education",
         "economicGrowth": "Decent work and economic growth",
-        "industryInfrastructureAndInnovation": "Industry, innovation and infrastructure", 
+        "industryInfrastructureAndInnovation": "Industry, innovation and infrastructure",
         "reducedInequalities": "Recent inequalities",
         "climateAction": "Climate action",
         "lifeOnLand": "Life on land",
