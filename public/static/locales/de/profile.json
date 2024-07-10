@@ -7,7 +7,11 @@
     "feature": {
       "redeem": "Einlösen",
       "registerTree": "Baum registrieren",
-      "share": "Teilen"
+      "share": "Teilen",
+      "allDonations": "Alle Spenden",
+      "supportUserTextIndividual": "Unterstützen Sie {username} mit einer Spende",
+      "supportUserTextGeneric": "Unterstütze sie mit einer Spende",
+      "website": "Meine Website"
     },
     "myPublicProfile": {
       "support": "Support",
@@ -15,6 +19,7 @@
     },
     "myForestMap": {
       "plantedTree": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "savedArea": "{area} m²",
       "treesPlanted": "Gepflanzte Bäume",
       "restored": "Wiederhergestellt",
       "registered": "Registriert",
@@ -33,6 +38,8 @@
       "editTarget": "Ziel bearbeiten"
     },
     "myContributions": {
+      "titlePrivate": "Meine Beiträge",
+      "titlePublic": "{name}'s Beiträge",
       "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete wiederhergestellt",
       "treeRegistered": "{count, plural, =1 {# Baum registriert} other {# Bäume registriert}}",
       "receivedFrom": "Empfangen von {name}",
@@ -43,7 +50,72 @@
       "conservedSmall": "geschützt",
       "restoredSmall": "wiederhergestellt",
       "areaType": "{areaConserved} m² {type}",
-      "areaConserved": "Geschütze Fläche"
+      "areaConserved": "Geschütze Fläche",
+      "unused": "v2 Übersetzungen unten",
+      "treesContributed": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "areaContributed": "{projectPurpose, select, }",
+      "giftReceivedInfo": "Geschenk von {name}",
+      "giftGivenInfo": "Geschenk an {name}",
+      "anonymousUser": "ein anonymer Nutzer",
+      "contributionCountOverflow": "+{additionalCount, plural, =1 {# Spende} other {# Spenden}}",
+      "treesRegisteredHeadline": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "registrationInfo": "Registriert • {date}",
+      "registrationInfoWithCountry": "Registriert • {countryName} • {date}"
+    },
+    "donatePopup": {
+      "totalContribution": "+{count, plural, =1 {# Spende} other {# Spenden}}",
+      "projectName": "{name}",
+      "classification": "{classification}"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Schließen Sie sich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen #StopTalkingStartPlanting #TrillionTrees",
+      "shareVia": "Teilen über",
+      "copyLink": "Link kopieren",
+      "textToShareLinkedin": "Schließe dich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen"
+    },
+    "progressBar": {
+      "treePlanted": "{count, plural, =1 {# Baum gepflanzt} other {# Bäume gepflanzt}}",
+      "treePlantedAgainstTarget": "{count, number} von {total, plural, =1 {# Baum} other {# Bäume}} angepflanzt",
+      "restoredArea": "{unit, number} m² wiederaufgeforstet",
+      "restoredAreaAgainstTarget": "{count, number} von {unit, number} m² wiederaufgeforstet",
+      "conservedArea": "{unit, number} m² geschützt",
+      "conservedAreaAgainstTarget": "{count, number} von {unit, number} m² geschützt",
+      "totalGiftFromCommunity": "{quantity, number} von deiner Community",
+      "editTarget": "Ziel bearbeiten",
+      "setTarget": "Ziel setzen",
+      "plantedTreesTarget": "Ziel gepflanzte Bäume",
+      "areaConservedTarget": "Ziel geschützte Fläche",
+      "areaRestoredTarget": "Ziel wiederaufgeforstete Fläche",
+      "save": "Speichern",
+      "setTargets": "Ziele setzen",
+      "emptyProgressInformation": "Ziele für gepflanzte Bäume, geschützte Flächen und wiederaufgeforstete Flächen setzen",
+      "enterYourTarget": "Gib das Ziel ein"
+    },
+    "mapStats": {
+      "countryStats": "{count, plural, =1 {# Land} other {# Länder}} ",
+      "projectStats": "{count, plural, =1 {# Projekt} other {# Projekte}} "
+    },
+    "communityContributions": {
+      "title": "Beiträge der Community",
+      "tooltipText": "Beiträge der Community sind alle Spenden für Bäume, Wiederaufforstung oder Schutz, die dir gewidmet sind, z. B. durch Spenden über dein Profil",
+      "tooltipTextPublic": "Beiträge der Community sind alle Spenden für Bäume, Wiederaufforstung oder Schutz, die diesem Profil gewidmet sind",
+      "mostRecentTabLabel": "Neuste",
+      "mostTreesTabLabel": "Meiste Bäume",
+      "restorationPurpose": "wiederaufgeforstet",
+      "conservationPurpose": "geschützt",
+      "treesPurpose": "Bäume",
+      "noContributionPrivateProfileText": "Huch! Noch keine Beiträge zu sehen",
+      "noContributionPublicProfileText": "Unterstützen Sie {name} mit einer Spende"
+    },
+    "unitType": {
+      "m2": "m²"
+    },
+    "infoAndCtaContainer": {
+      "pfpDonorCircleMember": "Plant-for-the-Planet Donor Circle-Mitglied",
+      "publicProfileActions": {
+        "becomeAMember": "Mitglied werden"
+      }
     }
   }
 }

@@ -1,1 +1,5 @@
-{ "Project": {} }
+{
+  "Project": {
+    "tpoName": "Von {tpoName}"
+  }
+}

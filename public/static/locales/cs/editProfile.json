@@ -12,7 +12,6 @@
     "profileCreationFailed": "Chyba při vytváření profilu. Zkuste to prosím znovu.",
     "profileCreationError": "Chyba při vytváření profilu.",
     "edit": "Editovat profil",
-    "privateAccountTxt": "Váš profil je skrytý a v žebříčku se zobrazuje pouze vaše křestní jméno",
     "save": "Uložit",
     "profilePicUpdated": "Profilový obrázek se aktualizuje...",
     "profileSaved": "Úspěšně uloženo!",
@@ -36,7 +35,6 @@
       "country": "Země",
       "bio": "Popis profilu",
       "website": "Webstránka",
-      "privateAccount": "Soukromý účet",
       "subscribe": "Přihlášení k odběru novinek e-mailem"
     },
     "validationErrors": {

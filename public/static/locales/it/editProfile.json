@@ -12,7 +12,6 @@
     "profileCreationFailed": "Errore nella creazione del profilo. Riprovare.",
     "profileCreationError": "Errore nella creazione del profilo.",
     "edit": "Modifica profilo",
-    "privateAccountTxt": "Il tuo profilo è nascosto e nella classifica appare solo il tuo nome di battesimo",
     "save": "Salva",
     "profilePicUpdated": "L'immagine del profilo è in fase di aggiornamento...",
     "profileSaved": "Salvato con successo!",
@@ -36,7 +35,6 @@
       "country": "Paese",
       "bio": "Descrizione del profilo",
       "website": "Sito web",
-      "privateAccount": "Conto privato",
       "subscribe": "Iscriviti alle notizie via e-mail"
     },
     "validationErrors": {

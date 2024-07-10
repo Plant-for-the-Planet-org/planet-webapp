@@ -12,8 +12,8 @@
     "profileCreationFailed": "Fehler bei der Profilerstellung. Bitte versuchen Sie es erneut.",
     "profileCreationError": "Fehler bei der Profilerstellung.",
     "edit": "Profil bearbeiten",
-    "privateAccountTxt": "Dein Profil wird ausgeblendet und nur Dein Vorname erscheint in der Bestenliste",
     "save": "Speichern",
+    "viewPublicProfile": "Öffentliches Profil anzeigen",
     "profilePicUpdated": "Profilbild wird aktualisiert...",
     "profileSaved": "Erfolgreich gespeichert!",
     "profileSaveFailed": "Fehler beim Aktualisieren des Profils.",
@@ -24,6 +24,13 @@
     "cancel": "Abbrechen",
     "termAndCondition": "Ich stimme den <termsLink>Nutzungsbedingungen</termsLink> der Plant-for-the-Planet Plattform zu.",
     "termAndConditionError": "Bitte stimme den Nutzungsbedingungen zu",
+    "profileConsentSettingsTitle": "Öffentliches Profil anpassen",
+    "publicProfileExplanation": "Wenn Sie Ihr Profil öffentlich machen, können Sie Ihre Informationen weitergeben und mit anderen in Kontakt treten.",
+    "leaderboardTooltipExplanation": "In der Rangliste werden alle Beiträge angezeigt, die andere zu Ihrem Profil geleistet haben. Dabei kann es sich um Bäume handeln, die Ihnen geschenkt wurden, oder um Spenden, die von Personen geleistet wurden, die Ihr Profil besucht haben. Wenn Sie diese Funktion aktivieren, kann jeder im Internet sehen, wer die meisten Beiträge geleistet hat",
+    "profilePictureButtonLabels": {
+      "upload": "Ein neues Foto hochladen",
+      "delete": "Foto löschen"
+    },
     "fieldLabels": {
       "profileType": "Ich bin ein",
       "firstName": "Vorname",
@@ -36,8 +43,10 @@
       "country": "Land",
       "bio": "Profilbeschreibung",
       "website": "Website",
-      "privateAccount": "Privatkonto",
-      "subscribe": "Nachrichten per E-Mail abonnieren"
+      "isPublic": "Profil öffentlich machen",
+      "subscribe": "Nachrichten per E-Mail abonnieren",
+      "exposeCommunity": "Meine Rangliste anzeigen",
+      "showTreegame": "TreeGame anzeigen"
     },
     "validationErrors": {
       "maxChars": "Sollte {max} oder weniger Buchstaben haben",
