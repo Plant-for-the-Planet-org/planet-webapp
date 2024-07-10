@@ -18,6 +18,12 @@ handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {
+  if (!redisClient) {
+    throw new Error(
+      'Redis client not initialized. If this is not a Storybook environment, please ensure Redis is properly configured and connected.'
+    );
+  }
+
   const { projectId, startDate, endDate } = req.body;
 
   const CACHE_KEY = `TOTAL_TREES_PLANTED__${getCachedKey(
