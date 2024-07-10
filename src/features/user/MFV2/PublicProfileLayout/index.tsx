@@ -15,6 +15,7 @@ import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestV2Utils';
 import InfoAndCta from '../InfoAndCTA';
+import TpoProjects from '../TpoProjects';
 
 interface Props {
   tenantConfigId: string;
@@ -188,7 +189,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           id="tpo-projects-container"
           className={styles.tpoProjectsContainer}
         >
-          Projects
+          <TpoProjects profile={profile} />
         </section>
       )}
 
