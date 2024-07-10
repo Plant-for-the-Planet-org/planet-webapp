@@ -12,7 +12,6 @@
     "profileCreationFailed": "Erro na criação do perfil. Por favor, tente novamente.",
     "profileCreationError": "Erro na criação do perfil.",
     "edit": "Editar Perfil",
-    "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
     "save": "Salvar",
     "profilePicUpdated": "A foto do perfil está sendo atualizada",
     "profileSaved": "Salvo com sucesso!",
@@ -36,7 +35,6 @@
       "country": "País",
       "bio": "Descrição do perfil",
       "website": "Website",
-      "privateAccount": "Conta Privada",
       "subscribe": "Inscreva-se para receber notícias por e-mail"
     },
     "validationErrors": {

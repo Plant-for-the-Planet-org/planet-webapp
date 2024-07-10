@@ -12,7 +12,6 @@
     "profileCreationFailed": "Erreur dans la création du profil. Veuillez réessayer.",
     "profileCreationError": "Erreur dans la création du profil.",
     "edit": "Modifier le profil",
-    "privateAccountTxt": "Votre profil est caché et seul votre prénom apparaît dans le classement",
     "save": "Sauvegarder",
     "profilePicUpdated": "La photo du profil est en cours d'actualisation...",
     "profileSaved": "Sauvé avec succès !",
@@ -36,7 +35,6 @@
       "country": "Pays",
       "bio": "Description du profil",
       "website": "Site web",
-      "privateAccount": "Compte privé",
       "subscribe": "S'abonner aux actualités par email"
     },
     "validationErrors": {
