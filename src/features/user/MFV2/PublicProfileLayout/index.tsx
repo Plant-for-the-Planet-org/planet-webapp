@@ -15,6 +15,7 @@ import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestV2Utils';
 import InfoAndCta from '../InfoAndCTA';
+import TpoProjects from '../TpoProjects';
 
 interface Props {
   tenantConfigId: string;
@@ -102,12 +103,16 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     isContributionsLoaded && isProjectsListLoaded;
   const isProgressDataLoaded =
     isContributionsLoaded && profile !== null && profile !== undefined;
+  const isTpoProfile =
+    profile !== null && profile !== undefined && profile.type === 'tpo';
 
   return (
     <article
       className={`${styles.publicProfileLayout} ${
         !canShowLeaderboard ? styles.noLeaderboard : ''
-      } ${isProgressBarDisabled ? styles.noProgress : ''}`}
+      } ${isProgressBarDisabled ? styles.noProgress : ''} ${
+        isTpoProfile ? styles.tpoProfile : ''
+      }`}
     >
       <section id="profile-container" className={styles.profileContainer}>
         {isProfileLoaded ? (
@@ -116,68 +121,78 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
           <ProfileLoader height={450} />
         )}
       </section>
-      <section
-        id="map-container"
-        className={`${styles.mapContainer} ${
-          !isContributionsDataLoaded ? styles.loading : ''
-        }`}
-      >
-        {isContributionsDataLoaded ? (
-          <ContributionsMap
-            profilePageType="public"
-            supportedTreecounter={userInfo?.slug ?? ''}
-          />
-        ) : (
-          <ProfileLoader height={450} />
-        )}
-      </section>
-      {isProgressBarDisabled ? (
-        <></>
-      ) : (
-        <section
-          id="progress-container"
-          className={`${styles.progressContainer} ${
-            !isProgressDataLoaded ? styles.loading : ''
-          }`}
-        >
-          {isProgressDataLoaded ? (
-            <ForestProgress profilePageType="public" />
-          ) : (
-            <ProfileLoader height={116} />
+      {/* Render the following sections only when we know the profile belongs to a non-tpo user */}
+      {!isTpoProfile && (
+        <>
+          <section
+            id="map-container"
+            className={`${styles.mapContainer} ${
+              !isContributionsDataLoaded ? styles.loading : ''
+            }`}
+          >
+            {isContributionsDataLoaded ? (
+              <ContributionsMap
+                profilePageType="public"
+                supportedTreecounter={userInfo?.slug ?? ''}
+              />
+            ) : (
+              <ProfileLoader height={450} />
+            )}
+          </section>
+          {!isProgressBarDisabled && (
+            <section
+              id="progress-container"
+              className={`${styles.progressContainer} ${
+                !isProgressDataLoaded ? styles.loading : ''
+              }`}
+            >
+              {isProgressDataLoaded ? (
+                <ForestProgress profilePageType="public" />
+              ) : (
+                <ProfileLoader height={116} />
+              )}
+            </section>
           )}
+          <section
+            id="my-contributions-container"
+            className={`${styles.myContributionsContainer} ${
+              !isContributionsDataLoaded ? styles.loading : ''
+            }`}
+          >
+            {isContributionsDataLoaded && profile ? (
+              <MyContributions profilePageType="public" userProfile={profile} />
+            ) : (
+              <ProfileLoader height={350} />
+            )}
+          </section>
+          {canShowLeaderboard && (
+            <section
+              id="community-contributions-container"
+              className={`${styles.communityContributionsContainer} ${
+                !isLeaderboardLoaded ? styles.loading : ''
+              }`}
+            >
+              {isLeaderboardLoaded && profile ? (
+                <CommunityContributions
+                  userProfile={profile}
+                  profilePageType="public"
+                />
+              ) : (
+                <ProfileLoader height={350} />
+              )}
+            </section>
+          )}
+        </>
+      )}
+      {isTpoProfile && (
+        <section
+          id="tpo-projects-container"
+          className={styles.tpoProjectsContainer}
+        >
+          <TpoProjects profile={profile} />
         </section>
       )}
 
-      <section
-        id="my-contributions-container"
-        className={`${styles.myContributionsContainer} ${
-          !isContributionsDataLoaded ? styles.loading : ''
-        }`}
-      >
-        {isContributionsDataLoaded && profile ? (
-          <MyContributions profilePageType="public" userProfile={profile} />
-        ) : (
-          <ProfileLoader height={350} />
-        )}
-      </section>
-      {canShowLeaderboard ? (
-        <section
-          id="community-contributions-container"
-          className={`
-						${styles.communityContributionsContainer} ${
-            !isLeaderboardLoaded ? styles.loading : ''
-          }`}
-        >
-          {isLeaderboardLoaded && profile ? (
-            <CommunityContributions
-              userProfile={profile}
-              profilePageType="public"
-            />
-          ) : (
-            <ProfileLoader height={350} />
-          )}
-        </section>
-      ) : null}
       <section id="info-cta-container" className={styles.infoAndCtaContainer}>
         <InfoAndCta />
       </section>
