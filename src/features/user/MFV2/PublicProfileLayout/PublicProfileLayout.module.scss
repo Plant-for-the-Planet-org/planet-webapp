@@ -41,6 +41,13 @@
     }
   }
 
+  &.tpoProfile {
+    grid-template-areas:
+      'profileContainer'
+      'tpoProjectsContainer'
+      'infoAndCtaContainer';
+  }
+
   > section {
     border-radius: 16px;
     background-color: $backgroundColor;
@@ -90,6 +97,10 @@
 
   .infoAndCtaContainer {
     grid-area: infoAndCtaContainer;
+  }
+
+  .tpoProjectsContainer {
+    grid-area: tpoProjectsContainer;
   }
 }
 
@@ -143,6 +154,13 @@
       }
     }
 
+    &.tpoProfile {
+      grid-template-areas:
+        'profileContainer .'
+        'tpoProjectsContainer tpoProjectsContainer'
+        'infoAndCtaContainer infoAndCtaContainer';
+    }
+
     > section {
       border-radius: 24px;
     }
@@ -191,6 +209,13 @@
           'myContributionsContainer myContributionsContainer myContributionsContainer myContributionsContainer'
           'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
       }
+    }
+
+    &.tpoProfile {
+      grid-template-areas:
+        'profileContainer profileContainer . .'
+        'tpoProjectsContainer tpoProjectsContainer tpoProjectsContainer tpoProjectsContainer'
+        'infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer infoAndCtaContainer';
     }
   }
 }
