@@ -5,7 +5,7 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages } from 'next-intl';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -22,10 +22,12 @@ interface Props {
 }
 
 const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
+  const t = useTranslations('Me');
+
   return tenantConfig ? (
     <UserLayout>
       <Head>
-        <title>My Forest V2</title>
+        <title>{t('profile')}</title>
       </Head>
       <MyForestProviderV2>
         <ProfileOuterContainer>

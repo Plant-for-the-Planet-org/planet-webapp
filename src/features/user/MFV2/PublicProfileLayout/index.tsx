@@ -5,12 +5,7 @@ import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import CommunityContributions from '../CommunityContributions';
-import { useState, useEffect, useContext, useMemo } from 'react';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useRouter } from 'next/router';
-import { handleError, APIError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import { useEffect, useMemo } from 'react';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestV2Utils';
@@ -18,14 +13,12 @@ import InfoAndCta from '../InfoAndCTA';
 import TpoProjects from '../TpoProjects';
 
 interface Props {
-  tenantConfigId: string;
+  profile: UserPublicProfile | null;
+  isProfileLoaded: boolean;
 }
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
-const PublicProfileLayout = ({ tenantConfigId }: Props) => {
-  const [profile, setProfile] = useState<null | UserPublicProfile>();
-  const { user, contextLoaded } = useUserProps();
-  const router = useRouter();
+const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const {
     userInfo,
     setUserInfo,
@@ -34,20 +27,6 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     isProjectsListLoaded,
     isLeaderboardLoaded,
   } = useMyForestV2();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
-
-  async function loadPublicProfile(id: string) {
-    try {
-      const profileData = await getRequest<UserPublicProfile>(
-        tenantConfigId,
-        `/app/profiles/${id}`
-      );
-      setProfile(profileData);
-    } catch (err) {
-      setErrors(handleError(err as APIError));
-      redirect('/');
-    }
-  }
 
   useEffect(() => {
     if (profile) {
@@ -65,13 +44,6 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     }
   }, [profile]);
 
-  useEffect(() => {
-    if (router && router.isReady && router.query.profile && contextLoaded) {
-      // reintiating the profile
-      setProfile(null);
-      loadPublicProfile(router.query.profile as string);
-    }
-  }, [contextLoaded, user, router]);
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
   const treeTarget = userInfo?.targets.treesDonated ?? 0;
@@ -98,7 +70,6 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
     conservTarget,
   ]);
 
-  const isProfileLoaded = profile !== null && profile !== undefined;
   const isContributionsDataLoaded =
     isContributionsLoaded && isProjectsListLoaded;
   const isProgressDataLoaded =
@@ -115,7 +86,7 @@ const PublicProfileLayout = ({ tenantConfigId }: Props) => {
       }`}
     >
       <section id="profile-container" className={styles.profileContainer}>
-        {isProfileLoaded ? (
+        {isProfileLoaded && profile ? (
           <ProfileCard userProfile={profile} profilePageType="public" />
         ) : (
           <ProfileLoader height={450} />
