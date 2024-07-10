@@ -22,6 +22,12 @@ handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.get(async (req, response) => {
+  if (!redisClient) {
+    throw new Error(
+      'Redis client not initialized. If this is not a Storybook environment, please ensure Redis is properly configured and connected.'
+    );
+  }
+
   const { projectId } = req.query;
 
   const key = `${KEY}_${projectId}`;
