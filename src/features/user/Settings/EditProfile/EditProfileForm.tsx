@@ -753,7 +753,7 @@ export default function EditProfileForm() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            router.push(`/${locale}/mfv2-public/${user?.slug}`);
+            router.push(`/${locale}/t/${user?.slug}`);
           }}
           className={styles.viewPublicProfileButton}
         >
