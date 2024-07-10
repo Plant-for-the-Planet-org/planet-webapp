@@ -39,7 +39,7 @@
     },
     "myContributions": {
       "titlePrivate": "Meine Beiträge",
-      "titlePublic": "{name}'s Beiträge",
+      "titlePublic": "Beiträge von {name}",
       "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete renaturiert",
       "treeRegistered": "{count, plural, =1 {# Baum registriert} other {# Bäume registriert}}",
       "receivedFrom": "Empfangen von {name}",
