@@ -18,6 +18,9 @@ const getGlobalStyles = async () => {
   const fetchConfig = async () => {
     try {
       let tenantConfig;
+      if (process.env.STORYBOOK_IS_STORYBOOK) {
+        return null;
+      }
       if (typeof window !== 'undefined') {
         // Check if tenantConfig is stored in local storage
         const storedConfig = localStorage.getItem('tenantConfig');
@@ -36,6 +39,7 @@ const getGlobalStyles = async () => {
       }
     } catch (err) {
       console.log('Error in fetchConfig for getGlobalStyles', err);
+      return null;
     }
   };
 
@@ -63,6 +67,14 @@ const getGlobalStyles = async () => {
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
+      --medium-blue-color: ${theme.mediumBlueColor};
+      --sky-blue-color: ${theme.skyBlueColor};
+      --electric-purple-color: ${theme.electricPurpleColor};
+      --lavender-purple-color: ${theme.lavenderPurpleColor};
+      --green-haze-color: ${theme.greenHazeColor};
+      --mint-green-color: ${theme.mintGreenColor};
+      --amethyst-purple-color: ${theme.amethystPurpleColor};
+      --cerulean-blue-color: ${theme.ceruleanBlueColor};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};

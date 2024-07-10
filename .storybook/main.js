@@ -34,4 +34,9 @@ module.exports = {
   docs: {
     autodocs: true,
   },
+
+  env: (config) => ({
+    ...config,
+    STORYBOOK_IS_STORYBOOK: true,
+  }),
 };

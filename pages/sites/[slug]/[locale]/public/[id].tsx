@@ -36,7 +36,7 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   // External imports
   const locale = useLocale();
   const router = useRouter();
-  const { user, contextLoaded } = useUserProps();
+  const { user, contextLoaded, isImpersonationModeOn } = useUserProps();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
 
@@ -80,7 +80,11 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   return tenantConfig && profile ? (
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <div className={myProfileStyle.publicProfile}>
+      <div
+        className={`${myProfileStyle.publicProfile} ${
+          isImpersonationModeOn ? myProfileStyle.impersonationMode : ''
+        }`}
+      >
         <div className={myProfileStyle.publicProfileMainContainer}>
           <Profile userProfile={profile} />
           {profile.type === 'tpo' && (

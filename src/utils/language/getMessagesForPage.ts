@@ -18,6 +18,7 @@ type TRANSLATION_FILE_NAMES =
   | 'planet'
   | 'planetcash'
   | 'profile'
+  | 'project'
   | 'redeem'
   | 'registerTrees'
   | 'tenants'

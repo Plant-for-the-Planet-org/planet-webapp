@@ -1,0 +1,90 @@
+@import '../../../theme/theme';
+
+.webappButtonLink {
+  max-width: 100%;
+}
+
+.webappButton {
+  max-width: 100%;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 8px;
+  background: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+  min-height: 2rem;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  &:hover {
+    background: rgba(33, 150, 83, 0.2);
+    border: none;
+  }
+}
+
+.webappButtonIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+.webappButtonLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2f3336;
+  cursor: pointer;
+  line-height: 1.2;
+  text-wrap: wrap;
+}
+
+.primaryWebappButton {
+  background-color: $primaryDarkColor;
+  border: 1px solid $primaryDarkColor;
+  box-sizing: border-box;
+  .webappButtonLabel {
+    color: #fff;
+  }
+  &:hover {
+    border: 1px solid rgba(33, 150, 83, 0.4);
+    background: #27ae60;
+  }
+}
+
+.secondaryWebappButton {
+  background-color: #fff;
+  border: 1px solid rgba(33, 150, 83, 0.4);
+  .webappButtonLabel {
+    color: #2f3336;
+  }
+  &:hover {
+    background: rgba(33, 150, 83, 0.2);
+    border: 1px solid transparent;
+  }
+}
+
+.tertiaryWebappButton {
+  background-color: $primaryDarkColor;
+  .webappButtonLabel {
+    color: #fff;
+    font-size: $fontXSmall;
+  }
+  &:hover {
+    background: #27ae60;
+  }
+}

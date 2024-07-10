@@ -21,7 +21,7 @@ function countryToFlag(isoCode: string) {
 }
 
 interface CountrySelectProps {
-  label: ReactNode;
+  label?: ReactNode;
   name: string | undefined;
   defaultValue: string | undefined; //This will be a country code e.g. DE, IN, US
   onChange: SetState<ExtendedCountryCode | ''>;

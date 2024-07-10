@@ -1,4 +1,4 @@
-import { Button, styled, TextField } from '@mui/material';
+import { styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
@@ -6,18 +6,16 @@ import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import { User } from '@planet-sdk/common/build/types/user';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
-import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { allCountries } from '../../../../utils/constants/countries';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
@@ -33,6 +31,12 @@ import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
+import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
+import CustomTooltip from '../../../common/Layout/CustomTooltip';
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import { useRouter } from 'next/router';
+import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import themeProperties from '../../../../theme/themeProperties';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -46,11 +50,13 @@ type FormData = {
   city: string;
   firstname: string;
   getNews: boolean;
-  isPrivate: boolean;
+  isPublic: boolean;
   lastname: string;
   name: string;
   url: string;
   zipCode: string;
+  exposeCommunity: boolean;
+  showTreegame: boolean;
 };
 
 type ProfileTypeOption = {
@@ -66,6 +72,8 @@ export default function EditProfileForm() {
   const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('EditProfile');
+  const locale = useLocale();
+  const router = useRouter();
 
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -76,11 +84,12 @@ export default function EditProfileForm() {
       city: user?.address && user.address.city ? user.address.city : '',
       zipCode:
         user?.address && user.address.zipCode ? user.address.zipCode : '',
-      isPrivate: user?.isPrivate ? user.isPrivate : false,
+      isPublic: user?.isPrivate === false ? true : false,
       getNews: user?.getNews ? user.getNews : false,
       bio: user?.bio ? user.bio : '',
       url: user?.url ? user.url : '',
       name: user?.type !== 'individual' && user?.name ? user.name : '',
+      exposeCommunity: user?.exposeCommunity === true ? true : false,
     };
   }, [user]);
 
@@ -89,7 +98,6 @@ export default function EditProfileForm() {
     control,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     mode: 'onBlur',
@@ -177,7 +185,6 @@ export default function EditProfileForm() {
   // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const watchIsPrivate = watch('isPrivate');
   const [type, setAccountType] = useState(
     user?.type ? user.type : 'individual'
   );
@@ -219,6 +226,29 @@ export default function EditProfileForm() {
     // This will remove field values which do not exist for the new type
     reset();
   }, [type]);
+
+  const handleUserProfileImage = async (bodyToSend: {
+    imageFile: string | ArrayBuffer | null | undefined;
+  }) => {
+    try {
+      const res = await putAuthenticatedRequest<User>(
+        tenantConfig?.id,
+        `/app/profile`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      if (user) {
+        const newUserInfo = { ...user, image: res.image };
+        setUpdatingPic(false);
+        setUser(newUserInfo);
+      }
+    } catch (err) {
+      setUpdatingPic(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
@@ -235,30 +265,23 @@ export default function EditProfileForm() {
             setSeverity('info');
             setSnackbarMessage(t('profilePicUpdated'));
             handleSnackbarOpen();
-
-            try {
-              const res = await putAuthenticatedRequest<User>(
-                tenantConfig?.id,
-                `/app/profile`,
-                bodyToSend,
-                token,
-                logoutUser
-              );
-              if (user) {
-                const newUserInfo = { ...user, image: res.image };
-                setUpdatingPic(false);
-                setUser(newUserInfo);
-              }
-            } catch (err) {
-              setUpdatingPic(false);
-              setErrors(handleError(err as APIError));
-            }
+            handleUserProfileImage(bodyToSend);
           }
         };
       });
     },
     [token]
   );
+
+  const deleteProfilePicture = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const bodyToSend = {
+      imageFile: null,
+    };
+    handleUserProfileImage(bodyToSend);
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -269,11 +292,15 @@ export default function EditProfileForm() {
 
   const saveProfile = async (data: FormData) => {
     setIsUploadingData(true);
+    const { isPublic, ...otherData } = data;
+
     const bodyToSend = {
-      ...data,
+      ...otherData,
       country: country,
+      isPrivate: !isPublic,
       ...(type !== 'tpo' ? { type: type } : {}),
     };
+
     if (contextLoaded && token) {
       try {
         const res: User = await putAuthenticatedRequest(
@@ -299,28 +326,51 @@ export default function EditProfileForm() {
   return (
     <StyledForm>
       <div className="inputContainer">
-        <div {...getRootProps()}>
-          <label htmlFor="upload">
-            <div className={styles.profilePicDiv}>
-              <input {...getInputProps()} />
-              {updatingPic ? (
+        <div className={styles.profilePicDiv}>
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {updatingPic ? (
+              <div className={styles.spinnerContainer}>
                 <div className={styles.spinnerImage}></div>
-              ) : user?.image ? (
-                <div className={styles.profilePic}>
-                  <img
-                    src={getImageUrl('profile', 'thumb', user.image)}
-                    className={styles.profilePicImg}
-                  />
-                  <div className={styles.profilePicOverlay} />
-                  <CameraWhite />
-                </div>
-              ) : (
-                <div className={styles.noProfilePic}>
-                  <Camera />
-                </div>
-              )}
-            </div>
-          </label>
+              </div>
+            ) : user?.image ? (
+              <div className={styles.profilePic}>
+                <img
+                  src={getImageUrl('profile', 'thumb', user.image)}
+                  className={styles.profilePicImg}
+                />
+              </div>
+            ) : (
+              <div className={styles.noProfilePic}>
+                <DefaultUserProfileImage />
+              </div>
+            )}
+          </div>
+          <div className={styles.profilePicDivButtons}>
+            <button
+              {...getRootProps()}
+              className={styles.uploadProfilePicButton}
+              aria-label="upload profile picture"
+              type="button"
+            >
+              <div className={styles.profilePicButtonText}>
+                <input {...getInputProps()} />
+                <Camera />
+                <span>{t('profilePictureButtonLabels.upload')}</span>
+              </div>
+            </button>
+            <button
+              className={styles.deleteProfilePicButton}
+              onClick={(event) => deleteProfilePicture(event)}
+              aria-label="delete profile picture"
+              type="button"
+            >
+              <div className={styles.profilePicButtonText}>
+                <Delete color="#828282" />
+                <span>{t('profilePictureButtonLabels.delete')}</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         {type !== 'tpo' ? (
@@ -352,6 +402,7 @@ export default function EditProfileForm() {
             )}
           />
         ) : null}
+        {/* to be changed to fullname after api changes */}
         <InlineFormDisplayGroup>
           <Controller
             name="firstname"
@@ -369,7 +420,7 @@ export default function EditProfileForm() {
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('fieldLabels.firstName')}
+                label={`${t('fieldLabels.firstName')}*`}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -396,7 +447,7 @@ export default function EditProfileForm() {
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('fieldLabels.lastName')}
+                label={`${t('fieldLabels.lastName')}*`}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -408,12 +459,36 @@ export default function EditProfileForm() {
             )}
           />
         </InlineFormDisplayGroup>
-        <TextField
-          label={t('fieldLabels.email')}
-          name="email"
-          defaultValue={user?.email}
-          disabled
-        ></TextField>
+        <InlineFormDisplayGroup>
+          <TextField
+            label={t('fieldLabels.email')}
+            name="email"
+            defaultValue={user?.email}
+            disabled
+          ></TextField>
+          <Controller
+            name="url"
+            control={control}
+            rules={{
+              pattern: {
+                //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                value:
+                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                message: t('validationErrors.websiteInvalid'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('fieldLabels.website')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.url !== undefined}
+                helperText={errors.url !== undefined && errors.url.message}
+              />
+            )}
+          />
+        </InlineFormDisplayGroup>
         {type && type !== 'individual' && (
           <Controller
             name="name"
@@ -427,9 +502,9 @@ export default function EditProfileForm() {
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('fieldLabels.name', {
+                label={`${t('fieldLabels.name', {
                   type: selectUserType(type, t),
-                })}
+                })}*`}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -439,58 +514,56 @@ export default function EditProfileForm() {
             )}
           />
         )}
-        <div className={styles.formFieldLarge}>
-          <Controller
-            name="address"
-            control={control}
-            rules={{
-              required: t('validationErrors.addressRequired'),
-              pattern: {
-                value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
-                message: t('validationErrors.addressInvalid'),
-              },
-            }}
-            render={({
-              field: { onChange: handleChange, value, onBlur: handleBlur },
-            }) => (
-              <TextField
-                label={t('fieldLabels.address')}
-                onChange={(event) => {
-                  suggestAddress(event.target.value);
-                  handleChange(event);
-                }}
-                onBlur={() => {
-                  setaddressSugggestions([]);
-                  handleBlur();
-                }}
-                value={value}
-                error={errors.address !== undefined}
-                helperText={
-                  errors.address !== undefined && errors.address.message
-                }
-              />
-            )}
-          />
-          {addressSugggestions
-            ? addressSugggestions.length > 0 && (
-                <div className="suggestions-container">
-                  {addressSugggestions.map((suggestion) => {
-                    return (
-                      <div
-                        key={'suggestion' + suggestion_counter++}
-                        onMouseDown={() => {
-                          getAddress(suggestion['text']);
-                        }}
-                        className="suggestion"
-                      >
-                        {suggestion['text']}
-                      </div>
-                    );
-                  })}
-                </div>
-              )
-            : null}
-        </div>
+        <Controller
+          name="address"
+          control={control}
+          rules={{
+            required: t('validationErrors.addressRequired'),
+            pattern: {
+              value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+              message: t('validationErrors.addressInvalid'),
+            },
+          }}
+          render={({
+            field: { onChange: handleChange, value, onBlur: handleBlur },
+          }) => (
+            <TextField
+              label={`${t('fieldLabels.address')}*`}
+              onChange={(event) => {
+                suggestAddress(event.target.value);
+                handleChange(event);
+              }}
+              onBlur={() => {
+                setaddressSugggestions([]);
+                handleBlur();
+              }}
+              value={value}
+              error={errors.address !== undefined}
+              helperText={
+                errors.address !== undefined && errors.address.message
+              }
+            />
+          )}
+        />
+        {addressSugggestions
+          ? addressSugggestions.length > 0 && (
+              <div className="suggestions-container">
+                {addressSugggestions.map((suggestion) => {
+                  return (
+                    <div
+                      key={'suggestion' + suggestion_counter++}
+                      onMouseDown={() => {
+                        getAddress(suggestion['text']);
+                      }}
+                      className="suggestion"
+                    >
+                      {suggestion['text']}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+          : null}
         <InlineFormDisplayGroup>
           <Controller
             name="city"
@@ -504,7 +577,7 @@ export default function EditProfileForm() {
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('fieldLabels.city')}
+                label={`${t('fieldLabels.city')}*`}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -525,7 +598,7 @@ export default function EditProfileForm() {
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('fieldLabels.zipCode')}
+                label={`${t('fieldLabels.zipCode')}*`}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -536,68 +609,14 @@ export default function EditProfileForm() {
               />
             )}
           />
-        </InlineFormDisplayGroup>
-        <AutoCompleteCountry
-          defaultValue={country}
-          onChange={setCountry}
-          label={t('fieldLabels.country')}
-          name="editProfile"
-          countries={allCountries}
-        />
-        <InlineFormDisplayGroup type="other">
-          <div>
-            <label
-              htmlFor="editPrivate"
-              className={styles.mainText}
-              style={{ cursor: 'pointer' }}
-            >
-              {t('fieldLabels.privateAccount')}
-            </label>{' '}
-            <br />
-            {watchIsPrivate && (
-              <label className={styles.isPrivateAccountText}>
-                {t('privateAccountTxt')}
-              </label>
-            )}
-          </div>
-          <Controller
-            name="isPrivate"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <ToggleSwitch
-                checked={value}
-                onChange={onChange}
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                id="editPrivate"
-              />
-            )}
+          <AutoCompleteCountry
+            defaultValue={country}
+            onChange={setCountry}
+            label={t('fieldLabels.country')}
+            name="country"
+            countries={allCountries}
           />
         </InlineFormDisplayGroup>
-
-        <InlineFormDisplayGroup type="other">
-          <label
-            htmlFor="editGetNews"
-            className={styles.mainText}
-            style={{ cursor: 'pointer' }}
-          >
-            {t('fieldLabels.subscribe')}
-          </label>
-
-          <Controller
-            name="getNews"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <ToggleSwitch
-                checked={value}
-                onChange={onChange}
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                id="editGetNews"
-              />
-            )}
-          />
-        </InlineFormDisplayGroup>
-
-        <div className={styles.horizontalLine} />
 
         <Controller
           name="bio"
@@ -622,38 +641,136 @@ export default function EditProfileForm() {
           )}
         />
 
-        <Controller
-          name="url"
-          control={control}
-          rules={{
-            pattern: {
-              //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-              value:
-                /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-              message: t('validationErrors.websiteInvalid'),
-            },
-          }}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <TextField
-              label={t('fieldLabels.website')}
-              onChange={onChange}
-              onBlur={onBlur}
-              value={value}
-              error={errors.url !== undefined}
-              helperText={errors.url !== undefined && errors.url.message}
+        <section className={styles.profileConsentSettings}>
+          <h2>{t('profileConsentSettingsTitle')}</h2>
+          <InlineFormDisplayGroup type="other">
+            <div>
+              <label
+                htmlFor="is-public"
+                className={styles.profileConsentSettingLabel}
+                style={{ cursor: 'pointer' }}
+              >
+                {t('fieldLabels.isPublic')}
+              </label>
+              <br />
+              <p className={styles.fieldExplanation}>
+                {t('publicProfileExplanation')}
+              </p>
+            </div>
+            <Controller
+              name="isPublic"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <NewToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="is-public"
+                />
+              )}
             />
-          )}
-        />
+          </InlineFormDisplayGroup>
+          <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
+            <label
+              htmlFor="get-news"
+              className={styles.profileConsentSettingLabel}
+              style={{ cursor: 'pointer' }}
+            >
+              {t('fieldLabels.subscribe')}
+            </label>
+
+            <Controller
+              name="getNews"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <NewToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="get-news"
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
+          <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
+            <label
+              htmlFor="expose-community"
+              className={styles.profileConsentSettingLabel}
+              style={{ cursor: 'pointer' }}
+            >
+              {t('fieldLabels.exposeCommunity')}
+              <div className={styles.infoIcon}>
+                <CustomTooltip
+                  height={15}
+                  width={14}
+                  color={themeProperties.mediumGrayColor}
+                >
+                  <div className={styles.infoIconPopupContainer}>
+                    {t('leaderboardTooltipExplanation')}
+                  </div>
+                </CustomTooltip>
+              </div>
+            </label>
+
+            <Controller
+              name="exposeCommunity"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <NewToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="expose-community"
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
+          {/* <div className={styles.horizontalLine} />
+          <InlineFormDisplayGroup type="other">
+            <label
+              htmlFor="show-treegame"
+              className={styles.profileConsentSettingLabel}
+              style={{ cursor: 'pointer' }}
+            >
+              {t('fieldLabels.showTreegame')}
+            </label>
+
+            <Controller
+              name="showTreegame"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <NewToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="show-treegame"
+                  disabled={true}
+                />
+              )}
+            />
+          </InlineFormDisplayGroup> */}
+        </section>
       </div>
-      <Button
-        id={'editProfileSaveProfile'}
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit(saveProfile)}
-        disabled={isUploadingData}
-      >
-        {isUploadingData ? <div className={styles.spinner}></div> : t('save')}
-      </Button>
+      <InlineFormDisplayGroup>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            router.push(`/${locale}/t/${user?.slug}`);
+          }}
+          className={styles.viewPublicProfileButton}
+        >
+          {t('viewPublicProfile')}
+        </button>
+        <button
+          onClick={handleSubmit(saveProfile)}
+          disabled={isUploadingData}
+          className={styles.saveProfileButton}
+        >
+          {isUploadingData ? <div className={styles.spinner}></div> : t('save')}
+        </button>
+      </InlineFormDisplayGroup>
 
       {/* snackbar for showing various messages */}
       <Snackbar
