@@ -1,0 +1,56 @@
+@import '../../../../theme/theme';
+
+.tpoProjects {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include xsPhoneView {
+    align-items: center;
+  }
+}
+
+.projectsTitleText {
+  font-family: $primaryFontFamily;
+  text-align: left;
+  font-weight: 700;
+  color: $primaryFontColor;
+  font-size: $fontXLarge;
+}
+
+//  the list of projects
+.listProjects {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  @include xsPhoneView {
+    justify-content: center;
+  }
+}
+
+.singleProject {
+  max-width: 280px;
+  width: 100%;
+}
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+  margin-top: 20px;
+  h2 {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}

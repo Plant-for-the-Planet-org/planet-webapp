@@ -120,8 +120,8 @@ export interface InteractionState {
 }
 
 export interface ViewportProps {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
   latitude: number;
   longitude: number;
   zoom: number;

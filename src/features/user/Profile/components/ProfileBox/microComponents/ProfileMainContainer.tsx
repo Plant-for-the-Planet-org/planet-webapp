@@ -11,7 +11,6 @@ const ProfileMainContainer = styled('div')(() => ({
   boxShadow: '4px 6px 12px 0 rgba(102, 102, 102, 0.03)',
   marginLeft: 50,
   marginRight: 50,
-  marginTop: 80,
   marginBottom: 20,
   padding: 30,
   '.MuiButton-root': {

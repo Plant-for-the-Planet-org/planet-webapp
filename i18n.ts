@@ -27,6 +27,7 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/${locale}/planetcash.json`))
       .default,
     ...(await import(`./public/static/locales/${locale}/profile.json`)).default,
+    ...(await import(`./public/static/locales/${locale}/project.json`)).default,
     ...(await import(`./public/static/locales/${locale}/redeem.json`)).default,
     ...(await import(`./public/static/locales/${locale}/registerTrees.json`))
       .default,
@@ -54,6 +55,7 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/en/planet.json`)).default,
     ...(await import(`./public/static/locales/en/planetcash.json`)).default,
     ...(await import(`./public/static/locales/en/profile.json`)).default,
+    ...(await import(`./public/static/locales/en/project.json`)).default,
     ...(await import(`./public/static/locales/en/redeem.json`)).default,
     ...(await import(`./public/static/locales/en/registerTrees.json`)).default,
     ...(await import(`./public/static/locales/en/tenants.json`)).default,

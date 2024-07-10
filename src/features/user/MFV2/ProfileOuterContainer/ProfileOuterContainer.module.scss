@@ -1,0 +1,12 @@
+@import '../../../../theme/theme';
+
+.mainContainer {
+  margin-top: 80px;
+  padding: 20px 40px 40px;
+
+  @include xsPhoneView {
+    // To accomodate the burger menu button
+    margin-top: 142px;
+    padding: 20px 0;
+  }
+}

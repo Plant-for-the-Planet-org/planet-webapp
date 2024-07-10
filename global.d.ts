@@ -22,6 +22,7 @@ type MessagesPlanet = typeof import('./public/static/locales/en/planet.json');
 type MessagesPlanetcash =
   typeof import('./public/static/locales/en/planetcash.json');
 type MessagesProfile = typeof import('./public/static/locales/en/profile.json');
+type MessagesProject = typeof import('./public/static/locales/en/project.json');
 type MessagesRedeem = typeof import('./public/static/locales/en/redeem.json');
 type MessagesRegisterTrees =
   typeof import('./public/static/locales/en/registerTrees.json');
@@ -46,6 +47,7 @@ type Messages = MessagesBulkCodes &
   MessagesPlanet &
   MessagesPlanetcash &
   MessagesProfile &
+  MessagesProject &
   MessagesRedeem &
   MessagesRegisterTrees &
   MessagesTenants &
