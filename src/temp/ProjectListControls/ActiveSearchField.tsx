@@ -24,7 +24,7 @@ const ActiveSearchField = ({
   };
 
   return (
-    <>
+    <div className={style.searchBarMainContainer}>
       <button className={style.activeSearchIcon}>
         <SearchIcon />
       </button>
@@ -41,7 +41,7 @@ const ActiveSearchField = ({
       <button onClick={resetSearchTab} className={style.crossIcon}>
         <CrossIcon width={18} />
       </button>
-    </>
+    </div>
   );
 };
 

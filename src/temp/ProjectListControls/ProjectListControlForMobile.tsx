@@ -26,12 +26,16 @@ const ProjectListControlForMobile = ({
     <>
       <div className={style.searchTabForMobile}>
         {isSearching ? (
-          <div className={style.searchBarMainContainer}>
+          <>
             <ActiveSearchField
               setIsFilterOpen={setIsFilterOpen}
               setIsSearching={setIsSearching}
             />
-          </div>
+            <ViewModeTabs
+              setIsFilterOpen={setIsFilterOpen}
+              isSearching={isSearching}
+            />
+          </>
         ) : (
           <>
             <ProjectListTabForMobile
@@ -48,11 +52,14 @@ const ProjectListControlForMobile = ({
               setIsSearching={setIsSearching}
               isSearching={isSearching}
             />
-            <ViewModeTabs setIsFilterOpen={setIsFilterOpen} />
+            <ViewModeTabs
+              setIsFilterOpen={setIsFilterOpen}
+              isSearching={isSearching}
+            />
           </>
         )}
       </div>
-      {isFilterOpen && (
+      {isFilterOpen && !isSearching && (
         <ClassificationDropDown
           selectedClassification={selectedClassification}
           setSelectedClassification={setSelectedClassification}

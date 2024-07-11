@@ -62,7 +62,7 @@ const ProjectListTabForMobile = ({
             }
           />
         }
-        label={t.rich('topProjects', {
+        label={t.rich('top', {
           noOfProjects: topProjectCount,
           projectCountContainer: (chunks) => (
             <span className={style.projectCount}>{chunks}</span>

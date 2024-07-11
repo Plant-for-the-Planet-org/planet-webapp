@@ -3,17 +3,19 @@ import { useState, ReactNode } from 'react';
 import style from './Search.module.scss';
 import ListIcon from '../icons/ListIcon';
 import LocationIcon from '../icons/LocationIcon';
+import { SetState } from '../../features/common/types/common';
 
 interface ViewModeTabsProps {
-  setIsFilterOpen: (value: boolean) => void;
+  setIsFilterOpen: SetState<boolean>;
+  isSearching: boolean;
 }
 
 interface TabItemProps {
   selectedTab: 'list' | 'map';
   icon: ReactNode;
-  label: 'list' | 'map';
+  label: 'list' | 'map' | undefined;
 }
-const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
+const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
   const { dark, light } = themeProperties;
   const [selectedMode, setSelectedMode] = useState<'list' | 'map'>('list');
   const selectTab = (tab: 'list' | 'map') => {
@@ -38,7 +40,11 @@ const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
   };
 
   return (
-    <div className={style.tabContainer}>
+    <div
+      className={`${
+        isSearching ? style.tabContainerSecondary : style.tabContainer
+      }`}
+    >
       <TabItem
         selectedTab="list"
         icon={
@@ -49,7 +55,7 @@ const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
             }
           />
         }
-        label={'list'}
+        label={isSearching ? undefined : 'list'}
       />
       <TabItem
         selectedTab="map"
@@ -62,7 +68,7 @@ const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
             }
           />
         }
-        label={'map'}
+        label={isSearching ? undefined : 'map'}
       />
     </div>
   );
