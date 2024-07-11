@@ -1,5 +1,18 @@
 @import '../../theme/theme';
 
+.filterContainer {
+  position: relative;
+  .filterIndicator {
+    position: absolute;
+    left: 28px;
+    z-index: 1;
+    background-color: var(--primary-color-new);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+}
+
 .filterListContainer {
   max-width: 130px;
   background: $backgroundColor;

@@ -3,8 +3,10 @@ import { Button } from '@mui/material';
 import style from './Filter.module.scss';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { SetState } from '../../features/common/types/common';
 
 export type Classification =
+  | 'allProjects'
   | 'large-scale-planting'
   | 'agroforestry'
   | 'natural-regeneration'
@@ -13,40 +15,44 @@ export type Classification =
   | 'other-planting';
 
 interface FilterProps {
-  filterApplied: Classification | undefined;
-  setFilterApplied: (newValue: Classification | undefined) => void;
+  selectedFilter: Classification[];
   availableFilters: Classification[];
+  setSelectedFilter: SetState<Classification[]>;
 }
 
 export const FilterDropDown = ({
-  filterApplied,
-  setFilterApplied,
+  selectedFilter,
   availableFilters,
+  setSelectedFilter,
 }: FilterProps) => {
   const tAllProjects = useTranslations('AllProjects');
 
-  const handleFilterSelection = (
-    filterItem: Classification | undefined
-  ): void => {
-    setFilterApplied(filterItem);
+  const handleFilterSelection = (filterItem: Classification): void => {
+    if (filterItem === 'allProjects') {
+      setSelectedFilter([]);
+    } else {
+      const newFilter = selectedFilter.includes(filterItem)
+        ? selectedFilter
+        : [...selectedFilter, filterItem];
+      setSelectedFilter(newFilter);
+    }
   };
-
   return (
     <>
       {availableFilters.length > 0 ? (
         <div className={style.filterListContainer}>
           <button
             className={style.filterButton}
-            onClick={() => handleFilterSelection(undefined)}
+            onClick={() => handleFilterSelection('allProjects')}
           >
             <div
               className={
-                filterApplied === undefined
+                selectedFilter === undefined
                   ? style.filterSelected
                   : style.projectName
               }
             >
-              {tAllProjects('classificationTypes.all')}
+              {tAllProjects('classificationTypes.allProjects')}
             </div>
             <hr className={style.hrLine} />
           </button>
@@ -60,7 +66,7 @@ export const FilterDropDown = ({
                 >
                   <div
                     className={
-                      filterApplied === filterItem
+                      selectedFilter.includes(filterItem)
                         ? style.filterSelected
                         : style.projectName
                     }
@@ -82,23 +88,23 @@ export const FilterDropDown = ({
   );
 };
 
-const Filter = ({
-  filterApplied,
-  setFilterApplied,
-  availableFilters,
-}: FilterProps) => {
+const Filter = ({ availableFilters }: FilterProps) => {
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<Classification[]>([]);
+  const isFilterApplied = selectedFilter.length > 0;
+
   return (
-    <div>
+    <div className={style.filterContainer}>
+      {isFilterApplied && <div className={style.filterIndicator} />}
       <Button
         onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
         startIcon={<FilterIcon width={'16px'} />}
       />
       {isFilterDropdownOpen && (
         <FilterDropDown
-          filterApplied={filterApplied}
-          setFilterApplied={setFilterApplied}
           availableFilters={availableFilters}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
         />
       )}
     </div>

@@ -8,31 +8,17 @@ const meta: Meta<typeof Filter> = {
 export default meta;
 type Story = StoryObj<typeof Filter>;
 
-export interface FilterState {
-  availableFilters: Classification[];
-  filterApplied: Classification | undefined;
-}
-
-const filterState: FilterState = {
-  availableFilters: [
-    'large-scale-planting',
-    'agroforestry',
-    'natural-regeneration',
-    'managed-regeneration',
-    'urban-planting',
-    'other-planting',
-  ],
-  filterApplied: 'large-scale-planting',
-};
-
-const setFilterApplied = (value: Classification | undefined) => {
-  window.alert(`${value} is selected`);
-};
+const availableFilters: Classification[] = [
+  'large-scale-planting',
+  'agroforestry',
+  'natural-regeneration',
+  'managed-regeneration',
+  'urban-planting',
+  'other-planting',
+];
 
 export const Default: Story = {
   args: {
-    filterApplied: filterState.filterApplied,
-    setFilterApplied: setFilterApplied,
-    availableFilters: filterState.availableFilters,
+    availableFilters: availableFilters,
   },
 };
