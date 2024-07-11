@@ -1,4 +1,18 @@
 @import '../../theme/theme';
+
+.filterContainer {
+  position: relative;
+  .filterIndicator {
+    position: absolute;
+    left: 10px;
+    top: -3px;
+    z-index: 1;
+    background-color: var(--primary-color-new);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+}
 .searchBarMainContainer {
   background-color: $light;
   height: 47px;
@@ -41,11 +55,6 @@
   margin-top: 5px;
   cursor: pointer;
   padding-right: 15px;
-}
-
-.filterContainer {
-  margin-top: 5px;
-  margin-left: 205px;
 }
 
 .searchTabForMobile {

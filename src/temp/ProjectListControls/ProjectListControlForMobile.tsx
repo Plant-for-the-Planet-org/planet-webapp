@@ -3,22 +3,25 @@ import style from './Search.module.scss';
 import ProjectListTabForMobile from './ProjectListTabForMobile';
 import ProjectSearchAndFilter from './ProjectSearchAndFilter';
 import ViewModeTabs from './ViewModeTabs';
-import { FilterDropDown } from './Filter';
+import ClassificationDropDown from './ClassificationDropDown';
 import { ProjectListControlsProps } from '.';
 import ActiveSearchField from './ActiveSearchField';
+import { Classification } from '.';
 
 const ProjectListControlForMobile = ({
-  filterApplied,
-  setFilterApplied,
   availableFilters,
   projectCount,
   topProjectCount,
 }: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedClassification, setSelectedClassification] = useState<
+    Classification[]
+  >([]);
   const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
     'topProjects'
   );
+
   return (
     <>
       <div className={style.searchTabForMobile}>
@@ -39,6 +42,7 @@ const ProjectListControlForMobile = ({
               setIsFilterOpen={setIsFilterOpen}
             />
             <ProjectSearchAndFilter
+              selectedClassification={selectedClassification}
               setIsFilterOpen={setIsFilterOpen}
               isFilterOpen={isFilterOpen}
               setIsSearching={setIsSearching}
@@ -49,9 +53,9 @@ const ProjectListControlForMobile = ({
         )}
       </div>
       {isFilterOpen && (
-        <FilterDropDown
-          filterApplied={filterApplied}
-          setFilterApplied={setFilterApplied}
+        <ClassificationDropDown
+          selectedClassification={selectedClassification}
+          setSelectedClassification={setSelectedClassification}
           availableFilters={availableFilters}
         />
       )}

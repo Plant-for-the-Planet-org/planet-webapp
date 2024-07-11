@@ -1,19 +1,7 @@
 @import '../../theme/theme';
 
-.filterContainer {
-  position: relative;
-  .filterIndicator {
-    position: absolute;
-    left: 28px;
-    z-index: 1;
-    background-color: var(--primary-color-new);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-}
-
-.filterListContainer {
+.classificationListContainer {
+  min-width: 130px;
   max-width: 130px;
   background: $backgroundColor;
   padding: 16px;
@@ -21,13 +9,12 @@
   border-radius: 12px;
 }
 
-.projectName {
+.classificationUnselected {
   font-size: $fontXXSmall;
-  text-transform: capitalize;
   line-height: normal;
 }
 
-.filterSelected {
+.classificationSelected {
   font-weight: 700;
   font-size: $fontXXSmall;
 }

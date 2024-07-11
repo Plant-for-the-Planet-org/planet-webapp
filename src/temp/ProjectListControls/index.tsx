@@ -8,8 +8,16 @@ import { useTranslations } from 'next-intl';
 import CustomMuiTab from './CustomMuiTab';
 import themeProperties from '../../theme/themeProperties';
 import ActiveSearchField from './ActiveSearchField';
-import { FilterDropDown } from './Filter';
-import { Classification } from './Filter';
+import ClassificationDropDown from './ClassificationDropDown';
+
+export type Classification =
+  | 'allProjects'
+  | 'large-scale-planting'
+  | 'agroforestry'
+  | 'natural-regeneration'
+  | 'managed-regeneration'
+  | 'urban-planting'
+  | 'other-planting';
 
 export interface ProjectListControlsProps {
   filterApplied: Classification | undefined;
@@ -20,8 +28,6 @@ export interface ProjectListControlsProps {
 }
 
 const ProjectListControls = ({
-  filterApplied,
-  setFilterApplied,
   availableFilters,
   projectCount,
   topProjectCount,
@@ -30,8 +36,11 @@ const ProjectListControls = ({
   const [isSearching, setIsSearching] = useState(false);
   const [value, setValue] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedClassification, setSelectedClassification] = useState<
+    Classification[]
+  >([]);
   const { primaryColorNew, dark } = themeProperties;
-
+  const isFilterApplied = selectedClassification.length > 0;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     setIsFilterOpen(false);
@@ -93,22 +102,25 @@ const ProjectListControls = ({
               >
                 <SearchIcon />
               </button>
-              <button
-                className={style.icon}
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-              >
-                <FilterIcon width={'16px'} />
-              </button>
+              <div className={style.filterContainer}>
+                {isFilterApplied && <div className={style.filterIndicator} />}
+                <button
+                  className={style.icon}
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                >
+                  <FilterIcon width={'16px'} />
+                </button>
+              </div>
             </div>
           </div>
         )}
       </div>
       <div className={style.filterDropDownContainer}>
         {isFilterOpen && !isSearching && (
-          <FilterDropDown
-            setFilterApplied={setFilterApplied}
+          <ClassificationDropDown
+            selectedClassification={selectedClassification}
+            setSelectedClassification={setSelectedClassification}
             availableFilters={availableFilters}
-            filterApplied={filterApplied}
           />
         )}
       </div>
