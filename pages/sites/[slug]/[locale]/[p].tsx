@@ -155,9 +155,21 @@ export default function Donate({
       !router.query.ploc &&
       project
     ) {
-      router.push(
-        `/${locale}/${project.slug}?site=${geoJson.features[0].properties.id}`
-      );
+      const currentUrl = new URL(window.location.href);
+      const searchParams = currentUrl.searchParams;
+
+      // Delete the existing site parameter from the displayed URL (if it exists). Unlikely to happen as router.query.site is not set
+      searchParams.delete('site');
+
+      // Add the new 'site' parameter
+      searchParams.append('site', geoJson.features[0].properties.id);
+
+      const newSearch = searchParams.toString();
+      const newPath = `/${locale}/${project.slug}${
+        newSearch.length > 0 ? `?${newSearch}` : ''
+      }`;
+
+      router.push(newPath);
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 

@@ -18,7 +18,6 @@ import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
-import styles from '../../../../src/features/user/ManageProjects/StepForm.module.scss';
 import {
   ManageProjectsProps,
   ProfileProjectTrees,
@@ -358,15 +357,24 @@ export default function ManageProjects({
         projectGUID ? (
           t('onlyEnglish')
         ) : (
-          <div className={styles.addProjectTitle}>
+          <div>
             <div>{t('addProjetDescription')}</div>
-            <div className={styles.editProjectInfo}>
-              <div className={styles.note}>{t('important')}</div>
-              <div>{t('englishOnly')}</div>
+            <div>
+              {t.rich('createProjectsEnglishOnly', {
+                noteLabel: (chunk) => <strong>{chunk}</strong>,
+              })}
             </div>
             <div>
-              {' '}
-              {t('addProjetContact')} <span>{t('supportLink')}</span>{' '}
+              {t.rich('contactSupportEmail', {
+                supportLink: (chunk) => (
+                  <a
+                    className="planet-links"
+                    href="mailto:support@plant-for-the-planet.org"
+                  >
+                    {chunk}
+                  </a>
+                ),
+              })}
             </div>
           </div>
         )

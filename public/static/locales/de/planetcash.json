@@ -16,7 +16,7 @@
     "labelCreditLimit": "Grenze",
     "deactivateAccountButton": "Deaktivieren",
     "activateAccountButton": "Aktivieren",
-    "accountInactiveHelpText": "Dieses Konto ist inaktiv und kann nicht verwendet werden, um Beiträge zu leisten. Um dieses Konto zu aktivieren, wende dich bitte an support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "Dieses Konto ist inaktiv und kann nicht verwendet werden, um Beiträge zu leisten. Um dieses Konto zu aktivieren, wende dich bitte an <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "Du scheinst noch kein PlanetCash-Konto angelegt zu haben.",
     "createPlanetCashButton": "Planet Cash Konto erstellen",
     "accountQuotaReachedText": "Du kannst keine weiteren Konten erstellen, da dein Kontokontingent ausgeschöpft haben.",
@@ -24,7 +24,7 @@
     "labelCountry": "Land",
     "planetCashTerms1": "Indem ich auf \"PlanetCash-Konto erstellen\" klicke, erkläre ich mich mit den Allgemeinen Geschäftsbedingungen von Plant-for-the-Planet und PlanetCash einverstanden.",
     "planetCashTerms2": "Ich verstehe, dass PlanetCash-Spenden nicht zurückerstattet werden können, und dass nicht zugewiesene Zahlungen nach sechs Monaten automatisch Projekten auf der Plattform zugewiesen werden.",
-    "planetCashTerms3": "Spenden auf das PlanetCash-Konto aus persönlichen Gründen sind in dem Land, das du in diesem Schritt auswählst, in der Regel steuerlich absetzbar. Die kommerzielle Nutzung von PlanetCash ist möglicherweise nicht steuerlich absetzbar. Wenn du Fragen hast, wende dich bitte an support@plant-for-the-planet.org oder an deinen Steuerberater.",
+    "planetCashTerms3": "Spenden auf das PlanetCash-Konto aus persönlichen Gründen sind in dem Land, das du in diesem Schritt auswählst, in der Regel steuerlich absetzbar. Die kommerzielle Nutzung von PlanetCash ist möglicherweise nicht steuerlich absetzbar. Wenn du Fragen hast, wende dich bitte an <supportLink>support@plant-for-the-planet.org</supportLink>oder an deinen Steuerberater.",
     "accountError": {
       "active_account_exists": "Es existiert bereits ein aktives Konto. Deaktiviere dieses Konto, bevor du ein anderes Konto aktivierst.",
       "duplicate_account": "Du hast bereits ein Konto für {country} erstellt",
