@@ -19,10 +19,13 @@
   "exclude": ["node_modules"],
   "include": [
     "next-env.d.ts",
+    "global.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "./src/**/*",
     "tenant.config.ts",
-    "public/assets"
+    "public/assets",
+    "folderCrawler.js",
+    "modifyJson.js"
   ]
 }

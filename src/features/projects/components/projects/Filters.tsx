@@ -1,14 +1,16 @@
 import React, { ReactElement, useEffect } from 'react';
 import styles from '../../styles/Filters.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 
 export default function Filters(): ReactElement {
-  const { t, ready } = useTranslation(['donate']);
+  const t = useTranslations('Donate');
+  const { tenantConfig } = useTenant();
   const router = useRouter();
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
@@ -43,7 +45,7 @@ export default function Filters(): ReactElement {
       setFilteredProjects(filteredProjects);
     }
     if (projects) {
-      if (process.env.TENANT === 'salesforce') {
+      if (tenantConfig?.config.slug === 'salesforce') {
         filterProjects();
       } else {
         setFilteredProjects(projects);
@@ -71,7 +73,7 @@ export default function Filters(): ReactElement {
       const uniqueFilters = [...new Set(filters)];
       return uniqueFilters;
     }
-    if (projects && process.env.TENANT === 'salesforce') {
+    if (projects && tenantConfig?.config.slug === 'salesforce') {
       const filters = getFilters().filter((filter) => filter);
       setFilters(filters);
     }
@@ -92,7 +94,18 @@ export default function Filters(): ReactElement {
     }
   }, [router.query.filter]);
 
-  return process.env.TENANT === 'salesforce' && ready ? (
+  useEffect(() => {
+    if (router.query.filter && !Array.isArray(router.query.filter)) {
+      if (!(router.query.filter in type)) return;
+      const tempType = { ...type };
+      for (const key in tempType) {
+        tempType[key] = key === router.query.filter;
+      }
+      setType(tempType);
+    }
+  }, [router.query.filter]);
+
+  return tenantConfig?.config.slug === 'salesforce' ? (
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
         <div
@@ -101,7 +114,7 @@ export default function Filters(): ReactElement {
             filtersOpen ? styles.selected : ''
           }`}
         >
-          <div className={styles.filterButtonText}>{t('donate:filters')}</div>
+          <div className={styles.filterButtonText}>{t('filters')}</div>
           <div
             className={`${styles.dropdownIcon} ${
               filtersOpen ? styles.selected : ''
@@ -143,7 +156,7 @@ export default function Filters(): ReactElement {
               </div>
             </div>
           </FormGroup> */}
-            <div className={styles.filterTitle}>{t('donate:projectType')}</div>
+            <div className={styles.filterTitle}>{t('projectType')}</div>
             <FormGroup style={{ width: '100%' }}>
               {filters &&
                 filters.map((filter, index: number) => {
@@ -157,7 +170,7 @@ export default function Filters(): ReactElement {
                             name={filter}
                           />
                         }
-                        label={t(`donate:${filter}`)}
+                        label={t(filter)}
                       />
                       {/* <div className={styles.filterInfo}>
                 <InfoIcon />

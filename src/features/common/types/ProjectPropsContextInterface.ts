@@ -17,6 +17,7 @@ import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl/src/components/static-map';
 import { FlyToInterpolator } from 'react-map-gl';
 import { PlantLocation, SamplePlantLocation } from './plantLocation';
+import { Contributions } from './myForest';
 
 export type ExploreOption =
   | 'Deforestation'
@@ -170,6 +171,7 @@ interface ProjectPropsContextInterface {
   setPurpose: SetState<ProjectPurposeTypes>;
   plantLocationsLoaded: boolean;
   setPlantLocationsLoaded: SetState<boolean>;
+ 
 }
 
 export default ProjectPropsContextInterface;

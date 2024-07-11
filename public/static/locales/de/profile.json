@@ -1,0 +1,139 @@
+{
+  "Profile": {
+    "myProfile": {
+      "memberSince": "Mitglied seit {date}",
+      "userDescription": "{bio}"
+    },
+    "feature": {
+      "redeem": "Einlösen",
+      "registerTree": "Baum registrieren",
+      "share": "Teilen",
+      "allDonations": "Alle Spenden",
+      "supportUserTextIndividual": "Unterstütze {username} mit einer Spende",
+      "supportUserTextGeneric": "Unterstütze sie mit einer Spende",
+      "website": "Meine Website"
+    },
+    "myPublicProfile": {
+      "support": "Support",
+      "link": "Link"
+    },
+    "myForestMap": {
+      "plantedTree": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "savedArea": "{area} m²",
+      "treesPlanted": "Gepflanzte Bäume",
+      "restored": "Renaturiert",
+      "registered": "Registriert",
+      "conservation": "Naturschutz",
+      "projects": "Projekte",
+      "countries": "Länder",
+      "donations": "Spenden",
+      "area": "{areaConserved}  m²",
+      "zoomIn": "Für weitere Details heranzoomen",
+      "totalDonation": "{count, plural, =1 {# Spende} other {# Spenden}} ",
+      "totalProject": "für {count, plural, =1 {# Projeckt} other {# Projeckte}}",
+      "tpoName": "Von {tpo}"
+    },
+    "myTreeCounter": {
+      "treesPlanted": "Bäume gepflanzt",
+      "editTarget": "Ziel bearbeiten"
+    },
+    "myContributions": {
+      "titlePrivate": "Meine Beiträge",
+      "titlePublic": "Beiträge von {name}",
+      "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete renaturiert",
+      "treeRegistered": "{count, plural, =1 {# Baum registriert} other {# Bäume registriert}}",
+      "receivedFrom": "Empfangen von {name}",
+      "loadMoreContribution": "Lade weitere Beiträge",
+      "loadingContribution": "Lade Beiträge....",
+      "donate": "Spenden",
+      "donateAgain": "Erneut spenden",
+      "conservedSmall": "geschützt",
+      "restoredSmall": "renaturiert",
+      "areaType": "{areaConserved} m² {type}",
+      "areaConserved": "Geschütze Fläche",
+      "unused": "v2 Übersetzungen unten",
+      "treesContributed": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "areaContributed": "{projectPurpose, select, trees {{count}m² renaturiert} other {{count}m² geschützt}}",
+      "giftReceivedInfo": "Geschenk von {name}",
+      "giftGivenInfo": "Geschenk an {name}",
+      "anonymousUser": "ein anonymer Nutzer",
+      "contributionCountOverflow": "+{additionalCount, plural, =1 {# Spende} other {# Spenden}}",
+      "treesRegisteredHeadline": "{count, plural, =1 {# Baum} other {# Bäume}}",
+      "registrationInfo": "Registriert • {date}",
+      "registrationInfoWithCountry": "Registriert • {countryName} • {date}"
+    },
+    "donatePopup": {
+      "totalContribution": "+{count, plural, =1 {# Spende} other {# Spenden}}",
+      "projectName": "{name}",
+      "classification": "{classification}"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Schließen Sie sich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen #StopTalkingStartPlanting #TrillionTrees",
+      "shareVia": "Teilen über",
+      "copyLink": "Link kopieren",
+      "textToShareLinkedin": "Schließe dich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen"
+    },
+    "progressBar": {
+      "treePlanted": "{count, plural, =1 {# Baum gepflanzt} other {# Bäume gepflanzt}}",
+      "treePlantedAgainstTarget": "{count, number} von {total, plural, =1 {# Baum} other {# Bäume}} gepflanzt",
+      "restoredArea": "{unit, number} m² renaturiert",
+      "restoredAreaAgainstTarget": "{count, number} von {unit, number} m² renaturiert",
+      "conservedArea": "{unit, number} m² geschützt",
+      "conservedAreaAgainstTarget": "{count, number} von {unit, number} m² geschützt",
+      "totalGiftFromCommunity": "{quantity, number} von deiner Community",
+      "editTarget": "Ziel bearbeiten",
+      "setTarget": "Ziel setzen",
+      "plantedTreesTarget": "Ziel gepflanzte Bäume",
+      "areaConservedTarget": "Ziel geschützte Fläche",
+      "areaRestoredTarget": "Ziel renaturierte Fläche",
+      "save": "Speichern",
+      "setTargets": "Ziele setzen",
+      "emptyProgressInformation": "Ziele für gepflanzte Bäume, geschützte Flächen und renaturierte Flächen setzen",
+      "enterYourTarget": "Gib das Ziel ein"
+    },
+    "mapStats": {
+      "countryStats": "{count, plural, =1 {# Land} other {# Länder}} ",
+      "projectStats": "{count, plural, =1 {# Projekt} other {# Projekte}} "
+    },
+    "communityContributions": {
+      "title": "Beiträge der Community",
+      "tooltipText": "Beiträge der Community sind alle Spenden für Bäume, Renaturierung oder Schutz, die dir gewidmet sind, z. B. durch Spenden über dein Profil",
+      "tooltipTextPublic": "Beiträge der Community sind alle Spenden für Bäume, Renaturierung oder Schutz, die diesem Profil gewidmet sind",
+      "mostRecentTabLabel": "Neueste",
+      "mostTreesTabLabel": "Meiste Bäume",
+      "restorationPurpose": "renaturiert",
+      "conservationPurpose": "geschützt",
+      "treesPurpose": "Bäume",
+      "noContributionPrivateProfileText": "Huch! Noch keine Beiträge zu sehen",
+      "noContributionPublicProfileText": "Unterstützen Sie {name} mit einer Spende"
+    },
+    "unitType": {
+      "m2": "m²"
+    },
+    "infoAndCtaContainer": {
+      "sdgCardsSectionHeading": "Wiederherstellung von Ökosystemen und Bekämpfung der Klimakrise für die SDGs",
+      "pfpDonorCircleMember": "Plant-for-the-Planet Donor Circle-Mitglied",
+      "publicProfileActions": {
+        "becomeAMember": "Mitglied werden",
+        "youthEmpowermentTitle": "Jugend Empowerment",
+        "youthEmpowermentSubtext": "Kinder & Jugendliche aktiv gegen die Klimakrise.",
+        "restorationToolsTitle": "Tools für die Renaturierung",
+        "restorationToolsSubtext": "Finanzierung, Wiederherstellung, Überwachung und Erhaltung.",
+        "restorationAdviceTitle": "Beratung zur Restaurierung",
+        "restorationAdviceSubtext": "& Forschung",
+        "restorationAndConservationTitle": "Waldwiederherstellung & Naturschutz",
+        "restorationAndConservationSubtext": "in Mexiko, Ghana und Spanien"
+      },
+      "sdgCardAlternativeText": {
+        "qualityEducation": "Hochwertige Bildung",
+        "economicGrowth": "Menschenwürdige Arbeit und Wirtschaftswachstum",
+        "industryInfrastructureAndInnovation": "Industrie, Innovation und Infrastruktur",
+        "reducedInequalities": "Weniger Ungleichheiten",
+        "climateAction": "Maßnahmen zum Klimaschutz",
+        "lifeOnLand": "Leben an Land",
+        "partnership": "Partnerschaften zur Erreichung der Ziele"
+      }
+    }
+  }
+}

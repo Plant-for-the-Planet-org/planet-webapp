@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
@@ -22,6 +22,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -51,6 +52,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
+  const { tenantConfig } = useTenant();
   const { token, logoutUser } = useUserProps();
   const [option, setoption] = React.useState<string>();
   const [showCalender, setshowCalender] = React.useState(false);
@@ -59,7 +61,7 @@ export const PauseModal = ({
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -87,6 +89,7 @@ export const PauseModal = ({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/subscriptions/${record.id}?scope=pause`,
         bodyToSend,
         token,
@@ -123,7 +126,7 @@ export const PauseModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('me:pauseDonationConfirmation')}</h4>
+              <h4>{t('pauseDonationConfirmation')}</h4>
               <button
                 onClick={handlePauseModalClose}
                 onKeyPress={handlePauseModalClose}
@@ -135,7 +138,7 @@ export const PauseModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:pauseDonationDescription')}</p>
+              <p>{t('pauseDonationDescription')}</p>
             </div>
           </div>
           <FormControl variant="standard" component="fieldset">
@@ -163,13 +166,13 @@ export const PauseModal = ({
                 key={2}
                 value={'pauseUntilResume'}
                 control={<GreenRadio />}
-                label={t('me:pauseUntilResume')}
+                label={t('pauseUntilResume')}
               />
               <FormControlLabel
                 key={3}
                 value={'pauseUntilDate'}
                 control={<GreenRadio />}
-                label={t('me:pauseUntilDate')}
+                label={t('pauseUntilDate')}
               />
             </RadioGroup>
             {showCalender ? (

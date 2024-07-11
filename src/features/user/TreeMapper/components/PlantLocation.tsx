@@ -1,7 +1,7 @@
 import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
@@ -33,7 +33,8 @@ function PlantLocation({
   selectedLocation,
   setselectedLocation,
 }: Props) {
-  const { t, i18n } = useTranslation('treemapper');
+  const t = useTranslations('Treemapper');
+  const locale = useLocale();
   const router = useRouter();
   let treeCount = 0;
   if ((location as PlantLocationMulti)?.plantedSpecies?.length !== 0) {
@@ -89,7 +90,7 @@ function PlantLocation({
               (location as PlantLocationMulti).type === 'multi'
                 ? '• ' +
                   localizedAbbreviatedNumber(
-                    i18n.language,
+                    locale,
                     Number(plantationArea),
                     2
                   ) +
@@ -108,7 +109,7 @@ function PlantLocation({
             {(location as PlantLocationMulti).type === 'multi' && treeCount
               ? `${treeCount}`
               : `1`}
-            <TreeIcon />
+            <TreeIcon width={'19px'} height={'19.25px'} />
           </div>
           <div className={styles.mode}>
             {t((location as PlantLocationBase).captureStatus)}

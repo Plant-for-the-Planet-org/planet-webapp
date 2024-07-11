@@ -2,7 +2,7 @@
 import { useState, ReactElement, useEffect, ReactNode } from 'react';
 import { TextField } from '@mui/material';
 import React from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
 import { CountryType, ExtendedCountryCode } from '../types/country';
 import { allCountries } from '../../../utils/constants/countries';
@@ -21,7 +21,7 @@ function countryToFlag(isoCode: string) {
 }
 
 interface CountrySelectProps {
-  label: ReactNode;
+  label?: ReactNode;
   name: string | undefined;
   defaultValue: string | undefined; //This will be a country code e.g. DE, IN, US
   onChange: SetState<ExtendedCountryCode | ''>;
@@ -35,7 +35,7 @@ export default function CountrySelect({
   onChange,
   countries = allCountries,
 }: CountrySelectProps): ReactElement | null {
-  const { t, ready } = useTranslation(['country']);
+  const t = useTranslations('Country');
 
   // This value is an object with keys - code, label and phone
   // This has to be passed to the component as default value
@@ -66,8 +66,8 @@ export default function CountrySelect({
 
   useEffect(() => {
     countries.sort((a, b) => {
-      const nameA = t(`country:${a.code.toLowerCase()}`);
-      const nameB = t(`country:${b.code.toLowerCase()}`);
+      const nameA = t(a.code.toLowerCase());
+      const nameB = t(b.code.toLowerCase());
 
       //Automatic Selection option is always at first position (if present)
       if (a.code === 'auto') return -1;
@@ -81,9 +81,9 @@ export default function CountrySelect({
       }
       return 0;
     });
-  }, [ready]);
+  }, []);
 
-  return selectedCountry && ready ? (
+  return selectedCountry ? (
     <MuiAutoComplete
       id="country-select"
       options={countries}
@@ -91,8 +91,7 @@ export default function CountrySelect({
       getOptionLabel={(option) => {
         const { code: countryCode, currency } = option as CountryType;
         const label =
-          (currency ? `(${currency}) ` : '') +
-          t(`country:${countryCode.toLowerCase()}`);
+          (currency ? `(${currency}) ` : '') + t(countryCode.toLowerCase());
         return label;
       }}
       isOptionEqualToValue={(option, value) =>
@@ -102,7 +101,7 @@ export default function CountrySelect({
         const { code: countryCode, currency } = option as CountryType;
         const displayedOption =
           (currency ? `(${currency}) ` : '') +
-          t(`country:${countryCode.toLowerCase()}`) +
+          t(countryCode.toLowerCase()) +
           (!(name == 'editProfile' || countryCode === 'auto')
             ? ` ${countryCode}`
             : '');

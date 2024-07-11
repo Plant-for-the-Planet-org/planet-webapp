@@ -1,9 +1,22 @@
 {
-  "congratulations": "Congratulazioni!",
-  "addToMyTrees": "Aggiungi ai miei alberi",
-  "validateCode": "Convalidare il codice",
-  "enterRedeemCode": "Si prega di inserire un codice per riscattare",
-  "validating": "Convalida",
-  "invalidType": "Tipo non valido, si prega di controllare di nuovo il link",
-  "redeemDescription": "Riscatta il tuo buono per l'albero e altri codici."
+  "Redeem": {
+    "myPlantedTreesByOrg": "Il mio albero {formattedNumber} sarà piantato da {tpoName}",
+    "myPlantedTreesByOrg_plural": "I miei alberi {formattedNumber} saranno piantati da {tpoName}",
+    "congratulations": "Congratulazioni!",
+    "addToMyTrees": "Aggiungi ai miei alberi",
+    "validateCode": "Convalidare il codice",
+    "enterRedeemCode": "Si prega di inserire un codice per riscattare",
+    "validating": "Convalida",
+    "invalidType": "Tipo non valido, si prega di controllare di nuovo il link",
+    "redeeming": "Riscatto:",
+    "invalidCode": "Questo codice non è valido.",
+    "selfGiftMessage": "Non è possibile riscattare un regalo/codice emesso da voi stessi",
+    "alreadyRedeemed": "Il codice è già stato riscattato",
+    "redeemCode": "Codice di riscatto",
+    "redeemingCode": "Codice di riscatto...",
+    "redeem": "Riscatto",
+    "redeemDescription": "Riscatta il tuo buono per l'albero e altri codici.",
+    "successfullyRedeemed": "Riscattato con successo",
+    "redeemAnotherCode": "Riscattare un altro codice"
+  }
 }

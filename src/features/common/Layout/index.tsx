@@ -5,7 +5,7 @@ import CookiePolicy from './CookiePolicy';
 import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
-import RedeemPopup from './RedeemPopup';
+// import RedeemPopup from './RedeemPopup';
 import { ParamsContext } from './QueryParamsContext';
 
 const Layout: FC = ({ children }) => {
@@ -27,7 +27,7 @@ const Layout: FC = ({ children }) => {
             {!isEmbed && (
               <>
                 <CookiePolicy />
-                <RedeemPopup />
+                {/* <RedeemPopup /> */}
               </>
             )}
 

@@ -4,13 +4,10 @@ import { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { PaymentOptions } from '../BulkCodesTypes';
 import { ProjectOption } from '../../../common/types/project';
-// import i18next from '../../../../../i18n';
-
+import { useTenant } from '../../../common/Layout/TenantContext';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError, APIError } from '@planet-sdk/common';
-
-// const { useTranslation } = i18next;
 
 interface ProjectSelectorProps {
   projectList: ProjectOption[];
@@ -27,9 +24,8 @@ const ProjectSelector = ({
   active = true,
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
-  // const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-
+  const { tenantConfig } = useTenant();
   const defaultUnit = (project: ProjectOption | null) => {
     if (project?.purpose === 'conservation') return 'm2';
 
@@ -38,6 +34,7 @@ const ProjectSelector = ({
 
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getRequest<PaymentOptions>(
+      `${tenantConfig?.id}`,
       `/app/paymentOptions/${guid}`,
       {
         country: planetCashAccount?.country || '',

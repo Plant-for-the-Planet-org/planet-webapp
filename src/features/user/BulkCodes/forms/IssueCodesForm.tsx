@@ -3,11 +3,12 @@ import React, {
   ReactElement,
   useContext,
   useState,
+  useEffect,
   useCallback,
   useMemo,
 } from 'react';
-import { useTranslation, Trans } from 'next-i18next';
-import { Button, TextField } from '@mui/material';
+import { useLocale, useTranslations } from 'next-intl';
+import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
@@ -33,9 +34,11 @@ import {
   SerializedError,
   Donation,
 } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
-  const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
+  const t = useTranslations('BulkCodes');
+  const locale = useLocale();
   const router = useRouter();
   const {
     project,
@@ -45,7 +48,8 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, logoutUser } = useUserProps();
+  const { user, logoutUser, setRefetchUserData } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -53,17 +57,26 @@ const IssueCodesForm = (): ReactElement | null => {
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
   const [unitsPerCode, setUnitsPerCode] = useState('');
-
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
+  const [notificationLocale, setNotificationLocale] = useState('');
 
+  const notificationLocales = [
+    {
+      langCode: 'en',
+      languageName: 'English',
+    },
+    {
+      langCode: 'de',
+      languageName: 'Deutsch',
+    },
+  ];
   const resetBulkContext = (): void => {
     setProject(null);
     setBulkMethod(null);
   };
-
   const getTotalUnits = (): number => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
@@ -85,17 +98,22 @@ const IssueCodesForm = (): ReactElement | null => {
         message: recipient.recipient_message,
         notifyRecipient: recipient.recipient_notify === 'yes',
         units: parseInt(recipient.units),
-        // occasion: recipient.recipient_occasion,
       };
       recipients.push(temp);
     });
     return recipients;
   };
 
+  useEffect(() => {
+    if (locale) {
+      setNotificationLocale(locale === 'de' ? 'de' : 'en');
+    }
+  }, [locale]);
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (isAddingRecipient || isEditingRecipient) {
-      const shouldSubmit = confirm(t('bulkCodes:unsavedDataWarning'));
+      const shouldSubmit = confirm(t('unsavedDataWarning'));
       if (!shouldSubmit) return;
     }
 
@@ -121,6 +139,7 @@ const IssueCodesForm = (): ReactElement | null => {
           break;
         case BulkCodeMethods.IMPORT:
           donationData.gift = {
+            notificationLocale: notificationLocale,
             type: 'discrete-bulk',
             occasion,
             recipients: getProcessedRecipients(),
@@ -132,6 +151,7 @@ const IssueCodesForm = (): ReactElement | null => {
 
       try {
         const res = await postAuthenticatedRequest<Donation>(
+          tenantConfig?.id,
           `/app/donations`,
           cleanedData,
           token,
@@ -144,6 +164,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
+          setRefetchUserData(true);
           setTimeout(() => {
             router.push(`/profile/history?ref=${res.uid}`);
           }, 5000);
@@ -157,35 +178,27 @@ const IssueCodesForm = (): ReactElement | null => {
           switch (error.message) {
             case 'planet_cash_invalid_project':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_invalid_project'
-                ),
+                message: t('donationError.planet_cash_invalid_project'),
               });
               break;
 
             case 'planet_cash_insufficient_credit':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_insufficient_credit',
-                  {
-                    availableBalance: getFormatedCurrency(
-                      i18n.language,
-                      planetCashAccount?.currency as string,
-                      error.parameters && error.parameters['available_credit']
-                    ),
-                  }
-                ),
+                message: t('donationError.planet_cash_insufficient_credit', {
+                  availableBalance: getFormatedCurrency(
+                    locale,
+                    planetCashAccount?.currency as string,
+                    error.parameters && error.parameters['available_credit']
+                  ),
+                }),
               });
               break;
 
             case 'planet_cash_payment_failure':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_payment_failure',
-                  {
-                    reason: error.parameters && error.parameters['reason'],
-                  }
-                ),
+                message: t('donationError.planet_cash_payment_failure', {
+                  reason: error.parameters && error.parameters['reason'],
+                }),
               });
               break;
 
@@ -199,7 +212,7 @@ const IssueCodesForm = (): ReactElement | null => {
       }
     } else {
       setIsProcessing(false);
-      setErrors([{ message: t('bulkCodes:projectRequired') }]);
+      setErrors([{ message: t('projectRequired') }]);
     }
   };
 
@@ -251,123 +264,145 @@ const IssueCodesForm = (): ReactElement | null => {
   const renderInvalidEmailWarning = useCallback(() => {
     return (
       <>
-        {t('bulkCodes:invalidEmailWarningText')}
+        {t.rich('invalidEmailWarningText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
         <br />
       </>
     );
-  }, [i18n.language, t]);
+  }, [locale, t]);
 
   const renderTermsAndPrivacyText = useCallback(() => {
     return (
       <>
-        <Trans key={'bulkCodes:termsAndPrivacyText'}>
-          Read more about our{' '}
-          <a
-            target="_blank"
-            href={`https://pp.eco/legal/${i18n.language}/terms`}
-            rel="noreferrer"
-            className="planet-links"
-            onClick={(e) => e.stopPropagation()}
-          >
-            terms and conditions
-          </a>{' '}
-          and the{' '}
-          <a
-            target="_blank"
-            href={`https://pp.eco/legal/${i18n.language}/privacy`}
-            rel="noreferrer"
-            className="planet-links"
-            onClick={(e) => e.stopPropagation()}
-          >
-            privacy policy
-          </a>
-          .
-        </Trans>
+        {t.rich('termsAndPrivacyText', {
+          termsLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/terms`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+          privacyPolicyLink: (chunks) => (
+            <a
+              target="_blank"
+              href={`https://pp.eco/legal/${locale}/privacy`}
+              rel="noreferrer"
+              className="planet-links"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
       </>
     );
-  }, [i18n.language, t]);
+  }, [locale, t]);
 
-  if (ready) {
-    if (!isSubmitted) {
-      return (
-        <CenteredContainer>
-          <StyledFormContainer className="IssueCodesForm" component={'section'}>
-            <div className="inputContainer">
-              <ProjectSelector
-                projectList={projectList || []}
-                project={project}
-                active={false}
-                planetCashAccount={planetCashAccount}
-              />
+  if (!isSubmitted) {
+    return (
+      <CenteredContainer>
+        <StyledFormContainer className="IssueCodesForm" component={'section'}>
+          <div className="inputContainer">
+            <ProjectSelector
+              projectList={projectList || []}
+              project={project}
+              active={false}
+              planetCashAccount={planetCashAccount}
+            />
+            <TextField
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+              label={t('labelComment')}
+            />
+            <TextField
+              onChange={(e) => setOccasion(e.target.value)}
+              value={occasion}
+              label={t('occasion')}
+            />
+            {bulkMethod === 'import' && (
               <TextField
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-                label={t('bulkCodes:labelComment')}
-              />
-              <TextField
-                onChange={(e) => setOccasion(e.target.value)}
-                value={occasion}
-                label={t('bulkCodes:occasion')}
-              />
-              {bulkMethod === 'generic' && (
-                <GenericCodesPartial
-                  codeQuantity={codeQuantity}
-                  unitsPerCode={unitsPerCode}
-                  setCodeQuantity={setCodeQuantity}
-                  setUnitsPerCode={setUnitsPerCode}
-                />
-              )}
-              {bulkMethod === 'import' && (
-                <RecipientsUploadForm
-                  setLocalRecipients={setLocalRecipients}
-                  localRecipients={localRecipients}
-                  setIsAddingRecipient={setIsAddingRecipient}
-                  setIsEditingRecipient={setIsEditingRecipient}
-                />
-              )}
-              <BulkGiftTotal
-                amount={totalAmount}
-                currency={planetCashAccount?.currency}
-                units={getTotalUnits()}
-                unit={project?.unit}
-              />
-            </div>
-
-            <BulkCodesError />
-
-            <form onSubmit={handleSubmit}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className="formButton"
-                disabled={shouldDisableSubmission}
+                label={t('notificationLanguage')}
+                variant="outlined"
+                select
+                value={notificationLocale}
+                onChange={(event) =>
+                  setNotificationLocale(event.target.value as string)
+                }
               >
-                {isProcessing
-                  ? t('bulkCodes:issuingCodes')
-                  : t('bulkCodes:issueCodes')}
-              </Button>
-            </form>
-            <div className={styles.issueCodeTermsAndWarnings}>
-              {t('bulkCodes:chargeConsentText')}
-              <br />
-              {bulkMethod === 'import' && renderInvalidEmailWarning()}
-              {renderTermsAndPrivacyText()}
-            </div>
-          </StyledFormContainer>
-        </CenteredContainer>
-      );
-    } else {
-      return (
-        <div className={styles.successMessage}>
-          {t('bulkCodes:donationSuccess')}
-          <span className={styles.spinner}></span>
-        </div>
-      );
-    }
+                {notificationLocales.map((locale) => (
+                  <MenuItem key={locale.langCode} value={locale.langCode}>
+                    {locale.languageName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+            {bulkMethod === 'generic' && (
+              <GenericCodesPartial
+                codeQuantity={codeQuantity}
+                unitsPerCode={unitsPerCode}
+                setCodeQuantity={setCodeQuantity}
+                setUnitsPerCode={setUnitsPerCode}
+              />
+            )}
+            {bulkMethod === 'import' && (
+              <RecipientsUploadForm
+                setLocalRecipients={setLocalRecipients}
+                localRecipients={localRecipients}
+                setIsAddingRecipient={setIsAddingRecipient}
+                setIsEditingRecipient={setIsEditingRecipient}
+              />
+            )}
+            <BulkGiftTotal
+              amount={totalAmount}
+              currency={planetCashAccount?.currency}
+              units={getTotalUnits()}
+              unit={project?.unit}
+            />
+          </div>
+          <BulkCodesError />
+          <form onSubmit={handleSubmit}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="formButton"
+              disabled={shouldDisableSubmission}
+            >
+              {isProcessing ? t('issuingCodes') : t('issueCodes')}
+            </Button>
+          </form>
+          <div className={styles.issueCodeTermsAndWarnings}>
+            {t('chargeConsentText')}
+            <br />
+            {bulkMethod === 'import' && renderInvalidEmailWarning()}
+            {renderTermsAndPrivacyText()}
+          </div>
+        </StyledFormContainer>
+      </CenteredContainer>
+    );
+  } else {
+    return (
+      <div className={styles.successMessage}>
+        {t('donationSuccess')}
+        <span className={styles.spinner}></span>
+      </div>
+    );
   }
-
-  return null;
 };
 
 export default IssueCodesForm;

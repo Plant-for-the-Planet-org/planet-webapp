@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
@@ -16,8 +16,8 @@ import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import { TENANT_ID } from '../../../utils/constants/environment';
 import { Tenant } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   projects: MapProject[];
@@ -43,7 +43,9 @@ function ProjectsList({
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
-  const { t, ready } = useTranslation(['donate', 'country', 'maps']);
+  const tDonate = useTranslations('Donate');
+  const tCountry = useTranslations('Country');
+  const tMaps = useTranslations('Maps');
   const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
@@ -55,6 +57,7 @@ function ProjectsList({
     boolean | null
   >(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
 
   useDebouncedEffect(
     () => {
@@ -70,23 +73,22 @@ function ProjectsList({
     projects: MapProject[],
     type: string
   ): MapProject[] | undefined {
-    if (type === 'top') {
-      return projects.filter(
-        (project) =>
-          project.properties.purpose === 'trees' &&
-          project.properties.isApproved === true &&
-          project.properties.isTopProject === true
-      );
-    } else if (type === 'all') {
-      return projects;
-    } else if (type === 'all_sorted') {
-      const donatableProjects = projects.filter(
-        (project) => project.properties.allowDonations === true
-      );
-      const nonDonatableProjects = projects.filter(
-        (project) => project.properties.allowDonations === false
-      );
-      return [...donatableProjects, ...nonDonatableProjects];
+    switch (type) {
+      case 'top':
+        return projects
+          .filter(
+            (project) =>
+              project.properties.purpose === 'trees' &&
+              project.properties.isApproved &&
+              project.properties.isTopProject
+          )
+          .sort((a, b) => (b.properties.allowDonations ? 1 : -1));
+      case 'all_sorted':
+        return projects.sort((a, b) => (b.properties.allowDonations ? 1 : -1));
+      case 'all':
+        return projects;
+      default:
+        return undefined;
     }
   }
 
@@ -121,7 +123,7 @@ function ProjectsList({
                 .toLowerCase()
             : '';
           const projectCountry = project.properties.country
-            ? t('country:' + project.properties.country.toLowerCase())
+            ? tCountry(project.properties.country.toLowerCase())
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase()
@@ -167,16 +169,17 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getRequest<Tenant>(`/app/tenants/${TENANT_ID}`);
+        const res = await getRequest<Tenant>(
+          tenantConfig.id,
+          `/app/tenants/${tenantConfig.id}`
+        );
         setShouldSortProjectList(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));
       }
     }
-    if (ready) {
-      setListOrder();
-    }
-  }, [ready]);
+    setListOrder();
+  }, []);
 
   const topProjects = React.useMemo(
     () => getProjects(projects, 'top'),
@@ -184,7 +187,7 @@ function ProjectsList({
   );
 
   const showTopProjectsList =
-    process.env.NEXT_PUBLIC_SHOW_TOP_PROJECTS === 'true' &&
+    tenantConfig.config.slug !== 'salesforce' &&
     topProjects !== undefined &&
     topProjects.length > 0;
 
@@ -193,23 +196,23 @@ function ProjectsList({
   }, []);
 
   const NoProjectFound = () => {
-    return ready ? (
+    return (
       <div className={'projectNotFound'}>
         <LazyLoad>
           <NotFound className={'projectNotFoundImage'} />
           <h5 style={{ color: 'var(--primary-font-color' }}>
-            {t('donate:noProjectsFound')}
+            {tDonate('noProjectsFound')}
           </h5>
         </LazyLoad>
       </div>
-    ) : null;
+    );
   };
 
   const toggleSidebar = () => {
     setHideSidebar(!hideSidebar);
   };
 
-  return ready ? (
+  return (
     <>
       <Explore />
       {isEmbed && isMobile && showProjectList === undefined && (
@@ -218,7 +221,7 @@ function ProjectsList({
           variant={hideSidebar ? 'outlined' : 'contained'}
           className="toggleButton"
         >
-          {hideSidebar ? t('maps:showProjectList') : t('maps:hideProjectList')}
+          {hideSidebar ? tMaps('showProjectList') : tMaps('hideProjectList')}
         </MuiButton>
       )}
       {showProjects ? (
@@ -310,8 +313,6 @@ function ProjectsList({
         </div>
       ) : null}
     </>
-  ) : (
-    <></>
   );
 }
 

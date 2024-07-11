@@ -1,7 +1,6 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
-const { i18n } = require('./next-i18next.config');
 
 // Use the SentryWebpack plugin to upload the source maps during build step
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
@@ -49,7 +48,6 @@ const hasAssetPrefix =
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: true,
-  i18n,
   serverRuntimeConfig: {
     rootDir: __dirname,
   },
@@ -122,6 +120,8 @@ const nextConfig = {
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
     ENABLE_ANALYTICS: DB_CONN_URL ? 'true' : 'false',
+    REDIS_URL: process.env.REDIS_URL,
+    REDIS_TOKEN: process.env.REDIS_TOKEN,
     WEBHOOK_URL: process.env.WEBHOOK_URL,
   },
   trailingSlash: false,

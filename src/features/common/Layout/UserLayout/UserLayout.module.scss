@@ -1,12 +1,12 @@
 @import '../../../../theme/theme';
 
 .profilePageContainer {
-  margin-top: -45px;
   margin-left: 55px;
   position: relative;
   display: flex;
   padding-left: 60px;
   font-family: $primaryFontFamily;
+  background-color: $backgroundBase;
   & .hamburgerIcon {
     display: none;
   }
@@ -40,20 +40,21 @@
 .profilePageWrapper {
   width: 100%;
   min-height: 100vh;
+  max-width: 1400px;
   .widgetsContainer {
     padding: 0px;
-    margin-top: 130px;
+    margin-top: 85px;
   }
   @include xsPhoneView {
     & .widgetsContainer {
-      padding-top: 80px !important;
+      padding-top: 60px !important;
       margin-top: 80px;
     }
   }
 }
 
 .profileImpersonation {
-  margin-top: 58px;
+  margin-top: 50px;
 }
 
 // Styles for Sidebar

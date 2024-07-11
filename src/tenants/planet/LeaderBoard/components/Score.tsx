@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './LeaderBoard.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 import MaterialTextField from '../../../../features/common/InputTypes/MaterialTextField';
@@ -13,6 +13,7 @@ import getRandomImage from '../../../../utils/getRandomImage';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 interface Props {
   leaderboard: any;
@@ -21,13 +22,17 @@ interface Props {
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
-  const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
+  const tLeaderboard = useTranslations('Leaderboard');
+  const tCommon = useTranslations('Common');
+  const locale = useLocale();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [users, setUsers] = React.useState([]);
-
+  const { tenantConfig } = useTenant();
   const fetchUsers = async (query: any) => {
     try {
-      const res = await postRequest('/suggest.php', { q: query });
+      const res = await postRequest(tenantConfig?.id, '/suggest.php', {
+        q: query,
+      });
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);
     } catch (err) {
@@ -35,10 +40,10 @@ export default function LeaderBoardSection(leaderboard: Props) {
     }
   };
 
-  return ready ? (
+  return (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
-        <h2>{t('leaderboard:forestFrontrunners')}</h2>
+        <h2>{tLeaderboard('forestFrontrunners')}</h2>
 
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
@@ -51,7 +56,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   : styles.leaderBoardTableHeaderTitle
               }
             >
-              {t('leaderboard:mostRecent')}
+              {tLeaderboard('mostRecent')}
             </button>
             <button
               id={'scoreHighest'}
@@ -62,7 +67,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   : styles.leaderBoardTableHeaderTitle
               }
             >
-              {t('leaderboard:mostTrees')}
+              {tLeaderboard('mostTrees')}
             </button>
             <button
               id={'searchIconScore'}
@@ -88,11 +93,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(
-                        i18n.language,
-                        Number(leader.treeCount)
-                      )}{' '}
-                      {t('common:tree', { count: Number(leader.treeCount) })}
+                      {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
+                      {tCommon('tree', { count: Number(leader.treeCount) })}
                     </p>
                     {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -108,11 +110,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(
-                        i18n.language,
-                        Number(leader.treeCount)
-                      )}{' '}
-                      {t('common:tree', { count: Number(leader.treeCount) })}
+                      {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
+                      {tCommon('tree', { count: Number(leader.treeCount) })}
                     </p>
                   </div>
                 ))}
@@ -163,7 +162,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   renderInput={(params) => (
                     <MaterialTextField
                       {...params}
-                      label={t('leaderboard:searchUser')}
+                      label={tLeaderboard('searchUser')}
                       variant="outlined"
                       name="searchUser"
                       onChange={(e) => {
@@ -204,5 +203,5 @@ export default function LeaderBoardSection(leaderboard: Props) {
         alt=""
       />
     </section>
-  ) : null;
+  );
 }

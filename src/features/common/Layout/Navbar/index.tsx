@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
-import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -14,6 +13,7 @@ import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
+import { useTenant } from '../TenantContext';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -27,9 +27,9 @@ const useWidth = () => {
   return width;
 };
 
-const config = tenantConfig();
 export default function NavbarComponent() {
-  const { t, ready, i18n } = useTranslation(['common']);
+  const t = useTranslations('Common');
+  const locale = useLocale();
   const router = useRouter();
   const subMenuPath = {
     overview: '',
@@ -46,6 +46,9 @@ export default function NavbarComponent() {
   const [isConstrained, setIsConstrained] = useState(false);
   const [mobileWidth, setMobileWidth] = useState(false);
   const { embed } = useContext(ParamsContext);
+
+  const { tenantConfig } = useTenant();
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
@@ -82,10 +85,8 @@ export default function NavbarComponent() {
         router.push(`/profile`);
       }
     } else {
-      //----------------- To do - redirect to slug -----------------
-      // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect({
-        redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+        redirectUri: `${window.location.origin}/login`,
         ui_locales: localStorage.getItem('language') || 'en',
       });
     }
@@ -104,16 +105,16 @@ export default function NavbarComponent() {
     if (auth0Error.message === '401') {
       if (typeof window !== 'undefined') {
         setUser(null);
-        logoutUser(`${process.env.NEXTAUTH_URL}/verify-email`);
+        logoutUser(`${window.location.origin}/verify-email`);
       }
     } else if (auth0Error.message === 'Invalid state') {
       setUser(null);
-    } else {
+    } else if (typeof window !== 'undefined') {
       if (auth0Error.message) {
         alert(auth0Error.message);
       }
       setUser(null);
-      logoutUser(`${process.env.NEXTAUTH_URL}/`);
+      logoutUser(`${window.location.origin}/`);
     }
   }
 
@@ -135,8 +136,8 @@ export default function NavbarComponent() {
           style={{ borderRadius: '40px' }}
         />
       </div>
-    ) : router.pathname === '/complete-signup' ||
-      (user && router.pathname === `/t/${user.slug}`) ? (
+    ) : router.pathname.includes('/complete-signup') ||
+      (user && router.pathname.includes(`/profile`)) ? (
       <MeSelected color={themeProperties.primaryColor} />
     ) : (
       <Me color={themeProperties.light.primaryFontColor} />
@@ -144,13 +145,14 @@ export default function NavbarComponent() {
   };
 
   const MenuItems = () => {
-    const links = Object.keys(config.header.items);
-    const tenantName = config?.tenantName;
-    return links ? (
+    const { tenantConfig } = useTenant();
+
+    const links = Object.keys(tenantConfig.config.header.items);
+    const tenantName = tenantConfig.config.slug || '';
+    return tenantConfig && links ? (
       <div className={`menuItems ${isConstrained ? 'constrained' : ''}`}>
         {links.map((link) => {
-          const linkKey = link as keyof typeof config.header.items;
-          let SingleLink = config.header.items[linkKey];
+          let SingleLink = tenantConfig.config.header.items[link];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
@@ -169,24 +171,25 @@ export default function NavbarComponent() {
                   </div>
                   <p
                     className={
-                      router.pathname === SingleLink.onclick
+                      router.asPath === `/${locale}${SingleLink.onclick}`
                         ? 'active_icon'
                         : ''
                     }
                   >
                     {user && SingleLink.loggedInTitle
-                      ? t('common:' + SingleLink.loggedInTitle)
-                      : t('common:' + SingleLink.title)}
+                      ? t(SingleLink.loggedInTitle)
+                      : t(SingleLink.title)}
                   </p>
                 </button>
               );
             }
+
             if (link === 'about' && SingleLink.visible) {
               let aboutOnclick = `${SingleLink.onclick}${
-                (process.env.TENANT === 'planet' ||
-                  process.env.TENANT === 'ttc') &&
-                lang_path[i18n.language as keyof typeof lang_path]
-                  ? lang_path[i18n.language as keyof typeof lang_path]
+                (tenantConfig.config.slug === 'planet' ||
+                  tenantConfig.config.slug === 'ttc') &&
+                lang_path[locale as keyof typeof lang_path]
+                  ? lang_path[locale as keyof typeof lang_path]
                   : ''
               }`;
 
@@ -222,7 +225,12 @@ export default function NavbarComponent() {
                 }
                 key={link}
               >
-                <Link href={isMobile && hasSubMenu ? '' : SingleLink.onclick}>
+                <Link
+                  prefetch={false}
+                  href={
+                    isMobile && hasSubMenu ? router.asPath : SingleLink.onclick
+                  }
+                >
                   <div
                     className={`linkContainer ${
                       isConstrained ? 'constrained' : ''
@@ -237,16 +245,21 @@ export default function NavbarComponent() {
                     {link === 'donate' ? (
                       <p
                         className={
-                          router.pathname === '/' || router.pathname === '/[p]'
+                          router.pathname === '/' ||
+                          router.pathname === '/[p]' ||
+                          router.pathname === '/[p]/[id]' ||
+                          router.pathname === '/sites/[slug]/[locale]' ||
+                          router.pathname === '/sites/[slug]/[locale]/[p]' ||
+                          router.pathname === '/sites/[slug]/[locale]/[p]/[id]'
                             ? 'active_icon'
                             : ''
                         }
                       >
-                        {t('common:' + SingleLink.title)}
+                        {t(SingleLink.title)}
                       </p>
                     ) : (
                       <p className={isActive ? 'active_icon' : ''}>
-                        {t('common:' + SingleLink.title)}
+                        {t(SingleLink.title)}
                       </p>
                     )}
                   </div>
@@ -271,43 +284,38 @@ export default function NavbarComponent() {
                             >
                               <GetSubMenu title={submenu.title} />
                               <div className={'menuText'}>
-                                {t('common:' + submenu.title)}
+                                {t(submenu.title)}
                               </div>
                             </div>
                           </Link>
                         );
                       } else {
-                        return (
-                          <a
-                            key={submenu.title}
-                            className={'menuRow'}
-                            href={`https://a.plant-for-the-planet.org/${
-                              lang_path[i18n.language as keyof typeof lang_path]
-                                ? lang_path[
-                                    i18n.language as keyof typeof lang_path
-                                  ]
-                                : 'en'
-                            }/${
-                              subMenuPath[
-                                submenu.title as keyof typeof subMenuPath
-                              ]
-                            }`}
+												return (
+                        <a
+                          key={submenu.title}
+                          className={'menuRow'}
+                          href={`https://www.plant-for-the-planet.org/${
+                            lang_path[locale as keyof typeof lang_path]
+                              ? lang_path[locale as keyof typeof lang_path]
+                              : 'en'
+                          }/${
+                            subMenuPath[
+                              submenu.title as keyof typeof subMenuPath
+                            ]
+                          }`}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
                           >
-                            <div
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <GetSubMenu title={submenu.title} />
-                              <div className={'menuText'}>
-                                {t('common:' + submenu.title)}
-                              </div>
-                            </div>
-                          </a>
-                        );
-                      }
+                            <GetSubMenu title={submenu.title} />
+                            <div className={'menuText'}>{t(submenu.title)}</div>
+                          </div>
+                        </a>
+                      );
                     })}
                 </div>
               </div>
@@ -321,9 +329,10 @@ export default function NavbarComponent() {
       <></>
     );
   };
+
   return embed === 'true' ? (
     <></>
-  ) : (
+  ) : tenantConfig ? (
     <>
       {isImpersonationModeOn && (
         <div className="impersonationAlertContainer" style={{ top: -142 }}>
@@ -336,28 +345,28 @@ export default function NavbarComponent() {
       >
         <div className={'top_nav'}>
           <div className={`brandLogos ${isConstrained ? 'constrained' : ''}`}>
-            {config.header?.isSecondaryTenant && (
+            {tenantConfig.config.header?.isSecondaryTenant && (
               <div
                 className={
-                  config.tenantName === 'ttc'
+                  tenantConfig.config.slug === 'ttc'
                     ? 'hidePrimaryTenantLogo'
                     : 'primaryTenantLogo'
                 }
               >
-                <a href={config.header?.tenantLogoLink}>
+                <a href={tenantConfig.config.header?.tenantLogoLink}>
                   <img
                     className={'tenantLogo desktop'}
-                    src={config.header.tenantLogoURL}
+                    src={tenantConfig.config.header.tenantLogoURL}
                   />
-                  {config.header.mobileLogoURL ? (
+                  {tenantConfig.config.header.mobileLogoURL ? (
                     <img
                       className={'tenantLogo mobile'}
-                      src={config.header.mobileLogoURL}
+                      src={tenantConfig.config.header.mobileLogoURL}
                     />
                   ) : (
                     <img
                       className={'tenantLogo mobile'}
-                      src={config.header.tenantLogoURL}
+                      src={tenantConfig.config.header.tenantLogoURL}
                     />
                   )}
                 </a>
@@ -370,26 +379,28 @@ export default function NavbarComponent() {
             )}
 
             {theme === 'theme-light' ? (
-              <a href="https://a.plant-for-the-planet.org">
+              <a href="https://www.plant-for-the-planet.org">
                 <img
                   className={'tenantLogo'}
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                  alt={t('common:about_pftp')}
+                  alt={t('about_pftp')}
                 />
               </a>
             ) : (
-              <a href="https://a.plant-for-the-planet.org">
+              <a href="https://www.plant-for-the-planet.org">
                 <img
                   className={'tenantLogo'}
                   src={`/assets/images/PlanetDarkLogo.svg`}
-                  alt={t('common:about_pftp')}
+                  alt={t('about_pftp')}
                 />
               </a>
             )}
           </div>
-          {ready && <MenuItems />}
+          <MenuItems />
         </div>
       </div>
     </>
+  ) : (
+    <></>
   );
 }

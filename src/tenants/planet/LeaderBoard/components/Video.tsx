@@ -1,18 +1,18 @@
 // Not used currently. Left as a reference.
 import React, { ReactElement } from 'react';
 import styles from './Video.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import ReactPlayer from 'react-player/lazy';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
 function Video(): ReactElement {
-  const { t, ready } = useTranslation(['leaderboard', 'common']);
+  const tLeaderboard = useTranslations('Leaderboard');
 
   const videoUrl = 'Some dummy url (to be replaced)';
-  return ready ? (
+  return (
     <div className={styles.videoSection}>
       <div className={styles.videoTitle}>
-        <h2>{t('leaderboard:videoTitle')}</h2>
+        <h2>{tLeaderboard('videoTitle')}</h2>
         <button id="backArrowVideoT" className={styles.backArrowVideoT}>
           <BackArrow />
         </button>
@@ -38,8 +38,6 @@ function Video(): ReactElement {
         </div>
       </div>
     </div>
-  ) : (
-    <></>
   );
 }
 

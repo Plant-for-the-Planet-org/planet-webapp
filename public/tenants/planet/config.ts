@@ -1,7 +1,5 @@
 const config = {
-  // name of tenant
   tenantName: 'planet',
-  // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
   tenantGoal: null,
   showUNEPLogo: true,
@@ -9,7 +7,6 @@ const config = {
   showRedeemHint: true,
   enableGuestSepa: false,
   darkModeEnabled: false,
-  // font family and it's property particular to tenant
   font: {
     primaryFontFamily:
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
@@ -19,7 +16,7 @@ const config = {
   languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR', 'cs'],
   header: {
     isSecondaryTenant: false,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
+    tenantLogoURL: `https://cdn.plant-for-the-planet.org/logo/svg/planet.svg`,
     tenantLogoLink: '/',
     items: {
       home: {
@@ -27,50 +24,45 @@ const config = {
         onclick: '/',
         visible: true,
       },
-      // donate: {
-      //   title: 'home',
-      //   onclick: '/',
-      //   visible: true,
-      // },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: true,
         subMenu: [
           {
             title: 'overview',
-            onclick: 'https://a.plant-for-the-planet.org/',
+            onclick: 'https://www.plant-for-the-planet.org/',
             visible: true,
           },
           {
             title: 'childrenAndYouth',
-            onclick: 'https://a.plant-for-the-planet.org/children-youth/',
+            onclick: 'https://www.plant-for-the-planet.org/children-youth/',
             visible: true,
           },
           {
             title: 'trillionTrees',
-            onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
+            onclick: 'https://www.plant-for-the-planet.org/trillion-trees/',
             visible: true,
           },
           {
             title: 'yucatan',
-            onclick: 'https://a.plant-for-the-planet.org/yucatan/',
+            onclick: 'https://www.plant-for-the-planet.org/yucatan/',
             visible: true,
           },
           {
             title: 'partners',
-            onclick: 'https://a.plant-for-the-planet.org/partners/',
+            onclick: 'https://www.plant-for-the-planet.org/partners/',
             visible: true,
           },
           {
             title: 'changeChocolate',
-            onclick: 'https://a.plant-for-the-planet.org/chocolate/',
+            onclick: 'https://www.plant-for-the-planet.org/chocolate/',
             visible: true,
           },
           {
             title: 'stopTalkingStartPlanting',
             onclick:
-              'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
+              'https://www.plant-for-the-planet.org/stop-talking-start-planting/',
             visible: true,
           },
         ],
@@ -98,7 +90,7 @@ const config = {
     appTitle: 'Plant for the Planet',
     description:
       "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'en_US',
   },

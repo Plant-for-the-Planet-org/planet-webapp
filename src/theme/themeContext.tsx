@@ -1,16 +1,17 @@
-import React from 'react';
-import tenantConfig from '../../tenant.config';
+import React, { ReactNode } from 'react';
+import { useTenant } from '../features/common/Layout/TenantContext';
 
 export const ThemeContext = React.createContext({
   theme: 'theme-light',
   setTheme: (theme: any) => theme,
 });
 
-export default function ThemeProvider({ children }: any) {
+export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = React.useState('theme-light');
-  const config = tenantConfig();
+  const { tenantConfig } = useTenant();
+
   React.useEffect(() => {
-    if (typeof window !== 'undefined' && config.darkModeEnabled) {
+    if (typeof window !== 'undefined' && tenantConfig.config.darkModeEnabled) {
       if (localStorage.getItem('theme')) {
         if (localStorage.getItem('theme') === 'theme-light') {
           setTheme('theme-light');

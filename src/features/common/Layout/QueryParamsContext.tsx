@@ -1,16 +1,13 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from './TenantContext';
+import { useLocale } from 'next-intl';
 
-const config = tenantConfig();
-const tenantSupportedLocale = config.languages;
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
   embed: QueryParamType;
   showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
-  language: QueryParamType;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
   enableIntro: QueryParamType;
@@ -20,7 +17,6 @@ export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
   showBackIcon: undefined,
   callbackUrl: undefined,
-  language: undefined,
   showProjectDetails: undefined,
   showProjectList: undefined,
   enableIntro: undefined,
@@ -28,16 +24,11 @@ export const ParamsContext = createContext<ParamsContextType>({
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
-  const { i18n } = useTranslation();
+  const locale = useLocale();
   const [isContextLoaded, setIsContextLoaded] = useState(false);
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
-  const [language, setLanguage] = useState<QueryParamType>(
-    typeof window !== 'undefined' && localStorage.getItem('language')
-      ? localStorage.getItem('language')
-      : 'en'
-  );
 
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
@@ -63,34 +54,9 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [router]);
 
   useEffect(() => {
-    if (localStorage.getItem('language') === null) {
-      const userBrowserLanguage = navigator.language ?? navigator.languages[0];
-      // checks whether tenant supported locale matches the user browser preference locale
-      const languageMatched = tenantSupportedLocale.find((locale) => {
-        return (
-          locale[0] + locale[1] ===
-          userBrowserLanguage[0] + userBrowserLanguage[1]
-        );
-      });
-
-      if (languageMatched !== undefined) {
-        localStorage.setItem('language', languageMatched);
-        setLanguage(languageMatched);
-        i18n.changeLanguage(languageMatched);
-      } else {
-        localStorage.setItem('language', 'en');
-        setLanguage('en');
-        i18n.changeLanguage('en');
-      }
-    }
-  }, [tenantSupportedLocale]);
-
-  useEffect(() => {
-    if (i18n && i18n.isInitialized && language) {
-      i18n.changeLanguage(language as string);
-      /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
-    }
-  }, [language, i18n.isInitialized]);
+    if (localStorage.getItem('language') !== locale)
+      localStorage.setItem('language', locale);
+  }, [locale]);
 
   return (
     <ParamsContext.Provider
@@ -98,7 +64,6 @@ const QueryParamsProvider: FC = ({ children }) => {
         embed,
         showBackIcon,
         callbackUrl,
-        language,
         showProjectDetails,
         showProjectList,
         enableIntro,

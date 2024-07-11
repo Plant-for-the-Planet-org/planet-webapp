@@ -1,5 +1,5 @@
 import React, { RefObject } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { TextField } from '@mui/material';
@@ -17,8 +17,8 @@ function SearchBar({
   searchValue,
   searchRef,
 }: Props) {
-  const { t, ready } = useTranslation(['donate']);
-  return ready ? (
+  const t = useTranslations('Donate');
+  return (
     <>
       <button id={'searchIconSearchB'} className={'searchIcon'}>
         <SearchIcon />
@@ -29,7 +29,7 @@ function SearchBar({
           ref={searchRef}
           fullWidth={true}
           autoFocus={true}
-          placeholder={t('donate:searchProjects')}
+          placeholder={t('searchProjects')}
           onChange={(e) => setSearchValue(e.target.value)}
           value={searchValue}
           variant="standard"
@@ -46,7 +46,7 @@ function SearchBar({
         <CancelIcon color={'primaryFontColor'} />
       </button>
     </>
-  ) : null;
+  );
 }
 
 export default SearchBar;

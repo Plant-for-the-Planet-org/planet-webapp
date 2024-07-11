@@ -1,0 +1,203 @@
+@import '../../../../../../../../theme/theme';
+
+.spinner {
+  border: 2px solid $primaryColor;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.plantLocationDetailsContainer {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  z-index: 2;
+  width: 300px;
+  box-shadow: 4px 8px 16px 0px #0000001a;
+  border-radius: 16px;
+  background-color: #fff;
+  font-size: 10px;
+  height: 450px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:hover {
+    cursor: auto;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 16px;
+    padding: 10px 16px;
+    width: 100%;
+    z-index: 2;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 450px;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .contentTop {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      row-gap: 16px;
+      width: 100%;
+
+      .topContainer {
+        display: flex;
+        justify-content: space-between;
+        z-index: 2;
+        column-gap: 6px;
+        width: 100%;
+
+        .leftContainer {
+          background-color: #2f80ed1a;
+          padding: 16px;
+          z-index: 2;
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          flex-direction: column;
+          border-radius: 16px;
+          .title {
+            font-weight: 500;
+          }
+        }
+        .rightContainer {
+          background-color: #f2c94c1a;
+          padding: 16px;
+          z-index: 2;
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: flex-start;
+          flex-direction: column;
+          border-radius: 16px;
+          .title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+
+      .midContainer {
+        background-color: #27ae601a;
+        z-index: 2;
+        padding: 16px;
+        border-radius: 16px;
+        flex-grow: 1;
+        width: 100%;
+
+        .speciesContainer {
+          padding: 0 8px;
+
+          .individualSpeciesContainer {
+            display: flex;
+
+            .speciesName {
+              border-right: 1px solid #68b03066;
+              width: 120px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              padding-right: 5px;
+              font-style: italic;
+            }
+
+            .count {
+              border-right: 1px solid #68b03066;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-width: 50px;
+              font-weight: 600;
+            }
+
+            .totalPercentage {
+              padding-left: 10px;
+              display: flex;
+              justify-content: flex-end;
+              align-items: center;
+              font-weight: 600;
+            }
+          }
+        }
+
+        .title {
+          font-weight: 500;
+          margin-bottom: 8px;
+        }
+      }
+
+      .bottomContainer {
+        background-color: #e86f561a;
+        z-index: 2;
+        padding: 16px;
+        border-radius: 16px;
+        width: 100%;
+
+        .sampleTreeContainer {
+          border-radius: 8px;
+          background: #f2994a1f;
+          padding: 10px 18px;
+          margin-bottom: 8px;
+
+          .title {
+            font-weight: 500;
+            margin-bottom: 0px;
+            font-style: italic;
+            display: flex;
+            .species {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .title {
+          font-weight: 500;
+          margin-bottom: 12px;
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+
+      .treemapper {
+        font-weight: 700;
+        color: $primaryColor;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
@@ -42,7 +42,8 @@ export default function PlantLocationDetails({
     setSamplePlantLocation,
     setHoveredPl,
   } = useProjectProps();
-  const { t, i18n } = useTranslation(['maps']);
+  const t = useTranslations('Maps');
+  const locale = useLocale();
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
   const [sampleTreeImages, setSampleTreeImages] = React.useState<SliderImage[]>(
@@ -150,16 +151,12 @@ export default function PlantLocationDetails({
               {plantLocation.type === 'multi' && (
                 <>
                   <span>
-                    {localizedAbbreviatedNumber(
-                      i18n.language,
-                      Number(treeCount),
-                      1
-                    )}{' '}
+                    {localizedAbbreviatedNumber(locale, Number(treeCount), 1)}{' '}
                     {t('trees')}
                   </span>{' '}
                   (
                   {localizedAbbreviatedNumber(
-                    i18n.language,
+                    locale,
                     Number(plantationArea),
                     3
                   )}{' '}
@@ -240,7 +237,7 @@ export default function PlantLocationDetails({
                 </div>
                 <div className={styles.detailValue}>
                   {localizedAbbreviatedNumber(
-                    i18n.language,
+                    locale,
                     Number(treeCount / plantationArea),
                     1
                   )}{' '}
@@ -353,7 +350,7 @@ export default function PlantLocationDetails({
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {t('treemapper:treeMapper')}
+                  {t('treeMapper')}
                 </a>
               </div>
             </div>

@@ -12,3 +12,8 @@ export type LeaderBoardList = {
   mostRecent: LeaderBoardItem[];
   mostDonated: LeaderBoardItem[];
 };
+
+export type TreesDonated = {
+  trees_since_2019: number;
+  updated_on: string;
+};

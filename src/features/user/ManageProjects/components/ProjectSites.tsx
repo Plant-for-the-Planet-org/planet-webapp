@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
@@ -40,6 +40,7 @@ import {
   SitesScopeProjects,
 } from '../../../common/types/project';
 import { FeatureCollection as GeoJson } from 'geojson';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -58,7 +59,6 @@ function EditSite({
   siteDetails,
   status,
   geoJsonProp,
-  ready,
   projectGUID,
   setSiteList,
   token,
@@ -67,7 +67,8 @@ function EditSite({
   siteList,
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
-  const { t } = useTranslation(['manageProjects']);
+  const { tenantConfig } = useTenant();
+  const t = useTranslations('ManageProjects');
   const {
     handleSubmit,
     formState: { errors },
@@ -102,6 +103,7 @@ function EditSite({
 
       try {
         const res = await putAuthenticatedRequest<Site>(
+          tenantConfig?.id,
           `/app/projects/${projectGUID}/sites/${siteGUID}`,
           submitData,
           token,
@@ -128,7 +130,7 @@ function EditSite({
         setErrors(handleError(err as APIError));
       }
     } else {
-      setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
+      setErrorMessage(t('polygonRequired'));
     }
   };
 
@@ -158,11 +160,11 @@ function EditSite({
                 <Controller
                   name="name"
                   control={control}
-                  rules={{ required: t('manageProjects:siteNameValidation') }}
+                  rules={{ required: t('siteNameValidation') }}
                   defaultValue={siteDetails.name}
                   render={({ field: { onChange, value, onBlur, name } }) => (
                     <TextField
-                      label={t('manageProjects:siteName')}
+                      label={t('siteName')}
                       variant="outlined"
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         changeSiteDetails(e);
@@ -182,12 +184,12 @@ function EditSite({
               <div className={styles.formFieldHalf}>
                 <Controller
                   name="status"
-                  rules={{ required: t('manageProjects:selectProjectStatus') }}
+                  rules={{ required: t('selectProjectStatus') }}
                   control={control}
                   defaultValue={siteDetails.status ? siteDetails.status : ''}
                   render={({ field: { onChange, onBlur, name, value } }) => (
                     <TextField
-                      label={t('manageProjects:siteStatus')}
+                      label={t('siteStatus')}
                       variant="outlined"
                       name={name}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -228,7 +230,7 @@ function EditSite({
               className={styles.backButton}
             >
               <BackArrow />
-              <p>{t('manageProjects:backToSites')}</p>
+              <p>{t('backToSites')}</p>
             </Button>
 
             <Button
@@ -238,7 +240,7 @@ function EditSite({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('manageProjects:saveSite')
+                t('saveSite')
               )}
             </Button>
           </div>
@@ -260,7 +262,7 @@ export default function ProjectSites({
   projectGUID,
   projectDetails,
 }: ProjectSitesProps): ReactElement {
-  const { t, ready } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
   const {
     handleSubmit,
     formState: { errors },
@@ -294,7 +296,7 @@ export default function ProjectSites({
     status: '',
     geometry: {},
   };
-
+  const { tenantConfig } = useTenant();
   const [siteDetails, setSiteDetails] =
     React.useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = React.useState<Site[]>([]);
@@ -334,6 +336,7 @@ export default function ProjectSites({
       if (projectGUID) {
         // Fetch sites of the project
         const result = await getAuthenticatedRequest<SitesScopeProjects>(
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
           logoutUser
@@ -371,6 +374,7 @@ export default function ProjectSites({
 
       try {
         const res = await postAuthenticatedRequest<Site>(
+          tenantConfig?.id,
           `/app/projects/${projectGUID}/sites`,
           submitData,
           token,
@@ -394,7 +398,7 @@ export default function ProjectSites({
         setErrors(handleError(err as APIError));
       }
     } else {
-      setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
+      setErrorMessage(t('polygonRequired'));
     }
   };
 
@@ -407,6 +411,7 @@ export default function ProjectSites({
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/sites/${id}`,
         token,
         logoutUser
@@ -422,37 +427,31 @@ export default function ProjectSites({
 
   const status = [
     {
-      label: ready
-        ? projectDetails?.purpose === 'trees'
-          ? t('manageProjects:siteStatusPlanting')
-          : t('manageProjects:siteStatusNotYetprotected')
-        : '',
+      label:
+        projectDetails?.purpose === 'trees'
+          ? t('siteStatusPlanting')
+          : t('siteStatusNotYetprotected'),
       value:
         projectDetails?.purpose === 'trees' ? 'planting' : 'not yet protected',
     },
     {
-      label: ready
-        ? projectDetails?.purpose === 'trees'
-          ? t('manageProjects:siteStatusPlanted')
-          : t('manageProjects:siteStatusPartiallyprotected')
-        : '',
+      label:
+        projectDetails?.purpose === 'trees'
+          ? t('siteStatusPlanted')
+          : t('siteStatusPartiallyprotected'),
       value:
         projectDetails?.purpose === 'trees' ? 'planted' : 'partially protected',
     },
     {
-      label: ready
-        ? projectDetails?.purpose === 'trees'
-          ? t('manageProjects:siteStatusBarren')
-          : t('manageProjects:siteStatusFullyprotected')
-        : '',
+      label:
+        projectDetails?.purpose === 'trees'
+          ? t('siteStatusBarren')
+          : t('siteStatusFullyprotected'),
       value: projectDetails?.purpose === 'trees' ? 'barren' : 'fully protected',
     },
     {
-      label: ready
-        ? projectDetails?.purpose === 'trees'
-          ? t('manageProjects:siteStatusReforestation')
-          : ''
-        : '',
+      label:
+        projectDetails?.purpose === 'trees' ? t('siteStatusReforestation') : '',
       value: projectDetails?.purpose === 'trees' ? 'reforestation' : '',
     },
   ];
@@ -490,7 +489,6 @@ export default function ProjectSites({
     errorMessage,
     status,
     geoJsonProp: geoJson,
-    ready,
     projectGUID,
     setSiteList,
     token,
@@ -499,7 +497,7 @@ export default function ProjectSites({
     siteList,
   };
 
-  return ready ? (
+  return (
     <CenteredContainer>
       {editMode && <EditSite {...EditProps} />}
 
@@ -602,11 +600,11 @@ export default function ProjectSites({
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: t('manageProjects:siteNameValidation') }}
+                rules={{ required: t('siteNameValidation') }}
                 defaultValue={siteDetails.name}
                 render={({ field: { onChange, value, onBlur, name } }) => (
                   <TextField
-                    label={t('manageProjects:siteName')}
+                    label={t('siteName')}
                     variant="outlined"
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       changeSiteDetails(e);
@@ -625,13 +623,13 @@ export default function ProjectSites({
               <Controller
                 name="status"
                 rules={{
-                  required: t('manageProjects:selectProjectStatus'),
+                  required: t('selectProjectStatus'),
                 }}
                 control={control}
                 defaultValue={siteDetails.status ? siteDetails.status : ''}
                 render={({ field: { onChange, onBlur, name, value } }) => (
                   <TextField
-                    label={t('manageProjects:siteStatus')}
+                    label={t('siteStatus')}
                     variant="outlined"
                     name={name}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -663,9 +661,7 @@ export default function ProjectSites({
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.projSiteSaveandAdd}
             >
-              <p className={styles.inlineLinkButton}>
-                {t('manageProjects:saveAndAddSite')}
-              </p>
+              <p className={styles.inlineLinkButton}>{t('saveAndAddSite')}</p>
             </Button>
           </div>
         ) : (
@@ -681,9 +677,7 @@ export default function ProjectSites({
             }}
             className={styles.formFieldLarge}
           >
-            <p className={styles.inlineLinkButton}>
-              {t('manageProjects:addSite')}
-            </p>
+            <p className={styles.inlineLinkButton}>{t('addSite')}</p>
           </Button>
         )}
 
@@ -700,7 +694,7 @@ export default function ProjectSites({
             className="formButton"
             startIcon={<BackArrow />}
           >
-            {t('manageProjects:backToAnalysis')}
+            {t('backToAnalysis')}
           </Button>
 
           <Button
@@ -711,7 +705,7 @@ export default function ProjectSites({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('manageProjects:saveAndContinue')
+              t('saveAndContinue')
             )}
           </Button>
 
@@ -720,12 +714,10 @@ export default function ProjectSites({
             variant="contained"
             className="formButton"
           >
-            {t('manageProjects:skip')}
+            {t('skip')}
           </Button>
         </div>
       </StyledForm>
     </CenteredContainer>
-  ) : (
-    <></>
   );
 }

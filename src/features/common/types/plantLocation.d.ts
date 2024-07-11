@@ -39,18 +39,18 @@ export interface PlantLocationBase {
   statusReason: string | null; // currently always null. Should we do something here?
 }
 export interface PlantLocationSingle extends PlantLocationBase {
-  type: PlantLocationType;
+  type: 'single';
   scientificName: string | null;
   scientificSpecies: string | null;
   tag: string | null;
   measurements: Measurements;
   originalGeometry: Point;
-  geometry: GeometryOfSinglePlant;
+  geometry: Point;
   sampleTrees: SamplePlantLocation[];
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
-  type: PlantLocationType;
+  type: 'multi';
   nextMeasurementDate: DateString | null;
   plantDateStart: DateString | null;
   plantDateEnd: DateString | null;
@@ -58,7 +58,7 @@ export interface PlantLocationMulti extends PlantLocationBase {
   samplePlantLocations: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
-  geometry: Geometry;
+  geometry: Point | Polygon;
   sampleTrees: SamplePlantLocation[];
 }
 
@@ -66,7 +66,7 @@ export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
 
 export interface SamplePlantLocation
   extends Omit<PlantLocationBase, 'plantProject'> {
-  type: Type;
+  type: 'sample';
   /** parent plant location */
   parent: string;
   /** tpo profile id */

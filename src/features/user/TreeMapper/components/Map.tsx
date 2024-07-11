@@ -335,7 +335,6 @@ export default function MyTreesMap({
                   <div
                     key={`${pl.id}-marker`}
                     onClick={() => {
-                      // console.log(pl, '==');
                       setselectedLocation(pl);
                     }}
                     // onMouseEnter={() => onHover(pl)}
