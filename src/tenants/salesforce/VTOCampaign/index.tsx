@@ -6,10 +6,7 @@ import ProjectGrid from './components/ProjectGrid';
 import LeaderBoard from './components/LeaderBoardSection';
 import AdditionalInfo from './components/AdditionalInfo';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
-
-const config = tenantConfig();
-
+import { useTenant } from '../../../features/common/Layout/TenantContext';
 interface Props {
   leaderboard: {
     mostDonated: { created: string; donorName: string; treeCount: string }[];
@@ -24,10 +21,11 @@ export default function Campaign({
   leaderboard,
   isLoaded,
 }: Props) {
+  const { tenantConfig } = useTenant();
   return (
     <>
       <Head>
-        <title>{`VTO Fitness Challenge | ${config.meta.title}`}</title>
+        <title>{`VTO Fitness Challenge | ${tenantConfig.config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} isLoaded={isLoaded} />

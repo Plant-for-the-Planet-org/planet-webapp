@@ -66,7 +66,7 @@ export default function NavbarComponent() {
   }, [width]);
 
   React.useEffect(() => {
-    setIsConstrained(config.tenantName === 'salesforce' && isMobile);
+    setIsConstrained(tenantConfig.config.slug === 'salesforce' && isMobile);
   }, [isMobile]);
 
   const {
@@ -290,32 +290,35 @@ export default function NavbarComponent() {
                           </Link>
                         );
                       } else {
-												return (
-                        <a
-                          key={submenu.title}
-                          className={'menuRow'}
-                          href={`https://www.plant-for-the-planet.org/${
-                            lang_path[locale as keyof typeof lang_path]
-                              ? lang_path[locale as keyof typeof lang_path]
-                              : 'en'
-                          }/${
-                            subMenuPath[
-                              submenu.title as keyof typeof subMenuPath
-                            ]
-                          }`}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
+                        return (
+                          <a
+                            key={submenu.title}
+                            className={'menuRow'}
+                            href={`https://www.plant-for-the-planet.org/${
+                              lang_path[locale as keyof typeof lang_path]
+                                ? lang_path[locale as keyof typeof lang_path]
+                                : 'en'
+                            }/${
+                              subMenuPath[
+                                submenu.title as keyof typeof subMenuPath
+                              ]
+                            }`}
                           >
-                            <GetSubMenu title={submenu.title} />
-                            <div className={'menuText'}>{t(submenu.title)}</div>
-                          </div>
-                        </a>
-                      );
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <GetSubMenu title={submenu.title} />
+                              <div className={'menuText'}>
+                                {t(submenu.title)}
+                              </div>
+                            </div>
+                          </a>
+                        );
+                      }
                     })}
                 </div>
               </div>
