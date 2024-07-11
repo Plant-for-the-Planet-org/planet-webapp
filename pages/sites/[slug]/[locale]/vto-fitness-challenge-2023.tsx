@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign';
-import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign2023';
+import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import {
   LeaderBoard,
   TenantScore,
-} from '../src/features/common/types/campaign';
+} from '../../../../src/features/common/types/campaign';
+import { AbstractIntlMessages } from 'next-intl';
+import { Tenant } from '@planet-sdk/common';
+import {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import { defaultTenant } from '../../../../tenant.config';
+import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
+import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   initialized: boolean;
@@ -25,7 +34,7 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
     async function loadData() {
       try {
         const leaderboardRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-leaderboard`
+          `${process.env.WEBHOOK_URL}/salesforce-earth-month-leaderboard`
         );
         if (leaderboardRes.ok && leaderboardRes.status === 200) {
           const leaderBoardArr = await leaderboardRes.json();
@@ -37,7 +46,7 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
 
       try {
         const tenantscoreRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-treecount`
+          `${process.env.WEBHOOK_URL}/salesforce-earth-month-count`
         );
         if (tenantscoreRes.ok && tenantscoreRes.status === 200) {
           const tenantScoreArr = await tenantscoreRes.json();
@@ -81,15 +90,33 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
   );
 }
 
-export async function getStaticProps({ locale }: { locale: string }) {
+export const getStaticPaths = async () => {
+  return {
+    paths: [{ params: { slug: 'salesforce', locale: 'en' } }],
+    fallback: 'blocking',
+  };
+};
+
+interface PageProps {
+  messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
+}
+
+export const getStaticProps: GetStaticProps<PageProps> = async (
+  context: GetStaticPropsContext
+): Promise<GetStaticPropsResult<PageProps>> => {
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'donate', 'country', 'manageProjects', 'leaderboard'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['donate', 'common', 'country', 'manageProjects', 'leaderboard'],
-        null,
-        ['en']
-      )),
+      messages,
+      tenantConfig,
     },
   };
-}
+};
