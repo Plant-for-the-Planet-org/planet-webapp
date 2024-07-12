@@ -33,35 +33,25 @@ const ProjectListTabForMobile = ({
   };
 
   const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
+    const tabButtonClass =
+      tabSelected === selectedTab
+        ? style.selectedTabButton
+        : style.unselectedTabButton;
     return (
-      <button
-        className={
-          tabSelected === selectedTab
-            ? style.selectedTabButton
-            : style.unselectedTabButton
-        }
-        onClick={() => selectTab(selectedTab)}
-      >
+      <button className={tabButtonClass} onClick={() => selectTab(selectedTab)}>
         <div className={style.starIconContainer}>{icon}</div>
         <div className={style.label}>{label}</div>
       </button>
     );
   };
+  const starIconColor =
+    tabSelected === 'topProjects' ? `${light.light}` : `${dark.darkNew}`;
 
   return (
     <div className={style.tabContainer}>
       <TabItem
         selectedTab="topProjects"
-        icon={
-          <StarIcon
-            width={'12px'}
-            color={
-              tabSelected === 'topProjects'
-                ? `${light.light}`
-                : `${dark.darkNew}`
-            }
-          />
-        }
+        icon={<StarIcon width={'12px'} color={starIconColor} />}
         label={t.rich('top', {
           noOfProjects: topProjectCount,
           projectCountContainer: (chunks) => (
