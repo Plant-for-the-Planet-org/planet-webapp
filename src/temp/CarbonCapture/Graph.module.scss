@@ -11,7 +11,7 @@
       margin-bottom: 5px;
     }
     .subtitle {
-      font-size: $fontXXXSmallNew;
+      font-size: $fontXXSmallNew;
       font-weight: 400;
     }
   }
@@ -27,7 +27,7 @@
       font-size: $fontXXSmallNew;
     }
     .date {
-      font-size: 6px; //to be replaced
+      font-size: 10px;
       font-weight: 500;
       color: $dark;
       opacity: 0.5;
@@ -55,7 +55,7 @@
   }
   .graphSubheading {
     color: #bdbdbd; //to be replaced
-    font-size: $fontXXXSmallNew;
+    font-size: $fontXXSmallNew;
     text-transform: lowercase;
     padding: 0 15px;
   }

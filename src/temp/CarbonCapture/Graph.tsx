@@ -77,6 +77,7 @@ const Graph = ({
     });
     setXaxisOptions(newOptions);
   }, []);
+
   const options = {
     fill: {
       type: 'gradient',
@@ -206,6 +207,7 @@ const Graph = ({
       zIndex: 1,
     },
   ];
+
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
