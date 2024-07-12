@@ -7,8 +7,7 @@ const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
 /**
  * This is the default slug that will be used if no tenant is found.
  */
-// export const DEFAULT_TENANT = 'planet';
-export const DEFAULT_TENANT = 'salesforce';
+export const DEFAULT_TENANT = 'planet';
 
 /**
  *
