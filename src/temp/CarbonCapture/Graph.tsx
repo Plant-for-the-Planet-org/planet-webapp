@@ -66,7 +66,7 @@ const Graph = ({
   const [xaxisOptions, setXaxisOptions] = useState<
     (number | (string | number)[])[]
   >([]);
-  const { light, primaryDarkColorX } = themeProperties;
+  const { light, primaryDarkColorX, darkBlackColor } = themeProperties;
   useEffect(() => {
     const newOptions = years.map((year, index) => {
       if (index === 1) {
@@ -187,8 +187,8 @@ const Graph = ({
       xaxis: [
         {
           x: xaxisOptions[1],
-          strokeDashArray: 0,
-          borderColor: `${primaryDarkColorX}`,
+          strokeDashArray: 4,
+          borderColor: `${darkBlackColor}`,
         },
       ],
     },
