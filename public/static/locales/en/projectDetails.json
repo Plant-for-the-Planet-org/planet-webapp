@@ -19,8 +19,8 @@
     "progressReports": "progress reports",
     "co2CapturePerHa": "<captureContainer>CO₂ Captured</captureContainer>(per ha.)",
     "comparedToRegionalAverage": "Compared to regional average",
-    "co2Removed": "CO₂ removed",
-    "biomass": "Biomass",
+    "co2Removed": "{value}t CO₂ removed",
+    "biomass": "{value}t Biomass",
     "yoy": "+{value}% YoY",
     "projectLaunch": "Project Launch",
     "canopyCover": "Canopy Cover"

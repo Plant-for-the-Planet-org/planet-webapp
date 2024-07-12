@@ -12,6 +12,8 @@ interface TooltipProps {
   subTitle: string;
   yoyValue: string;
   date: string;
+  type: 'canopyCover' | 'carbonCapture';
+  canopyCoverPercentage: number;
 }
 
 export const Tooltip = ({
@@ -19,12 +21,18 @@ export const Tooltip = ({
   subTitle,
   yoyValue,
   date,
+  type,
+  canopyCoverPercentage,
 }: TooltipProps) => {
   return (
     <div className={styles.tooltipContainer}>
       <div className={styles.header}>
-        <p className={styles.title}>{headerTitle}</p>
-        <p className={styles.subtitle}>{subTitle}</p>
+        <p className={styles.title}>
+          {type === 'carbonCapture' ? headerTitle : `${canopyCoverPercentage}%`}
+        </p>
+        {type === 'carbonCapture' && (
+          <p className={styles.subtitle}>{subTitle}</p>
+        )}
       </div>
       <div className={styles.body}>
         <p className={styles.yoyValue}>{yoyValue}</p>
@@ -38,13 +46,9 @@ interface GraphProps {
   title: string;
   subtitle: string;
   years: number[];
-  carbonRemoved: number[];
-  biomass: number[];
-  tooltip: {
-    heading: string;
-    unit: string;
-    subheading: string;
-  };
+  byProjectResult: number[];
+  regionalAverage: number[];
+  type: 'carbonCapture' | 'canopyCover';
 }
 
 interface CustomTooltipProps {
@@ -53,12 +57,10 @@ interface CustomTooltipProps {
 }
 
 const Graph = ({
-  title,
-  subtitle,
   years,
-  carbonRemoved,
-  biomass,
-  tooltip,
+  byProjectResult,
+  regionalAverage,
+  type,
 }: GraphProps) => {
   const t = useTranslations('ProjectDetails');
   const [xaxisOptions, setXaxisOptions] = useState<
@@ -75,7 +77,6 @@ const Graph = ({
     });
     setXaxisOptions(newOptions);
   }, []);
-
   const options = {
     fill: {
       type: 'gradient',
@@ -95,26 +96,28 @@ const Graph = ({
     tooltip: {
       custom: function ({ dataPointIndex, w }: CustomTooltipProps) {
         const getToolTip = () => {
-          const headingTranslation = t(`${tooltip.heading}`);
-          const subHeadingTranslation = t(`${tooltip.subheading}`);
+          const headingTranslation = t('co2Removed', {
+            value: w.globals.series[0][dataPointIndex],
+          });
+          const subHeadingTranslation = t('biomass', {
+            value: w.globals.series[1][dataPointIndex],
+          });
           const yoyTranslation = t('yoy', {
             value: 4,
           });
+          const canopyCoverPercentage = 43;
           const dataPoint = xaxisOptions[dataPointIndex];
           const year = Array.isArray(dataPoint) ? dataPoint[0] : dataPoint;
-
-          const headerTitle = `${w.globals.series[0][dataPointIndex]}${tooltip.unit} ${headingTranslation}`;
-          const subTitle = subHeadingTranslation
-            ? `${w.globals.series[1][dataPointIndex]}${tooltip.unit} ${subHeadingTranslation}`
-            : '';
           const date = year.toString();
 
           return (
             <Tooltip
-              headerTitle={headerTitle}
-              subTitle={subTitle}
+              headerTitle={headingTranslation}
+              subTitle={subHeadingTranslation}
               yoyValue={yoyTranslation}
               date={date}
+              type={type}
+              canopyCoverPercentage={canopyCoverPercentage}
             />
           );
         };
@@ -192,13 +195,13 @@ const Graph = ({
   const series = [
     {
       name: 'series1',
-      data: carbonRemoved,
+      data: byProjectResult,
       color: `${primaryDarkColorX}`,
       zIndex: 2,
     },
     {
       name: 'series2',
-      data: biomass,
+      data: regionalAverage,
       color: `${light.dividerColorNew}`,
       zIndex: 1,
     },
@@ -207,11 +210,11 @@ const Graph = ({
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <h5 className={styles.graphHeading}>
-          {title === 'co2CapturePerHa'
+          {type === 'carbonCapture'
             ? t.rich('co2CapturePerHa', {
                 captureContainer: (chunk) => <span>{chunk}</span>,
               })
-            : t(`${title}`)}
+            : t('canopyCover')}
           <div className={styles.newInfoIcon}>
             <NewInfoIcon
               height={17}
@@ -220,7 +223,11 @@ const Graph = ({
             />
           </div>
         </h5>
-        <p className={styles.graphSubheading}> {t(`${subtitle}`)}</p>
+        {type === 'carbonCapture' && (
+          <p className={styles.graphSubheading}>
+            {t('comparedToRegionalAverage')}
+          </p>
+        )}
       </div>
       <div id="chart">
         <ReactApexChart
