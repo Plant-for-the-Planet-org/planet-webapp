@@ -16,6 +16,7 @@ const {
   deforestrationRangeBackgroundNew,
   horizontalLineColorNew,
   exploreDescriptionBackground,
+  secondaryColorNew,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -60,6 +61,7 @@ const getGlobalStyles = async () => {
       --font-xxxx-extra-small-new: ${fontSizes.fontXXXXSmallNew};
       --font-xxx-extra-small-new: ${fontSizes.fontXXXSmallNew};
       --font-xx-extra-small: ${fontSizes.fontXXSmall};
+      --font-xx-extra-small-new: ${fontSizes.fontXXSmallNew};
       --font-x-extra-small: ${fontSizes.fontXSmall};
       --font-small: ${fontSizes.fontSmall};
       --font-sixteen: ${fontSizes.fontSixteen};
@@ -77,6 +79,7 @@ const getGlobalStyles = async () => {
       --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
+      --secondary-color-new: ${secondaryColorNew};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};

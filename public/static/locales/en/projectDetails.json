@@ -16,6 +16,13 @@
     "plantingSeasons": "planting seasons",
     "privateProperty": "private property",
     "publicProperty": "public property",
-    "progressReports": "progress reports"
+    "progressReports": "progress reports",
+    "co2CapturePerHa": "CO₂ Captured<captureContainer>(per ha.)</captureContainer>",
+    "comparedToRegionalAverage": "Compared to regional average",
+    "co2Removed": "{value}t CO₂ removed",
+    "biomass": "{value}t Biomass",
+    "yoy": "+{value}% YoY",
+    "projectLaunch": "Project Launch",
+    "canopyCover": "Canopy Cover"
   }
 }

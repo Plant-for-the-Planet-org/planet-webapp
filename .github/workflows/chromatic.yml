@@ -10,6 +10,7 @@ on:
       - develop
       - feature/redesign-explore-btn
       - feature/merge-from-develop
+      - feature/design-capture-graph
 # List of jobs
 jobs:
   chromatic-deployment:

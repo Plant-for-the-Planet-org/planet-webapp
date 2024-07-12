@@ -1,0 +1,75 @@
+@import '../../theme/theme';
+
+.tooltipContainer {
+  min-width: 120px;
+  .header {
+    padding: 10px 10px 8px 10px;
+    .title {
+      color: #333; //to be replaced
+      font-size: $fontSmall;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      font-size: $fontXXSmallNew;
+      font-weight: 400;
+    }
+  }
+  .body {
+    background-color: rgba(var(--primary-color-new), 0.1);
+    padding: 4px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .yoyValue {
+      color: $secondaryColorNew;
+      font-weight: 700;
+      font-size: $fontXXSmallNew;
+    }
+    .date {
+      font-size: 10px;
+      font-weight: 500;
+      color: $dark;
+      opacity: 0.5;
+    }
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 338px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .graphHeading {
+    font-size: $fontXXSmall;
+    color: #2f3336; //to be replaced
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    gap: 2px;
+    font-weight: 700;
+    span {
+      font-weight: 400;
+    }
+  }
+  .graphSubheading {
+    color: #bdbdbd; //to be replaced
+    font-size: $fontXXSmallNew;
+    text-transform: lowercase;
+    padding: 0 15px;
+  }
+}
+
+.titleContainer {
+  width: 100%;
+  max-width: 300px;
+}
+.newInfoIcon {
+  margin-left: auto;
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

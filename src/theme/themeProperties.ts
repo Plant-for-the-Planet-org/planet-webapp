@@ -4,6 +4,7 @@ const themeProperties = {
   fontSizes: {
     fontXXXXSmallNew: '6px',
     fontXXXSmallNew: '8px',
+    fontXXSmallNew: '9px',
     fontXXSmall: '10px',
     fontXSmall: '12px',
     fontSmall: '14px',
@@ -29,11 +30,12 @@ const themeProperties = {
   topProjectBackgroundColor: '#F3BB44',
   nonDonatableProjectBackgroundColor: '#828282',
   deforestrationRangeBackgroundNew: '235, 87, 87',
-  primaryColorNew: '#219653',
+  primaryColorNew: '33, 150, 83',
   horizontalLineColorNew: '#bdbdbd',
   restorationToggleColorNew: '#2f80ed',
   deforestrationToggleColorNew: 'rgba(235, 87, 87, 1)',
   exploreDescriptionBackground: '242, 242, 242',
+  secondaryColorNew: '#377E36',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
