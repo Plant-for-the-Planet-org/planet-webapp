@@ -187,7 +187,7 @@ const Graph = ({
       xaxis: [
         {
           x: xaxisOptions[1],
-          strokeDashArray: 4,
+          strokeDashArray: 2,
           borderColor: `${darkBlackColor}`,
         },
       ],
