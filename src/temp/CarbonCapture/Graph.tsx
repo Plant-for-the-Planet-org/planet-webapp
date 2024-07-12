@@ -36,7 +36,7 @@ export const Tooltip = ({
       </div>
       <div className={styles.body}>
         <p className={styles.yoyValue}>{yoyValue}</p>
-        <p className={styles.date}>{date}</p>
+        <p className={styles.date}>Aug {date}</p>
       </div>
     </div>
   );
