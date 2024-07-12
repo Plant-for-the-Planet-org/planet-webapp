@@ -15,18 +15,29 @@ import {
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
+import router from 'next/router';
 
 interface Props {
-  initialized: boolean;
+  pageProps: PageProps;
 }
 
-export default function MangroveChallenge({ initialized }: Props) {
+export default function MangroveChallenge({
+  pageProps: { tenantConfig },
+}: Props) {
   const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
     mostDonated: [],
     mostRecent: [],
   });
   const [tenantScore, setTenantScore] = useState<TenantScore>({ total: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
+  const { setTenantConfig } = useTenant();
+
+  useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(tenantConfig);
+    }
+  }, [router.isReady]);
 
   useEffect(() => {
     async function loadData() {
@@ -63,7 +74,7 @@ export default function MangroveChallenge({ initialized }: Props) {
 
   function getCampaignPage() {
     let CampaignPage;
-    switch (process.env.TENANT) {
+    switch (tenantConfig.config.slug) {
       case 'salesforce':
         CampaignPage = SalesforceCampaign;
         return (
@@ -82,7 +93,7 @@ export default function MangroveChallenge({ initialized }: Props) {
   return (
     <>
       <GetHomeMeta />
-      {initialized ? getCampaignPage() : <></>}
+      {tenantConfig && isLoaded ? getCampaignPage() : <></>}
     </>
   );
 }

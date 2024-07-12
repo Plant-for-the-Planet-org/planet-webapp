@@ -6,9 +6,9 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
 import { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
-import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 const MANGROVE_PROJECTS = [
   'proj_4urzfQ47Xwv5SlNOurnXn2hU',
@@ -26,6 +26,7 @@ const MANGROVE_PROJECTS = [
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
@@ -33,12 +34,16 @@ export default function ProjectGrid() {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest<MapProject[]>(`/app/projects`, {
-          _scope: 'map',
-          currency: currencyCode,
-          tenant: TENANT_ID,
-          'filter[purpose]': 'trees,conservation',
-        });
+        const projects = await getRequest<MapProject[]>(
+          tenantConfig.id,
+          `/app/projects`,
+          {
+            _scope: 'map',
+            currency: currencyCode,
+            tenant: tenantConfig.id,
+            'filter[purpose]': 'trees,conservation',
+          }
+        );
         setProjects(projects);
         setIsLoaded(true);
       } catch (err) {

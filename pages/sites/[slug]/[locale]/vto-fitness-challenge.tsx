@@ -15,12 +15,16 @@ import {
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
+import router from 'next/router';
 
 interface Props {
-  initialized: boolean;
+  pageProps: PageProps;
 }
 
-export default function VTOFitnessChallenge({ initialized }: Props) {
+export default function VTOFitnessChallenge({
+  pageProps: { tenantConfig },
+}: Props) {
   const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
     mostDonated: [],
     mostRecent: [],
@@ -29,6 +33,13 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
     total: 0,
   });
   const [isLoaded, setIsLoaded] = useState(false);
+  const { setTenantConfig } = useTenant();
+
+  useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(tenantConfig);
+    }
+  }, [router.isReady]);
 
   useEffect(() => {
     async function loadData() {
@@ -66,7 +77,7 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
   function getCampaignPage() {
     if (leaderBoard === null || tenantScore === null) return <></>;
     let CampaignPage;
-    switch (process.env.TENANT) {
+    switch (tenantConfig.config.slug) {
       case 'salesforce':
         CampaignPage = SalesforceCampaign;
         return (
@@ -85,7 +96,7 @@ export default function VTOFitnessChallenge({ initialized }: Props) {
   return (
     <>
       <GetHomeMeta />
-      {initialized && isLoaded ? getCampaignPage() : <></>}
+      {isLoaded && tenantConfig ? getCampaignPage() : <></>}
     </>
   );
 }

@@ -6,22 +6,23 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
 import { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
-import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest(`/app/projects`, {
+        const projects = await getRequest(tenantConfig.id, `/app/projects`, {
           _scope: 'map',
           currency: currencyCode,
-          tenant: TENANT_ID,
+          tenant: tenantConfig.id,
           'filter[purpose]': 'trees,conservation',
         });
         setProjects(projects as MapProject[]);
