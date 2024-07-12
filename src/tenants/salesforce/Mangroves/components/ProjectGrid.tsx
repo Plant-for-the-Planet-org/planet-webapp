@@ -14,7 +14,6 @@ const MANGROVE_PROJECTS = [
   'proj_4urzfQ47Xwv5SlNOurnXn2hU',
   'proj_7gmlF7Q8aL65V7j7AG9NW8Yy',
   'proj_StWEs2TGZFPf1WgfT6IJQoLC',
-  'proj_cVpKWdkq5nM31NfQ5Yn9pXMY',
   'proj_mgtS4XFpiL6RCieGK403qDG5',
   'proj_FEvW3WIB0Vcq2far1ppJvgLs',
   'proj_AzYMCCfmCnrwfS8nilKFng8z',
