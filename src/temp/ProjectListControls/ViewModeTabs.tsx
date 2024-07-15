@@ -10,24 +10,25 @@ interface ViewModeTabsProps {
   isSearching: boolean;
 }
 
+type Tabs = 'list' | 'map';
 interface TabItemProps {
-  selectedTab: 'list' | 'map';
+  selectedTab: Tabs;
   icon: ReactNode;
-  label: 'list' | 'map' | boolean;
+  label: Tabs | undefined;
 }
 const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
   const { dark, light } = themeProperties;
   const [selectedMode, setSelectedMode] = useState<'list' | 'map'>('list');
-  const selectTab = (tab: 'list' | 'map') => {
+  const selectTab = (tab: Tabs) => {
     setIsFilterOpen(false);
     setSelectedMode(tab);
   };
 
   const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
-    const tabButtonClass =
-      selectedMode === selectedTab
-        ? style.selectedTabButton
-        : style.unselectedTabButton;
+    const isSelected = selectedMode === selectedTab;
+    const tabButtonClass = isSelected
+      ? style.selectedTabButton
+      : style.unselectedTabButton;
     return (
       <button className={tabButtonClass} onClick={() => selectTab(selectedTab)}>
         {icon}
@@ -40,23 +41,28 @@ const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
     ? style.tabContainerSecondary
     : style.tabContainer;
 
-  const listIconColor =
-    selectedMode === 'list' ? `${light.light}` : `${dark.darkNew}`;
-
-  const locationIconColor =
-    selectedMode === 'map' ? `${light.light}` : `${dark.darkNew}`;
+  const getIconColor = (mode: Tabs, selectMode: Tabs) =>
+    mode === selectMode ? light.light : dark.darkNew;
 
   return (
     <div className={tabContainerClass}>
       <TabItem
         selectedTab="list"
-        icon={<ListIcon width={14} color={listIconColor} />}
-        label={!isSearching && 'list'}
+        icon={
+          <ListIcon width={14} color={getIconColor('list', selectedMode)} />
+        }
+        label={isSearching ? undefined : 'list'}
       />
       <TabItem
         selectedTab="map"
-        icon={<LocationIcon width={9} height={13} color={locationIconColor} />}
-        label={!isSearching && 'map'}
+        icon={
+          <LocationIcon
+            width={9}
+            height={13}
+            color={getIconColor('map', selectedMode)}
+          />
+        }
+        label={isSearching ? undefined : 'map'}
       />
     </div>
   );
