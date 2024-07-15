@@ -1,11 +1,10 @@
-import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const LocationIcon = ({ width, color }: IconProps) => {
+const LocationIconPrimary = ({ width, color }: IconProps) => {
   return (
     <svg
       width={width}
-      viewBox="0 0 9 13"
+      viewBox="0 0 9 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -29,4 +28,4 @@ const LocationIcon = ({ width, color }: IconProps) => {
   );
 };
 
-export default LocationIcon;
+export default LocationIconPrimary;

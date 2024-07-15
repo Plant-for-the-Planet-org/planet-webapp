@@ -1,9 +1,9 @@
 import themeProperties from '../../theme/themeProperties';
 import { useState, ReactNode } from 'react';
-import style from './Search.module.scss';
+import style from './ProjectListControls.module.scss';
 import ListIcon from '../icons/ListIcon';
-import LocationIcon from '../icons/LocationIcon';
 import { SetState } from '../../features/common/types/common';
+import LocationIconPrimary from '../icons/LocationIconPrimary';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean>;
@@ -56,9 +56,8 @@ const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
       <TabItem
         selectedTab="map"
         icon={
-          <LocationIcon
+          <LocationIconPrimary
             width={9}
-            height={13}
             color={getIconColor('map', selectedMode)}
           />
         }

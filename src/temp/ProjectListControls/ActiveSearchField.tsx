@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../icons/CrossIcon';
-import style from './Search.module.scss';
+import style from './ProjectListControls.module.scss';
 import SearchIcon from '../icons/SearchIcon';
 import { useTranslations } from 'next-intl';
 import { SetState } from '../../features/common/types/common';
@@ -24,7 +24,7 @@ const ActiveSearchField = ({
   };
 
   return (
-    <div className={style.searchBarMainContainer}>
+    <div className={style.projectListControls}>
       <button className={style.activeSearchIcon}>
         <SearchIcon />
       </button>
@@ -39,7 +39,7 @@ const ActiveSearchField = ({
       />
 
       <button onClick={resetSearchTab} className={style.crossIcon}>
-        <CrossIcon width={18} />
+        <CrossIcon />
       </button>
     </div>
   );

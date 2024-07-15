@@ -63,6 +63,7 @@ const themeProperties = {
     contactDetailBackgroundColorNew: '232, 111, 86',
     certificationLinkColorNew: '#3AB6BD',
     secondaryDividerColor: '242, 153, 74',
+    borderColor: '211, 211, 211',
   },
   dark: {
     primaryFontColor: '#ffffff',

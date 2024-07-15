@@ -107,6 +107,7 @@ const getGlobalStyles = async () => {
       --contactDetail-background-color-new: ${light.contactDetailBackgroundColorNew};
       --certification-link-color-new: ${light.certificationLinkColorNew};
       --secondary-divider-color-new: ${light.secondaryDividerColor};
+      --border-color: ${light.borderColor};
     }
     .theme-dark {
       --primary-font-color: ${dark.primaryFontColor};

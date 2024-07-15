@@ -1,5 +1,5 @@
 import StarIcon from '../icons/StarIcon';
-import style from './Search.module.scss';
+import style from './ProjectListControls.module.scss';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 import { ReactNode } from 'react';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import style from './Search.module.scss';
+import style from './ProjectListControls.module.scss';
 import ProjectListTabForMobile from './ProjectListTabForMobile';
-import ProjectSearchAndFilter from './ProjectSearchAndFilter';
+import { SearchAndFilter } from './ProjectSearchAndFilter';
 import ViewModeTabs from './ViewModeTabs';
 import ClassificationDropDown from './ClassificationDropDown';
 import { ProjectListControlsProps } from '.';
@@ -24,7 +24,7 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
-      <div className={style.searchTabForMobile}>
+      <div className={style.projectListControlsMobile}>
         {isSearching ? (
           <>
             <ActiveSearchField
@@ -45,7 +45,7 @@ const ProjectListControlForMobile = ({
               setTabSelected={setTabSelected}
               setIsFilterOpen={setIsFilterOpen}
             />
-            <ProjectSearchAndFilter
+            <SearchAndFilter
               selectedClassification={selectedClassification}
               setIsFilterOpen={setIsFilterOpen}
               isFilterOpen={isFilterOpen}

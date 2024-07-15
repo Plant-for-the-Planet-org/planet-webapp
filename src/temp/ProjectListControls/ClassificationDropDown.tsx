@@ -1,4 +1,4 @@
-import style from './Filter.module.scss';
+import style from './ProjectListControls.module.scss';
 import { useTranslations } from 'next-intl';
 import { Classification } from '.';
 import { SetState } from '../../features/common/types/common';
