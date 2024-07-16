@@ -122,7 +122,7 @@ export default function CompleteSignup(): ReactElement | null {
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
     useUserProps();
 
-  const isPrivate = watch('isPrivate');
+  const isPublic = watch('isPublic');
   const [submit, setSubmit] = React.useState(false);
   React.useEffect(() => {
     async function loadFunction() {
@@ -236,9 +236,11 @@ export default function CompleteSignup(): ReactElement | null {
     setSubmit(true);
     if (country !== '') {
       if (contextLoaded && token) {
+        const { isPublic, ...otherData } = data;
         const submitData = {
-          ...data,
+          ...otherData,
           country: country as CountryCode,
+          isPrivate: !isPublic,
           type,
           oAuthAccessToken: token,
         };
@@ -527,21 +529,21 @@ export default function CompleteSignup(): ReactElement | null {
             <div className={styles.inlineToggleGroup}>
               <div>
                 <label
-                  htmlFor="isPrivate"
+                  htmlFor="is-public"
                   className={styles.mainText}
                   style={{ cursor: 'pointer' }}
                 >
                   {t('fieldLabels.isPublic')}
                 </label>{' '}
                 <br />
-                {isPrivate && (
+                {isPublic && (
                   <label className={styles.isPrivateAccountText}>
                     {t('publicProfileExplanation')}
                   </label>
                 )}
               </div>
               <Controller
-                name="isPrivate"
+                name="isPublic"
                 control={control}
                 defaultValue={false}
                 render={({ field: { onChange, value } }) => (
@@ -549,7 +551,7 @@ export default function CompleteSignup(): ReactElement | null {
                     checked={value}
                     onChange={onChange}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    id="isPrivate"
+                    id="is-public"
                   />
                 )}
               />
@@ -557,7 +559,7 @@ export default function CompleteSignup(): ReactElement | null {
 
             <div className={styles.inlineToggleGroup}>
               <div className={styles.mainText}>
-                <label htmlFor={'getNews'} style={{ cursor: 'pointer' }}>
+                <label htmlFor="get-news" style={{ cursor: 'pointer' }}>
                   {t('fieldLabels.subscribe')}
                 </label>
               </div>
@@ -571,7 +573,7 @@ export default function CompleteSignup(): ReactElement | null {
                       checked={value}
                       onChange={(e) => onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
-                      id="getNews"
+                      id="get-news"
                     />
                   );
                 }}
