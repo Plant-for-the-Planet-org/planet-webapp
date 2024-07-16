@@ -14,7 +14,7 @@ interface ProjectListTabForMobileProps {
 }
 interface TabItemProps {
   selectedTab: 'topProjects' | 'allProjects';
-  icon: ReactNode | undefined;
+  icon?: ReactNode | undefined;
   label: ReactNode;
 }
 const ProjectListTabForMobile = ({
@@ -39,7 +39,7 @@ const ProjectListTabForMobile = ({
         : style.unselectedTabButton;
     return (
       <button className={tabButtonClass} onClick={() => selectTab(selectedTab)}>
-        <div className={style.starIconContainer}>{icon}</div>
+        {icon && <div className={style.starIconContainer}>{icon}</div>}
         <div className={style.label}>{label}</div>
       </button>
     );
@@ -61,7 +61,6 @@ const ProjectListTabForMobile = ({
       />
       <TabItem
         selectedTab="allProjects"
-        icon={undefined}
         label={t.rich('allProjects', {
           noOfProjects: projectCount,
           projectCountContainer: (chunks) => (

@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../icons/CrossIcon';
 import style from './ProjectListControls.module.scss';
@@ -10,15 +10,47 @@ interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;
   setIsFilterOpen: SetState<boolean>;
 }
+
 const ActiveSearchField = ({
   setIsSearching,
   setIsFilterOpen,
 }: ActiveSearchFieldProps) => {
-  const [input, setInput] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+
+  useEffect(() => {
+    window.alert(`${debouncedSearchValue} searched !`);
+  }, [debouncedSearchValue]);
+
+  const useDebouncedEffect = (
+    effect: () => void,
+    delay: number,
+    deps: any[]
+  ) => {
+    const callback = useCallback(effect, deps);
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        callback();
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [callback, delay]);
+  };
+
+  useDebouncedEffect(
+    () => {
+      setDebouncedSearchValue(searchValue);
+    },
+    1000,
+    [searchValue]
+  );
   const t = useTranslations('AllProjects');
 
   const resetSearchTab = () => {
-    setInput('');
+    setSearchValue('');
     setIsSearching(false);
     setIsFilterOpen(false);
   };
@@ -32,9 +64,9 @@ const ActiveSearchField = ({
         id="standard-search"
         variant="standard"
         placeholder={t('searchProject')}
-        value={input}
+        value={searchValue}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          setInput(event.target.value);
+          setSearchValue(event.target.value);
         }}
       />
 
