@@ -531,12 +531,12 @@ export default function CompleteSignup(): ReactElement | null {
                   className={styles.mainText}
                   style={{ cursor: 'pointer' }}
                 >
-                  {t('fieldLabels.privateAccount')}
+                  {t('fieldLabels.isPublic')}
                 </label>{' '}
                 <br />
                 {isPrivate && (
                   <label className={styles.isPrivateAccountText}>
-                    {t('privateAccountTxt')}
+                    {t('publicProfileExplanation')}
                   </label>
                 )}
               </div>
