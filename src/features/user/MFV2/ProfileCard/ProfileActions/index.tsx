@@ -15,7 +15,7 @@ import WebappButton from '../../../../common/WebappButton';
 const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const t = useTranslations('Profile');
-
+  const userWebsiteUrl = userProfile?.url;
   const handleRedeemModalOpen = () => {
     setIsRedeemModalOpen(true);
   };
@@ -69,13 +69,15 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
         href={`/s/${userProfile?.slug}`}
       />
       <div className={styles.websiteShareActions}>
-        <WebappButton
-          icon={<WebsiteLinkIcon />}
-          text={t('feature.website')}
-          elementType={'link'}
-          href={handleWebsiteShareUrl()}
-          target={'_blank'}
-        />
+        {userWebsiteUrl && (
+          <WebappButton
+            icon={<WebsiteLinkIcon />}
+            text={t('feature.website')}
+            elementType={'link'}
+            href={handleWebsiteShareUrl()}
+            target={'_blank'}
+          />
+        )}
         <SocialMediaShareButton userProfile={userProfile} />
       </div>
     </div>
