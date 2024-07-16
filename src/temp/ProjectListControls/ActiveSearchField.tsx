@@ -20,7 +20,7 @@ const ActiveSearchField = ({
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
 
   useEffect(() => {
-    window.alert(`${debouncedSearchValue} searched !`);
+    if (debouncedSearchValue) window.alert(`${debouncedSearchValue} searched!`);
   }, [debouncedSearchValue]);
 
   useDebouncedEffect(
