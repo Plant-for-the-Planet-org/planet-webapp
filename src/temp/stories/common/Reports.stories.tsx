@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectReview from '../ReviewReports';
+import ProjectReview from '../../ReviewReports';
 
 const meta: Meta<typeof ProjectReview> = {
+  title: 'Projects/Common/ProjectReview',
   component: ProjectReview,
 };
 
