@@ -12,7 +12,7 @@ import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
 import { useTenant } from '../Layout/TenantContext';
 
-const { primaryDarkColorX, light } = theme;
+const { primaryColorNew, light } = theme;
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
@@ -25,7 +25,7 @@ const CircularProgress = styled(MuiCircularProgress)({
 });
 const XCircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: `${primaryDarkColorX}`,
+    color: `${primaryColorNew}`,
     animationDuration: '550ms',
   },
   '& > svg > circle': {

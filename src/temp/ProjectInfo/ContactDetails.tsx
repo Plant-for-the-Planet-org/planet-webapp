@@ -1,4 +1,3 @@
-import LocationIcon from '../icons/LocationIcon';
 import MailIcon from '../icons/MailIcon';
 import { ViewProfileIcon } from '../icons/ViewProfileIcon';
 import WebsiteLinkIcon from '../icons/WebsiteLinkIcon';
@@ -6,6 +5,7 @@ import styles from './ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import SingleContactDetail from './SingleContactDetail';
+import LocationIconSolid from '../icons/LocationIconSolid';
 
 interface Props {
   websiteURL: string;
@@ -54,7 +54,10 @@ const ContactDetails = ({
     },
     {
       icon: (
-        <LocationIcon width={9.5} color={`${'var(--primary-font-color)'}`} />
+        <LocationIconSolid
+          width={9.5}
+          color={`${'var(--primary-font-color)'}`}
+        />
       ),
       title: location,
       link: '',
