@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ContactDetails from '../ProjectInfo/ContactDetails';
+import ContactDetails from '../../ProjectInfo/ContactDetails';
 
 const meta: Meta<typeof ContactDetails> = {
+  title: 'Project Details/ContactDetails',
   component: ContactDetails,
 };
 

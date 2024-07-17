@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import InfoIconPopup from '../components/InfoIconPopup';
+import InfoIconPopup from '../../components/InfoIconPopup';
 
 const meta: Meta<typeof InfoIconPopup> = {
+  title: 'Common/InfoIconPopup',
   component: InfoIconPopup,
 };
 

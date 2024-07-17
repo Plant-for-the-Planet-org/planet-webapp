@@ -1,8 +1,9 @@
-import TimeTravelDropdown from '../TimeTravelDropdown';
-import sources from '../../../public/data/maps/sources.json';
+import TimeTravelDropdown from '../../TimeTravelDropdown';
+import sources from '../../../../public/data/maps/sources.json';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TimeTravelDropdown> = {
+  title: 'Project Details/TimeTravelDropdown',
   component: TimeTravelDropdown,
 };
 

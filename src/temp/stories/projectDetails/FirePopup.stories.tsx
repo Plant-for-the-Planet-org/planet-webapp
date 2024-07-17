@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Popup from '../FirePopup';
+import Popup from '../../FirePopup';
 
 const meta: Meta<typeof Popup> = {
+  title: 'Project Details/Popup',
   component: Popup,
 };
 
