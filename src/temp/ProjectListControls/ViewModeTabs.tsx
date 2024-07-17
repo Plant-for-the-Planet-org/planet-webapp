@@ -4,6 +4,7 @@ import style from './ProjectListControls.module.scss';
 import ListIcon from '../icons/ListIcon';
 import { SetState } from '../../features/common/types/common';
 import LocationIconPrimary from '../icons/LocationIconPrimary';
+import { useTranslations } from 'next-intl';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean>;
@@ -14,10 +15,11 @@ type Tabs = 'list' | 'map';
 interface TabItemProps {
   selectedTab: Tabs;
   icon: ReactNode;
-  label: Tabs | undefined;
+  label: string | undefined;
 }
 const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
   const { dark, light } = themeProperties;
+  const t = useTranslations('AllProjects');
   const [selectedMode, setSelectedMode] = useState<'list' | 'map'>('list');
   const selectTab = (tab: Tabs) => {
     setIsFilterOpen(false);
@@ -49,19 +51,19 @@ const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
       <TabItem
         selectedTab="list"
         icon={
-          <ListIcon width={14} color={getIconColor('list', selectedMode)} />
+          <ListIcon height={14} color={getIconColor('list', selectedMode)} />
         }
-        label={isSearching ? undefined : 'list'}
+        label={isSearching ? undefined : t('list')}
       />
       <TabItem
         selectedTab="map"
         icon={
           <LocationIconPrimary
-            width={9}
+            height={14}
             color={getIconColor('map', selectedMode)}
           />
         }
-        label={isSearching ? undefined : 'map'}
+        label={isSearching ? undefined : t('map')}
       />
     </div>
   );

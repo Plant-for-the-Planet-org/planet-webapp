@@ -1,9 +1,9 @@
 import { IconProps } from '../../features/common/types/common';
 
-const LocationIconPrimary = ({ width, color }: IconProps) => {
+const LocationIconPrimary = ({ height, color }: IconProps) => {
   return (
     <svg
-      width={width}
+      height={height}
       viewBox="0 0 9 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

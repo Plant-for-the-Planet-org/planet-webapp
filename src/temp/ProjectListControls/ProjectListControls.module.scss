@@ -9,22 +9,26 @@
   max-width: 338px;
   justify-content: space-between;
   min-width: 288px;
-  box-shadow: 0px 4px 24px 0px rgba(var(--dark), 0.2);
+  box-shadow: 0px 4px 24px 0px rgba($dark, 0.2);
 
   @include xsPhoneView {
     height: 36px;
     min-width: 200px;
     border-radius: 8px;
-    border: 1px solid rgba(var(--border-color), 0.5);
+    border: 1px solid rgba($borderColor, 0.5);
   }
 }
 
 .projectListControlsMobile {
   height: 26px;
-  width: 100%;
   justify-content: space-between;
   display: flex;
   gap: 10px;
+}
+
+.searchFieldAndViewTabsContainer {
+  display: flex;
+  gap: 12px;
 }
 
 .activeSearchIcon {
@@ -75,6 +79,7 @@
   border: 2px solid $primaryColorNew;
   display: flex;
   overflow: hidden;
+  min-width: max-content;
 }
 
 .tabContainerSecondary {
@@ -117,7 +122,7 @@
 
 .projectCount {
   font-weight: 400;
-  margin-left: 4px;
+  margin-left: 3px;
 }
 
 .iconsContainerMobile {
@@ -126,6 +131,7 @@
   justify-content: space-between;
   gap: 12px;
   transition: all 0.4s ease-in-out;
+  width: 20%;
 }
 
 .iconsContainer {
@@ -151,7 +157,7 @@
     left: 10px;
     top: -3px;
     z-index: 1;
-    background-color: var(--primary-color-new);
+    background-color: $primaryColorNew;
     width: 12px;
     height: 12px;
     border-radius: 50%;

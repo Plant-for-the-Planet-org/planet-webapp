@@ -24,41 +24,39 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
-      <div className={style.projectListControlsMobile}>
-        {isSearching ? (
-          <>
-            <ActiveSearchField
-              setIsFilterOpen={setIsFilterOpen}
-              setIsSearching={setIsSearching}
-            />
-            <ViewModeTabs
-              setIsFilterOpen={setIsFilterOpen}
-              isSearching={isSearching}
-            />
-          </>
-        ) : (
-          <>
-            <ProjectListTabForMobile
-              projectCount={projectCount}
-              topProjectCount={topProjectCount}
-              tabSelected={tabSelected}
-              setTabSelected={setTabSelected}
-              setIsFilterOpen={setIsFilterOpen}
-            />
-            <SearchAndFilter
-              selectedClassification={selectedClassification}
-              setIsFilterOpen={setIsFilterOpen}
-              isFilterOpen={isFilterOpen}
-              setIsSearching={setIsSearching}
-              isSearching={isSearching}
-            />
-            <ViewModeTabs
-              setIsFilterOpen={setIsFilterOpen}
-              isSearching={isSearching}
-            />
-          </>
-        )}
-      </div>
+      {isSearching ? (
+        <div className={style.searchFieldAndViewTabsContainer}>
+          <ActiveSearchField
+            setIsFilterOpen={setIsFilterOpen}
+            setIsSearching={setIsSearching}
+          />
+          <ViewModeTabs
+            setIsFilterOpen={setIsFilterOpen}
+            isSearching={isSearching}
+          />
+        </div>
+      ) : (
+        <div className={style.projectListControlsMobile}>
+          <ProjectListTabForMobile
+            projectCount={projectCount}
+            topProjectCount={topProjectCount}
+            tabSelected={tabSelected}
+            setTabSelected={setTabSelected}
+            setIsFilterOpen={setIsFilterOpen}
+          />
+          <SearchAndFilter
+            selectedClassification={selectedClassification}
+            setIsFilterOpen={setIsFilterOpen}
+            isFilterOpen={isFilterOpen}
+            setIsSearching={setIsSearching}
+            isSearching={isSearching}
+          />
+          <ViewModeTabs
+            setIsFilterOpen={setIsFilterOpen}
+            isSearching={isSearching}
+          />
+        </div>
+      )}
       {isFilterOpen && !isSearching && (
         <ClassificationDropDown
           selectedClassification={selectedClassification}

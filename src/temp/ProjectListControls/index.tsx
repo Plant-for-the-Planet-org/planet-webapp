@@ -49,19 +49,18 @@ const ProjectListControls = ({
 
   return (
     <>
-      <div className={style.projectListControls}>
-        {isSearching ? (
-          <ActiveSearchField
-            setIsSearching={setIsSearching}
-            setIsFilterOpen={setIsFilterOpen}
-          />
-        ) : (
-          <>
-            <ProjectListTabLargeScreen {...projectListTabProps} />
-            <SearchAndFilter {...searchAndFilterProps} />
-          </>
-        )}
-      </div>
+      {isSearching ? (
+        <ActiveSearchField
+          setIsSearching={setIsSearching}
+          setIsFilterOpen={setIsFilterOpen}
+        />
+      ) : (
+        <div className={style.projectListControls}>
+          <ProjectListTabLargeScreen {...projectListTabProps} />
+          <SearchAndFilter {...searchAndFilterProps} />
+        </div>
+      )}
+
       <div className={style.filterDropDownContainer}>
         {isFilterOpen && !isSearching && (
           <ClassificationDropDown
