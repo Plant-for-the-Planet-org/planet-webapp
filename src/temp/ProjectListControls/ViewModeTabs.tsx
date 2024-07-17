@@ -3,7 +3,7 @@ import { useState, ReactNode } from 'react';
 import style from './ProjectListControls.module.scss';
 import ListIcon from '../icons/ListIcon';
 import { SetState } from '../../features/common/types/common';
-import LocationIconPrimary from '../icons/LocationIconPrimary';
+import LocationIconOutline from '../icons/LocationIconOutline';
 import { useTranslations } from 'next-intl';
 
 interface ViewModeTabsProps {
@@ -58,7 +58,7 @@ const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
       <TabItem
         selectedTab="map"
         icon={
-          <LocationIconPrimary
+          <LocationIconOutline
             height={14}
             color={getIconColor('map', selectedMode)}
           />
