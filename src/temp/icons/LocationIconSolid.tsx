@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const LocationIconSecondary = ({ width }: IconProps) => {
+const LocationIconSolid = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,4 +20,4 @@ const LocationIconSecondary = ({ width }: IconProps) => {
   );
 };
 
-export default LocationIconSecondary;
+export default LocationIconSolid;

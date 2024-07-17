@@ -1,6 +1,6 @@
 import { IconProps } from '../../features/common/types/common';
 
-const LocationIconPrimary = ({ width, color }: IconProps) => {
+const LocationIconOutline = ({ width, color }: IconProps) => {
   return (
     <svg
       width={width}
@@ -28,4 +28,4 @@ const LocationIconPrimary = ({ width, color }: IconProps) => {
   );
 };
 
-export default LocationIconPrimary;
+export default LocationIconOutline;

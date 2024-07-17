@@ -5,7 +5,7 @@ import styles from './ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './SingleProjectInfoItem';
 import SingleContactDetail from './SingleContactDetail';
-import LocationIconSecondary from '../icons/LocationIconSecondary';
+import LocationIconSolid from '../icons/LocationIconSolid';
 
 interface Props {
   websiteURL: string;
@@ -54,7 +54,7 @@ const ContactDetails = ({
     },
     {
       icon: (
-        <LocationIconSecondary
+        <LocationIconSolid
           width={9.5}
           color={`${'var(--primary-font-color)'}`}
         />
