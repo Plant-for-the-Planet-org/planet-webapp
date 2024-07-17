@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectBadge from '../ProjectBadge/ProjectBadge';
+import ProjectBadge from '../../ProjectBadge/ProjectBadge';
 
 const meta: Meta<typeof ProjectBadge> = {
+  title: 'Projects/Common/ProjectBadge',
   component: ProjectBadge,
 };
 

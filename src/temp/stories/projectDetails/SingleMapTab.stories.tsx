@@ -1,8 +1,9 @@
-import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
+import SatelliteIcon from '../../../../public/assets/images/icons/SatelliteIcon';
 import type { Meta, StoryObj } from '@storybook/react';
-import SingleTab from '../ProjectMapTabs/SingleTab';
+import SingleTab from '../../ProjectMapTabs/SingleTab';
 
 const meta: Meta<typeof SingleTab> = {
+  title: 'Projects/Details/SingleTab',
   component: SingleTab,
 };
 

@@ -10,6 +10,7 @@ on:
       - develop
       - feature/redesign-explore-btn
       - feature/merge-from-develop
+      - feature/storybook-folder-structure
 # List of jobs
 jobs:
   chromatic-deployment:
