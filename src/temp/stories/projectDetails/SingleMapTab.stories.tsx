@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SingleTab from '../../ProjectMapTabs/SingleTab';
 
 const meta: Meta<typeof SingleTab> = {
-  title: 'Project Details/SingleTab',
+  title: 'Projects/Details/SingleTab',
   component: SingleTab,
 };
 

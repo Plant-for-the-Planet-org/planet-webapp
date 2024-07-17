@@ -3,7 +3,7 @@ import sources from '../../../../public/data/maps/sources.json';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TimeTravelDropdown> = {
-  title: 'Project Details/TimeTravelDropdown',
+  title: 'Projects/Details/TimeTravelDropdown',
   component: TimeTravelDropdown,
 };
 

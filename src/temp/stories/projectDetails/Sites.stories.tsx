@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ProjectSiteDropdown from '../../ProjectSiteDropdown';
 
 const meta: Meta<typeof ProjectSiteDropdown> = {
-  title: 'Project Details/ProjectSiteDropdown',
+  title: 'Projects/Details/ProjectSiteDropdown',
   component: ProjectSiteDropdown,
 };
 

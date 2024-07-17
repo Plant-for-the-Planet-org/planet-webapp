@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ImagesSlider from '../../ImagesSlider';
 
 const meta: Meta<typeof ImagesSlider> = {
-  title: 'Project Details/ImagesSlider',
+  title: 'Projects/Details/ImagesSlider',
   component: ImagesSlider,
 };
 

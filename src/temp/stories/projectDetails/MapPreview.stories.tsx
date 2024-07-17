@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import MapPreview from '../../MapPreview';
 
 const meta: Meta<typeof MapPreview> = {
-  title: 'Project Details/MapPreview',
+  title: 'Projects/Details/MapPreview',
   component: MapPreview,
 };
 

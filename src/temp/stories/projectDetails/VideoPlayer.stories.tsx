@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import VideoPlayer from '../../ProjectDetailVideoPlayer';
 
 const meta: Meta<typeof VideoPlayer> = {
-  title: 'Project Details/VideoPlayer',
+  title: 'Projects/Details/VideoPlayer',
   component: VideoPlayer,
 };
 
