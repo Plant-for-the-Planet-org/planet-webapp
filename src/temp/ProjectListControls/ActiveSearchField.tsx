@@ -39,7 +39,7 @@ const ActiveSearchField = ({
   };
 
   return (
-    <div className={style.projectListControls}>
+    <div className={style.activeSearchFieldContainer}>
       <button className={style.activeSearchIcon}>
         <SearchIcon />
       </button>
