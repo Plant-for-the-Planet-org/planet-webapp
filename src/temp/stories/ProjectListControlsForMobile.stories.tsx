@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Classification } from '../ProjectListControls';
 
 const meta: Meta<typeof ProjectListControlForMobile> = {
+  title: 'Projects/Landing/ProjectListControlForMobile',
   component: ProjectListControlForMobile,
 };
 
