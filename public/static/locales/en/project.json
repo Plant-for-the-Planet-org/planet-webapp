@@ -1,0 +1,31 @@
+{
+  "Project": {
+    "classification": {
+      "natural-regeneration": "Natural Regeneration",
+      "managed-regeneration": "Managed Regeneration",
+      "large-scale-planting": "Large Scale Restoration",
+      "agroforestry": "Agroforestry",
+      "urban-planting": "Urban Restoration",
+      "other-planting": "Restoration",
+      "mangroves": "Mangroves",
+      "conservation": "Conservation"
+    },
+    "ecosystem": {
+      "tropical-moist-forests": "Tropical Moist Forests",
+      "tropical-dry-forests": "Tropical Dry Forests",
+      "tropical-coniferous-forests": "Tropical Coniferous Forests",
+      "tropical-grasslands-forests": "Tropical Grasslands Forests",
+      "temperate-broadleaf-forests": "Temperate Broadleaf Forests",
+      "temperate-coniferous-forests": "Temperate Coniferous Forests",
+      "temperate-grasslands-forests": "Temperate Grassland Forests",
+      "mediterranean-forests": "Mediterranean Forests",
+      "mangroves": "Mangroves",
+      "deserts": "Deserts",
+      "flooded-grasslands": "Flooded Grasslands",
+      "montane-grasslands": "Montane Grasslands",
+      "boreal-forests": "Boreal Forests",
+      "tundra": "Tundra"
+    },
+    "tpoName": "By {tpoName}"
+  }
+}

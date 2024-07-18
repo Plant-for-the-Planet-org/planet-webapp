@@ -7,6 +7,7 @@ name: 'Chromatic'
 on:
   push:
     branches:
+      - hotfix/chromatic-build-issue
       - develop
       - feature/redesign-explore-btn
       - feature/design-projectlist-filter

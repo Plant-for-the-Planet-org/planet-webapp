@@ -142,7 +142,18 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
         )}
         {!account.isActive && (
           <Grid item xs={12}>
-            <p className="helpText">{t('accountInactiveHelpText')}</p>
+            <p className="helpText">
+              {t.rich('accountInactiveHelpText', {
+                supportLink: (chunk) => (
+                  <a
+                    className="planet-links"
+                    href="mailto:support@plant-for-the-planet.org"
+                  >
+                    {chunk}
+                  </a>
+                ),
+              })}
+            </p>
           </Grid>
         )}
       </Grid>

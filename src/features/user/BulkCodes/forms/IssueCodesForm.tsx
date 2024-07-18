@@ -216,7 +216,7 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const getTotalAmount = (): number | undefined => {
+  const totalAmount = useMemo((): number | undefined => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project
         ? Math.round(
@@ -235,7 +235,7 @@ const IssueCodesForm = (): ReactElement | null => {
             100
         : undefined;
     }
-  };
+  }, [bulkMethod, project, codeQuantity, unitsPerCode, localRecipients]);
 
   const shouldDisableSubmission = useMemo(() => {
     const hasSufficientFunds =
@@ -245,8 +245,21 @@ const IssueCodesForm = (): ReactElement | null => {
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
 
-    return hasSufficientFunds && !isProcessing && hasEnteredRequiredData;
-  }, [user, localRecipients, codeQuantity, unitsPerCode, isProcessing]);
+    return (
+      !hasSufficientFunds ||
+      isProcessing ||
+      !hasEnteredRequiredData ||
+      !totalAmount ||
+      totalAmount <= 0
+    );
+  }, [
+    user,
+    localRecipients,
+    codeQuantity,
+    unitsPerCode,
+    isProcessing,
+    totalAmount,
+  ]);
 
   const renderInvalidEmailWarning = useCallback(() => {
     return (
@@ -355,7 +368,7 @@ const IssueCodesForm = (): ReactElement | null => {
               />
             )}
             <BulkGiftTotal
-              amount={getTotalAmount()}
+              amount={totalAmount}
               currency={planetCashAccount?.currency}
               units={getTotalUnits()}
               unit={project?.unit}

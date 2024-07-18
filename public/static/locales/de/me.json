@@ -230,7 +230,7 @@
       "offline-offline": "Banküberweisungen benötigen in der Regel 1-5 Werktage, um uns zu erreichen. Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinen Belegen (und deinem Zertifikat).",
       "stripe-sepa_debit": "SEPA-Zahlungen dauern 2-14 Arbeitstage (normalerweise 3-5 Tage). Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail.",
       "stripe-sofort": "SOFORT-Zahlungen dauern 2-14 Werktage (normalerweise 2-3 Tage). Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail.",
-      "in-dispute": "Deine Überweisung wurde angefochten. In der Regel werden von den Zahlungsanbietern $7 - $15.00 Gebühren erhoben. Bitte kontaktiere support@plant-for-the-planet.org für weitere Informationen."
+      "in-dispute": "Deine Überweisung wurde angefochten. In der Regel werden von den Zahlungsanbietern $7 - $15.00 Gebühren erhoben. Bitte kontaktiere <supportLink>support@plant-for-the-planet.org</supportLink> für weitere Informationen."
     },
     "active": "aktiv",
     "canceled": "abgebrochen",
@@ -272,7 +272,7 @@
     "donate": "Spenden",
     "donated": "Gespendet",
     "conserved": "Erhalten",
-    "restored": "Wiederhergestellt",
+    "restored": "Renaturiert",
     "membershipCtaButtonText": "Jetzt mitmachen",
     "membershipCtaCopy": "Unterstütze uns und <highlight>WERDE MITGLIED</highlight>",
     "shareUrl": "Teile URL",

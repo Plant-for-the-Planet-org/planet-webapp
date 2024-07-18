@@ -1,6 +1,10 @@
 @import './theme';
 @import '~vizzuality-components/dist/bundle';
 
+.maplibregl-control-container .maplibregl-ctrl-bottom-right {
+  bottom: 30px;
+}
+
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
 }
@@ -166,6 +170,7 @@ video {
   padding: 0;
   border: 0;
   font: inherit;
+  font-family: $primaryFontFamily;
   vertical-align: baseline;
 }
 

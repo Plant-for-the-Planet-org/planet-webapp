@@ -13,6 +13,7 @@ import me from '../public/static/locales/en/me.json';
 import planet from '../public/static/locales/en/planet.json';
 import planetcash from '../public/static/locales/en/planetcash.json';
 import profile from '../public/static/locales/en/profile.json';
+import project from '../public/static/locales/en/project.json';
 import redeem from '../public/static/locales/en/redeem.json';
 import registerTrees from '../public/static/locales/en/registerTrees.json';
 import tenants from '../public/static/locales/en/tenants.json';
@@ -36,6 +37,7 @@ import meDE from '../public/static/locales/de/me.json';
 import planetDE from '../public/static/locales/de/planet.json';
 import planetcashDE from '../public/static/locales/de/planetcash.json';
 import profileDE from '../public/static/locales/de/profile.json';
+import projectDE from '../public/static/locales/de/project.json';
 import redeemDE from '../public/static/locales/de/redeem.json';
 import registerTreesDE from '../public/static/locales/de/registerTrees.json';
 import tenantsDE from '../public/static/locales/de/tenants.json';
@@ -62,6 +64,7 @@ const messages_en = {
   ...planet,
   ...planetcash,
   ...profile,
+  ...project,
   ...redeem,
   ...registerTrees,
   ...tenants,
@@ -87,6 +90,7 @@ const messages_de = {
   ...planetDE,
   ...planetcashDE,
   ...profileDE,
+  ...projectDE,
   ...redeemDE,
   ...registerTreesDE,
   ...tenantsDE,

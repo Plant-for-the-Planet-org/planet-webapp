@@ -20,6 +20,7 @@ type TRANSLATION_FILE_NAMES =
   | 'planetcash'
   | 'profile'
   | 'projectDetails'
+  | 'project'
   | 'redeem'
   | 'registerTrees'
   | 'tenants'

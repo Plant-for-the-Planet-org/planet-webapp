@@ -1,78 +1,46 @@
-import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
-import Profile from '../../../../../src/features/user/Profile/components/ProfileBox';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import MyContributions from '../../../../../src/features/user/Profile/components/MyContributions';
-import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import { User } from '@planet-sdk/common';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
 import {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import myProfileStyle from '../../../../../src/features/user/Profile/styles/MyProfile.module.scss';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { defaultTenant } from '../../../../../tenant.config';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import ProfileOuterContainer from '../../../../../src/features/user/MFV2/ProfileOuterContainer';
+import ProfileLayout from '../../../../../src/features/user/MFV2/ProfileLayout';
 
 interface Props {
   pageProps: PageProps;
 }
 
-function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
+const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Me');
-  // External imports
-  const router = useRouter();
-  const { user, contextLoaded } = useUserProps();
-  const { setTenantConfig } = useTenant();
 
-  // Internal states
-  const [profile, setProfile] = React.useState<null | User>();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
-
-  useEffect(() => {
-    if (contextLoaded) {
-      if (user) {
-        setProfile(user);
-      }
-    }
-  }, [contextLoaded, user, router]);
-
-  return (
-    tenantConfig && (
-      <UserLayout>
-        <Head>
-          <title>{t('profile')}</title>
-        </Head>
-        {profile && (
-          <>
-            <MyForestProvider>
-              <div className={myProfileStyle.profileContainer}>
-                <Profile userProfile={profile} />
-                <MyContributions profile={profile} />
-              </div>
-            </MyForestProvider>
-          </>
-        )}
-      </UserLayout>
-    )
+  return tenantConfig ? (
+    <UserLayout>
+      <Head>
+        <title>{t('profile')}</title>
+      </Head>
+      <MyForestProviderV2>
+        <ProfileOuterContainer>
+          <ProfileLayout />
+        </ProfileOuterContainer>
+      </MyForestProviderV2>
+    </UserLayout>
+  ) : (
+    <></>
   );
-}
+};
 
-export default ProfilePage;
+export default MyForestPage;
 
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
@@ -105,7 +73,15 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'profile', 'country', 'donate', 'redeem'],
+    filenames: [
+      'common',
+      'me',
+      'country',
+      'redeem',
+      'donate',
+      'profile',
+      'project',
+    ],
   });
 
   return {

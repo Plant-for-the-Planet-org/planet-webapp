@@ -16,7 +16,7 @@
     "labelCreditLimit": "Limit",
     "deactivateAccountButton": "Deactivate",
     "activateAccountButton": "Activate",
-    "accountInactiveHelpText": "This account is inactive and cannot be used to make contributions. To activate this account, please contact support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "This account is inactive and cannot be used to make contributions. To activate this account, please contact <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "You don't seem to have created a PlanetCash account yet.",
     "createPlanetCashButton": "Create Planet Cash Account",
     "accountQuotaReachedText": "You cannot create more accounts as you have exhausted your account quota.",
@@ -24,7 +24,7 @@
     "labelCountry": "Country",
     "planetCashTerms1": "By clicking \"Create PlanetCash Account\", I agree to the Terms and Conditions of Plant-for-the-Planet and PlanetCash.",
     "planetCashTerms2": "I understand that PlanetCash donations are non-refundable, and unallocated payments will be auto allocated to projects on the Platform after six months of a Payment.",
-    "planetCashTerms3": "Donations to PlanetCash Account for personal reasons are generally tax-deductible in the country selected at this step. Commercial use of PlanetCash may not be eligible for tax-deductions. If you have questions please contact support@plant-for-the-planet.org or contact your Tax Advisor.",
+    "planetCashTerms3": "Donations to PlanetCash Account for personal reasons are generally tax-deductible in the country selected at this step. Commercial use of PlanetCash may not be eligible for tax-deductions. If you have questions please contact <supportLink>support@plant-for-the-planet.org</supportLink> or contact your Tax Advisor.",
     "accountError": {
       "active_account_exists": "An active account already exists. Deactivate that account before activating another account.",
       "duplicate_account": "You have already created an account for {country}",
