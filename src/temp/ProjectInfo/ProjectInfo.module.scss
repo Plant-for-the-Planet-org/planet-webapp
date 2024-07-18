@@ -1,0 +1,207 @@
+@import '../../theme/theme';
+
+.projectInfoContainer, .moreInfoContainer, .certificationContainer, .contactDetailsContainer {
+    display: flex;
+    width: 100%;
+    max-width: 258px;
+    flex-wrap: wrap;
+    padding: 24px;
+    background: rgba(var(--abandonment-background-color-new), 0.1);
+    border-radius: 14px;
+    flex-direction: column;
+    color: #2F3336; //to be replaced
+    font-size: $fontXXSmall;
+}
+.moreInfoContainer {
+    background: rgba(var(--more-info-background-color-new), 0.1);
+    gap: 16px;
+}
+
+.certificationContainer {
+    background-color: rgba(var(--certification-background-color-new), 0.1);
+    gap: 12px;
+    height: auto;
+}
+
+.contactDetailsContainer {
+    background-color: rgba(var(--contactDetail-background-color-new), 0.1);
+}
+
+.singleRowInfoContent {
+    flex: 1;
+    .singleRowInfoTitle {
+        font-weight: 700;
+        margin-bottom: 4px;
+        text-transform: capitalize;
+        display: flex;
+        gap: 12px;
+    }   
+}
+
+.infoDetail {
+    display: flex;
+    justify-content: space-between;
+    a {
+        color: $certificationLinkColorNew;
+        font-weight: 700;   
+    }
+}
+
+.singleRowInfoContainer {
+   display: flex;
+   width: 100%;
+   flex-direction: row;
+}
+
+.seperator {
+    height: 0.5px;
+    background-color: rgba(var(--secondary-divider-color-new), 0.2);
+    margin: 12px 0;
+}
+
+.infoIconPopupContainer {
+    padding: 12px 16px;
+    font-size: $fontXXSmall;
+    max-width: 200px !important;
+}
+
+
+.abandonmentTitle {
+    display: flex;
+    gap: 12px;
+}
+
+.siteOwnershipTitle {
+   display: flex;
+   flex-direction: column;
+   font-weight: 700;
+   text-transform: capitalize;
+   gap: 3px;
+}
+
+.siteOwnershipLabelContainer {
+    display: flex;
+    gap:5px;
+    margin-bottom: 4px;
+    overflow-x: scroll;  
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+    width: 100%;
+    max-width: 258px;
+    span {
+        padding: 2px 6px;
+        background-color: rgba(var(--more-info-background-color-new), 0.2); //
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: $fontXXXSmallNew;
+        min-width: 105px;
+        white-space: nowrap;
+        text-transform: capitalize;
+       }
+}
+
+.siteOwnershipLabelContainer::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.downloadLabel {
+    padding: 2px 9px;
+    border-radius: 24px;
+    border: 0.4px solid  rgba(var(--certification-background-color-new), 0.2); 
+    background:  rgba(var(--certification-background-color-new), 0.15);
+    font-weight: 700;
+    width: fit-content;
+    cursor: pointer;
+    a {
+        color:  rgb(var(--certification-background-color-new));
+    }
+}
+.spendingsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px
+}
+.spendingDetail {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    min-width: 50%;
+}
+.reportsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.downloadIcon {
+    display: none;
+}
+
+.contactText {
+    margin-top: 12.87px;
+}
+
+.singleContact {
+    display: flex;
+    background-color: rgba(var(--secondary-divider-color-new), 0.12);
+    border-radius: 8px;
+    padding: 0 10.5px;
+    min-height: 41px;
+    margin-bottom: 8px;
+    align-items: center;
+    gap: 8.5px;
+    max-width: 258px;
+
+    .icon {
+        width: 21px;
+        height: 21px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $backgroundColor;
+        flex-shrink: 0;
+    }
+    .title {
+        font-size: $fontXXSmall;
+        font-weight: 500;
+        color: #2F3336; //to be replaced
+    }
+    .rightArrow {
+        margin-left: auto;
+    }
+}
+
+
+@include xsPhoneView {
+    .contactDetailsContainer, .moreInfoContainer, .certificationContainer, .projectInfoContainer {
+        max-width: 240px;
+    }
+    .downloadLabel {
+        background-color: transparent;
+        border: 0px;
+        font-weight: 400;
+        color: inherit;
+        padding: 0;
+        cursor: none;
+    }
+    .spendingDetail {
+        width: 100%;
+        gap:32px;
+    }
+    .downloadIcon {
+        display: inline;
+        margin-left: auto;
+        cursor: pointer;
+    }
+    .spendingsContainer {
+        gap: 2px;
+    }
+    .reportsContainer {
+        flex-direction: column;
+        gap:2px;
+        >div {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

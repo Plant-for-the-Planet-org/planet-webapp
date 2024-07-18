@@ -17,16 +17,16 @@ const SingleMarkerImageContainer = ({
   isGiftContribution,
   isMergeContribution,
 }: SingleMarkerImageContainerProps) => {
-  const { primaryDarkColorX, lightBlueColor } = theme;
+  const { primaryColorNew, lightBlueColor } = theme;
   const _renderTreeIcon = () => {
     switch (true) {
       case isNormalTreeDonation ||
         isRegisteredTree ||
         isMergeContribution ||
         isGiftContribution:
-        return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
+        return <PlantedTreesSvg color={`${primaryColorNew}`} />;
       case isRestorationTreePlantation:
-        return <RestoredSvg color={`${primaryDarkColorX}`} />;
+        return <RestoredSvg color={`${primaryColorNew}`} />;
       case isConservation:
         return <ConservationTreeSvg color={`${lightBlueColor}`} />;
       default:
