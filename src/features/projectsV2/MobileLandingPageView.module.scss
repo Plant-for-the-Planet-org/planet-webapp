@@ -1,3 +1,5 @@
+@import '../../theme/theme';
+
 .mobileLandingPage {
   height: 100vh;
   width: 100%;
@@ -5,17 +7,24 @@
   flex-direction: column;
   align-items: center;
   gap: 17px;
-  background: grey;
-  padding-bottom: 100px;
+  background: #fff;
+  padding-bottom: 80px;
   position: fixed;
 }
-
+.mainMapContainer {
+  width: inherit;
+  height: inherit;
+  background: #87ceeb; // will be remove in future
+}
 .projectListControltabsContainer {
-  width: 92%;
-  min-height: 28px;
+  max-width: max-content;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 40px;
-  background: #fff;
   border-radius: 5px;
+  min-height: 28px;
 }
 
 .projectListMainContainer {
@@ -23,10 +32,10 @@
   height: calc(100% - 85px);
   background: #fff;
   border-radius: 16px;
+  margin-top: 85px;
   .projectListSubContainer {
     height: 100%;
     overflow-y: auto;
-    padding: 16px;
     &::-webkit-scrollbar {
       background: transparent;
     }
@@ -36,8 +45,30 @@
 
 //need to be remove in future
 .projectCard {
-  background: #f0f0f0;
+  background: #e28743;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
+  min-height: 225px;
+}
+
+.inActiveMapTab,
+.activeMapTab {
+  padding: 4px;
+  border-radius: 8px;
+  font-size: $fontXXSmall;
+  font-weight: 400;
+  min-width: 65px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+}
+
+.inActiveMapTab {
+  background: #fff;
+  border: solid 2px $primaryColor;
+  color: #000;
+}
+
+.activeMapTab {
+  background: $primaryColor;
+  color: #fff;
 }
