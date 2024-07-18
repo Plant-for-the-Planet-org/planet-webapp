@@ -1,0 +1,43 @@
+.mobileLandingPage {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 17px;
+  background: grey;
+  padding-bottom: 100px;
+  position: fixed;
+}
+
+.projectListControltabsContainer {
+  width: 92%;
+  min-height: 28px;
+  margin-top: 40px;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.projectListMainContainer {
+  width: 92%;
+  height: calc(100% - 85px);
+  background: #fff;
+  border-radius: 16px;
+  .projectListSubContainer {
+    height: 100%;
+    overflow-y: auto;
+    padding: 16px;
+    &::-webkit-scrollbar {
+      background: transparent;
+    }
+    scrollbar-width: none; // for firefox
+  }
+}
+
+//need to be remove in future
+.projectCard {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}

@@ -14,6 +14,7 @@ import getMessagesForPage from '../../../../../src/utils/language/getMessagesFor
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { ReactElement, useEffect } from 'react';
+import MobileLandingPageView from '../../../../../src/features/projectsV2/MobileLandingPageView';
 
 interface Props {
   pageProps: PageProps;
@@ -29,7 +30,11 @@ export default function ProjectListPage({ pageProps }: Props): ReactElement {
     }
   }, [router.isReady]);
 
-  return <div style={{ marginTop: '80px' }}>ProjectListPage</div>;
+  return (
+    <div style={{ marginTop: '80px' }}>
+      <MobileLandingPageView />
+    </div>
+  );
 }
 
 export const getStaticPaths = async () => {
