@@ -14,6 +14,8 @@ import getMessagesForPage from '../../../../../src/utils/language/getMessagesFor
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { ReactElement, useEffect } from 'react';
+import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
+import Link from 'next/link';
 
 interface Props {
   pageProps: PageProps;
@@ -29,8 +31,17 @@ export default function ProjectListPage({ pageProps }: Props): ReactElement {
     }
   }, [router.isReady]);
 
-  return <div style={{ marginTop: '80px' }}>ProjectListPage</div>;
+  return (
+    <div>
+      <h2>ProjectListPage</h2>
+      <Link href="/en/pr/lemon">Go to List Page</Link>
+    </div>
+  );
 }
+
+ProjectListPage.getLayout = function getLayout(page: ReactElement) {
+  return <ProjectsLayout>{page}</ProjectsLayout>;
+};
 
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();

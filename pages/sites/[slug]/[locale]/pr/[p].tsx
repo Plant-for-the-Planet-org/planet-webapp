@@ -15,6 +15,8 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { ReactElement, useEffect } from 'react';
 import { v4 } from 'uuid';
+import Link from 'next/link';
+import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
 
 interface Props {
   pageProps: PageProps;
@@ -30,8 +32,17 @@ export default function ProjectDetailsPage({ pageProps }: Props): ReactElement {
     }
   }, [router.isReady]);
 
-  return <div style={{ marginTop: '80px' }}>ProjectDetailsPage</div>;
+  return (
+    <div>
+      <h2>ProjectDetailsPage</h2>
+      <Link href="/en/pr">Go to Details Page</Link>
+    </div>
+  );
 }
+
+ProjectDetailsPage.getLayout = function getLayout(page: ReactElement) {
+  return <ProjectsLayout>{page}</ProjectsLayout>;
+};
 
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
