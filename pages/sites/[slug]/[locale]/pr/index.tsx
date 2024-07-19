@@ -13,16 +13,30 @@ import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import MobileLandingPageView from '../../../../../src/features/projectsV2/MobileLandingPageView';
+import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
+import Link from 'next/link';
 
 interface Props {
   pageProps: PageProps;
 }
 
 export default function ProjectListPage({ pageProps }: Props): ReactElement {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 481);
+
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 481);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -31,11 +45,22 @@ export default function ProjectListPage({ pageProps }: Props): ReactElement {
   }, [router.isReady]);
 
   return (
-    <div style={{ marginTop: '80px' }}>
-      <MobileLandingPageView />
+    <div>
+      {isMobile ? (
+        <MobileLandingPageView />
+      ) : (
+        <>
+          <h2>ProjectListPage</h2>
+          <Link href="/en/pr/lemon">Go to List Page</Link>
+        </>
+      )}
     </div>
   );
 }
+
+ProjectListPage.getLayout = function getLayout(page: ReactElement) {
+  return <ProjectsLayout>{page}</ProjectsLayout>;
+};
 
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();

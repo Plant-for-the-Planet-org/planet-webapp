@@ -3,10 +3,10 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
+import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
@@ -40,9 +40,8 @@ import {
   getTenantSlug,
 } from '../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import { NextIntlClientProvider } from 'next-intl';
-
-type AppOwnProps = { tenantConfig: Tenant };
+import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
+import { NextPage } from 'next';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -106,15 +105,27 @@ const onRedirectCallback = (appState: any) => {
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-export interface MyAppProps extends AppProps {
+type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
+  Component: NextPageWithLayout;
   emotionCache?: EmotionCache;
-}
+  pageProps: PlanetWebPageProps;
+};
+
+type PlanetWebPageProps = {
+  tenantConfig: Tenant;
+  messages?: AbstractIntlMessages;
+  [key: string]: any;
+};
 
 const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-}: MyAppProps & AppOwnProps) => {
+}: AppPropsWithLayout) => {
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
@@ -163,7 +174,7 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
-  const ProjectProps = {
+  const projectProps = {
     pageProps,
     currencyCode,
     setCurrencyCode,
@@ -204,6 +215,9 @@ const PlanetWeb = ({
   React.useEffect(() => {
     setshowVideo(localShowVideo);
   }, [localShowVideo]);
+
+  const getLayout = Component.getLayout ?? ((page) => page);
+  const pageContent = getLayout(<Component {...pageProps} {...projectProps} />);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -271,7 +285,7 @@ const PlanetWeb = ({
                                             setshowVideo={setshowVideo}
                                           />
                                         ) : null}
-                                        <Component {...ProjectProps} />
+                                        {pageContent}
                                       </AnalyticsProvider>
                                     </BulkCodeProvider>
                                   </ProjectPropsProvider>
@@ -297,7 +311,7 @@ const PlanetWeb = ({
 
 PlanetWeb.getInitialProps = async (
   context: AppContext
-): Promise<AppOwnProps & AppInitialProps> => {
+): Promise<AppInitialProps & { pageProps: PlanetWebPageProps }> => {
   const ctx = await App.getInitialProps(context);
 
   const _tenantSlug = await getTenantSlug(
@@ -308,12 +322,13 @@ PlanetWeb.getInitialProps = async (
 
   const tenantConfig = await getTenantConfig(tenantSlug);
 
-  const pageProps = {
-    ...ctx.pageProps,
-    tenantConfig,
+  return {
+    ...ctx,
+    pageProps: {
+      ...ctx.pageProps,
+      tenantConfig,
+    },
   };
-
-  return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
 };
 
 export default trpc.withTRPC(PlanetWeb);

@@ -1,14 +1,14 @@
 @import '../../theme/theme';
 
 .mobileLandingPage {
-  height: 100vh;
+  height: 96vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 17px;
-  background: #fff;
-  padding-bottom: 80px;
+  background: transparent;
+  padding-bottom: 75px;
   position: fixed;
 }
 .mainMapContainer {
@@ -30,7 +30,7 @@
 .projectListMainContainer {
   width: 92%;
   height: calc(100% - 85px);
-  background: #fff;
+  background: transparent;
   border-radius: 16px;
   margin-top: 85px;
   .projectListSubContainer {
