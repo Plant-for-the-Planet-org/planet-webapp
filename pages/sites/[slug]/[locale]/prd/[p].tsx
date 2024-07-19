@@ -34,7 +34,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
   return (
     <div>
       <h2>ProjectDetailsPage</h2>
-      <Link href="/en/pr">Go to List Page</Link>
+      <Link href="/en/prd">Go to List Page</Link>
     </div>
   );
 };
@@ -43,7 +43,12 @@ ProjectDetailsPage.getLayout = function getLayout(
   page: ReactElement,
   pageComponentProps: PageComponentProps
 ): ReactElement {
-  return (
+  return pageComponentProps.isMobile ? (
+    // Temp div, remove when implementing mobile layout
+    <div className="mobile-layout" style={{ marginTop: '100px' }}>
+      {page}
+    </div>
+  ) : (
     <ProjectsLayout setCurrencyCode={pageComponentProps.setCurrencyCode}>
       {page}
     </ProjectsLayout>

@@ -3,7 +3,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, useMemo } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
@@ -132,6 +132,7 @@ export type PageComponentProps = {
   pageProps: PageProps;
   currencyCode: string;
   setCurrencyCode: SetState<string>;
+  isMobile: boolean;
 };
 
 const PlanetWeb = ({
@@ -187,10 +188,16 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
+  const isMobile = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 481;
+  }, [typeof window !== 'undefined' && window.innerWidth]);
+
   const pageComponentProps = {
     pageProps,
     currencyCode,
     setCurrencyCode,
+    isMobile,
   };
 
   const [showVideo, setshowVideo] = React.useState(true);
