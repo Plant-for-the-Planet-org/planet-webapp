@@ -1,9 +1,7 @@
-import { AbstractIntlMessages } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -17,12 +15,11 @@ import { ReactElement, useEffect } from 'react';
 import { v4 } from 'uuid';
 import Link from 'next/link';
 import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
+import { PageComponentProps, PageProps } from '../../../../_app';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function ProjectDetailsPage({ pageProps }: Props): ReactElement {
+export default function ProjectDetailsPage({
+  pageProps,
+}: PageComponentProps): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -62,11 +59,6 @@ export const getStaticPaths = async () => {
     fallback: 'blocking',
   };
 };
-
-interface PageProps {
-  messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
-}
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext

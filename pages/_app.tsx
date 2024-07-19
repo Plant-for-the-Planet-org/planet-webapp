@@ -42,6 +42,7 @@ import {
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import { NextPage } from 'next';
+import { SetState } from '../src/features/common/types/common';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -105,20 +106,26 @@ const onRedirectCallback = (appState: any) => {
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+type NextPageWithLayout<P = PageComponentProps, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
   Component: NextPageWithLayout;
   emotionCache?: EmotionCache;
-  pageProps: PlanetWebPageProps;
+  pageProps: PageProps;
 };
 
-type PlanetWebPageProps = {
+export type PageProps = {
   tenantConfig: Tenant;
   messages?: AbstractIntlMessages;
   [key: string]: any;
+};
+
+export type PageComponentProps = {
+  pageProps: PageProps;
+  currencyCode: string;
+  setCurrencyCode: SetState<string>;
 };
 
 const PlanetWeb = ({
@@ -217,7 +224,7 @@ const PlanetWeb = ({
   }, [localShowVideo]);
 
   const getLayout = Component.getLayout ?? ((page) => page);
-  const pageContent = getLayout(<Component {...pageProps} {...projectProps} />);
+  const pageContent = getLayout(<Component {...projectProps} />);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -311,7 +318,7 @@ const PlanetWeb = ({
 
 PlanetWeb.getInitialProps = async (
   context: AppContext
-): Promise<AppInitialProps & { pageProps: PlanetWebPageProps }> => {
+): Promise<AppInitialProps & { pageProps: PageProps }> => {
   const ctx = await App.getInitialProps(context);
 
   const _tenantSlug = await getTenantSlug(
