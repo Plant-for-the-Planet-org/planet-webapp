@@ -1,0 +1,33 @@
+@import '../../../../theme/theme';
+
+.projectsLayout {
+  margin-top: 80px;
+  height: calc(100vh - 80px);
+  background: linear-gradient(
+      0deg,
+      rgba(172, 172, 172, 0.15) 0%,
+      rgba(172, 172, 172, 0.15) 100%
+    ),
+    #fff;
+  padding: 24px 20px 30px;
+  position: relative;
+}
+
+.mainContent {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contentContainer {
+  width: 338px;
+  max-width: 100%;
+  background: white;
+}
+
+.mapContainer {
+  flex: 1;
+  background: skyblue;
+  border-radius: 16px;
+}

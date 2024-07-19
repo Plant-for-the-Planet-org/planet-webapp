@@ -15,11 +15,13 @@ import { ReactElement, useEffect } from 'react';
 import { v4 } from 'uuid';
 import Link from 'next/link';
 import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
-import { PageComponentProps, PageProps } from '../../../../_app';
+import {
+  NextPageWithLayout,
+  PageComponentProps,
+  PageProps,
+} from '../../../../_app';
 
-export default function ProjectDetailsPage({
-  pageProps,
-}: PageComponentProps): ReactElement {
+const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -32,14 +34,23 @@ export default function ProjectDetailsPage({
   return (
     <div>
       <h2>ProjectDetailsPage</h2>
-      <Link href="/en/pr">Go to Details Page</Link>
+      <Link href="/en/pr">Go to List Page</Link>
     </div>
   );
-}
-
-ProjectDetailsPage.getLayout = function getLayout(page: ReactElement) {
-  return <ProjectsLayout>{page}</ProjectsLayout>;
 };
+
+ProjectDetailsPage.getLayout = function getLayout(
+  page: ReactElement,
+  pageComponentProps: PageComponentProps
+): ReactElement {
+  return (
+    <ProjectsLayout setCurrencyCode={pageComponentProps.setCurrencyCode}>
+      {page}
+    </ProjectsLayout>
+  );
+};
+
+export default ProjectDetailsPage;
 
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
@@ -68,7 +79,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common'],
+    filenames: ['common', 'maps'],
   });
 
   return {

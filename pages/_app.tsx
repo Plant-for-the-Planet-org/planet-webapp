@@ -106,8 +106,14 @@ const onRedirectCallback = (appState: any) => {
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-type NextPageWithLayout<P = PageComponentProps, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
+export type NextPageWithLayout<P = PageComponentProps, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (
+    page: ReactElement,
+    pageComponentProps: PageComponentProps
+  ) => ReactNode;
 };
 
 type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
@@ -181,7 +187,7 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
-  const projectProps = {
+  const pageComponentProps = {
     pageProps,
     currencyCode,
     setCurrencyCode,
@@ -224,7 +230,10 @@ const PlanetWeb = ({
   }, [localShowVideo]);
 
   const getLayout = Component.getLayout ?? ((page) => page);
-  const pageContent = getLayout(<Component {...projectProps} />);
+  const pageContent = getLayout(
+    <Component {...pageComponentProps} />,
+    pageComponentProps
+  );
 
   if (browserCompatible) {
     return <BrowserNotSupported />;

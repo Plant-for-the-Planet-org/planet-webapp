@@ -1,17 +1,23 @@
-import { FC, useState } from 'react';
-import WebappButton from '../../WebappButton';
+import { FC } from 'react';
+import styles from './ProjectsLayout.module.scss';
+import Credits from '../../../projects/components/maps/Credits';
+import { SetState } from '../../types/common';
 
-const ProjectsLayout: FC = ({ children }) => {
-  const [buttonState, setButtonState] = useState(false);
+interface ProjectsLayoutProps {
+  setCurrencyCode: SetState<string>;
+}
 
+const ProjectsLayout: FC<ProjectsLayoutProps> = ({
+  children,
+  setCurrencyCode,
+}) => {
   return (
-    <div style={{ marginTop: '80px' }}>
-      <WebappButton
-        onClick={() => setButtonState(!buttonState)}
-        elementType="button"
-        text={buttonState ? 'Active' : 'Inactive'}
-      />
-      {children}
+    <div className={styles.projectsLayout}>
+      <main className={styles.mainContent}>
+        <section className={styles.contentContainer}>{children}</section>
+        <section className={styles.mapContainer}></section>
+      </main>
+      <Credits setCurrencyCode={setCurrencyCode} />
     </div>
   );
 };
