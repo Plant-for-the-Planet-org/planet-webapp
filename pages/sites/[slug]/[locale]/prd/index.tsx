@@ -19,6 +19,7 @@ import {
   PageComponentProps,
   PageProps,
 } from '../../../../_app';
+import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
@@ -43,10 +44,7 @@ ProjectListPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   return pageComponentProps.isMobile ? (
-    // Temp div, remove when implementing mobile layout
-    <div className="mobile-layout" style={{ marginTop: '100px' }}>
-      {page}
-    </div>
+    <MobileProjectsLayout>{page}</MobileProjectsLayout>
   ) : (
     <ProjectsLayout setCurrencyCode={pageComponentProps.setCurrencyCode}>
       {page}

@@ -31,3 +31,40 @@
   border-radius: 16px;
   overflow: hidden;
 }
+
+// styles for mobile layout
+
+.mobileProjectsLayout {
+  width: 100%;
+  height: calc(100vh - 80px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  padding-top: 24px;
+  &.mapMode {
+    height: 100vh;
+    margin-top: 0px;
+  }
+}
+
+.viewButton {
+  position: absolute;
+  top: 13px;
+  right: 20px;
+  z-index: 1;
+  &.viewButtonShifted {
+    top: 95px;
+  }
+}
+
+.mobileContentContainer {
+  background: grey;
+  height: 100%;
+  width: 100%;
+}
+
+.mobileMapContainer {
+  width: inherit;
+  height: 100%;
+}
