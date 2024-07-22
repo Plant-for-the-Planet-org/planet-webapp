@@ -36,12 +36,13 @@
 
 .mobileProjectsLayout {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 80px);
   position: relative;
   display: flex;
   justify-content: center;
-  margin-top: 90px;
-  &.compact {
+  margin-top: 80px;
+  padding-top: 24px;
+  &.mapMode {
     height: 100vh;
     margin-top: 0px;
   }
@@ -60,7 +61,7 @@
 .mobileContentContainer {
   background: grey;
   height: 100%;
-  width: calc(100vw - 20px);
+  width: 100%;
 }
 
 .mobileMapContainer {

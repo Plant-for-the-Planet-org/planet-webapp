@@ -7,7 +7,7 @@ const MobileProjectsLayout = ({ children }: { children: ReactElement }) => {
   const [isMapMode, setIsMapMode] = useState(false);
 
   const mobileLayoutClass = `${style.mobileProjectsLayout} ${
-    isMapMode ? style.compact : ''
+    isMapMode ? style.mapMode : ''
   }`;
 
   const viewButtonClass = `${style.viewButton} ${
