@@ -36,28 +36,31 @@
 
 .mobileProjectsLayout {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 100px);
   position: relative;
-  padding: 100px 5px 20px 5px;
   display: flex;
   justify-content: center;
-
+  margin-top: 90px;
   &.compact {
-    padding: 0px;
+    height: 100vh;
+    margin-top: 0px;
   }
 }
 
-.mapButton {
+.viewButton {
   position: absolute;
-  top: 100px;
+  top: 13px;
   right: 20px;
   z-index: 1;
+  &.viewButtonShifted {
+    top: 95px;
+  }
 }
 
-.projectlistAndDetail {
+.mobileContentContainer {
   background: grey;
   height: 100%;
-  width: 94%;
+  width: calc(100vw - 20px);
 }
 
 .mobileMapContainer {

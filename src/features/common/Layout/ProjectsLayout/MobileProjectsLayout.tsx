@@ -4,27 +4,31 @@ import ProjectsMap from './ProjectsMap';
 import WebappButton from '../../WebappButton';
 
 const MobileProjectsLayout = ({ children }: { children: ReactElement }) => {
-  const [isMap, setIsMap] = useState(false);
+  const [isMapMode, setIsMapMode] = useState(false);
 
   const mobileLayoutClass = `${style.mobileProjectsLayout} ${
-    isMap ? style.compact : ''
+    isMapMode ? style.compact : ''
+  }`;
+
+  const viewButtonClass = `${style.viewButton} ${
+    isMapMode ? style.viewButtonShifted : ''
   }`;
 
   return (
     <main className={mobileLayoutClass}>
       <WebappButton
-        text="Map"
+        text={isMapMode ? 'View Info' : 'View Map'}
         variant="primary"
         elementType="button"
-        onClick={() => setIsMap(!isMap)}
-        buttonClasses={style.mapButton}
+        onClick={() => setIsMapMode(!isMapMode)}
+        buttonClasses={viewButtonClass}
       />
-      {isMap ? (
+      {isMapMode ? (
         <section className={style.mobileMapContainer}>
           <ProjectsMap />
         </section>
       ) : (
-        <section className={style.projectlistAndDetail}>{children}</section>
+        <section className={style.mobileContentContainer}>{children}</section>
       )}
     </main>
   );
