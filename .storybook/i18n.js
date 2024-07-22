@@ -19,6 +19,8 @@ import registerTrees from '../public/static/locales/en/registerTrees.json';
 import tenants from '../public/static/locales/en/tenants.json';
 import treemapper from '../public/static/locales/en/treemapper.json';
 import treemapperAnalytics from '../public/static/locales/en/treemapperAnalytics.json';
+import projectDetails from '../public/static/locales/en/projectDetails.json';
+import allProjects from '../public/static/locales/en/allProjects.json';
 
 import bulkCodesDE from '../public/static/locales/de/bulkCodes.json';
 import commonDE from '../public/static/locales/de/common.json';
@@ -41,6 +43,8 @@ import registerTreesDE from '../public/static/locales/de/registerTrees.json';
 import tenantsDE from '../public/static/locales/de/tenants.json';
 import treemapperDE from '../public/static/locales/de/treemapper.json';
 import treemapperAnalyticsDE from '../public/static/locales/de/treemapperAnalytics.json';
+import projectDetailsDE from '../public/static/locales/de/projectDetails.json';
+import allProjectsDE from '../public/static/locales/de/allProjects.json';
 
 import deepmerge from 'deepmerge';
 
@@ -66,6 +70,8 @@ const messages_en = {
   ...tenants,
   ...treemapper,
   ...treemapperAnalytics,
+  ...projectDetails,
+  ...allProjects,
 };
 
 const messages_de = {
@@ -90,6 +96,8 @@ const messages_de = {
   ...tenantsDE,
   ...treemapperDE,
   ...treemapperAnalyticsDE,
+  ...projectDetailsDE,
+  ...allProjectsDE,
 };
 
 const getMessages = (locale) => {
