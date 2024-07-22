@@ -31,3 +31,36 @@
   border-radius: 16px;
   overflow: hidden;
 }
+
+// styles for mobile layout
+
+.mobileProjectsLayout {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  padding: 100px 5px 20px 5px;
+  display: flex;
+  justify-content: center;
+
+  &.compact {
+    padding: 0px;
+  }
+}
+
+.mapButton {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  z-index: 1;
+}
+
+.projectlistAndDetail {
+  background: grey;
+  height: 100%;
+  width: 94%;
+}
+
+.mobileMapContainer {
+  width: inherit;
+  height: 100%;
+}
