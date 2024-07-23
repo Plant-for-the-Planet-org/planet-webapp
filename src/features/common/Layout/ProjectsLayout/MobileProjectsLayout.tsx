@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import style from './ProjectsLayout.module.scss';
-import ProjectsMap from './ProjectsMap';
+import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import WebappButton from '../../WebappButton';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';

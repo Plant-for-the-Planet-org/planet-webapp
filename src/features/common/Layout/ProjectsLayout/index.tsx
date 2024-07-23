@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projects/components/maps/Credits';
 import { SetState } from '../../types/common';
-import ProjectsMap from './ProjectsMap';
+import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 
