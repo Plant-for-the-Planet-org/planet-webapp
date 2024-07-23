@@ -15,13 +15,13 @@ import { APIError, handleError } from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 
-interface ProjectsContextInterface {
+interface ProjectsState {
   projects: MapProject[] | null;
   isLoading: boolean;
   isError: boolean;
 }
 
-const ProjectsContext = createContext<ProjectsContextInterface | null>(null);
+const ProjectsContext = createContext<ProjectsState | null>(null);
 
 type ProjectsProviderProps = {
   page: 'project-list' | 'project-details';
@@ -83,7 +83,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
   }, [currencyCode, setCurrencyCode]);
 
-  const value: ProjectsContextInterface | null = useMemo(
+  const value: ProjectsState | null = useMemo(
     () => ({
       projects,
       isLoading,
@@ -99,7 +99,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   );
 };
 
-export const useProjects = (): ProjectsContextInterface => {
+export const useProjects = (): ProjectsState => {
   const context = useContext(ProjectsContext);
   if (!context) {
     throw new Error('ProjectsContext must be used within ProjectsProvider');
