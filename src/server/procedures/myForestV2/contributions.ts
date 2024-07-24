@@ -86,9 +86,9 @@ async function fetchContributions(
 				contribution c
 			WHERE
 				c.deleted_at is null AND 
-				c.profile_id IN (${Prisma.join(profileIds)}) AND
+				c.profile_id IN (${Prisma.join(profileIds)}) AND 
 				(
-					(c.contribution_type = 'donation' AND c.payment_status = 'paid')
+					(c.contribution_type = 'donation' AND c.payment_status = 'paid' AND c.purpose IN ('trees', 'conservation'))
 					OR 
 					(c.contribution_type = 'planting' AND c.is_verified = '1')
 				)
