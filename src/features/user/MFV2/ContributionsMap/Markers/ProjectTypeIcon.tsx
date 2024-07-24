@@ -31,9 +31,9 @@ const ProjectTypeIcon = ({
       case 'trees':
         return unitType === 'm2'
           ? themeProperties.electricPurpleColor
-          : themeProperties.primaryDarkColorX;
+          : themeProperties.primaryColorNew;
       default:
-        return themeProperties.primaryDarkColorX;
+        return themeProperties.primaryColorNew;
     }
   };
   const pointMarkerColor = useMemo(
