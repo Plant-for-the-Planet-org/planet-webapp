@@ -13,20 +13,17 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { ReactElement, useEffect } from 'react';
 import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
-import Link from 'next/link';
 import {
   NextPageWithLayout,
   PageComponentProps,
   PageProps,
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { useProjects } from '../../../../../src/features/projectsV2/ProjectsContext';
+import ProjectSection from '../../../../../src/features/projectsV2/ProjectSection';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-
-  const { projects, isLoading, isError } = useProjects();
 
   useEffect(() => {
     if (router.isReady) {
@@ -34,16 +31,7 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
     }
   }, [router.isReady]);
 
-  return (
-    <div>
-      <h2>ProjectListPage</h2>
-      <Link href="/en/prd/lemon">Go to Details Page</Link>
-      {!isLoading && !isError && projects !== null && (
-        // To replace this with the project list
-        <div>{projects.length} projects found</div>
-      )}
-    </div>
-  );
+  return <ProjectSection />;
 };
 
 ProjectListPage.getLayout = function getLayout(
@@ -91,7 +79,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'maps', 'country'],
+    filenames: ['common', 'maps', 'country', 'projectDetails', 'donate'],
   });
 
   return {

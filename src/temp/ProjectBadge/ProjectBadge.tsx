@@ -1,10 +1,12 @@
 import React, { ReactElement, useMemo } from 'react';
-import NewInfoIcon from '../icons/NewInfoIcon';
 import OffSiteReviewedIcon from '../icons/OffSiteReviewedIcon';
 import FieldReviewedIcon from '../icons/FieldReviewedIcon';
 import styles from './Badge.module.scss';
 import TopProjectIcon from '../icons/TopProjectIcon';
 import { useTranslations } from 'next-intl';
+import CustomTooltip from '../../features/common/Layout/CustomTooltip';
+import themeProperties from '../../theme/themeProperties';
+import { useTenant } from '../../features/common/Layout/TenantContext';
 
 interface Props {
   isApproved: boolean;
@@ -20,16 +22,28 @@ interface TitleAndIconReturnType {
 const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
-
   const getTitleAndIcon = (
     isApproved: boolean,
     isTopProject: boolean,
     allowDonations: boolean
   ): TitleAndIconReturnType | undefined => {
+    const { tenantConfig } = useTenant();
     return useMemo(() => {
       if (!allowDonations) {
         return {
-          icon: <NewInfoIcon width={10} height={10} color={'var(--light)'} />,
+          icon: (
+            <CustomTooltip
+              height={10}
+              width={10}
+              color={themeProperties.light.light}
+            >
+              <div className={styles.tooltipContent}>
+                {tenantConfig.config.slug === 'salesforce'
+                  ? `${tCommon('salesforceDisabledDonateButtonText')}`
+                  : `${tCommon('disabledDonateButtonText')}`}
+              </div>
+            </CustomTooltip>
+          ),
           title: tCommon('notDonatable'),
         };
       }

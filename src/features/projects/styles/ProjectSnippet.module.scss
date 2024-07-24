@@ -32,10 +32,11 @@
 }
 
 .singleProject {
-  border: solid #FFF;
+  border: solid $light;
   border-width: 3px;
-  border-radius: 10px;
+  border-radius: 16px;
   box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .projectImage {
@@ -44,7 +45,8 @@
   background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
-  border-radius:7.2px 7.2px 0 0;
+  border-radius: 16px 16px 0px 0px;
+  overflow: hidden;
   > .projectImageBlock {
     transition: all 1s ease;
     left: 16px;
@@ -100,12 +102,10 @@
 }
 
 .projectImageFile {
-  height: 100%;
   width: 100%;
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius: 7.2px 7.2px 0 0;
 }
 
 .projectImageBlock {
@@ -149,18 +149,18 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: var(--top-project-background-color);
+  background: $topProjectBackgroundColor;
   border-radius: 14px;
   padding: 2px 8px 2px 2px;
   font-weight: 700;
   font-size: 12px;
 
   * {
-    color: #6D4230;
+    color: #6d4230;
   }
 
   .badgeIcon {
-    background-color: white;
+    background-color: $light;
     height: 24px;
     width: 24px;
     border-radius: 50%;
@@ -214,21 +214,28 @@
   cursor: pointer;
   position: relative;
   text-align: center;
-  color: #4F4F4F;
-  height: 34px;
+  color: $grayFontColorNew;
   font-size: 10px;
   font-weight: 400;
   line-height: 1.5em;
   margin-top: 10px;
   padding: 9px 0;
-  border-bottom-left-radius: 7.2px;
-  border-bottom-right-radius: 7.2px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: $primaryColorNewTransparent;
+  &.no-donation {
+    background: $mediumGrayColorTransparent;
+  }
+  &.top-approved {
+    background: $lightOrange;
+  }
 }
 
 .projectData {
   max-width: 178px;
 }
 
+// need to be remove
 .projectCost {
   display: flex;
   flex-direction: column;
@@ -282,37 +289,42 @@
   width: 0.95em;
   min-width: 0.95em;
   margin-right: 4px;
-  font-size: var(--font-xx-extra-small);
+  font-size: $fontXXSmall;
   line-height: 0.3em;
 }
 
 .topApproved {
-  background: var(--top-project-background-color);
+  background-color: $topProjectBackgroundColor !important;
+  border: 0px !important;
 }
 
 .topUnapproved {
-  background-color: #219653;
+  background-color: $primaryColorNew;
 }
 
 .notDonatable {
-  background-color: var(--non-donatable-project-background-color);
+  background-color: $nonDonatableProjectBackgroundColor;
 }
 .projectHoverIcon {
   display: inline-flex;
   font-size: 10px;
   font-weight: 700;
-  color: var(--non-donatable-project-background-color);
+  color: $nonDonatableProjectBackgroundColor;
   align-items: center;
- gap: 4px;
- line-height: normal;
+  gap: 4px;
+  line-height: normal;
 }
 
-.projectInfoPopupContainer{
+.projectInfoPopupContainer {
   margin: 10px;
   max-width: 250px;
 }
 
 .projectEcosystemOrTypeContainer {
   display: flex;
-  align-items:center;
+  align-items: center;
+}
+
+.country {
+  font-weight: 400;
 }

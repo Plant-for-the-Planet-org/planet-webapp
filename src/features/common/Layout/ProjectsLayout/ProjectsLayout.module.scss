@@ -23,7 +23,19 @@
 .contentContainer {
   width: 338px;
   max-width: 100%;
-  background: white;
+  background: transparent;
+}
+
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  overflow-y: auto;
+  margin-top: 70px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .mapContainer {
@@ -59,7 +71,7 @@
 }
 
 .mobileContentContainer {
-  background: grey;
+  padding: 0px 18px;
   height: 100%;
   width: 100%;
 }
