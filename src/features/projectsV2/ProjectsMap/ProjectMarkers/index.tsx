@@ -17,7 +17,7 @@ const ProjectMarkers = ({ projects }: ProjectMarkersProps) => {
 
   const visitProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/${projectSlug}/${
+      `/${locale}/prd/${projectSlug}/${
         embed === 'true'
           ? `${
               callbackUrl != undefined
