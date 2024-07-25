@@ -11,10 +11,8 @@ import {
 } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
-import Link from 'next/link';
 import getImageUrl from '../../../utils/getImageURL';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
@@ -33,7 +31,6 @@ interface Props {
     | ConservationProjectConcise
     | TreeProjectExtended
     | ConservationProjectExtended;
-  editMode: boolean;
   displayPopup: boolean;
 }
 
@@ -239,7 +236,6 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
 
 export default function ProjectSnippet({
   project,
-  editMode,
   displayPopup,
 }: Props): ReactElement {
   const router = useRouter();
@@ -301,13 +297,6 @@ export default function ProjectSnippet({
 
   return (
     <div className={'singleProject'}>
-      {editMode ? (
-        <Link href={`/profile/projects/${project.id}`}>
-          <button id={'projectSnipEdit'} className={'projectEditBlock'}>
-            <EditIcon></EditIcon>
-          </button>
-        </Link>
-      ) : null}
       <ImageSection {...imageProps} />
       <div className={'progressBar'}>
         <div

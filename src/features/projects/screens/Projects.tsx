@@ -275,7 +275,6 @@ function ProjectsList({
                       <ProjectSnippet
                         key={project.properties.id}
                         project={project.properties}
-                        editMode={false}
                         displayPopup={true}
                       />
                     ))
@@ -288,7 +287,6 @@ function ProjectsList({
                       <ProjectSnippet
                         key={project.properties.id}
                         project={project.properties}
-                        editMode={false}
                         displayPopup={true}
                       />
                     ))
@@ -300,7 +298,6 @@ function ProjectsList({
                     <ProjectSnippet
                       key={project.properties.id}
                       project={project.properties}
-                      editMode={false}
                       displayPopup={true}
                     />
                   ))

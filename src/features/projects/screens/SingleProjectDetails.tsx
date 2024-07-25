@@ -198,11 +198,7 @@ function SingleProjectDetails(): ReactElement {
               </button>
             )}
             <div className={'projectSnippetContainer'}>
-              <ProjectSnippet
-                project={project}
-                editMode={false}
-                displayPopup={false}
-              />
+              <ProjectSnippet project={project} displayPopup={false} />
             </div>
             {hoveredPl || selectedPl ? (
               <PlantLocationDetails {...ProjectProps} />

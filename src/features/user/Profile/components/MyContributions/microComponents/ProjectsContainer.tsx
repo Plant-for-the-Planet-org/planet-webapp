@@ -78,7 +78,6 @@ export default function ProjectsContainer({ profile }: Props) {
                   >
                     <ProjectSnippet
                       project={project.properties}
-                      editMode={false}
                       displayPopup={true}
                     />
                   </div>

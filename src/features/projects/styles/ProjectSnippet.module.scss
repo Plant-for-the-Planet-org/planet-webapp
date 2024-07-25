@@ -11,28 +11,9 @@
   scrollbar-width: none;
 }
 
-.projectEditBlock {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background-color: $backgroundColor;
-  border-radius: 50%;
-  font-size: $fontXSmall;
-  display: flex;
-  flex-direction: row;
-  height: 24px;
-  width: 24px;
-  justify-content: center;
-  align-items: center;
-  padding: 4px;
-  z-index: 9;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
+//project image
 .singleProject {
-  border: solid $light;
+  border: 2px solid $light;
   border-width: 3px;
   border-radius: 16px;
   box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
@@ -55,45 +36,6 @@
   &.projectCollapsed {
     height: 100px;
     transition: all 1s ease;
-    // > .projectImageBlock {
-    //   left: 50px;
-    // }
-  }
-}
-
-@keyframes collapseImage {
-  0% {
-    height: 160px;
-  }
-  100% {
-    height: 50px;
-  }
-}
-
-@keyframes expandImage {
-  0% {
-    height: 50px;
-  }
-  100% {
-    height: 160px;
-  }
-}
-
-@keyframes translateLeft {
-  0% {
-    left: 16px;
-  }
-  100% {
-    left: 50px;
-  }
-}
-
-@keyframes translateRight {
-  0% {
-    left: 50px;
-  }
-  100% {
-    left: 16px;
   }
 }
 
@@ -114,6 +56,7 @@
   left: 7px;
 }
 
+// project info
 .projectType,
 .projectEcosystem {
   font-family: $primaryFontFamily;
@@ -235,32 +178,10 @@
   max-width: 178px;
 }
 
-// need to be remove
 .projectCost {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-}
-
-.donateButton {
-  min-width: 75px;
-  max-width: 150px;
-  padding: 0 4px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  border-radius: 11px;
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  line-height: 1.52em;
-}
-
-.donateButton:hover {
-  cursor: pointer;
-  text-decoration: none;
 }
 
 .perUnitCost {

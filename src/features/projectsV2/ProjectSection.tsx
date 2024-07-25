@@ -14,7 +14,6 @@ const ProjectSection = () => {
         <ProjectSnippet
           key={project.properties.id}
           project={project.properties}
-          editMode={false}
           displayPopup={true}
         />
       ))}
