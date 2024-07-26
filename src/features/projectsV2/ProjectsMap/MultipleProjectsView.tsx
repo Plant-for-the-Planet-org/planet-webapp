@@ -1,14 +1,7 @@
 import { useMemo } from 'react';
-import { MapProject } from '../../common/types/projectv2';
 import { useProjects } from '../ProjectsContext';
-import ProjectMarkers from './ProjectMarkers';
+import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectType } from './utils';
-
-type CategorizedProjects = {
-  topApprovedProjects: MapProject[];
-  nonDonatableProjects: MapProject[];
-  regularDonatableProjects: MapProject[];
-};
 
 const MultipleProjectsView = () => {
   const { projects, isLoading, isError } = useProjects();
@@ -42,23 +35,7 @@ const MultipleProjectsView = () => {
     );
   }, [projects, isLoading, isError]);
 
-  const {
-    topApprovedProjects,
-    nonDonatableProjects,
-    regularDonatableProjects,
-  } = categorizedProjects;
-
-  const renderMarkers = (projects: MapProject[]) => (
-    <ProjectMarkers projects={projects} />
-  );
-
-  return (
-    <>
-      {renderMarkers(nonDonatableProjects)}
-      {renderMarkers(regularDonatableProjects)}
-      {renderMarkers(topApprovedProjects)}
-    </>
-  );
+  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
 };
 
 export default MultipleProjectsView;

@@ -1,17 +1,35 @@
-import { Marker } from 'react-map-gl-v7/maplibre';
+import { useContext, useMemo, useRef, useState } from 'react';
 import { MapProject } from '../../../common/types/projectv2';
-import styles from './ProjectMarkers.module.scss';
+import ProjectPopup from '../ProjectPopup';
+import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
-import { useContext } from 'react';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import ProjectMarkerIcon from './ProjectMarkerIcon';
 
+export type CategorizedProjects = {
+  topApprovedProjects: MapProject[];
+  nonDonatableProjects: MapProject[];
+  regularDonatableProjects: MapProject[];
+};
 interface ProjectMarkersProps {
-  projects: MapProject[];
+  categorizedProjects: CategorizedProjects;
 }
 
-const ProjectMarkers = ({ projects }: ProjectMarkersProps) => {
+type ClosedPopupState = {
+  show: false;
+};
+
+type OpenPopupState = {
+  show: true;
+  project: MapProject;
+};
+
+type PopupState = ClosedPopupState | OpenPopupState;
+
+const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [popupState, setPopupState] = useState<PopupState>({ show: false });
+
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
 
@@ -29,30 +47,65 @@ const ProjectMarkers = ({ projects }: ProjectMarkersProps) => {
     );
   };
 
+  const initiatePopupOpen = (project: MapProject) => {
+    if (
+      popupState.show === false ||
+      popupState.project.properties.id !== project.properties.id
+    ) {
+      timerRef.current = setTimeout(() => {
+        setPopupState({
+          show: true,
+          project: project,
+        });
+      }, 300);
+    }
+  };
+
+  const handleMarkerLeave = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const initiatePopupClose = () => {
+    setTimeout(() => {
+      setPopupState({ show: false });
+    }, 200);
+  };
+
+  const {
+    topApprovedProjects,
+    nonDonatableProjects,
+    regularDonatableProjects,
+  } = categorizedProjects;
+
+  const renderMarkers = useMemo(
+    () => (projects: MapProject[]) =>
+      projects.map((project) => (
+        <SingleMarker
+          project={project}
+          key={project.properties.id}
+          onMouseOver={() => initiatePopupOpen(project)}
+          onMouseLeave={handleMarkerLeave}
+          visitProject={visitProject}
+        />
+      )),
+    [initiatePopupOpen, handleMarkerLeave, visitProject]
+  );
+
   return (
     <>
-      {projects.map((project) => (
-        <Marker
-          key={project.properties.id}
-          latitude={project.geometry.coordinates[1]}
-          longitude={project.geometry.coordinates[0]}
-          anchor="bottom"
-          offset={[0, 0]}
-        >
-          <div className={styles.markerContainer}>
-            <div
-              className={styles.marker}
-              onClick={() => visitProject(project.properties.slug)}
-              onKeyDown={() => visitProject(project.properties.slug)}
-              role="button"
-              tabIndex={0}
-              onFocus={() => {}} //Do we want to allow keyboard navigation for the map? In that case, perhaps we should make it obvious that the marker is focused
-            >
-              <ProjectMarkerIcon projectProperties={project.properties} />
-            </div>
-          </div>
-        </Marker>
-      ))}
+      {renderMarkers(nonDonatableProjects)}
+      {renderMarkers(regularDonatableProjects)}
+      {renderMarkers(topApprovedProjects)}
+      {popupState.show && (
+        <ProjectPopup
+          project={popupState.project}
+          handlePopupLeave={initiatePopupClose}
+          visitProject={visitProject}
+        />
+      )}
     </>
   );
 };
