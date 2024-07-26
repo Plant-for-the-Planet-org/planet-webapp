@@ -1,13 +1,12 @@
 import React, { ReactElement, useMemo } from 'react';
-import OffSiteReviewedIcon from '../icons/OffSiteReviewedIcon';
-import FieldReviewedIcon from '../icons/FieldReviewedIcon';
-import styles from './Badge.module.scss';
-import TopProjectIcon from '../icons/TopProjectIcon';
+import OffSiteReviewedIcon from '../../../../../public/assets/images/icons/projectV2/OffSiteReviewedIcon';
+import FieldReviewedIcon from '../../../../../public/assets/images/icons/projectV2/FieldReviewedIcon';
+import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/TopProjectIcon';
+import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import style from '../../styles/Badge.module.scss';
 import { useTranslations } from 'next-intl';
-import CustomTooltip from '../../features/common/Layout/CustomTooltip';
-import themeProperties from '../../theme/themeProperties';
-import { useTenant } from '../../features/common/Layout/TenantContext';
-import NewInfoIcon from '../icons/NewInfoIcon';
+import CustomTooltip from '../../../common/Layout/CustomTooltip';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   isApproved: boolean;
@@ -18,7 +17,7 @@ interface Props {
 interface TitleAndIconReturnType {
   icon: ReactElement;
   title: string;
-  displayTooltip: boolean;
+  displayPopup: boolean;
 }
 
 const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
@@ -31,22 +30,22 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
       notDonatable: {
         icon: <NewInfoIcon width={10} />,
         title: tCommon('notDonatable'),
-        displayTooltip: true,
+        displayPopup: true,
       },
       topProject: {
         icon: <TopProjectIcon width={11} />,
         title: tCommon('topProject'),
-        displayTooltip: true,
+        displayPopup: true,
       },
       fieldReviewed: {
         icon: <FieldReviewedIcon width={10} />,
         title: tProjectDetails('fieldReviewed'),
-        displayTooltip: false,
+        displayPopup: false,
       },
       offSiteReviewed: {
         icon: <OffSiteReviewedIcon width={10} />,
         title: tProjectDetails('offSiteReviewed'),
-        displayTooltip: false,
+        displayPopup: false,
       },
     };
     const { notDonatable, topProject, fieldReviewed, offSiteReviewed } =
@@ -60,7 +59,7 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
   const getMessage = (title: string | undefined) => {
     if (title === tCommon('notDonatable')) {
       return (
-        <div className={styles.tooltipContent}>
+        <div className={style.tooltipContent}>
           {tenantConfig.config.slug === 'salesforce'
             ? `${tCommon('salesforceDisabledDonateButtonText')}`
             : `${tCommon('disabledDonateButtonText')}`}
@@ -68,17 +67,14 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
       );
     } else if (title === tCommon('topProject')) {
       return (
-        <div className="topProjectPopupContainer">
+        <div className={style.tooltipContent}>
           {tCommon.rich('top_project_standards_fulfilled', {
             standardsLink: (chunks) => (
               <a
                 target="_blank"
                 href={tCommon('standardsLink')}
                 rel="noreferrer"
-                style={{
-                  color: themeProperties.primaryColor,
-                  fontWeight: 400,
-                }}
+                className={style.standardsLink}
                 onClick={(e) => e.stopPropagation()}
               >
                 {chunks}
@@ -90,16 +86,16 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
     }
     return null;
   };
-  const { icon, title, displayTooltip } = badgeConfig || {};
+  const { icon, title, displayPopup } = badgeConfig || {};
   return (
     <CustomTooltip
       badgeContent={
-        <div className={styles.projectBadge}>
-          <div className={styles.badgeIcon}>{icon}</div>
-          <div className={styles.badgeTitle}>{title}</div>
+        <div className={style.projectBadge}>
+          <div className={style.badgeIcon}>{icon}</div>
+          <div className={style.badgeTitle}>{title}</div>
         </div>
       }
-      shouldDisplayTooltip={displayTooltip}
+      shouldDisplayPopup={displayPopup}
     >
       {getMessage(title)}
     </CustomTooltip>

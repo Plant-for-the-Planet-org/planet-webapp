@@ -31,6 +31,7 @@ const themeProperties = {
   ceruleanBlueColor: '#2d9cdb0d',
   mintGreenColor: '#6fcf97',
   mediumGrayColor: '#828282',
+  CharcoalGray: '#242424',
   mediumGrayColorTransparent: '#82828233',
   lightGrayColor: '#f2f2f2',
   amethystPurpleColor: '#9b51e00d',

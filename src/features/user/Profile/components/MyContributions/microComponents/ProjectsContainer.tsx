@@ -12,7 +12,7 @@ import { MapProject } from '../../../../../common/types/ProjectPropsContextInter
 import { useTenant } from '../../../../../common/Layout/TenantContext';
 
 const ProjectSnippet = dynamic(
-  () => import('../../../../../projects/components/ProjectSnippet'),
+  () => import('../../../../../projectsV2/components/ProjectSnippet'),
   {
     loading: () => <ProjectLoader />,
   }

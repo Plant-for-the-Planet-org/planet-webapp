@@ -26,9 +26,12 @@ interface Props {
   setsearchedProjects: SetState<MapProject[]>;
 }
 
-const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
-  loading: () => <ProjectLoader />,
-});
+const ProjectSnippet = dynamic(
+  () => import('../../projectsV2/components/ProjectSnippet'),
+  {
+    loading: () => <ProjectLoader />,
+  }
+);
 
 function ProjectsList({
   projects,

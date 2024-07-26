@@ -1,0 +1,14 @@
+@import '../../../theme/theme';
+
+// temporary file will be deleted later on
+
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

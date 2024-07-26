@@ -1,5 +1,5 @@
-import ProjectSnippet from '../projects/components/ProjectSnippet';
-import style from '../common/Layout/ProjectsLayout/ProjectsLayout.module.scss';
+import ProjectSnippet from './components/ProjectSnippet';
+import style from './styles/ProjectSection.module.scss';
 import { useProjects } from './ProjectsContext';
 
 const ProjectSection = () => {
@@ -14,7 +14,7 @@ const ProjectSection = () => {
         <ProjectSnippet
           key={project.properties.id}
           project={project.properties}
-          displayPopup={true}
+          shouldDisplayPopup={true}
         />
       ))}
     </div>

@@ -11,31 +11,27 @@
   scrollbar-width: none;
 }
 
-//project image
 .singleProject {
   border: 2px solid $light;
   border-width: 3px;
   border-radius: 16px;
-  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
   position: relative;
+  @include xsPhoneView {
+    box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  }
 }
-
+//project image
 .projectImage {
   height: 160px;
   width: 100%;
   background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
-  border-radius: 16px 16px 0px 0px;
+  border-radius: 14px 14px 0px 0px;
   overflow: hidden;
   > .projectImageBlock {
     transition: all 1s ease;
     left: 16px;
-  }
-
-  &.projectCollapsed {
-    height: 100px;
-    transition: all 1s ease;
   }
 }
 
@@ -75,6 +71,7 @@
   font-size: $fontMedium;
   color: $light;
   padding-right: 16px;
+  display: flex;
 }
 
 .verifiedIcon {
@@ -83,6 +80,8 @@
   width: 0.95em;
   min-width: 0.95em;
   line-height: 0.95em;
+  margin-left: 4px;
+  margin-top: 2px;
 }
 
 .topProjectBadge {
@@ -120,7 +119,7 @@
 .progressBar {
   height: 4px;
   width: 100%;
-  background-color: $dividerColor;
+  background-color: $charcoalGray;
 }
 
 .progressBarHighlight {
@@ -163,8 +162,8 @@
   line-height: 1.5em;
   margin-top: 10px;
   padding: 9px 0;
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
   background: $primaryColorNewTransparent;
   &.no-donation {
     background: $mediumGrayColorTransparent;
@@ -172,10 +171,6 @@
   &.top-approved {
     background: $lightOrange;
   }
-}
-
-.projectData {
-  max-width: 178px;
 }
 
 .projectCost {
@@ -192,19 +187,15 @@
   font-weight: 700;
 }
 
-.perUnitCost > span {
+.perUnitCost {
   font-family: $primaryFontFamily;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .topProjectReportsContainer {
   margin: 10px;
 }
 
-.topProjectPopupContainer {
-  margin: 10px;
-  width: 300px;
-}
 .projectTypeIcon {
   display: inline-block;
   width: 0.95em;
@@ -215,8 +206,12 @@
 }
 
 .topApproved {
-  background-color: $topProjectBackgroundColor !important;
-  border: 0px !important;
+  background-color: $topProjectBackgroundColor;
+  border: none;
+  &:hover {
+    background-color: $topProjectBackgroundColor;
+    border: none;
+  }
 }
 
 .topUnapproved {

@@ -26,17 +26,6 @@
   background: transparent;
 }
 
-.projectList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: 100%;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 .mapContainer {
   flex: 1;
   border-radius: 16px;

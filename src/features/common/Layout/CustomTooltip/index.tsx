@@ -2,30 +2,26 @@ import { ReactElement, ReactNode } from 'react';
 import { bindHover, bindPopover } from 'material-ui-popup-state';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { usePopupState } from 'material-ui-popup-state/hooks';
-import style from '../../../../temp/ProjectBadge/Badge.module.scss';
 
 interface Props {
   badgeContent: ReactElement;
   children: ReactNode;
-  shouldDisplayTooltip: boolean | undefined;
+  shouldDisplayPopup: boolean | undefined;
 }
 
 const CustomTooltip = ({
   children,
   badgeContent,
-  shouldDisplayTooltip,
+  shouldDisplayPopup,
 }: Props) => {
   const abandonmentInfoPopupState = usePopupState({
     variant: 'popover',
     popupId: 'abandonmentInfoPopover',
   });
   return (
-    <div
-      {...bindHover(abandonmentInfoPopupState)}
-      className={style.projectSnippetTooltip}
-    >
+    <div {...bindHover(abandonmentInfoPopupState)}>
       {badgeContent}
-      {shouldDisplayTooltip && (
+      {shouldDisplayPopup && (
         <HoverPopover
           {...bindPopover(abandonmentInfoPopupState)}
           anchorOrigin={{

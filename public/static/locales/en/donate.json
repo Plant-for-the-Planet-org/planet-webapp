@@ -15,6 +15,7 @@
     "readMore": "Read More",
     "readLess": "Read Less",
     "treeDonation": "Tree Donation",
+    "treeDonated": "{count, plural, =1 {Tree donated} other {Trees donated}}",
     "myDonationGiftToSomeone": "My donation is dedicated to someone",
     "taxDeductionNotYetAvailable": "Tax deduction is not yet available for ",
     "taxDeductionNotAvailableForProject": "Tax deduction is not yet available for this project",

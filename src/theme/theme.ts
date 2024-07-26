@@ -18,6 +18,7 @@ const {
   horizontalLineColorNew,
   exploreDescriptionBackground,
   lightOrange,
+  CharcoalGray,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -90,6 +91,7 @@ const getGlobalStyles = async () => {
       --amethyst-purple-color: ${theme.amethystPurpleColor};
       --cerulean-blue-color: ${theme.ceruleanBlueColor};
       --light-orange: ${lightOrange};
+      --charcoal-gray: ${CharcoalGray};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};
