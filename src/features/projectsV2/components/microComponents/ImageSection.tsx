@@ -58,12 +58,15 @@ const ImageSection = (props: ImageProps) => {
         isTopProject={isTopProject}
       />
       {image && typeof image !== 'undefined' ? (
-        <img
-          alt="projectImage"
-          src={imageSource}
-          width={'fit-content'}
-          className={style.projectImageFile}
-        />
+        <>
+          <img
+            alt="projectImage"
+            src={imageSource}
+            width={'fit-content'}
+            className={style.projectImageFile}
+          />
+          <div className={style.gradientOverlay} />
+        </>
       ) : null}
 
       <div className={style.projectImageBlock}>

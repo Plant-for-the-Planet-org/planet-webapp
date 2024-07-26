@@ -54,8 +54,8 @@ export default function ProjectSnippet({
   };
 
   const getBackgroundClass = () => {
-    if (!project.allowDonations) return 'no-donation';
-    if (_isTopProject && _isApproved) return 'top-approved';
+    if (!project.allowDonations) return `${style.noDonation}`;
+    if (_isTopProject && _isApproved) return `${style.tpoBackground}`;
     return '';
   };
 
