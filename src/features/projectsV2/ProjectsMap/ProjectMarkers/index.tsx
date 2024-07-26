@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useMemo, useRef, useState } from 'react';
 import { MapProject } from '../../../common/types/projectv2';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
@@ -80,16 +80,19 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
     regularDonatableProjects,
   } = categorizedProjects;
 
-  const renderMarkers = (projects: MapProject[]) =>
-    projects.map((project) => (
-      <SingleMarker
-        project={project}
-        key={project.properties.id}
-        onMouseOver={() => initiatePopupOpen(project)}
-        onMouseLeave={handleMarkerLeave}
-        visitProject={visitProject}
-      />
-    ));
+  const renderMarkers = useMemo(
+    () => (projects: MapProject[]) =>
+      projects.map((project) => (
+        <SingleMarker
+          project={project}
+          key={project.properties.id}
+          onMouseOver={() => initiatePopupOpen(project)}
+          onMouseLeave={handleMarkerLeave}
+          visitProject={visitProject}
+        />
+      )),
+    [initiatePopupOpen, handleMarkerLeave, visitProject]
+  );
 
   return (
     <>
