@@ -11,6 +11,7 @@ const {
   defaultFontFamily,
   primaryLightColor,
   topProjectBackgroundColor,
+  topProjectTransparentColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
@@ -75,6 +76,7 @@ const getGlobalStyles = async () => {
       --primary-dark-color: ${primaryDarkColor};
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
+      --top-project-transparent: ${topProjectTransparentColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
       --primary-color-new: ${primaryColorNew};
       --primary-color-new-transparent: ${primaryColorNewTransparent};

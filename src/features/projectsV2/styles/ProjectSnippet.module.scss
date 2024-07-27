@@ -13,7 +13,6 @@
 
 .singleProject {
   border: 2px solid $light;
-  border-width: 3px;
   border-radius: 16px;
   position: relative;
   @include xsPhoneView {
@@ -31,7 +30,7 @@
   overflow: hidden;
   > .projectImageBlock {
     transition: all 1s ease;
-    left: 16px;
+    left: 13px;
   }
 }
 
@@ -223,7 +222,7 @@
   background-color: $topProjectBackgroundColor;
   border: none;
   &:hover {
-    background-color: $topProjectBackgroundColor;
+    background-color: $topProjectTransparentColor;
     border: none;
   }
 }

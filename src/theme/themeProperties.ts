@@ -27,6 +27,7 @@ const themeProperties = {
   darkBlackColor: '#4F4F4F',
   darkOliveGreen: '#688816',
   topProjectBackgroundColor: '#F3BB44',
+  topProjectTransparentColor: '#ffd273',
   lightOrange: '#e7b24c33',
   ceruleanBlueColor: '#2d9cdb0d',
   mintGreenColor: '#6fcf97',
