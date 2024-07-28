@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement, useContext, useMemo } from 'react';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -36,10 +36,14 @@ export default function ProjectSnippet({
   const router = useRouter();
   const tCommon = useTranslations('Common');
   const { embed } = useContext(ParamsContext);
-  const progressPercentage =
-    project.purpose === 'trees' && project.countTarget
-      ? Math.min((project.countPlanted / project.countTarget) * 100, 100)
-      : 0;
+
+  const progressPercentage = useMemo(() => {
+    if (project.purpose === 'trees' && project.countTarget) {
+      return Math.min((project.countPlanted / project.countTarget) * 100, 100);
+    }
+    return 0;
+  }, [(project as TreeProjectConcise).countPlanted, project.countTarget]);
+
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const _isTopProject = (project as TreeProjectConcise).isTopProject;

@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import { CommonProps } from '../ProjectSnippet';
@@ -10,6 +11,7 @@ import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
 import style from '../../styles/ProjectSnippet.module.scss';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 type Classification =
   | 'large-scale-planting'
@@ -32,6 +34,7 @@ const ImageSection = (props: ImageProps) => {
   const {
     projectName,
     image,
+    slug,
     ecosystem,
     shouldDisplayPopup,
     projectReviews,
@@ -45,9 +48,20 @@ const ImageSection = (props: ImageProps) => {
   const tDonate = useTranslations('Donate');
   const router = useRouter();
   const locale = useLocale();
+  const { embed, callbackUrl } = useContext(ParamsContext);
 
   const handleImageClick = () => {
-    router.push(`/${locale}/prd/xyz`);
+    router.push(
+      `/${locale}/prd/${slug}/${
+        embed === 'true'
+          ? `${
+              callbackUrl != undefined
+                ? `?embed=true&callback=${callbackUrl}`
+                : '?embed=true'
+            }`
+          : ''
+      }`
+    );
   };
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   return (
