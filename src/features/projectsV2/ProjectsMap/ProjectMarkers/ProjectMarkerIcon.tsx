@@ -9,7 +9,7 @@ import {
   UrbanRestoration,
 } from '../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 import { MapProjectProperties } from '../../../common/types/projectv2';
-import { getProjectType } from '../utils';
+import { getProjectCategory } from '../utils';
 import themeProperties from '../../../../theme/themeProperties';
 
 type Props = {
@@ -17,12 +17,12 @@ type Props = {
 };
 
 const ProjectMarkerIcon = ({ projectProperties }: Props) => {
-  const projectType = getProjectType(projectProperties);
+  const projectCategory = getProjectCategory(projectProperties);
 
   const getIconColor = (
-    projectType: 'topProject' | 'regularProject' | 'nonDonatableProject'
+    projectCategory: 'topProject' | 'regularProject' | 'nonDonatableProject'
   ) => {
-    switch (projectType) {
+    switch (projectCategory) {
       case 'topProject':
         return themeProperties.topProjectBackgroundColor;
       case 'regularProject':
@@ -32,7 +32,7 @@ const ProjectMarkerIcon = ({ projectProperties }: Props) => {
     }
   };
 
-  const iconColor = getIconColor(projectType);
+  const iconColor = getIconColor(projectCategory);
 
   // return the correct pin based on project classification and purpose
   if (projectProperties.purpose === 'conservation') {

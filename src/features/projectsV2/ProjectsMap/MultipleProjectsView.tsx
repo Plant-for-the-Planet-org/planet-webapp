@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useProjects } from '../ProjectsContext';
 import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
-import { getProjectType } from './utils';
+import { getProjectCategory } from './utils';
 
 const MultipleProjectsView = () => {
   const { projects, isLoading, isError } = useProjects();
@@ -13,8 +13,8 @@ const MultipleProjectsView = () => {
   const categorizedProjects = useMemo(() => {
     return projects.reduce<CategorizedProjects>(
       (categorizedProjects, project) => {
-        const projectType = getProjectType(project.properties);
-        switch (projectType) {
+        const projectCategory = getProjectCategory(project.properties);
+        switch (projectCategory) {
           case 'topProject':
             categorizedProjects.topApprovedProjects.push(project);
             break;
