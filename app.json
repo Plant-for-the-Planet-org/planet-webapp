@@ -59,6 +59,11 @@
     "SITE_IMAGERY_API_URL": {
       "required": false,
       "description": "For showing vegetation change"
+    },
+    "WEBHOOK_URL": {
+      "required": true,
+      "description": "URL for webhooks of automation service",
+      "value": "https://automate.plant-for-the-planet.org/webhook"
     }
   },
   "formation": {

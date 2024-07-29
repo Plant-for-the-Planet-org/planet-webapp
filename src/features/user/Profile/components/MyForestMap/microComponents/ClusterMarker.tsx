@@ -10,13 +10,12 @@ import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import { MarkerProps } from '../../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 import theme from '../../../../../../theme/themeProperties';
-import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
 
 export const TreePlantedClusterMarker = ({
   geoJson,
   mapRef,
 }: MarkerProps): ReactElement => {
-  const { primaryDarkColorX } = theme;
+  const { primaryColorNew } = theme;
   const t = useTranslations('Profile');
   const [showPopUp, setShowPopUp] = useState(false);
 
@@ -51,9 +50,9 @@ export const TreePlantedClusterMarker = ({
         >
           <div className={MyForestMapStyle.svgContainer}>
             {_isRestoredArea ? (
-              <RestoredSvg color={`${primaryDarkColorX}`} />
+              <RestoredSvg color={`${primaryColorNew}`} />
             ) : (
-              <PlantedTreesSvg color={`${primaryDarkColorX}`} />
+              <PlantedTreesSvg color={`${primaryColorNew}`} />
             )}
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>

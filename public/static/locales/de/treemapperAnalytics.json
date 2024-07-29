@@ -54,6 +54,18 @@
     "trillion": "Bill.",
     "billion": "Mrd.",
     "million": "Mill.",
-    "thousand": "Tsd."
+    "thousand": "Tsd.",
+    "plantLocationsWithPlantedSpecies": "Standorte mit gepflanzten Arten",
+    "search": "Suche nach HID/Datum",
+    "groups": "Gruppen",
+    "treesPerHa": "Bäume pro ha",
+    "trees": "Bäume",
+    "plantingDensity": "Pflanzdichte",
+    "sampleTrees": "Sample Trees",
+    "tag": "Tag",
+    "sites": "Pflanzorte",
+    "searchDateError": "Das Suchdatum liegt nicht innerhalb des ausgewählten Intervalls.",
+    "noProjectsText": "Keine Projekte verfügbar.",
+    "addProjectsButton": "Projekt hinzufügen"
   }
 }

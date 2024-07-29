@@ -6,12 +6,17 @@ import StatsInfoModal from './StatsInfoModal';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
+import {
+  TenantScore,
+  TreesDonated,
+} from '../../../../features/common/types/leaderboard';
 
 interface Props {
-  tenantScore: any;
+  tenantScore: TenantScore;
+  treesDonated: TreesDonated;
 }
-export default function Stats({ tenantScore }: Props): ReactElement {
-  const [infoExpanded, setInfoExpanded] = React.useState(null);
+export default function Stats({ tenantScore, treesDonated }: Props): ReactElement {
+  const [infoExpanded, setInfoExpanded] = React.useState<String | null>(null);
   const tPlanet = useTranslations('Planet');
   const locale = useLocale();
   const [openModal, setModalOpen] = React.useState(false);
@@ -25,7 +30,7 @@ export default function Stats({ tenantScore }: Props): ReactElement {
       <div className={styles.container}>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>
-            {localizedAbbreviatedNumber(locale, Number(79586370), 2)}
+            {localizedAbbreviatedNumber(locale, Number(treesDonated.trees_since_2019), 2)}
           </h2>
           <h3 className={styles.statText}>{tPlanet('treesDonated')}</h3>
           <button

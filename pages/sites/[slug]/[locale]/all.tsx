@@ -7,6 +7,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import {
   LeaderBoardList,
   TenantScore,
+  TreesDonated,
 } from '../../../../src/features/common/types/leaderboard';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
@@ -32,7 +33,7 @@ export default function Home({ pageProps }: Props) {
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
     null
   );
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const router = useRouter();
   const { setTenantConfig } = useTenant();
@@ -77,17 +78,37 @@ export default function Home({ pageProps }: Props) {
     loadTenantScore();
   }, []);
 
+
+  const [treesDonated, setTreesDonated] = React.useState<TreesDonated | null>(
+    null
+  );
+
+  React.useEffect(() => {
+    async function loadTreesDonated() {
+      try {
+        const newTreesDonated = await getRequest<TreesDonated>(
+          pageProps.tenantConfig.id,
+          `${process.env.WEBHOOK_URL}/platform/total-tree-count`
+        );
+        setTreesDonated(newTreesDonated);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+      }
+    }
+    loadTreesDonated();
+  }, []);
+
   let AllPage;
   function getAllPage() {
     switch (pageProps.tenantConfig.config.slug) {
       case 'planet':
         AllPage = (
-          <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} />
+          <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} treesDonated={treesDonated} />
         );
         return AllPage;
       case 'ttc':
         AllPage = (
-          <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} />
+          <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} treesDonated={treesDonated}/>
         );
         return AllPage;
       default:

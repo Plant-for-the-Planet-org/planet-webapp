@@ -1,4 +1,6 @@
 // Use type safe message keys with `next-intl`
+type MessagesAllProjects =
+  typeof import('./public/static/locales/en/allProjects.json');
 type MessagesBulkCodes =
   typeof import('./public/static/locales/en/bulkCodes.json');
 type MessagesCommon = typeof import('./public/static/locales/en/common.json');
@@ -22,6 +24,9 @@ type MessagesPlanet = typeof import('./public/static/locales/en/planet.json');
 type MessagesPlanetcash =
   typeof import('./public/static/locales/en/planetcash.json');
 type MessagesProfile = typeof import('./public/static/locales/en/profile.json');
+type MessagesProjectDetails =
+  typeof import('./public/static/locales/en/projectDetails.json');
+type MessagesProject = typeof import('./public/static/locales/en/project.json');
 type MessagesRedeem = typeof import('./public/static/locales/en/redeem.json');
 type MessagesRegisterTrees =
   typeof import('./public/static/locales/en/registerTrees.json');
@@ -31,7 +36,8 @@ type MessagesTreemapper =
 type MessagesTreemapperAnalytics =
   typeof import('./public/static/locales/en/treemapperAnalytics.json');
 
-type Messages = MessagesBulkCodes &
+type Messages = MessagesAllProjects &
+  MessagesBulkCodes &
   MessagesCommon &
   MessagesCountry &
   MessagesDonate &
@@ -46,6 +52,8 @@ type Messages = MessagesBulkCodes &
   MessagesPlanet &
   MessagesPlanetcash &
   MessagesProfile &
+  MessagesProjectDetails &
+  MessagesProject &
   MessagesRedeem &
   MessagesRegisterTrees &
   MessagesTenants &

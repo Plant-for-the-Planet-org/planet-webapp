@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Project,
   useAnalytics,
@@ -49,6 +49,9 @@ const ProjectFilter = () => {
     setProject(proj);
   };
 
+  const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
+  const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
+
   return (
     <Grid alignItems="top" container spacing={2}>
       <Grid item xs={12} md={6}>
@@ -70,8 +73,11 @@ const ProjectFilter = () => {
           >
             <MuiDatePicker
               label={t('from')}
-              value={fromDate}
-              onChange={setFromDate}
+              value={localFromDate}
+              onChange={(e) => setLocalFromDate(e)}
+              onAccept={(value) => {
+                if (value) setFromDate(value);
+              }}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}
@@ -96,8 +102,11 @@ const ProjectFilter = () => {
           >
             <MuiDatePicker
               label={t('to')}
-              value={toDate}
-              onChange={setToDate}
+              value={localToDate}
+              onChange={(e) => setLocalToDate(e)}
+              onAccept={(value) => {
+                if (value) setToDate(value);
+              }}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}

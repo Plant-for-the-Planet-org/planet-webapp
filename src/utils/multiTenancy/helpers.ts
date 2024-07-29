@@ -59,7 +59,8 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
       'env_missing';
     const caching_key = `${cachingKeyPrefix}_TENANT_CONFIG_${slug}`;
 
-    const tenant = await redisClient.get<Tenant>(caching_key);
+    const tenant =
+      redisClient !== null ? await redisClient.get<Tenant>(caching_key) : null;
 
     if (tenant) {
       return tenant;
@@ -77,9 +78,10 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
 
     const tenantConf = _tenantConf ?? defaultTenantConfig;
 
-    await redisClient.set(caching_key, JSON.stringify(tenantConf), {
-      ex: FIVE_HOURS,
-    });
+    redisClient !== null &&
+      (await redisClient.set(caching_key, JSON.stringify(tenantConf), {
+        ex: FIVE_HOURS,
+      }));
 
     return tenantConf as Tenant; // Ensure that the returned value is of type Tenant
   } catch (err) {

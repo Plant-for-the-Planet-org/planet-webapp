@@ -12,6 +12,7 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { PopupData } from './maps/Markers';
+import { PlantLocation } from '../../common/types/plantLocation';
 
 interface ShowDetailsProps {
   coordinates: [number, number] | null;
@@ -33,7 +34,6 @@ export default function ProjectsMap(): ReactElement {
     defaultMapCenter,
     defaultZoom,
     zoomLevel,
-    plIds,
     setHoveredPl,
     plantLocations,
     setSelectedPl,
@@ -85,45 +85,49 @@ export default function ProjectsMap(): ReactElement {
     setViewPort,
   };
 
+  const handlePlantLocationSelection = (
+    plantLocations: PlantLocation[] | null,
+    e: MapEvent
+  ) => {
+    if (!plantLocations || !e || !e.features || !e.features[0]) {
+      return;
+    }
+
+    const { id } = e.features[0].properties;
+    const selectedElement = plantLocations.find(
+      (location) => location.id === id
+    );
+
+    if (selectedElement) {
+      setSelectedPl(selectedElement);
+    }
+  };
+
   const onMapClick = (e: MapEvent) => {
     setSamplePlantLocation(null);
     setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
-    if (e.features && e.features?.length !== 0) {
-      if (e.features[0].layer?.source) {
-        for (const key in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-            const element = plantLocations[Number(key)];
-            if (element.id === e.features[0].layer?.source) {
-              setSelectedPl(element);
-
-              break;
-            }
-          }
-        }
-        //router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
-      }
-    }
+    handlePlantLocationSelection(plantLocations, e);
   };
 
   const onMapHover = (e: MapEvent) => {
-    if (e.features && e.features?.length !== 0) {
-      if (!hoveredPl || hoveredPl.type !== 'sample') {
-        if (e.features[0].layer?.source && plantLocations) {
-          for (const key in plantLocations) {
-            if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-              const element = plantLocations[key];
-              if (element.id === e.features[0].layer?.source) {
-                setHoveredPl(element);
-                // setSelectedPl(element);
-                break;
-              }
-            }
-          }
-        }
+    if (plantLocations && e && e.features && e.features[0]) {
+      const activeElement = e.features[0];
+      if (selectedPl && selectedPl.id === activeElement.properties.id) {
+        setHoveredPl(null)
+        setShowDetails({ coordinates: e.lngLat, show: true });
+        return
       }
-      setShowDetails({ coordinates: e.lngLat, show: true });
+      const activePlantLocation = plantLocations.find(
+        (obj) => obj.id === activeElement.properties.id
+      );
+      if (activePlantLocation) {
+        setHoveredPl(activePlantLocation);
+        setSamplePlantLocation(null)
+        setShowDetails({ coordinates: e.lngLat, show: true });
+        return
+      }
     } else {
       setShowDetails({ ...showDetails, show: false });
       setHoveredPl(null);
@@ -147,6 +151,10 @@ export default function ProjectsMap(): ReactElement {
     }
   }, [showProjectList]);
 
+  const handleOnLoad = () => {
+    setLoaded(true);
+  };
+
   return (
     <div
       className={
@@ -158,11 +166,12 @@ export default function ProjectsMap(): ReactElement {
         {...mapState}
         {...viewport}
         onViewportChange={_onViewportChange}
+        // TODO: onStateChange is deprecated, and does not work any more. _onStateChange does not seem to be called in any scenario while debugging the code. However this is left in to avoid breaking the code unintentionally. NOTE: replacing with onViewStateChange does not work as expected, the map stops zooming in to a clicked plant location, or to the site after switching between the Field data and Time travel map tabs.
         onStateChange={_onStateChange}
         onClick={onMapClick}
         onHover={onMapHover}
-        onLoad={() => setLoaded(true)}
-        interactiveLayerIds={plIds ? plIds : undefined}
+        onLoad={handleOnLoad}
+        interactiveLayerIds={project !== null ? ['polygon-layer', 'point-layer'] : undefined}
       >
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
@@ -215,8 +224,4 @@ export default function ProjectsMap(): ReactElement {
       </MapGL>
     </div>
   );
-}
-interface DetailsType {
-  coordinates: number[];
-  show: boolean;
 }

@@ -54,6 +54,18 @@
     "trillion": "t",
     "billion": "b",
     "million": "m",
-    "thousand": "k"
+    "thousand": "k",
+    "plantLocationsWithPlantedSpecies": "Lugares con especies plantadas",
+    "search": "Búsqueda por hid/fecha",
+    "groups": "Grupos",
+    "treesPerHa": "árboles por ha",
+    "trees": "árboles",
+    "plantingDensity": "Densidad de plantación",
+    "sampleTrees": "Ejemplos de árboles",
+    "tag": "Etiqueta",
+    "sites": "Sitios",
+    "searchDateError": "La fecha de búsqueda no se encuentra entre el intervalo de fechas seleccionado.",
+    "noProjectsText": "No hay proyectos disponibles.",
+    "addProjectsButton": "Añadir un proyecto"
   }
 }

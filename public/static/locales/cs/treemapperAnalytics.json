@@ -54,6 +54,18 @@
     "trillion": "t",
     "billion": "b",
     "million": "m",
-    "thousand": "k"
+    "thousand": "k",
+    "plantLocationsWithPlantedSpecies": "Lokality s vysazenými druhy",
+    "search": "Vyhledávání podle skrýše/dat",
+    "groups": "Skupiny",
+    "treesPerHa": "stromů na hektar",
+    "trees": "stromy",
+    "plantingDensity": "Hustota výsadby",
+    "sampleTrees": "Ukázkové stromy",
+    "tag": "Štítek",
+    "sites": "Stránky",
+    "searchDateError": "Datum hledání není mezi vybraným rozsahem dat.",
+    "noProjectsText": "Nejsou k dispozici žádné projekty.",
+    "addProjectsButton": "Přidat projekt"
   }
 }

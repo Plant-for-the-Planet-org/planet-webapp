@@ -49,6 +49,7 @@ import {
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import PlantLocationDetails from './components/PlantLocationDetails';
 import MyForestMapCredit from '../../../../Profile/components/MyForestMap/microComponents/MyForestMapCredit';
+import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -291,17 +292,21 @@ export const MapContainer = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (project && species) {
-      if (queryType === QueryType.DATE) {
-        if (!isDateBetween(search, fromDate, toDate)) {
-          setErrors([{ message: t('searchDateError') }]);
-          return;
+  useDebouncedEffect(
+    () => {
+      if (project && species) {
+        if (queryType === QueryType.DATE) {
+          if (!isDateBetween(search, fromDate, toDate)) {
+            setErrors([{ message: t('searchDateError') }]);
+            return;
+          }
         }
+        fetchProjectLocations();
       }
-      fetchProjectLocations();
-    }
-  }, [project, species, queryType, fromDate, toDate]);
+    },
+    500,
+    [project, species, queryType, fromDate, toDate]
+  );
 
   // Set the map style to the default style
   // Currently this only shows Intervention

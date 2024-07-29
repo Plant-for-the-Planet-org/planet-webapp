@@ -55,7 +55,7 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = useProjectProps();
+  const { selectedPl, hoveredPl, setSelectedSite } = useProjectProps();
   const { tenantConfig } = useTenant();
 
   let progressPercentage = 0;
@@ -110,6 +110,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
+          setSelectedSite(0);
           router.push(
             `/${locale}/${project.slug}/${
               embed === 'true'
@@ -234,9 +235,8 @@ export default function ProjectSnippet({
             <div className={'perUnitCost'}>
               {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
-                {project.purpose === 'conservation'
-                  ? tDonate('perM2')
-                  : tDonate('perTree')}
+                {project.unitType === 'tree' && tDonate('perTree')}
+                {project.unitType === 'm2' && tDonate('perM2')}
               </span>
             </div>
           )}

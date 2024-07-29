@@ -60,12 +60,14 @@ model project {
 }
 
 model profile {
-    id           Int            @id @default(autoincrement())
-    guid         String         @db.VarChar(32)
-    name         String?        @db.VarChar(255)
-    contribution contribution[]
-    plantProject project[]
-    gift         gift[]
+    id           	Int            @id @default(autoincrement())
+		treecounterId Int						 @map("treecounter_id")
+    guid         	String         @db.VarChar(32)
+    name         	String?        @db.VarChar(255)
+		deleted_at		DateTime?      @map("deleted_at") @db.DateTime(0)
+    contribution 	contribution[]
+    plantProject 	project[]
+    gift         	gift[]
 }
 
 model gift {

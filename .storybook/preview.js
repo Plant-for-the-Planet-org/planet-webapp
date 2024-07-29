@@ -3,25 +3,45 @@ import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from '@storybook/theming';
+import { lazy } from 'react';
+import { useTheme } from '../src/theme/themeContext';
+// import { ThemeProvider } from 'emotion-theming';
 import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
+import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 
 /*
  * Global decorator to apply the styles to all stories
  * Read more about them at:
  * https://storybook.js.org/docs/react/writing-stories/decorators#global-decorators
  */
+
+const globalStyles = lazy(() => import('../src/theme/theme'));
+
 export const decorators = [
   (Story, context) => {
     const locale = context.globals.locale;
+    const { theme: themeType } = useTheme();
 
     return (
       <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
-        <MUIThemeProvider theme={materialTheme}>
-          <ThemeProvider theme={materialTheme}>
-            <Story />
-          </ThemeProvider>
-        </MUIThemeProvider>
+        <style>{globalStyles}</style>
+        <div
+          className={`${themeType}`}
+          style={{ backgroundColor: 'transparent' }}
+        >
+          <MUIThemeProvider theme={materialTheme}>
+            {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
+            <TenantProvider>
+              <UserPropsProvider>
+                <ThemeProvider theme={materialTheme}>
+                  <Story />
+                </ThemeProvider>
+              </UserPropsProvider>
+            </TenantProvider>
+          </MUIThemeProvider>
+        </div>
       </NextIntlClientProvider>
     );
   },

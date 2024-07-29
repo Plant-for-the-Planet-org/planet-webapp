@@ -6,13 +6,13 @@ import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
-import { Feature, Point, Polygon } from 'geojson';
 import {
   PlantLocation,
   PlantLocationMulti,
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+import { Feature, Point, Polygon } from 'geojson';
 
 export default function PlantLocations(): ReactElement {
   const {
@@ -114,140 +114,118 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
+  const makeInterventionGeoJson = (
+    geometry: Point | Polygon,
+    id: string,
+    extra?: Record<string, string | number | boolean | null>
+  ): Feature<Point | Polygon> => {
+    const properties = {
+      id,
+      ...extra,
+    };
+
+    return {
+      type: 'Feature',
+      properties,
+      geometry,
+    };
+  };
+
+  if (!plantLocations) {
+    return <></>;
+  }
+
+  const features = plantLocations.map((el) => {
+    const isSelected = selectedPl && selectedPl.id === el.id;
+    const isHovered = hoveredPl && hoveredPl.id === el.id;
+    const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
+      highlightLine: isSelected || isHovered,
+      opacity: el.type === 'multi' ? getPolygonColor(el) : 0.5,
+      dateDiff: getDateDiff(el),
+    });
+    return GeoJSON;
+  });
+
   return (
     <>
-      {plantLocations &&
-        plantLocations
-          .filter((item) => {
-            if (item.captureStatus === 'complete') {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .map((pl) => {
-            if (pl.type === 'multi') {
-              const dateDiff = getDateDiff(pl);
-              const data: Feature<Point | Polygon> = {
-                type: 'Feature',
-                geometry: { ...pl.geometry },
-                properties: { id: pl.id },
-              };
-              return (
-                <React.Fragment key={pl.id}>
-                  <Source
-                    key={`${pl.id}-source`}
-                    id={pl.id}
-                    type="geojson"
-                    data={data}
-                  >
-                    <Layer
-                      key={`${pl.id}-layer`}
-                      id={`${pl.id}-layer`}
-                      type="fill"
-                      source={pl.id}
-                      paint={{
-                        'fill-color': satellite ? '#ffffff' : '#007A49',
-                        'fill-opacity': getPolygonColor(pl),
-                      }}
-                    />
-                    {((selectedPl && selectedPl.id === pl.id) ||
-                      (hoveredPl && hoveredPl.id === pl.id)) && (
-                      <Layer
-                        key={`${pl.id}-selected`}
-                        id={`${pl.id}-selected-layer`}
-                        type="line"
-                        source={pl.id}
-                        paint={{
-                          'line-color': satellite ? '#ffffff' : '#007A49',
-                          'line-width': 4,
-                        }}
-                      />
-                    )}
-                    {dateDiff && (
-                      <Layer
-                        key={`${pl.id}-label`}
-                        id={`${pl.id}-label`}
-                        type="symbol"
-                        source={pl.id}
-                        layout={{
-                          'text-field': dateDiff,
-                          'text-anchor': 'center',
-                          'text-font': ['Ubuntu Regular'],
-                        }}
-                        paint={{
-                          'text-color': satellite ? '#ffffff' : '#2f3336',
-                        }}
-                      />
-                    )}
-                  </Source>
-                  {pl &&
-                    pl.id === selectedPl?.id &&
-                    pl.samplePlantLocations &&
-                    pl.samplePlantLocations
-                      .filter((item) => {
-                        if (item.captureStatus === 'complete') {
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      })
-                      .map((spl) => {
-                        return (
-                          <Marker
-                            key={`${spl.id}-sample`}
-                            latitude={spl.geometry.coordinates[1]}
-                            longitude={spl.geometry.coordinates[0]}
-                          >
-                            {viewport.zoom > 14 && (
-                              <div
-                                key={`${spl.id}-marker`}
-                                className={`${styles.single} ${
-                                  spl.hid === samplePlantLocation?.hid
-                                    ? styles.singleSelected
-                                    : ''
-                                }`}
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => openPl(spl)}
-                                onMouseEnter={() => onHover(spl)}
-                                onMouseLeave={onHoverEnd}
-                              />
-                            )}
-                          </Marker>
-                        );
-                      })}
-                </React.Fragment>
-              );
-            } else {
+      <Source
+        id={'display-source'}
+        type="geojson"
+        data={{
+          type: 'FeatureCollection',
+          features: [...features],
+        }}
+      >
+        <Layer
+          id={`polygon-layer`}
+          type="fill"
+          paint={{
+            'fill-color': satellite ? '#ffffff' : '#007A49',
+            'fill-opacity': ['get', 'opacity'],
+          }}
+          filter={['==', ['geometry-type'], 'Polygon']}
+        />
+        <Layer
+          id={`point-layer`}
+          type="circle"
+          paint={{
+            'circle-color': satellite ? '#ffffff' : '#007A49',
+            'circle-opacity': 0.5,
+          }}
+          filter={['==', ['geometry-type'], 'Point']}
+        />
+        <Layer
+          id={`line-selected`}
+          type="line"
+          paint={{
+            'line-color': satellite ? '#ffffff' : '#007A49',
+            'line-width': 4,
+          }}
+          filter={['==', ['get', 'highlightLine'], true]}
+        />
+        <Layer
+          id={`datediff-label`}
+          type="symbol"
+          layout={{
+            'text-field': ['get', 'dateDiff'],
+            'text-anchor': 'center',
+            'text-font': ['Ubuntu Regular'],
+          }}
+          paint={{
+            'text-color': satellite ? '#ffffff' : '#2f3336',
+          }}
+          filter={['!=', ['get', 'dateDiff'], null]}
+        />
+        {selectedPl &&
+        selectedPl.type === 'multi' &&
+        selectedPl.samplePlantLocations
+          ? selectedPl.samplePlantLocations.map((spl) => {
               return (
                 <Marker
-                  key={`${pl.id}-single`}
-                  latitude={pl.geometry.coordinates[1]}
-                  longitude={pl.geometry.coordinates[0]}
-                  // offsetLeft={5}
-                  // offsetTop={-16}
-                  // style={{ left: '28px' }}
+                  key={`${spl.id}-sample`}
+                  latitude={spl.geometry.coordinates[1]}
+                  longitude={spl.geometry.coordinates[0]}
                 >
                   {viewport.zoom > 14 && (
                     <div
-                      key={`${pl.id}-marker`}
-                      onClick={() => {
-                        openPl(pl);
-                      }}
-                      onMouseEnter={() => onHover(pl)}
-                      onMouseLeave={onHoverEnd}
+                      key={`${spl.id}-marker`}
                       className={`${styles.single} ${
-                        pl.id === selectedPl?.id ? styles.singleSelected : ''
+                        spl.hid === samplePlantLocation?.hid
+                          ? styles.singleSelected
+                          : ''
                       }`}
                       role="button"
                       tabIndex={0}
+                      onClick={() => openPl(spl)}
+                      onMouseEnter={() => onHover(spl)}
+                      onMouseLeave={onHoverEnd}
                     />
                   )}
                 </Marker>
               );
-            }
-          })}
+            })
+          : null}
+      </Source>
     </>
   );
 }

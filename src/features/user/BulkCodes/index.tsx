@@ -98,6 +98,7 @@ export default function BulkCodes({
               .filter((project) => {
                 return (
                   project.properties.allowDonations &&
+                  project.properties.unitType === 'tree' &&
                   (planetCashAccount.currency !== 'CHF' ||
                     (planetCashAccount.currency === 'CHF' &&
                       allowedCHFProjects.includes(project.properties.slug)))
