@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { PaymentOptions } from '../BulkCodesTypes';
@@ -32,12 +32,15 @@ const ProjectSelector = ({
 
     return 'tree';
   };
-  const { user } = useUserProps();
+  const { user, token, logoutUser, contextLoaded } = useUserProps();
 
   const fetchPaymentOptions = async (guid: string) => {
-    const paymentOptions = await getRequest<PaymentOptions>(
+    const paymentOptions = await getAuthenticatedRequest<PaymentOptions>(
       `${tenantConfig?.id}`,
       `/app/paymentOptions/${guid}`,
+      token,
+      logoutUser,
+      undefined,
       {
         country: planetCashAccount?.country || '',
         ...(user !== null && { profile: user.id }),
@@ -48,7 +51,7 @@ const ProjectSelector = ({
 
   const handleProjectChange = async (project: ProjectOption | null) => {
     // fetch project details
-    if (project) {
+    if (project && user && token && contextLoaded) {
       try {
         const paymentOptions = await fetchPaymentOptions(project.guid);
         // Add to project object
