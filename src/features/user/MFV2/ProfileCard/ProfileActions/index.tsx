@@ -37,14 +37,14 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
       <WebappButton
         icon={<AllDonations />}
         text={t('feature.allDonations')}
-        elementType={'link'}
-        href={'/profile/history'}
+        elementType="link"
+        href="/profile/history"
       />
       <WebappButton
         icon={<RedeemIcon />}
         text={t('feature.redeem')}
         onClick={handleRedeemModalOpen}
-        elementType={'button'}
+        elementType="button"
       />
       <RedeemModal
         redeemModalOpen={isRedeemModalOpen}
@@ -64,7 +64,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
             : t('feature.supportUserTextGeneric')
         }
         variant="primary"
-        elementType={'link'}
+        elementType="link"
         href={`/s/${userProfile?.slug}`}
       />
       <div className={styles.websiteShareActions}>
@@ -72,9 +72,9 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
           <WebappButton
             icon={<WebsiteLinkIcon />}
             text={t('feature.website')}
-            elementType={'link'}
+            elementType="link"
             href={handleWebsiteShareUrl()}
-            target={'_blank'}
+            target="_blank"
           />
         )}
         <SocialMediaShareButton userProfile={userProfile} />

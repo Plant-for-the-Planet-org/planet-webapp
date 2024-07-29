@@ -251,8 +251,8 @@ const PlanetWeb = ({
                           ? window.location.origin
                           : ''
                       }
-                      audience={'urn:plant-for-the-planet'}
-                      cacheLocation={'localstorage'}
+                      audience="urn:plant-for-the-planet"
+                      cacheLocation="localstorage"
                       onRedirectCallback={onRedirectCallback}
                       useRefreshTokens={true}
                     >

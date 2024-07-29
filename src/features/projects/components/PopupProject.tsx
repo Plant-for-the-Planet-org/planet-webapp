@@ -77,11 +77,11 @@ export default function PopupProject({
   });
 
   return (
-    <div className={'singleProject'}>
-      <div className={'projectImage'}>
+    <div className="singleProject">
+      <div className="projectImage">
         {project.image && typeof project.image !== 'undefined' ? (
           <div
-            className={'projectImageFile'}
+            className="projectImageFile"
             style={{
               backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
               backgroundPosition: 'center',
@@ -91,9 +91,9 @@ export default function PopupProject({
         {project.purpose === 'trees' &&
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={false} />}
-        <div className={'projectImageBlock'}>
-          <div className={'projectEcosystemOrTypeContainer'}>
-            <div className={'projectTypeIcon'}>
+        <div className="projectImageBlock">
+          <div className="projectEcosystemOrTypeContainer">
+            <div className="projectTypeIcon">
               <ProjectTypeIcon
                 projectType={
                   project.purpose === 'conservation'
@@ -104,20 +104,20 @@ export default function PopupProject({
             </div>
             <div>
               {project.ecosystem !== null && (
-                <div className={'projectEcosystem'}>
+                <div className="projectEcosystem">
                   {tManageProjects(`ecosystemTypes.${project.ecosystem}`)}
                   {project.purpose === 'trees' && ' /'}
                 </div>
               )}
               {project.purpose === 'trees' && (
-                <div className={'projectType'}>
+                <div className="projectType">
                   {project.classification && tDonate(project.classification)}
                 </div>
               )}
             </div>
           </div>
 
-          <p className={'projectName'}>
+          <p className="projectName">
             {truncateString(project.name, 54)}
             {project.purpose === 'trees' && project.isApproved && (
               <VerifiedBadge displayPopup={false} project={project} />
@@ -126,21 +126,21 @@ export default function PopupProject({
         </div>
       </div>
 
-      <div className={'progressBar'}>
+      <div className="progressBar">
         <div
           className={`progressBarHighlight ${progressBarBackgroundColor}`}
           style={{ width: progressPercentage }}
         />
       </div>
       <div
-        className={'projectInfo'}
+        className="projectInfo"
         style={{
           padding: '0 16px',
         }}
       >
-        <div className={'projectData'}>
-          <div className={'targetLocation'}>
-            <div className={'target'}>
+        <div className="projectData">
+          <div className="targetLocation">
+            <div className="target">
               {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
@@ -163,10 +163,10 @@ export default function PopupProject({
           </div>
           {!project.allowDonations ? (
             <div
-              className={'projectHoverIcon'}
+              className="projectHoverIcon"
               {...bindHover(popupProjectInfoPopover)}
             >
-              <ProjectInfo color={'#828282'} />
+              <ProjectInfo color="#828282" />
               <HoverPopover
                 {...bindPopover(popupProjectInfoPopover)}
                 anchorOrigin={{
@@ -190,7 +190,7 @@ export default function PopupProject({
               {tCommon('notDonatable')}
             </div>
           ) : (
-            <div className={'perUnitCost'}>
+            <div className="perUnitCost">
               {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
                 {project.unitType === 'tree' && tDonate('perTree')}
@@ -200,7 +200,7 @@ export default function PopupProject({
           )}
         </div>
         {project.allowDonations && (
-          <div className={'projectCost'}>
+          <div className="projectCost">
             {project.unitCost ? (
               <button
                 id={`ProjPopDonate${project.id}`}
@@ -215,7 +215,7 @@ export default function PopupProject({
         )}
       </div>
       <div
-        className={'projectTPOName'}
+        className="projectTPOName"
         style={{
           background: `${
             !project.allowDonations

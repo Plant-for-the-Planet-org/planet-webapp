@@ -48,7 +48,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
             <button
-              id={'scoreTabRecent'}
+              id="scoreTabRecent"
               onClick={() => setSelectedTab('recent')}
               className={
                 selectedTab === 'recent'
@@ -59,7 +59,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               {tLeaderboard('mostRecent')}
             </button>
             <button
-              id={'scoreHighest'}
+              id="scoreHighest"
               onClick={() => setSelectedTab('highest')}
               className={
                 selectedTab === 'highest'
@@ -70,7 +70,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               {tLeaderboard('mostTrees')}
             </button>
             <button
-              id={'searchIconScore'}
+              id="searchIconScore"
               onClick={() => setSelectedTab('search')}
               className={
                 selectedTab === 'search'

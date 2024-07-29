@@ -65,10 +65,10 @@ export const getParams = (config = [], params = {}) => {
   };
 
   let { startDate, endDate, trimEndDate, maxAbsoluteDate } = newParams;
-  if (typeof startDate == 'string') startDate = parseISO(startDate);
-  if (typeof endDate == 'string') endDate = parseISO(endDate);
-  if (typeof trimEndDate == 'string') trimEndDate = parseISO(trimEndDate);
-  if (typeof maxAbsoluteDate == 'string')
+  if (typeof startDate === 'string') startDate = parseISO(startDate);
+  if (typeof endDate === 'string') endDate = parseISO(endDate);
+  if (typeof trimEndDate === 'string') trimEndDate = parseISO(trimEndDate);
+  if (typeof maxAbsoluteDate === 'string')
     maxAbsoluteDate = parseISO(maxAbsoluteDate);
 
   const start = startDate;

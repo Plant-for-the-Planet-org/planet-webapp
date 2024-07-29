@@ -184,9 +184,9 @@ export default function History({
               ) : paymentHistory &&
                 Array.isArray(paymentHistory?.items) &&
                 paymentHistory.items.length === 0 ? (
-                <div className={styles.notFound}>
-                  <TransactionsNotFound />
-                </div>
+                  <div className={styles.notFound}>
+                    <TransactionsNotFound />
+                  </div>
               ) : (
                 paymentHistory &&
                 Array.isArray(paymentHistory?.items) &&

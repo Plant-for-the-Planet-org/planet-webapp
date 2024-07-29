@@ -66,7 +66,7 @@ function ExploreInfoModal({
         </div>
       ) : null}
       <button
-        id={'statsInfoModal'}
+        id="statsInfoModal"
         onClick={() => {
           setInfoExpanded(null);
           setModalOpen(false);

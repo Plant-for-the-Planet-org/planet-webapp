@@ -85,7 +85,7 @@ export const ReactivateModal = ({
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <Close color="#4d5153" />
               </button>
             </div>
             <div className={styles.note}>

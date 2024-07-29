@@ -114,7 +114,7 @@ export default function AddTargetModal({
               />
             </div>
             {errors.target && (
-              <span className={'formErrors'}>{t('targetErrorMessage')}</span>
+              <span className="formErrors">{t('targetErrorMessage')}</span>
             )}
             {errors.target ? (
               <div className="primaryButton" style={{ marginTop: '24px' }}>
@@ -122,13 +122,13 @@ export default function AddTargetModal({
               </div>
             ) : (
               <button
-                id={'AddTargetCont'}
+                id="AddTargetCont"
                 className="primaryButton"
                 style={{ marginTop: '24px' }}
                 type="submit"
               >
                 {isLoadingForm ? (
-                  <div className={'spinner'}></div>
+                  <div className="spinner"></div>
                 ) : (
                   t('targetSave')
                 )}

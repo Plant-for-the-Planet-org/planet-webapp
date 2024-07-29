@@ -99,7 +99,7 @@ export default function Footer(): ReactElement | null {
           <div>
             <div className={styles.footer_button_container}>
               <button
-                id={'worldIcon'}
+                id="worldIcon"
                 onClick={handleModalOpen}
                 className={styles.footer_button}
               >
@@ -109,7 +109,7 @@ export default function Footer(): ReactElement | null {
                 </p>
               </button>
               <div className={styles.footer_social_container}>
-                <button id={'facebookIcon'}>
+                <button id="facebookIcon">
                   <a
                     className={styles.social_button}
                     target="_blank"
@@ -154,7 +154,7 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'instagramIcon'}>
+                <button id="instagramIcon">
                   <a
                     className={styles.social_button}
                     target="_blank"
@@ -199,7 +199,7 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'linkedInIcon'}>
+                <button id="linkedInIcon">
                   <a
                     className={styles.social_button}
                     target="_blank"
@@ -235,7 +235,7 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'youtubeIcon'}>
+                <button id="youtubeIcon">
                   <a
                     className={styles.social_button}
                     target="_blank"
@@ -271,7 +271,7 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'flickrIcon'}>
+                <button id="flickrIcon">
                   <a
                     className={styles.social_button}
                     target="_blank"
@@ -307,7 +307,7 @@ export default function Footer(): ReactElement | null {
                     </svg>
                   </a>
                 </button>
-                <button id={'tiktokIcon'}>
+                <button id="tiktokIcon">
                   <a
                     className={styles.social_button}
                     target="_blank"
@@ -365,7 +365,7 @@ export default function Footer(): ReactElement | null {
           </div>
         </div>
         <div className={styles.logo_container}>
-          <button id={'pfpLogoIcon'} className={styles.pfp_logo_container}>
+          <button id="pfpLogoIcon" className={styles.pfp_logo_container}>
             <a
               href="http://www.plant-for-the-planet.org/"
               target="_blank"
@@ -376,7 +376,7 @@ export default function Footer(): ReactElement | null {
           </button>
 
           {tenantConfig.config.showUNEPLogo && (
-            <button id={'unepLogoIcon'} className={styles.unep_logo_container}>
+            <button id="unepLogoIcon" className={styles.unep_logo_container}>
               <a
                 href="https://www.unep.org/"
                 target="_blank"
@@ -390,7 +390,7 @@ export default function Footer(): ReactElement | null {
 
           {tenantConfig.config.showUNDecadeLogo && (
             <button
-              id={'undecadeLogoIcon'}
+              id="undecadeLogoIcon"
               className={styles.undecade_logo_container}
             >
               <a

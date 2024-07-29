@@ -60,8 +60,8 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         !isEmbed ? (
           <a
             rel="noopener noreferrer"
-            href={`https://www.thegoodshop.org/de/shop/`}
-            target={'_blank'}
+            href="https://www.thegoodshop.org/de/shop/"
+            target="_blank"
           >
             {tCommon('shop')}
           </a>
@@ -69,7 +69,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
 
         <a
           rel="noopener noreferrer"
-          href={`https://status.pp.eco/`}
+          href="https://status.pp.eco/"
           target={isEmbed ? '_top' : '_blank'}
         >
           {tCommon('status')}
@@ -78,7 +78,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
           <a
             rel="noopener noreferrer"
             href={`https://pp.eco/legal/${locale}/imprint`}
-            target={'_blank'}
+            target="_blank"
           >
             {tCommon('imprint')}
           </a>
@@ -87,7 +87,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
           <a
             rel="noopener noreferrer"
             href={`https://pp.eco/legal/${locale}/privacy`}
-            target={'_blank'}
+            target="_blank"
           >
             {tCommon('privacy')}
           </a>
@@ -96,7 +96,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
           <a
             rel="noopener noreferrer"
             href={`https://pp.eco/legal/${locale}/terms`}
-            target={'_blank'}
+            target="_blank"
           >
             {tCommon('terms')}
           </a>
@@ -138,7 +138,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
           <a
             rel="noopener noreferrer"
             href="mailto:support@plant-for-the-planet.org"
-            target={'_blank'}
+            target="_blank"
           >
             {tCommon('contact')}
           </a>

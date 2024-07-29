@@ -39,7 +39,7 @@ function GetNavBarIcon({
   const HomeLink = () => {
     return (
       <button
-        id={'homeIcon'}
+        id="homeIcon"
         className={`link_icon ${
           router.pathname === item.onclick ? 'active_icon' : ''
         }`}
@@ -62,7 +62,7 @@ function GetNavBarIcon({
   const DonateLink = () => {
     return (
       <button
-        id={'donateIcon'}
+        id="donateIcon"
         className={`link_icon ${
           router.pathname === item.onclick || router.pathname === '/[p]'
             ? 'active_icon'
@@ -80,7 +80,7 @@ function GetNavBarIcon({
   const AboutUsLink = () => {
     return (
       <button
-        id={'aboutIcon'}
+        id="aboutIcon"
         className={`link_icon ${
           router.pathname === item.onclick ? 'active_icon' : ''
         }`}
@@ -96,7 +96,7 @@ function GetNavBarIcon({
   const LeadersLink = () => {
     return (
       <button
-        id={'leaderIcon'}
+        id="leaderIcon"
         className={`link_icon ${
           router.pathname === item.onclick ? 'active_icon' : ''
         }`}
@@ -112,7 +112,7 @@ function GetNavBarIcon({
   const ShopLink = () => {
     return (
       <button
-        id={'shopIcon'}
+        id="shopIcon"
         className={`link_icon ${
           router.pathname === item.onclick ? 'active_icon' : ''
         }`}

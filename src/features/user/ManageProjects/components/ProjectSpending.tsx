@@ -216,7 +216,7 @@ export default function ProjectSpending({
                                         <PencilIcon color={"#000"} />
                                     </div> */}
                   <IconButton
-                    id={'trashIconProjSpend'}
+                    id="trashIconProjSpend"
                     onClick={() => deleteProjectSpending(report.id)}
                     className={styles.reportEditButton}
                   >
@@ -300,7 +300,7 @@ export default function ProjectSpending({
                         <p
                           className={styles.inputStartAdornment}
                           style={{ paddingRight: '4px' }}
-                        >{`€`}</p>
+                        >€</p>
                       ),
                     }}
                     error={errors.amount !== undefined}

@@ -132,7 +132,7 @@ export default function NavbarComponent() {
       </div>
     ) : router.pathname.includes('/complete-signup') ||
       (user && router.pathname.includes(`/profile`)) ? (
-      <MeSelected color={themeProperties.primaryColor} />
+        <MeSelected color={themeProperties.primaryColor} />
     ) : (
       <Me color={themeProperties.light.primaryFontColor} />
     );
@@ -144,7 +144,7 @@ export default function NavbarComponent() {
     const links = Object.keys(tenantConfig.config.header.items);
     const tenantName = tenantConfig.config.slug || '';
     return tenantConfig && links ? (
-      <div className={'menuItems'}>
+      <div className="menuItems">
         {links.map((link) => {
           let SingleLink = tenantConfig.config.header.items[link];
           const hasSubMenu =
@@ -153,12 +153,12 @@ export default function NavbarComponent() {
             if (link === 'me' && SingleLink.visible) {
               return (
                 <button
-                  id={'navbarActiveIcon'}
+                  id="navbarActiveIcon"
                   key={link}
                   onClick={() => gotoUserPage()}
-                  className={`linkContainer`}
+                  className="linkContainer"
                 >
-                  <div className={'link_icon'}>
+                  <div className="link_icon">
                     <UserIcon />
                   </div>
                   <p
@@ -215,7 +215,7 @@ export default function NavbarComponent() {
                     isMobile && hasSubMenu ? router.asPath : SingleLink.onclick
                   }
                 >
-                  <div className={`linkContainer`}>
+                  <div className="linkContainer">
                     <GetNavBarIcon
                       mainKey={link}
                       router={router}
@@ -257,7 +257,7 @@ export default function NavbarComponent() {
                       return (
                         <a
                           key={submenu.title}
-                          className={'menuRow'}
+                          className="menuRow"
                           href={`https://www.plant-for-the-planet.org/${
                             lang_path[locale as keyof typeof lang_path]
                               ? lang_path[locale as keyof typeof lang_path]
@@ -276,7 +276,7 @@ export default function NavbarComponent() {
                             }}
                           >
                             <GetSubMenu title={submenu.title} />
-                            <div className={'menuText'}>{t(submenu.title)}</div>
+                            <div className="menuText">{t(submenu.title)}</div>
                           </div>
                         </a>
                       );
@@ -304,11 +304,11 @@ export default function NavbarComponent() {
         </div>
       )}
       <div
-        className={`mainNavContainer`}
+        className="mainNavContainer"
         style={{ top: isImpersonationModeOn ? 49 : 0 }}
       >
-        <div className={'top_nav'}>
-          <div className={'brandLogos'}>
+        <div className="top_nav">
+          <div className="brandLogos">
             {tenantConfig.config.header?.isSecondaryTenant && (
               <div
                 className={
@@ -319,29 +319,29 @@ export default function NavbarComponent() {
               >
                 <a href={tenantConfig.config.header?.tenantLogoLink}>
                   <img
-                    className={'tenantLogo desktop'}
+                    className="tenantLogo desktop"
                     src={tenantConfig.config.header.tenantLogoURL}
                   />
                   {tenantConfig.config.header.mobileLogoURL ? (
                     <img
-                      className={'tenantLogo mobile'}
+                      className="tenantLogo mobile"
                       src={tenantConfig.config.header.mobileLogoURL}
                     />
                   ) : (
                     <img
-                      className={'tenantLogo mobile'}
+                      className="tenantLogo mobile"
                       src={tenantConfig.config.header.tenantLogoURL}
                     />
                   )}
                 </a>
-                <div className={'logo_divider'} />
+                <div className="logo_divider" />
               </div>
             )}
 
             {theme === 'theme-light' ? (
               <a href="https://www.plant-for-the-planet.org">
                 <img
-                  className={'tenantLogo'}
+                  className="tenantLogo"
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
                   alt={t('about_pftp')}
                 />
@@ -349,8 +349,8 @@ export default function NavbarComponent() {
             ) : (
               <a href="https://www.plant-for-the-planet.org">
                 <img
-                  className={'tenantLogo'}
-                  src={`/assets/images/PlanetDarkLogo.svg`}
+                  className="tenantLogo"
+                  src="/assets/images/PlanetDarkLogo.svg"
                   alt={t('about_pftp')}
                 />
               </a>

@@ -94,7 +94,7 @@ const PlantedTreesContributions = ({
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"
-                  startIcon={<EditTargetSvg color={'#FFFFFF'} />}
+                  startIcon={<EditTargetSvg color="#FFFFFF" />}
                   onClick={handleAddTargetModalOpen}
                   className={myForestStyles.customEditButton}
                 >

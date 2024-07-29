@@ -6,8 +6,8 @@ export default function Social() {
   const { tenantConfig } = useTenant();
 
   const url = encodeURI(
-    tenantConfig.config.slug.indexOf('http://') == 0 ||
-      tenantConfig.config.slug.indexOf('https://') == 0
+    tenantConfig.config.slug.indexOf('http://') === 0 ||
+      tenantConfig.config.slug.indexOf('https://') === 0
       ? tenantConfig.config.slug + '/home'
       : 'https://' + tenantConfig.config.slug + '/home'
   );

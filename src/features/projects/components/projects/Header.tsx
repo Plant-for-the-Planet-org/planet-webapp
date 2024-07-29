@@ -21,10 +21,10 @@ function Header({
 }: Props): ReactElement {
   const t = useTranslations('Donate');
   return (
-    <div className={'header'}>
+    <div className="header">
       {showTopProjectsList ? (
-        <div className={'tabButtonContainer'}>
-          <div className={'tabButton'} onClick={() => setSelectedTab('top')}>
+        <div className="tabButtonContainer">
+          <div className="tabButton" onClick={() => setSelectedTab('top')}>
             <div
               className={
                 selectedTab === 'top' ? 'tabButtonSelected' : 'tabButtonText'
@@ -33,11 +33,11 @@ function Header({
               {t('topProjects')}
             </div>
             {selectedTab === 'top' ? (
-              <div className={'tabButtonSelectedIndicator'} />
+              <div className="tabButtonSelectedIndicator" />
             ) : null}
           </div>
 
-          <div className={'tabButton'} onClick={() => setSelectedTab('all')}>
+          <div className="tabButton" onClick={() => setSelectedTab('all')}>
             <div
               className={
                 selectedTab === 'all' ? 'tabButtonSelected' : 'tabButtonText'
@@ -48,18 +48,18 @@ function Header({
               })}
             </div>
             {selectedTab === 'all' ? (
-              <div className={'tabButtonSelectedIndicator'} />
+              <div className="tabButtonSelectedIndicator" />
             ) : null}
           </div>
         </div>
       ) : (
-        <p className={'headerText'}>{t('stopTalkingStartPlanting')}</p>
+        <p className="headerText">{t('stopTalkingStartPlanting')}</p>
       )}
 
       <button
-        id={'searchIcon'}
+        id="searchIcon"
         data-test-id="searchIcon"
-        className={'searchIcon'}
+        className="searchIcon"
         onClick={() => setSearchMode(true)}
       >
         <SearchIcon />

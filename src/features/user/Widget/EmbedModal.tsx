@@ -114,7 +114,7 @@ export default function EmbedModal({
             style={{ justifyContent: 'center' }}
           >
             <button
-              id={'editProfileSaveProfile'}
+              id="editProfileSaveProfile"
               className={styles.saveButton}
               onClick={() => saveProfile()}
             >
@@ -125,7 +125,7 @@ export default function EmbedModal({
               )}
             </button>
             <button
-              id={'editProfileSaveProfile'}
+              id="editProfileSaveProfile"
               className={styles.cancelButton}
               onClick={() => {
                 setEmbedModalOpen(false);

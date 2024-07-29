@@ -249,7 +249,7 @@ export interface ProjectSpendingProps {
 export interface SubmitForReviewProps {
   submitForReview: () => Promise<void>;
   handleBack: (arg: number) => void;
-  isUploadingData: Boolean;
+  isUploadingData: boolean;
   projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   handlePublishChange: (arg: boolean) => Promise<void>;
 }

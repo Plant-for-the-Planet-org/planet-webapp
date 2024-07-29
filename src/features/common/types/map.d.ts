@@ -122,19 +122,11 @@ export interface InteractionState {
 export interface ViewportProps {
   width?: string;
   height?: string;
-  latitude: number;
-  longitude: number;
-  zoom: number;
-  viewState?: ViewState | undefined;
-  interactionState?: InteractionState | undefined;
-}
-
-export interface ViewportProps {
-  height: number | string;
-  width: number | string;
-  zoom: [number] | number | undefined;
   latitude?: number;
   longitude?: number;
+  zoom: [number] | number | undefined;
+  viewState?: ViewState | undefined;
+  interactionState?: InteractionState | undefined;
   center?: [number, number];
   transitionDuration?: number | undefined;
   transitionInterpolator?: FlyToInterpolator | undefined;

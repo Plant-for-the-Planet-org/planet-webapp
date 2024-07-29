@@ -16,7 +16,7 @@ interface Props {
   treesDonated: TreesDonated;
 }
 export default function Stats({ tenantScore, treesDonated }: Props): ReactElement {
-  const [infoExpanded, setInfoExpanded] = React.useState<String | null>(null);
+  const [infoExpanded, setInfoExpanded] = React.useState<string | null>(null);
   const tPlanet = useTranslations('Planet');
   const locale = useLocale();
   const [openModal, setModalOpen] = React.useState(false);
@@ -34,7 +34,7 @@ export default function Stats({ tenantScore, treesDonated }: Props): ReactElemen
           </h2>
           <h3 className={styles.statText}>{tPlanet('treesDonated')}</h3>
           <button
-            id={'donatedStats'}
+            id="donatedStats"
             onClick={() => {
               setInfoExpanded('donated');
               setModalOpen(true);
@@ -50,7 +50,7 @@ export default function Stats({ tenantScore, treesDonated }: Props): ReactElemen
           </h2>
           <h3 className={styles.statText}>{tPlanet('plantedGlobally')}</h3>
           <button
-            id={'globalStats'}
+            id="globalStats"
             onClick={() => {
               setInfoExpanded('global');
               setModalOpen(true);
@@ -69,7 +69,7 @@ export default function Stats({ tenantScore, treesDonated }: Props): ReactElemen
           </h2>
           <h3 className={styles.statText}>{tPlanet('forestLoss')}</h3>
           <button
-            id={'lossStats'}
+            id="lossStats"
             onClick={() => {
               setInfoExpanded('loss');
               setModalOpen(true);

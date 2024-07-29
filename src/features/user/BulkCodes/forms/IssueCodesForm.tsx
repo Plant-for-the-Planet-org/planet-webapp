@@ -239,7 +239,7 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const shouldDisableSubmission = useMemo(() => {
     const hasSufficientFunds =
-      user?.planetCash != null &&
+      user?.planetCash !== null &&
       user.planetCash.balance + user.planetCash.creditLimit > 0;
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
@@ -316,7 +316,7 @@ const IssueCodesForm = (): ReactElement | null => {
   if (!isSubmitted) {
     return (
       <CenteredContainer>
-        <StyledFormContainer className="IssueCodesForm" component={'section'}>
+        <StyledFormContainer className="IssueCodesForm" component="section">
           <div className="inputContainer">
             <ProjectSelector
               projectList={projectList || []}

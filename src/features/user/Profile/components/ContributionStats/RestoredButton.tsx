@@ -52,7 +52,7 @@ const RestoredButton = ({
             {restoredArea ? getFormattedNumber(locale, restoredArea) : 0}
           </div>
         </div>
-        <div className={myForestStyles.restoredUnit}>{'m²'}</div>
+        <div className={myForestStyles.restoredUnit}>m²</div>
         {restoredArea !== null &&
           plantedTrees !== null &&
           restoredArea > 0 &&

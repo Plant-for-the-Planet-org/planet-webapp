@@ -19,7 +19,7 @@ export default function getCurrencySymbolByCode(
   const formatter = new Intl.NumberFormat(langCode, options);
   const currencySymbol = formatter
     .formatToParts(amount)
-    .filter((part) => part.type == 'currency');
+    .filter((part) => part.type === 'currency');
 
   return Array.isArray(currencySymbol) && currencySymbol.length > 0
     ? currencySymbol[0].value
