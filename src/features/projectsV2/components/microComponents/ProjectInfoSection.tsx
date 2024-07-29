@@ -36,6 +36,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   const tDonate = useTranslations('Donate');
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
+  const tAllProjects = useTranslations('AllProjects');
   const { tenantConfig } = useTenant();
   const { token } = useUserProps();
   const locale = useLocale();
@@ -63,7 +64,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
               <>
                 {localizedAbbreviatedNumber(locale, Number(countPlanted), 1)}{' '}
                 {unitType === 'tree'
-                  ? tDonate('treeDonated', {
+                  ? tAllProjects('treeDonated', {
                       count: Number(countPlanted),
                     })
                   : tCommon('m2')}{' '}

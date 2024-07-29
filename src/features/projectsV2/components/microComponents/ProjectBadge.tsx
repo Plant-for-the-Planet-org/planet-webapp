@@ -26,7 +26,7 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
   const { tenantConfig } = useTenant();
 
   const badgeConfig: TitleAndIconReturnType | undefined = useMemo(() => {
-    const projectBadge = {
+    const badgeOptions = {
       notDonatable: {
         icon: <NewInfoIcon width={10} />,
         title: tCommon('notDonatable'),
@@ -49,7 +49,7 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
       },
     };
     const { notDonatable, topProject, fieldReviewed, offSiteReviewed } =
-      projectBadge;
+      badgeOptions;
     if (!allowDonations) return notDonatable;
     if (isTopProject && isApproved) return topProject;
     if (!isTopProject && isApproved) return fieldReviewed;

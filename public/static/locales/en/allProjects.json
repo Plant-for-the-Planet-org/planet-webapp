@@ -18,6 +18,7 @@
     "topProjects": "Top Projects <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "list": "List",
-    "map": "Map"
+    "map": "Map",
+    "treeDonated": "{count, plural, =1 {Tree donated} other {Trees donated}}"
   }
 }
