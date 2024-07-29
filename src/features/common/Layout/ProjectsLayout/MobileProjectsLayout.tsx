@@ -1,9 +1,10 @@
 import { FC, useState } from 'react';
 import style from './ProjectsLayout.module.scss';
-import ProjectsMap from './ProjectsMap';
+import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import WebappButton from '../../WebappButton';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
+import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -33,22 +34,26 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
       currencyCode={currencyCode}
       setCurrencyCode={setCurrencyCode}
     >
-      <main className={mobileLayoutClass}>
-        <WebappButton
-          text={isMapMode ? 'View Info' : 'View Map'}
-          variant="primary"
-          elementType="button"
-          onClick={() => setIsMapMode(!isMapMode)}
-          buttonClasses={viewButtonClass}
-        />
-        {isMapMode ? (
-          <section className={style.mobileMapContainer}>
-            <ProjectsMap />
-          </section>
-        ) : (
-          <section className={style.mobileContentContainer}>{children}</section>
-        )}
-      </main>
+      <ProjectsMapProvider>
+        <main className={mobileLayoutClass}>
+          <WebappButton
+            text={isMapMode ? 'View Info' : 'View Map'}
+            variant="primary"
+            elementType="button"
+            onClick={() => setIsMapMode(!isMapMode)}
+            buttonClasses={viewButtonClass}
+          />
+          {isMapMode ? (
+            <section className={style.mobileMapContainer}>
+              <ProjectsMap />
+            </section>
+          ) : (
+            <section className={style.mobileContentContainer}>
+              {children}
+            </section>
+          )}
+        </main>
+      </ProjectsMapProvider>
     </ProjectsProvider>
   );
 };

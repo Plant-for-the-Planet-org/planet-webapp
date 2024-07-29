@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { MapProject } from '../common/types/ProjectPropsContextInterface';
+import { MapProject } from '../common/types/projectv2';
 import { useLocale } from 'next-intl';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
