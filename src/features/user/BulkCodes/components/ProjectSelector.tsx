@@ -8,6 +8,7 @@ import { useTenant } from '../../../common/Layout/TenantContext';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface ProjectSelectorProps {
   projectList: ProjectOption[];
@@ -31,6 +32,7 @@ const ProjectSelector = ({
 
     return 'tree';
   };
+  const { user } = useUserProps();
 
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getRequest<PaymentOptions>(
@@ -38,6 +40,7 @@ const ProjectSelector = ({
       `/app/paymentOptions/${guid}`,
       {
         country: planetCashAccount?.country || '',
+        ...(user !== null && { profile: user.id }),
       }
     );
     return paymentOptions;

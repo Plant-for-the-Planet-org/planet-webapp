@@ -26,6 +26,7 @@ import {
 } from 'next';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
+import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 
 interface Props {
   pageProps: PageProps;
@@ -41,6 +42,7 @@ export default function BulkCodeIssueCodesPage({
 
   const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
     useBulkCode();
+  const { user } = useUserProps();
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
@@ -53,6 +55,7 @@ export default function BulkCodeIssueCodesPage({
               `/app/paymentOptions/${router.query.id}`,
               {
                 currency: planetCashAccount.country,
+                ...(user !== null && { profile: user.id }),
               }
             );
 
