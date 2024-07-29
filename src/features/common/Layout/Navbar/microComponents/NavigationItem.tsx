@@ -1,22 +1,13 @@
-import { useTenant } from '../../TenantContext';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import UserIcon from './UserIcon';
-import { useState, useEffect } from 'react';
 import AboutUsSubMenu from './AboutUsSubMenu';
 import { SetState } from '../../../types/common';
-import { useMobileDetection } from '../../../../../utils/navbarUtils';
+import { useTenant } from '../../TenantContext';
+import { navLinkOptions } from './NavigationMenu';
+import { useMemo } from 'react';
 
-type Submenu = Omit<navLinkOptions, 'subMenu' | 'loggedInTitle'>;
-interface navLinkOptions {
-  title: string;
-  onclick: string;
-  visible: boolean;
-  subMenu?: Submenu[];
-  loggedInTitle?: string | undefined;
-}
-interface MenuItemProps {
+interface NavigationItemProps {
   navLink: string;
   navLinkOptions: navLinkOptions;
   isMobile: boolean;
@@ -24,13 +15,13 @@ interface MenuItemProps {
   setMenu: SetState<boolean>;
 }
 
-const MenuItem = ({
+const NavigationItem = ({
   navLink,
   navLinkOptions,
   isMobile,
   menu,
   setMenu,
-}: MenuItemProps) => {
+}: NavigationItemProps) => {
   const router = useRouter();
   const t = useTranslations('Common');
   const { tenantConfig } = useTenant();
@@ -54,8 +45,7 @@ const MenuItem = ({
       setMenu(isMobile ? menu : false);
     }
   };
-
-  const isActive = () => {
+  const isActive = useMemo(() => {
     const { slug } = tenantConfig.config;
     const { pathname } = router;
     const donatePaths = [
@@ -81,16 +71,14 @@ const MenuItem = ({
       pathname === '/sites/[slug]/[locale]' &&
       navLink === 'home';
 
-    if (isPlanetHome) {
-      return true;
-    }
-
     if (navLink === 'donate') {
       return isDonatePath;
     }
-
+    if (isPlanetHome) {
+      return true;
+    }
     return isHomePath || isLeaderboardPath;
-  };
+  }, [router, tenantConfig]);
 
   return navLinkOptions.visible ? (
     <div
@@ -106,7 +94,7 @@ const MenuItem = ({
       >
         {navLinkOptions.title !== 'signIn' && (
           <div className={`linkContainer`}>
-            <p className={isActive() ? 'active_icon' : ''}>
+            <p className={isActive ? 'activeIcon' : ''}>
               {t(navLinkOptions.title)}
             </p>
           </div>
@@ -119,44 +107,4 @@ const MenuItem = ({
   ) : null;
 };
 
-const MenuItems = () => {
-  const { tenantConfig } = useTenant();
-  const [isMobile, setIsMobile] = useState(false);
-  const [menu, setMenu] = useState(false);
-  const links = Object.keys(tenantConfig?.config?.header?.items || {});
-
-  useEffect(() => {
-    const maxWidth = '768px';
-    useMobileDetection(maxWidth, (isMobile: boolean) => {
-      setIsMobile(isMobile);
-    });
-  }, []);
-
-  return tenantConfig ? (
-    <div className={'menuItems'}>
-      {links
-        .filter((navLink) => navLink !== 'shop' && navLink !== 'me')
-        .map((navLink) => {
-          const navLinkOptions = tenantConfig.config.header.items[navLink];
-
-          return (
-            <MenuItem
-              key={navLink}
-              navLink={navLink}
-              navLinkOptions={navLinkOptions}
-              isMobile={isMobile}
-              menu={menu}
-              setMenu={setMenu}
-            />
-          );
-        })}
-      {tenantConfig.config.header.items['me']?.visible && (
-        <div>
-          <UserIcon />
-        </div>
-      )}
-    </div>
-  ) : null;
-};
-
-export default MenuItems;
+export default NavigationItem;

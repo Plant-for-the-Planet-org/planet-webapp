@@ -4,7 +4,7 @@ import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
 import BrandLogo from './microComponents/BrandLogo';
-import MenuItems from './microComponents/MenuItems';
+import NavigationMenu from './microComponents/NavigationMenu';
 
 const ImpersonationStatusHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
@@ -12,56 +12,53 @@ const ImpersonationStatusHeader = () => {
     <div className="impersonationAlertContainer">
       <ImpersonationActivated />
     </div>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
 
 const CommonHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
   return (
-    <div
+    <header
       className={`navContainer ${
         isImpersonationModeOn ? 'impersonationMode' : ''
       }`}
     >
       <BrandLogo />
-      <MenuItems />
-    </div>
+      <NavigationMenu />
+    </header>
   );
 };
+
 export default function NavbarComponent() {
   const { embed } = useContext(ParamsContext);
-
   const { tenantConfig } = useTenant();
-
   const { setUser, logoutUser, auth0Error } = useUserProps();
 
   if (auth0Error) {
-    if (auth0Error.message === '401') {
+    const { message } = auth0Error;
+
+    if (message === '401') {
       if (typeof window !== 'undefined') {
         setUser(null);
         logoutUser(`${window.location.origin}/verify-email`);
       }
-    } else if (auth0Error.message === 'Invalid state') {
+    } else if (message === 'Invalid state') {
       setUser(null);
     } else if (typeof window !== 'undefined') {
-      if (auth0Error.message) {
-        alert(auth0Error.message);
+      if (message) {
+        alert(message);
       }
       setUser(null);
       logoutUser(`${window.location.origin}/`);
     }
   }
 
-  return embed === 'true' ? (
-    <></>
-  ) : tenantConfig ? (
+  if (embed === 'true') return null;
+
+  return tenantConfig ? (
     <div className="mainNavContainer">
       <ImpersonationStatusHeader />
       <CommonHeader />
     </div>
-  ) : (
-    <></>
-  );
+  ) : null;
 }

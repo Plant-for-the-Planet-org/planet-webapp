@@ -5,7 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import DefaultProfileImageIcon from '../../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import SignInButton from './SignInButton';
 
-const UserIcon = () => {
+const UserProfileButton = () => {
   const { user } = useUserProps();
   const router = useRouter();
   const { isAuthenticated, isLoading } = useAuth0();
@@ -15,7 +15,7 @@ const UserIcon = () => {
   }
 
   if (!user) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -26,10 +26,12 @@ const UserIcon = () => {
       {user.image ? (
         <img src={getImageUrl('profile', 'avatar', user.image)} alt="Profile" />
       ) : (
-        <DefaultProfileImageIcon width={'110px'} />
+        <div className="userDefaultIconContainer">
+          <DefaultProfileImageIcon />
+        </div>
       )}
     </button>
   );
 };
 
-export default UserIcon;
+export default UserProfileButton;

@@ -27,20 +27,22 @@ const AboutUsSubMenu = ({ subMenu }: AboutUsSubMenuProp) => {
   return (
     <>
       {subMenu &&
-        subMenu.map((singleMenu: SubMenu) => {
+        subMenu.map((subMenuItem: SubMenu) => {
           return (
             <a
-              key={singleMenu.title}
+              key={subMenuItem.title}
               className={'menuRow'}
               href={`https://www.plant-for-the-planet.org/${
                 lang_path[locale as keyof typeof lang_path]
                   ? lang_path[locale as keyof typeof lang_path]
                   : 'en'
-              }/${subMenuPath[singleMenu.title as keyof typeof subMenuPath]}`}
+              }/${subMenuPath[subMenuItem.title as keyof typeof subMenuPath]}`}
             >
               <div className={'subMenuContainer'}>
-                <GetSubMenuIcons title={singleMenu.title} />
-                <div className={'menuText'}>{t(singleMenu.title)}</div>
+                <GetSubMenuIcons title={subMenuItem.title} />
+                <div className={'menuText'}>
+                  {t(subMenuItem.title as keyof typeof subMenuPath)}
+                </div>
               </div>
             </a>
           );

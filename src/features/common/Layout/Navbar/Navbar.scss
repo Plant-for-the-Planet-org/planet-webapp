@@ -16,7 +16,7 @@
   position: fixed;
   top: 0px;
   width: 100%;
-  padding: 18px 36px 18px 25px;
+  padding: 10px 25px 10px 25px;
   border-radius: 0px;
   &.impersonationMode {
     top: 49px;
@@ -88,7 +88,7 @@
       color: rgba(47, 51, 54, 1);
       cursor: pointer;
     }
-    > p.active_icon {
+    > p.activeIcon {
       color: $primaryColor;
     }
     .link_icon {
@@ -213,6 +213,14 @@
   > img {
     border-radius: 50%;
     @include xsPhoneView {
+      height: 42px;
+    }
+  }
+  .userDefaultIconContainer {
+    width: 50px;
+    height: 50px;
+    @include xsPhoneView {
+      width: 42px;
       height: 42px;
     }
   }
