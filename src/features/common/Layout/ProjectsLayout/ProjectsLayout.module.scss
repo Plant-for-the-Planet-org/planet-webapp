@@ -1,5 +1,10 @@
 @import '../../../../theme/theme';
 
+// define a variable for the space around the layout
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+$layoutPaddingBottom: 30px;
+
 .projectsLayout {
   margin-top: 80px;
   height: calc(100vh - 80px);
@@ -9,7 +14,7 @@
       rgba(172, 172, 172, 0.15) 100%
     ),
     #fff;
-  padding: 24px 20px 30px;
+  padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
   position: relative;
 }
 
@@ -32,6 +37,13 @@
   overflow: hidden;
 }
 
+.exploreOptions {
+  position: absolute;
+  top: calc($layoutPaddingTop + 20px);
+  right: calc($layoutPaddingSide + 20px);
+  z-index: 1;
+}
+
 // styles for mobile layout
 
 .mobileProjectsLayout {
@@ -41,7 +53,7 @@
   display: flex;
   justify-content: center;
   margin-top: 80px;
-  padding-top: 24px;
+  padding-top: $layoutPaddingTop;
   &.mapMode {
     height: 100vh;
     margin-top: 0px;

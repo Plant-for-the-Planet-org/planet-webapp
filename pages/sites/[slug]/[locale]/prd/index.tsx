@@ -91,7 +91,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'maps', 'country'],
+    filenames: ['common', 'maps', 'country', 'allProjects'],
   });
 
   return {
