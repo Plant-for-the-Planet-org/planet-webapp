@@ -60,16 +60,16 @@ function RecurrentDonations({
       );
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
-          (obj) => obj.status == 'active' || obj.status == 'trialing'
+          (obj) => obj.status === 'active' || obj.status === 'trialing'
         );
         const pauseRecurrencies = recurrencies?.filter(
-          (obj) => obj.status == 'paused'
+          (obj) => obj.status === 'paused'
         );
         const otherRecurrencies = recurrencies?.filter(
           (obj) =>
-            obj.status != 'paused' &&
-            obj.status != 'active' &&
-            obj.status != 'trialing'
+            obj.status !== 'paused' &&
+            obj.status !== 'active' &&
+            obj.status !== 'trialing'
         );
         setrecurrencies([
           ...activeRecurrencies,
@@ -99,7 +99,7 @@ function RecurrentDonations({
   return tenantConfig ? (
     <>
       {progress > 0 && (
-        <div className={'topLoader'}>
+        <div className="topLoader">
           <TopProgressBar progress={progress} />
         </div>
       )}

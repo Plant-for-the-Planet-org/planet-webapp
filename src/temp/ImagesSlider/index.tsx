@@ -40,7 +40,7 @@ const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
       <Stories
         stories={projectImages}
         defaultInterval={7000}
-        width={'100%'}
+        width="100%"
         height={height}
         loop={true}
         progressContainerStyles={{

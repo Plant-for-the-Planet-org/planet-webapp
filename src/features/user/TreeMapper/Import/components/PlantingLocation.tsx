@@ -526,7 +526,7 @@ export default function PlantingLocation({
 
       <div className={`${styles.formFieldLarge}`}>
         <Button
-          id={'basicDetailsCont'}
+          id="basicDetailsCont"
           onClick={handleSubmit(onSubmit)}
           variant="contained"
           color="primary"

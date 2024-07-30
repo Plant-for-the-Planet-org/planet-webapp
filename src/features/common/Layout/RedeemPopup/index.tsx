@@ -58,7 +58,7 @@ export default function RedeemPopup() {
   return showRedeemPopup ? (
     <div className={styles.cookieContainer}>
       <button
-        id={'redeemCloseButton'}
+        id="redeemCloseButton"
         className={styles.closeButton}
         onClick={() => setShowRedeemPopup(false)}
       >

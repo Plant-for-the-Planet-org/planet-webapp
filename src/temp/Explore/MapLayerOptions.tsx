@@ -25,7 +25,7 @@ const MayLayerOptions = () => {
       <div className={style.exploreContainer}>
         <div>
           <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
+            infoIcon={<InfoIcon width="10px" />}
             label={tAllProjects('currentForests')}
             switchComponent={
               <StyledSwitch customColor={`${primaryColorNew}`} />
@@ -33,7 +33,7 @@ const MayLayerOptions = () => {
           />
           <div className={style.hrLine} />
           <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
+            infoIcon={<InfoIcon width="10px" />}
             label={tAllProjects('restorationPotential')}
             switchComponent={
               <StyledSwitch customColor={`${restorationToggleColorNew}`} />
@@ -41,7 +41,7 @@ const MayLayerOptions = () => {
           />
           <div className={style.hrLine} />
           <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
+            infoIcon={<InfoIcon width="10px" />}
             label={tAllProjects('deforestation')}
             switchComponent={
               <StyledSwitch

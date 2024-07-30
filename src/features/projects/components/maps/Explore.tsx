@@ -171,7 +171,7 @@ export default function Explore(): ReactElement {
         `/${
           embed === 'true'
             ? `${
-                callbackUrl != undefined
+                callbackUrl !== undefined
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`

@@ -49,7 +49,7 @@ export default function PlanetCashPage({
   return tenantConfig ? (
     <>
       {progress > 0 && (
-        <div className={'topLoader'}>
+        <div className="topLoader">
           <TopProgressBar progress={progress} />
         </div>
       )}

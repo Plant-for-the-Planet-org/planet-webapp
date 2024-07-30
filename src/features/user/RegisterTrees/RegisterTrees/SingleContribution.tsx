@@ -73,7 +73,7 @@ export default function SingleContribution({
         <UploadImages {...UploadProps} />
       </div>
       <Button
-        id={'singleControCont'}
+        id="singleControCont"
         onClick={() => router.push('/profile')}
         variant="contained"
         color="primary"

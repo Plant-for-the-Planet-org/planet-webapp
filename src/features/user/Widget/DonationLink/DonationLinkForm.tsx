@@ -68,14 +68,14 @@ const DonationLinkForm = ({
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
     const selectedLanguage =
-      Languages && Languages.langCode != 'auto'
+      Languages && Languages.langCode !== 'auto'
         ? `locale=${Languages.langCode}&`
         : '';
 
     const selectedCountry = country !== 'auto' ? `country=${country}&` : '';
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
-      localProject == null ? '' : `to=${localProject.slug}&`
+      localProject === null ? '' : `to=${localProject.slug}&`
     }tenant=${tenantConfig?.id}${isSupport ? `&s=${user?.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
@@ -135,7 +135,7 @@ const DonationLinkForm = ({
               <AutoCompleteCountry
                 label={tDonationLink('labelCountry')}
                 name="country"
-                defaultValue={'auto'}
+                defaultValue="auto"
                 onChange={setCountry}
                 countries={allCountries}
               />

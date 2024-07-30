@@ -20,11 +20,11 @@ function SearchBar({
   const t = useTranslations('Donate');
   return (
     <>
-      <button id={'searchIconSearchB'} className={'searchIcon'}>
+      <button id="searchIconSearchB" className="searchIcon">
         <SearchIcon />
       </button>
 
-      <div className={'searchInput'} data-test-id="searchIcon">
+      <div className="searchInput" data-test-id="searchIcon">
         <TextField
           ref={searchRef}
           fullWidth={true}
@@ -36,14 +36,14 @@ function SearchBar({
         />
       </div>
       <button
-        id={'searchCancelIcon'}
-        className={'cancelIcon'}
+        id="searchCancelIcon"
+        className="cancelIcon"
         onClick={() => {
           setSearchMode(false);
           setSearchValue('');
         }}
       >
-        <CancelIcon color={'primaryFontColor'} />
+        <CancelIcon color="primaryFontColor" />
       </button>
     </>
   );

@@ -78,11 +78,11 @@ export const PauseModal = ({
     setDisabled(true);
     const bodyToSend = {
       pauseType:
-        option == 'pauseForMonth' || option == 'pauseUntilDate'
+        option === 'pauseForMonth' || option === 'pauseUntilDate'
           ? 'custom-date'
           : 'infinite', //custom-date | infinite
       pauseUntil:
-        option == 'pauseForMonth' || option == 'pauseUntilDate'
+        option === 'pauseForMonth' || option === 'pauseUntilDate'
           ? date?.toISOString().split('T')[0]
           : null, // only if pauseType='custom-date'
     };
@@ -134,7 +134,7 @@ export const PauseModal = ({
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <Close color="#4d5153" />
               </button>
             </div>
             <div className={styles.note}>
@@ -164,13 +164,13 @@ export const PauseModal = ({
               />):[]} */}
               <FormControlLabel
                 key={2}
-                value={'pauseUntilResume'}
+                value="pauseUntilResume"
                 control={<GreenRadio />}
                 label={t('pauseUntilResume')}
               />
               <FormControlLabel
                 key={3}
-                value={'pauseUntilDate'}
+                value="pauseUntilDate"
                 control={<GreenRadio />}
                 label={t('pauseUntilDate')}
               />

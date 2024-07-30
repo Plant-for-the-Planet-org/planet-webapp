@@ -411,14 +411,14 @@ function RegisterTreesForm({
 
           <div>
             <Button
-              id={'RegTressSubmit'}
+              id="RegTressSubmit"
               onClick={handleSubmit(submitRegisterTrees)}
               variant="contained"
               color="primary"
             >
               {' '}
               {isUploadingData ? (
-                <div className={'spinner'}></div>
+                <div className="spinner"></div>
               ) : (
                 t('registerButton')
               )}

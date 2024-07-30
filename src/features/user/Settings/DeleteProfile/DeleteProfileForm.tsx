@@ -111,7 +111,7 @@ export default function DeleteProfileForm() {
         color="error"
       >
         {isUploadingData ? (
-          <div className={'spinner'}></div>
+          <div className="spinner"></div>
         ) : (
           tCommon('delete')
         )}

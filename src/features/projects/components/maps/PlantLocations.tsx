@@ -149,7 +149,7 @@ export default function PlantLocations(): ReactElement {
   return (
     <>
       <Source
-        id={'display-source'}
+        id="display-source"
         type="geojson"
         data={{
           type: 'FeatureCollection',
@@ -157,7 +157,7 @@ export default function PlantLocations(): ReactElement {
         }}
       >
         <Layer
-          id={`polygon-layer`}
+          id="polygon-layer"
           type="fill"
           paint={{
             'fill-color': satellite ? '#ffffff' : '#007A49',
@@ -166,7 +166,7 @@ export default function PlantLocations(): ReactElement {
           filter={['==', ['geometry-type'], 'Polygon']}
         />
         <Layer
-          id={`point-layer`}
+          id="point-layer"
           type="circle"
           paint={{
             'circle-color': satellite ? '#ffffff' : '#007A49',
@@ -175,7 +175,7 @@ export default function PlantLocations(): ReactElement {
           filter={['==', ['geometry-type'], 'Point']}
         />
         <Layer
-          id={`line-selected`}
+          id="line-selected"
           type="line"
           paint={{
             'line-color': satellite ? '#ffffff' : '#007A49',
@@ -184,7 +184,7 @@ export default function PlantLocations(): ReactElement {
           filter={['==', ['get', 'highlightLine'], true]}
         />
         <Layer
-          id={`datediff-label`}
+          id="datediff-label"
           type="symbol"
           layout={{
             'text-field': ['get', 'dateDiff'],

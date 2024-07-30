@@ -52,7 +52,7 @@ export default function Markers({
       `/${locale}/${projectSlug}/${
         embed === 'true'
           ? `${
-              callbackUrl != undefined
+              callbackUrl !== undefined
                 ? `?embed=true&callback=${callbackUrl}`
                 : '?embed=true'
             }`

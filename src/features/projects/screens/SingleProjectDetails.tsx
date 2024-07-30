@@ -88,7 +88,7 @@ function SingleProjectDetails(): ReactElement {
         `/${project.slug}/${
           isEmbed
             ? `${
-                callbackUrl != undefined
+                callbackUrl !== undefined
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
@@ -149,18 +149,18 @@ function SingleProjectDetails(): ReactElement {
         }}
       >
         <Modal
-          className={'modalContainer'}
+          className="modalContainer"
           open={openModal}
           onClose={handleModalClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           hideBackdrop
         >
-          <div className={'modalWrapper'}>
+          <div className="modalWrapper">
             <button
-              id={'singleProjCloseModal'}
+              id="singleProjCloseModal"
               onClick={handleModalClose}
-              className={'modalClose'}
+              className="modalClose"
             >
               <CancelIcon color="#fff" />
             </button>
@@ -185,7 +185,7 @@ function SingleProjectDetails(): ReactElement {
               <></>
             ) : (
               <button
-                id={'backButtonSingleP'}
+                id="backButtonSingleP"
                 style={{
                   cursor: 'pointer',
                   width: 'fit-content',
@@ -197,7 +197,7 @@ function SingleProjectDetails(): ReactElement {
                 <BackButton />
               </button>
             )}
-            <div className={'projectSnippetContainer'}>
+            <div className="projectSnippetContainer">
               <ProjectSnippet
                 project={project}
                 editMode={false}
@@ -207,9 +207,9 @@ function SingleProjectDetails(): ReactElement {
             {hoveredPl || selectedPl ? (
               <PlantLocationDetails {...ProjectProps} />
             ) : (
-              <div className={'singleProjectDetails'}>
+              <div className="singleProjectDetails">
                 <div
-                  className={'projectCompleteInfo'}
+                  className="projectCompleteInfo"
                   style={{ marginTop: 24 }}
                 >
                   {project.purpose === 'trees' &&
@@ -218,8 +218,8 @@ function SingleProjectDetails(): ReactElement {
                     project.reviews.length > 0 && (
                       <TopProjectReports projectReviews={project.reviews} />
                     )}
-                  <div className={'projectDescription'}>
-                    <div className={'infoTitle'}>{tDonate('aboutProject')}</div>
+                  <div className="projectDescription">
+                    <div className="infoTitle">{tDonate('aboutProject')}</div>
                     <ReadMoreReact
                       key={project.description || ''}
                       min={300}
@@ -230,11 +230,11 @@ function SingleProjectDetails(): ReactElement {
                     />
                   </div>
 
-                  <div className={'projectInfoProperties'}>
+                  <div className="projectInfoProperties">
                     {project.videoUrl !== null &&
                     ReactPlayer.canPlay(project.videoUrl) ? (
                       <ReactPlayer
-                        className={'projectVideoContainer'}
+                        className="projectVideoContainer"
                         width="100%"
                         height="220px"
                         loop={true}
@@ -248,11 +248,11 @@ function SingleProjectDetails(): ReactElement {
                         url={project.videoUrl}
                       />
                     ) : null}
-                    <div className={'projectImageSliderContainer'}>
+                    <div className="projectImageSliderContainer">
                       <button
-                        id={'expandButton'}
+                        id="expandButton"
                         onClick={handleModalOpen}
-                        className={'modalOpen'}
+                        className="modalOpen"
                       >
                         <ExpandIcon color="#fff" />
                       </button>

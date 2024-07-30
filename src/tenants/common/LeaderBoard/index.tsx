@@ -22,7 +22,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
             <button
-              id={'LeaderBoardRecent'}
+              id="LeaderBoardRecent"
               onClick={() => setSelectedTab('recent')}
               className={
                 selectedTab === 'recent'

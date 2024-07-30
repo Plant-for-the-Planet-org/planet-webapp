@@ -63,7 +63,7 @@ const ConservationButton = ({
           <div className={myForestStyles.value}>
             {conservedArea ? getFormattedNumber(locale, conservedArea) : 0}
           </div>
-          <div className={myForestStyles.unit}>{'m²'}</div>
+          <div className={myForestStyles.unit}>m²</div>
           {conservedArea !== null &&
             conservedArea !== undefined &&
             conservedArea > 0 && (

@@ -33,14 +33,14 @@ function VerifyEmailComponent(): ReactElement {
         {t('verifyEmailInfo')}
       </span>
       <button
-        id={'verifyEmail'}
+        id="verifyEmail"
         onClick={() =>
           loginWithRedirect({
             redirectUri: `${window.location.origin}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
           })
         }
-        className={'primaryButton'}
+        className="primaryButton"
         style={{ marginTop: '10px' }}
       >
         {t('continueToLogin')}

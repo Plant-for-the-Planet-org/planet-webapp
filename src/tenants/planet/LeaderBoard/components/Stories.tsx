@@ -15,12 +15,12 @@ export default function Stories(): ReactElement {
             lang_path[locale] ? lang_path[locale] : 'en'
           }/principles`}
         >
-          <img src={'/tenants/planet/images/leaderboard/restoreTrees.svg'} />
+          <img src="/tenants/planet/images/leaderboard/restoreTrees.svg" />
           <div className={styles.storyContent}>
             <h2>{t('restoreTrees')}</h2>
             <div>
               <p>{t('learnMore')}</p>
-              <img src={'/tenants/planet/images/leaderboard/arrow-right.svg'} />
+              <img src="/tenants/planet/images/leaderboard/arrow-right.svg" />
             </div>
           </div>
         </a>
@@ -30,12 +30,12 @@ export default function Stories(): ReactElement {
             lang_path[locale] ? lang_path[locale] : 'en'
           }/standards`}
         >
-          <img src={'/tenants/planet/images/leaderboard/selectProjects.svg'} />
+          <img src="/tenants/planet/images/leaderboard/selectProjects.svg" />
           <div className={styles.storyContent}>
             <h2>{t('selectProjects')}</h2>
             <div>
               <p>{t('learnMore')}</p>
-              <img src={'/tenants/planet/images/leaderboard/arrow-right.svg'} />
+              <img src="/tenants/planet/images/leaderboard/arrow-right.svg" />
             </div>
           </div>
         </a>

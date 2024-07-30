@@ -45,7 +45,7 @@ export const SearchAndFilter = ({
       <div className={style.filterContainer}>
         {isFilterApplied && <div className={style.filterIndicator} />}
         <button onClick={() => setIsFilterOpen(!isFilterOpen)}>
-          <FilterIcon width={'16px'} />
+          <FilterIcon width="16px" />
         </button>
       </div>
     </div>

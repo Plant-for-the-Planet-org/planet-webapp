@@ -130,7 +130,7 @@ export default function MySpeciesForm() {
                 render={({ field: { onChange, value } }) => (
                   <TextField
                     label={tTreemapper('aliases')}
-                    type={'text'}
+                    type="text"
                     style={{ width: '300px' }}
                     variant="outlined"
                     onChange={onChange}
@@ -144,7 +144,7 @@ export default function MySpeciesForm() {
               />
             </div>
             <Button
-              id={'addSpecies'}
+              id="addSpecies"
               onClick={handleSubmit(addSpecies)}
               variant="contained"
               color="primary"

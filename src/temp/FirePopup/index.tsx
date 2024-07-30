@@ -53,7 +53,7 @@ export default function FirePopup({ isOpen }: Props) {
               {t('hoursAgo', {
                 hours: 21,
               })}
-              <InfoIconPopup width={9} height={9} color={'#828282'}>
+              <InfoIconPopup width={9} height={9} color="#828282">
                 <div className={styles.infoIconPopupContainer}>
                   {t('firePopupText')}
                 </div>
@@ -73,7 +73,7 @@ export default function FirePopup({ isOpen }: Props) {
                   important: (chunks) => <span>{chunks}</span>,
                 })}
               </p>
-              <RightArrowIcon width={5} color={'#4F4F4F'} />
+              <RightArrowIcon width={5} color="#4F4F4F" />
             </div>
           </div>
         </aside>

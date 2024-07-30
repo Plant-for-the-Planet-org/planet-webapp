@@ -532,11 +532,11 @@ export default function ProjectSites({
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
                       {status
-                        .find((e) => site.status == e.value)
+                        .find((e) => site.status === e.value)
                         ?.label.toUpperCase()}
                     </div>
                     <IconButton
-                      id={'trashIconProjS'}
+                      id="trashIconProjS"
                       onClick={() => {
                         deleteProjectSite(site.id);
                       }}
@@ -546,13 +546,13 @@ export default function ProjectSites({
                       <TrashIcon />
                     </IconButton>
                     <IconButton
-                      id={'edit'}
+                      id="edit"
                       onClick={() => {
                         editSite(site);
                       }}
                       className={styles.uploadedMapEditButton}
                     >
-                      <EditIcon color={'#000'} />
+                      <EditIcon color="#000" />
                     </IconButton>
                     <MapStatic
                       {...viewport}
@@ -666,7 +666,7 @@ export default function ProjectSites({
           </div>
         ) : (
           <Button
-            id={'manageProjAddSite'}
+            id="manageProjAddSite"
             onClick={() => {
               setShowForm(true);
               setGeoJson(null);

@@ -30,7 +30,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
         <div className={styles.selectProject}>{t('selectProject')}</div>
       </div>
       <button
-        id={'giftClose'}
+        id="giftClose"
         onClick={() => {
           directGift.show = false;
           localStorage.removeItem('directGift');

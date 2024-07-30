@@ -44,7 +44,7 @@ export default function CookiePolicy() {
   return showCookieNotice ? (
     <div className={styles.cookieContainer}>
       <button
-        id={'cookieCloseButton'}
+        id="cookieCloseButton"
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >

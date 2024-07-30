@@ -63,7 +63,7 @@ export default function MyContributions({
       ) {
         setIsConservedButtonActive(true);
       } else if (
-        treePlantationContribution?.pages[0].data.length ==
+        treePlantationContribution?.pages[0].data.length ===
         conservationContribution?.pages[0].data.length
       ) {
         setIsTreePlantedButtonActive(true);

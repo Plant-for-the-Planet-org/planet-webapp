@@ -70,13 +70,13 @@ export const CancelModal = ({
     setDisabled(true);
     const bodyToSend = {
       cancellationType:
-        option == 'cancelImmediately'
+        option === 'cancelImmediately'
           ? 'immediate'
-          : option == 'cancelOnPeriodEnd'
+          : option === 'cancelOnPeriodEnd'
           ? 'period-end'
           : 'custom-date', // immediate|period-end|custom-date
       cancellationDate:
-        option == 'cancelOnSelectedDate'
+        option === 'cancelOnSelectedDate'
           ? date?.toISOString().split('T')[0]
           : null, // if custom-date is cancellationType
     };
@@ -127,7 +127,7 @@ export const CancelModal = ({
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <Close color="#4d5153" />
               </button>
             </div>
             <div className={styles.note}>
@@ -156,7 +156,7 @@ export const CancelModal = ({
               >
                 <FormControlLabel
                   key={1}
-                  value={'cancelImmediately'}
+                  value="cancelImmediately"
                   control={<GreenRadio />}
                   label={t('cancelImmediately')}
                 />
@@ -169,7 +169,7 @@ export const CancelModal = ({
 
                 <FormControlLabel
                   key={3}
-                  value={'cancelOnSelectedDate'}
+                  value="cancelOnSelectedDate"
                   control={<GreenRadio />}
                   label={t('cancelOnSelectedDate')}
                 />

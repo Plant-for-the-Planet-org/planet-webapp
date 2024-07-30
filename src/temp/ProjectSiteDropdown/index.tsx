@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 
 interface SiteType {
   name: string;
-  area: Number;
+  area: number;
 }
 interface Props {
   siteList: SiteType[];
@@ -36,7 +36,7 @@ const ProjectSiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
       >
         <div className={styles.siteIconAndTextContainer}>
           {/* to be replaced */}
-          <SiteIcon width={27} color={'#333'} />
+          <SiteIcon width={27} color="#333" />
           <div className={styles.labelTextContainer}>
             <label className={styles.sitesLabel}>
               <span className={styles.siteId}>

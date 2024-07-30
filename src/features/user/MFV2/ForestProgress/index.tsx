@@ -44,7 +44,7 @@ const ProgressBars = ({
       {shouldShowBar(treeTarget, treesDonated) && (
         <ForestProgressItem
           handleEditTargets={handleEditTargets}
-          dataType={'treesPlanted'}
+          dataType="treesPlanted"
           target={treeTarget}
           gift={contributionStats?.treesDonated.received ?? 0}
           personal={
@@ -57,7 +57,7 @@ const ProgressBars = ({
       {shouldShowBar(restoreTarget, areaRestored) && (
         <ForestProgressItem
           handleEditTargets={handleEditTargets}
-          dataType={'areaRestored'}
+          dataType="areaRestored"
           target={restoreTarget}
           gift={contributionStats?.areaRestoredInM2.received ?? 0}
           personal={contributionStats?.areaRestoredInM2.personal ?? 0}
@@ -67,7 +67,7 @@ const ProgressBars = ({
       {shouldShowBar(conservTarget, areaConserved) && (
         <ForestProgressItem
           handleEditTargets={handleEditTargets}
-          dataType={'areaConserved'}
+          dataType="areaConserved"
           target={conservTarget}
           gift={contributionStats?.areaConservedInM2.received ?? 0}
           personal={contributionStats?.areaConservedInM2.personal ?? 0}

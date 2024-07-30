@@ -29,27 +29,27 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
     return useMemo(() => {
       if (!allowDonations) {
         return {
-          icon: <NewInfoIcon width={10} height={10} color={'var(--light)'} />,
+          icon: <NewInfoIcon width={10} height={10} color="var(--light)" />,
           title: tCommon('notDonatable'),
         };
       }
 
       if (isTopProject && isApproved) {
         return {
-          icon: <TopProjectIcon color={'var(--light)'} width={11} />,
+          icon: <TopProjectIcon color="var(--light)" width={11} />,
           title: tCommon('topProject'),
         };
       }
 
       if (!isTopProject && isApproved) {
         return {
-          icon: <FieldReviewedIcon width={10} color={'var(--light)'} />,
+          icon: <FieldReviewedIcon width={10} color="var(--light)" />,
           title: tProjectDetails('fieldReviewed'),
         };
       }
       if (!isTopProject && !isApproved) {
         return {
-          icon: <OffSiteReviewedIcon width={10} color={'var(--light)'} />,
+          icon: <OffSiteReviewedIcon width={10} color="var(--light)" />,
           title: tProjectDetails('offSiteReviewed'),
         };
       }

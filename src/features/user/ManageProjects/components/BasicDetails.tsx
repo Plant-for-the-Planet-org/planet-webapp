@@ -533,7 +533,7 @@ export default function BasicDetails({
                   <TextField
                     label={t('countTarget')}
                     variant="outlined"
-                    placeholder={'0'}
+                    placeholder="0"
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       onChange(e);
@@ -675,7 +675,7 @@ export default function BasicDetails({
                     label={t('unitCost')}
                     variant="outlined"
                     type="number"
-                    placeholder={'0'}
+                    placeholder="0"
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
@@ -684,7 +684,7 @@ export default function BasicDetails({
                         <p
                           className={styles.inputStartAdornment}
                           style={{ paddingRight: '4px' }}
-                        >{`€`}</p>
+                        >€</p>
                       ),
                     }}
                     error={errors.unitCost !== undefined}

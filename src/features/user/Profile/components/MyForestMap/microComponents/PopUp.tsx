@@ -146,7 +146,7 @@ export const ClusterPopUpLabel = ({
   return (
     <div className={MyForestMapStyle.clusterPopUpContainer}>
       <div>
-        <PopUpDonationIcon width={'21px'} height={'21px'} />
+        <PopUpDonationIcon width="21px" height="21px" />
       </div>
       <div className={MyForestMapStyle.clusterPopUpInfo}>
         {t('myForestMap.totalDonation', {

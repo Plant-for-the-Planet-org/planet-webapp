@@ -36,7 +36,7 @@ const ProjectListTabLargeScreen = ({
       <CustomMuiTab
         icon={
           <StarIcon
-            width={'16px'}
+            width="16px"
             color={`${value === 1 ? dark.darkNew : primaryColorNew}`}
           />
         }

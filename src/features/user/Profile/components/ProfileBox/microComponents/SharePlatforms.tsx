@@ -61,7 +61,7 @@ const SharePlatforms = ({
             )
           }
         >
-          <X height={'38px'} width={'38px'} />
+          <X height="38px" width="38px" />
         </button>
       </div>
 

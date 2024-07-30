@@ -51,7 +51,7 @@ const ProjectListTabForMobile = ({
     <div className={style.tabContainer}>
       <TabItem
         selectedTab="topProjects"
-        icon={<StarIcon width={'12px'} color={starIconColor} />}
+        icon={<StarIcon width="12px" color={starIconColor} />}
         label={t.rich('top', {
           noOfProjects: topProjectCount,
           projectCountContainer: (chunks) => (

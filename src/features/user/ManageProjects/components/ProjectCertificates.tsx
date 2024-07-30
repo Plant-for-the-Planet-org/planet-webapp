@@ -188,7 +188,7 @@ function ProjectCertificates({
   };
 
   React.useEffect(() => {
-    if (uploadedFiles && uploadedFiles.length == 0) {
+    if (uploadedFiles && uploadedFiles.length === 0) {
       setShowToggle(true);
       setShowForm(true);
       setisCertified(false);
@@ -239,7 +239,7 @@ function ProjectCertificates({
                                     <PencilIcon color={"#000"} />
                                 </div> */}
                 <button
-                  id={'trashIconProjC'}
+                  id="trashIconProjC"
                   onClick={() => deleteProjectCertificate(report.id)}
                   className={styles.reportEditButton}
                 >

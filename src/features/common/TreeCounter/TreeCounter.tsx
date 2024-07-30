@@ -153,7 +153,7 @@ export default function TpoProfile(props: TpoProfileInterface) {
         <div className={treeCounterStyles.treeCounterData}>
           <div>
             <PlantedTressBlackSvg
-              color={'#4F4F4F'}
+              color="#4F4F4F"
               height={svgHeight}
               width={svgWidth}
             />

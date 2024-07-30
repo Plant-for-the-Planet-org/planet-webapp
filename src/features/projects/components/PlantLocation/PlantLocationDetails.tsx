@@ -145,7 +145,7 @@ export default function PlantLocationDetails({
   return (
     <>
       {plantLocation && (
-        <div className={'singleProjectDetails'}>
+        <div className="singleProjectDetails">
           <div className={styles.treeCount}>
             <div>
               {plantLocation.type === 'multi' && (

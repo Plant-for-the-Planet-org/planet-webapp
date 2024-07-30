@@ -22,8 +22,8 @@ function Video(): ReactElement {
           {ReactPlayer.canPlay(videoUrl) ? (
             <ReactPlayer
               className={styles.video}
-              height={'100%'}
-              width={'100%'}
+              height="100%"
+              width="100%"
               loop={true}
               light={true}
               controls={true}

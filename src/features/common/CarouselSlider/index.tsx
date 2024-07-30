@@ -116,7 +116,7 @@ const CarouselSlider = ({
           <CarouselArrow
             onClick={slideNext}
             direction="next"
-            disabled={finalSlideStartIndex == currentSlide}
+            disabled={finalSlideStartIndex === currentSlide}
           />
         </div>
       </div>
