@@ -1,3 +1,6 @@
+const MAX_PARAMS = 4;
+const JSX_INDENT_SIZE = 2;
+
 module.exports = {
   env: {
     node: true,
@@ -40,7 +43,7 @@ module.exports = {
     // Code Quality
     'complexity': ['warn', { max: 10 }],
     'max-lines': ['warn', { max: 300, skipBlankLines: true, skipComments: true }],
-    'max-params': ['warn', 4],
+    'max-params': ['warn', MAX_PARAMS],
     'no-magic-numbers': ['warn', { ignore: [0, 1] }],
 
     // Security
@@ -76,7 +79,7 @@ module.exports = {
     ],
     'react/jsx-indent': [
       'warn', 
-      2
+      JSX_INDENT_SIZE
     ],
     'import/extensions': [
       'warn', 
