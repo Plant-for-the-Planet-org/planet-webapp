@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ExploreIcon } from '../icons/ExploreIcon';
+import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';
 import style from './Explore.module.scss';
 import { SmallSlider } from './CustomSlider';
-import PlayIcon from '../icons/PlayIcon';
+import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
 import MayLayerOptions from './MapLayerOptions';
 import { useTranslations } from 'next-intl';

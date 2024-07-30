@@ -1,4 +1,4 @@
-import ExploreProject from '../../Explore/ExploreProject';
+import ExploreProject from '../Explore/ExploreProject';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ExploreProject> = {

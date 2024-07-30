@@ -1,11 +1,11 @@
 import { useState, ChangeEvent } from 'react';
 import style from '../Explore/Explore.module.scss';
 import { MapLayerToggle } from './ExploreProject';
-import InfoIcon from '../icons/InfoIcon';
+import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
 import { YearRangeSlider } from './ExploreProject';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../theme/themeProperties';
+import themeProperties from '../../../../theme/themeProperties';
 
 const MayLayerOptions = () => {
   const [checked, setChecked] = useState(false);
