@@ -15,7 +15,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     slug,
     isApproved,
     isTopProject,
-    unitsContributed,
+    unitCount,
     purpose,
     unitType,
     unitCost,
@@ -42,18 +42,18 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   const donationLabel = useMemo(() => {
     if (unitType === 'tree' && purpose === 'trees') {
       return tAllProjects('treeDonated', {
-        count: unitsContributed,
+        count: unitCount,
       });
     } else if (unitType === 'm2' && purpose === 'trees') {
       return tAllProjects('areaRestored', {
-        area: unitsContributed,
+        area: unitCount,
       });
     } else {
       return tAllProjects('areaConserved', {
-        area: unitsContributed,
+        area: unitCount,
       });
     }
-  }, [unitsContributed, unitType, purpose]);
+  }, [unitCount, unitType, purpose]);
 
   const donateButtonClass =
     isTopProject && isApproved ? `${style.topProject}` : undefined;
@@ -63,8 +63,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
       <div>
         <div className={style.targetLocation}>
           <div className={style.target}>
-            {((unitsContributed !== undefined && unitsContributed > 0) ||
-              (unitsContributed && unitsContributed > 0)) && (
+            {unitCount !== undefined && unitCount > 0 && (
               <>{donationLabel} • </>
             )}
             <span className={style.country}>

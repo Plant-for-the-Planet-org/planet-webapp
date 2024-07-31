@@ -46,7 +46,7 @@ export interface ImageSectionProps extends CommonProps {
 
 export interface ProjectInfoProps extends CommonProps {
   unitType: 'm2' | 'tree';
-  unitsContributed: number | undefined;
+  unitCount: number | undefined;
   unitCost: number;
   country: CountryCode;
   currency: CurrencyCode;
@@ -117,9 +117,10 @@ export default function ProjectSnippet({
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
     unitType: project.unitType,
-    unitsContributed:
-      (project as TreeProjectExtended).unitsContributed?.m2 ||
-      (project as TreeProjectExtended).unitsContributed?.tree,
+    unitCount:
+      project.unitType === 'tree'
+        ? project.unitsContributed?.tree
+        : project.unitsContributed?.m2,
     unitCost: project.unitCost,
     country: project.country,
     currency: project.currency,
