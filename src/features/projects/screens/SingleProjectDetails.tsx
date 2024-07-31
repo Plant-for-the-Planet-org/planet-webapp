@@ -11,7 +11,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
-import ProjectSnippet from '../components/ProjectSnippet';
+import ProjectSnippet from '../../projectsV2/components/ProjectSnippet';
 import SitesDropdown from '../components/maps/SitesDropdown';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
@@ -198,11 +198,7 @@ function SingleProjectDetails(): ReactElement {
               </button>
             )}
             <div className={'projectSnippetContainer'}>
-              <ProjectSnippet
-                project={project}
-                editMode={false}
-                displayPopup={false}
-              />
+              <ProjectSnippet project={project} displayPopup={false} />
             </div>
             {hoveredPl || selectedPl ? (
               <PlantLocationDetails {...ProjectProps} />

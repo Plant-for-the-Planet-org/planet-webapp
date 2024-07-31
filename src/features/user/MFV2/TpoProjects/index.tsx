@@ -12,7 +12,7 @@ import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const ProjectSnippet = dynamic(
-  () => import('../../../projects/components/ProjectSnippet'),
+  () => import('../../../projectsV2/components/ProjectSnippet'),
   {
     loading: () => <ProjectLoader />,
   }
@@ -77,8 +77,7 @@ export default function ProjectsContainer({ profile }: Props) {
                   >
                     <ProjectSnippet
                       project={project.properties}
-                      editMode={false}
-                      displayPopup={true}
+                      showPopup={false}
                     />
                   </div>
                 );

@@ -21,9 +21,9 @@
 }
 
 .contentContainer {
-  width: 338px;
+  width: 360px;
   max-width: 100%;
-  background: white;
+  background: transparent;
 }
 
 .mapContainer {
@@ -59,7 +59,7 @@
 }
 
 .mobileContentContainer {
-  background: grey;
+  padding: 0px 18px;
   height: 100%;
   width: 100%;
 }
