@@ -83,9 +83,7 @@ export default function ProjectSnippet({
   }, [isTopProject, isApproved, project.allowDonations]);
 
   const progressBarClass = useMemo(() => {
-    if (project.purpose === 'trees') {
-      return `${style[getProjectCategory(project as TreeProjectConcise)]}`;
-    }
+    return `${style[getProjectCategory(project)]}`;
   }, [
     project.purpose,
     project.purpose === 'trees' && (project.isTopProject, project.isApproved),

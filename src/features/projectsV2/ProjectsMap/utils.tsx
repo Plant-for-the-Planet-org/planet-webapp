@@ -1,6 +1,11 @@
-import { MapProjectProperties } from '../../common/types/projectv2';
+import {
+  ExtendedProject,
+  MapProjectProperties,
+} from '../../common/types/projectv2';
 
-export const getProjectCategory = (projectProperties: MapProjectProperties) => {
+export const getProjectCategory = (
+  projectProperties: MapProjectProperties | ExtendedProject
+) => {
   if (
     projectProperties.purpose === 'trees' &&
     projectProperties.isTopProject &&
