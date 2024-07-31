@@ -12,7 +12,7 @@ interface Props {
 const CustomTooltip = ({ children, triggerElement, showPopup }: Props) => {
   const abandonmentInfoPopupState = usePopupState({
     variant: 'popover',
-    popupId: 'abandonmentInfoPopover',
+    popupId: null,
   });
 
   return (

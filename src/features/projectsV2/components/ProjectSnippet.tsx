@@ -46,12 +46,11 @@ export interface ImageSectionProps extends CommonProps {
 
 export interface ProjectInfoProps extends CommonProps {
   unitType: 'm2' | 'tree';
-  countPlanted: number;
+  unitsContributed: number;
   unitCost: number;
   country: CountryCode;
   currency: CurrencyCode;
   slug: string;
-  unitsContributed?: number;
 }
 
 export default function ProjectSnippet({
@@ -120,16 +119,11 @@ export default function ProjectSnippet({
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
     unitType: project.unitType,
-    countPlanted: (project as TreeProjectConcise).countPlanted,
+    unitsContributed:
+      project.unitsContributed?.m2 || project.unitsContributed?.tree,
     unitCost: project.unitCost,
     country: project.country,
     currency: project.currency,
-    ...(project.unitType === 'm2'
-      ? {
-          unitsContributed:
-            project.unitsContributed?.m2 || project.unitsContributed?.tree, //  planet-sdk need to be updated to include unitsContributed type
-        }
-      : null),
   };
 
   return (

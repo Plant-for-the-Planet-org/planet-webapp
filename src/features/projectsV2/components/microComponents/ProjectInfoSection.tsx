@@ -15,14 +15,13 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     slug,
     isApproved,
     isTopProject,
-    countPlanted,
+    unitsContributed,
     purpose,
     unitType,
     unitCost,
     allowDonations,
     country,
     currency,
-    unitsContributed,
   } = props;
 
   const tCommon = useTranslations('Common');
@@ -43,7 +42,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   const donationLabel = useMemo(() => {
     if (unitType === 'tree' && purpose === 'trees') {
       return tAllProjects('treeDonated', {
-        count: countPlanted,
+        count: unitsContributed,
       });
     } else if (unitType === 'm2' && purpose === 'trees') {
       return tAllProjects('areaRestored', {
@@ -54,7 +53,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
         area: unitsContributed,
       });
     }
-  }, [countPlanted, unitType, purpose, unitsContributed]);
+  }, [unitsContributed, unitType, purpose]);
 
   const donateButtonClass =
     isTopProject && isApproved ? `${style.topProject}` : undefined;
@@ -64,7 +63,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
       <div>
         <div className={style.targetLocation}>
           <div className={style.target}>
-            {(countPlanted > 0 ||
+            {(unitsContributed > 0 ||
               (unitsContributed && unitsContributed > 0)) && (
               <>{donationLabel} • </>
             )}
@@ -75,13 +74,10 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
         </div>
         {allowDonations && (
           <div className={style.perUnitCost}>
-            {purpose === 'trees'
-              ? tAllProjects('perTree', {
-                  amount: getFormatedCurrency(locale, currency, unitCost),
-                })
-              : tAllProjects('perM2', {
-                  amount: getFormatedCurrency(locale, currency, unitCost),
-                })}
+            {tAllProjects('ratePerUnit', {
+              amount: getFormatedCurrency(locale, currency, unitCost),
+              unit: `${unitType === 'm2' ? 'm²' : unitType}`,
+            })}
           </div>
         )}
       </div>

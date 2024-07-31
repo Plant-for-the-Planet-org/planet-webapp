@@ -1,5 +1,5 @@
 import ProjectSnippet from './components/ProjectSnippet';
-import style from './styles/ProjectSection.module.scss';
+import style from './styles/ProjectsSection.module.scss';
 import { useProjects } from './ProjectsContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
