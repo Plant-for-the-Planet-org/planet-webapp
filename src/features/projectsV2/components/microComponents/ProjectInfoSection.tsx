@@ -63,7 +63,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
       <div>
         <div className={style.targetLocation}>
           <div className={style.target}>
-            {(unitsContributed > 0 ||
+            {((unitsContributed !== undefined && unitsContributed > 0) ||
               (unitsContributed && unitsContributed > 0)) && (
               <>{donationLabel} • </>
             )}

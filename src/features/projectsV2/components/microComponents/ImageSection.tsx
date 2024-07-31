@@ -86,7 +86,7 @@ const ImageSection = (props: ImageSectionProps) => {
             </div>
           </div>
         </div>
-        <p className={style.projectName}>
+        <div className={style.projectName}>
           {truncateString(projectName, 30)}
           {isApproved && (
             <CustomTooltip
@@ -102,7 +102,7 @@ const ImageSection = (props: ImageSectionProps) => {
               </div>
             </CustomTooltip>
           )}
-        </p>
+        </div>
       </div>
     </div>
   );
