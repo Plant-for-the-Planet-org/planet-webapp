@@ -11,109 +11,56 @@
   scrollbar-width: none;
 }
 
-.projectEditBlock {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background-color: $backgroundColor;
-  border-radius: 50%;
-  font-size: $fontXSmall;
-  display: flex;
-  flex-direction: row;
-  height: 24px;
-  width: 24px;
-  justify-content: center;
-  align-items: center;
-  padding: 4px;
-  z-index: 9;
-  &:hover {
-    cursor: pointer;
+.singleProject {
+  border: 2px solid $light;
+  border-radius: 16px;
+  position: relative;
+  @include xsPhoneView {
+    box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
   }
 }
-
-.singleProject {
-  border: solid #FFF;
-  border-width: 3px;
-  border-radius: 10px;
-  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
-}
-
+//project image
 .projectImage {
   height: 160px;
   width: 100%;
   background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
-  border-radius:7.2px 7.2px 0 0;
+  border-radius: 14px 14px 0px 0px;
+  overflow: hidden;
   > .projectImageBlock {
     transition: all 1s ease;
-    left: 16px;
-  }
-
-  &.projectCollapsed {
-    height: 100px;
-    transition: all 1s ease;
-    // > .projectImageBlock {
-    //   left: 50px;
-    // }
+    position: absolute;
+    bottom: 12px;
+    left: 13px;
   }
 }
 
-@keyframes collapseImage {
-  0% {
-    height: 160px;
-  }
-  100% {
-    height: 50px;
-  }
+.gradientOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0)
+  );
 }
-
-@keyframes expandImage {
-  0% {
-    height: 50px;
-  }
-  100% {
-    height: 160px;
-  }
-}
-
-@keyframes translateLeft {
-  0% {
-    left: 16px;
-  }
-  100% {
-    left: 50px;
-  }
-}
-
-@keyframes translateRight {
-  0% {
-    left: 50px;
-  }
-  100% {
-    left: 16px;
-  }
-}
-
 .projectImage:hover {
   cursor: pointer;
 }
 
 .projectImageFile {
-  height: 100%;
   width: 100%;
-  position: relative;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius: 7.2px 7.2px 0 0;
 }
 
-.projectImageBlock {
-  position: absolute;
-  bottom: 12px;
-  left: 7px;
-}
-
+// project info
 .projectType,
 .projectEcosystem {
   font-family: $primaryFontFamily;
@@ -132,6 +79,7 @@
   font-size: $fontMedium;
   color: $light;
   padding-right: 16px;
+  display: flex;
 }
 
 .verifiedIcon {
@@ -140,6 +88,8 @@
   width: 0.95em;
   min-width: 0.95em;
   line-height: 0.95em;
+  margin-left: 4px;
+  margin-top: 2px;
 }
 
 .topProjectBadge {
@@ -149,18 +99,18 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: var(--top-project-background-color);
+  background: $topProjectBackgroundColor;
   border-radius: 14px;
   padding: 2px 8px 2px 2px;
   font-weight: 700;
   font-size: 12px;
 
   * {
-    color: #6D4230;
+    color: #6d4230;
   }
 
   .badgeIcon {
-    background-color: white;
+    background-color: $light;
     height: 24px;
     width: 24px;
     border-radius: 50%;
@@ -169,6 +119,7 @@
     align-items: center;
     svg {
       height: 14px;
+      width: 10px;
     }
   }
 }
@@ -177,7 +128,7 @@
 .progressBar {
   height: 4px;
   width: 100%;
-  background-color: $dividerColor;
+  background-color: $charcoalGray;
 }
 
 .progressBarHighlight {
@@ -214,46 +165,27 @@
   cursor: pointer;
   position: relative;
   text-align: center;
-  color: #4F4F4F;
-  height: 34px;
+  color: $grayFontColorNew;
   font-size: 10px;
   font-weight: 400;
   line-height: 1.5em;
   margin-top: 10px;
   padding: 9px 0;
-  border-bottom-left-radius: 7.2px;
-  border-bottom-right-radius: 7.2px;
-}
-
-.projectData {
-  max-width: 178px;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  background: $primaryColorNewTransparent;
+  &.noDonation {
+    background: $mediumGrayColorTransparent;
+  }
+  &.tpoBackground {
+    background: $lightOrange;
+  }
 }
 
 .projectCost {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-}
-
-.donateButton {
-  min-width: 75px;
-  max-width: 150px;
-  padding: 0 4px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  border-radius: 11px;
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  line-height: 1.52em;
-}
-
-.donateButton:hover {
-  cursor: pointer;
-  text-decoration: none;
 }
 
 .perUnitCost {
@@ -264,55 +196,60 @@
   font-weight: 700;
 }
 
-.perUnitCost > span {
+.perUnitCost {
   font-family: $primaryFontFamily;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .topProjectReportsContainer {
   margin: 10px;
 }
 
-.topProjectPopupContainer {
-  margin: 10px;
-  width: 300px;
-}
 .projectTypeIcon {
   display: inline-block;
   width: 0.95em;
   min-width: 0.95em;
   margin-right: 4px;
-  font-size: var(--font-xx-extra-small);
+  font-size: $fontXXSmall;
   line-height: 0.3em;
 }
 
-.topApproved {
-  background: var(--top-project-background-color);
+.topProject {
+  background-color: $topProjectBackgroundColor;
+  border: none;
+  &:hover {
+    background-color: $topProjectTransparentColor;
+    border: none;
+  }
 }
 
-.topUnapproved {
-  background-color: #219653;
+.regularProject {
+  background-color: $primaryColorNew;
 }
 
-.notDonatable {
-  background-color: var(--non-donatable-project-background-color);
+.nonDonatableProject {
+  background-color: $nonDonatableProjectBackgroundColor;
 }
 .projectHoverIcon {
   display: inline-flex;
   font-size: 10px;
   font-weight: 700;
-  color: var(--non-donatable-project-background-color);
+  color: $nonDonatableProjectBackgroundColor;
   align-items: center;
- gap: 4px;
- line-height: normal;
+  gap: 4px;
+  line-height: normal;
 }
 
-.projectInfoPopupContainer{
+.projectInfoPopupContainer {
   margin: 10px;
   max-width: 250px;
 }
 
 .projectEcosystemOrTypeContainer {
   display: flex;
-  align-items:center;
+  align-items: center;
+}
+
+.country {
+  font-weight: 400;
 }
