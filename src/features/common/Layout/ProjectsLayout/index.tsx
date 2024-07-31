@@ -5,7 +5,7 @@ import { SetState } from '../../types/common';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
-import ExploreProject from '../../../projectsV2/ProjectsMap/Explore/ExploreProject';
+import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -32,8 +32,8 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
             <section className={styles.mapContainer}>
               {/* Placed in layout as this will be common to both project-list and project-details in a later release */}
               {page === 'project-list' && (
-                <div className={styles.exploreOptions}>
-                  <ExploreProject />
+                <div className={styles.mapFeatureExplorer}>
+                  <MapFeatureExplorer />
                 </div>
               )}
               <ProjectsMap />

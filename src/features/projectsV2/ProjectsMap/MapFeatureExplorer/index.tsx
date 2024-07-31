@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';
-import style from './Explore.module.scss';
+import styles from './MapFeatureExplorer.module.scss';
 import { SmallSlider } from './CustomSlider';
 import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
-import MayLayerOptions from './MapLayerOptions';
+import MapOptions from './MapOptions';
 import { useTranslations } from 'next-intl';
 
 interface ExploreProjectProps {
@@ -32,12 +32,12 @@ export const MapLayerToggle = ({
 }: EcosystemOptionProps) => {
   return (
     <>
-      <div className={style.ecosystemMainContainer}>
-        <div className={style.ecosystemContainer}>
-          <div className={style.infoIconConatiner}>{infoIcon}</div>
+      <div className={styles.ecosystemMainContainer}>
+        <div className={styles.ecosystemContainer}>
+          <div className={styles.infoIconContainer}>{infoIcon}</div>
           <div>{label}</div>
         </div>
-        <div className={style.switchContainer}>{switchComponent}</div>
+        <div className={styles.switchContainer}>{switchComponent}</div>
       </div>
     </>
   );
@@ -68,12 +68,12 @@ export const YearRangeSlider = () => {
   };
 
   return (
-    <div className={style.rangeMainContainer}>
-      <div className={style.rangeContainer}>
-        <div className={style.playIconContainer}>
+    <div className={styles.rangeMainContainer}>
+      <div className={styles.rangeContainer}>
+        <div className={styles.playIconContainer}>
           <PlayIcon width={'8px'} />
         </div>
-        <div className={style.sliderContainer}>
+        <div className={styles.sliderContainer}>
           <SmallSlider
             getAriaLabel={() => 'Minimum distance'}
             value={value1}
@@ -83,15 +83,15 @@ export const YearRangeSlider = () => {
           />
         </div>
       </div>
-      <div className={style.yearRangeContainer}>
-        <div className={style.startYear}>{'2012'}</div>
-        <div className={style.endYear}>{'2024'}</div>
+      <div className={styles.yearRangeContainer}>
+        <div className={styles.startYear}>{'2012'}</div>
+        <div className={styles.endYear}>{'2024'}</div>
       </div>
     </div>
   );
 };
 
-const ExploreProject = () => {
+const MapFeatureExplorer = () => {
   const t = useTranslations('Maps');
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -103,9 +103,9 @@ const ExploreProject = () => {
         {t('explore')}
       </CustomButton>
 
-      {isOpen && <MayLayerOptions />}
+      {isOpen && <MapOptions />}
     </>
   );
 };
 
-export default ExploreProject;
+export default MapFeatureExplorer;
