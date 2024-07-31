@@ -75,7 +75,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
           <div className={style.perUnitCost}>
             {tAllProjects('ratePerUnit', {
               amount: getFormatedCurrency(locale, currency, unitCost),
-              unit: unitType === 'm2' ? 'm²' : unitType,
+              unit: unitType,
             })}
           </div>
         )}

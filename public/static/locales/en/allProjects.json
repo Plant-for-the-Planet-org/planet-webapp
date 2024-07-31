@@ -22,6 +22,6 @@
     "treeDonated": "{count, plural, =1 {# Tree donated} other {# Trees donated}}",
     "areaRestored": "{area}  m² restored",
     "areaConserved": "{area}  m² conserved",
-    "ratePerUnit": "{amount} per {unit}"
+    "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }"
   }
 }
