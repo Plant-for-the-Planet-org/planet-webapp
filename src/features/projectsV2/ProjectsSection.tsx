@@ -1,11 +1,13 @@
 import ProjectSnippet from './components/ProjectSnippet';
 import style from './styles/ProjectSection.module.scss';
 import { useProjects } from './ProjectsContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-const ProjectSection = () => {
+const ProjectsSection = () => {
   const { projects, isLoading, isError } = useProjects();
   if (isLoading || isError) {
-    return null;
+    return <Skeleton className={style.projectSectionSkeleton} />;
   }
 
   return (
@@ -14,11 +16,11 @@ const ProjectSection = () => {
         <ProjectSnippet
           key={project.properties.id}
           project={project.properties}
-          shouldDisplayPopup={true}
+          showPopup={true}
         />
       ))}
     </div>
   );
 };
 
-export default ProjectSection;
+export default ProjectsSection;

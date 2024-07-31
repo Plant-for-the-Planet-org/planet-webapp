@@ -19,6 +19,10 @@
     "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "list": "List",
     "map": "Map",
-    "treeDonated": "{count, plural, =1 {Tree donated} other {Trees donated}}"
+    "treeDonated": "{count, plural, =1 {# Tree donated} other {# Trees donated}}",
+    "areaRestored": "{area}  m² restored",
+    "areaConserved": "{area}  m² conserved",
+    "perTree": "{amount} per tree",
+    "perM2": "{amount} per m²"
   }
 }

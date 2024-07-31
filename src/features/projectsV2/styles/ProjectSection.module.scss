@@ -1,14 +1,28 @@
 @import '../../../theme/theme';
-
-// temporary file will be deleted later on
-
+// temporary file will be deleted later
 .projectList {
   display: flex;
   flex-direction: column;
   gap: 12px;
   height: 100%;
   overflow-y: auto;
+  padding-right: 10px;
   &::-webkit-scrollbar {
-    display: none;
+    width: 10px;
   }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: rgba(224, 224, 224, 1);
+    height: 220px;
+  }
+  @include xsPhoneView {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    padding-right: 0px;
+  }
+}
+
+.projectSectionSkeleton {
+  height: 100%;
 }

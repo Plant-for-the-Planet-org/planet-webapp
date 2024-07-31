@@ -1,8 +1,6 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
-import { CommonProps } from '../ProjectSnippet';
-import { EcosystemTypes, Review } from '@planet-sdk/common';
 import getImageUrl from '../../../../utils/getImageURL';
 import ProjectBadge from './ProjectBadge';
 import ProjectTypeIcon from './ProjectTypeIcon';
@@ -12,31 +10,15 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
 import style from '../../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { ImageSectionProps } from '../ProjectSnippet';
 
-type Classification =
-  | 'large-scale-planting'
-  | 'agroforestry'
-  | 'natural-regeneration'
-  | 'managed-regeneration'
-  | 'urban-planting'
-  | 'other-planting'
-  | 'mangroves';
-interface ImageProps extends CommonProps {
-  projectName: string;
-  image: string;
-  ecosystem: EcosystemTypes | null;
-  shouldDisplayPopup: boolean;
-  projectReviews: Review[] | undefined;
-  classification: Classification;
-}
-
-const ImageSection = (props: ImageProps) => {
+const ImageSection = (props: ImageSectionProps) => {
   const {
     projectName,
     image,
     slug,
     ecosystem,
-    shouldDisplayPopup,
+    showPopup,
     projectReviews,
     purpose,
     classification,
@@ -108,8 +90,8 @@ const ImageSection = (props: ImageProps) => {
           {truncateString(projectName, 30)}
           {isApproved && (
             <CustomTooltip
-              shouldDisplayPopup={shouldDisplayPopup}
-              badgeContent={
+              showPopup={showPopup}
+              triggerElement={
                 <span className={style.verifiedIcon}>
                   <VerifiedIcon sx={{ width: '100%' }} />
                 </span>

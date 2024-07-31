@@ -1,24 +1,14 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { CountryCode, CurrencyCode } from '@planet-sdk/common';
+import { CountryCode } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { CommonProps } from '../ProjectSnippet';
+import { ProjectInfoProps } from '../ProjectSnippet';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
 import style from '../../styles/ProjectSnippet.module.scss';
-
-interface ProjectInfoProps extends CommonProps {
-  unitType: 'm2' | 'tree';
-  countPlanted: number;
-  unitCost: number;
-  country: CountryCode;
-  currency: CurrencyCode;
-  slug: string;
-}
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {
@@ -32,8 +22,9 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     allowDonations,
     country,
     currency,
+    unitsContributed,
   } = props;
-  const tDonate = useTranslations('Donate');
+
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
   const tAllProjects = useTranslations('AllProjects');
@@ -49,27 +40,33 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     embed || undefined,
     callbackUrl || undefined
   );
+  const donationLabel = useMemo(() => {
+    if (unitType === 'tree' && purpose === 'trees') {
+      return tAllProjects('treeDonated', {
+        count: countPlanted,
+      });
+    } else if (unitType === 'm2' && purpose === 'trees') {
+      return tAllProjects('areaRestored', {
+        area: unitsContributed,
+      });
+    } else {
+      return tAllProjects('areaConserved', {
+        area: unitsContributed,
+      });
+    }
+  }, [countPlanted, unitType, purpose, unitsContributed]);
 
   const donateButtonClass =
-    isTopProject && isApproved
-      ? `${style.topApproved}`
-      : `${style.topUnapproved}`;
+    isTopProject && isApproved ? `${style.topProject}` : undefined;
 
   return (
     <div className={style.projectInfo}>
       <div>
         <div className={style.targetLocation}>
           <div className={style.target}>
-            {purpose === 'trees' && countPlanted > 0 && (
-              <>
-                {localizedAbbreviatedNumber(locale, Number(countPlanted), 1)}{' '}
-                {unitType === 'tree'
-                  ? tAllProjects('treeDonated', {
-                      count: Number(countPlanted),
-                    })
-                  : tCommon('m2')}{' '}
-                •{' '}
-              </>
+            {(countPlanted > 0 ||
+              (unitsContributed && unitsContributed > 0)) && (
+              <>{donationLabel} • </>
             )}
             <span className={style.country}>
               {tCountry(country.toLowerCase() as Lowercase<CountryCode>)}
@@ -78,10 +75,13 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
         </div>
         {allowDonations && (
           <div className={style.perUnitCost}>
-            {getFormatedCurrency(locale, currency, unitCost)}{' '}
-            <span>
-              {unitType === 'tree' ? tDonate('perTree') : tDonate('perM2')}
-            </span>
+            {purpose === 'trees'
+              ? tAllProjects('perTree', {
+                  amount: getFormatedCurrency(locale, currency, unitCost),
+                })
+              : tAllProjects('perM2', {
+                  amount: getFormatedCurrency(locale, currency, unitCost),
+                })}
           </div>
         )}
       </div>

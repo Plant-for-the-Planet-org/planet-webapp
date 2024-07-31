@@ -19,7 +19,7 @@ import {
   PageProps,
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
-import ProjectSection from '../../../../../src/features/projectsV2/ProjectSection';
+import ProjectsSection from '../../../../../src/features/projectsV2/ProjectsSection';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
@@ -31,7 +31,7 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
     }
   }, [router.isReady]);
 
-  return <ProjectSection />;
+  return <ProjectsSection />;
 };
 
 ProjectListPage.getLayout = function getLayout(
@@ -86,6 +86,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'projectDetails',
       'donate',
       'allProjects',
+      'manageProjects',
     ],
   });
 

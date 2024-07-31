@@ -30,6 +30,8 @@
   overflow: hidden;
   > .projectImageBlock {
     transition: all 1s ease;
+    position: absolute;
+    bottom: 12px;
     left: 13px;
   }
 }
@@ -54,15 +56,8 @@
 
 .projectImageFile {
   width: 100%;
-  position: relative;
   background-size: cover;
   background-repeat: no-repeat;
-}
-
-.projectImageBlock {
-  position: absolute;
-  bottom: 12px;
-  left: 7px;
 }
 
 // project info
@@ -124,6 +119,7 @@
     align-items: center;
     svg {
       height: 14px;
+      width: 10px;
     }
   }
 }
@@ -218,7 +214,7 @@
   line-height: 0.3em;
 }
 
-.topApproved {
+.topProject {
   background-color: $topProjectBackgroundColor;
   border: none;
   &:hover {
@@ -227,11 +223,11 @@
   }
 }
 
-.topUnapproved {
+.regularProject {
   background-color: $primaryColorNew;
 }
 
-.notDonatable {
+.nonDonatableProject {
   background-color: $nonDonatableProjectBackgroundColor;
 }
 .projectHoverIcon {

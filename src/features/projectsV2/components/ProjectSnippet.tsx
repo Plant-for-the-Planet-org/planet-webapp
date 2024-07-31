@@ -4,6 +4,11 @@ import {
   ConservationProjectExtended,
   TreeProjectConcise,
   TreeProjectExtended,
+  EcosystemTypes,
+  Review,
+  TreeProjectClassification,
+  CountryCode,
+  CurrencyCode,
 } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
@@ -11,6 +16,7 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import style from '../styles/ProjectSnippet.module.scss';
+import { getProjectCategory } from '../ProjectsMap/utils';
 
 interface Props {
   project:
@@ -18,7 +24,7 @@ interface Props {
     | ConservationProjectConcise
     | TreeProjectExtended
     | ConservationProjectExtended;
-  shouldDisplayPopup: boolean;
+  showPopup: boolean;
 }
 
 export interface CommonProps {
@@ -29,25 +35,63 @@ export interface CommonProps {
   purpose: 'trees' | 'conservation';
 }
 
+export interface ImageSectionProps extends CommonProps {
+  projectName: string;
+  image: string;
+  ecosystem: EcosystemTypes | null;
+  showPopup: boolean;
+  projectReviews: Review[] | undefined;
+  classification: TreeProjectClassification;
+}
+
+export interface ProjectInfoProps extends CommonProps {
+  unitType: 'm2' | 'tree';
+  countPlanted: number;
+  unitCost: number;
+  country: CountryCode;
+  currency: CurrencyCode;
+  slug: string;
+  unitsContributed?: number;
+}
+
 export default function ProjectSnippet({
   project,
-  shouldDisplayPopup,
+  showPopup,
 }: Props): ReactElement {
   const router = useRouter();
   const tCommon = useTranslations('Common');
   const { embed } = useContext(ParamsContext);
+
+  const ecosystem =
+    project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
+  const isTopProject = project.purpose === 'trees' && project.isTopProject;
+  const isApproved = project.purpose === 'trees' && project.isApproved;
 
   const progressPercentage = useMemo(() => {
     if (project.purpose === 'trees' && project.countTarget) {
       return Math.min((project.countPlanted / project.countTarget) * 100, 100);
     }
     return 0;
-  }, [(project as TreeProjectConcise).countPlanted, project.countTarget]);
+  }, [
+    project.purpose === 'trees' && project.countPlanted,
+    project.countTarget,
+  ]);
 
-  const ecosystem =
-    project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
-  const _isTopProject = (project as TreeProjectConcise).isTopProject;
-  const _isApproved = (project as TreeProjectConcise).isApproved;
+  const tpoNameBackgroundClass = useMemo(() => {
+    if (!project.allowDonations) return `${style.noDonation}`;
+    if (isTopProject && isApproved) return `${style.tpoBackground}`;
+    return '';
+  }, [isTopProject, isApproved, project.allowDonations]);
+
+  const progressBarClass = useMemo(() => {
+    if (project.purpose === 'trees') {
+      return `${style[getProjectCategory(project as TreeProjectConcise)]}`;
+    }
+  }, [
+    project.purpose,
+    project.purpose === 'trees' && (project.isTopProject, project.isApproved),
+    project.allowDonations,
+  ]);
 
   const handleClick = () => {
     if (embed === 'true') {
@@ -57,42 +101,35 @@ export default function ProjectSnippet({
     }
   };
 
-  const getBackgroundClass = () => {
-    if (!project.allowDonations) return `${style.noDonation}`;
-    if (_isTopProject && _isApproved) return `${style.tpoBackground}`;
-    return '';
-  };
-
-  const progressBarClass =
-    _isTopProject && _isApproved
-      ? `${style.topApproved}`
-      : project.allowDonations
-      ? `${style.topUnapproved}`
-      : `${style.notDonatable}`;
-
-  const commonProps = {
+  const commonProps: CommonProps = {
     slug: project.slug,
-    isApproved: _isApproved,
-    isTopProject: _isTopProject,
+    isApproved: isApproved,
+    isTopProject: isTopProject,
     allowDonations: project.allowDonations,
     purpose: project.purpose,
   };
-  const imageProps = {
+  const imageProps: ImageSectionProps = {
     ...commonProps,
     projectName: project.name,
     image: project.image,
     ecosystem: ecosystem,
-    shouldDisplayPopup: shouldDisplayPopup,
+    showPopup: showPopup,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
   };
-  const projectInfoProps = {
+  const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
     unitType: project.unitType,
     countPlanted: (project as TreeProjectConcise).countPlanted,
     unitCost: project.unitCost,
     country: project.country,
     currency: project.currency,
+    ...(project.unitType === 'm2'
+      ? {
+          unitsContributed:
+            project.unitsContributed?.m2 || project.unitsContributed?.tree, //  planet-sdk need to be updated to include unitsContributed type
+        }
+      : null),
   };
 
   return (
@@ -106,7 +143,7 @@ export default function ProjectSnippet({
       </div>
       <ProjectInfoSection {...projectInfoProps} />
       <div
-        className={`${style.projectTPOName} ${getBackgroundClass()}`}
+        className={`${style.projectTPOName} ${tpoNameBackgroundClass}`}
         onClick={handleClick}
       >
         {tCommon('by', {
