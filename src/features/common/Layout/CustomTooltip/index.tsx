@@ -10,18 +10,18 @@ interface Props {
 }
 
 const CustomTooltip = ({ children, triggerElement, showPopup }: Props) => {
-  const abandonmentInfoPopupState = usePopupState({
+  const popupState = usePopupState({
     variant: 'popover',
     popupId: null,
   });
 
   return (
     <>
-      <div {...bindHover(abandonmentInfoPopupState)}>
+      <div {...bindHover(popupState)}>
         {triggerElement}
         {showPopup && (
           <HoverPopover
-            {...bindPopover(abandonmentInfoPopupState)}
+            {...bindPopover(popupState)}
             anchorOrigin={{
               vertical: 'center',
               horizontal: 'center',
