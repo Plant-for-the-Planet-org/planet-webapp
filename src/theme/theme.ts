@@ -11,11 +11,15 @@ const {
   defaultFontFamily,
   primaryLightColor,
   topProjectBackgroundColor,
+  topProjectTransparentColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
+  primaryColorNewTransparent,
   deforestrationRangeBackgroundNew,
   horizontalLineColorNew,
   exploreDescriptionBackground,
+  lightOrange,
+  CharcoalGray,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -72,12 +76,15 @@ const getGlobalStyles = async () => {
       --primary-dark-color: ${primaryDarkColor};
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
+      --top-project-transparent: ${topProjectTransparentColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
       --primary-color-new: ${primaryColorNew};
+      --primary-color-new-transparent: ${primaryColorNewTransparent};
       --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
       --medium-blue-color: ${theme.mediumBlueColor};
+      --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};
       --lavender-purple-color: ${theme.lavenderPurpleColor};
@@ -85,6 +92,8 @@ const getGlobalStyles = async () => {
       --mint-green-color: ${theme.mintGreenColor};
       --amethyst-purple-color: ${theme.amethystPurpleColor};
       --cerulean-blue-color: ${theme.ceruleanBlueColor};
+      --light-orange: ${lightOrange};
+      --charcoal-gray: ${CharcoalGray};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};
@@ -116,6 +125,7 @@ const getGlobalStyles = async () => {
       --certification-link-color-new: ${light.certificationLinkColorNew};
       --secondary-divider-color-new: ${light.secondaryDividerColor};
       --border-color: ${light.borderColor};
+      --top-project-color: ${topProjectBackgroundColor};
     }
     .theme-dark {
       --primary-font-color: ${dark.primaryFontColor};

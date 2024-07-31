@@ -15,10 +15,12 @@ $mapboxIcon: var(--mapbox-icon);
 $disabledFontColor: var(--disabled-font-color);
 $primaryLightColor: var(--primary-light-color);
 $topProjectBackgroundColor: var(--top-project-background-color);
+$topProjectTransparentColor: var(--top-project-transparent);
 $nonDonatableProjectBackgroundColor: var(
   --non-donatable-project-background-color
 );
 $primaryColorNew: var(--primary-color-new);
+$primaryColorNewTransparent: var(--primary-color-new-transparent);
 $deforestrationRangeBackgroundColorNew: var(
   --deforestration-range-background-new
 );
@@ -31,6 +33,7 @@ $certificationLinkColorNew: var(--certification-link-color-new);
 $secondaryDividerColorNew: var(--secondary-divider-color-new);
 $grayFontColorNew: var(--gray-font-color-new);
 $lightGrayBackgroundColorNew: var(--light-gray-background-color-new);
+$charcoalGray: var(--charcoal-gray);
 $boldFontColorNew: var(--bold-font-color-new);
 $selectedMenuItemColorNew: var(--selected-menu-item-color-new);
 $dividerColorNew: var(--divider-color-new);
@@ -39,6 +42,7 @@ $aboutProjectBackgroundColorNew: var(--about-project-background-color-new);
 $dangerColorNew: var(--danger-color-new);
 $borderColor: var(--border-color);
 $mediumBlueColor: var(--medium-blue-color);
+$mediumGrayColorTransparent: var(--medium-gray-color-transparent);
 $skyBlueColor: var(--sky-blue-color);
 $electricPurpleColor: var(--electric-purple-color);
 $lavenderPurpleColor: var(--lavender-purple-color);
@@ -46,3 +50,4 @@ $greenHazeColor: var(--green-haze-color);
 $mintGreenColor: var(--mint-green-color);
 $amethystPurpleColor: var(--amethyst-purple-color);
 $ceruleanBlueColor: var(--cerulean-blue-color);
+$lightOrange: var(--light-orange);
