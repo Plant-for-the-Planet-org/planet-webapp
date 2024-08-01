@@ -1,16 +1,18 @@
-import { useState, ChangeEvent } from 'react';
-import style from '../Explore/Explore.module.scss';
-import { MapLayerToggle } from './ExploreProject';
-import InfoIcon from '../icons/InfoIcon';
+import { useState, ChangeEvent, FC } from 'react';
+import styles from './MapFeatureExplorer.module.scss';
+import { MapLayerToggle } from '.';
+import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
-import { YearRangeSlider } from './ExploreProject';
+import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../theme/themeProperties';
+import themeProperties from '../../../../theme/themeProperties';
+import { useProjectsMap } from '../../ProjectsMapContext';
 
-const MayLayerOptions = () => {
+const MapOptions: FC = () => {
   const [checked, setChecked] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const tMaps = useTranslations('Maps');
+  const { mapOptions, updateMapOption } = useProjectsMap();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
@@ -21,8 +23,8 @@ const MayLayerOptions = () => {
     deforestrationToggleColorNew,
   } = themeProperties;
   return (
-    <div className={style.exploreMainContainer}>
-      <div className={style.exploreContainer}>
+    <div className={styles.exploreMainContainer}>
+      <div className={styles.exploreContainer}>
         <div>
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
@@ -31,7 +33,7 @@ const MayLayerOptions = () => {
               <StyledSwitch customColor={`${primaryColorNew}`} />
             }
           />
-          <div className={style.hrLine} />
+          <div className={styles.hrLine} />
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
             label={tAllProjects('restorationPotential')}
@@ -39,7 +41,7 @@ const MayLayerOptions = () => {
               <StyledSwitch customColor={`${restorationToggleColorNew}`} />
             }
           />
-          <div className={style.hrLine} />
+          <div className={styles.hrLine} />
           <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
             label={tAllProjects('deforestation')}
@@ -51,14 +53,22 @@ const MayLayerOptions = () => {
             }
           />
           {checked && <YearRangeSlider />}
-          <div className={style.hrLine} />
+          <div className={styles.hrLine} />
           <MapLayerToggle
             infoIcon={undefined}
             label={tAllProjects('projects')}
-            switchComponent={<StyledSwitch />}
+            switchComponent={
+              <StyledSwitch
+                checked={mapOptions['showProjects']}
+                onChange={(
+                  _event: ChangeEvent<HTMLInputElement>,
+                  checked: boolean
+                ) => updateMapOption('showProjects', checked)}
+              />
+            }
           />
         </div>
-        <div className={style.exploreDescription}>
+        <div className={styles.exploreDescription}>
           {tMaps('3trilliontrees')}
         </div>
       </div>
@@ -66,4 +76,4 @@ const MayLayerOptions = () => {
   );
 };
 
-export default MayLayerOptions;
+export default MapOptions;

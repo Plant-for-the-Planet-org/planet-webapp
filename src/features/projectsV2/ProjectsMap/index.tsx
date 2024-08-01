@@ -10,6 +10,7 @@ function ProjectsMap() {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState } = useProjectsMap();
   const { projects } = useProjects();
+  const { mapOptions } = useProjectsMap();
 
   return (
     <Map
@@ -19,7 +20,7 @@ function ProjectsMap() {
       attributionControl={false}
       ref={mapRef}
     >
-      {projects && <MultipleProjectsView />}
+      {mapOptions.showProjects && projects && <MultipleProjectsView />}
       <NavigationControl position="bottom-right" showCompass={false} />
     </Map>
   );

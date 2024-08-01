@@ -1,5 +1,5 @@
 import { Button, styled } from '@mui/material';
-import theme from '../../theme/themeProperties';
+import theme from '../../../../theme/themeProperties';
 
 const { fontSizes, light } = theme;
 
