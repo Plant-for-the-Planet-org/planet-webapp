@@ -4,7 +4,10 @@ import Credits from '../../../projects/components/maps/Credits';
 import { SetState } from '../../types/common';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
-import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
+import {
+  ProjectsMapProvider,
+  useProjectsMap,
+} from '../../../projectsV2/ProjectsMapContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 
 interface ProjectsLayoutProps {
@@ -12,6 +15,35 @@ interface ProjectsLayoutProps {
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
 }
+
+const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
+  children,
+  setCurrencyCode,
+  page,
+}) => {
+  const { mapOptions } = useProjectsMap();
+  const showContentContainer =
+    mapOptions.showProjects || page === 'project-details';
+
+  return (
+    <div className={styles.projectsLayout}>
+      <main className={styles.mainContent}>
+        {showContentContainer && (
+          <section className={styles.contentContainer}>{children}</section>
+        )}
+        <section className={styles.mapContainer}>
+          {page === 'project-list' && (
+            <div className={styles.mapFeatureExplorer}>
+              <MapFeatureExplorer />
+            </div>
+          )}
+          <ProjectsMap />
+        </section>
+      </main>
+      <Credits setCurrencyCode={setCurrencyCode} />
+    </div>
+  );
+};
 
 const ProjectsLayout: FC<ProjectsLayoutProps> = ({
   children,
@@ -26,21 +58,9 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
       setCurrencyCode={setCurrencyCode}
     >
       <ProjectsMapProvider>
-        <div className={styles.projectsLayout}>
-          <main className={styles.mainContent}>
-            <section className={styles.contentContainer}>{children}</section>
-            <section className={styles.mapContainer}>
-              {/* Placed in layout as this will be common to both project-list and project-details in a later release */}
-              {page === 'project-list' && (
-                <div className={styles.mapFeatureExplorer}>
-                  <MapFeatureExplorer />
-                </div>
-              )}
-              <ProjectsMap />
-            </section>
-          </main>
-          <Credits setCurrencyCode={setCurrencyCode} />
-        </div>
+        <ProjectsLayoutContent setCurrencyCode={setCurrencyCode} page={page}>
+          {children}
+        </ProjectsLayoutContent>
       </ProjectsMapProvider>
     </ProjectsProvider>
   );
