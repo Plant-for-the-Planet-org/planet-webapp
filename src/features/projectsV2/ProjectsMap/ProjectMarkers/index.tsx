@@ -5,6 +5,7 @@ import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { TreeProjectClassification } from '@planet-sdk/common';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -12,7 +13,8 @@ export type CategorizedProjects = {
   regularDonatableProjects: MapProject[];
 };
 interface ProjectMarkersProps {
-  categorizedProjects: CategorizedProjects;
+  categorizedProjects: CategorizedProjects | undefined;
+  selectedClassification: TreeProjectClassification[];
 }
 
 type ClosedPopupState = {
@@ -26,7 +28,10 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
+const ProjectMarkers = ({
+  categorizedProjects,
+  selectedClassification,
+}: ProjectMarkersProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
 
@@ -73,7 +78,7 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
       setPopupState({ show: false });
     }, 200);
   };
-
+  if (!categorizedProjects) return null;
   const {
     topApprovedProjects,
     nonDonatableProjects,
@@ -91,7 +96,7 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
           visitProject={visitProject}
         />
       )),
-    [initiatePopupOpen, handleMarkerLeave, visitProject]
+    [initiatePopupOpen, handleMarkerLeave, visitProject, selectedClassification]
   );
 
   return (

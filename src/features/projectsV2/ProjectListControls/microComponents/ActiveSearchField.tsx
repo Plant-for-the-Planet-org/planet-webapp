@@ -1,27 +1,28 @@
-import { useState, ChangeEvent, useEffect } from 'react';
-import { SearchTextField } from './SearchTextField';
-import CrossIcon from '../icons/CrossIcon';
-import style from './ProjectListControls.module.scss';
-import SearchIcon from '../icons/SearchIcon';
+import { useState, ChangeEvent } from 'react';
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../features/common/types/common';
-import { useDebouncedEffect } from '../../utils/useDebouncedEffect';
+import { SearchTextField } from './SearchTextField';
+import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
+import style from '../styles/ProjectListControls.module.scss';
+import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
+import { SetState } from '../../../common/types/common';
+import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
+import { TreeProjectClassification } from '@planet-sdk/common';
 
 interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;
   setIsFilterOpen: SetState<boolean>;
+  setDebouncedSearchValue: SetState<string>;
+  setSelectedClassification: SetState<TreeProjectClassification[]>;
 }
 
 const ActiveSearchField = ({
   setIsSearching,
   setIsFilterOpen,
+  setDebouncedSearchValue,
+  setSelectedClassification,
 }: ActiveSearchFieldProps) => {
+  const t = useTranslations('AllProjects');
   const [searchValue, setSearchValue] = useState('');
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
-
-  useEffect(() => {
-    if (debouncedSearchValue) window.alert(`${debouncedSearchValue} searched!`);
-  }, [debouncedSearchValue]);
 
   useDebouncedEffect(
     () => {
@@ -30,12 +31,12 @@ const ActiveSearchField = ({
     1000,
     [searchValue]
   );
-  const t = useTranslations('AllProjects');
 
   const resetSearchTab = () => {
     setSearchValue('');
     setIsSearching(false);
     setIsFilterOpen(false);
+    setSelectedClassification([]);
   };
 
   return (
@@ -51,6 +52,7 @@ const ActiveSearchField = ({
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setSearchValue(event.target.value);
         }}
+        autoFocus
       />
 
       <button onClick={resetSearchTab} className={style.crossIcon}>

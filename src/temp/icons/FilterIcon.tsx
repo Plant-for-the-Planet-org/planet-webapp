@@ -1,4 +1,4 @@
-import { IconProps } from './StarIcon';
+import { IconProps } from '../../../public/assets/images/icons/projectV2/StarIcon';
 
 type FilterIconProps = Omit<IconProps, 'color'>;
 

@@ -27,7 +27,7 @@ interface Props {
 }
 
 const ProjectSnippet = dynamic(
-  () => import('../../projectsV2/components/ProjectSnippet'),
+  () => import('../../projectsV2/ProjectSnippet'),
   {
     loading: () => <ProjectLoader />,
   }

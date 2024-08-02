@@ -1,13 +1,13 @@
-import StarIcon from '../icons/StarIcon';
-import style from './ProjectListControls.module.scss';
-import { useTranslations } from 'next-intl';
-import themeProperties from '../../theme/themeProperties';
 import { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
+import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
+import style from '../styles/ProjectListControls.module.scss';
+import themeProperties from '../../../../theme/themeProperties';
 
 type ProjectCollection = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
-  projectCount: number;
-  topProjectCount: number;
+  projectCount: number | undefined;
+  topProjectCount: number | undefined;
   tabSelected: ProjectCollection;
   setTabSelected: (value: ProjectCollection) => void;
   setIsFilterOpen: (value: boolean) => void;

@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import style from './ProjectListControls.module.scss';
-import ProjectListTabForMobile from './ProjectListTabForMobile';
-import { SearchAndFilter } from './ProjectSearchAndFilter';
-import ViewModeTabs from './ViewModeTabs';
-import ClassificationDropDown from './ClassificationDropDown';
-import { ProjectListControlsProps } from '.';
-import ActiveSearchField from './ActiveSearchField';
-import { Classification } from '.';
+import style from './styles/ProjectListControls.module.scss';
+import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
+import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
+import ViewModeTabs from './microComponents/ViewModeTabs';
+import ClassificationDropDown from './microComponents/ClassificationDropDown';
 
+import ActiveSearchField from './microComponents/ActiveSearchField';
+import { TreeProjectClassification } from '@planet-sdk/common';
+
+interface ProjectListControlForMobileProps {
+  projectCount: number | undefined;
+  topProjectCount: number | undefined;
+}
 const ProjectListControlForMobile = ({
-  availableFilters,
   projectCount,
   topProjectCount,
-}: ProjectListControlsProps) => {
+}: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedClassification, setSelectedClassification] = useState<
-    Classification[]
+    TreeProjectClassification[]
   >([]);
   const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
     'topProjects'
@@ -61,7 +64,6 @@ const ProjectListControlForMobile = ({
         <ClassificationDropDown
           selectedClassification={selectedClassification}
           setSelectedClassification={setSelectedClassification}
-          availableFilters={availableFilters}
         />
       )}
     </>

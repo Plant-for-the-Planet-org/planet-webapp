@@ -10,9 +10,10 @@
       "natural-regeneration": "Natural Regeneration",
       "managed-regeneration": "Managed Regeneration",
       "urban-planting": "Urban Planting",
-      "other-planting": "Other Planting",
-      "allProjects": "All Projects"
+      "other-planting": "Other Planting"
     },
+    "noFilterApplied": "No Filter Applied",
+    "clearFilter": "Clear Filter",
     "allProjects": "All <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "searchProject": "Search Project",
     "topProjects": "Top Projects <projectCountContainer>({noOfProjects})</projectCountContainer>",

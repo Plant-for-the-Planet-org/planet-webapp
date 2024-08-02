@@ -1,33 +1,34 @@
-import CustomMuiTab from './CustomMuiTab';
-import { Tabs } from '@mui/material';
-import StarIcon from '../icons/StarIcon';
-import { useTranslations } from 'next-intl';
-import themeProperties from '../../theme/themeProperties';
-import style from './ProjectListControls.module.scss';
 import { useState } from 'react';
-import { SetState } from '../../features/common/types/common';
+import { Tabs } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import CustomMuiTab from './CustomMuiTab';
+import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
+import themeProperties from '../../../../theme/themeProperties';
+import style from '../styles/ProjectListControls.module.scss';
+import { SetState } from '../../../common/types/common';
 
 interface ProjectListTabLargeScreenProps {
   setIsFilterOpen: SetState<boolean>;
-  topProjectCount: number;
-  projectCount: number;
+  topProjectCount: number | undefined;
+  projectCount: number | undefined;
 }
 
 const ProjectListTabLargeScreen = ({
   setIsFilterOpen,
   topProjectCount,
   projectCount,
+  setTabSelected,
+  tabSelected,
 }: ProjectListTabLargeScreenProps) => {
   const t = useTranslations('AllProjects');
   const { primaryColorNew, dark } = themeProperties;
-  const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setTabSelected(newValue);
     setIsFilterOpen(false);
   };
   return (
     <Tabs
-      value={value}
+      value={tabSelected}
       onChange={handleChange}
       TabIndicatorProps={{
         sx: { backgroundColor: `${primaryColorNew}` },
@@ -37,7 +38,7 @@ const ProjectListTabLargeScreen = ({
         icon={
           <StarIcon
             width={'16px'}
-            color={`${value === 1 ? dark.darkNew : primaryColorNew}`}
+            color={`${tabSelected === 1 ? dark.darkNew : primaryColorNew}`}
           />
         }
         label={

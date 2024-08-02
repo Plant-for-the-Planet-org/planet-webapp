@@ -1,10 +1,10 @@
-import themeProperties from '../../theme/themeProperties';
 import { useState, ReactNode } from 'react';
-import style from './ProjectListControls.module.scss';
-import ListIcon from '../icons/ListIcon';
-import { SetState } from '../../features/common/types/common';
-import LocationIconOutline from '../icons/LocationIconOutline';
 import { useTranslations } from 'next-intl';
+import themeProperties from '../../../../theme/themeProperties';
+import style from '../styles/ProjectListControls.module.scss';
+import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';
+import { SetState } from '../../../common/types/common';
+import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean>;

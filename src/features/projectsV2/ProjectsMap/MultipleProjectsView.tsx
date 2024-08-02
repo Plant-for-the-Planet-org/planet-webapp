@@ -4,14 +4,42 @@ import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
 
 const MultipleProjectsView = () => {
-  const { projects, isLoading, isError } = useProjects();
+  const {
+    projects,
+    topFilteredProjects,
+    regularFilterProjects,
+    isLoading,
+    isError,
+    selectedClassification,
+    tabSelected,
+    topProjects,
+    searchProjectResults,
+    debouncedSearchValue,
+  } = useProjects();
 
   if (isLoading || isError || !projects) {
     return null;
   }
-
+  const projectsToDisplay = useMemo(() => {
+    if (searchProjectResults && searchProjectResults?.length > 0) {
+      return searchProjectResults;
+    }
+    if (selectedClassification.length > 0) {
+      return tabSelected === 0 ? topFilteredProjects : regularFilterProjects;
+    }
+    return projects;
+  }, [
+    tabSelected,
+    selectedClassification,
+    topFilteredProjects,
+    topProjects,
+    regularFilterProjects,
+    searchProjectResults,
+    debouncedSearchValue,
+  ]);
+  console.log(searchProjectResults, '==1');
   const categorizedProjects = useMemo(() => {
-    return projects.reduce<CategorizedProjects>(
+    return projectsToDisplay?.reduce<CategorizedProjects>(
       (categorizedProjects, project) => {
         const projectCategory = getProjectCategory(project.properties);
         switch (projectCategory) {
@@ -33,9 +61,20 @@ const MultipleProjectsView = () => {
         regularDonatableProjects: [],
       }
     );
-  }, [projects, isLoading, isError]);
-
-  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
+  }, [
+    projects,
+    topFilteredProjects,
+    regularFilterProjects,
+    searchProjectResults,
+    isLoading,
+    isError,
+  ]);
+  return (
+    <ProjectMarkers
+      categorizedProjects={categorizedProjects}
+      selectedClassification={selectedClassification}
+    />
+  );
 };
 
 export default MultipleProjectsView;

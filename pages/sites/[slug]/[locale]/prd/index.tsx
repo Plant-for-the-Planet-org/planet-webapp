@@ -42,6 +42,8 @@ ProjectListPage.getLayout = function getLayout(
     currencyCode: pageComponentProps.currencyCode,
     setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-list',
+    isMapMode: pageComponentProps.isMapMode,
+    setIsMapMode: pageComponentProps.setIsMapMode,
   } as const;
 
   return pageComponentProps.isMobile ? (

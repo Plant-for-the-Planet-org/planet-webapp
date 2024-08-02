@@ -1,10 +1,9 @@
-import SearchIcon from '../icons/SearchIcon';
-import FilterIcon from '../icons/FilterIcon';
-import style from './ProjectListControls.module.scss';
-import { SetState } from '../../features/common/types/common';
-import { Classification } from '.';
-import { useState, useEffect } from 'react';
-
+import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
+import FilterIcon from '../../../../temp/icons/FilterIcon';
+import style from '../styles/ProjectListControls.module.scss';
+import { SetState } from '../../../common/types/common';
+import { Classification } from '..';
+import { useProjects } from '../../ProjectsContext';
 interface ProjectSearchAndFilterProps {
   selectedClassification: Classification[];
   isFilterOpen: boolean;
@@ -20,18 +19,8 @@ export const SearchAndFilter = ({
   setIsSearching,
   isSearching,
 }: ProjectSearchAndFilterProps) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const { isMobile } = useProjects();
   const isFilterApplied = selectedClassification.length > 0;
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 481);
-    };
-
-    handleResize(); // Check on mount
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const searchAndFilterContainer = isMobile
     ? style.iconsContainerMobile

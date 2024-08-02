@@ -36,13 +36,6 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
     >
       <ProjectsMapProvider>
         <main className={mobileLayoutClass}>
-          <WebappButton
-            text={isMapMode ? 'View Info' : 'View Map'}
-            variant="primary"
-            elementType="button"
-            onClick={() => setIsMapMode(!isMapMode)}
-            buttonClasses={viewButtonClass}
-          />
           {isMapMode ? (
             <section className={style.mobileMapContainer}>
               <ProjectsMap />

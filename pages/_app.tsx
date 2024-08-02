@@ -133,6 +133,8 @@ export type PageComponentProps = {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   isMobile: boolean;
+  isMapMode: boolean;
+  setIsMapMode: SetState<boolean>;
 };
 
 const PlanetWeb = ({
@@ -144,6 +146,7 @@ const PlanetWeb = ({
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
+  const [isMapMode, setIsMapMode] = React.useState(false);
 
   const { tenantConfig } = pageProps;
 
@@ -198,6 +201,8 @@ const PlanetWeb = ({
     currencyCode,
     setCurrencyCode,
     isMobile,
+    isMapMode,
+    setIsMapMode,
   };
 
   const [showVideo, setshowVideo] = React.useState(true);

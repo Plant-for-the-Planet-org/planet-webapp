@@ -3,7 +3,7 @@ import OffSiteReviewedIcon from '../../../../../public/assets/images/icons/proje
 import FieldReviewedIcon from '../../../../../public/assets/images/icons/projectV2/FieldReviewedIcon';
 import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/TopProjectIcon';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
-import style from '../../styles/Badge.module.scss';
+import style from '../styles/Badge.module.scss';
 import { useTranslations } from 'next-intl';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTenant } from '../../../common/Layout/TenantContext';

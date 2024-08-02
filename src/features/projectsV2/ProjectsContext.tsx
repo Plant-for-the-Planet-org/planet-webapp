@@ -11,7 +11,11 @@ import { useLocale } from 'next-intl';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { APIError, handleError } from '@planet-sdk/common';
+import {
+  APIError,
+  handleError,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 
@@ -19,6 +23,20 @@ interface ProjectsState {
   projects: MapProject[] | null;
   isLoading: boolean;
   isError: boolean;
+  isMobile: boolean;
+  topFilteredProjects: MapProject[] | null;
+  setTopFilteredProjects: SetState<MapProject[] | null>;
+  regularFilterProjects: MapProject[] | null;
+  setRegularFilterProjects: SetState<MapProject[] | null>;
+  debouncedSearchValue: string;
+  setDebouncedSearchValue: SetState<string>;
+  searchProjectResults: MapProject[] | null;
+  setSearchProjectResults: SetState<MapProject[] | null>;
+  tabSelected: number;
+  setTabSelected: SetState<number>;
+  topProjects: MapProject[] | undefined;
+  selectedClassification: TreeProjectClassification[];
+  setSelectedClassification: SetState<TreeProjectClassification[]>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -36,12 +54,47 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setCurrencyCode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
+  const [topFilteredProjects, setTopFilteredProjects] = useState<
+    MapProject[] | null
+  >(null);
+  const [regularFilterProjects, setRegularFilterProjects] = useState<
+    MapProject[] | null
+  >(null);
+  const [tabSelected, setTabSelected] = useState(0);
+  const [selectedClassification, setSelectedClassification] = useState<
+    TreeProjectClassification[]
+  >([]);
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+  const [searchProjectResults, setSearchProjectResults] = useState<
+    MapProject[] | null
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 481);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
 
   const locale = useLocale();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 481);
+    };
+
+    handleResize(); // Check on mount
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const topProjects = useMemo(
+    () =>
+      projects?.filter((projects) => {
+        if (projects.properties.purpose === 'trees')
+          return projects.properties.isTopProject === true;
+      }),
+    [projects, tabSelected]
+  );
 
   useEffect(() => {
     async function loadProjects() {
@@ -88,8 +141,34 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       projects,
       isLoading,
       isError,
+      isMobile,
+      topFilteredProjects,
+      setTopFilteredProjects,
+      regularFilterProjects,
+      setRegularFilterProjects,
+      debouncedSearchValue,
+      setDebouncedSearchValue,
+      searchProjectResults,
+      setSearchProjectResults,
+      topProjects,
+      tabSelected,
+      setTabSelected,
+      selectedClassification,
+      setSelectedClassification,
     }),
-    [projects, isLoading, isError]
+    [
+      projects,
+      isLoading,
+      isError,
+      isMobile,
+      topFilteredProjects,
+      regularFilterProjects,
+      debouncedSearchValue,
+      searchProjectResults,
+      topProjects,
+      tabSelected,
+      selectedClassification,
+    ]
   );
 
   return (

@@ -8,9 +8,9 @@ import { truncateString } from '../../../../utils/getTruncatedString';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
-import style from '../../styles/ProjectSnippet.module.scss';
+import style from '../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { ImageSectionProps } from '../ProjectSnippet';
+import { ImageSectionProps } from '..';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
