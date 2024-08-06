@@ -59,7 +59,7 @@ export default function BulkCodeIssueCodesPage({
                 undefined,
                 {
                   country: planetCashAccount.country,
-                  ...(user !== null && { profile: user.id }),
+                  ...(user !== null && { legacyPriceFor: user.id }),
                 }
               );
 

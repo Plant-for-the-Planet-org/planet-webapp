@@ -43,7 +43,7 @@ const ProjectSelector = ({
       undefined,
       {
         country: planetCashAccount?.country || '',
-        ...(user !== null && { profile: user.id }),
+        ...(user !== null && { legacyPriceFor: user.id }),
       }
     );
     return paymentOptions;
