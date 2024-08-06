@@ -12,13 +12,11 @@ export interface ProjectListControlsProps {
   setFilterApplied?: (newValue: TreeProjectClassification | undefined) => void;
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  setTabSelected: SetState<number>;
-  tabSelected: number;
+  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
+  tabSelected: number | 'topProjects' | 'allProjects';
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   setDebouncedSearchValue: SetState<string>;
-  isSearching: boolean;
-  setIsSearching: SetState<boolean>;
 }
 const ProjectListControls = ({
   projectCount,
@@ -28,10 +26,9 @@ const ProjectListControls = ({
   selectedClassification,
   setSelectedClassification,
   setDebouncedSearchValue,
-  isSearching,
-  setIsSearching,
 }: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const projectListTabProps = {
     setIsFilterOpen,

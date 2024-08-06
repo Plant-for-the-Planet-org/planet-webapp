@@ -2,14 +2,14 @@ import SearchIcon from '../../../../../public/assets/images/icons/projectV2/Sear
 import FilterIcon from '../../../../temp/icons/FilterIcon';
 import style from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
-import { Classification } from '..';
 import { useProjects } from '../../ProjectsContext';
+import { TreeProjectClassification } from '@planet-sdk/common';
 interface ProjectSearchAndFilterProps {
-  selectedClassification: Classification[];
+  selectedClassification: TreeProjectClassification[];
   isFilterOpen: boolean;
   setIsFilterOpen: SetState<boolean>;
-  setIsSearching: SetState<boolean>;
   isSearching: boolean;
+  setIsSearching: SetState<boolean>;
 }
 
 export const SearchAndFilter = ({

@@ -7,24 +7,32 @@ import ClassificationDropDown from './microComponents/ClassificationDropDown';
 
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import { TreeProjectClassification } from '@planet-sdk/common';
+import { SetState } from '../../common/types/common';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
+  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
+  tabSelected: number | 'topProjects' | 'allProjects';
+  selectedClassification: TreeProjectClassification[];
+  setSelectedClassification: SetState<TreeProjectClassification[]>;
+  setDebouncedSearchValue: SetState<string>;
+  setSelectedMode: SetState<'list' | 'map'>;
+  selectedMode: 'list' | 'map';
 }
 const ProjectListControlForMobile = ({
   projectCount,
   topProjectCount,
+  setTabSelected,
+  tabSelected,
+  setDebouncedSearchValue,
+  selectedClassification,
+  setSelectedClassification,
+  setSelectedMode,
+  selectedMode,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedClassification, setSelectedClassification] = useState<
-    TreeProjectClassification[]
-  >([]);
-  const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
-    'topProjects'
-  );
-
   return (
     <>
       {isSearching ? (
@@ -32,10 +40,14 @@ const ProjectListControlForMobile = ({
           <ActiveSearchField
             setIsFilterOpen={setIsFilterOpen}
             setIsSearching={setIsSearching}
+            setDebouncedSearchValue={setDebouncedSearchValue}
+            setSelectedClassification={setSelectedClassification}
           />
           <ViewModeTabs
             setIsFilterOpen={setIsFilterOpen}
             isSearching={isSearching}
+            setSelectedMode={setSelectedMode}
+            selectedMode={selectedMode}
           />
         </div>
       ) : (
@@ -57,6 +69,8 @@ const ProjectListControlForMobile = ({
           <ViewModeTabs
             setIsFilterOpen={setIsFilterOpen}
             isSearching={isSearching}
+            setSelectedMode={setSelectedMode}
+            selectedMode={selectedMode}
           />
         </div>
       )}

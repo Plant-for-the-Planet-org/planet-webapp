@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useCallback,
 } from 'react';
 import { MapProject } from '../common/types/projectv2';
 import { useLocale } from 'next-intl';
@@ -18,6 +19,13 @@ import {
 } from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
+import { getSearchProjects } from './ProjectListControls/utils';
+
+const MOBILE_BREAKPOINT = 481;
+const TAB_OPTIONS = {
+  TOP_PROJECTS: 'topProjects',
+  ALL_PROJECTS: 'allProjects',
+} as const;
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -28,15 +36,15 @@ interface ProjectsState {
   setTopFilteredProjects: SetState<MapProject[] | null>;
   regularFilterProjects: MapProject[] | null;
   setRegularFilterProjects: SetState<MapProject[] | null>;
-  debouncedSearchValue: string;
-  setDebouncedSearchValue: SetState<string>;
   searchProjectResults: MapProject[] | null;
   setSearchProjectResults: SetState<MapProject[] | null>;
-  tabSelected: number;
-  setTabSelected: SetState<number>;
+  tabSelected: number | 'topProjects' | 'allProjects';
+  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
   topProjects: MapProject[] | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  debouncedSearchValue: string;
+  setDebouncedSearchValue: SetState<string>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -60,7 +68,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [regularFilterProjects, setRegularFilterProjects] = useState<
     MapProject[] | null
   >(null);
-  const [tabSelected, setTabSelected] = useState(0);
+  const [tabSelected, setTabSelected] = useState<
+    number | (typeof TAB_OPTIONS)[keyof typeof TAB_OPTIONS]
+  >(window.innerWidth < MOBILE_BREAKPOINT ? TAB_OPTIONS.TOP_PROJECTS : 0);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
@@ -70,22 +80,26 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 481);
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth < MOBILE_BREAKPOINT
+  );
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
-
   const locale = useLocale();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 481);
-    };
-
-    handleResize(); // Check on mount
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Function to filter projects based on classification
+  const filterProjectsByClassification = useCallback(
+    (projects: MapProject[]) => {
+      if (selectedClassification.length === 0) return projects;
+      return projects.filter((project) => {
+        if (project.properties.purpose === 'trees')
+          return selectedClassification.includes(
+            project.properties.classification
+          );
+      });
+    },
+    [selectedClassification]
+  );
 
   const topProjects = useMemo(
     () =>
@@ -95,6 +109,28 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }),
     [projects, tabSelected]
   );
+  useEffect(() => {
+    if (topProjects && projects) {
+      setTopFilteredProjects(filterProjectsByClassification(topProjects));
+      setRegularFilterProjects(filterProjectsByClassification(projects));
+    }
+  }, [tabSelected, selectedClassification]);
+
+  useEffect(() => {
+    const searchResult = getSearchProjects(projects, debouncedSearchValue);
+    if (searchResult) setSearchProjectResults(searchResult);
+  }, [debouncedSearchValue]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    };
+
+    handleResize(); // Check on mount
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     async function loadProjects() {
@@ -146,10 +182,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setTopFilteredProjects,
       regularFilterProjects,
       setRegularFilterProjects,
-      debouncedSearchValue,
-      setDebouncedSearchValue,
       searchProjectResults,
       setSearchProjectResults,
+      debouncedSearchValue,
+      setDebouncedSearchValue,
       topProjects,
       tabSelected,
       setTabSelected,
@@ -163,8 +199,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       isMobile,
       topFilteredProjects,
       regularFilterProjects,
-      debouncedSearchValue,
       searchProjectResults,
+      debouncedSearchValue,
       topProjects,
       tabSelected,
       selectedClassification,

@@ -11,6 +11,7 @@
     #fff;
   padding: 24px 20px 30px;
   position: relative;
+  overflow: hidden;
 }
 
 .mainContent {
@@ -67,4 +68,5 @@
 .mobileMapContainer {
   width: inherit;
   height: 100%;
+  position: relative;
 }

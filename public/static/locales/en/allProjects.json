@@ -10,7 +10,8 @@
       "natural-regeneration": "Natural Regeneration",
       "managed-regeneration": "Managed Regeneration",
       "urban-planting": "Urban Planting",
-      "other-planting": "Other Planting"
+      "other-planting": "Other Planting",
+      "mangroves": "Mangroves"
     },
     "noFilterApplied": "No Filter Applied",
     "clearFilter": "Clear Filter",
@@ -23,6 +24,7 @@
     "treeDonated": "{count, plural, =1 {# Tree donated} other {# Trees donated}}",
     "areaRestored": "{area}  m² restored",
     "areaConserved": "{area}  m² conserved",
-    "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }"
+    "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }",
+    "noProjectFound": "Oops! No project found"
   }
 }

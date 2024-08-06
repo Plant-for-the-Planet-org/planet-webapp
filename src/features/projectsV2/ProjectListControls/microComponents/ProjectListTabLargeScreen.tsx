@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Tabs } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import CustomMuiTab from './CustomMuiTab';
@@ -11,6 +10,8 @@ interface ProjectListTabLargeScreenProps {
   setIsFilterOpen: SetState<boolean>;
   topProjectCount: number | undefined;
   projectCount: number | undefined;
+  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
+  tabSelected: number | 'topProjects' | 'allProjects';
 }
 
 const ProjectListTabLargeScreen = ({

@@ -33,10 +33,10 @@ const ActiveSearchField = ({
   );
 
   const resetSearchTab = () => {
-    setSearchValue('');
+    setSelectedClassification([]);
+    setDebouncedSearchValue('');
     setIsSearching(false);
     setIsFilterOpen(false);
-    setSelectedClassification([]);
   };
 
   return (

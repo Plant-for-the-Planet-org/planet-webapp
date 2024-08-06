@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useTranslations } from 'next-intl';
 import ProjectSnippet from './ProjectSnippet';
 import style from './ProjectsSection.module.scss';
 import { useProjects } from './ProjectsContext';
@@ -8,73 +9,59 @@ import ProjectListControls from './ProjectListControls';
 import { MapProject } from '../common/types/ProjectPropsContextInterface';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import { getSearchProjects } from './ProjectListControls/utils';
+import NoProjectFound from '../../../public/assets/images/icons/projectV2/NoProjectFound';
+import { SetState } from '../common/types/common';
 
-const ProjectsSection = () => {
+interface ProjectsSectionProps {
+  selectedMode: 'list' | 'map';
+  setSelectedMode: SetState<'list' | 'map'>;
+}
+
+const ProjectsSection = ({
+  selectedMode,
+  setSelectedMode,
+}: ProjectsSectionProps) => {
   const {
     projects,
     topFilteredProjects,
-    setTopFilteredProjects,
     regularFilterProjects,
-    setRegularFilterProjects,
     selectedClassification,
     setSelectedClassification,
+    searchProjectResults,
+    setTabSelected,
+    topProjects,
     debouncedSearchValue,
     setDebouncedSearchValue,
-    searchProjectResults,
-    setSearchProjectResults,
     isLoading,
     isError,
     isMobile,
     tabSelected,
-    setTabSelected,
-    topProjects,
   } = useProjects();
-  const [isSearching, setIsSearching] = useState(false);
-  // Determine which projects to display
+  const tAllProjects = useTranslations('AllProjects');
   const projectsToDisplay = useMemo(() => {
-    if (searchProjectResults && isSearching && debouncedSearchValue) {
+    // If the user is searching for a project, return the search results
+    if (searchProjectResults && debouncedSearchValue) {
       return searchProjectResults;
     }
+    // If a classification filter is applied, return the filtered projects based on the selected tab
     if (selectedClassification.length > 0) {
-      return tabSelected === 0 ? topFilteredProjects : regularFilterProjects;
+      return tabSelected === 0 || tabSelected === 'topProjects'
+        ? topFilteredProjects
+        : regularFilterProjects;
     }
-    return tabSelected === 0 ? topProjects : projects;
+    // Default case: return either top projects or all projects based on the selected tab
+    return tabSelected === 0 || tabSelected === 'topProjects'
+      ? topProjects
+      : projects;
   }, [
     tabSelected,
+    selectedMode,
     selectedClassification,
     topFilteredProjects,
     topProjects,
     regularFilterProjects,
     searchProjectResults,
-    debouncedSearchValue,
-    isSearching,
   ]);
-
-  console.log(searchProjectResults, '==1');
-  // Function to filter projects based on classification
-  const filterProjectsByClassification = useCallback(
-    (projects: MapProject[]) => {
-      if (selectedClassification.length === 0) return projects;
-      return projects.filter((project) => {
-        if (project.properties.purpose === 'trees')
-          return selectedClassification.includes(
-            project.properties.classification
-          );
-      });
-    },
-    [selectedClassification]
-  );
-  useEffect(() => {
-    if (topProjects && projects) {
-      setTopFilteredProjects(filterProjectsByClassification(topProjects));
-      setRegularFilterProjects(filterProjectsByClassification(projects));
-    }
-  }, [tabSelected, selectedClassification]);
-
-  useEffect(() => {
-    const searchResult = getSearchProjects(projects, debouncedSearchValue);
-    if (searchResult) setSearchProjectResults(searchResult);
-  }, [debouncedSearchValue]);
 
   const renderProjectSnippet = useCallback(
     (project: MapProject) => (
@@ -86,7 +73,6 @@ const ProjectsSection = () => {
     ),
     []
   );
-
   if (isLoading || isError) {
     return <Skeleton className={style.projectSectionSkeleton} />;
   }
@@ -98,29 +84,49 @@ const ProjectsSection = () => {
     ? topFilteredProjects?.length
     : topProjects?.length;
 
+  const isNoProjectFound =
+    (projectsToDisplay?.length === 0 && debouncedSearchValue.length > 0) ||
+    projectsToDisplay?.length === 0;
+
+  const projectControlProps = {
+    projectCount,
+    topProjectCount,
+    tabSelected,
+    setTabSelected,
+    selectedClassification,
+    setSelectedClassification,
+    setDebouncedSearchValue,
+  };
+
   return (
     <>
       {isMobile ? (
         <ProjectListControlForMobile
-          projectCount={projectCount}
-          topProjectCount={topProjectCount}
+          {...projectControlProps}
+          setSelectedMode={setSelectedMode}
+          selectedMode={selectedMode}
         />
       ) : (
-        <ProjectListControls
-          projectCount={projectCount}
-          topProjectCount={topProjectCount}
-          setTabSelected={setTabSelected}
-          tabSelected={tabSelected}
-          setSelectedClassification={setSelectedClassification}
-          selectedClassification={selectedClassification}
-          setDebouncedSearchValue={setDebouncedSearchValue}
-          isSearching={isSearching}
-          setIsSearching={setIsSearching}
-        />
+        <ProjectListControls {...projectControlProps} />
       )}
 
       <div className={style.projectList}>
-        {projectsToDisplay?.map(renderProjectSnippet)}
+        {!isNoProjectFound ? (
+          projectsToDisplay
+            ?.sort(
+              (a, b) =>
+                Number(b.properties.allowDonations) -
+                Number(a.properties.allowDonations)
+            )
+            .map(renderProjectSnippet)
+        ) : (
+          <div className={style.noProjectFoundContainer}>
+            <NoProjectFound />
+            <p className={style.noProjectFoundText}>
+              {tAllProjects('noProjectFound')}
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

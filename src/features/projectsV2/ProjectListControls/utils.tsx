@@ -9,6 +9,14 @@ export const availableFilters: TreeProjectClassification[] = [
   'other-planting',
 ];
 
+/**
+ *
+ * @param {MapProject[] | null} projects - The list of projects to search through.
+ * @param {string} keyword - The search keyword used to filter projects. If the
+ *        keyword is an empty string or contains only whitespace, an empty array is returned.
+ * @returns {MapProject[]} A filtered list of projects that contain the keyword in
+ *          either the project name, location (if applicable), TPO name, or country.
+ */
 export const getSearchProjects = (
   projects: MapProject[] | null,
   keyword: string

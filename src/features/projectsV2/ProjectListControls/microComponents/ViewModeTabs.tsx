@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import style from '../styles/ProjectListControls.module.scss';
@@ -7,8 +7,10 @@ import { SetState } from '../../../common/types/common';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
 
 interface ViewModeTabsProps {
-  setIsFilterOpen: SetState<boolean>;
-  isSearching: boolean;
+  setIsFilterOpen?: SetState<boolean> | undefined;
+  isSearching?: boolean | undefined;
+  setSelectedMode: SetState<'list' | 'map'>;
+  selectedMode: 'list' | 'map';
 }
 
 type Tabs = 'list' | 'map';
@@ -17,12 +19,19 @@ interface TabItemProps {
   icon: ReactNode;
   label: string | undefined;
 }
-const ViewModeTabs = ({ setIsFilterOpen, isSearching }: ViewModeTabsProps) => {
+const ViewModeTabs = ({
+  setIsFilterOpen,
+  isSearching,
+  setSelectedMode,
+  selectedMode,
+}: ViewModeTabsProps) => {
   const { dark, light } = themeProperties;
   const t = useTranslations('AllProjects');
-  const [selectedMode, setSelectedMode] = useState<'list' | 'map'>('list');
+
   const selectTab = (tab: Tabs) => {
-    setIsFilterOpen(false);
+    if (setIsFilterOpen) {
+      setIsFilterOpen(false);
+    }
     setSelectedMode(tab);
   };
 
