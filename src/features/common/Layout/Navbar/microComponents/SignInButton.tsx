@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../UserPropsContext';
+import WebappButton from '../../../WebappButton';
 
 export const SignInButton = () => {
   const { user, loginWithRedirect } = useUserProps();
@@ -20,9 +21,12 @@ export const SignInButton = () => {
     }
   }
   return (
-    <button className="signInButton" onClick={() => gotoUserPage()}>
-      <p>{t('signIn')}</p>
-    </button>
+    <WebappButton
+      text={t('signIn')}
+      variant="primary"
+      elementType="button"
+      onClick={() => gotoUserPage()}
+    />
   );
 };
 export default SignInButton;

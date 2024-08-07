@@ -72,7 +72,11 @@
 
 .menuItems {
   display: flex;
+  align-items: center;
   gap: 20px;
+  .profileButtonContainer {
+    margin-left: 10px;
+  }
   .linkContainer {
     display: flex;
     flex-direction: column;
@@ -82,14 +86,15 @@
     > p {
       font-family: $primaryFontFamily;
       font-size: $fontMedium;
-      font-weight: 600;
+      font-weight: 500;
       margin: 5px;
       line-height: 1;
       color: rgba(47, 51, 54, 1);
       cursor: pointer;
     }
     > p.activeIcon {
-      color: $primaryColor;
+      color: $primaryColorNew;
+      font-weight: 700;
     }
     .link_icon {
       width: 24px;
@@ -99,9 +104,9 @@
     }
     &:hover {
       cursor: pointer;
-      color: $primaryColor;
+      color: $primaryColorNew;
       > p {
-        color: $primaryColor;
+        color: $primaryColorNew;
       }
     }
   }
@@ -159,11 +164,11 @@
     width: 100%;
     &:hover {
       .menuText {
-        color: $primaryColor;
+        color: $primaryColorNew;
       }
 
       .link_icon svg g path {
-        fill: $primaryColor;
+        fill: $primaryColorNew;
       }
     }
   }
@@ -182,26 +187,6 @@
         margin: 5px;
       }
     }
-  }
-}
-
-//new version
-
-.signInButton {
-  width: 126px;
-  height: 46px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgba(255, 255, 255, 1);
-  background: linear-gradient(134.6deg, #68b030 -52.19%, #007a49 100%);
-  border-radius: 100px;
-  font-size: 16px;
-  @include xsPhoneView {
-    width: 76px;
-    height: 32px;
-    font-size: 12px;
   }
 }
 

@@ -26,7 +26,10 @@ const NavigationMenu = () => {
         .map((headerItem) => {
           if (headerItem.headerKey === 'me') {
             return (
-              <div key={headerItem.headerKey}>
+              <div
+                className="profileButtonContainer"
+                key={headerItem.headerKey}
+              >
                 <UserProfileButton />
               </div>
             );
