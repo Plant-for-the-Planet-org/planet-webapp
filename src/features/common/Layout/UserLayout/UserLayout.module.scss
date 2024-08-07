@@ -16,7 +16,7 @@
     & .hamburgerIcon {
       display: block;
       position: fixed;
-      top: 100px;
+      top: 110px;
       left: 20px;
       z-index: 10;
       height: 42px;
@@ -125,6 +125,7 @@
     }
   }
   @include xsPhoneView {
+    top: 102px;
     width: 300px;
     & .navlink {
       padding: 16px 20px;

@@ -18,7 +18,7 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
               className="tenantLogo"
             />
           </a>
-          <div className={'logo_divider'} />
+          {!isMobile && <div className={'logo_divider'} />}
         </div>
       )}
     </>
