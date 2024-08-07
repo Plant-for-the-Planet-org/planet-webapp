@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import AboutUsSubMenu from './AboutUsSubMenu';
+import SubMenu from './SubMenu';
 import { SetState } from '../../../types/common';
 import { useTenant } from '../../TenantContext';
 import { type HeaderItem } from '@planet-sdk/common';
@@ -102,7 +102,7 @@ const NavigationItem = ({
         )}
       </Link>
       <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
-        {hasSubMenu && <AboutUsSubMenu subMenu={navLinkOptions.subMenu} />}
+        {hasSubMenu && <SubMenu subMenu={navLinkOptions.subMenu} />}
       </div>
     </div>
   ) : null;
