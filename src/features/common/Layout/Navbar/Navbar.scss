@@ -226,11 +226,21 @@
 }
 
 .ProfileIconSkeleton {
+  width: 100%;
   > span {
     > span {
       width: 50px;
       height: 50px;
       border-radius: 50%;
+    }
+  }
+  @include xsPhoneView {
+    > span {
+      > span {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
     }
   }
 }

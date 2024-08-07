@@ -5,14 +5,17 @@ import { useMobileDetection } from '../../../../../utils/navbarUtils';
 
 const BrandLogo = () => {
   const [isMobile, setIsMobile] = useState(
-    window.matchMedia('(max-width: 481px)').matches
+    window !== undefined && window.matchMedia('(max-width: 481px)').matches
   );
+
   useEffect(() => {
     const maxWidth = '481px';
-    useMobileDetection(maxWidth, (isMobile: boolean) => {
+    const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
+    return () => cleanup();
   }, []);
+
   return (
     <div className={'brandLogos'}>
       <SecondaryLogo isMobile={isMobile} />

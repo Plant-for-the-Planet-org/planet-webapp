@@ -125,7 +125,8 @@
     }
   }
   @include xsPhoneView {
-    top: 102px;
+    top: 100px;
+    height: calc(100% - 100px);
     width: 300px;
     & .navlink {
       padding: 16px 20px;

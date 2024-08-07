@@ -13,13 +13,15 @@ export const SignInButton = () => {
   const t = useTranslations('Common');
 
   const [isMobile, setIsMobile] = useState(
-    window.matchMedia('(max-width: 481px)').matches
+    window !== undefined && window.matchMedia('(max-width: 481px)').matches
   );
+
   useEffect(() => {
     const maxWidth = '481px';
-    useMobileDetection(maxWidth, (isMobile: boolean) => {
+    const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
+    return () => cleanup();
   }, []);
 
   // This function controls the path for the user when they click on Me
