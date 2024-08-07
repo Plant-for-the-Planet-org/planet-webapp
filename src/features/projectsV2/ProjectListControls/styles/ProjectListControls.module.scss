@@ -79,7 +79,7 @@
   border: 2px solid $primaryColorNew;
   display: flex;
   overflow: hidden;
-  min-width: max-content;
+  width: 130px;
 }
 
 .tabContainerSecondary {
@@ -132,6 +132,15 @@
   gap: 12px;
   transition: all 0.4s ease-in-out;
   width: 20%;
+  button {
+    width: 28px;
+    height: 28px;
+    border-radius: 7.78px;
+    background: $backgroundColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .iconsContainer {
@@ -163,6 +172,12 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    @include xsPhoneView {
+      width: 8px;
+      height: 8px;
+      top: 4px;
+      left: 15px;
+    }
   }
 }
 

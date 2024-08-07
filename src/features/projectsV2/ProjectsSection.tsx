@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useTranslations } from 'next-intl';
@@ -8,23 +8,24 @@ import { useProjects } from './ProjectsContext';
 import ProjectListControls from './ProjectListControls';
 import { MapProject } from '../common/types/ProjectPropsContextInterface';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
-import { getSearchProjects } from './ProjectListControls/utils';
 import NoProjectFound from '../../../public/assets/images/icons/projectV2/NoProjectFound';
 import { SetState } from '../common/types/common';
 
 interface ProjectsSectionProps {
   selectedMode: 'list' | 'map';
   setSelectedMode: SetState<'list' | 'map'>;
+  isMobile: boolean;
 }
 
 const ProjectsSection = ({
   selectedMode,
   setSelectedMode,
+  isMobile,
 }: ProjectsSectionProps) => {
   const {
     projects,
-    topFilteredProjects,
-    regularFilterProjects,
+    filteredTopProjects,
+    filteredRegularProjects,
     selectedClassification,
     setSelectedClassification,
     searchProjectResults,
@@ -34,22 +35,21 @@ const ProjectsSection = ({
     setDebouncedSearchValue,
     isLoading,
     isError,
-    isMobile,
     tabSelected,
   } = useProjects();
   const tAllProjects = useTranslations('AllProjects');
   const projectsToDisplay = useMemo(() => {
-    // If the user is searching for a project, return the search results
+    //* If the user is searching for a project, return the search results
     if (searchProjectResults && debouncedSearchValue) {
       return searchProjectResults;
     }
-    // If a classification filter is applied, return the filtered projects based on the selected tab
+    //* If a classification filter is applied, return the filtered projects based on the selected tab
     if (selectedClassification.length > 0) {
       return tabSelected === 0 || tabSelected === 'topProjects'
-        ? topFilteredProjects
-        : regularFilterProjects;
+        ? filteredTopProjects
+        : filteredRegularProjects;
     }
-    // Default case: return either top projects or all projects based on the selected tab
+    //* Default case: return either top projects or all projects based on the selected tab
     return tabSelected === 0 || tabSelected === 'topProjects'
       ? topProjects
       : projects;
@@ -57,9 +57,9 @@ const ProjectsSection = ({
     tabSelected,
     selectedMode,
     selectedClassification,
-    topFilteredProjects,
+    filteredTopProjects,
     topProjects,
-    regularFilterProjects,
+    filteredRegularProjects,
     searchProjectResults,
   ]);
 
@@ -77,18 +77,19 @@ const ProjectsSection = ({
     return <Skeleton className={style.projectSectionSkeleton} />;
   }
   const projectCount = selectedClassification.length
-    ? regularFilterProjects?.length
+    ? filteredRegularProjects?.length
     : projects?.length;
 
   const topProjectCount = selectedClassification.length
-    ? topFilteredProjects?.length
+    ? filteredTopProjects?.length
     : topProjects?.length;
 
-  const isNoProjectFound =
+  const isProjectFound = !(
     (projectsToDisplay?.length === 0 && debouncedSearchValue.length > 0) ||
-    projectsToDisplay?.length === 0;
+    projectsToDisplay?.length === 0
+  );
 
-  const projectControlProps = {
+  const commonProps = {
     projectCount,
     topProjectCount,
     tabSelected,
@@ -96,22 +97,27 @@ const ProjectsSection = ({
     selectedClassification,
     setSelectedClassification,
     setDebouncedSearchValue,
+    searchProjectResults,
+  };
+  const projectListControlMobileProps = {
+    setSelectedMode,
+    selectedMode,
+    isMobile,
   };
 
   return (
     <>
       {isMobile ? (
         <ProjectListControlForMobile
-          {...projectControlProps}
-          setSelectedMode={setSelectedMode}
-          selectedMode={selectedMode}
+          {...commonProps}
+          {...projectListControlMobileProps}
         />
       ) : (
-        <ProjectListControls {...projectControlProps} />
+        <ProjectListControls {...commonProps} />
       )}
 
       <div className={style.projectList}>
-        {!isNoProjectFound ? (
+        {isProjectFound ? (
           projectsToDisplay
             ?.sort(
               (a, b) =>

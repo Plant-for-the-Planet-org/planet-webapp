@@ -5,13 +5,14 @@ import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIc
 import themeProperties from '../../../../theme/themeProperties';
 import style from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
+import { ProjectTabs } from '..';
 
 interface ProjectListTabLargeScreenProps {
   setIsFilterOpen: SetState<boolean>;
   topProjectCount: number | undefined;
   projectCount: number | undefined;
-  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
-  tabSelected: number | 'topProjects' | 'allProjects';
+  setTabSelected: SetState<ProjectTabs>;
+  tabSelected: ProjectTabs;
 }
 
 const ProjectListTabLargeScreen = ({

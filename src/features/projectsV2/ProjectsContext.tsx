@@ -20,6 +20,7 @@ import {
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { getSearchProjects } from './ProjectListControls/utils';
+import { ProjectTabs } from './ProjectListControls';
 
 const MOBILE_BREAKPOINT = 481;
 const TAB_OPTIONS = {
@@ -31,15 +32,14 @@ interface ProjectsState {
   projects: MapProject[] | null;
   isLoading: boolean;
   isError: boolean;
-  isMobile: boolean;
-  topFilteredProjects: MapProject[] | null;
-  setTopFilteredProjects: SetState<MapProject[] | null>;
-  regularFilterProjects: MapProject[] | null;
-  setRegularFilterProjects: SetState<MapProject[] | null>;
+  filteredTopProjects: MapProject[] | null;
+  setFilteredTopProjects: SetState<MapProject[] | null>;
+  filteredRegularProjects: MapProject[] | null;
+  setFilteredRegularProjects: SetState<MapProject[] | null>;
   searchProjectResults: MapProject[] | null;
   setSearchProjectResults: SetState<MapProject[] | null>;
-  tabSelected: number | 'topProjects' | 'allProjects';
-  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
+  tabSelected: ProjectTabs;
+  setTabSelected: SetState<ProjectTabs>;
   topProjects: MapProject[] | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
@@ -62,10 +62,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setCurrencyCode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [topFilteredProjects, setTopFilteredProjects] = useState<
+  const [filteredTopProjects, setFilteredTopProjects] = useState<
     MapProject[] | null
   >(null);
-  const [regularFilterProjects, setRegularFilterProjects] = useState<
+  const [filteredRegularProjects, setFilteredRegularProjects] = useState<
     MapProject[] | null
   >(null);
   const [tabSelected, setTabSelected] = useState<
@@ -80,9 +80,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth < MOBILE_BREAKPOINT
-  );
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
@@ -111,8 +108,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   );
   useEffect(() => {
     if (topProjects && projects) {
-      setTopFilteredProjects(filterProjectsByClassification(topProjects));
-      setRegularFilterProjects(filterProjectsByClassification(projects));
+      setFilteredTopProjects(filterProjectsByClassification(topProjects));
+      setFilteredRegularProjects(filterProjectsByClassification(projects));
     }
   }, [tabSelected, selectedClassification]);
 
@@ -120,17 +117,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     const searchResult = getSearchProjects(projects, debouncedSearchValue);
     if (searchResult) setSearchProjectResults(searchResult);
   }, [debouncedSearchValue]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    };
-
-    handleResize(); // Check on mount
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     async function loadProjects() {
@@ -177,11 +163,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       projects,
       isLoading,
       isError,
-      isMobile,
-      topFilteredProjects,
-      setTopFilteredProjects,
-      regularFilterProjects,
-      setRegularFilterProjects,
+      filteredTopProjects,
+      setFilteredTopProjects,
+      filteredRegularProjects,
+      setFilteredRegularProjects,
       searchProjectResults,
       setSearchProjectResults,
       debouncedSearchValue,
@@ -196,9 +181,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       projects,
       isLoading,
       isError,
-      isMobile,
-      topFilteredProjects,
-      regularFilterProjects,
+      filteredTopProjects,
+      filteredRegularProjects,
       searchProjectResults,
       debouncedSearchValue,
       topProjects,

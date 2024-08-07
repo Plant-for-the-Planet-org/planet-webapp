@@ -10,7 +10,6 @@ export const availableFilters: TreeProjectClassification[] = [
 ];
 
 /**
- *
  * @param {MapProject[] | null} projects - The list of projects to search through.
  * @param {string} keyword - The search keyword used to filter projects. If the
  *        keyword is an empty string or contains only whitespace, an empty array is returned.
@@ -21,7 +20,7 @@ export const getSearchProjects = (
   projects: MapProject[] | null,
   keyword: string
 ) => {
-  if (!keyword.trim()) {
+  if (!keyword?.trim()) {
     return [];
   }
   const normalizedKeyword = keyword

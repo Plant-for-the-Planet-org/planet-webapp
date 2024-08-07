@@ -4,6 +4,7 @@ import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
+import Credits from '../../../projects/components/maps/Credits';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -11,6 +12,7 @@ interface ProjectsLayoutProps {
   page: 'project-list' | 'project-details';
   selectedMode: 'list' | 'map';
   setSelectedMode: SetState<'list' | 'map'>;
+  isMobile: boolean;
 }
 
 const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
@@ -20,6 +22,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   setCurrencyCode,
   selectedMode,
   setSelectedMode,
+  isMobile,
 }) => {
   const mobileLayoutClass = `${style.mobileProjectsLayout} ${
     selectedMode === 'map' ? style.mapMode : ''
@@ -38,6 +41,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
               <ProjectsMap
                 selectedMode={selectedMode}
                 setSelectedMode={setSelectedMode}
+                isMobile={isMobile}
               />
             </section>
           ) : (
@@ -46,6 +50,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
             </section>
           )}
         </main>
+        <Credits setCurrencyCode={setCurrencyCode} />
       </ProjectsMapProvider>
     </ProjectsProvider>
   );

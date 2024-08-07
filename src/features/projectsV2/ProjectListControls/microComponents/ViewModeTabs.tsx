@@ -7,8 +7,8 @@ import { SetState } from '../../../common/types/common';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
 
 interface ViewModeTabsProps {
-  setIsFilterOpen?: SetState<boolean> | undefined;
-  isSearching?: boolean | undefined;
+  setIsFilterOpen: SetState<boolean> | undefined;
+  isSearching: boolean | undefined;
   setSelectedMode: SetState<'list' | 'map'>;
   selectedMode: 'list' | 'map';
 }

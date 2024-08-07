@@ -8,17 +8,21 @@ import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { SetState } from '../../common/types/common';
+import { MapProject } from '../../common/types/projectv2';
+import { ProjectTabs } from '.';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  setTabSelected: SetState<number | 'topProjects' | 'allProjects'>;
-  tabSelected: number | 'topProjects' | 'allProjects';
+  setTabSelected: SetState<ProjectTabs>;
+  tabSelected: ProjectTabs;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   setDebouncedSearchValue: SetState<string>;
-  setSelectedMode: SetState<'list' | 'map'>;
   selectedMode: 'list' | 'map';
+  setSelectedMode: SetState<'list' | 'map'>;
+  isMobile: boolean;
+  searchProjectResults: MapProject[] | null;
 }
 const ProjectListControlForMobile = ({
   projectCount,
@@ -30,55 +34,59 @@ const ProjectListControlForMobile = ({
   setSelectedClassification,
   setSelectedMode,
   selectedMode,
+  searchProjectResults,
+  isMobile,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const activeSearchFieldProps = {
+    setIsFilterOpen,
+    setIsSearching,
+    setDebouncedSearchValue,
+    setSelectedClassification,
+  };
+  const viewModeTabsProps = {
+    setIsFilterOpen,
+    isSearching,
+    setSelectedMode,
+    selectedMode,
+  };
+  const tabProps = {
+    projectCount,
+    topProjectCount,
+    tabSelected,
+    setTabSelected,
+    setIsFilterOpen,
+  };
+  const listControlProps = {
+    selectedClassification,
+    setIsFilterOpen,
+    isFilterOpen,
+    setIsSearching,
+    isSearching,
+    searchProjectResults,
+    isMobile,
+  };
+  const classificationDropDownProps = {
+    selectedClassification,
+    setSelectedClassification,
+  };
   return (
     <>
       {isSearching ? (
         <div className={style.searchFieldAndViewTabsContainer}>
-          <ActiveSearchField
-            setIsFilterOpen={setIsFilterOpen}
-            setIsSearching={setIsSearching}
-            setDebouncedSearchValue={setDebouncedSearchValue}
-            setSelectedClassification={setSelectedClassification}
-          />
-          <ViewModeTabs
-            setIsFilterOpen={setIsFilterOpen}
-            isSearching={isSearching}
-            setSelectedMode={setSelectedMode}
-            selectedMode={selectedMode}
-          />
+          <ActiveSearchField {...activeSearchFieldProps} />
+          <ViewModeTabs {...viewModeTabsProps} />
         </div>
       ) : (
         <div className={style.projectListControlsMobile}>
-          <ProjectListTabForMobile
-            projectCount={projectCount}
-            topProjectCount={topProjectCount}
-            tabSelected={tabSelected}
-            setTabSelected={setTabSelected}
-            setIsFilterOpen={setIsFilterOpen}
-          />
-          <SearchAndFilter
-            selectedClassification={selectedClassification}
-            setIsFilterOpen={setIsFilterOpen}
-            isFilterOpen={isFilterOpen}
-            setIsSearching={setIsSearching}
-            isSearching={isSearching}
-          />
-          <ViewModeTabs
-            setIsFilterOpen={setIsFilterOpen}
-            isSearching={isSearching}
-            setSelectedMode={setSelectedMode}
-            selectedMode={selectedMode}
-          />
+          <ProjectListTabForMobile {...tabProps} />
+          <SearchAndFilter {...listControlProps} />
+          <ViewModeTabs {...viewModeTabsProps} />
         </div>
       )}
       {isFilterOpen && !isSearching && (
-        <ClassificationDropDown
-          selectedClassification={selectedClassification}
-          setSelectedClassification={setSelectedClassification}
-        />
+        <ClassificationDropDown {...classificationDropDownProps} />
       )}
     </>
   );

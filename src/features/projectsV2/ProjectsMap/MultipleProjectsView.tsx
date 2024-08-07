@@ -5,13 +5,15 @@ import { getProjectCategory } from './utils';
 
 const MultipleProjectsView = ({
   selectedMode,
+  isMobile,
 }: {
   selectedMode: 'list' | 'map';
+  isMobile: boolean;
 }) => {
   const {
     projects,
-    topFilteredProjects,
-    regularFilterProjects,
+    filteredTopProjects,
+    filteredRegularProjects,
     isLoading,
     isError,
     selectedClassification,
@@ -25,26 +27,33 @@ const MultipleProjectsView = ({
     return null;
   }
   const projectsToDisplay = useMemo(() => {
-    // If search results exist, return them (search project case)
+    //* If search results exist, return them (search project case)
     if (searchProjectResults && searchProjectResults?.length > 0) {
       return searchProjectResults;
     }
-    // If there are no search results and the search value is not empty, return an empty array (no project found case)
+    //* If there are no search results and the search value is not empty, return an empty array (no project found case)
     if (searchProjectResults?.length === 0 && debouncedSearchValue.length > 0)
       return [];
-    // If a classification filter is applied, return the filtered projects based on the selected tab
+    //* If a classification filter is applied, return the filtered projects based on the selected tab
     if (selectedClassification.length > 0) {
-      return tabSelected === 0 ? topFilteredProjects : regularFilterProjects;
+      return tabSelected === 0 || tabSelected === 'topProjects'
+        ? filteredTopProjects
+        : filteredRegularProjects;
     }
-    // If none of the above conditions are met, return all projects (default case)
-    return projects;
+    //* If none of the above conditions are met, return all projects (for desktop version).
+    //* However it return all projects base on selected tab(top/all) for mobile version
+    return isMobile
+      ? tabSelected === 'topProjects'
+        ? topProjects
+        : projects
+      : projects;
   }, [
     selectedMode,
     tabSelected,
     selectedClassification,
-    topFilteredProjects,
+    filteredTopProjects,
     topProjects,
-    regularFilterProjects,
+    filteredRegularProjects,
     searchProjectResults,
   ]);
 
@@ -73,8 +82,8 @@ const MultipleProjectsView = ({
     );
   }, [
     projects,
-    topFilteredProjects,
-    regularFilterProjects,
+    filteredTopProjects,
+    filteredRegularProjects,
     searchProjectResults,
     isLoading,
     isError,

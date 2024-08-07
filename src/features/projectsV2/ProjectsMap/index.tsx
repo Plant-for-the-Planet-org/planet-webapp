@@ -12,32 +12,37 @@ import style from './ProjectsMap.module.scss';
 interface ProjectsMapProp {
   selectedMode: 'list' | 'map';
   setSelectedMode: SetState<'list' | 'map'>;
+  isMobile: boolean;
 }
 
-function ProjectsMap({ selectedMode, setSelectedMode }: ProjectsMapProp) {
+function ProjectsMap({
+  selectedMode,
+  setSelectedMode,
+  isMobile,
+}: ProjectsMapProp) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState } = useProjectsMap();
   const {
     projects,
     topProjects,
     selectedClassification,
-    topFilteredProjects,
-    isMobile,
+    filteredTopProjects,
     tabSelected,
     setTabSelected,
     setSelectedClassification,
     setDebouncedSearchValue,
-    regularFilterProjects,
+    filteredRegularProjects,
+    searchProjectResults,
   } = useProjects();
   const topProjectCount = selectedClassification.length
-    ? topFilteredProjects?.length
+    ? filteredTopProjects?.length
     : topProjects?.length;
 
   const projectCount = selectedClassification.length
-    ? regularFilterProjects?.length
+    ? filteredRegularProjects?.length
     : projects?.length;
 
-  const projectControlProps = {
+  const projectListControlProps = {
     projectCount,
     topProjectCount,
     tabSelected,
@@ -47,12 +52,14 @@ function ProjectsMap({ selectedMode, setSelectedMode }: ProjectsMapProp) {
     setDebouncedSearchValue,
     selectedMode,
     setSelectedMode,
+    searchProjectResults,
+    isMobile,
   };
   return (
     <>
       {isMobile && (
         <div className={style.projectListControlsContainer}>
-          <ProjectListControlForMobile {...projectControlProps} />
+          <ProjectListControlForMobile {...projectListControlProps} />
         </div>
       )}
       <Map
@@ -62,7 +69,12 @@ function ProjectsMap({ selectedMode, setSelectedMode }: ProjectsMapProp) {
         attributionControl={false}
         ref={mapRef}
       >
-        {projects && <MultipleProjectsView selectedMode={selectedMode} />}
+        {projects && (
+          <MultipleProjectsView
+            selectedMode={selectedMode}
+            isMobile={isMobile}
+          />
+        )}
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
     </>

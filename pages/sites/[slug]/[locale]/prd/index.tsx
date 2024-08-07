@@ -25,6 +25,7 @@ const ProjectListPage: NextPageWithLayout = ({
   pageProps,
   selectedMode,
   setSelectedMode,
+  isMobile,
 }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
@@ -39,6 +40,7 @@ const ProjectListPage: NextPageWithLayout = ({
     <ProjectsSection
       selectedMode={selectedMode}
       setSelectedMode={setSelectedMode}
+      isMobile={isMobile}
     />
   );
 };
@@ -53,6 +55,7 @@ ProjectListPage.getLayout = function getLayout(
     page: 'project-list',
     selectedMode: pageComponentProps.selectedMode,
     setSelectedMode: pageComponentProps.setSelectedMode,
+    isMobile: pageComponentProps.isMobile,
   } as const;
 
   return pageComponentProps.isMobile ? (
