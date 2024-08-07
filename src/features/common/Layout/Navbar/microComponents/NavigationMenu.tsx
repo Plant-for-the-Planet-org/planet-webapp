@@ -4,20 +4,11 @@ import { useState, useEffect } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import NavigationItem from './NavigationItem';
 
-type Submenu = Omit<navLinkOptions, 'subMenu' | 'loggedInTitle'>;
-export interface navLinkOptions {
-  title: string;
-  onclick: string;
-  visible: boolean;
-  subMenu?: Submenu[];
-  loggedInTitle?: string | undefined;
-}
-
 const NavigationMenu = () => {
   const { tenantConfig } = useTenant();
   const [isMobile, setIsMobile] = useState(false);
   const [menu, setMenu] = useState(false);
-  const links = Object.keys(tenantConfig?.config?.header?.items || {});
+  const headerItems = tenantConfig.config.header.items;
 
   useEffect(() => {
     const maxWidth = '768px';
@@ -25,28 +16,33 @@ const NavigationMenu = () => {
       setIsMobile(isMobile);
     });
   }, []);
-  return tenantConfig ? (
+
+  return headerItems.length > 0 ? (
     <nav className={'menuItems'}>
-      {links
-        .filter((navLink) => navLink !== 'shop' && navLink !== 'me')
-        .map((navLink) => {
-          const navLinkOptions = tenantConfig.config.header.items[navLink];
-          return (
-            <NavigationItem
-              key={navLink}
-              navLink={navLink}
-              navLinkOptions={navLinkOptions}
-              isMobile={isMobile}
-              menu={menu}
-              setMenu={setMenu}
-            />
-          );
+      {headerItems
+        .filter(
+          (headerItem) => headerItem.visible && headerItem.headerKey !== 'shop'
+        )
+        .map((headerItem) => {
+          if (headerItem.headerKey === 'me') {
+            return (
+              <div key={headerItem.headerKey}>
+                <UserProfileButton />
+              </div>
+            );
+          } else {
+            return (
+              <NavigationItem
+                key={headerItem.headerKey}
+                navLink={headerItem.headerKey}
+                navLinkOptions={headerItem}
+                isMobile={isMobile}
+                menu={menu}
+                setMenu={setMenu}
+              />
+            );
+          }
         })}
-      {tenantConfig.config.header.items['me']?.visible && (
-        <div>
-          <UserProfileButton />
-        </div>
-      )}
     </nav>
   ) : null;
 };

@@ -4,12 +4,12 @@ import Link from 'next/link';
 import AboutUsSubMenu from './AboutUsSubMenu';
 import { SetState } from '../../../types/common';
 import { useTenant } from '../../TenantContext';
-import { navLinkOptions } from './NavigationMenu';
+import { type HeaderItem } from '@planet-sdk/common';
 import { useMemo } from 'react';
 
 interface NavigationItemProps {
   navLink: string;
-  navLinkOptions: navLinkOptions;
+  navLinkOptions: HeaderItem;
   isMobile: boolean;
   menu: boolean;
   setMenu: SetState<boolean>;
@@ -26,7 +26,7 @@ const NavigationItem = ({
   const t = useTranslations('Common');
   const { tenantConfig } = useTenant();
   const hasSubMenu =
-    navLinkOptions.subMenu && navLinkOptions.subMenu.length > 0;
+    navLinkOptions.subMenu !== undefined && navLinkOptions.subMenu.length > 0;
 
   const handleClick = () => {
     if (isMobile && hasSubMenu) {
@@ -45,6 +45,7 @@ const NavigationItem = ({
       setMenu(isMobile ? menu : false);
     }
   };
+
   const isActive = useMemo(() => {
     const { slug } = tenantConfig.config;
     const { pathname } = router;
