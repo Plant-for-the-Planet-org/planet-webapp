@@ -21,7 +21,9 @@ export const SignInButton = () => {
     const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
-    return () => cleanup();
+    return () => {
+      if (cleanup) cleanup();
+    };
   }, []);
 
   // This function controls the path for the user when they click on Me

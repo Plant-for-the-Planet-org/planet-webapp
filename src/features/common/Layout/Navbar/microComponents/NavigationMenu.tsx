@@ -16,7 +16,9 @@ const NavigationMenu = () => {
     const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
-    return () => cleanup();
+    return () => {
+      if (cleanup) cleanup();
+    };
   }, []);
 
   const renderHeaderItem = (headerItem: HeaderItem) => {

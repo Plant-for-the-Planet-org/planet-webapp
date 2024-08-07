@@ -13,7 +13,9 @@ const BrandLogo = () => {
     const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
       setIsMobile(isMobile);
     });
-    return () => cleanup();
+    return () => {
+      if (cleanup) cleanup();
+    };
   }, []);
 
   return (
