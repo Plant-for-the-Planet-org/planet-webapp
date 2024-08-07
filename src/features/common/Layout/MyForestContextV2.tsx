@@ -81,7 +81,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const _contributions = trpc.myForestV2.contributions.useQuery(
     {
       profileId: `${userInfo?.profileId}`,
-      slug: `${userInfo?.slug}`,
     },
     {
       enabled: !!userInfo?.profileId && !!userInfo?.slug,
@@ -93,7 +92,6 @@ export const MyForestProviderV2: FC = ({ children }) => {
   const _leaderboard = trpc.myForestV2.leaderboard.useQuery(
     {
       profileId: `${userInfo?.profileId}`,
-      slug: `${userInfo?.slug}`,
     },
     {
       enabled: !!userInfo?.profileId && !!userInfo?.slug,

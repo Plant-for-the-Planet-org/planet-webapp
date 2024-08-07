@@ -113,7 +113,7 @@ export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
   allowDonations: boolean;
 };
 
-export type GroupTreecounterQueryResult = {
+export type ProfileGroupQueryResult = {
   profileId: number;
 };
 
