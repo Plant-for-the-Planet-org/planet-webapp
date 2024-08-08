@@ -23,72 +23,77 @@ export const defaultTenant: Tenant = {
       isSecondaryTenant: false,
       tenantLogoURL: 'https://cdn.plant-for-the-planet.org/logo/svg/planet.svg',
       tenantLogoLink: '/',
-      items: {
-        home: {
+      items: [
+        {
           title: 'home',
           onclick: '/',
           visible: true,
+          headerKey: 'home',
         },
-        about: {
-          title: 'aboutUs',
-          onclick: 'https://www.plant-for-the-planet.org/',
+        {
+          title: 'shop',
+          onclick: 'https://thegoodshop.org',
           visible: true,
+          headerKey: 'shop',
+        },
+        {
+          title: 'aboutUs',
+          onclick: 'https://a.plant-for-the-planet.org/',
           subMenu: [
             {
               title: 'overview',
-              onclick: 'https://www.plant-for-the-planet.org/',
+              onclick: 'https://a.plant-for-the-planet.org/',
               visible: true,
             },
             {
               title: 'childrenAndYouth',
-              onclick: 'https://www.plant-for-the-planet.org/children-youth/',
+              onclick: 'https://a.plant-for-the-planet.org/children-youth/',
               visible: true,
             },
             {
               title: 'trillionTrees',
-              onclick: 'https://www.plant-for-the-planet.org/trillion-trees/',
+              onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
               visible: true,
             },
             {
               title: 'yucatan',
-              onclick: 'https://www.plant-for-the-planet.org/yucatan/',
+              onclick: 'https://a.plant-for-the-planet.org/yucatan/',
               visible: true,
             },
             {
               title: 'partners',
-              onclick: 'https://www.plant-for-the-planet.org/partners/',
+              onclick: 'https://a.plant-for-the-planet.org/partners/',
               visible: true,
             },
             {
               title: 'changeChocolate',
-              onclick: 'https://www.plant-for-the-planet.org/chocolate/',
+              onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
               visible: true,
             },
             {
               title: 'stopTalkingStartPlanting',
               onclick:
-                'https://www.plant-for-the-planet.org/stop-talking-start-planting/',
+                'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
               visible: true,
             },
           ],
+          visible: true,
+          headerKey: 'about',
         },
-        leaderboard: {
+        {
           title: 'leaders',
           onclick: '/all',
           visible: true,
+          headerKey: 'leaderboard',
         },
-        me: {
+        {
           title: 'signIn',
-          loggedInTitle: 'me',
           onclick: '/me',
           visible: true,
+          headerKey: 'me',
+          loggedInTitle: 'me',
         },
-        shop: {
-          title: 'shop',
-          onclick: 'https://thegoodshop.org',
-          visible: true,
-        },
-      },
+      ],
     },
     meta: {
       title: 'Plant trees around the world - Plant-for-the-Planet',

@@ -1,7 +1,8 @@
 import React from 'react';
 import { IconProps } from '../../../../src/features/common/types/common';
+import themeProperties from '../../../../src/theme/themeProperties';
 
-function Me({ color }: IconProps) {
+function Me({ color = themeProperties.light.primaryFontColor }: IconProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
       <path
