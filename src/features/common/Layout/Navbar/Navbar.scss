@@ -201,8 +201,13 @@
 
 .mobileSignInButton {
   width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
+
+  svg {
+    height: 100%;
+  }
 }
 
 .profileImageButton {
@@ -222,6 +227,9 @@
     @include xsPhoneView {
       width: 24px;
       height: 24px;
+    }
+    svg {
+      height: 100%;
     }
   }
 }
