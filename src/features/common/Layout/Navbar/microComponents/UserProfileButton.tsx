@@ -38,7 +38,7 @@ const UserProfileButton = () => {
       onClick={() => router.push(`/profile`)}
     >
       {user.image ? (
-        <img src={getImageUrl('profile', 'avatar', user.image)} alt="Profile" />
+        <img src={getImageUrl('profile', 'thumb', user.image)} alt="Profile" />
       ) : (
         <div className="userDefaultIconContainer">
           <DefaultProfileImageIcon />
