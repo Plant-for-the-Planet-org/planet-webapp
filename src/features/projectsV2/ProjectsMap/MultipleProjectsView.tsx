@@ -21,32 +21,34 @@ const MultipleProjectsView = ({
     topProjects,
     searchProjectResults,
     debouncedSearchValue,
+    doSearchResultsMatchFilters,
   } = useProjects();
 
   if (isLoading || isError || !projects) {
     return null;
   }
   const projectsToDisplay = useMemo(() => {
-    //* If search results exist, return them (search project case)
-    if (searchProjectResults && searchProjectResults?.length > 0) {
-      return searchProjectResults;
+    const isTopProjectTab = tabSelected === 0 || tabSelected === 'topProjects';
+    const hasClassificationFilter = selectedClassification.length > 0;
+    if (searchProjectResults && debouncedSearchValue) {
+      if (hasClassificationFilter && doSearchResultsMatchFilters) {
+        return searchProjectResults;
+      } else if (hasClassificationFilter && !doSearchResultsMatchFilters) {
+        return [];
+      } else {
+        return searchProjectResults;
+      }
     }
-    //* If there are no search results and the search value is not empty, return an empty array (no project found case)
+
     if (searchProjectResults?.length === 0 && debouncedSearchValue.length > 0)
       return [];
-    //* If a classification filter is applied, return the filtered projects based on the selected tab
-    if (selectedClassification.length > 0) {
-      return tabSelected === 0 || tabSelected === 'topProjects'
-        ? filteredTopProjects
-        : filteredRegularProjects;
+
+    if (hasClassificationFilter) {
+      return isTopProjectTab ? filteredTopProjects : filteredRegularProjects;
     }
     //* If none of the above conditions are met, return all projects (for desktop version).
     //* However it return all projects base on selected tab(top/all) for mobile version
-    return isMobile
-      ? tabSelected === 'topProjects'
-        ? topProjects
-        : projects
-      : projects;
+    return isMobile ? (isTopProjectTab ? topProjects : projects) : projects;
   }, [
     selectedMode,
     tabSelected,

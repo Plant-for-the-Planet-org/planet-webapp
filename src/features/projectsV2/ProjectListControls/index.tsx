@@ -53,7 +53,6 @@ const ProjectListControls = ({
     setIsSearching,
     setIsFilterOpen,
     setDebouncedSearchValue,
-    setSelectedClassification,
   };
   const classificationDropDownProps = {
     selectedClassification,

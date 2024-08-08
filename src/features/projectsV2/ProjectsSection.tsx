@@ -36,23 +36,29 @@ const ProjectsSection = ({
     isLoading,
     isError,
     tabSelected,
+    doSearchResultsMatchFilters,
   } = useProjects();
   const tAllProjects = useTranslations('AllProjects');
+
   const projectsToDisplay = useMemo(() => {
-    //* If the user is searching for a project, return the search results
-    if (searchProjectResults && debouncedSearchValue) {
-      return searchProjectResults;
+    const isTopProjectTab = tabSelected === 0 || tabSelected === 'topProjects';
+    const hasClassificationFilter = selectedClassification.length > 0;
+    const isSearching = searchProjectResults && debouncedSearchValue;
+
+    if (isSearching) {
+      if (hasClassificationFilter && doSearchResultsMatchFilters) {
+        return searchProjectResults;
+      } else if (hasClassificationFilter && !doSearchResultsMatchFilters) {
+        return [];
+      } else {
+        return searchProjectResults;
+      }
     }
-    //* If a classification filter is applied, return the filtered projects based on the selected tab
-    if (selectedClassification.length > 0) {
-      return tabSelected === 0 || tabSelected === 'topProjects'
-        ? filteredTopProjects
-        : filteredRegularProjects;
+    if (hasClassificationFilter) {
+      return isTopProjectTab ? filteredTopProjects : filteredRegularProjects;
     }
     //* Default case: return either top projects or all projects based on the selected tab
-    return tabSelected === 0 || tabSelected === 'topProjects'
-      ? topProjects
-      : projects;
+    return isTopProjectTab ? topProjects : projects;
   }, [
     tabSelected,
     selectedMode,
@@ -61,6 +67,7 @@ const ProjectsSection = ({
     topProjects,
     filteredRegularProjects,
     searchProjectResults,
+    doSearchResultsMatchFilters,
   ]);
 
   const renderProjectSnippet = useCallback(

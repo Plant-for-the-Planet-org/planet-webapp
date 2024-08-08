@@ -1,5 +1,6 @@
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/projectv2';
+
 export const availableFilters: TreeProjectClassification[] = [
   'large-scale-planting',
   'agroforestry',
@@ -54,4 +55,20 @@ export const getSearchProjects = (
     );
   });
   return filteredProjects;
+};
+
+/**
+ *
+ * @param searchedProject
+ * @param arrayOfFilteredProjects
+ * @returns it return boolean value (true) if the searchProject matches the filterProject  else return false
+ */
+
+export const doesProjectExistInFilteredLists = (
+  searchedProject: MapProject,
+  arrayOfFilteredProjects: MapProject[][]
+) => {
+  return arrayOfFilteredProjects.some((arr) =>
+    arr.find((item) => item.properties.id === searchedProject.properties.id)
+  );
 };

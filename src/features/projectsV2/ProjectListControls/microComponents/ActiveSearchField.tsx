@@ -6,20 +6,17 @@ import style from '../styles/ProjectListControls.module.scss';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { SetState } from '../../../common/types/common';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
-import { TreeProjectClassification } from '@planet-sdk/common';
 
 interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;
   setIsFilterOpen: SetState<boolean>;
   setDebouncedSearchValue: SetState<string>;
-  setSelectedClassification: SetState<TreeProjectClassification[]>;
 }
 
 const ActiveSearchField = ({
   setIsSearching,
   setIsFilterOpen,
   setDebouncedSearchValue,
-  setSelectedClassification,
 }: ActiveSearchFieldProps) => {
   const t = useTranslations('AllProjects');
   const [searchValue, setSearchValue] = useState('');
@@ -33,7 +30,6 @@ const ActiveSearchField = ({
   );
 
   const resetSearchTab = () => {
-    setSelectedClassification([]);
     setDebouncedSearchValue('');
     setIsSearching(false);
     setIsFilterOpen(false);

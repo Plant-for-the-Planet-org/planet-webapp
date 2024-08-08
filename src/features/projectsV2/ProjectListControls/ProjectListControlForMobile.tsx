@@ -43,7 +43,6 @@ const ProjectListControlForMobile = ({
     setIsFilterOpen,
     setIsSearching,
     setDebouncedSearchValue,
-    setSelectedClassification,
   };
   const viewModeTabsProps = {
     setIsFilterOpen,

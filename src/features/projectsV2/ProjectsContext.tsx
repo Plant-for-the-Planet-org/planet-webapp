@@ -21,6 +21,7 @@ import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { getSearchProjects } from './ProjectListControls/utils';
 import { ProjectTabs } from './ProjectListControls';
+import { doesProjectExistInFilteredLists } from './ProjectListControls/utils';
 
 const MOBILE_BREAKPOINT = 481;
 const TAB_OPTIONS = {
@@ -41,6 +42,7 @@ interface ProjectsState {
   tabSelected: ProjectTabs;
   setTabSelected: SetState<ProjectTabs>;
   topProjects: MapProject[] | undefined;
+  doSearchResultsMatchFilters: boolean | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
@@ -106,6 +108,26 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }),
     [projects, tabSelected]
   );
+  const doSearchResultsMatchFilters = useMemo(() => {
+    if (
+      filteredTopProjects &&
+      filteredRegularProjects &&
+      selectedClassification.length > 0
+    ) {
+      return searchProjectResults?.some((project) =>
+        doesProjectExistInFilteredLists(project, [
+          filteredTopProjects,
+          filteredRegularProjects,
+        ])
+      );
+    }
+  }, [
+    searchProjectResults,
+    filteredTopProjects,
+    filteredRegularProjects,
+    selectedClassification,
+  ]);
+
   useEffect(() => {
     if (topProjects && projects) {
       setFilteredTopProjects(filterProjectsByClassification(topProjects));
@@ -172,6 +194,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       debouncedSearchValue,
       setDebouncedSearchValue,
       topProjects,
+      doSearchResultsMatchFilters,
       tabSelected,
       setTabSelected,
       selectedClassification,
@@ -186,6 +209,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       searchProjectResults,
       debouncedSearchValue,
       topProjects,
+      doSearchResultsMatchFilters,
       tabSelected,
       selectedClassification,
     ]
