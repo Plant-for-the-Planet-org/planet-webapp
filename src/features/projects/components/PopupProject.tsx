@@ -9,7 +9,7 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
-import ProjectTypeIcon from '../../projectsV2/components/microComponents/ProjectTypeIcon';
+import ProjectTypeIcon from '../../projectsV2/ProjectSnippet/microComponents/ProjectTypeIcon';
 import {
   ConservationProjectConcise,
   TreeProjectConcise,

@@ -10,6 +10,8 @@ interface ProjectsLayoutProps {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
+  selectedMode: 'list' | 'map';
+  setSelectedMode: SetState<'list' | 'map'>;
 }
 
 const ProjectsLayout: FC<ProjectsLayoutProps> = ({
@@ -17,6 +19,8 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
   currencyCode,
   setCurrencyCode,
   page,
+  selectedMode,
+  setSelectedMode,
 }) => {
   return (
     <ProjectsProvider
@@ -29,7 +33,11 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
           <main className={styles.mainContent}>
             <section className={styles.contentContainer}>{children}</section>
             <section className={styles.mapContainer}>
-              <ProjectsMap />
+              <ProjectsMap
+                isMobile={false}
+                selectedMode={selectedMode}
+                setSelectedMode={setSelectedMode}
+              />
             </section>
           </main>
           <Credits setCurrencyCode={setCurrencyCode} />

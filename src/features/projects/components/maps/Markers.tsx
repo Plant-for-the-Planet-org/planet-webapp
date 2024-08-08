@@ -4,7 +4,7 @@ import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import ProjectTypeIcon from '../../../projectsV2/components/microComponents/ProjectTypeIcon';
+import ProjectTypeIcon from '../../../projectsV2/ProjectSnippet/microComponents/ProjectTypeIcon';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useLocale } from 'next-intl';

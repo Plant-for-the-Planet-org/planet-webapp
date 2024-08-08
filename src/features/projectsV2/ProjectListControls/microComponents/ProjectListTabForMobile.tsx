@@ -1,19 +1,19 @@
-import StarIcon from '../icons/StarIcon';
-import style from './ProjectListControls.module.scss';
-import { useTranslations } from 'next-intl';
-import themeProperties from '../../theme/themeProperties';
 import { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
+import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
+import style from '../styles/ProjectListControls.module.scss';
+import themeProperties from '../../../../theme/themeProperties';
 
-type ProjectCollection = 'topProjects' | 'allProjects';
+type ProjectCollection = number | 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
-  projectCount: number;
-  topProjectCount: number;
+  projectCount: number | undefined;
+  topProjectCount: number | undefined;
   tabSelected: ProjectCollection;
   setTabSelected: (value: ProjectCollection) => void;
   setIsFilterOpen: (value: boolean) => void;
 }
 interface TabItemProps {
-  selectedTab: 'topProjects' | 'allProjects';
+  selectedTab: ProjectCollection;
   icon?: ReactNode | undefined;
   label: ReactNode;
 }
@@ -27,7 +27,7 @@ const ProjectListTabForMobile = ({
   const { light, dark } = themeProperties;
   const t = useTranslations('AllProjects');
 
-  const selectTab = (tab: 'topProjects' | 'allProjects') => {
+  const selectTab = (tab: ProjectCollection) => {
     setTabSelected(tab);
     setIsFilterOpen(false);
   };
@@ -46,7 +46,6 @@ const ProjectListTabForMobile = ({
   };
   const starIconColor =
     tabSelected === 'topProjects' ? `${light.light}` : `${dark.darkNew}`;
-
   return (
     <div className={style.tabContainer}>
       <TabItem

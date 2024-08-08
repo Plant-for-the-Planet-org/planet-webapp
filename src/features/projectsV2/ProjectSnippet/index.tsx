@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
-import style from '../styles/ProjectSnippet.module.scss';
+import style from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../ProjectsMap/utils';
 
 interface Props {

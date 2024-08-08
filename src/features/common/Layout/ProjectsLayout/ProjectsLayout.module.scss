@@ -11,6 +11,7 @@
     #fff;
   padding: 24px 20px 30px;
   position: relative;
+  overflow: hidden;
 }
 
 .mainContent {
@@ -42,6 +43,7 @@
   justify-content: center;
   margin-top: 80px;
   padding-top: 24px;
+  overflow: hidden;
   &.mapMode {
     height: 100vh;
     margin-top: 0px;
@@ -67,4 +69,5 @@
 .mobileMapContainer {
   width: inherit;
   height: 100%;
+  position: relative;
 }

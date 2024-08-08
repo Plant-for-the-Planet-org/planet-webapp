@@ -21,7 +21,12 @@ import {
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../../src/features/projectsV2/ProjectsSection';
 
-const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
+const ProjectListPage: NextPageWithLayout = ({
+  pageProps,
+  selectedMode,
+  setSelectedMode,
+  isMobile,
+}) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -31,7 +36,13 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
     }
   }, [router.isReady]);
 
-  return <ProjectsSection />;
+  return (
+    <ProjectsSection
+      selectedMode={selectedMode}
+      setSelectedMode={setSelectedMode}
+      isMobile={isMobile}
+    />
+  );
 };
 
 ProjectListPage.getLayout = function getLayout(
@@ -42,6 +53,9 @@ ProjectListPage.getLayout = function getLayout(
     currencyCode: pageComponentProps.currencyCode,
     setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-list',
+    selectedMode: pageComponentProps.selectedMode,
+    setSelectedMode: pageComponentProps.setSelectedMode,
+    isMobile: pageComponentProps.isMobile,
   } as const;
 
   return pageComponentProps.isMobile ? (

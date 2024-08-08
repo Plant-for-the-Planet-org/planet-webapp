@@ -1,4 +1,4 @@
-@import '../../theme/theme';
+@import '../../../../theme/theme';
 
 .activeSearchFieldContainer,
 .projectListControls {
@@ -35,7 +35,6 @@
 .activeSearchIcon {
   margin-left: 24px;
   margin-top: 4px;
-  cursor: pointer;
   > svg {
     width: 16px;
     @include xsPhoneView {
@@ -80,7 +79,7 @@
   border: 2px solid $primaryColorNew;
   display: flex;
   overflow: hidden;
-  min-width: max-content;
+  width: 130px;
 }
 
 .tabContainerSecondary {
@@ -119,6 +118,7 @@
 
 .unselectedTabButton {
   background: $light;
+  color: rgba($dark, 1);
 }
 
 .projectCount {
@@ -133,6 +133,15 @@
   gap: 12px;
   transition: all 0.4s ease-in-out;
   width: 20%;
+  button {
+    width: 28px;
+    height: 28px;
+    border-radius: 7.78px;
+    background: $backgroundColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .iconsContainer {
@@ -142,7 +151,9 @@
   align-items: center;
   margin-left: 20px;
   padding-right: 19px;
-  cursor: pointer;
+  button {
+    cursor: pointer;
+  }
 }
 
 .label {
@@ -162,6 +173,12 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    @include xsPhoneView {
+      width: 8px;
+      height: 8px;
+      top: 4px;
+      left: 15px;
+    }
   }
 }
 
@@ -172,12 +189,17 @@
 }
 
 .classificationListContainer {
-  min-width: 130px;
-  max-width: 130px;
+  min-width: 182px;
   background: $backgroundColor;
   padding: 16px;
   margin-top: 10px;
   border-radius: 12px;
+  position: absolute;
+  z-index: 2;
+  @include xsPhoneView {
+    left: 140px;
+    top: 59px;
+  }
 }
 
 .classificationUnselected {

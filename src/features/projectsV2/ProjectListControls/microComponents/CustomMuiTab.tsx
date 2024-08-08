@@ -1,5 +1,5 @@
 import { Tab, styled } from '@mui/material';
-import themeProperties from '../../theme/themeProperties';
+import themeProperties from '../../../../theme/themeProperties';
 
 const { light, primaryColorNew } = themeProperties;
 const CustomMuiTab = styled(Tab)(() => ({

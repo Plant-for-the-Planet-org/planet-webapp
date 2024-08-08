@@ -4,11 +4,11 @@ import { CountryCode } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { ProjectInfoProps } from '../ProjectSnippet';
+import { ProjectInfoProps } from '..';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
-import style from '../../styles/ProjectSnippet.module.scss';
+import style from '../styles/ProjectSnippet.module.scss';
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {

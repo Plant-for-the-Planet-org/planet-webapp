@@ -1,15 +1,18 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import style from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import WebappButton from '../../WebappButton';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
+import Credits from '../../../projects/components/maps/Credits';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
+  selectedMode: 'list' | 'map';
+  setSelectedMode: SetState<'list' | 'map'>;
+  isMobile: boolean;
 }
 
 const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
@@ -17,15 +20,12 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   page,
   currencyCode,
   setCurrencyCode,
+  selectedMode,
+  setSelectedMode,
+  isMobile,
 }) => {
-  const [isMapMode, setIsMapMode] = useState(false);
-
   const mobileLayoutClass = `${style.mobileProjectsLayout} ${
-    isMapMode ? style.mapMode : ''
-  }`;
-
-  const viewButtonClass = `${style.viewButton} ${
-    isMapMode ? style.viewButtonShifted : ''
+    selectedMode === 'map' ? style.mapMode : ''
   }`;
 
   return (
@@ -36,16 +36,13 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
     >
       <ProjectsMapProvider>
         <main className={mobileLayoutClass}>
-          <WebappButton
-            text={isMapMode ? 'View Info' : 'View Map'}
-            variant="primary"
-            elementType="button"
-            onClick={() => setIsMapMode(!isMapMode)}
-            buttonClasses={viewButtonClass}
-          />
-          {isMapMode ? (
+          {selectedMode === 'map' ? (
             <section className={style.mobileMapContainer}>
-              <ProjectsMap />
+              <ProjectsMap
+                selectedMode={selectedMode}
+                setSelectedMode={setSelectedMode}
+                isMobile={isMobile}
+              />
             </section>
           ) : (
             <section className={style.mobileContentContainer}>
@@ -53,6 +50,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
             </section>
           )}
         </main>
+        <Credits setCurrencyCode={setCurrencyCode} />
       </ProjectsMapProvider>
     </ProjectsProvider>
   );
