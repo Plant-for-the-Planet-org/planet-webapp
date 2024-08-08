@@ -79,7 +79,11 @@ export default function Home({ pageProps }: Props) {
     loadLeaderboard();
   }, []);
 
-  if (!pageProps.tenantConfig.config.header.items['home'].visible) {
+  if (
+    !pageProps.tenantConfig.config.header.items.find(
+      (item) => item.headerKey === 'home' && item.visible
+    )
+  ) {
     if (typeof window !== 'undefined') {
       router.push('/');
     }

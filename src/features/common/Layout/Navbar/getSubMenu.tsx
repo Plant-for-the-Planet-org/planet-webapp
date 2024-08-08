@@ -6,12 +6,14 @@ import TrillionTreesIcon from '../../../../../public/assets/images/icons/megaMen
 import YucatanIcon from '../../../../../public/assets/images/icons/megaMenuIcons/yucatan';
 import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaMenuIcons/changeChocolate';
 import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
+import VTOChallengeIcon from '../../../../../public/assets/images/navigation/VTOChallengeIcon';
+import OceanforceChallengeIcon from '../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
 
 interface Props {
   title: string;
 }
 
-function GetSubMenu({ title }: Props): ReactElement {
+function GetSubMenuIcons({ title }: Props): ReactElement {
   const Overview = () => {
     return (
       <div id="overviewButton" className={'link_icon'}>
@@ -68,6 +70,22 @@ function GetSubMenu({ title }: Props): ReactElement {
     );
   };
 
+  const VTOChallenge = () => {
+    return (
+      <div id="overviewButton" className={'link_icon'}>
+        <VTOChallengeIcon />
+      </div>
+    );
+  };
+
+  const Mangroves = () => {
+    return (
+      <div id="overviewButton" className={'link_icon'}>
+        <OceanforceChallengeIcon />
+      </div>
+    );
+  };
+
   switch (title) {
     case 'overview':
       return <Overview />;
@@ -83,9 +101,13 @@ function GetSubMenu({ title }: Props): ReactElement {
       return <ChangeChocolate />;
     case 'stopTalkingStartPlanting':
       return <StopTalkingStartPlanting />;
+    case 'vtoChallenge':
+      return <VTOChallenge />;
+    case 'mangroves':
+      return <Mangroves />;
     default:
       return <></>;
   }
 }
 
-export default GetSubMenu;
+export default GetSubMenuIcons;
