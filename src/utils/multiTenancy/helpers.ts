@@ -40,11 +40,13 @@ export async function constructPathsForTenantSlug() {
   }
 
   // build paths for each of the sites
-  return tenants
-    .filter((tenant) => tenant.config.slug)
-    .map((item) => {
-      return { params: { slug: item.config.slug } };
-    });
+  if (tenants) {
+    return tenants
+      .filter((tenant) => tenant.config.slug)
+      .map((item) => {
+        return { params: { slug: item.config.slug } };
+      });
+  }
 }
 
 /**

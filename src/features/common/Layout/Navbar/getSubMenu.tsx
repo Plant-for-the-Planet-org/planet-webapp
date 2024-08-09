@@ -13,7 +13,7 @@ interface Props {
   title: string;
 }
 
-function GetSubMenu({ title }: Props): ReactElement {
+function GetSubMenuIcons({ title }: Props): ReactElement {
   const Overview = () => {
     return (
       <div id="overviewButton" className={'link_icon'}>
@@ -110,4 +110,4 @@ function GetSubMenu({ title }: Props): ReactElement {
   }
 }
 
-export default GetSubMenu;
+export default GetSubMenuIcons;
