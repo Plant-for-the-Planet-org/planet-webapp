@@ -1,6 +1,5 @@
 import ProjectListControlForMobile from '../ProjectListControlForMobile';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Classification } from '..';
 
 const meta: Meta<typeof ProjectListControlForMobile> = {
   title: 'Projects/Landing/ProjectListControlForMobile',
@@ -10,19 +9,18 @@ const meta: Meta<typeof ProjectListControlForMobile> = {
 export default meta;
 type Story = StoryObj<typeof ProjectListControlForMobile>;
 
-const availableFilters: Classification[] = [
-  'large-scale-planting',
-  'agroforestry',
-  'natural-regeneration',
-  'managed-regeneration',
-  'urban-planting',
-  'other-planting',
-];
-
 export const Default: Story = {
   args: {
-    topProjectCount: 56,
     projectCount: 20,
-    availableFilters: availableFilters,
+    topProjectCount: 30,
+    setTabSelected: undefined,
+    tabSelected: 'topProjects',
+    selectedClassification: [],
+    setSelectedClassification: undefined,
+    setDebouncedSearchValue: undefined,
+    searchProjectResults: [],
+    setSelectedMode: undefined,
+    selectedMode: 'list',
+    isMobile: true,
   },
 };

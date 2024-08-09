@@ -1,6 +1,5 @@
 import ProjectListControls from '..';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Classification } from '..';
 
 const meta: Meta<typeof ProjectListControls> = {
   title: 'Projects/Landing/ProjectListControls',
@@ -10,19 +9,15 @@ const meta: Meta<typeof ProjectListControls> = {
 export default meta;
 type Story = StoryObj<typeof ProjectListControls>;
 
-const availableFilters: Classification[] = [
-  'large-scale-planting',
-  'agroforestry',
-  'natural-regeneration',
-  'managed-regeneration',
-  'urban-planting',
-  'other-planting',
-];
-
 export const Default: Story = {
   args: {
-    availableFilters: availableFilters,
-    topProjectCount: 20,
-    projectCount: 10,
+    projectCount: 20,
+    topProjectCount: 30,
+    setTabSelected: undefined,
+    tabSelected: 0,
+    selectedClassification: [],
+    setSelectedClassification: undefined,
+    setDebouncedSearchValue: undefined,
+    searchProjectResults: [],
   },
 };
