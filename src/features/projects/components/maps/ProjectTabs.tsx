@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
@@ -10,14 +10,14 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 export default function ProjectTabs(): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
-  const { pathname } = useRouter();
-  const { t } = useTranslation(['maps']);
+  const router = useRouter();
+  const t = useTranslations('Maps');
   const { selectedMode, setSelectedMode, rasterData } = useProjectProps();
 
   const containerClasses =
     embed !== 'true'
       ? styles.VegetationChangeContainer
-      : pathname === '/[p]' && showProjectDetails === 'false'
+      : router.pathname.includes('/[p]') && showProjectDetails === 'false'
       ? `${styles.embed_VegetationChangeContainer} ${styles['no-project-details']}`
       : styles.embed_VegetationChangeContainer;
 
@@ -40,7 +40,7 @@ export default function ProjectTabs(): ReactElement {
           className={`${styles.options} ${styles.compact}`}
         >
           <LocationIcon color={selectedMode === 'location' ? '#fff' : null} />{' '}
-          <p>{t('maps:fieldData')}</p>
+          <p>{t('fieldData')}</p>
         </div>
         <div
           onClick={() => {
@@ -59,8 +59,8 @@ export default function ProjectTabs(): ReactElement {
         >
           <SatelliteIcon color={selectedMode === 'imagery' ? '#fff' : null} />{' '}
           <p>
-            {t('maps:timeTravel')}
-            <sup>{t('maps:beta')}</sup>
+            {t('timeTravel')}
+            <sup>{t('beta')}</sup>
           </p>
         </div>
         {/* Raster data for multipolygons is not supported and is returned with an error for such projects. In this case rasterData.evi will not exist*/}
@@ -84,8 +84,8 @@ export default function ProjectTabs(): ReactElement {
               color={selectedMode === 'vegetation' ? '#fff' : null}
             />{' '}
             <p>
-              {t('maps:vegetationChange')}
-              <sup>{t('maps:beta')}</sup>
+              {t('vegetationChange')}
+              <sup>{t('beta')}</sup>
             </p>
           </div>
         ) : null}

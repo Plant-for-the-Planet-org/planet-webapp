@@ -9,11 +9,12 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import { APIError, handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -33,7 +34,8 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 
 export default function ApiKey() {
   const { token, contextLoaded, logoutUser } = useUserProps();
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
+  const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
@@ -47,6 +49,7 @@ export default function ApiKey() {
     setIsUploadingData(true);
     try {
       const res = await getAuthenticatedRequest<ApiKeyResponse>(
+        tenantConfig?.id,
         '/app/profile/apiKey',
         token,
         logoutUser
@@ -67,6 +70,7 @@ export default function ApiKey() {
     setIsUploadingData(true);
     try {
       const res = await putAuthenticatedRequest<ApiKeyResponse>(
+        tenantConfig?.id,
         '/app/profile/apiKey',
         undefined,
         token,
@@ -121,7 +125,7 @@ export default function ApiKey() {
             {isUploadingData ? (
               <div className={'spinner'}></div>
             ) : (
-              t('me:regenerateKey')
+              t('regenerateKey')
             )}
           </Button>
         </div>

@@ -1,7 +1,9 @@
 {
-  "forestFrontrunners": "Baum-Bestenliste",
-  "mostRecent": "Neueste Spenden",
-  "mostTrees": "Die meisten Bäume",
-  "videoTitle": "Und schließlich dies",
-  "searchUser": "Benutzer suchen"
+  "Leaderboard": {
+    "forestFrontrunners": "Baum-Bestenliste",
+    "mostRecent": "Neueste Spenden",
+    "mostTrees": "Die meisten Bäume",
+    "videoTitle": "Und schließlich dies",
+    "searchUser": "Benutzer suchen"
+  }
 }

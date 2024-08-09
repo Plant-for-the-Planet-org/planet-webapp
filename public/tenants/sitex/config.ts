@@ -16,12 +16,12 @@ const config = {
     title: 'Sitex ❤️ Wald',
     description:
       'Die Klimarettung ist eine globale Aufgabe und lässt sich nur bewältigen, wenn wir alle zusammen vorgehen. Wir möchten unseren Kindern und Enkelkindern einen intakten Planeten hinterlassen. Darum unterstützen wir Plant-for-the-Planet und die Methode des Bäume-Pflanzens, um möglichst viel CO² aus der Atmosphäre zu binden. Unser Beitrag in der Sitex-Gruppe: Wir pflanzen mindestens 500.000 Bäume bis 2027.',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'de_DE',
   },
   home: {
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,
@@ -40,7 +40,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: false,
       },
       leaderboard: {

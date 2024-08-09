@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
@@ -9,6 +9,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface ReactivateModalProps {
   reactivateModalOpen: boolean;
@@ -24,10 +25,11 @@ export const ReactivateModal = ({
   fetchRecurrentDonations,
 }: ReactivateModalProps) => {
   const [disabled, setDisabled] = React.useState(false);
+  const { tenantConfig } = useTenant();
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const bodyToSend = {};
 
   React.useEffect(() => {
@@ -39,6 +41,7 @@ export const ReactivateModal = ({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/subscriptions/${record.id}?scope=reactivate`,
         bodyToSend,
         token,
@@ -74,7 +77,7 @@ export const ReactivateModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('me:reactivateDonationConfirmation')}</h4>
+              <h4>{t('reactivateDonationConfirmation')}</h4>
               <button
                 onClick={handleReactivateModalClose}
                 onKeyPress={handleReactivateModalClose}
@@ -87,7 +90,7 @@ export const ReactivateModal = ({
             </div>
             <div className={styles.note}>
               <p>
-                {t('me:reactivateDonationDescription', {
+                {t('reactivateDonationDescription', {
                   currentPeriodEnds: record?.currentPeriodEnd,
                 })}
               </p>

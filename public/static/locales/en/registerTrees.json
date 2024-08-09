@@ -1,11 +1,13 @@
 {
-  "selectLocationMap": "Select location on map",
-  "requiredNumberOfTrees": "Number of Trees is required",
-  "numberOfTrees": "Number of Trees",
-  "datePlanted": "Date Planted",
-  "treeSpecies": "Tree Species",
-  "speciesRequired": "Species is required",
-  "drawPolygonMap": "Draw a polygon on the map",
-  "clickMapMark": "Click on the map to mark a location",
-  "next": "Next"
+  "RegisterTrees": {
+    "selectLocationMap": "Select location on map",
+    "requiredNumberOfTrees": "Number of Trees is required",
+    "numberOfTrees": "Number of Trees",
+    "datePlanted": "Date Planted",
+    "treeSpecies": "Tree Species",
+    "speciesRequired": "Species is required",
+    "drawPolygonMap": "Draw a polygon on the map",
+    "clickMapMark": "Click on the map to mark a location",
+    "next": "Next"
+  }
 }

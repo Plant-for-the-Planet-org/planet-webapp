@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { CurrencyCode } from '@planet-sdk/common';
 
@@ -17,32 +17,31 @@ const BulkGiftTotal = ({
   units = 0,
   unit = 'tree',
 }: BulkGiftTotalProps): ReactElement | null => {
-  const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
+  const tCommon = useTranslations('Common');
+  const tBulkCodes = useTranslations('BulkCodes');
+  const locale = useLocale();
 
   const getUnit = (_unit: string, _units?: number) => {
     if (_unit === 'tree') {
-      return t('common:tree', { count: _units });
+      return tCommon('tree', { count: _units });
     } else if (_unit === 'm2') {
       return 'm2';
     } else return 'ha';
   };
 
-  if (ready) {
-    return (
-      <TextField
-        label={t('bulkCodes:total')}
-        disabled
-        inputProps={{ readOnly: true }}
-        value={`${getFormatedCurrency(
-          i18n.language,
-          currency as string,
-          amount
-        )} for ${units} ${getUnit(unit, units)}`}
-        // TODOO translation and pluralization
-      ></TextField>
-    );
-  }
-  return null;
+  return (
+    <TextField
+      label={tBulkCodes('total')}
+      disabled
+      inputProps={{ readOnly: true }}
+      value={`${getFormatedCurrency(
+        locale,
+        currency as string,
+        amount
+      )} for ${units} ${getUnit(unit, units)}`}
+      // TODOO translation and pluralization
+    ></TextField>
+  );
 };
 
 export default BulkGiftTotal;

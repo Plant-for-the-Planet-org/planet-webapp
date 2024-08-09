@@ -5,10 +5,8 @@ import ContentSection from './components/ContentSection';
 import ProjectGrid from './components/ProjectGrid';
 import AboveFooter from './components/AboveFooter';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
 import BlueCarbon from './components/BlueCarbon';
-
-const config = tenantConfig();
+import { useTenant } from '../../../features/common/Layout/TenantContext';
 
 interface Props {
   tenantScore: { total: number };
@@ -16,10 +14,11 @@ interface Props {
 }
 
 export default function Campaign({ tenantScore, isLoaded }: Props) {
+  const { tenantConfig } = useTenant();
   return (
     <>
       <Head>
-        <title>{`Restoring Mangroves | ${config.meta.title}`}</title>
+        <title>{`Restoring Mangroves | ${tenantConfig.config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} isLoaded={isLoaded} />

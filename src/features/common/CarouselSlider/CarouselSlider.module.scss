@@ -1,0 +1,38 @@
+.carouselSliderContainer {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+}
+
+.carouselHeader {
+    display: flex;
+
+    @media screen and (max-width: 861px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+.titleContainer {
+    text-align: center;
+    flex: 3;
+    font-size: 22px;
+}
+
+.arrowContainer {
+    display: flex;
+    gap: 14px;
+    button {
+        filter: drop-shadow(5.25px 5.25px 14px rgba(0, 0, 0, 0.25));
+    }
+
+    svg {
+        overflow: visible;
+        width: 100%;
+    }
+
+    @media screen and (min-width: 1101px) {
+        display: none;
+    }
+}

@@ -1,16 +1,22 @@
 {
-  "congratulations": "Gratulujeme!",
-  "addToMyTrees": "Přidat do mých stromů",
-  "validateCode": "Ověřit kód",
-  "enterRedeemCode": "Zadejte prosím kód, který chcete uplatnit",
-  "validating": "Ověřování",
-  "invalidType": "Neplatný typ, prosím zkontrolujte odkaz znovu",
-  "redeeming": "Uplatnění:",
-  "invalidCode": "Tento kód je neplatný.",
-  "alreadyRedeemed": "Kód již byl uplatněn",
-  "redeemCode": "Použít kód",
-  "redeem": "Uplatnit",
-  "redeemDescription": "Uplatněte svůj stromový poukaz a další kódy.",
-  "successfullyRedeemed": "Úspěšně uplatněn",
-  "redeemAnotherCode": "Uplatnit jiný kód"
+  "Redeem": {
+    "myPlantedTreesByOrg": "Můj strom {formattedNumber} bude zasazen {tpoName}",
+    "myPlantedTreesByOrg_plural": "Moje stromy {formattedNumber} budou vysazeny {tpoName}",
+    "congratulations": "Gratulujeme!",
+    "addToMyTrees": "Přidat do mých stromů",
+    "validateCode": "Ověřit kód",
+    "enterRedeemCode": "Zadejte prosím kód, který chcete uplatnit",
+    "validating": "Ověřování",
+    "invalidType": "Neplatný typ, prosím zkontrolujte odkaz znovu",
+    "redeeming": "Uplatnění:",
+    "invalidCode": "Tento kód je neplatný.",
+    "selfGiftMessage": "Dárek/kód, který jste sami vydali, nelze uplatnit",
+    "alreadyRedeemed": "Kód již byl uplatněn",
+    "redeemCode": "Použít kód",
+    "redeemingCode": "Uplatnění kódu...",
+    "redeem": "Uplatnit",
+    "redeemDescription": "Uplatněte svůj stromový poukaz a další kódy.",
+    "successfullyRedeemed": "Úspěšně uplatněn",
+    "redeemAnotherCode": "Uplatnit jiný kód"
+  }
 }

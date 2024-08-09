@@ -1,24 +1,26 @@
 import styles from '../../../common/Layout/UserLayout/UserLayout.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { useContext } from 'react';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { useTenant } from '../../../common/Layout/TenantContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface SupportPin {
   supportPin: string;
 }
 
 const SupportPin = () => {
-  const { token, user, setUser } = useContext(UserPropsContext);
-  const { t } = useTranslation('me');
-
+  const { token, user, setUser, logoutUser } = useUserProps();
+  const t = useTranslations('Me');
+  const { tenantConfig } = useTenant();
   const handleNewPin = async () => {
     try {
       const response = await putAuthenticatedRequest<SupportPin>(
+        tenantConfig?.id,
         '/app/profile/supportPin',
         undefined,
-        token
+        token,
+        logoutUser
       );
       if (response) {
         const updateUserData = { ...user };
@@ -35,7 +37,7 @@ const SupportPin = () => {
   return (
     <>
       <div className={styles.supportPinContainer}>
-        <div className={styles.supportPin}>{t('me:supportPin')} :</div>
+        <div className={styles.supportPin}>{t('supportPin')} :</div>
         <div className={styles.pinValue}>{user?.supportPin}</div>
         <div>
           <button onClick={handleNewPin}>
@@ -43,7 +45,7 @@ const SupportPin = () => {
           </button>
         </div>
         <div className={styles.resetPin}>
-          <span>{t('me:resetPin')}</span>
+          <span>{t('resetPin')}</span>
         </div>
       </div>
     </>

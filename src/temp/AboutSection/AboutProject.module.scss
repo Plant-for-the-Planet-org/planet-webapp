@@ -1,0 +1,26 @@
+@import '../../theme/theme';
+
+.projectDescription {
+    width: 100%;
+    max-width: 306px;
+    background-color: $aboutProjectBackgroundColorNew;
+    color: #2F3336; //to be removed
+    border-radius: 14px;   
+    font-size: $fontXSmall; 
+}
+.infoTitle {
+    font-size: $fontXXSmall;
+    font-weight: 700;
+    padding: 16px 16px 0;
+}
+
+.infoText {
+    padding: 4px 16px 8px;
+}
+
+.hideText {
+    display: none;
+}
+.showText {
+    display: inline;
+}

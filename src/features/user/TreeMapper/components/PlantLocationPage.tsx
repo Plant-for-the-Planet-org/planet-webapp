@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
@@ -52,19 +52,20 @@ export function LocationDetails({
   location,
   setselectedLocation,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
+  const tTreemapper = useTranslations('Treemapper');
+  const tMaps = useTranslations('Maps');
+  const locale = useLocale();
   const [sampleTreeImages, setSampleTreeImages] = React.useState<
     SampleTreeImageProps[]
   >([]);
 
   const text = `${location?.deviceLocation?.coordinates.map((coord) => {
-    return getFormattedNumber(i18n.language, Number(coord));
+    return getFormattedNumber(locale, Number(coord));
   })}`;
 
   React.useEffect(() => {
     if (location?.type === 'multi') {
       if (
-        ready &&
         location &&
         (location as PlantLocationMulti).samplePlantLocations &&
         (location as PlantLocationMulti).samplePlantLocations.length > 0
@@ -84,7 +85,7 @@ export function LocationDetails({
             if (element.coordinates?.[0]) {
               images.push({
                 image: element.coordinates[0].image,
-                description: `${t('maps:sampleTree')} ${
+                description: `${tMaps('sampleTree')} ${
                   element.tag ? '#' + element.tag : ''
                 }`,
               });
@@ -96,7 +97,7 @@ export function LocationDetails({
         setSampleTreeImages([]);
       }
     }
-  }, [location, ready]);
+  }, [location]);
   return location ? (
     <>
       {location.type === 'multi' && sampleTreeImages.length > 0 && (
@@ -123,22 +124,26 @@ export function LocationDetails({
       )}
       <div className={styles.details}>
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('captureMode')}</p>
-          <div className={styles.value}>{t(location.captureMode)}</div>
+          <p className={styles.title}>{tTreemapper('captureMode')}</p>
+          <div className={styles.value}>
+            {tTreemapper(location.captureMode)}
+          </div>
         </div>
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('captureStatus')}</p>
-          <div className={styles.value}>{t(location.captureStatus)}</div>
+          <p className={styles.title}>{tTreemapper('captureStatus')}</p>
+          <div className={styles.value}>
+            {tTreemapper(location.captureStatus)}
+          </div>
         </div>
         {/* <div className={styles.singleDetail}>
-              <p className={styles.title}>{t('guid')}</p>
+              <p className={styles.title}>{tTreemapper('guid')}</p>
               <div className={styles.value}>{location.id}</div>
             </div> */}
         {location?.deviceLocation ? (
           <div className={styles.rowDetail}>
             <div className={styles.singleDetail}>
               <p className={styles.title}>
-                {t('coordinates')} <CopyToClipboard text={text} />
+                {tTreemapper('coordinates')} <CopyToClipboard text={text} />
               </p>
               <div className={styles.value}>{text.split(',').join(', ')}</div>
             </div>
@@ -147,11 +152,11 @@ export function LocationDetails({
           []
         )}
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('plantDate')}</p>
+          <p className={styles.title}>{tTreemapper('plantDate')}</p>
           <div className={styles.value}>{formatDate(location.plantDate)}</div>
         </div>
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('registrationDate')}</p>
+          <p className={styles.title}>{tTreemapper('registrationDate')}</p>
           <div className={styles.value}>
             {formatDate(location.registrationDate)}
           </div>
@@ -160,12 +165,12 @@ export function LocationDetails({
           <>
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
-                <p className={styles.title}>{t('measurements')}</p>
+                <p className={styles.title}>{tTreemapper('measurements')}</p>
               </div>
             </div>
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
-                <p className={styles.title}>{t('date')}</p>
+                <p className={styles.title}>{tTreemapper('date')}</p>
                 {location.history?.map((h, index) => (
                   <div className={styles.value} key={index}>
                     {formatDate(h?.created)}
@@ -173,18 +178,18 @@ export function LocationDetails({
                 ))}
               </div>
               <div className={styles.singleDetail}>
-                <p className={styles.title}>{t('height')}</p>
+                <p className={styles.title}>{tTreemapper('height')}</p>
                 {location.history?.map((h, index) => (
                   <div className={styles.value} key={index}>
-                    {h?.measurements?.height} {t('m')}
+                    {h?.measurements?.height} {tTreemapper('m')}
                   </div>
                 ))}
               </div>
               <div className={styles.singleDetail}>
-                <p className={styles.title}>{t('width')}</p>
+                <p className={styles.title}>{tTreemapper('width')}</p>
                 {location.history?.map((h, index) => (
                   <div className={styles.value} key={index}>
-                    {h?.measurements?.width} {t('cm')}
+                    {h?.measurements?.width} {tTreemapper('cm')}
                   </div>
                 ))}
               </div>
@@ -193,7 +198,7 @@ export function LocationDetails({
         )}
         {(location as PlantLocationMulti | PlantLocation).plantProject && (
           <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('plantProject')}</p>
+            <p className={styles.title}>{tTreemapper('plantProject')}</p>
             <div className={styles.value}>
               <span
               // className={styles.link}
@@ -208,7 +213,7 @@ export function LocationDetails({
       <div className={styles.detailsFull}>
         {(location as PlantLocationMulti)?.plantedSpecies && (
           <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('species')}</p>
+            <p className={styles.title}>{tTreemapper('species')}</p>
             <div className={styles.value}>
               <span>
                 {(location as PlantLocationMulti)?.plantedSpecies?.map(
@@ -221,7 +226,7 @@ export function LocationDetails({
                           : species.otherSpecies &&
                             species.otherSpecies !== 'Unknown'
                           ? species.otherSpecies
-                          : t('maps:unknown')}
+                          : tMaps('unknown')}
                       </p>
                     );
                   }
@@ -232,7 +237,7 @@ export function LocationDetails({
         )}
         {location.type === 'multi' && location.captureMode === 'on-site' && (
           <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('maps:sampleTree')}</p>
+            <p className={styles.title}>{tMaps('sampleTree')}</p>
             {/* <div className={styles.value}> */}
             {(location as PlantLocationMulti).samplePlantLocations &&
               (location as PlantLocationMulti).samplePlantLocations.map(
@@ -249,13 +254,13 @@ export function LocationDetails({
                           : spl.scientificSpecies &&
                             spl.scientificSpecies !== 'Unknown'
                           ? spl.scientificSpecies
-                          : t('maps:unknown')}
+                          : tMaps('unknown')}
                       </span>
                       <br />
-                      {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
+                      {spl.tag ? `${tMaps('tag')} #${spl.tag} • ` : null}
                       {spl?.measurements?.height}
-                      {t('maps:meterHigh')} • {spl?.measurements?.width}
-                      {t('maps:cmWide')}
+                      {tMaps('meterHigh')} • {spl?.measurements?.width}
+                      {tMaps('cmWide')}
                     </div>
                   );
                 }

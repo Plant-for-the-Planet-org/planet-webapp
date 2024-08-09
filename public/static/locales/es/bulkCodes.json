@@ -1,1 +1,118 @@
-{ }
+{
+  "BulkCodes": {
+    "bulkCodesTitle": "Emisión de certificados y códigos de árbol",
+    "partnerSignupInfo": "El uso de esta función por parte de las empresas está sujeto a la asociación con Plant-for-the-Planet. Para más información, póngase en contacto con <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink>.",
+    "bulkCodesDescription1": "Con PlanetCash puede generar miles de códigos en una sola operación. La generación de certificados de árbol aumentará su recuento de árboles.",
+    "bulkCodesDescription2": "Puede utilizar esta función para crear códigos para certificados personalizados, tarjetas regalo, donaciones en nombre de los usuarios y códigos canjeables que puede asociar a sus productos.",
+    "tabCreationMethod": "Método de creación",
+    "tabSelectProject": "Seleccionar proyecto",
+    "tabIssueCodes": "Códigos de emisión",
+    "issueCodes": "Códigos de emisión",
+    "issuingCodes": "Emisión de códigos...",
+    "importMethodText": {
+      "title": "Crear certificados de árbol personalizados",
+      "subtitle": "Utilice este método (para un máximo de 1000 destinatarios en una transacción) si alguno de los siguientes criterios coincide con su caso de uso:",
+      "details": {
+        "line1": "Quiero indicar el nombre o el correo electrónico del destinatario de cada código.",
+        "line2": "Quiero que Plant-for-the-Planet envíe automáticamente un correo electrónico a los destinatarios una vez que se haya generado (opcional).",
+        "line3": "Quiero emitir códigos para diferentes recuentos de árboles."
+      }
+    },
+    "genericMethodText": {
+      "title": "Crear códigos genéricos",
+      "subtitle": "Utilice este método si los siguientes criterios coinciden con su caso de uso:",
+      "details": {
+        "line1": "Todos los códigos tendrán el mismo valor.",
+        "line2": "Quiero generar un número de código para destinatarios arbitrarios.",
+        "line3": "Los nombres y correos electrónicos no pueden asociarse al código."
+      }
+    },
+    "projectName": "Nombre del proyecto",
+    "costPerUnit": "Coste por unidad",
+    "labelComment": "Comentario [Privado]",
+    "unitOfMeasurement": "Unidad de medida",
+    "units": {
+      "ha": "ha",
+      "tree": "árbol",
+      "m2": "m²"
+    },
+    "unitsPerCode": "Unidades por código",
+    "totalNumberOfCodes": "Número total de códigos",
+    "occasion": "Ocasión",
+    "notificationLanguage": "Lengua de notificación",
+    "total": "Total",
+    "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+    "invalidEmailWarningText": "Please make sure that the Recipient Email is a valid email. Using dummy or invalid emails will lead to account suspension.",
+    "termsAndPrivacyText": "Read more about our <termsLink>terms and conditions</termsLink> and the <privacyPolicyLink>privacy policy</privacyPolicyLink>.",
+    "projectRequired": "No se selecciona ningún proyecto.",
+    "unitsPerCodeRequired": "Cada código debe contener al menos 1 unidad.",
+    "codeQuantityRequired": "Debe crear al menos 1 código.",
+    "unitsPerCodeInvalidRange": "Un código puede contener un máximo de 1000 unidades.",
+    "codeQuantityInvalidRange": "Se puede crear un máximo de 5000 códigos.",
+    "featureAvailability": "Esta función sólo está disponible para proyectos de socios.",
+    "planetCashDisabled": "PlanetCash no está activado. Por favor, active PlanetCash para utilizar esta función.",
+    "insufficientPCashBalance": "Equilibrio insuficiente.",
+    "addBalanceGeneric": "Haga clic aquí para añadir fondos.",
+    "instructionsUploadCSV": {
+      "empty": "Arrastre y suelte / haga clic para seleccionar un archivo .xslx / .csv para cargar.",
+      "error": "Por favor, compruebe si hay problemas y arrastre el archivo .xslx / .csv aquí para cargarlo.",
+      "processing": "Por favor, espere mientras analizamos su archivo...",
+      "success": "Continúe o arrastre el archivo .xlsx o .csv aquí para reemplazar el archivo actual."
+    },
+    "statusUploadCSV": {
+      "error": "Error",
+      "success": "Análisis de ficheros finalizado"
+    },
+    "errorUploadCSV": {
+      "fileInvalidType": "Sólo se permiten archivos .csv y .xslx.",
+      "tooManyFiles": "Cargue un solo archivo.",
+      "fileTooSmall": "El archivo cargado parece estar vacío.",
+      "fileTooLarge": "El archivo cargado debe ocupar 5 MB o menos.",
+      "missingColumns": "El archivo cargado no contiene las siguientes columnas: ",
+      "noRecipientData": "No se han encontrado datos del destinatario.",
+      "tooManyRecipients": "Se puede procesar un máximo de 1000 destinatarios en una transacción.",
+      "unitsNotProvided": "Faltan unidades/no son válidas para algunos destinatarios.",
+      "notifyNotPossible": "Falta el email y el nombre de algunos destinatarios que deben ser notificados.",
+      "instructionRowError": "Se ha producido un error en la 1ª fila. Compruebe si ha borrado las instrucciones o si hay datos adicionales.",
+      "invalidEmails": "recipient_email contiene emails ficticios/inválidos en las siguientes filas: {rowList}. Por favor, elimine los emails no válidos o añada emails válidos.",
+      "generalError": "Algo ha ido mal. Por favor, inténtelo después de un rato."
+    },
+    "errorAddRecipient": {
+      "unitsNotProvided": "Obligatorio",
+      "requiredForNotifications": "Obligatorio (para los destinatarios del correo electrónico)",
+      "emailInvalid": "Correo electrónico no válido"
+    },
+    "successUploadCSV": {
+      "ignoredColumns": "Se han ignorado las columnas adicionales"
+    },
+    "importInstructions": "Consulte la documentación de <docsLink>aquí</docsLink>, descargue <excelLink>plantilla Excel aquí</excelLink>, y <csvLink>plantilla CSV aquí.</csvLink>",
+    "tableHeaders": {
+      "recipient_name": "Nombre del beneficiario",
+      "recipient_email": "Correo electrónico del destinatario",
+      "recipient_notify": "¿Enviar correo electrónico?",
+      "units": "Unidades",
+      "recipient_message": "Mensaje"
+    },
+    "tableHeaderHelpText": {
+      "recipient_name": "Opcional. Nombre del destinatario, que aparece en el certificado y, si se ha optado por él, en el correo enviado al destinatario. Obligatorio si desea enviar correos electrónicos.",
+      "recipient_email": "Opcional. Obligatorio para enviar el certificado al destinatario por correo electrónico.",
+      "recipient_notify": "Opcional. Seleccione Sí si desea que Plant-for-the-Planet informe automáticamente al destinatario por correo electrónico.",
+      "units": "Obligatorio. Número de árboles que se entregan al beneficiario, por ejemplo, 5 por 5 árboles",
+      "recipient_message": "Opcional. Mensaje para el destinatario que se incluye en el correo electrónico si notificar es sí. Se enviará un mensaje por defecto si no se proporciona."
+    },
+    "donationSuccess": "Su donación se ha realizado correctamente. Le redirigimos a ver los detalles de la donación en breve...",
+    "donationError": {
+      "planet_cash_insufficient_credit": "Crédito disponible = {availableBalance}. Por favor, cargue saldo en su cuenta PlanetCash para realizar esta donación.",
+      "default": "Algo ha ido mal. Por favor, inténtelo después de un rato.",
+      "planet_cash_payment_failure": "La transacción ha fallado. {reason}",
+      "planet_cash_invalid_project": "No puede hacer una donación al proyecto seleccionado."
+    },
+    "titleAddRecipientButton": "Añadir destinatario a la tabla",
+    "notifyRecipientOptions": {
+      "yes": "Sí",
+      "no": "No"
+    },
+    "fileUploadWarning": "Esto eliminará los datos de los destinatarios existentes, ¿desea continuar?",
+    "unsavedDataWarning": "Algunos datos del destinatario no se han guardado. ¿Desea continuar? Los datos no guardados se perderán"
+  }
+}

@@ -3,26 +3,34 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
-import { handleError, APIError, ProjectExtended } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
 import { getRequest } from '../../../../utils/apiRequests/api';
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const currencyCode = getStoredCurrency();
+  const { tenantConfig } = useTenant();
 
-  const [project, setProject] = useState<ProjectExtended | null>(null);
+  const [project, setProject] = useState<
+    TreeProjectExtended | ConservationProjectExtended | null
+  >(null);
   useEffect(() => {
     async function loadProject() {
       try {
-        const project = await getRequest<ProjectExtended>(
-          `/app/projects/${projectSlug}`,
-          {
-            _scope: 'extended',
-            currency: currencyCode,
-          }
-        );
+        const project = await getRequest<
+          TreeProjectExtended | ConservationProjectExtended
+        >(tenantConfig.id, `/app/projects/${projectSlug}`, {
+          _scope: 'extended',
+          currency: currencyCode,
+        });
         setProject(project);
       } catch (err) {
         setErrors(handleError(err as APIError));

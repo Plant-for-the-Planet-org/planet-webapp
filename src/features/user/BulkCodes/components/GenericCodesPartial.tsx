@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { ReactElement, useState, FocusEvent } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
 import { BulkCodeLimits } from '../../../../utils/constants/bulkCodeConstants';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -18,7 +18,7 @@ const GenericCodesPartial = ({
   setCodeQuantity,
   setUnitsPerCode,
 }: GenericCodesProps): ReactElement | null => {
-  const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const t = useTranslations('BulkCodes');
   const [errors, setErrors] = useState({
     unitsPerCode: { status: false, errorType: '' },
     codeQuantity: { status: false, errorType: '' },
@@ -52,43 +52,36 @@ const GenericCodesPartial = ({
     });
   };
 
-  if (ready) {
-    return (
-      <InlineFormDisplayGroup>
-        <TextField
-          value={unitsPerCode}
-          onChange={(e) => handleChange(e.target.value, setUnitsPerCode)}
-          onBlur={(e) =>
-            validateRequiredField(e, BulkCodeLimits.MAX_UNITS_PER_CODE)
-          }
-          label={t('bulkCodes:unitsPerCode')}
-          name="unitsPerCode"
-          error={errors.unitsPerCode.status}
-          helperText={
-            errors.unitsPerCode.status
-              ? t(`bulkCodes:${errors.unitsPerCode.errorType}`)
-              : ''
-          }
-        ></TextField>
-        <TextField
-          value={codeQuantity}
-          onChange={(e) => handleChange(e.target.value, setCodeQuantity)}
-          onBlur={(e) =>
-            validateRequiredField(e, BulkCodeLimits.MAX_CODE_QUANTITY)
-          }
-          label={t('bulkCodes:totalNumberOfCodes')}
-          name="codeQuantity"
-          error={errors.codeQuantity.status}
-          helperText={
-            errors.codeQuantity.status
-              ? t(`bulkCodes:${errors.codeQuantity.errorType}`)
-              : ''
-          }
-        ></TextField>
-      </InlineFormDisplayGroup>
-    );
-  }
-  return null;
+  return (
+    <InlineFormDisplayGroup>
+      <TextField
+        value={unitsPerCode}
+        onChange={(e) => handleChange(e.target.value, setUnitsPerCode)}
+        onBlur={(e) =>
+          validateRequiredField(e, BulkCodeLimits.MAX_UNITS_PER_CODE)
+        }
+        label={t('unitsPerCode')}
+        name="unitsPerCode"
+        error={errors.unitsPerCode.status}
+        helperText={
+          errors.unitsPerCode.status ? t(errors.unitsPerCode.errorType) : ''
+        }
+      ></TextField>
+      <TextField
+        value={codeQuantity}
+        onChange={(e) => handleChange(e.target.value, setCodeQuantity)}
+        onBlur={(e) =>
+          validateRequiredField(e, BulkCodeLimits.MAX_CODE_QUANTITY)
+        }
+        label={t('totalNumberOfCodes')}
+        name="codeQuantity"
+        error={errors.codeQuantity.status}
+        helperText={
+          errors.codeQuantity.status ? t(errors.codeQuantity.errorType) : ''
+        }
+      ></TextField>
+    </InlineFormDisplayGroup>
+  );
 };
 
 export default GenericCodesPartial;

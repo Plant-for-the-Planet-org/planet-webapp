@@ -1,6 +1,6 @@
 import { TableCell, TextField, MenuItem } from '@mui/material';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { Recipient } from '../BulkCodesTypes';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const RecipientFormFields = ({ control, errors }: Props) => {
-  const { t } = useTranslation('bulkCodes');
+  const t = useTranslations('BulkCodes');
   const validateRequiredIfNotify = (
     value: string,
     formValues: Recipient

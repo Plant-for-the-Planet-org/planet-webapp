@@ -1,0 +1,20 @@
+@import '../../../../theme/theme';
+
+.mainContainer {
+  background-color: $backgroundBase;
+  margin-top: 80px;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  &.impersonationMode {
+    margin-top: 130px;
+  }
+}
+
+@include smTabletView {
+  .mainContainer {
+    padding: 20px 40px 40px;
+  }
+}

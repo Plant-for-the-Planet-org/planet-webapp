@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { BankAccount } from '../../../common/types/payouts';
 
 // TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
@@ -48,14 +48,16 @@ interface BankAccountDetailsProps {
 const BankAccountDetails = ({
   account,
 }: BankAccountDetailsProps): ReactElement => {
-  const { t, i18n } = useTranslation(['managePayouts', 'country']);
+  const tCountry = useTranslations('Country');
+  const tManagePayouts = useTranslations('ManagePayouts');
+  const locale = useLocale();
 
   const renderAccountTitle = () => {
     const { currency } = account;
     if (!currency) {
-      return t('defaultCurrency');
+      return tManagePayouts('defaultCurrency');
     } else {
-      return t('accountTitleText', { currency });
+      return tManagePayouts('accountTitleText', { currency });
     }
   };
 
@@ -74,9 +76,9 @@ const BankAccountDetails = ({
         </Grid>
         {account.currency !== null && account.payoutMinAmount !== null && (
           <Grid container item xs={6} sm={4} className="accountHeaderRight">
-            {t('minPayoutText', {
+            {tManagePayouts('minPayoutText', {
               amount: getFormatedCurrency(
-                i18n.language,
+                locale,
                 account.currency,
                 account.payoutMinAmount,
                 true
@@ -88,50 +90,60 @@ const BankAccountDetails = ({
       <Grid item component={Divider} />
       <Grid container item className="accountDetails" columnSpacing={2}>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.bankName')}</h3>
+          <h3 className="detailTitle">{tManagePayouts('labels.bankName')}</h3>
           <div className="detailInfo">{account.bankName}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.bankCountry')}</h3>
+          <h3 className="detailTitle">
+            {tManagePayouts('labels.bankCountry')}
+          </h3>
           <div className="detailInfo">
-            {t(`country:${account.bankCountry.toLowerCase()}`)}
+            {tCountry(account.bankCountry.toLowerCase())}
           </div>
         </Grid>
         <Grid item component={SingleDetail} xs={12}>
-          <h3 className="detailTitle">{t('labels.bankAddress')}</h3>
+          <h3 className="detailTitle">
+            {tManagePayouts('labels.bankAddress')}
+          </h3>
           <div className="detailInfo">{account.bankAddress}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.holderName')}</h3>
+          <h3 className="detailTitle">{tManagePayouts('labels.holderName')}</h3>
           <div className="detailInfo">{account.holderName}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.holderAddress')}</h3>
+          <h3 className="detailTitle">
+            {tManagePayouts('labels.holderAddress')}
+          </h3>
           <div className="detailInfo">{account.holderAddress}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.accountNumber')}</h3>
+          <h3 className="detailTitle">
+            {tManagePayouts('labels.accountNumber')}
+          </h3>
           <div className="detailInfo">{account.accountNumber}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.bic')}</h3>
+          <h3 className="detailTitle">{tManagePayouts('labels.bic')}</h3>
           <div className="detailInfo">{account.bic}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.branchCode')}</h3>
+          <h3 className="detailTitle">{tManagePayouts('labels.branchCode')}</h3>
           <div className="detailInfo">{account.branchCode || '-'}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.routingNumber')}</h3>
+          <h3 className="detailTitle">
+            {tManagePayouts('labels.routingNumber')}
+          </h3>
           <div className="detailInfo">{account.routingNumber || '-'}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12}>
-          <h3 className="detailTitle">{t('labels.remarks')}</h3>
+          <h3 className="detailTitle">{tManagePayouts('labels.remarks')}</h3>
           <div className="detailInfo">{account.remarks || '-'}</div>
         </Grid>
         <Grid item xs={12}>
           <Link href={`/profile/payouts/edit-bank-details/${account.id}`}>
-            <Button>{t('editAccountButton')}</Button>
+            <Button>{tManagePayouts('editAccountButton')}</Button>
           </Link>
         </Grid>
       </Grid>

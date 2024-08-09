@@ -8,7 +8,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from 'react-map-gl';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
@@ -29,6 +29,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { useTenant } from '../../common/Layout/TenantContext';
 import { ViewportProps } from '../../common/types/map';
 import {
   RegisterTreesFormProps,
@@ -63,8 +64,9 @@ function RegisterTreesForm({
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
-  const { t, ready } = useTranslation(['me', 'common']);
+  const { user, token, contextLoaded, logoutUser, setRefetchUserData } =
+    useUserProps();
+  const t = useTranslations('Me');
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
@@ -97,6 +99,7 @@ function RegisterTreesForm({
   const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [isStyleReady, setIsStyleReady] = React.useState(false);
+  const { tenantConfig } = useTenant();
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -187,6 +190,7 @@ function RegisterTreesForm({
         };
         try {
           const res = await postAuthenticatedRequest<ContributionProperties>(
+            tenantConfig?.id,
             `/app/contributions`,
             submitData,
             token,
@@ -197,22 +201,23 @@ function RegisterTreesForm({
           setContributionDetails(res);
           setIsUploadingData(false);
           setRegistered(true);
+          setRefetchUserData(true);
         } catch (err) {
           setIsUploadingData(false);
           setErrors(handleError(err as APIError));
           setRegistered(false);
         }
       } else {
-        setErrorMessage(ready ? t('me:locationMissing') : '');
+        setErrorMessage(t('locationMissing'));
       }
     } else {
-      setErrorMessage(ready ? t('me:wentWrong') : '');
+      setErrorMessage(t('wentWrong'));
     }
   };
-
   async function loadProjects() {
     try {
       const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser
@@ -240,19 +245,19 @@ function RegisterTreesForm({
           onSubmit={handleSubmit(submitRegisterTrees)}
         >
           <div className={styles.note}>
-            <p>{t('me:registerTreesDescription')}</p>
+            <p>{t('registerTreesDescription')}</p>
           </div>
           <InlineFormDisplayGroup>
             <Controller
               name="treeCount"
               control={control}
               rules={{
-                required: t('me:treesRequired'),
+                required: t('treesRequired'),
                 validate: (value) => parseInt(value, 10) >= 1,
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('me:noOfTrees')}
+                  label={t('noOfTrees')}
                   variant="outlined"
                   onChange={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -265,7 +270,7 @@ function RegisterTreesForm({
                   helperText={
                     errors && errors.treeCount && errors.treeCount.message
                       ? errors.treeCount.message
-                      : t('me:moreThanOne')
+                      : t('moreThanOne')
                   }
                 />
               )}
@@ -284,7 +289,7 @@ function RegisterTreesForm({
                 defaultValue={new Date()}
                 render={({ field: { onChange, value } }) => (
                   <MuiDatePicker
-                    label={t('me:datePlanted')}
+                    label={t('datePlanted')}
                     value={value}
                     onChange={onChange}
                     renderInput={(props) => <TextField {...props} />}
@@ -303,10 +308,10 @@ function RegisterTreesForm({
           <Controller
             name="species"
             control={control}
-            rules={{ required: t('me:speciesIsRequired') }}
+            rules={{ required: t('speciesIsRequired') }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('me:treeSpecies')}
+                label={t('treeSpecies')}
                 variant="outlined"
                 onChange={onChange}
                 value={value}
@@ -322,7 +327,7 @@ function RegisterTreesForm({
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('me:project')}
+                  label={t('project')}
                   variant="outlined"
                   select
                   onChange={onChange}
@@ -347,9 +352,9 @@ function RegisterTreesForm({
           )}
           <div className={styles.mapNote}>
             {isMultiple ? (
-              <p>{t('me:drawPolygon')}</p>
+              <p>{t('drawPolygon')}</p>
             ) : (
-              <p>{t('me:selectLocation')}</p>
+              <p>{t('selectLocation')}</p>
             )}
           </div>
           <div className={`${styles.locationMap}`}>
@@ -415,7 +420,7 @@ function RegisterTreesForm({
               {isUploadingData ? (
                 <div className={'spinner'}></div>
               ) : (
-                t('me:registerButton')
+                t('registerButton')
               )}
             </Button>
           </div>
@@ -434,7 +439,7 @@ type FormData = {
 };
 
 export default function RegisterTreesWidget() {
-  const { user, token } = useUserProps();
+  const { token } = useUserProps();
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] =
     React.useState<ContributionProperties | null>(null);
@@ -444,7 +449,6 @@ export default function RegisterTreesWidget() {
     token,
     contribution: contributionDetails !== null ? contributionDetails : null,
     contributionGUID,
-    slug: user !== null ? user.slug : null,
   };
 
   return (

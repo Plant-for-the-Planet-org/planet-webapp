@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react';
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 import { Image } from '@planet-sdk/common';
@@ -38,22 +38,21 @@ export default function SingleContribution({
   token,
   contribution,
   contributionGUID,
-  slug,
 }: SingleContributionProps): ReactElement {
   const router = useRouter();
   const UploadProps = {
     contributionGUID,
     token,
   };
-  const { t, ready } = useTranslation(['me', 'common']);
-  return ready && contribution !== null ? (
+  const t = useTranslations('Me');
+  return contribution !== null ? (
     <div className="inputContainer">
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div>
       <h2 className={styles.contribTitle}>
         <b>
-          {t('me:contribSuccess', {
+          {t('contribSuccess', {
             treeCount: contribution.treeCount,
             treeSpecies: contribution.treeSpecies,
             plantDate: formatDate(contribution.plantDate),
@@ -75,12 +74,12 @@ export default function SingleContribution({
       </div>
       <Button
         id={'singleControCont'}
-        onClick={() => router.push(`/t/${slug}`, undefined, { shallow: true })}
+        onClick={() => router.push('/profile')}
         variant="contained"
         color="primary"
         style={{ maxWidth: '100px', marginTop: '24px' }}
       >
-        {t('me:save')}
+        {t('save')}
       </Button>
     </div>
   ) : (

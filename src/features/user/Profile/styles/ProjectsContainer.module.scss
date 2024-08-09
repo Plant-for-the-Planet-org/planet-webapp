@@ -2,7 +2,7 @@
 
 .tpoProjectsContainer {
   // max-width: 1000px;
-  background-color: $backgroundColor;
+  background-color: $backgroundBase;
   margin-bottom: 80px;
   padding: 20px;
   display: flex;
@@ -11,7 +11,6 @@
   @include smTabletView {
     padding: 40px;
     margin-bottom: 0px;
-    margin-top: 80px;
   }
 }
 
@@ -26,11 +25,10 @@
 
 .projectsTitleText {
   font-family: $primaryFontFamily;
-  text-align: center;
+  text-align: left;
   width: 100%;
   font-weight: 700;
   margin-bottom: 20px;
-  margin-top: 60px;
   color: $primaryFontColor;
   font-size: $fontXXLarge;
 }
@@ -72,6 +70,7 @@
 @include smTabletView {
   .listProjects {
     padding: 0px;
+    justify-content: left;
   }
   .singleProject {
     margin-right: 24px;
@@ -84,5 +83,11 @@
   }
   .listProjects {
     justify-content: left;
+  }
+}
+
+@include smTabletView {
+  .listProjects {
+    text-align: left;
   }
 }

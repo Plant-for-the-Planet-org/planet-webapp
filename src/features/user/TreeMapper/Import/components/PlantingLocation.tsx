@@ -8,7 +8,7 @@ import {
   Control,
 } from 'react-hook-form';
 import styles from '../Import.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -30,6 +30,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import {
   FeatureCollection,
   GeoJsonProperties,
@@ -60,7 +61,6 @@ const dialogSx: SxProps = {
 
 interface SpeciesProps {
   index: number;
-  t: Function;
   remove: Function;
   errors: FieldErrors<PlantingLocationFormData>;
   item: FieldArrayWithId<PlantingLocationFormData, 'plantedSpecies', 'id'>;
@@ -69,26 +69,26 @@ interface SpeciesProps {
 
 function PlantedSpecies({
   index,
-  t,
   remove,
   errors,
   item,
   control,
 }: SpeciesProps): ReactElement {
+  const tTreemapper = useTranslations('Treemapper');
   return (
     <div key={item.id} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>
-        {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
+        {/* <SpeciesSelect label={tTreemapper('species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
         <Controller
           name={`plantedSpecies.${index}.otherSpecies`}
           control={control}
           rules={{
             required:
-              index > 0 ? false : t('treemapper:atLeastOneSpeciesRequired'),
+              index > 0 ? false : tTreemapper('atLeastOneSpeciesRequired'),
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
-              label={t('treeSpecies')}
+              label={tTreemapper('treeSpecies')}
               variant="outlined"
               onChange={onChange}
               onBlur={onBlur}
@@ -111,14 +111,14 @@ function PlantedSpecies({
           name={`plantedSpecies.${index}.treeCount`}
           control={control}
           rules={{
-            required: index > 0 ? false : t('treemapper:treesRequired'),
+            required: index > 0 ? false : tTreemapper('treesRequired'),
             validate: (value) => {
-              return Number(value) >= 1 ? true : t('treemapper:treesRequired');
+              return Number(value) >= 1 ? true : tTreemapper('treesRequired');
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
-              label={t('treemapper:count')}
+              label={tTreemapper('count')}
               variant="outlined"
               onChange={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -173,15 +173,16 @@ export default function PlantingLocation({
   setActiveMethod,
 }: Props): ReactElement {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
-
+  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-
-  const { t } = useTranslation(['treemapper', 'common', 'maps']);
+  const tTreemapper = useTranslations('Treemapper');
+  const tMe = useTranslations('Me');
+  const tMaps = useTranslations('Maps');
   const defaultValues = {
     plantDate: '',
     plantProject: '',
@@ -210,6 +211,7 @@ export default function PlantingLocation({
   const loadProjects = async () => {
     try {
       const projects = await getAuthenticatedRequest<MapProject[]>(
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser
@@ -223,6 +225,7 @@ export default function PlantingLocation({
   const loadMySpecies = async () => {
     try {
       const species = await getAuthenticatedRequest<Species[]>(
+        tenantConfig?.id,
         '/treemapper/species',
         token,
         logoutUser
@@ -336,6 +339,7 @@ export default function PlantingLocation({
 
       try {
         const res = await postAuthenticatedRequest<PlantLocation>(
+          tenantConfig?.id,
           `/treemapper/plantLocations`,
           submitData,
           token,
@@ -368,11 +372,11 @@ export default function PlantingLocation({
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
-                  t('treemapper:uploadFile')
+                  tTreemapper('uploadFile')
                 )}
               </Button>
               <p style={{ marginTop: '18px' }}>
-                {t('treemapper:fileFormatKML')}
+                {tTreemapper('fileFormatKML')}
               </p>
             </label>
           </>
@@ -418,10 +422,10 @@ export default function PlantingLocation({
             <Controller
               name="plantDate"
               control={control}
-              rules={{ required: t('me:datePlantedRequired') }}
+              rules={{ required: tTreemapper('datePlantedRequired') }}
               render={({ field: { onChange, value } }) => (
                 <MuiDatePicker
-                  label={t('me:datePlanted')}
+                  label={tMe('datePlanted')}
                   value={value}
                   onChange={onChange}
                   renderInput={(props) => <TextField {...props} />}
@@ -448,11 +452,11 @@ export default function PlantingLocation({
             name="plantProject"
             control={control}
             rules={{
-              required: t('treemapper:projectRequired'),
+              required: tTreemapper('projectRequired'),
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('me:project')}
+                label={tMe('project')}
                 variant="outlined"
                 select
                 onChange={onChange}
@@ -484,16 +488,16 @@ export default function PlantingLocation({
               variant="contained"
               color={activeMethod === method ? 'primary' : 'inherit'}
             >
-              {t(`treemapper:${method}`)}
+              {tTreemapper(method)}
             </Button>
           ))}
         </div>
         {getMethod(activeMethod)}
         <div className={styles.errorMessage}>
-          {geoJsonError && t('treemapper:geoJsonError')}
+          {geoJsonError && tTreemapper('geoJsonError')}
         </div>
       </div>
-      <div className={styles.formSubTitle}>{t('maps:speciesPlanted')}</div>
+      <div className={styles.formSubTitle}>{tMaps('speciesPlanted')}</div>
       {mySpecies &&
         fields.map((item, index) => {
           return (
@@ -501,7 +505,6 @@ export default function PlantingLocation({
               // Use id instead of index to prevent rerenders as per rhf guidelines
               key={item.id}
               index={index}
-              t={t}
               remove={remove}
               errors={errors}
               item={item}
@@ -518,7 +521,7 @@ export default function PlantingLocation({
         }}
         className={styles.addSpeciesButton}
       >
-        {t('treemapper:addAnotherSpecies')}
+        {tTreemapper('addAnotherSpecies')}
       </div>
 
       <div className={`${styles.formFieldLarge}`}>
@@ -531,7 +534,7 @@ export default function PlantingLocation({
           {isUploadingData ? (
             <div className={styles.spinner}></div>
           ) : (
-            t('treemapper:continue')
+            tTreemapper('continue')
           )}
         </Button>
       </div>

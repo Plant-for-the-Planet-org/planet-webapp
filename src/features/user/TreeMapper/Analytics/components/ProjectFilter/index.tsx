@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Project,
   useAnalytics,
@@ -8,7 +8,7 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import Grid from '@mui/material/Grid';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { SxProps } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
@@ -33,7 +33,7 @@ const dialogSx: SxProps = {
 };
 
 const ProjectFilter = () => {
-  const { t, ready } = useTranslation('treemapperAnalytics');
+  const t = useTranslations('TreemapperAnalytics');
   const {
     projectList,
     fromDate,
@@ -49,7 +49,10 @@ const ProjectFilter = () => {
     setProject(proj);
   };
 
-  return ready ? (
+  const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
+  const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
+
+  return (
     <Grid alignItems="top" container spacing={2}>
       <Grid item xs={12} md={6}>
         <ProjectSelectAutocomplete
@@ -69,9 +72,12 @@ const ProjectFilter = () => {
             }
           >
             <MuiDatePicker
-              label={t('treemapperAnalytics:from')}
-              value={fromDate}
-              onChange={setFromDate}
+              label={t('from')}
+              value={localFromDate}
+              onChange={(e) => setLocalFromDate(e)}
+              onAccept={(value) => {
+                if (value) setFromDate(value);
+              }}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}
@@ -95,9 +101,12 @@ const ProjectFilter = () => {
             }
           >
             <MuiDatePicker
-              label={t('treemapperAnalytics:to')}
-              value={toDate}
-              onChange={setToDate}
+              label={t('to')}
+              value={localToDate}
+              onChange={(e) => setLocalToDate(e)}
+              onAccept={(value) => {
+                if (value) setToDate(value);
+              }}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}
@@ -112,7 +121,7 @@ const ProjectFilter = () => {
         </Grid>
       </Grid>
     </Grid>
-  ) : null;
+  );
 };
 
 export default ProjectFilter;

@@ -16,12 +16,12 @@ const config = {
     title: 'AMS ❤️ Trees',
     description:
       'From 2021 on AMS joins the TrillionTreeCampaign and together with Plant-for-the-Planet we start giving back to nature. We will use the opportunities we get to promote sustainability in our supply chain and through our relationships with clients and business partners. Join us and #StopTalkingStartPlanting!',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'en_US',
   },
   home: {
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,
@@ -41,7 +41,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: false,
       },
       leaderboard: {

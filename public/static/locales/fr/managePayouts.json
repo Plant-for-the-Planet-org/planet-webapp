@@ -1,1 +1,76 @@
-{ }
+{
+  "ManagePayouts": {
+    "title": "Gérer les paiements",
+    "description": "Tenir à jour les informations relatives aux paiements (calendrier, coordonnées bancaires, etc.) afin de faciliter les paiements",
+    "tabPayoutSchedule": "Calendrier des paiements",
+    "tabAddBankDetails": "Ajouter les coordonnées bancaires",
+    "tabOverview": "Vue d'ensemble",
+    "payoutInformation1": "Les paiements sont effectués automatiquement chaque année, ou lorsqu'une organisation collecte 30 000 EUR ou l'équivalent dans une autre devise.",
+    "payoutInformation2": "Les paiements sont effectués par la Fondation Plant-for-the-Planet et ses organisations sœurs, par exemple Plant-for-the-Planet US, Plant-for-the-Planet Suisse, etc.",
+    "payoutInformation3": "Vous pouvez ajuster le calendrier des paiements et recevoir des paiements fréquents tant que vous remplissez le critère du montant minimum de 1 500 EUR.",
+    "supportInformation": "Si vous avez un cas exceptionnel, veuillez contacter <supportLink>support@plant-for-the-planet.org</supportLink>.",
+    "scheduleFrequencies": {
+      "monthly": "Mensuel",
+      "quarterly": "Trimestrielle",
+      "semiannually": "Semestrielle",
+      "annually": "Annuel",
+      "manual": "Manuel"
+    },
+    "defaultCurrency": "Défaut",
+    "labels": {
+      "currency": "Monnaie",
+      "scheduleFrequency": "Fréquence des paiements",
+      "payoutMinAmount": "Montant minimum du paiement",
+      "bankName": "Nom de la banque",
+      "bankAddress": "Adresse de la banque",
+      "bankCountry": "Banque Pays",
+      "holderName": "Nom du titulaire du compte",
+      "holderAddress": "Adresse du titulaire du compte",
+      "remarks": "Détails supplémentaires",
+      "accountNumber": "IBAN / Numéro de compte",
+      "routingNumber": "ABA / Numéro de routage (US uniquement)",
+      "bic": "BIC / SWIFT",
+      "branchCode": "Code de la branche"
+    },
+    "errors": {
+      "scheduleFrequencyRequired": "La fréquence des paiements est requise",
+      "payoutMinAmountRequired": "Un montant minimum de paiement est requis",
+      "payoutMinAmountTooLow": "Le montant minimum du versement doit être d'au moins {currency} {minAmount}",
+      "bankNameRequired": "Le nom de la banque est obligatoire.",
+      "bankAddressRequired": "L'adresse de la banque est requise.",
+      "holderNameRequired": "Le nom du titulaire est obligatoire.",
+      "holderAddressRequired": "L'adresse du titulaire est requise.",
+      "accountNumberRequired": "Le numéro de compte est requis.",
+      "bicRequired": "Le code BIC / SWIFT est requis.",
+      "noAccountFound": "Aucun compte n'a été récupéré"
+    },
+    "placeholders": {
+      "payoutMinAmount": "Il devrait être au moins de {currency} {minAmount}",
+      "bankName": "par exemple Century Bank LLC",
+      "bankAddress": "par exemple 1 West St, Hamington Way, MA, 10311, USA",
+      "holderName": "par exemple, John Doe",
+      "holderAddress": "ex. 21 Penn Avenue, MA 10317 USA",
+      "remarks": "par exemple, veuillez inclure la référence acct=1237 sur le virement."
+    },
+    "helperText": {
+      "currency": "Sélectionnez \"Défaut\" s'il s'agit de votre compte bancaire standard. Si vous devez fournir des détails particuliers pour une devise, sélectionnez-la ici et fournissez les détails. Nous utiliserons également les montants minimums standard pour un paiement.",
+      "remarks": "Fournir des détails supplémentaires, par exemple les coordonnées de la banque intermédiaire, les PC (codes d'objet) ou d'autres références ici."
+    },
+    "saveButton": "Économiser",
+    "accountError": {
+      "min_amount_range": "Le montant minimum du paiement doit être d'au moins {currency} {min}.",
+      "min_amount_forbidden": "Vous ne pouvez pas spécifier un montant minimum de paiement pour le compte par défaut.",
+      "account_duplicate": "Il existe déjà un compte {currency}.",
+      "default": "Un problème s'est produit lors de la création d'un compte. Veuillez réessayer après un certain temps."
+    },
+    "accountCreationSuccess": "Les données de votre compte ont été enregistrées avec succès.",
+    "accountUpdationSuccess": "Les données de votre compte ont été mises à jour avec succès.",
+    "scheduleSaveSuccess": "Votre calendrier de paiement a été sauvegardé avec succès.",
+    "editAccountButton": "Modifier le compte",
+    "accountTitleText": "Transfert pour {currency}",
+    "addBankDetailsButton": "Ajouter les coordonnées bancaires",
+    "noBankAccountText": "Vous n'avez pas encore ajouté de coordonnées bancaires.",
+    "editBankAccountTitle": "Modifier le compte",
+    "minPayoutText": "Min. Paiement : {amount}"
+  }
+}

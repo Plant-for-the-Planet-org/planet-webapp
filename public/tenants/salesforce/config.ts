@@ -7,13 +7,13 @@ const config = {
   showUNDecadeLogo: true,
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
-    primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
+    primaryFontURL: `https://cdn.plant-for-the-planet.org/media/fonts/salesforce/salesforce-sans.css?v1.0`,
     secondaryFontFamily: 'AvantGardeDemi,Helvetica,Arial,sans-serif',
     secondaryFontURL: '/tenants/salesforce/fonts/avantgarde.css',
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+    tenantLogoURL: `https://cdn.plant-for-the-planet.org/logo/svg/salesforce.svg`,
     tenantLogoLink: 'https://www.salesforce.com/sustainability/',
     items: {
       home: {
@@ -45,7 +45,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: false,
       },
       leaderboard: {

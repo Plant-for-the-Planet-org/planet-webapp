@@ -8,6 +8,7 @@ import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
+import { useTenant } from './TenantContext';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -26,6 +27,8 @@ interface UserPropsContextInterface {
   ) => Promise<void>;
   logoutUser: (returnUrl?: string | undefined) => void;
   loadUser: () => Promise<void>;
+  refetchUserData: boolean;
+  setRefetchUserData: SetState<boolean>;
 }
 
 export const UserPropsContext =
@@ -42,13 +45,14 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
-
-  const [contextLoaded, setContextLoaded] = React.useState<boolean>(false);
+  const { tenantConfig } = useTenant();
+  const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<User | null>(null);
   const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
-    React.useState<boolean>(false);
+    React.useState(false);
+  const [refetchUserData, setRefetchUserData] = React.useState(false);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -68,7 +72,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   const logoutUser = (
-    returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
+    returnUrl: string | undefined = `${window.location.origin}/`
   ) => {
     localStorage.removeItem('impersonationData');
     localStorage.removeItem('redirectLink');
@@ -80,7 +84,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     try {
       // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
 
-      const res = await getAccountInfo(token);
+      const res = await getAccountInfo(tenantConfig?.id, token);
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson as User);
@@ -88,14 +92,14 @@ export const UserPropsProvider: FC = ({ children }) => {
         // if 303 -> user doesn not exist in db
         setUser(null);
         if (typeof window !== 'undefined') {
-          router.push('/complete-signup', undefined, { shallow: true });
+          router.push('/complete-signup');
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         setUser(null);
         setToken(null);
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       } else if (res.status === 403) {
@@ -113,7 +117,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     if (token) {
       loadUser();
     }
-  }, [token]);
+  }, [token, refetchUserData]);
 
   React.useEffect(() => {
     if (localStorage.getItem('impersonationData') !== null) {
@@ -136,6 +140,8 @@ export const UserPropsProvider: FC = ({ children }) => {
     auth0User: user,
     auth0Error: error,
     loadUser,
+    refetchUserData,
+    setRefetchUserData,
   };
   return (
     <UserPropsContext.Provider value={value}>

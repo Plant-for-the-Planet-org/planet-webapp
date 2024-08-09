@@ -1,106 +1,118 @@
 {
-  "bulkCodesTitle": "Baumurkunden & Codes erzeugen",
-  "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <2>partner@plant-for-the-planet.org</2>.",
-  "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen. Das Erzeugen von Urkunden und Codes wird deine Baumzahl steigen lassen.",
-  "bulkCodesDescription2": "Mit dieser Funktion kannst du Codes für benutzerdefinierte Zertifikate, Geschenkkarten, Spenden im Namen von Nutzern und einlösbare Codes erstellen, die du mit deinen Produkten verknüpfen kannst.",
-  "tabCreationMethod": "Herstellungsmethode",
-  "tabSelectProject": "Projekt aussuchen",
-  "tabIssueCodes": "Codes erzeugen",
-  "issueCodes": "Codes erzeugen",
-  "issuingCodes": "erzeuge Codes...",
-  "importMethodText": {
-    "title": "Erstelle personalisierte Baumurkunden",
-    "subtitle": "Verwende diese Methode (maximal 1000 Empfänger in einer Operation), wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
-    "details": ["Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.", "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).", "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."]
-  },
-  "genericMethodText": {
-    "title": "Generische Codes erstellen",
-    "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
-    "details": ["Alle Codes werden den gleichen Wert haben.", "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.", "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."]
-  },
-  "projectName": "Projektname",
-  "costPerUnit": "Kosten pro Einheit",
-  "labelComment": "Kommentar [Privat]",
-  "unitOfMeasurement": "Maßeinheit",
-  "units": {
-    "ha": "ha",
-    "tree": "Baum",
-    "m2": "m²"
-  },
-  "unitsPerCode": "Einheiten pro Code*",
-  "totalNumberOfCodes": "Gesamtzahl der Codes*",
-  "occasion": "Anlass",
-  "total": "Insgesamt",
-  "chargeConsentText": "Indem du auf Codes erzeugen klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
-  "invalidEmailWarningText": "Bitte stelle sicher, dass die Empfängeremail eine gültige E-Mail ist. Die Verwendung von Pseudo-E-Mails oder ungültigen E-Mails führt zur Sperrung des Kontos in Übereinstimmung mit den Geschäftsbedingungen der Plattform.",
-  "projectRequired": "Es wurde kein Projekt ausgewählt.",
-  "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
-  "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",
-  "unitsPerCodeInvalidRange": "Ein Code kann bis zu 1000 Einheiten enthalten.",
-  "codeQuantityInvalidRange": "Es können maximal 5000 Codes erstellt werden.",
-  "featureAvailability": "Diese Funktion ist nur für Partnerprojekte verfügbar.",
-  "planetCashDisabled": "PlanetCash ist nicht aktiviert. Bitte aktiviere PlanetCash, um diese Funktion zu nutzen.",
-  "insufficientPCashBalance": "Unzureichendes Guthaben",
-  "addBalanceGeneric": "Bitte klicke hier, um Guthaben hinzuzufügen.",
-  "instructionsUploadCSV": {
-    "empty": "Drag & Drop / Klicke zur Auswahl einer .xslx/.csv-Datei zum Hochladen.",
-    "error": "Bitte prüfe etwaige Probleme und ziehe die .xslx/.csv-Datei zum Hochladen hierher.",
-    "processing": "Bitte warte, während wir deine Datei analysieren...",
-    "success": "Weiter oder ziehe eine .xslx or .csv-Datei hierher, um die aktuelle Datei zu ersetzen."
-  },
-  "statusUploadCSV": {
-    "error": "Fehler",
-    "success": "Dateianalyse abgeschlossen"
-  },
-  "errorUploadCSV": {
-    "fileInvalidType": "Nur .csv or .xslx Dateien sind zulässig",
-    "tooManyFiles": "Bitte lade nur eine einzige Datei hoch.",
-    "fileTooSmall": "Die hochgeladene Datei scheint leer zu sein",
-    "fileTooLarge": "Die hochgeladene Datei darf höchstens 5 MB groß sein.",
-    "missingColumns": "In der hochgeladenen Datei fehlen die folgenden Spalten: ",
-    "noRecipientData": "Keine Empfängerdaten gefunden.",
-    "tooManyRecipients": "Maximal 1000 Empfänger können in einer Transaktion verarbeitet werden.",
-    "unitsNotProvided": "Einheiten fehlen oder sind ungültig bei einigen Empfängern.",
-    "notifyNotPossible": "E-Mail und Name fehlen bei einigen Empfängern, die benachrichtigt werden sollen.",
-    "instructionRowError": "In der 1. Zeile ist ein Fehler aufgetreten. Bitte prüfe, ob du die Anweisungen gelöscht hast oder ob zusätzliche Daten vorhanden sind.",
-    "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {{rowList}}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
-    "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
-  },
-  "errorAddRecipient": {
-    "unitsNotProvided": "Pflicht",
-    "requiredForNotifications": "Benötigt (für Email Empfänger)",
-    "emailInvalid": "Ungültige Email"
-  },
-  "successUploadCSV": {
-    "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
-  },
-  "importInstructions": "Bitte lesen Sie die <2>Dokumentation hier</2>, lade die <5>Excel-Vorlage hier</5> und die <8>CSV-Vorlage hier</8> herunter.",
-  "tableHeaders": {
-    "recipient_name": "Empfängername",
-    "recipient_email": "Empfängeremail",
-    "recipient_notify": "Email senden?",
-    "units": "Einheiten",
-    "recipient_message": "Nachricht"
-  },
-  "tableHeaderHelpText": {
-    "recipient_name": "Optional. Name des Empfängers, wird auf der Urkunde angezeigt, und falls eingewilligt, in der Email, die an diesen geschickt wird. Benötigt, wenn Emails verschickt werden sollen.",
-    "recipient_email": "Optional. Benötigt um die Urkunde per Email an den Empfänger zu schicken.",
-    "recipient_notify": "Optional. Wähle \"Ja\", wenn du möchtest, dass Plant-for-the-Planet den Empfänger automatisch per Email informiert.",
-    "units": "Pflicht. Anzahl der Bäume für den Empfänger, z.B, 5 für 5 Bäume.",
-    "recipient_message": "Optional. Nachricht an den Empfänger, die in der Email enthalten ist, wenn Benachrichtigen auf \"Ja\" steht. Wenn nichts angegeben wird, wird eine Standardnachricht gesendet."
-  },
-  "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
-  "donationError": {
-    "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
-    "default": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nach einer Weile erneut.",
-    "planet_cash_payment_failure": "Die Transaktion ist fehlgeschlagen. {{reason}}",
-    "planet_cash_invalid_project": "Du kannst für das ausgewählte Projekt nicht spenden."
-  },
-  "titleAddRecipientButton": "Empfänger zur Tabelle hinzufügen",
-  "notifyRecipientOptions": {
-    "yes": "Ja",
-    "no": "Nein"
-  },
-  "fileUploadWarning": "Dies wird die bestehenden Empfängerdaten löschen, möchtest du fortfahren?",
-  "unsavedDataWarning": "Einige Empfängerdaten sind nicht gespeichert. Möchtest du fortfahren? Nicht gespeicherte Daten gehen verloren."
+  "BulkCodes": {
+    "bulkCodesTitle": "Baumurkunden & Codes erzeugen",
+    "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink>.",
+    "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen. Das Erzeugen von Urkunden und Codes wird deine Baumzahl steigen lassen.",
+    "bulkCodesDescription2": "Mit dieser Funktion kannst du Codes für benutzerdefinierte Zertifikate, Geschenkkarten, Spenden im Namen von Nutzern und einlösbare Codes erstellen, die du mit deinen Produkten verknüpfen kannst.",
+    "tabCreationMethod": "Erstellungsmethode",
+    "tabSelectProject": "Projekt aussuchen",
+    "tabIssueCodes": "Codes erzeugen",
+    "issueCodes": "Codes erzeugen",
+    "issuingCodes": "erzeuge Codes...",
+    "importMethodText": {
+      "title": "Erstelle personalisierte Baumurkunden",
+      "subtitle": "Verwende diese Methode (maximal 1000 Empfänger in einer Operation), wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
+      "details": {
+        "line1": "Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.",
+        "line2": "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).",
+        "line3": "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."
+      }
+    },
+    "genericMethodText": {
+      "title": "Generische Codes erstellen",
+      "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
+      "details": {
+        "line1": "Alle Codes werden den gleichen Wert haben.",
+        "line2": "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.",
+        "line3": "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
+      }
+    },
+    "projectName": "Projektname",
+    "costPerUnit": "Kosten pro Einheit",
+    "labelComment": "Kommentar [Privat]",
+    "unitOfMeasurement": "Maßeinheit",
+    "units": {
+      "ha": "ha",
+      "tree": "Baum",
+      "m2": "m²"
+    },
+    "unitsPerCode": "Einheiten pro Code*",
+    "totalNumberOfCodes": "Gesamtzahl der Codes*",
+    "occasion": "Anlass",
+    "notificationLanguage": "Sprache der Benachrichtigung",
+    "total": "Insgesamt",
+    "chargeConsentText": "Indem du auf Codes erzeugen klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
+    "invalidEmailWarningText": "Bitte stelle sicher, dass die Empfängeremail eine gültige E-Mail ist. Die Verwendung von Pseudo-E-Mails oder ungültigen E-Mails führt zur Sperrung des Kontos.",
+    "termsAndPrivacyText": "Lese mehr über unsere <termsLink>Geschäftsbedingungen</termsLink> und <privacyPolicyLink>Datenschutzbestimmungen</privacyPolicyLink>.",
+    "projectRequired": "Es wurde kein Projekt ausgewählt.",
+    "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
+    "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",
+    "unitsPerCodeInvalidRange": "Ein Code kann bis zu 1000 Einheiten enthalten.",
+    "codeQuantityInvalidRange": "Es können maximal 5000 Codes erstellt werden.",
+    "featureAvailability": "Diese Funktion ist nur für Partnerprojekte verfügbar.",
+    "planetCashDisabled": "PlanetCash ist nicht aktiviert. Bitte aktiviere PlanetCash, um diese Funktion zu nutzen.",
+    "insufficientPCashBalance": "Unzureichendes Guthaben",
+    "addBalanceGeneric": "Bitte klicke hier, um Guthaben hinzuzufügen.",
+    "instructionsUploadCSV": {
+      "empty": "Drag & Drop / Klicke zur Auswahl einer .xslx/.csv-Datei zum Hochladen.",
+      "error": "Bitte prüfe etwaige Probleme und ziehe die .xslx/.csv-Datei zum Hochladen hierher.",
+      "processing": "Bitte warte, während wir deine Datei analysieren...",
+      "success": "Weiter oder ziehe eine .xslx or .csv-Datei hierher, um die aktuelle Datei zu ersetzen."
+    },
+    "statusUploadCSV": {
+      "error": "Fehler",
+      "success": "Dateianalyse abgeschlossen"
+    },
+    "errorUploadCSV": {
+      "fileInvalidType": "Nur .csv or .xslx Dateien sind zulässig",
+      "tooManyFiles": "Bitte lade nur eine einzige Datei hoch.",
+      "fileTooSmall": "Die hochgeladene Datei scheint leer zu sein",
+      "fileTooLarge": "Die hochgeladene Datei darf höchstens 5 MB groß sein.",
+      "missingColumns": "In der hochgeladenen Datei fehlen die folgenden Spalten: ",
+      "noRecipientData": "Keine Empfängerdaten gefunden.",
+      "tooManyRecipients": "Maximal 1000 Empfänger können in einer Transaktion verarbeitet werden.",
+      "unitsNotProvided": "Einheiten fehlen oder sind ungültig bei einigen Empfängern.",
+      "notifyNotPossible": "E-Mail und Name fehlen bei einigen Empfängern, die benachrichtigt werden sollen.",
+      "instructionRowError": "In der 1. Zeile ist ein Fehler aufgetreten. Bitte prüfe, ob du die Anweisungen gelöscht hast oder ob zusätzliche Daten vorhanden sind.",
+      "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {rowList}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
+      "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
+    },
+    "errorAddRecipient": {
+      "unitsNotProvided": "Pflicht",
+      "requiredForNotifications": "Benötigt (für Email Empfänger)",
+      "emailInvalid": "Ungültige Email"
+    },
+    "successUploadCSV": {
+      "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
+    },
+    "importInstructions": "Bitte lesen Sie die <docsLink>Dokumentation hier</docsLink>, lade die <excelLink>Excel-Vorlage hier</excelLink> und die <csvLink>CSV-Vorlage hier</csvLink> herunter.",
+    "tableHeaders": {
+      "recipient_name": "Empfängername",
+      "recipient_email": "Empfängeremail",
+      "recipient_notify": "Email senden?",
+      "units": "Einheiten",
+      "recipient_message": "Nachricht"
+    },
+    "tableHeaderHelpText": {
+      "recipient_name": "Optional. Name des Empfängers, wird auf der Urkunde angezeigt, und falls eingewilligt, in der Email, die an diesen geschickt wird. Benötigt, wenn Emails verschickt werden sollen.",
+      "recipient_email": "Optional. Benötigt um die Urkunde per Email an den Empfänger zu schicken.",
+      "recipient_notify": "Optional. Wähle \"Ja\", wenn du möchtest, dass Plant-for-the-Planet den Empfänger automatisch per Email informiert.",
+      "units": "Pflicht. Anzahl der Bäume für den Empfänger, z.B, 5 für 5 Bäume.",
+      "recipient_message": "Optional. Nachricht an den Empfänger, die in der Email enthalten ist, wenn Benachrichtigen auf \"Ja\" steht. Wenn nichts angegeben wird, wird eine Standardnachricht gesendet."
+    },
+    "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
+    "donationError": {
+      "planet_cash_insufficient_credit": "Verfügbares Guthaben = {availableBalance}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
+      "default": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nach einer Weile erneut.",
+      "planet_cash_payment_failure": "Die Transaktion ist fehlgeschlagen. {reason}",
+      "planet_cash_invalid_project": "Du kannst für das ausgewählte Projekt nicht spenden."
+    },
+    "titleAddRecipientButton": "Empfänger zur Tabelle hinzufügen",
+    "notifyRecipientOptions": {
+      "yes": "Ja",
+      "no": "Nein"
+    },
+    "fileUploadWarning": "Dies wird die bestehenden Empfängerdaten löschen, möchtest du fortfahren?",
+    "unsavedDataWarning": "Einige Empfängerdaten sind nicht gespeichert. Möchtest du fortfahren? Nicht gespeicherte Daten gehen verloren."
+  }
 }

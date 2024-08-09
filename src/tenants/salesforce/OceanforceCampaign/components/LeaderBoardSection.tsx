@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './../styles/LeaderBoardSection.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 interface Props {
@@ -25,9 +25,11 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
       leaderboard.mostRecent.length === 1 &&
       Object.keys(leaderboard.mostRecent[0]).length === 0
     );
-  const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
+  const tCommon = useTranslations('Common');
+  const tLeaderboard = useTranslations('Leaderboard');
+  const locale = useLocale();
 
-  return ready ? (
+  return (
     <div className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>Tree Donation Tracker</h2>
@@ -43,7 +45,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
                     : styles.leaderBoardTableHeaderTitle
                 }
               >
-                {t('leaderboard:mostRecent')}
+                {tLeaderboard('mostRecent')}
               </button>
               <button
                 id={'leaderBoardSecHighest'}
@@ -54,7 +56,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
                     : styles.leaderBoardTableHeaderTitle
                 }
               >
-                {t('leaderboard:mostTrees')}
+                {tLeaderboard('mostTrees')}
               </button>
             </div>
             {leaderboard &&
@@ -69,11 +71,8 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(
-                            i18n.language,
-                            Number(leader.treeCount)
-                          )}{' '}
-                          {t('common:tree', {
+                          {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
+                          {tCommon('tree', {
                             count: Number(leader.treeCount),
                           })}
                         </p>
@@ -90,11 +89,8 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(
-                            i18n.language,
-                            Number(leader.treeCount)
-                          )}{' '}
-                          {t('common:tree', {
+                          {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
+                          {tCommon('tree', {
                             count: Number(leader.treeCount),
                           })}
                         </p>
@@ -112,7 +108,5 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
         )}
       </div>
     </div>
-  ) : (
-    <></>
   );
 }

@@ -2,7 +2,7 @@ import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
@@ -19,7 +19,8 @@ export function RecordHeader({
   handleRecordToggle,
   index,
 }: HeaderProps): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const t = useTranslations('Me');
+  const locale = useLocale();
   return (
     <div
       onClick={handleRecordToggle && (() => handleRecordToggle(index))}
@@ -81,7 +82,7 @@ export function RecordHeader({
           className={styles.top}
           style={{ color: themeProperties.primaryColor }}
         >
-          {getFormatedCurrency(i18n.language, record.currency, record.amount)}
+          {getFormatedCurrency(locale, record.currency, record.amount)}
         </p>
         <p
           className={`${styles.status} ${
@@ -105,15 +106,14 @@ interface DetailProps {
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const t = useTranslations('Me');
+  const locale = useLocale();
   return (
     <>
       {record.amount && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('amount')}</p>
-          <p>
-            {getFormatedCurrency(i18n.language, record.currency, record.amount)}
-          </p>
+          <p>{getFormatedCurrency(locale, record.currency, record.amount)}</p>
         </div>
       )}
       {record.frequency && (
@@ -132,11 +132,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('totalDonated')}</p>
           <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.totalDonated
-            )}
+            {getFormatedCurrency(locale, record.currency, record.totalDonated)}
           </p>
         </div>
       )}
@@ -204,7 +200,7 @@ export function ManageDonation({
   setcancelDonation,
   setreactivateDonation,
 }: ManageDonationProps): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
 
   const showPause =
     (record?.status === 'active' || record?.status === 'trialing') &&

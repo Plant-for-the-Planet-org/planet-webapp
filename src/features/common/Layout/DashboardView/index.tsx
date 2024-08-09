@@ -4,7 +4,7 @@ import materialTheme from '../../../../theme/themeStyles';
 
 interface DashboardViewProps {
   title: string;
-  subtitle: ReactElement | null;
+  subtitle: string | ReactElement | null;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
   multiColumn?: boolean;
@@ -13,13 +13,13 @@ interface DashboardViewProps {
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
   fontSize: '1rem',
   backgroundColor: theme.palette.background.base,
-  marginTop: 105,
+  marginTop: 80,
   minHeight: '100vh',
   '& .dashboardGrid': {
     [theme.breakpoints.up(481)]: {
-      padding: 40,
+      padding: '20px 40px 40px',
     },
-    padding: '80px 20px 20px 20px',
+    padding: '60px 20px 20px 20px',
     gap: 24,
     alignItems: 'flex-start',
   },

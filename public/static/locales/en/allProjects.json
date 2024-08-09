@@ -1,0 +1,23 @@
+{
+  "AllProjects": {
+    "currentForests": "Current Forests",
+    "restorationPotential": "Restoration Potential",
+    "deforestation": "Deforestation",
+    "projects": "Projects",
+    "classificationTypes": {
+      "large-scale-planting": "Large Scale Planting",
+      "agroforestry": "Agroforestry",
+      "natural-regeneration": "Natural Regeneration",
+      "managed-regeneration": "Managed Regeneration",
+      "urban-planting": "Urban Planting",
+      "other-planting": "Other Planting",
+      "allProjects": "All Projects"
+    },
+    "allProjects": "All <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "searchProject": "Search Project",
+    "topProjects": "Top Projects <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "list": "List",
+    "map": "Map"
+  }
+}

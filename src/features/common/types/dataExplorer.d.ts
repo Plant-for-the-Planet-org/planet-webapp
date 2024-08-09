@@ -1,3 +1,5 @@
+import { Geometry } from '@turf/turf';
+
 export interface IDailyFrame {
   plantedDate: string;
   treesPlanted: number;
@@ -53,4 +55,104 @@ export interface TotalTreesPlanted {
 
 export interface TotalSpeciesPlanted {
   totalSpeciesPlanted: number;
+}
+
+export interface Feature {
+  geometry: Geometry;
+  properties: {
+    name: string;
+  };
+  type: 'Feature';
+}
+
+export type FeatureCollection = {
+  type: 'FeatureCollection';
+  features: Feature[];
+};
+
+export interface UncleanSite {
+  name: string;
+  geometry: string;
+}
+
+export interface UncleanDistinctSpecies {
+  name: string;
+}
+
+export type DistinctSpecies = string[];
+
+export interface UncleanPlantLocations {
+  geometry: string;
+  guid: string;
+}
+
+export interface PlantLocation {
+  geometry: Geometry;
+  properties: {
+    guid: string;
+    treeCount: number;
+    density: number;
+    opacity?: number;
+  };
+  type: 'Feature';
+}
+
+export interface PlantLocations {
+  type: 'FeatureCollection';
+  features: PlantLocation[];
+}
+
+// --- /api/data-explorer/map/plant-location/[plantLocationId]
+export interface Measurements {
+  width: string;
+  height: string;
+}
+
+export interface SamplePlantLocation {
+  tag: string | null;
+  guid: string;
+  geometry: Geometry;
+  measurements: Measurements;
+}
+
+export interface PlantedSpecies {
+  treeCount: number;
+  scientificName: string;
+}
+
+export interface PlantLocationDetailsQueryRes {
+  result: string;
+}
+
+export interface PlantLocationDetails {
+  plantedSpecies: PlantedSpecies[];
+  totalPlantedTrees: number;
+  samplePlantLocations: SamplePlantLocation[];
+  totalSamplePlantLocations: number;
+}
+
+// --- types for plantLocationDetailsApi ------
+
+export interface PlantLocationDetailsApiResponse {
+  res: {
+    plantedSpecies: {
+      treeCount: number;
+      scientificName: string;
+    }[];
+    totalPlantedTrees: number;
+    samplePlantLocations: {
+      tag: string;
+      guid: string;
+      species: string;
+      geometry: {
+        type: string;
+        coordinates: number[];
+      };
+      measurements: {
+        width: string;
+        height: string;
+      };
+    }[];
+    totalSamplePlantLocations: number;
+  };
 }

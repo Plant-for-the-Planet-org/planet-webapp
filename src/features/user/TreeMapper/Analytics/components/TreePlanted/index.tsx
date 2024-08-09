@@ -1,5 +1,5 @@
 import { differenceInDays, format } from 'date-fns';
-import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import themeProperties from '../../../../../../theme/themeProperties';
@@ -20,6 +20,7 @@ import {
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
+import styles from './index.module.scss';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -76,10 +77,8 @@ export const getTimeFrames = (toDate: Date, fromDate: Date) => {
 };
 
 export const TreePlanted = () => {
-  const {
-    i18n: { language },
-    t,
-  } = useTranslation(['treemapperAnalytics']);
+  const t = useTranslations('TreemapperAnalytics');
+  const locale = useLocale();
 
   const [series, setSeries] = useState<ApexOptions['series']>([
     {
@@ -201,7 +200,7 @@ export const TreePlanted = () => {
       labels: {
         show: true,
         formatter: function (val) {
-          return getFormattedNumber(language, val);
+          return getFormattedNumber(locale, val);
         },
       },
     },
@@ -530,11 +529,7 @@ export const TreePlanted = () => {
 
     const isValidTimeFrame =
       timeFrame && getTimeFrames(toDate, fromDate).includes(timeFrame);
-    if (
-      process.env.ENABLE_ANALYTICS === 'true' &&
-      isValidTimeFrame &&
-      project
-    ) {
+    if (process.env.ENABLE_ANALYTICS && isValidTimeFrame && project) {
       fetchPlantedTrees();
     }
   }, [project, fromDate, toDate, timeFrame]);
@@ -545,8 +540,8 @@ export const TreePlanted = () => {
 
   return (
     <Container
-      title={t('treesPlanted')}
-      options={
+      leftElement={<h3 className={styles.title}>{t('treesPlanted')}</h3>}
+      rightElement={
         <TimeFrameSelector
           handleTimeFrameChange={handleTimeFrameChange}
           timeFrames={timeFrames}

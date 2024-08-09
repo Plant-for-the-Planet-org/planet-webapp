@@ -10,7 +10,8 @@ import { useCallback, useEffect } from 'react';
 export const useDebouncedEffect = (
   effect: () => void,
   delay: number,
-  deps: string[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deps: any[]
 ) => {
   const callback = useCallback(effect, deps);
 

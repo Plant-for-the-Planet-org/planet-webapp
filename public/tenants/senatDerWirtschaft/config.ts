@@ -14,12 +14,12 @@ const config = {
     title: 'Senat Der Wirtschaft',
     description:
       'Die Klimakrise ist eine der größten gesellschaftlichen Herausforderungen und es muss sich etwas ändern. Der Senat der Wirtschaft ist eine Wertegemeinschaft. Wir stehen für eine motivierende und verbindende Vision, verknüpft mit praktischer Umsetzung. Deshalb pflanzen immer mehr unserer Mitglieder Wälder, zusammen mit ihren Mitarbeiter, Geschäftspartnern und Kunden. Jeder gepflanzte Baum bindet CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen!',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'de_DE',
   },
   home: {
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,
@@ -39,7 +39,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.plant-for-the-planet.org/',
         visible: false,
       },
       leaderboard: {

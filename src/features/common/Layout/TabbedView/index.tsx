@@ -38,7 +38,7 @@ export default function TabbedView({
   const [stepToRender, setStepToRender] = useState<string | number | false>(
     false
   );
-  // console.log(tabItems);
+
   useEffect(() => {
     // sets value for Tabs component only if the specified step is within the list of tabs
     if (tabItems && tabItems.length > 0)

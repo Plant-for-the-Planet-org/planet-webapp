@@ -1,4 +1,4 @@
-import { useTranslation, Trans } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import React, {
   ReactElement,
   useEffect,
@@ -12,7 +12,7 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
+import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
@@ -33,7 +33,9 @@ interface BulkCodesProps {
 export default function BulkCodes({
   step,
 }: BulkCodesProps): ReactElement | null {
-  const { t, ready, i18n } = useTranslation('bulkCodes');
+  const t = useTranslations('BulkCodes');
+  const locale = useLocale();
+  const { tenantConfig } = useTenant();
   const {
     planetCashAccount,
     setPlanetCashAccount,
@@ -47,40 +49,39 @@ export default function BulkCodes({
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {
-    if (ready) {
-      setTabConfig([
-        {
-          label: t('bulkCodes:tabCreationMethod'),
-          link: '/profile/bulk-codes',
-          step: BulkCodeSteps.SELECT_METHOD,
-        },
-        {
-          label: t('bulkCodes:tabSelectProject'),
-          link: `/profile/bulk-codes/${bulkMethod}`,
-          step: BulkCodeSteps.SELECT_PROJECT,
-          disabled: bulkMethod === null,
-        },
-        {
-          label: t('bulkCodes:tabIssueCodes'),
-          link: `/profile/bulk-codes/${bulkMethod}/${project?.guid}`,
-          step: BulkCodeSteps.ISSUE_CODES,
-          disabled: bulkMethod === null || project === null,
-        },
-      ]);
-    }
-  }, [ready, bulkMethod, project, i18n.language]);
+    setTabConfig([
+      {
+        label: t('tabCreationMethod'),
+        link: '/profile/bulk-codes',
+        step: BulkCodeSteps.SELECT_METHOD,
+      },
+      {
+        label: t('tabSelectProject'),
+        link: `/profile/bulk-codes/${bulkMethod}`,
+        step: BulkCodeSteps.SELECT_PROJECT,
+        disabled: bulkMethod === null,
+      },
+      {
+        label: t('tabIssueCodes'),
+        link: `/profile/bulk-codes/${bulkMethod}/${project?.guid}`,
+        step: BulkCodeSteps.ISSUE_CODES,
+        disabled: bulkMethod === null || project === null,
+      },
+    ]);
+  }, [bulkMethod, project, locale]);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
         const fetchedProjects = await getRequest<MapProject[]>(
+          `${tenantConfig?.id}`,
           `/app/projects`,
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
-            tenant: TENANT_ID,
+            tenant: tenantConfig?.id,
             'filter[purpose]': 'trees',
-            locale: i18n.language,
+            locale: locale,
           }
         );
 
@@ -97,6 +98,7 @@ export default function BulkCodes({
               .filter((project) => {
                 return (
                   project.properties.allowDonations &&
+                  project.properties.unitType === 'tree' &&
                   (planetCashAccount.currency !== 'CHF' ||
                     (planetCashAccount.currency === 'CHF' &&
                       allowedCHFProjects.includes(project.properties.slug)))
@@ -119,7 +121,7 @@ export default function BulkCodes({
         setErrors(handleError(err as APIError));
       }
     }
-  }, [planetCashAccount?.currency, i18n.language]);
+  }, [planetCashAccount?.currency, locale]);
 
   useEffect(() => {
     fetchProjectList();
@@ -151,28 +153,27 @@ export default function BulkCodes({
     }
   };
 
-  return ready ? (
+  return (
     <DashboardView
-      title={t('bulkCodes:bulkCodesTitle')}
+      title={t('bulkCodesTitle')}
       subtitle={
         <div>
           <p>
-            <Trans i18nKey="bulkCodes:partnerSignupInfo">
-              Use of this feature by Companies is subject to partnership with
-              Plant-for-the-Planet. Please contact{' '}
-              <a
-                className="planet-links"
-                href="mailto:partner@plant-for-the-planet.org"
-              >
-                partner@plant-for-the-planet.org
-              </a>{' '}
-              for details.
-            </Trans>
+            {t.rich('partnerSignupInfo', {
+              partnerEmailLink: (chunks) => (
+                <a
+                  className="planet-links"
+                  href="mailto:partner@plant-for-the-planet.org"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
           <p>
-            {t('bulkCodes:bulkCodesDescription1')}
+            {t('bulkCodesDescription1')}
             <br />
-            {t('bulkCodes:bulkCodesDescription2')}
+            {t('bulkCodesDescription2')}
           </p>
         </div>
       }
@@ -181,5 +182,5 @@ export default function BulkCodes({
         {renderStep()}
       </TabbedView>
     </DashboardView>
-  ) : null;
+  );
 }

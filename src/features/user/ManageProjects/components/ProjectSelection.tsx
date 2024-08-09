@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import Styles from '../../../../../src/features/user/ManageProjects/StepForm.module.scss';
 import { SetState } from '../../../common/types/common';
 
@@ -12,9 +12,9 @@ export default function ProjectSelection({
   setTabSelected,
 }: ProjectSelectionProps): ReactElement {
   const router = useRouter();
-  const { t, ready } = useTranslation('manageProjects');
+  const t = useTranslations('ManageProjects');
 
-  return ready ? (
+  return (
     <div className={Styles.projectTypes}>
       <div>
         <button
@@ -25,7 +25,7 @@ export default function ProjectSelection({
             router.push('/profile/projects/new-project/?purpose=trees');
           }}
         >
-          {t('manageProjects:restorationProject')}
+          {t('restorationProject')}
         </button>
       </div>
       <div>
@@ -37,11 +37,9 @@ export default function ProjectSelection({
             router.push('/profile/projects/new-project/?purpose=conservation');
           }}
         >
-          {t('manageProjects:conservationProject')}
+          {t('conservationProject')}
         </button>
       </div>
     </div>
-  ) : (
-    <></>
   );
 }

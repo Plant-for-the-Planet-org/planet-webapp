@@ -4,23 +4,24 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { BankAccount } from '../../../common/types/payouts';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const AddBankAccount = (): ReactElement | null => {
-  const { t } = useTranslation('managePayouts');
+  const t = useTranslations('ManagePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const router = useRouter();
-
+  const { tenantConfig } = useTenant();
   const closeSnackbar = (): void => {
     setIsAccountCreated(false);
   };
@@ -35,6 +36,7 @@ const AddBankAccount = (): ReactElement | null => {
     };
     try {
       const res = await postAuthenticatedRequest<BankAccount>(
+        tenantConfig?.id,
         '/app/accounts',
         accountData,
         token,

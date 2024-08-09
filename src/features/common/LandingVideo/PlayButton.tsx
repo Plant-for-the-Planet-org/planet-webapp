@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import PlayIcon from '../../../../public/assets/images/icons/PlayIcon';
 import styles from './styles.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../Layout/UserPropsContext';
 import { ParamsContext } from '../Layout/QueryParamsContext';
 
@@ -15,12 +15,17 @@ export default function PlayButton({
 }: Props): ReactElement | null {
   const { isImpersonationModeOn } = useUserProps();
   const { embed, enableIntro, isContextLoaded } = useContext(ParamsContext);
-  const { t } = useTranslation(['common']);
-  const { pathname } = useRouter();
+  const t = useTranslations('Common');
+  const router = useRouter();
 
   const playButtonClasses = `${
     embed === 'true' ? styles.embed_playButton : styles.playButton
-  } ${pathname === '/[p]' ? styles['playButton--reduce-right-offset'] : ''}`;
+  } ${
+    router.pathname === '/[p]' ||
+    router.pathname === '/sites/[slug]/[locale]/[p]'
+      ? styles['playButton--reduce-right-offset']
+      : ''
+  }`;
 
   const canShowPlayButton = !(embed === 'true' && enableIntro !== 'true');
 

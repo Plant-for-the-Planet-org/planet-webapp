@@ -1,0 +1,364 @@
+@import '../../../../theme/theme';
+.singleMarkerContainer {
+  > .mapboxglPopup {
+    box-shadow: none;
+    border-radius: 0px;
+    overflow: auto;
+  }
+}
+
+.popUpContainer {
+  height: 75px;
+  width: 150px;
+}
+.popUp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
+}
+
+.popUpLabel {
+  font-weight: 700;
+  font-size: $fontSmall;
+}
+
+.markerContainer {
+  height: 30px;
+  width: 100%;
+  padding-right: 10px;
+  background-color: #b6c7a8d4;
+  border-radius: 40px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+  > .svgContainer {
+    width: 25px;
+    height: 25px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  > .trees {
+    font-weight: 700;
+    font-size: $fontSixteen;
+  }
+}
+
+.popUpMainContainer {
+  > .mapboxglPopup {
+    box-shadow: none;
+    border-radius: 0px;
+    overflow: auto;
+  }
+}
+
+.donatePopUpContainer {
+  width: 208px;
+  height: 154px;
+  > .projectImageContainer {
+    height: 95px;
+    width: 100%;
+    position: relative;
+    > .projectName {
+      position: absolute;
+      top: 75px;
+      left: 10px;
+      font-size: $fontXXSmall;
+      font-weight: 600;
+      color: #ffffff;
+    }
+  }
+}
+
+.projectInfoMainContainer {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  > .projectInfoContainer {
+    display: flex;
+    gap: 2px;
+    font-size: $fontXXSmall;
+    position: relative;
+    > .area {
+      font-weight: 700;
+    }
+  }
+}
+.tpo {
+  margin-top: 7px;
+  > .tpoName {
+    font-size: $fontXXSmall;
+  }
+  > .date {
+    font-size: $fontXXSmall;
+  }
+}
+.clusterMarkerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 32px;
+  border: 1px solid;
+  border-radius: 40px;
+  border-color: #ffffff;
+  background-color: #219653;
+  padding-left: 3px;
+  padding-right: 8px;
+  cursor: pointer;
+  > .svgContainer {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding-top: 5px;
+    padding-left: 4px;
+  }
+  > .totalTreeCount {
+    font-weight: 700;
+    font-size: $fontSixteen;
+    color: #ffffff;
+  }
+}
+
+.conservationClusterMarkerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  height: 28px;
+  border: 1px solid;
+  border-radius: 40px;
+  border-color: #ffffff;
+  background-color: #48aadd;
+  padding-left: 2px;
+  padding-right: 8px;
+  > .svgContainer {
+    height: 23px;
+    width: 23px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding-top: 3px;
+    padding-left: 5px;
+  }
+  > .totalTreeCount {
+    font-weight: 700;
+    font-size: $fontSixteen;
+    color: #ffffff;
+  }
+}
+
+.mapContainer {
+  width: 100%;
+  height: 560px;
+  padding-left: 50px;
+  padding-right: 50px;
+  position: relative;
+  > div > div > div {
+    border-radius: 12px;
+  }
+
+  @include xsPhoneView {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  @include smTabletView {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  @include mdTabletView {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+.mapCreditsContainer {
+  position: absolute;
+  right: 92px;
+  bottom: 1px;
+  z-index: 1;
+  cursor: pointer;
+  @include xsPhoneView {
+    bottom: 51px;
+    right: 40px;
+  }
+  @include smTabletView {
+    bottom: 52px;
+    right: 48px;
+  }
+  @include mdTabletView {
+    bottom: 47px;
+    right: 93px;
+  }
+  @include lgLaptopView {
+    bottom: 47px;
+  }
+  @include xlDesktopView {
+    bottom: 0px;
+  }
+}
+
+.mapCredit {
+  padding: 10px;
+  width: 330px;
+}
+
+.myForestMapSkeleton {
+  margin-top: 42px;
+  border-radius: 20px;
+}
+
+.myForestMapSkeletonContainer {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 25px;
+}
+.myForestMapSkeletonX {
+  border-radius: 20px;
+}
+
+.navigationControlConatiner {
+  position: absolute;
+  bottom: 65px;
+  right: 36px;
+  @include xsPhoneView {
+    bottom: 116px;
+    right: 35px;
+  }
+  @include smTabletView {
+    bottom: 119px;
+    right: 36px;
+  }
+  @include mdTabletView {
+    bottom: 113px;
+  }
+  @include lgLaptopView {
+    bottom: 113px;
+  }
+  @include xlDesktopView {
+    bottom: 66px;
+  }
+}
+
+.clusterPopUpContainer {
+  width: 202px;
+  height: 93px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .clusterPopUpInfo {
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .zoomIn {
+    font-size: 8px;
+    font-weight: 600;
+  }
+}
+
+.donationPopUpMainContainer {
+  position: relative;
+  height: 100%;
+  border: 3px;
+  min-width: 208px;
+}
+.donationPopUpImageContainer {
+  width: '100%';
+  height: 95.33px;
+  > .image {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    border: 1px solid #fff;
+    width: 100%;
+    height: 95.33px;
+    object-fit: cover;
+    filter: brightness(110%);
+  }
+}
+
+.projectName {
+  font-size: 10px;
+  position: absolute;
+  bottom: 58px;
+  left: 10px;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #fff;
+  padding-bottom: 12px;
+}
+.donationPopUpInfoMainContainer {
+  padding: 10px;
+}
+
+.donationPopUpInfoContainer {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.countryAndTreeInfo {
+  display: flex;
+  gap: 3px;
+  width: max-content;
+  font-weight: 700;
+  font-size: 8px;
+}
+
+.separatorContainer {
+  position: relative;
+}
+
+.seprator {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+}
+
+.country {
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.donateButton {
+  width: 53px !important;
+  height: 18px !important;
+  font-size: 10px !important;
+  box-shadow: none !important;
+  border-radius: 24px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+}
+
+.donationDate {
+  display: flex;
+  font-weight: 600;
+  font-size: 6px;
+  color: rgba(130, 130, 130, 1);
+  margin-top: 2px;
+}
+
+.donationDateX {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.tpoName {
+  font-weight: 400;
+  font-size: 8px;
+  margin-top: 4px;
+  width: 197px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

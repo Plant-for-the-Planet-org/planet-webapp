@@ -1,17 +1,17 @@
 import TextField from '@mui/material/TextField';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { ReactElement } from 'react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
-import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
+import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
 import React from 'react';
 import { SetState } from '../types/common';
 
 export interface EnterRedeemCodeProps {
   isLoading: boolean;
-  setInputCode: SetState<string | null>;
-  inputCode: string | null;
+  setInputCode: SetState<string | undefined>;
+  inputCode: string | undefined;
   redeemCode: () => void;
   closeRedeem: () => void;
 }
@@ -29,7 +29,7 @@ export const EnterRedeemCode = ({
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
-  const { t } = useTranslation(['redeem']);
+  const t = useTranslations('Redeem');
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
@@ -37,13 +37,13 @@ export const EnterRedeemCode = ({
           <CancelIcon />
         </button>
       </div>
-      <div className={styles.redeemHeading}>{t('redeem:redeem')}</div>
-      <div className={styles.note}>{t('redeem:redeemDescription')}</div>
+      <div className={styles.redeemHeading}>{t('redeem')}</div>
+      <div className={styles.note}>{t('redeemDescription')}</div>
       <div className={styles.inputField}>
         <Controller
           name="code"
           control={control}
-          rules={{ required: t('redeem:enterRedeemCode') }}
+          rules={{ required: t('enterRedeemCode') }}
           render={({ field: { onChange, onBlur } }) => (
             <TextField
               onChange={(event) => {
@@ -68,7 +68,7 @@ export const EnterRedeemCode = ({
           disabled={isLoading}
           onClick={handleSubmit(redeemCode)}
         >
-          {isLoading ? t('redeem:redeemingCode') : t('redeem:redeemCode')}
+          {isLoading ? t('redeemingCode') : t('redeemCode')}
         </Button>
       </div>
     </div>

@@ -1,0 +1,205 @@
+@import '../../theme/theme';
+
+.activeSearchFieldContainer,
+.projectListControls {
+  background-color: $light;
+  height: 47px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  max-width: 338px;
+  justify-content: space-between;
+  min-width: 288px;
+  box-shadow: 0px 4px 24px 0px rgba($dark, 0.2);
+
+  @include xsPhoneView {
+    height: 36px;
+    min-width: 200px;
+    border-radius: 8px;
+    border: 1px solid rgba($borderColor, 0.5);
+  }
+}
+
+.projectListControlsMobile {
+  height: 26px;
+  justify-content: space-between;
+  display: flex;
+  gap: 10px;
+}
+
+.searchFieldAndViewTabsContainer {
+  display: flex;
+  gap: 12px;
+}
+
+.activeSearchIcon {
+  margin-left: 24px;
+  margin-top: 4px;
+  cursor: pointer;
+  > svg {
+    width: 16px;
+    @include xsPhoneView {
+      width: 12px;
+    }
+  }
+  @include xsPhoneView {
+    margin-left: 11px;
+  }
+}
+
+.textField {
+  margin-left: 17px;
+}
+
+.crossIcon {
+  margin-left: 9px;
+  margin-top: 5px;
+  cursor: pointer;
+  padding-right: 15px;
+  @include xsPhoneView {
+    padding-right: 10px;
+  }
+  > svg {
+    width: 16px;
+    @include xsPhoneView {
+      width: 12px;
+    }
+  }
+}
+
+.projectLabel {
+  display: flex;
+  margin-left: 7px;
+}
+
+// mobile tab styles
+
+.tabContainerSecondary,
+.tabContainer {
+  border-radius: 5px;
+  border: 2px solid $primaryColorNew;
+  display: flex;
+  overflow: hidden;
+  min-width: max-content;
+}
+
+.tabContainerSecondary {
+  min-width: 70px;
+  border-radius: 6px;
+  height: 33px;
+}
+
+.selectedTabButton,
+.unselectedTabButton {
+  width: 100%;
+  padding: 7px;
+  line-height: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  > .label {
+    font-weight: 700;
+    font-size: $fontXXSmall;
+    display: flex;
+  }
+  .noOfProject {
+    font-weight: 400;
+    font-size: $fontXXSmall;
+    margin-left: 1px;
+  }
+}
+.selectedTabButton {
+  background: $primaryColorNew;
+  color: $light;
+}
+
+.unselectedTabButton {
+  background: $light;
+}
+
+.projectCount {
+  font-weight: 400;
+  margin-left: 3px;
+}
+
+.iconsContainerMobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.4s ease-in-out;
+  width: 20%;
+}
+
+.iconsContainer {
+  width: max-content;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-left: 20px;
+  padding-right: 19px;
+  cursor: pointer;
+}
+
+.label {
+  font-weight: 700;
+  font-size: $fontXXSmall;
+}
+
+// filter styles
+.filterContainer {
+  position: relative;
+  .filterIndicator {
+    position: absolute;
+    left: 10px;
+    top: -3px;
+    z-index: 1;
+    background-color: $primaryColorNew;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+}
+
+.filterDropDownContainer {
+  display: flex;
+  max-width: 338px;
+  justify-content: flex-end;
+}
+
+.classificationListContainer {
+  min-width: 130px;
+  max-width: 130px;
+  background: $backgroundColor;
+  padding: 16px;
+  margin-top: 10px;
+  border-radius: 12px;
+}
+
+.classificationUnselected {
+  font-size: $fontXXSmall;
+  line-height: normal;
+}
+
+.classificationSelected {
+  font-weight: 700;
+  font-size: $fontXXSmall;
+}
+
+.filterButton {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  cursor: pointer;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  align-items: flex-start;
+}
+
+.hrLine {
+  width: 100%;
+}

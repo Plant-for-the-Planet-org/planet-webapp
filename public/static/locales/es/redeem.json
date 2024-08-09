@@ -1,9 +1,22 @@
 {
-  "congratulations": "¡Felicidades!",
-  "addToMyTrees": "Añadir a mis árboles",
-  "validateCode": "Validar el código",
-  "enterRedeemCode": "Por favor, introduzca un código para redimir",
-  "validating": "Validación",
-  "invalidType": "Tipo inválido, por favor, compruebe el enlace de nuevo",
-  "redeemDescription": "Canjea tuVale de árboles y otros códigos."
+  "Redeem": {
+    "myPlantedTreesByOrg": "Mi árbol {formattedNumber} será plantado por {tpoName}",
+    "myPlantedTreesByOrg_plural": "Mis árboles {formattedNumber} serán plantados por {tpoName}",
+    "congratulations": "¡Felicidades!",
+    "addToMyTrees": "Añadir a mis árboles",
+    "validateCode": "Validar el código",
+    "enterRedeemCode": "Por favor, introduzca un código para redimir",
+    "validating": "Validación",
+    "invalidType": "Tipo inválido, por favor, compruebe el enlace de nuevo",
+    "redeeming": "Redentor:",
+    "invalidCode": "Este código no es válido.",
+    "selfGiftMessage": "No puede canjear un regalo/código emitido por usted mismo",
+    "alreadyRedeemed": "El código ya ha sido canjeado",
+    "redeemCode": "Canjear código",
+    "redeemingCode": "Canjear código...",
+    "redeem": "Canjear",
+    "redeemDescription": "Canjea tuVale de árboles y otros códigos.",
+    "successfullyRedeemed": "Canjeado con éxito",
+    "redeemAnotherCode": "Canjear otro código"
+  }
 }

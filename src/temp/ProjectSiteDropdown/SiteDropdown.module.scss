@@ -1,0 +1,135 @@
+@import '../../theme/theme';
+
+.dropdownButton {
+    display: flex;
+    border-radius: 12px;
+    background: $backgroundColor;
+    align-items: center;
+    padding: 12px 0px 9px 12px;
+    min-width: 290px;
+    width: fit-content;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 18px;
+}
+.siteIconAndTextContainer {
+    display: flex;
+    gap: 6px;
+}
+.labelTextContainer {
+    display: flex;
+    flex-direction: column;
+}
+.sitesLabel {
+    font-size: $fontXXXSmallNew;
+    color: $nonDonatableProjectBackgroundColor;
+    font-weight: 600;
+    span {
+        display: inline;
+    }
+}
+
+.siteId {
+    text-transform: uppercase;
+}
+.siteName {
+    text-transform: capitalize;
+    font-size: $fontXSmall;
+    font-weight: 700;
+    color: #333 //to be replaced
+}
+.menuArrow {
+    display: flex;
+    align-items: center;
+    margin-right: 13px;
+    svg {
+        width: 100%;
+        overflow: visible;
+    }
+}
+.siteListOptions{
+    background-color: $backgroundColor;
+    padding: 6px 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+    width: fit-content;
+    font-size: $fontXSmall;
+}
+.listItem {
+    display: flex;
+    justify-content: space-between;
+    gap:30px;
+    padding: 8px 0px; 
+    color: #4F4F4F; //to be replaced
+    cursor: pointer;
+    border-bottom: 1px solid $dividerColorNew;
+
+    &:last-of-type {
+        border-bottom: none;
+    }
+}
+.hideDivider {
+    display: none;
+}
+.showDivider {
+        height:0px;
+        border:0px;
+        border-top:1px solid $dividerColorNew;
+        margin:0px;
+    
+}
+.selectedItem {
+    color: #333; //to be replaced
+    text-shadow: 0 0 0.01px;
+}
+
+@include xsPhoneView {
+    .siteIconAndTextContainer {
+        >svg {
+            width: 16px;
+        }
+    }
+    .menuArrow {
+        margin-right: 5.13px;
+        svg {
+            width: 6.37px;
+            height: 4.183px;
+        }
+    }
+    .dropdownButton {
+        border-radius: 10px;
+        min-width: 93px;
+        padding: 7px;
+    }
+    .labelTextContainer {
+        justify-content: center;
+        .sitesLabel {
+            display: flex;
+            flex-direction: column;
+            .siteId {
+                text-transform: none;
+            }
+            .separator {
+                display: none;
+            }
+        }
+        .siteName {
+            display: none;
+        }
+    }
+    .siteListOptions{
+        max-width: 140px;
+        padding: 8px 12px;
+        .listItem {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            font-size: $fontXXXSmallNew;
+            padding: 4px 0;
+            color:#333; //to be replaced
+            .siteArea {
+                font-size: $fontXXSmall;
+            }
+        }
+    }
+}

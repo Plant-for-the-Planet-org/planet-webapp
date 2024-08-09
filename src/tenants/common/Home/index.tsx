@@ -4,14 +4,12 @@ import LeaderBoard from '../LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
-import { useTranslation } from 'next-i18next';
+import { useTenant } from '../../../features/common/Layout/TenantContext';
+import { useTranslations } from 'next-intl';
 import {
   LeaderBoardList,
   TenantScore,
 } from '../../../features/common/types/leaderboard';
-
-const config = tenantConfig();
 
 interface Props {
   leaderboard: LeaderBoardList | null;
@@ -19,40 +17,34 @@ interface Props {
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {
-  const { t, ready } = useTranslation(['tenants']);
+  const { tenantConfig } = useTenant();
+  const t = useTranslations('Tenants');
 
   const descriptionRef = React.useRef<HTMLParagraphElement>(null);
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
       descriptionRef.current.innerHTML = t(
-        `tenants:${config.tenantName}.description`
+        `${tenantConfig.config.slug}.description`
       );
     }
-  }, [ready]);
+  }, []);
 
-  return ready ? (
+  return (
     <main>
-      <LandingSection imageSrc={config.meta.image}>
+      <LandingSection imageSrc={tenantConfig.config.meta.image}>
         <div style={{ marginTop: '120px' }} />
         {tenantScore && (
-          <TreeCounter target={config.tenantGoal} planted={tenantScore.total} />
+          <TreeCounter
+            target={tenantConfig.tenantGoal}
+            planted={tenantScore.total}
+          />
         )}
-
         <p
           className={styles.publicUserDescription}
           style={{ fontWeight: 'bold', marginBottom: '0px' }}
         >
-          {t(`tenants:${config.tenantName}.title`)}
+          {t(`${tenantConfig.config.slug}.title`)}
         </p>
-
-        {config.home !== undefined && config.home.descriptionTitle && (
-          <p
-            className={styles.publicUserDescription}
-            style={{ fontWeight: 'bold', marginBottom: '0px' }}
-          >
-            {t(`tenants:${config.tenantName}.descriptionTitle`)}
-          </p>
-        )}
         <p
           ref={descriptionRef}
           className={styles.publicUserDescription}
@@ -67,5 +59,5 @@ export default function About({ leaderboard, tenantScore }: Props) {
         )}
       <Footer />
     </main>
-  ) : null;
+  );
 }

@@ -6,7 +6,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
@@ -30,7 +30,7 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
-  const { t, ready } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
   const [viewport, setViewPort] = React.useState({
     height: '400px',
     width: '100%',
@@ -118,7 +118,7 @@ export default function MapComponent({
     }
   }, [geoJson]);
 
-  return ready ? (
+  return (
     <div
       ref={mapParentRef}
       className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
@@ -230,7 +230,7 @@ export default function MapComponent({
         {({ getRootProps, getInputProps }) => (
           <div {...getRootProps()} className={styles.dropZone}>
             <input {...getInputProps()} />
-            {t('manageProjects:dropGeoJson')}
+            {t('dropGeoJson')}
           </div>
         )}
       </Dropzone>
@@ -238,7 +238,5 @@ export default function MapComponent({
         <div className={styles.geoJsonError}>Invalid geojson/kml</div>
       ) : null}
     </div>
-  ) : (
-    <></>
   );
 }

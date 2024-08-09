@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
@@ -23,6 +23,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -53,11 +54,12 @@ export const CancelModal = ({
 }: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(new Date());
   const [disabled, setDisabled] = React.useState(false);
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -81,6 +83,7 @@ export const CancelModal = ({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/subscriptions/${record.id}?scope=cancel`,
         bodyToSend,
         token,
@@ -116,7 +119,7 @@ export const CancelModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('me:cancelDonationConfirmation')}</h4>
+              <h4>{t('cancelDonationConfirmation')}</h4>
               <button
                 onClick={handleCancelModalClose}
                 onKeyPress={handleCancelModalClose}
@@ -129,9 +132,9 @@ export const CancelModal = ({
             </div>
             <div className={styles.note}>
               {record?.method === 'paypal' ? (
-                <p>{t('me:cancelDonationPaypalDescription')}</p>
+                <p>{t('cancelDonationPaypalDescription')}</p>
               ) : (
-                <p>{t('me:cancelDonationDescription')}</p>
+                <p>{t('cancelDonationDescription')}</p>
               )}
             </div>
           </div>
@@ -155,7 +158,7 @@ export const CancelModal = ({
                   key={1}
                   value={'cancelImmediately'}
                   control={<GreenRadio />}
-                  label={t('me:cancelImmediately')}
+                  label={t('cancelImmediately')}
                 />
                 {/* <FormControlLabel
                 key={2}
@@ -168,7 +171,7 @@ export const CancelModal = ({
                   key={3}
                   value={'cancelOnSelectedDate'}
                   control={<GreenRadio />}
-                  label={t('me:cancelOnSelectedDate')}
+                  label={t('cancelOnSelectedDate')}
                 />
               </RadioGroup>
               {showCalender ? (

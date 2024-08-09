@@ -1,14 +1,16 @@
 {
-  "treesDonated": "Alberi donati dal 2019",
-  "plantedByTPO": "Pianificato dalle {{projects}}+ organizzazioni partecipanti",
-  "plantedGlobally": "Alberi, che sono riportati a noi da 2006",
-  "forestLoss": "Perdita netta di foreste negli ultimi 12 mesi",
-  "estimateOf": "Stima della perdita annuale dell'albero di",
-  "globallySince": "Numero di alberi dichiarati alla Billion Tree Campaign (poi Trillion Tree Campaign) dalla sua fondazione da parte dell'UNEP nel 2006",
-  "restoreTrees": "Come possiamo ripristinare un trilione di alberi?",
-  "watchVideo": "Guarda il video",
-  "selectProjects": "Come selezioniamo i progetti",
-  "learnMore": "Per saperne di più",
-  "treesDonatedDescription": "Tutte le donazioni di alberi elaborate da Plant-for-the-Planet dal 2019. Include alberi donati direttamente attraverso le nostre app, nonché grandi donazioni private e aziendali. Queste donazioni non sono andate tutte a progetti gestiti direttamente da Plant-for-the-Planet, ma tutte le organizzazioni di restauro partecipanti. Alcuni alberi donati potrebbero non essere ancora stati piantati.",
-  "treesPlantedDescription": "Tutti gli alberi donati attraverso Plant-for-the-Planet e altri alberi segnalati come piantati dalle organizzazioni di restauro partecipanti"
+  "Planet": {
+    "treesDonated": "Alberi donati dal 2019",
+    "plantedByTPO": "Pianificato dalle {projects}+ organizzazioni partecipanti",
+    "plantedGlobally": "Alberi, che sono riportati a noi da 2006",
+    "forestLoss": "Perdita netta di foreste negli ultimi 12 mesi",
+    "estimateOf": "Stima della perdita annuale dell'albero di",
+    "globallySince": "Numero di alberi dichiarati alla Billion Tree Campaign (poi Trillion Tree Campaign) dalla sua fondazione da parte dell'UNEP nel 2006",
+    "restoreTrees": "Come possiamo ripristinare un trilione di alberi?",
+    "watchVideo": "Guarda il video",
+    "selectProjects": "Come selezioniamo i progetti",
+    "learnMore": "Per saperne di più",
+    "treesDonatedDescription": "Tutte le donazioni di alberi elaborate da Plant-for-the-Planet dal 2019. Include alberi donati direttamente attraverso le nostre app, nonché grandi donazioni private e aziendali. Queste donazioni non sono andate tutte a progetti gestiti direttamente da Plant-for-the-Planet, ma tutte le organizzazioni di restauro partecipanti. Alcuni alberi donati potrebbero non essere ancora stati piantati.",
+    "treesPlantedDescription": "Tutti gli alberi donati attraverso Plant-for-the-Planet e altri alberi segnalati come piantati dalle organizzazioni di restauro partecipanti"
+  }
 }

@@ -4,16 +4,16 @@ import World from '../../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
-import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../../tenant.config';
+import { useLocale, useTranslations } from 'next-intl';
+import { useTenant } from '../TenantContext';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
-import DarkModeSwitch from '../DarkModeSwitch.tsx';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
-  const { t, i18n, ready } = useTranslation(['common']);
-  const config = tenantConfig();
+  const t = useTranslations('Common');
+  const locale = useLocale();
+  const { tenantConfig } = useTenant();
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
@@ -27,52 +27,52 @@ export default function Footer(): ReactElement | null {
 
   const FooterLinks = {
     shop: {
-      title: ready ? t('common:shop') : '',
+      title: t('shop'),
       link: `https://www.thegoodshop.org/de`,
     },
     privacy: {
-      title: ready ? t('common:privacy') : '',
-      link: `https://pp.eco/legal/${i18n.language}/privacy`,
+      title: t('privacy'),
+      link: `https://pp.eco/legal/${locale}/privacy`,
     },
     terms: {
-      title: ready ? t('common:terms') : '',
-      link: `https://pp.eco/legal/${i18n.language}/terms`,
+      title: t('terms'),
+      link: `https://pp.eco/legal/${locale}/terms`,
     },
     imprint: {
-      title: ready ? t('common:imprint') : '',
-      link: `https://pp.eco/legal/${i18n.language}/imprint`,
+      title: t('imprint'),
+      link: `https://pp.eco/legal/${locale}/imprint`,
     },
     contact: {
-      title: ready ? t('common:contact') : '',
+      title: t('contact'),
       link: 'mailto:support@plant-for-the-planet.org',
     },
     downloads: {
-      title: ready ? t('common:downloads') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/download`,
+      title: t('downloads'),
+      link: `https://www.plant-for-the-planet.org/${locale}/download`,
     },
     annualReports: {
-      title: ready ? t('common:annualReports') : '',
-      link: `https://a.plant-for-the-planet.org/annual-reports`,
+      title: t('annualReports'),
+      link: `https://www.plant-for-the-planet.org/annual-reports`,
     },
     team: {
-      title: ready ? t('common:team') : '',
-      link: `https://a.plant-for-the-planet.org/team`,
+      title: t('team'),
+      link: `https://www.plant-for-the-planet.org/team`,
     },
     jobs: {
-      title: ready ? t('common:jobs') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/careers`,
+      title: t('jobs'),
+      link: `https://www.plant-for-the-planet.org/${locale}/careers`,
     },
     supportUs: {
-      title: ready ? t('common:supportUs') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/donation`,
+      title: t('supportUs'),
+      link: `https://www.plant-for-the-planet.org/${locale}/donation`,
     },
     blogs: {
-      title: ready ? t('common:blogs') : '',
-      link: `https://blog.plant-for-the-planet.org/${i18n.language}`,
+      title: t('blogs'),
+      link: `https://blog.plant-for-the-planet.org/${locale}`,
     },
     faqs: {
-      title: ready ? t('common:faqs') : '',
-      link: `https://a.plant-for-the-planet.org/${i18n.language}/faq`,
+      title: t('faqs'),
+      link: `https://www.plant-for-the-planet.org/${locale}/faq`,
     },
   };
 
@@ -90,7 +90,7 @@ export default function Footer(): ReactElement | null {
     }
   }, []);
 
-  return ready ? (
+  return (
     <footer>
       <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
@@ -105,7 +105,7 @@ export default function Footer(): ReactElement | null {
               >
                 <World />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(i18n.language)} · ${selectedCurrency}`}
+                  {`${getLanguageName(locale)} · ${selectedCurrency}`}
                 </p>
               </button>
               <div className={styles.footer_social_container}>
@@ -153,6 +153,7 @@ export default function Footer(): ReactElement | null {
                     </svg>
                   </a>
                 </button>
+
                 <button id={'instagramIcon'}>
                   <a
                     className={styles.social_button}
@@ -337,15 +338,15 @@ export default function Footer(): ReactElement | null {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              {config.darkModeEnabled && (
+              {/* {tenantConfig.config.darkModeEnabled && (
                 <div className={styles.switch}>
                   <DarkModeSwitch />
                 </div>
-              )}
+              )} */}
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              {config.footerLinks &&
-                config.footerLinks.map((key) => {
+              {tenantConfig.config.footerLinks &&
+                tenantConfig.config.footerLinks.map((key) => {
                   const footerLinkKey = key as keyof typeof FooterLinks;
                   return (
                     <a
@@ -374,22 +375,20 @@ export default function Footer(): ReactElement | null {
             </a>
           </button>
 
-          {config.showUNEPLogo && (
+          {tenantConfig.config.showUNEPLogo && (
             <button id={'unepLogoIcon'} className={styles.unep_logo_container}>
               <a
                 href="https://www.unep.org/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <p className={styles.unep_logo_text}>
-                  {t('common:supportsUNEP')}{' '}
-                </p>
+                <p className={styles.unep_logo_text}>{t('supportsUNEP')} </p>
                 <UNEPLogo />
               </a>
             </button>
           )}
 
-          {config.showUNDecadeLogo && (
+          {tenantConfig.config.showUNDecadeLogo && (
             <button
               id={'undecadeLogoIcon'}
               className={styles.undecade_logo_container}
@@ -413,5 +412,5 @@ export default function Footer(): ReactElement | null {
         />
       </div>
     </footer>
-  ) : null;
+  );
 }

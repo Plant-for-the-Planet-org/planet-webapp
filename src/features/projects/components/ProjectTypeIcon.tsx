@@ -7,7 +7,7 @@ import Conservation from '../../../../public/assets/images/icons/project/Conserv
 import ManagedRegeneration from '../../../../public/assets/images/icons/project/ManagedRegeneration';
 import TreePlanting from '../../../../public/assets/images/icons/project/TreePlanting';
 interface Props {
-  projectType: string;
+  projectType: string | null;
 }
 const ProjectTypeIcon = ({ projectType }: Props) => {
   switch (projectType) {

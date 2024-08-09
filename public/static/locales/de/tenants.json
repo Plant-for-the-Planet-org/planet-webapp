@@ -1,51 +1,53 @@
 {
-  "nitrosb": {
-    "title": "Bäume pflanzen mit Nitro Snowboards",
-    "description": "Nitro Snowboards hat sich zum Ziel gesetzt, die Erhaltung, Wiederherstellung und das Wachstum eines Waldes zu unterstützen und dafür zu mobilisieren."
-  },
-  "energizer": {
-    "title": "Energizer ❤️ Bäume",
-    "description": "`Das Richtige tun` ist für uns der zentrale Leitgedanke, an dem wir unser Handeln ausrichten. Seit der ersten quecksilberfreien Batterie im Jahre 1989 gelingt es uns, unsere Batterien immer weiter zu verbessern, langlebiger und damit umweltfreundlicher zu machen. Unsere Partnerschaft mit Plant-for-the-Planet steht genau in dieser Tradition, die Umwelt zu schonen und für mehr Nachhaltigkeit einzustehen. Gemeinsam pflanzen wir Bäume und veranstalten Bildungsprogramme für Kinder und Jugendliche, um ein Bewusstsein für globale Gerechtigkeit und die Klimakrise zu schaffen. Einbinden wollen wir dabei auch unsere Konsumenten und den Handel, denn nur gemeinsam kann diese zentrale Herausforderung unserer Zeit gelöst werden. Bist du dabei?"
-  },
-  "senatDerWirtschaft": {
-    "title": "Senat der Wirtschaft",
-    "description": "Die Klimakrise ist eine der größten gesellschaftlichen Herausforderungen und es muss sich etwas ändern. Der Senat der Wirtschaft ist eine Wertegemeinschaft. Wir stehen für eine motivierende und verbindende Vision, verknüpft mit praktischer Umsetzung. Deshalb pflanzen immer mehr unserer Mitglieder Wälder, zusammen mit ihren Mitarbeitern, Geschäftspartnern und Kunden. Jeder gepflanzte Baum bindet CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen!"
-  },
-  "pampers": {
-    "title": "Pampers ❤️ Wald",
-    "descriptionTitle": "Bäume pflanzen für eine nachhaltigere Zukunft",
-    "description": "Gemeinsam mit euch wollen wir dabei helfen, unseren Kleinsten eine bessere Zukunft zu ermöglichen. Deshalb arbeiten wir mit der Kinder- und Jugendorganisation Plant-for-the-Planet an einem tollen Projekt: dem Pampers Wald. Pro verkaufter Packung Pampers Windeln spenden wir 0,01 EUR/CHF und insgesamt bis zu 100.000 EUR an Plant-for-the-Planet. Unser Ziel: 60.000 Bäume für eine nachhaltige Wiederaufforstung zu pflanzen. Auf der Karte seht ihr, wo das Projekt realisiert wird. Jetzt anschauen und mithelfen."
-  },
-  "interactClub": {
-    "title": "Interact Club Wald",
-    "description": "Bäume pflanzen ist ein generationsverbindendes, friedensstiftendes Projekt, das uns Menschen und besonders jungen Menschen Hoffnung gibt und auch Mut. Mut brauchen wir, um gemeinsam in dieser Klimakrise Lösungen anzupacken. Unser Ziel ist es als Kinder, Jugendliche und junge Erwachsene die Welt zu mobilisieren 1.000 Milliarden Bäume zu pflanzen damit diese Bäume uns wertvolle Zeit, etwa 15 Jahre, schenken können, die wir unbedingt nutzen sollten, um unsere CO2-Emissionen zu reduzieren. Wiederaufforstung, global skaliert, kann so zum größten Konjunkturprogramm besonders für Länder des Globalen Südens werden. Die Flächen, auf denen wir die 1.000 Milliarden zusätzlichen Bäume pflanzen können, liegen zur Hälfte in Afrika, der Rest in Lateinamerika und Südostasien, und damit in Ländern, die von der Klimakrise am stärksten betroffen sind. Diese Bäume schaffen Arbeitsplätze, sind gut für die Artenvielfalt und binden das Treibhausgas CO2. Das neue Schwerpunktthema der Rotarischen Familie lautet: Umwelt. Wir fangen jetzt an unseren Beitrag zu leisten. Pflanzen Sie gemeinsam mit uns Bäume."
-  },
-  "culchacandela": {
-    "title": "Culcha Candela X Plant-for-the-Planet",
-    "description": "<p>Wir pflanzen B&auml;ume f&uuml;r ein besseres Weltklima, um uns so wichtige Zeit im Wettlauf gegen die Klimakrise zu verschaffen. Pflanz' hier mit! <br/>...und beim H&ouml;ren des neuen \"<a href=\"https://ffm.to/hamma-4-the-planet\" target=\"_blank\" rel=\"noopener noreferrer\">Hamma (INVCTS &amp;Dorfkind J-P Remix)</a>\" auf s&auml;mtlichen Musik Streaming-Plattformen.<br/>Wir spenden die kompletten Streaming Einnahmen des Songs an Plant-for-the-Planet! Powered by <a href=\"https://www.music-for-nature.net/\" target=\"_blank\" rel=\"noopener noreferrer\">music-for-nature</a>!</p>"
-  },
-  "lacoqueta": {
-    "title": "Bäume pflanzen mit La Coqueta",
-    "description": "Zu sehen, wie ihre eigenen Kinder aufwachsen und sich zunehmend für die Klimakrise interessieren, hat Celia dazu inspiriert, ihre Marke als Plattform für positiven Wandel zu nutzen. Nachdem sie erfahren hatte, dass Bäume das wirtschaftlichste und effektivste Mittel sind, um CO2 zu binden und so mehr Zeit zu gewinnen, um die Treibhausgasemissionen auf Null zu reduzieren und die Klimakrise zu entschärfen, entschied sie sich, diese spannende Reise mit Plant-for-the-Planet anzutreten. Auch Sie können Teil dieser Reise werden und einige Bäume spenden - in Granada, der Heimatstadt von Celia, oder in anderen Gebieten auf der ganzen Welt."
-  },
-  "xiting": {
-    "title": "Bäume pflanzen - Für eine grüne Zukunft",
-    "description": "Wir als Xiting möchten mit dieser Plattform unseren Partnern, Kunden und Unterstützern die Möglichkeit geben, schnell und einfach Bäume zu pflanzen und sich so unserem Engagement im Klimaschutz anzuschließen. Wir sind davon überzeugt, dass Klimaschutz nur Sinn macht, wenn er von einer breiten Öffentlichkeit getragen wird und wir gemeinsam an einer nachhaltigen und grünen Zukunft arbeiten. <strong>Bäume sind dafür die idealen und natürlichsten Mittel, CO2 aus der Luft filtern.</strong> Pflanzen Sie jetzt mit! Seit 2019 verfolgt Xiting erfolgreich das Ziel, als Unternehmen zu 100% CO2-neutral zu agieren. Einen Einblick in unser Engagement sowie bestehende Klima-Partnerschaften finden Sie <a href=\"https://www.xiting.de/ueber-uns/engagement/\" style=\"color: inherit; text-decoration: underline\" target=\"_blank\" rel=\"noopener noreferrer\">hier</a>."
-  },
-  "ulmpflanzt": {
-    "title": "Ulm pflanzt Bäume",
-    "description": "124.781 Bäume - für jede/n Ulmer Bürger/in einen. Das ist das Ziel von \"Ulm pflanzt Bäume\" - der Klima-Initiative von Plant-for-the-Planet, dem unw (Ulmer Initiativkreis nachhaltige Wirtschaftsentwicklung e. V.), den Ulmer Unternehmen pervormance international, Trivis und der Volksbank Ulm sowie der Stadt Ulm und der lokalen agenda ulm 21. Pflanzen auch Sie mit und helfen Sie, das größte Aufforstungsprojekt der Menschheitsgeschichte zu realisieren. Für Sie - und für uns alle!"
-  },
-  "sitex": {
-    "title": "Sitex ❤️ Wald",
-    "description": "Die Klimarettung ist eine globale Aufgabe und lässt sich nur bewältigen, wenn wir alle zusammen vorgehen. Wir möchten unseren Kindern und Enkelkindern einen intakten Planeten hinterlassen. Darum unterstützen wir Plant-for-the-Planet und die Methode des Bäume-Pflanzens, um möglichst viel CO² aus der Atmosphäre zu binden. Unser Beitrag in der Sitex-Gruppe: Wir pflanzen mindestens 500.000 Bäume bis 2027."
-  },
-  "3pleset": {
-    "title": "Alife & Kickin ❤️ Bäume",
-    "description": "<p>#WEAREALIFE Schreibfehler? Nö, Absicht!<br/>Ganz nach dem Motto CHOOSE LIFE seid ihr jetzt dran.<br/>Denn ab sofort könnt ihr mit Alife &amp; Kickin und der Organisation Plant-for-the-Planet Bäume pflanzen und Leben schenken. Erschafft mit uns den Alife & Kickin Wald. Wie?<br/>Pro Onlinebestellung pflanzen wir in den nächsten 2 Monaten einen Baum mit Plant-for-the-Planet. Unser Ziel: 50.000 Bäume für eine nachhaltige Wiederaufforstung. Wo?<br/>Auf der Karte seht ihr, wo unser Alife &amp; Kickin Wald realisiert wird. Jetzt anschauen, mithelfen und noch mehr Leben schenken. CHOOSE LIFE.<br/>ONE ORDER ONE TREE<br/>#WEAREALIFE<br/></p>"
-  },
-  "weareams": {
-    "title": "Alexander Mann Solutions ❤️ Trees",
-    "description": "Ab 2021 schließt sich AMS der TrillionTreeCampaign an und gemeinsam mit Plant-for-the-Planet geben wir der Natur etwas zurück. Wir werden die Möglichkeiten nutzen, die sich uns bieten, um Nachhaltigkeit in unserer Lieferkette und durch unsere Beziehungen zu Kunden und Geschäftspartnern zu fördern. Schließen Sie sich uns an und #StopTalkingStartPlanting!"
+  "Tenants": {
+    "nitrosb": {
+      "title": "Bäume pflanzen mit Nitro Snowboards",
+      "description": "Nitro Snowboards hat sich zum Ziel gesetzt, die Erhaltung, Wiederherstellung und das Wachstum eines Waldes zu unterstützen und dafür zu mobilisieren."
+    },
+    "energizer": {
+      "title": "Energizer ❤️ Bäume",
+      "description": "`Das Richtige tun` ist für uns der zentrale Leitgedanke, an dem wir unser Handeln ausrichten. Seit der ersten quecksilberfreien Batterie im Jahre 1989 gelingt es uns, unsere Batterien immer weiter zu verbessern, langlebiger und damit umweltfreundlicher zu machen. Unsere Partnerschaft mit Plant-for-the-Planet steht genau in dieser Tradition, die Umwelt zu schonen und für mehr Nachhaltigkeit einzustehen. Gemeinsam pflanzen wir Bäume und veranstalten Bildungsprogramme für Kinder und Jugendliche, um ein Bewusstsein für globale Gerechtigkeit und die Klimakrise zu schaffen. Einbinden wollen wir dabei auch unsere Konsumenten und den Handel, denn nur gemeinsam kann diese zentrale Herausforderung unserer Zeit gelöst werden. Bist du dabei?"
+    },
+    "senatDerWirtschaft": {
+      "title": "Senat der Wirtschaft",
+      "description": "Die Klimakrise ist eine der größten gesellschaftlichen Herausforderungen und es muss sich etwas ändern. Der Senat der Wirtschaft ist eine Wertegemeinschaft. Wir stehen für eine motivierende und verbindende Vision, verknüpft mit praktischer Umsetzung. Deshalb pflanzen immer mehr unserer Mitglieder Wälder, zusammen mit ihren Mitarbeitern, Geschäftspartnern und Kunden. Jeder gepflanzte Baum bindet CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen!"
+    },
+    "pampers": {
+      "title": "Pampers ❤️ Wald",
+      "descriptionTitle": "Bäume pflanzen für eine nachhaltigere Zukunft",
+      "description": "Gemeinsam mit euch wollen wir dabei helfen, unseren Kleinsten eine bessere Zukunft zu ermöglichen. Deshalb arbeiten wir mit der Kinder- und Jugendorganisation Plant-for-the-Planet an einem tollen Projekt: dem Pampers Wald. Pro verkaufter Packung Pampers Windeln spenden wir 0,01 EUR/CHF und insgesamt bis zu 100.000 EUR an Plant-for-the-Planet. Unser Ziel: 60.000 Bäume für eine nachhaltige Wiederaufforstung zu pflanzen. Auf der Karte seht ihr, wo das Projekt realisiert wird. Jetzt anschauen und mithelfen."
+    },
+    "interactClub": {
+      "title": "Interact Club Wald",
+      "description": "Bäume pflanzen ist ein generationsverbindendes, friedensstiftendes Projekt, das uns Menschen und besonders jungen Menschen Hoffnung gibt und auch Mut. Mut brauchen wir, um gemeinsam in dieser Klimakrise Lösungen anzupacken. Unser Ziel ist es als Kinder, Jugendliche und junge Erwachsene die Welt zu mobilisieren 1.000 Milliarden Bäume zu pflanzen damit diese Bäume uns wertvolle Zeit, etwa 15 Jahre, schenken können, die wir unbedingt nutzen sollten, um unsere CO2-Emissionen zu reduzieren. Wiederaufforstung, global skaliert, kann so zum größten Konjunkturprogramm besonders für Länder des Globalen Südens werden. Die Flächen, auf denen wir die 1.000 Milliarden zusätzlichen Bäume pflanzen können, liegen zur Hälfte in Afrika, der Rest in Lateinamerika und Südostasien, und damit in Ländern, die von der Klimakrise am stärksten betroffen sind. Diese Bäume schaffen Arbeitsplätze, sind gut für die Artenvielfalt und binden das Treibhausgas CO2. Das neue Schwerpunktthema der Rotarischen Familie lautet: Umwelt. Wir fangen jetzt an unseren Beitrag zu leisten. Pflanzen Sie gemeinsam mit uns Bäume."
+    },
+    "culchacandela": {
+      "title": "Culcha Candela X Plant-for-the-Planet",
+      "description": "<p>Wir pflanzen B&auml;ume f&uuml;r ein besseres Weltklima, um uns so wichtige Zeit im Wettlauf gegen die Klimakrise zu verschaffen. Pflanz' hier mit! <br/>...und beim H&ouml;ren des neuen \"<a href=\"https://ffm.to/hamma-4-the-planet\" target=\"_blank\" rel=\"noopener noreferrer\">Hamma (INVCTS &amp;Dorfkind J-P Remix)</a>\" auf s&auml;mtlichen Musik Streaming-Plattformen.<br/>Wir spenden die kompletten Streaming Einnahmen des Songs an Plant-for-the-Planet! Powered by <a href=\"https://www.music-for-nature.net/\" target=\"_blank\" rel=\"noopener noreferrer\">music-for-nature</a>!</p>"
+    },
+    "lacoqueta": {
+      "title": "Bäume pflanzen mit La Coqueta",
+      "description": "Zu sehen, wie ihre eigenen Kinder aufwachsen und sich zunehmend für die Klimakrise interessieren, hat Celia dazu inspiriert, ihre Marke als Plattform für positiven Wandel zu nutzen. Nachdem sie erfahren hatte, dass Bäume das wirtschaftlichste und effektivste Mittel sind, um CO2 zu binden und so mehr Zeit zu gewinnen, um die Treibhausgasemissionen auf Null zu reduzieren und die Klimakrise zu entschärfen, entschied sie sich, diese spannende Reise mit Plant-for-the-Planet anzutreten. Auch Sie können Teil dieser Reise werden und einige Bäume spenden - in Granada, der Heimatstadt von Celia, oder in anderen Gebieten auf der ganzen Welt."
+    },
+    "xiting": {
+      "title": "Bäume pflanzen - Für eine grüne Zukunft",
+      "description": "Wir als Xiting möchten mit dieser Plattform unseren Partnern, Kunden und Unterstützern die Möglichkeit geben, schnell und einfach Bäume zu pflanzen und sich so unserem Engagement im Klimaschutz anzuschließen. Wir sind davon überzeugt, dass Klimaschutz nur Sinn macht, wenn er von einer breiten Öffentlichkeit getragen wird und wir gemeinsam an einer nachhaltigen und grünen Zukunft arbeiten. <strong>Bäume sind dafür die idealen und natürlichsten Mittel, CO2 aus der Luft filtern.</strong> Pflanzen Sie jetzt mit! Seit 2019 verfolgt Xiting erfolgreich das Ziel, als Unternehmen zu 100% CO2-neutral zu agieren. Einen Einblick in unser Engagement sowie bestehende Klima-Partnerschaften finden Sie <a href=\"https://www.xiting.de/ueber-uns/engagement/\" style=\"color: inherit; text-decoration: underline\" target=\"_blank\" rel=\"noopener noreferrer\">hier</a>."
+    },
+    "ulmpflanzt": {
+      "title": "Ulm pflanzt Bäume",
+      "description": "124.781 Bäume - für jede/n Ulmer Bürger/in einen. Das ist das Ziel von \"Ulm pflanzt Bäume\" - der Klima-Initiative von Plant-for-the-Planet, dem unw (Ulmer Initiativkreis nachhaltige Wirtschaftsentwicklung e. V.), den Ulmer Unternehmen pervormance international, Trivis und der Volksbank Ulm sowie der Stadt Ulm und der lokalen agenda ulm 21. Pflanzen auch Sie mit und helfen Sie, das größte Aufforstungsprojekt der Menschheitsgeschichte zu realisieren. Für Sie - und für uns alle!"
+    },
+    "sitex": {
+      "title": "Sitex ❤️ Wald",
+      "description": "Die Klimarettung ist eine globale Aufgabe und lässt sich nur bewältigen, wenn wir alle zusammen vorgehen. Wir möchten unseren Kindern und Enkelkindern einen intakten Planeten hinterlassen. Darum unterstützen wir Plant-for-the-Planet und die Methode des Bäume-Pflanzens, um möglichst viel CO² aus der Atmosphäre zu binden. Unser Beitrag in der Sitex-Gruppe: Wir pflanzen mindestens 500.000 Bäume bis 2027."
+    },
+    "3pleset": {
+      "title": "Alife & Kickin ❤️ Bäume",
+      "description": "<p>#WEAREALIFE Schreibfehler? Nö, Absicht!<br/>Ganz nach dem Motto CHOOSE LIFE seid ihr jetzt dran.<br/>Denn ab sofort könnt ihr mit Alife &amp; Kickin und der Organisation Plant-for-the-Planet Bäume pflanzen und Leben schenken. Erschafft mit uns den Alife & Kickin Wald. Wie?<br/>Pro Onlinebestellung pflanzen wir in den nächsten 2 Monaten einen Baum mit Plant-for-the-Planet. Unser Ziel: 50.000 Bäume für eine nachhaltige Wiederaufforstung. Wo?<br/>Auf der Karte seht ihr, wo unser Alife &amp; Kickin Wald realisiert wird. Jetzt anschauen, mithelfen und noch mehr Leben schenken. CHOOSE LIFE.<br/>ONE ORDER ONE TREE<br/>#WEAREALIFE<br/></p>"
+    },
+    "weareams": {
+      "title": "Alexander Mann Solutions ❤️ Trees",
+      "description": "Ab 2021 schließt sich AMS der TrillionTreeCampaign an und gemeinsam mit Plant-for-the-Planet geben wir der Natur etwas zurück. Wir werden die Möglichkeiten nutzen, die sich uns bieten, um Nachhaltigkeit in unserer Lieferkette und durch unsere Beziehungen zu Kunden und Geschäftspartnern zu fördern. Schließen Sie sich uns an und #StopTalkingStartPlanting!"
+    }
   }
 }

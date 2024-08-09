@@ -10,7 +10,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import SpeciesSelect from './SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -19,6 +19,7 @@ import {
   Species,
   SpeciesSuggestionType,
 } from '../../../common/types/plantLocation';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface NewSpecies {
   aliases: string;
@@ -26,11 +27,13 @@ interface NewSpecies {
 }
 
 export default function MySpeciesForm() {
-  const { t } = useTranslation(['treemapper', 'me', 'common']);
+  const tTreemapper = useTranslations('Treemapper');
+  const tCommon = useTranslations('Common');
   const { token, contextLoaded, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<Species[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const { tenantConfig } = useTenant();
 
   const defaultMySpeciesValue = {
     aliases: '',
@@ -49,6 +52,7 @@ export default function MySpeciesForm() {
   const fetchMySpecies = async () => {
     try {
       const result = await getAuthenticatedRequest<Species[]>(
+        tenantConfig.id,
         '/treemapper/species',
         token,
         logoutUser
@@ -62,6 +66,7 @@ export default function MySpeciesForm() {
   const deleteSpecies = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig.id,
         `/treemapper/species/${id}`,
         token,
         logoutUser
@@ -83,6 +88,7 @@ export default function MySpeciesForm() {
     };
     try {
       await postAuthenticatedRequest(
+        tenantConfig.id,
         `/treemapper/species`,
         data,
         token,
@@ -106,7 +112,7 @@ export default function MySpeciesForm() {
         <form onSubmit={handleSubmit(addSpecies)}>
           <InlineFormDisplayGroup>
             <SpeciesSelect
-              label={t('treemapper:species')}
+              label={tTreemapper('species')}
               name="scientificSpecies"
               width="300px"
               control={control}
@@ -120,10 +126,10 @@ export default function MySpeciesForm() {
               <Controller
                 name="aliases"
                 control={control}
-                rules={{ required: t('treemapper:aliasesValidation') }}
+                rules={{ required: tTreemapper('aliasesValidation') }}
                 render={({ field: { onChange, value } }) => (
                   <TextField
-                    label={t('treemapper:aliases')}
+                    label={tTreemapper('aliases')}
                     type={'text'}
                     style={{ width: '300px' }}
                     variant="outlined"
@@ -146,7 +152,7 @@ export default function MySpeciesForm() {
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('common:add')
+                tCommon('add')
               )}
             </Button>
           </InlineFormDisplayGroup>

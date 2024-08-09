@@ -1,5 +1,6 @@
 import defaultStyle from '../../../public/data/styles/root.json';
 import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
+import myForestMapStyle from '../../../public/data/styles/MyForestMapStyles.json';
 
 function format(style: any, metadata: any, metadataUrl: string) {
   // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
@@ -32,20 +33,30 @@ async function fetchTiles(style: any, metadataUrl: string) {
   }
 }
 
-export default async function getMapStyle(style: string) {
-  if (style === 'default') {
-    const result = await fetchTiles(
-      defaultStyle,
-      'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
-    );
-    return result;
-  } else if (style === 'openStreetMap') {
-    const result = await fetchTiles(
-      openStreetMap,
-      'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
-    );
-    return result;
-  } else {
-    return null;
+export default async function getMapStyle(
+  style: 'default' | 'openStreetMap' | 'myForestMap'
+) {
+  let result = null;
+  switch (style) {
+    case 'default':
+      result = await fetchTiles(
+        defaultStyle,
+        'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
+      );
+      return result;
+    case 'openStreetMap':
+      result = await fetchTiles(
+        openStreetMap,
+        'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
+      );
+      return result;
+    case 'myForestMap':
+      result = await fetchTiles(
+        myForestMapStyle,
+        'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
+      );
+      return result;
+    default:
+      return result;
   }
 }

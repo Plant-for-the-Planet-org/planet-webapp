@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .profilePage {
-  margin-top: 300px;
+  margin-top: 255px;
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
   // margin-bottom: 80px;
@@ -234,7 +234,7 @@
   border-radius: 100px;
   width: 100%;
   margin-bottom: 10px;
-  gap:15px;
+  gap: 15px;
   .importTab {
     display: flex;
     flex-direction: column;
@@ -430,7 +430,7 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
-    padding-top: 65px;
+    padding-top: 20px;
   }
   .mapContainer {
     top: 80px;

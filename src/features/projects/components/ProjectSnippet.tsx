@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   project:
@@ -49,19 +49,19 @@ export default function ProjectSnippet({
   disableDonations = false,
 }: Props): ReactElement {
   const router = useRouter();
+  const locale = useLocale();
+  const tDonate = useTranslations('Donate');
+  const tCommon = useTranslations('Common');
+  const tCountry = useTranslations('Country');
+  const tManageProjects = useTranslations('ManageProjects');
   const storedCampaign = sessionStorage.getItem('campaign');
-  const { t, i18n, ready } = useTranslation([
-    'donate',
-    'common',
-    'country',
-    'manageProjects',
-  ]);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = useProjectProps();
+  const { selectedPl, hoveredPl, setSelectedSite } = useProjectProps();
+  const { tenantConfig } = useTenant();
 
   let progressPercentage = 0;
 
@@ -78,6 +78,7 @@ export default function ProjectSnippet({
   const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(
+      tenantConfig.id,
       project.slug,
       token,
       embed || undefined,
@@ -92,8 +93,6 @@ export default function ProjectSnippet({
     popupId: 'projectInfoPopover',
   });
 
-  const config = tenantConfig();
-
   const donateButtonBackgroundColor =
     project.isTopProject && project.isApproved
       ? 'topApproved'
@@ -106,7 +105,7 @@ export default function ProjectSnippet({
       ? 'topUnapproved'
       : 'notDonatable';
 
-  return ready ? (
+  return (
     <div className={'singleProject'}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
@@ -117,9 +116,10 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
+          setSelectedSite(0);
           if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
-            `/${project.slug}/${
+            `/${locale}/${project.slug}/${
               embed === 'true'
                 ? `${
                     callbackUrl != undefined
@@ -160,14 +160,14 @@ export default function ProjectSnippet({
             <div>
               {ecosystem !== null && (
                 <div className={'projectEcosystem'}>
-                  {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+                  {tManageProjects(`ecosystemTypes.${ecosystem}`)}
                   {project.purpose === 'trees' && ' /'}
                 </div>
               )}
               <div className={'projectType'}>
                 {project.purpose === 'trees' &&
                   project.classification &&
-                  t(`donate:${project.classification}`)}
+                  tDonate(project.classification)}
               </div>
             </div>
           </div>
@@ -193,20 +193,20 @@ export default function ProjectSnippet({
               {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
-                    i18n.language,
+                    locale,
                     Number(project.countPlanted),
                     1
                   )}{' '}
                   {project.unitType === 'tree'
-                    ? t('common:tree', {
+                    ? tCommon('tree', {
                         count: Number(project.countPlanted),
                       })
-                    : t('common:m2')}{' '}
+                    : tCommon('m2')}{' '}
                   •{' '}
                 </>
               )}
               <span style={{ fontWeight: 400 }}>
-                {t('country:' + project.country.toLowerCase())}
+                {tCountry(project.country.toLowerCase())}
               </span>
             </div>
           </div>
@@ -231,24 +231,19 @@ export default function ProjectSnippet({
                 }}
               >
                 <div className="projectInfoPopupContainer">
-                  {config.tenantName === 'salesforce'
-                    ? `${t('common:salesforceDisabledDonateButtonText')}`
-                    : `${t('common:disabledDonateButtonText')}`}
+                  {tenantConfig.config.slug === 'salesforce'
+                    ? `${tCommon('salesforceDisabledDonateButtonText')}`
+                    : `${tCommon('disabledDonateButtonText')}`}
                 </div>
               </HoverPopover>
-              {t('common:notDonatable')}
+              {tCommon('notDonatable')}
             </div>
           ) : (
             <div className={'perUnitCost'}>
-              {getFormatedCurrency(
-                i18n.language,
-                project.currency,
-                project.unitCost
-              )}{' '}
+              {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
-                {project.purpose === 'conservation'
-                  ? t('donate:perM2')
-                  : t('donate:perTree')}
+                {project.unitType === 'tree' && tDonate('perTree')}
+                {project.unitType === 'm2' && tDonate('perM2')}
               </span>
             </div>
           )}
@@ -262,7 +257,7 @@ export default function ProjectSnippet({
               className={`donateButton ${donateButtonBackgroundColor}`}
               data-test-id="donateButton"
             >
-              {t('common:donate')}
+              {tCommon('donate')}
             </button>
           )}
         </div>
@@ -284,12 +279,10 @@ export default function ProjectSnippet({
           }`,
         }}
       >
-        {t('common:by', {
+        {tCommon('by', {
           tpoName: project.tpo.name,
         })}
       </div>
     </div>
-  ) : (
-    <></>
   );
 }

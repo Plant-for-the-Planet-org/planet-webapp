@@ -796,19 +796,6 @@
   width: 100%;
 }
 
-.addProjectTitle {
-  > div > span {
-    color: $primaryColor;
-  }
-  .note {
-    font-weight: bold;
-  }
-  .editProjectInfo {
-    display: flex;
-    flex-direction: row;
-  }
-}
-
 .tooltipIcon {
   display: inline-block;
   width: 1em;

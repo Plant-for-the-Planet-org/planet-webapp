@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default function StaticMap({ geoJson }: Props): ReactElement {
-  console.log(geoJson, '==');
   const defaultMapCenter: [number, number] = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
