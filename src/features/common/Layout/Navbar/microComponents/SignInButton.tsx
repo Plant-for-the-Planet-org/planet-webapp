@@ -4,8 +4,7 @@ import { useUserProps } from '../../UserPropsContext';
 import WebappButton from '../../../WebappButton';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
-import themeProperties from '../../../../../theme/themeProperties';
-import Me from '../../../../../../public/assets/images/navigation/Me';
+import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 
 export const SignInButton = () => {
   const { user, loginWithRedirect } = useUserProps();
@@ -45,7 +44,7 @@ export const SignInButton = () => {
       type="button"
       onClick={() => gotoUserPage()}
     >
-      <Me color={themeProperties.light.primaryFontColor} />
+      <Me />
     </button>
   ) : (
     <WebappButton
