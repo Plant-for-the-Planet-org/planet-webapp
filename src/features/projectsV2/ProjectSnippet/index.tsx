@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
-import style from './styles/ProjectSnippet.module.scss';
+import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../ProjectsMap/utils';
 
 interface Props {
@@ -77,13 +77,13 @@ export default function ProjectSnippet({
   ]);
 
   const tpoNameBackgroundClass = useMemo(() => {
-    if (!project.allowDonations) return `${style.noDonation}`;
-    if (isTopProject && isApproved) return `${style.tpoBackground}`;
+    if (!project.allowDonations) return `${styles.noDonation}`;
+    if (isTopProject && isApproved) return `${styles.tpoBackground}`;
     return '';
   }, [isTopProject, isApproved, project.allowDonations]);
 
   const progressBarClass = useMemo(() => {
-    return `${style[getProjectCategory(project)]}`;
+    return `${styles[getProjectCategory(project)]}`;
   }, [
     project.purpose,
     project.purpose === 'trees' && (project.isTopProject, project.isApproved),
@@ -127,17 +127,17 @@ export default function ProjectSnippet({
   };
 
   return (
-    <div className={style.singleProject}>
+    <div className={styles.singleProject}>
       <ImageSection {...imageProps} />
-      <div className={style.progressBar}>
+      <div className={styles.progressBar}>
         <div
-          className={`${style.progressBarHighlight} ${progressBarClass}`}
+          className={`${styles.progressBarHighlight} ${progressBarClass}`}
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
       <ProjectInfoSection {...projectInfoProps} />
       <div
-        className={`${style.projectTPOName} ${tpoNameBackgroundClass}`}
+        className={`${styles.projectTPOName} ${tpoNameBackgroundClass}`}
         onClick={handleClick}
       >
         {tCommon('by', {

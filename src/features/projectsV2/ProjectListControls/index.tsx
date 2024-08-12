@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import style from './styles/ProjectListControls.module.scss';
+import { useTranslations } from 'next-intl';
+import styles from './styles/ProjectListControls.module.scss';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ProjectListTabLargeScreen from './microComponents/ProjectListTabLargeScreen';
@@ -7,6 +8,7 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import { SetState } from '../../common/types/common';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/projectv2';
+import { ViewMode } from '../../../../pages/_app';
 
 export type ProjectTabs = number | 'topProjects' | 'allProjects';
 export interface ProjectListControlsProps {
@@ -20,6 +22,7 @@ export interface ProjectListControlsProps {
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   setDebouncedSearchValue: SetState<string>;
   searchProjectResults: MapProject[] | null;
+  filteredProjects: MapProject[] | null | undefined;
 }
 const ProjectListControls = ({
   projectCount,
@@ -30,9 +33,11 @@ const ProjectListControls = ({
   setSelectedClassification,
   setDebouncedSearchValue,
   searchProjectResults,
+  filteredProjects,
 }: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const tAllProjects = useTranslations('AllProjects');
 
   const projectListTabProps = {
     setIsFilterOpen,
@@ -63,13 +68,21 @@ const ProjectListControls = ({
       {isSearching ? (
         <ActiveSearchField {...activeSearchFieldProps} />
       ) : (
-        <div className={style.projectListControls}>
-          <ProjectListTabLargeScreen {...projectListTabProps} />
+        <div className={styles.projectListControls}>
+          {selectedClassification.length > 0 ? (
+            <div className={styles.filterResultContainer}>
+              {tAllProjects('filterResult', {
+                count: filteredProjects?.length,
+              })}
+            </div>
+          ) : (
+            <ProjectListTabLargeScreen {...projectListTabProps} />
+          )}
           <SearchAndFilter {...searchAndFilterProps} />
         </div>
       )}
 
-      <div className={style.filterDropDownContainer}>
+      <div className={styles.filterDropDownContainer}>
         {isFilterOpen && !isSearching && (
           <ClassificationDropDown {...classificationDropDownProps} />
         )}

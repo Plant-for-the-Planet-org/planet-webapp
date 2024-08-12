@@ -33,10 +33,8 @@ interface ProjectsState {
   projects: MapProject[] | null;
   isLoading: boolean;
   isError: boolean;
-  filteredTopProjects: MapProject[] | null;
-  setFilteredTopProjects: SetState<MapProject[] | null>;
-  filteredRegularProjects: MapProject[] | null;
-  setFilteredRegularProjects: SetState<MapProject[] | null>;
+  filteredProjects: MapProject[] | null;
+  setFilteredProjects: SetState<MapProject[] | null>;
   searchProjectResults: MapProject[] | null;
   setSearchProjectResults: SetState<MapProject[] | null>;
   tabSelected: ProjectTabs;
@@ -64,12 +62,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setCurrencyCode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [filteredTopProjects, setFilteredTopProjects] = useState<
-    MapProject[] | null
-  >(null);
-  const [filteredRegularProjects, setFilteredRegularProjects] = useState<
-    MapProject[] | null
-  >(null);
+  const [filteredProjects, setFilteredProjects] = useState<MapProject[] | null>(
+    null
+  );
   const [tabSelected, setTabSelected] = useState<
     number | (typeof TAB_OPTIONS)[keyof typeof TAB_OPTIONS]
   >(window.innerWidth < MOBILE_BREAKPOINT ? TAB_OPTIONS.TOP_PROJECTS : 0);
@@ -109,29 +104,16 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     [projects, tabSelected]
   );
   const doSearchResultsMatchFilters = useMemo(() => {
-    if (
-      filteredTopProjects &&
-      filteredRegularProjects &&
-      selectedClassification.length > 0
-    ) {
+    if (filteredProjects && selectedClassification.length > 0) {
       return searchProjectResults?.some((project) =>
-        doesProjectExistInFilteredLists(project, [
-          filteredTopProjects,
-          filteredRegularProjects,
-        ])
+        doesProjectExistInFilteredLists(project, [filteredProjects])
       );
     }
-  }, [
-    searchProjectResults,
-    filteredTopProjects,
-    filteredRegularProjects,
-    selectedClassification,
-  ]);
+  }, [searchProjectResults, filteredProjects, selectedClassification]);
 
   useEffect(() => {
-    if (topProjects && projects) {
-      setFilteredTopProjects(filterProjectsByClassification(topProjects));
-      setFilteredRegularProjects(filterProjectsByClassification(projects));
+    if (projects) {
+      setFilteredProjects(filterProjectsByClassification(projects));
     }
   }, [tabSelected, selectedClassification]);
 
@@ -185,10 +167,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       projects,
       isLoading,
       isError,
-      filteredTopProjects,
-      setFilteredTopProjects,
-      filteredRegularProjects,
-      setFilteredRegularProjects,
+      filteredProjects,
+      setFilteredProjects,
       searchProjectResults,
       setSearchProjectResults,
       debouncedSearchValue,
@@ -204,8 +184,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       projects,
       isLoading,
       isError,
-      filteredTopProjects,
-      filteredRegularProjects,
+      filteredProjects,
       searchProjectResults,
       debouncedSearchValue,
       topProjects,

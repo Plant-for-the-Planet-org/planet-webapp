@@ -2,62 +2,25 @@ import { useMemo } from 'react';
 import { useProjects } from '../ProjectsContext';
 import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
+import { MapProject } from '../../common/types/projectv2';
 
 const MultipleProjectsView = ({
-  selectedMode,
-  isMobile,
+  projectsToDisplay,
 }: {
-  selectedMode: 'list' | 'map';
-  isMobile: boolean;
+  projectsToDisplay: MapProject[] | null | undefined;
 }) => {
   const {
     projects,
-    filteredTopProjects,
-    filteredRegularProjects,
+    filteredProjects,
     isLoading,
     isError,
     selectedClassification,
-    tabSelected,
-    topProjects,
     searchProjectResults,
-    debouncedSearchValue,
-    doSearchResultsMatchFilters,
   } = useProjects();
 
   if (isLoading || isError || !projects) {
     return null;
   }
-  const projectsToDisplay = useMemo(() => {
-    const isTopProjectTab = tabSelected === 0 || tabSelected === 'topProjects';
-    const hasClassificationFilter = selectedClassification.length > 0;
-    if (searchProjectResults && debouncedSearchValue) {
-      if (hasClassificationFilter && doSearchResultsMatchFilters) {
-        return searchProjectResults;
-      } else if (hasClassificationFilter && !doSearchResultsMatchFilters) {
-        return [];
-      } else {
-        return searchProjectResults;
-      }
-    }
-
-    if (searchProjectResults?.length === 0 && debouncedSearchValue.length > 0)
-      return [];
-
-    if (hasClassificationFilter) {
-      return isTopProjectTab ? filteredTopProjects : filteredRegularProjects;
-    }
-    //* If none of the above conditions are met, return all projects (for desktop version).
-    //* However it return all projects base on selected tab(top/all) for mobile version
-    return isMobile ? (isTopProjectTab ? topProjects : projects) : projects;
-  }, [
-    selectedMode,
-    tabSelected,
-    selectedClassification,
-    filteredTopProjects,
-    topProjects,
-    filteredRegularProjects,
-    searchProjectResults,
-  ]);
 
   const categorizedProjects = useMemo(() => {
     return projectsToDisplay?.reduce<CategorizedProjects>(
@@ -82,14 +45,7 @@ const MultipleProjectsView = ({
         regularDonatableProjects: [],
       }
     );
-  }, [
-    projects,
-    filteredTopProjects,
-    filteredRegularProjects,
-    searchProjectResults,
-    isLoading,
-    isError,
-  ]);
+  }, [projects, filteredProjects, searchProjectResults, isLoading, isError]);
   return (
     <ProjectMarkers
       categorizedProjects={categorizedProjects}

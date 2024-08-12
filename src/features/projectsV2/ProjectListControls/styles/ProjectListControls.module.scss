@@ -79,7 +79,6 @@
   border: 2px solid $primaryColorNew;
   display: flex;
   overflow: hidden;
-  width: 130px;
 }
 
 .tabContainerSecondary {
@@ -196,10 +195,15 @@
   border-radius: 12px;
   position: absolute;
   z-index: 2;
+  box-shadow: 2px 2px 14px gray;
   @include xsPhoneView {
     left: 140px;
     top: 59px;
   }
+}
+
+.mobileSelectMode {
+  left: 11px;
 }
 
 .classificationUnselected {
@@ -224,4 +228,20 @@
 
 .hrLine {
   width: 100%;
+}
+
+.filterResultContainer {
+  margin-left: 90px;
+  font-weight: 700;
+}
+
+.filterResultContainerMobile {
+  width: 130px;
+  height: 26px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

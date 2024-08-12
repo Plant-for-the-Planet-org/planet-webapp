@@ -21,16 +21,31 @@ import {
   PageProps,
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { useProjects } from '../../../../../src/features/projectsV2/ProjectsContext';
 
 const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const {
+    setFilteredProjects,
+    setSelectedClassification,
+    setSearchProjectResults,
+    setDebouncedSearchValue,
+  } = useProjects();
 
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
+
+  //* a temporary hook that will be removed in the future
+  useEffect(() => {
+    setFilteredProjects([]);
+    setSelectedClassification([]);
+    setSearchProjectResults([]);
+    setDebouncedSearchValue('');
+  }, []);
 
   return (
     <div>

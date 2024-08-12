@@ -25,6 +25,7 @@
     "areaRestored": "{area}  m² restored",
     "areaConserved": "{area}  m² conserved",
     "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }",
-    "noProjectFound": "Oops! No project found"
+    "noProjectFound": "Oops! No project found",
+    "filterResult": "{count, plural, =1 {# Project} other {# Projects}} found "
   }
 }

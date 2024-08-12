@@ -8,7 +8,7 @@ import { ProjectInfoProps } from '..';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
-import style from '../styles/ProjectSnippet.module.scss';
+import styles from '../styles/ProjectSnippet.module.scss';
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {
@@ -56,23 +56,23 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   }, [unitCount, unitType, purpose]);
 
   const donateButtonClass =
-    isTopProject && isApproved ? `${style.topProject}` : undefined;
+    isTopProject && isApproved ? `${styles.topProject}` : undefined;
 
   return (
-    <div className={style.projectInfo}>
+    <div className={styles.projectInfo}>
       <div>
-        <div className={style.targetLocation}>
-          <div className={style.target}>
+        <div className={styles.targetLocation}>
+          <div className={styles.target}>
             {unitCount !== undefined && unitCount > 0 && (
               <>{donationLabel} • </>
             )}
-            <span className={style.country}>
+            <span className={styles.country}>
               {tCountry(country.toLowerCase() as Lowercase<CountryCode>)}
             </span>
           </div>
         </div>
         {allowDonations && (
-          <div className={style.perUnitCost}>
+          <div className={styles.perUnitCost}>
             {tAllProjects('ratePerUnit', {
               amount: getFormatedCurrency(locale, currency, unitCost),
               unit: unitType,

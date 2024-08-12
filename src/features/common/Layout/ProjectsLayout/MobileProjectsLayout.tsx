@@ -1,17 +1,18 @@
 import { FC } from 'react';
-import style from './ProjectsLayout.module.scss';
+import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 import Credits from '../../../projects/components/maps/Credits';
+import { ViewMode } from '../../../../../pages/_app';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
-  selectedMode: 'list' | 'map';
-  setSelectedMode: SetState<'list' | 'map'>;
+  selectedMode: ViewMode;
+  setSelectedMode: SetState<ViewMode>;
   isMobile: boolean;
 }
 
@@ -24,8 +25,8 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   setSelectedMode,
   isMobile,
 }) => {
-  const mobileLayoutClass = `${style.mobileProjectsLayout} ${
-    selectedMode === 'map' ? style.mapMode : ''
+  const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
+    selectedMode === 'map' ? styles.mapMode : ''
   }`;
 
   return (
@@ -37,7 +38,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
       <ProjectsMapProvider>
         <main className={mobileLayoutClass}>
           {selectedMode === 'map' ? (
-            <section className={style.mobileMapContainer}>
+            <section className={styles.mobileMapContainer}>
               <ProjectsMap
                 selectedMode={selectedMode}
                 setSelectedMode={setSelectedMode}
@@ -45,7 +46,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
               />
             </section>
           ) : (
-            <section className={style.mobileContentContainer}>
+            <section className={styles.mobileContentContainer}>
               {children}
             </section>
           )}

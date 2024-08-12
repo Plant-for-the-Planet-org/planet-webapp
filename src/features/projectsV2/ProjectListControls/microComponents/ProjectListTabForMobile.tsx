@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
-import style from '../styles/ProjectListControls.module.scss';
+import styles from '../styles/ProjectListControls.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
 
 type ProjectCollection = number | 'topProjects' | 'allProjects';
@@ -35,26 +35,26 @@ const ProjectListTabForMobile = ({
   const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
     const tabButtonClass =
       tabSelected === selectedTab
-        ? style.selectedTabButton
-        : style.unselectedTabButton;
+        ? styles.selectedTabButton
+        : styles.unselectedTabButton;
     return (
       <button className={tabButtonClass} onClick={() => selectTab(selectedTab)}>
-        {icon && <div className={style.starIconContainer}>{icon}</div>}
-        <div className={style.label}>{label}</div>
+        {icon && <div className={styles.starIconContainer}>{icon}</div>}
+        <div className={styles.label}>{label}</div>
       </button>
     );
   };
   const starIconColor =
     tabSelected === 'topProjects' ? `${light.light}` : `${dark.darkNew}`;
   return (
-    <div className={style.tabContainer}>
+    <div className={styles.tabContainer}>
       <TabItem
         selectedTab="topProjects"
         icon={<StarIcon width={'12px'} color={starIconColor} />}
         label={t.rich('top', {
           noOfProjects: topProjectCount,
           projectCountContainer: (chunks) => (
-            <span className={style.projectCount}>{chunks}</span>
+            <span className={styles.projectCount}>{chunks}</span>
           ),
         })}
       />
@@ -63,7 +63,7 @@ const ProjectListTabForMobile = ({
         label={t.rich('allProjects', {
           noOfProjects: projectCount,
           projectCountContainer: (chunks) => (
-            <span className={style.projectCount}>{chunks}</span>
+            <span className={styles.projectCount}>{chunks}</span>
           ),
         })}
       />

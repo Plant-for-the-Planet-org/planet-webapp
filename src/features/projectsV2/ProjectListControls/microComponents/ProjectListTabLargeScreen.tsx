@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import CustomMuiTab from './CustomMuiTab';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import themeProperties from '../../../../theme/themeProperties';
-import style from '../styles/ProjectListControls.module.scss';
+import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
 import { ProjectTabs } from '..';
 
@@ -44,11 +44,11 @@ const ProjectListTabLargeScreen = ({
           />
         }
         label={
-          <div className={style.projectLabel}>
+          <div className={styles.projectLabel}>
             {t.rich('topProjects', {
               noOfProjects: topProjectCount,
               projectCountContainer: (chunks) => (
-                <span className={style.projectCount}>{chunks}</span>
+                <span className={styles.projectCount}>{chunks}</span>
               ),
             })}
           </div>
@@ -58,11 +58,11 @@ const ProjectListTabLargeScreen = ({
       <CustomMuiTab
         sx={{ fontWeight: '700', marginLeft: '0px' }}
         label={
-          <div className={style.projectLabel}>
+          <div className={styles.projectLabel}>
             {t.rich('allProjects', {
               noOfProjects: projectCount,
               projectCountContainer: (chunks) => (
-                <span className={style.projectCount}>{chunks}</span>
+                <span className={styles.projectCount}>{chunks}</span>
               ),
             })}
           </div>

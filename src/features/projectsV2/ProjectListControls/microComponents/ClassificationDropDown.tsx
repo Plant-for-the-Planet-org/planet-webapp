@@ -1,17 +1,25 @@
 import { useTranslations } from 'next-intl';
-import style from '../styles/ProjectListControls.module.scss';
+import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../utils';
 import { TreeProjectClassification } from '@planet-sdk/common';
+import { MapProject } from '../../../common/types/projectv2';
+import { ViewMode } from '../../../../../pages/_app';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  isMobile?: boolean;
+  selectedMode?: ViewMode;
+  projectsToDisplay?: MapProject[] | undefined | null;
 }
 
 export const ClassificationDropDown = ({
   selectedClassification,
   setSelectedClassification,
+  isMobile,
+  selectedMode,
+  projectsToDisplay,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
   const handleFilterSelection = (
@@ -26,43 +34,50 @@ export const ClassificationDropDown = ({
   };
   const isFilterApplied = selectedClassification.length !== 0;
   return (
-    <div className={style.classificationListContainer}>
+    <div
+      className={`${styles.classificationListContainer} ${
+        (isMobile && selectedMode === 'map') ||
+        (isMobile && selectedMode === 'list' && projectsToDisplay?.length === 0)
+          ? styles.mobileSelectMode
+          : ''
+      }`}
+    >
       <button
-        className={style.filterButton}
+        className={styles.filterButton}
         onClick={() => setSelectedClassification([])}
       >
         <div
           className={
             isFilterApplied
-              ? style.classificationUnselected
-              : style.classificationSelected
+              ? styles.classificationUnselected
+              : styles.classificationSelected
           }
         >
           {isFilterApplied
             ? tAllProjects('clearFilter')
             : tAllProjects('noFilterApplied')}
         </div>
-        <hr className={style.hrLine} />
+        <hr className={styles.hrLine} />
       </button>
       <div>
         {availableFilters.map((filterItem, index) => {
           return (
             <button
               key={index}
-              className={style.filterButton}
+              className={styles.filterButton}
               onClick={() => handleFilterSelection(filterItem)}
             >
               <div
                 className={
                   selectedClassification?.includes(filterItem)
-                    ? style.classificationSelected
-                    : style.classificationUnselected
+                    ? styles.classificationSelected
+                    : styles.classificationUnselected
                 }
               >
                 {tAllProjects(`classificationTypes.${filterItem}`)}
               </div>
               {index !== availableFilters.length - 1 && (
-                <hr className={style.hrLine} />
+                <hr className={styles.hrLine} />
               )}
             </button>
           );

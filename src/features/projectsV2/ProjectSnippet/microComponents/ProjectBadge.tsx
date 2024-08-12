@@ -3,7 +3,7 @@ import OffSiteReviewedIcon from '../../../../../public/assets/images/icons/proje
 import FieldReviewedIcon from '../../../../../public/assets/images/icons/projectV2/FieldReviewedIcon';
 import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/TopProjectIcon';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
-import style from '../styles/Badge.module.scss';
+import styles from '../styles/Badge.module.scss';
 import { useTranslations } from 'next-intl';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTenant } from '../../../common/Layout/TenantContext';
@@ -29,9 +29,9 @@ interface BadgeLabelprops {
 }
 const BadgeLabel = ({ icon, title }: BadgeLabelprops) => {
   return (
-    <div className={style.projectBadge}>
-      <div className={style.badgeIcon}>{icon}</div>
-      <div className={style.badgeTitle}>{title}</div>
+    <div className={styles.projectBadge}>
+      <div className={styles.badgeIcon}>{icon}</div>
+      <div className={styles.badgeTitle}>{title}</div>
     </div>
   );
 };
@@ -80,7 +80,7 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
   const getMessage = (badgeType: string | undefined) => {
     if (badgeType === 'notDonatable') {
       return (
-        <div className={style.tooltipContent}>
+        <div className={styles.tooltipContent}>
           {tenantConfig.config.slug === 'salesforce'
             ? `${tCommon('salesforceDisabledDonateButtonText')}`
             : `${tCommon('disabledDonateButtonText')}`}
@@ -88,14 +88,14 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
       );
     } else if (badgeType === 'topProject') {
       return (
-        <div className={style.tooltipContent}>
+        <div className={styles.tooltipContent}>
           {tCommon.rich('top_project_standards_fulfilled', {
             standardsLink: (chunks) => (
               <a
                 target="_blank"
                 href={tCommon('standardsLink')}
                 rel="noreferrer"
-                className={style.standardsLink}
+                className={styles.standardsLink}
                 onClick={(e) => e.stopPropagation()}
               >
                 {chunks}

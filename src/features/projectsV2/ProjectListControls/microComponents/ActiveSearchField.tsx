@@ -2,7 +2,7 @@ import { useState, ChangeEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import style from '../styles/ProjectListControls.module.scss';
+import styles from '../styles/ProjectListControls.module.scss';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { SetState } from '../../../common/types/common';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
@@ -36,8 +36,8 @@ const ActiveSearchField = ({
   };
 
   return (
-    <div className={style.activeSearchFieldContainer}>
-      <button className={style.activeSearchIcon}>
+    <div className={styles.activeSearchFieldContainer}>
+      <button className={styles.activeSearchIcon}>
         <SearchIcon />
       </button>
       <SearchTextField
@@ -51,7 +51,7 @@ const ActiveSearchField = ({
         autoFocus
       />
 
-      <button onClick={resetSearchTab} className={style.crossIcon}>
+      <button onClick={resetSearchTab} className={styles.crossIcon}>
         <CrossIcon />
       </button>
     </div>

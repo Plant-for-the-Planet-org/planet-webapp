@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
 import ProjectBadge from './ProjectBadge';
-import ProjectTypeIcon from './ProjectTypeIcon';
+import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
-import style from '../styles/ProjectSnippet.module.scss';
+import styles from '../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
 
@@ -47,7 +47,7 @@ const ImageSection = (props: ImageSectionProps) => {
   };
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   return (
-    <div onClick={handleImageClick} className={style.projectImage}>
+    <div onClick={handleImageClick} className={styles.projectImage}>
       <ProjectBadge
         isApproved={isApproved}
         allowDonations={allowDonations}
@@ -59,15 +59,15 @@ const ImageSection = (props: ImageSectionProps) => {
             alt="projectImage"
             src={imageSource}
             width={'fit-content'}
-            className={style.projectImageFile}
+            className={styles.projectImageFile}
           />
-          <div className={style.gradientOverlay} />
+          <div className={styles.gradientOverlay} />
         </>
       ) : null}
 
-      <div className={style.projectImageBlock}>
-        <div className={style.projectEcosystemOrTypeContainer}>
-          <div className={style.projectTypeIcon}>
+      <div className={styles.projectImageBlock}>
+        <div className={styles.projectEcosystemOrTypeContainer}>
+          <div className={styles.projectTypeIcon}>
             <ProjectTypeIcon
               projectType={
                 purpose === 'conservation' ? 'conservation' : classification
@@ -76,28 +76,28 @@ const ImageSection = (props: ImageSectionProps) => {
           </div>
           <div>
             {ecosystem !== null && (
-              <div className={style.projectEcosystem}>
+              <div className={styles.projectEcosystem}>
                 {tManageProjects(`ecosystemTypes.${ecosystem}`)}
                 {' /'}
               </div>
             )}
-            <div className={style.projectType}>
+            <div className={styles.projectType}>
               {classification && tDonate(classification)}
             </div>
           </div>
         </div>
-        <div className={style.projectName}>
+        <div className={styles.projectName}>
           {truncateString(projectName, 30)}
           {isApproved && (
             <CustomTooltip
               showPopup={showPopup}
               triggerElement={
-                <span className={style.verifiedIcon}>
+                <span className={styles.verifiedIcon}>
                   <VerifiedIcon sx={{ width: '100%' }} />
                 </span>
               }
             >
-              <div className={style.topProjectReportsContainer}>
+              <div className={styles.topProjectReportsContainer}>
                 <TopProjectReports projectReviews={projectReviews} />
               </div>
             </CustomTooltip>

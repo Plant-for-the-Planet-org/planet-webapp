@@ -1,21 +1,21 @@
 import { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
-import style from '../styles/ProjectListControls.module.scss';
+import styles from '../styles/ProjectListControls.module.scss';
 import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';
 import { SetState } from '../../../common/types/common';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
+import { ViewMode } from '../../../../../pages/_app';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean> | undefined;
   isSearching: boolean | undefined;
-  setSelectedMode: SetState<'list' | 'map'>;
-  selectedMode: 'list' | 'map';
+  setSelectedMode: SetState<ViewMode>;
+  selectedMode: ViewMode;
 }
 
-type Tabs = 'list' | 'map';
 interface TabItemProps {
-  selectedTab: Tabs;
+  selectedTab: ViewMode;
   icon: ReactNode;
   label: string | undefined;
 }
@@ -28,7 +28,7 @@ const ViewModeTabs = ({
   const { dark, light } = themeProperties;
   const t = useTranslations('AllProjects');
 
-  const selectTab = (tab: Tabs) => {
+  const selectTab = (tab: ViewMode) => {
     if (setIsFilterOpen) {
       setIsFilterOpen(false);
     }
@@ -38,21 +38,21 @@ const ViewModeTabs = ({
   const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
     const isSelected = selectedMode === selectedTab;
     const tabButtonClass = isSelected
-      ? style.selectedTabButton
-      : style.unselectedTabButton;
+      ? styles.selectedTabButton
+      : styles.unselectedTabButton;
     return (
       <button className={tabButtonClass} onClick={() => selectTab(selectedTab)}>
         {icon}
-        <div className={style.label}>{label}</div>
+        <div className={styles.label}>{label}</div>
       </button>
     );
   };
 
   const tabContainerClass = isSearching
-    ? style.tabContainerSecondary
-    : style.tabContainer;
+    ? styles.tabContainerSecondary
+    : styles.tabContainer;
 
-  const getIconColor = (mode: Tabs, selectMode: Tabs) =>
+  const getIconColor = (mode: ViewMode, selectMode: ViewMode) =>
     mode === selectMode ? light.light : dark.darkNew;
 
   return (
