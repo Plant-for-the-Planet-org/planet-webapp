@@ -19,9 +19,9 @@ const BrandLogo = () => {
   }, []);
 
   return (
-    <div className={'brandLogos'}>
+    <div className="brandLogos">
       <SecondaryLogo isMobile={isMobile} />
-      <PlanetLogo isMobile={isMobile} />
+      <PlanetLogo />
     </div>
   );
 };
