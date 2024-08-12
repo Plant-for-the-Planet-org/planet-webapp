@@ -5,7 +5,6 @@ export async function fetchProfile(profileId: string) {
     select: {
       id: true,
       guid: true,
-      treecounterId: true,
     },
     where: {
       guid: profileId,
