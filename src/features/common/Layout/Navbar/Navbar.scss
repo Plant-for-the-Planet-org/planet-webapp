@@ -33,21 +33,22 @@
   }
 }
 
-.planetLogoContainerForMobile {
-  width: 42px;
-  height: 42px;
-  border-radius: 9.5px;
-  padding-left: 5px;
-  padding-top: 5px;
-  border: 0.725px solid rgba(211, 211, 211, 0.5);
-  box-shadow: 0px 4.345px 5.793px 0px rgba(43, 43, 43, 0.1);
+.tenantLogoContainer,
+.planetLogoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include xsPhoneView {
+    height: 42px;
+    a {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .tenantLogo {
   margin-top: 0px;
-  @include xsPhoneView {
-    margin-top: 8px;
-  }
 }
 
 .brandLogos {
