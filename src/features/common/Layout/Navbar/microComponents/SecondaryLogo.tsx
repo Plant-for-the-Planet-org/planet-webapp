@@ -11,14 +11,14 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
   return (
     <>
       {tenantConfig.config.header?.isSecondaryTenant && (
-        <div className="brandLogos">
+        <div className="tenantLogoContainer">
           <a href={tenantConfig.config?.header?.tenantLogoLink}>
             <img
               src={tenantConfig.config?.header?.tenantLogoURL}
               className="tenantLogo"
             />
           </a>
-          {!isMobile && <div className={'logo_divider'} />}
+          {!isMobile && <div className="logo_divider" />}
         </div>
       )}
     </>

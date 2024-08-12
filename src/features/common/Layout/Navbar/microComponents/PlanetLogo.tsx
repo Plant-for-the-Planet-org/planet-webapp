@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { useTranslations } from 'next-intl';
 
-const PlanetLogo = ({ isMobile }: { isMobile: boolean }) => {
+const PlanetLogo = () => {
   const t = useTranslations('Common');
   const { theme } = useContext(ThemeContext);
   const logoSrc =
@@ -11,9 +11,9 @@ const PlanetLogo = ({ isMobile }: { isMobile: boolean }) => {
       : `/assets/images/PlanetDarkLogo.svg`;
 
   return (
-    <div className={`${isMobile ? `planetLogoContainerForMobile` : ''}`}>
+    <div className="planetLogoContainer">
       <a href="https://www.plant-for-the-planet.org">
-        <img className={'planetLogo'} src={logoSrc} alt={t('about_pftp')} />
+        <img className="planetLogo" src={logoSrc} alt={t('about_pftp')} />
       </a>
     </div>
   );
