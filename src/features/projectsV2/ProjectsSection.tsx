@@ -7,7 +7,6 @@ import ProjectListControlForMobile from './ProjectListControls/ProjectListContro
 import { SetState } from '../common/types/common';
 import ProjectList from './ProjectList';
 import { useState } from 'react';
-import { MapProject } from '../common/types/projectv2';
 import { ViewMode } from '../../../pages/_app';
 
 interface ProjectsSectionProps {
@@ -58,9 +57,8 @@ const ProjectsSection = ({
     selectedMode,
     isMobile,
   };
-  const handleResultantProjectCount = (projectList: MapProject[] | null) => {
-    if (projectList && projectList?.length > 0)
-      setResultantProjectCount(projectList?.length);
+  const handleResultantProjectCount = (projectCount: number) => {
+    setResultantProjectCount(projectCount);
   };
 
   return (

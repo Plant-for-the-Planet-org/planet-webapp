@@ -75,6 +75,7 @@ const ProjectListControlForMobile = ({
     setSelectedClassification,
     isMobile,
     selectedMode,
+    resultantProjectCount,
   };
   const hasFilterApplied =
     selectedClassification.length > 0 ||
@@ -82,6 +83,7 @@ const ProjectListControlForMobile = ({
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map';
+
   return (
     <>
       {isSearching ? (

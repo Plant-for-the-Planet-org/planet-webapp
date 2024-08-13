@@ -1,9 +1,9 @@
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../utils';
 import { TreeProjectClassification } from '@planet-sdk/common';
-import { MapProject } from '../../../common/types/projectv2';
 import { ViewMode } from '../../../../../pages/_app';
 
 interface ClassificationDropDownProps {
@@ -11,7 +11,7 @@ interface ClassificationDropDownProps {
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   isMobile?: boolean;
   selectedMode?: ViewMode;
-  projectsToDisplay?: MapProject[] | undefined | null;
+  resultantProjectCount?: number;
 }
 
 export const ClassificationDropDown = ({
@@ -19,7 +19,7 @@ export const ClassificationDropDown = ({
   setSelectedClassification,
   isMobile,
   selectedMode,
-  projectsToDisplay,
+  resultantProjectCount,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
   const handleFilterSelection = (
@@ -33,15 +33,17 @@ export const ClassificationDropDown = ({
     setSelectedClassification(newFilter);
   };
   const isFilterApplied = selectedClassification.length !== 0;
+
+  const classificationContainerClass = useMemo(() => {
+    return `${styles.classificationListContainer} ${
+      (isMobile && selectedMode === 'map') ||
+      (isMobile && selectedMode === 'list' && resultantProjectCount === 0)
+        ? styles.mobileSelectMode
+        : ''
+    }`;
+  }, [isMobile, selectedMode, resultantProjectCount]);
   return (
-    <div
-      className={`${styles.classificationListContainer} ${
-        (isMobile && selectedMode === 'map') ||
-        (isMobile && selectedMode === 'list' && projectsToDisplay?.length === 0)
-          ? styles.mobileSelectMode
-          : ''
-      }`}
-    >
+    <div className={classificationContainerClass}>
       <button
         className={styles.filterButton}
         onClick={() => setSelectedClassification([])}

@@ -9,7 +9,7 @@ import { ViewMode } from '../../../../pages/_app';
 
 type ProjectListProps = {
   selectedMode: ViewMode;
-  handleResultantProjectCount: (value: MapProject[] | null) => void;
+  handleResultantProjectCount: (value: number) => void;
 };
 
 const ProjectList = ({
@@ -82,8 +82,10 @@ const ProjectList = ({
     ),
     []
   );
+
   useEffect(() => {
-    if (projectsToDisplay) handleResultantProjectCount(projectsToDisplay);
+    if (projectsToDisplay)
+      handleResultantProjectCount(projectsToDisplay.length);
   }, [projectsToDisplay]);
 
   const isProjectFound = !(
