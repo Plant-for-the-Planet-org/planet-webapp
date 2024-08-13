@@ -11,6 +11,9 @@
   flex-wrap: wrap;
   gap: 20px;
   z-index: 13;
+  @include xsPhoneView {
+    top: 150px;
+  }
 }
 
 .filterButton {

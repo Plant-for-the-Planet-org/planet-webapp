@@ -19,7 +19,7 @@ const RestoredButton = ({
   restoredArea,
   plantedTrees,
 }: RestoredButtonProps): ReactElement => {
-  const { primaryDarkColorX, light } = theme;
+  const { primaryColorNew, light } = theme;
   const t = useTranslations('Profile');
   const locale = useLocale();
   const { isTreePlantedButtonActive } = useMyForest();
@@ -38,7 +38,7 @@ const RestoredButton = ({
             color={
               isTreePlantedButtonActive
                 ? `${light.light}`
-                : `${primaryDarkColorX}`
+                : `${primaryColorNew}`
             }
           />
         </div>
@@ -61,7 +61,7 @@ const RestoredButton = ({
               {isTreePlantedButtonActive ? (
                 <DownWardArrowSvg color={`${light.light}`} />
               ) : (
-                <ArrowSvg color={`${primaryDarkColorX}`} />
+                <ArrowSvg color={`${primaryColorNew}`} />
               )}
             </div>
           )}

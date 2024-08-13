@@ -40,6 +40,24 @@ export default function GrowingImpact() {
       bgColor: '#1C3326',
       partnerLogo: '/tenants/salesforce/images/partner-logo.png',
     },
+    {
+      id: 5,
+      copy: '2023 Fitness-for-a-Cause Challenge: Over 23,000 trees planted during Earthforce Champion month!',
+      image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
+      foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
+      link: '/vto-fitness-challenge-2023',
+      linkCopy: 'Click here to learn more about the cause',
+      bgColor: '#0B827C',
+    },
+    {
+      id: 6,
+      copy: '2023 Oceanforce Challenge: Over 3,000 Mangroves planted!',
+      image: '/tenants/salesforce/images/bkgd-guatemala-2.png',
+      foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
+      link: '/mangrove-challenge',
+      linkCopy: 'Click here to learn more about the cause',
+      bgColor: '#396547',
+    },
   ];
 
   return (
@@ -72,6 +90,15 @@ export default function GrowingImpact() {
                 >
                   <h5>{article.copy}</h5>
                   <h5>{article.subCopy}</h5>
+                  {article.linkCopy !== undefined && (
+                    <a
+                      href={article.link}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {article.linkCopy}
+                    </a>
+                  )}
                   <img
                     src={article.foliage}
                     alt=""

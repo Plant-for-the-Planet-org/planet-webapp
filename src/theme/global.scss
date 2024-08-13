@@ -52,10 +52,10 @@ body {
   // background-color: #c8def4;
 }
 
-.theme-light,
-.theme-dark {
-  background-color: $backgroundColor;
-}
+// .theme-light,
+// .theme-dark {
+//   background-color: $backgroundColor;
+// }
 
 .MuiInput-underline:after {
   border-bottom: 2px solid $primaryColor !important;
@@ -737,6 +737,7 @@ input[type='number'] {
   width: 100%;
   position: fixed;
   z-index: 1220;
+  top: -142px;
 }
 
 .accessDeniedContainer {
