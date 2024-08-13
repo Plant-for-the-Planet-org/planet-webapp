@@ -34,6 +34,11 @@ export const getTenantConfigList = async () => {
 export async function constructPathsForTenantSlug() {
   const tenants = (await getTenantConfigList()) as Tenant[];
 
+  if (process.env.IS_SINGLE_TENANT_SERVER === 'true') {
+    // Return only the path for the specific Heroku tenant
+    return [{ params: { slug: process.env.TENANT || DEFAULT_TENANT } }];
+  }
+
   // build paths for each of the sites
   if (tenants) {
     return tenants

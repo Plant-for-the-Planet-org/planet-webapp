@@ -1,0 +1,100 @@
+@import '../../../../theme/theme';
+
+.projectGridContainer {
+  background-image: url('/tenants/salesforce/images/rectangle-35.png');
+  background-size: 1440px 100%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  position: relative;
+  z-index: 999;
+  padding-top: 84px;
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+
+  .projectGrid {
+    padding-bottom: 150px;
+    h2 {
+      font-family: $secondaryFontFamily;
+      font-style: normal;
+      font-weight: 500;
+      font-size: $fontXXLarge;
+      line-height: 40px;
+      text-align: center;
+      letter-spacing: -0.004em;
+      color: #032d60;
+      margin-bottom: 10px;
+      @include lgLaptopView {
+        font-size: 52px;
+        line-height: 100%;
+        letter-spacing: -0.006em;
+      }
+    }
+    h3 {
+      font-family: $secondaryFontFamily;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: -0.004em;
+      text-align: center;
+      color: #032d60;
+      margin-bottom: 10px;
+      @include lgLaptopView {
+        font-size: $fontXXLarge;
+        line-height: 100%;
+        margin-bottom: 15px;
+      }
+    }
+    img {
+      margin: 0 auto 30px;
+      display: block;
+      width: 100%;
+      @include lgLaptopView {
+        margin: 0;
+      }
+    }
+    .justifyContentCenter {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .projectList {
+      gap: 10px;
+    }
+  }
+
+  .projectItem {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 320px;
+    max-width: 100%;
+  }
+
+  p.contentSectionSubhead {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 300;
+    font-size: $fontMedium;
+    line-height: 25px;
+    text-align: center;
+    letter-spacing: -0.002em;
+    color: #032d60;
+    margin-bottom: 30px;
+    @include lgLaptopView {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+}
