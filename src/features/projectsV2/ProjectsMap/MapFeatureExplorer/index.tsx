@@ -4,7 +4,7 @@ import styles from './MapFeatureExplorer.module.scss';
 import { SmallSlider } from './CustomSlider';
 import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
-import MapOptions from './MapOptions';
+import MapSettings from './MapSettings';
 import { useTranslations } from 'next-intl';
 
 interface ExploreProjectProps {
@@ -103,7 +103,7 @@ const MapFeatureExplorer = () => {
         {t('explore')}
       </CustomButton>
 
-      {isOpen && <MapOptions />}
+      {isOpen && <MapSettings />}
     </>
   );
 };

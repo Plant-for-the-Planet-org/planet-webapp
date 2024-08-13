@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import styles from './MapFeatureExplorer.module.scss';
 import { MapLayerToggle } from '.';
 import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
@@ -8,20 +8,17 @@ import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import { useProjectsMap } from '../../ProjectsMapContext';
 
-const MapOptions: FC = () => {
-  const [checked, setChecked] = useState(false);
+const MapSettings: FC = () => {
   const tAllProjects = useTranslations('AllProjects');
   const tMaps = useTranslations('Maps');
   const { mapOptions, updateMapOption } = useProjectsMap();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
   const {
     primaryColorNew,
     restorationToggleColorNew,
     deforestrationToggleColorNew,
   } = themeProperties;
+
   return (
     <div className={styles.exploreMainContainer}>
       <div className={styles.exploreContainer}>
@@ -48,11 +45,9 @@ const MapOptions: FC = () => {
             switchComponent={
               <StyledSwitch
                 customColor={`${deforestrationToggleColorNew}`}
-                onChange={handleChange}
               />
             }
           />
-          {checked && <YearRangeSlider />}
           <div className={styles.hrLine} />
           <MapLayerToggle
             infoIcon={undefined}
@@ -76,4 +71,4 @@ const MapOptions: FC = () => {
   );
 };
 
-export default MapOptions;
+export default MapSettings;
