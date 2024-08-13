@@ -47,39 +47,31 @@ const NavigationItem = ({
   };
 
   const isActive = useMemo(() => {
-    const { slug } = tenantConfig.config;
     const { pathname } = router;
-    const donatePaths = [
-      '/',
-      '/[p]',
-      '/[p]/[id]',
-      '/sites/[slug]/[locale]',
-      '/sites/[slug]/[locale]/[p]',
-      '/sites/[slug]/[locale]/[p]/[id]',
-    ];
+    const strippedPathname =
+      pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '') || '/';
 
-    const linkPaths = {
-      home: '/sites/[slug]/[locale]/home',
-      leaderboard: '/sites/[slug]/[locale]/all',
-    };
+    // Check if it's a donate path and the current link is the home page
+    const isDonatePath = ['/', '/[p]', '/[p]/[id]'].includes(strippedPathname);
 
-    const isDonatePath = donatePaths.includes(pathname);
-    const isHomePath = pathname === linkPaths.home && navLink === 'home';
-    const isLeaderboardPath =
-      pathname === linkPaths.leaderboard && navLink === 'leaderboard';
-    const isPlanetHome =
-      slug === 'planet' &&
-      pathname === '/sites/[slug]/[locale]' &&
-      navLink === 'home';
-
-    if (navLink === 'donate') {
-      return isDonatePath;
-    }
-    if (isPlanetHome) {
+    if (isDonatePath && navLinkOptions.onclick === '/') {
       return true;
     }
-    return isHomePath || isLeaderboardPath;
-  }, [router, tenantConfig]);
+
+    // Check if the current pathname matches the onclick of the current item
+    if (strippedPathname === navLinkOptions.onclick) {
+      return true;
+    }
+
+    // Check if the current pathname matches any submenu item's onclick
+    if (navLinkOptions.subMenu) {
+      return navLinkOptions.subMenu.some(
+        (item) => strippedPathname === item.onclick
+      );
+    }
+
+    return false;
+  }, [router, navLinkOptions]);
 
   return navLinkOptions.visible ? (
     <div
@@ -95,7 +87,7 @@ const NavigationItem = ({
       >
         {navLinkOptions.title !== 'signIn' && (
           <div className={`linkContainer`}>
-            <p className={isActive ? 'activeIcon' : ''}>
+            <p className={isActive ? 'activeItem' : ''}>
               {t(navLinkOptions.title)}
             </p>
           </div>

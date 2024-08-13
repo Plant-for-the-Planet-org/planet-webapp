@@ -72,6 +72,9 @@
     width: 1px;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 0rem 0.5rem;
+    &.constrained {
+      margin: 0rem 0.2rem;
+    }
   }
 }
 
@@ -97,7 +100,7 @@
       color: rgba(47, 51, 54, 1);
       cursor: pointer;
     }
-    > p.activeIcon {
+    > p.activeItem {
       color: $primaryColorNew;
       font-weight: 700;
     }
@@ -196,6 +199,13 @@
       .link_icon {
         margin: 5px;
       }
+      &.constrained {
+        text-align: center;
+        max-width: 64px;
+      }
+    }
+    &.constrained {
+      right: 2px;
     }
   }
 }

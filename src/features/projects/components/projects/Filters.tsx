@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import styles from '../../styles/Filters.module.scss';
 import { useTranslations } from 'next-intl';
 import { FormControlLabel, FormGroup } from '@mui/material';
@@ -6,11 +6,12 @@ import Switch from '../../../common/InputTypes/ToggleSwitch';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useRouter } from 'next/router';
 
 export default function Filters(): ReactElement {
   const t = useTranslations('Donate');
   const { tenantConfig } = useTenant();
-
+  const router = useRouter();
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
 
@@ -81,6 +82,28 @@ export default function Filters(): ReactElement {
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType({ ...type, [event.target.name]: event.target.checked });
   };
+
+  useEffect(() => {
+    if (router.query.filter && !Array.isArray(router.query.filter)) {
+      if (!(router.query.filter in type)) return;
+      const tempType = { ...type };
+      for (const key in tempType) {
+        tempType[key] = key === router.query.filter;
+      }
+      setType(tempType);
+    }
+  }, [router.query.filter]);
+
+  useEffect(() => {
+    if (router.query.filter && !Array.isArray(router.query.filter)) {
+      if (!(router.query.filter in type)) return;
+      const tempType = { ...type };
+      for (const key in tempType) {
+        tempType[key] = key === router.query.filter;
+      }
+      setType(tempType);
+    }
+  }, [router.query.filter]);
 
   return tenantConfig?.config.slug === 'salesforce' ? (
     <div className={styles.filtersContainer}>

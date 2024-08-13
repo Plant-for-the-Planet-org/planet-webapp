@@ -5,7 +5,8 @@ export const getDonationUrl = (
   token: string | null,
   embed?: string | undefined | string[],
   callbackUrl?: string | undefined | string[],
-  slug?: string | undefined
+  slug?: string | undefined,
+  utmCampaign?: string
 ): string => {
   const country = localStorage.getItem('countryCode');
   const language = localStorage.getItem('language');
@@ -26,6 +27,7 @@ export const getDonationUrl = (
       : slug !== undefined
       ? '&s=' + slug
       : ''
-  }`;
+  }${utmCampaign ? '&utm_campaign=' + utmCampaign : ''}`;
+
   return sourceUrl;
 };
