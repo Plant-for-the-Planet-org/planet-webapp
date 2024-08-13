@@ -1,11 +1,11 @@
 import { useTranslations } from 'next-intl';
 import styles from './ReviewReports.module.scss';
-import DownloadReportIcon from '../icons/DownloadReportIcon';
+import DownloadReportIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadReportIcon';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import { getPDFFile } from '../../utils/getImageURL';
+import { getPDFFile } from '../../../../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
-import { localeMapForDate } from '../../utils/language/getLanguageName';
+import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { Review } from '@planet-sdk/common';
 
 interface Props {

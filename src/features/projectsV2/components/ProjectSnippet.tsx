@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useMemo } from 'react';
+import React, { ReactElement, useContext, useEffect, useMemo } from 'react';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -17,6 +17,7 @@ import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import style from '../styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../ProjectsMap/utils';
+import { useProjects } from '../ProjectsContext';
 
 interface Props {
   project:
@@ -60,6 +61,7 @@ export default function ProjectSnippet({
   const router = useRouter();
   const tCommon = useTranslations('Common');
   const { embed } = useContext(ParamsContext);
+  const { setSingleProject } = useProjects();
 
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
@@ -127,7 +129,10 @@ export default function ProjectSnippet({
   };
 
   return (
-    <div className={style.singleProject}>
+    <div
+      className={style.singleProject}
+      onClick={() => setSingleProject(project)}
+    >
       <ImageSection {...imageProps} />
       <div className={style.progressBar}>
         <div

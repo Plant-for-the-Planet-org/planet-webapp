@@ -11,12 +11,32 @@ import { useLocale } from 'next-intl';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { APIError, handleError } from '@planet-sdk/common';
+import {
+  APIError,
+  ConservationProjectConcise,
+  ConservationProjectExtended,
+  handleError,
+  TreeProjectConcise,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 
 interface ProjectsState {
   projects: MapProject[] | null;
+  singleProject:
+    | TreeProjectConcise
+    | ConservationProjectConcise
+    | TreeProjectExtended
+    | ConservationProjectExtended
+    | null;
+  setSingleProject: SetState<
+    | TreeProjectConcise
+    | ConservationProjectConcise
+    | TreeProjectExtended
+    | ConservationProjectExtended
+    | null
+  >;
   isLoading: boolean;
   isError: boolean;
 }
@@ -36,6 +56,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setCurrencyCode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
+  const [singleProject, setSingleProject] = useState<
+    | TreeProjectConcise
+    | ConservationProjectConcise
+    | TreeProjectExtended
+    | ConservationProjectExtended
+    | null
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -88,8 +115,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       projects,
       isLoading,
       isError,
+      singleProject,
+      setSingleProject,
     }),
-    [projects, isLoading, isError]
+    [projects, isLoading, isError, singleProject]
   );
 
   return (
