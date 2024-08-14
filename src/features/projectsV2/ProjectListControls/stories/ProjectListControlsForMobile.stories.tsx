@@ -43,6 +43,67 @@ export const Default: Story = {
     setSelectedMode: undefined,
     selectedMode: 'map',
     isMobile: true,
+    filteredProjects: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [39.85994, -3.6281000553331],
+        },
+        properties: {
+          id: 'pi_StWEs2TGZFPfQoLC',
+          _scope: 'map',
+          allowDonations: false,
+          classification: 'mangroves',
+          countPlanted: 90000,
+          countTarget: 90000,
+          country: 'KE',
+          currency: 'INR',
+          fixedRates: null,
+          image: '5f50cf393d87b408808590.jpeg',
+          isApproved: false,
+          isFeatured: false,
+          isPublished: true,
+          isTopProject: false,
+          location: 'Kilifi County, Kenya',
+          minTreeCount: 1,
+          name: 'Community Mangrove Restoration, Kenya',
+          paymentDefaults: {
+            fixedTreeCountOptions: [10, 25, 50, 100],
+            fixedDefaultTreeCount: 5,
+          },
+          purpose: 'trees',
+          reviews: [],
+          slug: 'community-mangrove-restoration-kenya',
+          taxDeductionCountries: [],
+          tpo: {
+            image: '62f17359ebb67864676307.png',
+            address: {
+              zipCode: '29464',
+              country: 'US',
+              address: '1007 Johnnie Dodds Blvd, Suite 134',
+              city: 'Mount Pleasant',
+            },
+            name: 'Climate Impact Partners',
+            id: 'tpo_6CjTMsBqdVKNbZKq5hlGBLji',
+            email: 'rfay@naturalcapitalpartners.com',
+            slug: 'natural-capital-partners',
+          },
+          treeCost: 255.62,
+          unitCost: 255.62,
+          unitType: 'tree',
+          unitsContributed: {
+            tree: 90000,
+          },
+          unitsTargeted: {
+            tree: 90000,
+          },
+          description: null,
+          options: [],
+          ecosystem: 'mangroves',
+        },
+      },
+    ],
   },
   render: (args) => {
     const [tabSelected, setTabSelected] = useState(args.tabSelected);
@@ -50,6 +111,10 @@ export const Default: Story = {
       args.selectedClassification
     );
     const [selectedMode, setSelectedMode] = useState(args.selectedMode);
+    const [isSearching, setIsSearching] = useState(false);
+    const handleSearch = () => {
+      setIsSearching(true);
+    };
     return (
       <ProjectListControlForMobile
         {...args}
@@ -64,7 +129,10 @@ export const Default: Story = {
         selectedMode={selectedMode}
         setSelectedMode={(mode) => {
           setSelectedMode(mode);
-          window.alert(mode);
+        }}
+        setDebouncedSearchValue={(value) => {
+          handleSearch();
+          window.alert(`Search value: ${value}`);
         }}
       />
     );
