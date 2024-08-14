@@ -26,12 +26,7 @@ import { useProjects } from '../../../../../src/features/projectsV2/ProjectsCont
 const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const {
-    setFilteredProjects,
-    setSelectedClassification,
-    setSearchProjectResults,
-    setDebouncedSearchValue,
-  } = useProjects();
+  const { setSelectedClassification, setDebouncedSearchValue } = useProjects();
 
   useEffect(() => {
     if (router.isReady) {
@@ -41,9 +36,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
 
   //* a temporary hook that will be removed in the future
   useEffect(() => {
-    setFilteredProjects([]);
     setSelectedClassification([]);
-    setSearchProjectResults([]);
     setDebouncedSearchValue('');
   }, []);
 

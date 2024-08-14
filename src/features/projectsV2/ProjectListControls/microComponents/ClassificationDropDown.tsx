@@ -5,13 +5,14 @@ import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../utils';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../../../pages/_app';
+import { MapProject } from '../../../common/types/projectv2';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  filteredProjects: MapProject[] | undefined;
   isMobile?: boolean;
   selectedMode?: ViewMode;
-  resultantProjectCount?: number;
 }
 
 export const ClassificationDropDown = ({
@@ -19,7 +20,7 @@ export const ClassificationDropDown = ({
   setSelectedClassification,
   isMobile,
   selectedMode,
-  resultantProjectCount,
+  filteredProjects,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
   const handleFilterSelection = (
@@ -34,19 +35,24 @@ export const ClassificationDropDown = ({
   };
   const isFilterApplied = selectedClassification.length !== 0;
 
-  const classificationContainerClass = useMemo(() => {
+  const classificationListClasses = useMemo(() => {
+    const isHidden =
+      isMobile &&
+      (selectedMode === 'map' ||
+        (selectedMode === 'list' && filteredProjects?.length === 0));
+
     return `${styles.classificationListContainer} ${
-      (isMobile && selectedMode === 'map') ||
-      (isMobile && selectedMode === 'list' && resultantProjectCount === 0)
-        ? styles.mobileSelectMode
-        : ''
+      isHidden ? styles.mobileSelectMode : ''
     }`;
-  }, [isMobile, selectedMode, resultantProjectCount]);
+  }, [isMobile, selectedMode, filteredProjects]);
+
   return (
-    <div className={classificationContainerClass}>
+    <div className={classificationListClasses}>
       <button
         className={styles.filterButton}
-        onClick={() => setSelectedClassification([])}
+        onClick={() => {
+          setSelectedClassification([]);
+        }}
       >
         <div
           className={

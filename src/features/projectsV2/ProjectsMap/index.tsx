@@ -31,44 +31,12 @@ function ProjectsMap({
     tabSelected,
     setTabSelected,
     setSelectedClassification,
-    setDebouncedSearchValue,
-    searchProjectResults,
     debouncedSearchValue,
-    doSearchResultsMatchFilters,
+    setDebouncedSearchValue,
   } = useProjects();
   const topProjectCount = topProjects?.length;
   const projectCount = projects?.length;
 
-  const projectsToDisplay = useMemo(() => {
-    const isTopProjectTab = tabSelected === 0 || tabSelected === 'topProjects';
-    const isFilterApplied = selectedClassification.length > 0;
-    if (searchProjectResults && debouncedSearchValue) {
-      if (isFilterApplied && doSearchResultsMatchFilters) {
-        return searchProjectResults;
-      } else if (isFilterApplied && !doSearchResultsMatchFilters) {
-        return [];
-      } else {
-        return searchProjectResults;
-      }
-    }
-
-    if (searchProjectResults?.length === 0 && debouncedSearchValue.length > 0)
-      return [];
-
-    if (isFilterApplied) {
-      return filteredProjects;
-    }
-    //* If none of the above conditions are met, return all projects (for desktop version).
-    //* However it return all projects base on selected tab(top/all) for mobile version
-    return isMobile ? (isTopProjectTab ? topProjects : projects) : projects;
-  }, [
-    selectedMode,
-    tabSelected,
-    selectedClassification,
-    topProjects,
-    searchProjectResults,
-    filteredProjects,
-  ]);
   const projectListControlProps = {
     projectCount,
     topProjectCount,
@@ -76,10 +44,11 @@ function ProjectsMap({
     setTabSelected,
     selectedClassification,
     setSelectedClassification,
+    debouncedSearchValue,
     setDebouncedSearchValue,
     selectedMode,
     setSelectedMode,
-    searchProjectResults,
+    filteredProjects,
     isMobile,
   };
 
@@ -97,9 +66,7 @@ function ProjectsMap({
         attributionControl={false}
         ref={mapRef}
       >
-        {projects && (
-          <MultipleProjectsView projectsToDisplay={projectsToDisplay} />
-        )}
+        {projects && <MultipleProjectsView />}
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
     </>

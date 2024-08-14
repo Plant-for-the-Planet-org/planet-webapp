@@ -6,7 +6,6 @@ import ProjectListControls from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import { SetState } from '../common/types/common';
 import ProjectList from './ProjectList';
-import { useState } from 'react';
 import { ViewMode } from '../../../pages/_app';
 
 interface ProjectsSectionProps {
@@ -22,19 +21,19 @@ const ProjectsSection = ({
 }: ProjectsSectionProps) => {
   const {
     projects,
+    topProjects,
     selectedClassification,
     setSelectedClassification,
-    searchProjectResults,
+    filteredProjects,
+    tabSelected,
     setTabSelected,
-    topProjects,
+    debouncedSearchValue,
     setDebouncedSearchValue,
     isLoading,
     isError,
-    tabSelected,
-    filteredProjects,
   } = useProjects();
-  const [resultantProjectCount, setResultantProjectCount] = useState(0);
-  if (isLoading || isError) {
+
+  if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
   const projectCount = projects?.length;
@@ -48,17 +47,13 @@ const ProjectsSection = ({
     selectedClassification,
     setSelectedClassification,
     setDebouncedSearchValue,
-    searchProjectResults,
     filteredProjects,
-    resultantProjectCount,
   };
   const projectListControlMobileProps = {
+    debouncedSearchValue,
     setSelectedMode,
     selectedMode,
     isMobile,
-  };
-  const handleResultantProjectCount = (projectCount: number) => {
-    setResultantProjectCount(projectCount);
   };
 
   return (
@@ -71,10 +66,7 @@ const ProjectsSection = ({
       ) : (
         <ProjectListControls {...projectListControlCommonProps} />
       )}
-      <ProjectList
-        selectedMode={selectedMode}
-        handleResultantProjectCount={handleResultantProjectCount}
-      />
+      <ProjectList />
     </>
   );
 };

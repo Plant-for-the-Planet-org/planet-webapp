@@ -21,9 +21,7 @@ import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { getSearchProjects } from './ProjectListControls/utils';
 import { ProjectTabs } from './ProjectListControls';
-import { doesProjectExistInFilteredLists } from './ProjectListControls/utils';
 
-const MOBILE_BREAKPOINT = 481;
 const TAB_OPTIONS = {
   TOP_PROJECTS: 'topProjects',
   ALL_PROJECTS: 'allProjects',
@@ -33,14 +31,10 @@ interface ProjectsState {
   projects: MapProject[] | null;
   isLoading: boolean;
   isError: boolean;
-  filteredProjects: MapProject[] | null;
-  setFilteredProjects: SetState<MapProject[] | null>;
-  searchProjectResults: MapProject[] | null;
-  setSearchProjectResults: SetState<MapProject[] | null>;
+  filteredProjects: MapProject[] | undefined;
   tabSelected: ProjectTabs;
   setTabSelected: SetState<ProjectTabs>;
   topProjects: MapProject[] | undefined;
-  doSearchResultsMatchFilters: boolean | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
@@ -62,27 +56,21 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setCurrencyCode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [filteredProjects, setFilteredProjects] = useState<MapProject[] | null>(
-    null
-  );
   const [tabSelected, setTabSelected] = useState<
-    number | (typeof TAB_OPTIONS)[keyof typeof TAB_OPTIONS]
-  >(window.innerWidth < MOBILE_BREAKPOINT ? TAB_OPTIONS.TOP_PROJECTS : 0);
+    (typeof TAB_OPTIONS)[keyof typeof TAB_OPTIONS]
+  >(TAB_OPTIONS.TOP_PROJECTS);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
-  const [searchProjectResults, setSearchProjectResults] = useState<
-    MapProject[] | null
-  >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
 
-  // Function to filter projects based on classification
-  const filterProjectsByClassification = useCallback(
+  //* Function to filter projects based on classification
+  const filterByClassification = useCallback(
     (projects: MapProject[]) => {
       if (selectedClassification.length === 0) return projects;
       return projects.filter((project) => {
@@ -103,24 +91,18 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }),
     [projects, tabSelected]
   );
-  const doSearchResultsMatchFilters = useMemo(() => {
-    if (filteredProjects && selectedClassification.length > 0) {
-      return searchProjectResults?.some((project) =>
-        doesProjectExistInFilteredLists(project, [filteredProjects])
-      );
-    }
-  }, [searchProjectResults, filteredProjects, selectedClassification]);
 
-  useEffect(() => {
-    if (projects) {
-      setFilteredProjects(filterProjectsByClassification(projects));
-    }
-  }, [tabSelected, selectedClassification]);
+  const filteredProjects = useMemo(() => {
+    let result = projects || [];
 
-  useEffect(() => {
-    const searchResult = getSearchProjects(projects, debouncedSearchValue);
-    if (searchResult) setSearchProjectResults(searchResult);
-  }, [debouncedSearchValue]);
+    if (selectedClassification.length > 0)
+      result = filterByClassification(result);
+
+    if (debouncedSearchValue)
+      result = getSearchProjects(result, debouncedSearchValue) || result;
+
+    return result;
+  }, [projects, selectedClassification, debouncedSearchValue]);
 
   useEffect(() => {
     async function loadProjects() {
@@ -153,7 +135,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
 
     loadProjects();
-  }, [currencyCode, locale, page]);
+  }, [currencyCode, locale]);
 
   useEffect(() => {
     if (!currencyCode) {
@@ -168,13 +150,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       isLoading,
       isError,
       filteredProjects,
-      setFilteredProjects,
-      searchProjectResults,
-      setSearchProjectResults,
       debouncedSearchValue,
       setDebouncedSearchValue,
       topProjects,
-      doSearchResultsMatchFilters,
       tabSelected,
       setTabSelected,
       selectedClassification,
@@ -185,10 +163,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       isLoading,
       isError,
       filteredProjects,
-      searchProjectResults,
       debouncedSearchValue,
       topProjects,
-      doSearchResultsMatchFilters,
       tabSelected,
       selectedClassification,
     ]

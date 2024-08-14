@@ -4,16 +4,16 @@ import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIc
 import styles from '../styles/ProjectListControls.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
 
-type ProjectCollection = number | 'topProjects' | 'allProjects';
+type ProjectTabs = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  tabSelected: ProjectCollection;
-  setTabSelected: (value: ProjectCollection) => void;
+  tabSelected: ProjectTabs;
+  setTabSelected: (value: ProjectTabs) => void;
   setIsFilterOpen: (value: boolean) => void;
 }
 interface TabItemProps {
-  selectedTab: ProjectCollection;
+  selectedTab: ProjectTabs;
   icon?: ReactNode | undefined;
   label: ReactNode;
 }
@@ -27,7 +27,7 @@ const ProjectListTabForMobile = ({
   const { light, dark } = themeProperties;
   const t = useTranslations('AllProjects');
 
-  const selectTab = (tab: ProjectCollection) => {
+  const selectTab = (tab: ProjectTabs) => {
     setTabSelected(tab);
     setIsFilterOpen(false);
   };

@@ -2,20 +2,14 @@ import { useMemo } from 'react';
 import { useProjects } from '../ProjectsContext';
 import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
-import { MapProject } from '../../common/types/projectv2';
 
-const MultipleProjectsView = ({
-  projectsToDisplay,
-}: {
-  projectsToDisplay: MapProject[] | null | undefined;
-}) => {
+const MultipleProjectsView = () => {
   const {
     projects,
-    filteredProjects,
     isLoading,
     isError,
     selectedClassification,
-    searchProjectResults,
+    filteredProjects,
   } = useProjects();
 
   if (isLoading || isError || !projects) {
@@ -23,7 +17,7 @@ const MultipleProjectsView = ({
   }
 
   const categorizedProjects = useMemo(() => {
-    return projectsToDisplay?.reduce<CategorizedProjects>(
+    return filteredProjects?.reduce<CategorizedProjects>(
       (categorizedProjects, project) => {
         const projectCategory = getProjectCategory(project.properties);
         switch (projectCategory) {
@@ -45,7 +39,7 @@ const MultipleProjectsView = ({
         regularDonatableProjects: [],
       }
     );
-  }, [projects, filteredProjects, searchProjectResults, isLoading, isError]);
+  }, [projects, filteredProjects, isLoading, isError]);
   return (
     <ProjectMarkers
       categorizedProjects={categorizedProjects}

@@ -8,21 +8,17 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import { SetState } from '../../common/types/common';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/projectv2';
-import { ViewMode } from '../../../../pages/_app';
 
-export type ProjectTabs = number | 'topProjects' | 'allProjects';
+export type ProjectTabs = 'topProjects' | 'allProjects';
 export interface ProjectListControlsProps {
-  filterApplied?: TreeProjectClassification | undefined;
-  setFilterApplied?: (newValue: TreeProjectClassification | undefined) => void;
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  setTabSelected: SetState<ProjectTabs>;
   tabSelected: ProjectTabs;
+  setTabSelected: SetState<ProjectTabs>;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   setDebouncedSearchValue: SetState<string>;
-  searchProjectResults: MapProject[] | null;
-  filteredProjects: MapProject[] | null | undefined;
+  filteredProjects: MapProject[] | undefined;
 }
 const ProjectListControls = ({
   projectCount,
@@ -32,12 +28,13 @@ const ProjectListControls = ({
   selectedClassification,
   setSelectedClassification,
   setDebouncedSearchValue,
-  searchProjectResults,
   filteredProjects,
 }: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
+
+  const hasFilterApplied = selectedClassification.length > 0;
 
   const projectListTabProps = {
     setIsFilterOpen,
@@ -49,10 +46,9 @@ const ProjectListControls = ({
   const searchAndFilterProps = {
     setIsFilterOpen,
     isFilterOpen,
-    selectedClassification,
     isSearching,
     setIsSearching,
-    searchProjectResults,
+    hasFilterApplied,
   };
   const activeSearchFieldProps = {
     setIsSearching,
@@ -62,14 +58,16 @@ const ProjectListControls = ({
   const classificationDropDownProps = {
     selectedClassification,
     setSelectedClassification,
+    filteredProjects,
   };
+
   return (
     <>
       {isSearching ? (
         <ActiveSearchField {...activeSearchFieldProps} />
       ) : (
         <div className={styles.projectListControls}>
-          {selectedClassification.length > 0 ? (
+          {hasFilterApplied ? (
             <div className={styles.filterResultContainer}>
               {tAllProjects('filterResult', {
                 count: filteredProjects?.length,

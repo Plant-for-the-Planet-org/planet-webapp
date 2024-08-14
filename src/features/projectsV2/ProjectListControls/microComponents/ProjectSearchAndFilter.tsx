@@ -2,28 +2,26 @@ import SearchIcon from '../../../../../public/assets/images/icons/projectV2/Sear
 import FilterIcon from '../../../../../public/assets/images/icons/projectV2/FilterIcon';
 import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
-import { TreeProjectClassification } from '@planet-sdk/common';
-import { MapProject } from '../../../common/types/projectv2';
+
 interface ProjectSearchAndFilterProps {
-  selectedClassification: TreeProjectClassification[];
   isFilterOpen: boolean;
   setIsFilterOpen: SetState<boolean>;
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
-  searchProjectResults: MapProject[] | null;
-  isMobile?: boolean;
+  hasFilterApplied: boolean | undefined;
+  isMobile?: boolean; // only needed for mobile version
+  debouncedSearchValue?: string; // only needed for mobile version
 }
 
 export const SearchAndFilter = ({
-  selectedClassification,
+  hasFilterApplied,
   setIsFilterOpen,
   isFilterOpen,
   setIsSearching,
   isSearching,
-  searchProjectResults,
   isMobile,
+  debouncedSearchValue,
 }: ProjectSearchAndFilterProps) => {
-  const isFilterApplied = selectedClassification.length > 0;
   const searchAndFilterContainer = isMobile
     ? styles.iconsContainerMobile
     : styles.iconsContainer;
@@ -31,17 +29,15 @@ export const SearchAndFilter = ({
   return (
     <div className={searchAndFilterContainer}>
       <div className={styles.filterContainer}>
-        {isMobile &&
-          searchProjectResults &&
-          searchProjectResults?.length > 0 && (
-            <div className={styles.filterIndicator} />
-          )}
+        {isMobile && debouncedSearchValue && (
+          <div className={styles.filterIndicator} />
+        )}
         <button onClick={() => setIsSearching(!isSearching)}>
           <SearchIcon />
         </button>
       </div>
       <div className={styles.filterContainer}>
-        {isFilterApplied && <div className={styles.filterIndicator} />}
+        {hasFilterApplied && <div className={styles.filterIndicator} />}
         <button onClick={() => setIsFilterOpen(!isFilterOpen)}>
           <FilterIcon width={'16px'} />
         </button>

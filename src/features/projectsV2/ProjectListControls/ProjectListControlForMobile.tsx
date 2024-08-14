@@ -8,41 +8,47 @@ import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { SetState } from '../../common/types/common';
-import { MapProject } from '../../common/types/projectv2';
 import { ProjectTabs } from '.';
 import { ViewMode } from '../../../../pages/_app';
+import { MapProject } from '../../common/types/projectv2';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  setTabSelected: SetState<ProjectTabs>;
   tabSelected: ProjectTabs;
+  setTabSelected: SetState<ProjectTabs>;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   selectedMode: ViewMode;
   setSelectedMode: SetState<ViewMode>;
   isMobile: boolean;
-  searchProjectResults: MapProject[] | null;
-  resultantProjectCount?: number;
+  filteredProjects: MapProject[] | undefined;
 }
 const ProjectListControlForMobile = ({
   projectCount,
   topProjectCount,
-  setTabSelected,
+  filteredProjects,
   tabSelected,
+  setTabSelected,
+  debouncedSearchValue,
   setDebouncedSearchValue,
   selectedClassification,
   setSelectedClassification,
-  setSelectedMode,
   selectedMode,
-  searchProjectResults,
+  setSelectedMode,
   isMobile,
-  resultantProjectCount,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
+
+  const hasFilterApplied = selectedClassification.length > 0;
+  const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
+  const shouldDisplayProjectListTab =
+    !hasFilterApplied && selectedMode !== 'map';
+
   const activeSearchFieldProps = {
     setIsFilterOpen,
     setIsSearching,
@@ -62,12 +68,12 @@ const ProjectListControlForMobile = ({
     setIsFilterOpen,
   };
   const listControlProps = {
-    selectedClassification,
-    setIsFilterOpen,
+    debouncedSearchValue,
+    hasFilterApplied,
     isFilterOpen,
-    setIsSearching,
+    setIsFilterOpen,
     isSearching,
-    searchProjectResults,
+    setIsSearching,
     isMobile,
   };
   const classificationDropDownProps = {
@@ -75,14 +81,8 @@ const ProjectListControlForMobile = ({
     setSelectedClassification,
     isMobile,
     selectedMode,
-    resultantProjectCount,
+    filteredProjects,
   };
-  const hasFilterApplied =
-    selectedClassification.length > 0 ||
-    (searchProjectResults && searchProjectResults?.length > 0);
-  const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
-  const shouldDisplayProjectListTab =
-    !hasFilterApplied && selectedMode !== 'map';
 
   return (
     <>
@@ -94,11 +94,11 @@ const ProjectListControlForMobile = ({
       ) : (
         <div className={styles.projectListControlsMobile}>
           {shouldDisplayFilterResults &&
-            resultantProjectCount !== undefined &&
-            resultantProjectCount > 0 && (
+            filteredProjects &&
+            filteredProjects?.length > 0 && (
               <div className={styles.filterResultContainerMobile}>
                 {tAllProjects('filterResult', {
-                  count: resultantProjectCount,
+                  count: filteredProjects?.length,
                 })}
               </div>
             )}

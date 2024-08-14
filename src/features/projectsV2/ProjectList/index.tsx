@@ -1,66 +1,30 @@
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import styles from '../ProjectsSection.module.scss';
 import NoProjectFound from '../../../../public/assets/images/icons/projectV2/NoProjectFound';
 import { useProjects } from '../ProjectsContext';
 import ProjectSnippet from '../ProjectSnippet';
 import { MapProject } from '../../common/types/projectv2';
-import { ViewMode } from '../../../../pages/_app';
 
-type ProjectListProps = {
-  selectedMode: ViewMode;
-  handleResultantProjectCount: (value: number) => void;
-};
-
-const ProjectList = ({
-  selectedMode,
-  handleResultantProjectCount,
-}: ProjectListProps) => {
+const ProjectList = () => {
   const tAllProjects = useTranslations('AllProjects');
   const {
-    tabSelected,
-    selectedClassification,
     debouncedSearchValue,
-    searchProjectResults,
-    doSearchResultsMatchFilters,
+    selectedClassification,
     filteredProjects,
+    tabSelected,
     topProjects,
     projects,
   } = useProjects();
-  const projectsToDisplay = useMemo(() => {
-    const isTopProjectTab = tabSelected === 0 || tabSelected === 'topProjects';
-    const isFilterApplied = selectedClassification.length > 0;
-
-    if (
-      searchProjectResults &&
-      searchProjectResults?.length > 0 &&
-      debouncedSearchValue
-    ) {
-      if (isFilterApplied && doSearchResultsMatchFilters) {
-        return searchProjectResults;
-      } else if (isFilterApplied && !doSearchResultsMatchFilters) {
-        return [];
-      } else {
-        return searchProjectResults;
-      }
-    }
-    if (isFilterApplied) {
-      return filteredProjects;
-    }
-    //* Default case: return either top projects or all projects based on the selected tab
-    return isTopProjectTab ? topProjects : projects;
-  }, [
-    tabSelected,
-    selectedMode,
-    selectedClassification,
-    topProjects,
-    filteredProjects,
-    searchProjectResults,
-    doSearchResultsMatchFilters,
-  ]);
+  const ProjectsToDisplay = useMemo(() => {
+    const hasClassificationOrSearch =
+      debouncedSearchValue !== '' || selectedClassification.length > 0;
+    if (hasClassificationOrSearch) return filteredProjects;
+    return tabSelected === 'topProjects' ? topProjects : projects;
+  }, [filteredProjects, tabSelected]);
 
   const sortedProjects = useMemo(() => {
-    return projectsToDisplay?.sort((a, b) => {
+    return ProjectsToDisplay?.sort((a, b) => {
       const donationComparsion =
         Number(b.properties.allowDonations) -
         Number(a.properties.allowDonations);
@@ -71,7 +35,8 @@ const ProjectList = ({
         Number(a.properties.purpose === 'trees' && a.properties.isTopProject)
       );
     });
-  }, [projectsToDisplay]);
+  }, [tabSelected, filteredProjects]);
+
   const renderProjectSnippet = useCallback(
     (project: MapProject) => (
       <ProjectSnippet
@@ -83,15 +48,7 @@ const ProjectList = ({
     []
   );
 
-  useEffect(() => {
-    if (projectsToDisplay)
-      handleResultantProjectCount(projectsToDisplay.length);
-  }, [projectsToDisplay]);
-
-  const isProjectFound = !(
-    (projectsToDisplay?.length === 0 && debouncedSearchValue.length > 0) ||
-    projectsToDisplay?.length === 0
-  );
+  const isProjectFound = !(ProjectsToDisplay?.length === 0);
   return (
     <div className={styles.projectList}>
       {isProjectFound ? (
