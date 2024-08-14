@@ -33,7 +33,10 @@ export default function GetPublicUserProfileMeta({
           userprofile ? userprofile.displayName : tenantConfig.config.meta.title
         }`}
       />
-      <meta property="og:description" content={tenantConfig.config.meta.description} />
+      <meta
+        property="og:description"
+        content={tenantConfig.config.meta.description}
+      />
       <meta name="description" content={tenantConfig.config.meta.description} />
       <meta property="og:type" content="profile" />
       <meta property="og:image" content={tenantConfig.config.meta.image} />
@@ -42,7 +45,10 @@ export default function GetPublicUserProfileMeta({
       ) : null}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={tenantConfig.config.meta.title} />
-      <meta name="twitter:site" content={tenantConfig.config.meta.twitterHandle} />
+      <meta
+        name="twitter:site"
+        content={tenantConfig.config.meta.twitterHandle}
+      />
       <meta name="twitter:url" content={tenantConfig.config.tenantURL ?? ''} />
       <meta
         name="twitter:description"

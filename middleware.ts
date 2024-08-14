@@ -100,7 +100,7 @@ export default async function middleware(req: NextRequest) {
       }${cleanPathname}${searchParams}`,
       req.url
     );
-    console.log('Populated locale, redirecting to:', newUrl);
+    console.log('Populated locale, redirecting to:', newUrl.pathname);
     return NextResponse.redirect(newUrl);
   }
 
