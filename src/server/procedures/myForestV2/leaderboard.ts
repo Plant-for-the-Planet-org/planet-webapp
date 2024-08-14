@@ -5,7 +5,7 @@ import prisma from '../../../../prisma/client';
 import { TRPCError } from '@trpc/server';
 import { Prisma } from '@prisma/client';
 import { fetchProfile } from '../../utils/fetchProfile';
-import { fetchGroupTreecounterData } from '../../utils/fetchGroupTreecounterData';
+import { fetchProfileGroupData } from '../../utils/fetchProfileGroupData';
 
 async function fetchMostRecentGifts(profileIds: number[]) {
   return await prisma.$queryRaw<
@@ -58,10 +58,9 @@ export const leaderboardProcedure = procedure
   .input(
     z.object({
       profileId: z.string(),
-      slug: z.string(),
     })
   )
-  .query(async ({ input: { profileId, slug } }) => {
+  .query(async ({ input: { profileId } }) => {
     // Initialize return values
     const leaderboard: Leaderboard = {
       mostRecent: [],
@@ -78,15 +77,11 @@ export const leaderboardProcedure = procedure
       });
     }
 
-    // Check if the profile is associated with a group treecounter, and fetch all profile ids for that group (parent and children)
-    // slug and treecounterId are used to identify the group treecounter, if there is a mismatch, it will be treated as a normal profile
-    const groupTreecounterData = await fetchGroupTreecounterData(
-      slug,
-      profile.treecounterId
-    );
+    // Check if the profile is associated with a profile group, and fetch all profile ids for that group (parent and children)
+    const profileGroupData = await fetchProfileGroupData(profile.id);
     const profileIds =
-      groupTreecounterData.length > 0
-        ? groupTreecounterData.map(({ profileId }) => profileId)
+      profileGroupData.length > 0
+        ? profileGroupData.map(({ profileId }) => profileId)
         : [profile.id];
 
     // Fetch the most recent gifts for the profile(s)

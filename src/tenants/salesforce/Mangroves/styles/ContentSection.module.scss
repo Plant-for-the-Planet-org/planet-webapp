@@ -1,0 +1,213 @@
+@import '../../../../theme/theme';
+
+.contentSectionContainer {
+  background-image: url('/tenants/salesforce/images/rectangle-35.png');
+  background-size: 1440px 100%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  position: relative;
+  z-index: 999;
+  margin-top: -292px;
+  padding-top: 124px;
+  .contentSection {
+    padding-bottom: 150px;
+    h2 {
+      font-family: $secondaryFontFamily;
+      font-style: normal;
+      font-weight: 500;
+      font-size: $fontXXLarge;
+      line-height: 40px;
+      text-align: center;
+      letter-spacing: -0.004em;
+      color: #032d60;
+      margin-bottom: 10px;
+      @include lgLaptopView {
+        font-size: $fontXXXLarge;
+        line-height: 100%;
+        letter-spacing: -0.006em;
+      }
+    }
+    h3 {
+      font-family: $secondaryFontFamily;
+      font-style: normal;
+      font-weight: 500;
+      font-size: $fontLarge;
+      line-height: 28px;
+      letter-spacing: -0.004em;
+      color: #032d60;
+      margin-bottom: 10px;
+      @include lgLaptopView {
+        font-size: $fontXXLarge;
+        line-height: 100%;
+        margin-bottom: 15px;
+      }
+    }
+    h3.contentSectionSubhead {
+      @include lgLaptopView {
+        font-size: $fontXLarge;
+      }
+    }
+    p,
+    ul {
+      font-family: $primaryFontFamily;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 24px;
+      color: #032d60;
+      margin-bottom: 24px;
+      a {
+        text-decoration: underline;
+        color: #0b5cab;
+      }
+      em {
+        font-style: italic;
+      }
+      li {
+        margin-left: 20px;
+      }
+    }
+
+    img {
+      margin: 0 auto;
+      display: block;
+    }
+
+    .justifyContentCenter {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  p.contentSectionBlurb,
+  p.contentSectionQuote {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-size: $fontMedium;
+    line-height: 25px;
+    text-align: center;
+    letter-spacing: -0.002em;
+    color: #032d60;
+
+    &.bold {
+      font-weight: 600;
+    }
+
+    @include lgLaptopView {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  p.contentSectionQuote {
+    border-left: 5px solid #032d60;
+    margin: 10px 0 34px 0;
+  }
+
+  .mbIntro {
+    .introCTA {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 24px;
+      @include lgLaptopView {
+        img {
+          height: 200px;
+        }
+      }
+    }
+
+    .projectMapButton,
+    .projectListButton {
+      background-color: #fff;
+      border-radius: 35px;
+      color: #032d60;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      height: 70px;
+      padding: 4px 20px 4px 4px;
+      box-sizing: border-box;
+      gap: 10px;
+      text-transform: none;
+      width: 220px;
+      svg {
+        height: 100%;
+      }
+    }
+  }
+
+  .calloutContainer {
+    margin: 0;
+  }
+
+  .mbCallout {
+    background-color: $backgroundBase;
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 0;
+
+    .calloutContentContainer {
+      background: url('/tenants/salesforce/images/mangroves/madagascar-ambanja-mangrove-seedling_2018_credit_Louise Jasper.jpg');
+      padding: 0;
+      display: flex;
+    }
+
+    .calloutContentOverlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        264.03deg,
+        rgba(255, 255, 255, 0.7125) 13.14%,
+        rgba(255, 255, 255, 0.9) 65.48%
+      );
+    }
+
+    .calloutContent {
+      padding: 20px;
+      z-index: 1;
+
+      :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .calloutQuote {
+      padding: 20px;
+      z-index: 1;
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .projectItem {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 320px;
+    max-width: 100%;
+
+    p {
+      margin-bottom: 0;
+      font-size: 18px;
+      color: #ffffff;
+    }
+  }
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+}
