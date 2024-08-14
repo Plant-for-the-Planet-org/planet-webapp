@@ -26,7 +26,7 @@ export default function NewToggleSwitch(props: ToggleSwitchProps) {
         transform: 'translateX(24px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor: theme.primaryDarkColorX,
+          backgroundColor: theme.primaryColorNew,
           opacity: 1,
           border: 0,
         },

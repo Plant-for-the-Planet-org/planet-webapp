@@ -14,7 +14,10 @@ export default function GetAllProjectsMeta(): ReactElement {
         content={`${process.env.SCHEME}://${tenantConfig.config.tenantURL}`}
       />
       <meta property="og:title" content={tenantConfig.config.meta.title} />
-      <meta property="og:description" content={tenantConfig.config.meta.description} />
+      <meta
+        property="og:description"
+        content={tenantConfig.config.meta.description}
+      />
       <meta name="description" content={tenantConfig.config.meta.description} />
       <meta property="og:type" content="website" />
       <meta property="og:image" content={tenantConfig.config.meta.image} />
@@ -23,7 +26,10 @@ export default function GetAllProjectsMeta(): ReactElement {
       ) : null}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={tenantConfig.config.meta.title} />
-      <meta name="twitter:site" content={tenantConfig.config.meta.twitterHandle} />
+      <meta
+        name="twitter:site"
+        content={tenantConfig.config.meta.twitterHandle}
+      />
       <meta name="twitter:url" content={tenantConfig.config.tenantURL ?? ''} />
       <meta
         name="twitter:description"
