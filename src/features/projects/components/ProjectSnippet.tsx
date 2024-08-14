@@ -13,7 +13,7 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
-import ProjectTypeIcon from './ProjectTypeIcon';
+import ProjectTypeIcon from '../../projectsV2/components/microComponents/ProjectTypeIcon';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
