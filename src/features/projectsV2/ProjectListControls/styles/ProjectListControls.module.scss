@@ -10,7 +10,7 @@
   max-width: 338px;
   justify-content: space-between;
   min-width: 288px;
-  box-shadow: 0px 4px 24px 0px rgba($dark, 0.2);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
 
   @include xsPhoneView {
     height: 36px;
@@ -29,7 +29,7 @@
 
 .searchFieldAndViewTabsContainer {
   display: flex;
-  gap: 12px;
+  gap: 5px;
 }
 
 .activeSearchIcon {
@@ -84,7 +84,6 @@
 .tabContainerSecondary {
   min-width: 70px;
   border-radius: 6px;
-  height: 33px;
 }
 
 .selectedTabButton,
@@ -147,9 +146,8 @@
   width: max-content;
   display: flex;
   gap: 20px;
-  align-items: center;
-  margin-left: 20px;
   padding-right: 19px;
+  margin-top: 4px;
   button {
     cursor: pointer;
   }
@@ -166,7 +164,7 @@
   .filterIndicator {
     position: absolute;
     left: 10px;
-    top: -3px;
+    top: -4px;
     z-index: 1;
     background-color: $primaryColorNew;
     width: 12px;
@@ -197,7 +195,7 @@
   z-index: 2;
   box-shadow: 2px 2px 14px gray;
   @include xsPhoneView {
-    left: 140px;
+    left: 100px;
     top: 59px;
   }
 }
@@ -231,16 +229,16 @@
 }
 
 .filterResultContainer {
-  margin-left: 90px;
-  font-weight: 700;
+  margin-left: 19px;
+  font-weight: 600;
 }
 
 .filterResultContainerMobile {
-  width: 130px;
+  width: max-content;
   height: 26px;
   border-radius: 5px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;

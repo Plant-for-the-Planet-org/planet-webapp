@@ -39,6 +39,8 @@ interface ProjectsState {
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
+  isSearching: boolean;
+  setIsSearching: SetState<boolean>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -63,6 +65,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     TreeProjectClassification[]
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -103,7 +106,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     return result;
   }, [projects, selectedClassification, debouncedSearchValue]);
-
   useEffect(() => {
     async function loadProjects() {
       if (page !== 'project-list' || !currencyCode) {
@@ -136,7 +138,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     loadProjects();
   }, [currencyCode, locale]);
-
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
@@ -152,6 +153,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       filteredProjects,
       debouncedSearchValue,
       setDebouncedSearchValue,
+      isSearching,
+      setIsSearching,
       topProjects,
       tabSelected,
       setTabSelected,
@@ -163,10 +166,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       isLoading,
       isError,
       filteredProjects,
-      debouncedSearchValue,
+      isSearching,
       topProjects,
       tabSelected,
       selectedClassification,
+      debouncedSearchValue,
     ]
   );
 

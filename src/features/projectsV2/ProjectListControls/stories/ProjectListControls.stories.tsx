@@ -108,11 +108,12 @@ export const Default: Story = {
     if (isSearching) {
       return (
         <ActiveSearchField
+          debouncedSearchValue={''}
           setIsSearching={setIsSearching}
           setIsFilterOpen={() => {}}
-          setDebouncedSearchValue={(value) =>
-            window.alert(`Search value: ${value}`)
-          }
+          setDebouncedSearchValue={(value) => {
+            if (value) window.alert(`Search value: ${value}`);
+          }}
         />
       );
     }

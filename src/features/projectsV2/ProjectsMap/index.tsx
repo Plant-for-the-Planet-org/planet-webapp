@@ -33,6 +33,8 @@ function ProjectsMap({
     setSelectedClassification,
     debouncedSearchValue,
     setDebouncedSearchValue,
+    isSearching,
+    setIsSearching,
   } = useProjects();
   const topProjectCount = topProjects?.length;
   const projectCount = projects?.length;
@@ -50,6 +52,8 @@ function ProjectsMap({
     setSelectedMode,
     filteredProjects,
     isMobile,
+    isSearching,
+    setIsSearching,
   };
 
   return (

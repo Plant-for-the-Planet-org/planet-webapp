@@ -10,16 +10,18 @@ import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;
   setIsFilterOpen: SetState<boolean>;
+  debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
 }
 
 const ActiveSearchField = ({
   setIsSearching,
   setIsFilterOpen,
+  debouncedSearchValue,
   setDebouncedSearchValue,
 }: ActiveSearchFieldProps) => {
   const t = useTranslations('AllProjects');
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState(debouncedSearchValue);
 
   useDebouncedEffect(
     () => {
@@ -28,13 +30,11 @@ const ActiveSearchField = ({
     1000,
     [searchValue]
   );
-
   const resetSearchTab = () => {
     setDebouncedSearchValue('');
     setIsSearching(false);
     setIsFilterOpen(false);
   };
-
   return (
     <div className={styles.activeSearchFieldContainer}>
       <button className={styles.activeSearchIcon}>

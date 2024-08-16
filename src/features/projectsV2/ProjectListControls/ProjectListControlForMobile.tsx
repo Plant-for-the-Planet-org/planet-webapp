@@ -21,6 +21,8 @@ interface ProjectListControlForMobileProps {
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
+  isSearching: boolean;
+  setIsSearching: SetState<boolean>;
   selectedMode: ViewMode;
   setSelectedMode: SetState<ViewMode>;
   isMobile: boolean;
@@ -39,9 +41,10 @@ const ProjectListControlForMobile = ({
   selectedMode,
   setSelectedMode,
   isMobile,
+  isSearching,
+  setIsSearching,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
 
   const hasFilterApplied = selectedClassification.length > 0;
@@ -52,6 +55,7 @@ const ProjectListControlForMobile = ({
   const activeSearchFieldProps = {
     setIsFilterOpen,
     setIsSearching,
+    debouncedSearchValue,
     setDebouncedSearchValue,
   };
   const viewModeTabsProps = {
@@ -83,7 +87,6 @@ const ProjectListControlForMobile = ({
     selectedMode,
     filteredProjects,
   };
-
   return (
     <>
       {isSearching ? (

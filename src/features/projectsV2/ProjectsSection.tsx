@@ -29,6 +29,8 @@ const ProjectsSection = ({
     setTabSelected,
     debouncedSearchValue,
     setDebouncedSearchValue,
+    isSearching,
+    setIsSearching,
     isLoading,
     isError,
   } = useProjects();
@@ -54,6 +56,8 @@ const ProjectsSection = ({
     setSelectedMode,
     selectedMode,
     isMobile,
+    isSearching,
+    setIsSearching,
   };
 
   return (

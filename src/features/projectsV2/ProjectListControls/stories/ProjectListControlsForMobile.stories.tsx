@@ -112,9 +112,6 @@ export const Default: Story = {
     );
     const [selectedMode, setSelectedMode] = useState(args.selectedMode);
     const [isSearching, setIsSearching] = useState(false);
-    const handleSearch = () => {
-      setIsSearching(true);
-    };
     return (
       <ProjectListControlForMobile
         {...args}
@@ -131,9 +128,10 @@ export const Default: Story = {
           setSelectedMode(mode);
         }}
         setDebouncedSearchValue={(value) => {
-          handleSearch();
-          window.alert(`Search value: ${value}`);
+          if (value) window.alert(`Search value: ${value}`);
         }}
+        isSearching={isSearching}
+        setIsSearching={() => setIsSearching(!isSearching)}
       />
     );
   },

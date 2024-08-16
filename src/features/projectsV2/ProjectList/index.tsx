@@ -25,17 +25,12 @@ const ProjectList = () => {
 
   const sortedProjects = useMemo(() => {
     return ProjectsToDisplay?.sort((a, b) => {
-      const donationComparsion =
-        Number(b.properties.allowDonations) -
-        Number(a.properties.allowDonations);
-
-      if (donationComparsion !== 0) return donationComparsion;
       return (
-        Number(b.properties.purpose === 'trees' && b.properties.isTopProject) -
-        Number(a.properties.purpose === 'trees' && a.properties.isTopProject)
+        Number(b.properties.allowDonations) -
+        Number(a.properties.allowDonations)
       );
     });
-  }, [tabSelected, filteredProjects]);
+  }, [ProjectsToDisplay]);
 
   const renderProjectSnippet = useCallback(
     (project: MapProject) => (
