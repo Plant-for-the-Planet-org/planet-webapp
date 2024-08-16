@@ -52,12 +52,18 @@ ProjectDetailsPage.getLayout = function getLayout(
   page: ReactElement,
   pageComponentProps: PageComponentProps
 ): ReactElement {
+  const layoutProps = {
+    currencyCode: pageComponentProps.currencyCode,
+    setCurrencyCode: pageComponentProps.setCurrencyCode,
+    page: 'project-list',
+    selectedMode: pageComponentProps.selectedMode,
+    setSelectedMode: pageComponentProps.setSelectedMode,
+    isMobile: pageComponentProps.isMobile,
+  } as const;
   return pageComponentProps.isMobile ? (
-    <MobileProjectsLayout>{page}</MobileProjectsLayout>
+    <MobileProjectsLayout {...layoutProps}>{page}</MobileProjectsLayout>
   ) : (
-    <ProjectsLayout setCurrencyCode={pageComponentProps.setCurrencyCode}>
-      {page}
-    </ProjectsLayout>
+    <ProjectsLayout {...layoutProps}>{page}</ProjectsLayout>
   );
 };
 
