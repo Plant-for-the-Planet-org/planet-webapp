@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useMemo } from 'react';
+import React, { ReactElement, useContext, useMemo } from 'react';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -26,6 +26,7 @@ interface Props {
     | TreeProjectExtended
     | ConservationProjectExtended;
   showPopup: boolean;
+  showBackButton: boolean;
 }
 
 export interface CommonProps {
@@ -41,6 +42,7 @@ export interface ImageSectionProps extends CommonProps {
   image: string;
   ecosystem: EcosystemTypes | null;
   showPopup: boolean;
+  showBackButton: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
 }
@@ -57,6 +59,7 @@ export interface ProjectInfoProps extends CommonProps {
 export default function ProjectSnippet({
   project,
   showPopup,
+  showBackButton,
 }: Props): ReactElement {
   const router = useRouter();
   const tCommon = useTranslations('Common');
@@ -115,6 +118,7 @@ export default function ProjectSnippet({
     showPopup: showPopup,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
+    showBackButton,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,

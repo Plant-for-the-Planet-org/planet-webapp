@@ -17,6 +17,7 @@ const ProjectsSection = () => {
           key={project.properties.id}
           project={project.properties}
           showPopup={true}
+          showBackButton={false}
         />
       ))}
     </div>

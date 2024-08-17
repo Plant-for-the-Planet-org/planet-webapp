@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -11,6 +11,7 @@ import TopProjectReports from '../../../projects/components/projectDetails/TopPr
 import style from '../../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '../ProjectSnippet';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -25,6 +26,7 @@ const ImageSection = (props: ImageSectionProps) => {
     isApproved,
     isTopProject,
     allowDonations,
+    showBackButton,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
@@ -45,9 +47,23 @@ const ImageSection = (props: ImageSectionProps) => {
       }`
     );
   };
+  const handleBackButton = useCallback((e: MouseEvent) => {
+    e.stopPropagation();
+    if (window.history.length > 0) {
+      window.history.back();
+    } else {
+      window.location.href = '/';
+    }
+  }, []);
+
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   return (
     <div onClick={handleImageClick} className={style.projectImage}>
+      {showBackButton && (
+        <button onClick={handleBackButton} className={style.backButton}>
+          <BackButton />
+        </button>
+      )}
       <ProjectBadge
         isApproved={isApproved}
         allowDonations={allowDonations}

@@ -67,9 +67,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
-
   const locale = useLocale();
-
   useEffect(() => {
     async function loadProjects() {
       if (page !== 'project-list' || !currencyCode) {

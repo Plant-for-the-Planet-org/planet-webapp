@@ -4,9 +4,14 @@ import ProjectInfoSection from './ProjectInfoSection';
 
 const ProjectDetails = () => {
   const { singleProject } = useProjects();
+
   return singleProject ? (
     <>
-      <ProjectSnippet project={singleProject} showPopup={false} />
+      <ProjectSnippet
+        project={singleProject}
+        showPopup={false}
+        showBackButton={true}
+      />
       <ProjectInfoSection />
     </>
   ) : null;

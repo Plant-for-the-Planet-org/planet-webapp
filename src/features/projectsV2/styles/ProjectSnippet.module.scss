@@ -253,3 +253,9 @@
 .country {
   font-weight: 400;
 }
+
+.backButton {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+}
