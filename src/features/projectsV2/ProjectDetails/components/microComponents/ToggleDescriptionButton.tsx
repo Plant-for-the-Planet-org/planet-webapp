@@ -1,7 +1,7 @@
 import React from 'react';
-import DownArrow from '../icons/DownArrow';
-import UpArrow from '../icons/UpArrow';
-import styles from './ToggleDescriptionButton.module.scss';
+import DownArrow from '../../../../../temp/icons/DownArrow';
+import UpArrow from '../../../../../temp/icons/UpArrow';
+import styles from '../../styles/ToggleDescriptionButton.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface Props {

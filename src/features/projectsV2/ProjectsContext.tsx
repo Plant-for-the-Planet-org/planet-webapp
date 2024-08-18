@@ -38,7 +38,9 @@ interface ProjectsState {
     | null
   >;
   isLoading: boolean;
+  setIsLoading: SetState<boolean>;
   isError: boolean;
+  setIsError: SetState<boolean>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -112,7 +114,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     () => ({
       projects,
       isLoading,
+      setIsLoading,
       isError,
+      setIsError,
       singleProject,
       setSingleProject,
     }),

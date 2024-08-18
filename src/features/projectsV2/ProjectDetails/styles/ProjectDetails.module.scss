@@ -1,0 +1,22 @@
+@import '../../../../theme/theme';
+
+.projectInfoContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  grid-area: 15px;
+  overflow-y: auto;
+  gap: 15px;
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    width: 1px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    width: 1px;
+    height: 3px;
+  }
+}

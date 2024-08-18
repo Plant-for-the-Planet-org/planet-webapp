@@ -1,9 +1,56 @@
+import { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import ProjectSnippet from '../components/ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
-import ProjectInfoSection from './ProjectInfoSection';
+import ProjectInfoSection from './components/ProjectInfoSection';
+import { getRequest } from '../../../utils/apiRequests/api';
+import { useTenant } from '../../common/Layout/TenantContext';
+import { useLocale } from 'next-intl';
+import {
+  TreeProjectConcise,
+  ConservationProjectConcise,
+  TreeProjectExtended,
+  ConservationProjectExtended,
+  handleError,
+  APIError,
+} from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-const ProjectDetails = () => {
-  const { singleProject } = useProjects();
+const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
+  const { singleProject, setSingleProject, setIsLoading, setIsError } =
+    useProjects();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
+  const locale = useLocale();
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadProject() {
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        const { p } = router.query;
+        const fetchedProject = await getRequest<
+          | TreeProjectConcise
+          | ConservationProjectConcise
+          | TreeProjectExtended
+          | ConservationProjectExtended
+        >(tenantConfig.id, `/app/projects/${p}`, {
+          _scope: 'extended',
+          currency: currencyCode,
+          locale: locale,
+        });
+        setSingleProject(fetchedProject);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadProject();
+  }, [router.query.p, locale, currencyCode]);
 
   return singleProject ? (
     <>
@@ -12,7 +59,7 @@ const ProjectDetails = () => {
         showPopup={false}
         showBackButton={true}
       />
-      <ProjectInfoSection />
+      <ProjectInfoSection project={singleProject} />
     </>
   ) : null;
 };

@@ -22,7 +22,10 @@ import {
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../../src/features/projectsV2/ProjectDetails';
 
-const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
+const ProjectDetailsPage: NextPageWithLayout = ({
+  pageProps,
+  currencyCode,
+}) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -32,7 +35,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
     }
   }, [router.isReady]);
 
-  return <ProjectDetails />;
+  return <ProjectDetails currencyCode={currencyCode} />;
 };
 
 ProjectDetailsPage.getLayout = function getLayout(

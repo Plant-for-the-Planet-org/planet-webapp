@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './ReviewReports.module.scss';
+import styles from '../styles/ReviewReports.module.scss';
 import SingleReview from './microComponents/SingleReview';
 import { useTranslations } from 'next-intl';
 import { Review } from '@planet-sdk/common';
 
 interface Props {
-  reviews: Review[];
+  reviews: Review[] | undefined;
 }
 
 const ProjectReview = ({ reviews }: Props) => {
@@ -13,7 +13,7 @@ const ProjectReview = ({ reviews }: Props) => {
   return (
     <div className={styles.reviewReportsContainer}>
       <h6>{t('review')}</h6>
-      {reviews.map((review) => (
+      {reviews?.map((review) => (
         <SingleReview singleReview={review} key={review.id} />
       ))}
     </div>
