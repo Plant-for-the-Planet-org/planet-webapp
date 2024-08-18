@@ -202,6 +202,7 @@
     "planet-cash-planet-cash": "PlanetCash",
     "stripe-card": "Credit/Debit Card",
     "stripe-giropay": "GiroPay (Stripe)",
+    "composite-donation": "Composite Donation",
     "action-required": "Action Required",
     "completed": "Completed",
     "donationsSubTitle": "Manage all your donations and payments from one place.",
