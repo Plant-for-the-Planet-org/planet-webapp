@@ -277,6 +277,7 @@
     "membershipCtaCopy": "Unterstütze uns und <highlight>WERDE MITGLIED</highlight>",
     "shareUrl": "Teile URL",
     "treesOfTrees": "{count1} von {count2}",
-    "document": "Plattform-Dokumentation (EN)"
+    "document": "Plattform-Dokumentation (EN)",
+    "composite-donation": "Mischspende"
   }
 }

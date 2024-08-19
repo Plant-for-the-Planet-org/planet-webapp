@@ -277,6 +277,7 @@
     "membershipCtaCopy": "Support us <highlight>BY BECOMING A MEMBER</highlight>",
     "shareUrl": "Share URL",
     "treesOfTrees": "{count1} of {count2}",
-    "document": "Platform Documentation (EN)"
+    "document": "Platform Documentation (EN)",
+    "composite-donation": "Mixed Donation"
   }
 }
