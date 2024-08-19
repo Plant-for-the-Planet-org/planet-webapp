@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -26,7 +26,7 @@ const PlantingSeasons = ({ plantingSeasons }: Props) => {
 
   return (
     <div>
-      {plantingSeasons.map((season, index) => (
+      {plantingSeasons?.map((season, index) => (
         <span key={seasons[season - 1].title}>
           {seasons[season - 1].title}
           {index === plantingSeasons.length - 2 ? (

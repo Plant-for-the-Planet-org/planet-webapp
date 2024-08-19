@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styles from './ProjectInfo.module.scss';
+import styles from '../../styles/ProjectInfo.module.scss';
 
 interface Props {
   title: ReactElement | string;

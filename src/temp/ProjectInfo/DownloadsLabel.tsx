@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ProjectInfo.module.scss';
+import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
 
 interface Props {
   children: React.JSX.Element;

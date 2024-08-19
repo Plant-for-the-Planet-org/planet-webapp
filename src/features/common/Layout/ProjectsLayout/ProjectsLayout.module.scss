@@ -26,19 +26,22 @@
   background: transparent;
   overflow-y: auto;
   padding-right: 8px;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: rgba(224, 224, 224, 1);
+    height: 220px;
+  }
+  @include xsPhoneView {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    padding-right: 0px;
+  }
 }
 
-.contentContainer::-webkit-scrollbar {
-  width: 14px;
-}
-
-.contentContainer::-webkit-scrollbar-thumb {
-  background: red;
-  width: 10px;
-  border-radius: 10px;
-  height: 50px;
-  background: rgba(224, 224, 224, 1);
-}
 .mapContainer {
   flex: 1;
   border-radius: 16px;

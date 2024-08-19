@@ -1,6 +1,6 @@
-import styles from './ProjectInfo.module.scss';
+import styles from '../styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
-import SingleProjectInfoItem from './SingleProjectInfoItem';
+import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 interface Props {
   mainChallengeText: string;
   siteOwnershipText: string;
