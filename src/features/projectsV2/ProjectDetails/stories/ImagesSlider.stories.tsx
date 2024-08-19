@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ImagesSlider from '../../ImagesSlider';
+import ImagesSlider from '../components/ImagesSlider';
 
 const meta: Meta<typeof ImagesSlider> = {
   title: 'Projects/Details/ImagesSlider',
@@ -66,8 +66,6 @@ const images = [
 export const Preview: Story = {
   args: {
     images: images,
-    height: 195,
-    imageSize: 'medium',
     type: 'project',
   },
 };

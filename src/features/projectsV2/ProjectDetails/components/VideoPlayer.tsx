@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import styles from './VideoPlayer.module.scss';
-import PlayButtonIcon from '../icons/PlayButtonIcon';
+import styles from '../styles/VideoPlayer.module.scss';
+import PlayButtonIcon from '../../../../temp/icons/PlayButtonIcon';
 
 const PlayButton = () => {
   return (
@@ -21,7 +21,7 @@ const VideoPlayer = ({ videoUrl }: Props) => {
   useEffect(() => {
     const handleResize = () => {
       const newWindowDimensions = {
-        width: 306,
+        width: 342,
         height: 153,
       };
 

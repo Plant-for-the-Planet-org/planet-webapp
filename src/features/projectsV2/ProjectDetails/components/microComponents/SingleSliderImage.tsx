@@ -1,5 +1,5 @@
-import { SliderImage } from '../../features/projects/components/projectDetails/ImageSlider';
-import styles from './Slider.module.scss';
+import { SliderImage } from '../../../../projects/components/PlantLocation/ImageSlider';
+import styles from '../../styles/Slider.module.scss';
 
 interface Props {
   type: string;

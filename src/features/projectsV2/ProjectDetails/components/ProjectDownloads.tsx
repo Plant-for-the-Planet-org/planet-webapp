@@ -1,10 +1,10 @@
 import { ProjectExpense } from '@planet-sdk/common';
 import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
-import SingleProjectInfoItem from '../../features/projectsV2/ProjectDetails/components/microComponents/SingleProjectInfoItem';
-import ExternalCertificationItem from './ExternalCertificationItem';
-import ProjectSpendingItem from './ProjectSpendingItem';
-import ProgressReportItem from './ProgressReportItem';
+import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
+import ExternalCertificationItem from './microComponents/ExternalCertificationItem';
+import ProjectSpendingItem from './microComponents/ProjectSpendingItem';
+import ProgressReportItem from './microComponents/ProgressReportItem';
 
 interface ExternalCertificationProps {
   certification: string;

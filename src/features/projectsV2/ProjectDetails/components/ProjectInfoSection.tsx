@@ -9,6 +9,9 @@ import {
 import styles from '../styles/ProjectDetails.module.scss';
 import KeyInfo from './KeyInfo';
 import AdditionalInfo from './AdditionalInfo';
+import VideoPlayer from './VideoPlayer';
+import ImagesSlider from './ImagesSlider';
+import ProjectDownloads from './ProjectDownloads';
 
 interface ProjectInfoSectionProps {
   project:
@@ -25,6 +28,10 @@ const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
         <ProjectReview reviews={project.reviews} />
       )}
       <AboutProject description={project.description} wordCount={60} />
+      {project.videoUrl && <VideoPlayer videoUrl={project.videoUrl} />}
+      {project?.images?.length > 0 && (
+        <ImagesSlider images={project.images} type={'project'} />
+      )}
       <KeyInfo
         abandonment={project?.yearAbandoned}
         firstTree={project.firstTreePlanted}
@@ -35,13 +42,14 @@ const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
       />
       <AdditionalInfo
         mainChallengeText={project.metadata?.mainChallenge}
-        siteOwnershipText={project.metadata.siteOwnerName}
-        siteOwnershipType={project.metadata.siteOwnerType}
+        siteOwnershipText={project.metadata?.siteOwnerName}
+        siteOwnershipType={project.metadata?.siteOwnerType}
         causeOfDegradationText={project.metadata.degradationCause}
         whyThisSiteText={'xyz'}
         longTermProtectionText={project.metadata.longTermPlan}
         acquiredSince={project.metadata.acquisitionYear}
       />
+      {/* <ProjectDownloads /> */}
     </section>
   );
 };

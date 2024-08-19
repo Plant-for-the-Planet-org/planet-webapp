@@ -1,18 +1,16 @@
 import React, { ReactElement, useEffect } from 'react';
 import Stories from 'react-insta-stories';
-import getImageUrl from '../../utils/getImageURL';
-import { SliderImage } from '../../features/projects/components/PlantLocation/ImageSlider';
-import { SingleSliderImage } from './SingleSliderImage';
-import styles from './Slider.module.scss';
+import getImageUrl from '../../../../utils/getImageURL';
+import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
+import { SingleSliderImage } from './microComponents/SingleSliderImage';
+import styles from '../styles/Slider.module.scss';
 
 interface Props {
   images: SliderImage[];
-  height: number | string;
-  imageSize: string;
   type: 'coordinate' | 'project';
 }
 
-const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
+const ImagesSlider = ({ images, type }: Props) => {
   const [slider, setSlider] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
   const pattern = /^https:\/\//i;
@@ -23,7 +21,7 @@ const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
         if (pattern.test(sliderImage.image)) {
           imageURL = sliderImage.image;
         } else {
-          imageURL = getImageUrl(type, imageSize, sliderImage.image);
+          imageURL = getImageUrl(type, 'medium', sliderImage.image);
         }
         projectImages.push({
           content: () => (
@@ -41,7 +39,7 @@ const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
         stories={projectImages}
         defaultInterval={7000}
         width={'100%'}
-        height={height}
+        height={192}
         loop={true}
         progressContainerStyles={{
           position: 'absolute',
@@ -61,7 +59,7 @@ const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
     );
   }, [images]);
 
-  return <div className={styles.imageSliderContainer}>{slider}</div>;
+  return <div>{slider}</div>;
 };
 
 export default ImagesSlider;
