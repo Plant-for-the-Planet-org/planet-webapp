@@ -13,7 +13,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:storybook/recommended',
-    'plugin:import/recommended' // Add this line to include recommended rules from eslint-plugin-import
+    'plugin:import/recommended', // Add this line to include recommended rules from eslint-plugin-import
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -31,18 +31,24 @@ module.exports = {
     'prefer-const': 'warn',
     'no-var': 'error',
     'consistent-return': 'warn',
-    'eqeqeq': ['error', 'always'],
+    eqeqeq: ['error', 'always'],
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'warn',
 
     // React Best Practices
     'react/jsx-key': 'error',
     'react/no-array-index-key': 'warn',
-    'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
+    'react/jsx-curly-brace-presence': [
+      'warn',
+      { props: 'never', children: 'never' },
+    ],
 
     // Code Quality
-    'complexity': ['warn', { max: 10 }],
-    'max-lines': ['warn', { max: 300, skipBlankLines: true, skipComments: true }],
+    complexity: ['warn', { max: 10 }],
+    'max-lines': [
+      'warn',
+      { max: 300, skipBlankLines: true, skipComments: true },
+    ],
     'max-params': ['warn', MAX_PARAMS],
     'no-magic-numbers': ['warn', { ignore: [0, 1] }],
 
@@ -58,7 +64,7 @@ module.exports = {
     'no-empty-pattern': 'warn',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
-      'warn', 
+      'warn',
       {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
@@ -68,28 +74,25 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'warn',
     'react/jsx-filename-extension': [
-      'warn', 
-      { extensions: ['.js', '.jsx', '.tsx'] }
+      'warn',
+      { extensions: ['.js', '.jsx', '.tsx'] },
     ],
     'react/no-unknown-property': [
-      'error', 
+      'error',
       {
         ignore: ['jsx', 'global'],
-      }
+      },
     ],
-    'react/jsx-indent': [
-      'warn', 
-      JSX_INDENT_SIZE
-    ],
+    'react/jsx-indent': ['warn', JSX_INDENT_SIZE],
     'import/extensions': [
-      'warn', 
-      'always', 
+      'warn',
+      'always',
       {
         js: 'never',
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
-      }
+      },
     ],
     'import/no-unresolved': 'warn', // should be error
     'import/named': 'warn', // should be error
@@ -116,5 +119,10 @@ module.exports = {
     React: 'writable',
     cy: true,
     NodeJS: true,
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
