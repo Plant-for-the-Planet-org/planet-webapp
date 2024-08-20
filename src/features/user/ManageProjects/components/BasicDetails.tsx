@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
+import { Button, FormControlLabel, Switch, Tooltip , MenuItem, TextField } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
 import MapGL, {
@@ -16,7 +16,6 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   postAuthenticatedRequest,
@@ -533,7 +532,7 @@ export default function BasicDetails({
                   <TextField
                     label={t('countTarget')}
                     variant="outlined"
-                    placeholder={'0'}
+                    placeholder="0"
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       onChange(e);
@@ -675,7 +674,7 @@ export default function BasicDetails({
                     label={t('unitCost')}
                     variant="outlined"
                     type="number"
-                    placeholder={'0'}
+                    placeholder="0"
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
@@ -684,7 +683,7 @@ export default function BasicDetails({
                         <p
                           className={styles.inputStartAdornment}
                           style={{ paddingRight: '4px' }}
-                        >{`€`}</p>
+                        >€</p>
                       ),
                     }}
                     error={errors.unitCost !== undefined}

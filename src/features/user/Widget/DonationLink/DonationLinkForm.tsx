@@ -1,11 +1,10 @@
-import { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button, Switch, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
-import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
@@ -68,14 +67,14 @@ const DonationLinkForm = ({
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
     const selectedLanguage =
-      Languages && Languages.langCode != 'auto'
+      Languages && Languages.langCode !== 'auto'
         ? `locale=${Languages.langCode}&`
         : '';
 
     const selectedCountry = country !== 'auto' ? `country=${country}&` : '';
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
-      localProject == null ? '' : `to=${localProject.slug}&`
+      localProject === null ? '' : `to=${localProject.slug}&`
     }tenant=${tenantConfig?.id}${isSupport ? `&s=${user?.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
@@ -135,7 +134,7 @@ const DonationLinkForm = ({
               <AutoCompleteCountry
                 label={tDonationLink('labelCountry')}
                 name="country"
-                defaultValue={'auto'}
+                defaultValue="auto"
                 onChange={setCountry}
                 countries={allCountries}
               />

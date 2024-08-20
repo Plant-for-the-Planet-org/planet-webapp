@@ -66,7 +66,7 @@ export default function TabbedView({
         xs={12}
         md={9}
         component={TabContainer}
-        className={'TabContainer'}
+        className="TabContainer"
       >
         {children}
       </Grid>

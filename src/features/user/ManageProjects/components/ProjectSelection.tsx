@@ -18,8 +18,8 @@ export default function ProjectSelection({
     <div className={Styles.projectTypes}>
       <div>
         <button
-          id={'addProjectBut'}
-          className={'add-projects-button'}
+          id="addProjectBut"
+          className="add-projects-button"
           onClick={() => {
             setTabSelected(1);
             router.push('/profile/projects/new-project/?purpose=trees');
@@ -30,8 +30,8 @@ export default function ProjectSelection({
       </div>
       <div>
         <button
-          id={'conservationProj'}
-          className={'add-projects-button'}
+          id="conservationProj"
+          className="add-projects-button"
           onClick={() => {
             setTabSelected(1);
             router.push('/profile/projects/new-project/?purpose=conservation');

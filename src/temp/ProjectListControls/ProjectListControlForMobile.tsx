@@ -4,9 +4,8 @@ import ProjectListTabForMobile from './ProjectListTabForMobile';
 import { SearchAndFilter } from './ProjectSearchAndFilter';
 import ViewModeTabs from './ViewModeTabs';
 import ClassificationDropDown from './ClassificationDropDown';
-import { ProjectListControlsProps } from '.';
+import { ProjectListControlsProps , Classification } from '.';
 import ActiveSearchField from './ActiveSearchField';
-import { Classification } from '.';
 
 const ProjectListControlForMobile = ({
   availableFilters,

@@ -118,7 +118,7 @@ export default function UploadImages({
                   {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
                     <Button
-                      id={'uploadImgDelIcon'}
+                      id="uploadImgDelIcon"
                       onClick={() => deleteContributionImage(image.id)}
                     >
                       <DeleteIcon />
@@ -144,7 +144,7 @@ export default function UploadImages({
           >
             <input {...getInputProps()} />
             {isUploadingData ? (
-              <div className={'spinner'}></div>
+              <div className="spinner"></div>
             ) : (
               t('uploadPhotos')
             )}

@@ -23,7 +23,7 @@ const Layout: FC = ({ children }) => {
         <div>{children}</div>
 
         <div>
-          <div className={'notificationContainer'}>
+          <div className="notificationContainer">
             {!isEmbed && (
               <>
                 <CookiePolicy />

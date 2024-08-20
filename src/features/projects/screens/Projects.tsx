@@ -15,13 +15,12 @@ import { SetState } from '../../common/types/common';
 import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Tenant } from '@planet-sdk/common';
+import { handleError, APIError , Tenant } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   projects: MapProject[];
-  showProjects: Boolean;
+  showProjects: boolean;
   setShowProjects: Function;
   setsearchedProjects: SetState<MapProject[]>;
 }
@@ -197,9 +196,9 @@ function ProjectsList({
 
   const NoProjectFound = () => {
     return (
-      <div className={'projectNotFound'}>
+      <div className="projectNotFound">
         <LazyLoad>
-          <NotFound className={'projectNotFoundImage'} />
+          <NotFound className="projectNotFoundImage" />
           <h5 style={{ color: 'var(--primary-font-color' }}>
             {tDonate('noProjectsFound')}
           </h5>
@@ -248,7 +247,7 @@ function ProjectsList({
             >
               <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
                 {isMobile && (!hideSidebar || showProjectList === 'true') && (
-                  <div className={'dragBar'}></div>
+                  <div className="dragBar"></div>
                 )}
                 {searchMode ? (
                   <SearchBar
@@ -268,7 +267,7 @@ function ProjectsList({
                 )}
               </div>
               {/* till here is header */}
-              <div className={'projectsContainer'}>
+              <div className="projectsContainer">
                 {trottledSearchValue !== '' ? (
                   searchProjectResults && searchProjectResults.length > 0 ? (
                     searchProjectResults.map((project) => (

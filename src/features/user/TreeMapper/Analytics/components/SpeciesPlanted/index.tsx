@@ -96,7 +96,7 @@ export const SpeciesPlanted = () => {
           return (
             <Tooltip
               headerTitle={w.globals.categoryLabels[dataPointIndex]}
-              bodyTitle={'Planted Species'}
+              bodyTitle="Planted Species"
               value={s[0][dataPointIndex]}
             />
           );

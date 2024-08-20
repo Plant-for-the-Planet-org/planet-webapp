@@ -33,7 +33,7 @@ const NoContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
                 : t('feature.supportUserTextGeneric')
             }
             variant="primary"
-            elementType={'link'}
+            elementType="link"
             href={`/s/${userProfile?.slug}`}
           />
         </>

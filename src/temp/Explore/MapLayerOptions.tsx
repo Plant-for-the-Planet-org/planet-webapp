@@ -1,9 +1,8 @@
 import { useState, ChangeEvent } from 'react';
 import style from '../Explore/Explore.module.scss';
-import { MapLayerToggle } from './ExploreProject';
+import { MapLayerToggle , YearRangeSlider } from './ExploreProject';
 import InfoIcon from '../icons/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
-import { YearRangeSlider } from './ExploreProject';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 
@@ -25,7 +24,7 @@ const MayLayerOptions = () => {
       <div className={style.exploreContainer}>
         <div>
           <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
+            infoIcon={<InfoIcon width="10px" />}
             label={tAllProjects('currentForests')}
             switchComponent={
               <StyledSwitch customColor={`${primaryColorNew}`} />
@@ -33,7 +32,7 @@ const MayLayerOptions = () => {
           />
           <div className={style.hrLine} />
           <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
+            infoIcon={<InfoIcon width="10px" />}
             label={tAllProjects('restorationPotential')}
             switchComponent={
               <StyledSwitch customColor={`${restorationToggleColorNew}`} />
@@ -41,7 +40,7 @@ const MayLayerOptions = () => {
           />
           <div className={style.hrLine} />
           <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
+            infoIcon={<InfoIcon width="10px" />}
             label={tAllProjects('deforestation')}
             switchComponent={
               <StyledSwitch

@@ -433,8 +433,8 @@ export default function CompleteSignup(): ReactElement | null {
 
                 {addressSugggestions
                   ? addressSugggestions.length > 0 && (
-                      <div className="suggestions-container">
-                        {addressSugggestions.map((suggestion) => {
+                  <div className="suggestions-container">
+                    {addressSugggestions.map((suggestion) => {
                           return (
                             <div
                               key={'suggestion' + suggestion_counter++}
@@ -447,7 +447,7 @@ export default function CompleteSignup(): ReactElement | null {
                             </div>
                           );
                         })}
-                      </div>
+                  </div>
                     )
                   : null}
                 <InlineFormDisplayGroup>
@@ -583,14 +583,14 @@ export default function CompleteSignup(): ReactElement | null {
             <div>
               <div className={styles.inlineToggleGroup}>
                 <div className={styles.mainText}>
-                  <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
+                  <label htmlFor="terms" style={{ cursor: 'pointer' }}>
                     {t.rich('termAndCondition', {
                       termsLink: (chunks) => (
                         <a
                           className={styles.termsLink}
                           rel="noopener noreferrer"
                           href={`https://pp.eco/legal/${locale}/terms`}
-                          target={'_blank'}
+                          target="_blank"
                         >
                           {chunks}
                         </a>
@@ -616,7 +616,7 @@ export default function CompleteSignup(): ReactElement | null {
             <div className={styles.horizontalLine} />
 
             <button
-              id={'signupCreate'}
+              id="signupCreate"
               className={styles.saveButton}
               onClick={handleSubmit(createButtonClicked)}
               disabled={isProcessing}

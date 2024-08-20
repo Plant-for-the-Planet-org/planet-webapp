@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
 import { ProfileV2Props } from '../../../common/types/profile';
@@ -9,7 +9,6 @@ import { useTranslations } from 'next-intl';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
-import React from 'react';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {

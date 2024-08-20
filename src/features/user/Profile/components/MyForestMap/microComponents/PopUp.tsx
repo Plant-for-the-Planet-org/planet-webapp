@@ -4,9 +4,8 @@ import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate
 import { Cluster, ClusterMarker } from '../../../../../common/types/map';
 import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 import { _getClusterGeojson } from '../../../../../../utils/superclusterConfigV1';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect , MutableRefObject } from 'react';
 import { PopUpDonationIcon } from '../../../../../../../public/assets/images/ProfilePageIcons';
-import { MutableRefObject } from 'react';
 import getImageUrl from '../../../../../../utils/getImageURL';
 import { Button } from '@mui/material';
 import format from 'date-fns/format';
@@ -146,7 +145,7 @@ export const ClusterPopUpLabel = ({
   return (
     <div className={MyForestMapStyle.clusterPopUpContainer}>
       <div>
-        <PopUpDonationIcon width={'21px'} height={'21px'} />
+        <PopUpDonationIcon width="21px" height="21px" />
       </div>
       <div className={MyForestMapStyle.clusterPopUpInfo}>
         {t('myForestMap.totalDonation', {

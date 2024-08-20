@@ -2,9 +2,8 @@ import { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
 import { ExtractedProjectData } from '../features/user/MFV2/ContributionsMap/Markers/DonationClusterMarker';
 import themeProperties from '../theme/themeProperties';
 import { PointFeature } from 'supercluster';
-import { DonationProperties } from '../features/common/types/myForestv2';
+import { DonationProperties , ContributionStats } from '../features/common/types/myForestv2';
 import { ProgressDataType } from '../features/user/MFV2/ForestProgress/ForestProgressItem';
-import { ContributionStats } from '../features/common/types/myForestv2';
 
 export type Accumulator = {
   maxContributionCount: number;

@@ -1,6 +1,6 @@
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect , useState } from 'react';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -11,7 +11,6 @@ import { SetState } from '../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';
-import { useState } from 'react';
 
 interface TargetsModalProps {
   open: boolean;
@@ -120,21 +119,21 @@ const TargetsModal = ({
 
         <div className={styles.targetModalSubConatiner}>
           <TargetFormInput
-            dataType={'treesPlanted'}
+            dataType="treesPlanted"
             localTarget={treesPlantedTargetLocal}
             setLocalTarget={setTreesPlantedTargetLocal}
             checked={isTreesPlantedTargetActive}
             setChecked={setIsTreesPlantedTargetActive}
           />
           <TargetFormInput
-            dataType={'areaRestored'}
+            dataType="areaRestored"
             localTarget={areaRestoredTargetLocal}
             setLocalTarget={setAreaRestoredTargetLocal}
             checked={isRestoredAreaTargetActive}
             setChecked={setIsRestoredAreaTargetActive}
           />
           <TargetFormInput
-            dataType={'areaConserved'}
+            dataType="areaConserved"
             localTarget={areaConservedTargetLocal}
             setLocalTarget={setAreaConservedTargetLocal}
             checked={isConservedAreaTargetActive}
@@ -143,7 +142,7 @@ const TargetsModal = ({
         </div>
         <button className={styles.saveButton} onClick={handleTargets}>
           {isTargetModalLoading ? (
-            <div className={'spinner'}></div>
+            <div className="spinner"></div>
           ) : (
             tProfile('save')
           )}

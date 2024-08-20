@@ -358,7 +358,7 @@ const UserLayout: FC = ({ children }) => {
           hideItem:
             !user?.planetCash ||
             user?.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
-              .length == 0,
+              .length === 0,
         },
       ],
     },
@@ -462,7 +462,7 @@ const UserLayout: FC = ({ children }) => {
   return user ? (
     <div className={styles.profilePageContainer}>
       <div
-        key={'hamburgerIcon'}
+        key="hamburgerIcon"
         className={`${styles.hamburgerIcon}`}
         onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
         style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
@@ -478,7 +478,7 @@ const UserLayout: FC = ({ children }) => {
       >
         <div className={styles.navLinksContainer}>
           <>
-            <div key={'closeMenu'} className={`${styles.closeMenu}`}>
+            <div key="closeMenu" className={`${styles.closeMenu}`}>
               <div
                 className={`${styles.navlink}`}
                 onClick={() => setIsMenuOpen(false)} //for mobile version to close menu

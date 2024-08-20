@@ -1,5 +1,4 @@
-import { Switch } from '@mui/material';
-import { styled } from '@mui/material';
+import { Switch , styled } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface TargetSwitchProps {

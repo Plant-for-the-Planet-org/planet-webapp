@@ -22,7 +22,7 @@ export default function CustomModal({
 }: Props) {
   const t = useTranslations('EditProfile');
   return (
-    <Modal open={isOpen} hideBackdrop className={'modalContainer'}>
+    <Modal open={isOpen} hideBackdrop className="modalContainer">
       <div className={styles.modal}>
         <div className={styles.modal__titleContainer}>
           <div className={styles.modal__titleText}>
@@ -36,14 +36,14 @@ export default function CustomModal({
           style={{ justifyContent: 'center' }}
         >
           <button
-            id={'Continue'}
+            id="Continue"
             className={styles.continueButton}
             onClick={handleContinue}
           >
             {buttonTitle}
           </button>
           <button
-            id={'Cancel'}
+            id="Cancel"
             className={styles.cancelButton}
             onClick={handleCancel}
           >

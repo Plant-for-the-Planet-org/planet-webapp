@@ -12,7 +12,7 @@ type Story = StoryObj<typeof SingleTab>;
 
 export const Selected: Story = {
   args: {
-    icon: <SatelliteIcon color={'#fff'} />,
+    icon: <SatelliteIcon color="#fff" />,
     title: 'Time Travel',
     isSelected: true,
     onClickHandler: () => {},
@@ -21,7 +21,7 @@ export const Selected: Story = {
 
 export const Unselected: Story = {
   args: {
-    icon: <SatelliteIcon color={'#000'} />,
+    icon: <SatelliteIcon color="#000" />,
     title: 'Time Travel',
     isSelected: false,
     onClickHandler: () => {},

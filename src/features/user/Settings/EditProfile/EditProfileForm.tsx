@@ -547,8 +547,8 @@ export default function EditProfileForm() {
         />
         {addressSugggestions
           ? addressSugggestions.length > 0 && (
-              <div className="suggestions-container">
-                {addressSugggestions.map((suggestion) => {
+          <div className="suggestions-container">
+            {addressSugggestions.map((suggestion) => {
                   return (
                     <div
                       key={'suggestion' + suggestion_counter++}
@@ -561,7 +561,7 @@ export default function EditProfileForm() {
                     </div>
                   );
                 })}
-              </div>
+          </div>
             )
           : null}
         <InlineFormDisplayGroup>

@@ -50,11 +50,11 @@ export default function ErrorPopup(): ReactElement {
           return (
             <div key={`${index}`} className={styles.errorContainer}>
               <button
-                id={'errorCloseButton'}
+                id="errorCloseButton"
                 className={`${styles.closeButton}`}
                 onClick={() => handleRemoveError(err.message)}
               >
-                <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
+                <CloseIcon color="#f44336" width="10" height="10" />
               </button>
               <div className={styles.errorContent}>
                 {processErrorMessage(err.message)}

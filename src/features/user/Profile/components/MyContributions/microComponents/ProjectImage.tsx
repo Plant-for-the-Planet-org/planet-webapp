@@ -20,9 +20,9 @@ const ProjectImage = ({
         ) : (
           <div className={myForestStyles.registerTreeIcon}>
             {numberOfTreesPlanted && numberOfTreesPlanted > 1 ? (
-              <TreesIcon width={'100px'} height={'100px'} />
+              <TreesIcon width="100px" height="100px" />
             ) : (
-              <TreeIcon width={'100px'} height={'100px'} />
+              <TreeIcon width="100px" height="100px" />
             )}
           </div>
         )}

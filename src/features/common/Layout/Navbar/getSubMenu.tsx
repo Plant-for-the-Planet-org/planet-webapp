@@ -16,7 +16,7 @@ interface Props {
 function GetSubMenuIcons({ title }: Props): ReactElement {
   const Overview = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <OverviewIcon />
       </div>
     );
@@ -24,7 +24,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const Partners = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <PartnerIcon />
       </div>
     );
@@ -32,7 +32,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const TrillionTrees = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <TrillionTreesIcon />
       </div>
     );
@@ -40,7 +40,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const Yucatan = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <YucatanIcon />
       </div>
     );
@@ -48,7 +48,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const ChangeChocolate = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <ChangeChocolateIcon />
       </div>
     );
@@ -56,7 +56,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const ChildrenYouth = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <ChildrenYouthIcon />
       </div>
     );
@@ -64,7 +64,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const StopTalkingStartPlanting = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <StopTalkingStartPlantingIcon />
       </div>
     );
@@ -72,7 +72,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const VTOChallenge = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <VTOChallengeIcon />
       </div>
     );
@@ -80,7 +80,7 @@ function GetSubMenuIcons({ title }: Props): ReactElement {
 
   const Mangroves = () => {
     return (
-      <div id="overviewButton" className={'link_icon'}>
+      <div id="overviewButton" className="link_icon">
         <OceanforceChallengeIcon />
       </div>
     );

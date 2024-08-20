@@ -111,7 +111,7 @@ export const EditModal = ({
       frequency: data.frequency,
     };
     if (
-      new Date(data.currentPeriodEnd).toDateString() ==
+      new Date(data.currentPeriodEnd).toDateString() ===
         new Date(record.currentPeriodEnd).toDateString() ||
       bodyToSend.nextBilling === null
     ) {
@@ -120,7 +120,7 @@ export const EditModal = ({
     if (data.frequency.toLowerCase() === record.frequency) {
       delete bodyToSend.frequency;
     }
-    if (data.amount == record.amount) {
+    if (data.amount === record.amount) {
       delete bodyToSend.centAmount;
     }
 
@@ -182,7 +182,7 @@ export const EditModal = ({
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <Close color="#4d5153" />
               </button>
             </div>
             <div className={styles.note}>

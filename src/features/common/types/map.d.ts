@@ -1,8 +1,5 @@
 import Supercluster from 'supercluster';
-import { User, UserInfo } from '@planet-sdk/common';
-import { MutableRefObject } from 'react';
-import { UserPublicProfile } from '@planet-sdk/common';
-import {
+import { User, UserInfo , UserPublicProfile ,
   TreeProjectClassification,
   CountryCode,
   CurrencyCode,
@@ -11,6 +8,7 @@ import {
   Tpo,
   UnitTypes,
 } from '@planet-sdk/common';
+import { MutableRefObject } from 'react';
 import { Nullable } from '@planet-sdk/common/build/types/util';
 import { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import { FlyToInterpolator } from 'react-map-gl';
@@ -122,19 +120,11 @@ export interface InteractionState {
 export interface ViewportProps {
   width?: string;
   height?: string;
-  latitude: number;
-  longitude: number;
-  zoom: number;
-  viewState?: ViewState | undefined;
-  interactionState?: InteractionState | undefined;
-}
-
-export interface ViewportProps {
-  height: number | string;
-  width: number | string;
-  zoom: [number] | number | undefined;
   latitude?: number;
   longitude?: number;
+  zoom: [number] | number | undefined;
+  viewState?: ViewState | undefined;
+  interactionState?: InteractionState | undefined;
   center?: [number, number];
   transitionDuration?: number | undefined;
   transitionInterpolator?: FlyToInterpolator | undefined;

@@ -102,7 +102,7 @@ export default function CountrySelect({
         const displayedOption =
           (currency ? `(${currency}) ` : '') +
           t(countryCode.toLowerCase()) +
-          (!(name == 'editProfile' || countryCode === 'auto')
+          (!(name === 'editProfile' || countryCode === 'auto')
             ? ` ${countryCode}`
             : '');
         return (
@@ -124,7 +124,7 @@ export default function CountrySelect({
           {...params}
           label={label}
           color="primary"
-          name={'countrydropdown'}
+          name="countrydropdown"
         />
       )}
     />

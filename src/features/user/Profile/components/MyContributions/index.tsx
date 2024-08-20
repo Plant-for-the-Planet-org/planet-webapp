@@ -5,13 +5,11 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import { handleError, APIError } from '@planet-sdk/common';
 import { trpc } from '../../../../../utils/trpc';
 import { Purpose } from '../../../../../utils/constants/myForest';
-import { ContributionData } from '../../../../common/types/myForest';
-import { StatsResult } from '../../../../common/types/myForest';
-import { MyContributionsProps } from '../../../../common/types/map';
+import { ContributionData , StatsResult } from '../../../../common/types/myForest';
+import { MyContributionsProps , TestPointProps } from '../../../../common/types/map';
 import ContributionStats from '../ContributionStats';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
-import { TestPointProps } from '../../../../common/types/map';
 import { MyForestMapLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
@@ -63,7 +61,7 @@ export default function MyContributions({
       ) {
         setIsConservedButtonActive(true);
       } else if (
-        treePlantationContribution?.pages[0].data.length ==
+        treePlantationContribution?.pages[0].data.length ===
         conservationContribution?.pages[0].data.length
       ) {
         setIsTreePlantedButtonActive(true);

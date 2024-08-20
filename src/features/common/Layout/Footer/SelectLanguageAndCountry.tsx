@@ -230,7 +230,7 @@ export default function TransitionsModal({
             {/* modal buttons */}
             <div className={styles.buttonContainer}>
               <button
-                id={'selLangAndCountryCan'}
+                id="selLangAndCountryCan"
                 className={styles.button}
                 onClick={handleModalClose}
               >
@@ -238,7 +238,7 @@ export default function TransitionsModal({
                 <p>{tCommon('cancel')}</p>
               </button>
               <button
-                id={'selLangAndCountryOk'}
+                id="selLangAndCountryOk"
                 className={styles.button}
                 onClick={handleOKClick}
               >

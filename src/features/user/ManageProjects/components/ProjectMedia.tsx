@@ -303,14 +303,14 @@ export default function ProjectMedia({
 
                     <div className={styles.uploadedImageButtonContainer}>
                       <IconButton
-                        id={'DelProjCert'}
+                        id="DelProjCert"
                         onClick={() => deleteProjectCertificate(image.id)}
                         size="small"
                       >
                         <DeleteIcon />
                       </IconButton>
                       <IconButton
-                        id={'setDefaultImg'}
+                        id="setDefaultImg"
                         onClick={() => setDefaultImage(image.id, index)}
                         size="small"
                       >
@@ -355,7 +355,7 @@ export default function ProjectMedia({
           </Button>
 
           <Button
-            id={'SaveAndCont'}
+            id="SaveAndCont"
             onClick={handleSubmit(onSubmit)}
             data-test-id="projMediaCont"
             variant="contained"

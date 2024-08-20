@@ -71,7 +71,7 @@ export const YearRangeSlider = () => {
     <div className={style.rangeMainContainer}>
       <div className={style.rangeContainer}>
         <div className={style.playIconContainer}>
-          <PlayIcon width={'8px'} />
+          <PlayIcon width="8px" />
         </div>
         <div className={style.sliderContainer}>
           <SmallSlider
@@ -84,8 +84,8 @@ export const YearRangeSlider = () => {
         </div>
       </div>
       <div className={style.yearRangeContainer}>
-        <div className={style.startYear}>{'2012'}</div>
-        <div className={style.endYear}>{'2024'}</div>
+        <div className={style.startYear}>2012</div>
+        <div className={style.endYear}>2024</div>
       </div>
     </div>
   );
@@ -97,7 +97,7 @@ const ExploreProject = () => {
   return (
     <>
       <CustomButton
-        startIcon={<ExploreIcon width={'19px'} />}
+        startIcon={<ExploreIcon width="19px" />}
         onClick={() => setIsOpen(!isOpen)}
       >
         {t('explore')}
