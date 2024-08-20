@@ -86,7 +86,7 @@ const NavigationItem = ({
         href={isMobile && hasSubMenu ? router.asPath : navLinkOptions.onclick}
       >
         {navLinkOptions.title !== 'signIn' && (
-          <div className={`linkContainer`}>
+          <div className="linkContainer">
             <p className={isActive ? 'activeItem' : ''}>
               {t(navLinkOptions.title)}
             </p>
