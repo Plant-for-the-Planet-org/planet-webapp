@@ -1,0 +1,162 @@
+@import '../../../../theme/theme';
+
+.blueCarbonContainer {
+  background-image: url('/tenants/salesforce/images/rectangle-35.png');
+  background-size: 1440px 100%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  position: relative;
+  z-index: 999;
+  padding-top: 84px;
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+  hr {
+    border: none;
+    background-color: #0b827c;
+    height: 1px;
+    margin-bottom: 30px;
+  }
+
+  .blueCarbon {
+    padding-bottom: 150px;
+    h2 {
+      font-family: $secondaryFontFamily;
+      font-style: normal;
+      font-weight: 500;
+      font-size: $fontXXLarge;
+      line-height: 40px;
+      text-align: center;
+      letter-spacing: -0.004em;
+      // color: #ffffff;
+      color: #032d60;
+      margin-bottom: 10px;
+      @include lgLaptopView {
+        font-size: 52px;
+        line-height: 100%;
+        letter-spacing: -0.006em;
+      }
+    }
+    h3 {
+      font-family: $secondaryFontFamily;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: -0.004em;
+      // color: #ffffff;
+      color: #032d60;
+      margin-bottom: 10px;
+      @include lgLaptopView {
+        font-size: $fontXXLarge;
+        line-height: 100%;
+        margin-bottom: 15px;
+      }
+    }
+    p,
+    ul {
+      font-family: $primaryFontFamily;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 24px;
+      // color: #ffffff;
+      color: #032d60;
+      margin-bottom: 24px;
+      a {
+        text-decoration: underline;
+        color: #0b5cab;
+      }
+      li {
+        margin-left: 20px;
+      }
+    }
+
+    .calloutContainer {
+      margin: 0 0 30px;
+    }
+
+    .helpOutCallout {
+      background-color: $backgroundBase;
+      border-radius: 24px;
+      overflow: hidden;
+      padding: 0;
+
+      .calloutContentContainer {
+        background: url('/tenants/salesforce/images/mangroves/walking-through-restoration-site-humedal-nacional-térraba-sierpe_rock_ian_aug22.jpg');
+        background-size: cover;
+        padding: 0;
+        display: flex;
+      }
+
+      .calloutContentOverlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          264.03deg,
+          rgba(255, 255, 255, 0.7125) 13.14%,
+          rgba(255, 255, 255, 0.9) 65.48%
+        );
+
+        @include smTabletView {
+          background: linear-gradient(
+            264.03deg,
+            rgba(255, 255, 255, 0.3) 15%,
+            rgba(255, 255, 255, 0.7) 30%,
+            rgba(255, 255, 255, 0.9) 65.48%
+          );
+        }
+      }
+
+      .calloutContent {
+        padding: 20px;
+        z-index: 1;
+        text-align: start;
+
+        :last-child {
+          margin-bottom: 0;
+        }
+
+        @include smTabletView {
+          padding-right: 150px;
+        }
+      }
+
+      .calloutQuote {
+        padding: 20px;
+        z-index: 1;
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  p.contentSectionSubhead {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 300;
+    font-size: $fontMedium;
+    line-height: 25px;
+    text-align: center;
+    letter-spacing: -0.002em;
+    // color: #ffffff;
+    color: #032d60;
+    @include lgLaptopView {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+}

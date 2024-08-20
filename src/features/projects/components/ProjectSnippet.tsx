@@ -37,12 +37,16 @@ interface Props {
     | ConservationProjectExtended;
   editMode: boolean;
   displayPopup: boolean;
+  utmCampaign?: string;
+  disableDonations?: boolean;
 }
 
 export default function ProjectSnippet({
   project,
   editMode,
   displayPopup,
+  utmCampaign,
+  disableDonations = false,
 }: Props): ReactElement {
   const router = useRouter();
   const locale = useLocale();
@@ -50,6 +54,7 @@ export default function ProjectSnippet({
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
   const tManageProjects = useTranslations('ManageProjects');
+  const storedCampaign = sessionStorage.getItem('campaign');
   const { embed, callbackUrl } = React.useContext(ParamsContext);
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -77,7 +82,8 @@ export default function ProjectSnippet({
       project.slug,
       token,
       embed || undefined,
-      callbackUrl || undefined
+      callbackUrl || undefined,
+      utmCampaign || storedCampaign || undefined
     );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
@@ -111,6 +117,7 @@ export default function ProjectSnippet({
       <div
         onClick={() => {
           setSelectedSite(0);
+          if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
             `/${locale}/${project.slug}/${
               embed === 'true'
@@ -242,8 +249,8 @@ export default function ProjectSnippet({
           )}
         </div>
 
-        <div className="projectCost">
-          {project.allowDonations && (
+        <div className={'projectCost'}>
+          {project.allowDonations && !disableDonations && (
             <button
               id={`ProjSnippetDonate_${project.id}`}
               onClick={handleOpen}
