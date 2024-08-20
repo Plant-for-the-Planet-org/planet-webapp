@@ -480,7 +480,6 @@ export default function AccountRecord({
                   <Certificates
                     recordDetails={record.details}
                     purpose={record.purpose}
-                    unitType={record.unitType}
                   />
                 </div>
               </>

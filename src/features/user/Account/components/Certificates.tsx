@@ -8,7 +8,6 @@ import { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
 interface CertificatesProps {
   recordDetails: PaymentDetails;
   purpose: ProjectPurpose;
-  unitType: UnitTypes;
 }
 
 export const shouldEnableCertificate = (purpose: ProjectPurpose) => {
@@ -28,18 +27,17 @@ export default function Certificates({
 
   return (
     <>
-      {recordDetails?.donorCertificate &&
-        shouldEnableCertificate(purpose, unitType) && (
-          <div className={styles.singleDetail}>
-            <a
-              href={recordDetails?.donorCertificate}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t('donorCertificate')}
-            </a>
-          </div>
-        )}
+      {recordDetails?.donorCertificate && shouldEnableCertificate(purpose) && (
+        <div className={styles.singleDetail}>
+          <a
+            href={recordDetails?.donorCertificate}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t('donorCertificate')}
+          </a>
+        </div>
+      )}
       {recordDetails?.taxDeductibleReceipt && (
         <div className={styles.singleDetail}>
           <a
@@ -51,18 +49,17 @@ export default function Certificates({
           </a>
         </div>
       )}
-      {recordDetails?.giftCertificate &&
-        shouldEnableCertificate(purpose, unitType) && (
-          <div className={styles.singleDetail}>
-            <a
-              href={recordDetails.giftCertificate}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t('giftCertificate')}
-            </a>
-          </div>
-        )}
+      {recordDetails?.giftCertificate && shouldEnableCertificate(purpose) && (
+        <div className={styles.singleDetail}>
+          <a
+            href={recordDetails.giftCertificate}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t('giftCertificate')}
+          </a>
+        </div>
+      )}
       {recordDetails?.codesUrl && (
         <DownloadCodes codesUrl={recordDetails.codesUrl} />
       )}
