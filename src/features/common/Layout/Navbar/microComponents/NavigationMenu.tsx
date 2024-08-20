@@ -39,7 +39,7 @@ const NavigationMenu = () => {
   };
 
   return headerItems.length > 0 ? (
-    <nav className={'menuItems'}>
+    <nav className="menuItems">
       {headerItems
         .filter(
           (headerItem) => headerItem.visible && headerItem.headerKey !== 'shop'

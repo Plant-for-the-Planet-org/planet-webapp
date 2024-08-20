@@ -47,9 +47,7 @@ export default function AdditionalInfo() {
               <iframe
                 src="https://customer-3h4q1m4a9rqr5i6y.cloudflarestream.com/d20fa8f183f67d5fbe9efb5b4aedb102/iframe?preload=true&poster=https%3A%2F%2Fcustomer-3h4q1m4a9rqr5i6y.cloudflarestream.com%2Fd20fa8f183f67d5fbe9efb5b4aedb102%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D0h1m5s%26height%3D600"
                 className={styles.iframe}
-                allow={
-                  'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;'
-                }
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
                 allowFullScreen={true}
               ></iframe>
             </div>
