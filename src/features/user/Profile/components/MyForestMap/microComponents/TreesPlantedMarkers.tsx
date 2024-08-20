@@ -1,7 +1,6 @@
 import { TreePlantedClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
-import { useState, useEffect, ReactElement } from 'react';
-import React from 'react';
+import React, { useState, useEffect, ReactElement } from 'react';
 import {
   Cluster,
   ClusterMarkerProps,

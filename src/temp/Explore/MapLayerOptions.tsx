@@ -1,9 +1,8 @@
 import { useState, ChangeEvent } from 'react';
 import style from '../Explore/Explore.module.scss';
-import { MapLayerToggle } from './ExploreProject';
+import { MapLayerToggle , YearRangeSlider } from './ExploreProject';
 import InfoIcon from '../icons/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
-import { YearRangeSlider } from './ExploreProject';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../theme/themeProperties';
 

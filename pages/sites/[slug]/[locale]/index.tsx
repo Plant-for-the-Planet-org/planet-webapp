@@ -11,7 +11,7 @@ import { ErrorHandlingContext } from '../../../../src/features/common/Layout/Err
 import DirectGift, {
   DirectGiftI,
 } from '../../../../src/features/donations/components/DirectGift';
-import { useLocale } from 'next-intl';
+import { useLocale , AbstractIntlMessages } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../../../../src/features/common/types/common';
 import { MapProject } from '../../../../src/features/common/types/ProjectPropsContextInterface';
@@ -27,7 +27,6 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
-import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {

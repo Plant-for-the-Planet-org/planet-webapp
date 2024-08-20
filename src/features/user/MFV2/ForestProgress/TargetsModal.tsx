@@ -1,6 +1,6 @@
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect , useState } from 'react';
 import { useMyForestV2 } from '../../../common/Layout/MyForestContextV2';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -11,7 +11,6 @@ import { SetState } from '../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';
-import { useState } from 'react';
 
 interface TargetsModalProps {
   open: boolean;

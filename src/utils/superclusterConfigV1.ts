@@ -1,5 +1,4 @@
-import { ViewState } from '../features/common/types/map';
-import {
+import { ViewState ,
   TestPointProps,
   TestClusterProps,
   Bound,

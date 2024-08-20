@@ -1,11 +1,10 @@
-import { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button, Switch, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
-import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';

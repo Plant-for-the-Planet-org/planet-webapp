@@ -7,8 +7,7 @@ import styles from './MyContributions.module.scss';
 import {
   MyForestProject,
   ProfilePageType,
-} from '../../../common/types/myForestv2';
-import { MyContributionsSingleProject } from '../../../common/types/myForestv2';
+ MyContributionsSingleProject } from '../../../common/types/myForestv2';
 import { useTranslations } from 'next-intl';
 import { CountryCode } from '@planet-sdk/common';
 import ItemImage from './ItemImage';

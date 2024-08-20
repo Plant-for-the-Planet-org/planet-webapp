@@ -1,8 +1,5 @@
 import Supercluster from 'supercluster';
-import { User, UserInfo } from '@planet-sdk/common';
-import { MutableRefObject } from 'react';
-import { UserPublicProfile } from '@planet-sdk/common';
-import {
+import { User, UserInfo , UserPublicProfile ,
   TreeProjectClassification,
   CountryCode,
   CurrencyCode,
@@ -11,6 +8,7 @@ import {
   Tpo,
   UnitTypes,
 } from '@planet-sdk/common';
+import { MutableRefObject } from 'react';
 import { Nullable } from '@planet-sdk/common/build/types/util';
 import { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import { FlyToInterpolator } from 'react-map-gl';

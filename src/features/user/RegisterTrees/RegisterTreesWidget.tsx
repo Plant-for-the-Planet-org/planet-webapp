@@ -30,8 +30,7 @@ import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { ViewportProps } from '../../common/types/map';
-import {
+import { ViewportProps ,
   RegisterTreesFormProps,
   RegisterTreeGeometry,
   ProjectGeoJsonProps,

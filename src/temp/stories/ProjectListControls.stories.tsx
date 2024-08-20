@@ -1,6 +1,5 @@
-import ProjectListControls from '../ProjectListControls';
+import ProjectListControls, { Classification } from '../ProjectListControls';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Classification } from '../ProjectListControls';
 
 const meta: Meta<typeof ProjectListControls> = {
   title: 'Projects/Landing/ProjectListControls',

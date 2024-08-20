@@ -38,9 +38,9 @@ const SubMenu = ({ subMenu }: SubMenuProps) => {
                 key={subMenuItem.title}
                 href={subMenuItem.onclick}
               >
-                <div className={'subMenuContainer'}>
+                <div className="subMenuContainer">
                   <GetSubMenuIcons title={subMenuItem.title} />
-                  <div className={'menuText'}>
+                  <div className="menuText">
                     {t(subMenuItem.title as SubmenuTitle)}
                   </div>
                 </div>
@@ -55,14 +55,14 @@ const SubMenu = ({ subMenu }: SubMenuProps) => {
             return (
               <a
                 key={subMenuItem.title}
-                className={'menuRow'}
+                className="menuRow"
                 href={`https://www.plant-for-the-planet.org/${getLanguagePath(
                   locale
                 )}/${path}`}
               >
-                <div className={'subMenuContainer'}>
+                <div className="subMenuContainer">
                   <GetSubMenuIcons title={subMenuItem.title} />
-                  <div className={'menuText'}>
+                  <div className="menuText">
                     {t(subMenuItem.title as SubmenuTitle)}
                   </div>
                 </div>

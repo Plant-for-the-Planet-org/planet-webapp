@@ -15,8 +15,7 @@ import { SetState } from '../../common/types/common';
 import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Tenant } from '@planet-sdk/common';
+import { handleError, APIError , Tenant } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {

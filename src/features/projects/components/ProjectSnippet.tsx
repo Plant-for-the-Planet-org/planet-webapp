@@ -249,7 +249,7 @@ export default function ProjectSnippet({
           )}
         </div>
 
-        <div className={'projectCost'}>
+        <div className="projectCost">
           {project.allowDonations && !disableDonations && (
             <button
               id={`ProjSnippetDonate_${project.id}`}

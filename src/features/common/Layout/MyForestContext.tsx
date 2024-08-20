@@ -7,11 +7,9 @@ import {
   useEffect,
 } from 'react';
 import { PointFeature } from 'supercluster';
-import { TestPointProps } from '../types/map';
+import { TestPointProps , ViewportProps } from '../types/map';
 import { SetState } from '../types/common';
-import { ContributionData } from '../types/myForest';
-import { StatsResult } from '../types/myForest';
-import { ViewportProps } from '../../common/types/map';
+import { ContributionData , StatsResult } from '../types/myForest';
 
 interface MyForestContextInterface {
   conservationProjectGeoJson: PointFeature<TestPointProps>[];

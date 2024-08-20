@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
+import { Button, FormControlLabel, Switch, Tooltip , MenuItem, TextField } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
 import MapGL, {
@@ -16,7 +16,6 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   postAuthenticatedRequest,

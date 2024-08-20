@@ -14,12 +14,11 @@ import {
   DefaultPaymentConfig,
   Certificate,
 } from '@planet-sdk/common';
-import { FeatureCollection as GeoJson } from 'geojson';
+import { FeatureCollection as GeoJson , Polygon } from 'geojson';
 import { SetState } from './common';
 import { ChangeEvent } from 'react';
 import { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
 import { Nullable } from '@planet-sdk/common/build/types/util';
-import { Polygon } from 'geojson';
 import { Option } from '../../user/ManageProjects/components/ProjectSites';
 
 export interface UploadImage extends Image {
