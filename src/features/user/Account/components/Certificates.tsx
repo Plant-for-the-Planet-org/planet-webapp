@@ -1,17 +1,19 @@
 import { ReactElement } from 'react';
 import { useTranslations } from 'next-intl';
 import DownloadCodes from './DownloadCodes';
-import { PaymentDetails } from '../../../common/types/payments';
+import {
+  DonationPurpose,
+  PaymentDetails,
+} from '../../../common/types/payments';
 import styles from '../AccountHistory.module.scss';
-import { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
 
 interface CertificatesProps {
   recordDetails: PaymentDetails;
-  purpose: ProjectPurpose;
+  purpose: DonationPurpose;
 }
 
-export const shouldEnableCertificate = (purpose: ProjectPurpose) => {
-  if (purpose === 'bouquet') {
+export const shouldEnableCertificate = (purpose: DonationPurpose) => {
+  if (purpose === 'bouquet' || purpose === 'composite') {
     return false;
   } else {
     return true;
@@ -21,7 +23,6 @@ export const shouldEnableCertificate = (purpose: ProjectPurpose) => {
 export default function Certificates({
   recordDetails,
   purpose,
-  unitType,
 }: CertificatesProps): ReactElement {
   const t = useTranslations('Me');
 

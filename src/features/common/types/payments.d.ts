@@ -85,11 +85,13 @@ export interface FirstDonation {
   reference: string;
 }
 
+export type DonationPurpose = ProjectPurpose | 'composite';
+
 export interface PaymentHistoryRecord {
   quantity: number;
   bouquetPurpose?: string;
   netAmount: number;
-  purpose: ProjectPurpose;
+  purpose: DonationPurpose;
   created: Date;
   treeCount: number;
   type: string;
