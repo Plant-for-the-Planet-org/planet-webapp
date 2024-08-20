@@ -34,6 +34,25 @@ const dummyPrivateProfile: User = {
     received: 419,
     target: 100000000,
   },
+  scores: {
+    treesDonated: {
+      personal: 10235449.86,
+      received: 419,
+      target: 100000000,
+    },
+    areaRestored: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    areaConserved: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    treesPlanted: 100,
+    fundsDonated: { EUR: 1250 },
+  },
   targets: {
     treesDonated: 0,
     areaRestored: 0,
@@ -63,6 +82,7 @@ const dummyPrivateProfile: User = {
     creditLimit: 0,
     giftFunds: [],
   },
+  exposeCommunity: true,
 };
 
 const dummyPublicProfile: UserPublicProfile = {
@@ -78,6 +98,25 @@ const dummyPublicProfile: UserPublicProfile = {
     received: 0.0,
     target: 0.0,
   },
+  scores: {
+    treesDonated: {
+      personal: 10235449.86,
+      received: 419,
+      target: 100000000,
+    },
+    areaRestored: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    areaConserved: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    treesPlanted: 100,
+    fundsDonated: { EUR: 1250 },
+  },
   targets: {
     treesDonated: 0,
     areaRestored: 0,
@@ -87,6 +126,7 @@ const dummyPublicProfile: UserPublicProfile = {
   id: 'prf_n06cLhehvsBEpbyiVDorLP6f',
   bio: 'planting trees',
   hasLogoLicense: false,
+  exposeCommunity: true,
 };
 
 export const Private: Story = {
