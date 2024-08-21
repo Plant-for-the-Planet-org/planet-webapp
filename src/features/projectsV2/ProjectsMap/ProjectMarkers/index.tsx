@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { MapProject } from '../../../common/types/projectv2';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
@@ -28,10 +28,7 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({
-  categorizedProjects,
-  selectedClassification,
-}: ProjectMarkersProps) => {
+const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
 
@@ -85,8 +82,8 @@ const ProjectMarkers = ({
     regularDonatableProjects,
   } = categorizedProjects;
 
-  const renderMarkers = useMemo(
-    () => (projects: MapProject[]) =>
+  const renderMarkers = useCallback(
+    (projects: MapProject[]) =>
       projects.map((project) => (
         <SingleMarker
           project={project}
@@ -99,11 +96,24 @@ const ProjectMarkers = ({
     [initiatePopupOpen, handleMarkerLeave, visitProject]
   );
 
+  const nonDonatableProjectMarkers = useMemo(
+    () => renderMarkers(nonDonatableProjects),
+    [renderMarkers, nonDonatableProjects]
+  );
+  const regularDonatableProjectMarkers = useMemo(
+    () => renderMarkers(regularDonatableProjects),
+    [renderMarkers, regularDonatableProjects]
+  );
+  const topApprovedProjectMarkers = useMemo(
+    () => renderMarkers(topApprovedProjects),
+    [renderMarkers, topApprovedProjects]
+  );
+
   return (
     <>
-      {renderMarkers(nonDonatableProjects)}
-      {renderMarkers(regularDonatableProjects)}
-      {renderMarkers(topApprovedProjects)}
+      {nonDonatableProjectMarkers}
+      {regularDonatableProjectMarkers}
+      {topApprovedProjectMarkers}
       {popupState.show && (
         <ProjectPopup
           project={popupState.project}
