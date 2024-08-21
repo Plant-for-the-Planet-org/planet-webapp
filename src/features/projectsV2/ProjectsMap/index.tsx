@@ -10,17 +10,19 @@ import { SetState } from '../../common/types/common';
 import styles from './ProjectsMap.module.scss';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
-interface ProjectsMapProp {
-  selectedMode?: ViewMode;
-  setSelectedMode?: SetState<ViewMode>;
-  isMobile: boolean;
-}
+type ProjectsMapMobileProps = {
+  selectedMode: ViewMode;
+  setSelectedMode: SetState<ViewMode>;
+  isMobile: true;
+};
 
-function ProjectsMap({
-  selectedMode,
-  setSelectedMode,
-  isMobile,
-}: ProjectsMapProp) {
+type ProjectsMapDesktopProps = {
+  isMobile: false;
+};
+
+type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
+
+function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState } = useProjectsMap();
   const {
@@ -44,16 +46,16 @@ function ProjectsMap({
     setSelectedClassification,
     debouncedSearchValue,
     setDebouncedSearchValue,
-    selectedMode,
-    setSelectedMode,
+    selectedMode: props.isMobile ? props.selectedMode : undefined,
+    setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
     filteredProjects,
-    isMobile,
+    isMobile: props.isMobile,
     isSearching,
     setIsSearching,
   };
   return (
     <>
-      {isMobile && (
+      {props.isMobile && (
         <div className={styles.projectListControlsContainer}>
           <ProjectListControlForMobile {...projectListControlProps} />
         </div>

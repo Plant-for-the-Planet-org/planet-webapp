@@ -5,7 +5,7 @@ import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIc
 import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
-import { ProjectTabs } from '..';
+import { type ProjectTabs } from '..';
 
 interface ProjectListTabLargeScreenProps {
   setIsFilterOpen: SetState<boolean>;

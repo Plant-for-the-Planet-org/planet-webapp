@@ -10,6 +10,7 @@ import { TreeProjectClassification } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/projectv2';
 
 export type ProjectTabs = 'topProjects' | 'allProjects';
+
 export interface ProjectListControlsProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
