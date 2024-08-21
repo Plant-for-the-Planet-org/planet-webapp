@@ -8,6 +8,7 @@ import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
 import themeProperties from '../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
+import styles from '../styles/ProjectSnippet.module.scss';
 
 interface Props {
   displayPopup: boolean;
@@ -21,8 +22,11 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
   const t = useTranslations('Common');
   return (
     <>
-      <div className={'topProjectBadge'} {...bindHover(topProjectPopupState)}>
-        <div className={'badgeIcon'}>
+      <div
+        className={styles.topProjectBadge}
+        {...bindHover(topProjectPopupState)}
+      >
+        <div className={styles.badgeIcon}>
           <TopProjectIcon color={'#6D4230'} />
         </div>
         <div>{t('topProject')}</div>
@@ -42,7 +46,7 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
             e.stopPropagation();
           }}
         >
-          <div className="topProjectPopupContainer">
+          <div className={styles.topProjectPopupContainer}>
             {t.rich('top_project_standards_fulfilled', {
               standardsLink: (chunks) => (
                 <a
