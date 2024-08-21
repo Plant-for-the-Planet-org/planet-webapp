@@ -5,14 +5,16 @@
     "deforestation": "Deforestation",
     "projects": "Projects",
     "classificationTypes": {
-      "large-scale-planting": "Large Scale Planting",
+      "large-scale-planting": "Large Scale Restoration",
       "agroforestry": "Agroforestry",
       "natural-regeneration": "Natural Regeneration",
       "managed-regeneration": "Managed Regeneration",
       "urban-planting": "Urban Planting",
       "other-planting": "Other Planting",
-      "allProjects": "All Projects"
+      "mangroves": "Mangroves"
     },
+    "noFilterApplied": "No Filter Applied",
+    "clearFilter": "Clear Filter",
     "allProjects": "All <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "searchProject": "Search Project",
     "topProjects": "Top Projects <projectCountContainer>({noOfProjects})</projectCountContainer>",
@@ -22,6 +24,8 @@
     "treeDonated": "{count, plural, =1 {# Tree donated} other {# Trees donated}}",
     "areaRestored": "{area}  m² restored",
     "areaConserved": "{area}  m² conserved",
-    "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }"
+    "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }",
+    "noProjectFound": "Oops! No project found",
+    "filterResult": "{count, plural, =1 {# Project} other {# Projects}} found "
   }
 }

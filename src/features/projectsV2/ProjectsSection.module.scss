@@ -1,0 +1,46 @@
+@import '../../theme/theme';
+// temporary file will be deleted later
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-top: 20px;
+  padding-bottom: 65px;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: rgba(224, 224, 224, 1);
+    height: 220px;
+  }
+  @include xsPhoneView {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    padding-right: 0px;
+    padding-bottom: 100px;
+  }
+}
+
+.projectSectionSkeleton {
+  height: 100%;
+}
+
+.noProjectFoundContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.noProjectFoundText {
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 15px;
+}

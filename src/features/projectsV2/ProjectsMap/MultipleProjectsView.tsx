@@ -4,14 +4,20 @@ import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
 
 const MultipleProjectsView = () => {
-  const { projects, isLoading, isError } = useProjects();
+  const {
+    projects,
+    isLoading,
+    isError,
+    selectedClassification,
+    filteredProjects,
+  } = useProjects();
 
   if (isLoading || isError || !projects) {
     return null;
   }
 
   const categorizedProjects = useMemo(() => {
-    return projects.reduce<CategorizedProjects>(
+    return filteredProjects?.reduce<CategorizedProjects>(
       (categorizedProjects, project) => {
         const projectCategory = getProjectCategory(project.properties);
         switch (projectCategory) {
@@ -33,9 +39,13 @@ const MultipleProjectsView = () => {
         regularDonatableProjects: [],
       }
     );
-  }, [projects, isLoading, isError]);
-
-  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
+  }, [projects, filteredProjects, isLoading, isError]);
+  return (
+    <ProjectMarkers
+      categorizedProjects={categorizedProjects}
+      selectedClassification={selectedClassification}
+    />
+  );
 };
 
 export default MultipleProjectsView;

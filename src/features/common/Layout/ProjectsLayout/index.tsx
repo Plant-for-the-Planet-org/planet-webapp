@@ -29,7 +29,7 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
           <main className={styles.mainContent}>
             <section className={styles.contentContainer}>{children}</section>
             <section className={styles.mapContainer}>
-              <ProjectsMap />
+              <ProjectsMap isMobile={false} />
             </section>
           </main>
           <Credits setCurrencyCode={setCurrencyCode} />
