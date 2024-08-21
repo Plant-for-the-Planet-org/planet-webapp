@@ -3,7 +3,7 @@ import { useState } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ProjectsSection.module.scss';
 import { useProjects } from './ProjectsContext';
-import ProjectListControls from './ProjectListControls';
+import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
 
@@ -27,9 +27,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     setSelectedMode,
     selectedMode,
   } = useProjects();
-  const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
-    'topProjects'
-  );
+  const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }

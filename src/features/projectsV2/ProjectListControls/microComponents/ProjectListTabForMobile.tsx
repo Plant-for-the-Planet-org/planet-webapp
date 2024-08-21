@@ -3,8 +3,8 @@ import { useTranslations } from 'next-intl';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import styles from '../styles/ProjectListControls.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
+import { type ProjectTabs } from '..';
 
-type ProjectTabs = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
