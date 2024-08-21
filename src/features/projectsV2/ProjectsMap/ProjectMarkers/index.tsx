@@ -28,10 +28,7 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({
-  categorizedProjects,
-  selectedClassification,
-}: ProjectMarkersProps) => {
+const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
 

@@ -55,7 +55,7 @@ ProjectDetailsPage.getLayout = function getLayout(
   const layoutProps = {
     currencyCode: pageComponentProps.currencyCode,
     setCurrencyCode: pageComponentProps.setCurrencyCode,
-    page: 'project-list',
+    page: 'project-details',
     isMobile: pageComponentProps.isMobile,
   } as const;
   return pageComponentProps.isMobile ? (

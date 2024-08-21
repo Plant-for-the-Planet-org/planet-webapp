@@ -14,13 +14,14 @@ import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   APIError,
+  CountryCode,
   handleError,
   TreeProjectClassification,
 } from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
-import { getSearchProjects } from './ProjectListControls/utils';
 import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { useTranslations } from 'next-intl';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -67,6 +68,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
+  const tCountry = useTranslations('Country');
 
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
@@ -91,6 +93,50 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     [projects]
   );
 
+  const getSearchProjects = useCallback(
+    (projects: MapProject[] | null, keyword: string) => {
+      if (!keyword?.trim()) {
+        return [];
+      }
+
+      const normalizedKeyword = keyword
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+      const filteredProjects = projects?.filter((project: MapProject) => {
+        const normalizedText = (text: string | undefined | null) => {
+          return text
+            ? text
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+            : '';
+        };
+
+        const projectName = normalizedText(project.properties.name);
+        const projectLocation =
+          project.properties.purpose === 'trees'
+            ? normalizedText(project.properties.location)
+            : '';
+        const tpoName = normalizedText(project.properties.tpo.name);
+        const country = normalizedText(
+          tCountry(
+            project.properties.country.toLowerCase() as Lowercase<CountryCode>
+          )
+        );
+        return (
+          projectName.includes(normalizedKeyword) ||
+          projectLocation.includes(normalizedKeyword) ||
+          tpoName.includes(normalizedKeyword) ||
+          country.includes(normalizedKeyword)
+        );
+      });
+      return filteredProjects;
+    },
+    []
+  );
+
   const filteredProjects = useMemo(() => {
     let result = projects || [];
 
@@ -102,6 +148,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     return result;
   }, [projects, selectedClassification, debouncedSearchValue]);
+
   useEffect(() => {
     async function loadProjects() {
       if (page !== 'project-list' || !currencyCode) {

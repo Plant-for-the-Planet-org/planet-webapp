@@ -18,9 +18,10 @@ interface TabItemProps {
   icon: ReactNode;
   label: string | undefined;
 }
-const { light } = themeProperties;
-const getIconColor = (mode: ViewMode, selectMode: ViewMode) =>
-  mode === selectMode ? light.light : light.richBlack;
+const getIconColor = (mode: ViewMode, selectMode: ViewMode) => {
+  const { light } = themeProperties;
+  return mode === selectMode ? light.light : light.richBlack;
+};
 
 const ViewModeTabs = ({
   setIsFilterOpen,
