@@ -9,22 +9,22 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { SetState } from '../../common/types/common';
 import { ProjectTabs } from '.';
-import { ViewMode } from '../../../../pages/_app';
 import { MapProject } from '../../common/types/projectv2';
+import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  tabSelected: ProjectTabs;
-  setTabSelected: SetState<ProjectTabs>;
+  tabSelected?: ProjectTabs;
+  setTabSelected?: SetState<ProjectTabs>;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
-  selectedMode: ViewMode;
-  setSelectedMode: SetState<ViewMode>;
+  selectedMode: ViewMode | undefined;
+  setSelectedMode: SetState<ViewMode> | undefined;
   isMobile: boolean;
   filteredProjects: MapProject[] | undefined;
 }
@@ -72,7 +72,6 @@ const ProjectListControlForMobile = ({
     setIsFilterOpen,
   };
   const listControlProps = {
-    debouncedSearchValue,
     hasFilterApplied,
     isFilterOpen,
     setIsFilterOpen,

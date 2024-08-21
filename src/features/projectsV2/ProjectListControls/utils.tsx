@@ -7,6 +7,7 @@ export const availableFilters: TreeProjectClassification[] = [
   'natural-regeneration',
   'managed-regeneration',
   'urban-planting',
+  'mangroves',
   'other-planting',
 ];
 

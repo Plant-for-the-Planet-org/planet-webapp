@@ -56,8 +56,6 @@ ProjectDetailsPage.getLayout = function getLayout(
     currencyCode: pageComponentProps.currencyCode,
     setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-list',
-    selectedMode: pageComponentProps.selectedMode,
-    setSelectedMode: pageComponentProps.setSelectedMode,
     isMobile: pageComponentProps.isMobile,
   } as const;
   return pageComponentProps.isMobile ? (
@@ -72,7 +70,7 @@ export default ProjectDetailsPage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,

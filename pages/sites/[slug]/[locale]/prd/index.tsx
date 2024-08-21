@@ -21,12 +21,7 @@ import {
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../../src/features/projectsV2/ProjectsSection';
 
-const ProjectListPage: NextPageWithLayout = ({
-  pageProps,
-  selectedMode,
-  setSelectedMode,
-  isMobile,
-}) => {
+const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -36,13 +31,7 @@ const ProjectListPage: NextPageWithLayout = ({
     }
   }, [router.isReady]);
 
-  return (
-    <ProjectsSection
-      selectedMode={selectedMode}
-      setSelectedMode={setSelectedMode}
-      isMobile={isMobile}
-    />
-  );
+  return <ProjectsSection isMobile={isMobile} />;
 };
 
 ProjectListPage.getLayout = function getLayout(
@@ -53,8 +42,6 @@ ProjectListPage.getLayout = function getLayout(
     currencyCode: pageComponentProps.currencyCode,
     setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-list',
-    selectedMode: pageComponentProps.selectedMode,
-    setSelectedMode: pageComponentProps.setSelectedMode,
     isMobile: pageComponentProps.isMobile,
   } as const;
 
@@ -70,7 +57,7 @@ export default ProjectListPage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,

@@ -6,17 +6,20 @@ import { useProjects } from '../ProjectsContext';
 import ProjectSnippet from '../ProjectSnippet';
 import { MapProject } from '../../common/types/projectv2';
 
-const ProjectList = () => {
+const ProjectList = ({
+  tabSelected,
+}: {
+  tabSelected: 'topProjects' | 'allProjects';
+}) => {
   const tAllProjects = useTranslations('AllProjects');
   const {
     debouncedSearchValue,
     selectedClassification,
     filteredProjects,
-    tabSelected,
     topProjects,
     projects,
   } = useProjects();
-  const ProjectsToDisplay = useMemo(() => {
+  const projectsToDisplay = useMemo(() => {
     const hasClassificationOrSearch =
       debouncedSearchValue !== '' || selectedClassification.length > 0;
     if (hasClassificationOrSearch) return filteredProjects;
@@ -24,13 +27,11 @@ const ProjectList = () => {
   }, [filteredProjects, tabSelected]);
 
   const sortedProjects = useMemo(() => {
-    return ProjectsToDisplay?.sort((a, b) => {
-      return (
-        Number(b.properties.allowDonations) -
-        Number(a.properties.allowDonations)
-      );
+    return projectsToDisplay?.sort((a, b) => {
+      if (a.properties.allowDonations === b.properties.allowDonations) return 0;
+      return a.properties.allowDonations ? -1 : 1;
     });
-  }, [ProjectsToDisplay]);
+  }, [projectsToDisplay]);
 
   const renderProjectSnippet = useCallback(
     (project: MapProject) => (
@@ -43,7 +44,7 @@ const ProjectList = () => {
     []
   );
 
-  const isProjectFound = !(ProjectsToDisplay?.length === 0);
+  const isProjectFound = !(projectsToDisplay?.length === 0);
   return (
     <div className={styles.projectList}>
       {isProjectFound ? (

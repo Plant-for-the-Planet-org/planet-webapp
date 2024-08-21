@@ -8,8 +8,8 @@ type ProjectTabs = 'topProjects' | 'allProjects';
 interface ProjectListTabForMobileProps {
   projectCount: number | undefined;
   topProjectCount: number | undefined;
-  tabSelected: ProjectTabs;
-  setTabSelected: (value: ProjectTabs) => void;
+  tabSelected?: ProjectTabs;
+  setTabSelected?: (value: ProjectTabs) => void;
   setIsFilterOpen: (value: boolean) => void;
 }
 interface TabItemProps {
@@ -24,11 +24,13 @@ const ProjectListTabForMobile = ({
   setTabSelected,
   setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
-  const { light, dark } = themeProperties;
+  const { light } = themeProperties;
   const t = useTranslations('AllProjects');
 
   const selectTab = (tab: ProjectTabs) => {
-    setTabSelected(tab);
+    if (setTabSelected) {
+      setTabSelected(tab);
+    }
     setIsFilterOpen(false);
   };
 
@@ -45,7 +47,7 @@ const ProjectListTabForMobile = ({
     );
   };
   const starIconColor =
-    tabSelected === 'topProjects' ? `${light.light}` : `${dark.darkNew}`;
+    tabSelected === 'topProjects' ? `${light.light}` : `${light.richBlack}`;
   return (
     <div className={styles.tabContainer}>
       <TabItem

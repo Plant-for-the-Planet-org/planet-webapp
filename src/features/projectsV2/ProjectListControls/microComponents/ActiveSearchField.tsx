@@ -30,7 +30,7 @@ const ActiveSearchField = ({
     1000,
     [searchValue]
   );
-  const resetSearchTab = () => {
+  const resetSearch = () => {
     setDebouncedSearchValue('');
     setIsSearching(false);
     setIsFilterOpen(false);
@@ -51,7 +51,7 @@ const ActiveSearchField = ({
         autoFocus
       />
 
-      <button onClick={resetSearchTab} className={styles.crossIcon}>
+      <button onClick={resetSearch} className={styles.crossIcon}>
         <CrossIcon />
       </button>
     </div>

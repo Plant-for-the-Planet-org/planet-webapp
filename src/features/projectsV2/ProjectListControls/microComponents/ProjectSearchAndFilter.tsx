@@ -20,7 +20,6 @@ export const SearchAndFilter = ({
   setIsSearching,
   isSearching,
   isMobile,
-  debouncedSearchValue,
 }: ProjectSearchAndFilterProps) => {
   const searchAndFilterContainer = isMobile
     ? styles.iconsContainerMobile
@@ -28,16 +27,11 @@ export const SearchAndFilter = ({
 
   return (
     <div className={searchAndFilterContainer}>
-      <div className={styles.filterContainer}>
-        {isMobile && debouncedSearchValue && (
-          <div className={styles.filterIndicator} />
-        )}
-        <button onClick={() => setIsSearching(!isSearching)}>
-          <SearchIcon />
-        </button>
-      </div>
-      <div className={styles.filterContainer}>
-        {hasFilterApplied && <div className={styles.filterIndicator} />}
+      <button onClick={() => setIsSearching(!isSearching)}>
+        <SearchIcon />
+      </button>
+      <div className={styles.buttonContainer}>
+        {hasFilterApplied && <div className={styles.activeIndicator} />}
         <button onClick={() => setIsFilterOpen(!isFilterOpen)}>
           <FilterIcon width={'16px'} />
         </button>

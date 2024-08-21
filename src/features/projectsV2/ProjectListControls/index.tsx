@@ -17,6 +17,7 @@ export interface ProjectListControlsProps {
   setTabSelected: SetState<ProjectTabs>;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   filteredProjects: MapProject[] | undefined;
 }
@@ -27,6 +28,7 @@ const ProjectListControls = ({
   tabSelected,
   selectedClassification,
   setSelectedClassification,
+  debouncedSearchValue,
   setDebouncedSearchValue,
   filteredProjects,
 }: ProjectListControlsProps) => {
@@ -53,6 +55,7 @@ const ProjectListControls = ({
   const activeSearchFieldProps = {
     setIsSearching,
     setIsFilterOpen,
+    debouncedSearchValue,
     setDebouncedSearchValue,
   };
   const classificationDropDownProps = {

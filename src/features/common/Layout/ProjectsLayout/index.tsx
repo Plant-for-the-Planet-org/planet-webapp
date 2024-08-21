@@ -5,14 +5,11 @@ import { SetState } from '../../types/common';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
-import { ViewMode } from '../../../../../pages/_app';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
-  selectedMode: ViewMode;
-  setSelectedMode: SetState<ViewMode>;
 }
 
 const ProjectsLayout: FC<ProjectsLayoutProps> = ({
@@ -20,8 +17,6 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
   currencyCode,
   setCurrencyCode,
   page,
-  selectedMode,
-  setSelectedMode,
 }) => {
   return (
     <ProjectsProvider
@@ -34,11 +29,7 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
           <main className={styles.mainContent}>
             <section className={styles.contentContainer}>{children}</section>
             <section className={styles.mapContainer}>
-              <ProjectsMap
-                isMobile={false}
-                selectedMode={selectedMode}
-                setSelectedMode={setSelectedMode}
-              />
+              <ProjectsMap isMobile={false} />
             </section>
           </main>
           <Credits setCurrencyCode={setCurrencyCode} />

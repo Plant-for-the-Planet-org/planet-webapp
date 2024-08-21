@@ -20,20 +20,13 @@ import {
 import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { getSearchProjects } from './ProjectListControls/utils';
-import { ProjectTabs } from './ProjectListControls';
-
-const TAB_OPTIONS = {
-  TOP_PROJECTS: 'topProjects',
-  ALL_PROJECTS: 'allProjects',
-} as const;
+import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 interface ProjectsState {
   projects: MapProject[] | null;
   isLoading: boolean;
   isError: boolean;
   filteredProjects: MapProject[] | undefined;
-  tabSelected: ProjectTabs;
-  setTabSelected: SetState<ProjectTabs>;
   topProjects: MapProject[] | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
@@ -41,6 +34,8 @@ interface ProjectsState {
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
+  selectedMode?: ViewMode;
+  setSelectedMode?: SetState<ViewMode>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -49,6 +44,8 @@ type ProjectsProviderProps = {
   page: 'project-list' | 'project-details';
   currencyCode: string;
   setCurrencyCode: SetState<string>;
+  selectedMode?: ViewMode;
+  setSelectedMode?: SetState<ViewMode>;
 };
 
 export const ProjectsProvider: FC<ProjectsProviderProps> = ({
@@ -56,11 +53,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   page,
   currencyCode,
   setCurrencyCode,
+  selectedMode,
+  setSelectedMode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [tabSelected, setTabSelected] = useState<
-    (typeof TAB_OPTIONS)[keyof typeof TAB_OPTIONS]
-  >(TAB_OPTIONS.TOP_PROJECTS);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
@@ -92,7 +88,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
         if (projects.properties.purpose === 'trees')
           return projects.properties.isTopProject === true;
       }),
-    [projects, tabSelected]
+    [projects]
   );
 
   const filteredProjects = useMemo(() => {
@@ -156,10 +152,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       isSearching,
       setIsSearching,
       topProjects,
-      tabSelected,
-      setTabSelected,
       selectedClassification,
       setSelectedClassification,
+      selectedMode,
+      setSelectedMode,
     }),
     [
       projects,
@@ -168,9 +164,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       filteredProjects,
       isSearching,
       topProjects,
-      tabSelected,
       selectedClassification,
       debouncedSearchValue,
+      selectedMode,
     ]
   );
 

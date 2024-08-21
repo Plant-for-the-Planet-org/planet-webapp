@@ -23,7 +23,7 @@ const ProjectListTabLargeScreen = ({
   tabSelected,
 }: ProjectListTabLargeScreenProps) => {
   const t = useTranslations('AllProjects');
-  const { primaryColorNew, dark } = themeProperties;
+  const { primaryColorNew, light } = themeProperties;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabSelected(newValue === 0 ? 'topProjects' : 'allProjects');
     setIsFilterOpen(false);
@@ -41,7 +41,7 @@ const ProjectListTabLargeScreen = ({
         icon={
           <StarIcon
             width={'16px'}
-            color={`${isTopProjectTab ? primaryColorNew : dark.darkNew}`}
+            color={`${isTopProjectTab ? primaryColorNew : light.richBlack}`}
           />
         }
         label={

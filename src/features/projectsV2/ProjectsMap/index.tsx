@@ -1,18 +1,18 @@
 import Map from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useRef, MutableRefObject, useMemo } from 'react';
+import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import { useProjects } from '../ProjectsContext';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { SetState } from '../../common/types/common';
 import styles from './ProjectsMap.module.scss';
-import { ViewMode } from '../../../../pages/_app';
+import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 interface ProjectsMapProp {
-  selectedMode: ViewMode;
-  setSelectedMode: SetState<ViewMode>;
+  selectedMode?: ViewMode;
+  setSelectedMode?: SetState<ViewMode>;
   isMobile: boolean;
 }
 
@@ -28,8 +28,6 @@ function ProjectsMap({
     topProjects,
     selectedClassification,
     filteredProjects,
-    tabSelected,
-    setTabSelected,
     setSelectedClassification,
     debouncedSearchValue,
     setDebouncedSearchValue,
@@ -42,8 +40,6 @@ function ProjectsMap({
   const projectListControlProps = {
     projectCount,
     topProjectCount,
-    tabSelected,
-    setTabSelected,
     selectedClassification,
     setSelectedClassification,
     debouncedSearchValue,
@@ -55,7 +51,6 @@ function ProjectsMap({
     isSearching,
     setIsSearching,
   };
-
   return (
     <>
       {isMobile && (

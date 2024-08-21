@@ -96,7 +96,7 @@ const ProjectMarkers = ({
           visitProject={visitProject}
         />
       )),
-    [initiatePopupOpen, handleMarkerLeave, visitProject, selectedClassification]
+    [initiatePopupOpen, handleMarkerLeave, visitProject]
   );
 
   return (

@@ -4,7 +4,7 @@ import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../utils';
 import { TreeProjectClassification } from '@planet-sdk/common';
-import { ViewMode } from '../../../../../pages/_app';
+import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { MapProject } from '../../../common/types/projectv2';
 
 interface ClassificationDropDownProps {

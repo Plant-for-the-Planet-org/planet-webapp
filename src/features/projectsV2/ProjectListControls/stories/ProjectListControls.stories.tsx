@@ -1,5 +1,4 @@
 import ProjectListControls from '..';
-import ActiveSearchField from '../microComponents/ActiveSearchField';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
@@ -33,6 +32,7 @@ export const Default: Story = {
     projectCount: 20,
     topProjectCount: 30,
     selectedClassification: [],
+    debouncedSearchValue: '',
     filteredProjects: [
       {
         type: 'Feature',
@@ -94,29 +94,13 @@ export const Default: Story = {
         },
       },
     ],
-    isSearching: true,
   },
   render: (args) => {
     const [tabSelected, setTabSelected] = useState(args.tabSelected);
     const [selectedClassification, setSelectedClassification] = useState(
       args.selectedClassification
     );
-    const [isSearching, setIsSearching] = useState(false);
-    const handleSearch = () => {
-      setIsSearching(true);
-    };
-    if (isSearching) {
-      return (
-        <ActiveSearchField
-          debouncedSearchValue={''}
-          setIsSearching={setIsSearching}
-          setIsFilterOpen={() => {}}
-          setDebouncedSearchValue={(value) => {
-            if (value) window.alert(`Search value: ${value}`);
-          }}
-        />
-      );
-    }
+
     return (
       <ProjectListControls
         {...args}
@@ -128,7 +112,9 @@ export const Default: Story = {
         setSelectedClassification={(classification) =>
           setSelectedClassification(classification)
         }
-        setDebouncedSearchValue={handleSearch}
+        setDebouncedSearchValue={(value) => {
+          if (value) window.alert(`Search value: ${value}`);
+        }}
       />
     );
   },

@@ -1,40 +1,35 @@
 import Skeleton from 'react-loading-skeleton';
+import { useState } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ProjectsSection.module.scss';
 import { useProjects } from './ProjectsContext';
 import ProjectListControls from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
-import { SetState } from '../common/types/common';
 import ProjectList from './ProjectList';
-import { ViewMode } from '../../../pages/_app';
 
 interface ProjectsSectionProps {
-  selectedMode: ViewMode;
-  setSelectedMode: SetState<ViewMode>;
   isMobile: boolean;
 }
 
-const ProjectsSection = ({
-  selectedMode,
-  setSelectedMode,
-  isMobile,
-}: ProjectsSectionProps) => {
+const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const {
     projects,
     topProjects,
     selectedClassification,
     setSelectedClassification,
     filteredProjects,
-    tabSelected,
-    setTabSelected,
     debouncedSearchValue,
     setDebouncedSearchValue,
     isSearching,
     setIsSearching,
     isLoading,
     isError,
+    setSelectedMode,
+    selectedMode,
   } = useProjects();
-
+  const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
+    'topProjects'
+  );
   if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
@@ -48,6 +43,7 @@ const ProjectsSection = ({
     setTabSelected,
     selectedClassification,
     setSelectedClassification,
+    debouncedSearchValue,
     setDebouncedSearchValue,
     filteredProjects,
   };
@@ -70,7 +66,7 @@ const ProjectsSection = ({
       ) : (
         <ProjectListControls {...projectListControlCommonProps} />
       )}
-      <ProjectList />
+      <ProjectList tabSelected={tabSelected} />
     </>
   );
 };
