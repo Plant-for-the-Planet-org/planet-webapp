@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
-import RightArrowIcon from '../icons/RightArrowIcon';
+import RightArrowIcon from '../../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 
 interface Props {
   contactInfo: { icon: React.JSX.Element; title: string; link: string };

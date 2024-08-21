@@ -1,11 +1,11 @@
-import MailIcon from '../icons/MailIcon';
-import { ViewProfileIcon } from '../icons/ViewProfileIcon';
-import WebsiteLinkIcon from '../icons/WebsiteLinkIcon';
+import MailIcon from '../../../../../public/assets/images/icons/projectV2/MailIcon';
+import { ViewProfileIcon } from '../../../../../public/assets/images/icons/projectV2/ViewProfileIcon';
+import WebsiteLinkIcon from '../../../../../public/assets/images/icons/projectV2/WebsiteLinkIcon';
 import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
-import SingleProjectInfoItem from '../../features/projectsV2/ProjectDetails/components/microComponents/SingleProjectInfoItem';
-import SingleContactDetail from './SingleContactDetail';
-import LocationIconSolid from '../icons/LocationIconSolid';
+import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
+import SingleContactDetail from './microComponents/SingleContactDetail';
+import LocationIconSolid from '../../../../../public/assets/images/icons/projectV2/LocationIconSolid';
 
 interface Props {
   websiteURL: string;

@@ -12,6 +12,7 @@ import AdditionalInfo from './AdditionalInfo';
 import VideoPlayer from './VideoPlayer';
 import ImagesSlider from './ImagesSlider';
 import ProjectDownloads from './ProjectDownloads';
+import ContactDetails from './ContactDetails';
 
 interface ProjectInfoSectionProps {
   project:
@@ -44,12 +45,13 @@ const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
         mainChallengeText={project.metadata?.mainChallenge}
         siteOwnershipText={project.metadata?.siteOwnerName}
         siteOwnershipType={project.metadata?.siteOwnerType}
-        causeOfDegradationText={project.metadata.degradationCause}
+        causeOfDegradationText={project.metadata?.degradationCause}
         whyThisSiteText={'xyz'}
-        longTermProtectionText={project.metadata.longTermPlan}
-        acquiredSince={project.metadata.acquisitionYear}
+        longTermProtectionText={project.metadata?.longTermPlan}
+        acquiredSince={project.metadata?.acquisitionYear}
       />
       {/* <ProjectDownloads /> */}
+      {/* <ContactDetails publicProfileURL={`/t/${project}`}/> */}
     </section>
   );
 };
