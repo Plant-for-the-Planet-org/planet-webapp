@@ -1,15 +1,17 @@
 import { FC, useState } from 'react';
-import style from './ProjectsLayout.module.scss';
+import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import WebappButton from '../../WebappButton';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
+import Credits from '../../../projects/components/maps/Credits';
 
+export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
+  isMobile: boolean;
 }
 
 const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
@@ -17,42 +19,37 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   page,
   currencyCode,
   setCurrencyCode,
+  isMobile,
 }) => {
-  const [isMapMode, setIsMapMode] = useState(false);
-
-  const mobileLayoutClass = `${style.mobileProjectsLayout} ${
-    isMapMode ? style.mapMode : ''
+  const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
+  const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
+    selectedMode === 'map' && page !== 'project-details' ? styles.mapMode : '' //temporary condition will be updated later on
   }`;
-
-  const viewButtonClass = `${style.viewButton} ${
-    isMapMode ? style.viewButtonShifted : ''
-  }`;
-
   return (
     <ProjectsProvider
       page={page}
       currencyCode={currencyCode}
       setCurrencyCode={setCurrencyCode}
+      selectedMode={selectedMode}
+      setSelectedMode={setSelectedMode}
     >
       <ProjectsMapProvider>
         <main className={mobileLayoutClass}>
-          <WebappButton
-            text={isMapMode ? 'View Info' : 'View Map'}
-            variant="primary"
-            elementType="button"
-            onClick={() => setIsMapMode(!isMapMode)}
-            buttonClasses={viewButtonClass}
-          />
-          {isMapMode ? (
-            <section className={style.mobileMapContainer}>
-              <ProjectsMap />
+          {selectedMode === 'map' && page !== 'project-details' ? ( //temporary condition will be updated later on
+            <section className={styles.mobileMapContainer}>
+              <ProjectsMap
+                selectedMode={selectedMode}
+                setSelectedMode={setSelectedMode}
+                isMobile={isMobile}
+              />
             </section>
           ) : (
-            <section className={style.mobileContentContainer}>
+            <section className={styles.mobileContentContainer}>
               {children}
             </section>
           )}
         </main>
+        <Credits setCurrencyCode={setCurrencyCode} />
       </ProjectsMapProvider>
     </ProjectsProvider>
   );

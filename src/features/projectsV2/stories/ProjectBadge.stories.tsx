@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectBadge from '../components/microComponents/ProjectBadge';
+import ProjectBadge from '../ProjectSnippet/microComponents/ProjectBadge';
 
 const meta: Meta<typeof ProjectBadge> = {
   title: 'Projects/Common/ProjectBadge',

@@ -8,6 +8,7 @@ import {
 import TopProjectReports from './projectDetails/TopProjectReports';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { Review } from '@planet-sdk/common';
+import styles from '../styles/ProjectSnippet.module.scss';
 
 interface Props {
   displayPopup: boolean;
@@ -25,7 +26,7 @@ const VerifiedBadge = ({
   return (
     <>
       {' '}
-      <span className={'verifiedIcon'}>
+      <span className={styles.verifiedIcon}>
         <VerifiedIcon
           sx={{ width: '100%' }}
           {...bindHover(verifiedPopupState)}

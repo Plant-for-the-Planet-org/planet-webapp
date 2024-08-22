@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ProjectSnippet from '../components/ProjectSnippet';
+import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
 import ProjectInfoSection from './components/ProjectInfoSection';
 import { getRequest } from '../../../utils/apiRequests/api';
@@ -15,6 +15,7 @@ import {
   APIError,
 } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import styles from './ProjectDetails.module.scss';
 
 const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
   const { singleProject, setSingleProject, setIsLoading, setIsError } =
@@ -53,14 +54,14 @@ const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
   }, [router.query.p, locale, currencyCode]);
 
   return singleProject ? (
-    <>
+    <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
         project={singleProject}
         showPopup={false}
         showBackButton={true}
       />
       <ProjectInfoSection project={singleProject} />
-    </>
+    </div>
   ) : null;
 };
 

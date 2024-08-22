@@ -27,7 +27,7 @@ interface Props {
 }
 
 const ProjectSnippet = dynamic(
-  () => import('../../projectsV2/components/ProjectSnippet'),
+  () => import('../../projects/components/ProjectSnippet'),
   {
     loading: () => <ProjectLoader />,
   }
@@ -276,6 +276,7 @@ function ProjectsList({
                   searchProjectResults && searchProjectResults.length > 0 ? (
                     searchProjectResults.map((project) => (
                       <ProjectSnippet
+                        editMode={false}
                         key={project.properties.id}
                         project={project.properties}
                         displayPopup={true}
@@ -288,6 +289,7 @@ function ProjectsList({
                   allProjects && allProjects.length > 0 ? (
                     allProjects.map((project) => (
                       <ProjectSnippet
+                        editMode={false}
                         key={project.properties.id}
                         project={project.properties}
                         displayPopup={true}
@@ -299,6 +301,7 @@ function ProjectsList({
                 ) : topProjects && topProjects.length > 0 ? (
                   topProjects.map((project) => (
                     <ProjectSnippet
+                      editMode={false}
                       key={project.properties.id}
                       project={project.properties}
                       displayPopup={true}

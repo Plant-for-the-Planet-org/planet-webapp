@@ -11,6 +11,7 @@
     #fff;
   padding: 24px 20px 30px;
   position: relative;
+  overflow: hidden;
 }
 
 .mainContent {
@@ -24,22 +25,6 @@
   width: 360px;
   max-width: 100%;
   background: transparent;
-  overflow-y: auto;
-  padding-right: 8px;
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 100px;
-    background: rgba(224, 224, 224, 1);
-    height: 220px;
-  }
-  @include xsPhoneView {
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    padding-right: 0px;
-  }
 }
 
 .mapContainer {
@@ -58,9 +43,11 @@
   justify-content: center;
   margin-top: 80px;
   padding-top: 24px;
+  overflow: hidden;
   &.mapMode {
     height: 100vh;
     margin-top: 0px;
+    padding-top: 0px;
   }
 }
 
@@ -75,12 +62,14 @@
 }
 
 .mobileContentContainer {
-  padding: 0px 18px;
+  padding: 0px 12px;
   height: 100%;
   width: 100%;
+  margin-top: 20px;
 }
 
 .mobileMapContainer {
   width: inherit;
   height: 100%;
+  position: relative;
 }
