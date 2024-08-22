@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
+import React, { Dispatch, ReactElement, SetStateAction, useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -6,7 +6,10 @@ import { useLocale, useTranslations } from 'next-intl';
 import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import { Subscription } from '../../../common/types/payments';
+import {
+  MultipleDestinations,
+  Subscription,
+} from '../../../common/types/payments';
 
 interface HeaderProps {
   record: Subscription;
@@ -21,6 +24,18 @@ export function RecordHeader({
 }: HeaderProps): ReactElement {
   const t = useTranslations('Me');
   const locale = useLocale();
+
+  const recordName = useMemo(() => {
+    switch (record.destination.type) {
+      case 'planet-cash':
+        return t('planetCashPayment');
+      case 'mixed':
+        return t('composite-donation');
+      default:
+        return record.destination?.name || '';
+    }
+  }, [record.destination]);
+
   return (
     <div
       onClick={handleRecordToggle && (() => handleRecordToggle(index))}
@@ -30,11 +45,7 @@ export function RecordHeader({
       }}
     >
       <div className={styles.left}>
-        {record.destination.type === 'planet-cash' ? (
-          <p className={styles.top}>{t('planetCashPayment')}</p>
-        ) : (
-          <p className={styles.top}>{record?.destination?.name}</p>
-        )}
+        <p className={styles.top}>{recordName}</p>
 
         {record?.endsAt ? (
           <p>
@@ -101,6 +112,28 @@ export function RecordHeader({
   );
 }
 
+interface MixedSubscriptionProjectsProps {
+  destinations: MultipleDestinations['items'];
+}
+
+export function MixedSubscriptionProjects({
+  destinations,
+}: MixedSubscriptionProjectsProps): ReactElement {
+  const destinationList = destinations.map((destination, index) => (
+    <span key={destination.id || index}>{destination.name}</span>
+  ));
+
+  const concatenatedDestinations = destinationList.reduce((prev, curr) => (
+    <>
+      {prev}
+      {', '}
+      {curr}
+    </>
+  ));
+
+  return <p>{concatenatedDestinations}</p>;
+}
+
 interface DetailProps {
   record: Subscription;
 }
@@ -148,12 +181,13 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{formatDate(record.firstDonation.created)}</p>
         </div>
       )}
-      {record?.destination?.type === 'planet-cash' ? (
+      {record?.destination?.type === 'planet-cash' && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('planet-cash')}</p>
           <p>{t('planetCashPayment')}</p>
         </div>
-      ) : (
+      )}
+      {record?.destination?.type === 'project' && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
           {record.destination.id ? (
@@ -168,6 +202,13 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('reference')}</p>
           <p>{record.firstDonation.reference}</p>
+        </div>
+      )}
+
+      {record?.destination?.type === 'mixed' && (
+        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+          <p className={styles.title}>{t('projects')}</p>
+          <MixedSubscriptionProjects destinations={record.destination.items} />
         </div>
       )}
     </>
