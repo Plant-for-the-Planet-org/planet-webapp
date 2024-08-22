@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo, JSX } from 'react';
+import React, { ReactElement, useMemo, JSX, useCallback } from 'react';
 import OffSiteReviewedIcon from '../../../../../public/assets/images/icons/projectV2/OffSiteReviewedIcon';
 import FieldReviewedIcon from '../../../../../public/assets/images/icons/projectV2/FieldReviewedIcon';
 import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/TopProjectIcon';
@@ -12,6 +12,7 @@ interface Props {
   isApproved: boolean;
   isTopProject: boolean;
   allowDonations: boolean;
+  showPopup: boolean;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -36,7 +37,12 @@ const BadgeLabel = ({ icon, title }: BadgeLabelprops) => {
   );
 };
 
-const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
+const ProjectBadge = ({
+  isApproved,
+  isTopProject,
+  allowDonations,
+  showPopup,
+}: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
   const { tenantConfig } = useTenant();
@@ -77,7 +83,7 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
       if (!isTopProject && !isApproved) return offSiteReviewed;
     }, [isApproved, isTopProject, allowDonations, tCommon, tProjectDetails]);
 
-  const getMessage = (badgeType: string | undefined) => {
+  const renderMessage = (badgeType: string | undefined) => {
     if (badgeType === 'notDonatable') {
       return (
         <div className={styles.tooltipContent}>
@@ -111,11 +117,16 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
   if (!badgeConfigurations) return null;
 
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
+
+  const shouldShowPopup = useCallback(
+    () => showPopup && displayPopup,
+    [showPopup, displayPopup]
+  );
   const badgeContent = <BadgeLabel icon={icon} title={title} />;
 
   return displayPopup ? (
-    <CustomTooltip triggerElement={badgeContent} showPopup={displayPopup}>
-      {getMessage(badgeType)}
+    <CustomTooltip triggerElement={badgeContent} showPopup={shouldShowPopup()}>
+      {renderMessage(badgeType)}
     </CustomTooltip>
   ) : (
     badgeContent

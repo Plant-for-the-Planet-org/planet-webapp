@@ -1,6 +1,7 @@
 import { Popup } from 'react-map-gl-v7/maplibre';
 import { MapProject } from '../../../common/types/projectv2';
 import styles from './ProjectPopup.module.scss';
+import ProjectSnippet from '../../ProjectSnippet';
 
 type Props = {
   project: MapProject;
@@ -19,12 +20,12 @@ const ProjectPopup = ({ project, handlePopupLeave, visitProject }: Props) => {
       className={styles.projectPopup}
     >
       <div
+        className={styles.popupContainer}
         onMouseLeave={handlePopupLeave}
         onClick={() => visitProject(project.properties.slug)}
         onKeyDown={() => visitProject(project.properties.slug)}
       >
-        {/* Dummy content to be replaced with actual ProjectSnippet once ready */}
-        <h3>{project.properties.name}</h3>
+        <ProjectSnippet project={project.properties} showPopup={false} />
       </div>
     </Popup>
   );

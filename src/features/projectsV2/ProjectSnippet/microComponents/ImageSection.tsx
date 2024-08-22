@@ -52,6 +52,7 @@ const ImageSection = (props: ImageSectionProps) => {
         isApproved={isApproved}
         allowDonations={allowDonations}
         isTopProject={isTopProject}
+        showPopup={showPopup}
       />
       {image && typeof image !== 'undefined' ? (
         <>
