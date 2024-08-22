@@ -34,9 +34,9 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
         profileId: profile.id,
         slug: profile.slug,
         targets: {
-          treesDonated: profile.targets.treesDonated ?? 0,
-          areaRestored: profile.targets.areaRestored ?? 0,
-          areaConserved: profile.targets.areaConserved ?? 0,
+          treesDonated: profile.scores.treesDonated.target ?? 0,
+          areaRestored: profile.scores.areaRestored.target ?? 0,
+          areaConserved: profile.scores.areaConserved.target ?? 0,
         },
       };
 
