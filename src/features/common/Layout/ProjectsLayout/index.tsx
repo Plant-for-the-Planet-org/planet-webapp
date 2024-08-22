@@ -37,7 +37,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
               <MapFeatureExplorer />
             </div>
           )}
-          <ProjectsMap />
+          <ProjectsMap isMobile={false} />
         </section>
       </main>
       <Credits setCurrencyCode={setCurrencyCode} />

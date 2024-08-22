@@ -1,10 +1,11 @@
-import { useContext, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { MapProject } from '../../../common/types/projectv2';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { TreeProjectClassification } from '@planet-sdk/common';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -12,7 +13,8 @@ export type CategorizedProjects = {
   regularDonatableProjects: MapProject[];
 };
 interface ProjectMarkersProps {
-  categorizedProjects: CategorizedProjects;
+  categorizedProjects: CategorizedProjects | undefined;
+  selectedClassification: TreeProjectClassification[];
 }
 
 type ClosedPopupState = {
@@ -73,15 +75,15 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
       setPopupState({ show: false });
     }, 200);
   };
-
+  if (!categorizedProjects) return null;
   const {
     topApprovedProjects,
     nonDonatableProjects,
     regularDonatableProjects,
   } = categorizedProjects;
 
-  const renderMarkers = useMemo(
-    () => (projects: MapProject[]) =>
+  const renderMarkers = useCallback(
+    (projects: MapProject[]) =>
       projects.map((project) => (
         <SingleMarker
           project={project}
@@ -94,11 +96,24 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
     [initiatePopupOpen, handleMarkerLeave, visitProject]
   );
 
+  const nonDonatableProjectMarkers = useMemo(
+    () => renderMarkers(nonDonatableProjects),
+    [renderMarkers, nonDonatableProjects]
+  );
+  const regularDonatableProjectMarkers = useMemo(
+    () => renderMarkers(regularDonatableProjects),
+    [renderMarkers, regularDonatableProjects]
+  );
+  const topApprovedProjectMarkers = useMemo(
+    () => renderMarkers(topApprovedProjects),
+    [renderMarkers, topApprovedProjects]
+  );
+
   return (
     <>
-      {renderMarkers(nonDonatableProjects)}
-      {renderMarkers(regularDonatableProjects)}
-      {renderMarkers(topApprovedProjects)}
+      {nonDonatableProjectMarkers}
+      {regularDonatableProjectMarkers}
+      {topApprovedProjectMarkers}
       {popupState.show && (
         <ProjectPopup
           project={popupState.project}

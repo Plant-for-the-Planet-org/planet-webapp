@@ -16,6 +16,7 @@ $layoutPaddingBottom: 30px;
     #fff;
   padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
   position: relative;
+  overflow: hidden;
 }
 
 .mainContent {
@@ -54,9 +55,11 @@ $layoutPaddingBottom: 30px;
   justify-content: center;
   margin-top: 80px;
   padding-top: $layoutPaddingTop;
+  overflow: hidden;
   &.mapMode {
     height: 100vh;
     margin-top: 0px;
+    padding-top: 0px;
   }
 }
 
@@ -71,12 +74,14 @@ $layoutPaddingBottom: 30px;
 }
 
 .mobileContentContainer {
-  padding: 0px 18px;
+  padding: 0px 12px;
   height: 100%;
   width: 100%;
+  margin-top: 20px;
 }
 
 .mobileMapContainer {
   width: inherit;
   height: 100%;
+  position: relative;
 }
