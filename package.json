@@ -166,7 +166,7 @@
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "ajv": "^8.16.0",
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "chromatic": "^6.24.1",
