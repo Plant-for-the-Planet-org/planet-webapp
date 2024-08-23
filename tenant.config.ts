@@ -3,7 +3,7 @@ import { Tenant } from '@planet-sdk/common/build/types/tenant';
 export const defaultTenant: Tenant = {
   id: 'ten_NxJq55pm',
   config: {
-    appDomain: 'https://www1.plant-for-the-planet.org',
+    appDomain: 'https://web.plant-for-the-planet.org',
     slug: 'planet',
     tenantURL: 'www.plant-for-the-planet.org',
     tenantGoal: null,
