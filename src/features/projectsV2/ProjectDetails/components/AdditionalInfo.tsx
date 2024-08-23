@@ -2,13 +2,13 @@ import styles from '../styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 interface Props {
-  mainChallengeText: string;
-  siteOwnershipText: string;
-  causeOfDegradationText: string;
-  whyThisSiteText: string;
-  longTermProtectionText: string;
-  siteOwnershipType: string[];
-  acquiredSince: number;
+  mainChallengeText: string | null;
+  siteOwnershipText: string | null;
+  causeOfDegradationText: string | null;
+  whyThisSiteText: string | null;
+  longTermProtectionText: string | null;
+  siteOwnershipType: string[] | null;
+  acquiredSince: number | null;
 }
 
 const AdditionalInfo = ({

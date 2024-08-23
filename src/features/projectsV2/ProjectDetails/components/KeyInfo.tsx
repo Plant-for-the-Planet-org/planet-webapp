@@ -7,12 +7,12 @@ import InfoIconPopup from '../../../../temp/components/InfoIconPopup';
 import PlantingSeasons from './microComponents/PlantingSeasons';
 
 interface Props {
-  abandonment: number;
-  firstTree: string;
-  plantingDensity: number;
-  maxPlantingDensity: number | undefined;
-  employees: number;
-  plantingSeasons: number[];
+  abandonment: number | null;
+  firstTree: string | null;
+  plantingDensity: number | null;
+  maxPlantingDensity: number | null;
+  employees: number | null;
+  plantingSeasons: number[] | null;
 }
 
 const KeyInfo = ({
@@ -69,7 +69,7 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
 
-        {firstTree?.length > 0 && (
+        {firstTree && firstTree?.length > 0 && (
           <SingleProjectInfoItem title={tProjectDetails('firstTreePlanted')}>
             <time>
               {firstTree?.length > 0 &&

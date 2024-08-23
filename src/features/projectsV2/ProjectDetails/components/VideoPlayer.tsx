@@ -21,7 +21,7 @@ const VideoPlayer = ({ videoUrl }: Props) => {
   useEffect(() => {
     const handleResize = () => {
       const newWindowDimensions = {
-        width: 342,
+        width: 310,
         height: 153,
       };
 

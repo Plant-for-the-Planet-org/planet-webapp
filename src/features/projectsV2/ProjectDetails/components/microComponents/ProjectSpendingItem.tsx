@@ -1,10 +1,11 @@
 import React from 'react';
-import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
+import styles from '../../styles/ProjectInfo.module.scss';
 import { ProjectExpense } from '@planet-sdk/common';
-import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
+import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { useLocale } from 'next-intl';
-import DownloadButton from './DownloadButton';
+import DownloadsButton from './DownloadButton';
 import DownloadsLabel from './DownloadsLabel';
+import { getPDFFile } from '../../../../../utils/getImageURL';
 
 interface Props {
   spendings: ProjectExpense[];
@@ -17,7 +18,7 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
 
   return (
     <div className={styles.spendingsContainer}>
-      {spendings.map((expense) => (
+      {spendings?.map((expense) => (
         <div className={styles.spendingDetail} key={expense.id}>
           {isMobile ? (
             <DownloadsLabel>
@@ -25,7 +26,11 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
             </DownloadsLabel>
           ) : (
             <DownloadsLabel>
-              <a href="#" target="_blank" rel="noreferrer">
+              <a
+                href={getPDFFile('projectExpense', expense.pdf)}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {expense.year}
               </a>
             </DownloadsLabel>
@@ -33,7 +38,7 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
 
           <div>{getFormatedCurrency(locale, 'EUR', expense.amount)}</div>
 
-          <DownloadButton />
+          <DownloadsButton />
         </div>
       ))}
     </div>

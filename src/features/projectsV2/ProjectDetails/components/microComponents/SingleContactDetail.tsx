@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
+import styles from '../../styles/ProjectInfo.module.scss';
 import RightArrowIcon from '../../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 
 interface Props {
@@ -10,7 +10,7 @@ const SingleContactDetail = ({ contactInfo }: Props) => {
   return (
     <a
       href={contactInfo.link}
-      target="_blank"
+      target={contactInfo.title === 'View Profile' ? '_self' : '_blank'}
       rel="noreferrer"
       className={styles.singleContact}
     >

@@ -1,10 +1,12 @@
 import React from 'react';
-import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
+import styles from '../../styles/ProjectInfo.module.scss';
 import DownloadsLabel from './DownloadsLabel';
 import DownloadButton from './DownloadButton';
+import { Certificate } from '@planet-sdk/common';
+import { getPDFFile } from '../../../../../utils/getImageURL';
 
 interface Props {
-  certification: string;
+  certification: Certificate[];
 }
 
 const ExternalCertificationItems = ({ certification }: Props) => {
@@ -12,20 +14,28 @@ const ExternalCertificationItems = ({ certification }: Props) => {
   const isMobile = screenWidth <= 481;
 
   return (
-    <div className={styles.infoDetail}>
-      {isMobile ? (
-        <DownloadsLabel>
-          <p>{certification}</p>
-        </DownloadsLabel>
-      ) : (
-        <DownloadsLabel>
-          <a href="#" target="_blank" rel="noreferrer">
-            {certification}
-          </a>
-        </DownloadsLabel>
-      )}
-      <DownloadButton />
-    </div>
+    <>
+      {certification.map((certificate) => {
+        <div className={styles.infoDetail}>
+          {isMobile ? (
+            <DownloadsLabel>
+              <p>{certificate}</p>
+            </DownloadsLabel>
+          ) : (
+            <DownloadsLabel>
+              <a
+                href={getPDFFile('projectCertificate', certificate.pdf)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {certificate}
+              </a>
+            </DownloadsLabel>
+          )}
+          <DownloadButton />
+        </div>;
+      })}
+    </>
   );
 };
 

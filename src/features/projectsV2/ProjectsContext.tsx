@@ -14,9 +14,7 @@ import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   APIError,
-  ConservationProjectConcise,
   ConservationProjectExtended,
-  TreeProjectConcise,
   TreeProjectExtended,
   CountryCode,
   handleError,
@@ -29,18 +27,9 @@ import { useTranslations } from 'next-intl';
 
 interface ProjectsState {
   projects: MapProject[] | null;
-  singleProject:
-    | TreeProjectConcise
-    | ConservationProjectConcise
-    | TreeProjectExtended
-    | ConservationProjectExtended
-    | null;
+  singleProject: TreeProjectExtended | ConservationProjectExtended | null;
   setSingleProject: SetState<
-    | TreeProjectConcise
-    | ConservationProjectConcise
-    | TreeProjectExtended
-    | ConservationProjectExtended
-    | null
+    TreeProjectExtended | ConservationProjectExtended | null
   >;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
@@ -78,11 +67,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [singleProject, setSingleProject] = useState<
-    | TreeProjectConcise
-    | ConservationProjectConcise
-    | TreeProjectExtended
-    | ConservationProjectExtended
-    | null
+    TreeProjectExtended | ConservationProjectExtended | null
   >(null);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
@@ -206,7 +191,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
 
     loadProjects();
-  }, [currencyCode, locale]);
+  }, [currencyCode, locale, page]);
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();

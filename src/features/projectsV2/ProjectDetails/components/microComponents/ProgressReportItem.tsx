@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
+import styles from '../../styles/ProjectInfo.module.scss';
 import DownloadsLabel from './DownloadsLabel';
 import DownloadButton from './DownloadButton';
 
@@ -12,7 +12,7 @@ const ProgressReportItem = ({ progressReports }: Props) => {
   const isMobile = screenWidth <= 481;
   return (
     <div className={styles.reportsContainer}>
-      {progressReports.map((report) => (
+      {progressReports?.map((report) => (
         <div key={report}>
           {isMobile ? (
             <DownloadsLabel>

@@ -7,8 +7,6 @@ import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
 import {
-  TreeProjectConcise,
-  ConservationProjectConcise,
   TreeProjectExtended,
   ConservationProjectExtended,
   handleError,
@@ -20,7 +18,7 @@ import styles from './ProjectDetails.module.scss';
 const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
   const { singleProject, setSingleProject, setIsLoading, setIsError } =
     useProjects();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
@@ -32,10 +30,7 @@ const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
       try {
         const { p } = router.query;
         const fetchedProject = await getRequest<
-          | TreeProjectConcise
-          | ConservationProjectConcise
-          | TreeProjectExtended
-          | ConservationProjectExtended
+          TreeProjectExtended | ConservationProjectExtended
         >(tenantConfig.id, `/app/projects/${p}`, {
           _scope: 'extended',
           currency: currencyCode,
@@ -45,6 +40,7 @@ const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
       } catch (err) {
         setErrors(handleError(err as APIError));
         setIsError(true);
+        redirect('/');
       } finally {
         setIsLoading(false);
       }

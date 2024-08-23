@@ -1,6 +1,6 @@
 import React from 'react';
-import DownloadIcon from '../icons/DownloadIcon';
-import styles from '../../features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss';
+import DownloadIcon from '../../../../../temp/icons/DownloadIcon';
+import styles from '../../styles/ProjectInfo.module.scss';
 
 const DownloadsButton = () => {
   return (

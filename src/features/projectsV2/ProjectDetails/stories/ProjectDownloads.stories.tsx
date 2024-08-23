@@ -30,12 +30,9 @@ const expenses = [
   },
 ];
 
-const reports = [2013, 2022, 2021, 2019, 2018, 2017, 2016, 2014];
-
 export const Preview: Story = {
   args: {
-    certification: 'Consolata Machuko',
+    certification: [],
     spendings: expenses,
-    progressReports: reports,
   },
 };
