@@ -7,8 +7,8 @@ export const defaultTenant: Tenant = {
     externalUrl: 'https://web.plant-for-the-planet.org',
     customDomain: 'https://web.plant-for-the-planet.org',
     font: {
-      primaryFontURL: null,
-      secondaryFontURL: null,
+      primaryFontURL: undefined,
+      secondaryFontURL: undefined,
       primaryFontFamily:
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
       secondaryFontFamily:
@@ -97,14 +97,7 @@ export const defaultTenant: Tenant = {
       isSecondaryTenant: false,
     },
     manifest: '/tenants/planet/manifest.json',
-    languages: {
-      '0': 'en',
-      '1': 'de',
-      '2': 'es',
-      '3': 'fr',
-      '4': 'it',
-      '6': 'cs',
-    },
+    languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR', 'cs'],
     tenantURL: 'web.plant-for-the-planet.org',
     tenantGoal: null,
     footerLinks: [
