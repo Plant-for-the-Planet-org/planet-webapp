@@ -14,12 +14,21 @@ import VideoPlayer from './VideoPlayer';
 import ImagesSlider from './ImagesSlider';
 import ProjectDownloads from './ProjectDownloads';
 import ContactDetails from './ContactDetails';
-
+import MapPreview from './MapPreview';
+import { SetState } from '../../../common/types/common';
+import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { ProjectExtend } from '../../ProjectsContext';
 interface ProjectInfoSectionProps {
-  project: TreeProjectExtended | ConservationProjectExtended;
+  project: ProjectExtend;
+  isMobile: boolean;
+  setSelectedMode: SetState<ViewMode> | undefined;
 }
 
-const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
+const ProjectInfoSection = ({
+  project,
+  isMobile,
+  setSelectedMode,
+}: ProjectInfoSectionProps) => {
   const tCountry = useTranslations('Country');
   const {
     metadata,
@@ -100,6 +109,7 @@ const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
       {description && <AboutProject description={description} wordCount={60} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
       {images.length > 0 && <ImagesSlider images={images} type={'project'} />}
+      {isMobile && <MapPreview setSelectedMode={setSelectedMode} />}
       {shouldRenderKeyInfo && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}

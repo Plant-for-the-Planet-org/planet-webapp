@@ -25,12 +25,11 @@ import { SetState } from '../common/types/common';
 import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
 
+export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
 interface ProjectsState {
   projects: MapProject[] | null;
-  singleProject: TreeProjectExtended | ConservationProjectExtended | null;
-  setSingleProject: SetState<
-    TreeProjectExtended | ConservationProjectExtended | null
-  >;
+  singleProject: ProjectExtend | null;
+  setSingleProject: SetState<ProjectExtend | null>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
   isError: boolean;
@@ -66,9 +65,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setSelectedMode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [singleProject, setSingleProject] = useState<
-    TreeProjectExtended | ConservationProjectExtended | null
-  >(null);
+  const [singleProject, setSingleProject] = useState<ProjectExtend | null>(
+    null
+  );
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);

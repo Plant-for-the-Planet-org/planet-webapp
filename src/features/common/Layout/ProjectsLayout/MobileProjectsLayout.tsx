@@ -23,7 +23,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
 }) => {
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
   const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
-    selectedMode === 'map' && page !== 'project-details' ? styles.mapMode : '' //temporary condition will be updated later on
+    selectedMode === 'map' ? styles.mapMode : ''
   }`;
   return (
     <ProjectsProvider
@@ -35,12 +35,13 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
     >
       <ProjectsMapProvider>
         <main className={mobileLayoutClass}>
-          {selectedMode === 'map' && page !== 'project-details' ? ( //temporary condition will be updated later on
+          {selectedMode === 'map' ? (
             <section className={styles.mobileMapContainer}>
               <ProjectsMap
                 selectedMode={selectedMode}
                 setSelectedMode={setSelectedMode}
                 isMobile={isMobile}
+                page={page}
               />
             </section>
           ) : (

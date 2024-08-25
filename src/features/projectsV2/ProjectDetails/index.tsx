@@ -1,27 +1,41 @@
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
-import { useProjects } from '../ProjectsContext';
+import { ProjectExtend, useProjects } from '../ProjectsContext';
 import ProjectInfoSection from './components/ProjectInfoSection';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
-import {
-  TreeProjectExtended,
-  ConservationProjectExtended,
-  handleError,
-  APIError,
-} from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 
-const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
-  const { singleProject, setSingleProject, setIsLoading, setIsError } =
-    useProjects();
+const ProjectDetails = ({
+  currencyCode,
+  isMobile,
+}: {
+  currencyCode: string;
+  isMobile: boolean;
+}) => {
+  const {
+    singleProject,
+    setSingleProject,
+    setIsLoading,
+    setIsError,
+    setSelectedMode,
+    setSelectedClassification,
+    setDebouncedSearchValue,
+  } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
+
+  useEffect(() => {
+    if (setSelectedMode) setSelectedMode('list');
+    setSelectedClassification([]);
+    setDebouncedSearchValue('');
+  }, []);
 
   useEffect(() => {
     async function loadProject() {
@@ -29,13 +43,15 @@ const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
       setIsError(false);
       try {
         const { p } = router.query;
-        const fetchedProject = await getRequest<
-          TreeProjectExtended | ConservationProjectExtended
-        >(tenantConfig.id, `/app/projects/${p}`, {
-          _scope: 'extended',
-          currency: currencyCode,
-          locale: locale,
-        });
+        const fetchedProject = await getRequest<ProjectExtend>(
+          tenantConfig.id,
+          `/app/projects/${p}`,
+          {
+            _scope: 'extended',
+            currency: currencyCode,
+            locale: locale,
+          }
+        );
         setSingleProject(fetchedProject);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -56,7 +72,11 @@ const ProjectDetails = ({ currencyCode }: { currencyCode: string }) => {
         showPopup={false}
         showBackButton={true}
       />
-      <ProjectInfoSection project={singleProject} />
+      <ProjectInfoSection
+        project={singleProject}
+        isMobile={isMobile}
+        setSelectedMode={setSelectedMode}
+      />
     </div>
   ) : null;
 };

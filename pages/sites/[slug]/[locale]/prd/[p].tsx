@@ -21,27 +21,22 @@ import {
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../../src/features/projectsV2/ProjectDetails';
-import { useProjects } from '../../../../../src/features/projectsV2/ProjectsContext';
 
 const ProjectDetailsPage: NextPageWithLayout = ({
   pageProps,
   currencyCode,
+  isMobile,
 }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { setSelectedClassification, setDebouncedSearchValue } = useProjects();
 
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
-  //* a temporary hook that will be removed in the future
-  useEffect(() => {
-    setSelectedClassification([]);
-    setDebouncedSearchValue('');
-  }, []);
-  return <ProjectDetails currencyCode={currencyCode} />;
+
+  return <ProjectDetails currencyCode={currencyCode} isMobile={isMobile} />;
 };
 
 ProjectDetailsPage.getLayout = function getLayout(

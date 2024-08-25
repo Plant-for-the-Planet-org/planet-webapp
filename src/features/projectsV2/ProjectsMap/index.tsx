@@ -5,15 +5,15 @@ import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import { useProjects } from '../ProjectsContext';
-import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { SetState } from '../../common/types/common';
-import styles from './ProjectsMap.module.scss';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import MobileControls from './microComponents/MobileControls';
 
 type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
   setSelectedMode: SetState<ViewMode>;
   isMobile: true;
+  page: 'project-list' | 'project-details';
 };
 
 type ProjectsMapDesktopProps = {
@@ -38,7 +38,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   } = useProjects();
   const topProjectCount = topProjects?.length;
   const projectCount = projects?.length;
-
   const projectListControlProps = {
     projectCount,
     topProjectCount,
@@ -52,14 +51,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     isSearching,
     setIsSearching,
+    page: props.isMobile ? props.page : undefined,
   };
+
   return (
     <>
-      {props.isMobile && (
-        <div className={styles.projectListControlsContainer}>
-          <ProjectListControlForMobile {...projectListControlProps} />
-        </div>
-      )}
+      <MobileControls {...projectListControlProps} />
       <Map
         {...viewState}
         {...mapState}

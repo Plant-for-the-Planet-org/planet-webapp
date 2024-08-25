@@ -1,4 +1,4 @@
-@import '../../theme/theme';
+@import '../../../../theme/theme';
 .mapPreviewContainer {
   max-width: 480px;
   width: 100%;
@@ -10,7 +10,7 @@
   justify-content: center;
 }
 
-.showMapButton {
+.diveToMap {
   display: flex;
   justify-content: center;
   align-items: center;
