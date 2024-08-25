@@ -15,9 +15,10 @@
   border: 2px solid $light;
   border-radius: 16px;
   position: relative;
+  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
   @include xsPhoneView {
-    box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
     max-width: 100%;
+    box-shadow: none;
   }
 }
 //project image

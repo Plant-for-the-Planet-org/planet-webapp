@@ -59,9 +59,3 @@
     font-weight: 700;
   }
 }
-
-@include xsPhoneView {
-  .singleReviewContainer {
-    max-width: 220px;
-  }
-}

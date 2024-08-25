@@ -6,6 +6,16 @@
   color: #2f3336; //to be removed
   border-radius: 14px;
   font-size: $fontXSmall;
+  button {
+    display: flex;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(0, 122, 73, 1);
+    padding-left: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+  }
 }
 .infoTitle {
   font-size: $fontXXSmall;
@@ -14,7 +24,7 @@
 }
 
 .infoText {
-  padding: 4px 16px 14px;
+  padding: 4px 16px 7px;
 }
 
 .hideText {

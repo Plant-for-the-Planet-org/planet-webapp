@@ -16,6 +16,8 @@
     "plantingSeasons": "planting seasons",
     "privateProperty": "private property",
     "publicProperty": "public property",
-    "progressReports": "progress reports"
+    "progressReports": "progress reports",
+    "readMore": "Read More",
+    "readLess": "Read Less"
   }
 }

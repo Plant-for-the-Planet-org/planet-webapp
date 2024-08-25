@@ -64,7 +64,6 @@ export default function ProjectSnippet({
   const router = useRouter();
   const tCommon = useTranslations('Common');
   const { embed } = useContext(ParamsContext);
-  const { setSingleProject } = useProjects();
 
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;

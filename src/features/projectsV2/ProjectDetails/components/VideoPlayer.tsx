@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import styles from '../styles/VideoPlayer.module.scss';
 import PlayButtonIcon from '../../../../temp/icons/PlayButtonIcon';
@@ -16,19 +16,20 @@ interface Props {
 }
 
 const VideoPlayer = ({ videoUrl }: Props) => {
-  const [calcWidth, setCalcWidth] = useState(0);
+  const [playerDimensions, setPlayerDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleResize = () => {
-      const newWindowDimensions = {
-        width: 310,
-        height: 153,
-      };
-
-      if (window.innerWidth <= 431) {
-        setCalcWidth(window.innerWidth - 32);
-      } else {
-        setCalcWidth(newWindowDimensions.width);
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.offsetWidth;
+        setPlayerDimensions({
+          width: containerWidth,
+          height: (containerWidth / 16) * 9,
+        });
       }
     };
 
@@ -43,12 +44,13 @@ const VideoPlayer = ({ videoUrl }: Props) => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+  const { height, width } = playerDimensions;
   return ReactPlayer.canPlay(videoUrl) ? (
-    <div className={styles.videoContainer}>
+    <div ref={containerRef} className={styles.videoContainer}>
       <ReactPlayer
         className={styles.video}
-        height={(calcWidth / 16) * 9}
-        width={calcWidth}
+        height={height}
+        width={width}
         loop={true}
         light={true}
         controls={true}

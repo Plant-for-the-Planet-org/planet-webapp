@@ -37,8 +37,7 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
           )}
 
           <div>{getFormatedCurrency(locale, 'EUR', expense.amount)}</div>
-
-          <DownloadsButton />
+          <DownloadsButton pdfUrl={getPDFFile('projectExpense', expense.pdf)} />
         </div>
       ))}
     </div>

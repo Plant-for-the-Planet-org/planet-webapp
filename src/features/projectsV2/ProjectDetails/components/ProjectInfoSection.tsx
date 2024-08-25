@@ -78,7 +78,6 @@ const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
   const location = useMemo(() => {
     if (!tpo.address) return '';
     const { address, zipCode, city, country } = tpo.address;
-
     return [
       address,
       zipCode,
@@ -98,7 +97,7 @@ const ProjectInfoSection = ({ project }: ProjectInfoSectionProps) => {
   return (
     <section className={styles.projectInfoContainer}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
-      <AboutProject description={description} wordCount={60} />
+      {description && <AboutProject description={description} wordCount={60} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
       {images.length > 0 && <ImagesSlider images={images} type={'project'} />}
       {shouldRenderKeyInfo && (
