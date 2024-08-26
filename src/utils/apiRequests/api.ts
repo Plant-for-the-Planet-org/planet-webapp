@@ -118,7 +118,6 @@ export function getAuthenticatedRequest<T>(
             resolve(await res.json());
           }
         } else {
-          localStorage.removeItem('impersonationData');
           logoutUser();
           throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
@@ -169,7 +168,6 @@ export function postAuthenticatedRequest<T>(
             resolve(await res.json());
           }
         } else {
-          localStorage.removeItem('impersonationData');
           logoutUser();
           throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
@@ -252,7 +250,6 @@ export function deleteAuthenticatedRequest<T>(
             resolve(await res.json());
           }
         } else {
-          localStorage.removeItem('impersonationData');
           logoutUser();
           throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
@@ -301,7 +298,6 @@ export function putAuthenticatedRequest<T>(
             resolve(await res.json());
           }
         } else {
-          localStorage.removeItem('impersonationData');
           logoutUser();
           throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
