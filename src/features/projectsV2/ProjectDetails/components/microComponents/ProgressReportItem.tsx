@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from '../../styles/ProjectInfo.module.scss';
 import DownloadsLabel from './DownloadsLabel';
-import DownloadButton from './DownloadButton';
 
 interface Props {
   progressReports: number[];
@@ -25,7 +24,7 @@ const ProgressReportItem = ({ progressReports }: Props) => {
               </a>
             </DownloadsLabel>
           )}
-          <DownloadButton />
+          {/* <DownloadButton /> */}
         </div>
       ))}
     </div>

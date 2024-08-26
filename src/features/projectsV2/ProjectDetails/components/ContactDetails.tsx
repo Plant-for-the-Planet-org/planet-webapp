@@ -76,9 +76,10 @@ const ContactDetails = ({
     <div className={styles.contactDetailsContainer}>
       <SingleProjectInfoItem title={t('contactDetails')}>
         <div className={styles.contactText}>
-          {contactDetails.map((contact, index) => (
-            <SingleContactDetail contactInfo={contact} key={index} />
-          ))}
+          {contactDetails.length > 0 &&
+            contactDetails.map((contact, index) => (
+              <SingleContactDetail contactInfo={contact} key={index} />
+            ))}
         </div>
       </SingleProjectInfoItem>
     </div>

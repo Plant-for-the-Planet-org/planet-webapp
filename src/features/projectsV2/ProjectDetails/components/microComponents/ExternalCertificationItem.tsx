@@ -32,7 +32,7 @@ const ExternalCertificationItems = ({ certification }: Props) => {
               </a>
             </DownloadsLabel>
           )}
-          <DownloadButton />
+          <DownloadButton pdfUrl={certificate.pdf} />
         </div>;
       })}
     </>

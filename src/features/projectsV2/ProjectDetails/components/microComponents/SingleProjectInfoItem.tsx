@@ -8,7 +8,7 @@ interface Props {
 
 const SingleProjectInfoItem = ({ title, children }: Props) => {
   return (
-    <div className={styles.singleRowInfoContainer}>
+    <section className={styles.singleRowInfoContainer}>
       <div className={styles.singleRowInfoContent}>
         {typeof title === 'string' ? (
           <h2 className={styles.singleRowInfoTitle}>{title}</h2>
@@ -17,7 +17,7 @@ const SingleProjectInfoItem = ({ title, children }: Props) => {
         )}
         {children}
       </div>
-    </div>
+    </section>
   );
 };
 

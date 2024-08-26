@@ -2,12 +2,8 @@ import { useMemo } from 'react';
 import AboutProject from './AboutProject';
 import { useTranslations } from 'next-intl';
 import ProjectReview from './ReviewReports';
-import {
-  TreeProjectExtended,
-  ConservationProjectExtended,
-  CountryCode,
-} from '@planet-sdk/common';
-import styles from '../styles/ProjectDetails.module.scss';
+import { CountryCode } from '@planet-sdk/common';
+import styles from '../ProjectDetails.module.scss';
 import KeyInfo from './KeyInfo';
 import AdditionalInfo from './AdditionalInfo';
 import VideoPlayer from './VideoPlayer';

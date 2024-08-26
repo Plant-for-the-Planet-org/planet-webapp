@@ -3,7 +3,6 @@ import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
 import { SingleSliderImage } from './microComponents/SingleSliderImage';
-import styles from '../styles/Slider.module.scss';
 
 interface Props {
   images: SliderImage[];

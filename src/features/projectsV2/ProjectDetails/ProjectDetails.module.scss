@@ -22,3 +22,18 @@
     padding-bottom: 100px;
   }
 }
+
+.projectInfoContainer {
+  padding: 15px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  grid-area: 15px;
+  gap: 15px;
+  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  @include xsPhoneView {
+    box-shadow: none;
+  }
+}

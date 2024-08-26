@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  plantingSeasons: number[];
+  plantingSeasons: number[] | null;
 }
 
 const PlantingSeasons = ({ plantingSeasons }: Props) => {

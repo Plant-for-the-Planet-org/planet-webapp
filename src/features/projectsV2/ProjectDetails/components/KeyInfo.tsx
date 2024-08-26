@@ -102,7 +102,7 @@ const KeyInfo = ({
         )}
       </div>
       <div className={styles.seperator}></div>
-      {plantingSeasons?.length > 0 && (
+      {plantingSeasons && plantingSeasons?.length > 0 && (
         <SingleProjectInfoItem title={tProjectDetails('plantingSeasons')}>
           <PlantingSeasons plantingSeasons={plantingSeasons} />
         </SingleProjectInfoItem>

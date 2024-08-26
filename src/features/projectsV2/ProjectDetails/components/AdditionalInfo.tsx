@@ -57,58 +57,70 @@ const AdditionalInfo = ({
   ];
 
   const renderSiteOwnershipType = (siteOwnershipType: string) => {
-    let translatedTitle = '';
-    siteOwners.map((siteOwner) => {
-      if (siteOwner.value === siteOwnershipType) {
-        translatedTitle = siteOwner.title;
-      }
-    });
-    return `${translatedTitle} · ${tManageProjects('since')} ${acquiredSince}`;
+    const siteOwner = siteOwners.find(
+      (item) => item.value === siteOwnershipType
+    );
+    const translatedTitle = siteOwner ? siteOwner.title : '';
+    if (acquiredSince) {
+      return `${translatedTitle} · ${tManageProjects(
+        'since'
+      )} ${acquiredSince}`;
+    } else {
+      return translatedTitle;
+    }
   };
 
   const moreInfoContent = [
     {
       title: `${tManageProjects('mainChallenge')}`,
       content: <div className={styles.infoDetail}>{mainChallengeText}</div>,
+      shouldDisplay: Boolean(mainChallengeText),
     },
     {
       title: `${tManageProjects('siteOwnership')}`,
       content: (
         <>
           <div className={styles.siteOwnershipLabelContainer}>
-            {siteOwnershipType.map((type) => (
+            {siteOwnershipType?.map((type) => (
               <span key={type}>{renderSiteOwnershipType(type)}</span>
             ))}
           </div>
           <div className={styles.infoDetail}>{siteOwnershipText}</div>
         </>
       ),
+      shouldDisplay: siteOwnershipText && siteOwnershipText?.length > 0,
     },
     {
       title: `${tManageProjects('causeOfDegradation')}`,
       content: (
         <div className={styles.infoDetail}>{causeOfDegradationText}</div>
       ),
+      shouldDisplay: Boolean(causeOfDegradationText),
     },
     {
       title: `${tManageProjects('whyThisSite')}`,
       content: <div className={styles.infoDetail}>{whyThisSiteText}</div>,
+      shouldDisplay: Boolean(whyThisSiteText),
     },
     {
       title: `${tManageProjects('longTermProtection')}`,
       content: (
         <div className={styles.infoDetail}>{longTermProtectionText}</div>
       ),
+      shouldDisplay: Boolean(longTermProtectionText),
     },
   ];
 
   return (
     <div className={styles.moreInfoContainer}>
-      {moreInfoContent.map((item) => (
-        <SingleProjectInfoItem key={item.title} title={item.title}>
-          {item.content}
-        </SingleProjectInfoItem>
-      ))}
+      {moreInfoContent.map(
+        (item) =>
+          item.shouldDisplay && (
+            <SingleProjectInfoItem key={item.title} title={item.title}>
+              {item.content}
+            </SingleProjectInfoItem>
+          )
+      )}
     </div>
   );
 };
