@@ -120,9 +120,8 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [token, refetchUserData]);
 
   React.useEffect(() => {
-    if (localStorage.getItem('impersonationData') !== null) {
-      setIsImpersonationModeOn(true);
-    }
+    const impersonationData = localStorage.getItem('impersonationData');
+    setIsImpersonationModeOn(impersonationData !== null);
   }, [isImpersonationModeOn]);
 
   const value: UserPropsContextInterface | null = {
