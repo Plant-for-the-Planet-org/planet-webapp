@@ -14,7 +14,7 @@ const meta: Meta<typeof ProfileCard> = {
 export default meta;
 type Story = StoryObj<typeof ProfileCard>;
 
-const privateUserProfile: User = {
+const dummyPrivateProfile: User = {
   slug: 'plant-for-the-planet',
   type: 'tpo',
   currency: 'EUR',
@@ -34,6 +34,25 @@ const privateUserProfile: User = {
     received: 419,
     target: 100000000,
   },
+  scores: {
+    treesDonated: {
+      personal: 10235449.86,
+      received: 419,
+      target: 100000000,
+    },
+    areaRestored: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    areaConserved: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    treesPlanted: 100,
+    fundsDonated: { EUR: 1250 },
+  },
   targets: {
     treesDonated: 0,
     areaRestored: 0,
@@ -41,7 +60,7 @@ const privateUserProfile: User = {
   },
   supportedProfile: null,
   id: 'tpo_gEZeQNxNhxZZ54zvYzCofsCr',
-  isPrivate: true,
+  isPrivate: false,
   getNews: true,
   bio: null,
   address: {
@@ -63,9 +82,10 @@ const privateUserProfile: User = {
     creditLimit: 0,
     giftFunds: [],
   },
+  exposeCommunity: true,
 };
 
-const publicUserProfile: UserPublicProfile = {
+const dummyPublicProfile: UserPublicProfile = {
   slug: 'prachi-garg',
   type: 'individual',
   image: '663bb3840f303535831427.jpg',
@@ -78,6 +98,25 @@ const publicUserProfile: UserPublicProfile = {
     received: 0.0,
     target: 0.0,
   },
+  scores: {
+    treesDonated: {
+      personal: 10235449.86,
+      received: 419,
+      target: 100000000,
+    },
+    areaRestored: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    areaConserved: {
+      personal: 0,
+      received: 0,
+      target: 0,
+    },
+    treesPlanted: 100,
+    fundsDonated: { EUR: 1250 },
+  },
   targets: {
     treesDonated: 0,
     areaRestored: 0,
@@ -87,18 +126,19 @@ const publicUserProfile: UserPublicProfile = {
   id: 'prf_n06cLhehvsBEpbyiVDorLP6f',
   bio: 'planting trees',
   hasLogoLicense: false,
+  exposeCommunity: true,
 };
 
 export const PrivateProfileCard: Story = {
   args: {
-    userProfile: privateUserProfile,
+    userProfile: dummyPrivateProfile,
     profilePageType: 'private',
   },
 };
 
 export const PublicProfileCard: Story = {
   args: {
-    userProfile: publicUserProfile,
+    userProfile: dummyPublicProfile,
     profilePageType: 'public',
   },
 };
