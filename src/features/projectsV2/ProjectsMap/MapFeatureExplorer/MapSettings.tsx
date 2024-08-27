@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from 'react';
 import styles from './MapFeatureExplorer.module.scss';
 import { MapLayerToggle } from '.';
-import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
+// import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
-import { YearRangeSlider } from '.';
+// import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../../../theme/themeProperties';
+// import themeProperties from '../../../../theme/themeProperties';
 import { useProjectsMap } from '../../ProjectsMapContext';
 
 const MapSettings: FC = () => {
@@ -13,17 +13,17 @@ const MapSettings: FC = () => {
   const tMaps = useTranslations('Maps');
   const { mapOptions, updateMapOption } = useProjectsMap();
 
-  const {
+  /* const {
     primaryColorNew,
     restorationToggleColorNew,
     deforestrationToggleColorNew,
-  } = themeProperties;
+  } = themeProperties; */
 
   return (
     <div className={styles.exploreMainContainer}>
       <div className={styles.exploreContainer}>
         <div>
-          <MapLayerToggle
+          {/* <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
             label={tAllProjects('currentForests')}
             switchComponent={
@@ -43,12 +43,10 @@ const MapSettings: FC = () => {
             infoIcon={<InfoIcon width={'10px'} />}
             label={tAllProjects('deforestation')}
             switchComponent={
-              <StyledSwitch
-                customColor={`${deforestrationToggleColorNew}`}
-              />
+              <StyledSwitch customColor={`${deforestrationToggleColorNew}`} />
             }
           />
-          <div className={styles.hrLine} />
+          <div className={styles.hrLine} /> */}
           <MapLayerToggle
             infoIcon={undefined}
             label={tAllProjects('projects')}

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';
 import styles from './MapFeatureExplorer.module.scss';
-import { SmallSlider } from './CustomSlider';
-import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
+// import { SmallSlider } from './CustomSlider';
+// import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
 import { useTranslations } from 'next-intl';
 
-interface ExploreProjectProps {
+/* interface ExploreProjectProps {
   label: string | string[];
   isOpen: boolean;
   startYear: number;
   endYear: number;
-}
+} */
 
 interface EcosystemOptionProps {
   infoIcon: React.ReactNode;
@@ -43,7 +43,7 @@ export const MapLayerToggle = ({
   );
 };
 
-export const YearRangeSlider = () => {
+/* export const YearRangeSlider = () => {
   const minDistance = 10;
   const [value1, setValue1] = useState<number[]>([20, 37]);
 
@@ -89,7 +89,7 @@ export const YearRangeSlider = () => {
       </div>
     </div>
   );
-};
+}; */
 
 const MapFeatureExplorer = () => {
   const t = useTranslations('Maps');
