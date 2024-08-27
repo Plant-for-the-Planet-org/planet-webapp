@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { MapOptions } from '../../ProjectsMapContext';
 import MapFeatureExplorer from '../MapFeatureExplorer';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -9,4 +11,26 @@ const meta: Meta<typeof MapFeatureExplorer> = {
 export default meta;
 type Story = StoryObj<typeof MapFeatureExplorer>;
 
-export const Default: Story = {};
+const MapFeatureExplorerWrapper = () => {
+  const [mapOptions, setMapOptions] = useState<MapOptions>({
+    showProjects: true,
+  });
+
+  const updateMapOption = (option: keyof MapOptions, value: boolean) => {
+    setMapOptions((prevOptions) => ({
+      ...prevOptions,
+      [option]: value,
+    }));
+  };
+
+  return (
+    <MapFeatureExplorer
+      mapOptions={mapOptions}
+      updateMapOption={updateMapOption}
+    />
+  );
+};
+
+export const Default: Story = {
+  render: () => <MapFeatureExplorerWrapper />,
+};

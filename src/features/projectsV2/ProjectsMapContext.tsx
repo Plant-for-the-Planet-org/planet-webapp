@@ -42,7 +42,7 @@ const DEFAULT_MAP_STATE: MapState = {
   maxZoom: 15,
 };
 
-type MapOptions = {
+export type MapOptions = {
   showProjects: boolean;
 };
 

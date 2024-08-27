@@ -21,7 +21,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
   setCurrencyCode,
   page,
 }) => {
-  const { mapOptions } = useProjectsMap();
+  const { mapOptions, updateMapOption } = useProjectsMap();
   const showContentContainer =
     mapOptions.showProjects || page === 'project-details';
 
@@ -34,7 +34,10 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
         <section className={styles.mapContainer}>
           {page === 'project-list' && (
             <div className={styles.mapFeatureExplorer}>
-              <MapFeatureExplorer />
+              <MapFeatureExplorer
+                mapOptions={mapOptions}
+                updateMapOption={updateMapOption}
+              />
             </div>
           )}
           <ProjectsMap isMobile={false} />

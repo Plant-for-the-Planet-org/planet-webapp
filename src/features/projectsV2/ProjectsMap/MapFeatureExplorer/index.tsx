@@ -6,6 +6,7 @@ import styles from './MapFeatureExplorer.module.scss';
 import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
 import { useTranslations } from 'next-intl';
+import { MapOptions } from '../../ProjectsMapContext';
 
 /* interface ExploreProjectProps {
   label: string | string[];
@@ -91,7 +92,15 @@ export const MapLayerToggle = ({
   );
 }; */
 
-const MapFeatureExplorer = () => {
+type MapFeatureExplorerProps = {
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+};
+
+const MapFeatureExplorer = ({
+  mapOptions,
+  updateMapOption,
+}: MapFeatureExplorerProps) => {
   const t = useTranslations('Maps');
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -103,7 +112,12 @@ const MapFeatureExplorer = () => {
         {t('explore')}
       </CustomButton>
 
-      {isOpen && <MapSettings />}
+      {isOpen && (
+        <MapSettings
+          mapOptions={mapOptions}
+          updateMapOption={updateMapOption}
+        />
+      )}
     </>
   );
 };

@@ -6,12 +6,16 @@ import { StyledSwitch } from './CustomSwitch';
 // import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
 // import themeProperties from '../../../../theme/themeProperties';
-import { useProjectsMap } from '../../ProjectsMapContext';
+import { MapOptions } from '../../ProjectsMapContext';
 
-const MapSettings: FC = () => {
+type MapSettingsProps = {
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+};
+
+const MapSettings: FC<MapSettingsProps> = ({ mapOptions, updateMapOption }) => {
   const tAllProjects = useTranslations('AllProjects');
   const tMaps = useTranslations('Maps');
-  const { mapOptions, updateMapOption } = useProjectsMap();
 
   /* const {
     primaryColorNew,
