@@ -1,10 +1,12 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projects/components/maps/Credits';
 import { SetState } from '../../types/common';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
+import { useRouter } from 'next/router';
+import { useUserProps } from '../UserPropsContext';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -18,6 +20,15 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
   setCurrencyCode,
   page,
 }) => {
+  const { query } = useRouter();
+  const { isImpersonationModeOn } = useUserProps();
+
+  const layoutClass = useMemo(() => {
+    if (query.embed === 'true') return styles.embedMode;
+    if (isImpersonationModeOn) return styles.impersonationMode;
+    return styles.projectsLayout;
+  }, [isImpersonationModeOn, query.embed]);
+
   return (
     <ProjectsProvider
       page={page}
@@ -25,7 +36,7 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
       setCurrencyCode={setCurrencyCode}
     >
       <ProjectsMapProvider>
-        <div className={styles.projectsLayout}>
+        <div className={layoutClass}>
           <main className={styles.mainContent}>
             <section className={styles.contentContainer}>{children}</section>
             <section className={styles.mapContainer}>

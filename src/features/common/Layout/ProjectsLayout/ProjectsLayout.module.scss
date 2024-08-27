@@ -1,5 +1,6 @@
 @import '../../../../theme/theme';
-
+.impersonationMode,
+.embedMode,
 .projectsLayout {
   margin-top: 80px;
   height: calc(100vh - 80px);
@@ -12,6 +13,14 @@
   padding: 24px 20px 30px;
   position: relative;
   overflow: hidden;
+}
+.embedMode {
+  margin-top: 0px;
+  height: 100vh;
+}
+.impersonationMode {
+  margin-top: 125px;
+  height: calc(100vh - 125px);
 }
 
 .mainContent {

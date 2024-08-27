@@ -14,6 +14,7 @@ import MapPreview from './MapPreview';
 import { SetState } from '../../../common/types/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { ProjectExtend } from '../../ProjectsContext';
+
 interface ProjectInfoSectionProps {
   project: ProjectExtend;
   isMobile: boolean;
@@ -58,7 +59,7 @@ const ProjectInfoSection = ({
         maxPlantingDensity ||
         (plantingSeasons && plantingSeasons.length > 0)
     );
-  }, [isTreeProject, metadata]);
+  }, [metadata]);
 
   const shouldRenderAdditionalInfo = useMemo(() => {
     const {
@@ -68,17 +69,18 @@ const ProjectInfoSection = ({
       acquisitionYear,
       motivation,
     } = metadata;
-
     return Boolean(
       mainChallenge ||
         siteOwnerName ||
-        (isTreeProject && metadata.siteOwnerType) ||
+        (isTreeProject &&
+          metadata.siteOwnerType &&
+          metadata.siteOwnerType?.length > 0) ||
         (isTreeProject && metadata.degradationCause) ||
         longTermPlan ||
         acquisitionYear ||
         motivation
     );
-  }, [isTreeProject, metadata]);
+  }, [metadata]);
 
   const location = useMemo(() => {
     if (!tpo.address) return '';
@@ -93,7 +95,7 @@ const ProjectInfoSection = ({
     ]
       .filter(Boolean)
       .join(',');
-  }, [tpo, tCountry]);
+  }, [tpo]);
 
   const shouldRenderProjectDownloads = useMemo(() => {
     return certificates.length > 0 || expenses.length > 0;

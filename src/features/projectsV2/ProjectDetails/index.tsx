@@ -6,9 +6,11 @@ import ProjectInfoSection from './components/ProjectInfoSection';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, ClientError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProjectDetails = ({
   currencyCode,
@@ -52,9 +54,17 @@ const ProjectDetails = ({
             locale: locale,
           }
         );
-        setSingleProject(fetchedProject);
+        const { purpose } = fetchedProject;
+        if (purpose === 'conservation' || purpose === 'trees') {
+          setSingleProject(fetchedProject);
+        } else {
+          throw new ClientError(404, {
+            error_type: 'project_not_available',
+            error_code: 'project_not_available',
+          });
+        }
       } catch (err) {
-        setErrors(handleError(err as APIError));
+        setErrors(handleError(err as APIError | ClientError));
         setIsError(true);
         redirect('/');
       } finally {
@@ -62,7 +72,7 @@ const ProjectDetails = ({
       }
     }
 
-    loadProject();
+    if (router.query.p) loadProject();
   }, [router.query.p, locale, currencyCode]);
 
   return singleProject ? (
@@ -78,7 +88,9 @@ const ProjectDetails = ({
         setSelectedMode={setSelectedMode}
       />
     </div>
-  ) : null;
+  ) : (
+    <Skeleton className={styles.projectInfoSkeleton} />
+  );
 };
 
 export default ProjectDetails;
