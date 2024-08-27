@@ -1,3 +1,5 @@
+// Was used for YearRangeSlider in MapFeatureExplorer. Can be removed if no longer needed.
+
 import { Slider, styled } from '@mui/material';
 import theme from '../../../../theme/themeProperties';
 const { light, nonDonatableProjectBackgroundColor } = theme;
