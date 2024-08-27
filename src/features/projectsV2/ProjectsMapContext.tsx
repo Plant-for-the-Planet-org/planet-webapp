@@ -44,7 +44,6 @@ const DEFAULT_MAP_STATE: MapState = {
 
 type MapOptions = {
   showProjects: boolean;
-  showDeforestation: boolean;
 };
 
 interface ProjectsMapState {
@@ -67,7 +66,6 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     showProjects: true,
-    showDeforestation: false,
   });
 
   useEffect(() => {
