@@ -44,6 +44,21 @@ const DEFAULT_MAP_STATE: MapState = {
 
 type MapOptions = {
   showProjects: boolean;
+  showDeforestation: boolean;
+};
+
+type LayerSettings = {
+  [id: string]: {
+    decodeParams?: {
+      startDate: string;
+      endDate: string;
+      trimEndDate: string;
+    };
+    params?: {
+      startDate: string;
+      endDate: string;
+    };
+  };
 };
 
 interface ProjectsMapState {
@@ -52,6 +67,10 @@ interface ProjectsMapState {
   mapState: MapState;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+  isMapLoaded: boolean;
+  setIsMapLoaded: SetState<boolean>;
+  layerSettings: LayerSettings;
+  setLayerSettings: SetState<LayerSettings>;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
@@ -66,7 +85,10 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     showProjects: true,
+    showDeforestation: false,
   });
+  const [layerSettings, setLayerSettings] = useState<LayerSettings>({});
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
     const [longitude, latitude] = singleProjectCoordinates;
@@ -95,8 +117,18 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   };
 
   const value: ProjectsMapState | null = useMemo(
-    () => ({ mapState, viewState, setViewState, mapOptions, updateMapOption }),
-    [mapState, viewState, mapOptions]
+    () => ({
+      mapState,
+      viewState,
+      setViewState,
+      mapOptions,
+      updateMapOption,
+      isMapLoaded,
+      setIsMapLoaded,
+      layerSettings,
+      setLayerSettings,
+    }),
+    [mapState, viewState, mapOptions, isMapLoaded, layerSettings]
   );
 
   return (
