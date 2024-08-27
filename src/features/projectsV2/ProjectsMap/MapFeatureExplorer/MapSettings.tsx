@@ -3,10 +3,10 @@ import styles from './MapFeatureExplorer.module.scss';
 import { MapLayerToggle } from '.';
 import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
 import { StyledSwitch } from './CustomSwitch';
-import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import { useProjectsMap } from '../../ProjectsMapContext';
+import DeforestationSlider from './DeforestationSlider';
 
 const MapSettings: FC = () => {
   const tAllProjects = useTranslations('AllProjects');
@@ -45,9 +45,15 @@ const MapSettings: FC = () => {
             switchComponent={
               <StyledSwitch
                 customColor={`${deforestrationToggleColorNew}`}
+                checked={mapOptions['showDeforestation']}
+                onChange={(
+                  _event: ChangeEvent<HTMLInputElement>,
+                  checked: boolean
+                ) => updateMapOption('showDeforestation', checked)}
               />
             }
           />
+          {mapOptions['showDeforestation'] && <DeforestationSlider />}
           <div className={styles.hrLine} />
           <MapLayerToggle
             infoIcon={undefined}

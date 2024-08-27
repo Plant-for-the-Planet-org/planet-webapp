@@ -1,7 +1,7 @@
-import Map from 'react-map-gl-v7/maplibre';
+import Map, { MapRef } from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useRef, MutableRefObject } from 'react';
+import { useRef } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import { useProjects } from '../ProjectsContext';
@@ -9,6 +9,7 @@ import ProjectListControlForMobile from '../ProjectListControls/ProjectListContr
 import { SetState } from '../../common/types/common';
 import styles from './ProjectsMap.module.scss';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import DeforestationLayers from './MapLayers/DeforestationLayers';
 
 type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
@@ -23,8 +24,9 @@ type ProjectsMapDesktopProps = {
 type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
-  const mapRef: MutableRefObject<null> = useRef(null);
-  const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
+  const mapRef = useRef<MapRef>(null);
+  const { viewState, setViewState, mapState, mapOptions, setIsMapLoaded } =
+    useProjectsMap();
   const {
     projects,
     topProjects,
@@ -67,8 +69,12 @@ function ProjectsMap(props: ProjectsMapProps) {
         onMove={(e) => setViewState(e.viewState)}
         attributionControl={false}
         ref={mapRef}
+        onLoad={() => setIsMapLoaded(true)}
       >
         {mapOptions.showProjects && projects && <MultipleProjectsView />}
+        {mapOptions.showDeforestation === true && (
+          <DeforestationLayers mapRef={mapRef} />
+        )}
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
     </>

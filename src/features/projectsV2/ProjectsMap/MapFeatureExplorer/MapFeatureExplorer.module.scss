@@ -39,31 +39,31 @@
   margin-top: 2px;
 }
 
-.rangeMainContainer {
+/* .rangeMainContainer {
   width: 150px;
   height: 30px;
   background-color: rgba(var(--deforestration-range-background-new), 0.1);
   margin-top: 6px;
   border-radius: 6px;
-}
-.rangeContainer {
+} */
+/* .rangeContainer {
   padding-left: 8px;
   display: flex;
   gap: 12px;
-}
+} */
 
-.playIconContainer {
+/* .playIconContainer {
   display: flex;
   margin-top: 8px;
-}
+} */
 
-.sliderContainer {
+/* .sliderContainer {
   width: 107px;
   display: flex;
   margin-top: 10px;
-}
+} */
 
-.yearRangeContainer {
+/* .yearRangeContainer {
   display: flex;
   padding-left: 22px;
   padding-right: 8px;
@@ -74,7 +74,7 @@
 .startYear {
   font-size: $fontXXXXSmallNew;
   font-weight: 400;
-}
+} */
 
 .exploreDescription {
   padding: 8px;
@@ -91,4 +91,32 @@
   margin-top: 6px;
   margin-bottom: 6px;
   background: $horizontalLineColor;
+}
+
+.deforestationSlider > div {
+  border: none;
+}
+
+.deforestationSlider > div > div > ul > li > div > div > header {
+  display: none !important;
+}
+
+.deforestationSlider > div > div {
+  width: 100%;
+}
+
+.deforestationSlider > div > div > ul > li {
+  width: 100%;
+}
+
+.deforestationSlider > div > div > ul > li > div {
+  padding: 0px 4px 10px !important;
+}
+
+.deforestationSlider > div > div > ul > li > div > div > div > div > button {
+  background-color: transparent;
+}
+
+.layerLegend {
+  width: 200px;
 }
