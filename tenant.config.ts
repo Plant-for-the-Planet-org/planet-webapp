@@ -7,8 +7,8 @@ export const defaultTenant: Tenant = {
     externalUrl: 'https://web.plant-for-the-planet.org',
     customDomain: 'https://web.plant-for-the-planet.org',
     font: {
-      primaryFontURL: undefined,
-      secondaryFontURL: undefined,
+      primaryFontURL: null,
+      secondaryFontURL: null,
       primaryFontFamily:
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
       secondaryFontFamily:
