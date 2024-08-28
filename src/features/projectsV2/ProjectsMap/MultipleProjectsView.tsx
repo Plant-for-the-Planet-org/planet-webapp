@@ -1,20 +1,45 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useProjects } from '../ProjectsContext';
 import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
+import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
+import { SetState } from '../../common/types/common';
+import { ViewState } from 'react-map-gl-v7';
+import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
+interface MultipleProjectsViewProps {
+  setViewState: SetState<ViewState>;
+  mapRef: MapRef;
+}
 
-const MultipleProjectsView = () => {
+const MultipleProjectsView = ({
+  setViewState,
+  mapRef,
+}: MultipleProjectsViewProps) => {
   const {
     projects,
     isLoading,
     isError,
     selectedClassification,
     filteredProjects,
+    singleProject,
   } = useProjects();
-
   if (isLoading || isError || !projects) {
     return null;
   }
+  useEffect(() => {
+    if (singleProject === null && mapRef.current) {
+      const map = mapRef.current.getMap
+        ? mapRef.current.getMap()
+        : mapRef.current;
+      zoomOutMap(map, () => {
+        setViewState((prevState) => ({
+          ...prevState,
+          ...map.getCenter(),
+          zoom: map.getZoom(),
+        }));
+      });
+    }
+  }, []);
 
   const categorizedProjects = useMemo(() => {
     return filteredProjects?.reduce<CategorizedProjects>(

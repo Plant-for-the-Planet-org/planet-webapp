@@ -1,13 +1,14 @@
 import Map from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useRef, MutableRefObject } from 'react';
+import { useRef, MutableRefObject, useEffect } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import { useProjects } from '../ProjectsContext';
 import { SetState } from '../../common/types/common';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import MobileControls from './microComponents/MobileControls';
+import SingleProjectView from './SingleProjectView';
 
 type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
@@ -35,6 +36,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     setDebouncedSearchValue,
     isSearching,
     setIsSearching,
+    singleProject,
   } = useProjects();
   const topProjectCount = topProjects?.length;
   const projectCount = projects?.length;
@@ -53,7 +55,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     setIsSearching,
     page: props.isMobile ? props.page : undefined,
   };
-
   return (
     <>
       <MobileControls {...projectListControlProps} />
@@ -63,8 +64,14 @@ function ProjectsMap(props: ProjectsMapProps) {
         onMove={(e) => setViewState(e.viewState)}
         attributionControl={false}
         ref={mapRef}
+        interactiveLayerIds={
+          singleProject !== null ? ['polygon-layer', 'point-layer'] : undefined
+        }
       >
-        {projects && <MultipleProjectsView />}
+        {singleProject && <SingleProjectView mapRef={mapRef} />}
+        {projects && !singleProject && (
+          <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
+        )}
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
     </>

@@ -12,6 +12,7 @@ import styles from '../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { useProjects } from '../../ProjectsContext';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -30,6 +31,7 @@ const ImageSection = (props: ImageSectionProps) => {
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
+  const { setSingleProject } = useProjects();
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
@@ -48,6 +50,7 @@ const ImageSection = (props: ImageSectionProps) => {
     );
   };
   const handleBackButton = useCallback((e: MouseEvent) => {
+    setSingleProject(null);
     e.stopPropagation();
     if (window.history.length > 0) {
       window.history.back();

@@ -26,7 +26,7 @@ const EMPTY_STYLE = {
   layers: [] as MapStyle['layers'],
 } as const;
 
-const DEFAULT_VIEW_STATE: ViewState = {
+export const DEFAULT_VIEW_STATE: ViewState = {
   longitude: 0,
   latitude: 0,
   zoom: 2,

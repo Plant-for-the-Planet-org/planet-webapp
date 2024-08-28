@@ -30,6 +30,8 @@ interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ProjectExtend | null;
   setSingleProject: SetState<ProjectExtend | null>;
+  selectedSite: number;
+  setSelectedSite: SetState<number>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
   isError: boolean;
@@ -73,6 +75,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedSite, setSelectedSite] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -190,7 +193,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
 
     loadProjects();
-  }, [currencyCode, locale, page]);
+  }, [currencyCode, locale]);
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
@@ -217,6 +220,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedMode,
       singleProject,
       setSingleProject,
+      selectedSite,
+      setSelectedSite,
     }),
     [
       projects,
