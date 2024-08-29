@@ -24,7 +24,7 @@ interface Props {
     | ConservationProjectConcise
     | TreeProjectExtended
     | ConservationProjectExtended;
-  showPopup: boolean;
+  showTooltipPopups: boolean;
 }
 
 export interface CommonProps {
@@ -39,7 +39,7 @@ export interface ImageSectionProps extends CommonProps {
   projectName: string;
   image: string;
   ecosystem: EcosystemTypes | null;
-  showPopup: boolean;
+  showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
 }
@@ -55,7 +55,7 @@ export interface ProjectInfoProps extends CommonProps {
 
 export default function ProjectSnippet({
   project,
-  showPopup,
+  showTooltipPopups,
 }: Props): ReactElement {
   const router = useRouter();
   const tCommon = useTranslations('Common');
@@ -110,7 +110,7 @@ export default function ProjectSnippet({
     projectName: project.name,
     image: project.image,
     ecosystem: ecosystem,
-    showPopup: showPopup,
+    showTooltipPopups: showTooltipPopups,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
   };

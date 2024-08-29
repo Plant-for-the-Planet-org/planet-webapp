@@ -18,7 +18,7 @@ const ImageSection = (props: ImageSectionProps) => {
     image,
     slug,
     ecosystem,
-    showPopup,
+    showTooltipPopups,
     projectReviews,
     purpose,
     classification,
@@ -52,6 +52,7 @@ const ImageSection = (props: ImageSectionProps) => {
         isApproved={isApproved}
         allowDonations={allowDonations}
         isTopProject={isTopProject}
+        showTooltipPopups={showTooltipPopups}
       />
       {image && typeof image !== 'undefined' ? (
         <>
@@ -90,7 +91,7 @@ const ImageSection = (props: ImageSectionProps) => {
           {truncateString(projectName, 30)}
           {isApproved && (
             <CustomTooltip
-              showPopup={showPopup}
+              showTooltipPopups={showTooltipPopups}
               triggerElement={
                 <span className={styles.verifiedIcon}>
                   <VerifiedIcon sx={{ width: '100%' }} />
