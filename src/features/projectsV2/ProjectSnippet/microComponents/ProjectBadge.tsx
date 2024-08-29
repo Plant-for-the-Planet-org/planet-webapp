@@ -118,13 +118,13 @@ const ProjectBadge = ({
 
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
 
-  const shouldShowPopup = () => showTooltipPopups && displayPopup;
+  const shouldShowPopup = showTooltipPopups && displayPopup;
   const badgeContent = <BadgeLabel icon={icon} title={title} />;
 
   return displayPopup ? (
     <CustomTooltip
       triggerElement={badgeContent}
-      showTooltipPopups={shouldShowPopup()}
+      showTooltipPopups={shouldShowPopup}
     >
       {renderMessage(badgeType)}
     </CustomTooltip>
