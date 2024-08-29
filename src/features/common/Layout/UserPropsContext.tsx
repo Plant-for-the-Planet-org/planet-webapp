@@ -45,7 +45,6 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
-  console.log(useAuth0(), '=1');
   const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState<string | null>(null);
