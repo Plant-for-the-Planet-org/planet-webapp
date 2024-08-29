@@ -12,7 +12,7 @@ interface Props {
   isApproved: boolean;
   isTopProject: boolean;
   allowDonations: boolean;
-  showPopup: boolean;
+  showTooltipPopups: boolean;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -41,7 +41,7 @@ const ProjectBadge = ({
   isApproved,
   isTopProject,
   allowDonations,
-  showPopup,
+  showTooltipPopups,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -118,14 +118,14 @@ const ProjectBadge = ({
 
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
 
-  const shouldShowPopup = useCallback(
-    () => showPopup && displayPopup,
-    [showPopup, displayPopup]
-  );
+  const shouldShowPopup = () => showTooltipPopups && displayPopup;
   const badgeContent = <BadgeLabel icon={icon} title={title} />;
 
   return displayPopup ? (
-    <CustomTooltip triggerElement={badgeContent} showPopup={shouldShowPopup()}>
+    <CustomTooltip
+      triggerElement={badgeContent}
+      showTooltipPopups={shouldShowPopup()}
+    >
       {renderMessage(badgeType)}
     </CustomTooltip>
   ) : (

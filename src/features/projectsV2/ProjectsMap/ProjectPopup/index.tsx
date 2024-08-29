@@ -25,7 +25,10 @@ const ProjectPopup = ({ project, handlePopupLeave, visitProject }: Props) => {
         onClick={() => visitProject(project.properties.slug)}
         onKeyDown={() => visitProject(project.properties.slug)}
       >
-        <ProjectSnippet project={project.properties} showPopup={false} />
+        <ProjectSnippet
+          project={project.properties}
+          showTooltipPopups={false}
+        />
       </div>
     </Popup>
   );
