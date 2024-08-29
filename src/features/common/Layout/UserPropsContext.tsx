@@ -45,6 +45,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
+  console.log(useAuth0(), '=1');
   const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState<string | null>(null);
@@ -120,9 +121,16 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [token, refetchUserData]);
 
   React.useEffect(() => {
+    if (!isLoading && user === undefined) {
+      localStorage.removeItem('impersonationData');
+    }
     const impersonationData = localStorage.getItem('impersonationData');
-    setIsImpersonationModeOn(impersonationData !== null);
-  }, [isImpersonationModeOn]);
+    if (impersonationData !== null && !isImpersonationModeOn) {
+      setIsImpersonationModeOn(true);
+    } else if (impersonationData === null && isImpersonationModeOn) {
+      setIsImpersonationModeOn(false);
+    }
+  }, [user, isLoading]);
 
   const value: UserPropsContextInterface | null = {
     contextLoaded,
