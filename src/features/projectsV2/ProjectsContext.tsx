@@ -26,6 +26,12 @@ import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
 
 export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
+
+export interface SiteType {
+  siteName: string;
+  siteArea: number;
+  id: number;
+}
 interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ProjectExtend | null;
@@ -200,7 +206,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setCurrencyCode(currency);
     }
   }, [currencyCode, setCurrencyCode]);
-
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,
@@ -234,6 +239,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       debouncedSearchValue,
       selectedMode,
       singleProject,
+      selectedSite,
     ]
   );
 

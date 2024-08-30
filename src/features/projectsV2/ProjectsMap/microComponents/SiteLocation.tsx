@@ -5,7 +5,7 @@ import { useProjectsMap } from '../../ProjectsMapContext';
 import SitePolygon from './SitePolygon';
 
 const SiteLocation = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
-  const { singleProject } = useProjects();
+  const { singleProject, selectedSite } = useProjects();
   const { setViewState } = useProjectsMap();
   const sitesGeojson = useMemo(() => {
     return {
@@ -13,11 +13,16 @@ const SiteLocation = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
       features: singleProject?.sites ?? [],
     };
   }, [singleProject]);
-
   useEffect(() => {
-    if (singleProject)
-      zoomInToProjectSite(mapRef, sitesGeojson, 0, setViewState, 4000);
-  }, [singleProject]);
+    if (singleProject?.sites)
+      zoomInToProjectSite(
+        mapRef,
+        sitesGeojson,
+        selectedSite,
+        setViewState,
+        4000
+      );
+  }, [singleProject?.sites, selectedSite]);
 
   return <SitePolygon geoJson={sitesGeojson} id="sitePolygon" />;
 };

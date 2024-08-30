@@ -1,7 +1,7 @@
 import Map from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useRef, MutableRefObject, useEffect } from 'react';
+import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import { useProjects } from '../ProjectsContext';
@@ -9,6 +9,7 @@ import { SetState } from '../../common/types/common';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import MobileControls from './microComponents/MobileControls';
 import SingleProjectView from './SingleProjectView';
+import ProjectSiteDropdown from './ProjectSiteDropDown';
 
 type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
@@ -19,6 +20,7 @@ type ProjectsMapMobileProps = {
 
 type ProjectsMapDesktopProps = {
   isMobile: false;
+  page: 'project-list' | 'project-details';
 };
 
 type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
@@ -37,6 +39,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     isSearching,
     setIsSearching,
     singleProject,
+    selectedSite,
+    setSelectedSite,
   } = useProjects();
   const topProjectCount = topProjects?.length;
   const projectCount = projects?.length;
@@ -53,11 +57,19 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     isSearching,
     setIsSearching,
-    page: props.isMobile ? props.page : undefined,
+    page: props.page,
+  };
+  const siteDropdownProps = {
+    selectedSite,
+    setSelectedSite,
+    projectSites: singleProject?.sites,
   };
   return (
     <>
       <MobileControls {...projectListControlProps} />
+      {props.page === 'project-details' && singleProject?.sites && (
+        <ProjectSiteDropdown {...siteDropdownProps} />
+      )}
       <Map
         {...viewState}
         {...mapState}
