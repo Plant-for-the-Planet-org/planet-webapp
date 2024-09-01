@@ -42,7 +42,7 @@ const ProjectSiteDropdown = ({
     if (!projectSites) return [];
     return projectSites.map((site, index: number) => ({
       siteName: site.properties.name,
-      siteArea: area(site) / 100000,
+      siteArea: area(site) / 10000,
       id: index,
     }));
   }, [projectSites]);

@@ -11,6 +11,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { PlantLocation } from '../../common/types/plantLocation';
 
 const ProjectDetails = ({
   currencyCode,
@@ -22,6 +23,7 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
+    setPlantLocations,
     setIsLoading,
     setIsError,
     setSelectedMode,
@@ -75,6 +77,30 @@ const ProjectDetails = ({
     if (router.query.p) loadProject();
   }, [router.query.p, locale, currencyCode]);
 
+  useEffect(() => {
+    async function loadPlantLocations() {
+      setIsLoading(true);
+      try {
+        const result = await getRequest<PlantLocation[]>(
+          tenantConfig.id,
+          `/app/plantLocations/${singleProject?.id}`,
+          {
+            _scope: 'extended',
+          },
+          '1.0.4'
+        );
+        setPlantLocations(result);
+      } catch (err) {
+        setErrors(handleError(err as APIError | ClientError));
+        setIsError(true);
+        redirect('/');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    if (singleProject && singleProject?.purpose === 'trees')
+      loadPlantLocations();
+  }, [singleProject]);
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet

@@ -24,6 +24,7 @@ import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
+import { PlantLocation } from '../common/types/plantLocation';
 
 export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
 
@@ -36,6 +37,8 @@ interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ProjectExtend | null;
   setSingleProject: SetState<ProjectExtend | null>;
+  plantLocations: PlantLocation[] | null;
+  setPlantLocations: SetState<PlantLocation[] | null>;
   selectedSite: number;
   setSelectedSite: SetState<number>;
   isLoading: boolean;
@@ -74,6 +77,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [singleProject, setSingleProject] = useState<ProjectExtend | null>(
+    null
+  );
+  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
     null
   );
   const [selectedClassification, setSelectedClassification] = useState<
@@ -225,6 +231,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedMode,
       singleProject,
       setSingleProject,
+      plantLocations,
+      setPlantLocations,
       selectedSite,
       setSelectedSite,
     }),
@@ -239,6 +247,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       debouncedSearchValue,
       selectedMode,
       singleProject,
+      plantLocations,
       selectedSite,
     ]
   );

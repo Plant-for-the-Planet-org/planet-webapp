@@ -46,18 +46,21 @@ interface ProjectsMapState {
   viewState: ViewState;
   setViewState: SetState<ViewState>;
   mapState: MapState;
+  isSatelliteView: boolean;
+  setIsSatelliteView: SetState<boolean>;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
 
 export const ProjectsMapProvider: FC = ({ children }) => {
-  const { filteredProjects } = useProjects();
+  const { filteredProjects, plantLocations } = useProjects();
   const hasSingleProject = filteredProjects?.length === 1;
   const singleProjectCoordinates = hasSingleProject
     ? filteredProjects[0].geometry.coordinates
     : [0, 0];
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
+  const [isSatelliteView, setIsSatelliteView] = useState(false);
 
   useEffect(() => {
     const [longitude, latitude] = singleProjectCoordinates;
@@ -67,6 +70,14 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       latitude,
     }));
   }, [filteredProjects]);
+
+  useEffect(() => {
+    if (plantLocations && plantLocations.length > 0) {
+      setIsSatelliteView(false);
+    } else {
+      setIsSatelliteView(true);
+    }
+  }, [plantLocations]);
 
   useEffect(() => {
     async function loadMapStyle() {
@@ -79,8 +90,14 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   }, []);
 
   const value: ProjectsMapState | null = useMemo(
-    () => ({ mapState, viewState, setViewState }),
-    [mapState, viewState]
+    () => ({
+      mapState,
+      viewState,
+      setViewState,
+      isSatelliteView,
+      setIsSatelliteView,
+    }),
+    [mapState, viewState, isSatelliteView]
   );
 
   return (

@@ -1,30 +1,23 @@
-import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
-import { useProjects } from '../../ProjectsContext';
-import { useEffect, useMemo, MutableRefObject } from 'react';
-import { useProjectsMap } from '../../ProjectsMapContext';
 import SitePolygon from './SitePolygon';
+import { Feature, Polygon, MultiPolygon } from 'geojson';
+import { ProjectSite } from '@planet-sdk/common';
 
-const SiteLocation = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
-  const { singleProject, selectedSite } = useProjects();
-  const { setViewState } = useProjectsMap();
-  const sitesGeojson = useMemo(() => {
-    return {
-      type: 'FeatureCollection' as const,
-      features: singleProject?.sites ?? [],
-    };
-  }, [singleProject]);
-  useEffect(() => {
-    if (singleProject?.sites)
-      zoomInToProjectSite(
-        mapRef,
-        sitesGeojson,
-        selectedSite,
-        setViewState,
-        4000
-      );
-  }, [singleProject?.sites, selectedSite]);
+interface SiteLocationProps {
+  sitesGeojson: {
+    type: 'FeatureCollection';
+    features: Feature<Polygon | MultiPolygon, ProjectSite>[];
+  };
+  isSatelliteView: boolean;
+}
 
-  return <SitePolygon geoJson={sitesGeojson} id="sitePolygon" />;
+const SiteLocation = ({ isSatelliteView, sitesGeojson }: SiteLocationProps) => {
+  return (
+    <SitePolygon
+      isSatelliteView={isSatelliteView}
+      geoJson={sitesGeojson}
+      id="sitePolygon"
+    />
+  );
 };
 
 export default SiteLocation;
