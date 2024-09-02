@@ -18,3 +18,18 @@
     right: 15px;
   }
 }
+
+.layerToggle {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  display: flex;
+  bottom: 110px;
+  right: 9px;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+}

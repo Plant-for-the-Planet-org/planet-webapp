@@ -9,14 +9,9 @@ interface SiteLocationProps {
   };
   isSatelliteView: boolean;
 }
-
 const SiteLocation = ({ isSatelliteView, sitesGeojson }: SiteLocationProps) => {
   return (
-    <SitePolygon
-      isSatelliteView={isSatelliteView}
-      geoJson={sitesGeojson}
-      id="sitePolygon"
-    />
+    <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
   );
 };
 

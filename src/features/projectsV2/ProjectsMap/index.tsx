@@ -64,10 +64,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSite,
     projectSites: singleProject?.sites,
   };
+  const hasMoreThanOneSite =
+    singleProject?.sites && singleProject?.sites?.length > 1;
   return (
     <>
       <MobileControls {...projectListControlProps} />
-      {props.page === 'project-details' && singleProject?.sites && (
+      {props.page === 'project-details' && hasMoreThanOneSite && (
         <ProjectSiteDropdown {...siteDropdownProps} />
       )}
       <Map

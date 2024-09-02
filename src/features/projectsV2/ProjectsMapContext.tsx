@@ -72,11 +72,7 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   }, [filteredProjects]);
 
   useEffect(() => {
-    if (plantLocations && plantLocations.length > 0) {
-      setIsSatelliteView(false);
-    } else {
-      setIsSatelliteView(true);
-    }
+    if (plantLocations) setIsSatelliteView(!(plantLocations?.length > 0));
   }, [plantLocations]);
 
   useEffect(() => {

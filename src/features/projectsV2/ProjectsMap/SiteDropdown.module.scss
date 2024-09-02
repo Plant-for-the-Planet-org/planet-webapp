@@ -6,15 +6,15 @@
   background: $backgroundColor;
   align-items: center;
   padding: 12px 0px 9px 12px;
-  min-width: 290px;
+  min-width: 300px;
   width: fit-content;
   justify-content: space-between;
   cursor: pointer;
   gap: 18px;
   position: absolute;
   z-index: 2;
-  top: 40px;
-  right: 35px;
+  top: 35px;
+  right: 30px;
 }
 .siteIconAndTextContainer {
   display: flex;
@@ -60,9 +60,16 @@
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-  top: 90px;
-  right: 35px;
-  min-width: 290px;
+  top: 84px;
+  right: 30px;
+  min-width: 300px;
+  max-height: 58vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
   > button {
     width: 100%;
   }
@@ -71,7 +78,7 @@
   display: flex;
   justify-content: space-between;
   gap: 30px;
-  padding: 8px 0px;
+  padding: 9px 0px;
   color: rgba(51, 51, 51, 1);
   cursor: pointer;
   border-bottom: 1px solid $dividerColorNew;
