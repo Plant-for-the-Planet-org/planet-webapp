@@ -33,7 +33,7 @@ function TreeMapper(): ReactElement {
   const [plantLocations, setPlantLocations] = React.useState<
     PlantLocationType[]
   >([]);
-  const [selectedLocation, setselectedLocation] = React.useState<
+  const [selectedLocation, setSelectedLocation] = React.useState<
     PlantLocationSingle | PlantLocationMulti | null
   >(null);
   const [links, setLinks] = React.useState<Links>();
@@ -61,7 +61,7 @@ function TreeMapper(): ReactElement {
             if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
               const ind = Number(itr);
               const location = newPlantLocations[ind];
-              if (location.type === 'multi') {
+              if (location.type === 'multi-tree-registration') {
                 location.sampleTrees = [];
                 for (const key in newPlantLocations) {
                   if (
@@ -69,7 +69,7 @@ function TreeMapper(): ReactElement {
                   ) {
                     const item = newPlantLocations[key] as PlantLocationMulti &
                       SamplePlantLocation;
-                    if (item.type === 'sample') {
+                    if (item.type === 'sample-tree-registration') {
                       if (item.parent === location.id) {
                         location.sampleTrees.push(item);
                       }
@@ -93,7 +93,7 @@ function TreeMapper(): ReactElement {
         const response =
           await getAuthenticatedRequest<ExtendedScopePlantLocations>(
             tenantConfig?.id,
-            '/treemapper/plantLocations?_scope=extended&limit=15',
+            '/treemapper/interventions?_scope=extended&limit=15',
             token,
             logoutUser,
 
@@ -109,7 +109,7 @@ function TreeMapper(): ReactElement {
             for (const itr in plantLocations) {
               if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
                 const location = plantLocations[itr];
-                if (location && location.type === 'multi') {
+                if (location && location.type === 'multi-tree-registration') {
                   location.sampleTrees = [];
                   for (const key in plantLocations) {
                     if (
@@ -117,7 +117,7 @@ function TreeMapper(): ReactElement {
                     ) {
                       const item = plantLocations[key] as PlantLocationMulti &
                         SamplePlantLocation;
-                      if (item.type === 'sample') {
+                      if (item.type === 'sample-tree-registration') {
                         if (item.parent === location.id) {
                           location.sampleTrees.push(item);
                         }
@@ -152,21 +152,21 @@ function TreeMapper(): ReactElement {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
             const plantLocation = plantLocations[key];
             if (plantLocation.id === router.query.l) {
-              setselectedLocation(plantLocation);
+              setSelectedLocation(plantLocation);
               break;
             }
           }
         }
       }
     } else {
-      setselectedLocation(null);
+      setSelectedLocation(null);
     }
   }, [router.query.l, plantLocations]);
 
   const TreeMapperProps = {
     location: selectedLocation,
     selectedLocation,
-    setselectedLocation,
+    setSelectedLocation,
     plantLocations,
     isDataLoading,
     fetchTreemapperData,
@@ -195,7 +195,7 @@ function TreeMapper(): ReactElement {
           <PlantLocationMap
             locations={plantLocations}
             selectedLocation={selectedLocation}
-            setselectedLocation={setselectedLocation}
+            setSelectedLocation={setSelectedLocation}
           />
         </div>
       </div>

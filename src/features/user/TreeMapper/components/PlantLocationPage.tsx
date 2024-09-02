@@ -32,7 +32,7 @@ const ImageSliderSingle = dynamic(
 );
 
 interface Props {
-  setselectedLocation: SetState<
+  setSelectedLocation: SetState<
     SamplePlantLocation | PlantLocationMulti | PlantLocationSingle | null
   >;
   location:
@@ -50,7 +50,7 @@ interface SampleTreeImageProps {
 
 export function LocationDetails({
   location,
-  setselectedLocation,
+  setSelectedLocation,
 }: Props): ReactElement {
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
@@ -64,23 +64,23 @@ export function LocationDetails({
   })}`;
 
   React.useEffect(() => {
-    if (location?.type === 'multi') {
+    if (location?.type === 'multi-tree-registration') {
       if (
         location &&
-        (location as PlantLocationMulti).samplePlantLocations &&
-        (location as PlantLocationMulti).samplePlantLocations.length > 0
+        (location as PlantLocationMulti).sampleInterventions &&
+        (location as PlantLocationMulti).sampleInterventions.length > 0
       ) {
         const images = [];
         for (const key in (location as PlantLocationMulti)
-          .samplePlantLocations) {
+          .sampleInterventions) {
           if (
             Object.prototype.hasOwnProperty.call(
-              (location as PlantLocationMulti).samplePlantLocations,
+              (location as PlantLocationMulti).sampleInterventions,
               key
             )
           ) {
             const element = (location as PlantLocationMulti)
-              .samplePlantLocations[key];
+              .sampleInterventions[key];
 
             if (element.coordinates?.[0]) {
               images.push({
@@ -100,28 +100,30 @@ export function LocationDetails({
   }, [location]);
   return location ? (
     <>
-      {location.type === 'multi' && sampleTreeImages.length > 0 && (
-        <div className={styles.projectImageSliderContainer}>
-          <ImageSlider
-            images={sampleTreeImages}
-            height={233}
-            imageSize="large"
-            type="coordinate"
-          />
-        </div>
-      )}
-      {location.type !== 'multi' && location.coordinates?.length > 0 && (
-        <div
-          className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
-        >
-          <ImageSliderSingle
-            images={location.coordinates}
-            height={233}
-            imageSize="large"
-            type="coordinate"
-          />
-        </div>
-      )}
+      {location.type === 'multi-tree-registration' &&
+        sampleTreeImages.length > 0 && (
+          <div className={styles.projectImageSliderContainer}>
+            <ImageSlider
+              images={sampleTreeImages}
+              height={233}
+              imageSize="large"
+              type="coordinate"
+            />
+          </div>
+        )}
+      {location.type !== 'multi-tree-registration' &&
+        location.coordinates?.length > 0 && (
+          <div
+            className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
+          >
+            <ImageSliderSingle
+              images={location.coordinates}
+              height={233}
+              imageSize="large"
+              type="coordinate"
+            />
+          </div>
+        )}
       <div className={styles.details}>
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tTreemapper('captureMode')}</p>
@@ -235,39 +237,40 @@ export function LocationDetails({
             </div>
           </div>
         )}
-        {location.type === 'multi' && location.captureMode === 'on-site' && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{tMaps('sampleTree')}</p>
-            {/* <div className={styles.value}> */}
-            {(location as PlantLocationMulti).samplePlantLocations &&
-              (location as PlantLocationMulti).samplePlantLocations.map(
-                (spl, index: number) => {
-                  return (
-                    <div key={index} className={styles.value}>
-                      {index + 1}.{' '}
-                      <span
-                        onClick={() => setselectedLocation(spl)}
-                        className={styles.link}
-                      >
-                        {spl.scientificName
-                          ? spl.scientificName
-                          : spl.scientificSpecies &&
-                            spl.scientificSpecies !== 'Unknown'
-                          ? spl.scientificSpecies
-                          : tMaps('unknown')}
-                      </span>
-                      <br />
-                      {spl.tag ? `${tMaps('tag')} #${spl.tag} • ` : null}
-                      {spl?.measurements?.height}
-                      {tMaps('meterHigh')} • {spl?.measurements?.width}
-                      {tMaps('cmWide')}
-                    </div>
-                  );
-                }
-              )}
-            {/* </div> */}
-          </div>
-        )}
+        {location.type === 'multi-tree-registration' &&
+          location.captureMode === 'on-site' && (
+            <div className={styles.singleDetail}>
+              <p className={styles.title}>{tMaps('sampleTree')}</p>
+              {/* <div className={styles.value}> */}
+              {(location as PlantLocationMulti).sampleInterventions &&
+                (location as PlantLocationMulti).sampleInterventions.map(
+                  (spl, index: number) => {
+                    return (
+                      <div key={index} className={styles.value}>
+                        {index + 1}.{' '}
+                        <span
+                          onClick={() => setSelectedLocation(spl)}
+                          className={styles.link}
+                        >
+                          {spl.scientificName
+                            ? spl.scientificName
+                            : spl.scientificSpecies &&
+                              spl.scientificSpecies !== 'Unknown'
+                            ? spl.scientificSpecies
+                            : tMaps('unknown')}
+                        </span>
+                        <br />
+                        {spl.tag ? `${tMaps('tag')} #${spl.tag} • ` : null}
+                        {spl?.measurements?.height}
+                        {tMaps('meterHigh')} • {spl?.measurements?.width}
+                        {tMaps('cmWide')}
+                      </div>
+                    );
+                  }
+                )}
+              {/* </div> */}
+            </div>
+          )}
       </div>
     </>
   ) : (
@@ -277,19 +280,19 @@ export function LocationDetails({
 
 export default function PlantLocationPage({
   location,
-  setselectedLocation,
+  setSelectedLocation,
   plantLocations,
 }: Props): ReactElement {
   const router = useRouter();
 
   const handleBackButton = () => {
-    if (location?.type === 'sample') {
+    if (location?.type === 'sample-tree-registration') {
       for (const iKey in plantLocations) {
         const i = iKey as keyof typeof plantLocations;
         if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
           const pl = plantLocations[i] as PlantLocation;
           if (pl.id === (location as SamplePlantLocation)?.parent) {
-            setselectedLocation(pl);
+            setSelectedLocation(pl);
             break;
           }
         }
@@ -301,7 +304,7 @@ export default function PlantLocationPage({
 
   const DetailProps = {
     location,
-    setselectedLocation,
+    setSelectedLocation,
   };
 
   return (
