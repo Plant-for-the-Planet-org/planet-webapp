@@ -126,7 +126,7 @@ export interface PlantedSpecies {
 
 type TreeStatus = 'alive' | 'sick' | 'dead';
 
-type CaptureMode = 'off-site' | 'on-site';
+type CaptureMode = 'off-site' | 'on-site' | 'external';
 
 type CaptureStatus = 'partial' | 'complete';
 
