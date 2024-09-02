@@ -22,6 +22,7 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
+    setSelectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
@@ -36,6 +37,7 @@ const ProjectDetails = ({
   const router = useRouter();
 
   useEffect(() => {
+    setSelectedSite(0); // default site value, will be removed in future
     if (setSelectedMode) setSelectedMode('list');
     setSelectedClassification([]);
     setDebouncedSearchValue('');

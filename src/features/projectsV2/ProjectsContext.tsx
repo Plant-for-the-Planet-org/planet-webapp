@@ -94,7 +94,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
-
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -203,9 +202,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
         setIsLoading(false);
       }
     }
-
     loadProjects();
   }, [currencyCode, locale]);
+
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();

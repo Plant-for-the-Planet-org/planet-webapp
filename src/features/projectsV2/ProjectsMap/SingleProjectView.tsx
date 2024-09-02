@@ -19,7 +19,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
       type: 'FeatureCollection' as const,
       features: singleProject?.sites ?? [],
     };
-  }, [singleProject?.sites]);
+  }, [singleProject?.sites, query.p]);
 
   useEffect(() => {
     if (singleProject?.sites)
@@ -30,7 +30,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
         setViewState,
         4000
       );
-  }, [query.p, selectedSite]);
+  }, [query.p, selectedSite, singleProject]);
 
   return (
     <>
@@ -40,8 +40,8 @@ const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
       >
         {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
       </button>
-      {isSatelliteView && <SatelliteLayer />}
       <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
+      {isSatelliteView && <SatelliteLayer />}
     </>
   );
 };
