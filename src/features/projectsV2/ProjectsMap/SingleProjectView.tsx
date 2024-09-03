@@ -10,27 +10,23 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import styles from '.././ProjectsMap/ProjectsMap.module.scss';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
+  const { singleProject, selectedSite } = useProjects();
+  if (!singleProject?.sites) {
+    return null;
+  }
   const { isSatelliteView, setIsSatelliteView, setViewState } =
     useProjectsMap();
-  const { singleProject, selectedSite } = useProjects();
   const { query } = useRouter();
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: singleProject?.sites ?? [],
+      features: singleProject.sites ?? [],
     };
-  }, [singleProject?.sites, query.p]);
+  }, [query.p]);
 
   useEffect(() => {
-    if (singleProject?.sites)
-      zoomInToProjectSite(
-        mapRef,
-        sitesGeojson,
-        selectedSite,
-        setViewState,
-        4000
-      );
-  }, [query.p, selectedSite, singleProject]);
+    zoomInToProjectSite(mapRef, sitesGeojson, selectedSite, setViewState, 4000);
+  }, [query.p, selectedSite]);
 
   return (
     <>
