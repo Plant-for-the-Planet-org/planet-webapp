@@ -177,7 +177,10 @@ const ProjectPropsProvider: FC = ({ children }) => {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
           const element = plantLocations[key];
-          if (element.type === 'multi' && element.captureStatus === 'complete')
+          if (
+            element.type === 'multi-tree-registration' &&
+            element.captureStatus === 'complete'
+          )
             ids.push(element.id + '-layer');
         }
       }
