@@ -30,6 +30,7 @@ const ProjectDetails = ({
     setSelectedMode,
     setSelectedClassification,
     setDebouncedSearchValue,
+    selectedSite,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -103,17 +104,22 @@ const ProjectDetails = ({
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
   }, [singleProject]);
-
+  // add  project site query
   useEffect(() => {
-    const projectSiteQuery =
-      singleProject?.sites && singleProject?.sites[0].properties.id;
-    if (projectSiteQuery) {
-      const newAsPath = router.asPath.includes('?')
-        ? `${router.asPath}&site=${projectSiteQuery}`
-        : `${router.asPath}?site=${projectSiteQuery}`;
-      router.push(newAsPath, undefined, { shallow: true });
+    const projectSites = singleProject?.sites;
+    if (!projectSites || !(projectSites && projectSites[selectedSite])) {
+      return;
     }
-  }, [singleProject?.sites]);
+    const currentUrl = new URL(window.location.href);
+    const searchParams = currentUrl.searchParams;
+    searchParams.set('site', projectSites[selectedSite].properties.id);
+    const newSearch = searchParams.toString();
+    const newPath = `/${locale}/prd/${singleProject.slug}${
+      newSearch.length > 0 ? `?${newSearch}` : ''
+    }`;
+    router.push(newPath);
+  }, [singleProject?.slug, selectedSite, locale]);
+
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet

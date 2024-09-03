@@ -35,7 +35,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
-
+  const isEmbed = embed === 'true';
   const handleImageClick = () => {
     router.push(
       `/${locale}/prd/${slug}/${
@@ -52,10 +52,18 @@ const ImageSection = (props: ImageSectionProps) => {
   const handleBackButton = useCallback((e: MouseEvent) => {
     setSingleProject(null);
     e.stopPropagation();
-    if (window.history.length > 0) {
-      window.history.back();
+    if (document.referrer) {
+      window.history.go(-2);
     } else {
-      window.location.href = '/';
+      router.replace({
+        pathname: `/${locale}/prd`,
+        query: {
+          ...(isEmbed ? { embed: 'true' } : {}),
+          ...(isEmbed && callbackUrl !== undefined
+            ? { callback: callbackUrl }
+            : {}),
+        },
+      });
     }
   }, []);
 
