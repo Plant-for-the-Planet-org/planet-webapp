@@ -4,7 +4,6 @@ import TransactionsNotFound from '../../../../../public/assets/images/icons/Tran
 import styles from '../TreeMapper.module.scss';
 import { useTranslations } from 'next-intl';
 import {
-  SamplePlantLocation,
   PlantLocation as PlantLocationType,
   PlantLocationSingle,
   PlantLocationMulti,
