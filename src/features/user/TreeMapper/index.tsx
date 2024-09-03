@@ -83,6 +83,7 @@ function TreeMapper(): ReactElement {
             ...plantLocations,
             ...newPlantLocations,
           ] as PlantLocationType[]);
+          setLinks(response._links);
         }
       } catch (err) {
         setErrors(handleError(err as APIError));
