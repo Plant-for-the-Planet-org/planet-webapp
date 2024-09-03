@@ -37,8 +37,11 @@ import {
   Geometry,
   GeometryObject,
 } from 'geojson';
-import { Species } from '../../../../common/types/plantLocation';
-import { PlantLocation, PlantingLocationFormData } from '../../Treemapper';
+import {
+  Species,
+  PlantLocation as PlantLocationType,
+} from '../../../../common/types/plantLocation';
+import { PlantingLocationFormData } from '../../Treemapper';
 // import { DevTool } from '@hookform/devtools';
 import { SetState } from '../../../../common/types/common';
 
@@ -156,7 +159,7 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  setPlantLocation: SetState<PlantLocation | null>;
+  setPlantLocation: SetState<PlantLocationType | null>;
   geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
@@ -328,7 +331,7 @@ export default function PlantingLocation({
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {
-        type: 'multi',
+        type: 'multi-tree-registration',
         captureMode: 'external',
         geometry: geoJson,
         plantedSpecies: data.plantedSpecies,
@@ -338,9 +341,9 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest<PlantLocation>(
+        const res = await postAuthenticatedRequest<PlantLocationType>(
           tenantConfig?.id,
-          `/treemapper/plantLocations`,
+          `/treemapper/interventions`,
           submitData,
           token,
           logoutUser

@@ -32,10 +32,10 @@ export default function PlantLocations(): ReactElement {
 
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
     switch (pl.type) {
-      case 'sample':
+      case 'sample-tree-registration':
         setSamplePlantLocation(pl);
         break;
-      case 'single':
+      case 'single-tree-registration':
         setSelectedPl(pl);
         break;
       default:
@@ -50,7 +50,8 @@ export default function PlantLocations(): ReactElement {
   const onHoverEnd = () => {
     if (
       hoveredPl &&
-      (hoveredPl.type === 'single' || hoveredPl.type === 'sample')
+      (hoveredPl.type === 'single-tree-registration' ||
+        hoveredPl.type === 'sample-tree-registration')
     )
       setHoveredPl(null);
   };
@@ -71,7 +72,7 @@ export default function PlantLocations(): ReactElement {
   };
 
   const getPlArea = (pl: PlantLocationMulti) => {
-    if (pl && pl.type === 'multi') {
+    if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
     } else {
@@ -140,7 +141,8 @@ export default function PlantLocations(): ReactElement {
     const isHovered = hoveredPl && hoveredPl.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
       highlightLine: isSelected || isHovered,
-      opacity: el.type === 'multi' ? getPolygonColor(el) : 0.5,
+      opacity:
+        el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
       dateDiff: getDateDiff(el),
     });
     return GeoJSON;
@@ -197,9 +199,9 @@ export default function PlantLocations(): ReactElement {
           filter={['!=', ['get', 'dateDiff'], null]}
         />
         {selectedPl &&
-        selectedPl.type === 'multi' &&
-        selectedPl.samplePlantLocations
-          ? selectedPl.samplePlantLocations.map((spl) => {
+        selectedPl.type === 'multi-tree-registration' &&
+        selectedPl.sampleInterventions
+          ? selectedPl.sampleInterventions.map((spl) => {
               return (
                 <Marker
                   key={`${spl.id}-sample`}

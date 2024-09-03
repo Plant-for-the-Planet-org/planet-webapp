@@ -15,7 +15,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
-import { PlantLocation, PlantedSpecies } from '../../Treemapper';
+import { PlantLocationMulti } from '../../../../common/types/plantLocation';
+
 import { SampleTree } from '../../../../common/types/plantLocation';
 
 const dialogSx: SxProps = {
@@ -46,7 +47,7 @@ interface Props {
   control: Control<SampleTreeFormData>;
   userLang: string;
   item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
-  plantLocation: PlantLocation;
+  plantLocation: PlantLocationMulti;
   errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }
@@ -261,38 +262,36 @@ export default function SampleTreeCard({
                 value={value}
                 select
               >
-                {plantLocation?.plantedSpecies.map(
-                  (species: PlantedSpecies, index: number) => {
-                    if (!species.otherSpecies) return;
-                    if (plantLocation?.plantedSpecies.length === 1) {
-                      return (
-                        <MenuItem
-                          key={index}
-                          value={species.otherSpecies}
-                          selected={true}
-                        >
-                          {species.otherSpecies}
-                        </MenuItem>
-                      );
-                    } else if (species.otherSpecies === item.otherSpecies) {
-                      return (
-                        <MenuItem
-                          key={index}
-                          value={species.otherSpecies}
-                          selected={true}
-                        >
-                          {species.otherSpecies}
-                        </MenuItem>
-                      );
-                    } else {
-                      return (
-                        <MenuItem key={index} value={species.otherSpecies}>
-                          {species.otherSpecies}
-                        </MenuItem>
-                      );
-                    }
+                {plantLocation?.plantedSpecies.map((species, index) => {
+                  if (!species.otherSpecies) return;
+                  if (plantLocation?.plantedSpecies.length === 1) {
+                    return (
+                      <MenuItem
+                        key={index}
+                        value={species.otherSpecies}
+                        selected={true}
+                      >
+                        {species.otherSpecies}
+                      </MenuItem>
+                    );
+                  } else if (species.otherSpecies === item.otherSpecies) {
+                    return (
+                      <MenuItem
+                        key={index}
+                        value={species.otherSpecies}
+                        selected={true}
+                      >
+                        {species.otherSpecies}
+                      </MenuItem>
+                    );
+                  } else {
+                    return (
+                      <MenuItem key={index} value={species.otherSpecies}>
+                        {species.otherSpecies}
+                      </MenuItem>
+                    );
                   }
-                )}
+                })}
               </TextField>
             )}
           />

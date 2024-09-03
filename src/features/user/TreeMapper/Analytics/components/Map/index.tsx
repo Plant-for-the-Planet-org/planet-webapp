@@ -26,6 +26,7 @@ import {
   PlantLocations,
   Feature,
   FeatureCollection,
+  SinglePlantLocationApiResponse,
 } from '../../../../../common/types/dataExplorer';
 import { Container } from '../Container';
 import { ProjectType } from '../ProjectTypeSelector';
@@ -165,7 +166,7 @@ export const MapContainer = () => {
 
   // Custom hook for making requests to fetch plant locations
   const { makeRequest: makeReqToFetchPlantLocation } = useNextRequest<{
-    data: PlantLocation[];
+    data: SinglePlantLocationApiResponse[];
   }>({
     url: `/api/data-explorer/map/plant-location`,
     method: HTTP_METHOD.POST,
@@ -227,7 +228,7 @@ export const MapContainer = () => {
   }, [project]);
 
   // Progamatically navigate to another location on the map
-  const _setViewport = (feature: Feature, zoom = 16) => {
+  const _setViewport = (feature: Feature | PlantLocation, zoom = 16) => {
     let centeroid;
 
     if (feature.geometry === null) {
@@ -266,18 +267,24 @@ export const MapContainer = () => {
         setPlantLocationDetails(null);
       }
 
-      const _plantLocations = res.data.map((pl) => {
+      const _plantLocations: PlantLocation[] = res.data.map((pl) => {
         // Calculate the area based on the feature's coordinates using Turf.js
         const area = turf.area(pl.geometry);
         const treeCount = pl.properties.treeCount;
         const density = treeCount / area;
 
         // Add the calculated density to the feature properties
-        pl.properties.density = density;
-        pl.properties.opacity = getPolygonOpacity(density);
-
-        return pl;
+        return {
+          geometry: pl.geometry,
+          type: pl.type,
+          properties: {
+            ...pl.properties,
+            density: density,
+            opacity: getPolygonOpacity(density),
+          },
+        };
       });
+
       const _featureCollection = {
         type: 'FeatureCollection',
         features: _plantLocations,
@@ -286,7 +293,9 @@ export const MapContainer = () => {
       if (_plantLocations.length > 0) {
         const defaultFeature = _plantLocations[0];
         _setViewport(defaultFeature);
-        setSelectedLayer(res.data[0] ? res.data[0].properties : null);
+        setSelectedLayer(
+          _plantLocations[0] ? _plantLocations[0].properties : null
+        );
       }
     }
     setLoading(false);

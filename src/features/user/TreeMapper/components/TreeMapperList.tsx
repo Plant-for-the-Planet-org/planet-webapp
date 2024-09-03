@@ -4,7 +4,6 @@ import TransactionsNotFound from '../../../../../public/assets/images/icons/Tran
 import styles from '../TreeMapper.module.scss';
 import { useTranslations } from 'next-intl';
 import {
-  SamplePlantLocation,
   PlantLocation as PlantLocationType,
   PlantLocationSingle,
   PlantLocationMulti,
@@ -15,7 +14,7 @@ import { SetState } from '../../../common/types/common';
 
 interface Props {
   selectedLocation: PlantLocationSingle | PlantLocationMulti | null;
-  setselectedLocation: SetState<
+  setSelectedLocation: SetState<
     PlantLocationSingle | PlantLocationMulti | null
   >;
   plantLocations: PlantLocationType[];
@@ -27,7 +26,7 @@ interface Props {
 
 export default function TreeMapperList({
   selectedLocation,
-  setselectedLocation,
+  setSelectedLocation,
   plantLocations,
   isDataLoading,
   location,
@@ -63,7 +62,7 @@ export default function TreeMapperList({
         <>
           {plantLocations ? (
             plantLocations.map((location, index: number) => {
-              if (location.type !== 'sample')
+              if (location.type !== 'sample-tree-registration')
                 return (
                   <PlantLocation
                     key={index}
@@ -71,7 +70,7 @@ export default function TreeMapperList({
                     locations={plantLocations}
                     index={index}
                     selectedLocation={selectedLocation}
-                    setselectedLocation={setselectedLocation}
+                    setSelectedLocation={setSelectedLocation}
                   />
                 );
             })

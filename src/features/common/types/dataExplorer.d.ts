@@ -156,3 +156,12 @@ export interface PlantLocationDetailsApiResponse {
     totalSamplePlantLocations: number;
   };
 }
+
+export interface SinglePlantLocationApiResponse {
+  geometry: Geometry;
+  properties: {
+    guid: string;
+    treeCount: number;
+  };
+  type: 'Feature';
+}
