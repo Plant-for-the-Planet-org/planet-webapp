@@ -78,7 +78,7 @@ export default function ProjectsContainer({ profile }: Props) {
                   >
                     <ProjectSnippet
                       project={project.properties}
-                      displayPopup={true}
+                      showTooltipPopups={true}
                     />
                   </div>
                 );

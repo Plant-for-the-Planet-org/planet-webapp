@@ -17,7 +17,6 @@ import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../ProjectsMap/utils';
-import { useProjects } from '../ProjectsContext';
 
 interface Props {
   project:
@@ -25,8 +24,8 @@ interface Props {
     | ConservationProjectConcise
     | TreeProjectExtended
     | ConservationProjectExtended;
-  showPopup: boolean;
   showBackButton: boolean;
+  showTooltipPopups: boolean;
 }
 
 export interface CommonProps {
@@ -41,8 +40,8 @@ export interface ImageSectionProps extends CommonProps {
   projectName: string;
   image: string;
   ecosystem: EcosystemTypes | null;
-  showPopup: boolean;
   showBackButton: boolean;
+  showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
 }
@@ -58,7 +57,7 @@ export interface ProjectInfoProps extends CommonProps {
 
 export default function ProjectSnippet({
   project,
-  showPopup,
+  showTooltipPopups,
   showBackButton,
 }: Props): ReactElement {
   const router = useRouter();
@@ -114,7 +113,7 @@ export default function ProjectSnippet({
     projectName: project.name,
     image: project.image,
     ecosystem: ecosystem,
-    showPopup: showPopup,
+    showTooltipPopups: showTooltipPopups,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
     showBackButton,

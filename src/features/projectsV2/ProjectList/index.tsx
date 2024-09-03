@@ -35,7 +35,7 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
       <ProjectSnippet
         key={project.properties.id}
         project={project.properties}
-        showPopup={true}
+        showTooltipPopups={true}
       />
     ),
     []
