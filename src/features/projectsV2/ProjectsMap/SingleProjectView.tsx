@@ -10,7 +10,7 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import styles from '.././ProjectsMap/ProjectsMap.module.scss';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
-  const { isSatelliteView, setViewState, setIsSatelliteView } =
+  const { isSatelliteView, setIsSatelliteView, setViewState } =
     useProjectsMap();
   const { singleProject, selectedSite } = useProjects();
   const { query } = useRouter();

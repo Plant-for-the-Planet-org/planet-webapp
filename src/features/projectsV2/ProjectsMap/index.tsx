@@ -64,8 +64,10 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSite,
     projectSites: singleProject?.sites,
   };
+  const projectSites = singleProject?.sites;
   const hasMoreThanOneSite =
-    singleProject?.sites && singleProject?.sites?.length > 1;
+    projectSites?.length !== undefined && projectSites?.length > 1;
+  const hasSingleProject = singleProject !== null;
   return (
     <>
       <MobileControls {...projectListControlProps} />
@@ -79,11 +81,11 @@ function ProjectsMap(props: ProjectsMapProps) {
         attributionControl={false}
         ref={mapRef}
         interactiveLayerIds={
-          singleProject !== null ? ['polygon-layer', 'point-layer'] : undefined
+          hasSingleProject ? ['polygon-layer', 'point-layer'] : undefined
         }
       >
-        {singleProject && <SingleProjectView mapRef={mapRef} />}
-        {projects && !singleProject && (
+        {hasSingleProject && <SingleProjectView mapRef={mapRef} />}
+        {projects && !hasSingleProject && (
           <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
         )}
         <NavigationControl position="bottom-right" showCompass={false} />
