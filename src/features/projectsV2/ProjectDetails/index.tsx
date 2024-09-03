@@ -103,6 +103,17 @@ const ProjectDetails = ({
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
   }, [singleProject]);
+
+  useEffect(() => {
+    const projectSiteQuery =
+      singleProject?.sites && singleProject?.sites[0].properties.id;
+    if (projectSiteQuery) {
+      const newAsPath = router.asPath.includes('?')
+        ? `${router.asPath}&site=${projectSiteQuery}`
+        : `${router.asPath}?site=${projectSiteQuery}`;
+      router.push(newAsPath, undefined, { shallow: true });
+    }
+  }, [singleProject?.sites]);
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet

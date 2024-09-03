@@ -33,6 +33,7 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
   const renderProjectSnippet = useCallback(
     (project: MapProject) => (
       <ProjectSnippet
+        showBackButton={false}
         key={project.properties.id}
         project={project.properties}
         showPopup={true}
