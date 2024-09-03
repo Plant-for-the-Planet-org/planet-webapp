@@ -6,10 +6,14 @@ import { usePopupState } from 'material-ui-popup-state/hooks';
 interface Props {
   triggerElement: ReactElement;
   children: ReactNode;
-  showPopup: boolean | undefined;
+  showTooltipPopups: boolean | undefined;
 }
 
-const CustomTooltip = ({ children, triggerElement, showPopup }: Props) => {
+const CustomTooltip = ({
+  children,
+  triggerElement,
+  showTooltipPopups,
+}: Props) => {
   const popupState = usePopupState({
     variant: 'popover',
     popupId: null,
@@ -19,7 +23,7 @@ const CustomTooltip = ({ children, triggerElement, showPopup }: Props) => {
     <>
       <div {...bindHover(popupState)}>
         {triggerElement}
-        {showPopup && (
+        {showTooltipPopups && (
           <HoverPopover
             {...bindPopover(popupState)}
             anchorOrigin={{

@@ -709,7 +709,7 @@ export default function EditProfileForm() {
                       color={themeProperties.mediumGrayColor}
                     />
                   }
-                  showPopup={true}
+                  showTooltipPopups={true}
                 >
                   <div className={styles.infoIconPopupContainer}>
                     {t('leaderboardTooltipExplanation')}

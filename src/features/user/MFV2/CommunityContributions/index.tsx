@@ -99,7 +99,7 @@ const CommunityContributions = ({
             triggerElement={
               <NewInfoIcon width={14} color={themeProperties.mediumGrayColor} />
             }
-            showPopup={true}
+            showTooltipPopups={true}
           >
             <div className={styles.infoIconPopupContainer}>
               {profilePageType === 'private'

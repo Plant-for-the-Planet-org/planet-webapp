@@ -36,7 +36,7 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
         showBackButton={false}
         key={project.properties.id}
         project={project.properties}
-        showPopup={true}
+        showTooltipPopups={true}
       />
     ),
     []
