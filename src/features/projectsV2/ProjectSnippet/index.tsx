@@ -17,7 +17,6 @@ import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../ProjectsMap/utils';
-import { useProjects } from '../ProjectsContext';
 
 interface Props {
   project:
