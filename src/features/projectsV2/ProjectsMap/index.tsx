@@ -10,6 +10,9 @@ import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayou
 import MobileControls from './microComponents/MobileControls';
 import SingleProjectView from './SingleProjectView';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
+import styles from './ProjectsMap.module.scss';
+import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
+import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 
 type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
@@ -27,7 +30,13 @@ type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
-  const { viewState, setViewState, mapState } = useProjectsMap();
+  const {
+    viewState,
+    setViewState,
+    mapState,
+    setIsSatelliteView,
+    isSatelliteView,
+  } = useProjectsMap();
   const {
     projects,
     topProjects,
@@ -68,11 +77,20 @@ function ProjectsMap(props: ProjectsMapProps) {
   const hasMoreThanOneSite =
     projectSites?.length !== undefined && projectSites?.length > 1;
   const hasSingleProject = singleProject !== null;
+  const isProjectDetailsPage = props.page === 'project-details';
   return (
     <>
       <MobileControls {...projectListControlProps} />
-      {props.page === 'project-details' && hasMoreThanOneSite && (
+      {isProjectDetailsPage && hasMoreThanOneSite && (
         <ProjectSiteDropdown {...siteDropdownProps} />
+      )}
+      {isProjectDetailsPage && (
+        <button
+          className={styles.layerToggle}
+          onClick={() => setIsSatelliteView(!isSatelliteView)}
+        >
+          {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
+        </button>
       )}
       <Map
         {...viewState}
