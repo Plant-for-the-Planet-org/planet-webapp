@@ -24,7 +24,7 @@ type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
-  const { viewState, setViewState, mapState } = useProjectsMap();
+  const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
   const {
     projects,
     topProjects,
@@ -53,6 +53,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     isSearching,
     setIsSearching,
   };
+
   return (
     <>
       {props.isMobile && (
@@ -67,7 +68,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         attributionControl={false}
         ref={mapRef}
       >
-        {projects && <MultipleProjectsView />}
+        {mapOptions.showProjects && projects && <MultipleProjectsView />}
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
     </>
