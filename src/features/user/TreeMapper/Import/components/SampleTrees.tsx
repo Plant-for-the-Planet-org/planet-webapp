@@ -13,17 +13,16 @@ import { Button } from '@mui/material';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import {
   Measurements,
+  PlantLocationMulti,
   SampleTree,
 } from '../../../../common/types/plantLocation';
 import { Geometry } from '@turf/turf';
-import { PlantLocation } from '../../Treemapper';
 import { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 
 interface Props {
   handleNext: Function;
-  plantLocation: PlantLocation;
+  plantLocation: PlantLocationMulti;
   userLang: string;
-  setPlantLocation: React.Dispatch<React.SetStateAction<PlantLocation | null>>;
 }
 
 type FormData = {
@@ -143,7 +142,7 @@ export default function SampleTrees({
     try {
       const res: SampleTree = await postAuthenticatedRequest(
         tenantConfig?.id,
-        `/treemapper/plantLocations`,
+        `/treemapper/interventions`,
         sampleTree,
         token,
         logoutUser
@@ -167,7 +166,7 @@ export default function SampleTrees({
       setIsUploadingData(true);
       for (const [index, sampleTree] of data.sampleTrees.entries()) {
         const samplePl = {
-          type: 'sample',
+          type: 'sample-tree-registration',
           captureMode: 'external',
           geometry: {
             coordinates: [
@@ -185,6 +184,7 @@ export default function SampleTrees({
           tag: sampleTree.treeTag,
           otherSpecies: sampleTree.otherSpecies,
           parent: plantLocation?.id,
+          plantProject: plantLocation?.plantProject,
         };
         await uploadSampleTree(samplePl, index);
       }
@@ -348,4 +348,5 @@ interface SampleTreeRequestData {
   tag: string;
   otherSpecies: string;
   parent: string | undefined;
+  plantProject: string;
 }

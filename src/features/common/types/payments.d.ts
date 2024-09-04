@@ -74,22 +74,32 @@ export interface Filters {
   'action-required': string;
 }
 
-export interface Destination {
+export type SingleDestination = {
   id: string;
   name?: string;
-  type: string;
-}
+  type: 'project' | 'planet-cash';
+  amount: number;
+};
+
+export type MultipleDestinations = {
+  type: 'mixed';
+  items: SingleDestination[];
+};
+
+export type Destination = SingleDestination | MultipleDestinations;
 
 export interface FirstDonation {
   created: Date;
   reference: string;
 }
 
+export type DonationPurpose = ProjectPurpose | 'composite';
+
 export interface PaymentHistoryRecord {
   quantity: number;
   bouquetPurpose?: string;
   netAmount: number;
-  purpose: ProjectPurpose;
+  purpose: DonationPurpose;
   created: Date;
   treeCount: number;
   type: string;

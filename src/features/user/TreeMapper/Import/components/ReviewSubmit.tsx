@@ -4,13 +4,11 @@ import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import { PlantLocation } from '../../Treemapper';
+import { PlantLocationMulti } from '../../../../common/types/plantLocation';
 
 interface Props {
-  plantLocation: PlantLocation;
+  plantLocation: PlantLocationMulti;
   handleBack: () => void;
-  errorMessage: string;
-  setErrorMessage: (errorMessage: string) => void;
 }
 
 export default function ReviewSubmit({
@@ -99,15 +97,15 @@ export default function ReviewSubmit({
                     : []}
                 </span>
               </div>
-              {plantLocation.type === 'multi' &&
+              {plantLocation.type === 'multi-tree-registration' &&
               plantLocation.captureMode === 'external' ? (
                 <>
                   <p className={styles.gridItemTitle}>
                     {tTreemapper('sampleTrees')}
                   </p>
                   <div className={styles.gridItemValue}>
-                    {plantLocation.samplePlantLocations &&
-                      plantLocation.samplePlantLocations.map((spl, index) => {
+                    {plantLocation.sampleInterventions &&
+                      plantLocation.sampleInterventions.map((spl, index) => {
                         return (
                           <div key={index} className={styles.value}>
                             {index + 1}.{' '}
