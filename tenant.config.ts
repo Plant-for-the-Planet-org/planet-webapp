@@ -3,77 +3,69 @@ import { Tenant } from '@planet-sdk/common/build/types/tenant';
 export const defaultTenant: Tenant = {
   id: 'ten_NxJq55pm',
   config: {
-    appDomain: 'https://www1.plant-for-the-planet.org',
-    slug: 'planet',
-    tenantURL: 'www.plant-for-the-planet.org',
-    tenantGoal: null,
-    showUNEPLogo: true,
-    showUNDecadeLogo: true,
-    showRedeemHint: true,
-    enableGuestSepa: false,
-    darkModeEnabled: false,
+    appDomain: 'https://web.plant-for-the-planet.org/',
+    externalUrl: 'https://web.plant-for-the-planet.org',
+    customDomain: 'https://web.plant-for-the-planet.org',
     font: {
+      primaryFontURL: null,
+      secondaryFontURL: null,
       primaryFontFamily:
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
       secondaryFontFamily:
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
     },
-    languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR', 'cs'],
+    meta: {
+      image:
+        'https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg',
+      title: 'Plant trees around the world - Plant-for-the-Planet',
+      locale: 'en_US',
+      appTitle: 'Plant for the Planet',
+      description:
+        "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+      twitterHandle: '',
+    },
+    slug: 'planet',
     header: {
-      isSecondaryTenant: false,
-      tenantLogoURL: 'https://cdn.plant-for-the-planet.org/logo/svg/planet.svg',
-      tenantLogoLink: '/',
       items: [
-        {
-          title: 'home',
-          onclick: '/',
-          visible: true,
-          headerKey: 'home',
-        },
-        {
-          title: 'shop',
-          onclick: 'https://thegoodshop.org',
-          visible: true,
-          headerKey: 'shop',
-        },
+        { title: 'home', onclick: '/', visible: true, headerKey: 'home' },
         {
           title: 'aboutUs',
-          onclick: 'https://a.plant-for-the-planet.org/',
+          onclick: 'https://www.plant-for-the-planet.org/',
           subMenu: [
             {
               title: 'overview',
-              onclick: 'https://a.plant-for-the-planet.org/',
+              onclick: 'https://www.plant-for-the-planet.org/',
               visible: true,
             },
             {
               title: 'childrenAndYouth',
-              onclick: 'https://a.plant-for-the-planet.org/children-youth/',
+              onclick: 'https://www.plant-for-the-planet.org/children-youth/',
               visible: true,
             },
             {
               title: 'trillionTrees',
-              onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
+              onclick: 'https://www.plant-for-the-planet.org/trillion-trees/',
               visible: true,
             },
             {
               title: 'yucatan',
-              onclick: 'https://a.plant-for-the-planet.org/yucatan/',
+              onclick: 'https://www.plant-for-the-planet.org/yucatan/',
               visible: true,
             },
             {
               title: 'partners',
-              onclick: 'https://a.plant-for-the-planet.org/partners/',
+              onclick: 'https://www.plant-for-the-planet.org/partners/',
               visible: true,
             },
             {
               title: 'changeChocolate',
-              onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
+              onclick: 'https://www.plant-for-the-planet.org/change-chocolate/',
               visible: true,
             },
             {
               title: 'stopTalkingStartPlanting',
               onclick:
-                'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
+                'https://www.plant-for-the-planet.org/stop-talking-start-planting/',
               visible: true,
             },
           ],
@@ -93,18 +85,21 @@ export const defaultTenant: Tenant = {
           headerKey: 'me',
           loggedInTitle: 'me',
         },
+        {
+          title: 'shop',
+          onclick: 'https://thegoodshop.org',
+          visible: false,
+          headerKey: 'shop',
+        },
       ],
+      tenantLogoURL: 'https://cdn.plant-for-the-planet.org/logo/svg/planet.svg',
+      tenantLogoLink: '/',
+      isSecondaryTenant: false,
     },
-    meta: {
-      title: 'Plant trees around the world - Plant-for-the-Planet',
-      appTitle: 'Plant for the Planet',
-      description:
-        "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
-      image:
-        'https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg',
-      twitterHandle: '',
-      locale: 'en_US',
-    },
+    manifest: '/tenants/planet/manifest.json',
+    languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR', 'cs'],
+    tenantURL: 'web.plant-for-the-planet.org',
+    tenantGoal: null,
     footerLinks: [
       'shop',
       'privacy',
@@ -119,15 +114,18 @@ export const defaultTenant: Tenant = {
       'blogs',
       'faqs',
     ],
-    manifest: '/tenants/planet/manifest.json',
+    showUNEPLogo: true,
+    showRedeemHint: true,
+    darkModeEnabled: false,
+    enableGuestSepa: false,
+    fallbackCurrency: null,
+    showUNDecadeLogo: true,
   },
-  images: {
-    featuredImage: null,
-    bannerImage: null,
-  },
+  images: { featuredImage: null, bannerImage: null },
   name: 'Plant-for-the-Planet',
   description:
     'This Tenant is used for Beta version of the  Plant-for-the-Planet Web App. At the end of the beta period, all donations will be re-associated to the main Plant-for-the-Planet Tenant',
+  topProjectsOnly: false,
   image: null,
-  tenantGoal: null,
+  tenantGoal: 2147483647,
 };

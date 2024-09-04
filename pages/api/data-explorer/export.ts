@@ -17,25 +17,25 @@ handler.post(async (req, response) => {
   try {
     const query =
       "SELECT \
-          pl.hid, \
-          pl.plant_date, \
-          COALESCE(ss.name, ps.other_species, pl.other_species) AS species, \
-          CASE WHEN pl.type='single' THEN 1 ELSE ps.tree_count END AS tree_count, \
-          pl.geometry, \
-          pl.type, \
-          pl.trees_allocated, \
-          pl.trees_planted, \
-          pl.metadata, \
-          pl.description, \
-          pl.plant_project_id, \
-          pl.sample_tree_count, \
-          pl.capture_status, \
-          pl.created \
-      FROM plant_location pl \
-      LEFT JOIN planted_species ps ON ps.plant_location_id = pl.id \
+          iv.hid, \
+          iv.intervention_date, \
+          COALESCE(ss.name, ps.other_species, iv.other_species) AS species, \
+          CASE WHEN iv.type='single-tree-registration' THEN 1 ELSE ps.tree_count END AS tree_count, \
+          iv.geometry, \
+          iv.type, \
+          iv.trees_allocated, \
+          iv.trees_planted, \
+          iv.metadata, \
+          iv.description, \
+          iv.plant_project_id, \
+          iv.sample_tree_count, \
+          iv.capture_status, \
+          iv.created \
+      FROM intervention iv \
+      LEFT JOIN planted_species ps ON ps.intervention_id = iv.id \
       LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-      JOIN project pp ON pl.plant_project_id = pp.id \
-      WHERE pp.guid=? AND pl.type IN ('multi','single') AND pl.deleted_at IS NULL AND pl.plant_date BETWEEN ? AND ?";
+      JOIN project pp ON iv.plant_project_id = pp.id \
+      WHERE pp.guid=? AND iv.type IN ('multi-tree-registration','single-tree-registration') AND iv.deleted_at IS NULL AND iv.intervention_date BETWEEN ? AND ?";
 
     const res = await db.query<IExportData[]>(query, [
       projectId,

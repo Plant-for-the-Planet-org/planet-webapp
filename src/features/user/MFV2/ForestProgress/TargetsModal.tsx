@@ -89,9 +89,9 @@ const TargetsModal = ({
           profileId: res.id,
           slug: res.slug,
           targets: {
-            treesDonated: res.targets.treesDonated ?? 0,
-            areaConserved: res.targets.areaConserved ?? 0,
-            areaRestored: res.targets.areaRestored ?? 0,
+            treesDonated: res.scores.treesDonated.target ?? 0,
+            areaConserved: res.scores.areaConserved.target ?? 0,
+            areaRestored: res.scores.areaRestored.target ?? 0,
           },
         };
         setRefetchUserData(true);
