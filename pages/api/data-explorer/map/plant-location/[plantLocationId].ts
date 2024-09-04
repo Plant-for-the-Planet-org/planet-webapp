@@ -17,58 +17,58 @@ handler.get(async (req, response) => {
             'plantedSpecies', (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        'scientificName', COALESCE(ss.name, ps.other_species, pl.other_species),
+                        'scientificName', COALESCE(ss.name, ps.other_species, iv.other_species),
                         'treeCount', ps.tree_count
                     )
                 )
                 FROM planted_species ps
-                INNER JOIN plant_location pl ON ps.plant_location_id = pl.id
+                INNER JOIN intervention iv ON ps.intervention_id = iv.id
                 LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id
-                WHERE pl.guid = ?
-                GROUP BY pl.id
+                WHERE iv.guid = ?
+                GROUP BY iv.id
             ),
             'totalPlantedTrees', (
               SELECT SUM(ps.tree_count)
               FROM planted_species ps
-              INNER JOIN plant_location pl ON ps.plant_location_id = pl.id
+              INNER JOIN intervention iv ON ps.intervention_id = iv.id
               LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id
-              WHERE pl.guid = ?
-              GROUP BY pl.id
+              WHERE iv.guid = ?
+              GROUP BY iv.id
           ),
             'samplePlantLocations', (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'measurements', JSON_OBJECT(
-                          'height', JSON_UNQUOTE(JSON_EXTRACT(spl.measurements, '$.height')),
-                          'width', JSON_UNQUOTE(JSON_EXTRACT(spl.measurements, '$.width'))
+                          'height', JSON_UNQUOTE(JSON_EXTRACT(siv.measurements, '$.height')),
+                          'width', JSON_UNQUOTE(JSON_EXTRACT(siv.measurements, '$.width'))
                       ),
-                        'tag', spl.tag,
-                        'guid', spl.guid,
+                        'tag', siv.tag,
+                        'guid', siv.guid,
                         'species', (
                           SELECT ss.name 
-                          FROM plant_location pl_inner 
+                          FROM intervention pl_inner 
                           JOIN scientific_species ss ON pl_inner.scientific_species_id = ss.id 
-                          WHERE pl_inner.guid = spl.guid
+                          WHERE pl_inner.guid = siv.guid
                           LIMIT 1
                       ),
                         'geometry', JSON_OBJECT(
-                          'type', JSON_UNQUOTE(JSON_EXTRACT(spl.geometry, '$.type')),
-                          'coordinates', JSON_EXTRACT(spl.geometry, '$.coordinates')
+                          'type', JSON_UNQUOTE(JSON_EXTRACT(siv.geometry, '$.type')),
+                          'coordinates', JSON_EXTRACT(siv.geometry, '$.coordinates')
                       )
                     )
                 )
-                FROM plant_location pl
-                LEFT JOIN plant_location spl ON pl.id = spl.parent_id
-                LEFT JOIN scientific_species ss ON pl.scientific_species_id = ss.id
-                WHERE pl.guid = ?
-                GROUP BY pl.parent_id
+                FROM intervention iv
+                LEFT JOIN intervention siv ON iv.id = siv.parent_id
+                LEFT JOIN scientific_species ss ON iv.scientific_species_id = ss.id
+                WHERE iv.guid = ?
+                GROUP BY iv.parent_id
             ),
             'totalSamplePlantLocations', (
                 SELECT COUNT(*) 
-                FROM plant_location pl
-                LEFT JOIN plant_location spl ON pl.id = spl.parent_id
-                WHERE pl.guid = ?
-                GROUP BY pl.parent_id
+                FROM intervention iv
+                LEFT JOIN intervention siv ON iv.id = siv.parent_id
+                WHERE iv.guid = ?
+                GROUP BY iv.parent_id
             )
         )
      AS result;

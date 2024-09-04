@@ -18,7 +18,7 @@ import theme from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { PlantLocation } from '../Treemapper';
+import { type PlantLocation as PlantLocationType } from '../../../common/types/plantLocation';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -57,18 +57,17 @@ export default function ImportData(): ReactElement {
     ];
   }
   const [activeStep, setActiveStep] = React.useState(0);
-  const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [plantLocation, setPlantLocation] =
-    React.useState<PlantLocation | null>(null);
+    React.useState<PlantLocationType | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
   const fetchPlantLocation = async (id: string) => {
     try {
-      const result = await getAuthenticatedRequest<PlantLocation>(
+      const result = await getAuthenticatedRequest<PlantLocationType>(
         tenantConfig?.id,
-        `/treemapper/plantLocations/${id}?_scope=extended`,
+        `/treemapper/interventions/${id}?_scope=extended`,
         token,
         logoutUser
       );
@@ -116,24 +115,20 @@ export default function ImportData(): ReactElement {
           />
         );
       case 1:
-        return plantLocation ? (
+        return plantLocation &&
+          plantLocation.type === 'multi-tree-registration' ? (
           <SampleTrees
             handleNext={handleNext}
             plantLocation={plantLocation}
-            setPlantLocation={setPlantLocation}
             userLang={userLang}
           />
         ) : (
           <p> {tCommon('some_error')}</p>
         );
       case 2:
-        return plantLocation ? (
-          <ReviewSubmit
-            plantLocation={plantLocation}
-            handleBack={handleBack}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-          />
+        return plantLocation &&
+          plantLocation.type === 'multi-tree-registration' ? (
+          <ReviewSubmit plantLocation={plantLocation} handleBack={handleBack} />
         ) : (
           <p> {tCommon('some_error')}</p>
         );
