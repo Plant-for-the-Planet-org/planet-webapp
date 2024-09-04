@@ -200,6 +200,7 @@
     "stripe-sofort": "Sofort (Stripe)",
     "tree-cash-tree-cash": "TreeCash",
     "planet-cash-planet-cash": "PlanetCash",
+    "creditcard": "Credit Card",
     "stripe-card": "Credit/Debit Card",
     "stripe-giropay": "GiroPay (Stripe)",
     "action-required": "Action Required",
@@ -209,9 +210,10 @@
     "payments": "Payments",
     "stripe-sepa_debit": "SEPA (Stripe)",
     "sepa_debit": "SEPA (Stripe)",
-    "offline": "Offline",
-    "offline-offline": "Offline",
-    "offline-transfer": "Offline",
+    "offline": "Bank Transfer",
+    "transfer": "Bank Transfer",
+    "offline-offline": "Bank Transfer",
+    "offline-transfer": "Bank Transfer",
     "profile": "Profile",
     "projects": "Projects",
     "settings": "Settings",
@@ -277,6 +279,7 @@
     "membershipCtaCopy": "Support us <highlight>BY BECOMING A MEMBER</highlight>",
     "shareUrl": "Share URL",
     "treesOfTrees": "{count1} of {count2}",
-    "document": "Platform Documentation (EN)"
+    "document": "Platform Documentation (EN)",
+    "composite-donation": "Mixed Donation"
   }
 }

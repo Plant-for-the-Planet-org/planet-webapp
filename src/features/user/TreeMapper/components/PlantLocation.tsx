@@ -23,7 +23,7 @@ interface Props {
     | PlantLocationMulti
     | SamplePlantLocation
     | null;
-  setselectedLocation: Function;
+  setSelectedLocation: Function;
 }
 
 function PlantLocation({
@@ -31,7 +31,7 @@ function PlantLocation({
   index,
   locations,
   selectedLocation,
-  setselectedLocation,
+  setSelectedLocation,
 }: Props) {
   const t = useTranslations('Treemapper');
   const locale = useLocale();
@@ -56,7 +56,7 @@ function PlantLocation({
       selectedLocation &&
       (selectedLocation as PlantLocationBase).id === location.id
     ) {
-      setselectedLocation(null);
+      setSelectedLocation(null);
     } else {
       router.replace(`/profile/treemapper/?l=${location.id}`);
     }
@@ -65,7 +65,10 @@ function PlantLocation({
   const [plantationArea, setPlantationArea] = React.useState(0);
 
   React.useEffect(() => {
-    if (location && (location as PlantLocationMulti).type === 'multi') {
+    if (
+      location &&
+      (location as PlantLocationMulti).type === 'multi-tree-registration'
+    ) {
       const area = turf.area((location as PlantLocationMulti).geometry);
       setPlantationArea(area / 10000);
     }
@@ -87,7 +90,8 @@ function PlantLocation({
                   (location as PlantLocationBase).hid.substring(3)
                 : null
             } ${
-              (location as PlantLocationMulti).type === 'multi'
+              (location as PlantLocationMulti).type ===
+              'multi-tree-registration'
                 ? '• ' +
                   localizedAbbreviatedNumber(
                     locale,
@@ -106,7 +110,8 @@ function PlantLocation({
         </div>
         <div className={styles.right}>
           <div className={styles.status}>
-            {(location as PlantLocationMulti).type === 'multi' && treeCount
+            {(location as PlantLocationMulti).type ===
+              'multi-tree-registration' && treeCount
               ? `${treeCount}`
               : `1`}
             <TreeIcon width={'19px'} height={'19.25px'} />

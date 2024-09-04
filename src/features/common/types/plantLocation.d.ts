@@ -2,21 +2,6 @@ import { DateString } from './common';
 import { Links } from './payments';
 import { Polygon, Point } from 'geojson';
 
-export interface Geometry {
-  coordinates: number[][][];
-  type: string;
-  properties: Properties;
-}
-export interface GeometryOfSinglePlant {
-  coordinates: number[];
-  type: string;
-  properties: Properties;
-}
-
-export interface Properties {
-  id: string;
-}
-
 export interface PlantLocationBase {
   hid: string;
   id: string;
@@ -24,62 +9,63 @@ export interface PlantLocationBase {
   plantProject: string;
   metadata: Metadata;
   registrationDate: DateString;
+  /** @deprecated */
   plantDate: DateString;
+  interventionDate: DateString;
+  interventionStartDate: DateString | null; //should be the same as interventionDate
+  interventionEndDate: DateString | null;
+  lastMeasurementDate: DateString | null;
+  nextMeasurementDate: DateString | null; //only relevant for single and sample plant locations for now
   coordinates: PlantLocationCoordinate[];
   history: History[];
   captureMode: CaptureMode;
   captureStatus: CaptureStatus;
-  deviceLocation: DeviceLocation;
+  deviceLocation: Point;
   otherSpecies: string | null;
   description: string | null;
   geometryUpdatesCount: number;
   plantProjectSite: string | null;
-  image: string | null; //deprecate if not being used?
-  status: string | null; // currently always null. Should we do something here?
-  statusReason: string | null; // currently always null. Should we do something here?
+  image: string | null;
+  status: InterventionStatus | null;
+  statusReason: InterventionStatusReasons | null;
 }
+
 export interface PlantLocationSingle extends PlantLocationBase {
-  type: 'single';
+  type: 'single-tree-registration';
   scientificName: string | null;
   scientificSpecies: string | null;
   tag: string | null;
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
-  sampleTrees: SamplePlantLocation[];
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
-  type: 'multi';
+  type: 'multi-tree-registration';
   nextMeasurementDate: DateString | null;
-  plantDateStart: DateString | null;
-  plantDateEnd: DateString | null;
   sampleTreeCount: number;
-  samplePlantLocations: SamplePlantLocation[];
+  sampleInterventions: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
   geometry: Point | Polygon;
-  sampleTrees: SamplePlantLocation[];
+  measurements: null;
+  nextMeasurementDate: null;
 }
 
 export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
 
-export interface SamplePlantLocation
-  extends Omit<PlantLocationBase, 'plantProject'> {
-  type: 'sample';
-  /** parent plant location */
+export interface SamplePlantLocation extends PlantLocationBase {
+  type: 'sample-tree-registration';
+  // /** parent plant location */
   parent: string;
-  /** tpo profile id */
+  // /** tpo profile id */
   profile: string;
-  nextMeasurementDate: DateString | null;
-  lastMeasurementDate: LastMeasurementDate;
   scientificName: string;
   scientificSpecies: string;
   tag: string | null;
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
-  sampleTrees?: PlantLocation[];
 }
 
 export interface Metadata {
@@ -97,15 +83,13 @@ export interface DeviceLocation {
   type: string;
 }
 
-type PlantLocationType = 'single' | 'multi' | 'sample';
-
 export interface PlantLocationCoordinate {
   image?: string;
-  created: DateString;
   coordinateIndex: string;
   id: string;
-  updated: DateString;
   status: string;
+  created: DateString;
+  updated: DateString;
 }
 
 export interface Measurements {
@@ -142,11 +126,15 @@ export interface PlantedSpecies {
 
 type TreeStatus = 'alive' | 'sick' | 'dead';
 
-type CaptureMode = 'off-site' | 'on-site';
+type CaptureMode = 'off-site' | 'on-site' | 'external';
 
 type CaptureStatus = 'partial' | 'complete';
 
 type HistoryEvent = 'created' | 'measurement' | 'skip-measurement' | 'status';
+
+type InterventionStatus = 'dead' | 'alive';
+
+type InterventionStatusReasons = 'flood' | 'fire' | 'drought' | 'other';
 
 export interface LastMeasurementDate {
   date: DateString;

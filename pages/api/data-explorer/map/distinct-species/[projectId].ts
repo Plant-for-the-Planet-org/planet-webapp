@@ -38,29 +38,29 @@ handler.get(async (req, response) => {
     return response.status(200).json({ data: cachedDistinctSpecies });
   }
 
-  let disctinctSpecies: DistinctSpecies;
+  let distinctSpecies: DistinctSpecies;
 
   try {
     const query =
       'SELECT \
-        DISTINCT COALESCE(ss.name, ps.other_species, pl.other_species) AS name \
+        DISTINCT COALESCE(ss.name, ps.other_species, iv.other_species) AS name \
         FROM planted_species ps \
-        INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
+        INNER JOIN intervention iv ON ps.intervention_id = iv.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON iv.plant_project_id = pp.id \
         WHERE pp.guid = ?';
 
     const res = await db.query<UncleanDistinctSpecies[]>(query, [projectId]);
 
-    disctinctSpecies = res.map((species) => species.name);
+    distinctSpecies = res.map((species) => species.name);
 
-    disctinctSpecies.unshift('All');
+    distinctSpecies.unshift('All');
 
-    await redisClient.set(key, JSON.stringify(disctinctSpecies), {
+    await redisClient.set(key, JSON.stringify(distinctSpecies), {
       ex: TWO_HOURS,
     });
 
-    response.status(200).json({ data: disctinctSpecies });
+    response.status(200).json({ data: distinctSpecies });
   } catch (err) {
     console.error(`Error fetching distinct species for ${projectId}`, err);
   } finally {

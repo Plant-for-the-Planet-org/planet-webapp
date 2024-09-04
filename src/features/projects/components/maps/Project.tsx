@@ -6,7 +6,7 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
-import { zoomToPlantLocation } from '../../../../../src/utils/maps/plantLocations';
+import { zoomToPolygonPlantLocation } from '../../../../../src/utils/maps/plantLocations';
 import {
   TreeProjectExtended,
   ConservationProjectExtended,
@@ -92,7 +92,12 @@ export default function Project({
   }
 
   React.useEffect(() => {
-    if (plantLocations && selectedPl && selectedPl.type === 'multi') {
+    if (
+      plantLocations &&
+      selectedPl &&
+      selectedPl.type === 'multi-tree-registration' &&
+      selectedPl.geometry.type === 'Polygon'
+    ) {
       setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
     if (selectedPl) router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
@@ -100,17 +105,26 @@ export default function Project({
 
   React.useEffect(() => {
     if (selectedPl) {
-      const locationCoordinates =
-        selectedPl.type === 'multi'
-          ? selectedPl.geometry.coordinates[0]
-          : selectedPl.geometry.coordinates;
-      zoomToPlantLocation(
-        locationCoordinates,
-        viewport,
-        isMobile,
-        setViewPort,
-        1200
-      );
+      if (selectedPl.geometry.type === 'Polygon') {
+        const locationCoordinates = selectedPl.geometry.coordinates[0];
+        zoomToPolygonPlantLocation(
+          locationCoordinates,
+          viewport,
+          isMobile,
+          setViewPort,
+          1200
+        );
+      } else {
+        const locationCoordinates = selectedPl.geometry.coordinates;
+        zoomToLocation(
+          viewport,
+          setViewPort,
+          locationCoordinates[0],
+          locationCoordinates[1],
+          18,
+          1200
+        );
+      }
       return;
     }
 
