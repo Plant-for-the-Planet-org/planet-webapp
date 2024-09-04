@@ -28,7 +28,7 @@ import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 interface Props {
   locations: PlantLocation[] | SamplePlantLocation[] | null;
   selectedLocation: PlantLocation | SamplePlantLocation | null;
-  setselectedLocation: Function;
+  setSelectedLocation: Function;
 }
 
 interface GeoJson {
@@ -46,7 +46,7 @@ interface GeoJson {
 export default function MyTreesMap({
   locations,
   selectedLocation,
-  setselectedLocation,
+  setSelectedLocation,
 }: Props): ReactElement {
   const router = useRouter();
   const { isMobile } = useProjectProps();
@@ -83,7 +83,7 @@ export default function MyTreesMap({
   };
 
   const getPlArea = (pl: PlantLocationMulti) => {
-    if (pl && pl.type === 'multi') {
+    if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
     } else {
@@ -190,7 +190,7 @@ export default function MyTreesMap({
             },
           };
           features.push(newFeature);
-          if (pl.type === 'multi') ids.push(`${pl.id}-layer`);
+          if (pl.type === 'multi-tree-registration') ids.push(`${pl.id}-layer`);
         }
       }
       setGeoJson({
@@ -215,7 +215,7 @@ export default function MyTreesMap({
   const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
 
   const onMapClick = (e: MapEvent) => {
-    setselectedLocation(null);
+    setSelectedLocation(null);
     if (e.features !== undefined && e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         const source = e.features[0].layer.source;
@@ -252,7 +252,7 @@ export default function MyTreesMap({
           const newPl = pl.geometry;
           newPl.properties = { id: '' };
           newPl.properties.id = pl.id;
-          if (pl.type === 'multi') {
+          if (pl.type === 'multi-tree-registration') {
             return (
               <>
                 <Source
@@ -285,8 +285,8 @@ export default function MyTreesMap({
                   )}
                 </Source>
                 {pl &&
-                  pl.samplePlantLocations &&
-                  pl.samplePlantLocations
+                  pl.sampleInterventions &&
+                  pl.sampleInterventions
                     .filter((item) => {
                       if (item.captureStatus === 'complete') {
                         return true;
@@ -311,7 +311,7 @@ export default function MyTreesMap({
                               }`}
                               role="button"
                               tabIndex={0}
-                              onClick={() => setselectedLocation(spl)}
+                              onClick={() => setSelectedLocation(spl)}
                               // onMouseEnter={() => onHover(spl)}
                               // onMouseLeave={() => onHoverEnd(spl)}
                             />
@@ -321,7 +321,7 @@ export default function MyTreesMap({
                     })}
               </>
             );
-          } else if (pl.type === 'single') {
+          } else if (pl.type === 'single-tree-registration') {
             return (
               <Marker
                 key={`${pl.id}-single`}
@@ -335,7 +335,7 @@ export default function MyTreesMap({
                   <div
                     key={`${pl.id}-marker`}
                     onClick={() => {
-                      setselectedLocation(pl);
+                      setSelectedLocation(pl);
                     }}
                     // onMouseEnter={() => onHover(pl)}
                     // onMouseLeave={() => onHoverEnd(pl)}

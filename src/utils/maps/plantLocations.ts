@@ -15,7 +15,7 @@ import { ViewPort } from '../../features/common/types/ProjectPropsContextInterfa
  * @param setViewPort - function to set the viewport
  * @param {number} duration - in ms
  */
-export function zoomToPlantLocation(
+export function zoomToPolygonPlantLocation(
   coordinates: Position[],
   viewport: ViewPort,
   isMobile: boolean,
