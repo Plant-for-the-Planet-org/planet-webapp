@@ -124,7 +124,7 @@ const ProjectDetails = ({
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
         project={singleProject}
-        showPopup={false}
+        showTooltipPopups={false}
         showBackButton={true}
       />
       <ProjectInfoSection

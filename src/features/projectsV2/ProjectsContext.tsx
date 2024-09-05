@@ -24,7 +24,10 @@ import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
-import { PlantLocation } from '../common/types/plantLocation';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../common/types/plantLocation';
 
 export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
 
@@ -39,6 +42,12 @@ interface ProjectsState {
   setSingleProject: SetState<ProjectExtend | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
+  selectedPl: PlantLocation | null;
+  setSelectedPl: SetState<PlantLocation | null>;
+  samplePlantLocation: SamplePlantLocation | null;
+  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  hoveredPl: PlantLocation | SamplePlantLocation | null;
+  setHoveredPl: SetState<PlantLocation | SamplePlantLocation | null>;
   selectedSite: number;
   setSelectedSite: SetState<number>;
   isLoading: boolean;
@@ -82,6 +91,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
     null
   );
+  const [selectedPl, setSelectedPl] = useState<PlantLocation | null>(null);
+  const [samplePlantLocation, setSamplePlantLocation] =
+    useState<SamplePlantLocation | null>(null);
+  const [hoveredPl, setHoveredPl] = useState<
+    PlantLocation | SamplePlantLocation | null
+  >(null);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
@@ -232,6 +247,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject,
       plantLocations,
       setPlantLocations,
+      selectedPl,
+      setSelectedPl,
+      hoveredPl,
+      setHoveredPl,
+      samplePlantLocation,
+      setSamplePlantLocation,
       selectedSite,
       setSelectedSite,
     }),
@@ -247,6 +268,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedMode,
       singleProject,
       plantLocations,
+      selectedPl,
+      samplePlantLocation,
+      hoveredPl,
       selectedSite,
     ]
   );

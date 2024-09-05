@@ -1,6 +1,6 @@
-import Map from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { NavigationControl } from 'react-map-gl-v7/maplibre';
+import Map, { MapRef, NavigationControl } from 'react-map-gl-v7/maplibre';
+import { useCallback } from 'react';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
@@ -13,6 +13,7 @@ import ProjectSiteDropdown from './ProjectSiteDropDown';
 import styles from './ProjectsMap.module.scss';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
+import { getPlantLocationInfo } from './utils';
 
 type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
@@ -29,7 +30,7 @@ type ProjectsMapDesktopProps = {
 type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
-  const mapRef: MutableRefObject<null> = useRef(null);
+  const mapRef: MutableRefObject<MapRef | null> = useRef(null);
   const {
     viewState,
     setViewState,
@@ -50,6 +51,9 @@ function ProjectsMap(props: ProjectsMapProps) {
     singleProject,
     selectedSite,
     setSelectedSite,
+    plantLocations,
+    setSelectedPl,
+    setHoveredPl,
   } = useProjects();
   const topProjectCount = topProjects?.length;
   const projectCount = projects?.length;
@@ -78,6 +82,34 @@ function ProjectsMap(props: ProjectsMapProps) {
     projectSites?.length !== undefined && projectSites?.length > 1;
   const hasSingleProject = singleProject !== null;
   const isProjectDetailsPage = props.page === 'project-details';
+
+  const onMouseMove = useCallback(
+    (e) => {
+      const hoveredPlantLocation = getPlantLocationInfo(
+        plantLocations,
+        mapRef,
+        e.point
+      );
+      if (hoveredPlantLocation) setHoveredPl(hoveredPlantLocation);
+    },
+    [plantLocations]
+  );
+
+  const onMouseLeave = () => {
+    setHoveredPl(null);
+  };
+
+  const onClick = useCallback(
+    (e) => {
+      const selectedPlantLocation = getPlantLocationInfo(
+        plantLocations,
+        mapRef,
+        e.point
+      );
+      if (selectedPlantLocation) setSelectedPl(selectedPlantLocation);
+    },
+    [plantLocations]
+  );
   return (
     <>
       <MobileControls {...projectListControlProps} />
@@ -96,13 +128,16 @@ function ProjectsMap(props: ProjectsMapProps) {
         {...viewState}
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        onClick={onClick}
         attributionControl={false}
         ref={mapRef}
-        interactiveLayerIds={
-          hasSingleProject ? ['polygon-layer', 'point-layer'] : undefined
-        }
+        interactiveLayerIds={['plant-polygon-layer']}
       >
-        {hasSingleProject && <SingleProjectView mapRef={mapRef} />}
+        {hasSingleProject && (
+          <SingleProjectView mapRef={mapRef} isMobile={props.isMobile} />
+        )}
         {projects && !hasSingleProject && (
           <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
         )}

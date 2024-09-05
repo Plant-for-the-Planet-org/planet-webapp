@@ -14,7 +14,7 @@ export default function SitePolygon({
   return (
     <Source id="project-site" type="geojson" data={geoJson}>
       <Layer
-        id="site-layer"
+        id="site-polygon-layer"
         type="line"
         source="project-site"
         paint={{

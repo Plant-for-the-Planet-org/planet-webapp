@@ -31,7 +31,7 @@ const ImageSection = (props: ImageSectionProps) => {
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
-  const { setSingleProject } = useProjects();
+  const { setSingleProject, setSelectedPl } = useProjects();
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
@@ -51,6 +51,7 @@ const ImageSection = (props: ImageSectionProps) => {
   };
   const handleBackButton = useCallback((e: MouseEvent) => {
     setSingleProject(null);
+    setSelectedPl(null);
     e.stopPropagation();
     if (document.referrer) {
       window.history.go(-2);

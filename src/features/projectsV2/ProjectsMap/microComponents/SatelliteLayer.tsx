@@ -8,14 +8,13 @@ const SatelliteLayer = () => {
     ],
     []
   );
-
   return (
     <Source id="satellite" type="raster" tiles={tiles} tileSize={256}>
       <Layer
         id="satellite-layer"
         source="satellite"
         type="raster"
-        beforeId="site-layer"
+        beforeId="site-polygon-layer"
       />
     </Source>
   );

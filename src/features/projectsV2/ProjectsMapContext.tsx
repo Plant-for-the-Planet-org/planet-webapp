@@ -39,7 +39,7 @@ const DEFAULT_MAP_STATE: MapState = {
   dragPan: true,
   scrollZoom: false,
   minZoom: 1,
-  maxZoom: 15,
+  maxZoom: 18,
 };
 
 interface ProjectsMapState {

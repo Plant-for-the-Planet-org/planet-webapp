@@ -4,8 +4,9 @@ import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
 import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import { SetState } from '../../common/types/common';
-import { ViewState } from 'react-map-gl-v7';
+import { ViewState } from 'react-map-gl-v7/maplibre';
 import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
+
 interface MultipleProjectsViewProps {
   setViewState: SetState<ViewState>;
   mapRef: MapRef;
