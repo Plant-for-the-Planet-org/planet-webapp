@@ -18,28 +18,31 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
 
   return (
     <div className={styles.spendingsContainer}>
-      {spendings?.map((expense) => (
-        <div className={styles.spendingDetail} key={expense.id}>
-          {isMobile ? (
-            <DownloadsLabel>
-              <time>{expense.year}</time>
-            </DownloadsLabel>
-          ) : (
-            <DownloadsLabel>
-              <a
-                href={getPDFFile('projectExpense', expense.pdf)}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {expense.year}
-              </a>
-            </DownloadsLabel>
-          )}
-
-          <div>{getFormatedCurrency(locale, 'EUR', expense.amount)}</div>
-          <DownloadsButton pdfUrl={getPDFFile('projectExpense', expense.pdf)} />
-        </div>
-      ))}
+      {spendings?.map((expense) => {
+        const pdfUrl = getPDFFile('projectExpense', expense.pdf);
+        const formattedAmount = getFormatedCurrency(
+          locale,
+          'EUR',
+          Math.floor(expense.amount)
+        ).replace(/\.00$/, '');
+        return (
+          <div className={styles.spendingDetail} key={expense.id}>
+            {isMobile ? (
+              <DownloadsLabel>
+                <time>{expense.year}</time>
+              </DownloadsLabel>
+            ) : (
+              <DownloadsLabel>
+                <a href={pdfUrl} target="_blank" rel="noreferrer">
+                  {expense.year}
+                </a>
+              </DownloadsLabel>
+            )}
+            <div>{formattedAmount}</div>
+            <DownloadsButton pdfUrl={pdfUrl} />
+          </div>
+        );
+      })}
     </div>
   );
 };

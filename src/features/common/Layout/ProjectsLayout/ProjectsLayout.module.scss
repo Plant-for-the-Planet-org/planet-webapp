@@ -10,7 +10,7 @@
       rgba(172, 172, 172, 0.15) 100%
     ),
     #fff;
-  padding: 24px 20px 30px;
+  padding: 24px 20px 30px 0;
   position: relative;
   overflow: hidden;
 }
@@ -31,7 +31,7 @@
 }
 
 .contentContainer {
-  width: 360px;
+  width: 378px;
   max-width: 100%;
   background: transparent;
 }
@@ -75,6 +75,9 @@
   height: 100%;
   width: 100%;
   margin-top: 20px;
+  @include xsPhoneView {
+    padding: 0px 0px;
+  }
 }
 
 .mobileMapContainer {

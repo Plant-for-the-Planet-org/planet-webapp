@@ -9,6 +9,7 @@ import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../styles/ProjectSnippet.module.scss';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {
@@ -40,17 +41,24 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     callbackUrl || undefined
   );
   const donationLabel = useMemo(() => {
+    if (unitCount === undefined) {
+      return;
+    }
+    const formattedUnitCount = localizedAbbreviatedNumber(locale, unitCount, 1);
     if (unitType === 'tree' && purpose === 'trees') {
       return tAllProjects('treeDonated', {
         count: unitCount,
+        formattedCount: formattedUnitCount,
       });
     } else if (unitType === 'm2' && purpose === 'trees') {
       return tAllProjects('areaRestored', {
         area: unitCount,
+        formattedCount: formattedUnitCount,
       });
     } else {
       return tAllProjects('areaConserved', {
         area: unitCount,
+        formattedCount: formattedUnitCount,
       });
     }
   }, [unitCount, unitType, purpose]);

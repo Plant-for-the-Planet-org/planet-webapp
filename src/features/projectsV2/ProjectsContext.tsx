@@ -150,7 +150,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const filteredProjects = useMemo(() => {
     let result = projects || [];
 
-    if (selectedClassification.length > 0)
+    if (selectedClassification?.length > 0)
       result = filterByClassification(result);
 
     if (debouncedSearchValue)

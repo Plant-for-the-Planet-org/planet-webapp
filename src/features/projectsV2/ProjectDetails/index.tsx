@@ -72,15 +72,17 @@ const ProjectDetails = ({
       }
     }
 
-    if (router.query.p) loadProject();
+    if (router.query.p && currencyCode) loadProject();
   }, [router.query.p, locale, currencyCode]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
         project={singleProject}
-        showPopup={false}
+        showTooltipPopups={false}
         showBackButton={true}
+        isMobile={isMobile}
+        page="project-details"
       />
       <ProjectInfoSection
         project={singleProject}
