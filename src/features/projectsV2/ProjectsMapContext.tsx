@@ -42,10 +42,16 @@ const DEFAULT_MAP_STATE: MapState = {
   maxZoom: 15,
 };
 
+export type MapOptions = {
+  showProjects: boolean;
+};
+
 interface ProjectsMapState {
   viewState: ViewState;
   setViewState: SetState<ViewState>;
   mapState: MapState;
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
@@ -58,6 +64,9 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     : [0, 0];
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
+  const [mapOptions, setMapOptions] = useState<MapOptions>({
+    showProjects: true,
+  });
 
   useEffect(() => {
     const [longitude, latitude] = singleProjectCoordinates;
@@ -78,9 +87,16 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     loadMapStyle();
   }, []);
 
+  const updateMapOption = (option: keyof MapOptions, value: boolean) => {
+    setMapOptions((prevOptions) => ({
+      ...prevOptions,
+      [option]: value,
+    }));
+  };
+
   const value: ProjectsMapState | null = useMemo(
-    () => ({ mapState, viewState, setViewState }),
-    [mapState, viewState]
+    () => ({ mapState, viewState, setViewState, mapOptions, updateMapOption }),
+    [mapState, viewState, mapOptions]
   );
 
   return (

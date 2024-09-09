@@ -29,13 +29,14 @@ const baseSwitchStyle = {
 const SmallSwitch = styled(Switch)(() => ({
   ...baseSwitchStyle,
 }));
-export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
-  ({ customColor }) => ({
-    '.MuiSwitch-switchBase.Mui-checked': {
-      color: `${customColor}`,
-    },
-    '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-      backgroundColor: `${customColor}`,
-    },
-  })
-);
+
+export const StyledSwitch = styled(SmallSwitch, {
+  shouldForwardProp: (prop) => prop !== 'customColor',
+})<SwitchProps>(({ customColor }) => ({
+  '.MuiSwitch-switchBase.Mui-checked': {
+    color: customColor,
+  },
+  '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+    backgroundColor: customColor,
+  },
+}));

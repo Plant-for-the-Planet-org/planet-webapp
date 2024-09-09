@@ -11,6 +11,7 @@ import { SetState } from '../../common/types/common';
 import { ProjectTabs } from '.';
 import { MapProject } from '../../common/types/projectv2';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -46,7 +47,7 @@ const ProjectListControlForMobile = ({
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-
+  const { isImpersonationModeOn } = useUserProps();
   const hasFilterApplied = selectedClassification.length > 0;
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
@@ -94,7 +95,13 @@ const ProjectListControlForMobile = ({
           <ViewModeTabs {...viewModeTabsProps} />
         </div>
       ) : (
-        <div className={styles.projectListControlsMobile}>
+        <div
+          className={
+            isImpersonationModeOn
+              ? styles.projectListControlsImpersonationMode
+              : styles.projectListControlsMobile
+          }
+        >
           {shouldDisplayFilterResults &&
             filteredProjects &&
             filteredProjects?.length > 0 && (

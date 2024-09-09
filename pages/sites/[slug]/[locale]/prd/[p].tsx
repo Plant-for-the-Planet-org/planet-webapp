@@ -93,6 +93,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'donate',
       'country',
       'manageProjects',
+      'me',
     ],
   });
 

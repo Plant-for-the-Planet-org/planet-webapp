@@ -8,10 +8,10 @@
   display: flex;
   align-items: center;
   max-width: 338px;
-  min-width: 288px;
+  min-width: 355px;
   justify-content: space-between;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
-  margin-left: 20px;
+  margin-left: 2px;
   @include xsPhoneView {
     height: 36px;
     min-width: 200px;
@@ -25,8 +25,6 @@
   justify-content: space-between;
   display: flex;
   gap: 10px;
-  padding-left: 9px;
-  padding-right: 9px;
 }
 
 .searchFieldAndViewTabsContainer {
