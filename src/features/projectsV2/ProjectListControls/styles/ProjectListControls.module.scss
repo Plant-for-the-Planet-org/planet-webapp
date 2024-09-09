@@ -21,10 +21,14 @@
 }
 
 .projectListControlsMobile {
-  height: 26px;
+  height: 28px;
   justify-content: space-between;
   display: flex;
   gap: 10px;
+
+  &.mapModeControls {
+    justify-content: flex-end;
+  }
 }
 
 .searchFieldAndViewTabsContainer {
@@ -80,6 +84,14 @@
   border: 2px solid $primaryColorNew;
   display: flex;
   overflow: hidden;
+
+  &.mapModeTabs {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.tabContainer {
+  height: 28px;
 }
 
 .tabContainerSecondary {
@@ -128,10 +140,8 @@
 .iconsContainerMobile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   transition: all 0.4s ease-in-out;
-  width: 20%;
   button {
     width: 28px;
     height: 28px;
@@ -140,6 +150,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &.mapModeButtons {
+    .buttonContainer,
+    > button {
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+    }
   }
 }
 
