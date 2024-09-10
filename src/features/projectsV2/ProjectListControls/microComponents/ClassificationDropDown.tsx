@@ -43,12 +43,10 @@ export const ClassificationDropDown = ({
       (selectedMode === 'map' ||
         (selectedMode === 'list' && filteredProjects?.length === 0));
 
-    return `${
-      isImpersonationModeOn
-        ? styles.impersonationMode
-        : styles.classificationListContainer
-    } ${isHidden ? styles.mobileSelectMode : ''}`;
-  }, [isMobile, selectedMode, filteredProjects]);
+    return `${styles.classificationListContainer} ${
+      isHidden ? styles.mobileSelectMode : ''
+    }`;
+  }, [isMobile, selectedMode, filteredProjects, isImpersonationModeOn]);
 
   return (
     <div className={classificationListClasses}>

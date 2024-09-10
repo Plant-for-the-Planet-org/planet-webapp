@@ -20,17 +20,31 @@
   }
 }
 
+.projectListControlsMobileTopMargin,
 .projectListControlsMobile {
   height: 26px;
   justify-content: space-between;
   display: flex;
   gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 0px;
 }
 
+.projectListControlsMobileTopMargin {
+  margin-top: 20px;
+}
+
+.tabsContainerTopMargin,
 .searchFieldAndViewTabsContainer {
   display: flex;
   justify-content: space-between;
   gap: 4px;
+  padding: 0px 10px;
+}
+
+.tabsContainerTopMargin {
+  margin-top: 10px;
 }
 
 .activeSearchIcon {
