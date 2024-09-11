@@ -1,13 +1,12 @@
 @import '../../../../theme/theme';
 .mapPreviewContainer {
-  max-width: 480px;
+  background-image: url('../../../../../public/assets/images/satellite-image-of-mexico.jpg');
   width: 100%;
-  height: 341px;
-  background: grey; //need to be removed
-  border-radius: 13.401px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 21.3rem;
+  border-radius: 12px;
+  position: relative;
 }
 
 .diveToMap {
@@ -21,6 +20,9 @@
   margin-bottom: 15px;
   max-width: 274px;
   width: 100%;
+  position: absolute;
+  bottom: 5px;
+  left: 50px;
   cursor: pointer;
   .label {
     font-size: $fontXSmall;
