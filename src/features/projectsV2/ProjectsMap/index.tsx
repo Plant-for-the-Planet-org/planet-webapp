@@ -34,6 +34,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     viewState,
     setViewState,
     mapState,
+    mapOptions,
     setIsSatelliteView,
     isSatelliteView,
   } = useProjectsMap();
@@ -103,7 +104,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         }
       >
         {hasSingleProject && <SingleProjectView mapRef={mapRef} />}
-        {projects && !hasSingleProject && (
+        {mapOptions.showProjects && projects && (
           <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
         )}
         <NavigationControl position="bottom-right" showCompass={false} />

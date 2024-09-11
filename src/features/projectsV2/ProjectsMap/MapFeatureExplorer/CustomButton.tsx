@@ -1,5 +1,5 @@
 import { Button, styled } from '@mui/material';
-import theme from '../../theme/themeProperties';
+import theme from '../../../../theme/themeProperties';
 
 const { fontSizes, light } = theme;
 
@@ -14,6 +14,7 @@ const CustomButton = styled(Button)(() => ({
     paddingLeft: '18px',
     marginLeft: '5px',
     fontSize: `${fontSizes.fontXSmall}`,
+    boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.12)',
   },
 }));
 

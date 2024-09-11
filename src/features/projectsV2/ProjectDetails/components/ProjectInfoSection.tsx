@@ -7,13 +7,13 @@ import styles from '../ProjectDetails.module.scss';
 import KeyInfo from './KeyInfo';
 import AdditionalInfo from './AdditionalInfo';
 import VideoPlayer from './VideoPlayer';
-import ImagesSlider from './ImagesSlider';
 import ProjectDownloads from './ProjectDownloads';
 import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
 import { SetState } from '../../../common/types/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { ProjectExtend } from '../../ProjectsContext';
+import ImageSlider from './microComponents/ImageSlider';
 
 interface ProjectInfoSectionProps {
   project: ProjectExtend;
@@ -33,7 +33,6 @@ const ProjectInfoSection = ({
     videoUrl,
     images,
     website,
-    slug,
     reviews,
     description,
     purpose,
@@ -106,7 +105,7 @@ const ProjectInfoSection = ({
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
       {description && <AboutProject description={description} wordCount={60} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
-      {images.length > 0 && <ImagesSlider images={images} type={'project'} />}
+      {images.length > 0 && <ImageSlider images={images} type={'project'} />}
       {isMobile && <MapPreview setSelectedMode={setSelectedMode} />}
       {shouldRenderKeyInfo && (
         <KeyInfo
@@ -137,7 +136,7 @@ const ProjectInfoSection = ({
         <ProjectDownloads certification={certificates} spendings={expenses} />
       )}
       <ContactDetails
-        publicProfileURL={`/t/${slug}`}
+        publicProfileURL={`/t/${tpo.slug}`}
         websiteURL={website}
         location={location}
         email={tpo.email}

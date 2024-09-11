@@ -21,9 +21,9 @@
     "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "list": "List",
     "map": "Map",
-    "treeDonated": "{count, plural, =1 {# Tree donated} other {# Trees donated}}",
-    "areaRestored": "{area}  m² restored",
-    "areaConserved": "{area}  m² conserved",
+    "treeDonated": "{count, plural, =1 {# Tree donated} other {{formattedCount} Trees donated}}",
+    "areaRestored": "{area, plural, =1 {# m² restored} other {{formattedCount} m² restored}}",
+    "areaConserved": "{area, plural, =1 {# m² conserved} other {{formattedCount} m² conserved}}",
     "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }",
     "noProjectFound": "Oops! No project found",
     "filterResult": "{count, plural, =1 {# Project} other {# Projects}} found "

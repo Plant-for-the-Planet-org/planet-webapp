@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
 import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
@@ -11,6 +11,7 @@ import { SetState } from '../../common/types/common';
 import { ProjectTabs } from '.';
 import { MapProject } from '../../common/types/projectv2';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -46,7 +47,7 @@ const ProjectListControlForMobile = ({
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-
+  const { isImpersonationModeOn } = useUserProps();
   const hasFilterApplied = selectedClassification.length > 0;
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
@@ -86,15 +87,27 @@ const ProjectListControlForMobile = ({
     selectedMode,
     filteredProjects,
   };
+
+  const { activeSearchFieldClass, inActiveSearchFieldClass } = useMemo(() => {
+    return {
+      activeSearchFieldClass: isImpersonationModeOn
+        ? styles.tabsContainerTopMargin
+        : styles.searchFieldAndViewTabsContainer,
+      inActiveSearchFieldClass: isImpersonationModeOn
+        ? styles.projectListControlsMobileTopMargin
+        : styles.projectListControlsMobile,
+    };
+  }, [isImpersonationModeOn]);
+
   return (
     <>
       {isSearching ? (
-        <div className={styles.searchFieldAndViewTabsContainer}>
+        <div className={activeSearchFieldClass}>
           <ActiveSearchField {...activeSearchFieldProps} />
           <ViewModeTabs {...viewModeTabsProps} />
         </div>
       ) : (
-        <div className={styles.projectListControlsMobile}>
+        <div className={inActiveSearchFieldClass}>
           {shouldDisplayFilterResults &&
             filteredProjects &&
             filteredProjects?.length > 0 && (

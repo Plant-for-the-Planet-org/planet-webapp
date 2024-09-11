@@ -17,12 +17,17 @@
   position: relative;
   box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
   max-width: 340px;
+  // margin-left: 20px;
+  background-color: #fff;
   @include xsPhoneView {
     max-width: 100%;
     box-shadow: none;
+    margin-left: 0px;
+    padding: 9px;
   }
 }
 //project image
+.projectImageSecondary,
 .projectImage {
   height: 160px;
   width: 100%;
@@ -36,6 +41,13 @@
     position: absolute;
     bottom: 12px;
     left: 13px;
+  }
+}
+
+.projectImageSecondary {
+  @include xsPhoneView {
+    border-radius: 14px;
+    height: 180px;
   }
 }
 
@@ -164,8 +176,8 @@
   font-weight: bold;
   margin-right: 4px;
 }
-
-.projectTPOName {
+.projectTpoNameSecondary,
+.projectTpoName {
   cursor: pointer;
   position: relative;
   text-align: center;
@@ -183,6 +195,13 @@
   }
   &.tpoBackground {
     background: $lightOrange;
+  }
+}
+
+.projectTpoNameSecondary {
+  @include xsPhoneView {
+    border-radius: 0px;
+    margin-top: 0px;
   }
 }
 

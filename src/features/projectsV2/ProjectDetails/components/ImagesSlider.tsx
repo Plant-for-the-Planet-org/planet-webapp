@@ -7,9 +7,18 @@ import { SingleSliderImage } from './microComponents/SingleSliderImage';
 interface Props {
   images: SliderImage[];
   type: 'coordinate' | 'project';
+  imageSize: 'large' | 'medium';
+  imageHeight: number;
+  leftAlignment: number;
 }
 
-const ImagesSlider = ({ images, type }: Props) => {
+const ImagesSlider = ({
+  images,
+  type,
+  imageSize,
+  imageHeight,
+  leftAlignment,
+}: Props) => {
   const [slider, setSlider] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
   const pattern = /^https:\/\//i;
@@ -20,7 +29,7 @@ const ImagesSlider = ({ images, type }: Props) => {
         if (pattern.test(sliderImage.image)) {
           imageURL = sliderImage.image;
         } else {
-          imageURL = getImageUrl(type, 'medium', sliderImage.image);
+          imageURL = getImageUrl(type, imageSize, sliderImage.image);
         }
         projectImages.push({
           content: () => (
@@ -38,13 +47,13 @@ const ImagesSlider = ({ images, type }: Props) => {
         stories={projectImages}
         defaultInterval={7000}
         width={'100%'}
-        height={192}
+        height={imageHeight}
         loop={true}
         progressContainerStyles={{
           position: 'absolute',
           bottom: 18,
           right: 18,
-          left: 18,
+          left: leftAlignment,
           padding: '7px 0 5px 0',
           maxWidth: '90%',
         }}
