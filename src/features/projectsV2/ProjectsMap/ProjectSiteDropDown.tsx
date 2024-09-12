@@ -21,11 +21,13 @@ export interface SiteProperties {
   status: string | null;
 }
 
+export type ProjectSite =
+  | Feature<Polygon | MultiPolygon, SiteProperties>[]
+  | undefined
+  | null;
+
 interface Props {
-  projectSites:
-    | Feature<Polygon | MultiPolygon, SiteProperties>[]
-    | undefined
-    | null;
+  projectSites: ProjectSite;
   selectedSite: number;
   setSelectedSite: SetState<number>;
 }

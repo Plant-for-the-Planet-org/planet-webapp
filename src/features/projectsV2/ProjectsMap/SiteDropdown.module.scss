@@ -119,6 +119,7 @@
     border-radius: 10px;
     min-width: 93px;
     padding: 7px;
+    position: unset;
   }
   .labelTextContainer {
     justify-content: center;
@@ -139,6 +140,9 @@
   .siteListOptions {
     max-width: 140px;
     padding: 8px 12px;
+    top: 36px;
+    right: 0px;
+    min-width: 160px;
     .listItem {
       display: flex;
       flex-direction: column;

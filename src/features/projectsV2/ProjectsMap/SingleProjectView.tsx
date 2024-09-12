@@ -8,15 +8,12 @@ import { useRouter } from 'next/router';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {
   const { singleProject, selectedSite } = useProjects();
-  if (!singleProject?.sites) {
-    return null;
-  }
   const { isSatelliteView, setViewState } = useProjectsMap();
   const { query } = useRouter();
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: singleProject.sites ?? [],
+      features: singleProject?.sites ?? [],
     };
   }, [query.p]);
 
