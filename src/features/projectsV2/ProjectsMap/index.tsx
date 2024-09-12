@@ -24,7 +24,8 @@ type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
-  const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
+  const { viewState, setViewState, mapState, mapOptions, updateMapOption } =
+    useProjectsMap();
   const {
     projects,
     topProjects,
@@ -52,6 +53,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     isSearching,
     setIsSearching,
+    mapOptions,
+    updateMapOption,
   };
 
   return (

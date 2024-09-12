@@ -1,18 +1,27 @@
 @import '../../../../theme/theme';
+
+.mapFeatureExplorer {
+  @include smTabletView {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .exploreMainContainer {
   max-width: 182px;
   background-color: $backgroundColor;
   border-radius: 12px;
   margin-top: 10px;
-  margin-left: 3px;
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding: 14px 16px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+
+  @include xsPhoneView {
+    position: absolute;
+  }
 }
 
 .exploreContainer {
   width: 150px;
-  margin-left: 16px;
 }
 
 .ecosystemMainContainer {
