@@ -13,28 +13,29 @@ type Story = StoryObj<typeof ProjectSiteDropdown>;
 
 const options: Feature<Polygon, SiteProperties>[] = [
   {
-    type: 'Feature',
     geometry: {
-      type: 'Polygon',
       coordinates: [
-        // Provide valid coordinates for a polygon
         [
-          [-90.1423066869791, 18.6684857455352],
-          [-90.1423244145065, 18.6697621275049],
-          [-90.1423066869791, 18.6684857455352],
+          [4.535788412887456, 50.94816094782527],
+          [4.537612315018265, 50.94717406256507],
+          [4.538899775345158, 50.94845836119242],
+          [4.537333365279977, 50.94917484921692],
+          [4.535788412887456, 50.94816094782527],
         ],
       ],
+      type: 'Polygon',
     },
+    type: 'Feature',
     properties: {
       lastUpdated: {
-        date: '',
-        timezone: '',
-        timezone_type: 4,
+        date: '2021-04-21 13:36:31.000000',
+        timezone: 'UTC',
+        timezone_type: 3,
       },
-      name: 'site 1',
+      name: 'Hellebos-Rotbos-Hellebos-Rotbos-Hellebos-Rotbos-Hellebos-Rotbos-Hellebos-Rotbos',
       description: null,
-      id: '2',
-      status: '',
+      id: 'site_0YTfpF4cYb6nQTD',
+      status: 'planting',
     },
   },
 ];

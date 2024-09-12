@@ -28,6 +28,7 @@ const ImageSection = (props: ImageSectionProps) => {
     isTopProject,
     allowDonations,
     showBackButton,
+    page,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
@@ -67,10 +68,16 @@ const ImageSection = (props: ImageSectionProps) => {
       });
     }
   }, []);
-
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   return (
-    <div onClick={handleImageClick} className={styles.projectImage}>
+    <div
+      onClick={handleImageClick}
+      className={`${
+        page === 'project-list'
+          ? styles.projectImage
+          : styles.projectImageSecondary
+      }`}
+    >
       {showBackButton && (
         <button onClick={handleBackButton} className={styles.backButton}>
           <BackButton />
@@ -85,7 +92,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {image && typeof image !== 'undefined' ? (
         <>
           <img
-            alt="projectImage"
+            alt={'projectImage'}
             src={imageSource}
             width={'fit-content'}
             className={styles.projectImageFile}

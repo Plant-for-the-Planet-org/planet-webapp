@@ -15,18 +15,16 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
   if (!singleProject?.sites) {
     return null;
   }
-  const { isSatelliteView, setViewState, viewState } = useProjectsMap();
-  console.log(viewState.zoom, '==1');
+  const { isSatelliteView, setViewState } = useProjectsMap();
   const { query } = useRouter();
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: singleProject.sites ?? [],
+      features: singleProject?.sites ?? [],
     };
   }, [query.p]);
   useEffect(() => {
     if (selectedPl && selectedPl.geometry.type === 'Polygon') {
-      console.log('i am running');
       const locationCoordinates = selectedPl.geometry.coordinates[0];
       zoomToPolygonPlantLocation(
         locationCoordinates,

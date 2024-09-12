@@ -1,4 +1,9 @@
 @import '../../../../theme/theme';
+
+// define a variable for the space around the layout
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+$layoutPaddingBottom: 30px;
 .impersonationMode,
 .embedMode,
 .projectsLayout {
@@ -10,7 +15,7 @@
       rgba(172, 172, 172, 0.15) 100%
     ),
     #fff;
-  padding: 24px 20px 30px;
+  padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
   position: relative;
   overflow: hidden;
 }
@@ -31,7 +36,7 @@
 }
 
 .contentContainer {
-  width: 360px;
+  width: 378px;
   max-width: 100%;
   background: transparent;
 }
@@ -40,6 +45,13 @@
   flex: 1;
   border-radius: 16px;
   overflow: hidden;
+}
+
+.mapFeatureExplorer {
+  position: absolute;
+  top: calc($layoutPaddingTop + 20px);
+  right: calc($layoutPaddingSide + 20px);
+  z-index: 1;
 }
 
 // styles for mobile layout
@@ -51,7 +63,7 @@
   display: flex;
   justify-content: center;
   margin-top: 80px;
-  padding-top: 24px;
+  padding-top: $layoutPaddingTop;
   overflow: hidden;
   &.mapMode {
     height: 100vh;
@@ -75,6 +87,10 @@
   height: 100%;
   width: 100%;
   margin-top: 20px;
+  @include xsPhoneView {
+    padding: 0px 0px;
+    margin-top: 20px;
+  }
 }
 
 .mobileMapContainer {

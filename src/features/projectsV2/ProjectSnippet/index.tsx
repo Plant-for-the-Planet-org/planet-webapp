@@ -26,6 +26,8 @@ interface Props {
     | ConservationProjectExtended;
   showBackButton: boolean;
   showTooltipPopups: boolean;
+  isMobile?: boolean;
+  page?: 'project-list' | 'project-details';
 }
 
 export interface CommonProps {
@@ -44,6 +46,7 @@ export interface ImageSectionProps extends CommonProps {
   showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
+  page?: 'project-list' | 'project-details';
 }
 
 export interface ProjectInfoProps extends CommonProps {
@@ -59,6 +62,8 @@ export default function ProjectSnippet({
   project,
   showTooltipPopups,
   showBackButton,
+  isMobile,
+  page,
 }: Props): ReactElement {
   const router = useRouter();
   const tCommon = useTranslations('Common');
@@ -117,6 +122,7 @@ export default function ProjectSnippet({
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
     showBackButton,
+    page,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
@@ -130,24 +136,36 @@ export default function ProjectSnippet({
     currency: project.currency,
   };
 
-  return (
-    <div className={styles.singleProject}>
-      <ImageSection {...imageProps} />
-      <div className={styles.progressBar}>
-        <div
-          className={`${styles.progressBarHighlight} ${progressBarClass}`}
-          style={{ width: `${progressPercentage}%` }}
-        />
-      </div>
-      <ProjectInfoSection {...projectInfoProps} />
-      <div
-        className={`${styles.projectTPOName} ${tpoNameBackgroundClass}`}
-        onClick={handleClick}
-      >
-        {tCommon('by', {
-          tpoName: project.tpo.name,
-        })}
-      </div>
+  const renderTpoName = (additionalClass = '') => (
+    <div
+      className={`${styles.projectTpoName} ${tpoNameBackgroundClass} ${additionalClass}`}
+      onClick={handleClick}
+    >
+      {tCommon('by', {
+        tpoName: project.tpo.name,
+      })}
     </div>
+  );
+  const renderProgressBar = () => (
+    <div className={styles.progressBar}>
+      <div
+        className={`${styles.progressBarHighlight} ${progressBarClass}`}
+        style={{ width: `${progressPercentage}%` }}
+      />
+    </div>
+  );
+  return (
+    <>
+      <div className={styles.singleProject}>
+        <ImageSection {...imageProps} />
+        {!isMobile && renderProgressBar()}
+        <ProjectInfoSection {...projectInfoProps} />
+        {!isMobile && renderTpoName()}
+      </div>
+      {isMobile &&
+        renderTpoName(
+          page === 'project-list' ? '' : styles.projectTpoNameSecondary
+        )}
+    </>
   );
 }

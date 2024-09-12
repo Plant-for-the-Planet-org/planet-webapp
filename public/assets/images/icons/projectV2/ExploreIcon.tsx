@@ -1,4 +1,6 @@
-export const ExploreIcon = ({ width }) => {
+import { IconProps } from '../../../../../src/features/common/types/common';
+
+export const ExploreIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -6,6 +6,7 @@ import { availableFilters } from '../utils';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { MapProject } from '../../../common/types/projectv2';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
@@ -23,6 +24,7 @@ export const ClassificationDropDown = ({
   filteredProjects,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
+  const { isImpersonationModeOn } = useUserProps();
   const handleFilterSelection = (
     filterItem: TreeProjectClassification
   ): void => {
@@ -44,7 +46,7 @@ export const ClassificationDropDown = ({
     return `${styles.classificationListContainer} ${
       isHidden ? styles.mobileSelectMode : ''
     }`;
-  }, [isMobile, selectedMode, filteredProjects]);
+  }, [isMobile, selectedMode, filteredProjects, isImpersonationModeOn]);
 
   return (
     <div className={classificationListClasses}>

@@ -32,12 +32,46 @@
   flex-direction: column;
   grid-area: 15px;
   gap: 15px;
-  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   @include xsPhoneView {
     box-shadow: none;
+    margin-left: 0px;
+    padding: 15px 30px;
   }
 }
 
 .projectInfoSkeleton {
   height: 100%;
+}
+
+.imageSliderContainer {
+  position: relative;
+  > button {
+    position: absolute;
+    z-index: 1000;
+    width: 18px;
+    top: 13px;
+    right: 13px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}
+
+.expandedImageSliderContainer {
+  position: relative;
+  width: 800px;
+  > button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 1000;
+    background: #fff;
+    cursor: pointer;
+  }
 }

@@ -77,7 +77,7 @@ const ProjectDetails = ({
       }
     }
 
-    if (router.query.p) loadProject();
+    if (router.query.p && currencyCode) loadProject();
   }, [router.query.p, locale, currencyCode]);
 
   useEffect(() => {
@@ -126,6 +126,8 @@ const ProjectDetails = ({
         project={singleProject}
         showTooltipPopups={false}
         showBackButton={true}
+        isMobile={isMobile}
+        page="project-details"
       />
       <ProjectInfoSection
         project={singleProject}

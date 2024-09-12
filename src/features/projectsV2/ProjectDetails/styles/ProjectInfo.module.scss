@@ -5,9 +5,8 @@
 .certificationContainer,
 .contactDetailsContainer {
   display: flex;
-  // width: 100%;
   flex-wrap: wrap;
-  padding: 24px;
+  padding: 16px;
   background: rgba(var(--abandonment-background-color-new), 0.1);
   border-radius: 14px;
   flex-direction: column;
@@ -138,6 +137,9 @@
 
 .contactText {
   margin-top: 12.87px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .singleContact {
@@ -146,7 +148,6 @@
   border-radius: 8px;
   padding: 0 10.5px;
   min-height: 41px;
-  margin-bottom: 8px;
   align-items: center;
   gap: 8.5px;
 

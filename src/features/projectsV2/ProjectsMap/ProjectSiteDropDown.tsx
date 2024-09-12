@@ -21,11 +21,13 @@ export interface SiteProperties {
   status: string | null;
 }
 
+export type ProjectSite =
+  | Feature<Polygon | MultiPolygon, SiteProperties>[]
+  | undefined
+  | null;
+
 interface Props {
-  projectSites:
-    | Feature<Polygon | MultiPolygon, SiteProperties>[]
-    | undefined
-    | null;
+  projectSites: ProjectSite;
   selectedSite: number;
   setSelectedSite: SetState<number>;
 }
@@ -37,7 +39,6 @@ const ProjectSiteDropdown = ({
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations('ManageProjects');
-
   const siteList = useMemo(() => {
     if (!projectSites) return [];
     return projectSites.map((site, index: number) => ({
@@ -48,10 +49,8 @@ const ProjectSiteDropdown = ({
   }, [projectSites]);
 
   const getId = useCallback(
-    (selectedSiteName: string) => {
-      const index = siteList.findIndex(
-        (site) => site.siteName === selectedSiteName
-      );
+    (selectedSiteId: number) => {
+      const index = siteList.findIndex((site) => site.id === selectedSiteId);
       return index !== -1 ? index + 1 : null;
     },
     [siteList]
@@ -71,7 +70,7 @@ const ProjectSiteDropdown = ({
             <label className={styles.sitesLabel}>
               <span className={styles.siteId}>
                 {t('siteCount', {
-                  siteId: getId(selectedSiteData?.siteName),
+                  siteId: getId(selectedSiteData?.id),
                   totalCount: siteList.length,
                 })}
               </span>

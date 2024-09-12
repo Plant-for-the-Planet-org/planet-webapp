@@ -28,9 +28,7 @@ const ProjectSiteList = ({
         return (
           <li
             className={`${styles.listItem} ${
-              site.siteName === selectedSiteData?.siteName
-                ? styles.selectedItem
-                : ''
+              site.id === selectedSiteData?.id ? styles.selectedItem : ''
             }`}
             onClick={() => handleSiteSelection(index)}
             key={index}

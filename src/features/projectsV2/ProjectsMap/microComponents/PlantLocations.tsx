@@ -194,6 +194,7 @@ export default function PlantLocations(): ReactElement {
         />
         {selectedPl &&
         selectedPl.type === 'multi-tree-registration' &&
+        viewState.zoom > 14 &&
         selectedPl.sampleInterventions
           ? selectedPl.sampleInterventions.map((spl) => {
               return (
@@ -201,22 +202,21 @@ export default function PlantLocations(): ReactElement {
                   key={`${spl.id}-sample`}
                   latitude={spl.geometry.coordinates[1]}
                   longitude={spl.geometry.coordinates[0]}
+                  anchor="center"
                 >
-                  {viewState.zoom > 14 && (
-                    <div
-                      key={`${spl.id}-marker`}
-                      className={`${styles.single} ${
-                        spl.hid === samplePlantLocation?.hid
-                          ? styles.singleSelected
-                          : ''
-                      }`}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => openPl(spl)}
-                      onMouseEnter={() => onHover(spl)}
-                      onMouseLeave={onHoverEnd}
-                    />
-                  )}
+                  <div
+                    key={`${spl.id}-marker`}
+                    className={`${styles.single} ${
+                      spl.hid === samplePlantLocation?.hid
+                        ? styles.singleSelected
+                        : ''
+                    }`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openPl(spl)}
+                    onMouseEnter={() => onHover(spl)}
+                    onMouseLeave={onHoverEnd}
+                  />
                 </Marker>
               );
             })
