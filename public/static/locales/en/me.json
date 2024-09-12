@@ -280,6 +280,9 @@
     "shareUrl": "Share URL",
     "treesOfTrees": "{count1} of {count2}",
     "document": "Platform Documentation (EN)",
-    "composite-donation": "Mixed Donation"
+    "composite-donation": "Mixed Donation",
+    "platform-payout": "Platform Payout",
+    "vplatform-payout": "Platform Payout",
+    "processing": "Processing"
   }
 }
