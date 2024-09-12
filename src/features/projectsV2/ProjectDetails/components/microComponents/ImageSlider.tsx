@@ -9,8 +9,9 @@ import { Image } from '@planet-sdk/common';
 interface ImageSliderProps {
   images: Image[];
   type: 'coordinate' | 'project';
+  isMobile: boolean;
 }
-const ImageSlider = ({ images, type }: ImageSliderProps) => {
+const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
@@ -43,7 +44,7 @@ const ImageSlider = ({ images, type }: ImageSliderProps) => {
             type={type}
             imageSize={'large'}
             imageHeight={600}
-            leftAlignment={40}
+            leftAlignment={isMobile ? 14 : 40}
           />
         </div>
       </Modal>

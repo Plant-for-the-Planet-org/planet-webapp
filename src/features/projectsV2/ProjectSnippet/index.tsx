@@ -11,12 +11,12 @@ import {
   CurrencyCode,
 } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../ProjectsMap/utils';
+import TpoName from './microComponents/TpoName';
 
 interface Props {
   project:
@@ -66,7 +66,6 @@ export default function ProjectSnippet({
   page,
 }: Props): ReactElement {
   const router = useRouter();
-  const tCommon = useTranslations('Common');
   const { embed } = useContext(ParamsContext);
 
   const ecosystem =
@@ -99,10 +98,11 @@ export default function ProjectSnippet({
   ]);
 
   const handleClick = () => {
+    const url = `/t/${project.tpo.slug}`;
     if (embed === 'true') {
-      window.open(`/t/${project.tpo.slug}`, '_top');
+      window.open(url, '_top');
     } else {
-      router.push(`/t/${project.tpo.slug}`);
+      router.push(url);
     }
   };
 
@@ -136,36 +136,37 @@ export default function ProjectSnippet({
     currency: project.currency,
   };
 
-  const renderTpoName = (additionalClass = '') => (
-    <div
-      className={`${styles.projectTpoName} ${tpoNameBackgroundClass} ${additionalClass}`}
-      onClick={handleClick}
-    >
-      {tCommon('by', {
-        tpoName: project.tpo.name,
-      })}
-    </div>
-  );
-  const renderProgressBar = () => (
-    <div className={styles.progressBar}>
-      <div
-        className={`${styles.progressBarHighlight} ${progressBarClass}`}
-        style={{ width: `${progressPercentage}%` }}
-      />
-    </div>
-  );
   return (
     <>
       <div className={styles.singleProject}>
         <ImageSection {...imageProps} />
-        {!isMobile && renderProgressBar()}
-        <ProjectInfoSection {...projectInfoProps} />
-        {!isMobile && renderTpoName()}
-      </div>
-      {isMobile &&
-        renderTpoName(
-          page === 'project-list' ? '' : styles.projectTpoNameSecondary
+        {!isMobile && (
+          <div className={styles.progressBar}>
+            <div
+              className={`${styles.progressBarHighlight} ${progressBarClass}`}
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
         )}
+        <ProjectInfoSection {...projectInfoProps} />
+        {!isMobile && (
+          <TpoName
+            tpoNameBackgroundClass={tpoNameBackgroundClass}
+            handleClick={handleClick}
+            projectTpoName={project.tpo.name}
+          />
+        )}
+      </div>
+      {isMobile && (
+        <TpoName
+          additionalClass={
+            page === 'project-list' ? undefined : styles.projectTpoNameSecondary
+          }
+          tpoNameBackgroundClass={tpoNameBackgroundClass}
+          handleClick={handleClick}
+          projectTpoName={project.tpo.name}
+        />
+      )}
     </>
   );
 }

@@ -6,7 +6,9 @@
   background-size: cover;
   min-height: 21.3rem;
   border-radius: 12px;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: self-end;
 }
 
 .diveToMap {
@@ -20,9 +22,6 @@
   margin-bottom: 15px;
   max-width: 274px;
   width: 100%;
-  position: absolute;
-  bottom: 5px;
-  left: 50px;
   cursor: pointer;
   .label {
     font-size: $fontXSmall;

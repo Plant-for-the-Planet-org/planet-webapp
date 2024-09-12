@@ -105,7 +105,9 @@ const ProjectInfoSection = ({
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
       {description && <AboutProject description={description} wordCount={60} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
-      {images.length > 0 && <ImageSlider images={images} type={'project'} />}
+      {images.length > 0 && (
+        <ImageSlider images={images} type={'project'} isMobile={isMobile} />
+      )}
       {isMobile && <MapPreview setSelectedMode={setSelectedMode} />}
       {shouldRenderKeyInfo && (
         <KeyInfo
