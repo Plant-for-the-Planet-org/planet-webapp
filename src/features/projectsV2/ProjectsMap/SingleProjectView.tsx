@@ -7,7 +7,6 @@ import SitePolygon from './microComponents/SitePolygon';
 import { useRouter } from 'next/router';
 import PlantLocations from './microComponents/PlantLocations';
 import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
-import zoomToLocation from '../../../utils/maps/zoomToLocation';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
@@ -32,16 +31,6 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         setViewState,
         1200
       );
-    } else {
-      // const locationCoordinates = selectedPl?.geometry.coordinates ?? [0, 0];
-      // zoomToLocation(
-      //   viewState,
-      //   setViewState,
-      //   locationCoordinates[0],
-      //   locationCoordinates[1],
-      //   17,
-      //   1200
-      // );
     }
     if (singleProject.sites && !selectedPl) {
       zoomInToProjectSite(
@@ -53,7 +42,6 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       );
     }
   }, [query.p, selectedSite, selectedPl]);
-
   return (
     <>
       <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />

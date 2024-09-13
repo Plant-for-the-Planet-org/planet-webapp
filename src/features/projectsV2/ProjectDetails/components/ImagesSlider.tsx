@@ -9,7 +9,7 @@ interface Props {
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
-  leftAlignment: number;
+  leftAlignment?: number;
 }
 
 const ImagesSlider = ({

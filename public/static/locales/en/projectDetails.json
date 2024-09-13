@@ -18,6 +18,15 @@
     "publicProperty": "public property",
     "progressReports": "progress reports",
     "readMore": "Read More",
-    "readLess": "Read Less"
+    "readLess": "Read Less",
+    "totalPlantedSpecies": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} <areaContainer>({area} ha)</areaContainer>",
+    "plantingDate": "Planting Date",
+    "plantingDensity": "Planting Density",
+    "plantingDensityUnit": "{formattedCount} trees per ha",
+    "speciesCount": "Species Planted ({count})",
+    "sampleTrees": "Sample Trees ({count})",
+    "speciesMeasurment": "Tag # {hid} • {height}m high • {width}cm wide",
+    "poweredBy": "Powered by",
+    "treeMapper": "TreeMapper"
   }
 }

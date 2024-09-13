@@ -2,8 +2,7 @@ import { SetState } from '../../features/common/types/common';
 import { ViewState } from 'react-map-gl-v7';
 import { MapRef } from './zoomToProjectSite';
 
-export default function zoomToLocation(
-  viewState: ViewState,
+export default function zoomToSingleTreeLocation(
   setViewState: SetState<ViewState>,
   longitude: number,
   latitude: number,
@@ -15,6 +14,11 @@ export default function zoomToLocation(
     return;
   }
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
+  map.flyTo({
+    center: [longitude, latitude],
+    zoom: zoom,
+    duration: duration,
+  });
   map.once('moveend', () => {
     const newViewState: ViewState = {
       longitude: longitude,

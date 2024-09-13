@@ -12,6 +12,7 @@ import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
+import PlantLocationInfoSection from './components/PlantLocationInfoSection';
 
 const ProjectDetails = ({
   currencyCode,
@@ -31,6 +32,8 @@ const ProjectDetails = ({
     setSelectedClassification,
     setDebouncedSearchValue,
     selectedSite,
+    selectedPl,
+    hoveredPl,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -129,11 +132,15 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      <ProjectInfoSection
-        project={singleProject}
-        isMobile={isMobile}
-        setSelectedMode={setSelectedMode}
-      />
+      {selectedPl || hoveredPl ? (
+        <PlantLocationInfoSection plantLocationInfo={selectedPl || hoveredPl} />
+      ) : (
+        <ProjectInfoSection
+          project={singleProject}
+          isMobile={isMobile}
+          setSelectedMode={setSelectedMode}
+        />
+      )}
     </div>
   ) : (
     <Skeleton className={styles.projectInfoSkeleton} />

@@ -41,6 +41,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     page: props.page,
   };
+
   const onMouseMove = useCallback(
     (e) => {
       const hoveredPlantLocation = getPlantLocationInfo(
@@ -56,7 +57,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onMouseLeave = () => {
     setHoveredPl(null);
   };
-
   const onClick = useCallback(
     (e) => {
       const selectedPlantLocation = getPlantLocationInfo(
