@@ -45,7 +45,6 @@ export default function PlantLocations(): ReactElement {
   };
 
   const onHoverEnd = () => {
-    console.log('i ran');
     if (
       hoveredPl &&
       (hoveredPl.type === 'single-tree-registration' ||

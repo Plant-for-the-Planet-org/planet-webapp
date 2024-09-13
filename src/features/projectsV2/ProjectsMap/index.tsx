@@ -82,7 +82,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         ref={mapRef}
         interactiveLayerIds={
           shouldShowSingleProjectsView
-            ? ['polygon-layer', 'point-layer']
+            ? ['plant-polygon-layer', 'point-layer']
             : undefined
         }
       >
