@@ -133,7 +133,9 @@ const ProjectDetails = ({
         page="project-details"
       />
       {selectedPl || hoveredPl ? (
-        <PlantLocationInfoSection plantLocationInfo={selectedPl || hoveredPl} />
+        <PlantLocationInfoSection
+          plantLocationInfo={hoveredPl ? hoveredPl : selectedPl}
+        />
       ) : (
         <ProjectInfoSection
           project={singleProject}
