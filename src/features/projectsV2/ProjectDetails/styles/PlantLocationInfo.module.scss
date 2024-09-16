@@ -34,6 +34,7 @@
 .plantingDetailsContainer {
   display: flex;
   justify-content: space-between;
+  font-size: 12px;
   .plantingDetailsSubContainer {
     min-width: 162px;
     padding: 20px;
@@ -43,12 +44,10 @@
   .label {
     color: rgba(0, 122, 73, 1);
     font-weight: 700;
-    font-size: 12px;
   }
   .data {
     font-weight: 400;
     margin-top: 3px;
-    font-size: 12px;
   }
 }
 
@@ -120,7 +119,7 @@
   }
 }
 
-.speciesMeasurements {
+.speciesMeasurement {
   font-weight: 400;
 }
 
