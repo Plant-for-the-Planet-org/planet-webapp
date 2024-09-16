@@ -10,7 +10,6 @@ import {
   CountryCode,
   CurrencyCode,
 } from '@planet-sdk/common';
-import { useRouter } from 'next/router';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
@@ -24,7 +23,6 @@ interface Props {
     | ConservationProjectConcise
     | TreeProjectExtended
     | ConservationProjectExtended;
-  showBackButton: boolean;
   showTooltipPopups: boolean;
   isMobile?: boolean;
   page?: 'project-list' | 'project-details';
@@ -42,7 +40,6 @@ export interface ImageSectionProps extends CommonProps {
   projectName: string;
   image: string;
   ecosystem: EcosystemTypes | null;
-  showBackButton: boolean;
   showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
@@ -61,11 +58,9 @@ export interface ProjectInfoProps extends CommonProps {
 export default function ProjectSnippet({
   project,
   showTooltipPopups,
-  showBackButton,
   isMobile,
   page,
 }: Props): ReactElement {
-  const router = useRouter();
   const { embed } = useContext(ParamsContext);
 
   const ecosystem =
@@ -83,12 +78,6 @@ export default function ProjectSnippet({
     project.countTarget,
   ]);
 
-  const tpoNameBackgroundClass = useMemo(() => {
-    if (!project.allowDonations) return `${styles.noDonation}`;
-    if (isTopProject && isApproved) return `${styles.tpoBackground}`;
-    return '';
-  }, [isTopProject, isApproved, project.allowDonations]);
-
   const progressBarClass = useMemo(() => {
     return `${styles[getProjectCategory(project)]}`;
   }, [
@@ -96,15 +85,6 @@ export default function ProjectSnippet({
     project.purpose === 'trees' && (project.isTopProject, project.isApproved),
     project.allowDonations,
   ]);
-
-  const handleClick = () => {
-    const url = `/t/${project.tpo.slug}`;
-    if (embed === 'true') {
-      window.open(url, '_top');
-    } else {
-      router.push(url);
-    }
-  };
 
   const commonProps: CommonProps = {
     slug: project.slug,
@@ -121,7 +101,6 @@ export default function ProjectSnippet({
     showTooltipPopups: showTooltipPopups,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
-    showBackButton,
     page,
   };
   const projectInfoProps: ProjectInfoProps = {
@@ -151,20 +130,25 @@ export default function ProjectSnippet({
         <ProjectInfoSection {...projectInfoProps} />
         {!isMobile && (
           <TpoName
-            tpoNameBackgroundClass={tpoNameBackgroundClass}
-            handleClick={handleClick}
             projectTpoName={project.tpo.name}
+            allowDonations={project.allowDonations}
+            isTopProject={isTopProject}
+            isApproved={isApproved}
+            page={page}
+            tpoSlug={project.tpo.slug}
+            embed={embed}
           />
         )}
       </div>
       {isMobile && (
         <TpoName
-          additionalClass={
-            page === 'project-list' ? undefined : styles.projectTpoNameSecondary
-          }
-          tpoNameBackgroundClass={tpoNameBackgroundClass}
-          handleClick={handleClick}
+          page={page}
           projectTpoName={project.tpo.name}
+          allowDonations={project.allowDonations}
+          isTopProject={isTopProject}
+          isApproved={isApproved}
+          tpoSlug={project.tpo.slug}
+          embed={embed}
         />
       )}
     </>

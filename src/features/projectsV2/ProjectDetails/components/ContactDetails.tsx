@@ -44,6 +44,7 @@ const ContactDetails = ({
       ),
       title: t('viewProfile'),
       link: publicProfileURL,
+      shouldOpenNewTab: false,
     },
     {
       icon: (
@@ -54,6 +55,7 @@ const ContactDetails = ({
       ),
       title: extractWebsiteURLTitle(),
       link: websiteURL,
+      shouldOpenNewTab: true,
     },
     {
       icon: (
@@ -64,11 +66,13 @@ const ContactDetails = ({
       ),
       title: location,
       link: `https://maps.google.com/?q=${location}`,
+      shouldOpenNewTab: true,
     },
     {
       icon: <MailIcon width={10.5} color={`${'var(--primary-font-color)'}`} />,
       title: email,
       link: `mailto:${email}`,
+      shouldOpenNewTab: false,
     },
   ];
 

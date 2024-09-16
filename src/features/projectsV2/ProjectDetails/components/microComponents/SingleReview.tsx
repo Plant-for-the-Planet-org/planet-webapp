@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import styles from '../../styles/ReviewReports.module.scss';
+import styles from '../../styles/ProjectReviews.module.scss';
 import DownloadReportIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadReportIcon';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { getPDFFile } from '../../../../../utils/getImageURL';

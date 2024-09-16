@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import AboutProject from './AboutProject';
 import { useTranslations } from 'next-intl';
-import ProjectReview from './ReviewReports';
+import ProjectReview from './ProjectReviews';
 import { CountryCode } from '@planet-sdk/common';
 import styles from '../ProjectDetails.module.scss';
 import KeyInfo from './KeyInfo';
@@ -12,11 +12,11 @@ import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
 import { SetState } from '../../../common/types/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { ProjectExtend } from '../../ProjectsContext';
 import ImageSlider from './microComponents/ImageSlider';
+import { ExtendedProject } from '../../../common/types/projectv2';
 
 interface ProjectInfoSectionProps {
-  project: ProjectExtend;
+  project: ExtendedProject;
   isMobile: boolean;
   setSelectedMode: SetState<ViewMode> | undefined;
 }
@@ -99,16 +99,19 @@ const ProjectInfoSection = ({
   const shouldRenderProjectDownloads = useMemo(() => {
     return certificates.length > 0 || expenses.length > 0;
   }, [certificates, expenses]);
+  const handleMap = () => {
+    if (setSelectedMode) setSelectedMode('map');
+  };
 
   return (
-    <section className={styles.projectInfoContainer}>
+    <section className={styles.projectInfoSection}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
-      {description && <AboutProject description={description} wordCount={60} />}
+      {description && <AboutProject description={description} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
       {images.length > 0 && (
         <ImageSlider images={images} type={'project'} isMobile={isMobile} />
       )}
-      {isMobile && <MapPreview setSelectedMode={setSelectedMode} />}
+      {isMobile && <MapPreview handleMap={handleMap} />}
       {shouldRenderKeyInfo && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}
@@ -135,7 +138,7 @@ const ProjectInfoSection = ({
         />
       )}
       {shouldRenderProjectDownloads && (
-        <ProjectDownloads certification={certificates} spendings={expenses} />
+        <ProjectDownloads certificates={certificates} expenses={expenses} />
       )}
       <ContactDetails
         publicProfileURL={`/t/${tpo.slug}`}

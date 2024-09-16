@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
 import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
@@ -88,26 +88,23 @@ const ProjectListControlForMobile = ({
     filteredProjects,
   };
 
-  const { activeSearchFieldClass, inActiveSearchFieldClass } = useMemo(() => {
-    return {
-      activeSearchFieldClass: isImpersonationModeOn
-        ? styles.tabsContainerTopMargin
-        : styles.searchFieldAndViewTabsContainer,
-      inActiveSearchFieldClass: isImpersonationModeOn
-        ? styles.projectListControlsMobileTopMargin
-        : styles.projectListControlsMobile,
-    };
-  }, [isImpersonationModeOn]);
-
   return (
     <>
       {isSearching ? (
-        <div className={activeSearchFieldClass}>
+        <div
+          className={`${styles.tabsContainer} ${
+            isImpersonationModeOn ? styles.marginTop10 : ''
+          }`}
+        >
           <ActiveSearchField {...activeSearchFieldProps} />
           <ViewModeTabs {...viewModeTabsProps} />
         </div>
       ) : (
-        <div className={inActiveSearchFieldClass}>
+        <div
+          className={`${styles.projectListControlsMobile} ${
+            isImpersonationModeOn ? styles.marginTop20 : ''
+          }`}
+        >
           {shouldDisplayFilterResults &&
             filteredProjects &&
             filteredProjects?.length > 0 && (

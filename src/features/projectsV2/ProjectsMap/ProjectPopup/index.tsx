@@ -28,7 +28,6 @@ const ProjectPopup = ({ project, handlePopupLeave, visitProject }: Props) => {
         <ProjectSnippet
           project={project.properties}
           showTooltipPopups={false}
-          showBackButton={false}
         />
       </div>
     </Popup>

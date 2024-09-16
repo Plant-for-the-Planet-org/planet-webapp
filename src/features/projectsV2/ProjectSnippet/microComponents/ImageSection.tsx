@@ -26,7 +26,6 @@ const ImageSection = (props: ImageSectionProps) => {
     isApproved,
     isTopProject,
     allowDonations,
-    showBackButton,
     page,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
@@ -66,7 +65,7 @@ const ImageSection = (props: ImageSectionProps) => {
           : styles.projectImageSecondary
       }`}
     >
-      {showBackButton && (
+      {page === 'project-details' && (
         <button onClick={handleBackButton} className={styles.backButton}>
           <BackButton />
         </button>

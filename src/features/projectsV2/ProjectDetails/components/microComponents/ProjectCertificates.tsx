@@ -6,17 +6,17 @@ import { Certificate } from '@planet-sdk/common';
 import { getPDFFile } from '../../../../../utils/getImageURL';
 
 interface Props {
-  certification: Certificate[];
+  certificates: Certificate[];
 }
 
-const ExternalCertificationItems = ({ certification }: Props) => {
+const ProjectCertificates = ({ certificates }: Props) => {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 481;
 
   return (
     <>
-      {certification.map((certificate) => {
-        <div className={styles.infoDetail}>
+      {certificates.map((certificate) => {
+        <div className={styles.certificateDataContainer}>
           {isMobile ? (
             <DownloadsLabel>
               <p>{certificate}</p>
@@ -39,4 +39,4 @@ const ExternalCertificationItems = ({ certification }: Props) => {
   );
 };
 
-export default ExternalCertificationItems;
+export default ProjectCertificates;

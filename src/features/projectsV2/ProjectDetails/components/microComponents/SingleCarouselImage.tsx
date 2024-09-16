@@ -4,13 +4,19 @@ import styles from '../../styles/Slider.module.scss';
 interface Props {
   type: string;
   imageURL: string;
-  sliderImage: SliderImage;
+  carouselImage: SliderImage;
+  leftAlignment: number;
 }
 
-export const SingleSliderImage = ({ type, imageURL, sliderImage }: Props) => {
+export const SingleCarouselImage = ({
+  type,
+  imageURL,
+  carouselImage,
+  leftAlignment,
+}: Props) => {
   return (
     <div
-      className={styles.sliderContent}
+      className={styles.carouselContent}
       style={
         type === 'coordinate'
           ? { background: `url(${imageURL})` }
@@ -19,7 +25,12 @@ export const SingleSliderImage = ({ type, imageURL, sliderImage }: Props) => {
             }
       }
     >
-      <p className={styles.sliderContentText}>{sliderImage.description}</p>
+      <p
+        className={styles.carouselContentText}
+        style={{ left: `${leftAlignment}px` }}
+      >
+        {carouselImage?.description}
+      </p>
     </div>
   );
 };

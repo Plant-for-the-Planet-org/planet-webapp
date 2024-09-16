@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectReview from '../components/ReviewReports';
+import ProjectReviews from '../components/ProjectReviews';
 
-const meta: Meta<typeof ProjectReview> = {
+const meta: Meta<typeof ProjectReviews> = {
   title: 'Projects/Common/ProjectReview',
-  component: ProjectReview,
+  component: ProjectReviews,
 };
 
 export default meta;
-type Story = StoryObj<typeof ProjectReview>;
+type Story = StoryObj<typeof ProjectReviews>;
 
 const reviews = [
   {

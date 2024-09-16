@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/ReviewReports.module.scss';
+import styles from '../styles/ProjectReviews.module.scss';
 import SingleReview from './microComponents/SingleReview';
 import { useTranslations } from 'next-intl';
 import { Review } from '@planet-sdk/common';
@@ -8,7 +8,7 @@ interface Props {
   reviews: Review[] | undefined;
 }
 
-const ProjectReview = ({ reviews }: Props) => {
+const ProjectReviews = ({ reviews }: Props) => {
   const t = useTranslations('ManageProjects');
   return (
     <div className={styles.reviewReportsContainer}>
@@ -20,4 +20,4 @@ const ProjectReview = ({ reviews }: Props) => {
   );
 };
 
-export default ProjectReview;
+export default ProjectReviews;

@@ -1,26 +1,24 @@
 import styles from '../styles/AboutProject.module.scss';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import DownArrow from '../../../../temp/icons/DownArrow';
-import UpArrow from '../../../../temp/icons/UpArrow';
+import DownArrow from '../../../../../public/assets/images/icons/projectV2/DownArrow';
+import UpArrow from '../../../../../public/assets/images/icons/projectV2/UpArrow';
 
 interface Props {
-  description: string | null;
-  wordCount: number | undefined;
+  description: string;
+  wordCount?: number;
 }
 
-const AboutProject = ({ description, wordCount }: Props) => {
+const AboutProject = ({ description, wordCount = 60 }: Props) => {
   const tDonate = useTranslations('Donate');
   const tProjectDetails = useTranslations('ProjectDetails');
   const [isExpanded, setIsExpanded] = useState(false);
   const descriptionWords = description?.split(' ');
-  const hasOverflow =
-    descriptionWords && wordCount && descriptionWords?.length > wordCount;
-  const startingText =
-    hasOverflow && wordCount
-      ? descriptionWords?.slice(0, wordCount - 1).join(' ')
-      : description;
-  const endText = wordCount && descriptionWords?.slice(wordCount - 1).join(' ');
+  const hasOverflow = descriptionWords?.length > wordCount;
+  const startingText = hasOverflow
+    ? descriptionWords?.slice(0, wordCount - 1).join(' ')
+    : description;
+  const endText = descriptionWords?.slice(wordCount - 1).join(' ');
   return (
     <div className={styles.projectDescription}>
       <div className={styles.infoTitle}>{tDonate('aboutProject')}</div>

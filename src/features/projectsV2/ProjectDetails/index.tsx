@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
-import { ProjectExtend, useProjects } from '../ProjectsContext';
+import { useProjects } from '../ProjectsContext';
 import ProjectInfoSection from './components/ProjectInfoSection';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
@@ -11,6 +11,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { ExtendedProject } from '../../common/types/projectv2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -25,32 +26,28 @@ const ProjectDetails = ({
     setIsLoading,
     setIsError,
     setSelectedMode,
-    setSelectedClassification,
-    setDebouncedSearchValue,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
+  const projectSlug = router.query.p;
 
   useEffect(() => {
-    if (setSelectedMode) setSelectedMode('list');
-    setSelectedClassification([]);
-    setDebouncedSearchValue('');
-  }, []);
-
-  useEffect(() => {
-    async function loadProject() {
+    async function loadProject(
+      projectSlug: string,
+      locale: string,
+      currency: string
+    ) {
       setIsLoading(true);
       setIsError(false);
       try {
-        const { p } = router.query;
-        const fetchedProject = await getRequest<ProjectExtend>(
+        const fetchedProject = await getRequest<ExtendedProject>(
           tenantConfig.id,
-          `/app/projects/${p}`,
+          `/app/projects/${projectSlug}`,
           {
             _scope: 'extended',
-            currency: currencyCode,
+            currency: currency,
             locale: locale,
           }
         );
@@ -72,15 +69,15 @@ const ProjectDetails = ({
       }
     }
 
-    if (router.query.p && currencyCode) loadProject();
-  }, [router.query.p, locale, currencyCode]);
+    if (typeof projectSlug === 'string' && currencyCode)
+      loadProject(projectSlug, locale, currencyCode);
+  }, [projectSlug, locale, currencyCode]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
         project={singleProject}
         showTooltipPopups={false}
-        showBackButton={true}
         isMobile={isMobile}
         page="project-details"
       />

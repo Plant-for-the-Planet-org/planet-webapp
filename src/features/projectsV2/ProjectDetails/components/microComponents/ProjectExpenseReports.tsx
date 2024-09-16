@@ -8,17 +8,17 @@ import DownloadsLabel from './DownloadsLabel';
 import { getPDFFile } from '../../../../../utils/getImageURL';
 
 interface Props {
-  spendings: ProjectExpense[];
+  expenses: ProjectExpense[];
 }
 
-const ProjectSpendingItem = ({ spendings }: Props) => {
+const ProjectExpenseReports = ({ expenses }: Props) => {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 481;
   const locale = useLocale();
 
   return (
-    <div className={styles.spendingsContainer}>
-      {spendings?.map((expense) => {
+    <div className={styles.expenseContainer}>
+      {expenses?.map((expense) => {
         const pdfUrl = getPDFFile('projectExpense', expense.pdf);
         const formattedAmount = getFormatedCurrency(
           locale,
@@ -26,7 +26,7 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
           Math.floor(expense.amount)
         ).replace(/\.00$/, '');
         return (
-          <div className={styles.spendingDetail} key={expense.id}>
+          <div className={styles.expenseDetails} key={expense.id}>
             {isMobile ? (
               <DownloadsLabel>
                 <time>{expense.year}</time>
@@ -47,4 +47,4 @@ const ProjectSpendingItem = ({ spendings }: Props) => {
   );
 };
 
-export default ProjectSpendingItem;
+export default ProjectExpenseReports;
