@@ -74,6 +74,7 @@
     "trees": "Trees",
     "amount": "Amount",
     "created": "Date Created",
+    "updated": "Date Updated",
     "paymentMethod": "Payment Method",
     "frequency": "Frequency",
     "monthly": "Monthly",
@@ -283,6 +284,8 @@
     "composite-donation": "Mixed Donation",
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
-    "processing": "Processing"
+    "processing": "Processing",
+    "bankDetails": "Bank Details",
+    "refundAmount": "Refunded Amount"
   }
 }
