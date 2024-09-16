@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from '../../features/common/types/common';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
 export const ViewProfileIcon = ({ width, color }: IconProps) => {
   return (
