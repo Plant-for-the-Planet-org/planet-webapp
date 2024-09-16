@@ -5,6 +5,7 @@ import { TreeProjectClassification } from '@planet-sdk/common';
 import { SetState } from '../../../common/types/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { MapProject } from '../../../common/types/projectv2';
+import { MapOptions } from '../../ProjectsMapContext';
 
 interface MobileControlsProps {
   projectCount: number | undefined;
@@ -20,6 +21,8 @@ interface MobileControlsProps {
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
   page: 'project-list' | 'project-details' | undefined;
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
 }
 const MobileControls = ({
   projectCount,
@@ -35,6 +38,8 @@ const MobileControls = ({
   isSearching,
   setIsSearching,
   page,
+  mapOptions,
+  updateMapOption,
 }: MobileControlsProps) => {
   const projectListControlProps = {
     projectCount,
@@ -49,6 +54,8 @@ const MobileControls = ({
     isMobile: isMobile,
     isSearching,
     setIsSearching,
+    mapOptions,
+    updateMapOption,
   };
   return (
     <>

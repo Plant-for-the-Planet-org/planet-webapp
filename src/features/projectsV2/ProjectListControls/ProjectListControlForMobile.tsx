@@ -12,6 +12,8 @@ import { ProjectTabs } from '.';
 import { MapProject } from '../../common/types/projectv2';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
+import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
+import { MapOptions } from '../ProjectsMapContext';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -28,7 +30,10 @@ interface ProjectListControlForMobileProps {
   setSelectedMode: SetState<ViewMode> | undefined;
   isMobile: boolean;
   filteredProjects: MapProject[] | undefined;
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
 }
+
 const ProjectListControlForMobile = ({
   projectCount,
   topProjectCount,
@@ -44,6 +49,8 @@ const ProjectListControlForMobile = ({
   isMobile,
   isSearching,
   setIsSearching,
+  mapOptions,
+  updateMapOption,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
@@ -52,6 +59,15 @@ const ProjectListControlForMobile = ({
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map';
+  const shouldDisplayMapFeatureExplorer = selectedMode === 'map';
+  const projectListControlsMobileClasses = `${
+    styles.projectListControlsMobile
+  } ${selectedMode === 'map' ? styles.mapModeControls : ''} ${
+    isImpersonationModeOn ? styles.marginTop20 : ''
+  }`;
+  const tabContainerClasses = `${styles.tabsContainer} ${
+    isImpersonationModeOn ? styles.marginTop10 : ''
+  }`;
 
   const activeSearchFieldProps = {
     setIsFilterOpen,
@@ -79,7 +95,9 @@ const ProjectListControlForMobile = ({
     isSearching,
     setIsSearching,
     isMobile,
+    selectedMode,
   };
+
   const classificationDropDownProps = {
     selectedClassification,
     setSelectedClassification,
@@ -91,20 +109,12 @@ const ProjectListControlForMobile = ({
   return (
     <>
       {isSearching ? (
-        <div
-          className={`${styles.tabsContainer} ${
-            isImpersonationModeOn ? styles.marginTop10 : ''
-          }`}
-        >
+        <div className={tabContainerClasses}>
           <ActiveSearchField {...activeSearchFieldProps} />
           <ViewModeTabs {...viewModeTabsProps} />
         </div>
       ) : (
-        <div
-          className={`${styles.projectListControlsMobile} ${
-            isImpersonationModeOn ? styles.marginTop20 : ''
-          }`}
-        >
+        <div className={projectListControlsMobileClasses}>
           {shouldDisplayFilterResults &&
             filteredProjects &&
             filteredProjects?.length > 0 && (
@@ -118,6 +128,12 @@ const ProjectListControlForMobile = ({
             <ProjectListTabForMobile {...tabProps} />
           )}
           <SearchAndFilter {...listControlProps} />
+          {shouldDisplayMapFeatureExplorer && (
+            <MapFeatureExplorer
+              mapOptions={mapOptions}
+              updateMapOption={updateMapOption}
+            />
+          )}
           <ViewModeTabs {...viewModeTabsProps} />
         </div>
       )}

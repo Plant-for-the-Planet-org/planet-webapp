@@ -38,15 +38,10 @@ export const ClassificationDropDown = ({
   const isFilterApplied = selectedClassification.length !== 0;
 
   const classificationListClasses = useMemo(() => {
-    const isHidden =
-      isMobile &&
-      (selectedMode === 'map' ||
-        (selectedMode === 'list' && filteredProjects?.length === 0));
-
     return `${styles.classificationListContainer} ${
-      isHidden ? styles.mobileSelectMode : ''
+      selectedMode === 'list' ? styles.listMode : ''
     }`;
-  }, [isMobile, selectedMode, filteredProjects, isImpersonationModeOn]);
+  }, [selectedMode]);
 
   return (
     <div className={classificationListClasses}>

@@ -33,7 +33,6 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
     if (isImpersonationModeOn) return styles.impersonationMode;
     return styles.projectsLayout;
   }, [isImpersonationModeOn, query.embed]);
-
   return (
     <div className={layoutClass}>
       <main className={styles.mainContent}>
@@ -42,7 +41,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
         )}
         <section className={styles.mapContainer}>
           {page === 'project-list' && (
-            <div className={styles.mapFeatureExplorer}>
+            <div className={styles.mapFeatureExplorerOverlay}>
               <MapFeatureExplorer
                 mapOptions={mapOptions}
                 updateMapOption={updateMapOption}

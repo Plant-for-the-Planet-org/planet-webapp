@@ -1,6 +1,6 @@
 import { IconProps } from '../../../../../src/features/common/types/common';
 
-export const ExploreIcon = ({ width }: IconProps) => {
+export const ExploreIcon = ({ width = '19px' }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
