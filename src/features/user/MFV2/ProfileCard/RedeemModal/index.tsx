@@ -2,18 +2,18 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import React, { ReactElement } from 'react';
 import { useTranslations } from 'next-intl';
-import { postAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../../../../theme/themeContext';
-import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
+import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { ThemeContext } from '../../../../../theme/themeContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
-import { RedeemedCodeData } from '../../../../../common/types/redeem';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { RedeemedCodeData } from '../../../../common/types/redeem';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
   EnterRedeemCode,
-} from '../../../../../common/RedeemCode';
-import { useTenant } from '../../../../../common/Layout/TenantContext';
+} from '../../../../common/RedeemCode';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 interface RedeemModal {
   redeemModalOpen: boolean;
   handleRedeemModalClose: () => void;

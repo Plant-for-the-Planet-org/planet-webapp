@@ -6,7 +6,7 @@ import {
   WebsiteLinkIcon,
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import styles from './ProfileActions.module.scss';
-import RedeemModal from '../../../Profile/components/ProfileBox/microComponents/RedeemModal';
+import RedeemModal from '../RedeemModal';
 import SocialMediaShareButton from './SocialMediaShareButton';
 import { useTranslations } from 'next-intl';
 import { ProfileV2Props } from '../../../../common/types/profile';

@@ -49,7 +49,7 @@ import {
 } from 'date-fns';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import PlantLocationDetails from './components/PlantLocationDetails';
-import MyForestMapCredit from '../../../../Profile/components/MyForestMap/microComponents/MyForestMapCredit';
+import MyForestMapCredit from './components/MapCredit';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 
 const EMPTY_STYLE = {
