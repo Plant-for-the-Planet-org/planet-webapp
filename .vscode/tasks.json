@@ -1,0 +1,17 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "npx tsc --noEmit --pretty | grep -A 1 \"is not assignable to parameter of type 'MessageKeys\"",
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "label": "TypeScript: Check MessageKeys errors"
+    }
+  ]
+}

@@ -101,7 +101,7 @@ const ReedemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
             case 'self_gift':
               _serializedErrors.push({
-                message: t('redeem:selfGiftMessage'),
+                message: t('selfGiftMessage'),
               });
               break;
 

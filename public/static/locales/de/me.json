@@ -74,6 +74,7 @@
     "trees": "Bäume",
     "amount": "Betrag",
     "created": "Erstellungsdatum",
+    "updated": "Aktualisierungsdatum",
     "paymentMethod": "Zahlungsmethode",
     "frequency": "Häufigkeit",
     "monthly": "Monatlich",
@@ -283,6 +284,8 @@
     "composite-donation": "Mischspende",
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
-    "processing": "Processing"
+    "processing": "Processing",
+    "bankDetails": "Bankverbindung",
+    "refundAmount": "Erstatteter Betrag"
   }
 }
