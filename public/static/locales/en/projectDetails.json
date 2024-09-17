@@ -27,6 +27,7 @@
     "sampleTrees": "Sample Trees ({count})",
     "speciesMeasurment": "Tag #{hid} • {plantHeight}m high • {plantWidth}cm wide",
     "poweredBy": "Powered by",
-    "treeMapper": "TreeMapper"
+    "treeMapper": "TreeMapper",
+    "sampleTreeTag": "Sample Tree #{tag}"
   }
 }

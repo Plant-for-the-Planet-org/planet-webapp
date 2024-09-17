@@ -33,11 +33,7 @@ const ImagesSlider = ({
         }
         projectImages.push({
           content: () => (
-            <SingleSliderImage
-              type={type}
-              imageURL={imageURL}
-              sliderImage={sliderImage}
-            />
+            <SingleSliderImage imageURL={imageURL} sliderImage={sliderImage} />
           ),
         });
       }

@@ -8,6 +8,7 @@ import { SetState } from '../../common/types/common';
 import ProjectSiteList from './microComponents/ProjectSiteList';
 import { area } from '@turf/turf';
 import { Feature, MultiPolygon, Polygon } from 'geojson';
+import { PlantLocation } from '../../common/types/plantLocation';
 
 export interface SiteProperties {
   lastUpdated: {
@@ -30,12 +31,14 @@ interface Props {
   projectSites: ProjectSite;
   selectedSite: number;
   setSelectedSite: SetState<number>;
+  setSelectedPl: SetState<PlantLocation | null>;
 }
 
 const ProjectSiteDropdown = ({
   projectSites,
   selectedSite,
   setSelectedSite,
+  setSelectedPl,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations('ManageProjects');
@@ -94,6 +97,7 @@ const ProjectSiteDropdown = ({
           setSelectedSite={setSelectedSite}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
+          setSelectedPl={setSelectedPl}
         />
       )}
     </>

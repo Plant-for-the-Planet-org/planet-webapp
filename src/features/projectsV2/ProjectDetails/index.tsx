@@ -23,14 +23,11 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
-    setSelectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
     setIsError,
     setSelectedMode,
-    setSelectedClassification,
-    setDebouncedSearchValue,
     selectedSite,
     selectedPl,
     hoveredPl,
@@ -39,13 +36,6 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
-
-  useEffect(() => {
-    setSelectedSite(0); // default site value, will be removed in future
-    if (setSelectedMode) setSelectedMode('list');
-    setSelectedClassification([]);
-    setDebouncedSearchValue('');
-  }, []);
 
   useEffect(() => {
     async function loadProject() {
@@ -110,18 +100,33 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    if (!projectSites || !(projectSites && projectSites[selectedSite])) {
-      return;
-    }
     const currentUrl = new URL(window.location.href);
     const searchParams = currentUrl.searchParams;
-    searchParams.set('site', projectSites[selectedSite].properties.id);
-    const newSearch = searchParams.toString();
-    const newPath = `/${locale}/prd/${singleProject.slug}${
-      newSearch.length > 0 ? `?${newSearch}` : ''
-    }`;
-    router.push(newPath);
-  }, [singleProject?.slug, selectedSite, locale]);
+    const updateSearchParams = (
+      paramToDelete: string,
+      paramToSet: string,
+      paramValue: string
+    ) => {
+      if (searchParams.has(paramToDelete)) searchParams.delete(paramToDelete);
+      searchParams.set(paramToSet, paramValue);
+    };
+    if (projectSites) {
+      if (selectedPl) {
+        updateSearchParams('site', 'ploc', selectedPl.hid);
+      } else {
+        updateSearchParams(
+          'ploc',
+          'site',
+          projectSites[selectedSite].properties.id
+        );
+      }
+      const newSearch = searchParams.toString();
+      const newPath = `/${locale}/prd/${singleProject.slug}${
+        newSearch.length > 0 ? `?${newSearch}` : ''
+      }`;
+      router.push(newPath);
+    }
+  }, [singleProject?.slug, selectedSite, locale, selectedPl?.hid]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>

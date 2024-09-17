@@ -36,6 +36,7 @@ const MapControls = ({
     singleProject,
     selectedSite,
     setSelectedSite,
+    setSelectedPl,
   } = useProjects();
   const hasMoreThanOneSite =
     singleProject?.sites?.length !== undefined &&
@@ -44,6 +45,7 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     projectSites: singleProject?.sites,
+    setSelectedPl,
   };
   const projectListControlProps = {
     ...siteDropdownProps,

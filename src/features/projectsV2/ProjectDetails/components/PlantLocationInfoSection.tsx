@@ -5,13 +5,13 @@ import {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import { extractImages } from '../utils';
 import ImagesSlider from './ImagesSlider';
 import TreePlantedData from './microComponents/TreeCountData';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleSpecies from './microComponents/SampleSpecies';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
+import { useTranslations } from 'next-intl';
 
 const PlantLocationInfoSection = ({
   plantLocationInfo,
@@ -20,7 +20,7 @@ const PlantLocationInfoSection = ({
 }) => {
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
-
+  const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount, plantedLocationArea } = useMemo(() => {
     const totalTreesCount = isMultiTreeRegistration
       ? plantLocationInfo.plantedSpecies.reduce(
@@ -39,7 +39,13 @@ const PlantLocationInfoSection = ({
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (isMultiTreeRegistration) {
-      return extractImages(plantLocationInfo.sampleInterventions);
+      const result = plantLocationInfo.sampleInterventions.map((item) => {
+        return {
+          image: item.coordinates[0].image,
+          description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+        };
+      });
+      return result;
     }
   }, [isMultiTreeRegistration ? plantLocationInfo.sampleInterventions : null]);
 
@@ -66,17 +72,19 @@ const PlantLocationInfoSection = ({
         plantingDensity={plantingDensity}
         plantDate={plantLocationInfo?.plantDate}
       />
-      {isMultiTreeRegistration && (
-        <SpeciesPlanted
-          totalTreesCount={totalTreesCount}
-          plantedSpecies={plantLocationInfo.plantedSpecies}
-        />
-      )}
-      {isMultiTreeRegistration && (
-        <SampleSpecies
-          sampleInterventions={plantLocationInfo.sampleInterventions}
-        />
-      )}
+      {isMultiTreeRegistration &&
+        plantLocationInfo.plantedSpecies.length > 0 && (
+          <SpeciesPlanted
+            totalTreesCount={totalTreesCount}
+            plantedSpecies={plantLocationInfo.plantedSpecies}
+          />
+        )}
+      {isMultiTreeRegistration &&
+        plantLocationInfo.sampleInterventions.length > 0 && (
+          <SampleSpecies
+            sampleInterventions={plantLocationInfo.sampleInterventions}
+          />
+        )}
       <TreeMapperBrand />
     </section>
   );
