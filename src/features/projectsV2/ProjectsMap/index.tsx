@@ -39,7 +39,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     page: props.page,
   };
-
+  const bottomAlignment = props.isMobile ? '60px' : '0px';
   return (
     <>
       <MapControls {...pageProps} />
@@ -64,7 +64,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           showCompass={false}
           style={{
             position: 'relative',
-            bottom: props.isMobile ? '100px' : '0px',
+            bottom: bottomAlignment,
           }}
         />
       </Map>
