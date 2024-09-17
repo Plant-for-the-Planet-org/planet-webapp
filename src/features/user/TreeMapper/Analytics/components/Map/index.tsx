@@ -49,7 +49,7 @@ import {
 } from 'date-fns';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import PlantLocationDetails from './components/PlantLocationDetails';
-import MyForestMapCredit from './components/MapCredit';
+import MapCredit from './components/MapCredit';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 
 const EMPTY_STYLE = {
@@ -487,7 +487,7 @@ export const MapContainer = () => {
               )}
             </MapGL>
             <div className={styles.mapCreditContainer}>
-              <MyForestMapCredit />
+              <MapCredit />
             </div>
           </>
         ) : (
