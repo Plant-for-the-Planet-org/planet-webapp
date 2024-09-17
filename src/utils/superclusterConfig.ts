@@ -9,7 +9,7 @@ import {
 import {} from '../features/common/Layout/MyForestContext';
 import { ViewState } from 'react-map-gl-v7/maplibre';
 
-const clusterConfigV2 = {
+const clusterConfig = {
   radius: 40,
   maxZoom: 3,
 };
@@ -38,7 +38,7 @@ const clusterConfigV2 = {
   const supercluster = new Supercluster<
     MyContributionsSingleRegistration | DonationProperties,
     {}
-  >(clusterConfigV2);
+  >(clusterConfig);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {
