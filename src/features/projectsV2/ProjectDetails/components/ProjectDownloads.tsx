@@ -2,30 +2,27 @@ import { Certificate, ProjectExpense } from '@planet-sdk/common';
 import styles from '../styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
-import ExternalCertificationItem from './microComponents/ExternalCertificationItem';
-import ProjectSpendingItem from './microComponents/ProjectSpendingItem';
+import ProjectCertificates from './microComponents/ProjectCertificates';
+import ProjectExpenseReports from './microComponents/ProjectExpenseReports';
 
-interface ExternalCertificationProps {
-  certification: Certificate[];
-  spendings: ProjectExpense[];
+interface Props {
+  certificates: Certificate[];
+  expenses: ProjectExpense[];
 }
 
-const ProjectDownloads = ({
-  certification,
-  spendings,
-}: ExternalCertificationProps) => {
+const ProjectDownloads = ({ certificates, expenses }: Props) => {
   const tManageProjects = useTranslations('ManageProjects');
 
-  const certificationContent = [
+  const financialAndCertificationData = [
     {
       title: `${tManageProjects('externalCertifications')}`,
-      content: <ExternalCertificationItem certification={certification} />,
-      shouldRender: certification.length > 0,
+      content: <ProjectCertificates certificates={certificates} />,
+      shouldRender: certificates.length > 0,
     },
     {
       title: `${tManageProjects('projectSpending')}`,
-      content: <ProjectSpendingItem spendings={spendings} />,
-      shouldRender: spendings.length > 0,
+      content: <ProjectExpenseReports expenses={expenses} />,
+      shouldRender: expenses.length > 0,
     },
     //TODO: Backend implementation pending for progressReport
     // {
@@ -35,8 +32,8 @@ const ProjectDownloads = ({
   ];
 
   return (
-    <div className={styles.certificationContainer}>
-      {certificationContent
+    <div className={styles.projectSummary}>
+      {financialAndCertificationData
         .filter((item) => item.shouldRender)
         .map((item) => (
           <SingleProjectInfoItem key={item.title} title={item.title}>

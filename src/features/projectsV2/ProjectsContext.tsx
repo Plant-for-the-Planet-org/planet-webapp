@@ -7,15 +7,13 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { MapProject } from '../common/types/projectv2';
+import { ExtendedProject, MapProject } from '../common/types/projectv2';
 import { useLocale } from 'next-intl';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   APIError,
-  ConservationProjectExtended,
-  TreeProjectExtended,
   CountryCode,
   handleError,
   TreeProjectClassification,
@@ -26,8 +24,6 @@ import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
 import { PlantLocation } from '../common/types/plantLocation';
 
-export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
-
 export interface SiteType {
   siteName: string;
   siteArea: number;
@@ -35,8 +31,8 @@ export interface SiteType {
 }
 interface ProjectsState {
   projects: MapProject[] | null;
-  singleProject: ProjectExtend | null;
-  setSingleProject: SetState<ProjectExtend | null>;
+  singleProject: ExtendedProject | null;
+  setSingleProject: SetState<ExtendedProject | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
   selectedSite: number;
@@ -204,7 +200,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
     loadProjects();
   }, [currencyCode, locale]);
-
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();

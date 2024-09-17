@@ -2,7 +2,7 @@
 
 .projectInfoContainer,
 .moreInfoContainer,
-.certificationContainer,
+.projectSummary,
 .contactDetailsContainer {
   display: flex;
   flex-wrap: wrap;
@@ -18,7 +18,7 @@
   gap: 16px;
 }
 
-.certificationContainer {
+.projectSummary {
   background-color: rgba(var(--certification-background-color-new), 0.1);
   gap: 12px;
   height: auto;
@@ -39,7 +39,7 @@
   }
 }
 
-.infoDetail {
+.certificateDataContainer {
   display: flex;
   justify-content: space-between;
   a {
@@ -115,12 +115,12 @@
     color: rgb(var(--certification-background-color-new));
   }
 }
-.spendingsContainer {
+.expenseContainer {
   display: flex;
   flex-wrap: wrap;
   row-gap: 5px;
 }
-.spendingDetail {
+.expenseDetails {
   display: flex;
   gap: 6px;
   align-items: center;
@@ -180,7 +180,7 @@
     padding: 0;
     cursor: none;
   }
-  .spendingDetail {
+  .expenseDetails {
     width: 100%;
     gap: 32px;
   }
@@ -189,7 +189,7 @@
     margin-left: auto;
     cursor: pointer;
   }
-  .spendingsContainer {
+  .expenseContainer {
     gap: 2px;
   }
   .reportsContainer {

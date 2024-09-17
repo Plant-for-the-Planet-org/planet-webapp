@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from '../../features/common/types/common';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
 const MailIcon = ({ width, color }: IconProps) => {
   return (

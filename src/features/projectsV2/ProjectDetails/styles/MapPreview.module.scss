@@ -1,13 +1,14 @@
 @import '../../../../theme/theme';
 .mapPreviewContainer {
-  max-width: 480px;
+  background-image: url('../../../../../public/assets/images/satellite-image-of-mexico.jpg');
   width: 100%;
-  height: 341px;
-  background: grey; //need to be removed
-  border-radius: 13.401px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 21.3rem;
+  border-radius: 12px;
   display: flex;
-  align-items: flex-end;
   justify-content: center;
+  align-items: self-end;
 }
 
 .diveToMap {

@@ -11,6 +11,7 @@ interface ProjectSearchAndFilterProps {
   hasFilterApplied: boolean | undefined;
   isMobile?: boolean; // only needed for mobile version
   debouncedSearchValue?: string; // only needed for mobile version
+  selectedMode?: 'map' | 'list'; // only needed for mobile version
 }
 
 export const SearchAndFilter = ({
@@ -20,13 +21,14 @@ export const SearchAndFilter = ({
   setIsSearching,
   isSearching,
   isMobile,
+  selectedMode,
 }: ProjectSearchAndFilterProps) => {
-  const searchAndFilterContainer = isMobile
-    ? styles.iconsContainerMobile
-    : styles.iconsContainer;
+  const searchAndFilterContainerClasses = `${
+    isMobile ? styles.iconsContainerMobile : styles.iconsContainer
+  } ${selectedMode === 'map' && isMobile ? styles.mapModeButtons : ''}`;
 
   return (
-    <div className={searchAndFilterContainer}>
+    <div className={searchAndFilterContainerClasses}>
       <button onClick={() => setIsSearching(!isSearching)}>
         <SearchIcon />
       </button>

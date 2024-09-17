@@ -32,7 +32,7 @@ const expenses = [
 
 export const Preview: Story = {
   args: {
-    certification: [],
-    spendings: expenses,
+    certificates: [],
+    expenses: expenses,
   },
 };

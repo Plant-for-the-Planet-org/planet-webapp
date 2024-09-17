@@ -1,15 +1,13 @@
-import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { SetState } from '../../../common/types/common';
 import style from '../styles/MapPreview.module.scss';
 import ShowMapButton from './microComponents/ShowMapButton';
 
 type MapPreviewProps = {
-  setSelectedMode: SetState<ViewMode> | undefined;
+  handleMap: () => void;
 };
-const MapPreview = ({ setSelectedMode }: MapPreviewProps) => {
+const MapPreview = ({ handleMap }: MapPreviewProps) => {
   return (
     <div className={style.mapPreviewContainer}>
-      <ShowMapButton setSelectedMode={setSelectedMode} />
+      <ShowMapButton handleMap={handleMap} />
     </div>
   );
 };

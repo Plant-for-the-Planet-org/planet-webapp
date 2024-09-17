@@ -22,7 +22,8 @@ const MapControls = ({
   setSelectedMode,
   page,
 }: MapControlsProps) => {
-  const { setIsSatelliteView, isSatelliteView } = useProjectsMap();
+  const { setIsSatelliteView, isSatelliteView, updateMapOption, mapOptions } =
+    useProjectsMap();
   const {
     projects,
     topProjects,
@@ -61,6 +62,8 @@ const MapControls = ({
     setIsSearching,
     page,
     hasMoreThanOneSite,
+    mapOptions,
+    updateMapOption,
   };
   const isProjectDetailsPage = page === 'project-details';
   return (

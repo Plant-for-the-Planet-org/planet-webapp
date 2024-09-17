@@ -23,7 +23,7 @@
   }
 }
 
-.projectInfoContainer {
+.projectInfoSection {
   padding: 15px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
@@ -42,36 +42,4 @@
 
 .projectInfoSkeleton {
   height: 100%;
-}
-
-.imageSliderContainer {
-  position: relative;
-  > button {
-    position: absolute;
-    z-index: 1000;
-    width: 18px;
-    top: 13px;
-    right: 13px;
-    cursor: pointer;
-    pointer-events: auto;
-  }
-}
-
-.expandedImageSliderContainer {
-  position: relative;
-  width: 800px;
-  > button {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    z-index: 1000;
-    background: #fff;
-    cursor: pointer;
-  }
 }

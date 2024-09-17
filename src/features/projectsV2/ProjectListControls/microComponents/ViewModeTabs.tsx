@@ -51,9 +51,9 @@ const ViewModeTabs = ({
     );
   };
 
-  const tabContainerClass = isSearching
-    ? styles.tabContainerSecondary
-    : styles.tabContainer;
+  const tabContainerClass = `${
+    isSearching ? styles.tabContainerSecondary : styles.tabContainer
+  } ${selectedMode === 'map' ? styles.mapModeTabs : ''}`;
 
   return selectedMode ? (
     <div className={tabContainerClass}>
