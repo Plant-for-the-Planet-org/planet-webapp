@@ -1,10 +1,10 @@
 import { router } from '../trpc';
 
-import { projectListsProcedure } from '../procedures/myForestV2/projectList';
-import { contributionsProcedure } from '../procedures/myForestV2/contributions';
-import { leaderboardProcedure } from '../procedures/myForestV2/leaderboard';
+import { projectListsProcedure } from '../procedures/myForest/projectList';
+import { contributionsProcedure } from '../procedures/myForest/contributions';
+import { leaderboardProcedure } from '../procedures/myForest/leaderboard';
 
-export const myForestV2Router = router({
+export const myForestRouter = router({
   projectList: projectListsProcedure,
   contributions: contributionsProcedure,
   leaderboard: leaderboardProcedure,

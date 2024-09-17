@@ -1,8 +1,8 @@
 import { router } from '../trpc';
-import { myForestV2Router } from './myForest';
+import { myForestRouter } from './myForest';
 
 export const appRouter = router({
-  myForestV2: myForestV2Router,
+  myForest: myForestRouter,
 });
 
 // export type definition of API
