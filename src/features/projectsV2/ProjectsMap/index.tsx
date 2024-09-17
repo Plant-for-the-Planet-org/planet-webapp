@@ -59,7 +59,14 @@ function ProjectsMap(props: ProjectsMapProps) {
         {shouldShowMultipleProjectsView && (
           <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
         )}
-        <NavigationControl position="bottom-right" showCompass={false} />
+        <NavigationControl
+          position="bottom-right"
+          showCompass={false}
+          style={{
+            position: 'relative',
+            bottom: props.isMobile ? '100px' : '0px',
+          }}
+        />
       </Map>
     </>
   );
