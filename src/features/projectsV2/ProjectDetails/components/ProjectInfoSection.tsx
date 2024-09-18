@@ -38,25 +38,25 @@ const ProjectInfoSection = ({
     purpose,
     expenses,
     certificates,
+    unitType,
   } = project;
   const isTreeProject = purpose === 'trees';
+  const isConservationProject = purpose === 'conservation';
+  const isRestorationProject = purpose === 'trees' && unitType === 'm2';
 
   const shouldRenderKeyInfo = useMemo(() => {
-    if (!isTreeProject) return false;
-    const {
-      yearAbandoned,
-      firstTreePlanted,
-      plantingDensity,
-      maxPlantingDensity,
-      plantingSeasons,
-    } = metadata;
-
+    if (!isTreeProject && !isConservationProject) return false;
     return Boolean(
-      yearAbandoned ||
-        firstTreePlanted ||
-        plantingDensity ||
-        maxPlantingDensity ||
-        (plantingSeasons && plantingSeasons.length > 0)
+      (isTreeProject && metadata.yearAbandoned) ||
+        (isTreeProject && metadata.firstTreePlanted) ||
+        (isTreeProject && metadata.plantingDensity) ||
+        (isTreeProject && metadata.maxPlantingDensity) ||
+        (isTreeProject &&
+          metadata.plantingSeasons &&
+          metadata.plantingSeasons.length > 0) ||
+        (isConservationProject &&
+          metadata.activitySeasons &&
+          metadata.activitySeasons.length > 0)
     );
   }, [metadata]);
 
@@ -67,6 +67,7 @@ const ProjectInfoSection = ({
       longTermPlan,
       acquisitionYear,
       motivation,
+      mainInterventions,
     } = metadata;
     return Boolean(
       mainChallenge ||
@@ -74,10 +75,14 @@ const ProjectInfoSection = ({
         (isTreeProject &&
           metadata.siteOwnerType &&
           metadata.siteOwnerType?.length > 0) ||
+        (isConservationProject &&
+          metadata.landOwnershipType &&
+          metadata.landOwnershipType?.length > 0) ||
         (isTreeProject && metadata.degradationCause) ||
         longTermPlan ||
         acquisitionYear ||
-        motivation
+        motivation ||
+        (mainInterventions && mainInterventions?.length > 0)
     );
   }, [metadata]);
 
@@ -99,10 +104,13 @@ const ProjectInfoSection = ({
   const shouldRenderProjectDownloads = useMemo(() => {
     return certificates.length > 0 || expenses.length > 0;
   }, [certificates, expenses]);
-  const handleMap = () => {
-    if (setSelectedMode) setSelectedMode('map');
-  };
+  const handleMap = () => setSelectedMode?.('map');
 
+  const siteOwnershipType = isTreeProject
+    ? metadata.siteOwnerType
+    : isConservationProject
+    ? metadata.landOwnershipType
+    : null;
   return (
     <section className={styles.projectInfoSection}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
@@ -122,19 +130,24 @@ const ProjectInfoSection = ({
           }
           employees={metadata.employeesCount}
           plantingSeasons={isTreeProject ? metadata.plantingSeasons : null}
+          activitySeason={
+            isConservationProject ? metadata.activitySeasons : null
+          }
+          isRestorationProject={isRestorationProject}
         />
       )}
       {shouldRenderAdditionalInfo && (
         <AdditionalInfo
           mainChallengeText={metadata.mainChallenge}
           siteOwnershipText={metadata.siteOwnerName}
-          siteOwnershipType={isTreeProject ? metadata.siteOwnerType : null}
+          siteOwnershipType={siteOwnershipType}
           causeOfDegradationText={
             isTreeProject ? metadata.degradationCause : null
           }
           whyThisSiteText={metadata.motivation}
           longTermProtectionText={metadata.longTermPlan}
           acquiredSince={metadata.acquisitionYear}
+          mainInterventions={metadata.mainInterventions}
         />
       )}
       {shouldRenderProjectDownloads && (

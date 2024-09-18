@@ -5,6 +5,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 import InfoIconPopup from '../../../../temp/components/InfoIconPopup';
 import PlantingSeasons from './microComponents/PlantingSeasons';
+import { AllowedSeasonMonths } from '@planet-sdk/common';
 
 interface Props {
   abandonment: number | null;
@@ -13,6 +14,8 @@ interface Props {
   maxPlantingDensity: number | null;
   employees: number | null;
   plantingSeasons: number[] | null;
+  activitySeason: AllowedSeasonMonths[] | null;
+  isRestorationProject: boolean;
 }
 
 const KeyInfo = ({
@@ -22,6 +25,8 @@ const KeyInfo = ({
   maxPlantingDensity,
   employees,
   plantingSeasons,
+  activitySeason,
+  isRestorationProject,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tManageProjects = useTranslations('ManageProjects');
@@ -70,7 +75,13 @@ const KeyInfo = ({
         )}
 
         {firstTree && firstTree?.length > 0 && (
-          <SingleProjectInfoItem title={tProjectDetails('firstTreePlanted')}>
+          <SingleProjectInfoItem
+            title={
+              isRestorationProject
+                ? tProjectDetails('restorationStarted')
+                : tProjectDetails('firstTreePlanted')
+            }
+          >
             <time>
               {firstTree?.length > 0 &&
                 formatDate(
@@ -83,7 +94,7 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
       </div>
-      <div className={styles.seperator} />
+      {(abandonment || firstTree) && <div className={styles.seperator} />}
       <div className={styles.singleRowInfoContainer}>
         {plantingDensity && (
           <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
@@ -101,10 +112,21 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
       </div>
-      <div className={styles.seperator}></div>
+      {(plantingDensity || employees) && <div className={styles.seperator} />}
       {plantingSeasons && plantingSeasons?.length > 0 && (
-        <SingleProjectInfoItem title={tProjectDetails('plantingSeasons')}>
+        <SingleProjectInfoItem
+          title={
+            isRestorationProject
+              ? tProjectDetails('restorationSeasons')
+              : tProjectDetails('plantingSeasons')
+          }
+        >
           <PlantingSeasons plantingSeasons={plantingSeasons} />
+        </SingleProjectInfoItem>
+      )}
+      {activitySeason && activitySeason?.length > 0 && (
+        <SingleProjectInfoItem title={tProjectDetails('protectionSeasons')}>
+          <PlantingSeasons plantingSeasons={activitySeason} />
         </SingleProjectInfoItem>
       )}
     </div>

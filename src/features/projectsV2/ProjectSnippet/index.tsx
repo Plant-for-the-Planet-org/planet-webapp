@@ -119,14 +119,12 @@ export default function ProjectSnippet({
     <>
       <div className={styles.singleProject}>
         <ImageSection {...imageProps} />
-        {!isMobile && (
-          <div className={styles.progressBar}>
-            <div
-              className={`${styles.progressBarHighlight} ${progressBarClass}`}
-              style={{ width: `${progressPercentage}%` }}
-            />
-          </div>
-        )}
+        <div className={styles.progressBar}>
+          <div
+            className={`${styles.progressBarHighlight} ${progressBarClass}`}
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
         <ProjectInfoSection {...projectInfoProps} />
         {!isMobile && (
           <TpoName

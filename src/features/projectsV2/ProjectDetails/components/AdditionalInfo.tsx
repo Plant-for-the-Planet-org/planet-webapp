@@ -1,6 +1,7 @@
 import styles from '../styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
+import { InterventionTypes } from '@planet-sdk/common';
 interface Props {
   mainChallengeText: string | null;
   siteOwnershipText: string | null;
@@ -9,6 +10,7 @@ interface Props {
   longTermProtectionText: string | null;
   siteOwnershipType: string[] | null;
   acquiredSince: number | null;
+  mainInterventions: InterventionTypes[] | null;
 }
 
 const AdditionalInfo = ({
@@ -19,6 +21,7 @@ const AdditionalInfo = ({
   longTermProtectionText,
   siteOwnershipType,
   acquiredSince,
+  mainInterventions,
 }: Props) => {
   const tManageProjects = useTranslations('ManageProjects');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -69,12 +72,22 @@ const AdditionalInfo = ({
       return translatedTitle;
     }
   };
-
   const moreInfoContent = [
     {
       title: `${tManageProjects('mainChallenge')}`,
       content: <div className={styles.infoDetail}>{mainChallengeText}</div>,
       shouldDisplay: Boolean(mainChallengeText),
+    },
+    {
+      title: `${tManageProjects(`labelMainInterventions`)}`,
+      content: (
+        <div className={styles.infoDetail}>
+          {mainInterventions
+            ?.map((item) => tManageProjects(`interventionTypes.${item}`))
+            .join(',')}
+        </div>
+      ),
+      shouldDisplay: mainInterventions && mainInterventions?.length > 0,
     },
     {
       title: `${tManageProjects('siteOwnership')}`,
@@ -88,7 +101,9 @@ const AdditionalInfo = ({
           <div className={styles.infoDetail}>{siteOwnershipText}</div>
         </>
       ),
-      shouldDisplay: siteOwnershipText && siteOwnershipText?.length > 0,
+      shouldDisplay:
+        (siteOwnershipText && siteOwnershipText?.length > 0) ||
+        (siteOwnershipType && siteOwnershipType?.length > 0),
     },
     {
       title: `${tManageProjects('causeOfDegradation')}`,
@@ -103,7 +118,7 @@ const AdditionalInfo = ({
       shouldDisplay: Boolean(whyThisSiteText),
     },
     {
-      title: `${tManageProjects('longTermProtection')}`,
+      title: `${tProjectDetails('longTermPlan')}`,
       content: (
         <div className={styles.infoDetail}>{longTermProtectionText}</div>
       ),
