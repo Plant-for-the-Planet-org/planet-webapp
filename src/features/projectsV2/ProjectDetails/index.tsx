@@ -12,7 +12,8 @@ import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
-import PlantLocationInfoSection from './components/PlantLocationInfoSection';
+import PlantLocationInfoSection from './components/PlantLocationInfo';
+import PlantLocationInfo from './components/PlantLocationInfo';
 
 const ProjectDetails = ({
   currencyCode,
@@ -133,7 +134,7 @@ const ProjectDetails = ({
         page="project-details"
       />
       {selectedPl || hoveredPl ? (
-        <PlantLocationInfoSection
+        <PlantLocationInfo
           plantLocationInfo={hoveredPl ? hoveredPl : selectedPl}
         />
       ) : (

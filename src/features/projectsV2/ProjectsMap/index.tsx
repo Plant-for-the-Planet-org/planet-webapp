@@ -26,7 +26,8 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
-  const { plantLocations, setHoveredPl, setSelectedPl } = useProjects();
+  const { plantLocations, setHoveredPl, setSelectedPl, samplePlantLocation } =
+    useProjects();
   const { projects, singleProject } = useProjects();
   const shouldShowSingleProjectsView = singleProject !== null;
   const shouldShowMultipleProjectsView =
@@ -53,7 +54,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     },
     [plantLocations]
   );
-
   const onMouseLeave = () => {
     setHoveredPl(null);
   };

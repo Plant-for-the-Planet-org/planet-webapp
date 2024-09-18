@@ -32,7 +32,7 @@ export const getPlantLocationInfo = (
   }
   const map = mapRef.current.getMap();
   const features = map.queryRenderedFeatures(point, {
-    layers: ['plant-polygon-layer'],
+    layers: ['plant-polygon-layer', 'point-layer'],
   });
   if (features && features.length > 0) {
     map.getCanvas().style.cursor = 'pointer';

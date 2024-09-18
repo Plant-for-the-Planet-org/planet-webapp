@@ -13,7 +13,7 @@ import SampleSpecies from './microComponents/SampleSpecies';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 
-const PlantLocationInfoSection = ({
+const PlantLocationInfo = ({
   plantLocationInfo,
 }: {
   plantLocationInfo: PlantLocation | SamplePlantLocation | null;
@@ -82,4 +82,4 @@ const PlantLocationInfoSection = ({
   );
 };
 
-export default PlantLocationInfoSection;
+export default PlantLocationInfo;
