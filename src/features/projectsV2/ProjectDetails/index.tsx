@@ -13,6 +13,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
 import { ExtendedProject } from '../../common/types/projectv2';
+import { updateUrlWithParams } from './utils';
 
 const ProjectDetails = ({
   currencyCode,
@@ -103,18 +104,18 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    if (!projectSites || !(projectSites && projectSites[selectedSite])) {
+    if (!projectSites || !projectSites[selectedSite]) {
       return;
     }
-    const currentUrl = new URL(window.location.href);
-    const searchParams = currentUrl.searchParams;
-    searchParams.set('site', projectSites[selectedSite].properties.id);
-    const newSearch = searchParams.toString();
-    const newPath = `/${locale}/prd/${singleProject.slug}${
-      newSearch.length > 0 ? `?${newSearch}` : ''
-    }`;
-    router.push(newPath);
-  }, [singleProject?.slug, selectedSite, locale]);
+    const newSiteId = projectSites[selectedSite].properties.id;
+    const pathname = `/${locale}/prd/${singleProject.slug}`;
+
+    const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
+
+    router.push({ pathname, query }, undefined, {
+      shallow: true,
+    });
+  }, [singleProject?.slug, selectedSite, locale, router.asPath]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>

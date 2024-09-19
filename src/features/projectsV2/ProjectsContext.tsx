@@ -171,7 +171,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   useEffect(() => {
     async function loadProjects() {
-      if (page !== 'project-list' || !currencyCode) {
+      if (
+        page !== 'project-list' ||
+        !currencyCode ||
+        (projects && projects?.length > 0)
+      ) {
         return;
       }
 
@@ -199,7 +203,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }
     }
     loadProjects();
-  }, [currencyCode, locale]);
+  }, [currencyCode, locale, page]);
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();

@@ -2,7 +2,7 @@ import * as turf from '@turf/turf';
 import { SitesGeoJSON } from '../../features/common/types/ProjectPropsContextInterface';
 import { SetState } from '../../features/common/types/common';
 import { ViewState } from 'react-map-gl-v7';
-import { Map } from 'mapbox-gl';
+import { Map } from 'maplibre-gl';
 import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
 import { MutableRefObject } from 'react';
 

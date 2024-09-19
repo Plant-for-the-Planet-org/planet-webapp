@@ -3,10 +3,10 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
-import MultipleProjectsView from './MultipleProjectsView';
+import MultipleProjectsView from './microComponents/MultipleProjectsView';
 import { useProjects } from '../ProjectsContext';
-import SingleProjectView from './SingleProjectView';
-import MapControls from './MapControls';
+import SingleProjectView from './microComponents/SingleProjectView';
+import MapControls from './microComponents/MapControls';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
 
@@ -33,16 +33,15 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects.length > 0 &&
     !shouldShowSingleProjectsView;
 
-  const pageProps = {
+  const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
     setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
     isMobile: props.isMobile,
     page: props.page,
   };
-  const bottomAlignment = props.isMobile ? '60px' : '0px';
   return (
     <>
-      <MapControls {...pageProps} />
+      <MapControls {...mapControlProps} />
       <Map
         {...viewState}
         {...mapState}
@@ -64,7 +63,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           showCompass={false}
           style={{
             position: 'relative',
-            bottom: bottomAlignment,
+            bottom: props.isMobile ? '60px' : '0px',
           }}
         />
       </Map>

@@ -1,5 +1,5 @@
 import { SetState } from '../../../common/types/common';
-import styles from '../SiteDropdown.module.scss';
+import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 
 type SiteData = {
   siteName: string;

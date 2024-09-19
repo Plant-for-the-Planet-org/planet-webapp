@@ -31,7 +31,7 @@ const ImageSection = (props: ImageSectionProps) => {
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
-  const { setSingleProject } = useProjects();
+  const { setSingleProject, setDebouncedSearchValue } = useProjects();
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
@@ -50,6 +50,7 @@ const ImageSection = (props: ImageSectionProps) => {
     );
   };
   const handleBackButton = useCallback((e: MouseEvent) => {
+    setDebouncedSearchValue('');
     setSingleProject(null);
     e.stopPropagation();
     if (document.referrer) {
