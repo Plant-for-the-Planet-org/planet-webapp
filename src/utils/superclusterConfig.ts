@@ -6,7 +6,6 @@ import {
   DonationProperties,
   MyContributionsSingleRegistration,
 } from '../features/common/types/myForest';
-import {} from '../features/common/Layout/MyForestContext';
 import { ViewState } from 'react-map-gl-v7/maplibre';
 
 const clusterConfig = {

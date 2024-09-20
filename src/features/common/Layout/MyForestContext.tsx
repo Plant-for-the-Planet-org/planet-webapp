@@ -231,7 +231,7 @@ export const MyForestProvider: FC = ({ children }) => {
 export const useMyForest = () => {
   const context = useContext(MyForestContext);
   if (!context) {
-    throw new Error('MyForestContextV2 must be used within MyForestProvider');
+    throw new Error('MyForestContext must be used within MyForestProvider');
   }
   return context;
 };
