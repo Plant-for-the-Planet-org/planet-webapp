@@ -63,7 +63,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           showCompass={false}
           style={{
             position: 'relative',
-            bottom: props.isMobile ? '60px' : '0px',
+            bottom: props.isMobile ? '110px' : '0px',
           }}
         />
       </Map>
