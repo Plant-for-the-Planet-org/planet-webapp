@@ -35,20 +35,29 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  .plantingDetailsSubContainer {
-    min-width: 162px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
-  }
-  .label {
-    color: rgba(0, 122, 73, 1);
-    font-weight: 700;
-  }
-  .data {
-    font-weight: 400;
-    margin-top: 3px;
-  }
+}
+.plantingDetailsSubContainer {
+  min-width: 162px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+}
+.label {
+  color: rgba(0, 122, 73, 1);
+  font-weight: 700;
+  font-size: 12px;
+}
+.showWholeArea,
+.data {
+  font-weight: 400;
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.showWholeArea {
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
 }
 
 .speciesContainer {
@@ -132,8 +141,23 @@
 .treeMapperLabelSubContainer {
   font-size: 12px;
   display: flex;
+  gap: 2px;
   .treeMapperLabel {
     color: rgba(0, 122, 73, 1);
     font-weight: 700;
+  }
+}
+
+//sample plant location styles
+
+.sampleTreeInfoHeading {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  h1 {
+    font-weight: 700;
+  }
+  p {
+    font-weight: 400;
   }
 }

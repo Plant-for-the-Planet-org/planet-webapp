@@ -1,8 +1,8 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { ProjectExtend, useProjects } from '../ProjectsContext';
-import ProjectInfoSection from './components/ProjectInfoSection';
+import ProjectInfo from './components/ProjectInfo';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
@@ -12,7 +12,6 @@ import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
-import PlantLocationInfoSection from './components/PlantLocationInfo';
 import PlantLocationInfo from './components/PlantLocationInfo';
 
 const ProjectDetails = ({
@@ -35,6 +34,8 @@ const ProjectDetails = ({
     selectedSite,
     selectedPl,
     hoveredPl,
+    samplePlantLocation,
+    setSamplePlantLocation,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -124,6 +125,23 @@ const ProjectDetails = ({
     router.push(newPath);
   }, [singleProject?.slug, selectedSite, locale]);
 
+  const getplantInfoToRender = useMemo(() => {
+    if (hoveredPl?.hid === selectedPl?.hid && samplePlantLocation)
+      return samplePlantLocation;
+    if (hoveredPl) {
+      return hoveredPl;
+    } else if (samplePlantLocation) {
+      return samplePlantLocation;
+    } else {
+      return selectedPl;
+    }
+  }, [samplePlantLocation, hoveredPl, selectedPl]);
+
+  // clean up sample plant location state whenever parent plant location change
+  useEffect(() => {
+    if (samplePlantLocation) return setSamplePlantLocation(null);
+  }, [selectedPl?.hid]);
+
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
@@ -133,12 +151,10 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {selectedPl || hoveredPl ? (
-        <PlantLocationInfo
-          plantLocationInfo={hoveredPl ? hoveredPl : selectedPl}
-        />
+      {selectedPl || hoveredPl || samplePlantLocation ? (
+        <PlantLocationInfo plantLocationInfo={getplantInfoToRender} />
       ) : (
-        <ProjectInfoSection
+        <ProjectInfo
           project={singleProject}
           isMobile={isMobile}
           setSelectedMode={setSelectedMode}

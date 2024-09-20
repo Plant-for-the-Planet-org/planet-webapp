@@ -12,12 +12,16 @@ import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleSpecies from './microComponents/SampleSpecies';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
+import SampleTreeInfoCard from './microComponents/SampleTreeInfoCard';
+import { formatHid } from '../utils';
+import { useTranslations } from 'next-intl';
 
 const PlantLocationInfo = ({
   plantLocationInfo,
 }: {
   plantLocationInfo: PlantLocation | SamplePlantLocation | null;
 }) => {
+  const t = useTranslations('ProjectDetails');
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
 
@@ -43,40 +47,63 @@ const PlantLocationInfo = ({
     }
   }, [isMultiTreeRegistration ? plantLocationInfo.sampleInterventions : null]);
 
-  const hasSampleInterventionSpeciesImages =
-    sampleInterventionSpeciesImages !== undefined &&
-    sampleInterventionSpeciesImages?.length > 0;
-
+  const isSampleTree = plantLocationInfo?.type === 'sample-tree-registration';
   return (
     <section className={styles.plantLocationInfoSection}>
-      <TreePlantedData
-        plHid={plantLocationInfo?.hid}
-        totalTreesCount={totalTreesCount}
-        plantedLocationArea={plantedLocationArea}
-      />
-      {hasSampleInterventionSpeciesImages && (
+      {isSampleTree ? (
+        <div className={styles.sampleTreeInfoHeading}>
+          <h1>{t('sampleTree')}</h1>
+          <p>{formatHid(plantLocationInfo?.hid)}</p>
+        </div>
+      ) : (
+        <TreePlantedData
+          plHid={plantLocationInfo?.hid}
+          totalTreesCount={totalTreesCount}
+          plantedLocationArea={plantedLocationArea}
+        />
+      )}
+      {(sampleInterventionSpeciesImages || plantLocationInfo?.coordinates) && (
         <ImagesSlider
-          images={sampleInterventionSpeciesImages}
+          images={
+            isSampleTree
+              ? plantLocationInfo.coordinates
+              : sampleInterventionSpeciesImages
+          }
           type={'coordinate'}
           imageSize={'large'}
           imageHeight={195}
+          hideProgressContainer={isSampleTree ? true : false}
         />
       )}
-      <PlantingDetails
-        plantingDensity={plantingDensity}
-        plantDate={plantLocationInfo?.plantDate}
-      />
-      {isMultiTreeRegistration && (
-        <SpeciesPlanted
-          totalTreesCount={totalTreesCount}
-          plantedSpecies={plantLocationInfo.plantedSpecies}
+
+      {isSampleTree ? (
+        <SampleTreeInfoCard
+          plantDate={plantLocationInfo?.plantDate}
+          treeTagNumber={plantLocationInfo?.tag}
+          scientificName={plantLocationInfo?.scientificName}
+          measurment={plantLocationInfo?.measurements}
         />
+      ) : (
+        <>
+          {' '}
+          <PlantingDetails
+            plantingDensity={plantingDensity}
+            plantDate={plantLocationInfo?.plantDate}
+          />
+          {isMultiTreeRegistration && (
+            <SpeciesPlanted
+              totalTreesCount={totalTreesCount}
+              plantedSpecies={plantLocationInfo.plantedSpecies}
+            />
+          )}
+          {isMultiTreeRegistration && (
+            <SampleSpecies
+              sampleInterventions={plantLocationInfo.sampleInterventions}
+            />
+          )}
+        </>
       )}
-      {isMultiTreeRegistration && (
-        <SampleSpecies
-          sampleInterventions={plantLocationInfo.sampleInterventions}
-        />
-      )}
+
       <TreeMapperBrand />
     </section>
   );

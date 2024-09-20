@@ -25,8 +25,16 @@
     "plantingDensityUnit": "{formattedCount} trees per ha",
     "speciesCount": "Species Planted ({count})",
     "sampleTrees": "Sample Trees ({count})",
+    "sampleTree": "Sample Tree",
+    "measurment": "Measurment",
     "speciesMeasurment": "Tag #{hid} • {plantHeight}m high • {plantWidth}cm wide",
+    "singleSpeciesMeasurment": "{plantHeight}m high • {plantWidth}cm wide",
     "poweredBy": "Powered by",
-    "treeMapper": "TreeMapper"
+    "treeMapper": "TreeMapper",
+    "treeTag": "Tree Tag",
+    "tag": "Tag #{number}",
+    "scientificName": "Scientific Name",
+    "plot": "Plot",
+    "showWholeArea": "Show Whole Area"
   }
 }

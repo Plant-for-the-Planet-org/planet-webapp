@@ -20,3 +20,7 @@ export const extractImages = (
   traverse(sampleInterventionsImages);
   return Images;
 };
+
+export const formatHid = (hid: string | undefined) => {
+  return hid ? hid.slice(0, 3) + '-' + hid.slice(3) : null;
+};

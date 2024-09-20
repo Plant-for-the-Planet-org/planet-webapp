@@ -3,13 +3,15 @@ import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
 import { SingleSliderImage } from './microComponents/SingleSliderImage';
+import { PlantLocationCoordinate } from '../../../common/types/plantLocation';
 
 interface Props {
-  images: SliderImage[];
+  images: SliderImage[] | PlantLocationCoordinate[] | undefined;
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
   leftAlignment?: number;
+  hideProgressContainer?: boolean;
 }
 
 const ImagesSlider = ({
@@ -18,12 +20,14 @@ const ImagesSlider = ({
   imageSize,
   imageHeight,
   leftAlignment,
+  hideProgressContainer = false,
 }: Props) => {
+  if (images === undefined) return <></>;
   const [slider, setSlider] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
   const pattern = /^https:\/\//i;
   useEffect(() => {
-    images.forEach((sliderImage) => {
+    images?.forEach((sliderImage) => {
       if (sliderImage.image) {
         let imageURL;
         if (pattern.test(sliderImage.image)) {
@@ -56,6 +60,7 @@ const ImagesSlider = ({
           left: leftAlignment,
           padding: '7px 0 5px 0',
           maxWidth: '90%',
+          display: hideProgressContainer ? 'none' : 'flex',
         }}
         progressStyles={{ background: '#27AE60', height: 3.35 }}
         progressWrapperStyles={{

@@ -1,6 +1,7 @@
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
+import { formatHid } from '../../utils';
 
 interface Props {
   plHid: string | undefined;
@@ -15,7 +16,6 @@ const TreePlantedData = ({
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
-  const formattedHid = plHid ? plHid.slice(0, 3) + '-' + plHid.slice(3) : null;
   return (
     <div className={styles.treeCountWrapper}>
       <div className={styles.treeCount}>
@@ -30,7 +30,7 @@ const TreePlantedData = ({
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>
-      <div className={styles.hid}>{formattedHid}</div>
+      <div className={styles.hid}>{formatHid(plHid)}</div>
     </div>
   );
 };
