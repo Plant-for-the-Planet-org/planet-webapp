@@ -3,7 +3,7 @@ import AboutProject from './AboutProject';
 import { useTranslations } from 'next-intl';
 import ProjectReview from './ProjectReviews';
 import { CountryCode } from '@planet-sdk/common';
-import styles from '../ProjectDetails.module.scss';
+import styles from '../styles/ProjectInfo.module.scss';
 import KeyInfo from './KeyInfo';
 import AdditionalInfo from './AdditionalInfo';
 import VideoPlayer from './VideoPlayer';
@@ -38,27 +38,32 @@ const ProjectInfoSection = ({
     purpose,
     expenses,
     certificates,
-    unitType,
   } = project;
   const isTreeProject = purpose === 'trees';
   const isConservationProject = purpose === 'conservation';
-  const isRestorationProject = purpose === 'trees' && unitType === 'm2';
 
   const shouldRenderKeyInfo = useMemo(() => {
     if (!isTreeProject && !isConservationProject) return false;
-    return Boolean(
-      (isTreeProject && metadata.yearAbandoned) ||
-        (isTreeProject && metadata.firstTreePlanted) ||
-        (isTreeProject && metadata.plantingDensity) ||
-        (isTreeProject && metadata.maxPlantingDensity) ||
-        (isTreeProject &&
-          metadata.plantingSeasons &&
-          metadata.plantingSeasons.length > 0) ||
-        (isConservationProject &&
-          metadata.activitySeasons &&
-          metadata.activitySeasons.length > 0)
+
+    const treeProjectConditions = isTreeProject
+      ? [
+          metadata.yearAbandoned,
+          metadata.firstTreePlanted,
+          metadata.plantingDensity,
+          metadata.maxPlantingDensity,
+          metadata.plantingSeasons && metadata.plantingSeasons.length > 0,
+        ]
+      : [];
+
+    const conservationProjectConditions = isConservationProject
+      ? [metadata.activitySeasons && metadata.activitySeasons.length > 0]
+      : [];
+
+    return (
+      (isTreeProject && treeProjectConditions.some(Boolean)) ||
+      (isConservationProject && conservationProjectConditions.some(Boolean))
     );
-  }, [metadata]);
+  }, [metadata, isTreeProject, isConservationProject]);
 
   const shouldRenderAdditionalInfo = useMemo(() => {
     const {
@@ -69,20 +74,35 @@ const ProjectInfoSection = ({
       motivation,
       mainInterventions,
     } = metadata;
-    return Boolean(
-      mainChallenge ||
-        siteOwnerName ||
-        (isTreeProject &&
-          metadata.siteOwnerType &&
-          metadata.siteOwnerType?.length > 0) ||
-        (isConservationProject &&
-          metadata.landOwnershipType &&
-          metadata.landOwnershipType?.length > 0) ||
-        (isTreeProject && metadata.degradationCause) ||
-        longTermPlan ||
-        acquisitionYear ||
-        motivation ||
-        (mainInterventions && mainInterventions?.length > 0)
+    const generalConditions = [
+      mainChallenge,
+      siteOwnerName,
+      longTermPlan,
+      acquisitionYear,
+      motivation,
+      mainInterventions && mainInterventions?.length > 0,
+    ];
+    const treeProjectConditions = isTreeProject
+      ? [
+          metadata.siteOwnerType && metadata.siteOwnerType?.length > 0,
+          metadata.degradationCause,
+        ]
+      : [];
+    const conservationProjectConditions = isConservationProject
+      ? [
+          metadata.landOwnershipType && metadata.landOwnershipType?.length > 0,
+          metadata.actions,
+          metadata.socialBenefits,
+          metadata.ecologicalBenefits,
+          metadata.coBenefits,
+          metadata.benefits,
+        ]
+      : [];
+
+    return (
+      generalConditions.some(Boolean) ||
+      treeProjectConditions.some(Boolean) ||
+      conservationProjectConditions.some(Boolean)
     );
   }, [metadata]);
 
@@ -106,11 +126,6 @@ const ProjectInfoSection = ({
   }, [certificates, expenses]);
   const handleMap = () => setSelectedMode?.('map');
 
-  const siteOwnershipType = isTreeProject
-    ? metadata.siteOwnerType
-    : isConservationProject
-    ? metadata.landOwnershipType
-    : null;
   return (
     <section className={styles.projectInfoSection}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
@@ -123,31 +138,51 @@ const ProjectInfoSection = ({
       {shouldRenderKeyInfo && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}
-          firstTree={isTreeProject ? metadata.firstTreePlanted : null}
+          interventionStarted={
+            isTreeProject
+              ? metadata.firstTreePlanted
+              : metadata.startingProtectionYear
+          }
+          interventionSeasons={
+            isTreeProject ? metadata.plantingSeasons : metadata.activitySeasons
+          }
           plantingDensity={isTreeProject ? metadata.plantingDensity : null}
           maxPlantingDensity={
             isTreeProject ? metadata.maxPlantingDensity : null
           }
           employees={metadata.employeesCount}
-          plantingSeasons={isTreeProject ? metadata.plantingSeasons : null}
-          activitySeason={
-            isConservationProject ? metadata.activitySeasons : null
-          }
-          isRestorationProject={isRestorationProject}
+          isTreeProject={isTreeProject}
+          degradationYear={isTreeProject ? metadata.degradationYear : null}
         />
       )}
       {shouldRenderAdditionalInfo && (
         <AdditionalInfo
-          mainChallengeText={metadata.mainChallenge}
-          siteOwnershipText={metadata.siteOwnerName}
-          siteOwnershipType={siteOwnershipType}
-          causeOfDegradationText={
-            isTreeProject ? metadata.degradationCause : null
+          mainChallenge={metadata.mainChallenge}
+          siteOwnerName={metadata.siteOwnerName}
+          siteOwnershipType={
+            isTreeProject
+              ? metadata.siteOwnerType
+              : isConservationProject
+              ? metadata.landOwnershipType
+              : null
           }
-          whyThisSiteText={metadata.motivation}
-          longTermProtectionText={metadata.longTermPlan}
+          causeOfDegradation={isTreeProject ? metadata.degradationCause : null}
+          whyThisSite={metadata.motivation}
+          longTermPlan={metadata.longTermPlan}
           acquiredSince={metadata.acquisitionYear}
           mainInterventions={metadata.mainInterventions}
+          actions={isConservationProject ? metadata.actions : null}
+          socialBenefits={
+            isConservationProject ? metadata.socialBenefits : null
+          }
+          ecologicalBenefits={
+            isConservationProject ? metadata.ecologicalBenefits : null
+          }
+          benefits={isConservationProject ? metadata.benefits : null}
+          coBenefits={isConservationProject ? metadata.coBenefits : null}
+          ownershipTenure={
+            isConservationProject ? metadata.ownershipType : null
+          }
         />
       )}
       {shouldRenderProjectDownloads && (

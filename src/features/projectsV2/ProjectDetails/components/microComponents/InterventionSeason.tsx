@@ -2,10 +2,10 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  plantingSeasons: number[] | null;
+  interventionSeasons: number[] | null;
 }
 
-const PlantingSeasons = ({ plantingSeasons }: Props) => {
+const InterventionSeason = ({ interventionSeasons }: Props) => {
   const tCommon = useTranslations('Common');
   const tManageProjects = useTranslations('ManageProjects');
 
@@ -25,13 +25,13 @@ const PlantingSeasons = ({ plantingSeasons }: Props) => {
   ];
   return (
     <div>
-      {plantingSeasons?.map((season, index) => {
+      {interventionSeasons?.map((season, index) => {
         return (
           <span key={seasons[season - 1]}>
             {seasons[season - 1]}
-            {index === plantingSeasons.length - 2 ? (
+            {index === interventionSeasons.length - 2 ? (
               <span> {tManageProjects('and')} </span>
-            ) : index === plantingSeasons.length - 1 ? (
+            ) : index === interventionSeasons.length - 1 ? (
               '.'
             ) : (
               ', '
@@ -43,4 +43,4 @@ const PlantingSeasons = ({ plantingSeasons }: Props) => {
   );
 };
 
-export default PlantingSeasons;
+export default InterventionSeason;

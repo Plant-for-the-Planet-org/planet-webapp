@@ -62,7 +62,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setSelectedMode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [singleProject, setSingleProject] = useState<ProjectExtend | null>(
+  const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
   const [selectedClassification, setSelectedClassification] = useState<
@@ -194,6 +194,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setCurrencyCode(currency);
     }
   }, [currencyCode, setCurrencyCode]);
+
+  useEffect(() => {
+    if (setSelectedMode && page === 'project-details') {
+      setSelectedMode('list');
+      setDebouncedSearchValue('');
+      setIsSearching(false);
+      setSelectedClassification([]);
+    }
+  }, [page]);
 
   const value: ProjectsState | null = useMemo(
     () => ({

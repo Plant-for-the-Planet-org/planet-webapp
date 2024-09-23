@@ -13,7 +13,7 @@ interface Props {
 const ProjectDownloads = ({ certificates, expenses }: Props) => {
   const tManageProjects = useTranslations('ManageProjects');
 
-  const financialAndCertificationData = [
+  const downloadsRenderConfig = [
     {
       title: `${tManageProjects('externalCertifications')}`,
       content: <ProjectCertificates certificates={certificates} />,
@@ -33,7 +33,7 @@ const ProjectDownloads = ({ certificates, expenses }: Props) => {
 
   return (
     <div className={styles.projectSummary}>
-      {financialAndCertificationData
+      {downloadsRenderConfig
         .filter((item) => item.shouldRender)
         .map((item) => (
           <SingleProjectInfoItem key={item.title} title={item.title}>

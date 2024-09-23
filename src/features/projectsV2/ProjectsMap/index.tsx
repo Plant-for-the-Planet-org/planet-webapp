@@ -56,7 +56,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapOptions,
     updateMapOption,
   };
-
   return (
     <>
       <MobileControls {...projectListControlProps} />
@@ -67,7 +66,9 @@ function ProjectsMap(props: ProjectsMapProps) {
         attributionControl={false}
         ref={mapRef}
       >
-        {mapOptions.showProjects && projects && <MultipleProjectsView />}
+        {mapOptions.showProjects && projects && (
+          <MultipleProjectsView isMobile={props.isMobile} />
+        )}
         <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
     </>

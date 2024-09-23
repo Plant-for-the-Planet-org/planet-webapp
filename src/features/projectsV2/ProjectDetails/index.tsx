@@ -88,7 +88,7 @@ const ProjectDetails = ({
       />
     </div>
   ) : (
-    <Skeleton className={styles.projectInfoSkeleton} />
+    <Skeleton className={styles.projectDetailsSkeleton} />
   );
 };
 
