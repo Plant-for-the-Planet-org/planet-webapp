@@ -2,7 +2,6 @@ import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { DevTool } from '@hookform/devtools';
 import { SetState } from '../../../common/types/common';
 import themeProperties from '../../../../theme/themeProperties';
 import { Recipient } from '../BulkCodesTypes';
