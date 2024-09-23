@@ -89,7 +89,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         const resJson = await res.json();
         setUser(resJson as User);
       } else if (res.status === 303) {
-        // if 303 -> user doesn not exist in db
+        // if 303 -> user does not exist in db
         setUser(null);
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
@@ -120,7 +120,10 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [token, refetchUserData]);
 
   React.useEffect(() => {
-    if (!isLoading && user === undefined) {
+    if (
+      !isLoading &&
+      (user === undefined || error !== undefined || !isAuthenticated)
+    ) {
       localStorage.removeItem('impersonationData');
     }
     const impersonationData = localStorage.getItem('impersonationData');
@@ -129,7 +132,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     } else if (impersonationData === null && isImpersonationModeOn) {
       setIsImpersonationModeOn(false);
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, error, isAuthenticated]);
 
   const value: UserPropsContextInterface | null = {
     contextLoaded,
