@@ -116,7 +116,6 @@ const ProjectDetails = ({
       shallow: true,
     });
   }, [singleProject?.slug, selectedSite, locale, router.asPath]);
-  console.log('i ran');
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
