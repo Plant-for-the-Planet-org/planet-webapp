@@ -44,6 +44,7 @@ const ProjectInfoSection = ({
 
   const shouldRenderKeyInfo = useMemo(() => {
     if (!isTreeProject && !isConservationProject) return false;
+    const generalConditions = [metadata.employeesCount];
 
     const treeProjectConditions = isTreeProject
       ? [
@@ -52,16 +53,21 @@ const ProjectInfoSection = ({
           metadata.plantingDensity,
           metadata.maxPlantingDensity,
           metadata.plantingSeasons && metadata.plantingSeasons.length > 0,
+          metadata.degradationYear,
         ]
       : [];
 
     const conservationProjectConditions = isConservationProject
-      ? [metadata.activitySeasons && metadata.activitySeasons.length > 0]
+      ? [
+          metadata.activitySeasons && metadata.activitySeasons.length > 0,
+          metadata.startingProtectionYear,
+        ]
       : [];
 
     return (
       (isTreeProject && treeProjectConditions.some(Boolean)) ||
-      (isConservationProject && conservationProjectConditions.some(Boolean))
+      (isConservationProject && conservationProjectConditions.some(Boolean)) ||
+      generalConditions.some(Boolean)
     );
   }, [metadata, isTreeProject, isConservationProject]);
 
@@ -96,6 +102,7 @@ const ProjectInfoSection = ({
           metadata.ecologicalBenefits,
           metadata.coBenefits,
           metadata.benefits,
+          metadata.ownershipType,
         ]
       : [];
 
