@@ -1,13 +1,13 @@
-import ProjectSiteDropdown from '../ProjectSiteDropDown';
-import ProjectListControlForMobile from '../../ProjectListControls/ProjectListControlForMobile';
-import { useProjectsMap } from '../../ProjectsMapContext';
-import { useProjects } from '../../ProjectsContext';
-import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
-import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
-import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import styles from '../ProjectsMap.module.scss';
-import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { SetState } from '../../../common/types/common';
+import ProjectSiteDropdown from './ProjectSiteDropDown';
+import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
+import { useProjectsMap } from '../ProjectsMapContext';
+import { useProjects } from '../ProjectsContext';
+import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
+import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
+import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
+import styles from '../ProjectsMap/ProjectsMap.module.scss';
+import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { SetState } from '../../common/types/common';
 
 interface MapControlsProps {
   isMobile: boolean;

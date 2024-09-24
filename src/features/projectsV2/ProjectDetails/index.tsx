@@ -13,7 +13,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
 import { ExtendedProject } from '../../common/types/projectv2';
-import { updateUrlWithParams } from './utils';
+import { updateUrlWithParams } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -116,7 +116,7 @@ const ProjectDetails = ({
       shallow: true,
     });
   }, [singleProject?.slug, selectedSite, locale, router.asPath]);
-
+  console.log('i ran');
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet

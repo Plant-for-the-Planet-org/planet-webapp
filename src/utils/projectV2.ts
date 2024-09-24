@@ -1,4 +1,10 @@
 import { ParsedUrlQuery } from 'querystring';
+import {
+  MapProjectProperties,
+  ExtendedProject,
+} from '../features/common/types/projectv2';
+import { TreeProjectClassification } from '@planet-sdk/common';
+
 const paramsToPreserve = [
   'embed',
   'back_icon',
@@ -36,3 +42,35 @@ export const updateUrlWithParams = (
   currentQuery.site = siteId;
   return currentQuery;
 };
+
+/**
+ * Determines the category of a project based on its properties.
+ * @param {MapProjectProperties | ExtendedProject} projectProperties - The project properties to evaluate.
+ * @returns {string} - Returns the category of the project as 'topProject', 'regularProject', or 'nonDonatableProject'.
+ */
+
+export const getProjectCategory = (
+  projectProperties: MapProjectProperties | ExtendedProject
+) => {
+  if (
+    projectProperties.purpose === 'trees' &&
+    projectProperties.isTopProject &&
+    projectProperties.isApproved
+  ) {
+    return 'topProject';
+  } else if (projectProperties.allowDonations) {
+    return 'regularProject';
+  } else {
+    return 'nonDonatableProject';
+  }
+};
+
+export const availableFilters: TreeProjectClassification[] = [
+  'large-scale-planting',
+  'agroforestry',
+  'natural-regeneration',
+  'managed-regeneration',
+  'urban-planting',
+  'mangroves',
+  'other-planting',
+];

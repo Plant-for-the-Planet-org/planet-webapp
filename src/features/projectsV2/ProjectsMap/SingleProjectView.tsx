@@ -1,9 +1,9 @@
 import { useEffect, MutableRefObject, useMemo } from 'react';
-import { useProjects } from '../../ProjectsContext';
-import { useProjectsMap } from '../../ProjectsMapContext';
-import SatelliteLayer from './SatelliteLayer';
-import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
-import SitePolygon from './SitePolygon';
+import { useProjects } from '../ProjectsContext';
+import { useProjectsMap } from '../ProjectsMapContext';
+import SatelliteLayer from './microComponents/SatelliteLayer';
+import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
+import SitePolygon from './microComponents/SitePolygon';
 import { useRouter } from 'next/router';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MutableRefObject<null> }) => {

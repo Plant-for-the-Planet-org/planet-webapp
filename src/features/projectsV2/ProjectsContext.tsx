@@ -24,11 +24,6 @@ import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
 import { PlantLocation } from '../common/types/plantLocation';
 
-export interface SiteType {
-  siteName: string;
-  siteArea: number;
-  id: number;
-}
 interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ExtendedProject | null;
@@ -72,7 +67,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setSelectedMode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [singleProject, setSingleProject] = useState<ProjectExtend | null>(
+  const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
   const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
@@ -171,11 +166,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   useEffect(() => {
     async function loadProjects() {
-      if (
-        page !== 'project-list' ||
-        !currencyCode ||
-        (projects && projects?.length > 0)
-      ) {
+      if (page !== 'project-list' || !currencyCode) {
         return;
       }
 

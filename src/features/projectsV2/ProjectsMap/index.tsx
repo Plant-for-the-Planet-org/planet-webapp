@@ -3,10 +3,10 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
-import MultipleProjectsView from './microComponents/MultipleProjectsView';
+import MultipleProjectsView from './MultipleProjectsView';
+import SingleProjectView from './SingleProjectView';
+import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
-import SingleProjectView from './microComponents/SingleProjectView';
-import MapControls from './microComponents/MapControls';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
 
@@ -63,7 +63,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           showCompass={false}
           style={{
             position: 'relative',
-            bottom: props.isMobile ? '110px' : '0px',
+            bottom: props.isMobile ? '120px' : '0px',
           }}
         />
       </Map>

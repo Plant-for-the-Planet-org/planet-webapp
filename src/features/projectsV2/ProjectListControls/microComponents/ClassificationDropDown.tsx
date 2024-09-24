@@ -2,11 +2,10 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
-import { availableFilters } from '../utils';
+import { availableFilters } from '../../../../utils/projectV2';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { MapProject } from '../../../common/types/projectv2';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
@@ -19,12 +18,9 @@ interface ClassificationDropDownProps {
 export const ClassificationDropDown = ({
   selectedClassification,
   setSelectedClassification,
-  isMobile,
   selectedMode,
-  filteredProjects,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
-  const { isImpersonationModeOn } = useUserProps();
   const handleFilterSelection = (
     filterItem: TreeProjectClassification
   ): void => {
