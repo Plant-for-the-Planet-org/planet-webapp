@@ -110,15 +110,19 @@ const ProjectDetails = ({
     if (!projectSites || !projectSites[selectedSite]) {
       return;
     }
-    const newSiteId = projectSites[selectedSite].properties.id;
-    const pathname = `/${locale}/prd/${singleProject.slug}`;
+    if (!selectedPl) {
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const newSiteId = projectSites[selectedSite].properties.id;
+      const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
+      router.push({ pathname, query }, undefined, {
+        shallow: true,
+      });
+    } else {
+      const pathname = `/${locale}/prd/${singleProject.slug}?ploc=${selectedPl.hid}`;
+      router.push(pathname, undefined, { shallow: true });
+    }
+  }, [selectedSite, locale, router.asPath, selectedPl]);
 
-    const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
-
-    router.push({ pathname, query }, undefined, {
-      shallow: true,
-    });
-  }, [singleProject?.slug, selectedSite, locale, router.asPath]);
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet

@@ -22,6 +22,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       features: singleProject?.sites ?? [],
     };
   }, [query.p]);
+
   useEffect(() => {
     if (selectedPl && selectedPl.geometry.type === 'Polygon') {
       const locationCoordinates = selectedPl.geometry.coordinates[0];
@@ -41,7 +42,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         4000
       );
     }
-  }, [query.p, selectedSite, selectedPl]);
+  }, [query, selectedSite, selectedPl]);
   return (
     <>
       <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />

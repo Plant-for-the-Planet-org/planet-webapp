@@ -13,7 +13,7 @@ const paramsToPreserve = [
   'project_list',
   'enable_intro',
 ];
-const paramsToDelete = ['locale', 'slug', 'p'];
+const paramsToDelete = ['locale', 'slug', 'p', 'ploc'];
 
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.

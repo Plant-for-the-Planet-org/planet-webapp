@@ -26,6 +26,7 @@ import {
   PlantLocation,
   SamplePlantLocation,
 } from '../common/types/plantLocation';
+import { useRouter } from 'next/router';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -100,7 +101,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
-
+  const router = useRouter();
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -226,6 +227,16 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedClassification([]);
     }
   }, [page]);
+
+  // Select plant location based on the ploc query param
+  useEffect(() => {
+    if (router.query.ploc && plantLocations && plantLocations?.length > 0) {
+      const result = plantLocations?.find(
+        (plantLocation) => plantLocation.hid === router.query.ploc
+      );
+      if (result) setSelectedPl(result);
+    }
+  }, [router.query]);
 
   const value: ProjectsState | null = useMemo(
     () => ({
