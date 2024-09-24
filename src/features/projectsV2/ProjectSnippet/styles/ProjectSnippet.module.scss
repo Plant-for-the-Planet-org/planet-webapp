@@ -16,18 +16,19 @@
   border-radius: 16px;
   position: relative;
   box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
-  // margin-left: 20px;
-  background-color: #fff;
   max-width: 356px;
+  background-color: #fff;
   @include xsPhoneView {
     max-width: 100%;
     box-shadow: none;
     margin-left: 0px;
-    padding: 9px;
+    padding: 0px 9px 9px 9px;
   }
 }
+.mapMode {
+  padding: 0px 0px 0px 0px;
+}
 //project image
-.projectImageSecondary,
 .projectImage {
   height: 160px;
   width: 100%;
@@ -46,7 +47,8 @@
 
 .projectImageSecondary {
   @include xsPhoneView {
-    border-radius: 14px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
     height: 180px;
   }
 }
@@ -176,7 +178,7 @@
   font-weight: bold;
   margin-right: 4px;
 }
-.projectTpoNameSecondary,
+
 .projectTpoName {
   cursor: pointer;
   position: relative;

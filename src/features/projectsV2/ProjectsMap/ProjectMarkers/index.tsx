@@ -5,7 +5,7 @@ import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { TreeProjectClassification } from '@planet-sdk/common';
+import { useProjects } from '../../ProjectsContext';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -14,7 +14,7 @@ export type CategorizedProjects = {
 };
 interface ProjectMarkersProps {
   categorizedProjects: CategorizedProjects | undefined;
-  selectedClassification: TreeProjectClassification[];
+  isMobile: boolean;
 }
 
 type ClosedPopupState = {
@@ -28,12 +28,16 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
+const ProjectMarkers = ({
+  categorizedProjects,
+  isMobile,
+}: ProjectMarkersProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
 
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
+  const { selectedMode } = useProjects();
 
   const visitProject = (projectSlug: string): void => {
     router.push(
@@ -119,6 +123,7 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
           project={popupState.project}
           handlePopupLeave={initiatePopupClose}
           visitProject={visitProject}
+          selectedMode={isMobile ? selectedMode : undefined}
         />
       )}
     </>

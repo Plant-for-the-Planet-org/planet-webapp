@@ -7,8 +7,7 @@
   border-radius: 12px;
   display: flex;
   align-items: center;
-  max-width: 338px;
-  min-width: 355px;
+  max-width: 355px;
   justify-content: space-between;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   margin-left: 2px;
@@ -20,31 +19,23 @@
   }
 }
 
-.projectListControlsMobileTopMargin,
+.tabsContainer,
 .projectListControlsMobile {
-  height: 26px;
-  justify-content: space-between;
-  display: flex;
-  gap: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 0px;
-}
-
-.projectListControlsMobileTopMargin {
-  margin-top: 20px;
-}
-
-.tabsContainerTopMargin,
-.searchFieldAndViewTabsContainer {
   display: flex;
   justify-content: space-between;
   gap: 4px;
   padding: 0px 10px;
+  &.mapModeControls {
+    justify-content: flex-end;
+  }
 }
 
-.tabsContainerTopMargin {
-  margin-top: 10px;
+.projectListControlsMobile {
+  gap: 10px;
+}
+
+.impersonationMode {
+  margin-top: 20px;
 }
 
 .activeSearchIcon {
@@ -94,6 +85,14 @@
   border: 2px solid $primaryColorNew;
   display: flex;
   overflow: hidden;
+
+  &.mapModeTabs {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.tabContainer {
+  height: 28px;
 }
 
 .tabContainerSecondary {
@@ -142,10 +141,8 @@
 .iconsContainerMobile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   transition: all 0.4s ease-in-out;
-  width: 20%;
   button {
     width: 28px;
     height: 28px;
@@ -154,6 +151,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &.mapModeButtons {
+    .buttonContainer,
+    > button {
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+    }
   }
 }
 
@@ -209,14 +213,16 @@
   position: absolute;
   z-index: 2;
   box-shadow: 2px 2px 14px gray;
+  left: 193px;
   @include xsPhoneView {
-    left: 100px;
-    top: 59px;
+    left: 127px;
+    top: 29px;
   }
 }
 
-.mobileSelectMode {
-  left: 11px;
+.listMode {
+  left: 168px;
+  top: 67px;
 }
 
 .classificationUnselected {

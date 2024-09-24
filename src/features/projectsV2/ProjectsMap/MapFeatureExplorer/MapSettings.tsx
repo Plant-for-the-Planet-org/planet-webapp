@@ -16,7 +16,6 @@ type MapSettingsProps = {
 const MapSettings: FC<MapSettingsProps> = ({ mapOptions, updateMapOption }) => {
   const tAllProjects = useTranslations('AllProjects');
   const tMaps = useTranslations('Maps');
-
   /* const {
     primaryColorNew,
     restorationToggleColorNew,

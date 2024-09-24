@@ -1,4 +1,4 @@
-import { IconProps } from '../../features/common/types/common';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
 const DownArrow = ({ width }: IconProps) => {
   return (

@@ -27,12 +27,12 @@ const ImageSection = (props: ImageSectionProps) => {
     isApproved,
     isTopProject,
     allowDonations,
-    showBackButton,
     page,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
-  const { setSingleProject, setSelectedPl } = useProjects();
+  const { setSingleProject, setDebouncedSearchValue, setSelectedPl } =
+    useProjects();
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
@@ -51,6 +51,7 @@ const ImageSection = (props: ImageSectionProps) => {
     );
   };
   const handleBackButton = useCallback((e: MouseEvent) => {
+    setDebouncedSearchValue('');
     setSingleProject(null);
     setSelectedPl(null);
     e.stopPropagation();
@@ -68,17 +69,14 @@ const ImageSection = (props: ImageSectionProps) => {
       });
     }
   }, []);
+
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
+  const imageContainerClasses = `${styles.projectImage} ${
+    page === 'project-details' ? styles.projectImageSecondary : ''
+  }`;
   return (
-    <div
-      onClick={handleImageClick}
-      className={`${
-        page === 'project-list'
-          ? styles.projectImage
-          : styles.projectImageSecondary
-      }`}
-    >
-      {showBackButton && (
+    <div onClick={handleImageClick} className={imageContainerClasses}>
+      {page === 'project-details' && (
         <button onClick={handleBackButton} className={styles.backButton}>
           <BackButton />
         </button>

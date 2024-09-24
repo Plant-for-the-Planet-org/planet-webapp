@@ -28,6 +28,11 @@
     "speciesMeasurment": "Tag #{hid} • {plantHeight}m high • {plantWidth}cm wide",
     "poweredBy": "Powered by",
     "treeMapper": "TreeMapper",
-    "sampleTreeTag": "Sample Tree #{tag}"
+    "sampleTreeTag": "Sample Tree #{tag}",
+    "protectionSeasons": "Protection Seasons",
+    "protectionStarted": "Protection Started",
+    "restorationStarted": "Restoration Started",
+    "restorationSeasons": "Restoration Seasons",
+    "longTermPlan": "Long Term Plan"
   }
 }

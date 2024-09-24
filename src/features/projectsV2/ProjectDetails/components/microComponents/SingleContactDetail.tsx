@@ -7,19 +7,21 @@ interface Props {
     icon: React.JSX.Element;
     title: string | null;
     link: string | null;
+    shouldOpenNewTab: boolean;
   };
 }
 
 const SingleContactDetail = ({ contactInfo }: Props) => {
+  const { link, shouldOpenNewTab, icon, title } = contactInfo;
   return (
     <a
-      href={contactInfo.link || undefined}
-      target={contactInfo.title === 'View Profile' ? '_self' : '_blank'}
+      href={link || undefined}
+      target={shouldOpenNewTab ? '_blank' : '_self'}
       rel="noreferrer"
       className={styles.singleContact}
     >
-      <div className={styles.icon}>{contactInfo.icon}</div>
-      <div className={styles.title}>{contactInfo.title}</div>
+      <div className={styles.icon}>{icon}</div>
+      <div className={styles.title}>{title}</div>
       <div className={styles.rightArrow}>
         <RightArrowIcon width={5} color={`${'var(--primary-font-color)'}`} />
       </div>

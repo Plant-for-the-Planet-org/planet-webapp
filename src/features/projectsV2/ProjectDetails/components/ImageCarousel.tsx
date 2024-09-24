@@ -2,43 +2,51 @@ import React, { ReactElement, useEffect } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
-import { SingleSliderImage } from './microComponents/SingleSliderImage';
+import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
 
 interface Props {
   images: SliderImage[];
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
-  leftAlignment?: number;
+  leftAlignment: number;
+  isImageModalOpenOnMobile?: boolean;
 }
 
-const ImagesSlider = ({
+const ImageCarousel = ({
   images,
   type,
   imageSize,
   imageHeight,
   leftAlignment,
+  isImageModalOpenOnMobile,
 }: Props) => {
-  const [slider, setSlider] = React.useState<ReactElement>();
+  const [carousel, setCarousel] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
   const pattern = /^https:\/\//i;
   useEffect(() => {
-    images.forEach((sliderImage) => {
-      if (sliderImage.image) {
+    images.forEach((carouselImage) => {
+      if (carouselImage.image) {
         let imageURL;
-        if (pattern.test(sliderImage.image)) {
-          imageURL = sliderImage.image;
+        if (pattern.test(carouselImage.image)) {
+          imageURL = carouselImage.image;
         } else {
-          imageURL = getImageUrl(type, imageSize, sliderImage.image);
+          imageURL = getImageUrl(type, imageSize, carouselImage.image);
         }
         projectImages.push({
           content: () => (
-            <SingleSliderImage imageURL={imageURL} sliderImage={sliderImage} />
+            <SingleCarouselImage
+              type={type}
+              imageURL={imageURL}
+              carouselImage={carouselImage}
+              leftAlignment={leftAlignment}
+              isImageModalOpenOnMobile={isImageModalOpenOnMobile}
+            />
           ),
         });
       }
     });
-    setSlider(
+    setCarousel(
       <Stories
         stories={projectImages}
         defaultInterval={7000}
@@ -63,7 +71,7 @@ const ImagesSlider = ({
     );
   }, [images]);
 
-  return <div>{slider}</div>;
+  return <>{carousel}</>;
 };
 
-export default ImagesSlider;
+export default ImageCarousel;

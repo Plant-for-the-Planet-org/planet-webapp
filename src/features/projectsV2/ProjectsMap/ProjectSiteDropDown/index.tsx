@@ -1,14 +1,15 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import SiteIcon from '../../../temp/icons/SiteIcon';
+import SiteIcon from '../../../../temp/icons/SiteIcon';
 import styles from './SiteDropdown.module.scss';
-import DropdownUpArrow from '../../../temp/icons/DropdownUpArrow';
-import DropdownDownArrow from '../../../temp/icons/DropdownDownArrow';
-import { SetState } from '../../common/types/common';
-import ProjectSiteList from './microComponents/ProjectSiteList';
+import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
+import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
+import { SetState } from '../../../common/types/common';
+import ProjectSiteList from './ProjectSiteList';
 import { area } from '@turf/turf';
 import { Feature, MultiPolygon, Polygon } from 'geojson';
-import { PlantLocation } from '../../common/types/plantLocation';
+import { PlantLocation } from '../../../common/types/plantLocation';
+import { truncateString } from '../../../../utils/getTruncatedString';
 
 export interface SiteProperties {
   lastUpdated: {
@@ -63,7 +64,6 @@ const ProjectSiteDropdown = ({
     return null;
   }
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
@@ -80,7 +80,9 @@ const ProjectSiteDropdown = ({
               <span className={styles.separator}> • </span>
               <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
             </label>
-            <p className={styles.siteName}>{selectedSiteData?.siteName}</p>
+            <p className={styles.siteName}>
+              {truncateString(selectedSiteData?.siteName, 40)}
+            </p>
           </div>
         </div>
         <div className={styles.menuArrow}>

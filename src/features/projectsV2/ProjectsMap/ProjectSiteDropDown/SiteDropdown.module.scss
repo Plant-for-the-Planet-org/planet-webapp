@@ -1,4 +1,4 @@
-@import '../../../theme/theme';
+@import '../../../../theme/theme';
 
 .dropdownButton {
   display: flex;
@@ -6,8 +6,7 @@
   background: $backgroundColor;
   align-items: center;
   padding: 12px 0px 9px 12px;
-  min-width: 300px;
-  width: fit-content;
+  min-width: 350px;
   justify-content: space-between;
   cursor: pointer;
   gap: 18px;
@@ -56,13 +55,12 @@
   padding: 6px 17px;
   border-radius: 12px;
   margin-top: 12px;
-  width: fit-content;
+  width: 350px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
   top: 84px;
   right: 30px;
-  min-width: 300px;
   max-height: 58vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */

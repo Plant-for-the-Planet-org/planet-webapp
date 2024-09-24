@@ -4,10 +4,10 @@ import { useCallback } from 'react';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
-import { useProjects } from '../ProjectsContext';
 import SingleProjectView from './SingleProjectView';
 import { getPlantLocationInfo } from './utils';
 import MapControls from './MapControls';
+import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
 
@@ -35,13 +35,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects.length > 0 &&
     !shouldShowSingleProjectsView;
 
-  const pageProps = {
+  const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
     setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
     isMobile: props.isMobile,
     page: props.page,
   };
-
   const onMouseMove = useCallback(
     (e) => {
       const hoveredPlantLocation = getPlantLocationInfo(
@@ -70,7 +69,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
   return (
     <>
-      <MapControls {...pageProps} />
+      <MapControls {...mapControlProps} />
       <Map
         {...viewState}
         {...mapState}
@@ -88,9 +87,20 @@ function ProjectsMap(props: ProjectsMapProps) {
       >
         {shouldShowSingleProjectsView && <SingleProjectView mapRef={mapRef} />}
         {shouldShowMultipleProjectsView && (
-          <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
+          <MultipleProjectsView
+            setViewState={setViewState}
+            mapRef={mapRef}
+            isMobile={props.isMobile}
+          />
         )}
-        <NavigationControl position="bottom-right" showCompass={false} />
+        <NavigationControl
+          position="bottom-right"
+          showCompass={false}
+          style={{
+            position: 'relative',
+            bottom: props.isMobile ? '120px' : '0px',
+          }}
+        />
       </Map>
     </>
   );

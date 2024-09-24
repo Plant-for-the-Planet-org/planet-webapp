@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
-import { ProjectExtend, useProjects } from '../ProjectsContext';
+import { useProjects } from '../ProjectsContext';
 import ProjectInfoSection from './components/ProjectInfoSection';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
@@ -13,6 +13,8 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
 import PlantLocationInfoSection from './components/PlantLocationInfoSection';
+import { ExtendedProject } from '../../common/types/projectv2';
+import { updateUrlWithParams } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -23,12 +25,12 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
+    selectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
     setIsError,
     setSelectedMode,
-    selectedSite,
     selectedPl,
     hoveredPl,
   } = useProjects();
@@ -36,19 +38,23 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
+  const projectSlug = router.query.p;
 
   useEffect(() => {
-    async function loadProject() {
+    async function loadProject(
+      projectSlug: string,
+      locale: string,
+      currency: string
+    ) {
       setIsLoading(true);
       setIsError(false);
       try {
-        const { p } = router.query;
-        const fetchedProject = await getRequest<ProjectExtend>(
+        const fetchedProject = await getRequest<ExtendedProject>(
           tenantConfig.id,
-          `/app/projects/${p}`,
+          `/app/projects/${projectSlug}`,
           {
             _scope: 'extended',
-            currency: currencyCode,
+            currency: currency,
             locale: locale,
           }
         );
@@ -70,8 +76,9 @@ const ProjectDetails = ({
       }
     }
 
-    if (router.query.p && currencyCode) loadProject();
-  }, [router.query.p, locale, currencyCode]);
+    if (typeof projectSlug === 'string' && currencyCode)
+      loadProject(projectSlug, locale, currencyCode);
+  }, [projectSlug, locale, currencyCode]);
 
   useEffect(() => {
     async function loadPlantLocations() {
@@ -100,40 +107,23 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    const currentUrl = new URL(window.location.href);
-    const searchParams = currentUrl.searchParams;
-    const updateSearchParams = (
-      paramToDelete: string,
-      paramToSet: string,
-      paramValue: string
-    ) => {
-      if (searchParams.has(paramToDelete)) searchParams.delete(paramToDelete);
-      searchParams.set(paramToSet, paramValue);
-    };
-    if (projectSites) {
-      if (selectedPl) {
-        updateSearchParams('site', 'ploc', selectedPl.hid);
-      } else {
-        updateSearchParams(
-          'ploc',
-          'site',
-          projectSites[selectedSite].properties.id
-        );
-      }
-      const newSearch = searchParams.toString();
-      const newPath = `/${locale}/prd/${singleProject.slug}${
-        newSearch.length > 0 ? `?${newSearch}` : ''
-      }`;
-      router.push(newPath);
+    if (!projectSites || !projectSites[selectedSite]) {
+      return;
     }
-  }, [singleProject?.slug, selectedSite, locale, selectedPl?.hid]);
+    const newSiteId = projectSites[selectedSite].properties.id;
+    const pathname = `/${locale}/prd/${singleProject.slug}`;
 
+    const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
+
+    router.push({ pathname, query }, undefined, {
+      shallow: true,
+    });
+  }, [singleProject?.slug, selectedSite, locale, router.asPath]);
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
         project={singleProject}
         showTooltipPopups={false}
-        showBackButton={true}
         isMobile={isMobile}
         page="project-details"
       />
@@ -150,7 +140,7 @@ const ProjectDetails = ({
       )}
     </div>
   ) : (
-    <Skeleton className={styles.projectInfoSkeleton} />
+    <Skeleton className={styles.projectDetailsSkeleton} />
   );
 };
 

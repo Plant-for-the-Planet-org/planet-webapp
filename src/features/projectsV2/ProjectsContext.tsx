@@ -7,15 +7,13 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { MapProject } from '../common/types/projectv2';
+import { ExtendedProject, MapProject } from '../common/types/projectv2';
 import { useLocale } from 'next-intl';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   APIError,
-  ConservationProjectExtended,
-  TreeProjectExtended,
   CountryCode,
   handleError,
   TreeProjectClassification,
@@ -29,17 +27,10 @@ import {
   SamplePlantLocation,
 } from '../common/types/plantLocation';
 
-export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
-
-export interface SiteType {
-  siteName: string;
-  siteArea: number;
-  id: number;
-}
 interface ProjectsState {
   projects: MapProject[] | null;
-  singleProject: ProjectExtend | null;
-  setSingleProject: SetState<ProjectExtend | null>;
+  singleProject: ExtendedProject | null;
+  setSingleProject: SetState<ExtendedProject | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
   selectedPl: PlantLocation | null;
@@ -85,7 +76,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setSelectedMode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [singleProject, setSingleProject] = useState<ProjectExtend | null>(
+  const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
   const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
@@ -219,14 +210,23 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }
     }
     loadProjects();
-  }, [currencyCode, locale]);
-
+  }, [currencyCode, locale, page]);
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
       setCurrencyCode(currency);
     }
   }, [currencyCode, setCurrencyCode]);
+
+  useEffect(() => {
+    if (setSelectedMode && page === 'project-details') {
+      setSelectedMode('list');
+      setDebouncedSearchValue('');
+      setIsSearching(false);
+      setSelectedClassification([]);
+    }
+  }, [page]);
+
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,

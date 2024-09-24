@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useProjects } from '../ProjectsContext';
 import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
-import { getProjectCategory } from './utils';
+import { getProjectCategory } from '../../../utils/projectV2';
 import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import { SetState } from '../../common/types/common';
 import { ViewState } from 'react-map-gl-v7/maplibre';
@@ -10,20 +10,16 @@ import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
 interface MultipleProjectsViewProps {
   setViewState: SetState<ViewState>;
   mapRef: MapRef;
+  isMobile: boolean;
 }
 
 const MultipleProjectsView = ({
   setViewState,
   mapRef,
+  isMobile,
 }: MultipleProjectsViewProps) => {
-  const {
-    projects,
-    isLoading,
-    isError,
-    selectedClassification,
-    filteredProjects,
-    singleProject,
-  } = useProjects();
+  const { projects, isLoading, isError, filteredProjects, singleProject } =
+    useProjects();
   if (isLoading || isError || !projects) {
     return null;
   }
@@ -69,7 +65,7 @@ const MultipleProjectsView = ({
   return (
     <ProjectMarkers
       categorizedProjects={categorizedProjects}
-      selectedClassification={selectedClassification}
+      isMobile={isMobile}
     />
   );
 };
