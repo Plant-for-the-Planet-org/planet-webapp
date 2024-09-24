@@ -18,6 +18,11 @@
     "publicProperty": "public property",
     "progressReports": "progress reports",
     "readMore": "Read More",
-    "readLess": "Read Less"
+    "readLess": "Read Less",
+    "protectionSeasons": "Protection Seasons",
+    "protectionStarted": "Protection Started",
+    "restorationStarted": "Restoration Started",
+    "restorationSeasons": "Restoration Seasons",
+    "longTermPlan": "Long Term Plan"
   }
 }

@@ -10,6 +10,7 @@ interface Props {
   imageSize: 'large' | 'medium';
   imageHeight: number;
   leftAlignment: number;
+  isImageModalOpenOnMobile?: boolean;
 }
 
 const ImageCarousel = ({
@@ -18,6 +19,7 @@ const ImageCarousel = ({
   imageSize,
   imageHeight,
   leftAlignment,
+  isImageModalOpenOnMobile,
 }: Props) => {
   const [carousel, setCarousel] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
@@ -38,6 +40,7 @@ const ImageCarousel = ({
               imageURL={imageURL}
               carouselImage={carouselImage}
               leftAlignment={leftAlignment}
+              isImageModalOpenOnMobile={isImageModalOpenOnMobile}
             />
           ),
         });

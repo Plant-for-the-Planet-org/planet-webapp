@@ -39,13 +39,13 @@ const TpoName = ({
       router.push(url);
     }
   };
+  const tpoNameContainerClasses = `${
+    styles.projectTpoName
+  } ${tpoNameBackgroundClass} ${
+    page === 'project-details' ? styles.projectTpoNameSecondary : ''
+  }`;
   return (
-    <div
-      className={`${styles.projectTpoName} ${tpoNameBackgroundClass} ${
-        page === 'project-list' ? styles.projectTpoNameSecondary : ''
-      }`}
-      onClick={handleClick}
-    >
+    <div className={tpoNameContainerClasses} onClick={handleClick}>
       {tCommon('by', { tpoName: projectTpoName })}
     </div>
   );

@@ -13,6 +13,7 @@ interface ImageSliderProps {
 }
 const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isImageModalOpenOnMobile = isModalOpen && isMobile;
   return (
     <>
       {!isModalOpen && (
@@ -37,6 +38,7 @@ const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          overflow: 'hidden',
         }}
       >
         <div className={styles.expandedImageSliderContainer}>
@@ -49,6 +51,7 @@ const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
             imageSize={'large'}
             imageHeight={600}
             leftAlignment={isMobile ? 14 : 40}
+            isImageModalOpenOnMobile={isImageModalOpenOnMobile}
           />
         </div>
       </Modal>

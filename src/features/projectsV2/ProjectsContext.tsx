@@ -201,6 +201,16 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setCurrencyCode(currency);
     }
   }, [currencyCode, setCurrencyCode]);
+
+  useEffect(() => {
+    if (setSelectedMode && page === 'project-details') {
+      setSelectedMode('list');
+      setDebouncedSearchValue('');
+      setIsSearching(false);
+      setSelectedClassification([]);
+    }
+  }, [page]);
+
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,

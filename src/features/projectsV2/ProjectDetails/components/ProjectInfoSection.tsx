@@ -3,7 +3,7 @@ import AboutProject from './AboutProject';
 import { useTranslations } from 'next-intl';
 import ProjectReview from './ProjectReviews';
 import { CountryCode } from '@planet-sdk/common';
-import styles from '../ProjectDetails.module.scss';
+import styles from '../styles/ProjectInfo.module.scss';
 import KeyInfo from './KeyInfo';
 import AdditionalInfo from './AdditionalInfo';
 import VideoPlayer from './VideoPlayer';
@@ -40,25 +40,30 @@ const ProjectInfoSection = ({
     certificates,
   } = project;
   const isTreeProject = purpose === 'trees';
+  const isConservationProject = purpose === 'conservation';
 
   const shouldRenderKeyInfo = useMemo(() => {
-    if (!isTreeProject) return false;
-    const {
-      yearAbandoned,
-      firstTreePlanted,
-      plantingDensity,
-      maxPlantingDensity,
-      plantingSeasons,
-    } = metadata;
+    if (!isTreeProject && !isConservationProject) return false;
 
-    return Boolean(
-      yearAbandoned ||
-        firstTreePlanted ||
-        plantingDensity ||
-        maxPlantingDensity ||
-        (plantingSeasons && plantingSeasons.length > 0)
+    const treeProjectConditions = isTreeProject
+      ? [
+          metadata.yearAbandoned,
+          metadata.firstTreePlanted,
+          metadata.plantingDensity,
+          metadata.maxPlantingDensity,
+          metadata.plantingSeasons && metadata.plantingSeasons.length > 0,
+        ]
+      : [];
+
+    const conservationProjectConditions = isConservationProject
+      ? [metadata.activitySeasons && metadata.activitySeasons.length > 0]
+      : [];
+
+    return (
+      (isTreeProject && treeProjectConditions.some(Boolean)) ||
+      (isConservationProject && conservationProjectConditions.some(Boolean))
     );
-  }, [metadata]);
+  }, [metadata, isTreeProject, isConservationProject]);
 
   const shouldRenderAdditionalInfo = useMemo(() => {
     const {
@@ -67,17 +72,37 @@ const ProjectInfoSection = ({
       longTermPlan,
       acquisitionYear,
       motivation,
+      mainInterventions,
     } = metadata;
-    return Boolean(
-      mainChallenge ||
-        siteOwnerName ||
-        (isTreeProject &&
-          metadata.siteOwnerType &&
-          metadata.siteOwnerType?.length > 0) ||
-        (isTreeProject && metadata.degradationCause) ||
-        longTermPlan ||
-        acquisitionYear ||
-        motivation
+    const generalConditions = [
+      mainChallenge,
+      siteOwnerName,
+      longTermPlan,
+      acquisitionYear,
+      motivation,
+      mainInterventions && mainInterventions?.length > 0,
+    ];
+    const treeProjectConditions = isTreeProject
+      ? [
+          metadata.siteOwnerType && metadata.siteOwnerType?.length > 0,
+          metadata.degradationCause,
+        ]
+      : [];
+    const conservationProjectConditions = isConservationProject
+      ? [
+          metadata.landOwnershipType && metadata.landOwnershipType?.length > 0,
+          metadata.actions,
+          metadata.socialBenefits,
+          metadata.ecologicalBenefits,
+          metadata.coBenefits,
+          metadata.benefits,
+        ]
+      : [];
+
+    return (
+      generalConditions.some(Boolean) ||
+      treeProjectConditions.some(Boolean) ||
+      conservationProjectConditions.some(Boolean)
     );
   }, [metadata]);
 
@@ -99,9 +124,7 @@ const ProjectInfoSection = ({
   const shouldRenderProjectDownloads = useMemo(() => {
     return certificates.length > 0 || expenses.length > 0;
   }, [certificates, expenses]);
-  const handleMap = () => {
-    if (setSelectedMode) setSelectedMode('map');
-  };
+  const handleMap = () => setSelectedMode?.('map');
 
   return (
     <section className={styles.projectInfoSection}>
@@ -115,26 +138,51 @@ const ProjectInfoSection = ({
       {shouldRenderKeyInfo && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}
-          firstTree={isTreeProject ? metadata.firstTreePlanted : null}
+          interventionStarted={
+            isTreeProject
+              ? metadata.firstTreePlanted
+              : metadata.startingProtectionYear
+          }
+          interventionSeasons={
+            isTreeProject ? metadata.plantingSeasons : metadata.activitySeasons
+          }
           plantingDensity={isTreeProject ? metadata.plantingDensity : null}
           maxPlantingDensity={
             isTreeProject ? metadata.maxPlantingDensity : null
           }
           employees={metadata.employeesCount}
-          plantingSeasons={isTreeProject ? metadata.plantingSeasons : null}
+          isTreeProject={isTreeProject}
+          degradationYear={isTreeProject ? metadata.degradationYear : null}
         />
       )}
       {shouldRenderAdditionalInfo && (
         <AdditionalInfo
-          mainChallengeText={metadata.mainChallenge}
-          siteOwnershipText={metadata.siteOwnerName}
-          siteOwnershipType={isTreeProject ? metadata.siteOwnerType : null}
-          causeOfDegradationText={
-            isTreeProject ? metadata.degradationCause : null
+          mainChallenge={metadata.mainChallenge}
+          siteOwnerName={metadata.siteOwnerName}
+          siteOwnershipType={
+            isTreeProject
+              ? metadata.siteOwnerType
+              : isConservationProject
+              ? metadata.landOwnershipType
+              : null
           }
-          whyThisSiteText={metadata.motivation}
-          longTermProtectionText={metadata.longTermPlan}
+          causeOfDegradation={isTreeProject ? metadata.degradationCause : null}
+          whyThisSite={metadata.motivation}
+          longTermPlan={metadata.longTermPlan}
           acquiredSince={metadata.acquisitionYear}
+          mainInterventions={metadata.mainInterventions}
+          actions={isConservationProject ? metadata.actions : null}
+          socialBenefits={
+            isConservationProject ? metadata.socialBenefits : null
+          }
+          ecologicalBenefits={
+            isConservationProject ? metadata.ecologicalBenefits : null
+          }
+          benefits={isConservationProject ? metadata.benefits : null}
+          coBenefits={isConservationProject ? metadata.coBenefits : null}
+          ownershipTenure={
+            isConservationProject ? metadata.ownershipType : null
+          }
         />
       )}
       {shouldRenderProjectDownloads && (

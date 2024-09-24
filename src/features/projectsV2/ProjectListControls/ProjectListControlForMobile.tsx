@@ -63,10 +63,10 @@ const ProjectListControlForMobile = ({
   const projectListControlsMobileClasses = `${
     styles.projectListControlsMobile
   } ${selectedMode === 'map' ? styles.mapModeControls : ''} ${
-    isImpersonationModeOn ? styles.marginTop20 : ''
+    isImpersonationModeOn ? styles['impersonationMode'] : ''
   }`;
   const tabContainerClasses = `${styles.tabsContainer} ${
-    isImpersonationModeOn ? styles.marginTop10 : ''
+    isImpersonationModeOn ? styles['impersonationMode'] : ''
   }`;
 
   const activeSearchFieldProps = {

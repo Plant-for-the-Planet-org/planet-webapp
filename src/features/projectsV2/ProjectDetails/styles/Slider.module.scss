@@ -7,6 +7,10 @@
   background-position: center center !important;
   background-size: cover !important;
 }
+.carouselContentExpand {
+  border-radius: 0px;
+  height: 40%;
+}
 .carouselContentText {
   position: absolute;
   bottom: 38px;
@@ -21,7 +25,7 @@
   position: relative;
   > button {
     position: absolute;
-    z-index: 1000;
+    z-index: 9999;
     width: 18px;
     top: 13px;
     right: 13px;

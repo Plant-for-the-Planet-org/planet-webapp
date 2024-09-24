@@ -4,24 +4,29 @@ import { useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 import InfoIconPopup from '../../../../temp/components/InfoIconPopup';
-import PlantingSeasons from './microComponents/PlantingSeasons';
+import InterventionSeason from './microComponents/InterventionSeason';
+import { AllowedSeasonMonths } from '@planet-sdk/common';
 
 interface Props {
   abandonment: number | null;
-  firstTree: string | null;
+  interventionStarted: string | number | null;
   plantingDensity: number | null;
   maxPlantingDensity: number | null;
   employees: number | null;
-  plantingSeasons: number[] | null;
+  interventionSeasons: number[] | AllowedSeasonMonths[] | null;
+  isTreeProject: boolean;
+  degradationYear: number | null;
 }
 
 const KeyInfo = ({
   abandonment,
-  firstTree,
+  interventionStarted,
   plantingDensity,
   maxPlantingDensity,
   employees,
-  plantingSeasons,
+  interventionSeasons,
+  isTreeProject,
+  degradationYear,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tManageProjects = useTranslations('ManageProjects');
@@ -42,6 +47,11 @@ const KeyInfo = ({
     }
     return newDateArr.join('-');
   };
+  const shouldRenderInterventionDate =
+    (interventionStarted &&
+      typeof interventionStarted === 'string' &&
+      interventionStarted?.length > 0) ||
+    interventionStarted;
 
   return (
     <div className={styles.projectInfoContainer}>
@@ -68,22 +78,33 @@ const KeyInfo = ({
             </p>
           </SingleProjectInfoItem>
         )}
-
-        {firstTree && firstTree?.length > 0 && (
-          <SingleProjectInfoItem title={tProjectDetails('firstTreePlanted')}>
-            <time>
-              {firstTree?.length > 0 &&
-                formatDate(
-                  firstTree.split('-')[1].length === 1 ||
-                    firstTree.split('-')[2].length === 1
-                    ? addZeroToDate(firstTree)
-                    : firstTree
-                )}
-            </time>
+        {shouldRenderInterventionDate && (
+          <SingleProjectInfoItem
+            title={
+              isTreeProject
+                ? tProjectDetails('restorationStarted')
+                : tProjectDetails('protectionStarted')
+            }
+          >
+            {isTreeProject && typeof interventionStarted === 'string' ? (
+              <time>
+                {interventionStarted?.length > 0 &&
+                  formatDate(
+                    interventionStarted.split('-')[1].length === 1 ||
+                      interventionStarted.split('-')[2].length === 1
+                      ? addZeroToDate(interventionStarted)
+                      : interventionStarted
+                  )}
+              </time>
+            ) : (
+              <time>{interventionStarted}</time>
+            )}
           </SingleProjectInfoItem>
         )}
       </div>
-      <div className={styles.seperator} />
+      {(abandonment || interventionStarted) && (
+        <div className={styles.seperator} />
+      )}
       <div className={styles.singleRowInfoContainer}>
         {plantingDensity && (
           <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
@@ -101,10 +122,24 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
       </div>
-      <div className={styles.seperator}></div>
-      {plantingSeasons && plantingSeasons?.length > 0 && (
-        <SingleProjectInfoItem title={tProjectDetails('plantingSeasons')}>
-          <PlantingSeasons plantingSeasons={plantingSeasons} />
+      {(employees || plantingDensity) && <div className={styles.seperator} />}
+      <div className={styles.singleRowInfoContainer}>
+        {degradationYear && (
+          <SingleProjectInfoItem title={tManageProjects('degradationYear')}>
+            <p>{degradationYear}</p>
+          </SingleProjectInfoItem>
+        )}
+      </div>
+      {degradationYear && <div className={styles.seperator} />}
+      {interventionSeasons && interventionSeasons.length > 0 && (
+        <SingleProjectInfoItem
+          title={
+            isTreeProject
+              ? tProjectDetails('restorationSeasons')
+              : tProjectDetails('protectionSeasons')
+          }
+        >
+          <InterventionSeason interventionSeasons={interventionSeasons} />
         </SingleProjectInfoItem>
       )}
     </div>
