@@ -5,7 +5,7 @@ import {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import ImagesSlider from './ImagesSlider';
+import ImageCarousel from './ImageCarousel';
 import TreePlantedData from './microComponents/TreeCountData';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleSpecies from './microComponents/SampleSpecies';
@@ -61,11 +61,12 @@ const PlantLocationInfoSection = ({
         plantedLocationArea={plantedLocationArea}
       />
       {hasSampleInterventionSpeciesImages && (
-        <ImagesSlider
+        <ImageCarousel
           images={sampleInterventionSpeciesImages}
           type={'coordinate'}
           imageSize={'large'}
           imageHeight={195}
+          leftAlignment={15}
         />
       )}
       <PlantingDetails
