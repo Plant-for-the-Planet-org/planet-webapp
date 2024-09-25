@@ -122,7 +122,7 @@ const ProjectInfoSection = ({
   }, [tpo]);
 
   const shouldRenderProjectDownloads = useMemo(() => {
-    return certificates.length > 0 || expenses.length > 0;
+    return certificates?.length > 0 || expenses?.length > 0;
   }, [certificates, expenses]);
   const handleMap = () => setSelectedMode?.('map');
 
@@ -131,7 +131,7 @@ const ProjectInfoSection = ({
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
       {description && <AboutProject description={description} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
-      {images.length > 0 && (
+      {images?.length > 0 && (
         <ImageSlider images={images} type={'project'} isMobile={isMobile} />
       )}
       {isMobile && <MapPreview handleMap={handleMap} />}

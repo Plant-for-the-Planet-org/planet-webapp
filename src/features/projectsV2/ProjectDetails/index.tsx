@@ -38,7 +38,8 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
-  const projectSlug = router.query.p;
+  const { query, asPath, isReady } = router;
+  const projectSlug = query.p;
 
   useEffect(() => {
     async function loadProject(
@@ -110,18 +111,55 @@ const ProjectDetails = ({
     if (!projectSites || !projectSites[selectedSite]) {
       return;
     }
-    if (!selectedPl) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const newSiteId = projectSites[selectedSite].properties.id;
-      const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
-      router.push({ pathname, query }, undefined, {
+
+    if (!isReady) return;
+    const pushWithShallow = (pathname: string, queryParams = {}) => {
+      router.push({ pathname, query: queryParams }, undefined, {
         shallow: true,
       });
-    } else {
-      const pathname = `/${locale}/prd/${singleProject.slug}?ploc=${selectedPl.hid}`;
-      router.push(pathname, undefined, { shallow: true });
+    };
+
+    // Case 1: If visit using direct link using wrong ploc),
+    // Case 1.1: If the "ploc" and "site" query param exists then set site param,
+    // Update url with the default site  param
+    if (
+      (query.ploc && !selectedPl && !query.site) ||
+      (query.ploc && query.site)
+    ) {
+      const siteId =
+        projectSites[query.ploc && query.site ? 0 : selectedSite].properties.id;
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const queryParams = { site: siteId };
+      pushWithShallow(pathname, queryParams);
+      return;
     }
-  }, [selectedSite, locale, router.asPath, selectedPl]);
+
+    // Case 2: no "ploc" query or plant location is selected (default route),
+    // Update url with the selected site  param
+    if (!query.ploc && !selectedPl) {
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const siteId = projectSites[selectedSite].properties.id;
+      const updatedQueryParams = updateUrlWithParams(asPath, query, siteId);
+      pushWithShallow(pathname, updatedQueryParams);
+      return;
+    }
+
+    // Case 3: If a plant location (selectedPl) is selected,
+    // Update url with the selected plant location  param
+    if (selectedPl) {
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const queryParams = { ploc: selectedPl.hid };
+      pushWithShallow(pathname, queryParams);
+    }
+  }, [
+    singleProject,
+    selectedSite,
+    selectedPl,
+    locale,
+    query.site,
+    query.ploc,
+    isReady,
+  ]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>

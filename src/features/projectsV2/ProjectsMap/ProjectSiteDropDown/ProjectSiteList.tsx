@@ -1,6 +1,6 @@
 import { SetState } from '../../../common/types/common';
-import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 import { PlantLocation } from '../../../common/types/plantLocation';
+import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 
 type SiteData = {
   siteName: string;

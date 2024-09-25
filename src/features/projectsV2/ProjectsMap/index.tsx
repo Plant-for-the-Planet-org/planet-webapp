@@ -53,9 +53,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     [plantLocations]
   );
 
-  const onMouseLeave = () => {
-    setHoveredPl(null);
-  };
   const onClick = useCallback(
     (e) => {
       const selectedPlantLocation = getPlantLocationInfo(
@@ -75,7 +72,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
+        onMouseLeave={() => setHoveredPl(null)}
         onClick={onClick}
         attributionControl={false}
         ref={mapRef}

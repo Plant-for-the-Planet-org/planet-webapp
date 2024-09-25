@@ -10,6 +10,7 @@ import { area } from '@turf/turf';
 import { Feature, MultiPolygon, Polygon } from 'geojson';
 import { PlantLocation } from '../../../common/types/plantLocation';
 import { truncateString } from '../../../../utils/getTruncatedString';
+import { useRouter } from 'next/router';
 
 export interface SiteProperties {
   lastUpdated: {
@@ -32,6 +33,7 @@ interface Props {
   projectSites: ProjectSite;
   selectedSite: number;
   setSelectedSite: SetState<number>;
+  selectedPl: PlantLocation | null;
   setSelectedPl: SetState<PlantLocation | null>;
 }
 
@@ -39,10 +41,13 @@ const ProjectSiteDropdown = ({
   projectSites,
   selectedSite,
   setSelectedSite,
+  selectedPl,
   setSelectedPl,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations('ManageProjects');
+  const router = useRouter();
+  const { query } = router;
   const siteList = useMemo(() => {
     if (!projectSites) return [];
     return projectSites.map((site, index: number) => ({
@@ -69,21 +74,25 @@ const ProjectSiteDropdown = ({
       <div className={styles.dropdownButton} onClick={toggleMenu}>
         <div className={styles.siteIconAndTextContainer}>
           <SiteIcon width={27} color={'#333'} />
-          <div className={styles.labelTextContainer}>
-            <label className={styles.sitesLabel}>
-              <span className={styles.siteId}>
-                {t('siteCount', {
-                  siteId: getId(selectedSiteData?.id),
-                  totalCount: siteList.length,
-                })}
-              </span>
-              <span className={styles.separator}> • </span>
-              <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
-            </label>
-            <p className={styles.siteName}>
-              {truncateString(selectedSiteData?.siteName, 40)}
-            </p>
-          </div>
+          {selectedPl && query.ploc ? (
+            '-'
+          ) : (
+            <div className={styles.labelTextContainer}>
+              <label className={styles.sitesLabel}>
+                <span className={styles.siteId}>
+                  {t('siteCount', {
+                    siteId: getId(selectedSiteData?.id),
+                    totalCount: siteList.length,
+                  })}
+                </span>
+                <span className={styles.separator}> • </span>
+                <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
+              </label>
+              <p className={styles.siteName}>
+                {truncateString(selectedSiteData?.siteName, 40)}
+              </p>
+            </div>
+          )}
         </div>
         <div className={styles.menuArrow}>
           {isMenuOpen ? (

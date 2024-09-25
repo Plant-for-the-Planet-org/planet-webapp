@@ -51,9 +51,6 @@ const ImageSection = (props: ImageSectionProps) => {
     );
   };
   const handleBackButton = useCallback((e: MouseEvent) => {
-    setDebouncedSearchValue('');
-    setSingleProject(null);
-    setSelectedPl(null);
     e.stopPropagation();
     if (document.referrer) {
       window.history.go(-2);

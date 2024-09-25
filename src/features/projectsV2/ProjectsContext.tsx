@@ -102,6 +102,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
+  const { query, isReady } = router;
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -220,23 +221,55 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
+    setDebouncedSearchValue('');
     if (setSelectedMode && page === 'project-details') {
       setSelectedMode('list');
-      setDebouncedSearchValue('');
       setIsSearching(false);
       setSelectedClassification([]);
+    } else {
+      setSelectedPl(null);
+      setSingleProject(null);
+      setHoveredPl(null);
     }
   }, [page]);
 
-  // Select plant location based on the ploc query param
+  // Select plant location based on the ploc query param (for direct links)
   useEffect(() => {
-    if (router.query.ploc && plantLocations && plantLocations?.length > 0) {
-      const result = plantLocations?.find(
-        (plantLocation) => plantLocation.hid === router.query.ploc
+    if (
+      isReady &&
+      query.ploc &&
+      !query.site &&
+      plantLocations &&
+      plantLocations?.length > 0
+    ) {
+      const result = plantLocations.find(
+        (plantLocation) => plantLocation.hid === query.ploc
       );
-      if (result) setSelectedPl(result);
+      if (result) {
+        setSelectedPl(result);
+      } else {
+        router.push(
+          `/${locale}/prd/${singleProject?.slug}?site=${singleProject?.sites?.[0].properties.id}`,
+          undefined,
+          { shallow: true }
+        );
+        setSelectedPl(null);
+      }
     }
-  }, [router.query]);
+  }, [isReady, plantLocations]);
+  // Select project site based on the site query param (for direct links)
+  useEffect(() => {
+    if (isReady && query.site && singleProject) {
+      const result = singleProject.sites?.findIndex(
+        (site) => site.properties.id === query.site
+      );
+      if (result && result !== -1) {
+        setSelectedSite(result);
+      } else {
+        setSelectedSite(0); // default site
+      }
+    }
+  }, [query.site, isReady, singleProject]);
 
   const value: ProjectsState | null = useMemo(
     () => ({

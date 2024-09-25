@@ -18,13 +18,12 @@ const MultipleProjectsView = ({
   mapRef,
   isMobile,
 }: MultipleProjectsViewProps) => {
-  const { projects, isLoading, isError, filteredProjects, singleProject } =
-    useProjects();
+  const { projects, isLoading, isError, filteredProjects } = useProjects();
   if (isLoading || isError || !projects) {
     return null;
   }
   useEffect(() => {
-    if (singleProject === null && mapRef.current) {
+    if (mapRef.current) {
       const map = mapRef.current.getMap
         ? mapRef.current.getMap()
         : mapRef.current;

@@ -37,6 +37,7 @@ const MapControls = ({
     singleProject,
     selectedSite,
     setSelectedSite,
+    selectedPl,
     setSelectedPl,
   } = useProjects();
   const hasMoreThanOneSite =
@@ -46,6 +47,7 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     projectSites: singleProject?.sites,
+    selectedPl,
     setSelectedPl,
   };
   const projectListControlProps = {
