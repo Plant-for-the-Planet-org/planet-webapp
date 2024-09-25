@@ -129,8 +129,8 @@ const ProjectDetails = ({
       const siteId =
         projectSites[query.ploc && query.site ? 0 : selectedSite].properties.id;
       const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const queryParams = { site: siteId };
-      pushWithShallow(pathname, queryParams);
+      const updatedQueryParams = { site: siteId };
+      pushWithShallow(pathname, updatedQueryParams);
       return;
     }
 
@@ -148,8 +148,8 @@ const ProjectDetails = ({
     // Update url with the selected plant location  param
     if (selectedPl) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const queryParams = { ploc: selectedPl.hid };
-      pushWithShallow(pathname, queryParams);
+      const updatedQueryParams = { ploc: selectedPl.hid };
+      pushWithShallow(pathname, updatedQueryParams);
     }
   }, [
     singleProject,
