@@ -1,5 +1,5 @@
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
+import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -14,8 +14,8 @@ import getMessagesForPage from '../../../../../src/utils/language/getMessagesFor
 import { defaultTenant } from '../../../../../tenant.config';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import ProfileOuterContainer from '../../../../../src/features/user/MFV2/ProfileOuterContainer';
-import ProfileLayout from '../../../../../src/features/user/MFV2/ProfileLayout';
+import ProfileOuterContainer from '../../../../../src/features/user/Profile/ProfileOuterContainer';
+import ProfileLayout from '../../../../../src/features/user/Profile/ProfileLayout';
 
 interface Props {
   pageProps: PageProps;
@@ -29,11 +29,11 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
       <Head>
         <title>{t('profile')}</title>
       </Head>
-      <MyForestProviderV2>
+      <MyForestProvider>
         <ProfileOuterContainer>
           <ProfileLayout />
         </ProfileOuterContainer>
-      </MyForestProviderV2>
+      </MyForestProvider>
     </UserLayout>
   ) : (
     <></>

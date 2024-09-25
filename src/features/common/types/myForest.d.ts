@@ -1,222 +1,187 @@
-import { Geometry } from '@turf/turf';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from './user';
+import { Point, Polygon } from 'geojson';
+import { DateString } from './common';
+import {
+  CountryCode,
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import { ClusterProperties } from 'supercluster';
 
-export interface Page {
-  data: Contributions[];
-  nextCursor: string | undefined;
-}
-export interface StatsParam {
-  profileId: string;
-}
-
-export interface Stats {
-  conserved: number;
-  countries: number;
-  donations: number;
-  projects: number;
-  squareMeters: number;
-  treeCount: number;
-}
-
-interface Tpo {
-  guid: string;
-  name: string;
-  id: string;
-}
-interface PlantProject {
-  guid: string;
-  name: string | null;
-  image: string;
-  country: string;
-  unit: string;
-  location: string | null;
-  geoLatitude: number | null;
-  geoLongitude: number | null;
-  tpo: Tpo;
-}
-export interface GiftContributionProps {
-  allowDonations: boolean;
-  created: string;
-  value: number;
-  guid: string;
-  recipient: Recipient;
-  metadata: Metadata;
-  purpose: string;
-  type: string;
-  _type: string;
-  quantity: number;
-}
-
-export interface Recipient {
-  id: number;
-  guid: string;
-  name: string | null;
-}
-
-export interface Metadata {
-  giver: Giver;
-  project: Project;
-}
-
-export interface Giver {
-  name: string;
-  slug: string;
-  avatar: any;
-}
-
-export interface Project {
-  id: string;
-  name: string;
-  slug: string;
-  image: string;
-  country: string;
-  location: string;
-  coordinates: number[];
-  organization: Organization;
-}
-
-export interface Organization {
-  name: string;
-  slug: string;
-}
-
-export type BouquetContribution = Omit<Contributions, 'bouquetContributions'>;
-
-interface Tenant {
-  guid: string;
-  name: string;
-}
-
-export interface Contributions {
-  // procedure returns Contributions
-  purpose: string | null;
-  treeCount: number | null;
-  quantity: number | null;
-  tenant: Tenant;
-  plantDate: number | Date | string;
-  contributionType: string;
-  bouquetContributions: BouquetContribution[] | undefined;
-  plantProject: PlantProject;
-  _type: 'contribution';
-}
-
-interface Properties {
-  cluster: boolean;
-  purpose: string;
-  quantity: number;
-  plantDate: number | Date;
-  contributionType: string;
-  plantProject: PlantProject;
-}
-
-interface PlantProject {
-  allowDonations: boolean;
-  guid: string;
-  name: string | null;
-  image: string;
-  country: string;
-  unit: string;
-  location: string;
-  geoLatitude: number;
-  geoLongitude: number;
-  tpo: Tpo;
-}
-
-interface Tpo {
-  id: number;
-  guid: string;
-  name: string | null;
-}
-
-export interface DonationInfoProps {
-  projects: number | null;
-  countries: number | null;
-  donations: number | null;
-}
-
-export interface ContributionStatsQueryResult {
-  treeCount: number | null;
-  squareMeters: number | null;
-  conserved: number | null;
-  projects: number | null;
-  countries: number | null;
-  donations: number | null;
-}
-
-export interface GiftStatsQueryResult {
-  treeCount: number | null;
-  conserved: number | null;
-}
-
-export interface CountryProjectStatsResult {
-  projectId: string;
-  country: string;
-}
-
-export interface StatsResult {
-  treeCount: number;
-  squareMeters: number;
-  conserved: number;
-  projects: number;
-  countries: number;
-  donations: number;
-}
-
-export interface ContributionsGeoJsonQueryResult {
-  purpose: string;
-  treeCount: number;
-  quantity: number;
-  contribution_type: string;
-  location: string;
-  country: string;
-  unit_type: string;
-  guid: string;
-  name: string;
-  image: string;
-  geoLatitude: number;
-  geoLongitude: number;
-  geometry: Geometry | null;
-  tpoName: string;
-  startDate: string;
-  endDate: string;
-  totalContributions: number;
-  allowDonations: boolean;
-}
-
-export interface GiftsGeoJsonQueryResult {
-  type: string;
-  purpose: string;
-  value: string;
-  created: Date;
-  metadata: {
-    giver: {
-      name: string;
-      slug: string;
-      avatar: string | null;
-    };
-    project: {
-      id: string;
-      name: string;
-      slug: string;
-      country: string;
-      location: string;
-      coordinates: number[];
-      organization: {
-        name: string;
-        slug: string;
-      };
-    };
-    notificationLocale: string | null;
+export type ContributionStats = {
+  giftsReceivedCount: number;
+  contributionsMadeCount: number;
+  contributedProjects: Set<string>;
+  contributedCountries: Set<string>;
+  treesRegistered: number;
+  treesDonated: {
+    personal: number;
+    received: number;
   };
+  areaRestoredInM2: {
+    personal: number;
+    /** not currently needed, but included for consistency. Gifts with units 'm2' are not currently supported. Initialize as 0.  */
+    received: 0;
+  };
+  areaConservedInM2: {
+    personal: number;
+    /** not currently needed but included for consistency. Gifts with units 'm2' are not currently supported. Initialize as 0. */
+    received: 0;
+  };
+};
+
+export type MyContributionsMapItem =
+  | MyContributionsSingleProject
+  | MyContributionsSingleRegistration;
+
+export type MyContributionsSingleProject = {
+  type: 'project';
+  contributionCount: number;
+  contributionUnitType: 'tree' | 'm2';
+  /** Gifts received or donations made (including gifts given)  */
+  totalContributionUnits: number;
+  latestContributions: MySingleContribution[];
+  latestGifts?: SingleGiftReceived[];
+  latestDonations?: SingleDonation[];
+};
+
+export type MySingleContribution = SingleDonation | SingleGiftReceived;
+
+export type SingleDonation = {
+  dataType: 'donation';
+  quantity: number;
+  plantDate: DateString;
+  unitType: 'tree' | 'm2';
+  isGifted: boolean;
+  giftDetails: GiftGivenDetails | null;
+};
+
+export type GiftGivenDetails = {
+  recipient: string | null;
+  type: string | null;
+};
+
+export type SingleGiftReceived = {
+  dataType: 'receivedGift';
+  quantity: number;
+  plantDate: DateString;
+  unitType: 'tree';
+  isGift: true;
+  giftDetails: GiftReceivedDetails;
+};
+
+export type GiftReceivedDetails = {
+  giverName: string | null;
+};
+
+export type MyContributionsSingleRegistration = {
+  type: 'registration';
+  totalContributionUnits: number;
+  contributionUnitType: 'tree';
+  contributionCount: number;
+  country: CountryCode | null;
+  projectGuid: string | null;
+  contributions: SingleRegistration[];
+};
+
+export type SingleRegistration = {
+  dataType: 'treeRegistration';
+  quantity: number;
+  plantDate: DateString;
+  unitType: 'tree';
+};
+
+export type MapLocation = {
+  geometry: Point;
+};
+
+export type ProjectQueryResult = {
+  guid: string;
+  name: string;
+  slug: string;
+  classification: TreeProjectClassification | null;
+  ecosystem: Exclude<EcosystemTypes, 'tropical-forests' | 'temperate'> | null;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2';
+  country: CountryCode;
+  geometry: Point;
+  image: string;
+  allowDonations: '0' | '1';
+  tpoName: string;
+};
+
+export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
+  allowDonations: boolean;
+};
+
+export type ProfileGroupQueryResult = {
+  profileId: number;
+};
+
+export type BriefProjectQueryResult = {
+  id: string;
+  guid: string;
+  purpose: 'trees' | 'conservation';
+  country: string;
+  geometry: Point | null;
+};
+
+export type ContributionsQueryResult = {
+  guid: string;
+  units: number;
+  unitType: 'tree' | 'm2';
+  plantDate: DateString;
+  contributionType: 'donation' | 'planting';
+  projectId: string;
+  amount: number;
+  currency: string;
+  geometry: Point | Polygon | null;
+  country: CountryCode | '';
+  giftMethod: string | null;
+  giftRecipient: string | null;
+  giftType: string | null;
+};
+
+export type GiftsQueryResult = {
+  quantity: number;
+  giftGiver: string;
+  projectGuid: string;
+  projectName: string;
+  country: string;
+  plantDate: DateString;
+};
+
+// Procedure Response types
+interface ContributionsResponse {
+  stats: ContributionStats;
+  myContributionsMap: Map<string, MyContributionsMapItem>;
+  registrationLocationsMap: Map<string, MapLocation>;
+  projectLocationsMap: Map<string, MapLocation>;
 }
 
-export interface ContributionData {
-  pageParams: [null, string] | [null];
-  pages: Page[];
+type ProjectListResponse = Record<string, MyForestProject>;
+
+// TODO: Could probably rename this to something more descriptive, similar to the other types for API response
+export type LeaderboardItem = {
+  name: string;
+  units: number;
+  unitType: 'tree' | 'm2';
+  purpose: string;
+};
+
+export type Leaderboard = {
+  mostRecent: LeaderboardItem[];
+  mostTrees: LeaderboardItem[];
+};
+
+export interface DonationProperties {
+  projectInfo: MyForestProject;
+  contributionInfo: MyContributionsSingleProject;
 }
-export interface TreeContributedProjectListProps {
-  userProfile: User | PublicUser;
-  handleFetchNextPage?: () => void;
-  hasNextPage?: boolean | undefined;
-}
+export type DonationSuperclusterProperties =
+  | DonationProperties
+  | ClusterProperties;
+
+export type RegistrationSuperclusterProperties =
+  | MyContributionsSingleRegistration
+  | ClusterProperties;
+export type ProfilePageType = 'private' | 'public';

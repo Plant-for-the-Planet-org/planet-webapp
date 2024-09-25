@@ -34,6 +34,7 @@ import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { trpc } from '../src/utils/trpc';
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import { CurrencyProvider } from '../src/features/common/Layout/CurrencyContext';
 import {
   DEFAULT_TENANT,
   getTenantConfig,
@@ -252,77 +253,79 @@ const PlanetWeb = ({
       >
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
-            <TenantProvider>
-              <QueryParamsProvider>
-                <div>
-                  <div
-                    style={
-                      showVideo &&
-                      (tenantConfig.config.slug === 'planet' ||
-                        tenantConfig.config.slug === 'ttc')
-                        ? {}
-                        : { display: 'none' }
-                    }
-                  >
-                    <VideoContainer setshowVideo={setshowVideo} />
-                  </div>
-
-                  <div
-                    style={
-                      showVideo &&
-                      (tenantConfig.config.slug === 'planet' ||
-                        tenantConfig.config.slug === 'ttc')
-                        ? { display: 'none' }
-                        : {}
-                    }
-                  >
-                    <Auth0Provider
-                      domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-                      clientId={
-                        tenantConfig.config?.auth0ClientId
-                          ? tenantConfig.config.auth0ClientId
-                          : process.env.AUTH0_CLIENT_ID
+            <CurrencyProvider>
+              <TenantProvider>
+                <QueryParamsProvider>
+                  <div>
+                    <div
+                      style={
+                        showVideo &&
+                        (tenantConfig.config.slug === 'planet' ||
+                          tenantConfig.config.slug === 'ttc')
+                          ? {}
+                          : { display: 'none' }
                       }
-                      redirectUri={
-                        typeof window !== 'undefined'
-                          ? window.location.origin
-                          : ''
-                      }
-                      audience={'urn:plant-for-the-planet'}
-                      cacheLocation={'localstorage'}
-                      onRedirectCallback={onRedirectCallback}
-                      useRefreshTokens={true}
                     >
-                      <ThemeProvider>
-                        <MuiThemeProvider theme={materialTheme}>
-                          <CssBaseline />
-                          <UserPropsProvider>
-                            <PlanetCashProvider>
-                              <PayoutsProvider>
-                                <Layout>
-                                  <ProjectPropsProvider>
-                                    <BulkCodeProvider>
-                                      <AnalyticsProvider>
-                                        {isMap ? (
-                                          <MapHolder
-                                            setshowVideo={setshowVideo}
-                                          />
-                                        ) : null}
-                                        {pageContent}
-                                      </AnalyticsProvider>
-                                    </BulkCodeProvider>
-                                  </ProjectPropsProvider>
-                                </Layout>
-                              </PayoutsProvider>
-                            </PlanetCashProvider>
-                          </UserPropsProvider>
-                        </MuiThemeProvider>
-                      </ThemeProvider>
-                    </Auth0Provider>
+                      <VideoContainer setshowVideo={setshowVideo} />
+                    </div>
+
+                    <div
+                      style={
+                        showVideo &&
+                        (tenantConfig.config.slug === 'planet' ||
+                          tenantConfig.config.slug === 'ttc')
+                          ? { display: 'none' }
+                          : {}
+                      }
+                    >
+                      <Auth0Provider
+                        domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+                        clientId={
+                          tenantConfig.config?.auth0ClientId
+                            ? tenantConfig.config.auth0ClientId
+                            : process.env.AUTH0_CLIENT_ID
+                        }
+                        redirectUri={
+                          typeof window !== 'undefined'
+                            ? window.location.origin
+                            : ''
+                        }
+                        audience={'urn:plant-for-the-planet'}
+                        cacheLocation={'localstorage'}
+                        onRedirectCallback={onRedirectCallback}
+                        useRefreshTokens={true}
+                      >
+                        <ThemeProvider>
+                          <MuiThemeProvider theme={materialTheme}>
+                            <CssBaseline />
+                            <UserPropsProvider>
+                              <PlanetCashProvider>
+                                <PayoutsProvider>
+                                  <Layout>
+                                    <ProjectPropsProvider>
+                                      <BulkCodeProvider>
+                                        <AnalyticsProvider>
+                                          {isMap ? (
+                                            <MapHolder
+                                              setshowVideo={setshowVideo}
+                                            />
+                                          ) : null}
+                                          {pageContent}
+                                        </AnalyticsProvider>
+                                      </BulkCodeProvider>
+                                    </ProjectPropsProvider>
+                                  </Layout>
+                                </PayoutsProvider>
+                              </PlanetCashProvider>
+                            </UserPropsProvider>
+                          </MuiThemeProvider>
+                        </ThemeProvider>
+                      </Auth0Provider>
+                    </div>
                   </div>
-                </div>
-              </QueryParamsProvider>
-            </TenantProvider>
+                </QueryParamsProvider>
+              </TenantProvider>
+            </CurrencyProvider>
           </ErrorHandlingProvider>
         </CacheProvider>
       </NextIntlClientProvider>
