@@ -21,16 +21,24 @@ import {
   PageProps,
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { useProjects } from '../../../../../src/features/projectsV2/ProjectsContext';
 
 const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { setSelectedClassification, setDebouncedSearchValue } = useProjects();
 
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
+
+  //* a temporary hook that will be removed in the future
+  useEffect(() => {
+    setSelectedClassification([]);
+    setDebouncedSearchValue('');
+  }, []);
 
   return (
     <div>
@@ -44,12 +52,16 @@ ProjectDetailsPage.getLayout = function getLayout(
   page: ReactElement,
   pageComponentProps: PageComponentProps
 ): ReactElement {
+  const layoutProps = {
+    currencyCode: pageComponentProps.currencyCode,
+    setCurrencyCode: pageComponentProps.setCurrencyCode,
+    page: 'project-details',
+    isMobile: pageComponentProps.isMobile,
+  } as const;
   return pageComponentProps.isMobile ? (
-    <MobileProjectsLayout>{page}</MobileProjectsLayout>
+    <MobileProjectsLayout {...layoutProps}>{page}</MobileProjectsLayout>
   ) : (
-    <ProjectsLayout setCurrencyCode={pageComponentProps.setCurrencyCode}>
-      {page}
-    </ProjectsLayout>
+    <ProjectsLayout {...layoutProps}>{page}</ProjectsLayout>
   );
 };
 
@@ -58,7 +70,7 @@ export default ProjectDetailsPage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
@@ -82,7 +94,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'maps'],
+    filenames: ['common', 'maps', 'allProjects'],
   });
 
   return {

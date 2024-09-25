@@ -1,5 +1,10 @@
 @import '../../../../theme/theme';
 
+// define a variable for the space around the layout
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+$layoutPaddingBottom: 30px;
+
 .projectsLayout {
   margin-top: 80px;
   height: calc(100vh - 80px);
@@ -9,8 +14,9 @@
       rgba(172, 172, 172, 0.15) 100%
     ),
     #fff;
-  padding: 24px 20px 30px;
+  padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
   position: relative;
+  overflow: hidden;
 }
 
 .mainContent {
@@ -21,15 +27,22 @@
 }
 
 .contentContainer {
-  width: 338px;
+  width: 360px;
   max-width: 100%;
-  background: white;
+  background: transparent;
 }
 
 .mapContainer {
   flex: 1;
   border-radius: 16px;
   overflow: hidden;
+}
+
+.mapFeatureExplorerOverlay {
+  position: absolute;
+  top: calc($layoutPaddingTop + 20px);
+  right: calc($layoutPaddingSide + 20px);
+  z-index: 1;
 }
 
 // styles for mobile layout
@@ -41,10 +54,12 @@
   display: flex;
   justify-content: center;
   margin-top: 80px;
-  padding-top: 24px;
+  padding-top: $layoutPaddingTop;
+  overflow: hidden;
   &.mapMode {
     height: 100vh;
     margin-top: 0px;
+    padding-top: 0px;
   }
 }
 
@@ -59,12 +74,14 @@
 }
 
 .mobileContentContainer {
-  background: grey;
+  padding: 0px 12px;
   height: 100%;
   width: 100%;
+  margin-top: 20px;
 }
 
 .mobileMapContainer {
   width: inherit;
   height: 100%;
+  position: relative;
 }

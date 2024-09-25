@@ -13,15 +13,15 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { ReactElement, useEffect } from 'react';
 import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
-import Link from 'next/link';
 import {
   NextPageWithLayout,
   PageComponentProps,
   PageProps,
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
+import ProjectsSection from '../../../../../src/features/projectsV2/ProjectsSection';
 
-const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
+const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -31,24 +31,24 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps }) => {
     }
   }, [router.isReady]);
 
-  return (
-    <div>
-      <h2>ProjectListPage</h2>
-      <Link href="/en/prd/lemon">Go to Details Page</Link>
-    </div>
-  );
+  return <ProjectsSection isMobile={isMobile} />;
 };
 
 ProjectListPage.getLayout = function getLayout(
   page: ReactElement,
   pageComponentProps: PageComponentProps
 ): ReactElement {
+  const layoutProps = {
+    currencyCode: pageComponentProps.currencyCode,
+    setCurrencyCode: pageComponentProps.setCurrencyCode,
+    page: 'project-list',
+    isMobile: pageComponentProps.isMobile,
+  } as const;
+
   return pageComponentProps.isMobile ? (
-    <MobileProjectsLayout>{page}</MobileProjectsLayout>
+    <MobileProjectsLayout {...layoutProps}>{page}</MobileProjectsLayout>
   ) : (
-    <ProjectsLayout setCurrencyCode={pageComponentProps.setCurrencyCode}>
-      {page}
-    </ProjectsLayout>
+    <ProjectsLayout {...layoutProps}>{page}</ProjectsLayout>
   );
 };
 
@@ -57,7 +57,7 @@ export default ProjectListPage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
@@ -80,7 +80,15 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'maps'],
+    filenames: [
+      'common',
+      'maps',
+      'country',
+      'projectDetails',
+      'donate',
+      'allProjects',
+      'manageProjects',
+    ],
   });
 
   return {
