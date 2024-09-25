@@ -45,18 +45,28 @@ export function sortCountriesData(sortBy) {
  * Sorts the countries array for the translated country name
  * @param {Function} tCountry - translation function
  * @param {String} language - language to get country names for
- * @param {Array} priorityCountries - country code to always show first in given order
+ * @param {Array} priorityCountryCodes - country code to always show first in given order
+ * @param {Set<string> | null} supportedCurrencyCodes - supported currency codes (3 letters)
  */
+
 export function sortCountriesByTranslation(
   tCountry,
   language,
-  priorityCountryCodes
+  priorityCountryCodes,
+  supportedCurrencyCodes
 ) {
   const key = `${language}.${priorityCountryCodes}`;
   if (!sortedCountries[key]) {
     const priorityCountries = [];
     // filter priority countries from list
     const filteredCountries = countriesData.filter(function (value) {
+      // Filter out countries with unsupported currency codes
+      if (
+        supportedCurrencyCodes &&
+        !supportedCurrencyCodes.has(value.currencyCode)
+      ) {
+        return false;
+      }
       if (priorityCountryCodes.includes(value.countryCode)) {
         priorityCountries.push(value);
         return false;

@@ -25,6 +25,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useRouter } from 'next/router';
 import { CountryCode } from '@planet-sdk/common';
+import { useCurrency } from '../CurrencyContext';
 
 interface MapCountryProps {
   value: string;
@@ -93,13 +94,15 @@ function MapLanguage({ value, handleChange }: MapLanguageProps) {
 // Maps the radio buttons for countries
 function MapCountry({ value, handleChange }: MapCountryProps) {
   const t = useTranslations('Country');
+  const { supportedCurrencies } = useCurrency();
   const locale = useLocale();
   const country = getStoredConfig('country');
   const priorityCountries = country === value ? [value] : [value, country];
   const sortedCountriesData = sortCountriesByTranslation(
     t,
     locale,
-    priorityCountries
+    priorityCountries,
+    supportedCurrencies
   );
   return (
     <FormControl variant="standard" component="fieldset">

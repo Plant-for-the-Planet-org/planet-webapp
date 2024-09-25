@@ -5,11 +5,10 @@ import { MapRef } from 'react-map-gl';
 import {
   DonationProperties,
   MyContributionsSingleRegistration,
-} from '../features/common/types/myForestv2';
-import {} from '../features/common/Layout/MyForestContextV2';
+} from '../features/common/types/myForest';
 import { ViewState } from 'react-map-gl-v7/maplibre';
 
-const clusterConfigV2 = {
+const clusterConfig = {
   radius: 40,
   maxZoom: 3,
 };
@@ -38,7 +37,7 @@ const clusterConfigV2 = {
   const supercluster = new Supercluster<
     MyContributionsSingleRegistration | DonationProperties,
     {}
-  >(clusterConfigV2);
+  >(clusterConfig);
   supercluster.load(geoJson);
   const zoom = viewState?.zoom;
   if (mapRef && mapRef.current !== null) {
