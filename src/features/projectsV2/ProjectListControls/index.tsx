@@ -62,7 +62,6 @@ const ProjectListControls = ({
   const classificationDropDownProps = {
     selectedClassification,
     setSelectedClassification,
-    filteredProjects,
   };
 
   return (

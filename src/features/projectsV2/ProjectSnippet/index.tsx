@@ -16,7 +16,6 @@ import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
-import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 interface Props {
   project:
@@ -27,7 +26,6 @@ interface Props {
   showTooltipPopups: boolean;
   isMobile?: boolean;
   page?: 'project-list' | 'project-details';
-  selectedMode?: ViewMode | undefined;
 }
 
 export interface CommonProps {
@@ -62,7 +60,6 @@ export default function ProjectSnippet({
   showTooltipPopups,
   isMobile,
   page,
-  selectedMode,
 }: Props): ReactElement {
   const { embed } = useContext(ParamsContext);
 
@@ -117,14 +114,14 @@ export default function ProjectSnippet({
     country: project.country,
     currency: project.currency,
   };
-
+  const projectSnippetContainerClasses = `${styles.singleProject} ${
+    page === 'project-details' && isMobile
+      ? styles.projectDetailsSnippetMobile
+      : ''
+  }`;
   return (
     <>
-      <div
-        className={`${styles.singleProject} ${
-          selectedMode === 'map' ? styles['mapMode'] : ''
-        }`}
-      >
+      <div className={projectSnippetContainerClasses}>
         <ImageSection {...imageProps} />
         <div className={styles.progressBar}>
           <div

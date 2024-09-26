@@ -44,7 +44,10 @@ const ProjectInfoSection = ({
 
   const shouldRenderKeyInfo = useMemo(() => {
     if (!isTreeProject && !isConservationProject) return false;
+    // General conditions that apply to all projects (e.g employee count)
+    const generalConditions = [metadata.employeesCount];
 
+    // Specific conditions for tree projects
     const treeProjectConditions = isTreeProject
       ? [
           metadata.yearAbandoned,
@@ -52,16 +55,21 @@ const ProjectInfoSection = ({
           metadata.plantingDensity,
           metadata.maxPlantingDensity,
           metadata.plantingSeasons && metadata.plantingSeasons.length > 0,
+          metadata.degradationYear,
         ]
       : [];
-
+    // Specific conditions for conservation projects
     const conservationProjectConditions = isConservationProject
-      ? [metadata.activitySeasons && metadata.activitySeasons.length > 0]
+      ? [
+          metadata.activitySeasons && metadata.activitySeasons.length > 0,
+          metadata.startingProtectionYear,
+        ]
       : [];
-
+    //Render key info if either tree or conservation project conditions are met
     return (
       (isTreeProject && treeProjectConditions.some(Boolean)) ||
-      (isConservationProject && conservationProjectConditions.some(Boolean))
+      (isConservationProject && conservationProjectConditions.some(Boolean)) ||
+      generalConditions.some(Boolean)
     );
   }, [metadata, isTreeProject, isConservationProject]);
 
@@ -74,6 +82,7 @@ const ProjectInfoSection = ({
       motivation,
       mainInterventions,
     } = metadata;
+    // General conditions that apply to all projects
     const generalConditions = [
       mainChallenge,
       siteOwnerName,
@@ -82,12 +91,14 @@ const ProjectInfoSection = ({
       motivation,
       mainInterventions && mainInterventions?.length > 0,
     ];
+    // Specific conditions for tree projects
     const treeProjectConditions = isTreeProject
       ? [
           metadata.siteOwnerType && metadata.siteOwnerType?.length > 0,
           metadata.degradationCause,
         ]
       : [];
+    // Specific conditions for conservation projects
     const conservationProjectConditions = isConservationProject
       ? [
           metadata.landOwnershipType && metadata.landOwnershipType?.length > 0,
@@ -96,9 +107,10 @@ const ProjectInfoSection = ({
           metadata.ecologicalBenefits,
           metadata.coBenefits,
           metadata.benefits,
+          metadata.ownershipType,
         ]
       : [];
-
+    //Render additional info if general, tree, or conservation conditions are met
     return (
       generalConditions.some(Boolean) ||
       treeProjectConditions.some(Boolean) ||
@@ -138,20 +150,19 @@ const ProjectInfoSection = ({
       {shouldRenderKeyInfo && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}
-          interventionStarted={
-            isTreeProject
-              ? metadata.firstTreePlanted
-              : metadata.startingProtectionYear
+          firstTreePlanted={isTreeProject ? metadata.firstTreePlanted : null}
+          startingProtectionYear={
+            isConservationProject ? metadata.startingProtectionYear : null
           }
-          interventionSeasons={
-            isTreeProject ? metadata.plantingSeasons : metadata.activitySeasons
+          plantingSeasons={isTreeProject ? metadata.plantingSeasons : null}
+          activitySeasons={
+            isConservationProject ? metadata.activitySeasons : null
           }
           plantingDensity={isTreeProject ? metadata.plantingDensity : null}
           maxPlantingDensity={
             isTreeProject ? metadata.maxPlantingDensity : null
           }
           employees={metadata.employeesCount}
-          isTreeProject={isTreeProject}
           degradationYear={isTreeProject ? metadata.degradationYear : null}
         />
       )}

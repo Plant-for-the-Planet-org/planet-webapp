@@ -187,7 +187,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       if (page !== 'project-list' || !currencyCode) {
         return;
       }
-
+      if (projects !== null) {
+        return;
+      }
       setIsLoading(true);
       setIsError(false);
 
@@ -222,14 +224,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   useEffect(() => {
     setDebouncedSearchValue('');
-    if (setSelectedMode && page === 'project-details') {
-      setSelectedMode('list');
+    if (page === 'project-details') {
+      if (setSelectedMode) setSelectedMode('list');
       setIsSearching(false);
       setSelectedClassification([]);
     } else {
       setSelectedPl(null);
       setSingleProject(null);
       setHoveredPl(null);
+      setSelectedSite(0);
     }
   }, [page]);
 

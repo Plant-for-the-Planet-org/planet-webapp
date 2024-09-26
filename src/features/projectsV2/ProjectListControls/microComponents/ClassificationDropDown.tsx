@@ -5,13 +5,10 @@ import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../../../../utils/projectV2';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { MapProject } from '../../../common/types/projectv2';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
-  filteredProjects: MapProject[] | undefined;
-  isMobile?: boolean;
   selectedMode?: ViewMode;
 }
 

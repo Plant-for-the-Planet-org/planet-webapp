@@ -101,9 +101,7 @@ const ProjectListControlForMobile = ({
   const classificationDropDownProps = {
     selectedClassification,
     setSelectedClassification,
-    isMobile,
     selectedMode,
-    filteredProjects,
   };
 
   return (

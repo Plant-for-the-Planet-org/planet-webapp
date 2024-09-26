@@ -188,7 +188,7 @@ export default function BasicDetails({
     'tundra',
   ];
 
-  const unitTypeOptions = ['tree', 'm2'];
+  const unitTypeOptions = ['tree', 'm2'] as const;
 
   // Default Form Fields
   const defaultBasicDetails =

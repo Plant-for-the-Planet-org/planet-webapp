@@ -163,7 +163,7 @@ const AdditionalInfo = ({
   ];
 
   return (
-    <div className={styles.moreInfoContainer}>
+    <div className={styles.additionalInfoContainer}>
       {moreInfoContent.map(
         (item) =>
           item.shouldDisplay && (

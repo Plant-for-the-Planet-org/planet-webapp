@@ -33,7 +33,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         locationCoordinates,
         mapRef,
         setViewState,
-        2000
+        2500
       );
     }
   }, [selectedPl, query.ploc, isReady]);

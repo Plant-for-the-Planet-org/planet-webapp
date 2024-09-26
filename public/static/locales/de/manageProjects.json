@@ -241,6 +241,7 @@
     "taxExemption": "Steuerbefreiungsdokumente (falls in Ihrem Land zutreffend)",
     "annualReport": "Letzter Jahresbericht",
     "financialReport": "Letzter geprüfter Finanzbericht",
-    "PlantingReport": "Projekt Fortschritt Bericht"
+    "PlantingReport": "Projekt Fortschritt Bericht",
+    "siteCount": "Fläche {siteId} von {totalCount}"
   }
 }
