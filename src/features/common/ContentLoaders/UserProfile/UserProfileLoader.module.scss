@@ -1,0 +1,20 @@
+@import './../../../../theme/theme';
+
+.skeletonContainer {
+  padding-left: 200px;
+  padding-right: 50px;
+  padding-bottom: 20px;
+}
+
+.profileSkeleton {
+  margin-top: 132px;
+  height: 400px;
+  padding-right: 100px;
+  border-radius: 20px !important;
+}
+
+// Possible change the name
+.myForestMapSkeleton {
+  margin-top: 42px;
+  border-radius: 20px;
+}

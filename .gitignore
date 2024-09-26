@@ -49,6 +49,11 @@ cypress.env.json
 /storybook-static
 build-storybook.log
 src/stories
+
+# vscode and local code
 .vscode/settings.json
 .vscode/launch.json
 .env copy.local
+
+# TypeScript incremental compilation file
+tsconfig.tsbuildinfo
