@@ -22,11 +22,16 @@ import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
+import { PlantLocation } from '../common/types/plantLocation';
 
 interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ExtendedProject | null;
   setSingleProject: SetState<ExtendedProject | null>;
+  plantLocations: PlantLocation[] | null;
+  setPlantLocations: SetState<PlantLocation[] | null>;
+  selectedSite: number;
+  setSelectedSite: SetState<number>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
   isError: boolean;
@@ -65,18 +70,21 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
+  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
+    null
+  );
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedSite, setSelectedSite] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
-
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -226,6 +234,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedMode,
       singleProject,
       setSingleProject,
+      plantLocations,
+      setPlantLocations,
+      selectedSite,
+      setSelectedSite,
     }),
     [
       projects,
@@ -238,6 +250,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       debouncedSearchValue,
       selectedMode,
       singleProject,
+      plantLocations,
+      selectedSite,
     ]
   );
 

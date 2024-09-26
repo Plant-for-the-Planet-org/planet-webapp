@@ -4,70 +4,68 @@ import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
+import SingleProjectView from './SingleProjectView';
+import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
-import { SetState } from '../../common/types/common';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import MobileControls from './microComponents/MobileControls';
+import { SetState } from '../../common/types/common';
 
-type ProjectsMapMobileProps = {
+export type ProjectsMapDesktopProps = {
+  isMobile: false;
+  page: 'project-list' | 'project-details';
+};
+export type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
   setSelectedMode: SetState<ViewMode>;
   isMobile: true;
   page: 'project-list' | 'project-details';
 };
-
-type ProjectsMapDesktopProps = {
-  isMobile: false;
-};
-
-type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
+export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
-  const { viewState, setViewState, mapState, mapOptions, updateMapOption } =
-    useProjectsMap();
-  const {
-    projects,
-    topProjects,
-    selectedClassification,
-    filteredProjects,
-    setSelectedClassification,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
-    isSearching,
-    setIsSearching,
-  } = useProjects();
-  const topProjectCount = topProjects?.length;
-  const projectCount = projects?.length;
-  const projectListControlProps = {
-    projectCount,
-    topProjectCount,
-    selectedClassification,
-    setSelectedClassification,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
+  const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
+  const { projects, singleProject } = useProjects();
+  const shouldShowSingleProjectsView = singleProject !== null;
+  const shouldShowMultipleProjectsView =
+    mapOptions.showProjects &&
+    projects &&
+    projects.length > 0 &&
+    !shouldShowSingleProjectsView;
+
+  const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
     setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
-    filteredProjects,
     isMobile: props.isMobile,
-    isSearching,
-    setIsSearching,
-    page: props.isMobile ? props.page : undefined,
-    mapOptions,
-    updateMapOption,
+    page: props.page,
   };
   return (
     <>
-      <MobileControls {...projectListControlProps} />
+      <MapControls {...mapControlProps} />
       <Map
         {...viewState}
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         attributionControl={false}
         ref={mapRef}
+        interactiveLayerIds={
+          shouldShowSingleProjectsView
+            ? ['polygon-layer', 'point-layer']
+            : undefined
+        }
       >
-        {mapOptions.showProjects && projects && <MultipleProjectsView />}
-        <NavigationControl position="bottom-right" showCompass={false} />
+        {shouldShowSingleProjectsView && <SingleProjectView mapRef={mapRef} />}
+        {shouldShowMultipleProjectsView && (
+          <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
+        )}
+        <NavigationControl
+          position="bottom-right"
+          showCompass={false}
+          style={{
+            position: 'relative',
+            bottom: props.isMobile ? '120px' : '0px',
+          }}
+        />
       </Map>
     </>
   );

@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
-import { availableFilters } from '../utils';
+import { availableFilters } from '../../../../utils/projectV2';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 

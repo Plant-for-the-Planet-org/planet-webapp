@@ -8,12 +8,33 @@
 }
 
 .projectDetailsControlsContainer {
-  // will be updated later on
+  display: flex;
+  position: absolute;
+  align-items: center;
+  gap: 34px;
+  top: 114px;
+  right: 14px;
+  z-index: 2px;
   button {
-    display: flex;
-    position: absolute;
     z-index: 2;
-    top: 115px;
-    right: 15px;
+  }
+}
+
+.layerToggle {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  display: flex;
+  bottom: 143px;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  @include xsPhoneView {
+    bottom: 220px;
+    right: 9px;
   }
 }

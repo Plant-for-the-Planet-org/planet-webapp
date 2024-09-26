@@ -14,7 +14,7 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
-import { getProjectCategory } from '../ProjectsMap/utils';
+import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 
 interface Props {

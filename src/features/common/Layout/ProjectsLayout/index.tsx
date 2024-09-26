@@ -48,7 +48,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
               />
             </div>
           )}
-          <ProjectsMap isMobile={false} />
+          <ProjectsMap isMobile={false} page={page} />
         </section>
       </main>
       <Credits setCurrencyCode={setCurrencyCode} />

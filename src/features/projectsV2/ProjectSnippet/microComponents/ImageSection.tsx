@@ -12,6 +12,7 @@ import styles from '../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { useProjects } from '../../ProjectsContext';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -30,10 +31,11 @@ const ImageSection = (props: ImageSectionProps) => {
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
+  const { setSingleProject, setDebouncedSearchValue } = useProjects();
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
-
+  const isEmbed = embed === 'true';
   const handleImageClick = () => {
     router.push(
       `/${locale}/prd/${slug}/${
@@ -48,11 +50,21 @@ const ImageSection = (props: ImageSectionProps) => {
     );
   };
   const handleBackButton = useCallback((e: MouseEvent) => {
+    setDebouncedSearchValue('');
+    setSingleProject(null);
     e.stopPropagation();
-    if (window.history.length > 0) {
-      window.history.back();
+    if (document.referrer) {
+      window.history.go(-2);
     } else {
-      window.location.href = '/';
+      router.replace({
+        pathname: `/${locale}/prd`,
+        query: {
+          ...(isEmbed ? { embed: 'true' } : {}),
+          ...(isEmbed && callbackUrl !== undefined
+            ? { callback: callbackUrl }
+            : {}),
+        },
+      });
     }
   }, []);
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';

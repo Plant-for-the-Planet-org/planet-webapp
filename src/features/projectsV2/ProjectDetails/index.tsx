@@ -11,7 +11,9 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { PlantLocation } from '../../common/types/plantLocation';
 import { ExtendedProject } from '../../common/types/projectv2';
+import { updateUrlWithParams } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -22,7 +24,9 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
+    selectedSite,
     setSingleProject,
+    setPlantLocations,
     setIsLoading,
     setIsError,
     setSelectedMode,
@@ -73,6 +77,45 @@ const ProjectDetails = ({
       loadProject(projectSlug, locale, currencyCode);
   }, [projectSlug, locale, currencyCode]);
 
+  useEffect(() => {
+    async function loadPlantLocations() {
+      setIsLoading(true);
+      try {
+        const result = await getRequest<PlantLocation[]>(
+          tenantConfig.id,
+          `/app/plantLocations/${singleProject?.id}`,
+          {
+            _scope: 'extended',
+          },
+          '1.0.4'
+        );
+        setPlantLocations(result);
+      } catch (err) {
+        setErrors(handleError(err as APIError | ClientError));
+        setIsError(true);
+        redirect('/');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    if (singleProject && singleProject?.purpose === 'trees')
+      loadPlantLocations();
+  }, [singleProject]);
+  // add  project site query
+  useEffect(() => {
+    const projectSites = singleProject?.sites;
+    if (!projectSites || !projectSites[selectedSite]) {
+      return;
+    }
+    const newSiteId = projectSites[selectedSite].properties.id;
+    const pathname = `/${locale}/prd/${singleProject.slug}`;
+
+    const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
+
+    router.push({ pathname, query }, undefined, {
+      shallow: true,
+    });
+  }, [singleProject?.slug, selectedSite, locale, router.asPath]);
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
