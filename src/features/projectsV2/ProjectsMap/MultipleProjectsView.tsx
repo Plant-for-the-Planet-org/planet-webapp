@@ -3,7 +3,7 @@ import { useProjects } from '../ProjectsContext';
 import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from './utils';
 
-const MultipleProjectsView = ({ isMobile }: { isMobile: boolean }) => {
+const MultipleProjectsView = () => {
   const { projects, isLoading, isError, filteredProjects } = useProjects();
 
   if (isLoading || isError || !projects) {
@@ -34,12 +34,7 @@ const MultipleProjectsView = ({ isMobile }: { isMobile: boolean }) => {
       }
     );
   }, [projects, filteredProjects, isLoading, isError]);
-  return (
-    <ProjectMarkers
-      categorizedProjects={categorizedProjects}
-      isMobile={isMobile}
-    />
-  );
+  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
 };
 
 export default MultipleProjectsView;

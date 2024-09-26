@@ -17,8 +17,8 @@
   }
 }
 
-.projectInfoContainer,
-.moreInfoContainer,
+.keyInfoContainer,
+.additionalInfoContainer,
 .projectSummary,
 .contactDetailsContainer {
   display: flex;
@@ -30,7 +30,7 @@
   color: #2f3336; //to be replaced
   font-size: $fontXXSmall;
 }
-.moreInfoContainer {
+.additionalInfoContainer {
   background: rgba(var(--more-info-background-color-new), 0.1);
   gap: 16px;
 }

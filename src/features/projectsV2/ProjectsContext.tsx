@@ -161,7 +161,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       if (page !== 'project-list' || !currencyCode) {
         return;
       }
-
+      if (projects !== null) {
+        return;
+      }
       setIsLoading(true);
       setIsError(false);
 
@@ -185,9 +187,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
         setIsLoading(false);
       }
     }
-
     loadProjects();
-  }, [currencyCode, locale]);
+  }, [currencyCode, locale, page]);
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
@@ -196,11 +197,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
-    if (setSelectedMode && page === 'project-details') {
-      setSelectedMode('list');
+    if (page === 'project-details') {
+      if (setSelectedMode) setSelectedMode('list');
       setDebouncedSearchValue('');
       setIsSearching(false);
       setSelectedClassification([]);
+    } else {
+      setSingleProject(null);
     }
   }, [page]);
 

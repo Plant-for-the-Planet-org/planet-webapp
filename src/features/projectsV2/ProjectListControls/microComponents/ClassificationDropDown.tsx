@@ -5,26 +5,19 @@ import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../utils';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { MapProject } from '../../../common/types/projectv2';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
-  filteredProjects: MapProject[] | undefined;
-  isMobile?: boolean;
   selectedMode?: ViewMode;
 }
 
 export const ClassificationDropDown = ({
   selectedClassification,
   setSelectedClassification,
-  isMobile,
   selectedMode,
-  filteredProjects,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
-  const { isImpersonationModeOn } = useUserProps();
   const handleFilterSelection = (
     filterItem: TreeProjectClassification
   ): void => {
