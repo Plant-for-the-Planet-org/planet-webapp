@@ -1,24 +1,42 @@
 import styles from '../styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
+import {
+  InterventionTypes,
+  LandOwnershipTypes,
+  OwnershipTypes,
+} from '@planet-sdk/common';
 interface Props {
-  mainChallengeText: string | null;
-  siteOwnershipText: string | null;
-  causeOfDegradationText: string | null;
-  whyThisSiteText: string | null;
-  longTermProtectionText: string | null;
-  siteOwnershipType: string[] | null;
+  mainChallenge: string | null;
+  siteOwnerName: string | null;
+  siteOwnershipType: LandOwnershipTypes[] | null;
+  causeOfDegradation: string | null;
+  whyThisSite: string | null;
+  longTermPlan: string | null;
   acquiredSince: number | null;
+  mainInterventions: InterventionTypes[] | null;
+  actions: string | null;
+  socialBenefits: string | null;
+  ecologicalBenefits: string | null;
+  coBenefits: string | null;
+  benefits: string | null;
+  ownershipTenure: OwnershipTypes | null;
 }
 
 const AdditionalInfo = ({
-  mainChallengeText,
-  siteOwnershipText,
-  causeOfDegradationText,
-  whyThisSiteText,
-  longTermProtectionText,
+  mainChallenge,
+  siteOwnerName,
+  causeOfDegradation,
+  whyThisSite,
+  longTermPlan,
   siteOwnershipType,
   acquiredSince,
+  mainInterventions,
+  actions,
+  socialBenefits,
+  ecologicalBenefits,
+  coBenefits,
+  ownershipTenure,
 }: Props) => {
   const tManageProjects = useTranslations('ManageProjects');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -69,12 +87,42 @@ const AdditionalInfo = ({
       return translatedTitle;
     }
   };
-
   const moreInfoContent = [
     {
       title: `${tManageProjects('mainChallenge')}`,
-      content: <div className={styles.infoDetail}>{mainChallengeText}</div>,
-      shouldDisplay: Boolean(mainChallengeText),
+      content: <div className={styles.infoDetail}>{mainChallenge}</div>,
+      shouldDisplay: Boolean(mainChallenge),
+    },
+    {
+      title: `${tManageProjects('actions')}`,
+      content: <div className={styles.infoDetail}>{actions}</div>,
+      shouldDisplay: Boolean(actions),
+    },
+    {
+      title: `${tManageProjects('socialBenefits')}`,
+      content: <div className={styles.infoDetail}>{socialBenefits}</div>,
+      shouldDisplay: Boolean(socialBenefits),
+    },
+    {
+      title: `${tManageProjects('ecologicalBenefits')}`,
+      content: <div className={styles.infoDetail}>{ecologicalBenefits}</div>,
+      shouldDisplay: Boolean(ecologicalBenefits),
+    },
+    {
+      title: `${tManageProjects('coBenefits')}`,
+      content: <div className={styles.infoDetail}>{coBenefits}</div>,
+      shouldDisplay: Boolean(coBenefits),
+    },
+    {
+      title: `${tManageProjects(`labelMainInterventions`)}`,
+      content: (
+        <div className={styles.infoDetail}>
+          {mainInterventions
+            ?.map((item) => tManageProjects(`interventionTypes.${item}`))
+            .join(',')}
+        </div>
+      ),
+      shouldDisplay: mainInterventions && mainInterventions?.length > 0,
     },
     {
       title: `${tManageProjects('siteOwnership')}`,
@@ -85,34 +133,37 @@ const AdditionalInfo = ({
               <span key={type}>{renderSiteOwnershipType(type)}</span>
             ))}
           </div>
-          <div className={styles.infoDetail}>{siteOwnershipText}</div>
+          <div className={styles.infoDetail}>{siteOwnerName}</div>
         </>
       ),
-      shouldDisplay: siteOwnershipText && siteOwnershipText?.length > 0,
+      shouldDisplay:
+        Boolean(siteOwnerName) ||
+        (siteOwnershipType && siteOwnershipType?.length > 0),
+    },
+    {
+      title: `${tManageProjects('ownerShipTenure')}`,
+      content: <div className={styles.infoDetail}>{ownershipTenure}</div>,
+      shouldDisplay: Boolean(ownershipTenure),
     },
     {
       title: `${tManageProjects('causeOfDegradation')}`,
-      content: (
-        <div className={styles.infoDetail}>{causeOfDegradationText}</div>
-      ),
-      shouldDisplay: Boolean(causeOfDegradationText),
+      content: <div className={styles.infoDetail}>{causeOfDegradation}</div>,
+      shouldDisplay: Boolean(causeOfDegradation),
     },
     {
       title: `${tManageProjects('whyThisSite')}`,
-      content: <div className={styles.infoDetail}>{whyThisSiteText}</div>,
-      shouldDisplay: Boolean(whyThisSiteText),
+      content: <div className={styles.infoDetail}>{whyThisSite}</div>,
+      shouldDisplay: Boolean(whyThisSite),
     },
     {
-      title: `${tManageProjects('longTermProtection')}`,
-      content: (
-        <div className={styles.infoDetail}>{longTermProtectionText}</div>
-      ),
-      shouldDisplay: Boolean(longTermProtectionText),
+      title: `${tProjectDetails('longTermPlan')}`,
+      content: <div className={styles.infoDetail}>{longTermPlan}</div>,
+      shouldDisplay: Boolean(longTermPlan),
     },
   ];
 
   return (
-    <div className={styles.moreInfoContainer}>
+    <div className={styles.additionalInfoContainer}>
       {moreInfoContent.map(
         (item) =>
           item.shouldDisplay && (

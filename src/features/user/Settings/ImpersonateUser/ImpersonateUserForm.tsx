@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -19,6 +19,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { tenantConfig } = useTenant();
   const t = useTranslations('Me');
+  const [hasUpdatedUrl, setHasUpdatedUrl] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const { token, setUser, setIsImpersonationModeOn } = useUserProps();
@@ -26,6 +27,7 @@ const ImpersonateUserForm = (): ReactElement => {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<ImpersonationData>({
     mode: 'onBlur',
     defaultValues: {
@@ -33,6 +35,36 @@ const ImpersonateUserForm = (): ReactElement => {
       supportPin: '',
     },
   });
+
+  useEffect(() => {
+    if (router.isReady && !hasUpdatedUrl) {
+      let shouldUpdateUrl = false;
+
+      if (router.query.email && typeof router.query.email === 'string') {
+        setValue('targetEmail', router.query.email);
+        shouldUpdateUrl = true;
+      }
+
+      if (
+        router.query.support_pin &&
+        typeof router.query.support_pin === 'string'
+      ) {
+        setValue('supportPin', router.query.support_pin);
+        shouldUpdateUrl = true;
+      }
+
+      if (shouldUpdateUrl) {
+        // Remove only the email and support_pin query parameters
+        const url = new URL(router.asPath, window.location.origin);
+        url.searchParams.delete('email');
+        url.searchParams.delete('support_pin');
+
+        // Use router.replace with the modified URL string
+        router.replace(url.pathname + url.search, undefined, { shallow: true });
+        setHasUpdatedUrl(true);
+      }
+    }
+  }, [router.isReady, router.query, hasUpdatedUrl, setValue]);
 
   const handleImpersonation = async (
     data: ImpersonationData

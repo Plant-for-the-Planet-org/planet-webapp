@@ -4,10 +4,10 @@ import { useCallback } from 'react';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
-import { useProjects } from '../ProjectsContext';
 import SingleProjectView from './SingleProjectView';
 import { getPlantLocationInfo } from './utils';
 import MapControls from './MapControls';
+import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
 
@@ -36,13 +36,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects.length > 0 &&
     !shouldShowSingleProjectsView;
 
-  const pageProps = {
+  const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
     setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
     isMobile: props.isMobile,
     page: props.page,
   };
-
   const onMouseMove = useCallback(
     (e) => {
       const hoveredPlantLocation = getPlantLocationInfo(
@@ -54,9 +53,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     },
     [plantLocations]
   );
-  const onMouseLeave = () => {
-    setHoveredPl(null);
-  };
   const onClick = useCallback(
     (e) => {
       const selectedPlantLocation = getPlantLocationInfo(
@@ -70,13 +66,13 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
   return (
     <>
-      <MapControls {...pageProps} />
+      <MapControls {...mapControlProps} />
       <Map
         {...viewState}
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
+        onMouseLeave={() => setHoveredPl(null)}
         onClick={onClick}
         attributionControl={false}
         ref={mapRef}
@@ -90,7 +86,14 @@ function ProjectsMap(props: ProjectsMapProps) {
         {shouldShowMultipleProjectsView && (
           <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
         )}
-        <NavigationControl position="bottom-right" showCompass={false} />
+        <NavigationControl
+          position="bottom-right"
+          showCompass={false}
+          style={{
+            position: 'relative',
+            bottom: props.isMobile ? '120px' : '0px',
+          }}
+        />
       </Map>
     </>
   );

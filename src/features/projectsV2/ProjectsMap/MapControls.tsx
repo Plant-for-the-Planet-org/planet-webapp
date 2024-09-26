@@ -22,7 +22,8 @@ const MapControls = ({
   setSelectedMode,
   page,
 }: MapControlsProps) => {
-  const { setIsSatelliteView, isSatelliteView } = useProjectsMap();
+  const { setIsSatelliteView, isSatelliteView, updateMapOption, mapOptions } =
+    useProjectsMap();
   const {
     projects,
     topProjects,
@@ -36,6 +37,8 @@ const MapControls = ({
     singleProject,
     selectedSite,
     setSelectedSite,
+    selectedPl,
+    setSelectedPl,
   } = useProjects();
   const hasMoreThanOneSite =
     singleProject?.sites?.length !== undefined &&
@@ -44,6 +47,8 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     projectSites: singleProject?.sites,
+    selectedPl,
+    setSelectedPl,
   };
   const projectListControlProps = {
     ...siteDropdownProps,
@@ -61,6 +66,8 @@ const MapControls = ({
     setIsSearching,
     page,
     hasMoreThanOneSite,
+    mapOptions,
+    updateMapOption,
   };
   const isProjectDetailsPage = page === 'project-details';
   return (
@@ -70,24 +77,29 @@ const MapControls = ({
           <ProjectListControlForMobile {...projectListControlProps} />
         </div>
       )}
-      {isMobile && isProjectDetailsPage && (
-        <div className={styles.projectDetailsControlsContainer}>
-          {hasMoreThanOneSite && <ProjectSiteDropdown {...siteDropdownProps} />}
-          <button onClick={() => setSelectedMode && setSelectedMode('list')}>
-            <CrossIcon width={18} />
-          </button>
-        </div>
-      )}
-      {!isMobile && isProjectDetailsPage && (
-        <ProjectSiteDropdown {...siteDropdownProps} />
-      )}
       {isProjectDetailsPage && (
-        <button
-          className={styles.layerToggle}
-          onClick={() => setIsSatelliteView(!isSatelliteView)}
-        >
-          {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
-        </button>
+        <>
+          {isMobile ? (
+            <div className={styles.projectDetailsControlsContainer}>
+              {hasMoreThanOneSite && (
+                <ProjectSiteDropdown {...siteDropdownProps} />
+              )}
+              <button
+                onClick={() => setSelectedMode && setSelectedMode('list')}
+              >
+                <CrossIcon width={18} />
+              </button>
+            </div>
+          ) : (
+            <ProjectSiteDropdown {...siteDropdownProps} />
+          )}
+          <button
+            className={styles.layerToggle}
+            onClick={() => setIsSatelliteView(!isSatelliteView)}
+          >
+            {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
+          </button>
+        </>
       )}
     </>
   );

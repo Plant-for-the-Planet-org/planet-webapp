@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
-import { ProjectExtend, useProjects } from '../ProjectsContext';
+import { useProjects } from '../ProjectsContext';
 import ProjectInfo from './components/ProjectInfo';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
@@ -13,6 +13,8 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
 import PlantLocationInfo from './components/PlantLocationInfo';
+import { ExtendedProject } from '../../common/types/projectv2';
+import { updateUrlWithParams } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -23,15 +25,12 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
-    setSelectedSite,
+    selectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
     setIsError,
     setSelectedMode,
-    setSelectedClassification,
-    setDebouncedSearchValue,
-    selectedSite,
     selectedPl,
     hoveredPl,
     samplePlantLocation,
@@ -41,26 +40,24 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
+  const { query, asPath, isReady } = router;
+  const projectSlug = query.p;
 
   useEffect(() => {
-    setSelectedSite(0); // default site value, will be removed in future
-    if (setSelectedMode) setSelectedMode('list');
-    setSelectedClassification([]);
-    setDebouncedSearchValue('');
-  }, []);
-
-  useEffect(() => {
-    async function loadProject() {
+    async function loadProject(
+      projectSlug: string,
+      locale: string,
+      currency: string
+    ) {
       setIsLoading(true);
       setIsError(false);
       try {
-        const { p } = router.query;
-        const fetchedProject = await getRequest<ProjectExtend>(
+        const fetchedProject = await getRequest<ExtendedProject>(
           tenantConfig.id,
-          `/app/projects/${p}`,
+          `/app/projects/${projectSlug}`,
           {
             _scope: 'extended',
-            currency: currencyCode,
+            currency: currency,
             locale: locale,
           }
         );
@@ -82,8 +79,9 @@ const ProjectDetails = ({
       }
     }
 
-    if (router.query.p && currencyCode) loadProject();
-  }, [router.query.p, locale, currencyCode]);
+    if (typeof projectSlug === 'string' && currencyCode)
+      loadProject(projectSlug, locale, currencyCode);
+  }, [projectSlug, locale, currencyCode]);
 
   useEffect(() => {
     async function loadPlantLocations() {
@@ -112,18 +110,58 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    if (!projectSites || !(projectSites && projectSites[selectedSite])) {
+    if (!projectSites || !projectSites[selectedSite]) {
       return;
     }
-    const currentUrl = new URL(window.location.href);
-    const searchParams = currentUrl.searchParams;
-    searchParams.set('site', projectSites[selectedSite].properties.id);
-    const newSearch = searchParams.toString();
-    const newPath = `/${locale}/prd/${singleProject.slug}${
-      newSearch.length > 0 ? `?${newSearch}` : ''
-    }`;
-    router.push(newPath);
-  }, [singleProject?.slug, selectedSite, locale]);
+
+    if (!isReady) return;
+    const pushWithShallow = (pathname: string, queryParams = {}) => {
+      router.push({ pathname, query: queryParams }, undefined, {
+        shallow: true,
+      });
+    };
+
+    // Case 1: If visit using direct link using wrong ploc),
+    // Case 1.1: If the "ploc" and "site" query param exists then set site param,
+    // Update url with the default site  param
+    if (
+      (query.ploc && !selectedPl && !query.site) ||
+      (query.ploc && query.site)
+    ) {
+      const siteId =
+        projectSites[query.ploc && query.site ? 0 : selectedSite].properties.id;
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const updatedQueryParams = { site: siteId };
+      pushWithShallow(pathname, updatedQueryParams);
+      return;
+    }
+
+    // Case 2: no "ploc" query or plant location is selected (default route),
+    // Update url with the selected site  param
+    if (!query.ploc && !selectedPl) {
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const siteId = projectSites[selectedSite].properties.id;
+      const updatedQueryParams = updateUrlWithParams(asPath, query, siteId);
+      pushWithShallow(pathname, updatedQueryParams);
+      return;
+    }
+
+    // Case 3: If a plant location (selectedPl) is selected,
+    // Update url with the selected plant location  param
+    if (selectedPl) {
+      const pathname = `/${locale}/prd/${singleProject.slug}`;
+      const updatedQueryParams = { ploc: selectedPl.hid };
+      pushWithShallow(pathname, updatedQueryParams);
+    }
+  }, [
+    singleProject,
+    selectedSite,
+    selectedPl,
+    locale,
+    query.site,
+    query.ploc,
+    isReady,
+  ]);
 
   const getplantInfoToRender = useMemo(() => {
     if (hoveredPl?.hid === selectedPl?.hid && samplePlantLocation)
@@ -147,7 +185,6 @@ const ProjectDetails = ({
       <ProjectSnippet
         project={singleProject}
         showTooltipPopups={false}
-        showBackButton={true}
         isMobile={isMobile}
         page="project-details"
       />
@@ -162,7 +199,7 @@ const ProjectDetails = ({
       )}
     </div>
   ) : (
-    <Skeleton className={styles.projectInfoSkeleton} />
+    <Skeleton className={styles.projectDetailsSkeleton} />
   );
 };
 

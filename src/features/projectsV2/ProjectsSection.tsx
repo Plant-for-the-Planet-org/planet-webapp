@@ -6,6 +6,7 @@ import { useProjects } from './ProjectsContext';
 import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
+import { useProjectsMap } from './ProjectsMapContext';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -27,6 +28,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     setSelectedMode,
     selectedMode,
   } = useProjects();
+  const { mapOptions, updateMapOption } = useProjectsMap();
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
@@ -52,8 +54,9 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     isMobile,
     isSearching,
     setIsSearching,
+    mapOptions,
+    updateMapOption,
   };
-
   return (
     <>
       {isMobile ? (

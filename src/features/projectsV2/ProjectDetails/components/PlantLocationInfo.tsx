@@ -5,8 +5,7 @@ import {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import { extractImages } from '../utils';
-import ImagesSlider from './ImagesSlider';
+import ImageCarousel from './ImageCarousel';
 import TreePlantedData from './microComponents/TreeCountData';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleSpecies from './microComponents/SampleSpecies';
@@ -24,7 +23,7 @@ const PlantLocationInfo = ({
   const t = useTranslations('ProjectDetails');
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
-
+  const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount, plantedLocationArea } = useMemo(() => {
     const totalTreesCount = isMultiTreeRegistration
       ? plantLocationInfo.plantedSpecies.reduce(
@@ -43,7 +42,13 @@ const PlantLocationInfo = ({
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (isMultiTreeRegistration) {
-      return extractImages(plantLocationInfo.sampleInterventions);
+      const result = plantLocationInfo.sampleInterventions.map((item) => {
+        return {
+          image: item.coordinates[0].image,
+          description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+        };
+      });
+      return result;
     }
   }, [isMultiTreeRegistration ? plantLocationInfo.sampleInterventions : null]);
 
@@ -63,7 +68,7 @@ const PlantLocationInfo = ({
         />
       )}
       {(sampleInterventionSpeciesImages || plantLocationInfo?.coordinates) && (
-        <ImagesSlider
+        <ImageCarousel
           images={
             isSampleTree
               ? plantLocationInfo.coordinates
@@ -73,6 +78,7 @@ const PlantLocationInfo = ({
           imageSize={'large'}
           imageHeight={195}
           hideProgressContainer={isSampleTree ? true : false}
+          leftAlignment={15}
         />
       )}
 

@@ -2,22 +2,17 @@ import { SliderImage } from '../../../../projects/components/PlantLocation/Image
 import styles from '../../styles/Slider.module.scss';
 
 interface Props {
-  type: string;
   imageURL: string;
   sliderImage: SliderImage;
 }
 
-export const SingleSliderImage = ({ type, imageURL, sliderImage }: Props) => {
+export const SingleSliderImage = ({ imageURL, sliderImage }: Props) => {
   return (
     <div
       className={styles.sliderContent}
-      style={
-        type === 'coordinate'
-          ? { background: `url(${imageURL})` }
-          : {
-              background: `linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.49) 100%),url(${imageURL})`,
-            }
-      }
+      style={{
+        background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),url(${imageURL})`,
+      }}
     >
       <p className={styles.sliderContentText}>{sliderImage.description}</p>
     </div>

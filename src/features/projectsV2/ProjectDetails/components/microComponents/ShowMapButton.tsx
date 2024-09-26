@@ -1,24 +1,17 @@
 import ExpandIcon from '../../../../../temp/icons/ExpandIcon';
 import style from '../../styles/MapPreview.module.scss';
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../../../common/types/common';
-import { ViewMode } from '../../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 type ShowMapButtonProp = {
-  setSelectedMode: SetState<ViewMode> | undefined;
+  handleMap: () => void;
 };
 
-const ShowMapButton = ({ setSelectedMode }: ShowMapButtonProp) => {
+const ShowMapButton = ({ handleMap }: ShowMapButtonProp) => {
   const t = useTranslations('ProjectDetails');
 
   return (
     <>
-      <button
-        className={style.diveToMap}
-        onClick={() => {
-          if (setSelectedMode) setSelectedMode('map');
-        }}
-      >
+      <button className={style.diveToMap} onClick={handleMap}>
         <div className={style.buttonIconContainer}>
           <ExpandIcon />
         </div>

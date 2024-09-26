@@ -5,7 +5,6 @@ import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { TreeProjectClassification } from '@planet-sdk/common';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -14,7 +13,6 @@ export type CategorizedProjects = {
 };
 interface ProjectMarkersProps {
   categorizedProjects: CategorizedProjects | undefined;
-  selectedClassification: TreeProjectClassification[];
 }
 
 type ClosedPopupState = {

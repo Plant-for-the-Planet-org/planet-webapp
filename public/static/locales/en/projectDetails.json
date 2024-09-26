@@ -35,6 +35,12 @@
     "tag": "Tag #{number}",
     "scientificName": "Scientific Name",
     "plot": "Plot",
-    "showWholeArea": "Show Whole Area"
+    "showWholeArea": "Show Whole Area",
+    "sampleTreeTag": "Sample Tree #{tag}",
+    "protectionSeasons": "Protection Seasons",
+    "protectionStarted": "Protection Started",
+    "restorationStarted": "Restoration Started",
+    "restorationSeasons": "Restoration Seasons",
+    "longTermPlan": "Long Term Plan"
   }
 }

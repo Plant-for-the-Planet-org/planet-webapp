@@ -104,10 +104,11 @@ const MapFeatureExplorer = ({
   const t = useTranslations('Maps');
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <>
+    <div className={styles.mapFeatureExplorer}>
       <CustomButton
-        startIcon={<ExploreIcon width={'19px'} />}
+        startIcon={<ExploreIcon />}
         onClick={() => setIsOpen(!isOpen)}
+        className={isOpen ? 'active' : ''}
       >
         {t('explore')}
       </CustomButton>
@@ -118,7 +119,7 @@ const MapFeatureExplorer = ({
           updateMapOption={updateMapOption}
         />
       )}
-    </>
+    </div>
   );
 };
 

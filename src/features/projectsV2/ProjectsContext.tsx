@@ -7,15 +7,13 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { MapProject } from '../common/types/projectv2';
+import { ExtendedProject, MapProject } from '../common/types/projectv2';
 import { useLocale } from 'next-intl';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   APIError,
-  ConservationProjectExtended,
-  TreeProjectExtended,
   CountryCode,
   handleError,
   TreeProjectClassification,
@@ -28,18 +26,12 @@ import {
   PlantLocation,
   SamplePlantLocation,
 } from '../common/types/plantLocation';
+import { useRouter } from 'next/router';
 
-export type ProjectExtend = TreeProjectExtended | ConservationProjectExtended;
-
-export interface SiteType {
-  siteName: string;
-  siteArea: number;
-  id: number;
-}
 interface ProjectsState {
   projects: MapProject[] | null;
-  singleProject: ProjectExtend | null;
-  setSingleProject: SetState<ProjectExtend | null>;
+  singleProject: ExtendedProject | null;
+  setSingleProject: SetState<ExtendedProject | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
   selectedPl: PlantLocation | null;
@@ -85,7 +77,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   setSelectedMode,
 }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const [singleProject, setSingleProject] = useState<ProjectExtend | null>(
+  const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
   const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
@@ -109,6 +101,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
+  const router = useRouter();
+  const { query, isReady } = router;
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -193,7 +187,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       if (page !== 'project-list' || !currencyCode) {
         return;
       }
-
+      if (projects !== null) {
+        return;
+      }
       setIsLoading(true);
       setIsError(false);
 
@@ -218,14 +214,66 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }
     }
     loadProjects();
-  }, [currencyCode, locale]);
-
+  }, [currencyCode, locale, page]);
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
       setCurrencyCode(currency);
     }
   }, [currencyCode, setCurrencyCode]);
+
+  useEffect(() => {
+    setDebouncedSearchValue('');
+    if (page === 'project-details') {
+      if (setSelectedMode) setSelectedMode('list');
+      setIsSearching(false);
+      setSelectedClassification([]);
+    } else {
+      setSelectedPl(null);
+      setSingleProject(null);
+      setHoveredPl(null);
+      setSelectedSite(0);
+    }
+  }, [page]);
+
+  // Select plant location based on the ploc query param (for direct links)
+  useEffect(() => {
+    if (
+      isReady &&
+      query.ploc &&
+      !query.site &&
+      plantLocations &&
+      plantLocations?.length > 0
+    ) {
+      const result = plantLocations.find(
+        (plantLocation) => plantLocation.hid === query.ploc
+      );
+      if (result) {
+        setSelectedPl(result);
+      } else {
+        router.push(
+          `/${locale}/prd/${singleProject?.slug}?site=${singleProject?.sites?.[0].properties.id}`,
+          undefined,
+          { shallow: true }
+        );
+        setSelectedPl(null);
+      }
+    }
+  }, [isReady, plantLocations]);
+  // Select project site based on the site query param (for direct links)
+  useEffect(() => {
+    if (isReady && query.site && singleProject) {
+      const result = singleProject.sites?.findIndex(
+        (site) => site.properties.id === query.site
+      );
+      if (result && result !== -1) {
+        setSelectedSite(result);
+      } else {
+        setSelectedSite(0); // default site
+      }
+    }
+  }, [query.site, isReady, singleProject]);
+
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,

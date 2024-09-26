@@ -52,7 +52,13 @@ interface ProjectsMapState {
   mapState: MapState;
   isSatelliteView: boolean;
   setIsSatelliteView: SetState<boolean>;
+  /**
+   * Contains the current state (enabled/disabled) of various map-related options.
+   */
   mapOptions: MapOptions;
+  /**
+   * Updates the state of a single map-related option.
+   */
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
 }
 
