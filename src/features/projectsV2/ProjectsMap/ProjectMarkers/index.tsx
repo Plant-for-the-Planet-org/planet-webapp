@@ -5,7 +5,6 @@ import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { useProjects } from '../../ProjectsContext';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -14,7 +13,6 @@ export type CategorizedProjects = {
 };
 interface ProjectMarkersProps {
   categorizedProjects: CategorizedProjects | undefined;
-  isMobile: boolean;
 }
 
 type ClosedPopupState = {
@@ -28,16 +26,12 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({
-  categorizedProjects,
-  isMobile,
-}: ProjectMarkersProps) => {
+const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
 
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
-  const { selectedMode } = useProjects();
 
   const visitProject = (projectSlug: string): void => {
     router.push(
@@ -123,7 +117,6 @@ const ProjectMarkers = ({
           project={popupState.project}
           handlePopupLeave={initiatePopupClose}
           visitProject={visitProject}
-          selectedMode={isMobile ? selectedMode : undefined}
         />
       )}
     </>

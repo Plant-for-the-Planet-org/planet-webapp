@@ -56,11 +56,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       >
         {shouldShowSingleProjectsView && <SingleProjectView mapRef={mapRef} />}
         {shouldShowMultipleProjectsView && (
-          <MultipleProjectsView
-            setViewState={setViewState}
-            mapRef={mapRef}
-            isMobile={props.isMobile}
-          />
+          <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
         )}
         <NavigationControl
           position="bottom-right"

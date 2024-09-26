@@ -9,13 +9,11 @@ import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
 interface MultipleProjectsViewProps {
   setViewState: SetState<ViewState>;
   mapRef: MapRef;
-  isMobile: boolean;
 }
 
 const MultipleProjectsView = ({
   setViewState,
   mapRef,
-  isMobile,
 }: MultipleProjectsViewProps) => {
   const { projects, isLoading, isError, filteredProjects, singleProject } =
     useProjects();
@@ -61,12 +59,7 @@ const MultipleProjectsView = ({
       }
     );
   }, [projects, filteredProjects, isLoading, isError]);
-  return (
-    <ProjectMarkers
-      categorizedProjects={categorizedProjects}
-      isMobile={isMobile}
-    />
-  );
+  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
 };
 
 export default MultipleProjectsView;

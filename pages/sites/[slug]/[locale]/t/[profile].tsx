@@ -12,12 +12,12 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../../tenant.config';
-import PublicProfileOuterContainer from '../../../../../src/features/user/MFV2/PublicProfileOuterContainer';
-import PublicProfileLayout from '../../../../../src/features/user/MFV2/PublicProfileLayout';
+import PublicProfileOuterContainer from '../../../../../src/features/user/Profile/PublicProfileOuterContainer';
+import PublicProfileLayout from '../../../../../src/features/user/Profile/PublicProfileLayout';
 import { v4 } from 'uuid';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { useRouter } from 'next/router';
-import { MyForestProviderV2 } from '../../../../../src/features/common/Layout/MyForestContextV2';
+import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { APIError, handleError, UserPublicProfile } from '@planet-sdk/common';
@@ -64,14 +64,14 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
   return tenantConfig ? (
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <MyForestProviderV2>
+      <MyForestProvider>
         <PublicProfileOuterContainer>
           <PublicProfileLayout
             profile={profile}
             isProfileLoaded={profile !== null}
           />
         </PublicProfileOuterContainer>
-      </MyForestProviderV2>
+      </MyForestProvider>
     </>
   ) : (
     <></>
