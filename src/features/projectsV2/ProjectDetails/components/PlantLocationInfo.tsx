@@ -11,8 +11,6 @@ import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleSpecies from './microComponents/SampleSpecies';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
-import SampleTreeInfoCard from './microComponents/SampleTreeInfoCard';
-import { formatHid } from '../utils';
 import { useTranslations } from 'next-intl';
 
 const PlantLocationInfo = ({
@@ -52,64 +50,41 @@ const PlantLocationInfo = ({
     }
   }, [isMultiTreeRegistration ? plantLocationInfo.sampleInterventions : null]);
 
-  const isSampleTree = plantLocationInfo?.type === 'sample-tree-registration';
+  const shouldDisplayImageCarousel =
+    sampleInterventionSpeciesImages &&
+    sampleInterventionSpeciesImages?.length > 0;
+
   return (
     <section className={styles.plantLocationInfoSection}>
-      {isSampleTree ? (
-        <div className={styles.sampleTreeInfoHeading}>
-          <h1>{t('sampleTree')}</h1>
-          <p>{formatHid(plantLocationInfo?.hid)}</p>
-        </div>
-      ) : (
-        <TreePlantedData
-          plHid={plantLocationInfo?.hid}
-          totalTreesCount={totalTreesCount}
-          plantedLocationArea={plantedLocationArea}
-        />
-      )}
-      {(sampleInterventionSpeciesImages || plantLocationInfo?.coordinates) && (
+      <TreePlantedData
+        plHid={plantLocationInfo?.hid}
+        totalTreesCount={totalTreesCount}
+        plantedLocationArea={plantedLocationArea}
+      />
+      {shouldDisplayImageCarousel && (
         <ImageCarousel
-          images={
-            isSampleTree
-              ? plantLocationInfo.coordinates
-              : sampleInterventionSpeciesImages
-          }
+          images={sampleInterventionSpeciesImages}
           type={'coordinate'}
           imageSize={'large'}
           imageHeight={195}
-          hideProgressContainer={isSampleTree ? true : false}
           leftAlignment={15}
         />
       )}
-
-      {isSampleTree ? (
-        <SampleTreeInfoCard
-          plantDate={plantLocationInfo?.plantDate}
-          treeTagNumber={plantLocationInfo?.tag}
-          scientificName={plantLocationInfo?.scientificName}
-          measurment={plantLocationInfo?.measurements}
+      <PlantingDetails
+        plantingDensity={plantingDensity}
+        plantDate={plantLocationInfo?.plantDate}
+      />
+      {isMultiTreeRegistration && (
+        <SpeciesPlanted
+          totalTreesCount={totalTreesCount}
+          plantedSpecies={plantLocationInfo.plantedSpecies}
         />
-      ) : (
-        <>
-          {' '}
-          <PlantingDetails
-            plantingDensity={plantingDensity}
-            plantDate={plantLocationInfo?.plantDate}
-          />
-          {isMultiTreeRegistration && (
-            <SpeciesPlanted
-              totalTreesCount={totalTreesCount}
-              plantedSpecies={plantLocationInfo.plantedSpecies}
-            />
-          )}
-          {isMultiTreeRegistration && (
-            <SampleSpecies
-              sampleInterventions={plantLocationInfo.sampleInterventions}
-            />
-          )}
-        </>
       )}
-
+      {isMultiTreeRegistration && (
+        <SampleSpecies
+          sampleInterventions={plantLocationInfo.sampleInterventions}
+        />
+      )}
       <TreeMapperBrand />
     </section>
   );

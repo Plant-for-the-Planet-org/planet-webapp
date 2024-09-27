@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
@@ -15,6 +15,7 @@ import { PlantLocation } from '../../common/types/plantLocation';
 import PlantLocationInfo from './components/PlantLocationInfo';
 import { ExtendedProject } from '../../common/types/projectv2';
 import { updateUrlWithParams } from '../../../utils/projectV2';
+import SamplePlantInfo from './components/SamplePlantInfo';
 
 const ProjectDetails = ({
   currencyCode,
@@ -33,8 +34,8 @@ const ProjectDetails = ({
     setSelectedMode,
     selectedPl,
     hoveredPl,
-    samplePlantLocation,
-    setSamplePlantLocation,
+    selectedSamplePlantLocation,
+    setSelectedSamplePlantLocation,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -121,7 +122,7 @@ const ProjectDetails = ({
       });
     };
 
-    // Case 1: If visit using direct link using wrong ploc),
+    // Case 1: If visit using direct link using wrong ploc,
     // Case 1.1: If the "ploc" and "site" query param exists then set site param,
     // Update url with the default site  param
     if (
@@ -162,22 +163,18 @@ const ProjectDetails = ({
     query.ploc,
     isReady,
   ]);
+  const shouldShowPlantLocationInfo = hoveredPl
+    ? hoveredPl
+    : selectedPl && !selectedSamplePlantLocation && !isMobile;
+  const shouldShowSamplePlantInfo =
+    !hoveredPl && selectedSamplePlantLocation && !isMobile;
+  const shouldShowProjectInfo =
+    !hoveredPl && !selectedPl && !selectedSamplePlantLocation;
 
-  const getplantInfoToRender = useMemo(() => {
-    if (hoveredPl?.hid === selectedPl?.hid && samplePlantLocation)
-      return samplePlantLocation;
-    if (hoveredPl) {
-      return hoveredPl;
-    } else if (samplePlantLocation) {
-      return samplePlantLocation;
-    } else {
-      return selectedPl;
-    }
-  }, [samplePlantLocation, hoveredPl, selectedPl]);
-
-  // clean up sample plant location state whenever parent plant location change
+  // clean up sample plant location when plant location change
   useEffect(() => {
-    if (samplePlantLocation) return setSamplePlantLocation(null);
+    if (selectedSamplePlantLocation)
+      return setSelectedSamplePlantLocation(null);
   }, [selectedPl?.hid]);
 
   return singleProject ? (
@@ -188,9 +185,15 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {selectedPl || hoveredPl || samplePlantLocation ? (
-        <PlantLocationInfo plantLocationInfo={getplantInfoToRender} />
-      ) : (
+      {shouldShowSamplePlantInfo && (
+        <SamplePlantInfo samplePlantData={selectedSamplePlantLocation} />
+      )}
+      {shouldShowPlantLocationInfo && (
+        <PlantLocationInfo
+          plantLocationInfo={hoveredPl ? hoveredPl : selectedPl}
+        />
+      )}
+      {shouldShowProjectInfo && (
         <ProjectInfo
           project={singleProject}
           isMobile={isMobile}

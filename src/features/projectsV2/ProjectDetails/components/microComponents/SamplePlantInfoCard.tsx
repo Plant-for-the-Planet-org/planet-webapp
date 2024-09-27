@@ -5,16 +5,16 @@ import { Measurements } from '../../../../common/types/plantLocation';
 
 interface Props {
   plantDate: string | undefined;
-  treeTagNumber: string | undefined | null;
+  tag: string | undefined | null;
   scientificName: string | undefined;
-  measurment: Measurements | undefined;
+  measurements: Measurements | undefined;
 }
 
-const SampleTreeInfoCard = ({
+const SamplePlantInfoCard = ({
   plantDate,
-  treeTagNumber,
+  tag,
   scientificName,
-  measurment,
+  measurements,
 }: Props) => {
   const t = useTranslations('ProjectDetails');
   const sampleTreeConfig = [
@@ -26,9 +26,9 @@ const SampleTreeInfoCard = ({
     {
       label: t('treeTag'),
       data: t('tag', {
-        number: treeTagNumber,
+        number: tag,
       }),
-      shouldRender: treeTagNumber !== undefined || treeTagNumber !== null,
+      shouldRender: tag !== undefined || tag !== null,
     },
   ];
   return (
@@ -49,13 +49,13 @@ const SampleTreeInfoCard = ({
           <p className={styles.data}>{scientificName}</p>
         </div>
       )}
-      {measurment && (
+      {measurements && (
         <div className={styles.plantingDetailsSubContainer}>
           <p className={styles.label}>{t('measurment')}</p>
           <p className={styles.data}>
             {t('singleSpeciesMeasurment', {
-              plantHeight: measurment.height,
-              plantWidth: measurment.width,
+              plantHeight: measurements.height,
+              plantWidth: measurements.width,
             })}
           </p>
         </div>
@@ -68,4 +68,4 @@ const SampleTreeInfoCard = ({
   );
 };
 
-export default SampleTreeInfoCard;
+export default SamplePlantInfoCard;

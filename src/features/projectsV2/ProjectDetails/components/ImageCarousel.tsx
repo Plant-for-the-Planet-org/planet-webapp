@@ -11,7 +11,6 @@ interface Props {
   imageSize: 'large' | 'medium';
   imageHeight: number;
   leftAlignment: number;
-  hideProgressContainer?: boolean;
   isImageModalOpenOnMobile?: boolean;
 }
 
@@ -22,7 +21,6 @@ const ImageCarousel = ({
   imageHeight,
   leftAlignment,
   isImageModalOpenOnMobile,
-  hideProgressContainer,
 }: Props) => {
   const [carousel, setCarousel] = React.useState<ReactElement>();
   const projectImages: { content: () => ReactElement }[] = [];
@@ -39,7 +37,6 @@ const ImageCarousel = ({
         projectImages.push({
           content: () => (
             <SingleCarouselImage
-              type={type}
               imageURL={imageURL}
               carouselImage={carouselImage}
               leftAlignment={leftAlignment}
@@ -63,7 +60,6 @@ const ImageCarousel = ({
           left: leftAlignment,
           padding: '7px 0 5px 0',
           maxWidth: '90%',
-          display: hideProgressContainer ? 'none' : 'flex',
         }}
         progressStyles={{ background: '#27AE60', height: 3.35 }}
         progressWrapperStyles={{

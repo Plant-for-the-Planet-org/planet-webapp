@@ -36,8 +36,8 @@ interface ProjectsState {
   setPlantLocations: SetState<PlantLocation[] | null>;
   selectedPl: PlantLocation | null;
   setSelectedPl: SetState<PlantLocation | null>;
-  samplePlantLocation: SamplePlantLocation | null;
-  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  selectedSamplePlantLocation: SamplePlantLocation | null;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
   hoveredPl: PlantLocation | SamplePlantLocation | null;
   setHoveredPl: SetState<PlantLocation | SamplePlantLocation | null>;
   selectedSite: number;
@@ -84,7 +84,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     null
   );
   const [selectedPl, setSelectedPl] = useState<PlantLocation | null>(null);
-  const [samplePlantLocation, setSamplePlantLocation] =
+  const [selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
     useState<SamplePlantLocation | null>(null);
   const [hoveredPl, setHoveredPl] = useState<
     PlantLocation | SamplePlantLocation | null
@@ -299,8 +299,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedPl,
       hoveredPl,
       setHoveredPl,
-      samplePlantLocation,
-      setSamplePlantLocation,
+      selectedSamplePlantLocation,
+      setSelectedSamplePlantLocation,
       selectedSite,
       setSelectedSite,
     }),
@@ -317,7 +317,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       singleProject,
       plantLocations,
       selectedPl,
-      samplePlantLocation,
+      selectedSamplePlantLocation,
       hoveredPl,
       selectedSite,
     ]

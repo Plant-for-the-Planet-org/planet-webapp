@@ -21,8 +21,8 @@ export default function PlantLocations(): ReactElement {
     selectedPl,
     setSelectedPl,
     setHoveredPl,
-    setSamplePlantLocation,
-    samplePlantLocation,
+    setSelectedSamplePlantLocation,
+    selectedSamplePlantLocation,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
   const t = useTranslations('Maps');
@@ -31,7 +31,7 @@ export default function PlantLocations(): ReactElement {
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
     switch (pl.type) {
       case 'sample-tree-registration':
-        setSamplePlantLocation(pl);
+        setSelectedSamplePlantLocation(pl);
         break;
       case 'single-tree-registration':
         setSelectedPl(pl);
@@ -207,7 +207,7 @@ export default function PlantLocations(): ReactElement {
                   <div
                     key={`${spl.id}-marker`}
                     className={`${styles.single} ${
-                      spl.hid === samplePlantLocation?.hid
+                      spl.hid === selectedSamplePlantLocation?.hid
                         ? styles.singleSelected
                         : ''
                     }`}
