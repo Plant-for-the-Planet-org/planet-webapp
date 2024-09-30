@@ -159,7 +159,7 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {selectedPlantLocation || hoveredPlantLocation ? (
+      {!isMobile && (selectedPlantLocation || hoveredPlantLocation) ? (
         <PlantLocationInfoSection
           plantLocationInfo={
             hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation

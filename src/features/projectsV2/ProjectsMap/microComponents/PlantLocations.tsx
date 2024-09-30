@@ -24,6 +24,11 @@ export default function PlantLocations(): ReactElement {
     setSamplePlantLocation,
     samplePlantLocation,
   } = useProjects();
+
+  if (!plantLocations) {
+    return <></>;
+  }
+
   const { isSatelliteView, viewState } = useProjectsMap();
   const t = useTranslations('Maps');
   const locale = useLocale();
@@ -129,10 +134,6 @@ export default function PlantLocations(): ReactElement {
       geometry,
     };
   };
-
-  if (!plantLocations) {
-    return <></>;
-  }
 
   const features = plantLocations.map((el) => {
     const isSelected =
