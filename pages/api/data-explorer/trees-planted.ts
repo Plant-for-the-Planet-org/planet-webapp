@@ -53,66 +53,66 @@ handler.post(async (req, response) => {
     case TIME_FRAME.DAYS:
       query =
         'SELECT  \
-          iv.intervention_date AS plantedDate, \
+          iv.intervention_start_date AS plantedDate, \
           SUM(iv.trees_planted) AS treesPlanted \
         FROM intervention iv \
         JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
-        GROUP BY iv.intervention_date \
-        ORDER BY iv.intervention_date';
+        WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ? \
+        GROUP BY iv.intervention_start_date \
+        ORDER BY iv.intervention_start_date';
       break;
 
     case TIME_FRAME.WEEKS:
       query =
         'SELECT \
-          DATE_SUB(iv.intervention_date, INTERVAL WEEKDAY(iv.intervention_date) DAY) AS weekStartDate, \
-          DATE_ADD(DATE_SUB(iv.intervention_date, INTERVAL WEEKDAY(iv.intervention_date) DAY), INTERVAL 6 DAY) AS weekEndDate, \
-          WEEK(iv.intervention_date, 1) AS weekNum, \
-          LEFT(MONTHNAME(iv.intervention_date), 3) AS month, \
-          YEAR(iv.intervention_date) AS year, \
+          DATE_SUB(iv.intervention_start_date, INTERVAL WEEKDAY(iv.intervention_start_date) DAY) AS weekStartDate, \
+          DATE_ADD(DATE_SUB(iv.intervention_start_date, INTERVAL WEEKDAY(iv.intervention_start_date) DAY), INTERVAL 6 DAY) AS weekEndDate, \
+          WEEK(iv.intervention_start_date, 1) AS weekNum, \
+          LEFT(MONTHNAME(iv.intervention_start_date), 3) AS month, \
+          YEAR(iv.intervention_start_date) AS year, \
           SUM(iv.trees_planted) AS treesPlanted \
         FROM intervention iv \
         JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
+        WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ? \
         GROUP BY weekNum, weekStartDate, weekEndDate, month, year \
-        ORDER BY iv.intervention_date';
+        ORDER BY iv.intervention_start_date';
       break;
 
     case TIME_FRAME.MONTHS:
       query =
         'SELECT \
-          LEFT(MONTHNAME(iv.intervention_date), 3) AS month, \
-          YEAR(iv.intervention_date) AS year, \
+          LEFT(MONTHNAME(iv.intervention_start_date), 3) AS month, \
+          YEAR(iv.intervention_start_date) AS year, \
           SUM(iv.trees_planted) AS treesPlanted \
         FROM intervention iv \
         JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
+        WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ? \
         GROUP BY month, year \
-        ORDER BY iv.intervention_date;';
+        ORDER BY iv.intervention_start_date;';
       break;
 
     case TIME_FRAME.YEARS:
       query =
         'SELECT \
-          YEAR(iv.intervention_date) AS year, \
+          YEAR(iv.intervention_start_date) AS year, \
           SUM(iv.trees_planted) AS treesPlanted \
         FROM intervention iv \
         JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
+        WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ? \
         GROUP BY year \
-        ORDER BY iv.intervention_date';
+        ORDER BY iv.intervention_start_date';
       break;
 
     default:
       query =
         'SELECT \
-            YEAR(iv.intervention_date) AS year, \
+            YEAR(iv.intervention_start_date) AS year, \
             SUM(iv.trees_planted) AS treesPlanted \
           FROM intervention iv \
           JOIN project pp ON iv.plant_project_id = pp.id \
-          WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
+          WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ? \
           GROUP BY year \
-          ORDER BY iv.intervention_date';
+          ORDER BY iv.intervention_start_date';
   }
 
   try {

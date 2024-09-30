@@ -45,7 +45,7 @@ handler.post(async (req, response) => {
         COALESCE(SUM(iv.trees_planted), 0) AS totalTreesPlanted \
       FROM intervention iv \
       JOIN project pp ON iv.plant_project_id = pp.id \
-      WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ?';
+      WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ?';
 
     const res = await db.query<TotalTreesPlanted[]>(query, [
       projectId,

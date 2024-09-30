@@ -30,14 +30,14 @@ handler.post(async (req, response) => {
     const values = [projectId];
 
     if (queryType !== QueryType.DATE) {
-      query += ' AND DATE(iv.intervention_date) BETWEEN ? AND ?';
+      query += ' AND DATE(iv.intervention_start_date) BETWEEN ? AND ?';
       values.push(fromDate, toDate);
     }
 
     if (queryType) {
       if (queryType === QueryType.DATE) {
         // Filter by date
-        query += ' AND DATE(iv.intervention_date) = ?';
+        query += ' AND DATE(iv.intervention_start_date) = ?';
         values.push(searchQuery);
       } else if (queryType === QueryType.HID) {
         // Filter by HID
