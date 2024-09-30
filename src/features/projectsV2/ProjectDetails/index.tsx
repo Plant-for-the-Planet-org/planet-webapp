@@ -32,8 +32,8 @@ const ProjectDetails = ({
     setIsLoading,
     setIsError,
     setSelectedMode,
-    selectedPl,
-    hoveredPl,
+    selectedPlantLocation,
+    hoveredPlantLocation,
     selectedSamplePlantLocation,
     setSelectedSamplePlantLocation,
   } = useProjects();
@@ -41,8 +41,11 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
-  const { query, asPath, isReady } = router;
-  const projectSlug = query.p;
+  const {
+    p: projectSlug,
+    ploc: requestedPlantLocation,
+    site: requestedSite,
+  } = router.query;
 
   useEffect(() => {
     async function loadProject(
@@ -111,71 +114,60 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    if (!projectSites || !projectSites[selectedSite]) {
+    if (!projectSites) {
       return;
     }
-
-    if (!isReady) return;
+    if (!router.isReady) return;
     const pushWithShallow = (pathname: string, queryParams = {}) => {
       router.push({ pathname, query: queryParams }, undefined, {
         shallow: true,
       });
     };
 
-    // Case 1: If visit using direct link using wrong ploc,
-    // Case 1.1: If the "ploc" and "site" query param exists then set site param,
-    // Update url with the default site  param
-    if (
-      (query.ploc && !selectedPl && !query.site) ||
-      (query.ploc && query.site)
-    ) {
-      const siteId =
-        projectSites[query.ploc && query.site ? 0 : selectedSite].properties.id;
+    // case 1: Update url with the selected site  param
+    // case 2: Update url with the selected site  param if both params are present in the url (i.e ploc, site)
+    if (selectedSite !== null || (requestedPlantLocation && requestedSite)) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const updatedQueryParams = { site: siteId };
+      const siteId = projectSites[selectedSite ?? 0].properties.id;
+      const updatedQueryParams = updateUrlWithParams(
+        router.asPath,
+        router.query,
+        siteId
+      );
       pushWithShallow(pathname, updatedQueryParams);
       return;
     }
 
-    // Case 2: no "ploc" query or plant location is selected (default route),
-    // Update url with the selected site  param
-    if (!query.ploc && !selectedPl) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const siteId = projectSites[selectedSite].properties.id;
-      const updatedQueryParams = updateUrlWithParams(asPath, query, siteId);
-      pushWithShallow(pathname, updatedQueryParams);
-      return;
-    }
-
-    // Case 3: If a plant location (selectedPl) is selected,
     // Update url with the selected plant location  param
-    if (selectedPl) {
+    if (selectedPlantLocation) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const updatedQueryParams = { ploc: selectedPl.hid };
+      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
       pushWithShallow(pathname, updatedQueryParams);
     }
   }, [
     singleProject,
     selectedSite,
-    selectedPl,
+    selectedPlantLocation,
     locale,
-    query.site,
-    query.ploc,
-    isReady,
+    router.isReady,
+    requestedPlantLocation,
+    requestedSite,
   ]);
-  const shouldShowPlantLocationInfo = hoveredPl
-    ? hoveredPl
-    : selectedPl && !selectedSamplePlantLocation && !isMobile;
+  const shouldShowPlantLocationInfo = hoveredPlantLocation
+    ? hoveredPlantLocation
+    : selectedPlantLocation && !selectedSamplePlantLocation && !isMobile;
   const shouldShowSamplePlantInfo =
-    !hoveredPl && selectedSamplePlantLocation && !isMobile;
+    !hoveredPlantLocation && selectedSamplePlantLocation && !isMobile;
   const shouldShowProjectInfo =
-    !hoveredPl && !selectedPl && !selectedSamplePlantLocation;
+    !hoveredPlantLocation &&
+    !selectedPlantLocation &&
+    !selectedSamplePlantLocation;
 
   // clean up sample plant location when plant location change
   useEffect(() => {
     if (selectedSamplePlantLocation)
       return setSelectedSamplePlantLocation(null);
-  }, [selectedPl?.hid]);
+  }, [selectedPlantLocation?.hid]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
@@ -190,7 +182,9 @@ const ProjectDetails = ({
       )}
       {shouldShowPlantLocationInfo && (
         <PlantLocationInfo
-          plantLocationInfo={hoveredPl ? hoveredPl : selectedPl}
+          plantLocationInfo={
+            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
+          }
         />
       )}
       {shouldShowProjectInfo && (

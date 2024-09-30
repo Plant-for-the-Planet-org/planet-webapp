@@ -5,7 +5,7 @@ import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
-import { getPlantLocationInfo } from './utils';
+import { getPlantLocationInfo } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
@@ -26,9 +26,13 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
-  const { plantLocations, setHoveredPl, setSelectedPl, selectedPl } =
-    useProjects();
-  const { projects, singleProject } = useProjects();
+  const {
+    plantLocations,
+    setHoveredPlantLocation,
+    setSelectedPlantLocation,
+    setSelectedSite,
+  } = useProjects();
+  const { projects, singleProject, selectedPlantLocation } = useProjects();
   const shouldShowSingleProjectsView = singleProject !== null;
   const shouldShowMultipleProjectsView =
     mapOptions.showProjects &&
@@ -51,14 +55,14 @@ function ProjectsMap(props: ProjectsMapProps) {
       );
       if (
         hoveredPlantLocation &&
-        hoveredPlantLocation?.hid !== selectedPl?.hid
+        hoveredPlantLocation.hid !== selectedPlantLocation?.hid
       ) {
-        setHoveredPl(hoveredPlantLocation);
+        setHoveredPlantLocation(hoveredPlantLocation);
       } else {
-        setHoveredPl(null);
+        setHoveredPlantLocation(null);
       }
     },
-    [plantLocations, selectedPl]
+    [plantLocations, selectedPlantLocation]
   );
   const onClick = useCallback(
     (e) => {
@@ -67,7 +71,10 @@ function ProjectsMap(props: ProjectsMapProps) {
         mapRef,
         e.point
       );
-      if (selectedPlantLocation) setSelectedPl(selectedPlantLocation);
+      if (selectedPlantLocation) {
+        setSelectedSite(null);
+        setSelectedPlantLocation(selectedPlantLocation);
+      }
     },
     [plantLocations]
   );
@@ -79,7 +86,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         onMouseMove={onMouseMove}
-        onMouseLeave={() => setHoveredPl(null)}
+        onMouseLeave={() => setHoveredPlantLocation(null)}
         onClick={onClick}
         attributionControl={false}
         ref={mapRef}

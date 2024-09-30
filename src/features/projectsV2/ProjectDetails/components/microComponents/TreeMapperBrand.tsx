@@ -7,13 +7,14 @@ const TreeMapperBrand = () => {
   return (
     <div className={styles.treeMapperLabelContainer}>
       <div className={styles.treeMapperLabelSubContainer}>
-        <p>{tProjectDetails('poweredBy')}</p>
-        <div>
-          <TreeMapperIcon />
-        </div>
-        <p className={styles.treeMapperLabel}>
-          {tProjectDetails('treeMapper')}
-        </p>
+        {tProjectDetails.rich('treeMapperBrand', {
+          iconText: (chunks) => (
+            <div className={styles.treeMapperLabel}>
+              <TreeMapperIcon />
+              {chunks}
+            </div>
+          ),
+        })}
       </div>
     </div>
   );

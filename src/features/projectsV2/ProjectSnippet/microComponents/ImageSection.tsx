@@ -12,7 +12,6 @@ import styles from '../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import { useProjects } from '../../ProjectsContext';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -31,8 +30,6 @@ const ImageSection = (props: ImageSectionProps) => {
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
-  const { setSingleProject, setDebouncedSearchValue, setSelectedPl } =
-    useProjects();
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);

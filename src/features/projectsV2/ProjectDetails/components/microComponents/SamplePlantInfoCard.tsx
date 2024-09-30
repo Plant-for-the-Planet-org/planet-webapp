@@ -51,9 +51,9 @@ const SamplePlantInfoCard = ({
       )}
       {measurements && (
         <div className={styles.plantingDetailsSubContainer}>
-          <p className={styles.label}>{t('measurment')}</p>
+          <p className={styles.label}>{t('measurement')}</p>
           <p className={styles.data}>
-            {t('singleSpeciesMeasurment', {
+            {t('singleSpeciesMeasurement', {
               plantHeight: measurements.height,
               plantWidth: measurements.width,
             })}

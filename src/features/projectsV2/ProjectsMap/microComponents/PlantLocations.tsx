@@ -17,13 +17,18 @@ import { useProjectsMap } from '../../ProjectsMapContext';
 export default function PlantLocations(): ReactElement {
   const {
     plantLocations,
-    hoveredPl,
-    selectedPl,
-    setSelectedPl,
-    setHoveredPl,
+    hoveredPlantLocation,
+    selectedPlantLocation,
+    setSelectedPlantLocation,
+    setHoveredPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
   } = useProjects();
+
+  if (!plantLocations) {
+    return <></>;
+  }
+
   const { isSatelliteView, viewState } = useProjectsMap();
   const t = useTranslations('Maps');
   const locale = useLocale();
@@ -34,23 +39,23 @@ export default function PlantLocations(): ReactElement {
         setSelectedSamplePlantLocation(pl);
         break;
       case 'single-tree-registration':
-        setSelectedPl(pl);
+        setSelectedPlantLocation(pl);
         break;
       default:
         break;
     }
   };
   const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
-    setHoveredPl(pl);
+    setHoveredPlantLocation(pl);
   };
 
   const onHoverEnd = () => {
     if (
-      hoveredPl &&
-      (hoveredPl.type === 'single-tree-registration' ||
-        hoveredPl.type === 'sample-tree-registration')
+      hoveredPlantLocation &&
+      (hoveredPlantLocation.type === 'single-tree-registration' ||
+        hoveredPlantLocation.type === 'sample-tree-registration')
     )
-      setHoveredPl(null);
+      setHoveredPlantLocation(null);
   };
   const getPlTreeCount = (pl: PlantLocationMulti) => {
     let count = 0;
@@ -93,8 +98,11 @@ export default function PlantLocations(): ReactElement {
   };
 
   const getDateDiff = (pl: PlantLocation) => {
+    if (!pl.interventionStartDate) {
+      return null;
+    }
     const today = new Date();
-    const plantationDate = new Date(pl.plantDate?.substr(0, 10));
+    const plantationDate = new Date(pl.interventionStartDate?.slice(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
@@ -127,13 +135,10 @@ export default function PlantLocations(): ReactElement {
     };
   };
 
-  if (!plantLocations) {
-    return <></>;
-  }
-
   const features = plantLocations.map((el) => {
-    const isSelected = selectedPl && selectedPl.id === el.id;
-    const isHovered = hoveredPl && hoveredPl.id === el.id;
+    const isSelected =
+      selectedPlantLocation && selectedPlantLocation.id === el.id;
+    const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
       highlightLine: isSelected || isHovered,
       opacity:
@@ -192,11 +197,11 @@ export default function PlantLocations(): ReactElement {
           }}
           filter={['!=', ['get', 'dateDiff'], null]}
         />
-        {selectedPl &&
-        selectedPl.type === 'multi-tree-registration' &&
+        {selectedPlantLocation &&
+        selectedPlantLocation.type === 'multi-tree-registration' &&
         viewState.zoom > 14 &&
-        selectedPl.sampleInterventions
-          ? selectedPl.sampleInterventions.map((spl) => {
+        selectedPlantLocation.sampleInterventions
+          ? selectedPlantLocation.sampleInterventions.map((spl) => {
               return (
                 <Marker
                   key={`${spl.id}-sample`}

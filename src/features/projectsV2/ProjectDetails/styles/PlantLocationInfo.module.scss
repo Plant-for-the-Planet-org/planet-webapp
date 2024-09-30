@@ -12,7 +12,7 @@
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-.treeCountWrapper {
+.plantLocationHeaderContainer {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -82,7 +82,7 @@
     font-weight: 400;
     min-width: 200px;
   }
-  .treeMatrics {
+  .treeMetrics {
     display: flex;
     min-width: 90px;
     justify-content: space-between;
@@ -99,7 +99,7 @@
   padding: 20px;
   font-size: 12px;
   font-weight: 700;
-  .mainLable {
+  .mainLabel {
     color: rgba(0, 122, 73, 1);
   }
 }
@@ -145,6 +145,7 @@
   .treeMapperLabel {
     color: rgba(0, 122, 73, 1);
     font-weight: 700;
+    display: flex;
   }
 }
 

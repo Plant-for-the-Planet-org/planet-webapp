@@ -6,9 +6,9 @@ import {
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import ImageCarousel from './ImageCarousel';
-import TreePlantedData from './microComponents/TreeCountData';
+import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
-import SampleSpecies from './microComponents/SampleSpecies';
+import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
@@ -56,7 +56,7 @@ const PlantLocationInfo = ({
 
   return (
     <section className={styles.plantLocationInfoSection}>
-      <TreePlantedData
+      <PlantLocationHeader
         plHid={plantLocationInfo?.hid}
         totalTreesCount={totalTreesCount}
         plantedLocationArea={plantedLocationArea}
@@ -72,19 +72,21 @@ const PlantLocationInfo = ({
       )}
       <PlantingDetails
         plantingDensity={plantingDensity}
-        plantDate={plantLocationInfo?.plantDate}
+        plantDate={plantLocationInfo?.interventionStartDate}
       />
-      {isMultiTreeRegistration && (
-        <SpeciesPlanted
-          totalTreesCount={totalTreesCount}
-          plantedSpecies={plantLocationInfo.plantedSpecies}
-        />
-      )}
-      {isMultiTreeRegistration && (
-        <SampleSpecies
-          sampleInterventions={plantLocationInfo.sampleInterventions}
-        />
-      )}
+      {isMultiTreeRegistration &&
+        plantLocationInfo.plantedSpecies.length > 0 && (
+          <SpeciesPlanted
+            totalTreesCount={totalTreesCount}
+            plantedSpecies={plantLocationInfo.plantedSpecies}
+          />
+        )}
+      {isMultiTreeRegistration &&
+        plantLocationInfo.sampleInterventions.length > 0 && (
+          <SampleTrees
+            sampleInterventions={plantLocationInfo.sampleInterventions}
+          />
+        )}
       <TreeMapperBrand />
     </section>
   );

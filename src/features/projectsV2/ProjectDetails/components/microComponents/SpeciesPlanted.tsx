@@ -22,16 +22,16 @@ const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
   );
   return (
     <div className={styles.speciesContainer}>
-      <p>
+      <h2>
         {tProjectDetails('speciesCount', {
           count: plantedSpecies.length,
         })}
-      </p>
+      </h2>
       <div className={styles.speciesSubContainer}>
         {plantedSpecies?.map((species) => (
           <div className={styles.speciesList} key={species.id}>
             <p className={styles.speciesName}>{species.scientificName}</p>
-            <div className={styles.treeMatrics}>
+            <div className={styles.treeMetrics}>
               <p>{species.treeCount}</p>
               <p>{`${getPlantedTreePercentage(species.treeCount)}%`}</p>
             </div>

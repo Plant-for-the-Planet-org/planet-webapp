@@ -31,18 +31,18 @@ export type ProjectSite =
 
 interface Props {
   projectSites: ProjectSite;
-  selectedSite: number;
-  setSelectedSite: SetState<number>;
-  selectedPl: PlantLocation | null;
-  setSelectedPl: SetState<PlantLocation | null>;
+  selectedSite: number | null;
+  setSelectedSite: SetState<number | null>;
+  selectedPlantLocation: PlantLocation | null;
+  setSelectedPlantLocation: SetState<PlantLocation | null>;
 }
 
 const ProjectSiteDropdown = ({
   projectSites,
   selectedSite,
   setSelectedSite,
-  selectedPl,
-  setSelectedPl,
+  selectedPlantLocation,
+  setSelectedPlantLocation,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations('ManageProjects');
@@ -64,34 +64,37 @@ const ProjectSiteDropdown = ({
     },
     [siteList]
   );
-  const selectedSiteData = siteList[selectedSite];
-  if (!selectedSiteData) {
-    return null;
-  }
+  const selectedSiteData =
+    selectedSite !== null ? siteList[selectedSite] : undefined;
+
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
         <div className={styles.siteIconAndTextContainer}>
           <SiteIcon width={27} color={'#333'} />
-          {selectedPl && query.ploc ? (
+          {selectedPlantLocation && query.ploc ? (
             '-'
           ) : (
-            <div className={styles.labelTextContainer}>
-              <label className={styles.sitesLabel}>
-                <span className={styles.siteId}>
-                  {t('siteCount', {
-                    siteId: getId(selectedSiteData?.id),
-                    totalCount: siteList.length,
-                  })}
-                </span>
-                <span className={styles.separator}> • </span>
-                <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
-              </label>
-              <p className={styles.siteName}>
-                {truncateString(selectedSiteData?.siteName, 40)}
-              </p>
-            </div>
+            <>
+              {selectedSiteData && (
+                <div className={styles.labelTextContainer}>
+                  <label className={styles.sitesLabel}>
+                    <span className={styles.siteId}>
+                      {t('siteCount', {
+                        siteId: getId(selectedSiteData?.id),
+                        totalCount: siteList.length,
+                      })}
+                    </span>
+                    <span className={styles.separator}> • </span>
+                    <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
+                  </label>
+                  <p className={styles.siteName}>
+                    {truncateString(selectedSiteData?.siteName, 40)}
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className={styles.menuArrow}>
@@ -108,7 +111,7 @@ const ProjectSiteDropdown = ({
           setSelectedSite={setSelectedSite}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
-          setSelectedPl={setSelectedPl}
+          setSelectedPlantLocation={setSelectedPlantLocation}
         />
       )}
     </>

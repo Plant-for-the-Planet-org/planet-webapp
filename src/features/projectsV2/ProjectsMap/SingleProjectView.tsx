@@ -10,25 +10,32 @@ import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
-  const { singleProject, selectedSite, selectedPl } = useProjects();
+  const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
   if (!singleProject?.sites) {
     return null;
   }
   const { isSatelliteView, setViewState } = useProjectsMap();
-  const { query, isReady } = useRouter();
-  const isPlantLocationReadyToZoom = selectedPl && query.ploc && isReady;
-  const isSiteReadyToZoom =
-    singleProject.sites && !selectedPl && query.site && isReady;
+  const router = useRouter();
+  const {
+    p: projectSlug,
+    ploc: requestedPlantLocation,
+    site: requestedSite,
+  } = router.query;
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
       features: singleProject?.sites ?? [],
     };
-  }, [query.p]);
+  }, [projectSlug]);
 
   useEffect(() => {
-    if (isPlantLocationReadyToZoom && selectedPl.geometry.type === 'Polygon') {
-      const locationCoordinates = selectedPl.geometry.coordinates[0];
+    const isPlantLocationReadyToZoom =
+      selectedPlantLocation && requestedPlantLocation && router.isReady;
+    if (
+      isPlantLocationReadyToZoom &&
+      selectedPlantLocation.geometry.type === 'Polygon'
+    ) {
+      const locationCoordinates = selectedPlantLocation.geometry.coordinates[0];
       zoomToPolygonPlantLocation(
         locationCoordinates,
         mapRef,
@@ -36,9 +43,15 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         2500
       );
     }
-  }, [selectedPl, query.ploc, isReady]);
+  }, [selectedPlantLocation, requestedPlantLocation, router.isReady]);
 
   useEffect(() => {
+    const isSiteReadyToZoom =
+      singleProject.sites &&
+      !selectedPlantLocation &&
+      requestedSite &&
+      router.isReady &&
+      selectedSite !== null;
     if (isSiteReadyToZoom) {
       zoomInToProjectSite(
         mapRef,
@@ -48,7 +61,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         4000
       );
     }
-  }, [selectedSite, query.site]);
+  }, [selectedSite, requestedSite, router.isReady]);
   return (
     <>
       <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
