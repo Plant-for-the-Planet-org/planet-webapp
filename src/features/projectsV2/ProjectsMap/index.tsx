@@ -26,7 +26,8 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
-  const { plantLocations, setHoveredPl, setSelectedPl } = useProjects();
+  const { plantLocations, setHoveredPlantLocation, setSelectedPlantLocation } =
+    useProjects();
   const { projects, singleProject } = useProjects();
   const shouldShowSingleProjectsView = singleProject !== null;
   const shouldShowMultipleProjectsView =
@@ -48,7 +49,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         mapRef,
         e.point
       );
-      if (hoveredPlantLocation) setHoveredPl(hoveredPlantLocation);
+      if (hoveredPlantLocation) setHoveredPlantLocation(hoveredPlantLocation);
     },
     [plantLocations]
   );
@@ -60,7 +61,8 @@ function ProjectsMap(props: ProjectsMapProps) {
         mapRef,
         e.point
       );
-      if (selectedPlantLocation) setSelectedPl(selectedPlantLocation);
+      if (selectedPlantLocation)
+        setSelectedPlantLocation(selectedPlantLocation);
     },
     [plantLocations]
   );
@@ -72,7 +74,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         onMouseMove={onMouseMove}
-        onMouseLeave={() => setHoveredPl(null)}
+        onMouseLeave={() => setHoveredPlantLocation(null)}
         onClick={onClick}
         attributionControl={false}
         ref={mapRef}

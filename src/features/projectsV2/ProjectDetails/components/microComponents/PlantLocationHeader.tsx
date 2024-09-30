@@ -8,7 +8,7 @@ interface Props {
   plantedLocationArea: number;
 }
 
-const TreePlantedData = ({
+const PlantLocationHeader = ({
   plHid,
   totalTreesCount,
   plantedLocationArea,
@@ -17,7 +17,7 @@ const TreePlantedData = ({
   const locale = useLocale();
   const formattedHid = plHid ? plHid.slice(0, 3) + '-' + plHid.slice(3) : null;
   return (
-    <div className={styles.treeCountWrapper}>
+    <div className={styles.plantLocationHeaderContainer}>
       <div className={styles.treeCount}>
         {tProjectDetails.rich('totalPlantedSpecies', {
           count: totalTreesCount,
@@ -35,4 +35,4 @@ const TreePlantedData = ({
   );
 };
 
-export default TreePlantedData;
+export default PlantLocationHeader;

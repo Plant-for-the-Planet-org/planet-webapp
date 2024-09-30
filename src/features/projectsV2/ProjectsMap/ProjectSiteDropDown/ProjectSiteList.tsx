@@ -12,19 +12,19 @@ interface ProjectSiteListProps {
   setSelectedSite: SetState<number>;
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData;
-  setSelectedPl: SetState<PlantLocation | null>;
+  setSelectedPlantLocation: SetState<PlantLocation | null>;
 }
 const ProjectSiteList = ({
   siteList,
   setSelectedSite,
   setIsMenuOpen,
   selectedSiteData,
-  setSelectedPl,
+  setSelectedPlantLocation,
 }: ProjectSiteListProps) => {
   const handleSiteSelection = (index: number) => {
     setIsMenuOpen(false);
     setSelectedSite(index);
-    setSelectedPl(null);
+    setSelectedPlantLocation(null);
   };
   return (
     <ul className={styles.siteListOptions}>

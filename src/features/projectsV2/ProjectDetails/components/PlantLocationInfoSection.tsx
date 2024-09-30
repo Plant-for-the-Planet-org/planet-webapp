@@ -6,9 +6,9 @@ import {
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import ImageCarousel from './ImageCarousel';
-import TreePlantedData from './microComponents/TreeCountData';
+import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
-import SampleSpecies from './microComponents/SampleSpecies';
+import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
@@ -55,7 +55,7 @@ const PlantLocationInfoSection = ({
 
   return (
     <section className={styles.plantLocationInfoSection}>
-      <TreePlantedData
+      <PlantLocationHeader
         plHid={plantLocationInfo?.hid}
         totalTreesCount={totalTreesCount}
         plantedLocationArea={plantedLocationArea}
@@ -82,7 +82,7 @@ const PlantLocationInfoSection = ({
         )}
       {isMultiTreeRegistration &&
         plantLocationInfo.sampleInterventions.length > 0 && (
-          <SampleSpecies
+          <SampleTrees
             sampleInterventions={plantLocationInfo.sampleInterventions}
           />
         )}

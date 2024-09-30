@@ -31,8 +31,8 @@ const ProjectDetails = ({
     setIsLoading,
     setIsError,
     setSelectedMode,
-    selectedPl,
-    hoveredPl,
+    selectedPlantLocation,
+    hoveredPlantLocation,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -123,7 +123,7 @@ const ProjectDetails = ({
     // Case 1.1: If the "ploc" and "site" query param exists then set site param,
     // Update url with the default site  param
     if (
-      (query.ploc && !selectedPl && !query.site) ||
+      (query.ploc && !selectedPlantLocation && !query.site) ||
       (query.ploc && query.site)
     ) {
       const siteId =
@@ -136,7 +136,7 @@ const ProjectDetails = ({
 
     // Case 2: no "ploc" query or plant location is selected (default route),
     // Update url with the selected site  param
-    if (!query.ploc && !selectedPl) {
+    if (!query.ploc && !selectedPlantLocation) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
       const siteId = projectSites[selectedSite].properties.id;
       const updatedQueryParams = updateUrlWithParams(asPath, query, siteId);
@@ -144,17 +144,17 @@ const ProjectDetails = ({
       return;
     }
 
-    // Case 3: If a plant location (selectedPl) is selected,
+    // Case 3: If a plant location (selectedPlantLocation) is selected,
     // Update url with the selected plant location  param
-    if (selectedPl) {
+    if (selectedPlantLocation) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const updatedQueryParams = { ploc: selectedPl.hid };
+      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
       pushWithShallow(pathname, updatedQueryParams);
     }
   }, [
     singleProject,
     selectedSite,
-    selectedPl,
+    selectedPlantLocation,
     locale,
     query.site,
     query.ploc,
@@ -169,9 +169,11 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {selectedPl || hoveredPl ? (
+      {selectedPlantLocation || hoveredPlantLocation ? (
         <PlantLocationInfoSection
-          plantLocationInfo={hoveredPl ? hoveredPl : selectedPl}
+          plantLocationInfo={
+            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
+          }
         />
       ) : (
         <ProjectInfoSection

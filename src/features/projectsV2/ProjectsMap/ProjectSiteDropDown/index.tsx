@@ -33,16 +33,16 @@ interface Props {
   projectSites: ProjectSite;
   selectedSite: number;
   setSelectedSite: SetState<number>;
-  selectedPl: PlantLocation | null;
-  setSelectedPl: SetState<PlantLocation | null>;
+  selectedPlantLocation: PlantLocation | null;
+  setSelectedPlantLocation: SetState<PlantLocation | null>;
 }
 
 const ProjectSiteDropdown = ({
   projectSites,
   selectedSite,
   setSelectedSite,
-  selectedPl,
-  setSelectedPl,
+  selectedPlantLocation,
+  setSelectedPlantLocation,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations('ManageProjects');
@@ -74,7 +74,7 @@ const ProjectSiteDropdown = ({
       <div className={styles.dropdownButton} onClick={toggleMenu}>
         <div className={styles.siteIconAndTextContainer}>
           <SiteIcon width={27} color={'#333'} />
-          {selectedPl && query.ploc ? (
+          {selectedPlantLocation && query.ploc ? (
             '-'
           ) : (
             <div className={styles.labelTextContainer}>
@@ -108,7 +108,7 @@ const ProjectSiteDropdown = ({
           setSelectedSite={setSelectedSite}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
-          setSelectedPl={setSelectedPl}
+          setSelectedPlantLocation={setSelectedPlantLocation}
         />
       )}
     </>

@@ -17,10 +17,10 @@ import { useProjectsMap } from '../../ProjectsMapContext';
 export default function PlantLocations(): ReactElement {
   const {
     plantLocations,
-    hoveredPl,
-    selectedPl,
-    setSelectedPl,
-    setHoveredPl,
+    hoveredPlantLocation,
+    selectedPlantLocation,
+    setSelectedPlantLocation,
+    setHoveredPlantLocation,
     setSamplePlantLocation,
     samplePlantLocation,
   } = useProjects();
@@ -34,23 +34,23 @@ export default function PlantLocations(): ReactElement {
         setSamplePlantLocation(pl);
         break;
       case 'single-tree-registration':
-        setSelectedPl(pl);
+        setSelectedPlantLocation(pl);
         break;
       default:
         break;
     }
   };
   const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
-    setHoveredPl(pl);
+    setHoveredPlantLocation(pl);
   };
 
   const onHoverEnd = () => {
     if (
-      hoveredPl &&
-      (hoveredPl.type === 'single-tree-registration' ||
-        hoveredPl.type === 'sample-tree-registration')
+      hoveredPlantLocation &&
+      (hoveredPlantLocation.type === 'single-tree-registration' ||
+        hoveredPlantLocation.type === 'sample-tree-registration')
     )
-      setHoveredPl(null);
+      setHoveredPlantLocation(null);
   };
   const getPlTreeCount = (pl: PlantLocationMulti) => {
     let count = 0;
@@ -132,8 +132,9 @@ export default function PlantLocations(): ReactElement {
   }
 
   const features = plantLocations.map((el) => {
-    const isSelected = selectedPl && selectedPl.id === el.id;
-    const isHovered = hoveredPl && hoveredPl.id === el.id;
+    const isSelected =
+      selectedPlantLocation && selectedPlantLocation.id === el.id;
+    const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
       highlightLine: isSelected || isHovered,
       opacity:
@@ -192,11 +193,11 @@ export default function PlantLocations(): ReactElement {
           }}
           filter={['!=', ['get', 'dateDiff'], null]}
         />
-        {selectedPl &&
-        selectedPl.type === 'multi-tree-registration' &&
+        {selectedPlantLocation &&
+        selectedPlantLocation.type === 'multi-tree-registration' &&
         viewState.zoom > 14 &&
-        selectedPl.sampleInterventions
-          ? selectedPl.sampleInterventions.map((spl) => {
+        selectedPlantLocation.sampleInterventions
+          ? selectedPlantLocation.sampleInterventions.map((spl) => {
               return (
                 <Marker
                   key={`${spl.id}-sample`}

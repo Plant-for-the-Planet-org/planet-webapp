@@ -5,11 +5,11 @@ import { useTranslations } from 'next-intl';
 interface Props {
   sampleInterventions: SamplePlantLocation[];
 }
-const SampleSpecies = ({ sampleInterventions }: Props) => {
+const SampleTrees = ({ sampleInterventions }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
     <div className={styles.sampleTreesContainer}>
-      <p className={styles.mainLable}>
+      <p className={styles.mainLabel}>
         {tProjectDetails('sampleTrees', {
           count: sampleInterventions.length,
         })}
@@ -28,7 +28,7 @@ const SampleSpecies = ({ sampleInterventions }: Props) => {
                 </p>
               </div>
               <p className={styles.speciesMeasurement}>
-                {tProjectDetails('speciesMeasurment', {
+                {tProjectDetails('speciesMeasurement', {
                   hid: sampleSpecies.hid,
                   plantHeight: sampleSpecies.measurements.height,
                   plantWidth: sampleSpecies.measurements.width,
@@ -42,4 +42,4 @@ const SampleSpecies = ({ sampleInterventions }: Props) => {
   );
 };
 
-export default SampleSpecies;
+export default SampleTrees;
