@@ -50,7 +50,8 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       singleProject.sites &&
       !selectedPlantLocation &&
       requestedSite &&
-      router.isReady;
+      router.isReady &&
+      selectedSite !== null;
     if (isSiteReadyToZoom) {
       zoomInToProjectSite(
         mapRef,

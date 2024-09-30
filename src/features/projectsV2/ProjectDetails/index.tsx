@@ -111,38 +111,21 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    if (!projectSites || !projectSites[selectedSite]) {
+    if (!projectSites) {
       return;
     }
     if (!router.isReady) return;
-
     const pushWithShallow = (pathname: string, queryParams = {}) => {
       router.push({ pathname, query: queryParams }, undefined, {
         shallow: true,
       });
     };
 
-    // Case 1: If visit using direct link using wrong ploc),
-    // Case 1.1: If the "ploc" and "site" query param exists then set site param,
-    // Update url with the default site  param
-    if (
-      (requestedPlantLocation && !selectedPlantLocation && !requestedSite) ||
-      (requestedPlantLocation && requestedSite)
-    ) {
-      const siteId =
-        projectSites[requestedPlantLocation && requestedSite ? 0 : selectedSite]
-          .properties.id;
+    // case 1: Update url with the selected site  param
+    // case 2: Update url with the selected site  param if both params are present in the url (i.e ploc, site)
+    if (selectedSite !== null || (requestedPlantLocation && requestedSite)) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const updatedQueryParams = { site: siteId };
-      pushWithShallow(pathname, updatedQueryParams);
-      return;
-    }
-
-    // Case 2: no "ploc" query or plant location is selected (default route),
-    // Update url with the selected site  param
-    if (!requestedPlantLocation && !selectedPlantLocation) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const siteId = projectSites[selectedSite].properties.id;
+      const siteId = projectSites[selectedSite ?? 0].properties.id;
       const updatedQueryParams = updateUrlWithParams(
         router.asPath,
         router.query,
@@ -152,7 +135,6 @@ const ProjectDetails = ({
       return;
     }
 
-    // Case 3: If a plant location (selectedPlantLocation) is selected,
     // Update url with the selected plant location  param
     if (selectedPlantLocation) {
       const pathname = `/${locale}/prd/${singleProject.slug}`;
@@ -164,9 +146,9 @@ const ProjectDetails = ({
     selectedSite,
     selectedPlantLocation,
     locale,
-    requestedSite,
-    requestedPlantLocation,
     router.isReady,
+    requestedPlantLocation,
+    requestedSite,
   ]);
 
   return singleProject ? (

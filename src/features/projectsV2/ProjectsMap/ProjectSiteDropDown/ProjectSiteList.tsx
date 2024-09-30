@@ -9,9 +9,9 @@ type SiteData = {
 };
 interface ProjectSiteListProps {
   siteList: SiteData[];
-  setSelectedSite: SetState<number>;
+  setSelectedSite: SetState<number | null>;
   setIsMenuOpen: SetState<boolean>;
-  selectedSiteData: SiteData;
+  selectedSiteData: SiteData | undefined;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
 }
 const ProjectSiteList = ({

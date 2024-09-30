@@ -31,8 +31,8 @@ export type ProjectSite =
 
 interface Props {
   projectSites: ProjectSite;
-  selectedSite: number;
-  setSelectedSite: SetState<number>;
+  selectedSite: number | null;
+  setSelectedSite: SetState<number | null>;
   selectedPlantLocation: PlantLocation | null;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
 }
@@ -64,10 +64,9 @@ const ProjectSiteDropdown = ({
     },
     [siteList]
   );
-  const selectedSiteData = siteList[selectedSite];
-  if (!selectedSiteData) {
-    return null;
-  }
+  const selectedSiteData =
+    selectedSite !== null ? siteList[selectedSite] : undefined;
+
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   return (
     <>
@@ -77,21 +76,25 @@ const ProjectSiteDropdown = ({
           {selectedPlantLocation && query.ploc ? (
             '-'
           ) : (
-            <div className={styles.labelTextContainer}>
-              <label className={styles.sitesLabel}>
-                <span className={styles.siteId}>
-                  {t('siteCount', {
-                    siteId: getId(selectedSiteData?.id),
-                    totalCount: siteList.length,
-                  })}
-                </span>
-                <span className={styles.separator}> • </span>
-                <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
-              </label>
-              <p className={styles.siteName}>
-                {truncateString(selectedSiteData?.siteName, 40)}
-              </p>
-            </div>
+            <>
+              {selectedSiteData && (
+                <div className={styles.labelTextContainer}>
+                  <label className={styles.sitesLabel}>
+                    <span className={styles.siteId}>
+                      {t('siteCount', {
+                        siteId: getId(selectedSiteData?.id),
+                        totalCount: siteList.length,
+                      })}
+                    </span>
+                    <span className={styles.separator}> • </span>
+                    <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
+                  </label>
+                  <p className={styles.siteName}>
+                    {truncateString(selectedSiteData?.siteName, 40)}
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className={styles.menuArrow}>

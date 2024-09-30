@@ -26,8 +26,12 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
-  const { plantLocations, setHoveredPlantLocation, setSelectedPlantLocation } =
-    useProjects();
+  const {
+    plantLocations,
+    setHoveredPlantLocation,
+    setSelectedPlantLocation,
+    setSelectedSite,
+  } = useProjects();
   const { projects, singleProject } = useProjects();
   const shouldShowSingleProjectsView = singleProject !== null;
   const shouldShowMultipleProjectsView =
@@ -61,8 +65,10 @@ function ProjectsMap(props: ProjectsMapProps) {
         mapRef,
         e.point
       );
-      if (selectedPlantLocation)
+      if (selectedPlantLocation) {
+        setSelectedSite(null);
         setSelectedPlantLocation(selectedPlantLocation);
+      }
     },
     [plantLocations]
   );

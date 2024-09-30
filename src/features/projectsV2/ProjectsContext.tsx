@@ -40,8 +40,8 @@ interface ProjectsState {
   setSamplePlantLocation: SetState<SamplePlantLocation | null>;
   hoveredPlantLocation: PlantLocation | SamplePlantLocation | null;
   setHoveredPlantLocation: SetState<PlantLocation | SamplePlantLocation | null>;
-  selectedSite: number;
-  setSelectedSite: SetState<number>;
+  selectedSite: number | null;
+  setSelectedSite: SetState<number | null>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
   isError: boolean;
@@ -95,7 +95,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedSite, setSelectedSite] = useState(0);
+  const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -103,7 +103,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
-  const { query, isReady } = router;
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -240,14 +240,14 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   // Select plant location based on the ploc query param (for direct links)
   useEffect(() => {
     if (
-      isReady &&
-      query.ploc &&
-      !query.site &&
+      router.isReady &&
+      requestedPlantLocation &&
+      !requestedSite &&
       plantLocations &&
       plantLocations?.length > 0
     ) {
       const result = plantLocations.find(
-        (plantLocation) => plantLocation.hid === query.ploc
+        (plantLocation) => plantLocation.hid === requestedPlantLocation
       );
       if (result) {
         setSelectedPlantLocation(result);
@@ -260,12 +260,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
         setSelectedPlantLocation(null);
       }
     }
-  }, [isReady, plantLocations]);
+  }, [requestedPlantLocation, router.isReady, plantLocations]);
   // Select project site based on the site query param (for direct links)
   useEffect(() => {
-    if (isReady && query.site && singleProject) {
+    if (router.isReady && requestedSite && singleProject) {
       const result = singleProject.sites?.findIndex(
-        (site) => site.properties.id === query.site
+        (site) => site.properties.id === requestedSite
       );
       if (result && result !== -1) {
         setSelectedSite(result);
@@ -273,8 +273,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
         setSelectedSite(0); // default site
       }
     }
-  }, [query.site, isReady, singleProject]);
-
+  }, [requestedSite, router.isReady, setSelectedSite]);
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,
