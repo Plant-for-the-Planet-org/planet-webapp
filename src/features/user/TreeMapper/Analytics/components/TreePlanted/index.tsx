@@ -438,6 +438,7 @@ export const TreePlanted = () => {
             headerTitle={(categories as DaysCategories[])[dataPointIndex].label}
             bodyTitle={t('treesPlanted')}
             value={`${seriesData[dataPointIndex]}`}
+            locale={locale}
           />
         );
       case TIME_FRAME.WEEKS:
@@ -450,6 +451,7 @@ export const TreePlanted = () => {
             }`}
             bodyTitle={t('treesPlanted')}
             value={`${seriesData[dataPointIndex]}`}
+            locale={locale}
           />
         );
       case TIME_FRAME.MONTHS:
@@ -460,6 +462,7 @@ export const TreePlanted = () => {
             } ${(categories as MonthsCategories[])[dataPointIndex].year}`}
             bodyTitle={t('treesPlanted')}
             value={`${seriesData[dataPointIndex]}`}
+            locale={locale}
           />
         );
       case TIME_FRAME.YEARS:
@@ -468,6 +471,7 @@ export const TreePlanted = () => {
             headerTitle={(categories as DaysCategories[])[dataPointIndex].label}
             bodyTitle={t('treesPlanted')}
             value={`${seriesData[dataPointIndex]}`}
+            locale={locale}
           />
         );
       default:
