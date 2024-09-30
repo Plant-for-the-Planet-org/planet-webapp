@@ -15,19 +15,22 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
     return null;
   }
   const { isSatelliteView, setViewState } = useProjectsMap();
-  const { query, isReady } = useRouter();
-  const isPlantLocationReadyToZoom =
-    selectedPlantLocation && query.ploc && isReady;
-  const isSiteReadyToZoom =
-    singleProject.sites && !selectedPlantLocation && query.site && isReady;
+  const router = useRouter();
+  const {
+    p: projectSlug,
+    ploc: requestedPlantLocation,
+    site: requestedSite,
+  } = router.query;
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
       features: singleProject?.sites ?? [],
     };
-  }, [query.p]);
+  }, [projectSlug]);
 
   useEffect(() => {
+    const isPlantLocationReadyToZoom =
+      selectedPlantLocation && requestedPlantLocation && router.isReady;
     if (
       isPlantLocationReadyToZoom &&
       selectedPlantLocation.geometry.type === 'Polygon'
@@ -40,9 +43,14 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         2500
       );
     }
-  }, [selectedPlantLocation, query.ploc, isReady]);
+  }, [selectedPlantLocation, requestedPlantLocation, router.isReady]);
 
   useEffect(() => {
+    const isSiteReadyToZoom =
+      singleProject.sites &&
+      !selectedPlantLocation &&
+      requestedSite &&
+      router.isReady;
     if (isSiteReadyToZoom) {
       zoomInToProjectSite(
         mapRef,
@@ -52,7 +60,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         4000
       );
     }
-  }, [selectedSite, query.site]);
+  }, [selectedSite, requestedSite, router.isReady]);
   return (
     <>
       <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />

@@ -5,7 +5,7 @@ import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNum
 
 interface Props {
   plantingDensity: number;
-  plantDate: string | undefined;
+  plantDate: string | null | undefined;
 }
 
 const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
@@ -28,7 +28,7 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
       {plantingDetails.map((item, key) => {
         return (
           <div key={key} className={styles.plantingDetailsSubContainer}>
-            <p className={styles.label}>{item.label}</p>
+            <h2 className={styles.label}>{item.label}</h2>
             <p className={styles.data}>{item.data}</p>
           </div>
         );

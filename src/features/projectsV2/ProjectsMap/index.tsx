@@ -5,7 +5,7 @@ import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
-import { getPlantLocationInfo } from './utils';
+import { getPlantLocationInfo } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';

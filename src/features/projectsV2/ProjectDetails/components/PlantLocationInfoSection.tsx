@@ -71,7 +71,7 @@ const PlantLocationInfoSection = ({
       )}
       <PlantingDetails
         plantingDensity={plantingDensity}
-        plantDate={plantLocationInfo?.plantDate}
+        plantDate={plantLocationInfo?.interventionStartDate}
       />
       {isMultiTreeRegistration &&
         plantLocationInfo.plantedSpecies.length > 0 && (
