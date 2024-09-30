@@ -98,6 +98,7 @@ export const SpeciesPlanted = () => {
               headerTitle={w.globals.categoryLabels[dataPointIndex]}
               bodyTitle={'Planted Species'}
               value={s[0][dataPointIndex]}
+              locale={locale}
             />
           );
         };
