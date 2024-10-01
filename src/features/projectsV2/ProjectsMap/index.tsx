@@ -54,13 +54,13 @@ function ProjectsMap(props: ProjectsMapProps) {
         e.point
       );
       if (
-        hoveredPlantLocation &&
-        hoveredPlantLocation.hid !== selectedPlantLocation?.hid
+        !hoveredPlantLocation ||
+        hoveredPlantLocation.hid === selectedPlantLocation?.hid
       ) {
-        setHoveredPlantLocation(hoveredPlantLocation);
-      } else {
         setHoveredPlantLocation(null);
+        return;
       }
+      setHoveredPlantLocation(hoveredPlantLocation);
     },
     [plantLocations, selectedPlantLocation]
   );

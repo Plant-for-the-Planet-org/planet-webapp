@@ -111,33 +111,42 @@ const ProjectDetails = ({
   // add  project site query
   useEffect(() => {
     const projectSites = singleProject?.sites;
-    if (!projectSites) {
-      return;
-    }
-    if (!router.isReady) return;
+    if (!projectSites || !router.isReady) return;
+
     const pushWithShallow = (pathname: string, queryParams = {}) => {
       router.push({ pathname, query: queryParams }, undefined, {
         shallow: true,
       });
     };
 
-    // case 1: Update url with the selected site  param
-    // case 2: Update url with the selected site  param if both params are present in the url (i.e ploc, site)
-    if (selectedSite !== null || (requestedPlantLocation && requestedSite)) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const siteId = projectSites[selectedSite ?? 0].properties.id;
+    const pathname = `/${locale}/prd/${singleProject?.slug}`;
+
+    // Helper function to update the URL
+    const updateUrlWithSiteId = (siteId: string) => {
       const updatedQueryParams = updateUrlWithParams(
         router.asPath,
         router.query,
         siteId
       );
       pushWithShallow(pathname, updatedQueryParams);
+    };
+
+    // Case 1: Update URL with default site param if no plant location or site is requested
+    if (!requestedPlantLocation && !requestedSite) {
+      const defaultSiteId = projectSites[0]?.properties.id;
+      if (defaultSiteId) updateUrlWithSiteId(defaultSiteId);
       return;
     }
 
-    // Update url with the selected plant location  param
+    // Case 2: Update URL based on the selected site or if both plant location and site are present in URL
+    if (selectedSite !== null || (requestedPlantLocation && requestedSite)) {
+      const siteId = projectSites[selectedSite ?? 0]?.properties.id;
+      if (siteId) updateUrlWithSiteId(siteId);
+      return;
+    }
+
+    // Case 3: Update URL with selected plant location
     if (selectedPlantLocation) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
       const updatedQueryParams = { ploc: selectedPlantLocation.hid };
       pushWithShallow(pathname, updatedQueryParams);
     }
