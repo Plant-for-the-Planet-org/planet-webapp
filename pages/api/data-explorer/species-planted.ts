@@ -49,7 +49,7 @@ handler.post(async (req, response) => {
         INNER JOIN intervention iv ON ps.intervention_id = iv.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
         JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
+        WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ? \
         GROUP BY ps.scientific_species_id, ss.name, ps.other_species \
         ORDER BY total_tree_count DESC';
 
