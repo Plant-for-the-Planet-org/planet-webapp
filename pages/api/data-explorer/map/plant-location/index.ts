@@ -54,7 +54,6 @@ handler.post(async (req, response) => {
     }
 
     const qRes = await db.query<UncleanPlantLocations[]>(query, values);
-    console.log('qRes:', qRes);
 
     const plantLocations: SinglePlantLocationApiResponse[] = qRes.map(
       (plantLocation) => ({

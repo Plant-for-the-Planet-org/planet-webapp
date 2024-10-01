@@ -1,4 +1,3 @@
-import { useLocale } from 'next-intl';
 import { getFormattedNumber } from '../../../../../../../utils/getFormattedNumber';
 import styles from './index.module.scss';
 
@@ -6,11 +5,10 @@ interface Props {
   headerTitle: string;
   bodyTitle: string;
   value: string;
+  locale: string;
 }
 
-export const Tooltip = ({ headerTitle, bodyTitle, value }: Props) => {
-  const locale = useLocale();
-
+export const Tooltip = ({ headerTitle, bodyTitle, value, locale }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
