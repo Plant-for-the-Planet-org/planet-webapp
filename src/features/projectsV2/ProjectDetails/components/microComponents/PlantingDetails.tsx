@@ -24,10 +24,10 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
     },
   ];
   return (
-    <div className={styles.plantingDetailsContainer}>
+    <div className={styles.plantingDetailsGroup}>
       {plantingDetails.map((item, key) => {
         return (
-          <div key={key} className={styles.plantingDetailsSubContainer}>
+          <div key={key} className={styles.plantingDetailsItem}>
             <h2 className={styles.label}>{item.label}</h2>
             <p className={styles.data}>{item.data}</p>
           </div>

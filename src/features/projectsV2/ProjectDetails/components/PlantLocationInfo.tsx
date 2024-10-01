@@ -18,7 +18,6 @@ const PlantLocationInfo = ({
 }: {
   plantLocationInfo: PlantLocation | SamplePlantLocation | null;
 }) => {
-  const t = useTranslations('ProjectDetails');
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -51,7 +50,7 @@ const PlantLocationInfo = ({
   }, [isMultiTreeRegistration ? plantLocationInfo.sampleInterventions : null]);
 
   const shouldDisplayImageCarousel =
-    sampleInterventionSpeciesImages &&
+    sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
   return (

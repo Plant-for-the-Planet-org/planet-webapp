@@ -34,6 +34,10 @@ export default function PlantLocations(): ReactElement {
   const locale = useLocale();
 
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
+    if (selectedSamplePlantLocation?.hid === pl.hid) {
+      setSelectedSamplePlantLocation(null);
+      return;
+    }
     switch (pl.type) {
       case 'sample-tree-registration':
         setSelectedSamplePlantLocation(pl);

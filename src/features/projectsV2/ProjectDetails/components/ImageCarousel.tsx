@@ -3,10 +3,9 @@ import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
 import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
-import { PlantLocationCoordinate } from '../../../common/types/plantLocation';
 
 interface Props {
-  images: SliderImage[] | PlantLocationCoordinate[] | undefined;
+  images: SliderImage[] | undefined;
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;

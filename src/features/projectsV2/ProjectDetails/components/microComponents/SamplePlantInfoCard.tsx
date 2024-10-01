@@ -4,14 +4,14 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { Measurements } from '../../../../common/types/plantLocation';
 
 interface Props {
-  plantDate: string | undefined;
+  interventionStartDate: string | null;
   tag: string | undefined | null;
   scientificName: string | undefined;
   measurements: Measurements | undefined;
 }
 
 const SamplePlantInfoCard = ({
-  plantDate,
+  interventionStartDate,
   tag,
   scientificName,
   measurements,
@@ -20,8 +20,8 @@ const SamplePlantInfoCard = ({
   const sampleTreeConfig = [
     {
       label: t('plantingDate'),
-      data: plantDate ? formatDate(plantDate) : null,
-      shouldRender: plantDate !== undefined,
+      data: interventionStartDate ? formatDate(interventionStartDate) : null,
+      shouldRender: interventionStartDate !== undefined,
     },
     {
       label: t('treeTag'),
@@ -33,25 +33,25 @@ const SamplePlantInfoCard = ({
   ];
   return (
     <>
-      <div className={styles.plantingDetailsContainer}>
+      <div className={styles.plantingDetailsGroup}>
         {sampleTreeConfig.map((item, key) => {
           return item.shouldRender ? (
-            <div key={key} className={styles.plantingDetailsSubContainer}>
-              <p className={styles.label}>{item.label}</p>
+            <div key={key} className={styles.plantingDetailsItem}>
+              <h2 className={styles.label}>{item.label}</h2>
               <p className={styles.data}>{item.data}</p>
             </div>
           ) : null;
         })}
       </div>
       {scientificName && (
-        <div className={styles.plantingDetailsSubContainer}>
-          <p className={styles.label}>{t('scientificName')}</p>
+        <div className={styles.plantingDetailsItem}>
+          <h2 className={styles.label}>{t('scientificName')}</h2>
           <p className={styles.data}>{scientificName}</p>
         </div>
       )}
       {measurements && (
-        <div className={styles.plantingDetailsSubContainer}>
-          <p className={styles.label}>{t('measurement')}</p>
+        <div className={styles.plantingDetailsItem}>
+          <h2 className={styles.label}>{t('measurement')}</h2>
           <p className={styles.data}>
             {t('singleSpeciesMeasurement', {
               plantHeight: measurements.height,
@@ -60,8 +60,8 @@ const SamplePlantInfoCard = ({
           </p>
         </div>
       )}
-      <div className={styles.plantingDetailsSubContainer}>
-        <p className={styles.label}>{t('plot')}</p>
+      <div className={styles.plantingDetailsItem}>
+        <h2 className={styles.label}>{t('plot')}</h2>
         <button className={styles.showWholeArea}>{t('showWholeArea')}</button>
       </div>
     </>

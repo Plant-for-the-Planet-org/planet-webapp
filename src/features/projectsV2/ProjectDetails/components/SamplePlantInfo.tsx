@@ -1,5 +1,5 @@
 import SamplePlantInfoCard from './microComponents/SamplePlantInfoCard';
-import { formatHid } from '../utils';
+import { formatHid } from '../../../../utils/projectV2';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import { SamplePlantLocation } from '../../../common/types/plantLocation';
@@ -11,9 +11,10 @@ interface Props {
 
 const SamplePlantInfo = ({ samplePlantData }: Props) => {
   const t = useTranslations('ProjectDetails');
-  const { hid, plantDate, tag, scientificName, measurements } = samplePlantData;
+  const { hid, interventionStartDate, tag, scientificName, measurements } =
+    samplePlantData;
   const plantInfo = {
-    plantDate,
+    interventionStartDate,
     tag,
     scientificName,
     measurements,

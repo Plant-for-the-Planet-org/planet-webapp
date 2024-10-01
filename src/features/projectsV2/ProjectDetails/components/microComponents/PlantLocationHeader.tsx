@@ -1,7 +1,7 @@
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
-import { formatHid } from '../../utils';
+import { formatHid } from '../../../../../utils/projectV2';
 
 interface Props {
   plHid: string | undefined;

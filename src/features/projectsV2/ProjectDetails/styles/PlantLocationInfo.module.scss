@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .plantLocationInfoSection {
-  background: rgba(0, 122, 73, 0.05);
+  background: #fff;
   max-width: 356px;
   border-radius: 12px;
   margin-top: 23px;
@@ -31,15 +31,15 @@
   color: rgba(47, 51, 54, 1);
 }
 
-.plantingDetailsContainer {
+.plantingDetailsGroup {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
 }
-.plantingDetailsSubContainer {
+.plantingDetailsItem {
   min-width: 162px;
   padding: 20px;
-  background: #fff;
+  background: rgba(0, 122, 73, 0.05);
   border-radius: 12px;
 }
 .label {
@@ -61,7 +61,7 @@
 }
 
 .speciesContainer {
-  background: #fff;
+  background: rgba(0, 122, 73, 0.05);
   border-radius: 12px;
   color: rgba(0, 122, 73, 1);
   font-weight: 700;
@@ -94,7 +94,7 @@
 }
 
 .sampleTreesContainer {
-  background: #fff;
+  background: rgba(0, 122, 73, 0.05);
   border-radius: 12px;
   padding: 20px;
   font-size: 12px;
@@ -110,7 +110,7 @@
 }
 
 .sampleSpeciesContainer {
-  background: rgba(242, 248, 246, 1);
+  background: #fff;
   min-height: 54px;
   border-radius: 12px;
   margin-top: 10px;

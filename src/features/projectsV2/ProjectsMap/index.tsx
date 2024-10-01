@@ -91,9 +91,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         attributionControl={false}
         ref={mapRef}
         interactiveLayerIds={
-          shouldShowSingleProjectsView
-            ? ['plant-polygon-layer', 'point-layer']
-            : undefined
+          shouldShowSingleProjectsView ? ['plant-polygon-layer'] : undefined
         }
       >
         {shouldShowSingleProjectsView && <SingleProjectView mapRef={mapRef} />}
