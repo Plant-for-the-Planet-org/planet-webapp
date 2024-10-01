@@ -5,19 +5,20 @@ import {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import ImageCarousel from './ImageCarousel';
 import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
+import ImageSlider from './microComponents/ImageSlider';
 
-const PlantLocationInfo = ({
-  plantLocationInfo,
-}: {
+interface Props {
   plantLocationInfo: PlantLocation | SamplePlantLocation | null;
-}) => {
+  isMobile: boolean;
+}
+
+const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -41,7 +42,8 @@ const PlantLocationInfo = ({
     if (isMultiTreeRegistration) {
       const result = plantLocationInfo.sampleInterventions.map((item) => {
         return {
-          image: item.coordinates[0].image,
+          id: item.coordinates[0].id,
+          image: item.coordinates[0].image ?? '',
           description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
         };
       });
@@ -61,12 +63,11 @@ const PlantLocationInfo = ({
         plantedLocationArea={plantedLocationArea}
       />
       {shouldDisplayImageCarousel && (
-        <ImageCarousel
+        <ImageSlider
           images={sampleInterventionSpeciesImages}
-          type={'coordinate'}
-          imageSize={'large'}
-          imageHeight={195}
-          leftAlignment={15}
+          type="coordinate"
+          isMobile={isMobile}
+          imageSize="large"
         />
       )}
       <PlantingDetails

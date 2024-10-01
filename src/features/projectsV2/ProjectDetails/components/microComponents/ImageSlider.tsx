@@ -10,8 +10,14 @@ interface ImageSliderProps {
   images: Image[];
   type: 'coordinate' | 'project';
   isMobile: boolean;
+  imageSize: 'medium' | 'large';
 }
-const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
+const ImageSlider = ({
+  images,
+  imageSize,
+  type,
+  isMobile,
+}: ImageSliderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
   return (
@@ -24,7 +30,7 @@ const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
           <ImageCarousel
             images={images}
             type={type}
-            imageSize={'medium'}
+            imageSize={imageSize}
             imageHeight={192}
             leftAlignment={18}
           />
