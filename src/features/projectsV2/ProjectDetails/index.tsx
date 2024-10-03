@@ -12,8 +12,8 @@ import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
+import PlantLocationInfoSection from './components/PlantLocationInfoSection';
 import { ExtendedProject } from '../../common/types/projectv2';
-import { updateUrlWithParams } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -24,18 +24,19 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
-    selectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
     setIsError,
     setSelectedMode,
+    selectedPlantLocation,
+    hoveredPlantLocation,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
-  const projectSlug = router.query.p;
+  const { p: projectSlug } = router.query;
 
   useEffect(() => {
     async function loadProject(
@@ -101,21 +102,7 @@ const ProjectDetails = ({
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
   }, [singleProject]);
-  // add  project site query
-  useEffect(() => {
-    const projectSites = singleProject?.sites;
-    if (!projectSites || !projectSites[selectedSite]) {
-      return;
-    }
-    const newSiteId = projectSites[selectedSite].properties.id;
-    const pathname = `/${locale}/prd/${singleProject.slug}`;
 
-    const query = updateUrlWithParams(router.asPath, router.query, newSiteId);
-
-    router.push({ pathname, query }, undefined, {
-      shallow: true,
-    });
-  }, [singleProject?.slug, selectedSite, locale, router.asPath]);
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
@@ -124,11 +111,19 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      <ProjectInfoSection
-        project={singleProject}
-        isMobile={isMobile}
-        setSelectedMode={setSelectedMode}
-      />
+      {!isMobile && (selectedPlantLocation || hoveredPlantLocation) ? (
+        <PlantLocationInfoSection
+          plantLocationInfo={
+            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
+          }
+        />
+      ) : (
+        <ProjectInfoSection
+          project={singleProject}
+          isMobile={isMobile}
+          setSelectedMode={setSelectedMode}
+        />
+      )}
     </div>
   ) : (
     <Skeleton className={styles.projectDetailsSkeleton} />

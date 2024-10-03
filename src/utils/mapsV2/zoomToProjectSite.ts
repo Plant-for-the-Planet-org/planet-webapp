@@ -49,12 +49,12 @@ export function zoomInToProjectSite(
     ],
     {
       duration: duration,
+      maxZoom: 14,
     }
   );
   map.once('moveend', () => {
     const center = map.getCenter();
-    const zoom = map.getZoom();
-    const defaultZoom = Math.min(15, zoom);
+    const defaultZoom = 14;
     const newViewState: ViewState = {
       longitude: center.lng,
       latitude: center.lat,

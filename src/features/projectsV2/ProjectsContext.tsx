@@ -22,7 +22,12 @@ import { useTenant } from '../common/Layout/TenantContext';
 import { SetState } from '../common/types/common';
 import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useTranslations } from 'next-intl';
-import { PlantLocation } from '../common/types/plantLocation';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../common/types/plantLocation';
+import { useRouter } from 'next/router';
+import { updateUrlWithParams } from '../../utils/projectV2';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -30,20 +35,26 @@ interface ProjectsState {
   setSingleProject: SetState<ExtendedProject | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
-  selectedSite: number;
-  setSelectedSite: SetState<number>;
+  selectedPlantLocation: PlantLocation | null;
+  setSelectedPlantLocation: SetState<PlantLocation | null>;
+  samplePlantLocation: SamplePlantLocation | null;
+  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  hoveredPlantLocation: PlantLocation | SamplePlantLocation | null;
+  setHoveredPlantLocation: SetState<PlantLocation | SamplePlantLocation | null>;
+  selectedSite: number | null;
+  setSelectedSite: SetState<number | null>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
   isError: boolean;
   setIsError: SetState<boolean>;
-  filteredProjects: MapProject[] | undefined;
-  topProjects: MapProject[] | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
+  filteredProjects: MapProject[] | undefined;
+  topProjects: MapProject[] | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 }
@@ -73,18 +84,29 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
     null
   );
+  const [selectedPlantLocation, setSelectedPlantLocation] =
+    useState<PlantLocation | null>(null);
+  const [samplePlantLocation, setSamplePlantLocation] =
+    useState<SamplePlantLocation | null>(null);
+  const [hoveredPlantLocation, setHoveredPlantLocation] = useState<
+    PlantLocation | SamplePlantLocation | null
+  >(null);
+  const [selectedSite, setSelectedSite] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedSite, setSelectedSite] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
+  const router = useRouter();
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -197,6 +219,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
     loadProjects();
   }, [currencyCode, locale, page]);
+
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
@@ -205,15 +228,136 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
+    setDebouncedSearchValue('');
     if (page === 'project-details') {
       if (setSelectedMode) setSelectedMode('list');
-      setDebouncedSearchValue('');
       setIsSearching(false);
       setSelectedClassification([]);
     } else {
+      setSelectedPlantLocation(null);
       setSingleProject(null);
+      setHoveredPlantLocation(null);
+      setSelectedSite(0);
     }
   }, [page]);
+
+  const pushWithShallow = (
+    locale: string,
+    projectSlug: string,
+    queryParams = {}
+  ) => {
+    const pathname = `/${locale}/prd/${projectSlug}`;
+    router.push({ pathname, query: queryParams }, undefined, {
+      shallow: true,
+    });
+  };
+
+  const updateUrlWithSiteId = (
+    locale: string,
+    projectSlug: string,
+    siteId: string
+  ) => {
+    const updatedQueryParams = updateUrlWithParams(
+      router.asPath,
+      router.query,
+      siteId
+    );
+    pushWithShallow(locale, projectSlug, updatedQueryParams);
+  };
+
+  // Helper function to set the selected site and update the URL with the corresponding site ID
+  const updateSiteAndUrl = (
+    locale: string,
+    projectSlug: string,
+    siteIndex: number
+  ) => {
+    setSelectedSite(siteIndex);
+    const siteId = singleProject?.sites?.[siteIndex].properties.id;
+    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId);
+  };
+
+  useEffect(() => {
+    if (
+      !router.isReady ||
+      (plantLocations && plantLocations?.length === 0) ||
+      page !== 'project-details' ||
+      singleProject === null ||
+      selectedSite !== null ||
+      (requestedPlantLocation && requestedSite)
+    )
+      return;
+
+    // Handle the case where a direct link requests a specific plant location (via URL query).
+    // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
+    // it falls back to the default (first) site.
+    if (requestedPlantLocation && selectedPlantLocation === null) {
+      const result = plantLocations?.find(
+        (plantLocation) => plantLocation.hid === requestedPlantLocation
+      );
+      if (result) {
+        setSelectedPlantLocation(result);
+      } else {
+        updateSiteAndUrl(locale, singleProject.slug, 0);
+      }
+    }
+
+    // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
+    if (selectedPlantLocation) {
+      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
+      pushWithShallow(locale, singleProject.slug, updatedQueryParams);
+    }
+  }, [
+    page,
+    singleProject?.slug,
+    locale,
+    requestedPlantLocation,
+    router.isReady,
+    selectedPlantLocation,
+    selectedSite,
+  ]);
+
+  useEffect(() => {
+    if (
+      !router.isReady ||
+      !singleProject ||
+      page !== 'project-details' ||
+      singleProject === null ||
+      selectedPlantLocation !== null
+    )
+      return;
+
+    // Handle the case where a direct link requests a specific site (via URL query)
+    // This will update the site param based on the requestedSite. If the requested site ID is invalid,
+    // it falls back to the default (first) site.
+    if (requestedSite && selectedSite === null) {
+      const index = singleProject.sites?.findIndex(
+        (site) => site.properties.id === requestedSite
+      );
+      if (index !== undefined)
+        updateSiteAndUrl(locale, singleProject.slug, index !== -1 ? index : 0);
+      return;
+    }
+
+    //Handle the case where user manually selects a site from the site list on the project detail page
+    if (selectedSite) {
+      updateSiteAndUrl(locale, singleProject.slug, selectedSite);
+      return;
+    }
+
+    //If the user navigates to the project detail page from the project list (no specific site selected)
+    // This defaults to the first site and updates the URL accordingly.
+    if (!requestedPlantLocation)
+      updateSiteAndUrl(locale, singleProject.slug, 0);
+  }, [
+    page,
+    locale,
+    singleProject?.slug,
+    selectedSite,
+    singleProject?.sites,
+    requestedSite,
+    router.isReady,
+    selectedPlantLocation,
+  ]);
 
   const value: ProjectsState | null = useMemo(
     () => ({
@@ -236,6 +380,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject,
       plantLocations,
       setPlantLocations,
+      selectedPlantLocation,
+      setSelectedPlantLocation,
+      hoveredPlantLocation,
+      setHoveredPlantLocation,
+      samplePlantLocation,
+      setSamplePlantLocation,
       selectedSite,
       setSelectedSite,
     }),
@@ -251,6 +401,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedMode,
       singleProject,
       plantLocations,
+      selectedPlantLocation,
+      samplePlantLocation,
+      hoveredPlantLocation,
       selectedSite,
     ]
   );

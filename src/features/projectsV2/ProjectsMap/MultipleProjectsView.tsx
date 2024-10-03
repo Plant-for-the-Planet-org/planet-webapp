@@ -4,8 +4,9 @@ import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from '../../../utils/projectV2';
 import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import { SetState } from '../../common/types/common';
-import { ViewState } from 'react-map-gl-v7';
+import { ViewState } from 'react-map-gl-v7/maplibre';
 import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
+
 interface MultipleProjectsViewProps {
   setViewState: SetState<ViewState>;
   mapRef: MapRef;
@@ -15,13 +16,12 @@ const MultipleProjectsView = ({
   setViewState,
   mapRef,
 }: MultipleProjectsViewProps) => {
-  const { projects, isLoading, isError, filteredProjects, singleProject } =
-    useProjects();
+  const { projects, isLoading, isError, filteredProjects } = useProjects();
   if (isLoading || isError || !projects) {
     return null;
   }
   useEffect(() => {
-    if (singleProject === null && mapRef.current) {
+    if (mapRef.current) {
       const map = mapRef.current.getMap
         ? mapRef.current.getMap()
         : mapRef.current;
