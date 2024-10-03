@@ -24,11 +24,7 @@ export default function PlantLocations(): ReactElement {
     setSamplePlantLocation,
     samplePlantLocation,
   } = useProjects();
-
-  if (!plantLocations) {
-    return <></>;
-  }
-
+  if (!plantLocations || plantLocations.length === 0) return <></>;
   const { isSatelliteView, viewState } = useProjectsMap();
   const t = useTranslations('Maps');
   const locale = useLocale();
@@ -195,7 +191,7 @@ export default function PlantLocations(): ReactElement {
           paint={{
             'text-color': isSatelliteView ? '#ffffff' : '#2f3336',
           }}
-          filter={['!=', ['get', 'dateDiff'], null]}
+          filter={['!=', ['get', 'dateDiff'], '']}
         />
         {selectedPlantLocation &&
         selectedPlantLocation.type === 'multi-tree-registration' &&
