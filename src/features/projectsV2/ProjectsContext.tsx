@@ -47,14 +47,14 @@ interface ProjectsState {
   setIsLoading: SetState<boolean>;
   isError: boolean;
   setIsError: SetState<boolean>;
-  filteredProjects: MapProject[] | undefined;
-  topProjects: MapProject[] | undefined;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
+  filteredProjects: MapProject[] | undefined;
+  topProjects: MapProject[] | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 }
@@ -91,20 +91,22 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] = useState<
     PlantLocation | SamplePlantLocation | null
   >(null);
+  const [selectedSite, setSelectedSite] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [selectedClassification, setSelectedClassification] = useState<
     TreeProjectClassification[]
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedSite, setSelectedSite] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
     (projects: MapProject[]) => {
@@ -217,6 +219,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
     loadProjects();
   }, [currencyCode, locale, page]);
+
   useEffect(() => {
     if (!currencyCode) {
       const currency = getStoredCurrency();
@@ -238,31 +241,47 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
   }, [page]);
 
-  const pushWithShallow = (pathname: string, queryParams = {}) => {
+  const pushWithShallow = (
+    locale: string,
+    projectSlug: string,
+    queryParams = {}
+  ) => {
+    const pathname = `/${locale}/prd/${projectSlug}`;
     router.push({ pathname, query: queryParams }, undefined, {
       shallow: true,
     });
   };
-  const pathname = `/${locale}/prd/${singleProject?.slug}`;
-  const updateUrlWithSiteId = (siteId: string) => {
+
+  const updateUrlWithSiteId = (
+    locale: string,
+    projectSlug: string,
+    siteId: string
+  ) => {
     const updatedQueryParams = updateUrlWithParams(
       router.asPath,
       router.query,
       siteId
     );
-    pushWithShallow(pathname, updatedQueryParams);
+    pushWithShallow(locale, projectSlug, updatedQueryParams);
   };
+
   // Helper function to set the selected site and update the URL with the corresponding site ID
-  const updateSiteAndUrl = (index: number) => {
-    setSelectedSite(index);
-    const siteId = singleProject?.sites?.[index].properties.id;
-    if (siteId) updateUrlWithSiteId(siteId);
+  const updateSiteAndUrl = (
+    locale: string,
+    projectSlug: string,
+    siteIndex: number
+  ) => {
+    setSelectedSite(siteIndex);
+    const siteId = singleProject?.sites?.[siteIndex].properties.id;
+    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId);
   };
+
   useEffect(() => {
     if (
       !router.isReady ||
       (plantLocations && plantLocations?.length === 0) ||
       page !== 'project-details' ||
+      singleProject === null ||
       selectedSite !== null ||
       (requestedPlantLocation && requestedSite)
     )
@@ -278,17 +297,19 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       if (result) {
         setSelectedPlantLocation(result);
       } else {
-        updateSiteAndUrl(0);
+        updateSiteAndUrl(locale, singleProject.slug, 0);
       }
     }
 
     // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
     if (selectedPlantLocation) {
       const updatedQueryParams = { ploc: selectedPlantLocation.hid };
-      pushWithShallow(pathname, updatedQueryParams);
+      pushWithShallow(locale, singleProject.slug, updatedQueryParams);
     }
   }, [
     page,
+    singleProject?.slug,
+    locale,
     requestedPlantLocation,
     router.isReady,
     selectedPlantLocation,
@@ -300,6 +321,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       !router.isReady ||
       !singleProject ||
       page !== 'project-details' ||
+      singleProject === null ||
       selectedPlantLocation !== null
     )
       return;
@@ -311,21 +333,25 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       const index = singleProject.sites?.findIndex(
         (site) => site.properties.id === requestedSite
       );
-      if (index !== undefined) updateSiteAndUrl(index !== -1 ? index : 0);
+      if (index !== undefined)
+        updateSiteAndUrl(locale, singleProject.slug, index !== -1 ? index : 0);
       return;
     }
 
     //Handle the case where user manually selects a site from the site list on the project detail page
     if (selectedSite) {
-      updateSiteAndUrl(selectedSite);
+      updateSiteAndUrl(locale, singleProject.slug, selectedSite);
       return;
     }
 
     //If the user navigates to the project detail page from the project list (no specific site selected)
     // This defaults to the first site and updates the URL accordingly.
-    if (!requestedPlantLocation) updateSiteAndUrl(0);
+    if (!requestedPlantLocation)
+      updateSiteAndUrl(locale, singleProject.slug, 0);
   }, [
     page,
+    locale,
+    singleProject?.slug,
     selectedSite,
     singleProject?.sites,
     requestedSite,
