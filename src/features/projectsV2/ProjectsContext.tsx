@@ -27,6 +27,7 @@ import {
   SamplePlantLocation,
 } from '../common/types/plantLocation';
 import { useRouter } from 'next/router';
+import { updateUrlWithParams } from '../../utils/projectV2';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -237,43 +238,101 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
   }, [page]);
 
-  // Select plant location based on the ploc query param (for direct links)
+  const pushWithShallow = (pathname: string, queryParams = {}) => {
+    router.push({ pathname, query: queryParams }, undefined, {
+      shallow: true,
+    });
+  };
+  const pathname = `/${locale}/prd/${singleProject?.slug}`;
+  const updateUrlWithSiteId = (siteId: string) => {
+    const updatedQueryParams = updateUrlWithParams(
+      router.asPath,
+      router.query,
+      siteId
+    );
+    pushWithShallow(pathname, updatedQueryParams);
+  };
+  // Helper function to set the selected site and update the URL with the corresponding site ID
+  const updateSiteAndUrl = (index: number) => {
+    setSelectedSite(index);
+    const siteId = singleProject?.sites?.[index].properties.id;
+    if (siteId) updateUrlWithSiteId(siteId);
+  };
   useEffect(() => {
     if (
-      router.isReady &&
-      requestedPlantLocation &&
-      !requestedSite &&
-      plantLocations &&
-      plantLocations?.length > 0
-    ) {
-      const result = plantLocations.find(
+      !router.isReady ||
+      (plantLocations && plantLocations?.length === 0) ||
+      page !== 'project-details' ||
+      selectedSite !== null ||
+      (requestedPlantLocation && requestedSite)
+    )
+      return;
+
+    // Handle the case where a direct link requests a specific plant location (via URL query).
+    // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
+    // it falls back to the default (first) site.
+    if (requestedPlantLocation && selectedPlantLocation === null) {
+      const result = plantLocations?.find(
         (plantLocation) => plantLocation.hid === requestedPlantLocation
       );
       if (result) {
         setSelectedPlantLocation(result);
       } else {
-        router.push(
-          `/${locale}/prd/${singleProject?.slug}?site=${singleProject?.sites?.[0].properties.id}`,
-          undefined,
-          { shallow: true }
-        );
-        setSelectedPlantLocation(null);
+        updateSiteAndUrl(0);
       }
     }
-  }, [requestedPlantLocation, router.isReady, plantLocations]);
-  // Select project site based on the site query param (for direct links)
+
+    // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
+    if (selectedPlantLocation) {
+      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
+      pushWithShallow(pathname, updatedQueryParams);
+    }
+  }, [
+    page,
+    requestedPlantLocation,
+    router.isReady,
+    selectedPlantLocation,
+    selectedSite,
+  ]);
+
   useEffect(() => {
-    if (router.isReady && requestedSite && singleProject) {
-      const result = singleProject.sites?.findIndex(
+    if (
+      !router.isReady ||
+      !singleProject ||
+      page !== 'project-details' ||
+      selectedPlantLocation !== null
+    )
+      return;
+
+    // Handle the case where a direct link requests a specific site (via URL query)
+    // This will update the site param based on the requestedSite. If the requested site ID is invalid,
+    // it falls back to the default (first) site.
+    if (requestedSite && selectedSite === null) {
+      const index = singleProject.sites?.findIndex(
         (site) => site.properties.id === requestedSite
       );
-      if (result && result !== -1) {
-        setSelectedSite(result);
-      } else {
-        setSelectedSite(0); // default site
-      }
+      if (index !== undefined) updateSiteAndUrl(index !== -1 ? index : 0);
+      return;
     }
-  }, [requestedSite, router.isReady, setSelectedSite]);
+
+    //Handle the case where user manually selects a site from the site list on the project detail page
+    if (selectedSite) {
+      updateSiteAndUrl(selectedSite);
+      return;
+    }
+
+    //If the user navigates to the project detail page from the project list (no specific site selected)
+    // This defaults to the first site and updates the URL accordingly.
+    if (!requestedPlantLocation) updateSiteAndUrl(0);
+  }, [
+    page,
+    selectedSite,
+    singleProject?.sites,
+    requestedSite,
+    router.isReady,
+    selectedPlantLocation,
+  ]);
+
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,

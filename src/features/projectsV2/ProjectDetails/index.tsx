@@ -14,7 +14,6 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
 import PlantLocationInfoSection from './components/PlantLocationInfoSection';
 import { ExtendedProject } from '../../common/types/projectv2';
-import { updateUrlWithParams } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -25,7 +24,6 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
-    selectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
@@ -38,11 +36,7 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
-  const {
-    p: projectSlug,
-    ploc: requestedPlantLocation,
-    site: requestedSite,
-  } = router.query;
+  const { p: projectSlug } = router.query;
 
   useEffect(() => {
     async function loadProject(
@@ -108,57 +102,6 @@ const ProjectDetails = ({
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
   }, [singleProject]);
-  // add  project site query
-  useEffect(() => {
-    const projectSites = singleProject?.sites;
-    if (!projectSites || !router.isReady) return;
-
-    const pushWithShallow = (pathname: string, queryParams = {}) => {
-      router.push({ pathname, query: queryParams }, undefined, {
-        shallow: true,
-      });
-    };
-
-    const pathname = `/${locale}/prd/${singleProject?.slug}`;
-
-    // Helper function to update the URL
-    const updateUrlWithSiteId = (siteId: string) => {
-      const updatedQueryParams = updateUrlWithParams(
-        router.asPath,
-        router.query,
-        siteId
-      );
-      pushWithShallow(pathname, updatedQueryParams);
-    };
-
-    // Case 1: Update URL with default site param if no plant location or site is requested
-    if (!requestedPlantLocation && !requestedSite) {
-      const defaultSiteId = projectSites[0]?.properties.id;
-      if (defaultSiteId) updateUrlWithSiteId(defaultSiteId);
-      return;
-    }
-
-    // Case 2: Update URL based on the selected site or if both plant location and site are present in URL
-    if (selectedSite !== null || (requestedPlantLocation && requestedSite)) {
-      const siteId = projectSites[selectedSite ?? 0]?.properties.id;
-      if (siteId) updateUrlWithSiteId(siteId);
-      return;
-    }
-
-    // Case 3: Update URL with selected plant location
-    if (selectedPlantLocation) {
-      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
-      pushWithShallow(pathname, updatedQueryParams);
-    }
-  }, [
-    singleProject,
-    selectedSite,
-    selectedPlantLocation,
-    locale,
-    router.isReady,
-    requestedPlantLocation,
-    requestedSite,
-  ]);
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>

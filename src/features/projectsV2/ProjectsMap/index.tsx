@@ -33,7 +33,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSite,
   } = useProjects();
   const { projects, singleProject, selectedPlantLocation } = useProjects();
-  const shouldShowSingleProjectsView = singleProject !== null;
+  const shouldShowSingleProjectsView =
+    singleProject !== null && props.page === 'project-details';
   const shouldShowMultipleProjectsView =
     mapOptions.showProjects &&
     projects &&
@@ -48,6 +49,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   };
   const onMouseMove = useCallback(
     (e) => {
+      if (props.page !== 'project-details') return;
       const hoveredPlantLocation = getPlantLocationInfo(
         plantLocations,
         mapRef,
@@ -62,10 +64,11 @@ function ProjectsMap(props: ProjectsMapProps) {
       }
       setHoveredPlantLocation(hoveredPlantLocation);
     },
-    [plantLocations, selectedPlantLocation]
+    [plantLocations, selectedPlantLocation, props.page]
   );
   const onClick = useCallback(
     (e) => {
+      if (props.page !== 'project-details') return;
       const selectedPlantLocation = getPlantLocationInfo(
         plantLocations,
         mapRef,
