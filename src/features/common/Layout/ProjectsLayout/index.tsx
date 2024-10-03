@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projects/components/maps/Credits';
 import { SetState } from '../../types/common';
@@ -9,6 +9,8 @@ import {
   useProjectsMap,
 } from '../../../projectsV2/ProjectsMapContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
+import { useRouter } from 'next/router';
+import { useUserProps } from '../UserPropsContext';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -22,11 +24,17 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
   page,
 }) => {
   const { mapOptions, updateMapOption } = useProjectsMap();
+  const { query } = useRouter();
+  const { isImpersonationModeOn } = useUserProps();
   const showContentContainer =
     mapOptions.showProjects || page === 'project-details';
-
+  const layoutClass = useMemo(() => {
+    if (query.embed === 'true') return styles.embedMode;
+    if (isImpersonationModeOn) return styles.impersonationMode;
+    return styles.projectsLayout;
+  }, [isImpersonationModeOn, query.embed]);
   return (
-    <div className={styles.projectsLayout}>
+    <div className={layoutClass}>
       <main className={styles.mainContent}>
         {showContentContainer && (
           <section className={styles.contentContainer}>{children}</section>
@@ -40,7 +48,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
               />
             </div>
           )}
-          <ProjectsMap isMobile={false} />
+          <ProjectsMap isMobile={false} page={page} />
         </section>
       </main>
       <Credits setCurrencyCode={setCurrencyCode} />

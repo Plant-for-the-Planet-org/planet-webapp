@@ -2,25 +2,20 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import styles from '../styles/ProjectListControls.module.scss';
 import { SetState } from '../../../common/types/common';
-import { availableFilters } from '../utils';
+import { availableFilters } from '../../../../utils/projectV2';
 import { TreeProjectClassification } from '@planet-sdk/common';
 import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { MapProject } from '../../../common/types/projectv2';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
-  filteredProjects: MapProject[] | undefined;
-  isMobile?: boolean;
   selectedMode?: ViewMode;
 }
 
 export const ClassificationDropDown = ({
   selectedClassification,
   setSelectedClassification,
-  isMobile,
   selectedMode,
-  filteredProjects,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
   const handleFilterSelection = (
@@ -36,15 +31,10 @@ export const ClassificationDropDown = ({
   const isFilterApplied = selectedClassification.length !== 0;
 
   const classificationListClasses = useMemo(() => {
-    const isHidden =
-      isMobile &&
-      (selectedMode === 'map' ||
-        (selectedMode === 'list' && filteredProjects?.length === 0));
-
     return `${styles.classificationListContainer} ${
-      isHidden ? styles.mobileSelectMode : ''
+      selectedMode === 'list' ? styles.listMode : ''
     }`;
-  }, [isMobile, selectedMode, filteredProjects]);
+  }, [selectedMode]);
 
   return (
     <div className={classificationListClasses}>

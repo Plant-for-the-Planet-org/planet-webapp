@@ -1,0 +1,60 @@
+@import '../../../../theme/theme';
+
+.reviewReportsContainer {
+  background-color: rgba(var(--review-font-color-new), 0.1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 14px;
+  h6 {
+    text-align: left;
+    width: 100%;
+    color: #2f3336;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+}
+
+.singleReviewContainer {
+  padding: 16px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: $light;
+}
+
+.downloadReportContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  p {
+    font-size: $fontXXXSmallNew;
+    color: rgb(var(--review-font-color-new));
+    font-weight: 700;
+  }
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.reviewInfoContainer {
+  display: flex;
+  gap: 7px;
+  color: #2f3336; //to be replaced
+  font-size: $fontXXSmall;
+  margin-top: 4px;
+  align-items: center;
+
+  a {
+    color: rgb(var(--review-font-color-new));
+    text-decoration: underline;
+    font-weight: 700;
+  }
+}

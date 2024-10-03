@@ -1,0 +1,35 @@
+@import '../../../../theme/theme';
+.mapPreviewContainer {
+  background-image: url('../../../../../public/assets/images/satellite-image-of-mexico.jpg');
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 21.3rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: self-end;
+}
+
+.diveToMap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  background: $primaryColorNew;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  max-width: 274px;
+  width: 100%;
+  cursor: pointer;
+  .label {
+    font-size: $fontXSmall;
+    font-weight: 700;
+    color: $light;
+  }
+}
+
+.buttonIconContainer {
+  margin-top: 1px;
+}

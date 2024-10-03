@@ -1,0 +1,28 @@
+@import '../../../theme/theme';
+
+.projectDetailsContainer {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: rgba(224, 224, 224, 1);
+    height: 220px;
+  }
+  @include xsPhoneView {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    padding-right: 0px;
+    padding-bottom: 100px;
+  }
+}
+
+.projectDetailsSkeleton {
+  height: 100%;
+}

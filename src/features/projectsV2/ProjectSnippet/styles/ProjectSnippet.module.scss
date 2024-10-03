@@ -15,11 +15,17 @@
   border: 2px solid $light;
   border-radius: 16px;
   position: relative;
-  max-width: 338px;
+  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  max-width: 356px;
+  background-color: #fff;
   @include xsPhoneView {
-    box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
     max-width: 100%;
+    box-shadow: none;
+    margin-left: 0px;
   }
+}
+.projectDetailsSnippetMobile {
+  padding: 0px 9px;
 }
 //project image
 .projectImage {
@@ -35,6 +41,14 @@
     position: absolute;
     bottom: 12px;
     left: 13px;
+  }
+}
+
+.projectImageSecondary {
+  @include xsPhoneView {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    height: 180px;
   }
 }
 
@@ -164,7 +178,7 @@
   margin-right: 4px;
 }
 
-.projectTPOName {
+.projectTpoName {
   cursor: pointer;
   position: relative;
   text-align: center;
@@ -182,6 +196,13 @@
   }
   &.tpoBackground {
     background: $lightOrange;
+  }
+}
+
+.projectTpoNameSecondary {
+  @include xsPhoneView {
+    border-radius: 0px;
+    margin-top: 0px;
   }
 }
 
@@ -255,4 +276,10 @@
 
 .country {
   font-weight: 400;
+}
+
+.backButton {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
 }

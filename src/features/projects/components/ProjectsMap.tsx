@@ -115,18 +115,18 @@ export default function ProjectsMap(): ReactElement {
     if (plantLocations && e && e.features && e.features[0]) {
       const activeElement = e.features[0];
       if (selectedPl && selectedPl.id === activeElement.properties.id) {
-        setHoveredPl(null)
+        setHoveredPl(null);
         setShowDetails({ coordinates: e.lngLat, show: true });
-        return
+        return;
       }
       const activePlantLocation = plantLocations.find(
         (obj) => obj.id === activeElement.properties.id
       );
       if (activePlantLocation) {
         setHoveredPl(activePlantLocation);
-        setSamplePlantLocation(null)
+        setSamplePlantLocation(null);
         setShowDetails({ coordinates: e.lngLat, show: true });
-        return
+        return;
       }
     } else {
       setShowDetails({ ...showDetails, show: false });
@@ -171,7 +171,9 @@ export default function ProjectsMap(): ReactElement {
         onClick={onMapClick}
         onHover={onMapHover}
         onLoad={handleOnLoad}
-        interactiveLayerIds={project !== null ? ['polygon-layer', 'point-layer'] : undefined}
+        interactiveLayerIds={
+          project !== null ? ['polygon-layer', 'point-layer'] : undefined
+        }
       >
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
