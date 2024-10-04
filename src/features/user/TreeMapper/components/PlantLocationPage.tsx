@@ -153,10 +153,14 @@ export function LocationDetails({
         ) : (
           []
         )}
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('plantDate')}</p>
-          <div className={styles.value}>{formatDate(location.plantDate)}</div>
-        </div>
+        {location.interventionStartDate !== null && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('plantDate')}</p>
+            <div className={styles.value}>
+              {formatDate(location.interventionStartDate)}
+            </div>
+          </div>
+        )}
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tTreemapper('registrationDate')}</p>
           <div className={styles.value}>
