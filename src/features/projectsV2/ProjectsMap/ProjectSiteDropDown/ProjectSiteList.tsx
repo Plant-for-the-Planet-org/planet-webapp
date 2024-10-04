@@ -22,9 +22,9 @@ const ProjectSiteList = ({
   setSelectedPlantLocation,
 }: ProjectSiteListProps) => {
   const handleSiteSelection = (index: number) => {
+    setSelectedPlantLocation(null);
     setIsMenuOpen(false);
     setSelectedSite(index);
-    setSelectedPlantLocation(null);
   };
 
   return (

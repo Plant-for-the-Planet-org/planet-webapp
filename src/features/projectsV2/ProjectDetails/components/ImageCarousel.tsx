@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
@@ -21,30 +21,39 @@ const ImageCarousel = ({
   leftAlignment,
   isImageModalOpenOnMobile,
 }: Props) => {
-  const validImages = images?.filter((image) => image.image !== null);
-  const projectImages: { content: () => ReactElement }[] = [];
+  const [projectImages, setProjectImages] = useState<
+    {
+      content: () => ReactElement;
+    }[]
+  >([]);
   const pattern = /^https:\/\//i;
   useEffect(() => {
-    validImages?.forEach((carouselImage) => {
-      if (carouselImage.image) {
-        const imageURL = pattern.test(carouselImage.image)
-          ? carouselImage.image
-          : getImageUrl(type, imageSize, carouselImage.image);
-
-        projectImages.push({
-          content: () => (
-            <SingleCarouselImage
-              imageURL={imageURL}
-              carouselImage={carouselImage}
-              leftAlignment={leftAlignment}
-              isImageModalOpenOnMobile={isImageModalOpenOnMobile}
-            />
-          ),
-        });
-      }
-    });
+    if (images && images?.length > 0) {
+      const result = images
+        .map((carouselImage) => {
+          if (carouselImage.image) {
+            const imageURL = pattern.test(carouselImage.image)
+              ? carouselImage.image
+              : getImageUrl(type, imageSize, carouselImage.image);
+            return {
+              content: () => (
+                <SingleCarouselImage
+                  imageURL={imageURL}
+                  carouselImage={carouselImage}
+                  leftAlignment={leftAlignment}
+                  isImageModalOpenOnMobile={isImageModalOpenOnMobile}
+                />
+              ),
+            };
+          }
+          return null;
+        })
+        .filter((image) => image !== null);
+      setProjectImages(result);
+    }
   }, [images]);
-  if (projectImages.length === 0) return <></>;
+
+  if (projectImages?.length === 0) return <></>;
   return (
     <Stories
       stories={projectImages}

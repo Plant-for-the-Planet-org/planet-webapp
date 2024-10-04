@@ -24,7 +24,6 @@ export default function PlantLocations(): ReactElement {
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
   } = useProjects();
-
   const { isSatelliteView, viewState } = useProjectsMap();
 
   const t = useTranslations('Maps');

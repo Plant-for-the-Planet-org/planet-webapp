@@ -30,7 +30,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
 
   useEffect(() => {
     const isPlantLocationReadyToZoom =
-      selectedPlantLocation && requestedPlantLocation && router.isReady;
+      selectedPlantLocation && router.isReady && requestedPlantLocation;
     if (
       isPlantLocationReadyToZoom &&
       selectedPlantLocation.geometry.type === 'Polygon'
@@ -47,11 +47,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
 
   useEffect(() => {
     const isSiteReadyToZoom =
-      singleProject.sites &&
-      !selectedPlantLocation &&
-      requestedSite &&
-      router.isReady &&
-      selectedSite !== null;
+      router.isReady && selectedSite !== null && requestedSite;
     if (isSiteReadyToZoom) {
       zoomInToProjectSite(
         mapRef,

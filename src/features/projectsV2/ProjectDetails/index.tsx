@@ -14,7 +14,6 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
 import PlantLocationInfo from './components/PlantLocationInfo';
 import { ExtendedProject } from '../../common/types/projectv2';
-import { updateUrlWithParams } from '../../../utils/projectV2';
 import SamplePlantInfo from './components/SamplePlantInfo';
 
 const ProjectDetails = ({
@@ -26,7 +25,6 @@ const ProjectDetails = ({
 }) => {
   const {
     singleProject,
-    selectedSite,
     setSingleProject,
     setPlantLocations,
     setIsLoading,
@@ -41,11 +39,7 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
-  const {
-    p: projectSlug,
-    ploc: requestedPlantLocation,
-    site: requestedSite,
-  } = router.query;
+  const { p: projectSlug } = router.query;
 
   useEffect(() => {
     async function loadProject(
@@ -111,48 +105,7 @@ const ProjectDetails = ({
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
   }, [singleProject]);
-  // add  project site query
-  useEffect(() => {
-    const projectSites = singleProject?.sites;
-    if (!projectSites) {
-      return;
-    }
-    if (!router.isReady) return;
-    const pushWithShallow = (pathname: string, queryParams = {}) => {
-      router.push({ pathname, query: queryParams }, undefined, {
-        shallow: true,
-      });
-    };
 
-    // case 1: Update url with the selected site  param
-    // case 2: Update url with the selected site  param if both params are present in the url (i.e ploc, site)
-    if (selectedSite !== null || (requestedPlantLocation && requestedSite)) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const siteId = projectSites[selectedSite ?? 0].properties.id;
-      const updatedQueryParams = updateUrlWithParams(
-        router.asPath,
-        router.query,
-        siteId
-      );
-      pushWithShallow(pathname, updatedQueryParams);
-      return;
-    }
-
-    // Update url with the selected plant location  param
-    if (selectedPlantLocation) {
-      const pathname = `/${locale}/prd/${singleProject.slug}`;
-      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
-      pushWithShallow(pathname, updatedQueryParams);
-    }
-  }, [
-    singleProject,
-    selectedSite,
-    selectedPlantLocation,
-    locale,
-    router.isReady,
-    requestedPlantLocation,
-    requestedSite,
-  ]);
   const shouldShowPlantLocationInfo = hoveredPlantLocation
     ? hoveredPlantLocation
     : selectedPlantLocation && !selectedSamplePlantLocation && !isMobile;
