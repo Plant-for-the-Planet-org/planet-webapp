@@ -240,7 +240,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSite(0);
     }
   }, [page]);
-
   const pushWithShallow = (
     locale: string,
     projectSlug: string,
@@ -271,6 +270,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     siteIndex: number
   ) => {
+    if (singleProject?.sites?.length === 0) return;
     setSelectedSite(siteIndex);
     const siteId = singleProject?.sites?.[siteIndex].properties.id;
     if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId);
@@ -338,13 +338,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       return;
     }
 
-    //Handle the case where user manually selects a site from the site list on the project detail page
+    // Handle the case where user manually selects a site from the site list on the project detail page
     if (selectedSite) {
       updateSiteAndUrl(locale, singleProject.slug, selectedSite);
       return;
     }
 
-    //If the user navigates to the project detail page from the project list (no specific site selected)
+    // If the user navigates to the project detail page from the project list (no specific site selected)
     // This defaults to the first site and updates the URL accordingly.
     if (!requestedPlantLocation)
       updateSiteAndUrl(locale, singleProject.slug, 0);

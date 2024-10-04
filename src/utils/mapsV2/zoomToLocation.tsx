@@ -2,11 +2,11 @@ import { SetState } from '../../features/common/types/common';
 import { ViewState } from 'react-map-gl-v7';
 import { MapRef } from './zoomToProjectSite';
 
-export default function zoomToSingleTreeLocation(
+export default function zoomToLocation(
   setViewState: SetState<ViewState>,
   longitude: number,
   latitude: number,
-  zoom: number,
+  zoom = 10,
   duration = 1200,
   mapRef: MapRef
 ) {

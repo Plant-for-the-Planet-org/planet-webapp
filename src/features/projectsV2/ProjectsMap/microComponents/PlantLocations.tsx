@@ -20,7 +20,6 @@ export default function PlantLocations(): ReactElement {
     hoveredPlantLocation,
     selectedPlantLocation,
     setSelectedPlantLocation,
-    setHoveredPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
   } = useProjects();
@@ -45,18 +44,7 @@ export default function PlantLocations(): ReactElement {
         break;
     }
   };
-  const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
-    setHoveredPlantLocation(pl);
-  };
 
-  const onHoverEnd = () => {
-    if (
-      hoveredPlantLocation &&
-      (hoveredPlantLocation.type === 'single-tree-registration' ||
-        hoveredPlantLocation.type === 'sample-tree-registration')
-    )
-      setHoveredPlantLocation(null);
-  };
   const getPlTreeCount = (pl: PlantLocationMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
@@ -222,8 +210,6 @@ export default function PlantLocations(): ReactElement {
                     role="button"
                     tabIndex={0}
                     onClick={() => openPl(spl)}
-                    onMouseEnter={() => onHover(spl)}
-                    onMouseLeave={onHoverEnd}
                   />
                 </Marker>
               );

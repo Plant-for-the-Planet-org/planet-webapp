@@ -31,7 +31,7 @@ const ImageCarousel = ({
     if (images && images?.length > 0) {
       const result = images
         .map((carouselImage) => {
-          if (carouselImage.image) {
+          if (carouselImage?.image) {
             const imageURL = pattern.test(carouselImage.image)
               ? carouselImage.image
               : getImageUrl(type, imageSize, carouselImage.image);
@@ -48,7 +48,7 @@ const ImageCarousel = ({
           }
           return null;
         })
-        .filter((image) => image !== null);
+        .filter((image) => image !== null && image !== undefined);
       setProjectImages(result);
     }
   }, [images]);

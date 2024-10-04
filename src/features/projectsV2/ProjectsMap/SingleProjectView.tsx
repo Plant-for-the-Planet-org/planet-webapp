@@ -8,12 +8,15 @@ import { useRouter } from 'next/router';
 import PlantLocations from './microComponents/PlantLocations';
 import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
+import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
+import ProjectLocation from './microComponents/ProjectLocation';
 
 const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
   const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
   if (!singleProject?.sites) {
     return null;
   }
+  const hasNoSites = singleProject.sites?.length === 0;
   const { isSatelliteView, setViewState } = useProjectsMap();
   const router = useRouter();
   const {
@@ -58,9 +61,31 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       );
     }
   }, [selectedSite, requestedSite, router.isReady]);
+  // zoom to project location (when project does not have sites)
+  useEffect(() => {
+    if (singleProject && hasNoSites) {
+      zoomToLocation(
+        setViewState,
+        singleProject.coordinates.lon,
+        singleProject.coordinates.lat,
+        10,
+        4000,
+        mapRef
+      );
+    }
+  }, [singleProject.sites]);
+
   return (
     <>
-      <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
+      {hasNoSites ? (
+        <ProjectLocation
+          latitude={singleProject.coordinates.lat}
+          longitude={singleProject.coordinates.lon}
+          purpose={singleProject.purpose}
+        />
+      ) : (
+        <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
+      )}
       {isSatelliteView && <SatelliteLayer />}
       <PlantLocations />
     </>
