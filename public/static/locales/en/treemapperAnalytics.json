@@ -28,7 +28,7 @@
     "dec": "Dec",
     "exportColumnHeaders": {
       "hid": "Human Readable ID for a plant location",
-      "plantDate": "Planted Date",
+      "interventionStartDate": "Starting date of intervention (e.g. Tree planting date)",
       "species": "Name of the species planted",
       "treeCount": "",
       "geometry": "GeoJson Co-ordinate of the polygon",

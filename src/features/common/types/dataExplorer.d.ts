@@ -34,7 +34,7 @@ export interface ISpeciesPlanted {
 
 export interface IExportData {
   hid: string;
-  plant_date: Date;
+  intervention_start_date: Date;
   species: string;
   tree_count: number;
   geometry: string;
