@@ -138,6 +138,7 @@ const ProjectDetails = ({
           plantLocationInfo={
             hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
           }
+          isMobile={isMobile}
         />
       )}
       {shouldShowProjectInfo && (
