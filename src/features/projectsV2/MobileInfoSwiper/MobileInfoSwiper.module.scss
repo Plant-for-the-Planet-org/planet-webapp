@@ -1,0 +1,35 @@
+@import '../../../theme/theme';
+
+.mobileInfoSwiper {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: 9999;
+  padding: 6px;
+}
+
+.swiperContentContainer {
+  height: 300px;
+  border-radius: 6px;
+  background-color: $primaryLightGreenBgColor;
+}
+
+.swiper {
+  height: 100%;
+  width: 100%;
+
+  :global(.swiper-pagination-bullet-active) {
+    background-color: $primaryDarkColor;
+  }
+
+  :global(.swiper-pagination-bullets.swiper-pagination-horizontal) {
+    width: fit-content;
+    left: 10px;
+  }
+}
+
+.logoContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
