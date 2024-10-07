@@ -10,6 +10,7 @@ import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
+import MobileInfoSwiper from '../MobileInfoSwiper';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -110,6 +111,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           }}
         />
       </Map>
+      <MobileInfoSwiper />
     </>
   );
 }
