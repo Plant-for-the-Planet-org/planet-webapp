@@ -33,7 +33,13 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedPlantLocation,
     setSelectedSite,
   } = useProjects();
-  const { projects, singleProject, selectedPlantLocation } = useProjects();
+  const {
+    projects,
+    singleProject,
+    selectedPlantLocation,
+    selectedSamplePlantLocation,
+  } = useProjects();
+
   const shouldShowSingleProjectsView =
     singleProject !== null && props.page === 'project-details';
   const shouldShowMultipleProjectsView =
@@ -41,6 +47,9 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects &&
     projects.length > 0 &&
     !shouldShowSingleProjectsView;
+  const shouldShowMobileInfoSwiper =
+    props.isMobile &&
+    (selectedPlantLocation !== null || selectedSamplePlantLocation !== null);
 
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
@@ -111,7 +120,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           }}
         />
       </Map>
-      <MobileInfoSwiper />
+      {shouldShowMobileInfoSwiper && <MobileInfoSwiper />}
     </>
   );
 }
