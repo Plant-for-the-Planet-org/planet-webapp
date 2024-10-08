@@ -49,7 +49,7 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
         locationCoordinates,
         mapRef,
         setViewState,
-        1300
+        3500
       );
     }
   }, [selectedPlantLocation, requestedPlantLocation, router.isReady]);
@@ -63,7 +63,7 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
         sitesGeojson,
         selectedSite,
         setViewState,
-        3000
+        3500
       );
     }
   }, [selectedSite, requestedSite, router.isReady]);
@@ -78,7 +78,7 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
       const latitude = singleProject.coordinates.lat;
       const longitude = singleProject.coordinates.lon;
       // Zoom into location for a project  which has no site
-      zoomToLocation(setViewState, longitude, latitude, 10, 3000, mapRef);
+      zoomToLocation(setViewState, longitude, latitude, 10, 3500, mapRef);
     } else if (
       selectedPlantLocation?.geometry?.type === 'Point' &&
       selectedPlantLocation?.geometry.coordinates.length === 2
@@ -86,7 +86,7 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
       const [lon, lat] = selectedPlantLocation.geometry.coordinates;
       if (lon !== undefined && lat !== undefined) {
         // Zoom into single tree registration
-        zoomToLocation(setViewState, lon, lat, 20, 3000, mapRef);
+        zoomToLocation(setViewState, lon, lat, 20, 3500, mapRef);
       }
     }
   }, [
