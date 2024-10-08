@@ -309,13 +309,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       const index = singleProject.sites?.findIndex(
         (site) => site.properties.id === requestedSite
       );
-      if (index !== undefined)
+
+      if (index !== undefined) {
         updateSiteAndUrl(locale, singleProject.slug, index !== -1 ? index : 0);
-      return;
+        return;
+      }
     }
 
     // Handle the case where user manually selects a site from the site list on the project detail page
-    if (selectedSite) {
+    if (selectedSite !== null) {
       updateSiteAndUrl(locale, singleProject.slug, selectedSite);
       return;
     }

@@ -10,8 +10,14 @@ import { MapRef } from '../../../utils/mapsV2/zoomToProjectSite';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import { SetState } from '../../common/types/common';
 
-const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
+interface Props {
+  setIsOnSampleMarker: SetState<boolean>;
+  mapRef: MapRef;
+}
+
+const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
   if (!singleProject?.sites) {
     return null;
@@ -57,7 +63,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         sitesGeojson,
         selectedSite,
         setViewState,
-        4000
+        3000
       );
     }
   }, [selectedSite, requestedSite, router.isReady]);
@@ -102,7 +108,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
         <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
       )}
       {isSatelliteView && <SatelliteLayer />}
-      <PlantLocations />
+      <PlantLocations setIsOnSampleMarker={setIsOnSampleMarker} />
     </>
   );
 };
