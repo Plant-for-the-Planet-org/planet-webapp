@@ -72,6 +72,11 @@ const MapControls = ({
     updateMapOption,
   };
   const isProjectDetailsPage = page === 'project-details';
+
+  const exitMapMode = () => {
+    setSelectedMode && setSelectedMode('list');
+  };
+
   return (
     <>
       {isMobile && page === 'project-list' && (
@@ -87,7 +92,8 @@ const MapControls = ({
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
               <button
-                onClick={() => setSelectedMode && setSelectedMode('list')}
+                className={styles.exitMapModeButton}
+                onClick={exitMapMode}
               >
                 <CrossIcon width={18} />
               </button>
