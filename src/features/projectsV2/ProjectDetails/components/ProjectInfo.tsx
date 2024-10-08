@@ -144,7 +144,12 @@ const ProjectInfo = ({
       {description && <AboutProject description={description} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
       {images?.length > 0 && (
-        <ImageSlider images={images} type={'project'} isMobile={isMobile} />
+        <ImageSlider
+          images={images}
+          type="project"
+          isMobile={isMobile}
+          imageSize="medium"
+        />
       )}
       {isMobile && <MapPreview handleMap={handleMap} />}
       {shouldRenderKeyInfo && (
