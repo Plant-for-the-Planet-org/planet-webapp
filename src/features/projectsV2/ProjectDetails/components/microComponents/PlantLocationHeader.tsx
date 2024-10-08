@@ -6,7 +6,7 @@ import { formatHid } from '../../../../../utils/projectV2';
 interface Props {
   plHid: string | undefined;
   totalTreesCount: number;
-  plantedLocationArea: number;
+  plantedLocationArea: number | null;
 }
 
 const PlantLocationHeader = ({
@@ -26,7 +26,7 @@ const PlantLocationHeader = ({
             Number(totalTreesCount),
             1
           ),
-          area: plantedLocationArea.toFixed(3),
+          area: plantedLocationArea?.toFixed(3),
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>

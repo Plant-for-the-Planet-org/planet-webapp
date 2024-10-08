@@ -30,7 +30,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       features: singleProject?.sites ?? [],
     };
   }, [projectSlug]);
-
+  // Zoom to plant location polygon
   useEffect(() => {
     const isPlantLocationReadyToZoom =
       selectedPlantLocation && router.isReady && requestedPlantLocation;
@@ -47,7 +47,7 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       );
     }
   }, [selectedPlantLocation, requestedPlantLocation, router.isReady]);
-
+  // Zoom to project site polygon
   useEffect(() => {
     const isSiteReadyToZoom =
       router.isReady && selectedSite !== null && requestedSite;
@@ -61,19 +61,34 @@ const SingleProjectView = ({ mapRef }: { mapRef: MapRef }) => {
       );
     }
   }, [selectedSite, requestedSite, router.isReady]);
-  // zoom to project location (when project does not have sites)
+
   useEffect(() => {
-    if (singleProject && hasNoSites) {
-      zoomToLocation(
-        setViewState,
-        singleProject.coordinates.lon,
-        singleProject.coordinates.lat,
-        10,
-        4000,
-        mapRef
-      );
+    if (
+      singleProject &&
+      hasNoSites &&
+      !selectedPlantLocation &&
+      router.isReady
+    ) {
+      const latitude = singleProject.coordinates.lat;
+      const longitude = singleProject.coordinates.lon;
+      // Zoom into location for a project  which has no site
+      zoomToLocation(setViewState, longitude, latitude, 10, 4000, mapRef);
+    } else if (
+      selectedPlantLocation?.geometry?.type === 'Point' &&
+      selectedPlantLocation?.geometry.coordinates.length === 2
+    ) {
+      const [lon, lat] = selectedPlantLocation.geometry.coordinates;
+      if (lon !== undefined && lat !== undefined) {
+        // Zoom into single tree registration
+        zoomToLocation(setViewState, lon, lat, 19, 3000, mapRef);
+      }
     }
-  }, [singleProject.sites]);
+  }, [
+    singleProject.sites,
+    selectedPlantLocation,
+    router.isReady,
+    selectedPlantLocation,
+  ]);
 
   return (
     <>

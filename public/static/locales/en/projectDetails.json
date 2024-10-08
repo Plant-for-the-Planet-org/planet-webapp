@@ -19,7 +19,7 @@
     "progressReports": "progress reports",
     "readMore": "Read More",
     "readLess": "Read Less",
-    "totalPlantedSpecies": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} <areaContainer>({area} ha)</areaContainer>",
+    "totalPlantedSpecies": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
     "plantingDate": "Planting Date",
     "plantingDensity": "Planting Density",
     "plantingDensityUnit": "{formattedCount} trees per ha",
@@ -40,6 +40,7 @@
     "protectionStarted": "Protection Started",
     "restorationStarted": "Restoration Started",
     "restorationSeasons": "Restoration Seasons",
-    "longTermPlan": "Long Term Plan"
+    "longTermPlan": "Long Term Plan",
+    "1Tree": "1 Tree"
   }
 }

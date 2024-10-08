@@ -27,7 +27,7 @@ import {
   SamplePlantLocation,
 } from '../common/types/plantLocation';
 import { useRouter } from 'next/router';
-import { updateUrlWithParams } from '../../utils/projectV2';
+import { pushWithShallow, updateUrlWithSiteId } from '../../utils/projectV2';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -240,31 +240,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSite(0);
     }
   }, [page]);
-  const pushWithShallow = (
-    locale: string,
-    projectSlug: string,
-    queryParams = {}
-  ) => {
-    const pathname = `/${locale}/prd/${projectSlug}`;
-    router.push({ pathname, query: queryParams }, undefined, {
-      shallow: true,
-    });
-  };
 
-  const updateUrlWithSiteId = (
-    locale: string,
-    projectSlug: string,
-    siteId: string
-  ) => {
-    const updatedQueryParams = updateUrlWithParams(
-      router.asPath,
-      router.query,
-      siteId
-    );
-    pushWithShallow(locale, projectSlug, updatedQueryParams);
-  };
-
-  // Helper function to set the selected site and update the URL with the corresponding site ID
   const updateSiteAndUrl = (
     locale: string,
     projectSlug: string,
@@ -273,7 +249,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     if (singleProject?.sites?.length === 0) return;
     setSelectedSite(siteIndex);
     const siteId = singleProject?.sites?.[siteIndex].properties.id;
-    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId);
+    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId, router);
   };
 
   useEffect(() => {
@@ -304,7 +280,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
     if (selectedPlantLocation) {
       const updatedQueryParams = { ploc: selectedPlantLocation.hid };
-      pushWithShallow(locale, singleProject.slug, updatedQueryParams);
+      pushWithShallow(locale, singleProject.slug, updatedQueryParams, router);
     }
   }, [
     page,

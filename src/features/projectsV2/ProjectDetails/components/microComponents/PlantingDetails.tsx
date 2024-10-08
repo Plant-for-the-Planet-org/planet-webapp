@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
 
 interface Props {
-  plantingDensity: number;
+  plantingDensity: number | null;
   plantDate: string | null | undefined;
 }
 
@@ -15,17 +15,22 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
     {
       label: tProjectDetails('plantingDate'),
       data: plantDate ? formatDate(plantDate) : null,
+      shouldRender: plantDate !== null,
     },
     {
       label: tProjectDetails('plantingDensity'),
       data: tProjectDetails('plantingDensityUnit', {
-        formattedCount: localizedAbbreviatedNumber(locale, plantingDensity, 1),
+        formattedCount: plantingDensity
+          ? localizedAbbreviatedNumber(locale, plantingDensity, 1)
+          : null,
       }),
+      shouldRender: plantingDensity !== null,
     },
   ];
   return (
     <div className={styles.plantingDetailsGroup}>
       {plantingDetails.map((item, key) => {
+        if (!item.shouldRender) return;
         return (
           <div key={key} className={styles.plantingDetailsItem}>
             <h2 className={styles.label}>{item.label}</h2>

@@ -52,13 +52,17 @@ const PlantLocationInfo = ({
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
-
+  const hasSampleInterventions =
+    plantLocationInfo?.type === 'multi-tree-registration' &&
+    plantLocationInfo.sampleInterventions.length > 0;
   return (
     <section className={styles.plantLocationInfoSection}>
       <PlantLocationHeader
         plHid={plantLocationInfo?.hid}
         totalTreesCount={totalTreesCount}
-        plantedLocationArea={plantedLocationArea}
+        plantedLocationArea={
+          hasSampleInterventions ? plantedLocationArea : null
+        }
       />
       {shouldDisplayImageCarousel && (
         <ImageCarousel
@@ -70,7 +74,7 @@ const PlantLocationInfo = ({
         />
       )}
       <PlantingDetails
-        plantingDensity={plantingDensity}
+        plantingDensity={hasSampleInterventions ? plantingDensity : null}
         plantDate={plantLocationInfo?.interventionStartDate}
       />
       {isMultiTreeRegistration &&

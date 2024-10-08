@@ -27,7 +27,6 @@ export default function PlantLocations(): ReactElement {
 
   const t = useTranslations('Maps');
   const locale = useLocale();
-
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
     if (selectedSamplePlantLocation?.hid === pl.hid) {
       setSelectedSamplePlantLocation(null);
@@ -162,7 +161,12 @@ export default function PlantLocations(): ReactElement {
           type="circle"
           paint={{
             'circle-color': isSatelliteView ? '#ffffff' : '#007A49',
-            'circle-opacity': 0.5,
+            'circle-opacity': [
+              'case',
+              ['==', ['get', 'id'], selectedPlantLocation?.id ?? 0],
+              1,
+              0.5,
+            ],
           }}
           filter={['==', ['geometry-type'], 'Point']}
         />

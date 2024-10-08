@@ -5,11 +5,16 @@ import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
-import { getPlantLocationInfo } from '../../../utils/projectV2';
+import {
+  getPlantLocationInfo,
+  updateUrlWithSiteId,
+} from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
+import { useRouter } from 'next/router';
+import { useLocale } from 'next-intl';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -33,6 +38,20 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSite,
   } = useProjects();
   const { projects, singleProject, selectedPlantLocation } = useProjects();
+  const router = useRouter();
+  const locale = useLocale();
+
+  const updateSiteAndUrl = (
+    locale: string,
+    projectSlug: string,
+    siteIndex: number
+  ) => {
+    if (singleProject?.sites?.length === 0) return;
+    setSelectedSite(siteIndex);
+    const siteId = singleProject?.sites?.[siteIndex].properties.id;
+    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId, router);
+  };
+
   const shouldShowSingleProjectsView =
     singleProject !== null && props.page === 'project-details';
   const shouldShowMultipleProjectsView =
@@ -47,6 +66,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     page: props.page,
   };
+
   const onMouseMove = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
@@ -64,22 +84,27 @@ function ProjectsMap(props: ProjectsMapProps) {
       }
       setHoveredPlantLocation(hoveredPlantLocation);
     },
-    [plantLocations, selectedPlantLocation, props.page]
+    [plantLocations, props.page, selectedPlantLocation]
   );
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
-      const selectedPlantLocation = getPlantLocationInfo(
-        plantLocations,
-        mapRef,
-        e.point
-      );
-      if (selectedPlantLocation) {
+      const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
+      if (
+        result?.geometry.type === 'Point' &&
+        result.id === selectedPlantLocation?.id &&
+        singleProject?.slug
+      ) {
+        updateSiteAndUrl(locale, singleProject?.slug, 0);
+        setSelectedPlantLocation(null);
+        return;
+      }
+      if (result) {
         setSelectedSite(null);
-        setSelectedPlantLocation(selectedPlantLocation);
+        setSelectedPlantLocation(result);
       }
     },
-    [plantLocations]
+    [plantLocations, props.page, selectedPlantLocation]
   );
   return (
     <>
@@ -94,7 +119,9 @@ function ProjectsMap(props: ProjectsMapProps) {
         attributionControl={false}
         ref={mapRef}
         interactiveLayerIds={
-          shouldShowSingleProjectsView ? ['plant-polygon-layer'] : undefined
+          singleProject !== null
+            ? ['plant-polygon-layer', 'point-layer']
+            : undefined
         }
       >
         {shouldShowSingleProjectsView && <SingleProjectView mapRef={mapRef} />}
