@@ -11,7 +11,7 @@ export interface PlantLocationBase {
   registrationDate: DateString;
   /** @deprecated */
   plantDate: DateString;
-  interventionDate: DateString;
+  interventionDate?: DateString;
   interventionStartDate: DateString | null; //should be the same as interventionDate
   interventionEndDate: DateString | null;
   lastMeasurementDate: DateString | null;
@@ -66,6 +66,9 @@ export interface SamplePlantLocation extends PlantLocationBase {
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
+  sampleInterventions: [];
+  sampleTreeCount: null;
+  plantedSpecies: [];
 }
 
 export interface Metadata {
@@ -85,11 +88,11 @@ export interface DeviceLocation {
 
 export interface PlantLocationCoordinate {
   image?: string;
-  coordinateIndex: string;
+  coordinateIndex: number;
   id: string;
   status: string;
-  created: DateString;
-  updated: DateString;
+  created?: DateString;
+  updated?: DateString;
 }
 
 export interface Measurements {
