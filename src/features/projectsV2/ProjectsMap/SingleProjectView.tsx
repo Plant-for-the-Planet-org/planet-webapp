@@ -41,15 +41,15 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
       features: singleProject?.sites ?? [],
     };
   }, [projectSlug]);
-  // Zoom to plant location polygon
+  // Zoom to plant location
   useEffect(() => {
-    const isPlantLocationReadyToZoom =
+    const canZoomToPolygonPlantLocation =
       selectedPlantLocation &&
       router.isReady &&
       requestedPlantLocation &&
       !selectedSamplePlantLocation;
     if (
-      isPlantLocationReadyToZoom &&
+      canZoomToPolygonPlantLocation &&
       selectedPlantLocation.geometry.type === 'Polygon'
     ) {
       const locationCoordinates = selectedPlantLocation.geometry.coordinates[0];
@@ -59,6 +59,21 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
         setViewState,
         3500
       );
+    } else {
+      const pointPlantLocation =
+        selectedPlantLocation?.geometry?.type === 'Point'
+          ? selectedPlantLocation
+          : selectedSamplePlantLocation?.originalGeometry?.type === 'Point'
+          ? selectedSamplePlantLocation
+          : null;
+
+      if (pointPlantLocation) {
+        const [lon, lat] = pointPlantLocation.geometry.coordinates;
+        if (typeof lon === 'number' && typeof lat === 'number') {
+          // Zoom into single tree location (point)
+          zoomToLocation(setViewState, lon, lat, 20, 3500, mapRef);
+        }
+      }
     }
   }, [
     selectedPlantLocation,
@@ -68,9 +83,9 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
   ]);
   // Zoom to project site polygon
   useEffect(() => {
-    const isSiteReadyToZoom =
+    const canZoomToProjectSite =
       router.isReady && selectedSite !== null && requestedSite;
-    if (isSiteReadyToZoom) {
+    if (canZoomToProjectSite) {
       zoomInToProjectSite(
         mapRef,
         sitesGeojson,
@@ -90,28 +105,12 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
       const longitude = singleProject.coordinates.lon;
       // Zoom into location for a project  which has no site
       zoomToLocation(setViewState, longitude, latitude, 10, 3500, mapRef);
-    } else {
-      const plantLocation =
-        selectedPlantLocation?.geometry?.type === 'Point'
-          ? selectedPlantLocation
-          : selectedSamplePlantLocation?.originalGeometry?.type === 'Point'
-          ? selectedSamplePlantLocation
-          : null;
-
-      if (plantLocation) {
-        const [lon, lat] = plantLocation.geometry.coordinates;
-        if (typeof lon === 'number' && typeof lat === 'number') {
-          // Zoom into single tree location (point)
-          zoomToLocation(setViewState, lon, lat, 20, 3500, mapRef);
-        }
-      }
     }
   }, [
     singleProject.sites,
     selectedPlantLocation,
     router.isReady,
     selectedPlantLocation,
-    selectedSamplePlantLocation,
   ]);
 
   return (
