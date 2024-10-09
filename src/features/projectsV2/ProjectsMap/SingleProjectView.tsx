@@ -77,9 +77,9 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
     }
   }, [
     selectedPlantLocation,
+    selectedSamplePlantLocation,
     requestedPlantLocation,
     router.isReady,
-    selectedSamplePlantLocation,
   ]);
   // Zoom to project site polygon
   useEffect(() => {
@@ -106,12 +106,7 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
       // Zoom into location for a project  which has no site
       zoomToLocation(setViewState, longitude, latitude, 10, 3500, mapRef);
     }
-  }, [
-    singleProject.sites,
-    selectedPlantLocation,
-    router.isReady,
-    selectedPlantLocation,
-  ]);
+  }, [singleProject.sites, selectedPlantLocation, router.isReady]);
 
   return (
     <>
