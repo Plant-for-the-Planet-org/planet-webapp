@@ -5,7 +5,7 @@ import { ViewState } from 'react-map-gl-v7/maplibre';
 import { MapRef } from './zoomToProjectSite';
 
 export function zoomToPolygonPlantLocation(
-  coordinates: Position[],
+  coordinates: number | Position[],
   mapRef: MapRef,
   setViewState: SetState<ViewState>,
   duration = 3000

@@ -119,9 +119,10 @@
 }
 
 .scientificNameContainer {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   display: flex;
+  color: rgba(47, 51, 54, 1);
   .scientificName {
     font-style: italic;
     margin-left: 2px;

@@ -44,14 +44,13 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
   // Zoom to plant location
   useEffect(() => {
     const canZoomToPolygonPlantLocation =
-      selectedPlantLocation &&
+      selectedPlantLocation !== null &&
+      selectedPlantLocation.geometry.type === 'Polygon' &&
+      selectedSamplePlantLocation === null &&
       router.isReady &&
-      requestedPlantLocation &&
-      !selectedSamplePlantLocation;
-    if (
-      canZoomToPolygonPlantLocation &&
-      selectedPlantLocation.geometry.type === 'Polygon'
-    ) {
+      Boolean(requestedPlantLocation);
+
+    if (canZoomToPolygonPlantLocation) {
       const locationCoordinates = selectedPlantLocation.geometry.coordinates[0];
       zoomToPolygonPlantLocation(
         locationCoordinates,
@@ -84,7 +83,7 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
   // Zoom to project site polygon
   useEffect(() => {
     const canZoomToProjectSite =
-      router.isReady && selectedSite !== null && requestedSite;
+      router.isReady && selectedSite !== null && Boolean(requestedSite);
     if (canZoomToProjectSite) {
       zoomInToProjectSite(
         mapRef,
@@ -98,7 +97,10 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
 
   useEffect(() => {
     const canZoomToProjectLocation =
-      singleProject && hasNoSites && !selectedPlantLocation && router.isReady;
+      Boolean(singleProject) &&
+      hasNoSites &&
+      selectedPlantLocation === null &&
+      router.isReady;
 
     if (canZoomToProjectLocation) {
       const latitude = singleProject.coordinates.lat;
