@@ -12,13 +12,19 @@ import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
 import ImageSlider from './microComponents/ImageSlider';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
   plantLocationInfo: PlantLocation | SamplePlantLocation | null;
   isMobile: boolean;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
+const PlantLocationInfo = ({
+  plantLocationInfo,
+  isMobile,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -89,6 +95,7 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
         plantLocationInfo.sampleInterventions.length > 0 && (
           <SampleTrees
             sampleInterventions={plantLocationInfo.sampleInterventions}
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           />
         )}
       <TreeMapperBrand />

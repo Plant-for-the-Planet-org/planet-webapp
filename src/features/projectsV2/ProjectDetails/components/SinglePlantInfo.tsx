@@ -8,12 +8,17 @@ import {
 } from '../../../common/types/plantLocation';
 import getImageUrl from '../../../../utils/getImageURL';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
   plantData: SamplePlantLocation | PlantLocation | null;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const SinglePlantInfo = ({ plantData }: Props) => {
+const SinglePlantInfo = ({
+  plantData,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const t = useTranslations('ProjectDetails');
   const isSinglePlant =
     plantData?.type === 'single-tree-registration' ||
@@ -25,6 +30,7 @@ const SinglePlantInfo = ({ plantData }: Props) => {
     scientificName: isSinglePlant ? plantData.scientificName : undefined,
     measurements: isSinglePlant ? plantData.measurements : undefined,
     type: isSinglePlant ? plantData?.type : undefined,
+    setSelectedSamplePlantLocation,
   };
   const image = plantData?.coordinates?.[0]?.image ?? '';
   return (

@@ -143,6 +143,24 @@ const ProjectDetails = ({
     selectedSamplePlantLocation,
   ]);
 
+  const singlePlantInfoProps = {
+    plantData,
+    setSelectedSamplePlantLocation,
+  };
+
+  const plantLocationInfoProps = {
+    plantLocationInfo: hoveredPlantLocation
+      ? hoveredPlantLocation
+      : selectedPlantLocation,
+    setSelectedSamplePlantLocation,
+    isMobile,
+  };
+
+  const projectInfoProps = {
+    project: singleProject,
+    isMobile,
+    setSelectedMode,
+  };
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
@@ -151,22 +169,13 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {shouldShowSinglePlantInfo && <SinglePlantInfo plantData={plantData} />}
+      {shouldShowSinglePlantInfo && (
+        <SinglePlantInfo {...singlePlantInfoProps} />
+      )}
       {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
-        <PlantLocationInfo
-          plantLocationInfo={
-            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
-          }
-          isMobile={isMobile}
-        />
+        <PlantLocationInfo {...plantLocationInfoProps} />
       )}
-      {shouldShowProjectInfo && (
-        <ProjectInfo
-          project={singleProject}
-          isMobile={isMobile}
-          setSelectedMode={setSelectedMode}
-        />
-      )}
+      {shouldShowProjectInfo && <ProjectInfo {...projectInfoProps} />}
     </div>
   ) : (
     <Skeleton className={styles.projectDetailsSkeleton} />

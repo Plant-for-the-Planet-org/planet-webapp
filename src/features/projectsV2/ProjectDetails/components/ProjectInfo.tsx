@@ -16,7 +16,7 @@ import ImageSlider from './microComponents/ImageSlider';
 import { ExtendedProject } from '../../../common/types/projectv2';
 
 interface ProjectInfoProps {
-  project: ExtendedProject;
+  project: ExtendedProject | null;
   isMobile: boolean;
   setSelectedMode: SetState<ViewMode> | undefined;
 }
@@ -26,6 +26,7 @@ const ProjectInfo = ({
   isMobile,
   setSelectedMode,
 }: ProjectInfoProps) => {
+  if (!project) return <></>;
   const tCountry = useTranslations('Country');
   const {
     metadata,

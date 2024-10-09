@@ -119,12 +119,14 @@
 }
 
 .scientificNameContainer {
+  font-weight: 700;
+  font-size: 12px;
   display: flex;
   .scientificName {
-    font-size: 12px;
     font-style: italic;
     margin-left: 2px;
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 

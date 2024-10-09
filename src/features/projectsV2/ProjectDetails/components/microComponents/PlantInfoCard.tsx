@@ -1,7 +1,11 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { Measurements } from '../../../../common/types/plantLocation';
+import {
+  Measurements,
+  SamplePlantLocation,
+} from '../../../../common/types/plantLocation';
+import { SetState } from '../../../../common/types/common';
 
 interface Props {
   interventionStartDate: string | null | undefined;
@@ -9,6 +13,7 @@ interface Props {
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
   type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
 const PlantInfoCard = ({
@@ -17,6 +22,7 @@ const PlantInfoCard = ({
   scientificName,
   measurements,
   type,
+  setSelectedSamplePlantLocation,
 }: Props) => {
   const t = useTranslations('ProjectDetails');
   const sampleTreeConfig = [
@@ -65,7 +71,12 @@ const PlantInfoCard = ({
       {type === 'sample-tree-registration' && (
         <div className={styles.plantingDetailsItem}>
           <h2 className={styles.label}>{t('plot')}</h2>
-          <button className={styles.showWholeArea}>{t('showWholeArea')}</button>
+          <button
+            className={styles.showWholeArea}
+            onClick={() => setSelectedSamplePlantLocation(null)}
+          >
+            {t('showWholeArea')}
+          </button>
         </div>
       )}
     </>
