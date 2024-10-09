@@ -129,7 +129,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         onMouseMove={onMouseMove}
-        onMouseLeave={() => setHoveredPlantLocation(null)}
+        onMouseOut={() => setHoveredPlantLocation(null)}
         onClick={onClick}
         attributionControl={false}
         ref={mapRef}
