@@ -5,12 +5,18 @@ import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import { PointPlantLocation } from '..';
+import { SetState } from '../../../common/types/common';
+import { SamplePlantLocation } from '../../../common/types/plantLocation';
 
 interface Props {
   plantData: PointPlantLocation;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const SinglePlantInfo = ({ plantData }: Props) => {
+const SinglePlantInfo = ({
+  plantData,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const t = useTranslations('ProjectDetails');
   const isSinglePlant =
     plantData?.type === 'single-tree-registration' ||
@@ -22,6 +28,7 @@ const SinglePlantInfo = ({ plantData }: Props) => {
     scientificName: isSinglePlant ? plantData.scientificName : undefined,
     measurements: isSinglePlant ? plantData.measurements : undefined,
     type: isSinglePlant ? plantData?.type : undefined,
+    setSelectedSamplePlantLocation,
   };
   const image = plantData?.coordinates?.[0]?.image ?? '';
   return (

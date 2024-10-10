@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import * as turf from '@turf/turf';
-import { PlantLocation } from '../../../common/types/plantLocation';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
@@ -9,13 +12,19 @@ import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
 import ImageSlider from './microComponents/ImageSlider';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
   plantLocationInfo: PlantLocation | null;
   isMobile: boolean;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const MultiPlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
+const MultiPlantLocationInfo = ({
+  plantLocationInfo,
+  isMobile,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -86,6 +95,7 @@ const MultiPlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
         plantLocationInfo.sampleInterventions.length > 0 && (
           <SampleTrees
             sampleInterventions={plantLocationInfo.sampleInterventions}
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           />
         )}
       <TreeMapperBrand />
