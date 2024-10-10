@@ -7,6 +7,8 @@ import {
   TreeProjectConcise,
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
+import { Nullable } from '@planet-sdk/common/build/types/util';
+import { PlantLocationSingle, SamplePlantLocation } from './plantLocation';
 
 export type MapProjectProperties =
   | TreeProjectConcise
@@ -15,3 +17,19 @@ export type MapProjectProperties =
 export type ExtendedProject = TreeProjectExtended | ConservationProjectExtended;
 
 export type MapProject = ProjectMapInfo<MapProjectProperties>;
+
+export interface Image {
+  image: string;
+  description: Nullable<string>;
+  id: string;
+}
+
+export type SliderImage = {
+  image?: string | undefined;
+  description?: string | null;
+};
+
+export type PointPlantLocation =
+  | PlantLocationSingle
+  | SamplePlantLocation
+  | null;

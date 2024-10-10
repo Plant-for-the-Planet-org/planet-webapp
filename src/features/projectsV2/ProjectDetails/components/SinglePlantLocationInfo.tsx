@@ -4,16 +4,16 @@ import styles from '../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
-import { PointPlantLocation } from '..';
 import { SetState } from '../../../common/types/common';
 import { SamplePlantLocation } from '../../../common/types/plantLocation';
+import { PointPlantLocation } from '../../../common/types/projectv2';
 
 interface Props {
   plantData: PointPlantLocation;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const SinglePlantInfo = ({
+const SinglePlantLocationInfo = ({
   plantData,
   setSelectedSamplePlantLocation,
 }: Props) => {
@@ -49,4 +49,4 @@ const SinglePlantInfo = ({
   );
 };
 
-export default SinglePlantInfo;
+export default SinglePlantLocationInfo;

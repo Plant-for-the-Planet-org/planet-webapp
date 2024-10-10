@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import * as turf from '@turf/turf';
 import {
-  PlantLocation,
+  PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
@@ -15,7 +15,7 @@ import ImageSlider from './microComponents/ImageSlider';
 import { SetState } from '../../../common/types/common';
 
 interface Props {
-  plantLocationInfo: PlantLocation | null;
+  plantLocationInfo: PlantLocationMulti | null;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }

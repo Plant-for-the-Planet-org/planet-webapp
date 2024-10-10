@@ -1,4 +1,4 @@
-import { SliderImage } from '../../../../projects/components/PlantLocation/ImageSlider';
+import { SliderImage } from '../../../../common/types/projectv2';
 import styles from '../../styles/Slider.module.scss';
 
 interface Props {

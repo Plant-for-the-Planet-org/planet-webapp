@@ -11,20 +11,14 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
+import { PlantLocation } from '../../common/types/plantLocation';
 import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
-import { ExtendedProject } from '../../common/types/projectv2';
-import SinglePlantInfo from './components/SinglePlantInfo';
+import {
+  ExtendedProject,
+  PointPlantLocation,
+} from '../../common/types/projectv2';
+import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
-
-export type PointPlantLocation =
-  | PlantLocationSingle
-  | SamplePlantLocation
-  | null;
 
 const ProjectDetails = ({
   currencyCode,
@@ -156,7 +150,7 @@ const ProjectDetails = ({
         page="project-details"
       />
       {shouldShowSinglePlantInfo && (
-        <SinglePlantInfo
+        <SinglePlantLocationInfo
           plantData={plantData}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
@@ -164,7 +158,11 @@ const ProjectDetails = ({
       {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
         <MultiPlantLocationInfo
           plantLocationInfo={
-            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
+            hoveredPlantLocation?.type === 'multi-tree-registration'
+              ? hoveredPlantLocation
+              : selectedPlantLocation?.type === 'multi-tree-registration'
+              ? selectedPlantLocation
+              : null
           }
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           isMobile={isMobile}
