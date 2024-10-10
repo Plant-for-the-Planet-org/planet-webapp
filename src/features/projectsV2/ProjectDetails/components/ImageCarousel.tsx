@@ -1,11 +1,11 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
-import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
 import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
+import { SliderImage } from '../../../common/types/projectv2';
 
 interface Props {
-  images: SliderImage[];
+  images: SliderImage[] | undefined;
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
@@ -21,57 +21,62 @@ const ImageCarousel = ({
   leftAlignment,
   isImageModalOpenOnMobile,
 }: Props) => {
-  const [carousel, setCarousel] = React.useState<ReactElement>();
-  const projectImages: { content: () => ReactElement }[] = [];
+  const [projectImages, setProjectImages] = useState<
+    {
+      content: () => ReactElement;
+    }[]
+  >([]);
   const pattern = /^https:\/\//i;
   useEffect(() => {
-    images.forEach((carouselImage) => {
-      if (carouselImage.image) {
-        let imageURL;
-        if (pattern.test(carouselImage.image)) {
-          imageURL = carouselImage.image;
-        } else {
-          imageURL = getImageUrl(type, imageSize, carouselImage.image);
-        }
-        projectImages.push({
-          content: () => (
-            <SingleCarouselImage
-              type={type}
-              imageURL={imageURL}
-              carouselImage={carouselImage}
-              leftAlignment={leftAlignment}
-              isImageModalOpenOnMobile={isImageModalOpenOnMobile}
-            />
-          ),
-        });
-      }
-    });
-    setCarousel(
-      <Stories
-        stories={projectImages}
-        defaultInterval={7000}
-        width={'100%'}
-        height={imageHeight}
-        loop={true}
-        progressContainerStyles={{
-          position: 'absolute',
-          bottom: 18,
-          right: 18,
-          left: leftAlignment,
-          padding: '7px 0 5px 0',
-          maxWidth: '90%',
-        }}
-        progressStyles={{ background: '#27AE60', height: 3.35 }}
-        progressWrapperStyles={{
-          height: 3.35,
-          background: 'rgba(255, 255, 255, 0.50)',
-        }}
-        storyContainerStyles={{ borderRadius: 13 }}
-      />
-    );
+    if (images && images?.length > 0) {
+      const result = images
+        .map((carouselImage) => {
+          if (carouselImage?.image) {
+            const imageURL = pattern.test(carouselImage.image)
+              ? carouselImage.image
+              : getImageUrl(type, imageSize, carouselImage.image);
+            return {
+              content: () => (
+                <SingleCarouselImage
+                  imageURL={imageURL}
+                  carouselImage={carouselImage}
+                  leftAlignment={leftAlignment}
+                  isImageModalOpenOnMobile={isImageModalOpenOnMobile}
+                />
+              ),
+            };
+          }
+          return null;
+        })
+        .filter((image) => image !== null && image !== undefined);
+      setProjectImages(result);
+    }
   }, [images]);
 
-  return <>{carousel}</>;
+  if (projectImages?.length === 0) return <></>;
+  return (
+    <Stories
+      stories={projectImages}
+      defaultInterval={7000}
+      width={'100%'}
+      height={imageHeight}
+      loop={true}
+      progressContainerStyles={{
+        position: 'absolute',
+        bottom: 18,
+        right: 18,
+        left: leftAlignment,
+        padding: '7px 0 5px 0',
+        maxWidth: '90%',
+      }}
+      progressStyles={{ background: '#27AE60', height: 3.35 }}
+      progressWrapperStyles={{
+        height: 3.35,
+        background: 'rgba(255, 255, 255, 0.50)',
+      }}
+      storyContainerStyles={{ borderRadius: 13 }}
+    />
+  );
 };
 
 export default ImageCarousel;

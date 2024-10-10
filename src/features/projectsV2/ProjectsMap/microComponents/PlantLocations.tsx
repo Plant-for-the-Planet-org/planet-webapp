@@ -13,26 +13,35 @@ import {
 import { Feature, Point, Polygon } from 'geojson';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
+import { SetState } from '../../../common/types/common';
 
-export default function PlantLocations(): ReactElement {
+interface Props {
+  setIsOnSampleMarker: SetState<boolean>;
+}
+
+export default function PlantLocations({
+  setIsOnSampleMarker,
+}: Props): ReactElement {
   const {
     plantLocations,
     hoveredPlantLocation,
     selectedPlantLocation,
     setSelectedPlantLocation,
-    setHoveredPlantLocation,
-    setSamplePlantLocation,
-    samplePlantLocation,
+    setSelectedSamplePlantLocation,
+    selectedSamplePlantLocation,
   } = useProjects();
-  if (!plantLocations || plantLocations.length === 0) return <></>;
   const { isSatelliteView, viewState } = useProjectsMap();
+
   const t = useTranslations('Maps');
   const locale = useLocale();
-
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
+    if (selectedSamplePlantLocation?.hid === pl.hid) {
+      setSelectedSamplePlantLocation(null);
+      return;
+    }
     switch (pl.type) {
       case 'sample-tree-registration':
-        setSamplePlantLocation(pl);
+        setSelectedSamplePlantLocation(pl);
         break;
       case 'single-tree-registration':
         setSelectedPlantLocation(pl);
@@ -41,18 +50,7 @@ export default function PlantLocations(): ReactElement {
         break;
     }
   };
-  const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
-    setHoveredPlantLocation(pl);
-  };
 
-  const onHoverEnd = () => {
-    if (
-      hoveredPlantLocation &&
-      (hoveredPlantLocation.type === 'single-tree-registration' ||
-        hoveredPlantLocation.type === 'sample-tree-registration')
-    )
-      setHoveredPlantLocation(null);
-  };
   const getPlTreeCount = (pl: PlantLocationMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
@@ -130,7 +128,9 @@ export default function PlantLocations(): ReactElement {
       geometry,
     };
   };
-
+  if (!plantLocations || plantLocations.length === 0) {
+    return <></>;
+  }
   const features = plantLocations.map((el) => {
     const isSelected =
       selectedPlantLocation && selectedPlantLocation.id === el.id;
@@ -143,6 +143,7 @@ export default function PlantLocations(): ReactElement {
     });
     return GeoJSON;
   });
+
   return (
     <>
       <Source
@@ -167,7 +168,16 @@ export default function PlantLocations(): ReactElement {
           type="circle"
           paint={{
             'circle-color': isSatelliteView ? '#ffffff' : '#007A49',
-            'circle-opacity': 0.5,
+            'circle-opacity': [
+              'case',
+              [
+                '==',
+                ['get', 'id'],
+                (selectedPlantLocation?.id || hoveredPlantLocation?.id) ?? 0,
+              ],
+              1,
+              0.5,
+            ],
           }}
           filter={['==', ['geometry-type'], 'Point']}
         />
@@ -208,15 +218,15 @@ export default function PlantLocations(): ReactElement {
                   <div
                     key={`${spl.id}-marker`}
                     className={`${styles.single} ${
-                      spl.hid === samplePlantLocation?.hid
+                      spl.hid === selectedSamplePlantLocation?.hid
                         ? styles.singleSelected
                         : ''
                     }`}
                     role="button"
                     tabIndex={0}
                     onClick={() => openPl(spl)}
-                    onMouseEnter={() => onHover(spl)}
-                    onMouseLeave={onHoverEnd}
+                    onMouseEnter={() => setIsOnSampleMarker(true)}
+                    onMouseLeave={() => setIsOnSampleMarker(false)}
                   />
                 </Marker>
               );

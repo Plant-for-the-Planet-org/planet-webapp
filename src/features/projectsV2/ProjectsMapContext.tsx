@@ -39,7 +39,7 @@ const DEFAULT_MAP_STATE: MapState = {
   dragPan: true,
   scrollZoom: false,
   minZoom: 1,
-  maxZoom: 18,
+  maxZoom: 20,
 };
 
 export type MapOptions = {

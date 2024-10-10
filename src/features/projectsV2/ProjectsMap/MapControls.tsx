@@ -40,7 +40,7 @@ const MapControls = ({
     selectedPlantLocation,
     setSelectedPlantLocation,
   } = useProjects();
-  const hasMoreThanOneSite =
+  const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
   const siteDropdownProps = {
@@ -54,18 +54,18 @@ const MapControls = ({
     ...siteDropdownProps,
     projectCount: projects?.length,
     topProjectCount: topProjects?.length,
+    filteredProjects,
     selectedClassification,
     setSelectedClassification,
     debouncedSearchValue,
     setDebouncedSearchValue,
     selectedMode,
     setSelectedMode,
-    filteredProjects,
     isMobile,
     isSearching,
     setIsSearching,
     page,
-    hasMoreThanOneSite,
+    hasProjectSites,
     mapOptions,
     updateMapOption,
   };
@@ -81,7 +81,7 @@ const MapControls = ({
         <>
           {isMobile ? (
             <div className={styles.projectDetailsControlsContainer}>
-              {hasMoreThanOneSite && (
+              {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
               <button
@@ -91,7 +91,11 @@ const MapControls = ({
               </button>
             </div>
           ) : (
-            <ProjectSiteDropdown {...siteDropdownProps} />
+            <>
+              {hasProjectSites && (
+                <ProjectSiteDropdown {...siteDropdownProps} />
+              )}
+            </>
           )}
           <button
             className={styles.layerToggle}

@@ -1,8 +1,8 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
-import ProjectInfoSection from './components/ProjectInfoSection';
+import ProjectInfo from './components/ProjectInfo';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
@@ -12,8 +12,13 @@ import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { PlantLocation } from '../../common/types/plantLocation';
-import PlantLocationInfoSection from './components/PlantLocationInfoSection';
-import { ExtendedProject } from '../../common/types/projectv2';
+import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
+import {
+  ExtendedProject,
+  PointPlantLocation,
+} from '../../common/types/projectv2';
+import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
+import { getPlantData } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -31,6 +36,8 @@ const ProjectDetails = ({
     setSelectedMode,
     selectedPlantLocation,
     hoveredPlantLocation,
+    selectedSamplePlantLocation,
+    setSelectedSamplePlantLocation,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -103,6 +110,37 @@ const ProjectDetails = ({
       loadPlantLocations();
   }, [singleProject]);
 
+  const shouldShowPlantLocationInfo =
+    (hoveredPlantLocation?.type === 'multi-tree-registration' ||
+      selectedPlantLocation?.type === 'multi-tree-registration') &&
+    !isMobile;
+  const shouldShowSinglePlantInfo =
+    (hoveredPlantLocation?.type === 'single-tree-registration' ||
+      selectedPlantLocation?.type === 'single-tree-registration' ||
+      selectedSamplePlantLocation !== null) &&
+    !isMobile;
+  const shouldShowProjectInfo =
+    hoveredPlantLocation === null &&
+    selectedPlantLocation === null &&
+    selectedSamplePlantLocation === null;
+
+  // clean up sample plant location when plant location change
+  useEffect(() => {
+    if (selectedSamplePlantLocation !== null) {
+      return setSelectedSamplePlantLocation(null);
+    }
+  }, [selectedPlantLocation?.hid]);
+
+  const plantData: PointPlantLocation = useMemo(
+    () =>
+      getPlantData(
+        selectedPlantLocation,
+        hoveredPlantLocation,
+        selectedSamplePlantLocation
+      ),
+    [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
+  );
+
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
       <ProjectSnippet
@@ -111,14 +149,27 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {!isMobile && (selectedPlantLocation || hoveredPlantLocation) ? (
-        <PlantLocationInfoSection
-          plantLocationInfo={
-            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
-          }
+      {shouldShowSinglePlantInfo && (
+        <SinglePlantLocationInfo
+          plantData={plantData}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
-      ) : (
-        <ProjectInfoSection
+      )}
+      {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
+        <MultiPlantLocationInfo
+          plantLocationInfo={
+            hoveredPlantLocation?.type === 'multi-tree-registration'
+              ? hoveredPlantLocation
+              : selectedPlantLocation?.type === 'multi-tree-registration'
+              ? selectedPlantLocation
+              : null
+          }
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          isMobile={isMobile}
+        />
+      )}
+      {shouldShowProjectInfo && (
+        <ProjectInfo
           project={singleProject}
           isMobile={isMobile}
           setSelectedMode={setSelectedMode}

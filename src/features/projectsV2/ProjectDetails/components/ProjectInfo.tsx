@@ -15,17 +15,17 @@ import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLa
 import ImageSlider from './microComponents/ImageSlider';
 import { ExtendedProject } from '../../../common/types/projectv2';
 
-interface ProjectInfoSectionProps {
+interface ProjectInfoProps {
   project: ExtendedProject;
   isMobile: boolean;
   setSelectedMode: SetState<ViewMode> | undefined;
 }
 
-const ProjectInfoSection = ({
+const ProjectInfo = ({
   project,
   isMobile,
   setSelectedMode,
-}: ProjectInfoSectionProps) => {
+}: ProjectInfoProps) => {
   const tCountry = useTranslations('Country');
   const {
     metadata,
@@ -144,7 +144,12 @@ const ProjectInfoSection = ({
       {description && <AboutProject description={description} />}
       {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
       {images?.length > 0 && (
-        <ImageSlider images={images} type={'project'} isMobile={isMobile} />
+        <ImageSlider
+          images={images}
+          type="project"
+          isMobile={isMobile}
+          imageSize="medium"
+        />
       )}
       {isMobile && <MapPreview handleMap={handleMap} />}
       {shouldRenderKeyInfo && (
@@ -209,4 +214,4 @@ const ProjectInfoSection = ({
   );
 };
 
-export default ProjectInfoSection;
+export default ProjectInfo;
