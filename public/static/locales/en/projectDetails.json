@@ -27,7 +27,7 @@
     "sampleTrees": "Sample Trees ({count})",
     "sampleTree": "Sample Tree",
     "measurement": "Measurement",
-    "speciesMeasurement": "Tag #{hid} • {plantHeight}m high • {plantWidth}cm wide",
+    "sampleTreeMeasurement": "Tag #{hid} • {plantHeight}m high • {plantWidth}cm wide",
     "singleSpeciesMeasurement": "{plantHeight}m high • {plantWidth}cm wide",
     "treeTag": "Tree Tag",
     "tag": "Tag #{number}",

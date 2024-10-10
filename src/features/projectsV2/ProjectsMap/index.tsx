@@ -11,6 +11,8 @@ import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
 import MobileInfoSwiper from '../MobileInfoSwiper';
+import PlantLocation from '../../user/TreeMapper/components/PlantLocation';
+import PlantLocationInfo from '../ProjectDetails/components/PlantLocationInfo';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -47,9 +49,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects &&
     projects.length > 0 &&
     !shouldShowSingleProjectsView;
-  const shouldShowMobileInfoSwiper =
+  const shouldShowPlantLocationInfo =
     props.isMobile &&
-    (selectedPlantLocation !== null || selectedSamplePlantLocation !== null);
+    selectedPlantLocation !== null &&
+    selectedSamplePlantLocation === null;
+  const shouldShowSamplePlantLocationInfo =
+    props.isMobile && selectedSamplePlantLocation !== null;
 
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
@@ -120,7 +125,12 @@ function ProjectsMap(props: ProjectsMapProps) {
           }}
         />
       </Map>
-      {shouldShowMobileInfoSwiper && <MobileInfoSwiper />}
+      {shouldShowPlantLocationInfo && (
+        <PlantLocationInfo
+          plantLocationInfo={selectedPlantLocation}
+          isMobile={props.isMobile}
+        />
+      )}
     </>
   );
 }

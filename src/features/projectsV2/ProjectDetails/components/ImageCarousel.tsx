@@ -74,7 +74,7 @@ const ImageCarousel = ({
         height: 3.35,
         background: 'rgba(255, 255, 255, 0.50)',
       }}
-      storyContainerStyles={{ borderRadius: 13 }}
+      // storyContainerStyles={{ borderRadius: 13 }}
     />
   );
 };

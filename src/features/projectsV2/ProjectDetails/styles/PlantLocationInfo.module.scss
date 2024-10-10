@@ -13,7 +13,6 @@
 }
 
 .plantLocationHeaderContainer {
-  width: 100%;
   display: flex;
   justify-content: space-between;
 }
@@ -104,16 +103,16 @@
   }
 }
 
-.sampleSpeciesListContainer {
-  list-style-type: none;
-  padding-left: 0px;
+.sampleTreeListContainer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.sampleSpeciesContainer {
+.sampleTreeContainer {
   background: #fff;
-  min-height: 54px;
   border-radius: 12px;
-  margin-top: 10px;
   list-style-position: inside;
   padding: 10px 15px;
 }
@@ -128,7 +127,7 @@
   }
 }
 
-.speciesMeasurement {
+.treeMeasurement {
   font-weight: 400;
 }
 
