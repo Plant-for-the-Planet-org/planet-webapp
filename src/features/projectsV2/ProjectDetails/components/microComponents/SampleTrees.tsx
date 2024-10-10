@@ -12,13 +12,7 @@ const SampleTreeList = ({
   setSelectedSamplePlantLocation,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
-  const selectSamplePlant = (speciesName: string) => {
-    if (!speciesName) return;
-    const result = sampleInterventions.find(
-      (sampleTree) => speciesName === sampleTree.scientificName
-    );
-    if (result) setSelectedSamplePlantLocation(result);
-  };
+
   return (
     <div className={styles.sampleSpeciesListContainer}>
       {sampleInterventions.map((sampleSpecies, index) => {
@@ -26,7 +20,7 @@ const SampleTreeList = ({
           <div key={sampleSpecies.id} className={styles.sampleSpeciesContainer}>
             <button
               className={styles.scientificNameContainer}
-              onClick={() => selectSamplePlant(sampleSpecies.scientificName)}
+              onClick={() => setSelectedSamplePlantLocation(sampleSpecies)}
             >
               <span>{index + 1}</span>.
               <p className={styles.scientificName}>

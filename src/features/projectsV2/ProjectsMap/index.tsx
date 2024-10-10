@@ -5,16 +5,11 @@ import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
-import {
-  getPlantLocationInfo,
-  updateUrlWithSiteId,
-} from '../../../utils/projectV2';
+import { getPlantLocationInfo } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
-import { useRouter } from 'next/router';
-import { useLocale } from 'next-intl';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -40,18 +35,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSamplePlantLocation,
   } = useProjects();
   const { projects, singleProject, selectedPlantLocation } = useProjects();
-  const router = useRouter();
-  const locale = useLocale();
-  const updateSiteAndUrl = (
-    locale: string,
-    projectSlug: string,
-    siteIndex: number
-  ) => {
-    if (singleProject?.sites?.length === 0) return;
-    setSelectedSite(siteIndex);
-    const siteId = singleProject?.sites?.[siteIndex].properties.id;
-    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId, router);
-  };
 
   const shouldShowSingleProjectsView =
     singleProject !== null && props.page === 'project-details';
@@ -96,12 +79,13 @@ function ProjectsMap(props: ProjectsMapProps) {
         result?.geometry.type === 'Point' &&
         result.id === selectedPlantLocation?.id &&
         singleProject?.slug;
+
       //Clear the sample plant state if the parent plant location (polygon) is selected
       if (isOnSampleMarker === false) setSelectedSamplePlantLocation(null);
 
       //Clear plant location info (single-tree-registration) if it is clicked twice
       if (isClickedOnSamePlantLocation) {
-        updateSiteAndUrl(locale, singleProject?.slug, 0);
+        setSelectedSite(0);
         setSelectedPlantLocation(null);
         return;
       }

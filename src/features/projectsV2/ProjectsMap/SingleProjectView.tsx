@@ -18,23 +18,14 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
-  const {
-    singleProject,
-    selectedSite,
-    selectedPlantLocation,
-    selectedSamplePlantLocation,
-  } = useProjects();
+  const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
   if (!singleProject?.sites) {
     return null;
   }
   const hasNoSites = singleProject.sites?.length === 0;
   const { isSatelliteView, setViewState } = useProjectsMap();
   const router = useRouter();
-  const {
-    p: projectSlug,
-    ploc: requestedPlantLocation,
-    site: requestedSite,
-  } = router.query;
+  const { p: projectSlug } = router.query;
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
@@ -43,72 +34,50 @@ const SingleProjectView = ({ mapRef, setIsOnSampleMarker }: Props) => {
   }, [projectSlug]);
   // Zoom to plant location
   useEffect(() => {
-    const canZoomToPolygonPlantLocation =
-      selectedPlantLocation !== null &&
-      selectedPlantLocation.geometry.type === 'Polygon' &&
-      selectedSamplePlantLocation === null &&
-      router.isReady &&
-      Boolean(requestedPlantLocation);
+    if (!router.isReady || selectedPlantLocation === null) return;
+    const { geometry } = selectedPlantLocation;
+    const { type, coordinates } = geometry;
 
-    if (canZoomToPolygonPlantLocation) {
-      const locationCoordinates = selectedPlantLocation.geometry.coordinates[0];
+    const isPolygonLocation = type === 'Polygon';
+    const isPointLocation = type === 'Point';
+
+    if (isPolygonLocation) {
+      const polygonCoordinates = coordinates[0];
       zoomToPolygonPlantLocation(
-        locationCoordinates,
+        polygonCoordinates,
         mapRef,
         setViewState,
-        3500
+        4000
       );
-    } else {
-      const pointPlantLocation =
-        selectedPlantLocation?.geometry?.type === 'Point'
-          ? selectedPlantLocation
-          : selectedSamplePlantLocation?.originalGeometry?.type === 'Point'
-          ? selectedSamplePlantLocation
-          : null;
-
-      if (pointPlantLocation) {
-        const [lon, lat] = pointPlantLocation.geometry.coordinates;
-        if (typeof lon === 'number' && typeof lat === 'number') {
-          // Zoom into single tree location (point)
-          zoomToLocation(setViewState, lon, lat, 20, 3500, mapRef);
-        }
+    } else if (isPointLocation) {
+      const [lon, lat] = coordinates;
+      if (typeof lon === 'number' && typeof lat === 'number') {
+        zoomToLocation(setViewState, lon, lat, 20, 4000, mapRef);
       }
     }
-  }, [
-    selectedPlantLocation,
-    selectedSamplePlantLocation,
-    requestedPlantLocation,
-    router.isReady,
-  ]);
-  // Zoom to project site polygon
+  }, [selectedPlantLocation, router.isReady]);
+
+  // Zoom to project site
   useEffect(() => {
-    const canZoomToProjectSite =
-      router.isReady && selectedSite !== null && Boolean(requestedSite);
-    if (canZoomToProjectSite) {
+    if (!router.isReady || selectedPlantLocation !== null) return;
+
+    if (selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeojson,
         selectedSite,
         setViewState,
-        3500
+        4000
       );
-    }
-  }, [selectedSite, requestedSite, router.isReady]);
+    } else {
+      const { lat: latitude, lon: longitude } = singleProject.coordinates;
 
-  useEffect(() => {
-    const canZoomToProjectLocation =
-      Boolean(singleProject) &&
-      hasNoSites &&
-      selectedPlantLocation === null &&
-      router.isReady;
-
-    if (canZoomToProjectLocation) {
-      const latitude = singleProject.coordinates.lat;
-      const longitude = singleProject.coordinates.lon;
-      // Zoom into location for a project  which has no site
-      zoomToLocation(setViewState, longitude, latitude, 10, 3500, mapRef);
+      if (typeof latitude === 'number' && typeof longitude === 'number') {
+        // Zoom into the project location that has no site
+        zoomToLocation(setViewState, longitude, latitude, 10, 4000, mapRef);
+      }
     }
-  }, [singleProject.sites, selectedPlantLocation, router.isReady]);
+  }, [selectedSite, router.isReady]);
 
   return (
     <>
