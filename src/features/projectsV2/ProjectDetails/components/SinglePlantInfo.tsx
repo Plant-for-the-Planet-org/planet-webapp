@@ -2,15 +2,12 @@ import PlantInfoCard from './microComponents/PlantInfoCard';
 import { formatHid } from '../../../../utils/projectV2';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
-import {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
 import getImageUrl from '../../../../utils/getImageURL';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
+import { PointPlantLocation } from '..';
 
 interface Props {
-  plantData: SamplePlantLocation | PlantLocation | null;
+  plantData: PointPlantLocation;
 }
 
 const SinglePlantInfo = ({ plantData }: Props) => {

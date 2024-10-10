@@ -11,10 +11,20 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { PlantLocation } from '../../common/types/plantLocation';
-import PlantLocationInfo from './components/PlantLocationInfo';
+import {
+  PlantLocation,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import { ExtendedProject } from '../../common/types/projectv2';
 import SinglePlantInfo from './components/SinglePlantInfo';
+import { getPlantData } from '../../../utils/projectV2';
+
+export type PointPlantLocation =
+  | PlantLocationSingle
+  | SamplePlantLocation
+  | null;
 
 const ProjectDetails = ({
   currencyCode,
@@ -107,9 +117,9 @@ const ProjectDetails = ({
   }, [singleProject]);
 
   const shouldShowPlantLocationInfo =
-    hoveredPlantLocation?.type === 'multi-tree-registration' ||
-    selectedPlantLocation?.type === 'multi-tree-registration';
-  !isMobile;
+    (hoveredPlantLocation?.type === 'multi-tree-registration' ||
+      selectedPlantLocation?.type === 'multi-tree-registration') &&
+    !isMobile;
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||
@@ -127,21 +137,15 @@ const ProjectDetails = ({
     }
   }, [selectedPlantLocation?.hid]);
 
-  const plantData = useMemo(() => {
-    if (
-      selectedPlantLocation?.type === 'single-tree-registration' ||
-      hoveredPlantLocation?.type === 'single-tree-registration'
-    )
-      return hoveredPlantLocation
-        ? hoveredPlantLocation
-        : selectedPlantLocation;
-
-    return selectedSamplePlantLocation;
-  }, [
-    selectedPlantLocation,
-    hoveredPlantLocation,
-    selectedSamplePlantLocation,
-  ]);
+  const plantData: PointPlantLocation = useMemo(
+    () =>
+      getPlantData(
+        selectedPlantLocation,
+        hoveredPlantLocation,
+        selectedSamplePlantLocation
+      ),
+    [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
+  );
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
@@ -153,7 +157,7 @@ const ProjectDetails = ({
       />
       {shouldShowSinglePlantInfo && <SinglePlantInfo plantData={plantData} />}
       {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
-        <PlantLocationInfo
+        <MultiPlantLocationInfo
           plantLocationInfo={
             hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
           }

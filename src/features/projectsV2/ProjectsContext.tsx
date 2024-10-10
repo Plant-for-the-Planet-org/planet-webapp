@@ -39,8 +39,8 @@ interface ProjectsState {
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   selectedSamplePlantLocation: SamplePlantLocation | null;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
-  hoveredPlantLocation: PlantLocation | SamplePlantLocation | null;
-  setHoveredPlantLocation: SetState<PlantLocation | SamplePlantLocation | null>;
+  hoveredPlantLocation: PlantLocation | null;
+  setHoveredPlantLocation: SetState<PlantLocation | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   isLoading: boolean;
@@ -88,9 +88,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     useState<PlantLocation | null>(null);
   const [selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
     useState<SamplePlantLocation | null>(null);
-  const [hoveredPlantLocation, setHoveredPlantLocation] = useState<
-    PlantLocation | SamplePlantLocation | null
-  >(null);
+  const [hoveredPlantLocation, setHoveredPlantLocation] =
+    useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);

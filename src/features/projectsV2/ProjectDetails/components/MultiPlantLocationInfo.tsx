@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
 import * as turf from '@turf/turf';
-import {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+import { PlantLocation } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
@@ -14,11 +11,11 @@ import { useTranslations } from 'next-intl';
 import ImageSlider from './microComponents/ImageSlider';
 
 interface Props {
-  plantLocationInfo: PlantLocation | SamplePlantLocation | null;
+  plantLocationInfo: PlantLocation | null;
   isMobile: boolean;
 }
 
-const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
+const MultiPlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -96,4 +93,4 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
   );
 };
 
-export default PlantLocationInfo;
+export default MultiPlantLocationInfo;

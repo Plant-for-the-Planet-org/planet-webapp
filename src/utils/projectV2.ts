@@ -6,7 +6,11 @@ import {
   MapProjectProperties,
   ExtendedProject,
 } from '../features/common/types/projectv2';
-import { PlantLocation } from '../features/common/types/plantLocation';
+import {
+  PlantLocation,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../features/common/types/plantLocation';
 import { NextRouter } from 'next/router';
 
 const paramsToPreserve = [
@@ -173,4 +177,16 @@ export const updateUrlWithSiteId = (
     siteId
   );
   pushWithShallow(locale, projectSlug, updatedQueryParams, router);
+};
+
+export const getPlantData = (
+  selected: PlantLocation | null,
+  hovered: PlantLocation | null,
+  selectedSample: SamplePlantLocation | null
+): PlantLocationSingle | SamplePlantLocation | null => {
+  if (selected?.type === 'single-tree-registration') return selected;
+  if (hovered?.type === 'single-tree-registration') return hovered;
+  if (selectedSample?.type === 'sample-tree-registration')
+    return selectedSample;
+  return null;
 };
