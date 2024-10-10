@@ -107,22 +107,22 @@ const ProjectDetails = ({
   }, [singleProject]);
 
   const shouldShowPlantLocationInfo =
-    hoveredPlantLocation?.type === 'multi-tree-registration' ||
-    selectedPlantLocation?.type === 'multi-tree-registration';
-  !isMobile;
+    (hoveredPlantLocation?.type === 'multi-tree-registration' ||
+      selectedPlantLocation?.type === 'multi-tree-registration') &&
+    !isMobile;
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||
-      selectedSamplePlantLocation) &&
+      selectedSamplePlantLocation !== null) &&
     !isMobile;
   const shouldShowProjectInfo =
-    !hoveredPlantLocation &&
-    !selectedPlantLocation &&
-    !selectedSamplePlantLocation;
+    hoveredPlantLocation === null &&
+    selectedPlantLocation === null &&
+    selectedSamplePlantLocation === null;
 
   // clean up sample plant location when plant location change
   useEffect(() => {
-    if (selectedSamplePlantLocation) {
+    if (selectedSamplePlantLocation !== null) {
       return setSelectedSamplePlantLocation(null);
     }
   }, [selectedPlantLocation?.hid]);
@@ -151,12 +151,18 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {shouldShowSinglePlantInfo && <SinglePlantInfo plantData={plantData} />}
+      {shouldShowSinglePlantInfo && (
+        <SinglePlantInfo
+          plantData={plantData}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        />
+      )}
       {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
         <PlantLocationInfo
           plantLocationInfo={
             hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
           }
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           isMobile={isMobile}
         />
       )}
