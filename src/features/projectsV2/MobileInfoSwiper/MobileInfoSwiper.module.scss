@@ -2,14 +2,13 @@
 
 .mobileInfoSwiper {
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   z-index: 9999;
   padding: 6px;
 }
 
 .swiperContentContainer {
-  // max-height: 500px;
   border-radius: 12px;
   background-color: $primaryLightGreenBgColor;
 
@@ -32,7 +31,7 @@
 }
 
 .slideContainer {
-  max-height: max(60vh, 500px);
+  max-height: min(60vh, 500px);
   overflow: auto;
   margin: 12px 12px 36px 12px;
   border-radius: 12px;
