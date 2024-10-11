@@ -1,12 +1,18 @@
+import { useTranslations } from 'next-intl';
+import { SetState } from '../../../../common/types/common';
 import { SamplePlantLocation } from '../../../../common/types/plantLocation';
 import styles from '../../styles/PlantLocationInfo.module.scss';
-import { useTranslations } from 'next-intl';
 
 interface Props {
   sampleInterventions: SamplePlantLocation[];
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
-const SampleTreeList = ({ sampleInterventions }: Props) => {
+const SampleTreeList = ({
+  sampleInterventions,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
+
   return (
     <div
       className={`sample-tree-list-container ${styles.sampleTreeListContainer}`}
@@ -17,12 +23,15 @@ const SampleTreeList = ({ sampleInterventions }: Props) => {
             key={sampleTree.id}
             className={`sample-tree-container ${styles.sampleTreeContainer}`}
           >
-            <div className={styles.scientificNameContainer}>
+            <button
+              className={styles.scientificNameContainer}
+              onClick={() => setSelectedSamplePlantLocation(sampleTree)}
+            >
               <span>{index + 1}</span>.
               <p className={styles.scientificName}>
                 {sampleTree.scientificName}
               </p>
-            </div>
+            </button>
             <p className={styles.treeMeasurement}>
               {tProjectDetails('sampleTreeMeasurement', {
                 hid: sampleTree.hid,
@@ -36,7 +45,10 @@ const SampleTreeList = ({ sampleInterventions }: Props) => {
     </div>
   );
 };
-const SampleTrees = ({ sampleInterventions }: Props) => {
+const SampleTrees = ({
+  sampleInterventions,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
     <div className={`sample-trees-container ${styles.sampleTreesContainer}`}>
@@ -45,7 +57,10 @@ const SampleTrees = ({ sampleInterventions }: Props) => {
           count: sampleInterventions.length,
         })}
       </h2>
-      <SampleTreeList sampleInterventions={sampleInterventions} />
+      <SampleTreeList
+        sampleInterventions={sampleInterventions}
+        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+      />
     </div>
   );
 };

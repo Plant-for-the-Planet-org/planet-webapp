@@ -39,8 +39,8 @@ interface ProjectsState {
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   selectedSamplePlantLocation: SamplePlantLocation | null;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
-  hoveredPlantLocation: PlantLocation | SamplePlantLocation | null;
-  setHoveredPlantLocation: SetState<PlantLocation | SamplePlantLocation | null>;
+  hoveredPlantLocation: PlantLocation | null;
+  setHoveredPlantLocation: SetState<PlantLocation | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   isLoading: boolean;
@@ -88,9 +88,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     useState<PlantLocation | null>(null);
   const [selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
     useState<SamplePlantLocation | null>(null);
-  const [hoveredPlantLocation, setHoveredPlantLocation] = useState<
-    PlantLocation | SamplePlantLocation | null
-  >(null);
+  const [hoveredPlantLocation, setHoveredPlantLocation] =
+    useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -240,13 +239,14 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSite(0);
     }
   }, [page]);
+
   const pushWithShallow = (
     locale: string,
     projectSlug: string,
     queryParams = {}
   ) => {
     const pathname = `/${locale}/prd/${projectSlug}`;
-    router.push({ pathname, query: queryParams }, undefined, {
+    router?.push({ pathname, query: queryParams }, undefined, {
       shallow: true,
     });
   };
@@ -264,7 +264,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     pushWithShallow(locale, projectSlug, updatedQueryParams);
   };
 
-  // Helper function to set the selected site and update the URL with the corresponding site ID
   const updateSiteAndUrl = (
     locale: string,
     projectSlug: string,
@@ -333,13 +332,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       const index = singleProject.sites?.findIndex(
         (site) => site.properties.id === requestedSite
       );
-      if (index !== undefined)
+
+      if (index !== undefined) {
         updateSiteAndUrl(locale, singleProject.slug, index !== -1 ? index : 0);
-      return;
+        return;
+      }
     }
 
     // Handle the case where user manually selects a site from the site list on the project detail page
-    if (selectedSite) {
+    if (selectedSite !== null) {
       updateSiteAndUrl(locale, singleProject.slug, selectedSite);
       return;
     }

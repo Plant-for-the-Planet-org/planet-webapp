@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import * as turf from '@turf/turf';
 import {
-  PlantLocation,
+  PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
@@ -13,13 +13,19 @@ import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
 import ImageSlider from './microComponents/ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  plantLocationInfo: PlantLocation | SamplePlantLocation | null;
+  plantLocationInfo: PlantLocationMulti | undefined;
   isMobile: boolean;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
+const MultiPlantLocationInfo = ({
+  plantLocationInfo,
+  isMobile,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
   const isMultiTreeRegistration =
@@ -56,6 +62,9 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
+  const hasSampleInterventions =
+    plantLocationInfo?.type === 'multi-tree-registration' &&
+    plantLocationInfo.sampleInterventions.length > 0;
 
   const content = [
     <>
@@ -63,7 +72,9 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
         key="plantLocationHeader"
         plHid={plantLocationInfo?.hid}
         totalTreesCount={totalTreesCount}
-        plantedLocationArea={plantedLocationArea}
+        plantedLocationArea={
+          hasSampleInterventions ? plantedLocationArea : null
+        }
       />
       {shouldDisplayImageCarousel && (
         <ImageSlider
@@ -78,7 +89,7 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
     </>,
     <PlantingDetails
       key="plantingDetails"
-      plantingDensity={plantingDensity}
+      plantingDensity={hasSampleInterventions ? plantingDensity : null}
       plantDate={plantLocationInfo?.interventionStartDate}
     />,
     isMultiTreeRegistration && plantLocationInfo.plantedSpecies.length > 0 && (
@@ -93,6 +104,7 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
         <SampleTrees
           key="sampleTrees"
           sampleInterventions={plantLocationInfo.sampleInterventions}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
       ),
   ].filter(Boolean);
@@ -107,4 +119,4 @@ const PlantLocationInfo = ({ plantLocationInfo, isMobile }: Props) => {
   );
 };
 
-export default PlantLocationInfo;
+export default MultiPlantLocationInfo;

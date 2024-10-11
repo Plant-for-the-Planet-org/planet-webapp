@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
@@ -11,10 +11,15 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { PlantLocation } from '../../common/types/plantLocation';
-import PlantLocationInfo from './components/PlantLocationInfo';
+import {
+  PlantLocation,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import { ExtendedProject } from '../../common/types/projectv2';
-import SamplePlantInfo from './components/SamplePlantInfo';
+import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
+import { getPlantData } from '../../../utils/projectV2';
 
 const ProjectDetails = ({
   currencyCode,
@@ -106,21 +111,36 @@ const ProjectDetails = ({
       loadPlantLocations();
   }, [singleProject]);
 
-  const shouldShowPlantLocationInfo = hoveredPlantLocation
-    ? hoveredPlantLocation
-    : selectedPlantLocation && !selectedSamplePlantLocation && !isMobile;
-  const shouldShowSamplePlantInfo =
-    !hoveredPlantLocation && selectedSamplePlantLocation && !isMobile;
+  const shouldShowPlantLocationInfo =
+    (hoveredPlantLocation?.type === 'multi-tree-registration' ||
+      selectedPlantLocation?.type === 'multi-tree-registration') &&
+    !isMobile;
+  const shouldShowSinglePlantInfo =
+    (hoveredPlantLocation?.type === 'single-tree-registration' ||
+      selectedPlantLocation?.type === 'single-tree-registration' ||
+      selectedSamplePlantLocation !== null) &&
+    !isMobile;
   const shouldShowProjectInfo =
-    !hoveredPlantLocation &&
-    !selectedPlantLocation &&
-    !selectedSamplePlantLocation;
+    hoveredPlantLocation === null &&
+    selectedPlantLocation === null &&
+    selectedSamplePlantLocation === null;
 
   // clean up sample plant location when plant location change
   useEffect(() => {
-    if (selectedSamplePlantLocation)
-      return setSelectedSamplePlantLocation(null);
+    if (selectedSamplePlantLocation !== null)
+      setSelectedSamplePlantLocation(null);
   }, [selectedPlantLocation?.hid]);
+
+  const plantData: PlantLocationSingle | SamplePlantLocation | undefined =
+    useMemo(
+      () =>
+        getPlantData(
+          selectedPlantLocation,
+          hoveredPlantLocation,
+          selectedSamplePlantLocation
+        ),
+      [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
+    );
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
@@ -130,14 +150,22 @@ const ProjectDetails = ({
         isMobile={isMobile}
         page="project-details"
       />
-      {shouldShowSamplePlantInfo && (
-        <SamplePlantInfo samplePlantData={selectedSamplePlantLocation} />
+      {shouldShowSinglePlantInfo && (
+        <SinglePlantLocationInfo
+          plantData={plantData}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        />
       )}
-      {shouldShowPlantLocationInfo && (
-        <PlantLocationInfo
+      {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
+        <MultiPlantLocationInfo
           plantLocationInfo={
-            hoveredPlantLocation ? hoveredPlantLocation : selectedPlantLocation
+            hoveredPlantLocation?.type === 'multi-tree-registration'
+              ? hoveredPlantLocation
+              : selectedPlantLocation?.type === 'multi-tree-registration'
+              ? selectedPlantLocation
+              : undefined
           }
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           isMobile={isMobile}
         />
       )}
