@@ -1,23 +1,30 @@
 import { useMemo } from 'react';
 import * as turf from '@turf/turf';
 import {
-  PlantLocation,
+  PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import ImageCarousel from './ImageCarousel';
 import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import { useTranslations } from 'next-intl';
+import ImageSlider from './microComponents/ImageSlider';
+import { SetState } from '../../../common/types/common';
 
-const PlantLocationInfoSection = ({
+interface Props {
+  plantLocationInfo: PlantLocationMulti | undefined;
+  isMobile: boolean;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+}
+
+const MultiPlantLocationInfo = ({
   plantLocationInfo,
-}: {
-  plantLocationInfo: PlantLocation | SamplePlantLocation | null;
-}) => {
+  isMobile,
+  setSelectedSamplePlantLocation,
+}: Props) => {
   const isMultiTreeRegistration =
     plantLocationInfo?.type === 'multi-tree-registration';
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -41,7 +48,8 @@ const PlantLocationInfoSection = ({
     if (isMultiTreeRegistration) {
       const result = plantLocationInfo.sampleInterventions.map((item) => {
         return {
-          image: item.coordinates[0].image,
+          id: item.coordinates[0].id,
+          image: item.coordinates[0].image ?? '',
           description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
         };
       });
@@ -49,28 +57,31 @@ const PlantLocationInfoSection = ({
     }
   }, [isMultiTreeRegistration ? plantLocationInfo.sampleInterventions : null]);
 
-  const hasSampleInterventionSpeciesImages =
+  const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
-
+  const hasSampleInterventions =
+    plantLocationInfo?.type === 'multi-tree-registration' &&
+    plantLocationInfo.sampleInterventions.length > 0;
   return (
     <section className={styles.plantLocationInfoSection}>
       <PlantLocationHeader
         plHid={plantLocationInfo?.hid}
         totalTreesCount={totalTreesCount}
-        plantedLocationArea={plantedLocationArea}
+        plantedLocationArea={
+          hasSampleInterventions ? plantedLocationArea : null
+        }
       />
-      {hasSampleInterventionSpeciesImages && (
-        <ImageCarousel
+      {shouldDisplayImageCarousel && (
+        <ImageSlider
           images={sampleInterventionSpeciesImages}
-          type={'coordinate'}
-          imageSize={'large'}
-          imageHeight={195}
-          leftAlignment={15}
+          type="coordinate"
+          isMobile={isMobile}
+          imageSize="large"
         />
       )}
       <PlantingDetails
-        plantingDensity={plantingDensity}
+        plantingDensity={hasSampleInterventions ? plantingDensity : null}
         plantDate={plantLocationInfo?.interventionStartDate}
       />
       {isMultiTreeRegistration &&
@@ -84,6 +95,7 @@ const PlantLocationInfoSection = ({
         plantLocationInfo.sampleInterventions.length > 0 && (
           <SampleTrees
             sampleInterventions={plantLocationInfo.sampleInterventions}
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           />
         )}
       <TreeMapperBrand />
@@ -91,4 +103,4 @@ const PlantLocationInfoSection = ({
   );
 };
 
-export default PlantLocationInfoSection;
+export default MultiPlantLocationInfo;

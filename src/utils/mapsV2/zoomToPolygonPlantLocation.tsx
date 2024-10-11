@@ -8,7 +8,7 @@ export function zoomToPolygonPlantLocation(
   coordinates: Position[],
   mapRef: MapRef,
   setViewState: SetState<ViewState>,
-  duration = 1200
+  duration = 3000
 ) {
   if (!mapRef.current) {
     return;

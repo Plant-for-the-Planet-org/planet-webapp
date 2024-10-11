@@ -4,14 +4,20 @@ import styles from '../../styles/Slider.module.scss';
 import { useState } from 'react';
 import { Modal } from '@mui/material';
 import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import { Image } from '@planet-sdk/common';
+import { Image } from '../../../../common/types/projectv2';
 
 interface ImageSliderProps {
   images: Image[];
   type: 'coordinate' | 'project';
   isMobile: boolean;
+  imageSize: 'medium' | 'large';
 }
-const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
+const ImageSlider = ({
+  images,
+  imageSize,
+  type,
+  isMobile,
+}: ImageSliderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
   return (
@@ -24,7 +30,7 @@ const ImageSlider = ({ images, type, isMobile }: ImageSliderProps) => {
           <ImageCarousel
             images={images}
             type={type}
-            imageSize={'medium'}
+            imageSize={imageSize}
             imageHeight={192}
             leftAlignment={18}
           />

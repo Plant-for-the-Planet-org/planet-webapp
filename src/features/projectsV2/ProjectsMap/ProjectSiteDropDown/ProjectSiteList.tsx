@@ -26,6 +26,7 @@ const ProjectSiteList = ({
     setIsMenuOpen(false);
     setSelectedSite(index);
   };
+
   return (
     <ul className={styles.siteListOptions}>
       {siteList.map((site, index) => {
