@@ -1,6 +1,6 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
@@ -10,9 +10,7 @@ import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
-import MobileInfoSwiper from '../MobileInfoSwiper';
-import PlantLocation from '../../user/TreeMapper/components/PlantLocation';
-import PlantLocationInfo from '../ProjectDetails/components/PlantLocationInfo';
+import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocationInfo';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -29,11 +27,13 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
+  const [isOnSampleMarker, setIsOnSampleMarker] = useState(false);
   const {
     plantLocations,
     setHoveredPlantLocation,
     setSelectedPlantLocation,
     setSelectedSite,
+    setSelectedSamplePlantLocation,
   } = useProjects();
   const {
     projects,
@@ -49,12 +49,13 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects &&
     projects.length > 0 &&
     !shouldShowSingleProjectsView;
-  const shouldShowPlantLocationInfo =
+  const shouldShowMultiPlantLocationInfo =
     props.isMobile &&
     selectedPlantLocation !== null &&
-    selectedSamplePlantLocation === null;
-  const shouldShowSamplePlantLocationInfo =
-    props.isMobile && selectedSamplePlantLocation !== null;
+    selectedSamplePlantLocation === null &&
+    selectedPlantLocation.type === 'multi-tree-registration';
+  /* const shouldShowSamplePlantLocationInfo =
+    props.isMobile && selectedSamplePlantLocation !== null; */
 
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
@@ -62,6 +63,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     isMobile: props.isMobile,
     page: props.page,
   };
+
   const onMouseMove = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
@@ -79,23 +81,43 @@ function ProjectsMap(props: ProjectsMapProps) {
       }
       setHoveredPlantLocation(hoveredPlantLocation);
     },
-    [plantLocations, selectedPlantLocation, props.page]
+    [plantLocations, props.page, selectedPlantLocation]
   );
+
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
-      const selectedPlantLocation = getPlantLocationInfo(
-        plantLocations,
-        mapRef,
-        e.point
-      );
-      if (selectedPlantLocation) {
+      const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
+      const isClickedOnSamePlantLocation =
+        result?.geometry.type === 'Point' &&
+        result.id === selectedPlantLocation?.id &&
+        singleProject?.slug;
+
+      //Clear the sample plant state if the parent plant location (polygon) is selected
+      if (isOnSampleMarker === false) setSelectedSamplePlantLocation(null);
+
+      //Clear plant location info (single-tree-registration) if it is clicked twice
+      if (isClickedOnSamePlantLocation) {
+        setSelectedSite(0);
+        setSelectedPlantLocation(null);
+        return;
+      }
+      if (result) {
         setSelectedSite(null);
-        setSelectedPlantLocation(selectedPlantLocation);
+        setSelectedPlantLocation(result);
       }
     },
-    [plantLocations]
+    [plantLocations, props.page, selectedPlantLocation, isOnSampleMarker]
   );
+
+  const singleProjectViewProps = {
+    mapRef,
+    setIsOnSampleMarker,
+  };
+  const multipleProjectsViewProps = {
+    mapRef,
+    setViewState,
+  };
   return (
     <>
       <MapControls {...mapControlProps} />
@@ -104,17 +126,21 @@ function ProjectsMap(props: ProjectsMapProps) {
         {...mapState}
         onMove={(e) => setViewState(e.viewState)}
         onMouseMove={onMouseMove}
-        onMouseLeave={() => setHoveredPlantLocation(null)}
+        onMouseOut={() => setHoveredPlantLocation(null)}
         onClick={onClick}
         attributionControl={false}
         ref={mapRef}
         interactiveLayerIds={
-          shouldShowSingleProjectsView ? ['plant-polygon-layer'] : undefined
+          singleProject !== null
+            ? ['plant-polygon-layer', 'point-layer']
+            : undefined
         }
       >
-        {shouldShowSingleProjectsView && <SingleProjectView mapRef={mapRef} />}
+        {shouldShowSingleProjectsView && (
+          <SingleProjectView {...singleProjectViewProps} />
+        )}
         {shouldShowMultipleProjectsView && (
-          <MultipleProjectsView setViewState={setViewState} mapRef={mapRef} />
+          <MultipleProjectsView {...multipleProjectsViewProps} />
         )}
         <NavigationControl
           position="bottom-right"
@@ -125,10 +151,11 @@ function ProjectsMap(props: ProjectsMapProps) {
           }}
         />
       </Map>
-      {shouldShowPlantLocationInfo && (
-        <PlantLocationInfo
+      {shouldShowMultiPlantLocationInfo && (
+        <MultiPlantLocationInfo
           plantLocationInfo={selectedPlantLocation}
           isMobile={props.isMobile}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
       )}
     </>

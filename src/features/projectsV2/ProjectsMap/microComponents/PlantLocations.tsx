@@ -13,8 +13,15 @@ import {
 import { Feature, Point, Polygon } from 'geojson';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
+import { SetState } from '../../../common/types/common';
 
-export default function PlantLocations(): ReactElement {
+interface Props {
+  setIsOnSampleMarker: SetState<boolean>;
+}
+
+export default function PlantLocations({
+  setIsOnSampleMarker,
+}: Props): ReactElement {
   const {
     plantLocations,
     hoveredPlantLocation,
@@ -27,7 +34,6 @@ export default function PlantLocations(): ReactElement {
 
   const t = useTranslations('Maps');
   const locale = useLocale();
-
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
     if (selectedSamplePlantLocation?.hid === pl.hid) {
       setSelectedSamplePlantLocation(null);
@@ -162,7 +168,16 @@ export default function PlantLocations(): ReactElement {
           type="circle"
           paint={{
             'circle-color': isSatelliteView ? '#ffffff' : '#007A49',
-            'circle-opacity': 0.5,
+            'circle-opacity': [
+              'case',
+              [
+                '==',
+                ['get', 'id'],
+                (selectedPlantLocation?.id || hoveredPlantLocation?.id) ?? 0,
+              ],
+              1,
+              0.5,
+            ],
           }}
           filter={['==', ['geometry-type'], 'Point']}
         />
@@ -210,6 +225,8 @@ export default function PlantLocations(): ReactElement {
                     role="button"
                     tabIndex={0}
                     onClick={() => openPl(spl)}
+                    onMouseEnter={() => setIsOnSampleMarker(true)}
+                    onMouseLeave={() => setIsOnSampleMarker(false)}
                   />
                 </Marker>
               );

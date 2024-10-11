@@ -1,20 +1,28 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { Measurements } from '../../../../common/types/plantLocation';
+import {
+  Measurements,
+  SamplePlantLocation,
+} from '../../../../common/types/plantLocation';
+import { SetState } from '../../../../common/types/common';
 
 interface Props {
-  interventionStartDate: string | null;
+  interventionStartDate: string | null | undefined;
   tag: string | undefined | null;
-  scientificName: string | undefined;
+  scientificName: string | undefined | null;
   measurements: Measurements | undefined;
+  type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
-const SamplePlantInfoCard = ({
+const PlantInfoCard = ({
   interventionStartDate,
   tag,
   scientificName,
   measurements,
+  type,
+  setSelectedSamplePlantLocation,
 }: Props) => {
   const t = useTranslations('ProjectDetails');
   const sampleTreeConfig = [
@@ -60,12 +68,19 @@ const SamplePlantInfoCard = ({
           </p>
         </div>
       )}
-      <div className={styles.plantingDetailsItem}>
-        <h2 className={styles.label}>{t('plot')}</h2>
-        <button className={styles.showWholeArea}>{t('showWholeArea')}</button>
-      </div>
+      {type === 'sample-tree-registration' && (
+        <div className={styles.plantingDetailsItem}>
+          <h2 className={styles.label}>{t('plot')}</h2>
+          <button
+            className={styles.showWholeArea}
+            onClick={() => setSelectedSamplePlantLocation(null)}
+          >
+            {t('showWholeArea')}
+          </button>
+        </div>
+      )}
     </>
   );
 };
 
-export default SamplePlantInfoCard;
+export default PlantInfoCard;

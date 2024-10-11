@@ -1,8 +1,8 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
-import { SliderImage } from '../../../projects/components/PlantLocation/ImageSlider';
 import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
+import { SliderImage } from '../../../common/types/projectv2';
 
 interface Props {
   images: SliderImage[] | undefined;
