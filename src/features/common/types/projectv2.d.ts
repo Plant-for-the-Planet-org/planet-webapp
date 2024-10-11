@@ -8,7 +8,6 @@ import {
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
 import { Nullable } from '@planet-sdk/common/build/types/util';
-import { PlantLocationSingle, SamplePlantLocation } from './plantLocation';
 
 export type MapProjectProperties =
   | TreeProjectConcise
@@ -28,8 +27,3 @@ export type SliderImage = {
   image?: string | undefined;
   description?: string | null;
 };
-
-export type PointPlantLocation =
-  | PlantLocationSingle
-  | SamplePlantLocation
-  | null;

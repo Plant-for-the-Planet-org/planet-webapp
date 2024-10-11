@@ -5,11 +5,13 @@ import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import { SetState } from '../../../common/types/common';
-import { SamplePlantLocation } from '../../../common/types/plantLocation';
-import { PointPlantLocation } from '../../../common/types/projectv2';
+import {
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 
 interface Props {
-  plantData: PointPlantLocation;
+  plantData: PlantLocationSingle | SamplePlantLocation | undefined;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 

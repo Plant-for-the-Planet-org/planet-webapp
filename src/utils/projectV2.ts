@@ -131,62 +131,14 @@ export const formatHid = (hid: string | undefined) => {
   return hid ? hid.slice(0, 3) + '-' + hid.slice(3) : null;
 };
 
-/**
- *
- *
- * @param {string} locale - The locale or language code (e.g., 'en', 'fr') for the current page.
- * @param {string} projectSlug - The unique identifier or slug for the project.
- * @param {Object} [queryParams={}] - Optional object containing key-value pairs for query parameters that will be added to the URL.
- * @param {NextRouter} router - The Next.js router object used for navigation and URL manipulation.
- *
- */
-export const pushWithShallow = (
-  locale: string,
-  projectSlug: string,
-  queryParams = {},
-  router: NextRouter
-) => {
-  const pathname = `/${locale}/prd/${projectSlug}`;
-  router?.push({ pathname, query: queryParams }, undefined, {
-    shallow: true,
-  });
-};
-
-/**
- * Updates the current URL with the provided site ID by modifying the query parameters,
- * and then pushes the updated URL using shallow routing.
- * This ensures that the site ID (e.g., `siteId`) is reflected in the URL while keeping the user on the same page.
- *
- * @param {string} locale - The locale or language code (e.g., 'en', 'fr') for the current page.
- * @param {string} projectSlug - The unique identifier or slug for the project.
- * @param {string} siteId - The ID of the site to be added to the query parameters.
- * @param {NextRouter} router - The Next.js router object used for navigation and URL manipulation.
- *
- *
- */
-
-export const updateUrlWithSiteId = (
-  locale: string,
-  projectSlug: string,
-  siteId: string,
-  router: NextRouter
-) => {
-  const updatedQueryParams = updateUrlWithParams(
-    router.asPath,
-    router.query,
-    siteId
-  );
-  pushWithShallow(locale, projectSlug, updatedQueryParams, router);
-};
-
 export const getPlantData = (
   selected: PlantLocation | null,
   hovered: PlantLocation | null,
   selectedSample: SamplePlantLocation | null
-): PlantLocationSingle | SamplePlantLocation | null => {
+): PlantLocationSingle | SamplePlantLocation | undefined => {
   if (selected?.type === 'single-tree-registration') return selected;
   if (hovered?.type === 'single-tree-registration') return hovered;
   if (selectedSample?.type === 'sample-tree-registration')
     return selectedSample;
-  return null;
+  return undefined;
 };

@@ -11,12 +11,13 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { PlantLocation } from '../../common/types/plantLocation';
-import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import {
-  ExtendedProject,
-  PointPlantLocation,
-} from '../../common/types/projectv2';
+  PlantLocation,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
+import { ExtendedProject } from '../../common/types/projectv2';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 
@@ -126,20 +127,20 @@ const ProjectDetails = ({
 
   // clean up sample plant location when plant location change
   useEffect(() => {
-    if (selectedSamplePlantLocation !== null) {
-      return setSelectedSamplePlantLocation(null);
-    }
+    if (selectedSamplePlantLocation !== null)
+      setSelectedSamplePlantLocation(null);
   }, [selectedPlantLocation?.hid]);
 
-  const plantData: PointPlantLocation = useMemo(
-    () =>
-      getPlantData(
-        selectedPlantLocation,
-        hoveredPlantLocation,
-        selectedSamplePlantLocation
-      ),
-    [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
-  );
+  const plantData: PlantLocationSingle | SamplePlantLocation | undefined =
+    useMemo(
+      () =>
+        getPlantData(
+          selectedPlantLocation,
+          hoveredPlantLocation,
+          selectedSamplePlantLocation
+        ),
+      [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
+    );
 
   return singleProject ? (
     <div className={styles.projectDetailsContainer}>
@@ -162,7 +163,7 @@ const ProjectDetails = ({
               ? hoveredPlantLocation
               : selectedPlantLocation?.type === 'multi-tree-registration'
               ? selectedPlantLocation
-              : null
+              : undefined
           }
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           isMobile={isMobile}

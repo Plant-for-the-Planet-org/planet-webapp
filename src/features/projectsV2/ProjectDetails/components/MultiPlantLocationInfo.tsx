@@ -15,7 +15,7 @@ import ImageSlider from './microComponents/ImageSlider';
 import { SetState } from '../../../common/types/common';
 
 interface Props {
-  plantLocationInfo: PlantLocationMulti | null;
+  plantLocationInfo: PlantLocationMulti | undefined;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
