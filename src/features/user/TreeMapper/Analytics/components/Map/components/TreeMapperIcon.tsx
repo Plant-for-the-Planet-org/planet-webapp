@@ -34,4 +34,4 @@ const TreeMapperIcon = () => {
   );
 };
 
-export default TreeMapperIcon
+export default TreeMapperIcon;

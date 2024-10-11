@@ -10,13 +10,12 @@ import {
   CountryCode,
   CurrencyCode,
 } from '@planet-sdk/common';
-import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
-import { getProjectCategory } from '../ProjectsMap/utils';
+import { getProjectCategory } from '../../../utils/projectV2';
+import TpoName from './microComponents/TpoName';
 
 interface Props {
   project:
@@ -25,6 +24,8 @@ interface Props {
     | TreeProjectExtended
     | ConservationProjectExtended;
   showTooltipPopups: boolean;
+  isMobile?: boolean;
+  page?: 'project-list' | 'project-details';
 }
 
 export interface CommonProps {
@@ -42,6 +43,7 @@ export interface ImageSectionProps extends CommonProps {
   showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
+  page?: 'project-list' | 'project-details';
 }
 
 export interface ProjectInfoProps extends CommonProps {
@@ -56,9 +58,9 @@ export interface ProjectInfoProps extends CommonProps {
 export default function ProjectSnippet({
   project,
   showTooltipPopups,
+  isMobile,
+  page,
 }: Props): ReactElement {
-  const router = useRouter();
-  const tCommon = useTranslations('Common');
   const { embed } = useContext(ParamsContext);
 
   const ecosystem =
@@ -76,12 +78,6 @@ export default function ProjectSnippet({
     project.countTarget,
   ]);
 
-  const tpoNameBackgroundClass = useMemo(() => {
-    if (!project.allowDonations) return `${styles.noDonation}`;
-    if (isTopProject && isApproved) return `${styles.tpoBackground}`;
-    return '';
-  }, [isTopProject, isApproved, project.allowDonations]);
-
   const progressBarClass = useMemo(() => {
     return `${styles[getProjectCategory(project)]}`;
   }, [
@@ -89,14 +85,6 @@ export default function ProjectSnippet({
     project.purpose === 'trees' && (project.isTopProject, project.isApproved),
     project.allowDonations,
   ]);
-
-  const handleClick = () => {
-    if (embed === 'true') {
-      window.open(`/t/${project.tpo.slug}`, '_top');
-    } else {
-      router.push(`/t/${project.tpo.slug}`);
-    }
-  };
 
   const commonProps: CommonProps = {
     slug: project.slug,
@@ -113,6 +101,7 @@ export default function ProjectSnippet({
     showTooltipPopups: showTooltipPopups,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
+    page,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
@@ -125,25 +114,45 @@ export default function ProjectSnippet({
     country: project.country,
     currency: project.currency,
   };
-
+  const projectSnippetContainerClasses = `${styles.singleProject} ${
+    page === 'project-details' && isMobile
+      ? styles.projectDetailsSnippetMobile
+      : ''
+  }`;
   return (
-    <div className={styles.singleProject}>
-      <ImageSection {...imageProps} />
-      <div className={styles.progressBar}>
-        <div
-          className={`${styles.progressBarHighlight} ${progressBarClass}`}
-          style={{ width: `${progressPercentage}%` }}
+    <>
+      <div className={projectSnippetContainerClasses}>
+        <ImageSection {...imageProps} />
+        <div className={styles.progressBar}>
+          <div
+            className={`${styles.progressBarHighlight} ${progressBarClass}`}
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+        <ProjectInfoSection {...projectInfoProps} />
+        {!isMobile && (
+          <TpoName
+            projectTpoName={project.tpo.name}
+            allowDonations={project.allowDonations}
+            isTopProject={isTopProject}
+            isApproved={isApproved}
+            page={page}
+            tpoSlug={project.tpo.slug}
+            embed={embed}
+          />
+        )}
+      </div>
+      {isMobile && (
+        <TpoName
+          page={page}
+          projectTpoName={project.tpo.name}
+          allowDonations={project.allowDonations}
+          isTopProject={isTopProject}
+          isApproved={isApproved}
+          tpoSlug={project.tpo.slug}
+          embed={embed}
         />
-      </div>
-      <ProjectInfoSection {...projectInfoProps} />
-      <div
-        className={`${styles.projectTPOName} ${tpoNameBackgroundClass}`}
-        onClick={handleClick}
-      >
-        {tCommon('by', {
-          tpoName: project.tpo.name,
-        })}
-      </div>
-    </div>
+      )}
+    </>
   );
 }

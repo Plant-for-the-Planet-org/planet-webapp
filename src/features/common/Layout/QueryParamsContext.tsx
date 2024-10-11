@@ -1,9 +1,8 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTenant } from './TenantContext';
 import { useLocale } from 'next-intl';
 
-type QueryParamType = string | undefined | string[] | null;
+export type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
   embed: QueryParamType;
   showBackIcon: QueryParamType;

@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { ReactElement, useEffect } from 'react';
 import { v4 } from 'uuid';
-import Link from 'next/link';
 import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
 import {
   NextPageWithLayout,
@@ -21,12 +20,15 @@ import {
   PageProps,
 } from '../../../../_app';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { useProjects } from '../../../../../src/features/projectsV2/ProjectsContext';
+import ProjectDetails from '../../../../../src/features/projectsV2/ProjectDetails';
 
-const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
+const ProjectDetailsPage: NextPageWithLayout = ({
+  pageProps,
+  currencyCode,
+  isMobile,
+}) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { setSelectedClassification, setDebouncedSearchValue } = useProjects();
 
   useEffect(() => {
     if (router.isReady) {
@@ -34,18 +36,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({ pageProps }) => {
     }
   }, [router.isReady]);
 
-  //* a temporary hook that will be removed in the future
-  useEffect(() => {
-    setSelectedClassification([]);
-    setDebouncedSearchValue('');
-  }, []);
-
-  return (
-    <div>
-      <h2>ProjectDetailsPage</h2>
-      <Link href="/en/prd">Go to List Page</Link>
-    </div>
-  );
+  return <ProjectDetails currencyCode={currencyCode} isMobile={isMobile} />;
 };
 
 ProjectDetailsPage.getLayout = function getLayout(
@@ -94,7 +85,16 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'maps', 'allProjects'],
+    filenames: [
+      'common',
+      'maps',
+      'allProjects',
+      'projectDetails',
+      'donate',
+      'country',
+      'manageProjects',
+      'me',
+    ],
   });
 
   return {

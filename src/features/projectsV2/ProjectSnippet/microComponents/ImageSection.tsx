@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -11,6 +11,7 @@ import TopProjectReports from '../../../projects/components/projectDetails/TopPr
 import styles from '../styles/ProjectSnippet.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -25,13 +26,14 @@ const ImageSection = (props: ImageSectionProps) => {
     isApproved,
     isTopProject,
     allowDonations,
+    page,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
-
+  const isEmbed = embed === 'true';
   const handleImageClick = () => {
     router.push(
       `/${locale}/prd/${slug}/${
@@ -45,9 +47,34 @@ const ImageSection = (props: ImageSectionProps) => {
       }`
     );
   };
+  const handleBackButton = useCallback((e: MouseEvent) => {
+    e.stopPropagation();
+    if (document.referrer) {
+      window.history.go(-2);
+    } else {
+      router.replace({
+        pathname: `/${locale}/prd`,
+        query: {
+          ...(isEmbed ? { embed: 'true' } : {}),
+          ...(isEmbed && callbackUrl !== undefined
+            ? { callback: callbackUrl }
+            : {}),
+        },
+      });
+    }
+  }, []);
+
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
+  const imageContainerClasses = `${styles.projectImage} ${
+    page === 'project-details' ? styles.projectImageSecondary : ''
+  }`;
   return (
-    <div onClick={handleImageClick} className={styles.projectImage}>
+    <div onClick={handleImageClick} className={imageContainerClasses}>
+      {page === 'project-details' && (
+        <button onClick={handleBackButton} className={styles.backButton}>
+          <BackButton />
+        </button>
+      )}
       <ProjectBadge
         isApproved={isApproved}
         allowDonations={allowDonations}
@@ -57,7 +84,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {image && typeof image !== 'undefined' ? (
         <>
           <img
-            alt="projectImage"
+            alt={'projectImage'}
             src={imageSource}
             width={'fit-content'}
             className={styles.projectImageFile}

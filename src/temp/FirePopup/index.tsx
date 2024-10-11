@@ -4,7 +4,7 @@ import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
 import InfoIconPopup from '../components/InfoIconPopup';
-import RightArrowIcon from '../icons/RightArrowIcon';
+import RightArrowIcon from '../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import { useTranslations } from 'next-intl';
 
 interface Props {
