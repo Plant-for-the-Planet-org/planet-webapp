@@ -1,5 +1,5 @@
 import styles from './MyContributions.module.scss';
-import ProjectTypeIcon from '../../../projects/components/ProjectTypeIcon';
+import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { useTranslations } from 'next-intl';
 import { EcosystemTypes, TreeProjectClassification } from '@planet-sdk/common';
 import { useMemo } from 'react';

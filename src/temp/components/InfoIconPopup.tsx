@@ -1,5 +1,5 @@
 import React from 'react';
-import NewInfoIcon from '../icons/NewInfoIcon';
+import NewInfoIcon from '../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { bindHover, bindPopover } from 'material-ui-popup-state';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { usePopupState } from 'material-ui-popup-state/hooks';

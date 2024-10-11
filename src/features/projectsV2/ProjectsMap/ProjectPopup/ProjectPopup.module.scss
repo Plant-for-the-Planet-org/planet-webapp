@@ -1,0 +1,13 @@
+.projectPopup :global(.maplibregl-popup-tip) {
+  display: none;
+}
+
+.projectPopup :global(.maplibregl-popup-content) {
+  padding: 0px 0px;
+  border-radius: 15px;
+  width: max-content;
+}
+
+.popupContainer {
+  width: 338px;
+}
