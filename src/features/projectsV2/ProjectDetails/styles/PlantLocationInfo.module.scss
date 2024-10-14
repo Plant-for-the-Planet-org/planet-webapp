@@ -153,7 +153,7 @@
 
 //sample plant location styles
 
-.sampleTreeInfoHeading {
+.singlePlantLocationHeading {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
@@ -165,9 +165,15 @@
   }
 }
 
-.samplePlantImage {
-  border-radius: 13.4px;
-  height: 195px;
+.singlePlantLocationImage {
+  border-radius: 13px;
+  height: 192px;
   object-fit: cover;
   width: auto;
+}
+
+.plantInfoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }

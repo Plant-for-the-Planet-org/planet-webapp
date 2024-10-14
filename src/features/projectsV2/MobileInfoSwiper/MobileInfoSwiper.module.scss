@@ -39,12 +39,14 @@
   flex-direction: column;
   background: $light;
 
-  :global(.image-slider-container) {
+  :global(.image-slider-container),
+  :global(.single-plant-location-image) {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
 
-  :global(.plant-location-header-container) {
+  :global(.plant-location-header-container),
+  :global(.single-plant-location-heading) {
     padding: 12px 20px;
 
     :global(.tree-count) {
@@ -66,10 +68,10 @@
     flex-direction: column;
     background-color: $primaryLightGreenBgColor;
     gap: 12px;
+  }
 
-    :global(.planting-details-item) {
-      background-color: $light;
-    }
+  :global(.planting-details-item) {
+    background-color: $light;
   }
 
   :global(.species-container) {
@@ -82,5 +84,9 @@
     :global(.sample-tree-container) {
       background-color: $primaryLightGreenBgColor;
     }
+  }
+
+  :global(.plant-info-card) {
+    background-color: $primaryLightGreenBgColor;
   }
 }

@@ -11,6 +11,8 @@ import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
 import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocationInfo';
+import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
+import { PlantLocationSingle } from '../../common/types/plantLocation';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -51,11 +53,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     !shouldShowSingleProjectsView;
   const shouldShowMultiPlantLocationInfo =
     props.isMobile &&
-    selectedPlantLocation !== null &&
     selectedSamplePlantLocation === null &&
-    selectedPlantLocation.type === 'multi-tree-registration';
-  /* const shouldShowSamplePlantLocationInfo =
-    props.isMobile && selectedSamplePlantLocation !== null; */
+    selectedPlantLocation?.type === 'multi-tree-registration';
+  const shouldShowSinglePlantLocationInfo =
+    props.isMobile &&
+    (selectedSamplePlantLocation !== null ||
+      selectedPlantLocation?.type === 'single-tree-registration');
 
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
@@ -154,6 +157,16 @@ function ProjectsMap(props: ProjectsMapProps) {
       {shouldShowMultiPlantLocationInfo && (
         <MultiPlantLocationInfo
           plantLocationInfo={selectedPlantLocation}
+          isMobile={props.isMobile}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        />
+      )}
+      {shouldShowSinglePlantLocationInfo && (
+        <SinglePlantLocationInfo
+          plantData={
+            selectedSamplePlantLocation ||
+            (selectedPlantLocation as PlantLocationSingle)
+          }
           isMobile={props.isMobile}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />

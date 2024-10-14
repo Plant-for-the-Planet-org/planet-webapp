@@ -1,50 +1,49 @@
 import PlantInfoCard from './microComponents/PlantInfoCard';
-import { formatHid } from '../../../../utils/projectV2';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import { useTranslations } from 'next-intl';
-import getImageUrl from '../../../../utils/getImageURL';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import { SetState } from '../../../common/types/common';
 import {
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+import SinglePlantLocationHeader from './microComponents/SinglePlantLocationHeader';
+import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
   plantData: PlantLocationSingle | SamplePlantLocation | undefined;
+  isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
 const SinglePlantLocationInfo = ({
   plantData,
+  isMobile,
   setSelectedSamplePlantLocation,
 }: Props) => {
-  const t = useTranslations('ProjectDetails');
-  const isSinglePlant =
-    plantData?.type === 'single-tree-registration' ||
-    plantData?.type === 'sample-tree-registration';
-  const isSamplePlant = plantData?.type === 'sample-tree-registration';
+  if (!plantData) return null;
+
   const plantInfoProps = {
-    interventionStartDate: plantData?.interventionStartDate,
-    tag: isSinglePlant ? plantData.tag : undefined,
-    scientificName: isSinglePlant ? plantData.scientificName : undefined,
-    measurements: isSinglePlant ? plantData.measurements : undefined,
-    type: isSinglePlant ? plantData?.type : undefined,
+    interventionStartDate: plantData.interventionStartDate,
+    tag: plantData.tag,
+    scientificName: plantData.scientificName,
+    measurements: plantData.measurements,
+    type: plantData.type,
     setSelectedSamplePlantLocation,
   };
-  const image = plantData?.coordinates?.[0]?.image ?? '';
-  return (
+
+  const content = [
+    <SinglePlantLocationHeader
+      key="singlePlantLocationHeader"
+      plantData={plantData}
+    />,
+    <PlantInfoCard key="plantInfoCard" {...plantInfoProps} />,
+  ].filter(Boolean);
+
+  return isMobile ? (
+    <MobileInfoSwiper slides={content} />
+  ) : (
     <div className={styles.plantLocationInfoSection}>
-      <div className={styles.sampleTreeInfoHeading}>
-        {isSamplePlant ? <h1>{t('sampleTree')}</h1> : <h1>{t('1Tree')}</h1>}
-        <p>{formatHid(plantData?.hid)}</p>
-      </div>
-      {image && (
-        <img
-          src={getImageUrl('coordinate', 'large', image)}
-          className={styles.samplePlantImage}
-        />
-      )}
+      <SinglePlantLocationHeader plantData={plantData} />
       <PlantInfoCard {...plantInfoProps} />
       <TreeMapperBrand />
     </div>
