@@ -1,4 +1,4 @@
-import { useCallback, useContext, MouseEvent } from 'react';
+import { useCallback, useContext, MouseEvent, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -27,13 +27,14 @@ const ImageSection = (props: ImageSectionProps) => {
     isTopProject,
     allowDonations,
     page,
+    setSelectedSite,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
-  const isEmbed = embed === 'true';
+
   const handleImageClick = () => {
     router.push(
       `/${locale}/prd/${slug}/${
@@ -47,22 +48,19 @@ const ImageSection = (props: ImageSectionProps) => {
       }`
     );
   };
-  const handleBackButton = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-    if (document.referrer) {
-      window.history.go(-2);
-    } else {
-      router.replace({
-        pathname: `/${locale}/prd`,
-        query: {
-          ...(isEmbed ? { embed: 'true' } : {}),
-          ...(isEmbed && callbackUrl !== undefined
-            ? { callback: callbackUrl }
-            : {}),
-        },
-      });
+
+  const handleBackButton = () => {
+    const redirectLink = localStorage.getItem('redirectLink');
+    if (redirectLink !== null && window.history.length > 1) {
+      setSelectedSite(null);
+      router.push(redirectLink);
     }
-  }, []);
+    if (window.history.length === 1) {
+      localStorage.removeItem('redirectLink');
+      setSelectedSite(null);
+      router.push(`/${locale}/prd`);
+    }
+  };
 
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   const imageContainerClasses = `${styles.projectImage} ${

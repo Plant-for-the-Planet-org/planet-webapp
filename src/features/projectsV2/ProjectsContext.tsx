@@ -62,9 +62,9 @@ interface ProjectsState {
 const ProjectsContext = createContext<ProjectsState | null>(null);
 
 type ProjectsProviderProps = {
-  page: 'project-list' | 'project-details';
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
+  page?: 'project-list' | 'project-details';
+  currencyCode?: string;
+  setCurrencyCode?: SetState<string> | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
@@ -98,7 +98,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
@@ -220,7 +219,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   }, [currencyCode, locale, page]);
 
   useEffect(() => {
-    if (!currencyCode) {
+    if (!currencyCode && setCurrencyCode !== undefined) {
       const currency = getStoredCurrency();
       setCurrencyCode(currency);
     }
