@@ -40,7 +40,7 @@ const SinglePlantLocationInfo = ({
   ].filter(Boolean);
 
   return isMobile ? (
-    <MobileInfoSwiper slides={content} />
+    <MobileInfoSwiper slides={content} uniqueKey={plantData.hid} />
   ) : (
     <div className={styles.plantLocationInfoSection}>
       <SinglePlantLocationHeader plantData={plantData} />

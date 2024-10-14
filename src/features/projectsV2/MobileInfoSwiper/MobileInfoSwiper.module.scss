@@ -39,6 +39,10 @@
   flex-direction: column;
   background: $light;
 
+  :global(.image-slider-container) {
+    height: 192px;
+  }
+
   :global(.image-slider-container),
   :global(.single-plant-location-image) {
     border-top-left-radius: 0;

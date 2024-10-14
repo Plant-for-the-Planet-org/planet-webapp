@@ -27,10 +27,13 @@ function SinglePlantLocationHeader({ plantData }: Props) {
         <div className="hid">{formatHid(plantData?.hid)}</div>
       </div>
       {image && (
-        <img
-          src={getImageUrl('coordinate', 'large', image)}
-          className={`single-plant-location-image ${styles.singlePlantLocationImage}`}
-        />
+        <>
+          <img
+            src={getImageUrl('coordinate', 'large', image)}
+            className={`single-plant-location-image ${styles.singlePlantLocationImage}`}
+            loading="lazy"
+          />
+        </>
       )}
     </>
   );

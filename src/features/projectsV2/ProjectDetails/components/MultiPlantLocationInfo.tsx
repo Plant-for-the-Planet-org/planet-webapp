@@ -110,7 +110,10 @@ const MultiPlantLocationInfo = ({
   ].filter(Boolean);
 
   return isMobile ? (
-    <MobileInfoSwiper slides={content} />
+    <MobileInfoSwiper
+      slides={content}
+      uniqueKey={plantLocationInfo?.hid || ''}
+    />
   ) : (
     <section className={styles.plantLocationInfoSection}>
       {content}
