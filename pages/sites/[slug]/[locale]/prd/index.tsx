@@ -26,6 +26,7 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const { setTenantConfig } = useTenant();
 
   useEffect(() => {
+    localStorage.removeItem('redirectLink');
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }

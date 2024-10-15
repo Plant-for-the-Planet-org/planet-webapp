@@ -34,11 +34,11 @@ const ImageSection = (props: ImageSectionProps) => {
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
-
+  const isEmbed = embed === 'true';
   const handleImageClick = () => {
     router.push(
       `/${locale}/prd/${slug}/${
-        embed === 'true'
+        isEmbed
           ? `${
               callbackUrl != undefined
                 ? `?embed=true&callback=${callbackUrl}`
@@ -51,14 +51,22 @@ const ImageSection = (props: ImageSectionProps) => {
 
   const handleBackButton = () => {
     const redirectLink = localStorage.getItem('redirectLink');
-    if (redirectLink !== null && window.history.length > 1) {
-      setSelectedSite(null);
+    const defaultRoute = `/${locale}/prd`;
+    const queryParams = {
+      ...(isEmbed ? { embed: 'true' } : {}),
+      ...(isEmbed && callbackUrl !== undefined
+        ? { callback: callbackUrl }
+        : {}),
+    };
+    setSelectedSite(null);
+    if (redirectLink) {
       router.push(redirectLink);
-    }
-    if (window.history.length === 1) {
-      localStorage.removeItem('redirectLink');
-      setSelectedSite(null);
-      router.push(`/${locale}/prd`);
+    } else {
+      if (window.history.length === 1) localStorage.removeItem('redirectLink');
+      router.push({
+        pathname: defaultRoute,
+        query: queryParams,
+      });
     }
   };
 
