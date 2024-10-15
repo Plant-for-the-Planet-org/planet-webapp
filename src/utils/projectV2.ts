@@ -11,7 +11,6 @@ import {
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../features/common/types/plantLocation';
-import { NextRouter } from 'next/router';
 
 const paramsToPreserve = [
   'embed',
@@ -35,7 +34,7 @@ const paramsToDelete = ['locale', 'slug', 'p', 'ploc'];
 export const updateUrlWithParams = (
   asPath: string,
   query: ParsedUrlQuery,
-  siteId: string
+  siteId: string | null
 ) => {
   const [, queryString] = asPath.split('?');
   const currentUrlParams = new URLSearchParams(queryString || '');
@@ -47,7 +46,7 @@ export const updateUrlWithParams = (
   });
   paramsToDelete.forEach((param) => delete currentQuery[param]);
   //add project site param
-  currentQuery.site = siteId;
+  if (siteId) currentQuery.site = siteId;
   return currentQuery;
 };
 
