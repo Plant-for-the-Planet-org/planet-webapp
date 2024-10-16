@@ -54,11 +54,11 @@ export function zoomInToProjectSite(
   );
   map.once('moveend', () => {
     const center = map.getCenter();
-    const defaultZoom = 14;
+    const currentZoom = map.getZoom();
     const newViewState: ViewState = {
       longitude: center.lng,
       latitude: center.lat,
-      zoom: defaultZoom,
+      zoom: currentZoom,
       bearing: 0,
       pitch: 0,
       padding: {
