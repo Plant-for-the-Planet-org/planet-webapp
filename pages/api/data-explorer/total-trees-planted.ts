@@ -26,7 +26,11 @@ handler.post(async (req, response) => {
 
   const { projectId, startDate, endDate } = req.body;
 
-  const CACHE_KEY = `TOTAL_TREES_PLANTED__${getCachedKey(
+  const cachingKeyPrefix =
+    process.env.API_ENDPOINT?.replace('https://', '').split('.')[0] ||
+    'env_missing';
+
+  const CACHE_KEY = `${cachingKeyPrefix}_TOTAL_TREES_PLANTED__${getCachedKey(
     projectId,
     startDate,
     endDate
