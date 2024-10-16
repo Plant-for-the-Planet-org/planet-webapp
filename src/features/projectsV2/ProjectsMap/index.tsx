@@ -59,6 +59,9 @@ function ProjectsMap(props: ProjectsMapProps) {
     props.isMobile &&
     (selectedSamplePlantLocation !== null ||
       selectedPlantLocation?.type === 'single-tree-registration');
+  const shouldShowNavigationControls = !(
+    shouldShowMultiPlantLocationInfo || shouldShowSinglePlantLocationInfo
+  );
 
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
@@ -145,14 +148,16 @@ function ProjectsMap(props: ProjectsMapProps) {
         {shouldShowMultipleProjectsView && (
           <MultipleProjectsView {...multipleProjectsViewProps} />
         )}
-        <NavigationControl
-          position="bottom-right"
-          showCompass={false}
-          style={{
-            position: 'relative',
-            bottom: props.isMobile ? '120px' : '0px',
-          }}
-        />
+        {shouldShowNavigationControls && (
+          <NavigationControl
+            position="bottom-right"
+            showCompass={false}
+            style={{
+              position: 'relative',
+              bottom: props.isMobile ? '120px' : '0px',
+            }}
+          />
+        )}
       </Map>
       {shouldShowMultiPlantLocationInfo && (
         <MultiPlantLocationInfo

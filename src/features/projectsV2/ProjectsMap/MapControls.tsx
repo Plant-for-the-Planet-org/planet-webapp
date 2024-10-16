@@ -38,12 +38,20 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     selectedPlantLocation,
+    selectedSamplePlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
   } = useProjects();
+
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
+  const canShowSatelliteToggle = !(
+    isMobile &&
+    (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
+  );
+  const isProjectDetailsPage = page === 'project-details';
+
   const siteDropdownProps = {
     selectedSite,
     setSelectedSite,
@@ -71,7 +79,6 @@ const MapControls = ({
     mapOptions,
     updateMapOption,
   };
-  const isProjectDetailsPage = page === 'project-details';
 
   const exitMapMode = () => {
     setSelectedMode && setSelectedMode('list');
@@ -105,12 +112,14 @@ const MapControls = ({
               )}
             </>
           )}
-          <button
-            className={styles.layerToggle}
-            onClick={() => setIsSatelliteView(!isSatelliteView)}
-          >
-            {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
-          </button>
+          {canShowSatelliteToggle && (
+            <button
+              className={styles.layerToggle}
+              onClick={() => setIsSatelliteView(!isSatelliteView)}
+            >
+              {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
+            </button>
+          )}
         </>
       )}
     </>
