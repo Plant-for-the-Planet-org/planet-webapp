@@ -28,6 +28,7 @@ interface Props {
   showTooltipPopups: boolean;
   isMobile?: boolean;
   page?: 'project-list' | 'project-details';
+  setPreventShallowPush?: SetState<boolean> | undefined;
 }
 
 export interface CommonProps {
@@ -47,6 +48,7 @@ export interface ImageSectionProps extends CommonProps {
   classification: TreeProjectClassification;
   page?: 'project-list' | 'project-details';
   setSelectedSite: SetState<number | null>;
+  setPreventShallowPush: SetState<boolean> | undefined;
 }
 
 export interface ProjectInfoProps extends CommonProps {
@@ -63,6 +65,7 @@ export default function ProjectSnippet({
   showTooltipPopups,
   isMobile,
   page,
+  setPreventShallowPush,
 }: Props): ReactElement {
   const { embed } = useContext(ParamsContext);
   const { setSelectedSite } = useProjects();
@@ -106,6 +109,7 @@ export default function ProjectSnippet({
     classification: (project as TreeProjectConcise).classification,
     page,
     setSelectedSite,
+    setPreventShallowPush,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,

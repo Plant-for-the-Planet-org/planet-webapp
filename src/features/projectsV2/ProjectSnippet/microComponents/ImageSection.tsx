@@ -1,4 +1,4 @@
-import { useCallback, useContext, MouseEvent, useEffect } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -28,6 +28,7 @@ const ImageSection = (props: ImageSectionProps) => {
     allowDonations,
     page,
     setSelectedSite,
+    setPreventShallowPush,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
@@ -49,7 +50,10 @@ const ImageSection = (props: ImageSectionProps) => {
     );
   };
 
-  const handleBackButton = () => {
+  const handleBackButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (setPreventShallowPush) setPreventShallowPush(true);
+    setSelectedSite(null);
+    event.stopPropagation();
     const redirectLink = localStorage.getItem('redirectLink');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {
@@ -58,7 +62,6 @@ const ImageSection = (props: ImageSectionProps) => {
         ? { callback: callbackUrl }
         : {}),
     };
-    setSelectedSite(null);
     if (redirectLink) {
       router.push(redirectLink);
     } else {

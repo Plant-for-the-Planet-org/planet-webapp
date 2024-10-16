@@ -39,6 +39,7 @@ const ProjectDetails = ({
     hoveredPlantLocation,
     selectedSamplePlantLocation,
     setSelectedSamplePlantLocation,
+    setPreventShallowPush,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -149,6 +150,7 @@ const ProjectDetails = ({
         showTooltipPopups={false}
         isMobile={isMobile}
         page="project-details"
+        setPreventShallowPush={setPreventShallowPush}
       />
       {shouldShowSinglePlantInfo && (
         <SinglePlantLocationInfo
