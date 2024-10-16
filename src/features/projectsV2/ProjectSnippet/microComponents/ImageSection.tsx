@@ -54,7 +54,7 @@ const ImageSection = (props: ImageSectionProps) => {
     if (setPreventShallowPush) setPreventShallowPush(true);
     setSelectedSite(null);
     event.stopPropagation();
-    const redirectLink = localStorage.getItem('redirectLink');
+    const previousPageRoute = localStorage.getItem('redirectLink');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {
       ...(isEmbed ? { embed: 'true' } : {}),
@@ -62,10 +62,9 @@ const ImageSection = (props: ImageSectionProps) => {
         ? { callback: callbackUrl }
         : {}),
     };
-    if (redirectLink) {
-      router.push(redirectLink);
+    if (previousPageRoute) {
+      router.push(previousPageRoute);
     } else {
-      if (window.history.length === 1) localStorage.removeItem('redirectLink');
       router.push({
         pathname: defaultRoute,
         query: queryParams,

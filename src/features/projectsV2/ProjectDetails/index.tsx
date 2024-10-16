@@ -110,6 +110,7 @@ const ProjectDetails = ({
     }
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
+    if (window.history.length === 1) localStorage.removeItem('redirectLink');
   }, [singleProject]);
 
   const shouldShowPlantLocationInfo =
