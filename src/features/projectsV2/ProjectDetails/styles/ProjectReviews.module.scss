@@ -29,13 +29,13 @@
 .downloadReportContainer {
   display: flex;
   align-items: center;
-  gap: 6px;
   justify-content: flex-end;
   margin-top: 8px;
   p {
     font-size: $fontXXXSmallNew;
     color: rgb(var(--review-font-color-new));
     font-weight: 700;
+    margin-right: 6px;
   }
   a {
     display: flex;

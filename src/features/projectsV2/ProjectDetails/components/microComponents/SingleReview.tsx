@@ -49,12 +49,12 @@ const SingleReview = ({ singleReview }: Props) => {
         </p>
       </div>
       <div className={styles.downloadReportContainer}>
-        <p>{tProjectDetails('report')}</p>
         <a
           target="_blank"
           rel="noopener noreferrer"
           href={getPDFFile('projectReview', singleReview.pdf)}
         >
+          <p>{tProjectDetails('report')}</p>
           <DownloadReportIcon
             width={10}
             color={`${'rgb(var(--review-font-color-new))'}`}
