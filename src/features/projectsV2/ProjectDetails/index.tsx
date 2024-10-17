@@ -39,6 +39,7 @@ const ProjectDetails = ({
     hoveredPlantLocation,
     selectedSamplePlantLocation,
     setSelectedSamplePlantLocation,
+    setPreventShallowPush,
   } = useProjects();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -109,6 +110,7 @@ const ProjectDetails = ({
     }
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
+    if (window.history.length === 1) localStorage.removeItem('redirectLink');
   }, [singleProject]);
 
   const shouldShowPlantLocationInfo =
@@ -149,6 +151,7 @@ const ProjectDetails = ({
         showTooltipPopups={false}
         isMobile={isMobile}
         page="project-details"
+        setPreventShallowPush={setPreventShallowPush}
       />
       {shouldShowSinglePlantInfo && (
         <SinglePlantLocationInfo

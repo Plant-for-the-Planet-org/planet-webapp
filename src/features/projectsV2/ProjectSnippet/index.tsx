@@ -16,6 +16,8 @@ import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
+import { useProjects } from '../ProjectsContext';
+import { SetState } from '../../common/types/common';
 
 interface Props {
   project:
@@ -26,6 +28,7 @@ interface Props {
   showTooltipPopups: boolean;
   isMobile?: boolean;
   page?: 'project-list' | 'project-details';
+  setPreventShallowPush?: SetState<boolean> | undefined;
 }
 
 export interface CommonProps {
@@ -44,6 +47,8 @@ export interface ImageSectionProps extends CommonProps {
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
   page?: 'project-list' | 'project-details';
+  setSelectedSite: SetState<number | null>;
+  setPreventShallowPush: SetState<boolean> | undefined;
 }
 
 export interface ProjectInfoProps extends CommonProps {
@@ -60,9 +65,10 @@ export default function ProjectSnippet({
   showTooltipPopups,
   isMobile,
   page,
+  setPreventShallowPush,
 }: Props): ReactElement {
   const { embed } = useContext(ParamsContext);
-
+  const { setSelectedSite } = useProjects();
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
@@ -102,6 +108,8 @@ export default function ProjectSnippet({
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
     page,
+    setSelectedSite,
+    setPreventShallowPush,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
@@ -119,6 +127,7 @@ export default function ProjectSnippet({
       ? styles.projectDetailsSnippetMobile
       : ''
   }`;
+
   return (
     <>
       <div className={projectSnippetContainerClasses}>
