@@ -8,6 +8,8 @@ import {
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
 import { Nullable } from '@planet-sdk/common/build/types/util';
+import { MutableRefObject } from 'react';
+import { Map } from 'maplibre-gl';
 
 export type MapProjectProperties =
   | TreeProjectConcise
@@ -27,3 +29,8 @@ export type SliderImage = {
   image?: string | undefined;
   description?: string | null;
 };
+
+export type MapRef = MutableRefObject<ExtendedMapLibreMap | null>;
+export interface ExtendedMapLibreMap extends Map {
+  getMap: () => Map;
+}

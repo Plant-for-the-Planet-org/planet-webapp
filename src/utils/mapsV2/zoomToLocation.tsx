@@ -1,6 +1,6 @@
 import { SetState } from '../../features/common/types/common';
-import { ViewState } from 'react-map-gl-v7';
-import { MapRef } from './zoomToProjectSite';
+import { ViewState } from 'react-map-gl-v7/maplibre';
+import { MapRef } from '../../features/common/types/projectv2';
 
 export default function zoomToLocation(
   setViewState: SetState<ViewState>,

@@ -2,7 +2,7 @@ import * as turf from '@turf/turf';
 import { SetState } from '../../features/common/types/common';
 import { Position } from 'geojson';
 import { ViewState } from 'react-map-gl-v7/maplibre';
-import { MapRef } from './zoomToProjectSite';
+import { MapRef } from '../../features/common/types/projectv2';
 
 export function zoomToPolygonPlantLocation(
   coordinates: Position[],
