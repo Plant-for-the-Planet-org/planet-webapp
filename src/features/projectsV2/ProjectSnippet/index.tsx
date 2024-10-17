@@ -16,6 +16,8 @@ import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
+import { useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
 
 interface Props {
   project:
@@ -61,8 +63,9 @@ export default function ProjectSnippet({
   isMobile,
   page,
 }: Props): ReactElement {
-  const { embed } = useContext(ParamsContext);
-
+  const { embed, callbackUrl } = useContext(ParamsContext);
+  const locale = useLocale();
+  const router = useRouter();
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
@@ -119,17 +122,32 @@ export default function ProjectSnippet({
       ? styles.projectDetailsSnippetMobile
       : ''
   }`;
+
+  const navigateToProjectDetails = () => {
+    let path = `/${locale}/prd/${project.slug}`;
+    if (embed === 'true') {
+      const params = new URLSearchParams({ embed: 'true' });
+      if (callbackUrl !== undefined && typeof callbackUrl === 'string') {
+        params.append('callback', callbackUrl);
+      }
+      path += `?${params.toString()}`;
+    }
+    router.push(path);
+  };
+
   return (
     <>
       <div className={projectSnippetContainerClasses}>
-        <ImageSection {...imageProps} />
-        <div className={styles.progressBar}>
-          <div
-            className={`${styles.progressBarHighlight} ${progressBarClass}`}
-            style={{ width: `${progressPercentage}%` }}
-          />
-        </div>
-        <ProjectInfoSection {...projectInfoProps} />
+        <button onClick={navigateToProjectDetails}>
+          <ImageSection {...imageProps} />
+          <div className={styles.progressBar}>
+            <div
+              className={`${styles.progressBarHighlight} ${progressBarClass}`}
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          <ProjectInfoSection {...projectInfoProps} />
+        </button>
         {!isMobile && (
           <TpoName
             projectTpoName={project.tpo.name}
