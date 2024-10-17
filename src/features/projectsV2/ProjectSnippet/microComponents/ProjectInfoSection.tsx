@@ -68,7 +68,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
 
   return (
     <div className={styles.projectInfo}>
-      <div>
+      <div className={styles.projectInfoSubContainer}>
         <div className={styles.targetLocation}>
           <div className={styles.target}>
             {unitCount !== undefined && unitCount > 0 && (
