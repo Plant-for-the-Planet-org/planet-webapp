@@ -1,11 +1,16 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
-import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useCallback, useState } from 'react';
+import Map, { MapRef, NavigationControl } from 'react-map-gl-v7/maplibre';
+import { useCallback, useState, useEffect } from 'react';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
-import { getPlantLocationInfo } from '../../../utils/projectV2';
+import {
+  calculateCentroid,
+  centerMapOnCoordinates,
+  getPlantLocationInfo,
+  getValidFeatures,
+} from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
@@ -24,7 +29,7 @@ export type ProjectsMapMobileProps = {
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
-  const mapRef: MutableRefObject<null> = useRef(null);
+  const mapRef: MutableRefObject<MapRef | null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
   const [isOnSampleMarker, setIsOnSampleMarker] = useState(false);
   const {
@@ -33,8 +38,24 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedPlantLocation,
     setSelectedSite,
     setSelectedSamplePlantLocation,
+    filteredProjects,
   } = useProjects();
   const { projects, singleProject, selectedPlantLocation } = useProjects();
+
+  useEffect(() => {
+    const canCenterMap =
+      filteredProjects !== undefined &&
+      filteredProjects.length > 0 &&
+      mapRef.current;
+    if (!canCenterMap) return;
+
+    const validFeatures = getValidFeatures(filteredProjects);
+    if (validFeatures.length === 0) return;
+
+    const centroid = calculateCentroid(validFeatures);
+    if (centroid.geometry)
+      centerMapOnCoordinates(mapRef, centroid.geometry.coordinates);
+  }, [filteredProjects]);
 
   const shouldShowSingleProjectsView =
     singleProject !== null && props.page === 'project-details';

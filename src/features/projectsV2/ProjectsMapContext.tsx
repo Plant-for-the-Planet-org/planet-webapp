@@ -11,9 +11,7 @@ import { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../utils/maps/getMapStyle';
 import { SetState } from '../common/types/common';
 import { useProjects } from './ProjectsContext';
-import * as turf from '@turf/turf';
-import { Position } from 'geojson';
-import { MapProject } from '../common/types/projectv2';
+
 interface MapState {
   mapStyle: MapStyle;
   dragPan: boolean;
@@ -64,49 +62,15 @@ interface ProjectsMapState {
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
 }
 
-const isValidCoordinate = (coord: Position) =>
-  Array.isArray(coord) &&
-  coord.length === 2 &&
-  typeof coord[0] === 'number' &&
-  typeof coord[1] === 'number';
-
-const getValidFeatures = (projects: MapProject[]) =>
-  projects?.filter((feature) =>
-    isValidCoordinate(feature.geometry.coordinates)
-  ) ?? [];
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
-const calculateCentroid = (features: MapProject[]) => {
-  const featureCollection = {
-    type: 'FeatureCollection',
-    features,
-  };
-  return turf.centroid(featureCollection);
-};
 export const ProjectsMapProvider: FC = ({ children }) => {
-  const { filteredProjects, plantLocations } = useProjects();
+  const { plantLocations } = useProjects();
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [isSatelliteView, setIsSatelliteView] = useState(false);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     showProjects: true,
   });
-  useEffect(() => {
-    if (filteredProjects === undefined || filteredProjects.length === 0) return;
-    const validFeatures = getValidFeatures(filteredProjects);
-
-    if (validFeatures.length > 0) {
-      const centroid = calculateCentroid(validFeatures);
-
-      if (centroid.geometry) {
-        const [longitude, latitude] = centroid.geometry.coordinates;
-        setViewState((prev) => ({
-          ...prev,
-          longitude,
-          latitude,
-        }));
-      }
-    }
-  }, [filteredProjects]);
 
   useEffect(() => {
     if (plantLocations) setIsSatelliteView(!(plantLocations?.length > 0));
