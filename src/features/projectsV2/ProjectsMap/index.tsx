@@ -1,6 +1,6 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useRef, MutableRefObject } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
@@ -29,7 +29,6 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MutableRefObject<null> = useRef(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
-  const [isOnSampleMarker, setIsOnSampleMarker] = useState(false);
   const {
     plantLocations,
     setHoveredPlantLocation,
@@ -99,8 +98,9 @@ function ProjectsMap(props: ProjectsMapProps) {
         result.id === selectedPlantLocation?.id &&
         singleProject?.slug;
 
-      //Clear the sample plant state if the parent plant location (polygon) is selected
-      if (isOnSampleMarker === false) setSelectedSamplePlantLocation(null);
+      // Clear sample plant location on clicking outside.
+      // Clicks on sample plant location will not propagate on the map
+      setSelectedSamplePlantLocation(null);
 
       //Clear plant location info (single-tree-registration) if it is clicked twice
       if (isClickedOnSamePlantLocation) {
@@ -113,12 +113,11 @@ function ProjectsMap(props: ProjectsMapProps) {
         setSelectedPlantLocation(result);
       }
     },
-    [plantLocations, props.page, selectedPlantLocation, isOnSampleMarker]
+    [plantLocations, props.page, selectedPlantLocation]
   );
 
   const singleProjectViewProps = {
     mapRef,
-    setIsOnSampleMarker,
   };
   const multipleProjectsViewProps = {
     mapRef,

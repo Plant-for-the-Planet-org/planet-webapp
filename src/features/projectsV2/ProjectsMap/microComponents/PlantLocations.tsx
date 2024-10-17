@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, MouseEvent } from 'react';
 import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
 import styles from '../../../projects/styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
@@ -13,15 +13,8 @@ import {
 import { Feature, Point, Polygon } from 'geojson';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
-import { SetState } from '../../../common/types/common';
 
-interface Props {
-  setIsOnSampleMarker: SetState<boolean>;
-}
-
-export default function PlantLocations({
-  setIsOnSampleMarker,
-}: Props): ReactElement {
+export default function PlantLocations(): ReactElement {
   const {
     plantLocations,
     hoveredPlantLocation,
@@ -34,20 +27,27 @@ export default function PlantLocations({
 
   const t = useTranslations('Maps');
   const locale = useLocale();
-  const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
+
+  const openPl = (
+    e: MouseEvent<HTMLDivElement>,
+    pl: PlantLocationSingle | SamplePlantLocation
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (selectedSamplePlantLocation?.hid === pl.hid) {
       setSelectedSamplePlantLocation(null);
-      return;
-    }
-    switch (pl.type) {
-      case 'sample-tree-registration':
-        setSelectedSamplePlantLocation(pl);
-        break;
-      case 'single-tree-registration':
-        setSelectedPlantLocation(pl);
-        break;
-      default:
-        break;
+    } else {
+      switch (pl.type) {
+        case 'sample-tree-registration':
+          setSelectedSamplePlantLocation(pl);
+          break;
+        case 'single-tree-registration':
+          setSelectedPlantLocation(pl);
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -224,9 +224,7 @@ export default function PlantLocations({
                     }`}
                     role="button"
                     tabIndex={0}
-                    onClick={() => openPl(spl)}
-                    onMouseEnter={() => setIsOnSampleMarker(true)}
-                    onMouseLeave={() => setIsOnSampleMarker(false)}
+                    onClick={(e) => openPl(e, spl)}
                   />
                 </Marker>
               );
