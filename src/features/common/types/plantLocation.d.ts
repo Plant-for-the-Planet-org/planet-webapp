@@ -11,7 +11,6 @@ export interface PlantLocationBase {
   registrationDate: DateString;
   /** @deprecated */
   plantDate: DateString;
-  interventionDate: DateString;
   interventionStartDate: DateString | null; //should be the same as interventionDate
   interventionEndDate: DateString | null;
   lastMeasurementDate: DateString | null;
