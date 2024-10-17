@@ -254,7 +254,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const updateUrlWithSiteId = (
     locale: string,
     projectSlug: string,
-    siteId: string
+    siteId: string | null
   ) => {
     const updatedQueryParams = updateUrlWithParams(
       router.asPath,
@@ -286,17 +286,22 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     )
       return;
 
-    // Handle the case where a direct link requests a specific plant location (via URL query).
-    // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
-    // it falls back to the default (first) site.
     if (requestedPlantLocation && selectedPlantLocation === null) {
-      const result = plantLocations?.find(
-        (plantLocation) => plantLocation.hid === requestedPlantLocation
-      );
-      if (result) {
-        setSelectedPlantLocation(result);
+      const hasNoSites = singleProject.sites?.length === 0;
+
+      if (hasNoSites) {
+        //Case when a direct link requests a specific plant location but no sites exist for a project(e.g projectSlug: mothersforest).
+        updateUrlWithSiteId(locale, singleProject.slug, null);
       } else {
-        updateSiteAndUrl(locale, singleProject.slug, 0);
+        // Handle the case where a direct link requests a specific plant location (via URL query).
+        // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
+        // it falls back to the default (first) site.
+        const result = plantLocations?.find(
+          (plantLocation) => plantLocation.hid === requestedPlantLocation
+        );
+        result
+          ? setSelectedPlantLocation(result)
+          : updateSiteAndUrl(locale, singleProject.slug, 0);
       }
     }
 
@@ -324,7 +329,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedPlantLocation !== null
     )
       return;
-
     // Handle the case where a direct link requests a specific site (via URL query)
     // This will update the site param based on the requestedSite. If the requested site ID is invalid,
     // it falls back to the default (first) site.
