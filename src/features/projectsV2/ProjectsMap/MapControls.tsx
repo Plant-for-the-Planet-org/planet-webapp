@@ -38,17 +38,27 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     selectedPlantLocation,
+    selectedSamplePlantLocation,
     setSelectedPlantLocation,
+    setSelectedSamplePlantLocation,
   } = useProjects();
+
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
+  const canShowSatelliteToggle = !(
+    isMobile &&
+    (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
+  );
+  const isProjectDetailsPage = page === 'project-details';
+
   const siteDropdownProps = {
     selectedSite,
     setSelectedSite,
     projectSites: singleProject?.sites,
     selectedPlantLocation,
     setSelectedPlantLocation,
+    setSelectedSamplePlantLocation,
   };
   const projectListControlProps = {
     ...siteDropdownProps,
@@ -69,7 +79,11 @@ const MapControls = ({
     mapOptions,
     updateMapOption,
   };
-  const isProjectDetailsPage = page === 'project-details';
+
+  const exitMapMode = () => {
+    setSelectedMode && setSelectedMode('list');
+  };
+
   return (
     <>
       {isMobile && page === 'project-list' && (
@@ -85,7 +99,8 @@ const MapControls = ({
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
               <button
-                onClick={() => setSelectedMode && setSelectedMode('list')}
+                className={styles.exitMapModeButton}
+                onClick={exitMapMode}
               >
                 <CrossIcon width={18} />
               </button>
@@ -97,12 +112,14 @@ const MapControls = ({
               )}
             </>
           )}
-          <button
-            className={styles.layerToggle}
-            onClick={() => setIsSatelliteView(!isSatelliteView)}
-          >
-            {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
-          </button>
+          {canShowSatelliteToggle && (
+            <button
+              className={styles.layerToggle}
+              onClick={() => setIsSatelliteView(!isSatelliteView)}
+            >
+              {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
+            </button>
+          )}
         </>
       )}
     </>

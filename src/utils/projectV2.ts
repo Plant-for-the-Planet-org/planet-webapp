@@ -1,6 +1,5 @@
 import { TreeProjectClassification } from '@planet-sdk/common';
-import { MapRef, PointLike } from 'react-map-gl-v7/maplibre';
-import { MutableRefObject } from 'react';
+import { PointLike } from 'react-map-gl-v7/maplibre';
 import { ParsedUrlQuery } from 'querystring';
 import {
   MapProjectProperties,
@@ -14,6 +13,7 @@ import {
 } from '../features/common/types/plantLocation';
 import * as turf from '@turf/turf';
 import { Position } from 'geojson';
+import { MapRef } from './mapsV2/zoomToProjectSite';
 
 const paramsToPreserve = [
   'embed',
@@ -103,7 +103,7 @@ export const availableFilters: TreeProjectClassification[] = [
 
 export const getPlantLocationInfo = (
   plantLocations: PlantLocation[] | null,
-  mapRef: MutableRefObject<MapRef | null>,
+  mapRef: MapRef,
   point: PointLike
 ) => {
   if (!mapRef.current || plantLocations?.length === 0) {
@@ -185,7 +185,7 @@ export const calculateCentroid = (features: MapProject[]) => {
  * @returns
  */
 export const centerMapOnCoordinates = (
-  mapRef: MutableRefObject<MapRef | null>,
+  mapRef: MapRef,
   [longitude, latitude]: Position
 ) => {
   if (!mapRef.current) return;
