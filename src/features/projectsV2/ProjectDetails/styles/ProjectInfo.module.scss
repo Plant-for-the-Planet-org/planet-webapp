@@ -30,6 +30,10 @@
   color: #2f3336; //to be replaced
   font-size: $fontXXSmall;
 }
+
+.keyInfoContainer {
+  gap: 16px;
+}
 .additionalInfoContainer {
   background: rgba(var(--more-info-background-color-new), 0.1);
   gap: 16px;
@@ -69,12 +73,6 @@
   display: flex;
   width: 100%;
   flex-direction: row;
-}
-
-.seperator {
-  height: 0.5px;
-  background-color: rgba(var(--secondary-divider-color-new), 0.2);
-  margin: 12px 0;
 }
 
 .infoIconPopupContainer {
