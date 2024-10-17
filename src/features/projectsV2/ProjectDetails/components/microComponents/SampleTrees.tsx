@@ -14,24 +14,29 @@ const SampleTreeList = ({
   const tProjectDetails = useTranslations('ProjectDetails');
 
   return (
-    <div className={styles.sampleSpeciesListContainer}>
-      {sampleInterventions.map((sampleSpecies, index) => {
+    <div
+      className={`sample-tree-list-container ${styles.sampleTreeListContainer}`}
+    >
+      {sampleInterventions.map((sampleTree, index) => {
         return (
-          <div key={sampleSpecies.id} className={styles.sampleSpeciesContainer}>
+          <div
+            key={sampleTree.id}
+            className={`sample-tree-container ${styles.sampleTreeContainer}`}
+          >
             <button
               className={styles.scientificNameContainer}
-              onClick={() => setSelectedSamplePlantLocation(sampleSpecies)}
+              onClick={() => setSelectedSamplePlantLocation(sampleTree)}
             >
               <span>{index + 1}</span>.
               <p className={styles.scientificName}>
-                {sampleSpecies.scientificName}
+                {sampleTree.scientificName}
               </p>
             </button>
-            <p className={styles.speciesMeasurement}>
-              {tProjectDetails('speciesMeasurement', {
-                hid: sampleSpecies.hid,
-                plantHeight: sampleSpecies.measurements.height,
-                plantWidth: sampleSpecies.measurements.width,
+            <p className={styles.treeMeasurement}>
+              {tProjectDetails('sampleTreeMeasurement', {
+                hid: sampleTree.hid,
+                plantHeight: sampleTree.measurements.height,
+                plantWidth: sampleTree.measurements.width,
               })}
             </p>
           </div>
@@ -46,7 +51,7 @@ const SampleTrees = ({
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
-    <div className={styles.sampleTreesContainer}>
+    <div className={`sample-trees-container ${styles.sampleTreesContainer}`}>
       <h2 className={styles.mainLabel}>
         {tProjectDetails('sampleTrees', {
           count: sampleInterventions.length,

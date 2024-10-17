@@ -39,12 +39,16 @@ const PlantInfoCard = ({
       shouldRender: tag !== undefined || tag !== null,
     },
   ];
+
   return (
-    <>
-      <div className={styles.plantingDetailsGroup}>
+    <div className={`plant-info-card ${styles.plantInfoCard}`}>
+      <div className={`planting-details-group ${styles.plantingDetailsGroup}`}>
         {sampleTreeConfig.map((item, key) => {
           return item.shouldRender ? (
-            <div key={key} className={styles.plantingDetailsItem}>
+            <div
+              key={key}
+              className={`planting-details-item ${styles.plantingDetailsItem}`}
+            >
               <h2 className={styles.label}>{item.label}</h2>
               <p className={styles.data}>{item.data}</p>
             </div>
@@ -52,13 +56,13 @@ const PlantInfoCard = ({
         })}
       </div>
       {scientificName && (
-        <div className={styles.plantingDetailsItem}>
+        <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
           <h2 className={styles.label}>{t('scientificName')}</h2>
           <p className={styles.data}>{scientificName}</p>
         </div>
       )}
       {measurements && (
-        <div className={styles.plantingDetailsItem}>
+        <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
           <h2 className={styles.label}>{t('measurement')}</h2>
           <p className={styles.data}>
             {t('singleSpeciesMeasurement', {
@@ -69,7 +73,7 @@ const PlantInfoCard = ({
         </div>
       )}
       {type === 'sample-tree-registration' && (
-        <div className={styles.plantingDetailsItem}>
+        <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
           <h2 className={styles.label}>{t('plot')}</h2>
           <button
             className={styles.showWholeArea}
@@ -79,7 +83,7 @@ const PlantInfoCard = ({
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
