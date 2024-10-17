@@ -21,7 +21,7 @@ const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
     [totalTreesCount]
   );
   return (
-    <div className={styles.speciesContainer}>
+    <div className={`species-container ${styles.speciesContainer}`}>
       <h2>
         {tProjectDetails('speciesCount', {
           count: plantedSpecies.length,

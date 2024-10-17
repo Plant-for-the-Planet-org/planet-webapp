@@ -1,5 +1,8 @@
 import { SetState } from '../../../common/types/common';
-import { PlantLocation } from '../../../common/types/plantLocation';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 
 type SiteData = {
@@ -13,6 +16,7 @@ interface ProjectSiteListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 const ProjectSiteList = ({
   siteList,
@@ -20,9 +24,11 @@ const ProjectSiteList = ({
   setIsMenuOpen,
   selectedSiteData,
   setSelectedPlantLocation,
+  setSelectedSamplePlantLocation,
 }: ProjectSiteListProps) => {
   const handleSiteSelection = (index: number) => {
     setSelectedPlantLocation(null);
+    setSelectedSamplePlantLocation(null);
     setIsMenuOpen(false);
     setSelectedSite(index);
   };
