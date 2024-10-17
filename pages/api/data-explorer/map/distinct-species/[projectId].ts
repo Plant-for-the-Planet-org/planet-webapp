@@ -10,11 +10,12 @@ import {
   UncleanDistinctSpecies,
 } from '../../../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../../../src/redis-client';
+import { cacheKeyPrefix } from '../../../../../src/utils/constants/cacheKeyPrefix';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
 
-const KEY = 'DISTINCT_SPECIES';
+const KEY = `${cacheKeyPrefix}_DISTINCT_SPECIES`;
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 

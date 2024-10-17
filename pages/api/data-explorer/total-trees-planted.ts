@@ -8,6 +8,7 @@ import {
 import { getCachedKey } from '../../../src/utils/getCachedKey';
 import { TotalTreesPlanted } from '../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../src/redis-client';
+import { cacheKeyPrefix } from '../../../src/utils/constants/cacheKeyPrefix';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
@@ -26,11 +27,7 @@ handler.post(async (req, response) => {
 
   const { projectId, startDate, endDate } = req.body;
 
-  const cachingKeyPrefix =
-    process.env.API_ENDPOINT?.replace('https://', '').split('.')[0] ||
-    'env_missing';
-
-  const CACHE_KEY = `${cachingKeyPrefix}_TOTAL_TREES_PLANTED__${getCachedKey(
+  const CACHE_KEY = `${cacheKeyPrefix}_TOTAL_TREES_PLANTED__${getCachedKey(
     projectId,
     startDate,
     endDate

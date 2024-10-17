@@ -1,5 +1,6 @@
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import redisClient from '../../redis-client';
+import { cacheKeyPrefix } from '../constants/cacheKeyPrefix';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
@@ -58,11 +59,7 @@ export async function constructPathsForTenantSlug() {
  */
 export const getTenantConfig = async (slug: string): Promise<Tenant> => {
   try {
-    // If the API_ENDPOINT is https://app-staging.planet.com, the cachingKeyPrefix will be 'staging'
-    const cachingKeyPrefix =
-      process.env.API_ENDPOINT?.replace('https://', '').split('.')[0] ||
-      'env_missing';
-    const caching_key = `${cachingKeyPrefix}_TENANT_CONFIG_${slug}`;
+    const caching_key = `${cacheKeyPrefix}_TENANT_CONFIG_${slug}`;
 
     const tenant =
       redisClient !== null ? await redisClient.get<Tenant>(caching_key) : null;
