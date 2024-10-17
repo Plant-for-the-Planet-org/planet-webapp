@@ -124,6 +124,7 @@ export default function ProjectSnippet({
   }`;
 
   const navigateToProjectDetails = () => {
+    if (page === 'project-details') return;
     let path = `/${locale}/prd/${project.slug}`;
     if (embed === 'true') {
       const params = new URLSearchParams({ embed: 'true' });
@@ -138,7 +139,10 @@ export default function ProjectSnippet({
   return (
     <>
       <div className={projectSnippetContainerClasses}>
-        <button onClick={navigateToProjectDetails}>
+        <button
+          onClick={navigateToProjectDetails}
+          style={{ cursor: page === 'project-list' ? 'pointer' : 'default' }}
+        >
           <ImageSection {...imageProps} />
           <div className={styles.progressBar}>
             <div
