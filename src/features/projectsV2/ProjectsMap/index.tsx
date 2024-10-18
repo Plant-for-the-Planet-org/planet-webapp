@@ -92,8 +92,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
-      const hasNoSites =
-        singleProject?.sites && singleProject?.sites?.length === 0;
+      const hasNoSites = singleProject?.sites?.length === 0;
       const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
 
       const isSamePlantLocation =

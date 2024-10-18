@@ -267,12 +267,16 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const updateSiteAndUrl = (
     locale: string,
     projectSlug: string,
-    siteIndex: number
+    siteIndex: number | null
   ) => {
-    if (singleProject?.sites?.length === 0) return;
+    if (!singleProject?.sites?.length) return;
+
     setSelectedSite(siteIndex);
-    const siteId = singleProject?.sites?.[siteIndex].properties.id;
-    if (siteId) updateUrlWithSiteId(locale, projectSlug, siteId);
+
+    const siteId =
+      siteIndex !== null ? singleProject.sites[siteIndex]?.properties.id : null;
+
+    updateUrlWithSiteId(locale, projectSlug, siteId);
   };
 
   useEffect(() => {
@@ -291,7 +295,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
       if (hasNoSites) {
         //Case when a direct link requests a specific plant location but no sites exist for a project(e.g projectSlug: mothersforest).
-        updateUrlWithSiteId(locale, singleProject.slug, null);
+        updateSiteAndUrl(locale, singleProject.slug, null);
       } else {
         // Handle the case where a direct link requests a specific plant location (via URL query).
         // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
