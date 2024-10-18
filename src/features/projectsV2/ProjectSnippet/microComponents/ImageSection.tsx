@@ -1,4 +1,4 @@
-import { useCallback, useContext, MouseEvent } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -27,6 +27,8 @@ const ImageSection = (props: ImageSectionProps) => {
     isTopProject,
     allowDonations,
     page,
+    setSelectedSite,
+    setPreventShallowPush,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
@@ -37,7 +39,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const handleImageClick = () => {
     router.push(
       `/${locale}/prd/${slug}/${
-        embed === 'true'
+        isEmbed
           ? `${
               callbackUrl != undefined
                 ? `?embed=true&callback=${callbackUrl}`
@@ -47,22 +49,28 @@ const ImageSection = (props: ImageSectionProps) => {
       }`
     );
   };
-  const handleBackButton = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-    if (document.referrer) {
-      window.history.go(-2);
+
+  const handleBackButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (setPreventShallowPush) setPreventShallowPush(true);
+    setSelectedSite(null);
+    event.stopPropagation();
+    const previousPageRoute = localStorage.getItem('redirectLink');
+    const defaultRoute = `/${locale}/prd`;
+    const queryParams = {
+      ...(isEmbed ? { embed: 'true' } : {}),
+      ...(isEmbed && callbackUrl !== undefined
+        ? { callback: callbackUrl }
+        : {}),
+    };
+    if (previousPageRoute) {
+      router.push(previousPageRoute);
     } else {
-      router.replace({
-        pathname: `/${locale}/prd`,
-        query: {
-          ...(isEmbed ? { embed: 'true' } : {}),
-          ...(isEmbed && callbackUrl !== undefined
-            ? { callback: callbackUrl }
-            : {}),
-        },
+      router.push({
+        pathname: defaultRoute,
+        query: queryParams,
       });
     }
-  }, []);
+  };
 
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   const imageContainerClasses = `${styles.projectImage} ${

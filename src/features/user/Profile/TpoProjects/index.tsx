@@ -10,6 +10,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useRouter } from 'next/router';
 
 const ProjectSnippet = dynamic(
   () => import('../../../projectsV2/ProjectSnippet'),
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function ProjectsContainer({ profile }: Props) {
+  const router = useRouter();
   const { tenantConfig } = useTenant();
   const t = useTranslations('Donate');
   const locale = useLocale();
@@ -46,6 +48,7 @@ export default function ProjectsContainer({ profile }: Props) {
 
   React.useEffect(() => {
     loadProjects();
+    localStorage.setItem('redirectLink', router.asPath);
   }, [locale]);
 
   if (projects === undefined) return null;
