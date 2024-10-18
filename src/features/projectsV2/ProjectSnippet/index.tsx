@@ -17,7 +17,7 @@ import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import { useLocale } from 'next-intl';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface Props {
   project:
@@ -65,7 +65,6 @@ export default function ProjectSnippet({
 }: Props): ReactElement {
   const { embed, callbackUrl } = useContext(ParamsContext);
   const locale = useLocale();
-  const router = useRouter();
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
@@ -123,8 +122,9 @@ export default function ProjectSnippet({
       : ''
   }`;
 
-  const navigateToProjectDetails = () => {
-    if (page === 'project-details') return;
+  const getProjectPath = () => {
+    if (page === 'project-details') return '#';
+
     let path = `/${locale}/prd/${project.slug}`;
     if (embed === 'true') {
       const params = new URLSearchParams({ embed: 'true' });
@@ -133,14 +133,14 @@ export default function ProjectSnippet({
       }
       path += `?${params.toString()}`;
     }
-    router.push(path);
+    return path;
   };
 
   return (
     <>
       <div className={projectSnippetContainerClasses}>
-        <button
-          onClick={navigateToProjectDetails}
+        <Link
+          href={getProjectPath()}
           style={{ cursor: page === 'project-list' ? 'pointer' : 'default' }}
         >
           <ImageSection {...imageProps} />
@@ -151,7 +151,8 @@ export default function ProjectSnippet({
             />
           </div>
           <ProjectInfoSection {...projectInfoProps} />
-        </button>
+        </Link>
+
         {!isMobile && (
           <TpoName
             projectTpoName={project.tpo.name}
