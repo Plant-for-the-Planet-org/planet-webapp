@@ -31,12 +31,12 @@
   font-size: $fontXXSmall;
 }
 
+.additionalInfoContainer,
 .keyInfoContainer {
   gap: 16px;
 }
 .additionalInfoContainer {
   background: rgba(var(--more-info-background-color-new), 0.1);
-  gap: 16px;
 }
 
 .projectSummary {

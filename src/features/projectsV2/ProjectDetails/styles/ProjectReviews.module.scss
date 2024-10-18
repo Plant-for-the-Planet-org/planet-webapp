@@ -35,12 +35,12 @@
     font-size: $fontXXXSmallNew;
     color: rgb(var(--review-font-color-new));
     font-weight: 700;
-    margin-right: 6px;
   }
   a {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
   }
 }
 
