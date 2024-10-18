@@ -17,8 +17,10 @@ const PlantLocationHeader = ({
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
   return (
-    <div className={styles.plantLocationHeaderContainer}>
-      <div className={styles.treeCount}>
+    <div
+      className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
+    >
+      <div className={`tree-count ${styles.treeCount}`}>
         {tProjectDetails.rich('totalPlantedSpecies', {
           count: totalTreesCount,
           formattedCount: localizedAbbreviatedNumber(
@@ -30,7 +32,7 @@ const PlantLocationHeader = ({
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>
-      <div className={styles.hid}>{formatHid(plHid)}</div>
+      <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
     </div>
   );
 };

@@ -3,7 +3,10 @@ import ProjectSiteDropdown from '../ProjectSiteDropDown';
 import { Feature, Polygon } from 'geojson';
 import { SiteProperties } from '../ProjectSiteDropDown';
 import { useState } from 'react';
-import { PlantLocationMulti } from '../../../common/types/plantLocation';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 
 const meta: Meta<typeof ProjectSiteDropdown> = {
   title: 'Projects/Details/ProjectSiteDropdown',
@@ -124,7 +127,7 @@ const options: Feature<Polygon, SiteProperties>[] = [
     },
   },
 ];
-const selectedPlantLocation: PlantLocationMulti = {
+/* const selectedPlantLocation: PlantLocationMulti = {
   nextMeasurementDate: null,
   hid: 'ZAUYCK',
   metadata: {
@@ -189,7 +192,7 @@ const selectedPlantLocation: PlantLocationMulti = {
         {
           image: '6307f34b7a152996408413.jpg',
           created: '2022-08-18 10:41:29',
-          coordinateIndex: '0',
+          coordinateIndex: 0,
           id: 'coord_6vhswbkD5SFozbIyCCGPtPi7',
           updated: '2022-08-25 22:10:19',
           status: 'complete',
@@ -287,10 +290,15 @@ const selectedPlantLocation: PlantLocationMulti = {
   },
   status: null,
   image: null,
-};
+}; */
+
 export const Preview: Story = {
   render: () => {
-    const [selectedSite, setSelectedSite] = useState(0);
+    const [selectedSite, setSelectedSite] = useState<null | number>(0);
+    const [selectedPlantLocation, setSelectedPlantLocation] =
+      useState<PlantLocation | null>(null);
+    const [_selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
+      useState<SamplePlantLocation | null>(null);
 
     return (
       <ProjectSiteDropdown
@@ -300,7 +308,8 @@ export const Preview: Story = {
           setSelectedSite(index);
         }}
         selectedPlantLocation={selectedPlantLocation}
-        setSelectedPlantLocation={() => {}}
+        setSelectedPlantLocation={setSelectedPlantLocation}
+        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
       />
     );
   },
