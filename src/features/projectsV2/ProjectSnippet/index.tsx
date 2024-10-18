@@ -16,6 +16,8 @@ import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
+import { useLocale } from 'next-intl';
+import Link from 'next/link';
 
 interface Props {
   project:
@@ -61,8 +63,8 @@ export default function ProjectSnippet({
   isMobile,
   page,
 }: Props): ReactElement {
-  const { embed } = useContext(ParamsContext);
-
+  const { embed, callbackUrl } = useContext(ParamsContext);
+  const locale = useLocale();
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
@@ -119,17 +121,38 @@ export default function ProjectSnippet({
       ? styles.projectDetailsSnippetMobile
       : ''
   }`;
+
+  const getProjectPath = () => {
+    if (page === 'project-details') return '#';
+
+    let path = `/${locale}/prd/${project.slug}`;
+    if (embed === 'true') {
+      const params = new URLSearchParams({ embed: 'true' });
+      if (callbackUrl !== undefined && typeof callbackUrl === 'string') {
+        params.append('callback', callbackUrl);
+      }
+      path += `?${params.toString()}`;
+    }
+    return path;
+  };
+
   return (
     <>
       <div className={projectSnippetContainerClasses}>
-        <ImageSection {...imageProps} />
-        <div className={styles.progressBar}>
-          <div
-            className={`${styles.progressBarHighlight} ${progressBarClass}`}
-            style={{ width: `${progressPercentage}%` }}
-          />
-        </div>
-        <ProjectInfoSection {...projectInfoProps} />
+        <Link
+          href={getProjectPath()}
+          style={{ cursor: page === 'project-list' ? 'pointer' : 'default' }}
+        >
+          <ImageSection {...imageProps} />
+          <div className={styles.progressBar}>
+            <div
+              className={`${styles.progressBarHighlight} ${progressBarClass}`}
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          <ProjectInfoSection {...projectInfoProps} />
+        </Link>
+
         {!isMobile && (
           <TpoName
             projectTpoName={project.tpo.name}

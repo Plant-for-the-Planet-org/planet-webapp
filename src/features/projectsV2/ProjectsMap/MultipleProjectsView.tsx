@@ -10,11 +10,13 @@ import { MapRef } from '../../common/types/projectv2';
 interface MultipleProjectsViewProps {
   setViewState: SetState<ViewState>;
   mapRef: MapRef;
+  page: 'project-list' | 'project-details';
 }
 
 const MultipleProjectsView = ({
   setViewState,
   mapRef,
+  page,
 }: MultipleProjectsViewProps) => {
   const { projects, isLoading, isError, filteredProjects } = useProjects();
   if (isLoading || isError || !projects) {
@@ -59,7 +61,9 @@ const MultipleProjectsView = ({
       }
     );
   }, [projects, filteredProjects, isLoading, isError]);
-  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
+  return (
+    <ProjectMarkers categorizedProjects={categorizedProjects} page={page} />
+  );
 };
 
 export default MultipleProjectsView;
