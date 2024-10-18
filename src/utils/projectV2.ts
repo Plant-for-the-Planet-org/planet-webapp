@@ -1,17 +1,19 @@
 import { TreeProjectClassification } from '@planet-sdk/common';
-import { MapRef, PointLike } from 'react-map-gl-v7/maplibre';
-import { MutableRefObject } from 'react';
+import { PointLike } from 'react-map-gl-v7/maplibre';
 import { ParsedUrlQuery } from 'querystring';
 import {
   MapProjectProperties,
   ExtendedProject,
+  MapProject,
 } from '../features/common/types/projectv2';
 import {
   PlantLocation,
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../features/common/types/plantLocation';
-import { NextRouter } from 'next/router';
+import * as turf from '@turf/turf';
+import { Position } from 'geojson';
+import { MapRef } from '../features/common/types/projectv2';
 
 const paramsToPreserve = [
   'embed',
@@ -101,7 +103,7 @@ export const availableFilters: TreeProjectClassification[] = [
 
 export const getPlantLocationInfo = (
   plantLocations: PlantLocation[] | null,
-  mapRef: MutableRefObject<MapRef | null>,
+  mapRef: MapRef,
   point: PointLike
 ) => {
   if (!mapRef.current || plantLocations?.length === 0) {
@@ -141,4 +143,55 @@ export const getPlantData = (
   if (selectedSample?.type === 'sample-tree-registration')
     return selectedSample;
   return undefined;
+};
+
+const isValidCoordinate = (coord: Position) =>
+  Array.isArray(coord) &&
+  coord.length === 2 &&
+  typeof coord[0] === 'number' &&
+  typeof coord[1] === 'number';
+
+/**
+ * Filters a list of project features to include only those with valid coordinates.
+ * A project feature is considered valid if its geometry.
+ * coordinates array contains exactly two numbers (longitude and latitude)
+ * @param {MapProject[]} projects
+ * @returns
+ */
+export const getValidFeatures = (projects: MapProject[]) =>
+  projects?.filter((feature) =>
+    isValidCoordinate(feature.geometry.coordinates)
+  ) ?? [];
+
+/**
+ * Calculates the centroid (geometric center) of a collection of project features.
+ * The features are converted into a GeoJSON FeatureCollection, and the centroid is calculated using Turf.js.
+ * @param {MapProject[]} features
+ * @returns
+ */
+export const calculateCentroid = (features: MapProject[]) => {
+  const featureCollection = {
+    type: 'FeatureCollection',
+    features,
+  };
+  return turf.centroid(featureCollection);
+};
+
+/**
+ *  Centers the map on a given longitude and latitude using a smooth transition (animated).
+ *  It uses the MapLibre easeTo method for map animation with a custom easing function
+ * @param mapRef
+ * @param param1
+ * @returns
+ */
+export const centerMapOnCoordinates = (
+  mapRef: MapRef,
+  [longitude, latitude]: Position
+) => {
+  if (!mapRef.current) return;
+  mapRef.current.getMap().easeTo({
+    center: [longitude, latitude],
+    duration: 1200,
+    easing: (t) => t * (2 - t),
+  });
 };
