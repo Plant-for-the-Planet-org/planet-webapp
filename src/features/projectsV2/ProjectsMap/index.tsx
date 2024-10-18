@@ -1,7 +1,7 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useCallback, useEffect } from 'react';
-import { useRef, MutableRefObject } from 'react';
+import { useRef } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';

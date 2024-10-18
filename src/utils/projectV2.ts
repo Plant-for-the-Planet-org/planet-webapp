@@ -13,7 +13,7 @@ import {
 } from '../features/common/types/plantLocation';
 import * as turf from '@turf/turf';
 import { Position } from 'geojson';
-import { MapRef } from './mapsV2/zoomToProjectSite';
+import { MapRef } from '../features/common/types/projectv2';
 
 const paramsToPreserve = [
   'embed',
