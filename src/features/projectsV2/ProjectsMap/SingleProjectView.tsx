@@ -75,7 +75,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         zoomToLocation(setViewState, longitude, latitude, 10, 4000, mapRef);
       }
     }
-  }, [selectedSite, router.isReady]);
+  }, [selectedSite, router.isReady, selectedPlantLocation]);
 
   return (
     <>
