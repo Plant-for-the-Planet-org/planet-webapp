@@ -16,20 +16,24 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
-  if (!singleProject?.sites) {
-    return null;
-  }
+  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
+    useProjects();
+  if (!singleProject?.sites) return null;
   const hasNoSites = singleProject.sites?.length === 0;
-  const { isSatelliteView, setViewState } = useProjectsMap();
+  const { isSatelliteView, setViewState, setIsSatelliteView } =
+    useProjectsMap();
   const router = useRouter();
   const { p: projectSlug } = router.query;
+
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: singleProject?.sites ?? [],
+      features: (singleProject.sites ?? []).filter(
+        (site) => site.geometry !== null
+      ),
     };
   }, [projectSlug]);
+
   // Zoom to plant location
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
@@ -59,7 +63,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;
 
-    if (selectedSite !== null) {
+    if (selectedSite !== null && sitesGeojson.features.length > 0) {
       zoomInToProjectSite(
         mapRef,
         sitesGeojson,
@@ -77,9 +81,16 @@ const SingleProjectView = ({ mapRef }: Props) => {
     }
   }, [selectedSite, router.isReady]);
 
+  useEffect(() => {
+    const hasNoPlantLocations = plantLocations?.length === 0;
+    const hasNoSites = sitesGeojson.features.length === 0;
+
+    setIsSatelliteView(hasNoPlantLocations || hasNoSites);
+  }, [plantLocations, sitesGeojson]);
+
   return (
     <>
-      {hasNoSites ? (
+      {hasNoSites || sitesGeojson.features.length === 0 ? (
         <ProjectLocation
           latitude={singleProject.coordinates.lat}
           longitude={singleProject.coordinates.lon}
