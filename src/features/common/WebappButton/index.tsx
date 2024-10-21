@@ -37,7 +37,6 @@ function WebappButton({
         className={styles.webappButtonLink}
       >
         <button
-          onClick={(e) => e.stopPropagation()}
           className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
         >
           {otherProps.icon !== undefined && (

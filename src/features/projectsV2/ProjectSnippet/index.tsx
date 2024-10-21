@@ -164,7 +164,11 @@ export default function ProjectSnippet({
         {page === 'project-details' ? (
           <ProjectSnippetContent {...ProjectSnippetContentProps} />
         ) : (
-          <Link href={getProjectPath()} style={{ cursor: 'pointer' }}>
+          <Link
+            href={getProjectPath()}
+            style={{ cursor: 'pointer' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <ProjectSnippetContent {...ProjectSnippetContentProps} />
           </Link>
         )}
