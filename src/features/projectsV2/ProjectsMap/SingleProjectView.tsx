@@ -28,9 +28,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: (singleProject.sites ?? []).filter(
-        (site) => site.geometry !== null
-      ),
+      features: singleProject.sites ?? [],
     };
   }, [projectSlug]);
 
@@ -63,7 +61,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;
 
-    if (selectedSite !== null && sitesGeojson.features.length > 0) {
+    if (selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeojson,
@@ -83,14 +81,12 @@ const SingleProjectView = ({ mapRef }: Props) => {
 
   useEffect(() => {
     const hasNoPlantLocations = plantLocations?.length === 0;
-    const hasNoSites = sitesGeojson.features.length === 0;
-
     setIsSatelliteView(hasNoPlantLocations || hasNoSites);
-  }, [plantLocations, sitesGeojson]);
+  }, [plantLocations, hasNoSites]);
 
   return (
     <>
-      {hasNoSites || sitesGeojson.features.length === 0 ? (
+      {hasNoSites ? (
         <ProjectLocation
           latitude={singleProject.coordinates.lat}
           longitude={singleProject.coordinates.lon}
