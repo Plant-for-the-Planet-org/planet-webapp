@@ -108,24 +108,6 @@ export default function MyTreesMap({
     }
   };
 
-  // const getDateDiff = (pl: PlantLocation) => {
-  //   const today = new Date();
-  //   const plantationDate = new Date(pl.plantDate?.substr(0, 10));
-  //   const differenceInTime = today.getTime() - plantationDate.getTime();
-  //   const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-  //   if (differenceInDays < 1) {
-  //     return t('today');
-  //   } else if (differenceInDays < 2) {
-  //     return t('yesterday');
-  //   } else if (differenceInDays < 30) {
-  //     return t('daysAgo', {
-  //       days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
-  //     });
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   const zoomToLocation = (geometry: turf.AllGeoJSON) => {
     if (viewport.width && viewport.height && geometry) {
       const bbox = turf.bbox(geometry);

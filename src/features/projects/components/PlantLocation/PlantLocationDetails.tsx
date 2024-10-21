@@ -207,7 +207,9 @@ export default function PlantLocationDetails({
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>{t('plantingDate')}</div>
                 <div className={styles.detailValue}>
-                  {formatDate(plantLocation.plantDate)}
+                  {plantLocation.interventionStartDate
+                    ? formatDate(plantLocation.interventionStartDate)
+                    : '-'}
                 </div>
               </div>
               {(plantLocation.type === 'sample-tree-registration' ||

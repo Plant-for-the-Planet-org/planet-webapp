@@ -60,14 +60,16 @@ export default function ReviewSubmit({
                     {plantLocation.captureMode}
                   </div>
                 </div>
-                <div className={styles.gridItem}>
-                  <div className={styles.gridItemTitle}>
-                    {tTreemapper('plantDate')}
+                {plantLocation.interventionStartDate !== null && (
+                  <div className={styles.gridItem}>
+                    <div className={styles.gridItemTitle}>
+                      {tTreemapper('plantDate')}
+                    </div>
+                    <div className={styles.gridItemValue}>
+                      {formatDate(plantLocation.interventionStartDate)}
+                    </div>
                   </div>
-                  <div className={styles.gridItemValue}>
-                    {formatDate(plantLocation.plantDate)}
-                  </div>
-                </div>
+                )}
                 <div className={styles.gridItem}>
                   <div className={styles.gridItemTitle}>
                     {tTreemapper('registrationDate')}
