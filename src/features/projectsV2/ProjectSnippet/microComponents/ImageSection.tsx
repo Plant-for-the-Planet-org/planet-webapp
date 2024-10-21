@@ -36,10 +36,9 @@ const ImageSection = (props: ImageSectionProps) => {
   const { embed, callbackUrl } = useContext(ParamsContext);
   const isEmbed = embed === 'true';
 
-  const handleBackButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
     setSelectedSite(null);
-    event.stopPropagation();
     const previousPageRoute = localStorage.getItem('redirectLink');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {
