@@ -22,19 +22,19 @@
 .projectSummary,
 .contactDetailsContainer {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
   flex-wrap: wrap;
   padding: 16px;
-  background: rgba(var(--abandonment-background-color-new), 0.1);
   border-radius: 14px;
-  flex-direction: column;
   color: #2f3336; //to be replaced
   font-size: $fontXXSmall;
 }
 
-.additionalInfoContainer,
 .keyInfoContainer {
-  gap: 16px;
+  background: rgba(var(--abandonment-background-color-new), 0.1);
 }
+
 .additionalInfoContainer {
   background: rgba(var(--more-info-background-color-new), 0.1);
 }
