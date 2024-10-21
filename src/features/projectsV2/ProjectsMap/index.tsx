@@ -112,22 +112,27 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
+      const hasNoSites = singleProject?.sites?.length === 0;
       const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
-      const isClickedOnSamePlantLocation =
-        result?.geometry.type === 'Point' &&
-        result.id === selectedPlantLocation?.id &&
-        singleProject?.slug;
 
+      const isSamePlantLocation =
+        result?.geometry.type === 'Point' &&
+        result.id === selectedPlantLocation?.id;
+      const isSingleTree =
+        selectedPlantLocation?.type === 'single-tree-registration';
+      const isMultiTree =
+        selectedPlantLocation?.type === 'multi-tree-registration';
       // Clear sample plant location on clicking outside.
       // Clicks on sample plant location will not propagate on the map
       setSelectedSamplePlantLocation(null);
-
-      //Clear plant location info (single-tree-registration) if it is clicked twice
-      if (isClickedOnSamePlantLocation) {
-        setSelectedSite(0);
+      // Clear plant location info if clicked twice (single or multi tree) // point plant location
+      if (isSamePlantLocation && (isSingleTree || isMultiTree)) {
         setSelectedPlantLocation(null);
+        setSelectedSite(hasNoSites ? null : 0);
         return;
       }
+
+      // Set selected plant location if a result is found
       if (result) {
         setSelectedSite(null);
         setSelectedPlantLocation(result);
