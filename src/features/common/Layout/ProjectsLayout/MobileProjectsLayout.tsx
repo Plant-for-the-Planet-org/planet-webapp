@@ -50,7 +50,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
             </section>
           )}
         </main>
-        <Credits setCurrencyCode={setCurrencyCode} />
+        <Credits setCurrencyCode={setCurrencyCode} isMobile={isMobile} />
       </ProjectsMapProvider>
     </ProjectsProvider>
   );
