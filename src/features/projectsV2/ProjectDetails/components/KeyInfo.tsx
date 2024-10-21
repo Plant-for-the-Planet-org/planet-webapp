@@ -93,9 +93,7 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
       </div>
-      {(abandonment || startingProtectionYear || firstTreePlanted) && (
-        <div className={styles.seperator} />
-      )}
+
       <div className={styles.singleRowInfoContainer}>
         {plantingDensity && (
           <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
@@ -113,7 +111,7 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
       </div>
-      {(employees || plantingDensity) && <div className={styles.seperator} />}
+
       <div className={styles.singleRowInfoContainer}>
         {degradationYear && (
           <SingleProjectInfoItem title={tManageProjects('degradationYear')}>
@@ -121,7 +119,7 @@ const KeyInfo = ({
           </SingleProjectInfoItem>
         )}
       </div>
-      {degradationYear && <div className={styles.seperator} />}
+
       {activitySeasons && activitySeasons.length > 0 && (
         <SingleProjectInfoItem title={tProjectDetails('protectionSeasons')}>
           <InterventionSeason interventionSeasons={activitySeasons} />
