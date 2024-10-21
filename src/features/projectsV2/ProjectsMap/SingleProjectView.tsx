@@ -16,20 +16,22 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
-  if (!singleProject?.sites) {
-    return null;
-  }
+  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
+    useProjects();
+  if (!singleProject?.sites) return null;
   const hasNoSites = singleProject.sites?.length === 0;
-  const { isSatelliteView, setViewState } = useProjectsMap();
+  const { isSatelliteView, setViewState, setIsSatelliteView } =
+    useProjectsMap();
   const router = useRouter();
   const { p: projectSlug } = router.query;
+
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: singleProject?.sites ?? [],
+      features: singleProject.sites ?? [],
     };
   }, [projectSlug]);
+
   // Zoom to plant location
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
@@ -76,6 +78,12 @@ const SingleProjectView = ({ mapRef }: Props) => {
       }
     }
   }, [selectedSite, router.isReady]);
+
+  useEffect(() => {
+    const hasNoPlantLocations =
+      plantLocations?.length === 0 || plantLocations === null;
+    setIsSatelliteView(hasNoPlantLocations || hasNoSites);
+  }, [plantLocations, hasNoSites]);
 
   return (
     <>

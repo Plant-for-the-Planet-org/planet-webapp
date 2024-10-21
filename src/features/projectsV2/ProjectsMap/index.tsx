@@ -142,6 +142,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const multipleProjectsViewProps = {
     mapRef,
     setViewState,
+    page: props.page,
   };
   return (
     <>
