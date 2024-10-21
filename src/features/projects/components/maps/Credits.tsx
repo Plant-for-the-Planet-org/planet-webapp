@@ -2,15 +2,18 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   setCurrencyCode: Function;
+  isMobile?: boolean;
 }
 
-export default function Credits({ setCurrencyCode }: Props): ReactElement {
+export default function Credits({
+  setCurrencyCode,
+  isMobile,
+}: Props): ReactElement {
   const { tenantConfig } = useTenant();
   const tCommon = useTranslations('Common');
   const tMaps = useTranslations('Maps');
@@ -41,7 +44,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
       }
     }
   }, []);
-
+  const separator = isMobile && !isEmbed ? '|' : null;
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
@@ -55,6 +58,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {`🌐 ${locale ? locale.toUpperCase() : ''} • ${selectedCurrency}`}
           </div>
         )}
+        {separator}
         {(tenantConfig.config.slug === 'ttc' ||
           tenantConfig.config.slug === 'planet') &&
         !isEmbed ? (
@@ -66,7 +70,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {tCommon('shop')}
           </a>
         ) : null}
-
+        {separator}
         <a
           rel="noopener noreferrer"
           href={`https://status.pp.eco/`}
@@ -74,6 +78,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         >
           {tCommon('status')}
         </a>
+        {isMobile && '|'}
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
@@ -83,6 +88,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {tCommon('imprint')}
           </a>
         )}
+        {separator}
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
@@ -92,6 +98,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {tCommon('privacy')}
           </a>
         )}
+        {separator}
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
@@ -101,6 +108,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {tCommon('terms')}
           </a>
         )}
+        {separator}
         <a
           style={{
             display: 'flex',
@@ -134,6 +142,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             </div>
           </div>
         </a>
+        {isMobile && '|'}
         {!isEmbed && (
           <a
             rel="noopener noreferrer"
@@ -143,7 +152,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {tCommon('contact')}
           </a>
         )}
-
         {isEmbed && (
           <span>
             Powered by
