@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useContext, useMemo } from 'react';
+import React, { ReactElement, useContext, useMemo } from 'react';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -166,11 +166,7 @@ export default function ProjectSnippet({
         {page === 'project-details' ? (
           <ProjectSnippetContent {...ProjectSnippetContentProps} />
         ) : (
-          <Link
-            href={projectPath}
-            style={{ cursor: 'pointer' }}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <Link href={projectPath} style={{ cursor: 'pointer' }}>
             <ProjectSnippetContent {...ProjectSnippetContentProps} />
           </Link>
         )}
