@@ -156,6 +156,7 @@ const ProjectDetails = ({
       {shouldShowSinglePlantInfo && (
         <SinglePlantLocationInfo
           plantData={plantData}
+          isMobile={isMobile}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
       )}

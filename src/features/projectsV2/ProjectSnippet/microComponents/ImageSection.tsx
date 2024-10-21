@@ -17,7 +17,6 @@ const ImageSection = (props: ImageSectionProps) => {
   const {
     projectName,
     image,
-    slug,
     ecosystem,
     showTooltipPopups,
     projectReviews,
@@ -36,19 +35,6 @@ const ImageSection = (props: ImageSectionProps) => {
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
   const isEmbed = embed === 'true';
-  const handleImageClick = () => {
-    router.push(
-      `/${locale}/prd/${slug}/${
-        isEmbed
-          ? `${
-              callbackUrl != undefined
-                ? `?embed=true&callback=${callbackUrl}`
-                : '?embed=true'
-            }`
-          : ''
-      }`
-    );
-  };
 
   const handleBackButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (setPreventShallowPush) setPreventShallowPush(true);
@@ -77,7 +63,7 @@ const ImageSection = (props: ImageSectionProps) => {
     page === 'project-details' ? styles.projectImageSecondary : ''
   }`;
   return (
-    <div onClick={handleImageClick} className={imageContainerClasses}>
+    <div className={imageContainerClasses}>
       {page === 'project-details' && (
         <button onClick={handleBackButton} className={styles.backButton}>
           <BackButton />

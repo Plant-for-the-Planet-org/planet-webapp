@@ -4,12 +4,8 @@ import { SetState } from '../../features/common/types/common';
 import { ViewState } from 'react-map-gl-v7';
 import { Map } from 'maplibre-gl';
 import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
-import { MutableRefObject } from 'react';
+import { MapRef } from '../../features/common/types/projectv2';
 
-export type MapRef = MutableRefObject<ExtendedMapLibreMap | null>;
-interface ExtendedMapLibreMap extends Map {
-  getMap?: () => Map;
-}
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
     center: [DEFAULT_VIEW_STATE.longitude, DEFAULT_VIEW_STATE.latitude],
@@ -41,6 +37,7 @@ export function zoomInToProjectSite(
   }
   // Get the bounding box of the selected site
   const bbox = turf.bbox(feature);
+
   // Fit the map to the bounding box
   map.fitBounds(
     [
@@ -54,11 +51,11 @@ export function zoomInToProjectSite(
   );
   map.once('moveend', () => {
     const center = map.getCenter();
-    const defaultZoom = 14;
+    const currentZoom = map.getZoom();
     const newViewState: ViewState = {
       longitude: center.lng,
       latitude: center.lat,
-      zoom: defaultZoom,
+      zoom: currentZoom,
       bearing: 0,
       pitch: 0,
       padding: {

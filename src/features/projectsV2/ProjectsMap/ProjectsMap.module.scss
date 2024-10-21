@@ -15,7 +15,8 @@
   top: 114px;
   right: 14px;
   z-index: 2px;
-  button {
+
+  > .exitMapModeButton {
     z-index: 2;
   }
 }

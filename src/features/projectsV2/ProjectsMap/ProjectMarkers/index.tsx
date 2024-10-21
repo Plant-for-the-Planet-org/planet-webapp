@@ -13,6 +13,7 @@ export type CategorizedProjects = {
 };
 interface ProjectMarkersProps {
   categorizedProjects: CategorizedProjects | undefined;
+  page: 'project-list' | 'project-details';
 }
 
 type ClosedPopupState = {
@@ -26,7 +27,7 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
+const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
 
@@ -117,6 +118,7 @@ const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
           project={popupState.project}
           handlePopupLeave={initiatePopupClose}
           visitProject={visitProject}
+          page={page}
         />
       )}
     </>

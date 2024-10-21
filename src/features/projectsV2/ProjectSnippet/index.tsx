@@ -18,6 +18,8 @@ import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import { useProjects } from '../ProjectsContext';
 import { SetState } from '../../common/types/common';
+import { useLocale } from 'next-intl';
+import Link from 'next/link';
 
 interface Props {
   project:
@@ -31,6 +33,7 @@ interface Props {
   setPreventShallowPush?: SetState<boolean> | undefined;
 }
 
+type ProjectSnippetContentProps = Omit<Props, 'isMobile'>;
 export interface CommonProps {
   slug: string;
   isApproved: boolean;
@@ -60,20 +63,17 @@ export interface ProjectInfoProps extends CommonProps {
   slug: string;
 }
 
-export default function ProjectSnippet({
+const ProjectSnippetContent = ({
   project,
   showTooltipPopups,
-  isMobile,
   page,
   setPreventShallowPush,
-}: Props): ReactElement {
-  const { embed } = useContext(ParamsContext);
+}: ProjectSnippetContentProps) => {
   const { setSelectedSite } = useProjects();
-  const ecosystem =
-    project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
-
+  const ecosystem =
+    project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const progressPercentage = useMemo(() => {
     if (project.purpose === 'trees' && project.countTarget) {
       return Math.min((project.countPlanted / project.countTarget) * 100, 100);
@@ -83,7 +83,6 @@ export default function ProjectSnippet({
     project.purpose === 'trees' && project.countPlanted,
     project.countTarget,
   ]);
-
   const progressBarClass = useMemo(() => {
     return `${styles[getProjectCategory(project)]}`;
   }, [
@@ -122,23 +121,67 @@ export default function ProjectSnippet({
     country: project.country,
     currency: project.currency,
   };
+  return (
+    <>
+      <ImageSection {...imageProps} />
+      <div className={styles.progressBar}>
+        <div
+          className={`${styles.progressBarHighlight} ${progressBarClass}`}
+          style={{ width: `${progressPercentage}%` }}
+        />
+      </div>
+      <ProjectInfoSection {...projectInfoProps} />
+    </>
+  );
+};
+
+export default function ProjectSnippet({
+  project,
+  showTooltipPopups,
+  isMobile,
+  page,
+  setPreventShallowPush,
+}: Props): ReactElement {
+  const { embed, callbackUrl } = useContext(ParamsContext);
+  const locale = useLocale();
+  const isTopProject = project.purpose === 'trees' && project.isTopProject;
+  const isApproved = project.purpose === 'trees' && project.isApproved;
+
   const projectSnippetContainerClasses = `${styles.singleProject} ${
     page === 'project-details' && isMobile
       ? styles.projectDetailsSnippetMobile
       : ''
   }`;
+  const ProjectSnippetContentProps = {
+    showTooltipPopups,
+    page,
+    project,
+    setPreventShallowPush,
+  };
+
+  const projectPath = useMemo(() => {
+    let path = `/${locale}/prd/${project.slug}`;
+    if (embed === 'true') {
+      const params = new URLSearchParams({ embed: 'true' });
+      if (callbackUrl !== undefined && typeof callbackUrl === 'string') {
+        params.append('callback', callbackUrl);
+      }
+      path += `?${params.toString()}`;
+    }
+    return path;
+  }, [locale, project.slug, embed, callbackUrl]);
 
   return (
     <>
       <div className={projectSnippetContainerClasses}>
-        <ImageSection {...imageProps} />
-        <div className={styles.progressBar}>
-          <div
-            className={`${styles.progressBarHighlight} ${progressBarClass}`}
-            style={{ width: `${progressPercentage}%` }}
-          />
-        </div>
-        <ProjectInfoSection {...projectInfoProps} />
+        {page === 'project-details' ? (
+          <ProjectSnippetContent {...ProjectSnippetContentProps} />
+        ) : (
+          <Link href={projectPath} style={{ cursor: 'pointer' }}>
+            <ProjectSnippetContent {...ProjectSnippetContentProps} />
+          </Link>
+        )}
+
         {!isMobile && (
           <TpoName
             projectTpoName={project.tpo.name}

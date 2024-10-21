@@ -363,6 +363,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     preventShallowPush,
   ]);
 
+  useEffect(() => {
+    if (selectedMode === 'list' && singleProject !== null) {
+      setSelectedSamplePlantLocation(null);
+      setSelectedPlantLocation(null);
+      setHoveredPlantLocation(null);
+      updateSiteAndUrl(locale, singleProject.slug, 0);
+    }
+  }, [selectedMode, singleProject, locale]);
+
   const value: ProjectsState | null = useMemo(
     () => ({
       projects,

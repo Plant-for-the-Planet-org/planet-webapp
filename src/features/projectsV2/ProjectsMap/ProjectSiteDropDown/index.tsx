@@ -8,7 +8,10 @@ import { SetState } from '../../../common/types/common';
 import ProjectSiteList from './ProjectSiteList';
 import { area } from '@turf/turf';
 import { Feature, MultiPolygon, Polygon } from 'geojson';
-import { PlantLocation } from '../../../common/types/plantLocation';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { useRouter } from 'next/router';
 
@@ -35,6 +38,7 @@ interface Props {
   setSelectedSite: SetState<number | null>;
   selectedPlantLocation: PlantLocation | null;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
+  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
 const ProjectSiteDropdown = ({
@@ -43,6 +47,7 @@ const ProjectSiteDropdown = ({
   setSelectedSite,
   selectedPlantLocation,
   setSelectedPlantLocation,
+  setSelectedSamplePlantLocation,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations('ManageProjects');
@@ -112,6 +117,7 @@ const ProjectSiteDropdown = ({
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
           setSelectedPlantLocation={setSelectedPlantLocation}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
       )}
     </>
