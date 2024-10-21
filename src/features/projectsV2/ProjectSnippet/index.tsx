@@ -147,7 +147,8 @@ export default function ProjectSnippet({
     page,
     project,
   };
-  const getProjectPath = useCallback(() => {
+
+  const projectPath = useMemo(() => {
     let path = `/${locale}/prd/${project.slug}`;
     if (embed === 'true') {
       const params = new URLSearchParams({ embed: 'true' });
@@ -157,7 +158,8 @@ export default function ProjectSnippet({
       path += `?${params.toString()}`;
     }
     return path;
-  }, [page, locale, project.slug, embed, callbackUrl]);
+  }, [locale, project.slug, embed, callbackUrl]);
+
   return (
     <>
       <div className={projectSnippetContainerClasses}>
@@ -165,7 +167,7 @@ export default function ProjectSnippet({
           <ProjectSnippetContent {...ProjectSnippetContentProps} />
         ) : (
           <Link
-            href={getProjectPath()}
+            href={projectPath}
             style={{ cursor: 'pointer' }}
             onClick={(e) => e.stopPropagation()}
           >
