@@ -48,7 +48,7 @@ export default function ProjectsContainer({ profile }: Props) {
 
   React.useEffect(() => {
     loadProjects();
-    localStorage.setItem('redirectLink', router.asPath);
+    localStorage.setItem('backNavigationUrl', router.asPath);
   }, [locale]);
 
   if (projects === undefined) return null;

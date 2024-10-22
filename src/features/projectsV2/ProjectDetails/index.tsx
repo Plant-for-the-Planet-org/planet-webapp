@@ -48,6 +48,8 @@ const ProjectDetails = ({
   const { p: projectSlug } = router.query;
 
   useEffect(() => {
+    if (window.history.length === 1)
+      localStorage.removeItem('backNavigationUrl');
     async function loadProject(
       projectSlug: string,
       locale: string,
@@ -110,7 +112,6 @@ const ProjectDetails = ({
     }
     if (singleProject && singleProject?.purpose === 'trees')
       loadPlantLocations();
-    if (window.history.length === 1) localStorage.removeItem('redirectLink');
   }, [singleProject]);
 
   const shouldShowPlantLocationInfo =

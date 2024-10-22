@@ -128,8 +128,8 @@ export default function ProjectsContainer() {
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     if (contextLoaded && token) {
-      localStorage.setItem('redirectLink', router.asPath);
       loadProjects();
+      localStorage.setItem('backNavigationUrl', router.asPath);
     }
   }, [contextLoaded, token]);
 
