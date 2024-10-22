@@ -195,3 +195,11 @@ export const centerMapOnCoordinates = (
     easing: (t) => t * (2 - t),
   });
 };
+
+export const isAndroid = /android/i.test(navigator.userAgent);
+export const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+export const navigationControlBottom = isIOS
+  ? '140px' // iOS value
+  : isAndroid
+  ? '87px' // Adjust for Android devices
+  : '0px';

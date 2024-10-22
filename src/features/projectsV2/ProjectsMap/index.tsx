@@ -144,6 +144,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     setViewState,
     page: props.page,
   };
+
   return (
     <>
       <MapControls {...mapControlProps} />
@@ -174,7 +175,7 @@ function ProjectsMap(props: ProjectsMapProps) {
             showCompass={false}
             style={{
               position: 'relative',
-              bottom: props.isMobile ? '120px' : '0px',
+              bottom: props.isMobile ? navigationControlBottom : undefined,
             }}
           />
         )}
