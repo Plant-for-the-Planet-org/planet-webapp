@@ -100,7 +100,6 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   const tMe = useTranslations('Me');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
-
   return (
     <>
       {record.status && (
@@ -167,7 +166,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('project')}</p>
           {record.projectGuid ? (
-            <a title={record.details.project} href={`/${record.projectGuid}`}>
+            <a
+              title={record.details.project}
+              href={`/prd/${record.projectGuid}`}
+            >
               {record.details.project.length > 42
                 ? record.details.project.substring(0, 42)
                 : record.details.project}

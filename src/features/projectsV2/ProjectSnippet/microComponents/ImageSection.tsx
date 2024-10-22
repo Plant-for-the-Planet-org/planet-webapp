@@ -39,7 +39,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
     setSelectedSite(null);
-    const previousPageRoute = localStorage.getItem('redirectLink');
+    const previousPageRoute = localStorage.getItem('backNavigationUrl');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {
       ...(isEmbed ? { embed: 'true' } : {}),
