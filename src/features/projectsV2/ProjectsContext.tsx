@@ -43,7 +43,6 @@ interface ProjectsState {
   setHoveredPlantLocation: SetState<PlantLocation | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
-  preventShallowPush: boolean;
   setPreventShallowPush: SetState<boolean>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
@@ -401,7 +400,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation,
       selectedSite,
       setSelectedSite,
-      preventShallowPush,
       setPreventShallowPush,
     }),
     [
