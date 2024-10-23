@@ -26,7 +26,6 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const { setTenantConfig } = useTenant();
 
   useEffect(() => {
-    localStorage.removeItem('backNavigationUrl');
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }

@@ -32,6 +32,7 @@ function SingleProject({ project }: { project: Properties }) {
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
   const locale = useLocale();
+  const router = useRouter();
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -88,7 +89,9 @@ function SingleProject({ project }: { project: Properties }) {
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
-        <Link href={'/prd/' + project.id}>
+        <Link
+          href={'/prd/' + project.id + `?backNavigationUrl=${router.asPath}`}
+        >
           <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
         <Link href={`/profile/projects/${project.id}?type=basic-details`}>

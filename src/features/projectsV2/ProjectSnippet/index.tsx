@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useMemo } from 'react';
+import React, { ReactElement, useContext, useEffect, useMemo } from 'react';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -20,6 +20,7 @@ import { useProjects } from '../ProjectsContext';
 import { SetState } from '../../common/types/common';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   project:
@@ -144,6 +145,7 @@ export default function ProjectSnippet({
 }: Props): ReactElement {
   const { embed, callbackUrl } = useContext(ParamsContext);
   const locale = useLocale();
+  const router = useRouter();
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
@@ -160,17 +162,37 @@ export default function ProjectSnippet({
   };
 
   const projectPath = useMemo(() => {
-    let path = `/${locale}/prd/${project.slug}`;
+    let path = `/${locale}/prd/${project.slug}?backNavigationUrl=${router.asPath}`;
+    const params = new URLSearchParams();
+
     if (embed === 'true') {
-      const params = new URLSearchParams({ embed: 'true' });
+      params.append('embed', 'true');
       if (callbackUrl !== undefined && typeof callbackUrl === 'string') {
         params.append('callback', callbackUrl);
       }
-      path += `?${params.toString()}`;
     }
-    return path;
-  }, [locale, project.slug, embed, callbackUrl]);
 
+    const paramsString = params.toString();
+    if (paramsString) {
+      path += `?${paramsString}`;
+    }
+
+    return path;
+  }, [locale, project.slug, embed, callbackUrl, page]);
+
+  // The useEffect hook checks if the backNavigationUrl query parameter exists and is a string, and if so,
+  // it decodes this value and stores it in session storage
+  useEffect(() => {
+    if (
+      router.query.backNavigationUrl &&
+      typeof router.query.backNavigationUrl === 'string'
+    ) {
+      sessionStorage.setItem(
+        'backNavigationUrl',
+        decodeURIComponent(router.query.backNavigationUrl)
+      );
+    }
+  }, [router.query]);
   return (
     <>
       <div className={projectSnippetContainerClasses}>

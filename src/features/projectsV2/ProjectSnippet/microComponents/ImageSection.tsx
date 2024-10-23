@@ -39,7 +39,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
     setSelectedSite(null);
-    const previousPageRoute = localStorage.getItem('backNavigationUrl');
+    const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {
       ...(isEmbed ? { embed: 'true' } : {}),
@@ -47,14 +47,16 @@ const ImageSection = (props: ImageSectionProps) => {
         ? { callback: callbackUrl }
         : {}),
     };
-    if (previousPageRoute) {
-      router.push(previousPageRoute);
-    } else {
-      router.push({
-        pathname: defaultRoute,
+    const routerPath = previousPageRoute || defaultRoute;
+    router
+      .push({
+        pathname: routerPath,
         query: queryParams,
+      })
+      .then(() => sessionStorage.removeItem('backNavigationUrl'))
+      .catch((error) => {
+        console.error('Navigation failed:', error);
       });
-    }
   };
 
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';

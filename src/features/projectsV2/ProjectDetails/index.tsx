@@ -48,8 +48,6 @@ const ProjectDetails = ({
   const { p: projectSlug } = router.query;
 
   useEffect(() => {
-    if (window.history.length === 1)
-      localStorage.removeItem('backNavigationUrl');
     async function loadProject(
       projectSlug: string,
       locale: string,
