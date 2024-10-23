@@ -15,6 +15,8 @@ import * as turf from '@turf/turf';
 import { Position } from 'geojson';
 import { MapRef } from '../features/common/types/projectv2';
 
+export type MobileOs = 'android' | 'ios' | undefined;
+
 const paramsToPreserve = [
   'embed',
   'back_icon',
@@ -196,10 +198,9 @@ export const centerMapOnCoordinates = (
   });
 };
 
-export const isAndroid = /android/i.test(navigator.userAgent);
-export const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-export const navigationControlBottom = isIOS
-  ? '140px' // iOS value
-  : isAndroid
-  ? '87px' // Adjust for Android devices
-  : '0px';
+export const getDeviceType = (): MobileOs => {
+  const userAgent = navigator.userAgent;
+  if (/android/i.test(userAgent)) return 'android';
+  if (/iPad|iPhone|iPod/.test(userAgent)) return 'ios';
+  return undefined;
+};

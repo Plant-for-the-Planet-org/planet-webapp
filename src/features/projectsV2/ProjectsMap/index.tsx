@@ -1,6 +1,6 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useRef } from 'react';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
@@ -8,6 +8,7 @@ import SingleProjectView from './SingleProjectView';
 import {
   calculateCentroid,
   centerMapOnCoordinates,
+  getDeviceType,
   getPlantLocationInfo,
   getValidFeatures,
 } from '../../../utils/projectV2';
@@ -19,6 +20,7 @@ import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocat
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import { PlantLocationSingle } from '../../common/types/plantLocation';
 import { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
+import styles from './ProjectsMap.module.scss';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -33,6 +35,7 @@ export type ProjectsMapMobileProps = {
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
+  // const [mobileOS, setMobileOS] = useState<MobileOs>(null);
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
   const {
@@ -81,12 +84,13 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowNavigationControls = !(
     shouldShowMultiPlantLocationInfo || shouldShowSinglePlantLocationInfo
   );
-
+  const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
     setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
     isMobile: props.isMobile,
     page: props.page,
+    mobileOS,
   };
 
   const onMouseMove = useCallback(
@@ -144,42 +148,39 @@ function ProjectsMap(props: ProjectsMapProps) {
     setViewState,
     page: props.page,
   };
-
+  const mapContainerClass = `${styles.mapContainer} ${
+    styles[mobileOS !== undefined ? mobileOS : '']
+  }`;
   return (
     <>
       <MapControls {...mapControlProps} />
-      <Map
-        {...viewState}
-        {...mapState}
-        onMove={(e) => setViewState(e.viewState)}
-        onMouseMove={onMouseMove}
-        onMouseOut={() => setHoveredPlantLocation(null)}
-        onClick={onClick}
-        attributionControl={false}
-        ref={mapRef}
-        interactiveLayerIds={
-          singleProject !== null
-            ? ['plant-polygon-layer', 'point-layer']
-            : undefined
-        }
-      >
-        {shouldShowSingleProjectsView && (
-          <SingleProjectView {...singleProjectViewProps} />
-        )}
-        {shouldShowMultipleProjectsView && (
-          <MultipleProjectsView {...multipleProjectsViewProps} />
-        )}
-        {shouldShowNavigationControls && (
-          <NavigationControl
-            position="bottom-right"
-            showCompass={false}
-            style={{
-              position: 'relative',
-              bottom: props.isMobile ? navigationControlBottom : undefined,
-            }}
-          />
-        )}
-      </Map>
+      <div className={mapContainerClass}>
+        <Map
+          {...viewState}
+          {...mapState}
+          onMove={(e) => setViewState(e.viewState)}
+          onMouseMove={onMouseMove}
+          onMouseOut={() => setHoveredPlantLocation(null)}
+          onClick={onClick}
+          attributionControl={false}
+          ref={mapRef}
+          interactiveLayerIds={
+            singleProject !== null
+              ? ['plant-polygon-layer', 'point-layer']
+              : undefined
+          }
+        >
+          {shouldShowSingleProjectsView && (
+            <SingleProjectView {...singleProjectViewProps} />
+          )}
+          {shouldShowMultipleProjectsView && (
+            <MultipleProjectsView {...multipleProjectsViewProps} />
+          )}
+          {shouldShowNavigationControls && (
+            <NavigationControl position="bottom-right" showCompass={false} />
+          )}
+        </Map>
+      </div>
       {shouldShowMultiPlantLocationInfo && (
         <MultiPlantLocationInfo
           plantLocationInfo={selectedPlantLocation}
