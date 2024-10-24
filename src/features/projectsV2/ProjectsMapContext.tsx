@@ -10,6 +10,7 @@ import { ViewState } from 'react-map-gl-v7';
 import { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../utils/maps/getMapStyle';
 import { SetState } from '../common/types/common';
+import { useProjects } from './ProjectsContext';
 
 interface MapState {
   mapStyle: MapStyle;
@@ -69,6 +70,13 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     showProjects: true,
   });
+  const { plantLocations } = useProjects();
+
+  useEffect(() => {
+    const hasNoPlantLocations =
+      plantLocations?.length === 0 || plantLocations === null;
+    setIsSatelliteView(hasNoPlantLocations);
+  }, [plantLocations]);
 
   useEffect(() => {
     async function loadMapStyle() {

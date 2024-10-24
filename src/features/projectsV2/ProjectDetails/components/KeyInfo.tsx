@@ -1,10 +1,11 @@
 import styles from '../styles/ProjectInfo.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 import InfoIconPopup from '../../../../temp/components/InfoIconPopup';
 import InterventionSeason from './microComponents/InterventionSeason';
 import { AllowedSeasonMonths } from '@planet-sdk/common';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 interface Props {
   abandonment: number | null;
@@ -32,6 +33,7 @@ const KeyInfo = ({
   const tCommon = useTranslations('Common');
   const tManageProjects = useTranslations('ManageProjects');
   const tProjectDetails = useTranslations('ProjectDetails');
+  const locale = useLocale();
 
   const addZeroToDate = (val: string) => {
     const arr = val.split('-');
@@ -98,9 +100,12 @@ const KeyInfo = ({
         {plantingDensity && (
           <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
             <>
-              {plantingDensity}
+              {getFormattedNumber(locale, plantingDensity)}
               {maxPlantingDensity !== null
-                ? `-${maxPlantingDensity} ${tManageProjects('treePerHa')}`
+                ? `-${getFormattedNumber(
+                    locale,
+                    maxPlantingDensity
+                  )} ${tManageProjects('treePerHa')}`
                 : ` ${tManageProjects('treePerHa')}`}
             </>
           </SingleProjectInfoItem>

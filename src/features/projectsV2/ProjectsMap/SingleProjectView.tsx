@@ -20,8 +20,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
     useProjects();
   if (!singleProject?.sites) return null;
   const hasNoSites = singleProject.sites?.length === 0;
-  const { isSatelliteView, setViewState, setIsSatelliteView } =
-    useProjectsMap();
+  const { isSatelliteView, setViewState } = useProjectsMap();
   const router = useRouter();
   const { p: projectSlug } = router.query;
 
@@ -79,12 +78,6 @@ const SingleProjectView = ({ mapRef }: Props) => {
     }
   }, [selectedSite, router.isReady, selectedPlantLocation]);
 
-  useEffect(() => {
-    const hasNoPlantLocations =
-      plantLocations?.length === 0 || plantLocations === null;
-    setIsSatelliteView(hasNoPlantLocations || hasNoSites);
-  }, [plantLocations, hasNoSites]);
-
   return (
     <>
       {hasNoSites ? (
@@ -94,9 +87,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
           purpose={singleProject.purpose}
         />
       ) : (
-        <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
+        <>
+          <SitePolygon
+            isSatelliteView={isSatelliteView}
+            geoJson={sitesGeojson}
+          />
+          {isSatelliteView && <SatelliteLayer />}
+        </>
       )}
-      {isSatelliteView && <SatelliteLayer />}
       <PlantLocations />
     </>
   );
