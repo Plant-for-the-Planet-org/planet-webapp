@@ -15,27 +15,32 @@ handler.use(speedLimiter);
 handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = req.body;
   try {
-    const query =
-      "SELECT \
-          iv.hid, \
-          iv.intervention_start_date, \
-          COALESCE(ss.name, ps.other_species, iv.other_species) AS species, \
-          CASE WHEN iv.type='single-tree-registration' THEN 1 ELSE ps.tree_count END AS tree_count, \
-          iv.geometry, \
-          iv.type, \
-          iv.trees_allocated, \
-          iv.trees_planted, \
-          iv.metadata, \
-          iv.description, \
-          iv.plant_project_id, \
-          iv.sample_tree_count, \
-          iv.capture_status, \
-          iv.created \
-      FROM intervention iv \
-      LEFT JOIN planted_species ps ON ps.intervention_id = iv.id \
-      LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-      JOIN project pp ON iv.plant_project_id = pp.id \
-      WHERE pp.guid=? AND iv.type IN ('multi-tree-registration','single-tree-registration') AND iv.deleted_at IS NULL AND iv.intervention_start_date BETWEEN ? AND ?";
+    const query = `
+			SELECT 
+          iv.hid, 
+          iv.intervention_start_date, 
+          COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS species, 
+          CASE WHEN iv.type='single-tree-registration' THEN 1 ELSE ps.tree_count END AS tree_count, 
+          iv.geometry, 
+          iv.type, 
+          iv.trees_allocated, 
+          iv.trees_planted, 
+          iv.metadata, 
+          iv.description, 
+          iv.plant_project_id, 
+          iv.sample_tree_count, 
+          iv.capture_status, 
+          iv.created 
+				FROM intervention iv 
+				LEFT JOIN planted_species ps ON ps.intervention_id = iv.id 
+				LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id 
+				JOIN project pp ON iv.plant_project_id = pp.id 
+				WHERE 
+						pp.guid=? AND 
+						iv.type IN ('multi-tree-registration','single-tree-registration') AND 
+						iv.deleted_at IS NULL AND 
+						iv.intervention_start_date BETWEEN ? AND ?
+			`;
 
     const res = await db.query<IExportData[]>(query, [
       projectId,

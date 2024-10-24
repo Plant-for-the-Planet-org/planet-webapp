@@ -19,13 +19,21 @@ handler.post(async (req, response) => {
     req.body;
 
   try {
-    let query =
-      'SELECT iv.guid, iv.trees_planted as treeCount, iv.geometry, COALESCE(ss.name, ps.other_species, iv.other_species) AS name \
-        FROM planted_species ps \
-        INNER JOIN intervention iv ON ps.intervention_id = iv.id \
-        LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ?';
+    let query = `
+			SELECT 
+					iv.guid,
+					iv.trees_planted as treeCount,
+					iv.geometry,
+					COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS name
+        FROM intervention iv
+        LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+        LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
+        JOIN project pp ON iv.plant_project_id = pp.id
+        WHERE 
+						pp.guid = ? AND 
+						iv.deleted_at IS NULL AND 
+						iv.type in ('multi-tree-registration', 'single-tree-registration')
+			`;
 
     const values = [projectId];
 

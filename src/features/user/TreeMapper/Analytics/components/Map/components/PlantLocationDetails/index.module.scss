@@ -70,6 +70,19 @@
       row-gap: 16px;
       width: 100%;
 
+      .header {
+        width: 100%;
+        padding: 0 5px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: -8px;
+
+        .hid {
+          font-weight: 500;
+        }
+      }
+
       .topContainer {
         display: flex;
         justify-content: space-between;

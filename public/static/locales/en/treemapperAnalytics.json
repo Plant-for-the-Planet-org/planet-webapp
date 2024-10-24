@@ -69,6 +69,10 @@
     "sites": "Sites",
     "searchDateError": "Search date is not between the selected date range.",
     "noProjectsText": "No projects are available.",
-    "addProjectsButton": "Add A Project"
+    "addProjectsButton": "Add A Project",
+    "plantLocationType": {
+      "single-tree-registration": "Single Tree",
+      "multi-tree-registration": "Multiple Trees"
+    }
   }
 }

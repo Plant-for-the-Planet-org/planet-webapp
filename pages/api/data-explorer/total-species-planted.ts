@@ -41,15 +41,23 @@ handler.post(async (req, response) => {
   }
 
   try {
-    const query =
-      "SELECT \
-            COUNT(DISTINCT COALESCE(ss.name, CASE WHEN ps.other_species='Unknown' THEN null ELSE ps.other_species END, \
-            CASE WHEN iv.other_species='Unknown' THEN null ELSE iv.other_species END)) as totalSpeciesPlanted \
-            FROM planted_species ps \
-        INNER JOIN intervention iv ON ps.intervention_id = iv.id \
-        LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_start_date BETWEEN ? AND ?";
+    const query = `
+			SELECT 
+					COUNT(DISTINCT COALESCE(
+							ss.name,
+							NULLIF(ps.other_species, 'Unknown'),
+							NULLIF(iv.other_species, 'Unknown')
+							)) AS totalSpeciesPlanted
+				FROM intervention iv
+				LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+				LEFT JOIN scientific_species ss ON COALESCE(ps.scientific_species_id, iv.scientific_species_id) = ss.id
+				JOIN project pp ON iv.plant_project_id = pp.id
+				WHERE
+						iv.deleted_at IS NULL
+						AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
+						AND pp.guid = ?
+						AND iv.intervention_start_date BETWEEN ? AND ?
+			`;
 
     const res = await db.query<TotalSpeciesPlanted[]>(query, [
       projectId,
