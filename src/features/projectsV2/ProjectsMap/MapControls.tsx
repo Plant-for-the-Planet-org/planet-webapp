@@ -8,12 +8,14 @@ import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIco
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { SetState } from '../../common/types/common';
+import { MobileOs } from '../../../utils/projectV2';
 
 interface MapControlsProps {
   isMobile: boolean;
   selectedMode: ViewMode | undefined;
   setSelectedMode: SetState<ViewMode> | undefined;
   page: 'project-list' | 'project-details';
+  mobileOS: MobileOs;
 }
 
 const MapControls = ({
@@ -21,6 +23,7 @@ const MapControls = ({
   selectedMode,
   setSelectedMode,
   page,
+  mobileOS,
 }: MapControlsProps) => {
   const { setIsSatelliteView, isSatelliteView, updateMapOption, mapOptions } =
     useProjectsMap();
@@ -84,6 +87,14 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
+  const layerToggleClass = `${styles.layerToggle} ${
+    isMobile
+      ? mobileOS === 'android'
+        ? styles.layerToggleAndroid
+        : styles.layerToggleIos
+      : styles.layerToggleDesktop
+  }`;
+
   return (
     <>
       {isMobile && page === 'project-list' && (
@@ -114,7 +125,7 @@ const MapControls = ({
           )}
           {canShowSatelliteToggle && (
             <button
-              className={styles.layerToggle}
+              className={layerToggleClass}
               onClick={() => setIsSatelliteView(!isSatelliteView)}
             >
               {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
