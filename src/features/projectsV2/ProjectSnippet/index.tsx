@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useMemo } from 'react';
+import React, { ReactElement, useContext, useEffect, useMemo } from 'react';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -16,8 +16,11 @@ import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
 import { getProjectCategory } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
+import { useProjects } from '../ProjectsContext';
+import { SetState } from '../../common/types/common';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   project:
@@ -28,6 +31,7 @@ interface Props {
   showTooltipPopups: boolean;
   isMobile?: boolean;
   page?: 'project-list' | 'project-details';
+  setPreventShallowPush?: SetState<boolean> | undefined;
 }
 
 type ProjectSnippetContentProps = Omit<Props, 'isMobile'>;
@@ -47,6 +51,8 @@ export interface ImageSectionProps extends CommonProps {
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
   page?: 'project-list' | 'project-details';
+  setSelectedSite: SetState<number | null>;
+  setPreventShallowPush: SetState<boolean> | undefined;
 }
 
 export interface ProjectInfoProps extends CommonProps {
@@ -62,7 +68,9 @@ const ProjectSnippetContent = ({
   project,
   showTooltipPopups,
   page,
+  setPreventShallowPush,
 }: ProjectSnippetContentProps) => {
+  const { setSelectedSite } = useProjects();
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
   const ecosystem =
@@ -100,6 +108,8 @@ const ProjectSnippetContent = ({
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
     page,
+    setSelectedSite,
+    setPreventShallowPush,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
@@ -131,9 +141,11 @@ export default function ProjectSnippet({
   showTooltipPopups,
   isMobile,
   page,
+  setPreventShallowPush,
 }: Props): ReactElement {
   const { embed, callbackUrl } = useContext(ParamsContext);
   const locale = useLocale();
+  const router = useRouter();
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
@@ -146,20 +158,41 @@ export default function ProjectSnippet({
     showTooltipPopups,
     page,
     project,
+    setPreventShallowPush,
   };
 
   const projectPath = useMemo(() => {
-    let path = `/${locale}/prd/${project.slug}`;
+    let path = `/${locale}/prd/${project.slug}?backNavigationUrl=${router.asPath}`;
+    const params = new URLSearchParams();
+
     if (embed === 'true') {
-      const params = new URLSearchParams({ embed: 'true' });
+      params.append('embed', 'true');
       if (callbackUrl !== undefined && typeof callbackUrl === 'string') {
         params.append('callback', callbackUrl);
       }
-      path += `?${params.toString()}`;
     }
-    return path;
-  }, [locale, project.slug, embed, callbackUrl]);
 
+    const paramsString = params.toString();
+    if (paramsString) {
+      path += `?${paramsString}`;
+    }
+
+    return path;
+  }, [locale, project.slug, embed, callbackUrl, page]);
+
+  // The useEffect hook checks if the backNavigationUrl query parameter exists and is a string, and if so,
+  // it decodes this value and stores it in session storage
+  useEffect(() => {
+    if (
+      router.query.backNavigationUrl &&
+      typeof router.query.backNavigationUrl === 'string'
+    ) {
+      sessionStorage.setItem(
+        'backNavigationUrl',
+        decodeURIComponent(router.query.backNavigationUrl)
+      );
+    }
+  }, [router.query]);
   return (
     <>
       <div className={projectSnippetContainerClasses}>

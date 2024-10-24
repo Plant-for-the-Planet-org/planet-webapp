@@ -17,7 +17,6 @@ import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
 import Grid from '@mui/material/Grid';
 import MembershipCta from './components/MembershipCta';
-
 interface Props {
   filter: string | null;
   setFilter: (filter: string) => void;
@@ -64,6 +63,7 @@ export default function History({
   };
 
   useEffect(() => {
+    localStorage.setItem('backNavigationUrl', router.asPath);
     const { ref } = router.query;
     let refIndex = !isMobile ? 0 : undefined;
     if (paymentHistory?.items && paymentHistory.items.length > 0) {

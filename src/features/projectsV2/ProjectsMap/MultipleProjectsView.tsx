@@ -22,19 +22,24 @@ const MultipleProjectsView = ({
   if (isLoading || isError || !projects) {
     return null;
   }
+
   useEffect(() => {
-    if (mapRef.current) {
-      const map = mapRef.current.getMap
-        ? mapRef.current.getMap()
-        : mapRef.current;
-      zoomOutMap(map, () => {
-        setViewState((prevState) => ({
-          ...prevState,
-          ...map.getCenter(),
-          zoom: map.getZoom(),
-        }));
-      });
-    }
+    //Wrapping the logic in Promise.resolve().then() defers the map-related code until after synchronous tasks finish,
+    //Giving the map time to initialize fully. This ensures mapRef.current is ready for interaction.
+    Promise.resolve().then(() => {
+      if (mapRef.current) {
+        const map = mapRef.current.getMap
+          ? mapRef.current.getMap()
+          : mapRef.current;
+        zoomOutMap(map, () => {
+          setViewState((prevState) => ({
+            ...prevState,
+            ...map.getCenter(),
+            zoom: map.getZoom(),
+          }));
+        });
+      }
+    });
   }, []);
 
   const categorizedProjects = useMemo(() => {
