@@ -15,6 +15,8 @@ import * as turf from '@turf/turf';
 import { Position } from 'geojson';
 import { MapRef } from '../features/common/types/projectv2';
 
+export type MobileOs = 'android' | 'ios' | undefined;
+
 const paramsToPreserve = [
   'embed',
   'back_icon',
@@ -203,4 +205,11 @@ export const generateProjectLink = (
   return `/prd/${projectGuid}?backNavigationUrl=${encodeURIComponent(
     routerAsPath
   )}`;
+};
+
+export const getDeviceType = (): MobileOs => {
+  const userAgent = navigator.userAgent;
+  if (/android/i.test(userAgent)) return 'android';
+  if (/iPad|iPhone|iPod/.test(userAgent)) return 'ios';
+  return undefined;
 };
