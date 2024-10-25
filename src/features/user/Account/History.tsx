@@ -63,7 +63,6 @@ export default function History({
   };
 
   useEffect(() => {
-    localStorage.setItem('backNavigationUrl', router.asPath);
     const { ref } = router.query;
     let refIndex = !isMobile ? 0 : undefined;
     if (paymentHistory?.items && paymentHistory.items.length > 0) {

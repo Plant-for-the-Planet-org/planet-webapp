@@ -14,7 +14,10 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
-import { getProjectCategory } from '../../../utils/projectV2';
+import {
+  generateProjectLink,
+  getProjectCategory,
+} from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import { useProjects } from '../ProjectsContext';
 import { SetState } from '../../common/types/common';
@@ -162,7 +165,7 @@ export default function ProjectSnippet({
   };
 
   const projectPath = useMemo(() => {
-    let path = `/${locale}/prd/${project.slug}?backNavigationUrl=${router.asPath}`;
+    let path = `/${locale}${generateProjectLink(project.slug, router.asPath)}`;
     const params = new URLSearchParams();
 
     if (embed === 'true') {
@@ -173,12 +176,11 @@ export default function ProjectSnippet({
     }
 
     const paramsString = params.toString();
-    if (paramsString) {
-      path += `?${paramsString}`;
-    }
+    if (paramsString)
+      path += `${path.includes('?') ? '&' : '?'}${paramsString}`;
 
     return path;
-  }, [locale, project.slug, embed, callbackUrl, page]);
+  }, [locale, project.slug, embed, callbackUrl, router.asPath]);
 
   // The useEffect hook checks if the backNavigationUrl query parameter exists and is a string, and if so,
   // it decodes this value and stores it in session storage

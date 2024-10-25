@@ -195,3 +195,12 @@ export const centerMapOnCoordinates = (
     easing: (t) => t * (2 - t),
   });
 };
+
+export const generateProjectLink = (
+  projectGuid: string,
+  routerAsPath: string
+) => {
+  return `/prd/${projectGuid}?backNavigationUrl=${encodeURIComponent(
+    routerAsPath
+  )}`;
+};

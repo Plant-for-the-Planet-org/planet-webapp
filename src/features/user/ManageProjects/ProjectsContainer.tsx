@@ -17,6 +17,7 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { useRouter } from 'next/router';
+import { generateProjectLink } from '../../../utils/projectV2';
 
 interface UserProjectsType {
   type: string;
@@ -89,9 +90,7 @@ function SingleProject({ project }: { project: Properties }) {
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
-        <Link
-          href={'/prd/' + project.id + `?backNavigationUrl=${router.asPath}`}
-        >
+        <Link href={generateProjectLink(project.id, router.asPath)}>
           <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
         <Link href={`/profile/projects/${project.id}?type=basic-details`}>
@@ -110,7 +109,6 @@ export default function ProjectsContainer() {
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
-  const router = useRouter();
   async function loadProjects() {
     if (user) {
       try {
@@ -132,7 +130,6 @@ export default function ProjectsContainer() {
   React.useEffect(() => {
     if (contextLoaded && token) {
       loadProjects();
-      localStorage.setItem('backNavigationUrl', router.asPath);
     }
   }, [contextLoaded, token]);
 

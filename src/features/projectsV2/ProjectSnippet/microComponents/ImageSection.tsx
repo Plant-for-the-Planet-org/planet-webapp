@@ -9,9 +9,9 @@ import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -47,7 +47,10 @@ const ImageSection = (props: ImageSectionProps) => {
         ? { callback: callbackUrl }
         : {}),
     };
-    const routerPath = previousPageRoute || defaultRoute;
+    const routerPath = previousPageRoute
+      ? previousPageRoute.split('?')[0]
+      : defaultRoute;
+
     router
       .push({
         pathname: routerPath,
