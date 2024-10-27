@@ -82,8 +82,8 @@ const SingleProjectView = ({ mapRef }: Props) => {
   useEffect(() => {
     const hasNoPlantLocations =
       plantLocations?.length === 0 || plantLocations === null;
-    setIsSatelliteView(hasNoPlantLocations);
-  }, [plantLocations]);
+    setIsSatelliteView(hasNoPlantLocations || hasNoSites);
+  }, [plantLocations, hasNoSites]);
 
   return (
     <>

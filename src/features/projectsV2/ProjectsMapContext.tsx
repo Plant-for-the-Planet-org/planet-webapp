@@ -10,7 +10,6 @@ import { ViewState } from 'react-map-gl-v7';
 import { MapStyle } from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../utils/maps/getMapStyle';
 import { SetState } from '../common/types/common';
-import { useProjects } from './ProjectsContext';
 
 interface MapState {
   mapStyle: MapStyle;
