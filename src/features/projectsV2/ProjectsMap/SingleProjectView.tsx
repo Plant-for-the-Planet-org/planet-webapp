@@ -86,7 +86,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
     // - false if there are no plant locations and no sites (i.e., a single project location only)
     // - true if there are no plant locations but there are multiple sites
     setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations?.length, hasNoSites]);
+  }, [plantLocations, hasNoSites]);
 
   return (
     <>
@@ -97,9 +97,15 @@ const SingleProjectView = ({ mapRef }: Props) => {
           purpose={singleProject.purpose}
         />
       ) : (
-        <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
+        <>
+          <SitePolygon
+            isSatelliteView={isSatelliteView}
+            geoJson={sitesGeojson}
+          />
+          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+        </>
       )}
-      {isSatelliteView && <SatelliteLayer />}
+
       <PlantLocations />
     </>
   );

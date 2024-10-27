@@ -269,13 +269,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     siteIndex: number | null
   ) => {
-    if (!singleProject?.sites?.length) return;
-
+    if (!singleProject?.sites) return;
     setSelectedSite(siteIndex);
-
     const siteId =
       siteIndex !== null ? singleProject.sites[siteIndex]?.properties.id : null;
-
     updateUrlWithSiteId(locale, projectSlug, siteId);
   };
 
