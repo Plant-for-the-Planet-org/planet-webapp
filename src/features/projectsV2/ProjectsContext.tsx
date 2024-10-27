@@ -269,7 +269,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     siteIndex: number | null
   ) => {
-    if (!singleProject?.sites) return;
+    if (!singleProject?.sites?.length) return;
     setSelectedSite(siteIndex);
     const siteId =
       siteIndex !== null ? singleProject.sites[siteIndex]?.properties.id : null;

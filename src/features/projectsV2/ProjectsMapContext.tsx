@@ -70,13 +70,6 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     showProjects: true,
   });
-  const { plantLocations } = useProjects();
-
-  useEffect(() => {
-    const hasNoPlantLocations =
-      plantLocations?.length === 0 || plantLocations === null;
-    setIsSatelliteView(hasNoPlantLocations);
-  }, [plantLocations]);
 
   useEffect(() => {
     async function loadMapStyle() {
