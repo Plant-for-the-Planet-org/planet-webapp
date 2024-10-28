@@ -1,4 +1,4 @@
-import { useCallback, useContext, MouseEvent } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -9,9 +9,9 @@ import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -26,6 +26,8 @@ const ImageSection = (props: ImageSectionProps) => {
     isTopProject,
     allowDonations,
     page,
+    setSelectedSite,
+    setPreventShallowPush,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
@@ -34,22 +36,33 @@ const ImageSection = (props: ImageSectionProps) => {
   const { embed, callbackUrl } = useContext(ParamsContext);
   const isEmbed = embed === 'true';
 
-  const handleBackButton = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-    if (document.referrer) {
-      window.history.go(-2);
-    } else {
-      router.replace({
-        pathname: `/${locale}/prd`,
-        query: {
-          ...(isEmbed ? { embed: 'true' } : {}),
-          ...(isEmbed && callbackUrl !== undefined
-            ? { callback: callbackUrl }
-            : {}),
-        },
+  const handleBackButton = () => {
+    if (setPreventShallowPush) setPreventShallowPush(true);
+    setSelectedSite(null);
+    const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
+    const defaultRoute = `/${locale}/prd`;
+    const queryParams = {
+      ...(isEmbed ? { embed: 'true' } : {}),
+      ...(isEmbed && callbackUrl !== undefined
+        ? { callback: callbackUrl }
+        : {}),
+    };
+    const routerPath = previousPageRoute
+      ? previousPageRoute.split('?')[0]
+      : defaultRoute;
+
+    const isAbsoluteUrl = previousPageRoute && (previousPageRoute.includes('http://') || previousPageRoute.includes('https://'));
+    const finalQueryParams = isAbsoluteUrl ? {}: queryParams
+    router
+      .push({
+        pathname: routerPath,
+        query: finalQueryParams,
+      })
+      .then(() => sessionStorage.removeItem('backNavigationUrl'))
+      .catch((error) => {
+        console.error('Navigation failed:', error);
       });
-    }
-  }, []);
+  };
 
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   const imageContainerClasses = `${styles.projectImage} ${

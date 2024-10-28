@@ -15,6 +15,8 @@ import * as turf from '@turf/turf';
 import { Position } from 'geojson';
 import { MapRef } from '../features/common/types/projectv2';
 
+export type MobileOs = 'android' | 'ios' | undefined;
+
 const paramsToPreserve = [
   'embed',
   'back_icon',
@@ -23,7 +25,7 @@ const paramsToPreserve = [
   'project_list',
   'enable_intro',
 ];
-const paramsToDelete = ['locale', 'slug', 'p', 'ploc'];
+const paramsToDelete = ['locale', 'slug', 'p', 'ploc', 'backNavigationUrl'];
 
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.
@@ -194,4 +196,20 @@ export const centerMapOnCoordinates = (
     duration: 1200,
     easing: (t) => t * (2 - t),
   });
+};
+
+export const generateProjectLink = (
+  projectGuid: string,
+  routerAsPath: string
+) => {
+  return `/prd/${projectGuid}?backNavigationUrl=${encodeURIComponent(
+    routerAsPath
+  )}`;
+};
+
+export const getDeviceType = (): MobileOs => {
+  const userAgent = navigator.userAgent;
+  if (/android/i.test(userAgent)) return 'android';
+  if (/iPad|iPhone|iPod/.test(userAgent)) return 'ios';
+  return undefined;
 };

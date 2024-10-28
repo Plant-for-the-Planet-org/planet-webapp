@@ -43,6 +43,7 @@ interface ProjectsState {
   setHoveredPlantLocation: SetState<PlantLocation | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
+  setPreventShallowPush: SetState<boolean>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
   isError: boolean;
@@ -62,9 +63,9 @@ interface ProjectsState {
 const ProjectsContext = createContext<ProjectsState | null>(null);
 
 type ProjectsProviderProps = {
-  page: 'project-list' | 'project-details';
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
+  page?: 'project-list' | 'project-details';
+  currencyCode?: string;
+  setCurrencyCode?: SetState<string> | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
@@ -91,6 +92,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
+  const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [selectedClassification, setSelectedClassification] = useState<
@@ -98,7 +100,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
@@ -220,7 +221,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   }, [currencyCode, locale, page]);
 
   useEffect(() => {
-    if (!currencyCode) {
+    if (!currencyCode && setCurrencyCode !== undefined) {
       const currency = getStoredCurrency();
       setCurrencyCode(currency);
     }
@@ -237,6 +238,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject(null);
       setHoveredPlantLocation(null);
       setSelectedSite(0);
+      setPreventShallowPush(false);
     }
   }, [page]);
 
@@ -286,7 +288,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       (requestedPlantLocation && requestedSite)
     )
       return;
-
+    
     if (requestedPlantLocation && selectedPlantLocation === null) {
       const hasNoSites = singleProject.sites?.length === 0;
 
@@ -320,14 +322,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedPlantLocation,
     selectedSite,
   ]);
-
   useEffect(() => {
     if (
       !router.isReady ||
-      !singleProject ||
       page !== 'project-details' ||
       singleProject === null ||
-      selectedPlantLocation !== null
+      selectedPlantLocation !== null ||
+      preventShallowPush
     )
       return;
     // Handle the case where a direct link requests a specific site (via URL query)
@@ -363,6 +364,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     requestedSite,
     router.isReady,
     selectedPlantLocation,
+    preventShallowPush,
   ]);
 
   useEffect(() => {
@@ -403,6 +405,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation,
       selectedSite,
       setSelectedSite,
+      setPreventShallowPush,
     }),
     [
       projects,
@@ -420,6 +423,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedSamplePlantLocation,
       hoveredPlantLocation,
       selectedSite,
+      preventShallowPush,
     ]
   );
 
