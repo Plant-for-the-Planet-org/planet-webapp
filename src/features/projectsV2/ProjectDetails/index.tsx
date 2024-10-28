@@ -31,6 +31,7 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
+    plantLocations,
     setPlantLocations,
     setIsLoading,
     setIsError,
@@ -108,9 +109,9 @@ const ProjectDetails = ({
         setIsLoading(false);
       }
     }
-    if (singleProject && singleProject?.purpose === 'trees')
+    if (singleProject && singleProject?.purpose === 'trees' && plantLocations === null) 
       loadPlantLocations();
-  }, [singleProject]);
+  }, [singleProject?.id]);
 
   const shouldShowPlantLocationInfo =
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
