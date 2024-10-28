@@ -272,12 +272,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     siteIndex: number | null
   ) => {
     if (!singleProject?.sites?.length) return;
-
     setSelectedSite(siteIndex);
-
     const siteId =
       siteIndex !== null ? singleProject.sites[siteIndex]?.properties.id : null;
-
     updateUrlWithSiteId(locale, projectSlug, siteId);
   };
 
@@ -328,7 +325,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     if (
       !router.isReady ||
-      !singleProject ||
       page !== 'project-details' ||
       singleProject === null ||
       selectedPlantLocation !== null ||
