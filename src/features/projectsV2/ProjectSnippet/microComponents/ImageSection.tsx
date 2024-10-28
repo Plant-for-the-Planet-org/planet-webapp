@@ -51,10 +51,12 @@ const ImageSection = (props: ImageSectionProps) => {
       ? previousPageRoute.split('?')[0]
       : defaultRoute;
 
+    const isAbsoluteUrl = previousPageRoute && (previousPageRoute.includes('http://') || previousPageRoute.includes('https://'));
+    const finalQueryParams = isAbsoluteUrl ? {}: queryParams
     router
       .push({
         pathname: routerPath,
-        query: queryParams,
+        query: finalQueryParams,
       })
       .then(() => sessionStorage.removeItem('backNavigationUrl'))
       .catch((error) => {
