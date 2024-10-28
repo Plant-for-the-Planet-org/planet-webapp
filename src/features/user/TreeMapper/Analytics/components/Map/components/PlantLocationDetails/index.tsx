@@ -3,6 +3,7 @@ import styles from './index.module.scss';
 import {
   PlantLocationDetailsApiResponse,
   PlantLocation,
+  PlantLocationProperties,
 } from '../../../../../../../common/types/dataExplorer';
 import PlantLocationDetailsZeroState from '../PlantLocationDetailsZeroState';
 import TreeMapperIcon from '../TreeMapperIcon';
@@ -134,16 +135,30 @@ const SampleTreesInfo = ({
   );
 };
 
+const PlantLocationHeader = ({ type, hid }: PlantLocationProperties) => {
+  const t = useTranslations('TreemapperAnalytics');
+  const formattedHid = hid.substring(0, 3) + '-' + hid.substring(3);
+
+  return (
+    <header className={styles.header}>
+      <div>{t(`plantLocationType.${type}`)}</div>
+      <div className={styles.hid}>#{formattedHid}</div>
+    </header>
+  );
+};
+
 const PlantLocationDetails = ({
   plantLocationDetails,
   selectedLayer,
   loading,
 }: Props) => {
+  const plantLocationType = plantLocationDetails?.properties.type;
+
   const hasData =
     plantLocationDetails !== null &&
     Boolean(
-      selectedLayer.treeCount ||
-        selectedLayer?.density ||
+      (plantLocationType === 'multi-tree-registration' &&
+        (selectedLayer.treeCount || selectedLayer.density)) ||
         (plantLocationDetails?.plantedSpecies?.length || 0) > 0 ||
         (plantLocationDetails?.samplePlantLocations?.length || 0) > 0
     );
@@ -158,9 +173,18 @@ const PlantLocationDetails = ({
           </>
         ) : hasData ? (
           <div className={styles.contentTop}>
-            <PlantationUnitInfo selectedLayer={selectedLayer} />
+            <PlantLocationHeader
+              type={plantLocationDetails.properties.type}
+              hid={plantLocationDetails.properties.hid}
+            />
+            {plantLocationType === 'multi-tree-registration' && (
+              <PlantationUnitInfo selectedLayer={selectedLayer} />
+            )}
             <ListOfSpeciesPlanted plantLocationDetails={plantLocationDetails} />
-            <SampleTreesInfo plantLocationDetails={plantLocationDetails} />
+            {plantLocationType === 'multi-tree-registration' &&
+              plantLocationDetails.totalSamplePlantLocations !== null && (
+                <SampleTreesInfo plantLocationDetails={plantLocationDetails} />
+              )}
           </div>
         ) : (
           <>
