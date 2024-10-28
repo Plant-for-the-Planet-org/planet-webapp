@@ -14,24 +14,32 @@ handler.get(async (req, response) => {
   const query = `
     SELECT
     JSON_OBJECT(
+						'properties', (
+								SELECT JSON_OBJECT(
+										'type', iv.type,
+										'hid', iv.hid
+								)
+								FROM intervention iv
+								WHERE iv.guid = ?
+						),
             'plantedSpecies', (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'scientificName', COALESCE(ss.name, ps.other_species, iv.other_species),
-                        'treeCount', ps.tree_count
+                        'treeCount', COALESCE(ps.tree_count, iv.trees_planted, 0)
                     )
                 )
-                FROM planted_species ps
-                INNER JOIN intervention iv ON ps.intervention_id = iv.id
-                LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id
+                FROM intervention iv
+                LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+                LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
                 WHERE iv.guid = ?
                 GROUP BY iv.id
             ),
             'totalPlantedTrees', (
-              SELECT SUM(ps.tree_count)
-              FROM planted_species ps
-              INNER JOIN intervention iv ON ps.intervention_id = iv.id
-              LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id
+              SELECT SUM(COALESCE(ps.tree_count, iv.trees_planted, 0))
+              FROM intervention iv
+              LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+              LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
               WHERE iv.guid = ?
               GROUP BY iv.id
           ),
@@ -58,7 +66,7 @@ handler.get(async (req, response) => {
                     )
                 )
                 FROM intervention iv
-                LEFT JOIN intervention siv ON iv.id = siv.parent_id
+                INNER JOIN intervention siv ON iv.id = siv.parent_id
                 LEFT JOIN scientific_species ss ON iv.scientific_species_id = ss.id
                 WHERE iv.guid = ?
                 GROUP BY iv.parent_id
@@ -66,7 +74,7 @@ handler.get(async (req, response) => {
             'totalSamplePlantLocations', (
                 SELECT COUNT(*) 
                 FROM intervention iv
-                LEFT JOIN intervention siv ON iv.id = siv.parent_id
+                INNER JOIN intervention siv ON iv.id = siv.parent_id
                 WHERE iv.guid = ?
                 GROUP BY iv.parent_id
             )
@@ -75,6 +83,7 @@ handler.get(async (req, response) => {
  `;
 
   const res = await db.query<PlantLocationDetailsQueryRes[]>(query, [
+    plantLocationId,
     plantLocationId,
     plantLocationId,
     plantLocationId,

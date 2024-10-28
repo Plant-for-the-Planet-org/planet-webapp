@@ -40,10 +40,13 @@ handler.get(async (req, response) => {
   }
 
   try {
-    const query =
-      'SELECT s.name, s.geometry FROM plant_project_site s \
-        INNER JOIN project p ON s.plant_project_id = p.id \
-        WHERE p.guid = ?';
+    const query = `
+			SELECT 
+					s.name, s.geometry 
+				FROM plant_project_site s
+        INNER JOIN project p ON s.plant_project_id = p.id
+        WHERE 
+						p.guid = ?`;
 
     const res = await db.query<UncleanSite[]>(query, [projectId]);
 
