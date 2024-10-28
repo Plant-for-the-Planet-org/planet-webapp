@@ -25,7 +25,7 @@ const paramsToPreserve = [
   'project_list',
   'enable_intro',
 ];
-const paramsToDelete = ['locale', 'slug', 'p', 'ploc'];
+const paramsToDelete = ['locale', 'slug', 'p', 'ploc', 'backNavigationUrl'];
 
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.
@@ -196,6 +196,15 @@ export const centerMapOnCoordinates = (
     duration: 1200,
     easing: (t) => t * (2 - t),
   });
+};
+
+export const generateProjectLink = (
+  projectGuid: string,
+  routerAsPath: string
+) => {
+  return `/prd/${projectGuid}?backNavigationUrl=${encodeURIComponent(
+    routerAsPath
+  )}`;
 };
 
 export const getDeviceType = (): MobileOs => {

@@ -11,6 +11,8 @@ import {
   RecipientBank,
 } from '../../../common/types/payments';
 import Certificates, { shouldEnableCertificate } from './Certificates';
+import { useRouter } from 'next/router';
+import { generateProjectLink } from '../../../../utils/projectV2';
 
 interface HeaderProps {
   record: PaymentHistoryRecord;
@@ -100,7 +102,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   const tMe = useTranslations('Me');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
-
+  const router = useRouter();
   return (
     <>
       {record.status && (
@@ -167,7 +169,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('project')}</p>
           {record.projectGuid ? (
-            <a title={record.details.project} href={`/${record.projectGuid}`}>
+            <a
+              title={record.details.project}
+              href={generateProjectLink(record.projectGuid, router.asPath)}
+            >
               {record.details.project.length > 42
                 ? record.details.project.substring(0, 42)
                 : record.details.project}
