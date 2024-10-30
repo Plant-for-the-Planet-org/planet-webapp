@@ -285,3 +285,21 @@
   left: 0px;
   cursor: pointer;
 }
+
+.reports_container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  .reports_description {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    a {
+      font-weight: bold;
+    }
+  }
+
+  @include mdTabletView {
+    width: 328px;
+  }
+}

@@ -7,7 +7,7 @@ import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
+import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
 import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
@@ -51,8 +51,11 @@ const ImageSection = (props: ImageSectionProps) => {
       ? previousPageRoute.split('?')[0]
       : defaultRoute;
 
-    const isAbsoluteUrl = previousPageRoute && (previousPageRoute.includes('http://') || previousPageRoute.includes('https://'));
-    const finalQueryParams = isAbsoluteUrl ? {}: queryParams
+    const isAbsoluteUrl =
+      previousPageRoute &&
+      (previousPageRoute.includes('http://') ||
+        previousPageRoute.includes('https://'));
+    const finalQueryParams = isAbsoluteUrl ? {} : queryParams;
     router
       .push({
         pathname: routerPath,
