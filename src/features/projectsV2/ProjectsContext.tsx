@@ -228,6 +228,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
+    if (selectedMode === 'list' && singleProject !== null) {
+      setSelectedSamplePlantLocation(null);
+      setSelectedPlantLocation(null);
+      setHoveredPlantLocation(null);
+      updateSiteAndUrl(locale, singleProject.slug, 0);
+    }
+  }, [selectedMode, singleProject, locale]);
+
+  useEffect(() => {
     setDebouncedSearchValue('');
     if (page === 'project-details') {
       if (setSelectedMode) setSelectedMode('list');
@@ -239,7 +248,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setHoveredPlantLocation(null);
       setSelectedSite(0);
       setPreventShallowPush(false);
+      setPlantLocations(null);
     }
+    if (selectedMode === 'list' && page === 'project-list')
+      setPlantLocations(null);
   }, [page]);
 
   const pushWithShallow = (
@@ -288,7 +300,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       (requestedPlantLocation && requestedSite)
     )
       return;
-    
+
     if (requestedPlantLocation && selectedPlantLocation === null) {
       const hasNoSites = singleProject.sites?.length === 0;
 
@@ -366,15 +378,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedPlantLocation,
     preventShallowPush,
   ]);
-
-  useEffect(() => {
-    if (selectedMode === 'list' && singleProject !== null) {
-      setSelectedSamplePlantLocation(null);
-      setSelectedPlantLocation(null);
-      setHoveredPlantLocation(null);
-      updateSiteAndUrl(locale, singleProject.slug, 0);
-    }
-  }, [selectedMode, singleProject, locale]);
 
   const value: ProjectsState | null = useMemo(
     () => ({

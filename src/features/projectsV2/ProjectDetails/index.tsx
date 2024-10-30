@@ -109,9 +109,14 @@ const ProjectDetails = ({
         setIsLoading(false);
       }
     }
-    if (singleProject && singleProject?.purpose === 'trees' && plantLocations === null) 
+
+    if (
+      singleProject &&
+      singleProject?.purpose === 'trees' &&
+      plantLocations === null
+    )
       loadPlantLocations();
-  }, [singleProject?.id]);
+  }, [singleProject]);
 
   const shouldShowPlantLocationInfo =
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
