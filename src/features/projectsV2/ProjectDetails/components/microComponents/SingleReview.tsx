@@ -56,7 +56,7 @@ const SingleReview = ({ singleReview }: Props) => {
         >
           <p>{tProjectDetails('report')}</p>
           <DownloadReportIcon
-            width={10}
+            width={12}
             color={`${'rgb(var(--review-font-color-new))'}`}
           />
         </a>
