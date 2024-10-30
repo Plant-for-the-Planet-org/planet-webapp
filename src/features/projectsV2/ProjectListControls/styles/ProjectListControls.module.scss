@@ -220,7 +220,7 @@
   border-radius: 12px;
   position: absolute;
   z-index: 2;
-  box-shadow: 2px 2px 14px gray;
+  box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
   left: 193px;
   @include xsPhoneView {
     left: 127px;
