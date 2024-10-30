@@ -78,8 +78,8 @@ export const Export = () => {
       description: t('exportColumnHeaders.hid'),
     },
     {
-      title: 'plant_date',
-      description: t('exportColumnHeaders.plantDate'),
+      title: 'intervention_start_date',
+      description: t('exportColumnHeaders.interventionStartDate'),
     },
     {
       title: 'species',
@@ -142,6 +142,7 @@ export const Export = () => {
   };
 
   const extractDataToXlsx = (data: IExportData[]) => {
+    console.log('Data for export:', data[0]);
     const worksheet = utils.json_to_sheet(data);
     const workbook = utils.book_new();
 
@@ -173,6 +174,7 @@ export const Export = () => {
   const handleExport = async () => {
     if (localProject) {
       const res = await makeRequest();
+      console.log('Data received from API:', res?.data[0]);
 
       if (res) {
         const { data } = res;
