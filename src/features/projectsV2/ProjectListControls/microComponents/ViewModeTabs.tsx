@@ -1,11 +1,12 @@
-import { ReactNode } from 'react';
+import React from 'react';
 import { useTranslations } from 'next-intl';
+import { type SetState } from '../../../common/types/common';
+import { type ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
 import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';
-import { SetState } from '../../../common/types/common';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
-import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean> | undefined;
   isSearching: boolean | undefined;
@@ -15,7 +16,7 @@ interface ViewModeTabsProps {
 
 interface TabItemProps {
   selectedTab: ViewMode;
-  icon: ReactNode;
+  icon: React.ReactNode;
   label: string | undefined;
 }
 const getIconColor = (mode: ViewMode, selectMode: ViewMode) => {

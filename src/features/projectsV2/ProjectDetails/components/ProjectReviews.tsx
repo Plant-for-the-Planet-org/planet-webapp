@@ -1,8 +1,8 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
+import { type Review } from '@planet-sdk/common';
 import styles from '../styles/ProjectReviews.module.scss';
 import SingleReview from './microComponents/SingleReview';
-import { useTranslations } from 'next-intl';
-import { Review } from '@planet-sdk/common';
 
 interface Props {
   reviews: Review[] | undefined;

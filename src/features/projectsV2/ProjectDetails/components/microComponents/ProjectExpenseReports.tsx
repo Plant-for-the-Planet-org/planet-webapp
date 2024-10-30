@@ -1,6 +1,6 @@
 import React from 'react';
+import { type ProjectExpense } from '@planet-sdk/common';
 import styles from '../../styles/ProjectInfo.module.scss';
-import { ProjectExpense } from '@planet-sdk/common';
 import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { useLocale } from 'next-intl';
 import DownloadsButton from './DownloadButton';

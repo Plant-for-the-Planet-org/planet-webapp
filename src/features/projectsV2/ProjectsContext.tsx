@@ -1,32 +1,31 @@
 import {
   createContext,
-  FC,
+  type FC,
   useContext,
   useEffect,
   useMemo,
   useState,
   useCallback,
 } from 'react';
-import { ExtendedProject, MapProject } from '../common/types/projectv2';
-import { useLocale } from 'next-intl';
-import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../../utils/apiRequests/api';
-import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
+import type { ExtendedProject, MapProject } from '../common/types/projectv2';
 import {
-  APIError,
-  CountryCode,
+  type APIError,
+  type CountryCode,
   handleError,
-  TreeProjectClassification,
+  type TreeProjectClassification,
 } from '@planet-sdk/common';
-import { useTenant } from '../common/Layout/TenantContext';
-import { SetState } from '../common/types/common';
-import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { useTranslations } from 'next-intl';
-import {
+import type { SetState } from '../common/types/common';
+import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type {
   PlantLocation,
   SamplePlantLocation,
 } from '../common/types/plantLocation';
-import { useRouter } from 'next/router';
+import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
+import { getRequest } from '../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
+import { useTenant } from '../common/Layout/TenantContext';
 import { updateUrlWithParams } from '../../utils/projectV2';
 
 interface ProjectsState {
@@ -288,7 +287,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       (requestedPlantLocation && requestedSite)
     )
       return;
-    
+
     if (requestedPlantLocation && selectedPlantLocation === null) {
       const hasNoSites = singleProject.sites?.length === 0;
 

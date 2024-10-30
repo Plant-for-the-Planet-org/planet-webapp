@@ -1,11 +1,11 @@
 import { Tabs } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import { type SetState } from '../../../common/types/common';
+import { type ProjectTabs } from '..';
 import CustomMuiTab from './CustomMuiTab';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
-import { SetState } from '../../../common/types/common';
-import { type ProjectTabs } from '..';
 
 interface ProjectListTabLargeScreenProps {
   setIsFilterOpen: SetState<boolean>;

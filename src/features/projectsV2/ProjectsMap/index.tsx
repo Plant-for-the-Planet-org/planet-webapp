@@ -1,7 +1,10 @@
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useRef } from 'react';
+import { type ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import { type SetState } from '../../common/types/common';
+import { type PlantLocationSingle } from '../../common/types/plantLocation';
+import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
@@ -14,12 +17,8 @@ import {
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import { useProjects } from '../ProjectsContext';
-import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { SetState } from '../../common/types/common';
 import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
-import { PlantLocationSingle } from '../../common/types/plantLocation';
-import { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 import styles from './ProjectsMap.module.scss';
 
 export type ProjectsMapDesktopProps = {

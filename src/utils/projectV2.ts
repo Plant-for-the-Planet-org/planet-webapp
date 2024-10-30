@@ -1,19 +1,19 @@
-import { TreeProjectClassification } from '@planet-sdk/common';
-import { PointLike } from 'react-map-gl-v7/maplibre';
-import { ParsedUrlQuery } from 'querystring';
-import {
-  MapProjectProperties,
-  ExtendedProject,
-  MapProject,
-} from '../features/common/types/projectv2';
-import {
+import * as turf from '@turf/turf';
+import { type TreeProjectClassification } from '@planet-sdk/common';
+import { type PointLike } from 'react-map-gl-v7/maplibre';
+import { type ParsedUrlQuery } from 'querystring';
+import type { Position } from 'geojson';
+import type { MapRef } from '../features/common/types/projectv2';
+import type {
   PlantLocation,
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../features/common/types/plantLocation';
-import * as turf from '@turf/turf';
-import { Position } from 'geojson';
-import { MapRef } from '../features/common/types/projectv2';
+import type {
+  MapProjectProperties,
+  ExtendedProject,
+  MapProject,
+} from '../features/common/types/projectv2';
 
 export type MobileOs = 'android' | 'ios' | undefined;
 

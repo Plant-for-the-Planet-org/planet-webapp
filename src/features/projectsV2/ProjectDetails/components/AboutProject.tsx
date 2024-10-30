@@ -1,6 +1,6 @@
-import styles from '../styles/AboutProject.module.scss';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import styles from '../styles/AboutProject.module.scss';
 import DownArrow from '../../../../../public/assets/images/icons/projectV2/DownArrow';
 import UpArrow from '../../../../../public/assets/images/icons/projectV2/UpArrow';
 

@@ -1,11 +1,11 @@
-import styles from '../styles/ProjectInfo.module.scss';
 import { useTranslations } from 'next-intl';
-import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
-import {
+import type {
   InterventionTypes,
   LandOwnershipTypes,
   OwnershipTypes,
 } from '@planet-sdk/common';
+import styles from '../styles/ProjectInfo.module.scss';
+import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 interface Props {
   mainChallenge: string | null;
   siteOwnerName: string | null;

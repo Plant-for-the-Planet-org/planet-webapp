@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../../../common/types/common';
-import { SamplePlantLocation } from '../../../../common/types/plantLocation';
+import { type SetState } from '../../../../common/types/common';
+import { type SamplePlantLocation } from '../../../../common/types/plantLocation';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 
 interface Props {

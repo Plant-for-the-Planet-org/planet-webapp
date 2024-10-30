@@ -1,8 +1,8 @@
 import PlantInfoCard from './microComponents/PlantInfoCard';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
-import { SetState } from '../../../common/types/common';
-import {
+import { type SetState } from '../../../common/types/common';
+import type {
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';

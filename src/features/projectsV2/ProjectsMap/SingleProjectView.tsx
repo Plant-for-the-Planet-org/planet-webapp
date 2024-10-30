@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import type { MapRef } from '../../common/types/projectv2';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
 import SitePolygon from './microComponents/SitePolygon';
-import { useRouter } from 'next/router';
 import PlantLocations from './microComponents/PlantLocations';
-import { MapRef } from '../../common/types/projectv2';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';

@@ -1,5 +1,8 @@
-import React, { ReactElement, useContext, useEffect, useMemo } from 'react';
-import {
+import { type ReactElement, useContext, useEffect, useMemo } from 'react';
+import { useLocale } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import type {
   ConservationProjectConcise,
   ConservationProjectExtended,
   TreeProjectConcise,
@@ -10,6 +13,7 @@ import {
   CountryCode,
   CurrencyCode,
 } from '@planet-sdk/common';
+import type { SetState } from '../../common/types/common';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
@@ -20,10 +24,6 @@ import {
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import { useProjects } from '../ProjectsContext';
-import { SetState } from '../../common/types/common';
-import { useLocale } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 interface Props {
   project:

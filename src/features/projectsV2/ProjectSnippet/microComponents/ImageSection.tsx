@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
+import type { ImageSectionProps } from '..';
 import getImageUrl from '../../../../utils/getImageURL';
 import ProjectBadge from './ProjectBadge';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
@@ -9,7 +10,6 @@ import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from '../../../projects/components/projectDetails/TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
-import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
@@ -51,8 +51,11 @@ const ImageSection = (props: ImageSectionProps) => {
       ? previousPageRoute.split('?')[0]
       : defaultRoute;
 
-    const isAbsoluteUrl = previousPageRoute && (previousPageRoute.includes('http://') || previousPageRoute.includes('https://'));
-    const finalQueryParams = isAbsoluteUrl ? {}: queryParams
+    const isAbsoluteUrl =
+      previousPageRoute &&
+      (previousPageRoute.includes('http://') ||
+        previousPageRoute.includes('https://'));
+    const finalQueryParams = isAbsoluteUrl ? {} : queryParams;
     router
       .push({
         pathname: routerPath,

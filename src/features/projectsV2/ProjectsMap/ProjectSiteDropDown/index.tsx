@@ -1,19 +1,19 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { area } from '@turf/turf';
+import { type SetState } from '../../../common/types/common';
+import type { Feature, MultiPolygon, Polygon } from 'geojson';
+import type {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 import SiteIcon from '../../../../temp/icons/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
-import { SetState } from '../../../common/types/common';
 import ProjectSiteList from './ProjectSiteList';
-import { area } from '@turf/turf';
-import { Feature, MultiPolygon, Polygon } from 'geojson';
-import {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
 import { truncateString } from '../../../../utils/getTruncatedString';
-import { useRouter } from 'next/router';
 
 export interface SiteProperties {
   lastUpdated: {

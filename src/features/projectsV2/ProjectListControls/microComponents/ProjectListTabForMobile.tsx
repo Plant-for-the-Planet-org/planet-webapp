@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import React from 'react';
 import { useTranslations } from 'next-intl';
+import { type ProjectTabs } from '..';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import styles from '../styles/ProjectListControls.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
-import { type ProjectTabs } from '..';
 
 interface ProjectListTabForMobileProps {
   projectCount: number | undefined;
@@ -14,8 +14,8 @@ interface ProjectListTabForMobileProps {
 }
 interface TabItemProps {
   selectedTab: ProjectTabs;
-  icon?: ReactNode | undefined;
-  label: ReactNode;
+  icon?: React.ReactNode | undefined;
+  label: React.ReactNode;
 }
 const ProjectListTabForMobile = ({
   projectCount,

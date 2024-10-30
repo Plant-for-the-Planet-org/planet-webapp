@@ -1,10 +1,10 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../styles/ProjectListControls.module.scss';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
-import { SetState } from '../../../common/types/common';
+import { type SetState } from '../../../common/types/common';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 
 interface ActiveSearchFieldProps {

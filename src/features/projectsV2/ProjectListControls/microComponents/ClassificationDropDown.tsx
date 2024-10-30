@@ -1,10 +1,10 @@
-import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import { type SetState } from '../../../common/types/common';
+import { type TreeProjectClassification } from '@planet-sdk/common';
+import { type ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import styles from '../styles/ProjectListControls.module.scss';
-import { SetState } from '../../../common/types/common';
 import { availableFilters } from '../../../../utils/projectV2';
-import { TreeProjectClassification } from '@planet-sdk/common';
-import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];

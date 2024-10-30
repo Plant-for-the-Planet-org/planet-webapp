@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { type MapOptions } from '../../ProjectsMapContext';
 import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';
 import styles from './MapFeatureExplorer.module.scss';
 // import { SmallSlider } from './CustomSlider';
 // import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
-import { useTranslations } from 'next-intl';
-import { MapOptions } from '../../ProjectsMapContext';
 
 /* interface ExploreProjectProps {
   label: string | string[];

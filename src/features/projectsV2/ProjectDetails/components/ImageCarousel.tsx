@@ -1,8 +1,8 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
+import { type SliderImage } from '../../../common/types/projectv2';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
-import { SliderImage } from '../../../common/types/projectv2';
 
 interface Props {
   images: SliderImage[] | undefined;
@@ -23,7 +23,7 @@ const ImageCarousel = ({
 }: Props) => {
   const [projectImages, setProjectImages] = useState<
     {
-      content: () => ReactElement;
+      content: () => React.ReactElement;
     }[]
   >([]);
   const pattern = /^https:\/\//i;

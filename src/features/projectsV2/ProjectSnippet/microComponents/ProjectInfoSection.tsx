@@ -1,10 +1,10 @@
 import { useContext, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { CountryCode } from '@planet-sdk/common';
+import type { CountryCode } from '@planet-sdk/common';
+import type { ProjectInfoProps } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { ProjectInfoProps } from '..';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
