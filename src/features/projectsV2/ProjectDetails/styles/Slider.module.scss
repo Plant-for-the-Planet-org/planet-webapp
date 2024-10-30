@@ -38,6 +38,8 @@
 .expandedImageSliderContainer {
   position: relative;
   width: 800px;
+  border-radius: 16px;
+  overflow: hidden;
   > button {
     position: absolute;
     right: 10px;
