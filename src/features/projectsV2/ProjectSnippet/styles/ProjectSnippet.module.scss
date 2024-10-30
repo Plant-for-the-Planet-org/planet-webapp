@@ -31,7 +31,6 @@
 .projectImage {
   height: 160px;
   width: 100%;
-  background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
   border-radius: 14px 14px 0px 0px;
@@ -41,6 +40,10 @@
     position: absolute;
     bottom: 12px;
     left: 13px;
+  }
+
+  &.loading {
+    background-color: $primaryColor;
   }
 }
 
@@ -71,6 +74,10 @@
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
+
+  .hidden {
+    display: none;
+  }
 }
 
 // project info

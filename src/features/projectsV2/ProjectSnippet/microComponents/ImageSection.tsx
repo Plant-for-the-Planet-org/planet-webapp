@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -29,6 +29,10 @@ const ImageSection = (props: ImageSectionProps) => {
     setSelectedSite,
     setPreventShallowPush,
   } = props;
+
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
   const tManageProjects = useTranslations('ManageProjects');
   const tDonate = useTranslations('Donate');
   const router = useRouter();
@@ -70,7 +74,17 @@ const ImageSection = (props: ImageSectionProps) => {
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   const imageContainerClasses = `${styles.projectImage} ${
     page === 'project-details' ? styles.projectImageSecondary : ''
-  }`;
+  } ${isImageLoading ? styles.loading : ''}`;
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
+  };
+
+  const handleImageError = () => {
+    setIsImageLoading(false);
+    setHasError(true);
+  };
+
   return (
     <div className={imageContainerClasses}>
       {page === 'project-details' && (
@@ -84,17 +98,53 @@ const ImageSection = (props: ImageSectionProps) => {
         isTopProject={isTopProject}
         showTooltipPopups={showTooltipPopups}
       />
-      {image && typeof image !== 'undefined' ? (
-        <>
-          <img
-            alt={'projectImage'}
-            src={imageSource}
-            width={'fit-content'}
-            className={styles.projectImageFile}
-          />
-          <div className={styles.gradientOverlay} />
-        </>
-      ) : null}
+
+      {/* Loading state */}
+      {isImageLoading && (
+        <img
+          alt="loading"
+          src="/assets/images/project-contribution-default-landscape.png"
+          className={styles.projectImageFile}
+          style={{
+            height: page === 'project-details' ? '180px' : '160px',
+            objectFit: 'cover',
+          }}
+        />
+      )}
+
+      {/* Main image */}
+      {image && typeof image !== 'undefined' && (
+        <img
+          alt={'projectImage'}
+          src={imageSource}
+          className={`${styles.projectImageFile} ${
+            isImageLoading ? styles.hidden : ''
+          }`}
+          style={{
+            height: page === 'project-details' ? '180px' : '160px',
+            objectFit: 'cover',
+            display: isImageLoading ? 'none' : 'block',
+          }}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+        />
+      )}
+
+      {/* Error/fallback state */}
+      {(hasError || !image) && (
+        <img
+          alt="fallback"
+          src="/assets/images/project-contribution-default-landscape.png"
+          className={styles.projectImageFile}
+          style={{
+            height: page === 'project-details' ? '180px' : '160px',
+            objectFit: 'cover',
+          }}
+        />
+      )}
+
+      {/* Gradient overlay */}
+      <div className={styles.gradientOverlay} />
 
       <div className={styles.projectImageBlock}>
         <div className={styles.projectEcosystemOrTypeContainer}>

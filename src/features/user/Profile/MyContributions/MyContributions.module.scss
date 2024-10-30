@@ -159,7 +159,7 @@
 
 .itemImageContainer {
   height: 150px;
-  background-image: url('/assets/images/contribution-default-landscape.png');
+  background-image: url('/assets/images/project-contribution-default-landscape.png');
   background-position: center;
   background-size: cover;
   display: flex;
@@ -168,7 +168,7 @@
   overflow: hidden;
 
   @include smTabletView {
-    background-image: url('/assets/images/contribution-default-portrait.png');
+    background-image: url('/assets/images/project-contribution-default-portrait.png');
     width: 130px;
     height: 130px;
     border-radius: 8px;
