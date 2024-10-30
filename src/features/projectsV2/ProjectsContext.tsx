@@ -237,7 +237,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedPlantLocation(null);
       setSingleProject(null);
       setHoveredPlantLocation(null);
-      setSelectedSite(0);
+      setSelectedSite(null);
       setPreventShallowPush(false);
     }
   }, [page]);
@@ -269,7 +269,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const updateSiteAndUrl = (
     locale: string,
     projectSlug: string,
-    siteIndex?: number
+    siteIndex: number | undefined
   ) => {
     if (
       singleProject?.sites &&
@@ -285,6 +285,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     }
   };
 
+  const hasNoSites = useMemo(
+    () =>
+      singleProject?.sites?.length === 0 ||
+      singleProject?.sites?.every((site) => site.geometry === null),
+    [singleProject?.sites]
+  );
+
   useEffect(() => {
     if (
       !router.isReady ||
@@ -297,11 +304,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       return;
 
     if (requestedPlantLocation && selectedPlantLocation === null) {
-      const hasNoSites = singleProject.sites?.length === 0;
-
       if (hasNoSites) {
         //Case when a direct link requests a specific plant location but no sites exist for a project(e.g projectSlug: mothersforest).
-        updateSiteAndUrl(locale, singleProject.slug);
+        updateSiteAndUrl(locale, singleProject.slug, undefined);
       } else {
         // Handle the case where a direct link requests a specific plant location (via URL query).
         // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
@@ -328,6 +333,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     router.isReady,
     selectedPlantLocation,
     selectedSite,
+    hasNoSites,
   ]);
   useEffect(() => {
     if (
@@ -341,7 +347,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     // Handle the case where a direct link requests a specific site (via URL query)
     // This will update the site param based on the requestedSite. If the requested site ID is invalid,
     // it falls back to the default (first) site.
-    if (requestedSite && selectedSite === null) {
+    if (requestedSite && selectedSite === null && !hasNoSites) {
       const index = singleProject.sites?.findIndex(
         (site) => site.properties.id === requestedSite
       );
@@ -360,8 +366,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     // If the user navigates to the project detail page from the project list (no specific site selected)
     // This defaults to the first site and updates the URL accordingly.
-    if (!requestedPlantLocation)
-      updateSiteAndUrl(locale, singleProject.slug, 0);
+    if (!requestedPlantLocation) {
+      const siteIndex = hasNoSites ? undefined : 0;
+      updateSiteAndUrl(locale, singleProject.slug, siteIndex);
+    }
   }, [
     page,
     locale,
@@ -372,6 +380,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     router.isReady,
     selectedPlantLocation,
     preventShallowPush,
+    hasNoSites,
   ]);
 
   useEffect(() => {
@@ -379,9 +388,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation(null);
       setSelectedPlantLocation(null);
       setHoveredPlantLocation(null);
-      updateSiteAndUrl(locale, singleProject.slug, 0);
+      updateSiteAndUrl(locale, singleProject.slug, hasNoSites ? undefined : 0);
     }
-  }, [selectedMode, singleProject, locale]);
+  }, [selectedMode, singleProject, locale, hasNoSites]);
 
   const value: ProjectsState | null = useMemo(
     () => ({
