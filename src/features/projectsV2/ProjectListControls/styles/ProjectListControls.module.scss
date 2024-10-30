@@ -19,6 +19,14 @@
   }
 }
 
+.activeSearchFieldContainer {
+  @include xsPhoneView {
+    input {
+      font-size: $fontXSmall;
+    }
+  }
+}
+
 .tabsContainer,
 .projectListControlsMobile {
   display: flex;
