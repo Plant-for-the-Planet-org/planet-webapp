@@ -34,6 +34,7 @@ export default function TopProjectReports({ projectReviews }: Props) {
                       target="_blank"
                       href={t('standardsLink')}
                       rel="noreferrer"
+                      className="planet-links"
                       style={{ fontWeight: 400 }}
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -45,6 +46,7 @@ export default function TopProjectReports({ projectReviews }: Props) {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
+                className="planet-links"
                 href={getPDFFile('projectReview', review.pdf)}
                 onClick={(e) => e.stopPropagation()}
               >

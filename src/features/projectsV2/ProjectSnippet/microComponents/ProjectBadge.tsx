@@ -101,7 +101,7 @@ const ProjectBadge = ({
                 target="_blank"
                 href={tCommon('standardsLink')}
                 rel="noreferrer"
-                className={styles.standardsLink}
+                className="planet-links"
                 onClick={(e) => e.stopPropagation()}
               >
                 {chunks}
