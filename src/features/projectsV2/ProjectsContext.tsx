@@ -239,7 +239,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setHoveredPlantLocation(null);
       setSelectedSite(null);
       setPreventShallowPush(false);
+      setPlantLocations(null);
     }
+    if (selectedMode === 'list' && page === 'project-list')
+      setPlantLocations(null);
   }, [page]);
 
   const pushWithShallow = (
