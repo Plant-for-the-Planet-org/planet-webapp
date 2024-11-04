@@ -53,7 +53,7 @@ const KeyInfo = ({
 
   return (
     <div className={styles.keyInfoContainer}>
-      <div className={styles.singleRowInfoContainer}>
+      <div className={styles.keyInfoSubContainer}>
         {abandonment && (
           <SingleProjectInfoItem
             title={
@@ -96,7 +96,7 @@ const KeyInfo = ({
         )}
       </div>
 
-      <div className={styles.singleRowInfoContainer}>
+      <div className={styles.keyInfoSubContainer}>
         {plantingDensity && (
           <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
             <>
@@ -117,7 +117,7 @@ const KeyInfo = ({
         )}
       </div>
 
-      <div className={styles.singleRowInfoContainer}>
+      <div className={styles.keyInfoSubContainer}>
         {degradationYear && (
           <SingleProjectInfoItem title={tManageProjects('degradationYear')}>
             <p>{degradationYear}</p>

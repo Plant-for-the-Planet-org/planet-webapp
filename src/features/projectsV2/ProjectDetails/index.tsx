@@ -31,6 +31,7 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
+    plantLocations,
     setPlantLocations,
     setIsLoading,
     setIsError,
@@ -108,7 +109,12 @@ const ProjectDetails = ({
         setIsLoading(false);
       }
     }
-    if (singleProject && singleProject?.purpose === 'trees')
+
+    if (
+      singleProject &&
+      singleProject?.purpose === 'trees' &&
+      plantLocations === null
+    )
       loadPlantLocations();
   }, [singleProject]);
 

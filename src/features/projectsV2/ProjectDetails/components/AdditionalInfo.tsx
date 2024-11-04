@@ -90,33 +90,33 @@ const AdditionalInfo = ({
   const moreInfoContent = [
     {
       title: `${tManageProjects('mainChallenge')}`,
-      content: <div className={styles.infoDetail}>{mainChallenge}</div>,
+      content: <div>{mainChallenge}</div>,
       shouldDisplay: Boolean(mainChallenge),
     },
     {
       title: `${tManageProjects('actions')}`,
-      content: <div className={styles.infoDetail}>{actions}</div>,
+      content: <div>{actions}</div>,
       shouldDisplay: Boolean(actions),
     },
     {
       title: `${tManageProjects('socialBenefits')}`,
-      content: <div className={styles.infoDetail}>{socialBenefits}</div>,
+      content: <div>{socialBenefits}</div>,
       shouldDisplay: Boolean(socialBenefits),
     },
     {
       title: `${tManageProjects('ecologicalBenefits')}`,
-      content: <div className={styles.infoDetail}>{ecologicalBenefits}</div>,
+      content: <div>{ecologicalBenefits}</div>,
       shouldDisplay: Boolean(ecologicalBenefits),
     },
     {
       title: `${tManageProjects('coBenefits')}`,
-      content: <div className={styles.infoDetail}>{coBenefits}</div>,
+      content: <div>{coBenefits}</div>,
       shouldDisplay: Boolean(coBenefits),
     },
     {
       title: `${tManageProjects(`labelMainInterventions`)}`,
       content: (
-        <div className={styles.infoDetail}>
+        <div>
           {mainInterventions
             ?.map((item) => tManageProjects(`interventionTypes.${item}`))
             .join(',')}
@@ -133,7 +133,7 @@ const AdditionalInfo = ({
               <span key={type}>{renderSiteOwnershipType(type)}</span>
             ))}
           </div>
-          <div className={styles.infoDetail}>{siteOwnerName}</div>
+          <div>{siteOwnerName}</div>
         </>
       ),
       shouldDisplay:
@@ -142,22 +142,22 @@ const AdditionalInfo = ({
     },
     {
       title: `${tManageProjects('ownerShipTenure')}`,
-      content: <div className={styles.infoDetail}>{ownershipTenure}</div>,
+      content: <div>{ownershipTenure}</div>,
       shouldDisplay: Boolean(ownershipTenure),
     },
     {
       title: `${tManageProjects('causeOfDegradation')}`,
-      content: <div className={styles.infoDetail}>{causeOfDegradation}</div>,
+      content: <div>{causeOfDegradation}</div>,
       shouldDisplay: Boolean(causeOfDegradation),
     },
     {
       title: `${tManageProjects('whyThisSite')}`,
-      content: <div className={styles.infoDetail}>{whyThisSite}</div>,
+      content: <div>{whyThisSite}</div>,
       shouldDisplay: Boolean(whyThisSite),
     },
     {
       title: `${tProjectDetails('longTermPlan')}`,
-      content: <div className={styles.infoDetail}>{longTermPlan}</div>,
+      content: <div>{longTermPlan}</div>,
       shouldDisplay: Boolean(longTermPlan),
     },
   ];

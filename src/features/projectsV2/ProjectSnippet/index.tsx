@@ -54,7 +54,6 @@ export interface ImageSectionProps extends CommonProps {
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
   page?: 'project-list' | 'project-details';
-  setSelectedSite: SetState<number | null>;
   setPreventShallowPush: SetState<boolean> | undefined;
 }
 
@@ -73,7 +72,6 @@ const ProjectSnippetContent = ({
   page,
   setPreventShallowPush,
 }: ProjectSnippetContentProps) => {
-  const { setSelectedSite } = useProjects();
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
   const ecosystem =
@@ -111,7 +109,6 @@ const ProjectSnippetContent = ({
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
     page,
-    setSelectedSite,
     setPreventShallowPush,
   };
   const projectInfoProps: ProjectInfoProps = {

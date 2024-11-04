@@ -26,7 +26,6 @@ const ImageSection = (props: ImageSectionProps) => {
     isTopProject,
     allowDonations,
     page,
-    setSelectedSite,
     setPreventShallowPush,
   } = props;
   const tManageProjects = useTranslations('ManageProjects');
@@ -38,7 +37,6 @@ const ImageSection = (props: ImageSectionProps) => {
 
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
-    setSelectedSite(null);
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {
