@@ -1,6 +1,6 @@
 import { Marker } from 'react-map-gl-v7';
 import ProjectMarkerIcon from './ProjectMarkerIcon';
-import { type MapProject } from '../../../common/types/projectv2';
+import type { MapProject } from '../../../common/types/projectv2';
 import styles from './ProjectMarkers.module.scss';
 
 type Props = {

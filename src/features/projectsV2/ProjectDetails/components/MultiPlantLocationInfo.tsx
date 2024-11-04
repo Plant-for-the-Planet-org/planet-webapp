@@ -5,7 +5,7 @@ import type {
   PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
-import { type SetState } from '../../../common/types/common';
+import type { SetState } from '../../../common/types/common';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';

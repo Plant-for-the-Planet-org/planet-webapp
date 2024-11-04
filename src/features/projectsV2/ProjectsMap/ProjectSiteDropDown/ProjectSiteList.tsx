@@ -1,4 +1,4 @@
-import { type SetState } from '../../../common/types/common';
+import type { SetState } from '../../../common/types/common';
 import type {
   PlantLocation,
   SamplePlantLocation,

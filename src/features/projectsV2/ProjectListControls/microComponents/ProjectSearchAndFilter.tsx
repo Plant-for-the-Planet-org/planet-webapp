@@ -1,4 +1,4 @@
-import { type SetState } from '../../../common/types/common';
+import type { SetState } from '../../../common/types/common';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import FilterIcon from '../../../../../public/assets/images/icons/projectV2/FilterIcon';
 import styles from '../styles/ProjectListControls.module.scss';

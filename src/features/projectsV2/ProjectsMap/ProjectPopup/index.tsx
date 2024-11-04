@@ -1,5 +1,5 @@
 import { Popup } from 'react-map-gl-v7/maplibre';
-import { type MapProject } from '../../../common/types/projectv2';
+import type { MapProject } from '../../../common/types/projectv2';
 import styles from './ProjectPopup.module.scss';
 import ProjectSnippet from '../../ProjectSnippet';
 

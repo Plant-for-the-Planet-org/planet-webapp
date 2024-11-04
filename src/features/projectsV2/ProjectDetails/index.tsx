@@ -17,7 +17,7 @@ import type {
   SamplePlantLocation,
 } from '../../common/types/plantLocation';
 import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
-import { type ExtendedProject } from '../../common/types/projectv2';
+import type { ExtendedProject } from '../../common/types/projectv2';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 

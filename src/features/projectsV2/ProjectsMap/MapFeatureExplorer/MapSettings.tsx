@@ -1,5 +1,5 @@
 import type { ChangeEvent, FC } from 'react';
-import { type MapOptions } from '../../ProjectsMapContext';
+import type { MapOptions } from '../../ProjectsMapContext';
 import styles from './MapFeatureExplorer.module.scss';
 import { MapLayerToggle } from '.';
 // import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';

@@ -1,5 +1,5 @@
 import { useLocale, useTranslations } from 'next-intl';
-import { type AllowedSeasonMonths } from '@planet-sdk/common';
+import type { AllowedSeasonMonths } from '@planet-sdk/common';
 import styles from '../styles/ProjectInfo.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';

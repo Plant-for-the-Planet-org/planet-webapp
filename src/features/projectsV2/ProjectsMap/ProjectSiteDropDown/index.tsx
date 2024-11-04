@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { area } from '@turf/turf';
-import { type SetState } from '../../../common/types/common';
+import type { SetState } from '../../../common/types/common';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
 import type {
   PlantLocation,

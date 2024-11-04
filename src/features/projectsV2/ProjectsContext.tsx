@@ -1,6 +1,5 @@
 import {
   createContext,
-  type FC,
   useContext,
   useEffect,
   useMemo,
@@ -9,6 +8,7 @@ import {
 } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
+import type { FC } from 'react';
 import type { ExtendedProject, MapProject } from '../common/types/projectv2';
 import {
   type APIError,

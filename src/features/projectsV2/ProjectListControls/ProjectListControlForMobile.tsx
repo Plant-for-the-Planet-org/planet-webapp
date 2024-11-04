@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { type TreeProjectClassification } from '@planet-sdk/common';
-import { type SetState } from '../../common/types/common';
-import { type ProjectTabs } from '.';
-import { type MapProject } from '../../common/types/projectv2';
-import { type ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { type MapOptions } from '../ProjectsMapContext';
+import type { TreeProjectClassification } from '@planet-sdk/common';
+import type { SetState } from '../../common/types/common';
+import type { ProjectTabs } from '.';
+import type { MapProject } from '../../common/types/projectv2';
+import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type { MapOptions } from '../ProjectsMapContext';
 import styles from './styles/ProjectListControls.module.scss';
 import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
 import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';

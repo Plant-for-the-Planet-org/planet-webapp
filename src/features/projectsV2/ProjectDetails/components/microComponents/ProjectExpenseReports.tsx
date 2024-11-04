@@ -1,5 +1,5 @@
 import React from 'react';
-import { type ProjectExpense } from '@planet-sdk/common';
+import type { ProjectExpense } from '@planet-sdk/common';
 import styles from '../../styles/ProjectInfo.module.scss';
 import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { useLocale } from 'next-intl';

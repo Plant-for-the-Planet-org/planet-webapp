@@ -1,7 +1,8 @@
-import { type ReactElement, useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import type { ReactElement } from 'react';
 import type {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -23,7 +24,6 @@ import {
   getProjectCategory,
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
-import { useProjects } from '../ProjectsContext';
 
 interface Props {
   project:

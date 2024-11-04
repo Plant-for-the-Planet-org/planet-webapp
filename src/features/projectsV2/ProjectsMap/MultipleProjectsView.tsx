@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from 'react';
-import ProjectMarkers, { type CategorizedProjects } from './ProjectMarkers';
-import { type SetState } from '../../common/types/common';
-import { type ViewState } from 'react-map-gl-v7/maplibre';
-import { type MapRef } from '../../common/types/projectv2';
+import ProjectMarkers from './ProjectMarkers';
+import type { CategorizedProjects } from './ProjectMarkers';
+import type { SetState } from '../../common/types/common';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef } from '../../common/types/projectv2';
 import { useProjects } from '../ProjectsContext';
 import { getProjectCategory } from '../../../utils/projectV2';
 import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';

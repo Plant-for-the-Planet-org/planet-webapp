@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { type ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { type SetState } from '../../common/types/common';
-import { type PlantLocationSingle } from '../../common/types/plantLocation';
+import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type { SetState } from '../../common/types/common';
+import type { PlantLocationSingle } from '../../common/types/plantLocation';
 import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';

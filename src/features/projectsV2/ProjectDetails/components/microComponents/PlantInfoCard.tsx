@@ -1,11 +1,11 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import {
+import type {
   Measurements,
   SamplePlantLocation,
 } from '../../../../common/types/plantLocation';
-import { SetState } from '../../../../common/types/common';
+import type { SetState } from '../../../../common/types/common';
 
 interface Props {
   interventionStartDate: string | null | undefined;

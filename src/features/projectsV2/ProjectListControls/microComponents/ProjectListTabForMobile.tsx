@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { type ProjectTabs } from '..';
+import type { ProjectTabs } from '..';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import styles from '../styles/ProjectListControls.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
