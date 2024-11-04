@@ -19,25 +19,33 @@ handler.post(async (req, response) => {
     req.body;
 
   try {
-    let query =
-      'SELECT iv.guid, iv.trees_planted as treeCount, iv.geometry, COALESCE(ss.name, ps.other_species, iv.other_species) AS name \
-        FROM planted_species ps \
-        INNER JOIN intervention iv ON ps.intervention_id = iv.id \
-        LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ?';
+    let query = `
+			SELECT 
+					iv.guid,
+					iv.trees_planted as treeCount,
+					iv.geometry,
+					COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS name
+        FROM intervention iv
+        LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+        LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
+        JOIN project pp ON iv.plant_project_id = pp.id
+        WHERE 
+						pp.guid = ? AND 
+						iv.deleted_at IS NULL AND 
+						iv.type in ('multi-tree-registration', 'single-tree-registration')
+			`;
 
     const values = [projectId];
 
     if (queryType !== QueryType.DATE) {
-      query += ' AND DATE(iv.intervention_date) BETWEEN ? AND ?';
+      query += ' AND DATE(iv.intervention_start_date) BETWEEN ? AND ?';
       values.push(fromDate, toDate);
     }
 
     if (queryType) {
       if (queryType === QueryType.DATE) {
         // Filter by date
-        query += ' AND DATE(iv.intervention_date) = ?';
+        query += ' AND DATE(iv.intervention_start_date) = ?';
         values.push(searchQuery);
       } else if (queryType === QueryType.HID) {
         // Filter by HID
@@ -54,7 +62,6 @@ handler.post(async (req, response) => {
     }
 
     const qRes = await db.query<UncleanPlantLocations[]>(query, values);
-    console.log('qRes:', qRes);
 
     const plantLocations: SinglePlantLocationApiResponse[] = qRes.map(
       (plantLocation) => ({

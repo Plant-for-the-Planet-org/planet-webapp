@@ -8,6 +8,7 @@ import {
 import { getCachedKey } from '../../../src/utils/getCachedKey';
 import { TotalTreesPlanted } from '../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../src/redis-client';
+import { cacheKeyPrefix } from '../../../src/utils/constants/cacheKeyPrefix';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
@@ -26,7 +27,7 @@ handler.post(async (req, response) => {
 
   const { projectId, startDate, endDate } = req.body;
 
-  const CACHE_KEY = `TOTAL_TREES_PLANTED__${getCachedKey(
+  const CACHE_KEY = `${cacheKeyPrefix}_TOTAL_TREES_PLANTED__${getCachedKey(
     projectId,
     startDate,
     endDate
@@ -40,12 +41,16 @@ handler.post(async (req, response) => {
   }
 
   try {
-    const query =
-      'SELECT \
-        COALESCE(SUM(iv.trees_planted), 0) AS totalTreesPlanted \
-      FROM intervention iv \
-      JOIN project pp ON iv.plant_project_id = pp.id \
-      WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ?';
+    const query = `
+			SELECT
+					COALESCE(SUM(iv.trees_planted), 0) AS totalTreesPlanted
+				FROM intervention iv
+				JOIN project pp ON iv.plant_project_id = pp.id
+				WHERE 
+						iv.deleted_at IS NULL
+						AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
+						AND pp.guid = ? 
+						AND iv.intervention_start_date BETWEEN ? AND ?`;
 
     const res = await db.query<TotalTreesPlanted[]>(query, [
       projectId,
