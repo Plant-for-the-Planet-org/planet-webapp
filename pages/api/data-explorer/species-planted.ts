@@ -8,6 +8,7 @@ import {
 import { getCachedKey } from '../../../src/utils/getCachedKey';
 import { ISpeciesPlanted } from '../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../src/redis-client';
+import { cacheKeyPrefix } from '../../../src/utils/constants/cacheKeyPrefix';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
@@ -26,7 +27,7 @@ handler.post(async (req, response) => {
 
   const { projectId, startDate, endDate } = req.body;
 
-  const CACHE_KEY = `SPECIES_PLANTED__${getCachedKey(
+  const CACHE_KEY = `${cacheKeyPrefix}_SPECIES_PLANTED__${getCachedKey(
     projectId,
     startDate,
     endDate
@@ -39,19 +40,28 @@ handler.post(async (req, response) => {
   }
 
   try {
-    const query =
-      'SELECT \
-          ps.other_species, \
-          ps.scientific_species_id, \
-          COALESCE(ss.name, ps.other_species, iv.other_species) AS name, \
-          SUM(ps.tree_count) AS total_tree_count \
-        FROM planted_species ps \
-        INNER JOIN intervention iv ON ps.intervention_id = iv.id \
-        LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN project pp ON iv.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND iv.intervention_date BETWEEN ? AND ? \
-        GROUP BY ps.scientific_species_id, ss.name, ps.other_species \
-        ORDER BY total_tree_count DESC';
+    const query = `
+			SELECT 
+					ps.other_species,
+					COALESCE(iv.scientific_species_id,
+									ps.scientific_species_id) AS scientific_species_id,
+					COALESCE(ss.name,
+									ps.other_species,
+									iv.other_species, 'Unknown') AS name,
+					SUM(COALESCE(ps.tree_count, iv.trees_planted, 0)) AS total_tree_count
+				FROM intervention iv
+				LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+				LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
+				JOIN project pp ON iv.plant_project_id = pp.id
+				WHERE
+						iv.deleted_at IS NULL
+						AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
+						AND pp.guid = ? 
+						AND iv.intervention_start_date BETWEEN ? AND ?
+				GROUP BY 
+						COALESCE(iv.scientific_species_id, ps.scientific_species_id), 
+						COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown')
+				ORDER BY total_tree_count DESC`;
 
     const res = await db.query<ISpeciesPlanted[]>(query, [
       projectId,

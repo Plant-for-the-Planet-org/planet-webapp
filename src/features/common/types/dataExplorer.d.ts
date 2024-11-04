@@ -124,36 +124,45 @@ export interface PlantLocationDetailsQueryRes {
   result: string;
 }
 
+export interface PlantLocationProperties {
+  hid: string;
+  type: 'single-tree-registration' | 'multi-tree-registration';
+}
+
 export interface PlantLocationDetails {
+  properties: PlantLocationProperties;
   plantedSpecies: PlantedSpecies[];
   totalPlantedTrees: number;
-  samplePlantLocations: SamplePlantLocation[];
-  totalSamplePlantLocations: number;
+  samplePlantLocations: null | SamplePlantLocation[];
+  totalSamplePlantLocations: null | number;
 }
 
 // --- types for plantLocationDetailsApi ------
 
 export interface PlantLocationDetailsApiResponse {
   res: {
+    properties: PlantLocationProperties;
     plantedSpecies: {
       treeCount: number;
       scientificName: string;
     }[];
     totalPlantedTrees: number;
-    samplePlantLocations: {
-      tag: string;
-      guid: string;
-      species: string;
-      geometry: {
-        type: string;
-        coordinates: number[];
-      };
-      measurements: {
-        width: string;
-        height: string;
-      };
-    }[];
-    totalSamplePlantLocations: number;
+    samplePlantLocations:
+      | null
+      | {
+          tag: string;
+          guid: string;
+          species: string;
+          geometry: {
+            type: string;
+            coordinates: number[];
+          };
+          measurements: {
+            width: string;
+            height: string;
+          };
+        }[];
+    totalSamplePlantLocations: null | number;
   };
 }
 
