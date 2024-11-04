@@ -74,7 +74,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   const imageContainerClasses = `${styles.projectImage} ${
     page === 'project-details' ? styles.projectImageSecondary : ''
-  } ${isImageLoading ? styles.loading : ''}`;
+  }`;
 
   const handleImageLoad = () => {
     setIsImageLoading(false);
