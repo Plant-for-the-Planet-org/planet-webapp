@@ -1,4 +1,4 @@
-import { type IconProps } from '../../../../../src/features/common/types/common';
+import type { IconProps } from '../../../../../src/features/common/types/common';
 
 type FilterIconProps = Omit<IconProps, 'color'>;
 

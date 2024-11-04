@@ -1,4 +1,4 @@
-import { type IconProps } from '../../../../../src/features/common/types/common';
+import type { IconProps } from '../../../../../src/features/common/types/common';
 const InfoIcon = ({ width }: IconProps) => {
   return (
     <svg
