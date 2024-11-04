@@ -1,4 +1,4 @@
-import { IconProps } from '../../../../../src/features/common/types/common';
+import type { IconProps } from '../../../../../src/features/common/types/common';
 
 const CrossIcon = ({ width }: IconProps) => {
   return (

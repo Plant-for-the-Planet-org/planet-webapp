@@ -1,10 +1,12 @@
-import React, { ReactElement, useMemo, JSX, useCallback } from 'react';
+import type { ReactElement, JSX } from 'react';
+
+import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 import OffSiteReviewedIcon from '../../../../../public/assets/images/icons/projectV2/OffSiteReviewedIcon';
 import FieldReviewedIcon from '../../../../../public/assets/images/icons/projectV2/FieldReviewedIcon';
 import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/TopProjectIcon';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import styles from '../styles/Badge.module.scss';
-import { useTranslations } from 'next-intl';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTenant } from '../../../common/Layout/TenantContext';
 

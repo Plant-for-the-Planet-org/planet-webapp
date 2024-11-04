@@ -1,8 +1,12 @@
+import type { CountryCode } from '@planet-sdk/common';
+import type { SetState } from '../../../common/types/common';
+import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type { ExtendedProject } from '../../../common/types/projectv2';
+
 import { useMemo } from 'react';
-import AboutProject from './AboutProject';
 import { useTranslations } from 'next-intl';
+import AboutProject from './AboutProject';
 import ProjectReview from './ProjectReviews';
-import { CountryCode } from '@planet-sdk/common';
 import styles from '../styles/ProjectInfo.module.scss';
 import KeyInfo from './KeyInfo';
 import AdditionalInfo from './AdditionalInfo';
@@ -10,10 +14,7 @@ import VideoPlayer from './VideoPlayer';
 import ProjectDownloads from './ProjectDownloads';
 import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
-import { SetState } from '../../../common/types/common';
-import { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ImageSlider from './microComponents/ImageSlider';
-import { ExtendedProject } from '../../../common/types/projectv2';
 
 interface ProjectInfoProps {
   project: ExtendedProject;

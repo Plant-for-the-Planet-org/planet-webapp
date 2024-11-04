@@ -1,6 +1,7 @@
-import { Certificate, ProjectExpense } from '@planet-sdk/common';
-import styles from '../styles/ProjectInfo.module.scss';
+import type { Certificate, ProjectExpense } from '@planet-sdk/common';
+
 import { useTranslations } from 'next-intl';
+import styles from '../styles/ProjectInfo.module.scss';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 import ProjectCertificates from './microComponents/ProjectCertificates';
 import ProjectExpenseReports from './microComponents/ProjectExpenseReports';

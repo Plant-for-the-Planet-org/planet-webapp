@@ -1,32 +1,32 @@
+import type { FC } from 'react';
+import type { ExtendedProject, MapProject } from '../common/types/projectv2';
+import type {
+  APIError,
+  CountryCode,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import type { SetState } from '../common/types/common';
+import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../common/types/plantLocation';
+
 import {
   createContext,
-  FC,
   useContext,
   useEffect,
   useMemo,
   useState,
   useCallback,
 } from 'react';
-import { ExtendedProject, MapProject } from '../common/types/projectv2';
-import { useLocale } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
+import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import {
-  APIError,
-  CountryCode,
-  handleError,
-  TreeProjectClassification,
-} from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
-import { SetState } from '../common/types/common';
-import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { useTranslations } from 'next-intl';
-import {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../common/types/plantLocation';
-import { useRouter } from 'next/router';
 import { updateUrlWithParams } from '../../utils/projectV2';
 
 interface ProjectsState {

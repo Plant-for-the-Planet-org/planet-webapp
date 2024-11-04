@@ -1,3 +1,5 @@
+import type { Review } from '@planet-sdk/common';
+
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/ProjectReviews.module.scss';
 import DownloadReportIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadReportIcon';
@@ -6,7 +8,6 @@ import { getPDFFile } from '../../../../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { Review } from '@planet-sdk/common';
 
 interface Props {
   singleReview: Review;

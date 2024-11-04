@@ -1,4 +1,6 @@
-import { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import type { MapOptions } from '../../ProjectsMapContext';
+
 import styles from './MapFeatureExplorer.module.scss';
 import { MapLayerToggle } from '.';
 // import InfoIcon from '../../../../../public/assets/images/icons/projectV2/InfoIcon';
@@ -6,7 +8,6 @@ import { StyledSwitch } from './CustomSwitch';
 // import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
 // import themeProperties from '../../../../theme/themeProperties';
-import { MapOptions } from '../../ProjectsMapContext';
 
 type MapSettingsProps = {
   mapOptions: MapOptions;

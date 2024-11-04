@@ -1,5 +1,6 @@
+import type { MapProject } from '../../../common/types/projectv2';
+
 import { useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { MapProject } from '../../../common/types/projectv2';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
 import router from 'next/router';

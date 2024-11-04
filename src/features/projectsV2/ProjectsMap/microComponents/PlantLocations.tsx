@@ -1,20 +1,21 @@
-import React, { ReactElement, MouseEvent } from 'react';
-import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
-import styles from '../../../projects/styles/PlantLocation.module.scss';
-import * as turf from '@turf/turf';
-import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useLocale, useTranslations } from 'next-intl';
-import {
+import type {
   PlantLocation,
   PlantLocationMulti,
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
-import { Feature, Point, Polygon } from 'geojson';
+import type { Feature, Point, Polygon } from 'geojson';
+
+import React from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
+import * as turf from '@turf/turf';
+import styles from '../../../projects/styles/PlantLocation.module.scss';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
 
-export default function PlantLocations(): ReactElement {
+export default function PlantLocations(): React.ReactElement {
   const {
     plantLocations,
     hoveredPlantLocation,
@@ -29,7 +30,7 @@ export default function PlantLocations(): ReactElement {
   const locale = useLocale();
 
   const openPl = (
-    e: MouseEvent<HTMLDivElement>,
+    e: React.MouseEvent<HTMLDivElement>,
     pl: PlantLocationSingle | SamplePlantLocation
   ) => {
     e.stopPropagation();

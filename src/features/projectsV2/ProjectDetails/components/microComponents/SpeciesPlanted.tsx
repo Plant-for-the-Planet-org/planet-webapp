@@ -1,5 +1,6 @@
+import type { PlantedSpecies } from '../../../../common/types/plantLocation';
+
 import { useCallback } from 'react';
-import { PlantedSpecies } from '../../../../common/types/plantLocation';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { useTranslations } from 'next-intl';
 
