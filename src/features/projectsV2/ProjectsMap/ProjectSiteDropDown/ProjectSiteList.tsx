@@ -3,6 +3,7 @@ import type {
   PlantLocation,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+
 import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 
 type SiteData = {

@@ -1,6 +1,7 @@
+import type { SliderImage } from '../../../common/types/projectv2';
+
 import React, { useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
-import type { SliderImage } from '../../../common/types/projectv2';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
 

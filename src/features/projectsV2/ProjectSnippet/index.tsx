@@ -1,7 +1,3 @@
-import { useContext, useEffect, useMemo } from 'react';
-import { useLocale } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 import type {
   ConservationProjectConcise,
@@ -15,6 +11,11 @@ import type {
   CurrencyCode,
 } from '@planet-sdk/common';
 import type { SetState } from '../../common/types/common';
+
+import { useContext, useEffect, useMemo } from 'react';
+import { useLocale } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';

@@ -1,7 +1,3 @@
-import React from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
-import * as turf from '@turf/turf';
 import type {
   PlantLocation,
   PlantLocationMulti,
@@ -9,6 +5,11 @@ import type {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import type { Feature, Point, Polygon } from 'geojson';
+
+import React from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
+import * as turf from '@turf/turf';
 import styles from '../../../projects/styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';

@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import * as turf from '@turf/turf';
 import type {
   PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import type { SetState } from '../../../common/types/common';
+
+import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import * as turf from '@turf/turf';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import PlantLocationHeader from './microComponents/PlantLocationHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';

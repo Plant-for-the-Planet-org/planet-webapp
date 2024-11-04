@@ -1,8 +1,9 @@
-import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import type { FC } from 'react';
 import type { ViewState } from 'react-map-gl-v7';
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
+
+import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
 
 interface MapState {

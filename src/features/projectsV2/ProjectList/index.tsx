@@ -1,7 +1,8 @@
-import { useCallback, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
 import type { MapProject } from '../../common/types/projectv2';
 import type { ProjectTabs } from '../ProjectListControls';
+
+import { useCallback, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from '../ProjectsSection.module.scss';
 import NoProjectFound from '../../../../public/assets/images/icons/projectV2/NoProjectFound';
 import { useProjects } from '../ProjectsContext';

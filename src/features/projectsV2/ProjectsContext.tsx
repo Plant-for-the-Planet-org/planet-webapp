@@ -1,14 +1,3 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from 'react';
-import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from 'next/router';
-import { handleError } from '@planet-sdk/common';
 import type { FC } from 'react';
 import type { ExtendedProject, MapProject } from '../common/types/projectv2';
 import type {
@@ -22,6 +11,18 @@ import type {
   PlantLocation,
   SamplePlantLocation,
 } from '../common/types/plantLocation';
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+} from 'react';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
+import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';

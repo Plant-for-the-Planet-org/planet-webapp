@@ -1,10 +1,11 @@
-import { useTranslations } from 'next-intl';
-import getImageUrl from '../../../../../utils/getImageURL';
-import { formatHid } from '../../../../../utils/projectV2';
 import type {
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../../common/types/plantLocation';
+
+import { useTranslations } from 'next-intl';
+import getImageUrl from '../../../../../utils/getImageURL';
+import { formatHid } from '../../../../../utils/projectV2';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 
 type Props = {

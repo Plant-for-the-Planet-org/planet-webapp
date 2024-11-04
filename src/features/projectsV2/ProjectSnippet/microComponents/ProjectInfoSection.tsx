@@ -1,7 +1,8 @@
-import { useContext, useMemo } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
 import type { CountryCode } from '@planet-sdk/common';
 import type { ProjectInfoProps } from '..';
+
+import { useContext, useMemo } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';

@@ -1,3 +1,11 @@
+import type { APIError } from '@planet-sdk/common';
+import type {
+  PlantLocation,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import type { ExtendedProject } from '../../common/types/projectv2';
+
 import { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
@@ -11,14 +19,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import type { APIError } from '@planet-sdk/common';
-import type {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
 import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
-import type { ExtendedProject } from '../../common/types/projectv2';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 

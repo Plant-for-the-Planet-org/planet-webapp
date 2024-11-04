@@ -1,5 +1,6 @@
-import React from 'react';
 import type { FeatureCollection } from 'geojson';
+
+import React from 'react';
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
 
 interface Props {

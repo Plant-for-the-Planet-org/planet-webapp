@@ -1,7 +1,8 @@
+import type { QueryParamType } from '../../../common/Layout/QueryParamsContext';
+
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import type { QueryParamType } from '../../../common/Layout/QueryParamsContext';
 import styles from '../styles/ProjectSnippet.module.scss';
 
 interface TpoNameProps {

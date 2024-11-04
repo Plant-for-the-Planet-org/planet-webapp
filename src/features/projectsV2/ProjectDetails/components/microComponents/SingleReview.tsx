@@ -1,5 +1,6 @@
-import { useTranslations } from 'next-intl';
 import type { Review } from '@planet-sdk/common';
+
+import { useTranslations } from 'next-intl';
 import styles from '../../styles/ProjectReviews.module.scss';
 import DownloadReportIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadReportIcon';
 import VerifiedIcon from '@mui/icons-material/Verified';

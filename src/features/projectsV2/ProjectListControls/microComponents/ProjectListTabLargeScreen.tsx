@@ -1,7 +1,8 @@
-import { Tabs } from '@mui/material';
-import { useTranslations } from 'next-intl';
 import type { SetState } from '../../../common/types/common';
 import type { ProjectTabs } from '..';
+
+import { Tabs } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import CustomMuiTab from './CustomMuiTab';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import themeProperties from '../../../../theme/themeProperties';

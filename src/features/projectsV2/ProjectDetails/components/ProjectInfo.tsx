@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
 import type { CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { ExtendedProject } from '../../../common/types/projectv2';
+
+import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import AboutProject from './AboutProject';
 import ProjectReview from './ProjectReviews';
 import styles from '../styles/ProjectInfo.module.scss';

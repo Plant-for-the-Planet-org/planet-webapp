@@ -1,6 +1,7 @@
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
+
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { useProjectsMap } from '../ProjectsMapContext';

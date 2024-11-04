@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Feature, Polygon } from 'geojson';
 import type { SiteProperties } from '../ProjectSiteDropDown';
@@ -6,6 +5,8 @@ import type {
   PlantLocation,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+
+import { useState } from 'react';
 import ProjectSiteDropdown from '../ProjectSiteDropDown';
 
 const meta: Meta<typeof ProjectSiteDropdown> = {

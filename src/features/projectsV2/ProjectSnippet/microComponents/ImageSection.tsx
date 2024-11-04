@@ -1,7 +1,8 @@
+import type { ImageSectionProps } from '..';
+
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
-import type { ImageSectionProps } from '..';
 import getImageUrl from '../../../../utils/getImageURL';
 import ProjectBadge from './ProjectBadge';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';

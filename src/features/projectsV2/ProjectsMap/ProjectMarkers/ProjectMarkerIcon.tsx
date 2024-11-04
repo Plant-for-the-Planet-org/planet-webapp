@@ -1,3 +1,5 @@
+import type { MapProjectProperties } from '../../../common/types/projectv2';
+
 import {
   Agroforestry,
   Conservation,
@@ -8,7 +10,6 @@ import {
   TreePlanting,
   UrbanRestoration,
 } from '../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
-import type { MapProjectProperties } from '../../../common/types/projectv2';
 import { getProjectCategory } from '../../../../utils/projectV2';
 import themeProperties from '../../../../theme/themeProperties';
 

@@ -1,6 +1,7 @@
+import type { ReactElement, JSX } from 'react';
+
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import type { ReactElement, JSX } from 'react';
 import OffSiteReviewedIcon from '../../../../../public/assets/images/icons/projectV2/OffSiteReviewedIcon';
 import FieldReviewedIcon from '../../../../../public/assets/images/icons/projectV2/FieldReviewedIcon';
 import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/TopProjectIcon';

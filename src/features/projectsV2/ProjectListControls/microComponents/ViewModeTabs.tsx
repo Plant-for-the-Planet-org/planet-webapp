@@ -1,7 +1,8 @@
-import React from 'react';
-import { useTranslations } from 'next-intl';
 import type { SetState } from '../../../common/types/common';
 import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+
+import React from 'react';
+import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
 import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';

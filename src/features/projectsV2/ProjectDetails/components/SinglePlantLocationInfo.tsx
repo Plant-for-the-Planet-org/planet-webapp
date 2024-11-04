@@ -1,11 +1,12 @@
-import PlantInfoCard from './microComponents/PlantInfoCard';
-import styles from '../styles/PlantLocationInfo.module.scss';
-import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import type { SetState } from '../../../common/types/common';
 import type {
   PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+
+import PlantInfoCard from './microComponents/PlantInfoCard';
+import styles from '../styles/PlantLocationInfo.module.scss';
+import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import SinglePlantLocationHeader from './microComponents/SinglePlantLocationHeader';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 

@@ -1,6 +1,7 @@
+import type { MapRef } from '../../common/types/projectv2';
+
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import type { MapRef } from '../../common/types/projectv2';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
