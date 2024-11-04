@@ -1,11 +1,13 @@
+import type { CategorizedProjects } from './ProjectMarkers';
+import type { SetState } from '../../common/types/common';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef } from '../../common/types/projectv2';
+
 import { useEffect, useMemo } from 'react';
+import ProjectMarkers from './ProjectMarkers';
 import { useProjects } from '../ProjectsContext';
-import ProjectMarkers, { CategorizedProjects } from './ProjectMarkers';
 import { getProjectCategory } from '../../../utils/projectV2';
 import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
-import { SetState } from '../../common/types/common';
-import { ViewState } from 'react-map-gl-v7/maplibre';
-import { MapRef } from '../../common/types/projectv2';
 
 interface MultipleProjectsViewProps {
   setViewState: SetState<ViewState>;

@@ -1,32 +1,32 @@
+import type { FC } from 'react';
+import type { ExtendedProject, MapProject } from '../common/types/projectv2';
+import type {
+  APIError,
+  CountryCode,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import type { SetState } from '../common/types/common';
+import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../common/types/plantLocation';
+
 import {
   createContext,
-  FC,
   useContext,
   useEffect,
   useMemo,
   useState,
   useCallback,
 } from 'react';
-import { ExtendedProject, MapProject } from '../common/types/projectv2';
-import { useLocale } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
+import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import {
-  APIError,
-  CountryCode,
-  handleError,
-  TreeProjectClassification,
-} from '@planet-sdk/common';
 import { useTenant } from '../common/Layout/TenantContext';
-import { SetState } from '../common/types/common';
-import { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { useTranslations } from 'next-intl';
-import {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../common/types/plantLocation';
-import { useRouter } from 'next/router';
 import { updateUrlWithParams } from '../../utils/projectV2';
 
 interface ProjectsState {
@@ -237,9 +237,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedPlantLocation(null);
       setSingleProject(null);
       setHoveredPlantLocation(null);
-      setSelectedSite(0);
+      setSelectedSite(null);
       setPreventShallowPush(false);
+      setPlantLocations(null);
     }
+    if (selectedMode === 'list' && page === 'project-list')
+      setPlantLocations(null);
   }, [page]);
 
   const pushWithShallow = (
@@ -269,14 +272,28 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const updateSiteAndUrl = (
     locale: string,
     projectSlug: string,
-    siteIndex: number | null
+    siteIndex: number | undefined
   ) => {
-    if (!singleProject?.sites?.length) return;
-    setSelectedSite(siteIndex);
-    const siteId =
-      siteIndex !== null ? singleProject.sites[siteIndex]?.properties.id : null;
-    updateUrlWithSiteId(locale, projectSlug, siteId);
+    if (
+      singleProject?.sites &&
+      singleProject.sites.length > 0 &&
+      siteIndex !== undefined
+    ) {
+      const siteId = singleProject.sites[siteIndex]?.properties.id;
+      setSelectedSite(siteIndex);
+      updateUrlWithSiteId(locale, projectSlug, siteId);
+    } else {
+      setSelectedSite(null);
+      updateUrlWithSiteId(locale, projectSlug, null);
+    }
   };
+
+  const hasNoSites = useMemo(
+    () =>
+      singleProject?.sites?.length === 0 ||
+      singleProject?.sites?.every((site) => site.geometry === null),
+    [singleProject?.sites]
+  );
 
   useEffect(() => {
     if (
@@ -288,13 +305,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       (requestedPlantLocation && requestedSite)
     )
       return;
-    
-    if (requestedPlantLocation && selectedPlantLocation === null) {
-      const hasNoSites = singleProject.sites?.length === 0;
 
+    if (requestedPlantLocation && selectedPlantLocation === null) {
       if (hasNoSites) {
         //Case when a direct link requests a specific plant location but no sites exist for a project(e.g projectSlug: mothersforest).
-        updateSiteAndUrl(locale, singleProject.slug, null);
+        updateSiteAndUrl(locale, singleProject.slug, undefined);
       } else {
         // Handle the case where a direct link requests a specific plant location (via URL query).
         // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
@@ -321,6 +336,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     router.isReady,
     selectedPlantLocation,
     selectedSite,
+    hasNoSites,
   ]);
   useEffect(() => {
     if (
@@ -334,7 +350,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     // Handle the case where a direct link requests a specific site (via URL query)
     // This will update the site param based on the requestedSite. If the requested site ID is invalid,
     // it falls back to the default (first) site.
-    if (requestedSite && selectedSite === null) {
+    if (requestedSite && selectedSite === null && !hasNoSites) {
       const index = singleProject.sites?.findIndex(
         (site) => site.properties.id === requestedSite
       );
@@ -353,8 +369,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     // If the user navigates to the project detail page from the project list (no specific site selected)
     // This defaults to the first site and updates the URL accordingly.
-    if (!requestedPlantLocation)
-      updateSiteAndUrl(locale, singleProject.slug, 0);
+    if (!requestedPlantLocation) {
+      const siteIndex = hasNoSites ? undefined : 0;
+      updateSiteAndUrl(locale, singleProject.slug, siteIndex);
+    }
   }, [
     page,
     locale,
@@ -365,6 +383,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     router.isReady,
     selectedPlantLocation,
     preventShallowPush,
+    hasNoSites,
   ]);
 
   useEffect(() => {
@@ -372,9 +391,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation(null);
       setSelectedPlantLocation(null);
       setHoveredPlantLocation(null);
-      updateSiteAndUrl(locale, singleProject.slug, 0);
+      updateSiteAndUrl(locale, singleProject.slug, hasNoSites ? undefined : 0);
     }
-  }, [selectedMode, singleProject, locale]);
+  }, [selectedMode, singleProject, locale, hasNoSites]);
 
   const value: ProjectsState | null = useMemo(
     () => ({

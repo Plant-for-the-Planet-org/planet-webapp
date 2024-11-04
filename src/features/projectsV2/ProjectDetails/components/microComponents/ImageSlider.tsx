@@ -1,10 +1,11 @@
+import type { Image } from '../../../../common/types/projectv2';
+
 import ExpandIcon from '../../../../../../public/assets/images/icons/ExpandIcon';
 import ImageCarousel from '../ImageCarousel';
 import styles from '../../styles/Slider.module.scss';
 import { useState } from 'react';
 import { Modal } from '@mui/material';
 import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import { Image } from '../../../../common/types/projectv2';
 
 interface ImageSliderProps {
   images: Image[];

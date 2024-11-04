@@ -1,3 +1,5 @@
+import type { ImageSectionProps } from '..';
+
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
@@ -9,7 +11,6 @@ import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
-import { ImageSectionProps } from '..';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
@@ -26,7 +27,6 @@ const ImageSection = (props: ImageSectionProps) => {
     isTopProject,
     allowDonations,
     page,
-    setSelectedSite,
     setPreventShallowPush,
   } = props;
 
@@ -42,7 +42,6 @@ const ImageSection = (props: ImageSectionProps) => {
 
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
-    setSelectedSite(null);
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/${locale}/prd`;
     const queryParams = {

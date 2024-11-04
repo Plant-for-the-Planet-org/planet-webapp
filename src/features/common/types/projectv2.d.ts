@@ -1,15 +1,15 @@
-import {
+import type {
   ConservationProjectExtended,
   TreeProjectExtended,
 } from '@planet-sdk/common';
-import {
+import type {
   ProjectMapInfo,
   TreeProjectConcise,
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
-import { Nullable } from '@planet-sdk/common/build/types/util';
-import { MutableRefObject } from 'react';
-import { Map } from 'maplibre-gl';
+import type { Nullable } from '@planet-sdk/common/build/types/util';
+import type { MutableRefObject } from 'react';
+import type { Map } from 'maplibre-gl';
 
 export type MapProjectProperties =
   | TreeProjectConcise

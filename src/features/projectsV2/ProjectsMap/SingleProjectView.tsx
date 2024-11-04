@@ -1,12 +1,13 @@
+import type { MapRef } from '../../common/types/projectv2';
+
 import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
 import SitePolygon from './microComponents/SitePolygon';
-import { useRouter } from 'next/router';
 import PlantLocations from './microComponents/PlantLocations';
-import { MapRef } from '../../common/types/projectv2';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
@@ -18,21 +19,22 @@ interface Props {
 const SingleProjectView = ({ mapRef }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
-  if (!singleProject?.sites) return null;
-  const hasNoSites = singleProject.sites?.length === 0;
+  if (singleProject === null) return;
+
   const { isSatelliteView, setViewState, setIsSatelliteView } =
     useProjectsMap();
   const router = useRouter();
-  const { p: projectSlug } = router.query;
 
   const sitesGeojson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
-      features: singleProject.sites ?? [],
+      features:
+        singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
     };
-  }, [projectSlug]);
-
+  }, [singleProject?.sites]);
+  const hasNoSites = sitesGeojson.features.length === 0;
   // Zoom to plant location
+
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
     const { geometry } = selectedPlantLocation;
@@ -60,8 +62,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
   // Zoom to project site
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;
-
-    if (selectedSite !== null) {
+    if (sitesGeojson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeojson,
@@ -77,12 +78,15 @@ const SingleProjectView = ({ mapRef }: Props) => {
         zoomToLocation(setViewState, longitude, latitude, 10, 4000, mapRef);
       }
     }
-  }, [selectedSite, router.isReady, selectedPlantLocation]);
+  }, [selectedSite, sitesGeojson, router.isReady, selectedPlantLocation]);
 
   useEffect(() => {
-    const hasNoPlantLocations =
-      plantLocations?.length === 0 || plantLocations === null;
-    setIsSatelliteView(hasNoPlantLocations || hasNoSites);
+    const hasNoPlantLocations = !plantLocations?.length;
+    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
+    // Satellite view will be:
+    // - false if there are no plant locations and no sites (i.e., a single project location only)
+    // - true if there are no plant locations but there are multiple sites
+    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
   }, [plantLocations, hasNoSites]);
 
   return (
@@ -94,9 +98,15 @@ const SingleProjectView = ({ mapRef }: Props) => {
           purpose={singleProject.purpose}
         />
       ) : (
-        <SitePolygon isSatelliteView={isSatelliteView} geoJson={sitesGeojson} />
+        <>
+          <SitePolygon
+            isSatelliteView={isSatelliteView}
+            geoJson={sitesGeojson}
+          />
+          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+        </>
       )}
-      {isSatelliteView && <SatelliteLayer />}
+
       <PlantLocations />
     </>
   );

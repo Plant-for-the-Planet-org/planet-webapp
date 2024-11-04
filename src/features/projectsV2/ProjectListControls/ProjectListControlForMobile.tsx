@@ -1,3 +1,10 @@
+import type { TreeProjectClassification } from '@planet-sdk/common';
+import type { SetState } from '../../common/types/common';
+import type { ProjectTabs } from '.';
+import type { MapProject } from '../../common/types/projectv2';
+import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type { MapOptions } from '../ProjectsMapContext';
+
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
@@ -6,14 +13,8 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
-import { TreeProjectClassification } from '@planet-sdk/common';
-import { SetState } from '../../common/types/common';
-import { ProjectTabs } from '.';
-import { MapProject } from '../../common/types/projectv2';
-import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
-import { MapOptions } from '../ProjectsMapContext';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;

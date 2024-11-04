@@ -1,6 +1,7 @@
-import React, { ReactElement } from 'react';
+import type { FeatureCollection } from 'geojson';
+
+import React from 'react';
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
-import { FeatureCollection } from 'geojson';
 
 interface Props {
   geoJson: FeatureCollection;
@@ -10,7 +11,7 @@ interface Props {
 export default function SitePolygon({
   geoJson,
   isSatelliteView,
-}: Props): ReactElement {
+}: Props): React.ReactElement {
   return (
     <Source id="project-site" type="geojson" data={geoJson}>
       <Layer

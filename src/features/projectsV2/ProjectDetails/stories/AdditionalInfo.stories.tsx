@@ -1,6 +1,7 @@
+import type { InterventionTypes, LandOwnershipTypes } from '@planet-sdk/common';
 import type { Meta, StoryObj } from '@storybook/react';
+
 import AdditionalInfo from '../components/AdditionalInfo';
-import { InterventionTypes, LandOwnershipTypes } from '@planet-sdk/common';
 
 const meta: Meta<typeof AdditionalInfo> = {
   title: 'Projects/Details/AdditionalInfo',

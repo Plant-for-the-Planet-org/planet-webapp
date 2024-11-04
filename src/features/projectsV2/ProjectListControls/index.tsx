@@ -1,3 +1,7 @@
+import type { SetState } from '../../common/types/common';
+import type { TreeProjectClassification } from '@planet-sdk/common';
+import type { MapProject } from '../../common/types/projectv2';
+
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
@@ -5,9 +9,6 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ProjectListTabLargeScreen from './microComponents/ProjectListTabLargeScreen';
 import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
-import { SetState } from '../../common/types/common';
-import { TreeProjectClassification } from '@planet-sdk/common';
-import { MapProject } from '../../common/types/projectv2';
 
 export type ProjectTabs = 'topProjects' | 'allProjects';
 

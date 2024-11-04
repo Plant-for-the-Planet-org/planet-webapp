@@ -1,3 +1,11 @@
+import type { APIError } from '@planet-sdk/common';
+import type {
+  PlantLocation,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import type { ExtendedProject } from '../../common/types/projectv2';
+
 import { useContext, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
@@ -6,18 +14,12 @@ import ProjectInfo from './components/ProjectInfo';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
-import { handleError, APIError, ClientError } from '@planet-sdk/common';
+import { handleError, ClientError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
 import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
-import { ExtendedProject } from '../../common/types/projectv2';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 
@@ -31,6 +33,7 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
+    plantLocations,
     setPlantLocations,
     setIsLoading,
     setIsError,
@@ -108,7 +111,12 @@ const ProjectDetails = ({
         setIsLoading(false);
       }
     }
-    if (singleProject && singleProject?.purpose === 'trees')
+
+    if (
+      singleProject &&
+      singleProject?.purpose === 'trees' &&
+      plantLocations === null
+    )
       loadPlantLocations();
   }, [singleProject]);
 

@@ -1,3 +1,7 @@
+import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type { SetState } from '../../common/types/common';
+import type { MobileOs } from '../../../utils/projectV2';
+
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { useProjectsMap } from '../ProjectsMapContext';
@@ -6,9 +10,6 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
-import { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import { SetState } from '../../common/types/common';
-import { MobileOs } from '../../../utils/projectV2';
 
 interface MapControlsProps {
   isMobile: boolean;
