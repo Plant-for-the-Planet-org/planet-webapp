@@ -105,10 +105,6 @@ const ImageSection = (props: ImageSectionProps) => {
           alt="loading"
           src="/assets/images/project-contribution-default-landscape.png"
           className={styles.projectImageFile}
-          style={{
-            height: page === 'project-details' ? '180px' : '160px',
-            objectFit: 'cover',
-          }}
         />
       )}
 
@@ -120,11 +116,6 @@ const ImageSection = (props: ImageSectionProps) => {
           className={`${styles.projectImageFile} ${
             isImageLoading ? styles.hidden : ''
           }`}
-          style={{
-            height: page === 'project-details' ? '180px' : '160px',
-            objectFit: 'cover',
-            display: isImageLoading ? 'none' : 'block',
-          }}
           onLoad={handleImageLoad}
           onError={handleImageError}
         />
@@ -136,10 +127,6 @@ const ImageSection = (props: ImageSectionProps) => {
           alt="fallback"
           src="/assets/images/project-contribution-default-landscape.png"
           className={styles.projectImageFile}
-          style={{
-            height: page === 'project-details' ? '180px' : '160px',
-            objectFit: 'cover',
-          }}
         />
       )}
 
