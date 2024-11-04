@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import KeyInfo from '../components/KeyInfo';
-import { AllowedSeasonMonths } from '@planet-sdk/common';
+import type { AllowedSeasonMonths } from '@planet-sdk/common';
 
 const meta: Meta<typeof KeyInfo> = {
   title: 'Projects/Details/KeyInfo',

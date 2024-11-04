@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { MapOptions } from '../../ProjectsMapContext';
-import MapFeatureExplorer from '../MapFeatureExplorer';
+import type { MapOptions } from '../../ProjectsMapContext';
 import type { Meta, StoryObj } from '@storybook/react';
+import MapFeatureExplorer from '../MapFeatureExplorer';
 
 const meta: Meta<typeof MapFeatureExplorer> = {
   title: 'Projects/Landing/MapFeatureExplorer',

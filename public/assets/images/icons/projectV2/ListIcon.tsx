@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconProps } from '../../features/common/types/common';
+import { type IconProps } from '../../../../../src/features/common/types/common';
 
 const ListIcon = ({ color, height }: IconProps) => (
   <svg
