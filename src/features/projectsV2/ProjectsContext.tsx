@@ -8,13 +8,13 @@ import {
 } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
+import { handleError } from '@planet-sdk/common';
 import type { FC } from 'react';
 import type { ExtendedProject, MapProject } from '../common/types/projectv2';
-import {
-  type APIError,
-  type CountryCode,
-  handleError,
-  type TreeProjectClassification,
+import type {
+  APIError,
+  CountryCode,
+  TreeProjectClassification,
 } from '@planet-sdk/common';
 import type { SetState } from '../common/types/common';
 import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';

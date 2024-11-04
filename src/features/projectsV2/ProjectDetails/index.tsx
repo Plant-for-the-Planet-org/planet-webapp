@@ -6,11 +6,12 @@ import ProjectInfo from './components/ProjectInfo';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
-import { handleError, type APIError, ClientError } from '@planet-sdk/common';
+import { handleError, ClientError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import type { APIError } from '@planet-sdk/common';
 import type {
   PlantLocation,
   PlantLocationSingle,
