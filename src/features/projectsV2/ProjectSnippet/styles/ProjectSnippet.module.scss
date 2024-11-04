@@ -31,13 +31,12 @@
 .projectImage {
   height: 160px;
   width: 100%;
-  background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
   border-radius: 14px 14px 0px 0px;
   overflow: hidden;
   > .projectImageBlock {
-    transition: all 1s ease;
+    transition: all 0.3s ease;
     position: absolute;
     bottom: 12px;
     left: 13px;
@@ -68,9 +67,18 @@
 }
 
 .projectImageFile {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+
+  &.hidden {
+    opacity: 0;
+  }
 }
 
 // project info
@@ -284,4 +292,22 @@
   z-index: 2;
   left: 0px;
   cursor: pointer;
+}
+
+.reports_container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  .reports_description {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    a {
+      font-weight: bold;
+    }
+  }
+
+  @include mdTabletView {
+    width: 328px;
+  }
 }

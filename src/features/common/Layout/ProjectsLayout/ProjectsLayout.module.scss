@@ -58,11 +58,11 @@ $layoutPaddingBottom: 30px;
 
 .mobileProjectsLayout {
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 58px);
   position: relative;
   display: flex;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 58px;
   padding-top: $layoutPaddingTop;
   overflow: hidden;
   &.mapMode {

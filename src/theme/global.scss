@@ -62,20 +62,21 @@ body {
 }
 
 .planet-links {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 .planet-links:hover {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 .planet-links:visited {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
+  primaryDarkColor: $primaryDarkColor;
 }
 
 a {
