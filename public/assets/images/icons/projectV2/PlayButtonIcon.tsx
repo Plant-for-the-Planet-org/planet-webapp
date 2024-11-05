@@ -1,5 +1,5 @@
+import type { IconProps } from '../../../../../src/features/common/types/common';
 import React from 'react';
-import { IconProps } from '../../features/common/types/common';
 
 const PlayButtonIcon = ({ width }: IconProps) => {
   return (

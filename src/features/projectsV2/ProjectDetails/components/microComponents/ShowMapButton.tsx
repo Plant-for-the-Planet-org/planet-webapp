@@ -1,4 +1,4 @@
-import ExpandIcon from '../../../../../temp/icons/ExpandIcon';
+import ExpandIcon from '../../../../../../public/assets/images/icons/projectV2/ExpandIcon';
 import style from '../../styles/MapPreview.module.scss';
 import { useTranslations } from 'next-intl';
 
