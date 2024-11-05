@@ -1,7 +1,7 @@
 import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { PointLike } from 'react-map-gl-v7/maplibre';
-import type { ParsedUrlQuery } from 'querystring';
 import type { Position } from 'geojson';
+import type { ParsedUrlQuery } from 'querystring';
 import type {
   MapRef,
   MapProjectProperties,
@@ -18,22 +18,12 @@ import * as turf from '@turf/turf';
 
 export type MobileOs = 'android' | 'ios' | undefined;
 
-const paramsToPreserve = [
-  'embed',
-  'back_icon',
-  'callback',
-  'project_details',
-  'project_list',
-  'enable_intro',
-];
-const paramsToDelete = [
-  'locale',
-  'slug',
-  'p',
-  'ploc',
-  'backNavigationUrl',
-  'site',
-];
+const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
+
+type RouteParams = {
+  siteId?: string | null;
+  plocId?: string | null;
+};
 
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.
@@ -44,22 +34,40 @@ const paramsToDelete = [
  * @returns An updated query object with preserved, removed, and new parameter
  */
 
-export const updateUrlWithParams = (
+export const buildProjectDetailsQuery = (
   asPath: string,
   query: ParsedUrlQuery,
-  siteId: string | null
-) => {
-  const [, queryString] = asPath.split('?');
-  const currentUrlParams = new URLSearchParams(queryString || '');
-  const currentQuery = { ...query };
-  paramsToPreserve.forEach((param) => {
-    if (currentUrlParams.has(param)) {
-      currentQuery[param] = currentUrlParams.get(param) ?? '';
-    }
-  });
+  routeParams: RouteParams
+): Record<string, string> => {
+  console.log('updateUrlWithParams:');
+  console.log('  Path:', asPath);
+  console.log('  Query:', query);
+  console.log('  Route Params:', routeParams);
+  // Convert ParsedUrlQuery to Record<string, string> by filtering out non-string values
+  const currentQuery: Record<string, string> = Object.entries(query).reduce(
+    (stringQueryParams, [key, value]) => {
+      if (typeof value === 'string') {
+        stringQueryParams[key] = value;
+      }
+      return stringQueryParams;
+    },
+    {} as Record<string, string>
+  );
+
+  // Preserve and delete query parameters
   paramsToDelete.forEach((param) => delete currentQuery[param]);
-  //add project site param
-  if (siteId) currentQuery.site = siteId;
+
+  // Add routing params if provided
+  if (routeParams.siteId) {
+    currentQuery.site = routeParams.siteId;
+  }
+
+  if (routeParams.plocId) {
+    currentQuery.ploc = routeParams.plocId;
+  }
+
+  console.log('updateUrlWithParams: Updated Query Parameters:');
+  console.log('  Current Query:', JSON.stringify(currentQuery, null, 2));
   return currentQuery;
 };
 
