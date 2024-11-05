@@ -49,8 +49,8 @@ $layoutPaddingBottom: 30px;
 
 .mapFeatureExplorerOverlay {
   position: absolute;
-  top: calc($layoutPaddingTop + 20px);
-  right: calc($layoutPaddingSide + 20px);
+  top: calc($layoutPaddingTop + 8px);
+  right: calc($layoutPaddingSide + 10px);
   z-index: 1;
 }
 
