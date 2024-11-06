@@ -228,6 +228,41 @@ export const generateProjectLink = (
   )}`;
 };
 
+/**
+ * Takes a relative path and returns a localized version with the correct locale prefix.
+ * Query parameters are stripped from the input path.
+ * @param path - The relative path to localize
+ * @param locale - The current locale (e.g., 'en')
+ * @returns The localized path without query parameters
+ */
+export const getLocalizedPath = (path: string, locale: string): string => {
+  // Strip query parameters if present
+  const pathWithoutQuery = path.split('?')[0];
+
+  // Remove trailing slash if present
+  const cleanPath = pathWithoutQuery.endsWith('/')
+    ? pathWithoutQuery.slice(0, -1)
+    : pathWithoutQuery;
+
+  // Handle root path special case
+  if (cleanPath === '' || cleanPath === '/') {
+    return `/${locale}`;
+  }
+
+  // If path already starts with locale, return as is
+  if (cleanPath.startsWith(`/${locale}/`)) {
+    return cleanPath;
+  }
+
+  // Remove leading slash if present for consistent handling
+  const normalizedPath = cleanPath.startsWith('/')
+    ? cleanPath.slice(1)
+    : cleanPath;
+
+  // Add locale prefix
+  return `/${locale}/${normalizedPath}`;
+};
+
 export const getDeviceType = (): MobileOs => {
   const userAgent = navigator.userAgent;
   if (/android/i.test(userAgent)) return 'android';
