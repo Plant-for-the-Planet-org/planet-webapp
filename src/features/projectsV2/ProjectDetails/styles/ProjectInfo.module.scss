@@ -28,7 +28,7 @@
   padding: 16px;
   border-radius: 14px;
   color: #2f3336; //to be replaced
-  font-size: $fontXXSmall;
+  font-size: $fontXSmall;
 }
 
 .keyInfoContainer {
@@ -66,6 +66,7 @@
   a {
     color: $certificationLinkColorNew;
     font-weight: 700;
+    font-size: $fontXXSmall;
   }
 }
 
@@ -108,7 +109,7 @@
     background-color: rgba(var(--more-info-background-color-new), 0.2); //
     border-radius: 4px;
     font-weight: 400;
-    font-size: $fontXXXSmallNew;
+    font-size: $fontXXSmall;
     white-space: nowrap;
     text-transform: capitalize;
   }
@@ -140,6 +141,9 @@
   gap: 6px;
   align-items: center;
   min-width: 50%;
+  .expenseYear {
+    font-size: $fontXXSmall;
+  }
 }
 .reportsContainer {
   display: flex;
@@ -177,7 +181,7 @@
     flex-shrink: 0;
   }
   .title {
-    font-size: $fontXXSmall;
+    font-size: $fontXSmall;
     font-weight: 500;
     color: #2f3336; //to be replaced
   }

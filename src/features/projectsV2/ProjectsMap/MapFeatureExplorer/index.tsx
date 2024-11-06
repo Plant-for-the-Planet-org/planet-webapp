@@ -34,8 +34,8 @@ export const MapLayerToggle = ({
 }: EcosystemOptionProps) => {
   return (
     <>
-      <div className={styles.ecosystemMainContainer}>
-        <div className={styles.ecosystemContainer}>
+      <div className={styles.toggleMainContainer}>
+        <div className={styles.toggleContainer}>
           <div className={styles.infoIconContainer}>{infoIcon}</div>
           <div>{label}</div>
         </div>

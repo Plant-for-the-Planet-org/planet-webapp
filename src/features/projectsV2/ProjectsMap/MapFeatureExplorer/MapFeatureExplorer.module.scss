@@ -24,16 +24,16 @@
   width: 150px;
 }
 
-.ecosystemMainContainer {
+.toggleMainContainer {
   height: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.ecosystemContainer {
+.toggleContainer {
   display: flex;
-  font-size: $fontXXSmall;
+  font-size: $fontXSmall;
   font-weight: 400;
   align-items: center;
   gap: 4px;
@@ -91,7 +91,7 @@
   height: fit-content;
   margin-top: 14px;
   background-color: rgba(var(--explore-description-background-color-new), 1);
-  font-size: $fontXXXSmallNew;
+  font-size: $fontXXSmall;
   border-radius: 6px;
 }
 
