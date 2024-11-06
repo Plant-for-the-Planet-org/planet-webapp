@@ -69,3 +69,21 @@
 .ios :global(.maplibregl-control-container .maplibregl-ctrl-bottom-right) {
   bottom: 150px;
 }
+
+// Plant Location Styles
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: rgba(0, 122, 73, 0.5);
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  &.singleSelected {
+    background-color: rgba(0, 122, 73, 1);
+  }
+}
+
+.single:hover {
+  background-color: rgba(0, 122, 73, 1);
+}
