@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-
 import React from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
@@ -46,16 +45,18 @@ export default function Credits({
       }
     }
   }, []);
+
   const separator = isMobile && !isEmbed ? '|' : null;
+
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {/* {tenantConfig.config.darkModeEnabled && <DarkModeSwitch />} */}
         {isEmbed ? null : (
           <div
             onClick={() => {
               setLanguageModalOpen(true);
             }}
+            className={styles.languageModalButton}
           >
             {`🌐 ${locale ? locale.toUpperCase() : ''} • ${selectedCurrency}`}
           </div>
@@ -111,39 +112,32 @@ export default function Credits({
           </a>
         )}
         {separator}
-        <a
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            overflow: 'visible',
-          }}
-        >
-          <div style={{ width: 'fit-content' }}>
-            <div className={styles.popover}>
+        <div className={styles.mapCreditsContainer}>
+          <div className={styles.popover}>
+            <span className={styles.mapCreditsTrigger}>
               {tCommon('mapInfo')}
-              <div
-                className={styles.popoverContent}
-                style={{ left: '-270px', top: '-240px' }}
-              >
-                <b>{tMaps('baseLayer')}</b>
-                <p>
-                  Esri Community Maps Contributors, Esri, HERE, Garmin,
-                  METI/NASA, USGS{' '}
-                </p>
-                <p>
-                  World Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus
-                  DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
-                  Community
-                </p>
-                <b>{tMaps('satelliteImagery')}</b>
-                <p>Image courtesy of Planet Labs, Inc</p>
-                <p>Copernicus Sentinel data 2017-2021</p>
-                <p>Landsat-8 image courtesy of the U.S. Geological Survey</p>
-              </div>
+            </span>
+            <div
+              className={styles.popoverContent}
+              style={{ left: '-270px', top: '-240px' }}
+            >
+              <b>{tMaps('baseLayer')}</b>
+              <p>
+                Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA,
+                USGS{' '}
+              </p>
+              <p>
+                World Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus
+                DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
+                Community
+              </p>
+              <b>{tMaps('satelliteImagery')}</b>
+              <p>Image courtesy of Planet Labs, Inc</p>
+              <p>Copernicus Sentinel data 2017-2021</p>
+              <p>Landsat-8 image courtesy of the U.S. Geological Survey</p>
             </div>
           </div>
-        </a>
+        </div>
         {isMobile && '|'}
         {!isEmbed && (
           <a
@@ -158,8 +152,7 @@ export default function Credits({
           <span>
             Powered by
             <a href="https://www.plant-for-the-planet.org" target="_top">
-              {' '}
-              Plant-for-the-Planet
+              {' Plant-for-the-Planet'}
             </a>
           </span>
         )}
