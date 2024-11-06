@@ -25,6 +25,11 @@ type RouteParams = {
   plocId?: string | null;
 };
 
+/** Type predicate to check that the property contains a string value*/
+const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
+  return typeof entry[1] === 'string';
+};
+
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.
  * It preserves selected query parameters, removes unwanted ones, and adds or updates the site parameter.
@@ -39,19 +44,9 @@ export const buildProjectDetailsQuery = (
   query: ParsedUrlQuery,
   routeParams: RouteParams
 ): Record<string, string> => {
-  console.log('updateUrlWithParams:');
-  console.log('  Path:', asPath);
-  console.log('  Query:', query);
-  console.log('  Route Params:', routeParams);
   // Convert ParsedUrlQuery to Record<string, string> by filtering out non-string values
-  const currentQuery: Record<string, string> = Object.entries(query).reduce(
-    (stringQueryParams, [key, value]) => {
-      if (typeof value === 'string') {
-        stringQueryParams[key] = value;
-      }
-      return stringQueryParams;
-    },
-    {} as Record<string, string>
+  const currentQuery: Record<string, string> = Object.fromEntries(
+    Object.entries(query).filter(isStringValue)
   );
 
   // Preserve and delete query parameters
@@ -66,8 +61,6 @@ export const buildProjectDetailsQuery = (
     currentQuery.ploc = routeParams.plocId;
   }
 
-  console.log('updateUrlWithParams: Updated Query Parameters:');
-  console.log('  Current Query:', JSON.stringify(currentQuery, null, 2));
   return currentQuery;
 };
 

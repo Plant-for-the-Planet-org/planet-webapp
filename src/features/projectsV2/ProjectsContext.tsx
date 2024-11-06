@@ -250,14 +250,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     queryParams: Record<string, string> = {}
   ) => {
-    console.log('===== Pushing with shallow =====');
-    console.log('Locale:', locale);
-    console.log('Project Slug:', projectSlug);
-    console.log('Query Params:', queryParams);
-    console.log('Router Pathname:', router.pathname);
-    console.log('Router AsPath:', router.asPath);
-    console.log('Router Query:', router.query);
-    console.log('==============================');
     const pathname = `/${locale}/prd/${projectSlug}`;
 
     // Extract only the visible query params for the URL
