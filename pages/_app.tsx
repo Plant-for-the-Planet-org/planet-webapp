@@ -8,8 +8,10 @@ import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
+// NOTE - needs to be removed when old projects code is removed
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
+// NOTE - needs to be removed when old projects code is removed
 import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
@@ -32,6 +34,7 @@ import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContex
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { trpc } from '../src/utils/trpc';
+// NOTE - needs to be removed when old projects code is removed
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { CurrencyProvider } from '../src/features/common/Layout/CurrencyContext';
