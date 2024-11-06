@@ -4,7 +4,7 @@ import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
-import Credits from '../../../projects/components/maps/Credits';
+import Credits from '../../../projectsV2/ProjectsMap/Credits';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
