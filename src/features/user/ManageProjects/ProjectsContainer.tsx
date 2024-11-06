@@ -90,7 +90,7 @@ function SingleProject({ project }: { project: Properties }) {
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
-        <Link href={generateProjectLink(project.id, router.asPath)}>
+        <Link href={generateProjectLink(project.id, router.asPath, locale)}>
           <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
         <Link href={`/profile/projects/${project.id}?type=basic-details`}>

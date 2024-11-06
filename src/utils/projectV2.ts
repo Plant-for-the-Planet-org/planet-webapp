@@ -1,7 +1,7 @@
 import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { PointLike } from 'react-map-gl-v7/maplibre';
-import type { ParsedUrlQuery } from 'querystring';
 import type { Position } from 'geojson';
+import type { ParsedUrlQuery } from 'querystring';
 import type {
   MapRef,
   MapProjectProperties,
@@ -18,22 +18,17 @@ import * as turf from '@turf/turf';
 
 export type MobileOs = 'android' | 'ios' | undefined;
 
-const paramsToPreserve = [
-  'embed',
-  'back_icon',
-  'callback',
-  'project_details',
-  'project_list',
-  'enable_intro',
-];
-const paramsToDelete = [
-  'locale',
-  'slug',
-  'p',
-  'ploc',
-  'backNavigationUrl',
-  'site',
-];
+const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
+
+type RouteParams = {
+  siteId?: string | null;
+  plocId?: string | null;
+};
+
+/** Type predicate to check that the property contains a string value*/
+const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
+  return typeof entry[1] === 'string';
+};
 
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.
@@ -44,22 +39,28 @@ const paramsToDelete = [
  * @returns An updated query object with preserved, removed, and new parameter
  */
 
-export const updateUrlWithParams = (
+export const buildProjectDetailsQuery = (
   asPath: string,
   query: ParsedUrlQuery,
-  siteId: string | null
-) => {
-  const [, queryString] = asPath.split('?');
-  const currentUrlParams = new URLSearchParams(queryString || '');
-  const currentQuery = { ...query };
-  paramsToPreserve.forEach((param) => {
-    if (currentUrlParams.has(param)) {
-      currentQuery[param] = currentUrlParams.get(param) ?? '';
-    }
-  });
+  routeParams: RouteParams
+): Record<string, string> => {
+  // Convert ParsedUrlQuery to Record<string, string> by filtering out non-string values
+  const currentQuery: Record<string, string> = Object.fromEntries(
+    Object.entries(query).filter(isStringValue)
+  );
+
+  // Preserve and delete query parameters
   paramsToDelete.forEach((param) => delete currentQuery[param]);
-  //add project site param
-  if (siteId) currentQuery.site = siteId;
+
+  // Add routing params if provided
+  if (routeParams.siteId) {
+    currentQuery.site = routeParams.siteId;
+  }
+
+  if (routeParams.plocId) {
+    currentQuery.ploc = routeParams.plocId;
+  }
+
   return currentQuery;
 };
 
@@ -208,11 +209,51 @@ export const centerMapOnCoordinates = (
 
 export const generateProjectLink = (
   projectGuid: string,
-  routerAsPath: string
+  routerAsPath: string, //e.g. /en/yucatan, /en
+  locale: string //e.g. en
 ) => {
+  const nonLocalizedPath =
+    routerAsPath === `/${locale}`
+      ? '/'
+      : routerAsPath.replace(`/${locale}`, '');
   return `/prd/${projectGuid}?backNavigationUrl=${encodeURIComponent(
-    routerAsPath
+    nonLocalizedPath
   )}`;
+};
+
+/**
+ * Takes a relative path and returns a localized version with the correct locale prefix.
+ * Query parameters are stripped from the input path.
+ * @param path - The relative path to localize
+ * @param locale - The current locale (e.g., 'en')
+ * @returns The localized path without query parameters
+ */
+export const getLocalizedPath = (path: string, locale: string): string => {
+  // Strip query parameters if present
+  const pathWithoutQuery = path.split('?')[0];
+
+  // Remove trailing slash if present
+  const cleanPath = pathWithoutQuery.endsWith('/')
+    ? pathWithoutQuery.slice(0, -1)
+    : pathWithoutQuery;
+
+  // Handle root path special case
+  if (cleanPath === '' || cleanPath === '/') {
+    return `/${locale}`;
+  }
+
+  // If path already starts with locale, return as is
+  if (cleanPath.startsWith(`/${locale}/`)) {
+    return cleanPath;
+  }
+
+  // Remove leading slash if present for consistent handling
+  const normalizedPath = cleanPath.startsWith('/')
+    ? cleanPath.slice(1)
+    : cleanPath;
+
+  // Add locale prefix
+  return `/${locale}/${normalizedPath}`;
 };
 
 export const getDeviceType = (): MobileOs => {

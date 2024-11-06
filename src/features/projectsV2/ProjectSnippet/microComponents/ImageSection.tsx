@@ -13,6 +13,7 @@ import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { getLocalizedPath } from '../../../../utils/projectV2';
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -41,28 +42,35 @@ const ImageSection = (props: ImageSectionProps) => {
   const isEmbed = embed === 'true';
 
   const handleBackButton = () => {
-    if (setPreventShallowPush) setPreventShallowPush(true);
+    if (setPreventShallowPush) {
+      setPreventShallowPush(true);
+    }
+
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/${locale}/prd`;
-    const queryParams = {
-      ...(isEmbed ? { embed: 'true' } : {}),
-      ...(isEmbed && callbackUrl !== undefined
-        ? { callback: callbackUrl }
-        : {}),
-    };
-    const routerPath = previousPageRoute
-      ? previousPageRoute.split('?')[0]
-      : defaultRoute;
 
+    const baseRoute = previousPageRoute || defaultRoute;
     const isAbsoluteUrl =
-      previousPageRoute &&
-      (previousPageRoute.includes('http://') ||
-        previousPageRoute.includes('https://'));
-    const finalQueryParams = isAbsoluteUrl ? {} : queryParams;
+      baseRoute.startsWith('http://') || baseRoute.startsWith('https://');
+
+    // Get the final route, localizing relative path
+    const finalRoute = isAbsoluteUrl
+      ? baseRoute.split('?')[0] // For absolute URLs, just strip query params
+      : getLocalizedPath(baseRoute, locale);
+
+    // Handle query parameters for the new navigation
+    const queryParams = isEmbed
+      ? {
+          embed: 'true',
+          ...(callbackUrl !== undefined && { callback: callbackUrl }),
+        }
+      : {};
+
+    // Navigate and clean up
     router
       .push({
-        pathname: routerPath,
-        query: finalQueryParams,
+        pathname: finalRoute,
+        query: isAbsoluteUrl ? {} : queryParams,
       })
       .then(() => sessionStorage.removeItem('backNavigationUrl'))
       .catch((error) => {

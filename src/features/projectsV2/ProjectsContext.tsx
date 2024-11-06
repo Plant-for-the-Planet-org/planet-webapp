@@ -27,7 +27,7 @@ import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import { useTenant } from '../common/Layout/TenantContext';
-import { updateUrlWithParams } from '../../utils/projectV2';
+import { buildProjectDetailsQuery } from '../../utils/projectV2';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -245,15 +245,29 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setPlantLocations(null);
   }, [page]);
 
-  const pushWithShallow = (
+  const updateProjectDetailsPath = (
     locale: string,
     projectSlug: string,
-    queryParams = {}
+    queryParams: Record<string, string> = {}
   ) => {
     const pathname = `/${locale}/prd/${projectSlug}`;
-    router?.push({ pathname, query: queryParams }, undefined, {
-      shallow: true,
-    });
+
+    // Extract only the visible query params for the URL
+    const { locale: _, slug: __, p: ___, ...visibleParams } = queryParams;
+
+    router?.push(
+      {
+        pathname,
+        query: queryParams,
+      },
+      // Only show necessary params in the URL
+      `${pathname}${
+        Object.keys(visibleParams).length
+          ? '?' + new URLSearchParams(visibleParams).toString()
+          : ''
+      }`,
+      { shallow: true }
+    );
   };
 
   const updateUrlWithSiteId = (
@@ -261,12 +275,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     siteId: string | null
   ) => {
-    const updatedQueryParams = updateUrlWithParams(
+    const updatedQueryParams = buildProjectDetailsQuery(
       router.asPath,
       router.query,
-      siteId
+      { siteId }
     );
-    pushWithShallow(locale, projectSlug, updatedQueryParams);
+    updateProjectDetailsPath(locale, projectSlug, updatedQueryParams);
   };
 
   const updateSiteAndUrl = (
@@ -325,8 +339,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
     if (selectedPlantLocation) {
-      const updatedQueryParams = { ploc: selectedPlantLocation.hid };
-      pushWithShallow(locale, singleProject.slug, updatedQueryParams);
+      const updatedQueryParams = buildProjectDetailsQuery(
+        router.asPath,
+        router.query,
+        { plocId: selectedPlantLocation.hid }
+      );
+      updateProjectDetailsPath(locale, singleProject.slug, updatedQueryParams);
     }
   }, [
     page,
