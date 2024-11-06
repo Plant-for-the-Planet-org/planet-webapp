@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
-import InfoIconPopup from '../components/InfoIconPopup';
+import InfoIconPopup from '../../features/projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
 import RightArrowIcon from '../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import { useTranslations } from 'next-intl';
 

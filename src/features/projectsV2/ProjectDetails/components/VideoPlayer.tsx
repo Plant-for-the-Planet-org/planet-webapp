@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/VideoPlayer.module.scss';
-import PlayButtonIcon from '../../../../temp/icons/PlayButtonIcon';
+import PlayButtonIcon from '../../../../../public/assets/images/icons/projectV2/PlayButtonIcon';
 import ReactPlayer from 'react-player/lazy';
 
 const PlayButton = () => {

@@ -9,7 +9,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { area } from '@turf/turf';
-import SiteIcon from '../../../../temp/icons/SiteIcon';
+import SiteIcon from '../../../../../public/assets/images/icons/projectV2/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';

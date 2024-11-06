@@ -1,5 +1,5 @@
 import React from 'react';
-import DownloadIcon from '../../../../../temp/icons/DownloadIcon';
+import DownloadIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 import styles from '../../styles/ProjectInfo.module.scss';
 
 const DownloadsButton = ({ pdfUrl }: { pdfUrl: string }) => {
