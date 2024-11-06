@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import styles from '../styles/ProjectInfo.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
-import InfoIconPopup from '../../../../temp/components/InfoIconPopup';
+import InfoIconPopup from './microComponents/InfoIconPopup';
 import InterventionSeason from './microComponents/InterventionSeason';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
