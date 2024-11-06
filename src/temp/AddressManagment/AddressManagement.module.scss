@@ -1,0 +1,32 @@
+@import '../../theme/theme';
+
+.addressContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  background: rgba(242, 242, 242, 0.5);
+  border-radius: 8px;
+  font-size: $fontSmall;
+  font-weight: 400;
+  padding: 24px 0px 24px 24px;
+  .addressTag {
+    padding: 5px 10px;
+    width: max-content;
+    border-radius: 10px;
+    color: #fff;
+    font-size: $fontXSmall;
+    font-weight: 600;
+  }
+  .address {
+    max-width: 346px;
+  }
+}
+
+.primary {
+  background: rgba(0, 122, 73, 1);
+}
+
+.mailing {
+  background: rgba(45, 156, 219, 1);
+}

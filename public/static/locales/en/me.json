@@ -286,6 +286,11 @@
     "vplatform-payout": "Platform Payout",
     "processing": "Processing",
     "bankDetails": "Bank Details",
-    "refundAmount": "Refunded Amount"
+    "refundAmount": "Refunded Amount",
+    "addressManagement": {
+      "address": "Address",
+      "primaryAddress": "Primary Address",
+      "BillingAddress": "Billing Address"
+    }
   }
 }

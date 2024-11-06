@@ -11,6 +11,7 @@ on:
       - develop
       - feature/redesign-explore-btn
       - feature/design-projectlist-filter
+      - address-mgmt/single-address-story
 # List of jobs
 jobs:
   chromatic-deployment:
