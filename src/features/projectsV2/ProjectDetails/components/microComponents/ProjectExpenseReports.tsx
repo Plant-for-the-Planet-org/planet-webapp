@@ -34,7 +34,12 @@ const ProjectExpenseReports = ({ expenses }: Props) => {
               </DownloadsLabel>
             ) : (
               <DownloadsLabel>
-                <a href={pdfUrl} target="_blank" rel="noreferrer">
+                <a
+                  className={styles.expenseYear}
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {expense.year}
                 </a>
               </DownloadsLabel>
