@@ -1,5 +1,7 @@
-import React, { ReactElement } from 'react';
-import styles from '../../styles/ProjectsMap.module.scss';
+import type { ReactElement } from 'react';
+
+import React from 'react';
+import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';

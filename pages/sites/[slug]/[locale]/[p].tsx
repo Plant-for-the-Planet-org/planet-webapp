@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../../src/features/common/Layout/ProjectPropsContext';
-import Credits from '../../../../src/features/projects/components/maps/Credits';
+import Credits from '../../../../src/features/projectsV2/ProjectsMap/Credits';
 import SingleProjectDetails from '../../../../src/features/projects/screens/SingleProjectDetails';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
 import getStoredCurrency from '../../../../src/utils/countryCurrency/getStoredCurrency';
