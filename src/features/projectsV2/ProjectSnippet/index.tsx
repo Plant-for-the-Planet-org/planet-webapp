@@ -163,7 +163,11 @@ export default function ProjectSnippet({
   };
 
   const projectPath = useMemo(() => {
-    let path = `/${locale}${generateProjectLink(project.slug, router.asPath)}`;
+    let path = `/${locale}${generateProjectLink(
+      project.slug,
+      router.asPath,
+      locale
+    )}`;
     const params = new URLSearchParams();
 
     if (embed === 'true') {

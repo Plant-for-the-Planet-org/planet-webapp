@@ -171,7 +171,11 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           {record.projectGuid ? (
             <a
               title={record.details.project}
-              href={generateProjectLink(record.projectGuid, router.asPath)}
+              href={generateProjectLink(
+                record.projectGuid,
+                router.asPath,
+                locale
+              )}
             >
               {record.details.project.length > 42
                 ? record.details.project.substring(0, 42)
