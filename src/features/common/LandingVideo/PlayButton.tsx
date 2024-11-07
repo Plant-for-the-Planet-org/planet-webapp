@@ -21,8 +21,8 @@ export default function PlayButton({
   const playButtonClasses = `${
     embed === 'true' ? styles.embed_playButton : styles.playButton
   } ${
-    router.pathname === '/[p]' ||
-    router.pathname === '/sites/[slug]/[locale]/[p]'
+    router.pathname === '/projects-archive/[p]' ||
+    router.pathname === '/sites/[slug]/[locale]/projects-archive/[p]'
       ? styles['playButton--reduce-right-offset']
       : ''
   }`;

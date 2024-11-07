@@ -1,34 +1,34 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import ProjectsList from '../../../../src/features/projects/screens/Projects';
-import ProjectsListMeta from '../../../../src/utils/getMetaTags/ProjectsListMeta';
-import getStoredCurrency from '../../../../src/utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../../../../src/utils/apiRequests/api';
-import { useProjectProps } from '../../../../src/features/common/Layout/ProjectPropsContext';
-import Credits from '../../../../src/features/projectsV2/ProjectsMap/Credits';
-import Filters from '../../../../src/features/projects/components/projects/Filters';
-import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
+import ProjectsList from '../../../../../src/features/projects/screens/Projects';
+import ProjectsListMeta from '../../../../../src/utils/getMetaTags/ProjectsListMeta';
+import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
+import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
+import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
+import Filters from '../../../../../src/features/projects/components/projects/Filters';
+import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift, {
   DirectGiftI,
-} from '../../../../src/features/donations/components/DirectGift';
+} from '../../../../../src/features/donations/components/DirectGift';
 import { useLocale } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
-import { SetState } from '../../../../src/features/common/types/common';
-import { MapProject } from '../../../../src/features/common/types/ProjectPropsContextInterface';
+import { SetState } from '../../../../../src/features/common/types/common';
+import { MapProject } from '../../../../../src/features/common/types/ProjectPropsContextInterface';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
+} from '../../../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
+import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { defaultTenant } from '../../../../tenant.config';
+import { defaultTenant } from '../../../../../tenant.config';
 import { AbstractIntlMessages } from 'next-intl';
-import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   currencyCode: string;
@@ -90,7 +90,7 @@ export default function Donate({
   React.useEffect(() => {
     if (typeof router.query.p === 'string') {
       const safePath = encodeURIComponent(router.query.p);
-      router.push(encodeURI(`/${safePath}`));
+      router.push(encodeURI(`/projects-archive/${safePath}`));
     }
   }, [router]);
 

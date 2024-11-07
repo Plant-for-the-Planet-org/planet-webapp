@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
-import { useProjectProps } from '../../../../src/features/common/Layout/ProjectPropsContext';
-import Credits from '../../../../src/features/projectsV2/ProjectsMap/Credits';
-import SingleProjectDetails from '../../../../src/features/projects/screens/SingleProjectDetails';
-import { getRequest } from '../../../../src/utils/apiRequests/api';
-import getStoredCurrency from '../../../../src/utils/countryCurrency/getStoredCurrency';
-import ProjectDetailsMeta from '../../../../src/utils/getMetaTags/ProjectDetailsMeta';
-import { getAllPlantLocations } from '../../../../src/utils/maps/plantLocations';
+import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
+import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
+import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
+import SingleProjectDetails from '../../../../../src/features/projects/screens/SingleProjectDetails';
+import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
+import ProjectDetailsMeta from '../../../../../src/utils/getMetaTags/ProjectDetailsMeta';
+import { getAllPlantLocations } from '../../../../../src/utils/maps/plantLocations';
 import { AbstractIntlMessages, useLocale } from 'next-intl';
 import {
   handleError,
@@ -17,13 +17,13 @@ import {
   ProjectExtended,
   ClientError,
 } from '@planet-sdk/common';
-import { SetState } from '../../../../src/features/common/types/common';
-import { PlantLocation } from '../../../../src/features/common/types/plantLocation';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
+import { SetState } from '../../../../../src/features/common/types/common';
+import { PlantLocation } from '../../../../../src/features/common/types/plantLocation';
+import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
+} from '../../../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { v4 } from 'uuid';
 import {
@@ -31,8 +31,8 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { defaultTenant } from '../../../../tenant.config';
-import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { defaultTenant } from '../../../../../tenant.config';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   currencyCode: string | null | undefined;
@@ -165,7 +165,7 @@ export default function Donate({
       searchParams.append('site', geoJson.features[0].properties.id);
 
       const newSearch = searchParams.toString();
-      const newPath = `/${locale}/${project.slug}${
+      const newPath = `/${locale}/projects-archive/${project.slug}${
         newSearch.length > 0 ? `?${newSearch}` : ''
       }`;
 
@@ -180,7 +180,7 @@ export default function Donate({
         return router.query.site === singleSite?.properties.id;
       });
       if (siteIndex === -1) {
-        router.push(`/${project.slug}`);
+        router.push(`/projects-archive/${project.slug}`);
       } else {
         setSelectedSite(siteIndex);
       }
@@ -196,7 +196,7 @@ export default function Donate({
         });
 
       if (singlePlantLocation === undefined) {
-        router.push(`/${project.slug}`);
+        router.push(`/projects-archive/${project.slug}`);
       } else {
         setSelectedPl(singlePlantLocation);
       }

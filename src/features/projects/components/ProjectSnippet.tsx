@@ -120,7 +120,7 @@ export default function ProjectSnippet({
           setSelectedSite(0);
           if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
-            `/${locale}/${project.slug}/${
+            `/${locale}/projects-archive/${project.slug}${
               embed === 'true'
                 ? `${
                     callbackUrl != undefined

@@ -168,14 +168,7 @@ const PlanetWeb = ({
   }, []);
 
   React.useEffect(() => {
-    if (
-      router.pathname === '/' ||
-      router.pathname === '/[p]' ||
-      router.pathname === '/[p]/[id]' ||
-      router.pathname === '/sites/[slug]/[locale]' ||
-      router.pathname === '/sites/[slug]/[locale]/[p]' ||
-      router.pathname === '/sites/[slug]/[locale]/[p]/[id]'
-    ) {
+    if (router.pathname.includes('projects-archive')) {
       setIsMap(true);
     } else {
       setIsMap(false);
@@ -214,11 +207,7 @@ const PlanetWeb = ({
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
   React.useEffect(() => {
-    if (
-      router.pathname === '/' ||
-      router.pathname === '/sites/[slug]' ||
-      router.pathname === '/sites/[slug]/[locale]'
-    ) {
+    if (router.pathname.endsWith('projects-archive')) {
       if (typeof window !== 'undefined') {
         if (localStorage.getItem('showVideo')) {
           if (localStorage.getItem('showVideo') === 'true') {
