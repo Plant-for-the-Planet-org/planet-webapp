@@ -46,7 +46,7 @@ const ImageSection = (props: ImageSectionProps) => {
     }
 
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
-    const defaultRoute = `/${locale}/prd`;
+    const defaultRoute = `/${locale}`;
 
     const baseRoute = previousPageRoute || defaultRoute;
     const isAbsoluteUrl =

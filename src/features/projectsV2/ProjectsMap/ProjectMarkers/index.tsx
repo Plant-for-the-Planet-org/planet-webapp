@@ -37,7 +37,7 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
 
   const visitProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/prd/${projectSlug}/${
+      `/${locale}/${projectSlug}${
         embed === 'true'
           ? `${
               callbackUrl != undefined

@@ -49,7 +49,7 @@ export default function Markers({
   };
   const goToProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/${projectSlug}/${
+      `/${locale}/projects-archive/${projectSlug}${
         embed === 'true'
           ? `${
               callbackUrl != undefined

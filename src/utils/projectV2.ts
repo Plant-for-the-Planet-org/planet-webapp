@@ -216,7 +216,7 @@ export const generateProjectLink = (
     routerAsPath === `/${locale}`
       ? '/'
       : routerAsPath.replace(`/${locale}`, '');
-  return `/prd/${projectGuid}?backNavigationUrl=${encodeURIComponent(
+  return `/${projectGuid}?backNavigationUrl=${encodeURIComponent(
     nonLocalizedPath
   )}`;
 };
