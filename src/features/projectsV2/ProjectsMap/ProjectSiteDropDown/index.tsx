@@ -51,7 +51,7 @@ const ProjectSiteDropdown = ({
   setSelectedSamplePlantLocation,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const t = useTranslations('ManageProjects');
+  const tProjectDetails = useTranslations('ProjectDetails');
   const router = useRouter();
   const { query } = router;
   const siteList = useMemo(() => {
@@ -87,7 +87,7 @@ const ProjectSiteDropdown = ({
                 <div className={styles.labelTextContainer}>
                   <label className={styles.sitesLabel}>
                     <span className={styles.siteId}>
-                      {t('siteCount', {
+                      {tProjectDetails('siteCount', {
                         siteId: getId(selectedSiteData?.id),
                         totalCount: siteList.length,
                       })}

@@ -25,16 +25,16 @@ const PlantInfoCard = ({
   type,
   setSelectedSamplePlantLocation,
 }: Props) => {
-  const t = useTranslations('ProjectDetails');
+  const tProjectDetails = useTranslations('ProjectDetails');
   const sampleTreeConfig = [
     {
-      label: t('plantingDate'),
+      label: tProjectDetails('plantingDate'),
       data: interventionStartDate ? formatDate(interventionStartDate) : null,
       shouldRender: interventionStartDate !== undefined,
     },
     {
-      label: t('treeTag'),
-      data: t('tag', {
+      label: tProjectDetails('treeTag'),
+      data: tProjectDetails('tag', {
         number: tag,
       }),
       shouldRender: tag !== undefined || tag !== null,
@@ -58,15 +58,15 @@ const PlantInfoCard = ({
       </div>
       {scientificName && (
         <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
-          <h2 className={styles.label}>{t('scientificName')}</h2>
+          <h2 className={styles.label}>{tProjectDetails('scientificName')}</h2>
           <p className={styles.data}>{scientificName}</p>
         </div>
       )}
       {measurements && (
         <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
-          <h2 className={styles.label}>{t('measurement')}</h2>
+          <h2 className={styles.label}>{tProjectDetails('measurement')}</h2>
           <p className={styles.data}>
-            {t('singleSpeciesMeasurement', {
+            {tProjectDetails('singleSpeciesMeasurement', {
               plantHeight: measurements.height,
               plantWidth: measurements.width,
             })}
@@ -75,12 +75,12 @@ const PlantInfoCard = ({
       )}
       {type === 'sample-tree-registration' && (
         <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
-          <h2 className={styles.label}>{t('plot')}</h2>
+          <h2 className={styles.label}>{tProjectDetails('plot')}</h2>
           <button
             className={styles.showWholeArea}
             onClick={() => setSelectedSamplePlantLocation(null)}
           >
-            {t('showWholeArea')}
+            {tProjectDetails('showWholeArea')}
           </button>
         </div>
       )}

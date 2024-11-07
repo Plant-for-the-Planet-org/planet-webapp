@@ -7,6 +7,7 @@ import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
 import { useProjectsMap } from './ProjectsMapContext';
+import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -59,6 +60,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   };
   return (
     <>
+      <ProjectsListMeta />
       {isMobile ? (
         <ProjectListControlForMobile
           {...projectListControlCommonProps}

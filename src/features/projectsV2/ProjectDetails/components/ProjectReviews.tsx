@@ -10,10 +10,10 @@ interface Props {
 }
 
 const ProjectReviews = ({ reviews }: Props) => {
-  const t = useTranslations('ManageProjects');
+  const tProjectDetails = useTranslations('ProjectDetails');
   return (
     <div className={styles.reviewReportsContainer}>
-      <h6>{t('review')}</h6>
+      <h6>{tProjectDetails('review')}</h6>
       {reviews?.map((review) => (
         <SingleReview singleReview={review} key={review.id} />
       ))}

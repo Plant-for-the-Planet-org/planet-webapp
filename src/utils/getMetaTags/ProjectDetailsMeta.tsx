@@ -1,18 +1,20 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
+
+import React from 'react';
 import { useTenant } from '../../features/common/Layout/TenantContext';
 import getImageUrl from '../getImageURL';
 import Head from 'next/head';
 import { truncateString } from '../getTruncatedString';
-import {
-  ConservationProjectExtended,
-  TreeProjectExtended,
-} from '@planet-sdk/common';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
 }
 
-export default function GetProjectMeta({ project }: Props): ReactElement {
+export default function ProjectDetailsMeta({ project }: Props): ReactElement {
   const { tenantConfig } = useTenant();
 
   const description = truncateString(project.description, 147);

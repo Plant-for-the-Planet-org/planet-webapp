@@ -7,7 +7,7 @@ type ShowMapButtonProp = {
 };
 
 const ShowMapButton = ({ handleMap }: ShowMapButtonProp) => {
-  const t = useTranslations('ProjectDetails');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   return (
     <>
@@ -15,7 +15,9 @@ const ShowMapButton = ({ handleMap }: ShowMapButtonProp) => {
         <div className={style.buttonIconContainer}>
           <ExpandIcon />
         </div>
-        <div className={style.label}>{t('diveIntoTheProject')}</div>
+        <div className={style.label}>
+          {tProjectDetails('diveIntoTheProject')}
+        </div>
       </button>
     </>
   );

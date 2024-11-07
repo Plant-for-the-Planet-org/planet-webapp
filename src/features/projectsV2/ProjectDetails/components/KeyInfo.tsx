@@ -32,7 +32,6 @@ const KeyInfo = ({
   degradationYear,
 }: Props) => {
   const tCommon = useTranslations('Common');
-  const tManageProjects = useTranslations('ManageProjects');
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
 
@@ -59,14 +58,14 @@ const KeyInfo = ({
           <SingleProjectInfoItem
             title={
               <h2 className={styles.abandonmentTitle}>
-                {tManageProjects('abandonment')}
+                {tProjectDetails('abandonment')}
                 <InfoIconPopup
                   height={10}
                   width={10}
                   color={`${'rgba(var(--secondary-divider-color-new))'}`}
                 >
                   <div className={styles.infoIconPopupContainer}>
-                    {tManageProjects('yearAbandonedInfo')}
+                    {tProjectDetails('yearAbandonedInfo')}
                   </div>
                 </InfoIconPopup>
               </h2>
@@ -99,20 +98,20 @@ const KeyInfo = ({
 
       <div className={styles.keyInfoSubContainer}>
         {plantingDensity && (
-          <SingleProjectInfoItem title={tManageProjects('plantingDensity')}>
+          <SingleProjectInfoItem title={tProjectDetails('plantingDensity')}>
             <>
               {getFormattedNumber(locale, plantingDensity)}
               {maxPlantingDensity !== null
                 ? `-${getFormattedNumber(
                     locale,
                     maxPlantingDensity
-                  )} ${tManageProjects('treePerHa')}`
-                : ` ${tManageProjects('treePerHa')}`}
+                  )} ${tProjectDetails('treePerHa')}`
+                : ` ${tProjectDetails('treePerHa')}`}
             </>
           </SingleProjectInfoItem>
         )}
         {employees && (
-          <SingleProjectInfoItem title={tManageProjects('employees')}>
+          <SingleProjectInfoItem title={tProjectDetails('employees')}>
             <p>{employees}</p>
           </SingleProjectInfoItem>
         )}
@@ -120,7 +119,7 @@ const KeyInfo = ({
 
       <div className={styles.keyInfoSubContainer}>
         {degradationYear && (
-          <SingleProjectInfoItem title={tManageProjects('degradationYear')}>
+          <SingleProjectInfoItem title={tProjectDetails('degradationYear')}>
             <p>{degradationYear}</p>
           </SingleProjectInfoItem>
         )}

@@ -22,6 +22,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
+import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 
 const ProjectDetails = ({
   currencyCode,
@@ -152,42 +153,45 @@ const ProjectDetails = ({
     );
 
   return singleProject ? (
-    <div className={styles.projectDetailsContainer}>
-      <ProjectSnippet
-        project={singleProject}
-        showTooltipPopups={false}
-        isMobile={isMobile}
-        page="project-details"
-        setPreventShallowPush={setPreventShallowPush}
-      />
-      {shouldShowSinglePlantInfo && (
-        <SinglePlantLocationInfo
-          plantData={plantData}
-          isMobile={isMobile}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-        />
-      )}
-      {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
-        <MultiPlantLocationInfo
-          plantLocationInfo={
-            hoveredPlantLocation?.type === 'multi-tree-registration'
-              ? hoveredPlantLocation
-              : selectedPlantLocation?.type === 'multi-tree-registration'
-              ? selectedPlantLocation
-              : undefined
-          }
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-          isMobile={isMobile}
-        />
-      )}
-      {shouldShowProjectInfo && (
-        <ProjectInfo
+    <>
+      <ProjectDetailsMeta project={singleProject} />
+      <div className={styles.projectDetailsContainer}>
+        <ProjectSnippet
           project={singleProject}
+          showTooltipPopups={false}
           isMobile={isMobile}
-          setSelectedMode={setSelectedMode}
+          page="project-details"
+          setPreventShallowPush={setPreventShallowPush}
         />
-      )}
-    </div>
+        {shouldShowSinglePlantInfo && (
+          <SinglePlantLocationInfo
+            plantData={plantData}
+            isMobile={isMobile}
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          />
+        )}
+        {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
+          <MultiPlantLocationInfo
+            plantLocationInfo={
+              hoveredPlantLocation?.type === 'multi-tree-registration'
+                ? hoveredPlantLocation
+                : selectedPlantLocation?.type === 'multi-tree-registration'
+                ? selectedPlantLocation
+                : undefined
+            }
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+            isMobile={isMobile}
+          />
+        )}
+        {shouldShowProjectInfo && (
+          <ProjectInfo
+            project={singleProject}
+            isMobile={isMobile}
+            setSelectedMode={setSelectedMode}
+          />
+        )}
+      </div>
+    </>
   ) : (
     <Skeleton className={styles.projectDetailsSkeleton} />
   );

@@ -12,16 +12,16 @@ interface Props {
 }
 
 const ProjectDownloads = ({ certificates, expenses }: Props) => {
-  const tManageProjects = useTranslations('ManageProjects');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   const downloadsRenderConfig = [
     {
-      title: `${tManageProjects('externalCertifications')}`,
+      title: `${tProjectDetails('externalCertifications')}`,
       content: <ProjectCertificates certificates={certificates} />,
       shouldRender: certificates.length > 0,
     },
     {
-      title: `${tManageProjects('projectSpending')}`,
+      title: `${tProjectDetails('projectSpending')}`,
       content: <ProjectExpenseReports expenses={expenses} />,
       shouldRender: expenses.length > 0,
     },

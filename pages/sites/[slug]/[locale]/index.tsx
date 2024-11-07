@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import ProjectsList from '../../../../src/features/projects/screens/Projects';
-import GetAllProjectsMeta from '../../../../src/utils/getMetaTags/GetAllProjectsMeta';
+import ProjectsListMeta from '../../../../src/utils/getMetaTags/ProjectsListMeta';
 import getStoredCurrency from '../../../../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
 import { useProjectProps } from '../../../../src/features/common/Layout/ProjectPropsContext';
@@ -149,7 +149,7 @@ export default function Donate({
     <>
       {filteredProjects !== null ? (
         <>
-          <GetAllProjectsMeta />
+          <ProjectsListMeta />
           <ProjectsList
             projects={filteredProjects}
             {...OtherProjectListProps}

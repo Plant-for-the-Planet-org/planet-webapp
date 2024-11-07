@@ -34,8 +34,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const tManageProjects = useTranslations('ManageProjects');
-  const tDonate = useTranslations('Donate');
+  const tProjectsCommon = useTranslations('Project');
   const router = useRouter();
   const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
@@ -152,12 +151,13 @@ const ImageSection = (props: ImageSectionProps) => {
           <div>
             {ecosystem !== null && (
               <div className={styles.projectEcosystem}>
-                {tManageProjects(`ecosystemTypes.${ecosystem}`)}
+                {tProjectsCommon(`ecosystem.${ecosystem}`)}
                 {' /'}
               </div>
             )}
             <div className={styles.projectType}>
-              {classification && tDonate(classification)}
+              {classification &&
+                tProjectsCommon(`classification.${classification}`)}
             </div>
           </div>
         </div>
