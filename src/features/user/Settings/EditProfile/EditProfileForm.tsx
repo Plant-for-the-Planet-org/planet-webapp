@@ -37,6 +37,7 @@ import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import { useRouter } from 'next/router';
 import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import themeProperties from '../../../../theme/themeProperties';
+import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -74,7 +75,6 @@ export default function EditProfileForm() {
   const t = useTranslations('EditProfile');
   const locale = useLocale();
   const router = useRouter();
-
   const defaultProfileDetails = useMemo(() => {
     return {
       firstname: user?.firstname ? user.firstname : '',
@@ -703,9 +703,13 @@ export default function EditProfileForm() {
               {t('fieldLabels.exposeCommunity')}
               <div className={styles.infoIcon}>
                 <CustomTooltip
-                  height={15}
-                  width={14}
-                  color={themeProperties.mediumGrayColor}
+                  triggerElement={
+                    <NewInfoIcon
+                      width={14}
+                      color={themeProperties.mediumGrayColor}
+                    />
+                  }
+                  showTooltipPopups={true}
                 >
                   <div className={styles.infoIconPopupContainer}>
                     {t('leaderboardTooltipExplanation')}

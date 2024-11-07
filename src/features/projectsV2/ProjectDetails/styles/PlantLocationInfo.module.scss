@@ -1,0 +1,180 @@
+@import '../../../../theme/theme';
+
+.plantLocationInfoSection {
+  background: #fff;
+  max-width: 356px;
+  border-radius: 12px;
+  margin-top: 23px;
+  padding: 12px 12px 24px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.plantLocationHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.treeCount {
+  font-weight: 700;
+  font-size: 14px;
+  color: rgba(47, 51, 54, 1);
+  span {
+    font-weight: 400;
+  }
+}
+.hid {
+  font-size: 14px;
+  color: rgba(47, 51, 54, 1);
+}
+
+.plantingDetailsGroup {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.plantingDetailsItem {
+  min-width: 162px;
+  padding: 20px;
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 12px;
+}
+.label {
+  color: rgba(0, 122, 73, 1);
+  font-weight: 700;
+  font-size: 12px;
+}
+.showWholeArea,
+.data {
+  font-weight: 400;
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.showWholeArea {
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+  color: $primaryFontColor;
+}
+
+.speciesContainer {
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 12px;
+  color: rgba(0, 122, 73, 1);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 20px;
+}
+
+.speciesSubContainer {
+  margin-top: 7px;
+}
+
+.speciesList {
+  display: flex;
+  color: rgba(47, 51, 54, 1);
+  line-height: 16.34px;
+  .speciesName {
+    font-style: italic;
+    font-weight: 400;
+    min-width: 200px;
+  }
+  .treeMetrics {
+    display: flex;
+    min-width: 90px;
+    justify-content: space-between;
+    p {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+}
+
+.sampleTreesContainer {
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  .mainLabel {
+    color: rgba(0, 122, 73, 1);
+  }
+}
+
+.sampleTreeListContainer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sampleTreeContainer {
+  background: #fff;
+  border-radius: 12px;
+  list-style-position: inside;
+  padding: 10px 15px;
+}
+
+.scientificNameContainer {
+  font-weight: 600;
+  font-size: 12px;
+  display: flex;
+  color: rgba(47, 51, 54, 1);
+  .scientificName {
+    font-style: italic;
+    margin-left: 2px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.treeMeasurement {
+  font-weight: 400;
+}
+
+.treeMapperLabelContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.treeMapperLabelSubContainer {
+  font-size: 12px;
+  display: flex;
+  gap: 2px;
+  .treeMapperLabel {
+    color: rgba(0, 122, 73, 1);
+    font-weight: 700;
+    display: flex;
+  }
+}
+
+//sample plant location styles
+
+.singlePlantLocationHeading {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  h1 {
+    font-weight: 700;
+  }
+  p {
+    font-weight: 400;
+  }
+}
+
+.singlePlantLocationImage {
+  border-radius: 13px;
+  height: 192px;
+  object-fit: cover;
+  width: auto;
+}
+
+.plantInfoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

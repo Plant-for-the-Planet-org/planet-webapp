@@ -35,6 +35,7 @@ function WebappButton({
         href={otherProps.href}
         target={otherProps.target || '_self'}
         className={styles.webappButtonLink}
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}

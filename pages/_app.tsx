@@ -3,13 +3,15 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React from 'react';
+import React, { ReactElement, ReactNode, useMemo } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
+import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
+// NOTE - needs to be removed when old projects code is removed
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
+// NOTE - needs to be removed when old projects code is removed
 import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
@@ -32,6 +34,7 @@ import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContex
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { trpc } from '../src/utils/trpc';
+// NOTE - needs to be removed when old projects code is removed
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { CurrencyProvider } from '../src/features/common/Layout/CurrencyContext';
@@ -41,9 +44,9 @@ import {
   getTenantSlug,
 } from '../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import { NextIntlClientProvider } from 'next-intl';
-
-type AppOwnProps = { tenantConfig: Tenant };
+import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
+import { NextPage } from 'next';
+import { SetState } from '../src/features/common/types/common';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -107,15 +110,40 @@ const onRedirectCallback = (appState: any) => {
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-export interface MyAppProps extends AppProps {
+export type NextPageWithLayout<P = PageComponentProps, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (
+    page: ReactElement,
+    pageComponentProps: PageComponentProps
+  ) => ReactNode;
+};
+
+type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
+  Component: NextPageWithLayout;
   emotionCache?: EmotionCache;
-}
+  pageProps: PageProps;
+};
+
+export type PageProps = {
+  tenantConfig: Tenant;
+  messages?: AbstractIntlMessages;
+  [key: string]: any;
+};
+
+export type PageComponentProps = {
+  pageProps: PageProps;
+  currencyCode: string;
+  setCurrencyCode: SetState<string>;
+  isMobile: boolean;
+};
 
 const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-}: MyAppProps & AppOwnProps) => {
+}: AppPropsWithLayout) => {
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
@@ -164,10 +192,16 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
-  const ProjectProps = {
+  const isMobile = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 481;
+  }, [typeof window !== 'undefined' && window.innerWidth]);
+
+  const pageComponentProps = {
     pageProps,
     currencyCode,
     setCurrencyCode,
+    isMobile,
   };
 
   const [showVideo, setshowVideo] = React.useState(true);
@@ -205,6 +239,12 @@ const PlanetWeb = ({
   React.useEffect(() => {
     setshowVideo(localShowVideo);
   }, [localShowVideo]);
+
+  const getLayout = Component.getLayout ?? ((page) => page);
+  const pageContent = getLayout(
+    <Component {...pageComponentProps} />,
+    pageComponentProps
+  );
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -273,7 +313,7 @@ const PlanetWeb = ({
                                               setshowVideo={setshowVideo}
                                             />
                                           ) : null}
-                                          <Component {...ProjectProps} />
+                                          {pageContent}
                                         </AnalyticsProvider>
                                       </BulkCodeProvider>
                                     </ProjectPropsProvider>
@@ -300,7 +340,7 @@ const PlanetWeb = ({
 
 PlanetWeb.getInitialProps = async (
   context: AppContext
-): Promise<AppOwnProps & AppInitialProps> => {
+): Promise<AppInitialProps & { pageProps: PageProps }> => {
   const ctx = await App.getInitialProps(context);
 
   const _tenantSlug = await getTenantSlug(
@@ -311,12 +351,13 @@ PlanetWeb.getInitialProps = async (
 
   const tenantConfig = await getTenantConfig(tenantSlug);
 
-  const pageProps = {
-    ...ctx.pageProps,
-    tenantConfig,
+  return {
+    ...ctx,
+    pageProps: {
+      ...ctx.pageProps,
+      tenantConfig,
+    },
   };
-
-  return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
 };
 
 export default trpc.withTRPC(PlanetWeb);

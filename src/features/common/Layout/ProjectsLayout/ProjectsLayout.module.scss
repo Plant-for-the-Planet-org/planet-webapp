@@ -1,0 +1,100 @@
+@import '../../../../theme/theme';
+
+// define a variable for the space around the layout
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+$layoutPaddingBottom: 30px;
+.impersonationMode,
+.embedMode,
+.projectsLayout {
+  margin-top: 80px;
+  height: calc(100vh - 80px);
+  background: linear-gradient(
+      0deg,
+      rgba(172, 172, 172, 0.15) 0%,
+      rgba(172, 172, 172, 0.15) 100%
+    ),
+    #fff;
+  padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
+  position: relative;
+  overflow: hidden;
+}
+.embedMode {
+  margin-top: 0px;
+  height: 100vh;
+}
+.impersonationMode {
+  margin-top: 125px;
+  height: calc(100vh - 125px);
+}
+
+.mainContent {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contentContainer {
+  width: 378px;
+  max-width: 100%;
+  background: transparent;
+}
+
+.mapContainer {
+  flex: 1;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.mapFeatureExplorerOverlay {
+  position: absolute;
+  top: calc($layoutPaddingTop + 8px);
+  right: calc($layoutPaddingSide + 10px);
+  z-index: 1;
+}
+
+// styles for mobile layout
+
+.mobileProjectsLayout {
+  width: 100%;
+  height: calc(100vh - 58px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 58px;
+  padding-top: $layoutPaddingTop;
+  overflow: hidden;
+  &.mapMode {
+    height: 100vh;
+    margin-top: 0px;
+    padding-top: 0px;
+  }
+}
+
+.viewButton {
+  position: absolute;
+  top: 13px;
+  right: 20px;
+  z-index: 1;
+  &.viewButtonShifted {
+    top: 95px;
+  }
+}
+
+.mobileContentContainer {
+  padding: 0px 12px;
+  height: 100%;
+  width: 100%;
+  margin-top: 20px;
+  @include xsPhoneView {
+    padding: 0px 0px;
+    margin-top: 20px;
+  }
+}
+
+.mobileMapContainer {
+  width: inherit;
+  height: 100%;
+  position: relative;
+}

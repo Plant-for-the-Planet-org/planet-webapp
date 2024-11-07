@@ -2,11 +2,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../../src/features/common/Layout/ProjectPropsContext';
-import Credits from '../../../../src/features/projects/components/maps/Credits';
+import Credits from '../../../../src/features/projectsV2/ProjectsMap/Credits';
 import SingleProjectDetails from '../../../../src/features/projects/screens/SingleProjectDetails';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
 import getStoredCurrency from '../../../../src/utils/countryCurrency/getStoredCurrency';
-import GetProjectMeta from '../../../../src/utils/getMetaTags/GetProjectMeta';
+import ProjectDetailsMeta from '../../../../src/utils/getMetaTags/ProjectDetailsMeta';
 import { getAllPlantLocations } from '../../../../src/utils/maps/plantLocations';
 import { AbstractIntlMessages, useLocale } from 'next-intl';
 import {
@@ -205,7 +205,7 @@ export default function Donate({
 
   return pageProps.tenantConfig ? (
     <>
-      {project ? <GetProjectMeta project={project} /> : null}
+      {project ? <ProjectDetailsMeta project={project} /> : null}
       {project ? (
         <>
           <SingleProjectDetails />
@@ -223,7 +223,7 @@ export default function Donate({
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
