@@ -1,5 +1,6 @@
 {
   "Common": {
+    "and": "und",
     "tree": "{count, plural, =1 {Baum} other {Bäume}}",
     "m2": "m²",
     "by": "Von {tpoName}",
@@ -18,6 +19,9 @@
     "me": "Ich",
     "signIn": "Anmelden",
     "home": "Start",
+    "vtoChallenge": "VTO-Herausforderung",
+    "mangroves": "Mangroven",
+    "campaigns": "Kampagnen",
     "donate_gift": "Spenden/Schenken",
     "plant": "Pflanzen",
     "donate": "Spenden",
