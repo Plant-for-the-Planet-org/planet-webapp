@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Button, Popover } from '@mui/material';
 import KababMenuIcon from '../../../../public/assets/images/icons/KababMenuIcon';
 import styles from '../AddressManagement.module.scss';
-import { filterAddressActions } from '../utils';
+import { SetState } from '../../../features/common/types/common';
 
 export type AddressType = 'primary' | 'mailing' | 'other';
 export const ADDRESS_ACTIONS = {
@@ -19,29 +19,42 @@ export type AddressAction =
 export interface AddressActionItem {
   label: string;
   action: AddressAction;
+  shouldRender: boolean;
+}
+interface Props {
+  type: AddressType;
+  addressCount: number;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
-const AddressActions = ({ type }: { type: AddressType }) => {
+const AddressActions = ({ type, addressCount, setAddressAction }: Props) => {
   const t = useTranslations('Me');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
 
-  const addressActions: AddressActionItem[] = filterAddressActions(
-    [
-      { label: t('addressManagement.edit'), action: ADDRESS_ACTIONS.EDIT },
-      { label: t('addressManagement.delete'), action: ADDRESS_ACTIONS.DELETE },
-      {
-        label: t('addressManagement.setAsPrimaryAddress'),
-        action: ADDRESS_ACTIONS.SET_PRIMARY,
-      },
-      {
-        label: t('addressManagement.setAsBillingAddress'),
-        action: ADDRESS_ACTIONS.SET_BILLING,
-      },
-    ],
-    type
-  );
+  const addressActionConfig: AddressActionItem[] = [
+    {
+      label: t('addressManagement.edit'),
+      action: ADDRESS_ACTIONS.EDIT,
+      shouldRender: true,
+    },
+    {
+      label: t('addressManagement.delete'),
+      action: ADDRESS_ACTIONS.DELETE,
+      shouldRender: addressCount > 1,
+    },
+    {
+      label: t('addressManagement.setAsPrimaryAddress'),
+      action: ADDRESS_ACTIONS.SET_PRIMARY,
+      shouldRender: !(type === 'mailing' || type === 'primary'),
+    },
+    {
+      label: t('addressManagement.setAsBillingAddress'),
+      action: ADDRESS_ACTIONS.SET_BILLING,
+      shouldRender: !(type === 'mailing' || type === 'primary'),
+    },
+  ];
 
   const openPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopoverAnchor(event.currentTarget);
@@ -52,6 +65,7 @@ const AddressActions = ({ type }: { type: AddressType }) => {
   };
 
   const handleActionClick = (action: AddressAction) => {
+    setAddressAction(action);
     setPopoverAnchor(null);
   };
 
@@ -85,15 +99,18 @@ const AddressActions = ({ type }: { type: AddressType }) => {
         }}
       >
         <ul className={styles.addressActions}>
-          {addressActions.map((item, key) => (
-            <li
-              key={key}
-              className={styles.action}
-              onClick={() => handleActionClick(item.action)}
-            >
-              {item.label}
-            </li>
-          ))}
+          {addressActionConfig.map((item, key) => {
+            if (!item.shouldRender) return;
+            return (
+              <li
+                key={key}
+                className={styles.action}
+                onClick={() => handleActionClick(item.action)}
+              >
+                {item.label}
+              </li>
+            );
+          })}
         </ul>
       </Popover>
     </div>
