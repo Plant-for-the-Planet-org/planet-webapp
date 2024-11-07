@@ -1,24 +1,26 @@
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../src/utils/multiTenancy/helpers';
-import {
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next/types';
-import { defaultTenant } from '../../../../../tenant.config';
-import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import { ReactElement, useEffect } from 'react';
-import { v4 } from 'uuid';
-import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
-import {
+import type { ReactElement } from 'react';
+import type {
   NextPageWithLayout,
   PageComponentProps,
   PageProps,
 } from '../../../../_app';
+
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../../tenant.config';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useRouter } from 'next/router';
+import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import { useEffect } from 'react';
+import { v4 } from 'uuid';
+import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../../src/features/projectsV2/ProjectDetails';
 
