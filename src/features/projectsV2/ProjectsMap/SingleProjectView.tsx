@@ -19,7 +19,7 @@ interface Props {
 const SingleProjectView = ({ mapRef }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
-  if (singleProject === null) return;
+  if (singleProject === null) return null;
 
   const { isSatelliteView, setViewState, setIsSatelliteView } =
     useProjectsMap();
