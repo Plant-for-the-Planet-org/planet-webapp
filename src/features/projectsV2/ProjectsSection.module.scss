@@ -1,0 +1,51 @@
+@import '../../theme/theme';
+// temporary file will be deleted later
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-top: 20px;
+  padding-bottom: 65px;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: rgba(224, 224, 224, 1);
+    height: 220px;
+  }
+  @include xsPhoneView {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    padding: 0px 9px 100px;
+  }
+}
+
+.projectSectionSkeleton {
+  height: 100%;
+}
+
+.noProjectFoundContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 16px;
+
+  @include smTabletView {
+    background-color: $light;
+    margin-left: 2px;
+    margin-right: 10px;
+  }
+}
+
+.noProjectFoundText {
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 15px;
+}

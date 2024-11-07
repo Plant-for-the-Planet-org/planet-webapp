@@ -1,0 +1,89 @@
+@import '../../../theme/theme';
+
+.projectListControlsContainer {
+  position: absolute;
+  width: 100%;
+  top: 102px;
+  z-index: 2;
+}
+
+.projectDetailsControlsContainer {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  gap: 34px;
+  top: 114px;
+  right: 10px;
+  z-index: 2px;
+
+  > .exitMapModeButton {
+    z-index: 2;
+    background: $light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 6px;
+  }
+}
+
+.layerToggle {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.layerToggleAndroid,
+.layerToggleIos {
+  right: 9px;
+}
+.layerToggleDesktop {
+  bottom: 105px;
+  right: 30px;
+}
+
+.layerToggleAndroid {
+  bottom: 162px;
+}
+
+.layerToggleIos {
+  bottom: 225px;
+}
+
+.mapContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.android :global(.maplibregl-control-container .maplibregl-ctrl-bottom-right) {
+  bottom: 85px;
+}
+
+.ios :global(.maplibregl-control-container .maplibregl-ctrl-bottom-right) {
+  bottom: 150px;
+}
+
+// Plant Location Styles
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: rgba(0, 122, 73, 0.5);
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  &.singleSelected {
+    background-color: rgba(0, 122, 73, 1);
+  }
+}
+
+.single:hover {
+  background-color: rgba(0, 122, 73, 1);
+}

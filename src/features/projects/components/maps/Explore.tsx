@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
@@ -57,6 +57,7 @@ export default function Explore(): ReactElement {
   } = useProjectProps();
 
   const t = useTranslations('Maps');
+  const locale = useLocale();
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
@@ -168,7 +169,7 @@ export default function Explore(): ReactElement {
       // setMapState(newMapState);
       setViewPort(newViewport);
       router.push(
-        `/${
+        `${locale}/projects-archive${
           embed === 'true'
             ? `${
                 callbackUrl != undefined

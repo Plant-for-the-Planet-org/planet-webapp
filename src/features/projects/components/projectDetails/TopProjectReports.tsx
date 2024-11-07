@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import { Review } from '@planet-sdk/common/build/types/project/common';
 
 interface Props {
-  projectReviews: Review[];
+  projectReviews: Review[] | undefined;
 }
 
 export default function TopProjectReports({ projectReviews }: Props) {
@@ -24,7 +24,7 @@ export default function TopProjectReports({ projectReviews }: Props) {
       <div className={styles.reports_container}>
         <VerifiedIcon sx={{ color: '#42A5F5' }} />
         <div className={styles.reports_description}>
-          {projectReviews.map((review) => (
+          {projectReviews?.map((review) => (
             <div key={review.id}>
               <p id="child-modal-description">
                 {t.rich('reviewInfo', {
