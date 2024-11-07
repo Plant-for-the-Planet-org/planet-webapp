@@ -13,7 +13,7 @@ type Props = {
 };
 
 function SinglePlantLocationHeader({ plantData }: Props) {
-  const t = useTranslations('ProjectDetails');
+  const tProjectDetails = useTranslations('ProjectDetails');
   const isSamplePlant = plantData.type === 'sample-tree-registration';
   const image = plantData?.coordinates?.[0]?.image ?? '';
 
@@ -23,7 +23,9 @@ function SinglePlantLocationHeader({ plantData }: Props) {
         className={`single-plant-location-heading ${styles.singlePlantLocationHeading}`}
       >
         <h1 className="tree-count">
-          {isSamplePlant ? t('sampleTree') : t('1Tree')}
+          {isSamplePlant
+            ? tProjectDetails('sampleTree')
+            : tProjectDetails('1Tree')}
         </h1>
         <div className="hid">{formatHid(plantData?.hid)}</div>
       </div>

@@ -89,7 +89,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'projectDetails',
       'donate',
       'allProjects',
-      'manageProjects',
+      'project',
       'me',
     ],
   });

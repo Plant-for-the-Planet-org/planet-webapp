@@ -40,38 +40,38 @@ const AdditionalInfo = ({
   coBenefits,
   ownershipTenure,
 }: Props) => {
-  const tManageProjects = useTranslations('ManageProjects');
+  const tProjectsCommon = useTranslations('Project');
   const tProjectDetails = useTranslations('ProjectDetails');
 
   const siteOwners = [
     {
       id: 1,
-      title: tProjectDetails('privateProperty'),
+      title: tProjectDetails('siteOwnershipTypes.private'),
       value: 'private',
     },
     {
       id: 2,
-      title: tProjectDetails('publicProperty'),
+      title: tProjectDetails('siteOwnershipTypes.public-property'),
       value: 'public-property',
     },
     {
       id: 3,
-      title: tManageProjects('siteOwnerSmallHolding'),
+      title: tProjectDetails('siteOwnershipTypes.smallholding'),
       value: 'smallholding',
     },
     {
       id: 4,
-      title: tManageProjects('siteOwnerCommunal'),
+      title: tProjectDetails('siteOwnershipTypes.communal-land'),
       value: 'communal-land',
     },
     {
       id: 5,
-      title: tManageProjects('siteOwnerOwned'),
+      title: tProjectDetails('siteOwnershipTypes.owned-by-owner'),
       value: 'owned-by-owner',
     },
     {
       id: 6,
-      title: tManageProjects('siteOwnerOther'),
+      title: tProjectDetails('siteOwnershipTypes.other'),
       value: 'other',
     },
   ];
@@ -82,52 +82,53 @@ const AdditionalInfo = ({
     );
     const translatedTitle = siteOwner ? siteOwner.title : '';
     if (acquiredSince) {
-      return `${translatedTitle} · ${tManageProjects(
-        'since'
-      )} ${acquiredSince}`;
+      return tProjectDetails('ownershipTypeDetails', {
+        translatedOwnershipType: translatedTitle,
+        acquisitionYear: acquiredSince,
+      });
     } else {
       return translatedTitle;
     }
   };
   const moreInfoContent = [
     {
-      title: `${tManageProjects('mainChallenge')}`,
+      title: `${tProjectDetails('mainChallenge')}`,
       content: <div>{mainChallenge}</div>,
       shouldDisplay: Boolean(mainChallenge),
     },
     {
-      title: `${tManageProjects('actions')}`,
+      title: `${tProjectDetails('actions')}`,
       content: <div>{actions}</div>,
       shouldDisplay: Boolean(actions),
     },
     {
-      title: `${tManageProjects('socialBenefits')}`,
+      title: `${tProjectDetails('socialBenefits')}`,
       content: <div>{socialBenefits}</div>,
       shouldDisplay: Boolean(socialBenefits),
     },
     {
-      title: `${tManageProjects('ecologicalBenefits')}`,
+      title: `${tProjectDetails('ecologicalBenefits')}`,
       content: <div>{ecologicalBenefits}</div>,
       shouldDisplay: Boolean(ecologicalBenefits),
     },
     {
-      title: `${tManageProjects('coBenefits')}`,
+      title: `${tProjectDetails('coBenefits')}`,
       content: <div>{coBenefits}</div>,
       shouldDisplay: Boolean(coBenefits),
     },
     {
-      title: `${tManageProjects(`labelMainInterventions`)}`,
+      title: `${tProjectDetails(`labelMainInterventions`)}`,
       content: (
         <div>
           {mainInterventions
-            ?.map((item) => tManageProjects(`interventionTypes.${item}`))
+            ?.map((item) => tProjectsCommon(`interventionTypes.${item}`))
             .join(',')}
         </div>
       ),
       shouldDisplay: mainInterventions && mainInterventions?.length > 0,
     },
     {
-      title: `${tManageProjects('siteOwnership')}`,
+      title: `${tProjectDetails('siteOwnership')}`,
       content: (
         <>
           <div className={styles.siteOwnershipLabelContainer}>
@@ -143,17 +144,17 @@ const AdditionalInfo = ({
         (siteOwnershipType && siteOwnershipType?.length > 0),
     },
     {
-      title: `${tManageProjects('ownerShipTenure')}`,
+      title: `${tProjectDetails('ownerShipTenure')}`,
       content: <div>{ownershipTenure}</div>,
       shouldDisplay: Boolean(ownershipTenure),
     },
     {
-      title: `${tManageProjects('causeOfDegradation')}`,
+      title: `${tProjectDetails('causeOfDegradation')}`,
       content: <div>{causeOfDegradation}</div>,
       shouldDisplay: Boolean(causeOfDegradation),
     },
     {
-      title: `${tManageProjects('whyThisSite')}`,
+      title: `${tProjectDetails('whyThisSite')}`,
       content: <div>{whyThisSite}</div>,
       shouldDisplay: Boolean(whyThisSite),
     },

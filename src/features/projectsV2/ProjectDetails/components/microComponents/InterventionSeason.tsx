@@ -7,7 +7,6 @@ interface Props {
 
 const InterventionSeason = ({ interventionSeasons }: Props) => {
   const tCommon = useTranslations('Common');
-  const tManageProjects = useTranslations('ManageProjects');
 
   const seasons = [
     tCommon('january'),
@@ -30,7 +29,7 @@ const InterventionSeason = ({ interventionSeasons }: Props) => {
           <span key={seasons[season - 1]}>
             {seasons[season - 1]}
             {index === interventionSeasons.length - 2 ? (
-              <span> {tManageProjects('and')} </span>
+              <span> {tCommon('and')} </span>
             ) : index === interventionSeasons.length - 1 ? (
               '.'
             ) : (
