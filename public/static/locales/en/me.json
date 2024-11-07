@@ -290,7 +290,11 @@
     "addressManagement": {
       "address": "Address",
       "primaryAddress": "Primary Address",
-      "BillingAddress": "Billing Address"
+      "BillingAddress": "Billing Address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "setAsPrimaryAddress": "Set as Primary Address",
+      "setAsBillingAddress": "Set as Billing Address"
     }
   }
 }

@@ -4,11 +4,13 @@ import DashboardView from '../../features/common/Layout/DashboardView';
 import SingleColumnView from '../../features/common/Layout/SingleColumnView';
 import CenteredContainer from '../../features/common/Layout/CenteredContainer';
 import { useTranslations } from 'next-intl';
-import SingleAddress from './microComponents/SingleAddress';
+import AddressList from './microComponents/AddressList';
+
+export type AddressType = 'primary' | 'mailing' | 'other';
 
 export interface UpdatedAddress extends Address {
   id: string;
-  type: 'primary' | 'mailing' | 'other';
+  type: AddressType;
   name: string | null;
   state: string | null;
   isPrimary: boolean | null;
@@ -25,9 +27,7 @@ const AddressManagement = ({ addresses }: Props) => {
     <DashboardView title={t('addressManagement.address')} subtitle={null}>
       <SingleColumnView>
         <CenteredContainer>
-          {addresses.map((address) => (
-            <SingleAddress key={address.id} userAddress={address} />
-          ))}
+          <AddressList addresses={addresses} />
         </CenteredContainer>
       </SingleColumnView>
     </DashboardView>

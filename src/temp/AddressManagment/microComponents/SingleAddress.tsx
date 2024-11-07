@@ -1,13 +1,15 @@
 import type { UpdatedAddress } from '..';
 
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { formatAddress } from '../../../utils/addressManagement';
-import style from '../AddressManagement.module.scss';
+import styles from '../AddressManagement.module.scss';
 import { CountryCode } from '@planet-sdk/common';
+import AddressContent from './AddressContent';
+import AddressActions from './AddressActions';
 
 const SingleAddress = ({ userAddress }: { userAddress: UpdatedAddress }) => {
   const tCountry = useTranslations('Country');
-  const t = useTranslations('Me');
   const { zipCode, city, state, country, address, type } = userAddress;
   const countryFullForm = tCountry(
     country.toLowerCase() as Lowercase<CountryCode>
@@ -19,16 +21,11 @@ const SingleAddress = ({ userAddress }: { userAddress: UpdatedAddress }) => {
     state,
     countryFullForm
   );
+
   return (
-    <div className={style.addressContainer}>
-      {type !== 'other' && (
-        <span className={`${style.addressTag} ${style[type]}`}>
-          {type === 'primary'
-            ? t('addressManagement.primaryAddress')
-            : t('addressManagement.BillingAddress')}
-        </span>
-      )}
-      <div className={style.address}>{formattedAddress}</div>
+    <div className={styles.addressContainer}>
+      <AddressContent type={type} userAddress={formattedAddress} />
+      <AddressActions type={type} />
     </div>
   );
 };

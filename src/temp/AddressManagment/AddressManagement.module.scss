@@ -2,24 +2,38 @@
 
 .addressContainer {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  justify-content: space-between;
   width: 100%;
   background: rgba(242, 242, 242, 0.5);
   border-radius: 8px;
   font-size: $fontSmall;
   font-weight: 400;
+  .address {
+    max-width: 346px;
+  }
+  svg {
+    height: 20px;
+    width: 12px;
+    padding-right: 24px;
+    padding-top: 24px;
+    cursor: pointer;
+  }
+}
+
+.addressSubContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px 0px 24px 24px;
   .addressTag {
     padding: 5px 10px;
-    width: max-content;
-    border-radius: 10px;
+    max-width: 98px;
+    border-radius: 6px;
+    text-align: center;
     color: #fff;
     font-size: $fontXSmall;
+    line-height: 16px;
     font-weight: 600;
-  }
-  .address {
-    max-width: 346px;
   }
 }
 
@@ -29,4 +43,27 @@
 
 .mailing {
   background: rgba(45, 156, 219, 1);
+}
+
+.kababMenuButton {
+  cursor: pointer;
+}
+
+.addressActions {
+  min-width: 184px;
+  cursor: pointer;
+  padding: 12px;
+  list-style: none;
+  .action {
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
+
+.addressActions li {
+  padding: 8px 0px;
+}
+
+.addressActions li:not(:last-child) {
+  border-bottom: 1px solid rgba(189, 189, 189, 1);
 }
