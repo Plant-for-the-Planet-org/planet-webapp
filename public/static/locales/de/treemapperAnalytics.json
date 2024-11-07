@@ -66,6 +66,10 @@
     "sites": "Pflanzorte",
     "searchDateError": "Das Suchdatum liegt nicht innerhalb des ausgewählten Intervalls.",
     "noProjectsText": "Keine Projekte verfügbar.",
-    "addProjectsButton": "Projekt hinzufügen"
+    "addProjectsButton": "Projekt hinzufügen",
+    "plantLocationType": {
+      "single-tree-registration": "Einzelner Baum",
+      "multi-tree-registration": "Mehrere Bäume"
+    }
   }
 }
