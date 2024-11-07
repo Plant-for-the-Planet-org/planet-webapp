@@ -54,7 +54,6 @@
   .singleRowInfoTitle {
     font-weight: 700;
     margin-bottom: 4px;
-    text-transform: capitalize;
     display: flex;
     gap: 12px;
   }
@@ -111,7 +110,6 @@
     font-weight: 400;
     font-size: $fontXXSmall;
     white-space: nowrap;
-    text-transform: capitalize;
   }
 }
 
