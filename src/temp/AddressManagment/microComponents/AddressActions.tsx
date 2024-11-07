@@ -51,6 +51,10 @@ const AddressActions = ({ type }: { type: AddressType }) => {
     setPopoverAnchor(null);
   };
 
+  const handleActionClick = (action: AddressAction) => {
+    setPopoverAnchor(null);
+  };
+
   const open = Boolean(popoverAnchor);
   const id = open ? 'simple-popover' : undefined;
 
@@ -82,7 +86,11 @@ const AddressActions = ({ type }: { type: AddressType }) => {
       >
         <ul className={styles.addressActions}>
           {addressActions.map((item, key) => (
-            <li key={key} className={styles.action}>
+            <li
+              key={key}
+              className={styles.action}
+              onClick={() => handleActionClick(item.action)}
+            >
               {item.label}
             </li>
           ))}
