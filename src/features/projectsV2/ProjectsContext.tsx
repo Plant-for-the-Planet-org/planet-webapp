@@ -250,7 +250,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     queryParams: Record<string, string> = {}
   ) => {
-    const pathname = `/${locale}/prd/${projectSlug}`;
+    const pathname = `/${locale}/${projectSlug}`;
 
     // Extract only the visible query params for the URL
     const { locale: _, slug: __, p: ___, ...visibleParams } = queryParams;

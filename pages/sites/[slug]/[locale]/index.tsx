@@ -8,20 +8,20 @@ import type {
   NextPageWithLayout,
   PageComponentProps,
   PageProps,
-} from '../../../../_app';
+} from '../../../_app';
 
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
-} from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+} from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
+import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { useEffect } from 'react';
-import ProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout';
-import MobileProjectsLayout from '../../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
-import ProjectsSection from '../../../../../src/features/projectsV2/ProjectsSection';
+import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
+import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
+import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
