@@ -117,13 +117,13 @@ const KeyInfo = ({
         )}
       </div>
 
-      <div className={styles.keyInfoSubContainer}>
-        {degradationYear && (
+      {degradationYear && (
+        <div className={styles.keyInfoSubContainer}>
           <SingleProjectInfoItem title={tProjectDetails('degradationYear')}>
             <p>{degradationYear}</p>
           </SingleProjectInfoItem>
-        )}
-      </div>
+        </div>
+      )}
 
       {activitySeasons && activitySeasons.length > 0 && (
         <SingleProjectInfoItem title={tProjectDetails('protectionSeasons')}>

@@ -155,7 +155,11 @@ const ProjectInfo = ({
       {isMobile && <MapPreview handleMap={handleMap} />}
       {shouldRenderKeyInfo && (
         <KeyInfo
-          abandonment={isTreeProject ? metadata.yearAbandoned : null}
+          abandonment={
+            isTreeProject && metadata.yearAbandoned !== 0
+              ? metadata.yearAbandoned
+              : null
+          }
           firstTreePlanted={isTreeProject ? metadata.firstTreePlanted : null}
           startingProtectionYear={
             isConservationProject ? metadata.startingProtectionYear : null
@@ -169,7 +173,11 @@ const ProjectInfo = ({
             isTreeProject ? metadata.maxPlantingDensity : null
           }
           employees={metadata.employeesCount}
-          degradationYear={isTreeProject ? metadata.degradationYear : null}
+          degradationYear={
+            isTreeProject && metadata.degradationYear !== 0
+              ? metadata.degradationYear
+              : null
+          }
         />
       )}
       {shouldRenderAdditionalInfo && (
