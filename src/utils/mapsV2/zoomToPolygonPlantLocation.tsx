@@ -1,13 +1,13 @@
+import type { Position } from 'geojson';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef } from '../../features/common/types/projectv2';
+
 import * as turf from '@turf/turf';
-import { SetState } from '../../features/common/types/common';
-import { Position } from 'geojson';
-import { ViewState } from 'react-map-gl-v7/maplibre';
-import { MapRef } from '../../features/common/types/projectv2';
 
 export function zoomToPolygonPlantLocation(
   coordinates: Position[],
   mapRef: MapRef,
-  setViewState: SetState<ViewState>,
+  handleViewStateChange: (viewState: Partial<ViewState>) => void,
   duration = 3000
 ) {
   if (!mapRef.current) {
@@ -42,6 +42,6 @@ export function zoomToPolygonPlantLocation(
         right: 0,
       },
     };
-    setViewState(newViewState);
+    handleViewStateChange(newViewState);
   });
 }
