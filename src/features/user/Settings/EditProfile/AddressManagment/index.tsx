@@ -21,7 +21,7 @@ export interface UpdatedAddress extends Address {
 export const addressType = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
   const { user } = useUserProps();
-  const tMe = useTranslations('Me');
+  const tProfile = useTranslations('Profile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
     user?.addresses
   ); // need to update planet-sdk to include addresses key
@@ -42,7 +42,7 @@ const AddressManagement = () => {
         setAddressAction={setAddressAction}
       />
       <WebappButton
-        text={tMe('addressManagement.addNewAddress')}
+        text={tProfile('addNewAddress')}
         elementType="button"
         onClick={openAddressForm}
         variant="primary"

@@ -33,29 +33,29 @@ const AddressActionsMenu = ({
   addressCount,
   setAddressAction,
 }: Props) => {
-  const t = useTranslations('Me');
+  const tProfile = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: t('addressManagement.edit'),
+      label: tProfile('edit'),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: t('addressManagement.delete'),
+      label: tProfile('delete'),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: t('addressManagement.setAsPrimaryAddress'),
+      label: tProfile('setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(type === 'mailing' || type === 'primary'),
     },
     {
-      label: t('addressManagement.setAsBillingAddress'),
+      label: tProfile('setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(type === 'mailing' || type === 'primary'),
     },
