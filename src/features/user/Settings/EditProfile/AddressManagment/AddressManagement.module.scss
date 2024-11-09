@@ -38,7 +38,7 @@
   gap: 16px;
   .addressTag {
     padding: 5px 10px;
-    max-width: 110px;
+    max-width: 112px;
     border-radius: 6px;
     text-align: center;
     color: #fff;
@@ -46,6 +46,12 @@
     line-height: 16px;
     font-weight: 600;
   }
+}
+
+.addNewAddressButton {
+  width: 342px;
+  height: 40px;
+  margin-top: 40px;
 }
 
 .primary {

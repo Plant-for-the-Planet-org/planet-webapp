@@ -294,7 +294,8 @@
       "edit": "Edit",
       "delete": "Delete",
       "setAsPrimaryAddress": "Set as Primary Address",
-      "setAsBillingAddress": "Set as Billing Address"
+      "setAsBillingAddress": "Set as Billing Address",
+      "addNewAddress": "Add New Address"
     }
   }
 }
