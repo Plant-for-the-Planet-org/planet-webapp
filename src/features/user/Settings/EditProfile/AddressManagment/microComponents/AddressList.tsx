@@ -1,14 +1,16 @@
 import type { UpdatedAddress } from '..';
-import type { AddressAction } from './AddressActions';
+import type { AddressAction } from './AddressActionMenu';
+import type { SetState } from '../../../../../common/types/common';
 
-import { useState } from 'react';
 import SingleAddress from './SingleAddress';
 
-const AddressList = ({ addresses }: { addresses: UpdatedAddress[] }) => {
-  const [addressAction, setAddressAction] = useState<AddressAction | null>(
-    null
-  );
-  const addressCount = addresses.length;
+interface Props {
+  addresses: UpdatedAddress[];
+  setAddressAction: SetState<AddressAction | null>;
+}
+
+const AddressList = ({ addresses, setAddressAction }: Props) => {
+  const addressCount = addresses?.length;
 
   return (
     <>

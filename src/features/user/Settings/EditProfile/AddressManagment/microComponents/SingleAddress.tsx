@@ -1,14 +1,13 @@
 import type { UpdatedAddress } from '..';
-import type { SetState } from '../../../features/common/types/common';
-import type { AddressAction } from './AddressActions';
+import type { SetState } from '../../../../../common/types/common';
+import type { AddressAction } from './AddressActionMenu';
+import type { CountryCode } from '@planet-sdk/common';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
-import { formatAddress } from '../../../utils/addressManagement';
+import { formatAddress } from '../../../../../../utils/addressManagement';
 import styles from '../AddressManagement.module.scss';
-import { CountryCode } from '@planet-sdk/common';
 import AddressContent from './AddressContent';
-import AddressActions from './AddressActions';
+import AddressActionsMenu from './AddressActionMenu';
 
 interface Props {
   userAddress: UpdatedAddress;
@@ -37,7 +36,7 @@ const SingleAddress = ({
   return (
     <div className={styles.addressContainer}>
       <AddressContent type={type} userAddress={formattedAddress} />
-      <AddressActions
+      <AddressActionsMenu
         type={type}
         addressCount={addressCount}
         setAddressAction={setAddressAction}
