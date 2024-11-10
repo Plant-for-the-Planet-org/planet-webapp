@@ -75,7 +75,7 @@ const AddressActionsMenu = ({
   };
 
   const open = Boolean(popoverAnchor);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'address-action-popOver' : undefined;
 
   return (
     <div>
