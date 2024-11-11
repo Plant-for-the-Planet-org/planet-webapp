@@ -1,8 +1,8 @@
-import type { ExtendedCountryCode } from '../../features/common/types/country';
 import type {
   AddressSuggestionsType,
   AddressType,
-} from '../../features/common/types/geocoder';
+} from '../../../../common/types/geocoder';
+import type { ExtendedCountryCode } from '../../../../common/types/country';
 
 import { useState, useContext, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -11,16 +11,16 @@ import { Autocomplete, TextField } from '@mui/material';
 import GeocoderArcGIs from 'geocoder-arcgis';
 import { APIError, handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
-import WebappButton from '../../features/common/WebappButton';
-import InlineFormDisplayGroup from '../../features/common/Layout/Forms/InlineFormDisplayGroup';
-import SelectCountry from '../../features/common/InputTypes/AutoCompleteCountry';
-import { allCountries } from '../../utils/constants/countries';
-import COUNTRY_ADDRESS_POSTALS from '../../utils/countryZipCode';
-import { useUserProps } from '../../features/common/Layout/UserPropsContext';
-import { postAuthenticatedRequest } from '../../utils/apiRequests/api';
-import { useTenant } from '../../features/common/Layout/TenantContext';
-import { ErrorHandlingContext } from '../../features/common/Layout/ErrorHandlingContext';
-import { validationPattern } from '../../utils/addressManagement';
+import WebappButton from '../../../../common/WebappButton';
+import InlineFormDisplayGroup from '../../../../common/Layout/Forms/InlineFormDisplayGroup';
+import SelectCountry from '../../../../common/InputTypes/AutoCompleteCountry';
+import { allCountries } from '../../../../../utils/constants/countries';
+import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { useTenant } from '../../../../common/Layout/TenantContext';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { validationPattern } from '../../../../../utils/addressManagement';
 
 type FormData = {
   address: string;
@@ -56,7 +56,7 @@ const AddressForm = ({ mode }) => {
     defaultValues: defaultAddressDetail,
   });
   const t = useTranslations('EditProfile');
-  const tMe = useTranslations('Me');
+  const tProfile = useTranslations('Profile');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -143,7 +143,7 @@ const AddressForm = ({ mode }) => {
 
   return (
     <div className={styles.addressFormContainer}>
-      <h1>{tMe('addressManagement.addAddress')}</h1>
+      <h1>{tProfile('addressManagement.addAddress')}</h1>
       <form className={styles.addressForm}>
         <Controller
           name="address"
@@ -205,7 +205,7 @@ const AddressForm = ({ mode }) => {
             field: { onChange: handleChange, value, onBlur: handleBlur },
           }) => (
             <TextField
-              label={tMe('addressManagement.address2')}
+              label={tProfile('addressManagement.address2')}
               onChange={(event) => {
                 handleChange(event);
               }}
@@ -299,7 +299,7 @@ const AddressForm = ({ mode }) => {
           buttonClasses={styles.cancelButton}
         />
         <WebappButton
-          text={tMe('addressManagement.addAddress')}
+          text={tProfile('addressManagement.addAddress')}
           variant="primary"
           elementType="button"
           onClick={handleSubmit(addNewAddress)}

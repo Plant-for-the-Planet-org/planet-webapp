@@ -50,7 +50,7 @@ export default EditProfilePage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'editProfile'],
+    filenames: ['common', 'me', 'country', 'editProfile', 'profile'],
   });
 
   return {

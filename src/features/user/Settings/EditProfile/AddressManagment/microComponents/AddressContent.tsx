@@ -6,15 +6,13 @@ interface Props {
   userAddress: string;
 }
 const AddressContent = ({ type, userAddress }: Props) => {
-  const t = useTranslations('Me');
+  const tProfile = useTranslations('Profile.addressManagement');
   return (
     <div className={styles.addressSubContainer}>
       {type !== 'other' && (
         <span className={`${styles.addressTag} ${styles[type]}`}>
-          {t(
-            `addressManagement.${
-              type === 'primary' ? 'primaryAddress' : 'BillingAddress'
-            }`
+          {tProfile(
+            `${type === 'primary' ? 'primaryAddress' : 'BillingAddress'}`
           )}
         </span>
       )}

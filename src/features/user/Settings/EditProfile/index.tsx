@@ -4,10 +4,11 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import DashboardView from '../../../common/Layout/DashboardView';
 import EditProfileForm from './EditProfileForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
-import AddressForm from '../../../../temp/AddressManagment/AddressForm';
+import AddressManagement from './AddressManagment';
 
 export default function EditProfile(): ReactElement | null {
   const t = useTranslations('Me');
+  const tProfile = useTranslations('Profile');
 
   return (
     <>
@@ -18,7 +19,16 @@ export default function EditProfile(): ReactElement | null {
           </CenteredContainer>
         </SingleColumnView>
       </DashboardView>
-      <AddressForm mode="add" />
+      <DashboardView
+        title={tProfile('addressManagement.address')}
+        subtitle={null}
+      >
+        <SingleColumnView>
+          <CenteredContainer>
+            <AddressManagement />
+          </CenteredContainer>
+        </SingleColumnView>
+      </DashboardView>
     </>
   );
 }

@@ -1,9 +1,10 @@
+import type { SetState } from '../../../../../common/types/common';
+
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button, Popover } from '@mui/material';
-import KababMenuIcon from '../../../../public/assets/images/icons/KababMenuIcon';
+import { Popover } from '@mui/material';
+import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
 import styles from '../AddressManagement.module.scss';
-import { SetState } from '../../../features/common/types/common';
 
 export type AddressType = 'primary' | 'mailing' | 'other';
 export const ADDRESS_ACTIONS = {
@@ -27,30 +28,34 @@ interface Props {
   setAddressAction: SetState<AddressAction | null>;
 }
 
-const AddressActions = ({ type, addressCount, setAddressAction }: Props) => {
-  const t = useTranslations('Me');
+const AddressActionsMenu = ({
+  type,
+  addressCount,
+  setAddressAction,
+}: Props) => {
+  const tProfile = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: t('addressManagement.edit'),
+      label: tProfile('edit'),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: t('addressManagement.delete'),
+      label: tProfile('delete'),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: t('addressManagement.setAsPrimaryAddress'),
+      label: tProfile('setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(type === 'mailing' || type === 'primary'),
     },
     {
-      label: t('addressManagement.setAsBillingAddress'),
+      label: tProfile('setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(type === 'mailing' || type === 'primary'),
     },
@@ -70,15 +75,13 @@ const AddressActions = ({ type, addressCount, setAddressAction }: Props) => {
   };
 
   const open = Boolean(popoverAnchor);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'address-action-popOver' : undefined;
 
   return (
     <div>
-      <Button
-        endIcon={<KababMenuIcon />}
-        onClick={openPopover}
-        className={styles.kababMenuButton}
-      />
+      <button onClick={openPopover} className={styles.kababMenuButton}>
+        <KababMenuIcon />
+      </button>
       <Popover
         id={id}
         open={open}
@@ -86,11 +89,7 @@ const AddressActions = ({ type, addressCount, setAddressAction }: Props) => {
         onClose={closePopover}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         sx={{
           '& .MuiPaper-root': {
@@ -106,6 +105,7 @@ const AddressActions = ({ type, addressCount, setAddressAction }: Props) => {
                 key={key}
                 className={styles.action}
                 onClick={() => handleActionClick(item.action)}
+                role="button"
               >
                 {item.label}
               </li>
@@ -117,4 +117,4 @@ const AddressActions = ({ type, addressCount, setAddressAction }: Props) => {
   );
 };
 
-export default AddressActions;
+export default AddressActionsMenu;

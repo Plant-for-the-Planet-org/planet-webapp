@@ -1,13 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import AddressManagement, { UpdatedAddress } from '../AddressManagment';
+import { addressType, type UpdatedAddress } from '..';
 
-const meta: Meta<typeof AddressManagement> = {
+import AddressList from '../microComponents/AddressList';
+
+const meta: Meta<typeof AddressList> = {
   title: 'AddressManagement/AddressManagement',
-  component: AddressManagement,
+  component: AddressList,
 };
 
 export default meta;
-type Story = StoryObj<typeof AddressManagement>;
+type Story = StoryObj<typeof AddressList>;
 
 const address1: UpdatedAddress = {
   address: 'Königsallee 45, Building A, Floor 3, Apartment 3C',
@@ -48,7 +50,9 @@ const address3: UpdatedAddress = {
   isPrimary: null,
 };
 
-const addresses = [address1, address2, address3];
+const addresses = [address1, address2, address3].sort((a, b) => {
+  return addressType.indexOf(a.type) - addressType.indexOf(b.type);
+});
 
 export const Default: Story = {
   args: {

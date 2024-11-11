@@ -1,4 +1,4 @@
-@import '../../theme/theme';
+@import '../../../../../theme/theme';
 
 .addressContainer {
   display: flex;
@@ -8,26 +8,37 @@
   border-radius: 8px;
   font-size: $fontSmall;
   font-weight: 400;
+  padding: 24px 10px 24px 24px;
   .address {
     max-width: 346px;
   }
-  svg {
-    height: 20px;
-    width: 12px;
-    padding-right: 24px;
-    padding-top: 24px;
+  .kababMenuButton {
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
     cursor: pointer;
+    svg {
+      height: 20px;
+      width: 12px;
+    }
+  }
+  .kababMenuButton:hover {
+    background-color: rgba(120, 120, 120, 0.1);
   }
 }
 
 .addressSubContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 16px;
-  padding: 24px 0px 24px 24px;
   .addressTag {
     padding: 5px 10px;
-    max-width: 98px;
+    max-width: 112px;
     border-radius: 6px;
     text-align: center;
     color: #fff;
@@ -35,6 +46,12 @@
     line-height: 16px;
     font-weight: 600;
   }
+}
+
+.addNewAddressButton {
+  width: 342px;
+  height: 40px;
+  margin-top: 40px;
 }
 
 .primary {
@@ -45,14 +62,10 @@
   background: rgba(45, 156, 219, 1);
 }
 
-.kababMenuButton {
-  cursor: pointer;
-}
-
 .addressActions {
   min-width: 184px;
   cursor: pointer;
-  padding: 12px;
+  padding: 2px 12px;
   list-style: none;
   .action {
     font-size: 12px;
