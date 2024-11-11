@@ -3,10 +3,12 @@ import type { AddressAction } from './microComponents/AddressActionMenu';
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { Modal } from '@mui/material';
 import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
+import AddressForm from './AddressForm';
 
 export type AddressType = 'primary' | 'mailing' | 'other';
 
@@ -28,6 +30,7 @@ const AddressManagement = () => {
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const openAddressForm = () => {};
   const sortedAddresses = useMemo(() => {
     return userAddresses.sort((a, b) => {
@@ -44,10 +47,13 @@ const AddressManagement = () => {
       <WebappButton
         text={tProfile('addNewAddress')}
         elementType="button"
-        onClick={openAddressForm}
+        onClick={() => setIsModalOpen(true)}
         variant="primary"
         buttonClasses={styles.addNewAddressButton}
       />
+      <Modal open={isModalOpen}>
+        <AddressForm mode="add" setIsModalOpen={setIsModalOpen} />
+      </Modal>
     </>
   );
 };

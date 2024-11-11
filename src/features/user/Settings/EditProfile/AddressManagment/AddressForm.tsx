@@ -3,6 +3,7 @@ import type {
   AddressType,
 } from '../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../common/types/country';
+import type { SetState } from '../../../../common/types/common';
 
 import { useState, useContext, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -29,6 +30,11 @@ type FormData = {
   zipCode: string;
   state: string;
 };
+
+interface Props {
+  mode: string;
+  setIsModalOpen: SetState<boolean>;
+}
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
     ? {
@@ -37,7 +43,7 @@ const geocoder = new GeocoderArcGIs(
       }
     : {}
 );
-const AddressForm = ({ mode }) => {
+const AddressForm = ({ mode, setIsModalOpen }: Props) => {
   const defaultAddressDetail = {
     address: '',
     address2: '',
@@ -113,6 +119,7 @@ const AddressForm = ({ mode }) => {
     setAddressSuggestions([]);
   };
   const closeModal = () => {
+    setIsModalOpen(false);
     resetForm();
   };
 

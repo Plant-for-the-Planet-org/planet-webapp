@@ -90,6 +90,10 @@
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
   padding: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   h1 {
     font-weight: 700;
     font-size: $fontSixteen;
@@ -104,11 +108,26 @@
 
 .formButtonContainer {
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   .addAddressButton,
   .cancelButton {
     min-width: 252px;
     min-height: 40px;
+  }
+}
+
+@include xsPhoneView {
+  .addressFormContainer {
+    width: 95%;
+  }
+  .formButtonContainer {
+    display: flex;
+    flex-direction: column;
+    .addAddressButton,
+    .cancelButton {
+      width: 100%;
+    }
   }
 }
 
