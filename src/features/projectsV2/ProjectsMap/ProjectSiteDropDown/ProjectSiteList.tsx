@@ -1,3 +1,5 @@
+import { useLocale } from 'next-intl';
+import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import type { SetState } from '../../../common/types/common';
 import type {
   PlantLocation,
@@ -27,6 +29,7 @@ const ProjectSiteList = ({
   setSelectedPlantLocation,
   setSelectedSamplePlantLocation,
 }: ProjectSiteListProps) => {
+  const locale = useLocale();
   const handleSiteSelection = (index: number) => {
     setSelectedPlantLocation(null);
     setSelectedSamplePlantLocation(null);
@@ -46,7 +49,9 @@ const ProjectSiteList = ({
             key={index}
           >
             <p>{site.siteName}</p>
-            <p className={styles.siteArea}>{Math.round(site.siteArea)}ha</p>
+            <p className={styles.siteArea}>
+              {getFormattedRoundedNumber(locale, site.siteArea, 0)} ha
+            </p>
           </li>
         );
       })}
