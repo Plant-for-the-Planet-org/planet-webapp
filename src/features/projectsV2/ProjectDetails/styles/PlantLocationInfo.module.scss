@@ -177,4 +177,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  .scientificName .data {
+    font-style: italic;
+  }
 }
