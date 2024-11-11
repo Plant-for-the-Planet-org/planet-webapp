@@ -296,7 +296,7 @@
       "setAsPrimaryAddress": "Set as Primary Address",
       "setAsBillingAddress": "Set as Billing Address",
       "addAddress": "Add Address",
-      "alternativeAddress": "Address 2(optional)"
+      "address2": "Address 2(optional)"
     }
   }
 }

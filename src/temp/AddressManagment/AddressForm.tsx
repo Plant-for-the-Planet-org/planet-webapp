@@ -1,27 +1,46 @@
 import type { ExtendedCountryCode } from '../../features/common/types/country';
+import type {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../features/common/types/geocoder';
 
-import { useState } from 'react';
+import { useState, useContext, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
+import GeocoderArcGIs from 'geocoder-arcgis';
+import { APIError, handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../features/common/WebappButton';
 import InlineFormDisplayGroup from '../../features/common/Layout/Forms/InlineFormDisplayGroup';
 import SelectCountry from '../../features/common/InputTypes/AutoCompleteCountry';
 import { allCountries } from '../../utils/constants/countries';
+import COUNTRY_ADDRESS_POSTALS from '../../utils/countryZipCode';
+import { useUserProps } from '../../features/common/Layout/UserPropsContext';
+import { postAuthenticatedRequest } from '../../utils/apiRequests/api';
+import { useTenant } from '../../features/common/Layout/TenantContext';
+import { ErrorHandlingContext } from '../../features/common/Layout/ErrorHandlingContext';
+import { validationPattern } from '../../utils/addressManagement';
 
 type FormData = {
   address: string;
-  alternativeAddress: string | undefined;
+  address2: string | undefined;
   city: string;
   zipCode: string;
   state: string;
 };
-
+const geocoder = new GeocoderArcGIs(
+  process.env.ESRI_CLIENT_SECRET
+    ? {
+        client_id: process.env.ESRI_CLIENT_ID,
+        client_secret: process.env.ESRI_CLIENT_SECRET,
+      }
+    : {}
+);
 const AddressForm = ({ mode }) => {
   const defaultAddressDetail = {
     address: '',
-    alternativeAddress: '',
+    address2: '',
     city: '',
     zipCode: '',
     state: '',
@@ -29,6 +48,8 @@ const AddressForm = ({ mode }) => {
   const {
     control,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     mode: 'onBlur',
@@ -37,8 +58,89 @@ const AddressForm = ({ mode }) => {
   const t = useTranslations('EditProfile');
   const tMe = useTranslations('Me');
   const tCommon = useTranslations('Common');
+  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('DE');
-  const closeModal = () => {};
+  const [addressSuggestions, setAddressSuggestions] = useState<
+    AddressSuggestionsType[]
+  >([]);
+  const [isUploadingData, setIsUploadingData] = useState(false); // This state will be useful to conditionally render loader.
+
+  const suggestAddress = (value: string) => {
+    if (value.length > 3) {
+      geocoder
+        .suggest(value, { category: 'Address', countryCode: country })
+        .then((result: { suggestions: AddressSuggestionsType[] }) => {
+          const filterdSuggestions = result.suggestions.filter(
+            (suggestion: AddressSuggestionsType) => {
+              return !suggestion.isCollection;
+            }
+          );
+          setAddressSuggestions(filterdSuggestions);
+        })
+        .catch(console.log);
+    }
+  };
+
+  const getAddress = (value: string) => {
+    geocoder
+      .findAddressCandidates(value, { outfields: '*' })
+      .then((result: AddressType) => {
+        setValue('address', result.candidates[0].attributes.ShortLabel, {
+          shouldValidate: true,
+        });
+        setValue('city', result.candidates[0].attributes.City, {
+          shouldValidate: true,
+        });
+        setValue('zipCode', result.candidates[0].attributes.Postal, {
+          shouldValidate: true,
+        });
+        setAddressSuggestions([]);
+      })
+      .catch(console.log);
+  };
+
+  const postalRegex = useMemo(() => {
+    const filteredCountry = COUNTRY_ADDRESS_POSTALS.find(
+      (item) => item.abbrev === country
+    );
+    return filteredCountry?.postal;
+  }, [country]);
+
+  const resetForm = () => {
+    reset(defaultAddressDetail);
+    setAddressSuggestions([]);
+  };
+  const closeModal = () => {
+    resetForm();
+  };
+
+  const addNewAddress = async (data: FormData) => {
+    setIsUploadingData(true);
+    const bodyToSend = {
+      ...data,
+      country,
+      type: 'other',
+    };
+    if (contextLoaded && user) {
+      try {
+        const req = await postAuthenticatedRequest(
+          tenantConfig.id,
+          '/app/addresses',
+          bodyToSend,
+          token,
+          logoutUser
+        );
+      } catch (error) {
+        setIsUploadingData(false);
+        setErrors(handleError(error as APIError));
+      } finally {
+        setIsUploadingData(false);
+      }
+    }
+  };
+
   return (
     <div className={styles.addressFormContainer}>
       <h1>{tMe('addressManagement.addAddress')}</h1>
@@ -49,33 +151,53 @@ const AddressForm = ({ mode }) => {
           rules={{
             required: t('validationErrors.addressRequired'),
             pattern: {
-              value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+              value: validationPattern.address,
               message: t('validationErrors.addressInvalid'),
             },
           }}
-          render={({
-            field: { onChange: handleChange, value, onBlur: handleBlur },
-          }) => (
-            <TextField
-              label={t('fieldLabels.address')}
-              onChange={(event) => {
-                handleChange(event);
+          render={({ field }) => (
+            <Autocomplete
+              freeSolo
+              options={addressSuggestions}
+              onInputChange={(_, newValue) => {
+                suggestAddress(newValue);
+                field.onChange(newValue);
               }}
-              onBlur={() => handleBlur()}
-              value={value}
-              error={errors.address !== undefined}
-              helperText={
-                errors.address !== undefined ? errors.address?.message : null
-              }
+              onChange={(_, newValue) => {
+                if (newValue) getAddress(newValue as string);
+                field.onChange(
+                  typeof newValue === 'string' ? newValue : newValue?.text || ''
+                );
+              }}
+              value={field.value}
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') {
+                  return option; // Return the string value when typing
+                }
+                if (typeof option === 'object' && 'text' in option) {
+                  return option.text; // Return the text property for suggestion objects
+                }
+                return '';
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={t('fieldLabels.address')}
+                  error={errors.address !== undefined}
+                  helperText={errors.address?.message}
+                  inputRef={field.ref}
+                  onBlur={field.onBlur}
+                />
+              )}
             />
           )}
         />
         <Controller
-          name="alternativeAddress"
+          name="address2"
           control={control}
           rules={{
             pattern: {
-              value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+              value: validationPattern.address,
               message: t('validationErrors.addressInvalid'),
             },
           }}
@@ -83,18 +205,14 @@ const AddressForm = ({ mode }) => {
             field: { onChange: handleChange, value, onBlur: handleBlur },
           }) => (
             <TextField
-              label={tMe('addressManagement.alternativeAddress')}
+              label={tMe('addressManagement.address2')}
               onChange={(event) => {
                 handleChange(event);
               }}
               onBlur={() => handleBlur()}
               value={value}
-              error={errors.alternativeAddress !== undefined}
-              helperText={
-                errors.alternativeAddress !== undefined
-                  ? errors.alternativeAddress?.message
-                  : null
-              }
+              error={errors.address2 !== undefined}
+              helperText={errors.address2?.message}
             />
           )}
         />
@@ -105,7 +223,7 @@ const AddressForm = ({ mode }) => {
             rules={{
               required: t('validationErrors.cityRequired'),
               pattern: {
-                value: /^[\p{L}\sß.,()-]+$/u,
+                value: validationPattern.cityState,
                 message: t('validationErrors.cityInvalid'),
               },
             }}
@@ -116,7 +234,7 @@ const AddressForm = ({ mode }) => {
                 onBlur={onBlur}
                 value={value}
                 error={errors.city !== undefined}
-                helperText={errors.city !== undefined && errors.city.message}
+                helperText={errors.city?.message}
               />
             )}
           />
@@ -125,10 +243,10 @@ const AddressForm = ({ mode }) => {
             control={control}
             rules={{
               required: t('validationErrors.zipCodeRequired'),
-              //   pattern: {
-              //     value: postalRegex as RegExp,
-              //     message: t('validationErrors.zipCodeInvalid'),
-              //   },
+              pattern: {
+                value: postalRegex as RegExp,
+                message: t('validationErrors.zipCodeInvalid'),
+              },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
@@ -137,9 +255,7 @@ const AddressForm = ({ mode }) => {
                 onBlur={onBlur}
                 value={value}
                 error={errors.zipCode !== undefined}
-                helperText={
-                  errors.zipCode !== undefined && errors.zipCode.message
-                }
+                helperText={errors.zipCode?.message}
               />
             )}
           />
@@ -150,7 +266,7 @@ const AddressForm = ({ mode }) => {
             control={control}
             rules={{
               pattern: {
-                value: /^[\p{L}\sß.,()-]+$/u,
+                value: validationPattern.cityState,
                 message: t('validationErrors.stateInvalid'),
               },
             }}
@@ -161,7 +277,7 @@ const AddressForm = ({ mode }) => {
                 onBlur={onBlur}
                 value={value}
                 error={errors.state !== undefined}
-                helperText={errors.state !== undefined && errors.state.message}
+                helperText={errors.state?.message}
               />
             )}
           />
@@ -186,7 +302,7 @@ const AddressForm = ({ mode }) => {
           text={tMe('addressManagement.addAddress')}
           variant="primary"
           elementType="button"
-          onClick={closeModal}
+          onClick={handleSubmit(addNewAddress)}
           buttonClasses={styles.addAddressButton}
         />
       </div>

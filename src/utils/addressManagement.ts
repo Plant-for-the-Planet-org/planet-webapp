@@ -13,3 +13,8 @@ export const formatAddress = (
 
   return cleanAddress;
 };
+
+export const validationPattern = {
+  address: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+  cityState: /^[\p{L}\sß.,()-]+$/u,
+};
