@@ -16,7 +16,6 @@ import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import * as Sentry from '@sentry/node';
-import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
@@ -64,14 +63,14 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
   Sentry.init({
     enabled: process.env.NODE_ENV === 'production',
-    integrations: [
-      new RewriteFrames({
+    integrations: [Sentry.rewriteFramesIntegration(
+      {
         iteratee: (frame) => {
           frame.filename = frame.filename?.replace(distDir, 'app:///_next');
           return frame;
         },
-      }),
-    ],
+      }
+    )],
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
     // from https://gist.github.com/pioug/b006c983538538066ea871d299d8e8bc,
     // also see https://docs.sentry.io/platforms/javascript/configuration/filtering/#decluttering-sentry
@@ -98,7 +97,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       /window\._sharedData\.entry_data/,
       /ztePageScrollModule/,
     ],
-    denyUrls: [],
+    // denyUrls: [], //commented out as this option is currently not utilized
   });
 }
 
