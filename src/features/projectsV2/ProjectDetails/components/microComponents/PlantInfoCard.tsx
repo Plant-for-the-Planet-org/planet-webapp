@@ -57,7 +57,9 @@ const PlantInfoCard = ({
         })}
       </div>
       {scientificName && (
-        <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
+        <div
+          className={`planting-details-item ${styles.plantingDetailsItem} ${styles.scientificName}`}
+        >
           <h2 className={styles.label}>{tProjectDetails('scientificName')}</h2>
           <p className={styles.data}>{scientificName}</p>
         </div>

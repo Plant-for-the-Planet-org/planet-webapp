@@ -1,9 +1,8 @@
-import { SetState } from '../../features/common/types/common';
-import { ViewState } from 'react-map-gl-v7/maplibre';
-import { MapRef } from '../../features/common/types/projectv2';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef } from '../../features/common/types/projectv2';
 
 export default function zoomToLocation(
-  setViewState: SetState<ViewState>,
+  handleViewStateChange: (viewState: Partial<ViewState>) => void,
   longitude: number,
   latitude: number,
   zoom = 10,
@@ -33,6 +32,6 @@ export default function zoomToLocation(
         right: 0,
       },
     };
-    setViewState(newViewState);
+    handleViewStateChange(newViewState);
   });
 }

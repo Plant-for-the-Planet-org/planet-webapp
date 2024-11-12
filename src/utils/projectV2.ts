@@ -222,6 +222,26 @@ export const generateProjectLink = (
 };
 
 /**
+ * Compares the coordinates of the map center with the centroid coordinates to determine if they are approximately equal.
+ *
+ * @param mapCenter - The center coordinates of the map, containing longitude (`lng`) and latitude (`lat`). Can be `undefined`.
+ * @param centroidCoords - The centroid coordinates as a tuple containing longitude and latitude.
+ * @param epsilon - The threshold for determining equality, representing a very small difference (default is 0.00009, which corresponds to approximately 10 meters at the Equator).
+ * @returns `true` if the coordinates are approximately equal within the specified threshold, otherwise `false`.
+ */
+export const areMapCoordsEqual = (
+  mapCenter: { lng: number; lat: number } | undefined,
+  centroidCoords: Position,
+  epsilon = 0.00009 // Very small difference threshold corresponding to 10m at Equator
+): boolean => {
+  if (mapCenter === undefined) return false;
+  return (
+    Math.abs(mapCenter.lng - centroidCoords[0]) < epsilon &&
+    Math.abs(mapCenter.lat - centroidCoords[1]) < epsilon
+  );
+};
+
+/**
  * Takes a relative path and returns a localized version with the correct locale prefix.
  * Query parameters are stripped from the input path.
  * @param path - The relative path to localize

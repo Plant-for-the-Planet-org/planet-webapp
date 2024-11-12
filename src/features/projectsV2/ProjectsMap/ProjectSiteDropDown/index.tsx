@@ -6,7 +6,7 @@ import type {
 } from '../../../common/types/plantLocation';
 
 import { useState, useMemo, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { area } from '@turf/turf';
 import SiteIcon from '../../../../../public/assets/images/icons/projectV2/SiteIcon';
@@ -15,6 +15,7 @@ import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
 import ProjectSiteList from './ProjectSiteList';
 import { truncateString } from '../../../../utils/getTruncatedString';
+import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 
 export interface SiteProperties {
   lastUpdated: {
@@ -52,6 +53,7 @@ const ProjectSiteDropdown = ({
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
+  const locale = useLocale();
   const router = useRouter();
   const { query } = router;
   const siteList = useMemo(() => {
@@ -93,7 +95,14 @@ const ProjectSiteDropdown = ({
                       })}
                     </span>
                     <span className={styles.separator}> • </span>
-                    <span>{Math.round(selectedSiteData?.siteArea)} ha</span>
+                    <span>
+                      {getFormattedRoundedNumber(
+                        locale,
+                        selectedSiteData?.siteArea,
+                        0
+                      )}{' '}
+                      ha
+                    </span>
                   </label>
                   <p className={styles.siteName}>
                     {truncateString(selectedSiteData?.siteName, 40)}

@@ -1,15 +1,17 @@
+import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
 import type { PlantLocationSingle } from '../../common/types/plantLocation';
 import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
 import {
+  areMapCoordsEqual,
   calculateCentroid,
   centerMapOnCoordinates,
   getDeviceType,
@@ -21,6 +23,7 @@ import { useProjects } from '../ProjectsContext';
 import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import styles from './ProjectsMap.module.scss';
+import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -37,7 +40,8 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   // const [mobileOS, setMobileOS] = useState<MobileOs>(null);
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
-  const { viewState, setViewState, mapState, mapOptions } = useProjectsMap();
+  const { viewState, handleViewStateChange, mapState, mapOptions } =
+    useProjectsMap();
   const {
     plantLocations,
     setHoveredPlantLocation,
@@ -51,20 +55,32 @@ function ProjectsMap(props: ProjectsMapProps) {
     selectedSamplePlantLocation,
   } = useProjects();
 
-  useEffect(() => {
-    const canCenterMap =
-      filteredProjects !== undefined &&
-      filteredProjects.length > 0 &&
-      mapRef.current;
-    if (!canCenterMap) return;
+  useDebouncedEffect(
+    () => {
+      const map = mapRef.current;
+      const shouldCenterMap =
+        filteredProjects !== undefined &&
+        filteredProjects.length > 0 &&
+        (filteredProjects.length < 30 ||
+          filteredProjects.length === projects?.length) &&
+        map !== null;
+      if (!shouldCenterMap) return;
 
-    const validFeatures = getValidFeatures(filteredProjects);
-    if (validFeatures.length === 0) return;
+      const validFeatures = getValidFeatures(filteredProjects);
+      if (validFeatures.length === 0) return;
 
-    const centroid = calculateCentroid(validFeatures);
-    if (centroid.geometry)
+      const centroid = calculateCentroid(validFeatures);
+      if (!centroid.geometry) return;
+
+      const currentCenter = map.getCenter();
+      if (areMapCoordsEqual(currentCenter, centroid.geometry.coordinates))
+        return;
+
       centerMapOnCoordinates(mapRef, centroid.geometry.coordinates);
-  }, [filteredProjects]);
+    },
+    250,
+    [filteredProjects]
+  );
 
   const shouldShowSingleProjectsView =
     singleProject !== null && props.page === 'project-details';
@@ -92,6 +108,13 @@ function ProjectsMap(props: ProjectsMapProps) {
     page: props.page,
     mobileOS,
   };
+
+  const onMove = useCallback(
+    (evt: ViewStateChangeEvent) => {
+      handleViewStateChange(evt.viewState);
+    },
+    [handleViewStateChange]
+  );
 
   const onMouseMove = useCallback(
     (e) => {
@@ -150,7 +173,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   };
   const multipleProjectsViewProps = {
     mapRef,
-    setViewState,
     page: props.page,
   };
   const mapContainerClass = `${styles.mapContainer} ${
@@ -163,7 +185,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         <Map
           {...viewState}
           {...mapState}
-          onMove={(e) => setViewState(e.viewState)}
+          onMove={onMove}
           onMouseMove={onMouseMove}
           onMouseOut={() => setHoveredPlantLocation(null)}
           onClick={onClick}
