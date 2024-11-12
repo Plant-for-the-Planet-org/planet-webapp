@@ -9,7 +9,7 @@ import type { UpdatedAddress } from '.';
 import { useState, useContext, useMemo, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import { CircularProgress, TextField } from '@mui/material';
 import GeocoderArcGIs from 'geocoder-arcgis';
 import { APIError, handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
@@ -24,6 +24,7 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { validationPattern } from '../../../../../utils/addressManagement';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
+import AddressInput from './microComponents/AddressInput';
 
 type FormData = {
   address: string;
@@ -171,81 +172,43 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
       }
     }
   };
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
+  const handleAddressSelect = (address: string) => {
+    getAddress(address);
+  };
 
   return (
     <div className={styles.addressFormContainer}>
       <h1>{tProfile('addressManagement.addAddress')}</h1>
       <form className={styles.addressForm}>
-        <Controller
+        <AddressInput
           name="address"
           control={control}
-          rules={{
+          label={t('fieldLabels.address')}
+          required
+          validationPattern={validationPattern.address}
+          validationMessages={{
             required: t('validationErrors.addressRequired'),
-            pattern: {
-              value: validationPattern.address,
-              message: t('validationErrors.addressInvalid'),
-            },
+            invalid: t('validationErrors.addressInvalid'),
           }}
-          render={({ field }) => (
-            <Autocomplete
-              freeSolo
-              options={addressSuggestions}
-              onInputChange={(_, newValue) => {
-                setInputValue(newValue);
-                field.onChange(newValue);
-              }}
-              onChange={(_, newValue) => {
-                if (newValue) getAddress(newValue as string);
-                field.onChange(
-                  typeof newValue === 'string' ? newValue : newValue?.text || ''
-                );
-              }}
-              value={field.value}
-              getOptionLabel={(option) => {
-                if (typeof option === 'string') {
-                  return option; // Return the string value when typing
-                }
-                if (typeof option === 'object' && 'text' in option) {
-                  return option.text; // Return the text property for suggestion objects
-                }
-                return '';
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={t('fieldLabels.address')}
-                  error={errors.address !== undefined}
-                  helperText={errors.address?.message}
-                  inputRef={field.ref}
-                  onBlur={field.onBlur}
-                />
-              )}
-            />
-          )}
+          suggestions={addressSuggestions}
+          onInputChange={handleInputChange}
+          onAddressSelect={handleAddressSelect}
         />
-        <Controller
+        <AddressInput
           name="address2"
           control={control}
-          rules={{
-            pattern: {
-              value: validationPattern.address,
-              message: t('validationErrors.addressInvalid'),
-            },
+          label={tProfile('addressManagement.address2')}
+          validationPattern={validationPattern.address}
+          validationMessages={{
+            required: t('validationErrors.addressRequired'),
+            invalid: t('validationErrors.addressInvalid'),
           }}
-          render={({
-            field: { onChange: handleChange, value, onBlur: handleBlur },
-          }) => (
-            <TextField
-              label={tProfile('addressManagement.address2')}
-              onChange={(event) => {
-                handleChange(event);
-              }}
-              onBlur={() => handleBlur()}
-              value={value}
-              error={errors.address2 !== undefined}
-              helperText={errors.address2?.message}
-            />
-          )}
+          suggestions={addressSuggestions}
+          onInputChange={handleInputChange}
         />
         <InlineFormDisplayGroup>
           <Controller
