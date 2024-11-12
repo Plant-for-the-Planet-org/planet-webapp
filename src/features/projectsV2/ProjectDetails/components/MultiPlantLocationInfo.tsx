@@ -90,7 +90,7 @@ const MultiPlantLocationInfo = ({
     </>,
     <PlantingDetails
       key="plantingDetails"
-      plantingDensity={hasSampleInterventions ? plantingDensity : null}
+      plantingDensity={plantingDensity}
       plantDate={plantLocationInfo?.interventionStartDate}
     />,
     isMultiTreeRegistration && plantLocationInfo.plantedSpecies.length > 0 && (
