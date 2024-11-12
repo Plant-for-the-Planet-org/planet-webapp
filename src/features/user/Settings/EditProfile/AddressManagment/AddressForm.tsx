@@ -9,7 +9,7 @@ import type { UpdatedAddress } from '.';
 import { useState, useContext, useMemo, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 import GeocoderArcGIs from 'geocoder-arcgis';
 import { APIError, handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
@@ -77,7 +77,7 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
     AddressSuggestionsType[]
   >([]);
   const [inputValue, setInputValue] = useState('');
-  const [isUploadingData, setIsUploadingData] = useState(false); // This state will be useful to conditionally render loader.
+  const [isUploadingData, setIsUploadingData] = useState(false);
 
   const suggestAddress = useCallback(
     (value: string) => {
@@ -163,6 +163,7 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
           closeModal();
         }
       } catch (error) {
+        resetForm();
         setIsUploadingData(false);
         setErrors(handleError(error as APIError));
       } finally {
@@ -320,22 +321,28 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
           />
         </InlineFormDisplayGroup>
       </form>
-      <div className={styles.formButtonContainer}>
-        <WebappButton
-          text={tCommon('cancel')}
-          variant="secondary"
-          elementType="button"
-          onClick={closeModal}
-          buttonClasses={styles.cancelButton}
-        />
-        <WebappButton
-          text={tProfile('addressManagement.addAddress')}
-          variant="primary"
-          elementType="button"
-          onClick={handleSubmit(addNewAddress)}
-          buttonClasses={styles.addAddressButton}
-        />
-      </div>
+      {isUploadingData ? (
+        <div className={styles.addressMgmtSpinner}>
+          <CircularProgress color="success" />
+        </div>
+      ) : (
+        <div className={styles.formButtonContainer}>
+          <WebappButton
+            text={tCommon('cancel')}
+            variant="secondary"
+            elementType="button"
+            onClick={closeModal}
+            buttonClasses={styles.cancelButton}
+          />
+          <WebappButton
+            text={tProfile('addressManagement.addAddress')}
+            variant="primary"
+            elementType="button"
+            onClick={handleSubmit(addNewAddress)}
+            buttonClasses={styles.addAddressButton}
+          />
+        </div>
+      )}
     </div>
   );
 };
