@@ -6,6 +6,12 @@ import type { SetState } from '../common/types/common';
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
 
+// Update ViewState type to ensure width and height are included
+interface ExtendedViewState extends ViewState {
+  width?: string | number;
+  height?: string | number;
+}
+
 interface MapState {
   mapStyle: MapStyle;
   dragPan: boolean;
@@ -20,14 +26,17 @@ const EMPTY_STYLE = {
   layers: [] as MapStyle['layers'],
 } as const;
 
-export const DEFAULT_VIEW_STATE: ViewState = {
+export const DEFAULT_VIEW_STATE: ExtendedViewState = {
   longitude: 0,
   latitude: 0,
   zoom: 2,
   bearing: 0,
   pitch: 0,
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
+  width: '100%',
+  height: '100%',
 };
+
 const DEFAULT_MAP_STATE: MapState = {
   mapStyle: EMPTY_STYLE,
   dragPan: true,
@@ -42,7 +51,7 @@ export type MapOptions = {
 
 interface ProjectsMapState {
   viewState: ViewState;
-  setViewState: SetState<ViewState>;
+  handleViewStateChange: (newViewState: Partial<ExtendedViewState>) => void;
   mapState: MapState;
   isSatelliteView: boolean;
   setIsSatelliteView: SetState<boolean>;
@@ -65,6 +74,15 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     showProjects: true,
   });
 
+  const handleViewStateChange = (newViewState: Partial<ExtendedViewState>) => {
+    setViewState((prev) => ({
+      ...prev,
+      ...newViewState,
+      width: '100%', // Always ensure width and height are set
+      height: '100%',
+    }));
+  };
+
   useEffect(() => {
     async function loadMapStyle() {
       const result = await getMapStyle('default');
@@ -86,11 +104,11 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     () => ({
       mapState,
       viewState,
-      setViewState,
-      mapOptions,
-      updateMapOption,
+      handleViewStateChange,
       isSatelliteView,
       setIsSatelliteView,
+      mapOptions,
+      updateMapOption,
     }),
     [mapState, viewState, mapOptions, isSatelliteView]
   );

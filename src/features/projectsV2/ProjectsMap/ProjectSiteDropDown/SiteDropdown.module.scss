@@ -1,5 +1,8 @@
 @import '../../../../theme/theme';
 
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+
 .dropdownButton {
   display: flex;
   border-radius: 12px;
@@ -12,8 +15,8 @@
   gap: 18px;
   position: absolute;
   z-index: 2;
-  top: 35px;
-  right: 30px;
+  top: calc($layoutPaddingTop + 10px);
+  right: calc($layoutPaddingSide + 10px);
 }
 .siteIconAndTextContainer {
   display: flex;

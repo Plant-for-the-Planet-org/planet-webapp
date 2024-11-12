@@ -2,7 +2,8 @@ import type { PlantedSpecies } from '../../../../common/types/plantLocation';
 
 import { useCallback } from 'react';
 import styles from '../../styles/PlantLocationInfo.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 
 interface Props {
   totalTreesCount: number;
@@ -11,6 +12,7 @@ interface Props {
 
 const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
+  const locale = useLocale();
   const getPlantedTreePercentage = useCallback(
     (treeCount: number) => {
       const result = (treeCount / totalTreesCount) * 100;
@@ -33,7 +35,7 @@ const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
           <div className={styles.speciesList} key={species.id}>
             <p className={styles.speciesName}>{species.scientificName}</p>
             <div className={styles.treeMetrics}>
-              <p>{species.treeCount}</p>
+              <p>{getFormattedNumber(locale, species.treeCount)}</p>
               <p>{`${getPlantedTreePercentage(species.treeCount)}%`}</p>
             </div>
           </div>

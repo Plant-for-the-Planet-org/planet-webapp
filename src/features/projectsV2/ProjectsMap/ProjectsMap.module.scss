@@ -50,24 +50,43 @@
 }
 
 .layerToggleAndroid {
-  bottom: 162px;
+  bottom: 182px;
 }
 
 .layerToggleIos {
-  bottom: 225px;
+  bottom: 240px;
 }
 
 .mapContainer {
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  :global {
+    .maplibregl-map {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .maplibregl-canvas-container {
+      width: 100% !important;
+      height: 100% !important;
+
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
 }
 
 .android :global(.maplibregl-control-container .maplibregl-ctrl-bottom-right) {
-  bottom: 85px;
+  bottom: 105px;
 }
 
 .ios :global(.maplibregl-control-container .maplibregl-ctrl-bottom-right) {
-  bottom: 150px;
+  bottom: 165px;
 }
 
 // Plant Location Styles

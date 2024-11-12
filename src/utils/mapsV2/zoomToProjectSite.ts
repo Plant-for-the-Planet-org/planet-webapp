@@ -1,10 +1,10 @@
+import type { SitesGeoJSON } from '../../features/common/types/ProjectPropsContextInterface';
+import type { ViewState } from 'react-map-gl-v7';
+import type { Map } from 'maplibre-gl';
+import type { MapRef } from '../../features/common/types/projectv2';
+
 import * as turf from '@turf/turf';
-import { SitesGeoJSON } from '../../features/common/types/ProjectPropsContextInterface';
-import { SetState } from '../../features/common/types/common';
-import { ViewState } from 'react-map-gl-v7';
-import { Map } from 'maplibre-gl';
 import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
-import { MapRef } from '../../features/common/types/projectv2';
 
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
@@ -21,7 +21,7 @@ export function zoomInToProjectSite(
   mapRef: MapRef,
   geoJson: SitesGeoJSON | null,
   selectedSite: number,
-  setViewState: SetState<ViewState>,
+  handleViewStateChange: (viewState: Partial<ViewState>) => void,
   duration = 1200
 ) {
   if (!geoJson || !mapRef.current) {
@@ -65,6 +65,6 @@ export function zoomInToProjectSite(
         right: 0,
       },
     };
-    setViewState(newViewState);
+    handleViewStateChange(newViewState);
   });
 }

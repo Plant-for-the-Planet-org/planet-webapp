@@ -6,6 +6,7 @@
     ".next/cache"
   ],
   "scripts": {
+    "dev-https": "next dev --experimental-https",
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "analyze": "ANALYZE=true npm run build",

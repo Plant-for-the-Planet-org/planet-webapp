@@ -21,7 +21,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
     useProjects();
   if (singleProject === null) return null;
 
-  const { isSatelliteView, setViewState, setIsSatelliteView } =
+  const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
   const router = useRouter();
 
@@ -48,13 +48,13 @@ const SingleProjectView = ({ mapRef }: Props) => {
       zoomToPolygonPlantLocation(
         polygonCoordinates,
         mapRef,
-        setViewState,
+        handleViewStateChange,
         4000
       );
     } else if (isPointLocation) {
       const [lon, lat] = coordinates;
       if (typeof lon === 'number' && typeof lat === 'number') {
-        zoomToLocation(setViewState, lon, lat, 20, 4000, mapRef);
+        zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
       }
     }
   }, [selectedPlantLocation, router.isReady]);
@@ -67,7 +67,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         mapRef,
         sitesGeojson,
         selectedSite,
-        setViewState,
+        handleViewStateChange,
         4000
       );
     } else {
@@ -75,7 +75,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
 
       if (typeof latitude === 'number' && typeof longitude === 'number') {
         // Zoom into the project location that has no site
-        zoomToLocation(setViewState, longitude, latitude, 10, 4000, mapRef);
+        zoomToLocation(
+          handleViewStateChange,
+          longitude,
+          latitude,
+          10,
+          4000,
+          mapRef
+        );
       }
     }
   }, [selectedSite, sitesGeojson, router.isReady, selectedPlantLocation]);
