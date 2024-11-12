@@ -4,8 +4,9 @@ import type {
 } from '../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
+import type { UpdatedAddress } from '.';
 
-import { useState, useContext, useMemo } from 'react';
+import { useState, useContext, useMemo, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { Autocomplete, TextField } from '@mui/material';
@@ -22,6 +23,7 @@ import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { validationPattern } from '../../../../../utils/addressManagement';
+import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 
 type FormData = {
   address: string;
@@ -34,6 +36,7 @@ type FormData = {
 interface Props {
   mode: string;
   setIsModalOpen: SetState<boolean>;
+  setUserAddresses: SetState<UpdatedAddress[]>;
 }
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
@@ -43,7 +46,7 @@ const geocoder = new GeocoderArcGIs(
       }
     : {}
 );
-const AddressForm = ({ mode, setIsModalOpen }: Props) => {
+const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
   const defaultAddressDetail = {
     address: '',
     address2: '',
@@ -67,27 +70,43 @@ const AddressForm = ({ mode, setIsModalOpen }: Props) => {
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [country, setCountry] = useState<ExtendedCountryCode | ''>('DE');
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>(
+    user?.country || 'DE'
+  );
   const [addressSuggestions, setAddressSuggestions] = useState<
     AddressSuggestionsType[]
   >([]);
+  const [inputValue, setInputValue] = useState('');
   const [isUploadingData, setIsUploadingData] = useState(false); // This state will be useful to conditionally render loader.
 
-  const suggestAddress = (value: string) => {
-    if (value.length > 3) {
-      geocoder
-        .suggest(value, { category: 'Address', countryCode: country })
-        .then((result: { suggestions: AddressSuggestionsType[] }) => {
-          const filterdSuggestions = result.suggestions.filter(
-            (suggestion: AddressSuggestionsType) => {
-              return !suggestion.isCollection;
-            }
-          );
-          setAddressSuggestions(filterdSuggestions);
-        })
-        .catch(console.log);
-    }
-  };
+  const suggestAddress = useCallback(
+    (value: string) => {
+      if (value.length > 3) {
+        geocoder
+          .suggest(value, { category: 'Address', countryCode: country })
+          .then((result: { suggestions: AddressSuggestionsType[] }) => {
+            const filterdSuggestions = result.suggestions.filter(
+              (suggestion: AddressSuggestionsType) => {
+                return !suggestion.isCollection;
+              }
+            );
+            setAddressSuggestions(filterdSuggestions);
+          })
+          .catch(console.log);
+      }
+    },
+    [country, geocoder]
+  );
+
+  useDebouncedEffect(
+    () => {
+      if (inputValue) {
+        suggestAddress(inputValue);
+      }
+    },
+    700,
+    [inputValue]
+  );
 
   const getAddress = (value: string) => {
     geocoder
@@ -132,13 +151,17 @@ const AddressForm = ({ mode, setIsModalOpen }: Props) => {
     };
     if (contextLoaded && user) {
       try {
-        const req = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<UpdatedAddress>(
           tenantConfig.id,
           '/app/addresses',
           bodyToSend,
           token,
           logoutUser
         );
+        if (res) {
+          setUserAddresses((prevAddresses) => [...prevAddresses, res]);
+          closeModal();
+        }
       } catch (error) {
         setIsUploadingData(false);
         setErrors(handleError(error as APIError));
@@ -167,7 +190,7 @@ const AddressForm = ({ mode, setIsModalOpen }: Props) => {
               freeSolo
               options={addressSuggestions}
               onInputChange={(_, newValue) => {
-                suggestAddress(newValue);
+                setInputValue(newValue);
                 field.onChange(newValue);
               }}
               onChange={(_, newValue) => {

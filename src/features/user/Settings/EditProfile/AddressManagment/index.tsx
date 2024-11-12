@@ -31,7 +31,6 @@ const AddressManagement = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openAddressForm = () => {};
   const sortedAddresses = useMemo(() => {
     return userAddresses.sort((a, b) => {
       return addressType.indexOf(a.type) - addressType.indexOf(b.type);
@@ -52,7 +51,11 @@ const AddressManagement = () => {
         buttonClasses={styles.addNewAddressButton}
       />
       <Modal open={isModalOpen}>
-        <AddressForm mode="add" setIsModalOpen={setIsModalOpen} />
+        <AddressForm
+          mode="add"
+          setIsModalOpen={setIsModalOpen}
+          setUserAddresses={setUserAddresses}
+        />
       </Modal>
     </>
   );
