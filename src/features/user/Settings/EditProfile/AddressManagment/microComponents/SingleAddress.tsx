@@ -19,6 +19,7 @@ interface Props {
   addressAction: AddressAction | null;
   setAddressAction: SetState<AddressAction | null>;
   setUserAddresses: SetState<UpdatedAddress[]>;
+  fetchUserAddresses: () => Promise<void>;
 }
 
 const SingleAddress = ({
@@ -27,6 +28,7 @@ const SingleAddress = ({
   addressAction,
   setAddressAction,
   setUserAddresses,
+  fetchUserAddresses,
 }: Props) => {
   const tCountry = useTranslations('Country');
   const { zipCode, city, state, country, address, type } = userAddress;
@@ -59,6 +61,7 @@ const SingleAddress = ({
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
             userAddress={userAddress}
+            fetchUserAddresses={fetchUserAddresses}
           />
         ) : (
           <></>

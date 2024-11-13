@@ -1,10 +1,10 @@
-import type { CountryCode } from '@planet-sdk/common';
+import type { APIError, CountryCode } from '@planet-sdk/common';
 import type {
   AddressAction,
   AddressType,
 } from './microComponents/AddressActionMenu';
 
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import AddressList from './microComponents/AddressList';
@@ -12,6 +12,10 @@ import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
 import AddressForm from './AddressForm';
+import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { useTenant } from '../../../../common/Layout/TenantContext';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { handleError } from '@planet-sdk/common';
 
 export interface UpdatedAddress {
   id: string;
@@ -27,7 +31,9 @@ export interface UpdatedAddress {
 }
 export const addressType = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
-  const { user } = useUserProps();
+  const { user, contextLoaded, token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
+  const { setErrors } = useContext(ErrorHandlingContext);
   const tProfile = useTranslations('Profile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
     user?.addresses
@@ -42,6 +48,21 @@ const AddressManagement = () => {
     });
   }, [userAddresses]);
 
+  const fetchUserAddresses = async () => {
+    if (!user || !token || !contextLoaded) return;
+    try {
+      const res = await getAuthenticatedRequest<UpdatedAddress[]>(
+        tenantConfig.id,
+        '/app/addresses',
+        token,
+        logoutUser
+      );
+      if (res) setUserAddresses(res);
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+    }
+  };
+
   return (
     <>
       <AddressList
@@ -49,6 +70,7 @@ const AddressManagement = () => {
         addressAction={addressAction}
         setAddressAction={setAddressAction}
         setUserAddresses={setUserAddresses}
+        fetchUserAddresses={fetchUserAddresses}
       />
       <WebappButton
         text={tProfile('addNewAddress')}

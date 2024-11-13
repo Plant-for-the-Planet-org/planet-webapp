@@ -9,6 +9,7 @@ interface Props {
   addressAction: AddressAction | null;
   setAddressAction: SetState<AddressAction | null>;
   setUserAddresses: SetState<UpdatedAddress[]>;
+  fetchUserAddresses: () => Promise<void>;
 }
 
 const AddressList = ({
@@ -16,6 +17,7 @@ const AddressList = ({
   addressAction,
   setAddressAction,
   setUserAddresses,
+  fetchUserAddresses,
 }: Props) => {
   const addressCount = addresses?.length;
 
@@ -29,6 +31,7 @@ const AddressList = ({
           addressAction={addressAction}
           setAddressAction={setAddressAction}
           setUserAddresses={setUserAddresses}
+          fetchUserAddresses={fetchUserAddresses}
         />
       ))}
     </>

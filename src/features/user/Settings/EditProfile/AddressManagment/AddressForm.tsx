@@ -48,6 +48,7 @@ interface Props {
   setUserAddresses: SetState<UpdatedAddress[]>;
   userAddress?: UpdatedAddress;
   addressAction?: AddressAction | null;
+  fetchUserAddresses?: () => Promise<void>;
 }
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
@@ -63,6 +64,7 @@ const AddressForm = ({
   setIsModalOpen,
   setUserAddresses,
   userAddress,
+  fetchUserAddresses,
 }: Props) => {
   const defaultAddressDetail = {
     address: userAddress ? userAddress.address : '',
@@ -176,8 +178,8 @@ const AddressForm = ({
         token,
         logoutUser
       );
-      if (res) {
-        setUserAddresses((prevAddresses) => [...prevAddresses, res]);
+      if (res && fetchUserAddresses) {
+        fetchUserAddresses();
         closeModal();
       }
     } catch (error) {
