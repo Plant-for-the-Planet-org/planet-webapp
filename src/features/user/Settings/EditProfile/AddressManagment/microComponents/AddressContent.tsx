@@ -1,8 +1,10 @@
 import styles from '../AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
+import { AddressType } from './AddressActionMenu';
+import { ADDRESS_TYPE } from '../../../../../../utils/addressManagement';
 
 interface Props {
-  type: 'primary' | 'mailing' | 'other';
+  type: AddressType;
   userAddress: string;
 }
 const AddressContent = ({ type, userAddress }: Props) => {
@@ -12,7 +14,11 @@ const AddressContent = ({ type, userAddress }: Props) => {
       {type !== 'other' && (
         <span className={`${styles.addressTag} ${styles[type]}`}>
           {tProfile(
-            `${type === 'primary' ? 'primaryAddress' : 'BillingAddress'}`
+            `${
+              type === ADDRESS_TYPE.PRIMARY
+                ? 'primaryAddress'
+                : 'BillingAddress'
+            }`
           )}
         </span>
       )}

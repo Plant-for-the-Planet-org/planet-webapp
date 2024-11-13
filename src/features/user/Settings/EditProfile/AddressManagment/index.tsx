@@ -1,5 +1,8 @@
-import type { Address } from '@planet-sdk/common';
-import type { AddressAction } from './microComponents/AddressActionMenu';
+import type { CountryCode } from '@planet-sdk/common';
+import type {
+  AddressAction,
+  AddressType,
+} from './microComponents/AddressActionMenu';
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -10,15 +13,17 @@ import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
 import AddressForm from './AddressForm';
 
-export type AddressType = 'primary' | 'mailing' | 'other';
-
-export interface UpdatedAddress extends Address {
+export interface UpdatedAddress {
   id: string;
   type: AddressType;
   name: string | null;
   state: string | null;
   isPrimary: boolean | null;
   address2: string | null;
+  address: string;
+  city?: string;
+  zipCode?: string;
+  country: CountryCode;
 }
 export const addressType = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
@@ -41,7 +46,9 @@ const AddressManagement = () => {
     <>
       <AddressList
         addresses={sortedAddresses}
+        addressAction={addressAction}
         setAddressAction={setAddressAction}
+        setUserAddresses={setUserAddresses}
       />
       <WebappButton
         text={tProfile('addNewAddress')}
@@ -50,9 +57,9 @@ const AddressManagement = () => {
         variant="primary"
         buttonClasses={styles.addNewAddressButton}
       />
-      <Modal open={isModalOpen}>
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <AddressForm
-          mode="add"
+          formType="add"
           setIsModalOpen={setIsModalOpen}
           setUserAddresses={setUserAddresses}
         />

@@ -19,25 +19,35 @@ import SelectCountry from '../../../../common/InputTypes/AutoCompleteCountry';
 import { allCountries } from '../../../../../utils/constants/countries';
 import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import {
+  postAuthenticatedRequest,
+  putAuthenticatedRequest,
+} from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { validationPattern } from '../../../../../utils/addressManagement';
+import {
+  ADDRESS_TYPE,
+  getAddressType,
+  validationPattern,
+} from '../../../../../utils/addressManagement';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 import AddressInput from './microComponents/AddressInput';
+import { AddressAction } from './microComponents/AddressActionMenu';
 
 type FormData = {
-  address: string;
-  address2: string | undefined;
-  city: string;
-  zipCode: string;
-  state: string;
+  address: string | undefined;
+  address2: string | null;
+  city: string | undefined;
+  zipCode: string | undefined;
+  state: string | null;
 };
 
 interface Props {
-  mode: string;
+  formType: 'edit' | 'add';
   setIsModalOpen: SetState<boolean>;
   setUserAddresses: SetState<UpdatedAddress[]>;
+  userAddress?: UpdatedAddress;
+  addressAction?: AddressAction | null;
 }
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
@@ -47,13 +57,19 @@ const geocoder = new GeocoderArcGIs(
       }
     : {}
 );
-const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
+const AddressForm = ({
+  formType,
+  addressAction,
+  setIsModalOpen,
+  setUserAddresses,
+  userAddress,
+}: Props) => {
   const defaultAddressDetail = {
-    address: '',
-    address2: '',
-    city: '',
-    zipCode: '',
-    state: '',
+    address: userAddress ? userAddress.address : '',
+    address2: userAddress ? userAddress.address2 : '',
+    city: userAddress ? userAddress.city : '',
+    zipCode: userAddress ? userAddress.zipCode : '',
+    state: userAddress ? userAddress.state : '',
   };
   const {
     control,
@@ -71,8 +87,9 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [country, setCountry] = useState<ExtendedCountryCode | ''>(
-    user?.country || 'DE'
+  const userCountry = formType === 'add' ? user?.country : userAddress?.country;
+  const [country, setCountry] = useState<ExtendedCountryCode>(
+    userCountry ?? 'DE'
   );
   const [addressSuggestions, setAddressSuggestions] = useState<
     AddressSuggestionsType[]
@@ -143,12 +160,40 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
     resetForm();
   };
 
+  const editAddress = async (data: FormData) => {
+    if (!addressAction || !userAddress) return;
+    setIsUploadingData(true);
+    const bodyToSend = {
+      ...data,
+      country,
+      type: getAddressType(formType, userAddress.type),
+    };
+    try {
+      const res = await putAuthenticatedRequest<UpdatedAddress>(
+        tenantConfig.id,
+        `/app/addresses/${userAddress?.id}`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      if (res) {
+        setUserAddresses((prevAddresses) => [...prevAddresses, res]);
+        closeModal();
+      }
+    } catch (error) {
+      setIsUploadingData(false);
+      setErrors(handleError(error as APIError));
+    } finally {
+      setIsUploadingData(false);
+    }
+  };
+
   const addNewAddress = async (data: FormData) => {
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
       country,
-      type: 'other',
+      type: ADDRESS_TYPE.OTHER,
     };
     if (contextLoaded && user) {
       try {
@@ -179,10 +224,9 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
   const handleAddressSelect = (address: string) => {
     getAddress(address);
   };
-
   return (
     <div className={styles.addressFormContainer}>
-      <h1>{tProfile('addressManagement.addAddress')}</h1>
+      <h1>{tProfile(`addressManagement.formType.${formType}`)}</h1>
       <form className={styles.addressForm}>
         <AddressInput
           name="address"
@@ -298,10 +342,16 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
             buttonClasses={styles.cancelButton}
           />
           <WebappButton
-            text={tProfile('addressManagement.addAddress')}
+            text={
+              formType === 'add'
+                ? tProfile(`addressManagement.formType.${formType}`)
+                : tProfile('addressManagement.saveChanges')
+            }
             variant="primary"
             elementType="button"
-            onClick={handleSubmit(addNewAddress)}
+            onClick={handleSubmit(
+              formType === 'add' ? addNewAddress : editAddress
+            )}
             buttonClasses={styles.addAddressButton}
           />
         </div>

@@ -5,15 +5,12 @@ import { useTranslations } from 'next-intl';
 import { Popover } from '@mui/material';
 import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
 import styles from '../AddressManagement.module.scss';
+import {
+  ADDRESS_ACTIONS,
+  ADDRESS_TYPE,
+} from '../../../../../../utils/addressManagement';
 
-export type AddressType = 'primary' | 'mailing' | 'other';
-export const ADDRESS_ACTIONS = {
-  EDIT: 'edit',
-  DELETE: 'delete',
-  SET_PRIMARY: 'setPrimary',
-  SET_BILLING: 'setBilling',
-} as const;
-
+export type AddressType = (typeof ADDRESS_TYPE)[keyof typeof ADDRESS_TYPE];
 export type AddressAction =
   (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
 
@@ -26,12 +23,14 @@ interface Props {
   type: AddressType;
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
+  setIsModalOpen: SetState<boolean>;
 }
 
 const AddressActionsMenu = ({
   type,
   addressCount,
   setAddressAction,
+  setIsModalOpen,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
@@ -52,12 +51,16 @@ const AddressActionsMenu = ({
     {
       label: tProfile('setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
-      shouldRender: !(type === 'mailing' || type === 'primary'),
+      shouldRender: !(
+        type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
+      ),
     },
     {
       label: tProfile('setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
-      shouldRender: !(type === 'mailing' || type === 'primary'),
+      shouldRender: !(
+        type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
+      ),
     },
   ];
 
@@ -70,6 +73,7 @@ const AddressActionsMenu = ({
   };
 
   const handleActionClick = (action: AddressAction) => {
+    setIsModalOpen(true);
     setAddressAction(action);
     setPopoverAnchor(null);
   };
