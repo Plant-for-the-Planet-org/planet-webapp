@@ -228,7 +228,9 @@ const AddressForm = ({
   };
   return (
     <div className={styles.addressFormContainer}>
-      <h1>{tProfile(`addressManagement.formType.${formType}`)}</h1>
+      <h1 className={styles.addressActionHeader}>
+        {tProfile(`addressManagement.formType.${formType}`)}
+      </h1>
       <form className={styles.addressForm}>
         <AddressInput
           name="address"
@@ -335,13 +337,12 @@ const AddressForm = ({
           <CircularProgress color="success" />
         </div>
       ) : (
-        <div className={styles.formButtonContainer}>
+        <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
             variant="secondary"
             elementType="button"
             onClick={closeModal}
-            buttonClasses={styles.cancelButton}
           />
           <WebappButton
             text={
@@ -354,7 +355,6 @@ const AddressForm = ({
             onClick={handleSubmit(
               formType === 'add' ? addNewAddress : editAddress
             )}
-            buttonClasses={styles.addAddressButton}
           />
         </div>
       )}

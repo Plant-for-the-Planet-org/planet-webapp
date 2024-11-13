@@ -150,7 +150,9 @@
       "formType": {
         "add": "Add Address",
         "edit": "Edit Address"
-      }
+      },
+      "addressConfirmationMessage": "Are you sure you want to set this address as your {addressType} Address? This will replace your current {addressType} Address.",
+      "confirm": "Confirm"
     }
   }
 }

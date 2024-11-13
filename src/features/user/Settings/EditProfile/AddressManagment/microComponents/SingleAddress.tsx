@@ -12,6 +12,7 @@ import AddressContent from './AddressContent';
 import AddressActionsMenu from './AddressActionMenu';
 import AddressForm from '../AddressForm';
 import { ADDRESS_ACTIONS } from '../../../../../../utils/addressManagement';
+import AddressTypeChange from '../AddressTypeChange';
 
 interface Props {
   userAddress: UpdatedAddress;
@@ -54,18 +55,30 @@ const SingleAddress = ({
         setIsModalOpen={setIsModalOpen}
       />
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        {addressAction === ADDRESS_ACTIONS.EDIT ? (
-          <AddressForm
-            formType="edit"
-            addressAction={addressAction}
-            setIsModalOpen={setIsModalOpen}
-            setUserAddresses={setUserAddresses}
-            userAddress={userAddress}
-            fetchUserAddresses={fetchUserAddresses}
-          />
-        ) : (
-          <></>
-        )}
+        <>
+          {addressAction === ADDRESS_ACTIONS.EDIT ? (
+            <AddressForm
+              formType="edit"
+              addressAction={addressAction}
+              setIsModalOpen={setIsModalOpen}
+              setUserAddresses={setUserAddresses}
+              userAddress={userAddress}
+              fetchUserAddresses={fetchUserAddresses}
+            />
+          ) : (
+            <></>
+          )}
+          {addressAction === ADDRESS_ACTIONS.SET_BILLING ||
+          addressAction === ADDRESS_ACTIONS.SET_PRIMARY ? (
+            <AddressTypeChange
+              addressAction={addressAction}
+              formattedAddress={formattedAddress}
+              setIsModalOpen={setIsModalOpen}
+            />
+          ) : (
+            <></>
+          )}
+        </>
       </Modal>
     </div>
   );
