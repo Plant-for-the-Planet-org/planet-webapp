@@ -137,7 +137,7 @@
     },
     "addressManagement": {
       "address": "Address",
-      "address2": "Address 2(optional)",
+      "address2": "Address 2 (optional)",
       "primaryAddress": "Primary Address",
       "BillingAddress": "Billing Address",
       "edit": "Edit",
