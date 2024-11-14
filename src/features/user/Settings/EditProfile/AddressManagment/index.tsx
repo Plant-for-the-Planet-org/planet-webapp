@@ -4,7 +4,7 @@ import type {
   AddressType,
 } from './microComponents/AddressActionMenu';
 
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import AddressList from './microComponents/AddressList';
@@ -31,19 +31,20 @@ export interface UpdatedAddress {
 }
 export const addressType = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
+  const tProfile = useTranslations('Profile.addressManagement');
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const tProfile = useTranslations('Profile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
-    user?.addresses
-  ); // need to update planet-sdk to include addresses key
+
+  const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>([]);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+
   const sortedAddresses = useMemo(() => {
-    return userAddresses.sort((a, b) => {
+    return userAddresses?.sort((a, b) => {
       return addressType.indexOf(a.type) - addressType.indexOf(b.type);
     });
   }, [userAddresses]);
@@ -63,6 +64,10 @@ const AddressManagement = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUserAddresses();
+  }, []);
+
   return (
     <>
       <AddressList
@@ -70,6 +75,8 @@ const AddressManagement = () => {
         addressAction={addressAction}
         setAddressAction={setAddressAction}
         setUserAddresses={setUserAddresses}
+        isUploadingData={isUploadingData}
+        setIsUploadingData={setIsUploadingData}
         fetchUserAddresses={fetchUserAddresses}
       />
       <WebappButton
@@ -84,6 +91,8 @@ const AddressManagement = () => {
           formType="add"
           setIsModalOpen={setIsModalOpen}
           setUserAddresses={setUserAddresses}
+          isUploadingData={isUploadingData}
+          setIsUploadingData={setIsUploadingData}
         />
       </Modal>
     </>

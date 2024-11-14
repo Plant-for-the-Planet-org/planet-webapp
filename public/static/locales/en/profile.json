@@ -142,6 +142,7 @@
       "BillingAddress": "Billing Address",
       "edit": "Edit",
       "delete": "Delete",
+      "deleteAddress": "Delete Address",
       "setAsPrimaryAddress": "Set as Primary Address",
       "setAsBillingAddress": "Set as Billing Address",
       "addNewAddress": "Add New Address",
@@ -152,6 +153,7 @@
         "edit": "Edit Address"
       },
       "addressConfirmationMessage": "Are you sure you want to set this address as your {addressType} Address? This will replace your current {addressType} Address.",
+      "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address.",
       "confirm": "Confirm"
     }
   }

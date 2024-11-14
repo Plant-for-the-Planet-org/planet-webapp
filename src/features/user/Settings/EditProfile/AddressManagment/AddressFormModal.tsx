@@ -46,6 +46,8 @@ interface Props {
     data: AddressFormData | null,
     addressType: string
   ) => Promise<void>;
+  isUploadingData: boolean;
+  setIsUploadingData: SetState<boolean>;
 }
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
@@ -55,12 +57,14 @@ const geocoder = new GeocoderArcGIs(
       }
     : {}
 );
-const AddressForm = ({
+const AddressFormModal = ({
   formType,
   setIsModalOpen,
   setUserAddresses,
   userAddress,
   editAddress,
+  setIsUploadingData,
+  isUploadingData,
 }: Props) => {
   const defaultAddressDetail = {
     address: userAddress ? userAddress.address : '',
@@ -93,7 +97,6 @@ const AddressForm = ({
     AddressSuggestionsType[]
   >([]);
   const [inputValue, setInputValue] = useState('');
-  const [isUploadingData, setIsUploadingData] = useState(false);
 
   const suggestAddress = useCallback(
     (value: string) => {
@@ -334,4 +337,4 @@ const AddressForm = ({
   );
 };
 
-export default AddressForm;
+export default AddressFormModal;

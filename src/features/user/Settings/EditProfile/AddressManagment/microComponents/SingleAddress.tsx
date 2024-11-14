@@ -17,7 +17,10 @@ import AddressActionsMenu from './AddressActionMenu';
 import AddressFormModal, { AddressFormData } from '../AddressFormModal';
 import { ADDRESS_ACTIONS } from '../../../../../../utils/addressManagement';
 import AddressTypeChangeModal from '../AddressTypeChangeModal';
-import { putAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
+import {
+  deleteAuthenticatedRequest,
+  putAuthenticatedRequest,
+} from '../../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
@@ -30,6 +33,8 @@ interface Props {
   setAddressAction: SetState<AddressAction | null>;
   setUserAddresses: SetState<UpdatedAddress[]>;
   fetchUserAddresses: () => Promise<void>;
+  isUploadingData: boolean;
+  setIsUploadingData: SetState<boolean>;
 }
 
 const SingleAddress = ({
@@ -39,6 +44,8 @@ const SingleAddress = ({
   setAddressAction,
   setUserAddresses,
   fetchUserAddresses,
+  isUploadingData,
+  setIsUploadingData,
 }: Props) => {
   const tCountry = useTranslations('Country');
   const { zipCode, city, state, country, address, type } = userAddress;
@@ -49,6 +56,7 @@ const SingleAddress = ({
     country.toLowerCase() as Lowercase<CountryCode>
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const formattedAddress = formatAddress(
     address,
     zipCode,
@@ -62,6 +70,7 @@ const SingleAddress = ({
     addressType: string
   ) => {
     if (!addressAction || !userAddress) return;
+    setIsUploadingData(true);
     const bodyToSend = addressType
       ? { type: addressType }
       : {
@@ -79,9 +88,26 @@ const SingleAddress = ({
       );
       if (res && fetchUserAddresses) {
         fetchUserAddresses();
+        setIsUploadingData(false);
         setIsModalOpen(false);
       }
     } catch (error) {
+      setErrors(handleError(error as APIError));
+    }
+  };
+  const deleteAddress = async () => {
+    try {
+      setIsUploadingData(true);
+      await deleteAuthenticatedRequest(
+        tenantConfig.id,
+        `/app/addresses/${userAddress?.id}`,
+        token,
+        logoutUser
+      );
+      fetchUserAddresses();
+      setIsModalOpen(false);
+    } catch (error) {
+      setIsUploadingData(false);
       setErrors(handleError(error as APIError));
     }
   };
@@ -104,6 +130,8 @@ const SingleAddress = ({
               setUserAddresses={setUserAddresses}
               userAddress={userAddress}
               editAddress={editAddress}
+              isUploadingData={isUploadingData}
+              setIsUploadingData={setIsUploadingData}
             />
           )}
           {(addressAction === ADDRESS_ACTIONS.SET_BILLING ||
@@ -115,7 +143,12 @@ const SingleAddress = ({
               editAddress={editAddress}
             />
           )}
-          {addressAction === ADDRESS_ACTIONS.DELETE && <AddressDeleteModal />}
+          {addressAction === ADDRESS_ACTIONS.DELETE && (
+            <AddressDeleteModal
+              setIsModalOpen={setIsModalOpen}
+              deleteAddress={deleteAddress}
+            />
+          )}
         </>
       </Modal>
     </div>

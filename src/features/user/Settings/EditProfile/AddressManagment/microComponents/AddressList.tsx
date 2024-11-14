@@ -5,33 +5,39 @@ import type { SetState } from '../../../../../common/types/common';
 import SingleAddress from './SingleAddress';
 
 interface Props {
-  addresses: UpdatedAddress[];
+  addresses: UpdatedAddress[] | undefined;
   addressAction: AddressAction | null;
   setAddressAction: SetState<AddressAction | null>;
   setUserAddresses: SetState<UpdatedAddress[]>;
   fetchUserAddresses: () => Promise<void>;
+  isUploadingData: boolean;
+  setIsUploadingData: SetState<boolean>;
 }
 
 const AddressList = ({
-  addresses,
+  fetchUserAddresses,
   addressAction,
   setAddressAction,
+  addresses,
   setUserAddresses,
-  fetchUserAddresses,
+  isUploadingData,
+  setIsUploadingData,
 }: Props) => {
-  const addressCount = addresses?.length;
+  const addressCount = addresses?.length ?? 0;
 
   return (
     <>
-      {addresses.map((address) => (
+      {addresses?.map((address) => (
         <SingleAddress
           key={address.id}
-          userAddress={address}
           addressCount={addressCount}
           addressAction={addressAction}
-          setAddressAction={setAddressAction}
+          userAddress={address}
           setUserAddresses={setUserAddresses}
+          setAddressAction={setAddressAction}
           fetchUserAddresses={fetchUserAddresses}
+          isUploadingData={isUploadingData}
+          setIsUploadingData={setIsUploadingData}
         />
       ))}
     </>
