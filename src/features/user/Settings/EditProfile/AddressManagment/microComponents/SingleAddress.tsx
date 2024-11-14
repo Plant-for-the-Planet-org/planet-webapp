@@ -1,18 +1,26 @@
 import type { UpdatedAddress } from '..';
 import type { SetState } from '../../../../../common/types/common';
 import type { AddressAction } from './AddressActionMenu';
-import type { CountryCode } from '@planet-sdk/common';
+import type { APIError, CountryCode } from '@planet-sdk/common';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Modal } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { formatAddress } from '../../../../../../utils/addressManagement';
+import { handleError } from '@planet-sdk/common';
+import {
+  formatAddress,
+  getAddressType,
+} from '../../../../../../utils/addressManagement';
 import styles from '../AddressManagement.module.scss';
 import AddressContent from './AddressContent';
 import AddressActionsMenu from './AddressActionMenu';
-import AddressForm from '../AddressForm';
+import AddressForm, { AddressFormData } from '../AddressForm';
 import { ADDRESS_ACTIONS } from '../../../../../../utils/addressManagement';
 import AddressTypeChange from '../AddressTypeChange';
+import { putAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
+import { useTenant } from '../../../../../common/Layout/TenantContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   userAddress: UpdatedAddress;
@@ -33,6 +41,9 @@ const SingleAddress = ({
 }: Props) => {
   const tCountry = useTranslations('Country');
   const { zipCode, city, state, country, address, type } = userAddress;
+  const { tenantConfig } = useTenant();
+  const { token, logoutUser } = useUserProps();
+  const { setErrors } = useContext(ErrorHandlingContext);
   const countryFullForm = tCountry(
     country.toLowerCase() as Lowercase<CountryCode>
   );
@@ -45,6 +56,35 @@ const SingleAddress = ({
     countryFullForm
   );
 
+  const editAddress = async (
+    data: AddressFormData | null,
+    addressType: string
+  ) => {
+    if (!addressAction || !userAddress) return;
+    const bodyToSend = addressType
+      ? { type: addressType }
+      : {
+          ...data,
+          country,
+          type: getAddressType('edit', userAddress.type),
+        };
+    try {
+      const res = await putAuthenticatedRequest<UpdatedAddress>(
+        tenantConfig.id,
+        `/app/addresses/${userAddress?.id}`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      if (res && fetchUserAddresses) {
+        fetchUserAddresses();
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+    }
+  };
+
   return (
     <div className={styles.addressContainer}>
       <AddressContent type={type} userAddress={formattedAddress} />
@@ -56,27 +96,23 @@ const SingleAddress = ({
       />
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <>
-          {addressAction === ADDRESS_ACTIONS.EDIT ? (
+          {addressAction === ADDRESS_ACTIONS.EDIT && (
             <AddressForm
               formType="edit"
-              addressAction={addressAction}
               setIsModalOpen={setIsModalOpen}
               setUserAddresses={setUserAddresses}
               userAddress={userAddress}
-              fetchUserAddresses={fetchUserAddresses}
+              editAddress={editAddress}
             />
-          ) : (
-            <></>
           )}
-          {addressAction === ADDRESS_ACTIONS.SET_BILLING ||
-          addressAction === ADDRESS_ACTIONS.SET_PRIMARY ? (
+          {(addressAction === ADDRESS_ACTIONS.SET_BILLING ||
+            addressAction === ADDRESS_ACTIONS.SET_PRIMARY) && (
             <AddressTypeChange
               addressAction={addressAction}
               formattedAddress={formattedAddress}
               setIsModalOpen={setIsModalOpen}
+              editAddress={editAddress}
             />
-          ) : (
-            <></>
           )}
         </>
       </Modal>

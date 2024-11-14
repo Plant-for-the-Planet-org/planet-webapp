@@ -19,22 +19,17 @@ import SelectCountry from '../../../../common/InputTypes/AutoCompleteCountry';
 import { allCountries } from '../../../../../utils/constants/countries';
 import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import {
-  postAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../../utils/apiRequests/api';
+import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   ADDRESS_TYPE,
-  getAddressType,
   validationPattern,
 } from '../../../../../utils/addressManagement';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 import AddressInput from './microComponents/AddressInput';
-import { AddressAction } from './microComponents/AddressActionMenu';
 
-type FormData = {
+export type AddressFormData = {
   address: string | undefined;
   address2: string | null;
   city: string | undefined;
@@ -47,8 +42,10 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   setUserAddresses: SetState<UpdatedAddress[]>;
   userAddress?: UpdatedAddress;
-  addressAction?: AddressAction | null;
-  fetchUserAddresses?: () => Promise<void>;
+  editAddress: (
+    data: AddressFormData | null,
+    addressType: string
+  ) => Promise<void>;
 }
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
@@ -60,11 +57,10 @@ const geocoder = new GeocoderArcGIs(
 );
 const AddressForm = ({
   formType,
-  addressAction,
   setIsModalOpen,
   setUserAddresses,
   userAddress,
-  fetchUserAddresses,
+  editAddress,
 }: Props) => {
   const defaultAddressDetail = {
     address: userAddress ? userAddress.address : '',
@@ -79,7 +75,7 @@ const AddressForm = ({
     setValue,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<AddressFormData>({
     mode: 'onBlur',
     defaultValues: defaultAddressDetail,
   });
@@ -162,35 +158,7 @@ const AddressForm = ({
     resetForm();
   };
 
-  const editAddress = async (data: FormData) => {
-    if (!addressAction || !userAddress) return;
-    setIsUploadingData(true);
-    const bodyToSend = {
-      ...data,
-      country,
-      type: getAddressType(formType, userAddress.type),
-    };
-    try {
-      const res = await putAuthenticatedRequest<UpdatedAddress>(
-        tenantConfig.id,
-        `/app/addresses/${userAddress?.id}`,
-        bodyToSend,
-        token,
-        logoutUser
-      );
-      if (res && fetchUserAddresses) {
-        fetchUserAddresses();
-        closeModal();
-      }
-    } catch (error) {
-      setIsUploadingData(false);
-      setErrors(handleError(error as APIError));
-    } finally {
-      setIsUploadingData(false);
-    }
-  };
-
-  const addNewAddress = async (data: FormData) => {
+  const addNewAddress = async (data: AddressFormData) => {
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
@@ -353,7 +321,9 @@ const AddressForm = ({
             variant="primary"
             elementType="button"
             onClick={handleSubmit(
-              formType === 'add' ? addNewAddress : editAddress
+              formType === 'add'
+                ? addNewAddress
+                : (data) => editAddress(data, '')
             )}
           />
         </div>
