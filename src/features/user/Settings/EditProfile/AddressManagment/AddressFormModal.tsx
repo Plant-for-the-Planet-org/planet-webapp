@@ -42,7 +42,7 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   setUserAddresses: SetState<UpdatedAddress[]>;
   userAddress?: UpdatedAddress;
-  editAddress: (
+  editAddress?: (
     data: AddressFormData | null,
     addressType: string
   ) => Promise<void>;
@@ -323,7 +323,9 @@ const AddressForm = ({
             onClick={handleSubmit(
               formType === 'add'
                 ? addNewAddress
-                : (data) => editAddress(data, '')
+                : editAddress
+                ? (data) => editAddress(data, '')
+                : () => {}
             )}
           />
         </div>

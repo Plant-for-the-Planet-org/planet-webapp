@@ -11,7 +11,7 @@ import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import AddressForm from './AddressForm';
+import AddressFormModal from './AddressFormModal';
 import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
@@ -80,7 +80,7 @@ const AddressManagement = () => {
         buttonClasses={styles.addNewAddressButton}
       />
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <AddressForm
+        <AddressFormModal
           formType="add"
           setIsModalOpen={setIsModalOpen}
           setUserAddresses={setUserAddresses}

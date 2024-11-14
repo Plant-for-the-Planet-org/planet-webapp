@@ -14,13 +14,14 @@ import {
 import styles from '../AddressManagement.module.scss';
 import AddressContent from './AddressContent';
 import AddressActionsMenu from './AddressActionMenu';
-import AddressForm, { AddressFormData } from '../AddressForm';
+import AddressFormModal, { AddressFormData } from '../AddressFormModal';
 import { ADDRESS_ACTIONS } from '../../../../../../utils/addressManagement';
-import AddressTypeChange from '../AddressTypeChange';
+import AddressTypeChangeModal from '../AddressTypeChangeModal';
 import { putAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import AddressDeleteModal from '../AddressDeleteModal';
 
 interface Props {
   userAddress: UpdatedAddress;
@@ -97,7 +98,7 @@ const SingleAddress = ({
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <>
           {addressAction === ADDRESS_ACTIONS.EDIT && (
-            <AddressForm
+            <AddressFormModal
               formType="edit"
               setIsModalOpen={setIsModalOpen}
               setUserAddresses={setUserAddresses}
@@ -107,13 +108,14 @@ const SingleAddress = ({
           )}
           {(addressAction === ADDRESS_ACTIONS.SET_BILLING ||
             addressAction === ADDRESS_ACTIONS.SET_PRIMARY) && (
-            <AddressTypeChange
+            <AddressTypeChangeModal
               addressAction={addressAction}
               formattedAddress={formattedAddress}
               setIsModalOpen={setIsModalOpen}
               editAddress={editAddress}
             />
           )}
+          {addressAction === ADDRESS_ACTIONS.DELETE && <AddressDeleteModal />}
         </>
       </Modal>
     </div>

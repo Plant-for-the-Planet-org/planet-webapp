@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { AddressAction } from './microComponents/AddressActionMenu';
 import WebappButton from '../../../../common/WebappButton';
 import { SetState } from '../../../../common/types/common';
-import { AddressFormData } from './AddressForm';
+import { AddressFormData } from './AddressFormModal';
 
 interface Props {
   addressAction: AddressAction;
@@ -16,7 +16,7 @@ interface Props {
   ) => Promise<void>;
 }
 
-const AddressTypeChange = ({
+const AddressTypeChangeModal = ({
   addressAction,
   formattedAddress,
   setIsModalOpen,
@@ -58,4 +58,4 @@ const AddressTypeChange = ({
   );
 };
 
-export default AddressTypeChange;
+export default AddressTypeChangeModal;
