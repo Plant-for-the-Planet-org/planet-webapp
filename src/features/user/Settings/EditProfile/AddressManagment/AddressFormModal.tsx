@@ -5,6 +5,7 @@ import type {
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { UpdatedAddress } from '.';
+import type { AddressFormType } from './microComponents/AddressActionMenu';
 
 import { useState, useContext, useMemo, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -23,6 +24,7 @@ import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
+  ADDRESS_FORM_TYPE,
   ADDRESS_TYPE,
   validationPattern,
 } from '../../../../../utils/addressManagement';
@@ -38,7 +40,7 @@ export type AddressFormData = {
 };
 
 interface Props {
-  formType: 'edit' | 'add';
+  formType: AddressFormType;
   setIsModalOpen: SetState<boolean>;
   setUserAddresses: SetState<UpdatedAddress[]>;
   userAddress?: UpdatedAddress;
@@ -89,7 +91,8 @@ const AddressFormModal = ({
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const userCountry = formType === 'add' ? user?.country : userAddress?.country;
+  const isAddAddressForm = formType === ADDRESS_FORM_TYPE.ADD_ADDRESS;
+  const userCountry = isAddAddressForm ? user?.country : userAddress?.country;
   const [country, setCountry] = useState<ExtendedCountryCode>(
     userCountry ?? 'DE'
   );
@@ -97,7 +100,6 @@ const AddressFormModal = ({
     AddressSuggestionsType[]
   >([]);
   const [inputValue, setInputValue] = useState('');
-
   const suggestAddress = useCallback(
     (value: string) => {
       if (value.length > 3) {
@@ -317,14 +319,14 @@ const AddressFormModal = ({
           />
           <WebappButton
             text={
-              formType === 'add'
+              isAddAddressForm
                 ? tProfile(`addressManagement.formType.${formType}`)
                 : tProfile('addressManagement.saveChanges')
             }
             variant="primary"
             elementType="button"
             onClick={handleSubmit(
-              formType === 'add'
+              isAddAddressForm
                 ? addNewAddress
                 : editAddress
                 ? (data) => editAddress(data, '')

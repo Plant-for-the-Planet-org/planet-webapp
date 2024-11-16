@@ -138,21 +138,20 @@
     "addressManagement": {
       "address": "Address",
       "address2": "Address 2 (optional)",
-      "primaryAddress": "Primary Address",
-      "BillingAddress": "Billing Address",
       "edit": "Edit",
+      "editAddress": "Edit Address",
       "delete": "Delete",
       "deleteAddress": "Delete Address",
-      "setAsPrimaryAddress": "Set as Primary Address",
-      "setAsBillingAddress": "Set as Billing Address",
       "addNewAddress": "Add New Address",
-      "editAddress": "Edit Address",
       "saveChanges": "Save Changes",
       "formType": {
         "add": "Add Address",
         "edit": "Edit Address"
       },
-      "addressConfirmationMessage": "Are you sure you want to set this address as your {addressType} Address? This will replace your current {addressType} Address.",
+      "addressType": "{address, select, mailing {Billing} primary {Primary} other{}} Address",
+      "setAsPrimaryAddress": "Set as Primary Address",
+      "setAsBillingAddress": "Set as Billing Address",
+      "addressConfirmationMessage": "Are you sure you want to set this address as your {addressType, select, mailing {Billing} primary {Primary} other {}} Address? {billingAddress, select, mailing {This will replace your current Billing Address.} other {}} {primaryAddress, select, primary {This will replace your current Primary Address.} other {}}",
       "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address.",
       "confirm": "Confirm"
     }

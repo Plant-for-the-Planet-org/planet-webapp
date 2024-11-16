@@ -16,6 +16,7 @@ import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
+import { ADDRESS_FORM_TYPE } from '../../../../../utils/addressManagement';
 
 export interface UpdatedAddress {
   id: string;
@@ -88,7 +89,7 @@ const AddressManagement = () => {
       />
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <AddressFormModal
-          formType="add"
+          formType={ADDRESS_FORM_TYPE.ADD_ADDRESS}
           setIsModalOpen={setIsModalOpen}
           setUserAddresses={setUserAddresses}
           isUploadingData={isUploadingData}

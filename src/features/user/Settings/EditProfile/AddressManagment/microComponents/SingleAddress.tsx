@@ -8,6 +8,7 @@ import { Modal } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import {
+  ADDRESS_FORM_TYPE,
   formatAddress,
   getAddressType,
 } from '../../../../../../utils/addressManagement';
@@ -35,6 +36,8 @@ interface Props {
   fetchUserAddresses: () => Promise<void>;
   isUploadingData: boolean;
   setIsUploadingData: SetState<boolean>;
+  primaryAddress: UpdatedAddress | undefined;
+  billingAddress: UpdatedAddress | undefined;
 }
 
 const SingleAddress = ({
@@ -46,6 +49,8 @@ const SingleAddress = ({
   fetchUserAddresses,
   isUploadingData,
   setIsUploadingData,
+  primaryAddress,
+  billingAddress,
 }: Props) => {
   const tCountry = useTranslations('Country');
   const { zipCode, city, state, country, address, type } = userAddress;
@@ -55,6 +60,14 @@ const SingleAddress = ({
   const countryFullForm = tCountry(
     country.toLowerCase() as Lowercase<CountryCode>
   );
+  const isSetBillingAction = addressAction === ADDRESS_ACTIONS.SET_BILLING;
+  const isSetPrimaryAction = addressAction === ADDRESS_ACTIONS.SET_PRIMARY;
+  const pcountryFullForm = tCountry(
+    primaryAddress?.country.toLowerCase() as Lowercase<CountryCode>
+  );
+  const bcountryFullForm = tCountry(
+    billingAddress?.country.toLowerCase() as Lowercase<CountryCode>
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formattedAddress = formatAddress(
@@ -63,6 +76,22 @@ const SingleAddress = ({
     city,
     state,
     countryFullForm
+  );
+
+  const primaryFrmtAddress = formatAddress(
+    primaryAddress?.address,
+    primaryAddress?.zipCode,
+    primaryAddress?.city,
+    primaryAddress?.state ?? '',
+    pcountryFullForm
+  );
+
+  const billingFrmtAddress = formatAddress(
+    billingAddress?.address,
+    billingAddress?.zipCode,
+    billingAddress?.city,
+    billingAddress?.state ?? '',
+    bcountryFullForm
   );
 
   const editAddress = async (
@@ -76,7 +105,10 @@ const SingleAddress = ({
       : {
           ...data,
           country,
-          type: getAddressType('edit', userAddress.type),
+          type: getAddressType(
+            ADDRESS_FORM_TYPE.EDIT_ADDRESS,
+            userAddress.type
+          ),
         };
     try {
       const res = await putAuthenticatedRequest<UpdatedAddress>(
@@ -125,7 +157,7 @@ const SingleAddress = ({
         <>
           {addressAction === ADDRESS_ACTIONS.EDIT && (
             <AddressFormModal
-              formType="edit"
+              formType={ADDRESS_FORM_TYPE.EDIT_ADDRESS}
               setIsModalOpen={setIsModalOpen}
               setUserAddresses={setUserAddresses}
               userAddress={userAddress}
@@ -134,13 +166,18 @@ const SingleAddress = ({
               setIsUploadingData={setIsUploadingData}
             />
           )}
-          {(addressAction === ADDRESS_ACTIONS.SET_BILLING ||
-            addressAction === ADDRESS_ACTIONS.SET_PRIMARY) && (
+          {(isSetBillingAction || isSetPrimaryAction) && (
             <AddressTypeChangeModal
-              addressAction={addressAction}
-              formattedAddress={formattedAddress}
               setIsModalOpen={setIsModalOpen}
               editAddress={editAddress}
+              primaryAddress={
+                primaryAddress !== undefined ? primaryFrmtAddress : undefined
+              }
+              billingAddress={
+                billingAddress !== undefined ? billingFrmtAddress : undefined
+              }
+              isSetBillingAction={isSetBillingAction}
+              isSetPrimaryAction={isSetPrimaryAction}
             />
           )}
           {addressAction === ADDRESS_ACTIONS.DELETE && (

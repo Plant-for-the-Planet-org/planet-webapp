@@ -1,4 +1,7 @@
-import { AddressType } from '../features/user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
+import {
+  AddressFormType,
+  AddressType,
+} from '../features/user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
 
 export const ADDRESS_TYPE = {
   PRIMARY: 'primary',
@@ -11,6 +14,11 @@ export const ADDRESS_ACTIONS = {
   DELETE: 'delete',
   SET_PRIMARY: 'setPrimary',
   SET_BILLING: 'setBilling',
+} as const;
+
+export const ADDRESS_FORM_TYPE = {
+  ADD_ADDRESS: 'add',
+  EDIT_ADDRESS: 'edit',
 } as const;
 
 export const formatAddress = (
@@ -35,11 +43,11 @@ export const validationPattern = {
 };
 
 export const getAddressType = (
-  formType: 'add' | 'edit',
+  formType: AddressFormType,
   userAddressType: AddressType
 ) => {
   if (
-    formType === 'edit' &&
+    formType === ADDRESS_FORM_TYPE.EDIT_ADDRESS &&
     (userAddressType === ADDRESS_TYPE.MAILING ||
       userAddressType === ADDRESS_TYPE.PRIMARY)
   ) {

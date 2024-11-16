@@ -7,12 +7,15 @@ import KababMenuIcon from '../../../../../../../public/assets/images/icons/Kabab
 import styles from '../AddressManagement.module.scss';
 import {
   ADDRESS_ACTIONS,
+  ADDRESS_FORM_TYPE,
   ADDRESS_TYPE,
 } from '../../../../../../utils/addressManagement';
 
 export type AddressType = (typeof ADDRESS_TYPE)[keyof typeof ADDRESS_TYPE];
 export type AddressAction =
   (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
+export type AddressFormType =
+  (typeof ADDRESS_FORM_TYPE)[keyof typeof ADDRESS_FORM_TYPE];
 
 export interface AddressActionItem {
   label: string;

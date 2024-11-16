@@ -1,43 +1,58 @@
-import { ADDRESS_ACTIONS } from '../../../../../utils/addressManagement';
+import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 import styles from './AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
-import { AddressAction } from './microComponents/AddressActionMenu';
 import WebappButton from '../../../../common/WebappButton';
 import { SetState } from '../../../../common/types/common';
 import { AddressFormData } from './AddressFormModal';
 
 interface Props {
-  addressAction: AddressAction;
-  formattedAddress: string;
   setIsModalOpen: SetState<boolean>;
   editAddress: (
     data: AddressFormData | null,
     addressType: string
   ) => Promise<void>;
+  primaryAddress: string | undefined;
+  billingAddress: string | undefined;
+  isSetBillingAction: boolean;
+  isSetPrimaryAction: boolean;
 }
 
 const AddressTypeChangeModal = ({
-  addressAction,
-  formattedAddress,
   setIsModalOpen,
   editAddress,
+  primaryAddress,
+  billingAddress,
+  isSetBillingAction,
+  isSetPrimaryAction,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
-  const isBillingAddress = addressAction === ADDRESS_ACTIONS.SET_BILLING;
   return (
     <div className={styles.addrConfirmContainer}>
       <h1 className={styles.addressActionHeader}>
-        {isBillingAddress
-          ? tProfile('BillingAddress')
-          : tProfile('primaryAddress')}
+        {tProfile('addressType', {
+          address: isSetPrimaryAction
+            ? ADDRESS_TYPE.PRIMARY
+            : ADDRESS_TYPE.MAILING,
+        })}
       </h1>
       <p>
         {tProfile('addressConfirmationMessage', {
-          addressType: isBillingAddress ? 'Billing' : 'Primary',
+          addressType: isSetBillingAction
+            ? ADDRESS_TYPE.MAILING
+            : ADDRESS_TYPE.PRIMARY,
+          billingAddress:
+            isSetBillingAction && billingAddress ? ADDRESS_TYPE.MAILING : '',
+          primaryAddress:
+            isSetPrimaryAction && primaryAddress ? ADDRESS_TYPE.PRIMARY : '',
         })}
       </p>
-      <p className={styles.address}>{formattedAddress}</p>
+      {billingAddress && isSetBillingAction && (
+        <p className={styles.address}>{billingAddress}</p>
+      )}
+      {primaryAddress && isSetPrimaryAction && (
+        <p className={styles.address}>{primaryAddress}</p>
+      )}
       <div className={styles.buttonContainer}>
         <WebappButton
           text={tCommon('cancel')}
@@ -50,7 +65,10 @@ const AddressTypeChangeModal = ({
           elementType="button"
           variant="primary"
           onClick={() =>
-            editAddress(null, isBillingAddress ? 'mailing' : 'primary')
+            editAddress(
+              null,
+              isSetBillingAction ? ADDRESS_TYPE.MAILING : ADDRESS_TYPE.PRIMARY
+            )
           }
         />
       </div>
