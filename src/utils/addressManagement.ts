@@ -1,4 +1,5 @@
-import {
+import type { UpdatedAddress } from '../features/user/Settings/EditProfile/AddressManagment';
+import type {
   AddressFormType,
   AddressType,
 } from '../features/user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
@@ -33,7 +34,6 @@ export const formatAddress = (
     .join(', ')
     .replace(/\s+/g, ' ')
     .trim();
-
   return cleanAddress;
 };
 
@@ -54,4 +54,11 @@ export const getAddressType = (
     return userAddressType;
   }
   return 'other';
+};
+
+export const findAddressByType = (
+  addresses: UpdatedAddress[] | undefined,
+  type: AddressType
+) => {
+  return addresses?.find((address) => address.type === type) || null;
 };
