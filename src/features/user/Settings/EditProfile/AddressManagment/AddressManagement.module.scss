@@ -1,40 +1,62 @@
 @import '../../../../../theme/theme';
 
-.addressContainer {
+$border-radius-sm: 8px;
+$border-radius-lg: 16px;
+$padding-standard: 24px;
+
+@mixin flex-container($direction: row, $justify: space-between) {
   display: flex;
-  justify-content: space-between;
+  flex-direction: $direction;
+  justify-content: $justify;
+}
+
+@mixin centered-absolute {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin modal-container {
+  @include centered-absolute;
+  padding: 20px;
+  border-radius: $border-radius-lg;
+  background: rgba(255, 255, 255, 1);
+}
+
+// Base Components
+.addressContainer {
+  @include flex-container;
   width: 100%;
   background: rgba(242, 242, 242, 0.5);
-  border-radius: 8px;
+  border-radius: $border-radius-sm;
   font-size: $fontSmall;
   font-weight: 400;
-  padding: 24px 10px 24px 24px;
+  padding: $padding-standard 10px $padding-standard $padding-standard;
   .address {
     max-width: 346px;
   }
-  .kababMenuButton {
-    height: 34px;
-    width: 34px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    cursor: pointer;
-    svg {
-      height: 20px;
-      width: 12px;
-    }
+}
+
+.kebabMenuButton {
+  @include flex-container(row, center);
+  align-items: center;
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  svg {
+    height: 20px;
+    width: 12px;
   }
-  .kababMenuButton:hover {
+  &:hover {
     background-color: rgba(120, 120, 120, 0.1);
   }
 }
 
 .addressSubContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  @include flex-container(column, center);
   gap: 16px;
   .addressTag {
     padding: 5px 10px;
@@ -54,6 +76,7 @@
   margin-top: 40px;
 }
 
+// Address Types
 .primary {
   background: rgba(0, 122, 73, 1);
 }
@@ -62,50 +85,41 @@
   background: rgba(45, 156, 219, 1);
 }
 
+// Address Actions
 .addressActions {
   min-width: 184px;
   cursor: pointer;
   padding: 2px 12px;
   list-style: none;
   .action {
-    font-size: 12px;
+    font-size: $fontXSmall;
     font-weight: 400;
+  }
+  li {
+    padding: 8px 0px;
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(189, 189, 189, 1);
+    }
   }
 }
 
-.addressActions li {
-  padding: 8px 0px;
-}
-
-.addressActions li:not(:last-child) {
-  border-bottom: 1px solid rgba(189, 189, 189, 1);
-}
-// address action form
+// Modal Forms
 
 .addressActionHeader {
   font-weight: 700;
   font-size: $fontSixteen;
 }
 .addressFormContainer {
+  @include flex-container(column);
+  @include modal-container;
   min-width: 565px;
-  display: flex;
-  flex-direction: column;
   gap: 40px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 16px;
-  padding: 20px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   .addressForm {
-    display: flex;
-    flex-direction: column;
+    @include flex-container(column);
     gap: 23px;
   }
   .buttonContainer {
-    display: flex;
-    justify-content: space-between;
+    @include flex-container;
     gap: 8px;
     button {
       min-width: 252px;
@@ -114,29 +128,21 @@
   }
 }
 .addrConfirmContainer {
-  width: 468px;
-  display: flex;
+  @include flex-container(column);
+  @include modal-container;
+  min-width: 468px;
   gap: 10px;
-  flex-direction: column;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 16px;
-  padding: 20px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   .address {
     width: 100%;
     background: rgba(242, 242, 242, 0.5);
-    border-radius: 8px;
+    border-radius: $border-radius-sm;
     font-size: $fontSmall;
     font-weight: 400;
-    padding: 24px;
+    padding: $padding-standard;
   }
 
   .buttonContainer {
-    display: flex;
-    justify-content: space-between;
+    @include flex-container;
     margin-top: 40px;
     button {
       min-width: 206px;
@@ -145,13 +151,13 @@
   }
 }
 
+// Mobile style
 @include xsPhoneView {
   .addressFormContainer {
     min-width: fit-content;
     width: 95%;
     .buttonContainer {
-      display: flex;
-      flex-direction: column;
+      @include flex-container(column);
       button {
         width: 100%;
       }
@@ -159,6 +165,7 @@
   }
   .addrConfirmContainer {
     width: 95%;
+    min-width: fit-content;
     .buttonContainer {
       flex-direction: column;
       gap: 8px;
@@ -169,6 +176,5 @@
 // Form spinner
 
 .addressMgmtSpinner {
-  display: flex;
-  justify-content: center;
+  @include flex-container(row, center);
 }
