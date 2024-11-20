@@ -63,9 +63,10 @@ function ProjectsMap(props: ProjectsMapProps) {
         filteredProjects.length > 0 &&
         (filteredProjects.length < 30 ||
           filteredProjects.length === projects?.length) &&
-        map !== null;
-      if (!shouldCenterMap) return;
+        map !== null &&
+        props.page === 'project-list';
 
+      if (!shouldCenterMap) return;
       const validFeatures = getValidFeatures(filteredProjects);
       if (validFeatures.length === 0) return;
 
