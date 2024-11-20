@@ -55,7 +55,7 @@
     "@mui/lab": "^5.0.0-alpha.77",
     "@mui/material": "^5.12.2",
     "@mui/x-date-pickers": "^5.0.15",
-    "@netlify/plugin-nextjs": "^4.33.0",
+    "@netlify/plugin-nextjs": "^5.0.0",
     "@next/bundle-analyzer": "^10.2.3",
     "@planet-sdk/common": "^0.1.41",
     "@prisma/client": "^4.13.0",
