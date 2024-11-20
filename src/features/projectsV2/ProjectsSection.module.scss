@@ -1,4 +1,7 @@
 @import '../../theme/theme';
+
+$bottomFooterSpace: 49px;
+
 // temporary file will be deleted later
 .projectList {
   display: flex;
@@ -21,7 +24,8 @@
     &::-webkit-scrollbar {
       display: none;
     }
-    padding: 0px 9px 100px;
+    height: calc(100% - $bottomFooterSpace);
+    padding: 0px 9px 20px;
   }
 }
 
