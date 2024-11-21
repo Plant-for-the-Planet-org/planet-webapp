@@ -79,7 +79,7 @@ const AddressActionsMenu = ({
 
   return (
     <div>
-      <button onClick={openPopover} className={styles.kababMenuButton}>
+      <button onClick={openPopover} className={styles.kebabMenuButton}>
         <KababMenuIcon />
       </button>
       <Popover

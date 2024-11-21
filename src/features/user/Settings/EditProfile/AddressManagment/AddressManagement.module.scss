@@ -18,7 +18,7 @@
   .address {
     max-width: 346px;
   }
-  .kababMenuButton {
+  .kebabMenuButton {
     height: 34px;
     width: 34px;
     border-radius: 50%;
@@ -31,9 +31,9 @@
       height: 20px;
       width: 12px;
     }
-  }
-  .kababMenuButton:hover {
-    background-color: rgba(120, 120, 120, 0.1);
+    &:hover {
+      background-color: rgba(120, 120, 120, 0.1);
+    }
   }
 }
 
@@ -54,7 +54,7 @@
   }
 }
 
-.addNewAddressButton {
+.addAddressButton {
   width: 342px;
   height: 40px;
   margin-top: 40px;

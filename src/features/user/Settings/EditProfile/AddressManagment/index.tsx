@@ -19,7 +19,7 @@ export interface UpdatedAddress extends Address {
   isPrimary: boolean | null;
   address2: string | null;
 }
-export const addressType = ['primary', 'mailing', 'other'];
+export const addressTypeOrder = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
   const { user } = useUserProps();
   const tProfile = useTranslations('Profile.addressManagement');
@@ -29,10 +29,12 @@ const AddressManagement = () => {
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
-  const openAddressForm = () => {};
+  const toggleAddAddressModal = () => {};
   const sortedAddresses = useMemo(() => {
     return userAddresses.sort((a, b) => {
-      return addressType.indexOf(a.type) - addressType.indexOf(b.type);
+      return (
+        addressTypeOrder.indexOf(a.type) - addressTypeOrder.indexOf(b.type)
+      );
     });
   }, [userAddresses]);
 
@@ -47,11 +49,11 @@ const AddressManagement = () => {
           setAddressAction={setAddressAction}
         />
         <WebappButton
-          text={tProfile('addNewAddress')}
+          text={tProfile('addAddress')}
           elementType="button"
-          onClick={openAddressForm}
+          onClick={toggleAddAddressModal}
           variant="primary"
-          buttonClasses={styles.addNewAddressButton}
+          buttonClasses={styles.addAddressButton}
         />
       </CenteredContainer>
     </>
