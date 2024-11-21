@@ -39,7 +39,7 @@ const AddressManagement = () => {
   }, [userAddresses]);
 
   return (
-    <>
+    <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
         {tProfile('addressManagementTitle')}
       </h2>
@@ -56,7 +56,7 @@ const AddressManagement = () => {
           buttonClasses={styles.addAddressButton}
         />
       </CenteredContainer>
-    </>
+    </section>
   );
 };
 

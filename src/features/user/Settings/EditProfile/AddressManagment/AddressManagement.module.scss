@@ -44,7 +44,7 @@
   gap: 16px;
   .addressTag {
     padding: 5px 10px;
-    max-width: 112px;
+    max-width: fit-content;
     border-radius: 6px;
     text-align: center;
     color: #fff;
@@ -55,8 +55,6 @@
 }
 
 .addAddressButton {
-  width: 342px;
-  height: 40px;
   margin-top: 40px;
 }
 
