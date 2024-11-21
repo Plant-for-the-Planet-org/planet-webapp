@@ -7,26 +7,22 @@ import type { SetState } from '../../../../common/types/common';
 import type { UpdatedAddress } from '.';
 
 import { useState, useContext, useMemo, useCallback } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { CircularProgress, TextField } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import GeocoderArcGIs from 'geocoder-arcgis';
 import { APIError, handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
-import InlineFormDisplayGroup from '../../../../common/Layout/Forms/InlineFormDisplayGroup';
-import SelectCountry from '../../../../common/InputTypes/AutoCompleteCountry';
-import { allCountries } from '../../../../../utils/constants/countries';
 import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { validationPattern } from '../../../../../utils/addressManagement';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
-import AddressInput from './microComponents/AddressInput';
+import AddressFormInputs from './microComponents/AddressFormInputs';
 
-type FormData = {
+export type FormData = {
   address: string;
   address2: string | undefined;
   city: string;
@@ -65,7 +61,7 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
     mode: 'onBlur',
     defaultValues: defaultAddressDetail,
   });
-  const t = useTranslations('EditProfile');
+
   const tProfile = useTranslations('Profile');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
@@ -182,108 +178,17 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
 
   return (
     <div className={styles.addressFormContainer}>
-      <h1>{tProfile('addressManagement.addAddress')}</h1>
-      <form className={styles.addressForm}>
-        <AddressInput
-          name="address"
-          control={control}
-          label={t('fieldLabels.address')}
-          required
-          validationPattern={validationPattern.address}
-          validationMessages={{
-            required: t('validationErrors.addressRequired'),
-            invalid: t('validationErrors.addressInvalid'),
-          }}
-          suggestions={addressSuggestions}
-          onInputChange={handleInputChange}
-          onAddressSelect={handleAddressSelect}
-        />
-        <AddressInput
-          name="address2"
-          control={control}
-          label={tProfile('addressManagement.address2')}
-          validationPattern={validationPattern.address}
-          validationMessages={{
-            required: t('validationErrors.addressRequired'),
-            invalid: t('validationErrors.addressInvalid'),
-          }}
-          suggestions={addressSuggestions}
-          onInputChange={handleInputChange}
-        />
-        <InlineFormDisplayGroup>
-          <Controller
-            name="city"
-            control={control}
-            rules={{
-              required: t('validationErrors.cityRequired'),
-              pattern: {
-                value: validationPattern.cityState,
-                message: t('validationErrors.cityInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.city')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.city !== undefined}
-                helperText={errors.city?.message}
-              />
-            )}
-          />
-          <Controller
-            name="zipCode"
-            control={control}
-            rules={{
-              required: t('validationErrors.zipCodeRequired'),
-              pattern: {
-                value: postalRegex as RegExp,
-                message: t('validationErrors.zipCodeInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.zipCode')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.zipCode !== undefined}
-                helperText={errors.zipCode?.message}
-              />
-            )}
-          />
-        </InlineFormDisplayGroup>
-        <InlineFormDisplayGroup>
-          <Controller
-            name="state"
-            control={control}
-            rules={{
-              pattern: {
-                value: validationPattern.cityState,
-                message: t('validationErrors.stateInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('fieldLabels.state')}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.state !== undefined}
-                helperText={errors.state?.message}
-              />
-            )}
-          />
-          <SelectCountry
-            countries={allCountries}
-            label={t('fieldLabels.country')}
-            name="country"
-            defaultValue={country}
-            onChange={setCountry}
-          />
-        </InlineFormDisplayGroup>
-      </form>
+      <h2>{tProfile('addressManagement.addAddress')}</h2>
+      <AddressFormInputs
+        handleInputChange={handleInputChange}
+        handleAddressSelect={handleAddressSelect}
+        addressSuggestions={addressSuggestions}
+        control={control}
+        errors={errors}
+        postalRegex={postalRegex}
+        country={country}
+        setCountry={setCountry}
+      />
       {isUploadingData ? (
         <div className={styles.addressMgmtSpinner}>
           <CircularProgress color="success" />

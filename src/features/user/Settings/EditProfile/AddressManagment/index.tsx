@@ -52,7 +52,7 @@ const AddressManagement = () => {
           setAddressAction={setAddressAction}
         />
         <WebappButton
-          text={tProfile('addAddress')}
+          text={tProfile('addNewAddress')}
           elementType="button"
           onClick={() => setIsModalOpen(true)}
           variant="primary"

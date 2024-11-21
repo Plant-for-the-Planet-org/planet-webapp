@@ -147,7 +147,8 @@
         "setAsPrimaryAddress": "Set as Primary Address",
         "setAsBillingAddress": "Set as Billing Address"
       },
-      "addAddress": "Add New Address",
+      "addNewAddress": "Add New Address",
+      "addAddress": "Add Address",
       "address2": "Address 2(optional)"
     }
   }
