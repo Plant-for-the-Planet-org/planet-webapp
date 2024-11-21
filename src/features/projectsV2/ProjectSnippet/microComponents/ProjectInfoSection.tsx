@@ -62,7 +62,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
         formattedCount: formattedUnitCount,
       });
     }
-  }, [unitCount, unitType, purpose]);
+  }, [unitCount, unitType, purpose, locale]);
 
   const donateButtonClass =
     isTopProject && isApproved ? `${styles.topProject}` : undefined;

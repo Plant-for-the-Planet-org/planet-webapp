@@ -102,7 +102,7 @@
     "negotiator": "^0.6.3",
     "next": "^13.5.7",
     "next-connect": "^0.13.0",
-    "next-intl": "^3.19.1",
+    "next-intl": "^3.25.1",
     "next-useragent": "^2.7.0",
     "node-cache": "^5.1.2",
     "npm": "^10.2.2",
