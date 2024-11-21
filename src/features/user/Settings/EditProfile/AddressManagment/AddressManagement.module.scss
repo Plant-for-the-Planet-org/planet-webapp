@@ -54,10 +54,6 @@
   }
 }
 
-.addAddressButton {
-  margin-top: 40px;
-}
-
 .primary {
   background: rgba(0, 122, 73, 1);
 }
@@ -87,9 +83,6 @@
 // address action form
 
 .addressFormContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
   min-width: 565px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
@@ -108,16 +101,18 @@
   display: flex;
   flex-direction: column;
   gap: 23px;
+  margin-top: 20px;
 }
 
 .formButtonContainer {
   display: flex;
   gap: 8px;
   justify-content: space-between;
+  align-items: end;
+  margin-top: 40px;
   .addAddressButton,
   .cancelButton {
     min-width: 252px;
-    min-height: 40px;
   }
 }
 
