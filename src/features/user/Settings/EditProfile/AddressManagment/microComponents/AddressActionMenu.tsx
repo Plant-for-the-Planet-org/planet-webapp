@@ -40,22 +40,22 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile('edit'),
+      label: tProfile(`actions.${ADDRESS_ACTIONS.EDIT}`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile('delete'),
+      label: tProfile(`actions.${ADDRESS_ACTIONS.DELETE}`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: tProfile('setAsPrimaryAddress'),
+      label: tProfile('actions.setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(type === 'mailing' || type === 'primary'),
     },
     {
-      label: tProfile('setAsBillingAddress'),
+      label: tProfile('actions.setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(type === 'mailing' || type === 'primary'),
     },

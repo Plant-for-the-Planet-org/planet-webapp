@@ -20,7 +20,7 @@ export default function EditProfile(): ReactElement | null {
         </SingleColumnView>
       </DashboardView>
       <DashboardView
-        title={tProfile('addressManagement.address')}
+        title={tProfile('addressManagement.addressManagementTitle')}
         subtitle={null}
       >
         <SingleColumnView>
