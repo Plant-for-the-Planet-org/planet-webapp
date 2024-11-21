@@ -7,6 +7,7 @@ import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
+import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 
 export type AddressType = 'primary' | 'mailing' | 'other';
 
@@ -37,17 +38,22 @@ const AddressManagement = () => {
 
   return (
     <>
-      <AddressList
-        addresses={sortedAddresses}
-        setAddressAction={setAddressAction}
-      />
-      <WebappButton
-        text={tProfile('addNewAddress')}
-        elementType="button"
-        onClick={openAddressForm}
-        variant="primary"
-        buttonClasses={styles.addNewAddressButton}
-      />
+      <h2 className={styles.addressManagementTitle}>
+        {tProfile('addressManagementTitle')}
+      </h2>
+      <CenteredContainer>
+        <AddressList
+          addresses={sortedAddresses}
+          setAddressAction={setAddressAction}
+        />
+        <WebappButton
+          text={tProfile('addNewAddress')}
+          elementType="button"
+          onClick={openAddressForm}
+          variant="primary"
+          buttonClasses={styles.addNewAddressButton}
+        />
+      </CenteredContainer>
     </>
   );
 };
