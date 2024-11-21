@@ -11,9 +11,7 @@ const AddressContent = ({ type, userAddress }: Props) => {
     <div className={styles.addressSubContainer}>
       {type !== 'other' && (
         <span className={`${styles.addressTag} ${styles[type]}`}>
-          {tProfile(
-            `${type === 'primary' ? 'primaryAddress' : 'BillingAddress'}`
-          )}
+          {tProfile(`addressTags.${type}`)}
         </span>
       )}
       <div className={styles.address}>{userAddress}</div>

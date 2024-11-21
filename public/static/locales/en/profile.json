@@ -136,16 +136,19 @@
       }
     },
     "addressManagement": {
-      "address": "Address",
-      "address2": "Address 2(optional)",
-      "primaryAddress": "Primary Address",
-      "BillingAddress": "Billing Address",
-      "edit": "Edit",
-      "delete": "Delete",
-      "setAsPrimaryAddress": "Set as Primary Address",
-      "setAsBillingAddress": "Set as Billing Address",
-      "addNewAddress": "Add New Address",
-      "addAddress": "Add Address"
+      "addressManagementTitle": "Address",
+      "addressTags": {
+        "primary": "Primary Address",
+        "mailing": "Billing Address"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "setAsPrimaryAddress": "Set as Primary Address",
+        "setAsBillingAddress": "Set as Billing Address"
+      },
+      "addAddress": "Add New Address",
+      "address2": "Address 2(optional)"
     }
   }
 }

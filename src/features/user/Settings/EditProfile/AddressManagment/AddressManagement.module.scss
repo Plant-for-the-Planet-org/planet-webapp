@@ -1,5 +1,11 @@
 @import '../../../../../theme/theme';
 
+.addressManagementTitle {
+  font-size: $fontLarge;
+  font-weight: 600;
+  margin: 40px 0 20px;
+}
+
 .addressContainer {
   display: flex;
   justify-content: space-between;
@@ -12,7 +18,7 @@
   .address {
     max-width: 346px;
   }
-  .kababMenuButton {
+  .kebabMenuButton {
     height: 34px;
     width: 34px;
     border-radius: 50%;
@@ -25,9 +31,9 @@
       height: 20px;
       width: 12px;
     }
-  }
-  .kababMenuButton:hover {
-    background-color: rgba(120, 120, 120, 0.1);
+    &:hover {
+      background-color: rgba(120, 120, 120, 0.1);
+    }
   }
 }
 
@@ -38,7 +44,7 @@
   gap: 16px;
   .addressTag {
     padding: 5px 10px;
-    max-width: 112px;
+    max-width: fit-content;
     border-radius: 6px;
     text-align: center;
     color: #fff;
@@ -48,9 +54,7 @@
   }
 }
 
-.addNewAddressButton {
-  width: 342px;
-  height: 40px;
+.addAddressButton {
   margin-top: 40px;
 }
 

@@ -8,7 +8,6 @@ import AddressManagement from './AddressManagment';
 
 export default function EditProfile(): ReactElement | null {
   const t = useTranslations('Me');
-  const tProfile = useTranslations('Profile');
 
   return (
     <>
@@ -17,16 +16,7 @@ export default function EditProfile(): ReactElement | null {
           <CenteredContainer>
             <EditProfileForm />
           </CenteredContainer>
-        </SingleColumnView>
-      </DashboardView>
-      <DashboardView
-        title={tProfile('addressManagement.address')}
-        subtitle={null}
-      >
-        <SingleColumnView>
-          <CenteredContainer>
-            <AddressManagement />
-          </CenteredContainer>
+          <AddressManagement />
         </SingleColumnView>
       </DashboardView>
     </>
