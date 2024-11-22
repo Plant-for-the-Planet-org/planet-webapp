@@ -14,6 +14,8 @@ export const ADDRESS_ACTIONS = {
   SET_BILLING: 'setBilling',
 } as const;
 
+export const addressTypeOrder = ['primary', 'mailing', 'other'];
+
 export const formatAddress = (
   address: string | undefined,
   zipCode: string | undefined,

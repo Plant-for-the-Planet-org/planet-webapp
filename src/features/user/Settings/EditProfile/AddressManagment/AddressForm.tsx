@@ -24,12 +24,10 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 import AddressFormInputs from './microComponents/AddressFormInputs';
-import AddressInput from './microComponents/AddressInput';
 import { AddressAction } from './microComponents/AddressActionMenu';
 import {
   ADDRESS_TYPE,
   getAddressType,
-  validationPattern,
 } from '../../../../../utils/addressManagement';
 
 export type FormData = {
@@ -43,8 +41,8 @@ export type FormData = {
 interface Props {
   formType: 'edit' | 'add';
   setIsModalOpen: SetState<boolean>;
-  setUserAddresses: SetState<UpdatedAddress[]>;
-  userAddress?: UpdatedAddress;
+  setUserAddresses?: SetState<UpdatedAddress[]>;
+  selectedAddressForAction?: UpdatedAddress | null;
   addressAction?: AddressAction | null;
   fetchUserAddresses?: () => Promise<void>;
 }
@@ -61,15 +59,15 @@ const AddressForm = ({
   addressAction,
   setIsModalOpen,
   setUserAddresses,
-  userAddress,
+  selectedAddressForAction,
   fetchUserAddresses,
 }: Props) => {
   const defaultAddressDetail = {
-    address: userAddress ? userAddress.address : '',
-    address2: userAddress ? userAddress.address2 : '',
-    city: userAddress ? userAddress.city : '',
-    zipCode: userAddress ? userAddress.zipCode : '',
-    state: userAddress ? userAddress.state : '',
+    address: selectedAddressForAction ? selectedAddressForAction.address : '',
+    address2: selectedAddressForAction ? selectedAddressForAction.address2 : '',
+    city: selectedAddressForAction ? selectedAddressForAction.city : '',
+    zipCode: selectedAddressForAction ? selectedAddressForAction.zipCode : '',
+    state: selectedAddressForAction ? selectedAddressForAction.state : '',
   };
   const {
     control,
@@ -87,7 +85,8 @@ const AddressForm = ({
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const userCountry = formType === 'add' ? user?.country : userAddress?.country;
+  const userCountry =
+    formType === 'add' ? user?.country : selectedAddressForAction?.country;
   const [country, setCountry] = useState<ExtendedCountryCode | ''>(
     userCountry ?? 'DE'
   );
@@ -161,17 +160,17 @@ const AddressForm = ({
   };
 
   const editAddress = async (data: FormData) => {
-    if (!addressAction || !userAddress) return;
+    if (!addressAction || !selectedAddressForAction) return;
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
       country,
-      type: getAddressType(formType, userAddress.type),
+      type: getAddressType(formType, selectedAddressForAction.type),
     };
     try {
       const res = await putAuthenticatedRequest<UpdatedAddress>(
         tenantConfig.id,
-        `/app/addresses/${userAddress?.id}`,
+        `/app/addresses/${selectedAddressForAction?.id}`,
         bodyToSend,
         token,
         logoutUser
@@ -204,7 +203,7 @@ const AddressForm = ({
           token,
           logoutUser
         );
-        if (res) {
+        if (res && setUserAddresses) {
           setUserAddresses((prevAddresses) => [...prevAddresses, res]);
           handleCancel();
         }
@@ -226,7 +225,7 @@ const AddressForm = ({
   };
   return (
     <div className={styles.addressFormContainer}>
-      <h1>{tProfile(`addressManagement.formType.${formType}`)}</h1>
+      <h2>{tProfile(`addressManagement.formType.${formType}`)}</h2>
       <AddressFormInputs
         handleInputChange={handleInputChange}
         handleAddressSelect={handleAddressSelect}

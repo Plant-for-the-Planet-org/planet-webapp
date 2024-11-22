@@ -9,6 +9,7 @@ import {
   ADDRESS_ACTIONS,
   ADDRESS_TYPE,
 } from '../../../../../../utils/addressManagement';
+import { UpdatedAddress } from '..';
 
 export type AddressType = (typeof ADDRESS_TYPE)[keyof typeof ADDRESS_TYPE];
 export type AddressAction =
@@ -24,6 +25,8 @@ interface Props {
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
+  setSelectedAddressForAction: SetState<UpdatedAddress | null>;
+  userAddress: UpdatedAddress;
 }
 
 const AddressActionsMenu = ({
@@ -31,6 +34,8 @@ const AddressActionsMenu = ({
   addressCount,
   setAddressAction,
   setIsModalOpen,
+  setSelectedAddressForAction,
+  userAddress,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
@@ -73,6 +78,7 @@ const AddressActionsMenu = ({
   };
 
   const handleActionClick = (action: AddressAction) => {
+    setSelectedAddressForAction(userAddress);
     setIsModalOpen(true);
     setAddressAction(action);
     setPopoverAnchor(null);

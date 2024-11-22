@@ -6,18 +6,16 @@ import SingleAddress from './SingleAddress';
 
 interface Props {
   addresses: UpdatedAddress[];
-  addressAction: AddressAction | null;
   setAddressAction: SetState<AddressAction | null>;
-  setUserAddresses: SetState<UpdatedAddress[]>;
-  fetchUserAddresses: () => Promise<void>;
+  setSelectedAddressForAction: SetState<UpdatedAddress | null>;
+  setIsModalOpen: SetState<boolean>;
 }
 
 const AddressList = ({
   addresses,
-  addressAction,
   setAddressAction,
-  setUserAddresses,
-  fetchUserAddresses,
+  setSelectedAddressForAction,
+  setIsModalOpen,
 }: Props) => {
   const addressCount = addresses?.length;
 
@@ -28,10 +26,9 @@ const AddressList = ({
           key={address.id}
           userAddress={address}
           addressCount={addressCount}
-          addressAction={addressAction}
           setAddressAction={setAddressAction}
-          setUserAddresses={setUserAddresses}
-          fetchUserAddresses={fetchUserAddresses}
+          setSelectedAddressForAction={setSelectedAddressForAction}
+          setIsModalOpen={setIsModalOpen}
         />
       ))}
     </>

@@ -16,7 +16,10 @@ import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { ADDRESS_ACTIONS } from '../../../../../utils/addressManagement';
+import {
+  ADDRESS_ACTIONS,
+  addressTypeOrder,
+} from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 
 export interface UpdatedAddress {
@@ -31,7 +34,7 @@ export interface UpdatedAddress {
   zipCode?: string;
   country: CountryCode;
 }
-export const addressTypeOrder = ['primary', 'mailing', 'other'];
+
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -43,6 +46,8 @@ const AddressManagement = () => {
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
+  const [selectedAddressForAction, setSelectedAddressForAction] =
+    useState<UpdatedAddress | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sortedAddresses = useMemo(() => {
@@ -81,10 +86,9 @@ const AddressManagement = () => {
       <CenteredContainer>
         <AddressList
           addresses={sortedAddresses}
-          addressAction={addressAction}
           setAddressAction={setAddressAction}
-          fetchUserAddresses={fetchUserAddresses}
-          setUserAddresses={setUserAddresses}
+          setSelectedAddressForAction={setSelectedAddressForAction}
+          setIsModalOpen={setIsModalOpen}
         />
         <WebappButton
           text={tProfile('addNewAddress')}
@@ -100,7 +104,16 @@ const AddressManagement = () => {
             <AddressForm
               formType="add"
               setIsModalOpen={setIsModalOpen}
-              setUserAddresses={setUserAddresses}
+              setUserAddresses={setUserAddresses} // to update the address list
+            />
+          )}
+          {addressAction === ADDRESS_ACTIONS.EDIT && (
+            <AddressForm
+              formType="edit"
+              setIsModalOpen={setIsModalOpen}
+              addressAction={addressAction}
+              selectedAddressForAction={selectedAddressForAction}
+              fetchUserAddresses={fetchUserAddresses} // to update the address list
             />
           )}
         </>
