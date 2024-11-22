@@ -1,5 +1,8 @@
 import type { Address } from '@planet-sdk/common';
-import type { AddressAction } from './microComponents/AddressActionMenu';
+import {
+  ADDRESS_ACTIONS,
+  type AddressAction,
+} from './microComponents/AddressActionMenu';
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -27,7 +30,7 @@ const AddressManagement = () => {
   const tProfile = useTranslations('Profile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
     user?.addresses
-  ); // need to update planet-sdk to include addresses key
+  );
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -40,6 +43,11 @@ const AddressManagement = () => {
       );
     });
   }, [userAddresses]);
+
+  const toggleAddAddressModal = () => {
+    setIsModalOpen(true);
+    setAddressAction(ADDRESS_ACTIONS.ADD);
+  };
 
   return (
     <section className={styles.addressManagement}>
@@ -54,17 +62,21 @@ const AddressManagement = () => {
         <WebappButton
           text={tProfile('addNewAddress')}
           elementType="button"
-          onClick={() => setIsModalOpen(true)}
+          onClick={toggleAddAddressModal}
           variant="primary"
           buttonClasses={styles.addAddressButton}
         />
       </CenteredContainer>
       <Modal open={isModalOpen}>
-        <AddressForm
-          mode="add"
-          setIsModalOpen={setIsModalOpen}
-          setUserAddresses={setUserAddresses}
-        />
+        <>
+          {addressAction === ADDRESS_ACTIONS.ADD && (
+            <AddressForm
+              formType="add"
+              setIsModalOpen={setIsModalOpen}
+              setUserAddresses={setUserAddresses}
+            />
+          )}
+        </>
       </Modal>
     </section>
   );

@@ -31,7 +31,7 @@ export type FormData = {
 };
 
 interface Props {
-  mode: string;
+  formType: string;
   setIsModalOpen: SetState<boolean>;
   setUserAddresses: SetState<UpdatedAddress[]>;
 }
@@ -43,7 +43,7 @@ const geocoder = new GeocoderArcGIs(
       }
     : {}
 );
-const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
+const AddressForm = ({ formType, setIsModalOpen, setUserAddresses }: Props) => {
   const defaultAddressDetail = {
     address: '',
     address2: '',
@@ -134,12 +134,12 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
     reset(defaultAddressDetail);
     setAddressSuggestions([]);
   };
-  const closeModal = () => {
+  const handleCancel = () => {
     setIsModalOpen(false);
     resetForm();
   };
 
-  const addNewAddress = async (data: FormData) => {
+  const addAddress = async (data: FormData) => {
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
@@ -157,7 +157,7 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
         );
         if (res) {
           setUserAddresses((prevAddresses) => [...prevAddresses, res]);
-          closeModal();
+          handleCancel();
         }
       } catch (error) {
         resetForm();
@@ -199,14 +199,14 @@ const AddressForm = ({ mode, setIsModalOpen, setUserAddresses }: Props) => {
             text={tCommon('cancel')}
             variant="secondary"
             elementType="button"
-            onClick={closeModal}
+            onClick={handleCancel}
             buttonClasses={styles.cancelButton}
           />
           <WebappButton
             text={tProfile('addressManagement.addAddress')}
             variant="primary"
             elementType="button"
-            onClick={handleSubmit(addNewAddress)}
+            onClick={handleSubmit(addAddress)}
             buttonClasses={styles.addAddressButton}
           />
         </div>

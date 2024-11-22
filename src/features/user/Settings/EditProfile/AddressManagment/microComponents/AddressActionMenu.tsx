@@ -8,6 +8,7 @@ import styles from '../AddressManagement.module.scss';
 
 export type AddressType = 'primary' | 'mailing' | 'other';
 export const ADDRESS_ACTIONS = {
+  ADD: 'add',
   EDIT: 'edit',
   DELETE: 'delete',
   SET_PRIMARY: 'setPrimary',
