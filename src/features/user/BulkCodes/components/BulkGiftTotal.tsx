@@ -1,14 +1,16 @@
+import type { ReactElement } from 'react';
+import type { CurrencyCode } from '@planet-sdk/common';
+import type { UnitType } from '../../../common/types/project';
+
 import { TextField } from '@mui/material';
-import { ReactElement } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { CurrencyCode } from '@planet-sdk/common';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 interface BulkGiftTotalProps {
   amount?: number;
   currency?: CurrencyCode;
   units?: number;
-  unit?: 'tree' | 'm2' | 'ha';
+  unit?: UnitType;
 }
 
 const BulkGiftTotal = ({
@@ -21,12 +23,15 @@ const BulkGiftTotal = ({
   const tBulkCodes = useTranslations('BulkCodes');
   const locale = useLocale();
 
-  const getUnit = (_unit: string, _units?: number) => {
-    if (_unit === 'tree') {
-      return tCommon('tree', { count: _units });
-    } else if (_unit === 'm2') {
-      return 'm2';
-    } else return 'ha';
+  const getPluralizedUnitType = (unit: UnitType, units: number) => {
+    switch (unit) {
+      case 'tree':
+        return tCommon('tree', { count: units });
+      case 'm2':
+        return tCommon('m2');
+      default:
+        return unit;
+    }
   };
 
   return (
@@ -34,12 +39,15 @@ const BulkGiftTotal = ({
       label={tBulkCodes('total')}
       disabled
       inputProps={{ readOnly: true }}
-      value={`${getFormatedCurrency(
-        locale,
-        currency as string,
-        amount
-      )} for ${units} ${getUnit(unit, units)}`}
-      // TODOO translation and pluralization
+      value={tBulkCodes('summaryTotal', {
+        formattedAmount: getFormattedCurrency(
+          locale,
+          currency as string,
+          amount
+        ),
+        units,
+        pluralizedUnitType: getPluralizedUnitType(unit, units),
+      })}
     ></TextField>
   );
 };

@@ -36,6 +36,7 @@
       "tree": "tree",
       "m2": "m²"
     },
+    "summaryTotal": "{formattedAmount} for {units} {pluralizedUnitType}",
     "unitsPerCode": "Units per Code*",
     "totalNumberOfCodes": "Total Number of Codes*",
     "occasion": "Occasion",
@@ -97,7 +98,7 @@
       "recipient_name": "Optional. Name of the recipient, shown on the certificate and if opted in, in the mail sent to the recipient. Required if you want to send emails.",
       "recipient_email": "Optional. Required to send certificate to the recipient by email.",
       "recipient_notify": "Optional. Select Yes if you want Plant-for-the-Planet to inform the recipient via email automatically.",
-      "units": "Mandatory. Number of trees that are given to the recipient, e.g., 5 for 5 trees",
+      "units": "Mandatory. Number of units (trees or m²) that are given to the recipient, e.g. 5 for 5 trees or 5 m².",
       "recipient_message": "Optional. Message to the recipient that is included in the email if notify is yes. A default message will be sent if not provided."
     },
     "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly...",
