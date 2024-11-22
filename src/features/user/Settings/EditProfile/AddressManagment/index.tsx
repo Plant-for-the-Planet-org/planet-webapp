@@ -24,7 +24,7 @@ import {
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 import AddressForm from './AddressForm';
-import AddressTypeChangeModal from './AddressTypeChangeModal';
+import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
 import AddressDeleteModal from './AddressDeleteModal';
 
 export interface UpdatedAddress {
@@ -99,7 +99,7 @@ const AddressManagement = () => {
           <AddressForm
             formType={ADDRESS_FORM_TYPE.ADD_ADDRESS}
             setIsModalOpen={setIsModalOpen}
-            setUserAddresses={setUserAddresses} // to update the address list
+            setUserAddresses={setUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
@@ -107,18 +107,6 @@ const AddressManagement = () => {
           <AddressForm
             formType={ADDRESS_FORM_TYPE.EDIT_ADDRESS}
             setIsModalOpen={setIsModalOpen}
-            addressAction={addressAction}
-            selectedAddressForAction={selectedAddressForAction}
-            fetchUserAddresses={fetchUserAddresses} // to update the address list
-          />
-        );
-      case ADDRESS_ACTIONS.SET_BILLING:
-      case ADDRESS_ACTIONS.SET_PRIMARY:
-        return (
-          <AddressTypeChangeModal
-            setIsModalOpen={setIsModalOpen}
-            primaryAddress={primaryAddress}
-            billingAddress={billingAddress}
             addressAction={addressAction}
             selectedAddressForAction={selectedAddressForAction}
             fetchUserAddresses={fetchUserAddresses}
@@ -132,6 +120,26 @@ const AddressManagement = () => {
             fetchUserAddresses={fetchUserAddresses}
           />
         );
+      case ADDRESS_ACTIONS.SET_PRIMARY:
+        return (
+          <AddressTypeConfirmationModal
+            type={ADDRESS_TYPE.PRIMARY}
+            address={primaryAddress}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            fetchUserAddresses={fetchUserAddresses}
+          />
+        );
+      case ADDRESS_ACTIONS.SET_BILLING:
+        return (
+          <AddressTypeConfirmationModal
+            type={ADDRESS_TYPE.MAILING}
+            address={billingAddress}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            fetchUserAddresses={fetchUserAddresses}
+          />
+        );
     }
   }, [
     addressAction,
@@ -139,6 +147,8 @@ const AddressManagement = () => {
     setUserAddresses,
     selectedAddressForAction,
     fetchUserAddresses,
+    primaryAddress,
+    billingAddress,
   ]);
 
   return userAddresses.length > 0 ? (

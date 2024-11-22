@@ -1,8 +1,4 @@
-import {
-  ADDRESS_ACTIONS,
-  ADDRESS_TYPE,
-  formatAddress,
-} from '../../../../../utils/addressManagement';
+import { formatAddress } from '../../../../../utils/addressManagement';
 import styles from './AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
 import WebappButton from '../../../../common/WebappButton';
@@ -17,19 +13,17 @@ import { APIError, CountryCode, handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 
 interface Props {
+  type: 'primary' | 'mailing';
   setIsModalOpen: SetState<boolean>;
-  primaryAddress: UpdatedAddress | undefined;
-  billingAddress: UpdatedAddress | undefined;
-  addressAction: 'setPrimary' | 'setBilling';
+  address: UpdatedAddress | undefined;
   selectedAddressForAction: UpdatedAddress | null;
   fetchUserAddresses: () => Promise<void>;
 }
 
-const AddressTypeChangeModal = ({
+const AddressTypeConfirmationModal = ({
+  type,
   setIsModalOpen,
-  primaryAddress,
-  billingAddress,
-  addressAction,
+  address,
   selectedAddressForAction,
   fetchUserAddresses,
 }: Props) => {
@@ -40,10 +34,6 @@ const AddressTypeChangeModal = ({
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  const isSetPrimaryAction = addressAction === ADDRESS_ACTIONS.SET_PRIMARY;
-  const isSetBillingAction = addressAction === ADDRESS_ACTIONS.SET_BILLING;
-  const isBillingAddressAlreadyPresent = isSetBillingAction && billingAddress;
-  const isPrimaryAddressAlreadyPresent = isSetPrimaryAction && primaryAddress;
 
   const getCountryFullForm = (countryCode: string | undefined) => {
     return countryCode
@@ -56,13 +46,9 @@ const AddressTypeChangeModal = ({
     return formatAddress(userAddress, zipCode, city, state, countryFullForm);
   };
 
-  const primaryFormattedAddress = useMemo(
-    () => (primaryAddress ? getFormattedAddress(primaryAddress) : null),
-    [primaryAddress]
-  );
-  const billingFormattedAddress = useMemo(
-    () => (billingAddress ? getFormattedAddress(billingAddress) : null),
-    [billingAddress]
+  const formattedAddress = useMemo(
+    () => (address ? getFormattedAddress(address) : null),
+    [address]
   );
 
   const updateAddress = async (addressType: 'primary' | 'mailing') => {
@@ -89,33 +75,14 @@ const AddressTypeChangeModal = ({
   };
   return (
     <div className={styles.addrConfirmContainer}>
-      <h2>
-        {tProfile('addressType', {
-          address: isSetPrimaryAction
-            ? ADDRESS_TYPE.PRIMARY
-            : ADDRESS_TYPE.MAILING,
-        })}
-      </h2>
+      <h2>{tProfile(`addressType.${type}`)}</h2>
       <p>
         {tProfile('addressConfirmationMessage', {
-          addressType: isSetBillingAction
-            ? ADDRESS_TYPE.MAILING
-            : ADDRESS_TYPE.PRIMARY,
-          billingAddress: isBillingAddressAlreadyPresent
-            ? ADDRESS_TYPE.MAILING
-            : '',
-          primaryAddress: isPrimaryAddressAlreadyPresent
-            ? ADDRESS_TYPE.PRIMARY
-            : '',
+          addressType: type,
+          isAddressSet: !!address,
         })}
       </p>
-      {isBillingAddressAlreadyPresent && (
-        <p className={styles.address}>{billingFormattedAddress}</p>
-      )}
-      {isPrimaryAddressAlreadyPresent && (
-        <p className={styles.address}>{primaryFormattedAddress}</p>
-      )}
-
+      {formattedAddress && <p className={styles.address}>{formattedAddress}</p>}
       {!isUploadingData ? (
         <div className={styles.buttonContainer}>
           <WebappButton
@@ -128,13 +95,7 @@ const AddressTypeChangeModal = ({
             text={tProfile('confirm')}
             elementType="button"
             variant="primary"
-            onClick={() =>
-              updateAddress(
-                addressAction === ADDRESS_ACTIONS.SET_PRIMARY
-                  ? ADDRESS_TYPE.PRIMARY
-                  : ADDRESS_TYPE.MAILING
-              )
-            }
+            onClick={() => updateAddress(type)}
           />
         </div>
       ) : (
@@ -146,4 +107,4 @@ const AddressTypeChangeModal = ({
   );
 };
 
-export default AddressTypeChangeModal;
+export default AddressTypeConfirmationModal;
