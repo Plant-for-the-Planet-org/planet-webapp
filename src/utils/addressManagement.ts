@@ -7,6 +7,7 @@ export const ADDRESS_TYPE = {
 } as const;
 
 export const ADDRESS_ACTIONS = {
+  ADD: 'add',
   EDIT: 'edit',
   DELETE: 'delete',
   SET_PRIMARY: 'setPrimary',

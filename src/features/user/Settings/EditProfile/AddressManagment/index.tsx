@@ -16,6 +16,8 @@ import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
+import { ADDRESS_ACTIONS } from '../../../../../utils/addressManagement';
+import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 
 export interface UpdatedAddress {
   id: string;
@@ -29,7 +31,7 @@ export interface UpdatedAddress {
   zipCode?: string;
   country: CountryCode;
 }
-export const addressType = ['primary', 'mailing', 'other'];
+export const addressTypeOrder = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -37,14 +39,17 @@ const AddressManagement = () => {
   const tProfile = useTranslations('Profile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
     user?.addresses
-  ); // need to update planet-sdk to include addresses key
+  );
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const sortedAddresses = useMemo(() => {
     return userAddresses.sort((a, b) => {
-      return addressType.indexOf(a.type) - addressType.indexOf(b.type);
+      return (
+        addressTypeOrder.indexOf(a.type) - addressTypeOrder.indexOf(b.type)
+      );
     });
   }, [userAddresses]);
 
@@ -63,30 +68,44 @@ const AddressManagement = () => {
     }
   };
 
+  const toggleAddAddressModal = () => {
+    setIsModalOpen(true);
+    setAddressAction(ADDRESS_ACTIONS.ADD);
+  };
+
   return (
-    <>
-      <AddressList
-        addresses={sortedAddresses}
-        addressAction={addressAction}
-        setAddressAction={setAddressAction}
-        setUserAddresses={setUserAddresses}
-        fetchUserAddresses={fetchUserAddresses}
-      />
-      <WebappButton
-        text={tProfile('addNewAddress')}
-        elementType="button"
-        onClick={() => setIsModalOpen(true)}
-        variant="primary"
-        buttonClasses={styles.addNewAddressButton}
-      />
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <AddressForm
-          formType="add"
-          setIsModalOpen={setIsModalOpen}
+    <section className={styles.addressManagement}>
+      <h2 className={styles.addressManagementTitle}>
+        {tProfile('addressManagementTitle')}
+      </h2>
+      <CenteredContainer>
+        <AddressList
+          addresses={sortedAddresses}
+          addressAction={addressAction}
+          setAddressAction={setAddressAction}
+          fetchUserAddresses={fetchUserAddresses}
           setUserAddresses={setUserAddresses}
         />
+        <WebappButton
+          text={tProfile('addNewAddress')}
+          elementType="button"
+          onClick={toggleAddAddressModal}
+          variant="primary"
+          buttonClasses={styles.addAddressButton}
+        />
+      </CenteredContainer>
+      <Modal open={isModalOpen}>
+        <>
+          {addressAction === ADDRESS_ACTIONS.ADD && (
+            <AddressForm
+              formType="add"
+              setIsModalOpen={setIsModalOpen}
+              setUserAddresses={setUserAddresses}
+            />
+          )}
+        </>
       </Modal>
-    </>
+    </section>
   );
 };
 

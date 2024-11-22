@@ -39,24 +39,24 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile('edit'),
+      label: tProfile(`actions.${ADDRESS_ACTIONS.EDIT}`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile('delete'),
+      label: tProfile(`actions.${ADDRESS_ACTIONS.DELETE}`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: tProfile('setAsPrimaryAddress'),
+      label: tProfile('actions.setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
       ),
     },
     {
-      label: tProfile('setAsBillingAddress'),
+      label: tProfile('actions.setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
@@ -83,7 +83,7 @@ const AddressActionsMenu = ({
 
   return (
     <div>
-      <button onClick={openPopover} className={styles.kababMenuButton}>
+      <button onClick={openPopover} className={styles.kebabMenuButton}>
         <KababMenuIcon />
       </button>
       <Popover
