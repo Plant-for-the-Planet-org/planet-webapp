@@ -80,6 +80,35 @@ const AddressManagement = () => {
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
 
+  const renderModalContent = useMemo(() => {
+    switch (addressAction) {
+      case ADDRESS_ACTIONS.ADD:
+        return (
+          <AddressForm
+            formType="add"
+            setIsModalOpen={setIsModalOpen}
+            setUserAddresses={setUserAddresses} // to update the address list
+          />
+        );
+      case ADDRESS_ACTIONS.EDIT:
+        return (
+          <AddressForm
+            formType="edit"
+            setIsModalOpen={setIsModalOpen}
+            addressAction={addressAction}
+            selectedAddressForAction={selectedAddressForAction}
+            fetchUserAddresses={fetchUserAddresses} // to update the address list
+          />
+        );
+    }
+  }, [
+    addressAction,
+    setIsModalOpen,
+    setUserAddresses,
+    selectedAddressForAction,
+    fetchUserAddresses,
+  ]);
+
   return userAddresses.length > 0 ? (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
@@ -101,24 +130,7 @@ const AddressManagement = () => {
         />
       </CenteredContainer>
       <Modal open={isModalOpen}>
-        <>
-          {addressAction === ADDRESS_ACTIONS.ADD && (
-            <AddressForm
-              formType="add"
-              setIsModalOpen={setIsModalOpen}
-              setUserAddresses={setUserAddresses} // to update the address list
-            />
-          )}
-          {addressAction === ADDRESS_ACTIONS.EDIT && (
-            <AddressForm
-              formType="edit"
-              setIsModalOpen={setIsModalOpen}
-              addressAction={addressAction}
-              selectedAddressForAction={selectedAddressForAction}
-              fetchUserAddresses={fetchUserAddresses} // to update the address list
-            />
-          )}
-        </>
+        <>{renderModalContent}</>
       </Modal>
     </section>
   ) : null;

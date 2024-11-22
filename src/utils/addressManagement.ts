@@ -36,17 +36,3 @@ export const validationPattern = {
   address: /^[\p{L}\p{N}\sß.,#/-]+$/u,
   cityState: /^[\p{L}\sß.,()-]+$/u,
 };
-
-export const getAddressType = (
-  formType: 'add' | 'edit',
-  userAddressType: AddressType
-) => {
-  if (
-    formType === 'edit' &&
-    (userAddressType === ADDRESS_TYPE.MAILING ||
-      userAddressType === ADDRESS_TYPE.PRIMARY)
-  ) {
-    return userAddressType;
-  }
-  return 'other';
-};

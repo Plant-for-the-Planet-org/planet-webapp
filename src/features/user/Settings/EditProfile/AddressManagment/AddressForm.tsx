@@ -25,10 +25,7 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 import AddressFormInputs from './microComponents/AddressFormInputs';
 import { AddressAction } from './microComponents/AddressActionMenu';
-import {
-  ADDRESS_TYPE,
-  getAddressType,
-} from '../../../../../utils/addressManagement';
+import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 
 export type FormData = {
   address: string | undefined;
@@ -159,13 +156,14 @@ const AddressForm = ({
     resetForm();
   };
 
-  const editAddress = async (data: FormData) => {
-    if (!addressAction || !selectedAddressForAction) return;
+  const updateAddress = async (data: FormData) => {
+    if (!addressAction || !selectedAddressForAction || formType === 'add')
+      return;
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
       country,
-      type: getAddressType(formType, selectedAddressForAction.type),
+      type: selectedAddressForAction.type,
     };
     try {
       const res = await putAuthenticatedRequest<UpdatedAddress>(
@@ -258,7 +256,7 @@ const AddressForm = ({
             variant="primary"
             elementType="button"
             onClick={handleSubmit(
-              formType === 'add' ? addAddress : editAddress
+              formType === 'add' ? addAddress : updateAddress
             )}
             buttonClasses={styles.addAddressButton}
           />
