@@ -4,7 +4,7 @@ import type {
   AddressType,
 } from './microComponents/AddressActionMenu';
 
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import AddressList from './microComponents/AddressList';
@@ -40,9 +40,7 @@ const AddressManagement = () => {
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const tProfile = useTranslations('Profile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
-    user?.addresses
-  );
+  const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>([]);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -73,12 +71,16 @@ const AddressManagement = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUserAddresses();
+  }, []);
+
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
 
-  return (
+  return userAddresses.length > 0 ? (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
         {tProfile('addressManagementTitle')}
@@ -119,7 +121,7 @@ const AddressManagement = () => {
         </>
       </Modal>
     </section>
-  );
+  ) : null;
 };
 
 export default AddressManagement;
