@@ -11,12 +11,20 @@ import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import AddressFormModal from './AddressFormModal';
 import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { ADDRESS_FORM_TYPE } from '../../../../../utils/addressManagement';
+import {
+  ADDRESS_ACTIONS,
+  ADDRESS_FORM_TYPE,
+  ADDRESS_TYPE,
+  addressTypeOrder,
+  findAddressByType,
+} from '../../../../../utils/addressManagement';
+import CenteredContainer from '../../../../common/Layout/CenteredContainer';
+import AddressForm from './AddressForm';
+import AddressTypeChangeModal from './AddressTypeChangeModal';
 
 export interface UpdatedAddress {
   id: string;
@@ -30,23 +38,25 @@ export interface UpdatedAddress {
   zipCode?: string;
   country: CountryCode;
 }
-export const addressType = ['primary', 'mailing', 'other'];
+
 const AddressManagement = () => {
   const tProfile = useTranslations('Profile.addressManagement');
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-
   const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>([]);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
+  const [selectedAddressForAction, setSelectedAddressForAction] =
+    useState<UpdatedAddress | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUploadingData, setIsUploadingData] = useState(false);
 
   const sortedAddresses = useMemo(() => {
-    return userAddresses?.sort((a, b) => {
-      return addressType.indexOf(a.type) - addressType.indexOf(b.type);
+    return userAddresses.sort((a, b) => {
+      return (
+        addressTypeOrder.indexOf(a.type) - addressTypeOrder.indexOf(b.type)
+      );
     });
   }, [userAddresses]);
 
@@ -69,35 +79,91 @@ const AddressManagement = () => {
     fetchUserAddresses();
   }, []);
 
-  return (
-    <>
-      <AddressList
-        addresses={sortedAddresses}
-        addressAction={addressAction}
-        setAddressAction={setAddressAction}
-        setUserAddresses={setUserAddresses}
-        isUploadingData={isUploadingData}
-        setIsUploadingData={setIsUploadingData}
-        fetchUserAddresses={fetchUserAddresses}
-      />
-      <WebappButton
-        text={tProfile('addNewAddress')}
-        elementType="button"
-        onClick={() => setIsModalOpen(true)}
-        variant="primary"
-        buttonClasses={styles.addNewAddressButton}
-      />
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <AddressFormModal
-          formType={ADDRESS_FORM_TYPE.ADD_ADDRESS}
-          setIsModalOpen={setIsModalOpen}
-          setUserAddresses={setUserAddresses}
-          isUploadingData={isUploadingData}
-          setIsUploadingData={setIsUploadingData}
-        />
-      </Modal>
-    </>
+  const toggleAddAddressModal = () => {
+    setIsModalOpen(true);
+    setAddressAction(ADDRESS_ACTIONS.ADD);
+  };
+  const primaryAddress = useMemo(
+    () => findAddressByType(userAddresses, ADDRESS_TYPE.PRIMARY),
+    [userAddresses]
   );
+  const billingAddress = useMemo(
+    () => findAddressByType(userAddresses, ADDRESS_TYPE.MAILING),
+    [userAddresses]
+  );
+  const renderModalContent = useMemo(() => {
+    switch (addressAction) {
+      case ADDRESS_ACTIONS.ADD:
+        return (
+          <AddressForm
+            formType={ADDRESS_FORM_TYPE.ADD_ADDRESS}
+            setIsModalOpen={setIsModalOpen}
+            setUserAddresses={setUserAddresses} // to update the address list
+          />
+        );
+      case ADDRESS_ACTIONS.EDIT:
+        return (
+          <AddressForm
+            formType={ADDRESS_FORM_TYPE.EDIT_ADDRESS}
+            setIsModalOpen={setIsModalOpen}
+            addressAction={addressAction}
+            selectedAddressForAction={selectedAddressForAction}
+            fetchUserAddresses={fetchUserAddresses} // to update the address list
+          />
+        );
+      case ADDRESS_ACTIONS.SET_BILLING:
+      case ADDRESS_ACTIONS.SET_PRIMARY:
+        return (
+          <AddressTypeChangeModal
+            setIsModalOpen={setIsModalOpen}
+            primaryAddress={primaryAddress}
+            billingAddress={billingAddress}
+            addressAction={addressAction}
+            selectedAddressForAction={selectedAddressForAction}
+            fetchUserAddresses={fetchUserAddresses}
+          />
+        );
+      // case ADDRESS_ACTIONS.DELETE:
+      //   return (
+      //     <AddressDeleteModal
+      //       setIsModalOpen={setIsModalOpen}
+      //       deleteAddress={deleteAddress}
+      //     />
+      //   );
+    }
+  }, [
+    addressAction,
+    setIsModalOpen,
+    setUserAddresses,
+    selectedAddressForAction,
+    fetchUserAddresses,
+  ]);
+
+  return userAddresses.length > 0 ? (
+    <section className={styles.addressManagement}>
+      <h2 className={styles.addressManagementTitle}>
+        {tProfile('addressManagementTitle')}
+      </h2>
+      <CenteredContainer>
+        <AddressList
+          addresses={sortedAddresses}
+          setAddressAction={setAddressAction}
+          setSelectedAddressForAction={setSelectedAddressForAction}
+          setIsModalOpen={setIsModalOpen}
+        />
+        <WebappButton
+          text={tProfile('addNewAddress')}
+          elementType="button"
+          onClick={toggleAddAddressModal}
+          variant="primary"
+          buttonClasses={styles.addAddressButton}
+        />
+      </CenteredContainer>
+      <Modal open={isModalOpen}>
+        <>{renderModalContent}</>
+      </Modal>
+    </section>
+  ) : null;
 };
 
 export default AddressManagement;

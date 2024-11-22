@@ -10,6 +10,7 @@ import {
   ADDRESS_FORM_TYPE,
   ADDRESS_TYPE,
 } from '../../../../../../utils/addressManagement';
+import { UpdatedAddress } from '..';
 
 export type AddressType = (typeof ADDRESS_TYPE)[keyof typeof ADDRESS_TYPE];
 export type AddressAction =
@@ -27,6 +28,8 @@ interface Props {
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
+  setSelectedAddressForAction: SetState<UpdatedAddress | null>;
+  userAddress: UpdatedAddress;
 }
 
 const AddressActionsMenu = ({
@@ -34,6 +37,8 @@ const AddressActionsMenu = ({
   addressCount,
   setAddressAction,
   setIsModalOpen,
+  setSelectedAddressForAction,
+  userAddress,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
@@ -42,24 +47,24 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile('edit'),
+      label: tProfile(`actions.${ADDRESS_ACTIONS.EDIT}`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile('delete'),
+      label: tProfile(`actions.${ADDRESS_ACTIONS.DELETE}`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: tProfile('setAsPrimaryAddress'),
+      label: tProfile('actions.setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
       ),
     },
     {
-      label: tProfile('setAsBillingAddress'),
+      label: tProfile('actions.setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
@@ -76,6 +81,7 @@ const AddressActionsMenu = ({
   };
 
   const handleActionClick = (action: AddressAction) => {
+    setSelectedAddressForAction(userAddress);
     setIsModalOpen(true);
     setAddressAction(action);
     setPopoverAnchor(null);
@@ -86,7 +92,7 @@ const AddressActionsMenu = ({
 
   return (
     <div>
-      <button onClick={openPopover} className={styles.kababMenuButton}>
+      <button onClick={openPopover} className={styles.kebabMenuButton}>
         <KababMenuIcon />
       </button>
       <Popover

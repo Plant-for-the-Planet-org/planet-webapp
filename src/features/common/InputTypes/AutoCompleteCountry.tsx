@@ -24,7 +24,7 @@ interface CountrySelectProps {
   label?: ReactNode;
   name: string | undefined;
   defaultValue: string | undefined; //This will be a country code e.g. DE, IN, US
-  onChange: SetState<ExtendedCountryCode>;
+  onChange: SetState<ExtendedCountryCode | ''>;
   countries?: CountryType[];
 }
 

@@ -1,8 +1,4 @@
-import type { UpdatedAddress } from '../features/user/Settings/EditProfile/AddressManagment';
-import type {
-  AddressFormType,
-  AddressType,
-} from '../features/user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
+import { UpdatedAddress } from '../features/user/Settings/EditProfile/AddressManagment';
 
 export const ADDRESS_TYPE = {
   PRIMARY: 'primary',
@@ -11,6 +7,7 @@ export const ADDRESS_TYPE = {
 } as const;
 
 export const ADDRESS_ACTIONS = {
+  ADD: 'add',
   EDIT: 'edit',
   DELETE: 'delete',
   SET_PRIMARY: 'setPrimary',
@@ -21,6 +18,7 @@ export const ADDRESS_FORM_TYPE = {
   ADD_ADDRESS: 'add',
   EDIT_ADDRESS: 'edit',
 } as const;
+export const addressTypeOrder = ['primary', 'mailing', 'other'];
 
 export const formatAddress = (
   address: string | undefined,
@@ -42,23 +40,9 @@ export const validationPattern = {
   cityState: /^[\p{L}\sß.,()-]+$/u,
 };
 
-export const getAddressType = (
-  formType: AddressFormType,
-  userAddressType: AddressType
-) => {
-  if (
-    formType === ADDRESS_FORM_TYPE.EDIT_ADDRESS &&
-    (userAddressType === ADDRESS_TYPE.MAILING ||
-      userAddressType === ADDRESS_TYPE.PRIMARY)
-  ) {
-    return userAddressType;
-  }
-  return 'other';
-};
-
 export const findAddressByType = (
-  addresses: UpdatedAddress[] | undefined,
-  type: AddressType
+  addresses: UpdatedAddress[],
+  addressType: 'primary' | 'mailing'
 ) => {
-  return addresses?.find((address) => address.type === type) || null;
+  return addresses.find((address) => address.type === addressType);
 };

@@ -1,5 +1,11 @@
 @import '../../../../../theme/theme';
 
+.addressManagementTitle {
+  font-size: $fontLarge;
+  font-weight: 600;
+  margin: 40px 0 20px;
+}
+
 .addressContainer {
   display: flex;
   justify-content: space-between;
@@ -12,7 +18,7 @@
   .address {
     max-width: 346px;
   }
-  .kababMenuButton {
+  .kebabMenuButton {
     height: 34px;
     width: 34px;
     border-radius: 50%;
@@ -25,9 +31,9 @@
       height: 20px;
       width: 12px;
     }
-  }
-  .kababMenuButton:hover {
-    background-color: rgba(120, 120, 120, 0.1);
+    &:hover {
+      background-color: rgba(120, 120, 120, 0.1);
+    }
   }
 }
 
@@ -38,7 +44,7 @@
   gap: 16px;
   .addressTag {
     padding: 5px 10px;
-    max-width: 112px;
+    max-width: fit-content;
     border-radius: 6px;
     text-align: center;
     color: #fff;
@@ -46,12 +52,6 @@
     line-height: 16px;
     font-weight: 600;
   }
-}
-
-.addNewAddressButton {
-  width: 342px;
-  height: 40px;
-  margin-top: 40px;
 }
 
 .primary {
@@ -98,6 +98,10 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  h2 {
+    font-weight: 700;
+    font-size: $fontSixteen;
+  }
   .addressForm {
     display: flex;
     flex-direction: column;
@@ -133,14 +137,12 @@
     font-weight: 400;
     padding: 24px;
   }
-
   .buttonContainer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
+    gap: 20px;
+    margin-top: 34px;
     button {
-      min-width: 206px;
-      min-height: 40px;
+      flex: 1 1;
     }
   }
 }

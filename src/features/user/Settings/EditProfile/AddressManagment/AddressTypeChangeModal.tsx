@@ -1,38 +1,96 @@
 import {
   ADDRESS_ACTIONS,
   ADDRESS_TYPE,
+  formatAddress,
 } from '../../../../../utils/addressManagement';
 import styles from './AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
 import WebappButton from '../../../../common/WebappButton';
 import { SetState } from '../../../../common/types/common';
-import { AddressFormData } from './AddressFormModal';
-import { AddressAction } from './microComponents/AddressActionMenu';
+import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { UpdatedAddress } from '.';
+import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useContext, useMemo, useState } from 'react';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { APIError, CountryCode, handleError } from '@planet-sdk/common';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
-  editAddress: (
-    data: AddressFormData | null,
-    addressType: string
-  ) => Promise<void>;
-  primaryAddress: string | null;
-  billingAddress: string | null;
-  addressAction: AddressAction;
+  primaryAddress: UpdatedAddress | undefined;
+  billingAddress: UpdatedAddress | undefined;
+  addressAction: 'setPrimary' | 'setBilling';
+  selectedAddressForAction: UpdatedAddress | null;
+  fetchUserAddresses: () => Promise<void>;
 }
 
 const AddressTypeChangeModal = ({
   setIsModalOpen,
-  editAddress,
   primaryAddress,
   billingAddress,
   addressAction,
+  selectedAddressForAction,
+  fetchUserAddresses,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
+  const tCountry = useTranslations('Country');
+  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const [isUploadingData, setIsUploadingData] = useState(false);
   const isSetPrimaryAction = addressAction === ADDRESS_ACTIONS.SET_PRIMARY;
   const isSetBillingAction = addressAction === ADDRESS_ACTIONS.SET_BILLING;
   const isBillingAddressAlreadyPresent = isSetBillingAction && billingAddress;
   const isPrimaryAddressAlreadyPresent = isSetPrimaryAction && primaryAddress;
+
+  const getCountryFullForm = (countryCode: string | undefined) => {
+    return countryCode
+      ? tCountry(countryCode.toLowerCase() as Lowercase<CountryCode>)
+      : '';
+  };
+  const getFormattedAddress = (address: UpdatedAddress) => {
+    const { address: userAddress, zipCode, city, state, country } = address;
+    const countryFullForm = getCountryFullForm(country);
+    return formatAddress(userAddress, zipCode, city, state, countryFullForm);
+  };
+
+  const primaryFormattedAddress = useMemo(
+    () => (primaryAddress ? getFormattedAddress(primaryAddress) : null),
+    [primaryAddress]
+  );
+  const billingFormattedAddress = useMemo(
+    () => (billingAddress ? getFormattedAddress(billingAddress) : null),
+    [billingAddress]
+  );
+
+  const updateAddress = async (addressType: 'primary' | 'mailing') => {
+    if (!contextLoaded || !user) return;
+    setIsUploadingData(true);
+    const bodyToSend = {
+      type: addressType,
+    };
+    try {
+      const res = await putAuthenticatedRequest<UpdatedAddress>(
+        tenantConfig.id,
+        `/app/addresses/${selectedAddressForAction?.id}`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      if (res) {
+        fetchUserAddresses();
+        setIsUploadingData(false);
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      setIsUploadingData(false);
+      setErrors(handleError(error as APIError));
+    } finally {
+      setIsUploadingData(false);
+      setIsModalOpen(false);
+    }
+  };
   return (
     <div className={styles.addrConfirmContainer}>
       <h1 className={styles.addressActionHeader}>
@@ -56,10 +114,10 @@ const AddressTypeChangeModal = ({
         })}
       </p>
       {isBillingAddressAlreadyPresent && (
-        <p className={styles.address}>{billingAddress}</p>
+        <p className={styles.address}>{billingFormattedAddress}</p>
       )}
       {isPrimaryAddressAlreadyPresent && (
-        <p className={styles.address}>{primaryAddress}</p>
+        <p className={styles.address}>{primaryFormattedAddress}</p>
       )}
       <div className={styles.buttonContainer}>
         <WebappButton
@@ -73,9 +131,10 @@ const AddressTypeChangeModal = ({
           elementType="button"
           variant="primary"
           onClick={() =>
-            editAddress(
-              null,
-              isSetBillingAction ? ADDRESS_TYPE.MAILING : ADDRESS_TYPE.PRIMARY
+            updateAddress(
+              addressAction === ADDRESS_ACTIONS.SET_PRIMARY
+                ? ADDRESS_TYPE.PRIMARY
+                : ADDRESS_TYPE.MAILING
             )
           }
         />
