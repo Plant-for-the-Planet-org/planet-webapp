@@ -182,10 +182,10 @@ const AddressForm = ({
         handleCancel();
       }
     } catch (error) {
-      setIsUploadingData(false);
       setErrors(handleError(error as APIError));
     } finally {
       setIsUploadingData(false);
+      setIsModalOpen(false);
     }
   };
 
@@ -211,10 +211,10 @@ const AddressForm = ({
         }
       } catch (error) {
         resetForm();
-        setIsUploadingData(false);
         setErrors(handleError(error as APIError));
       } finally {
         setIsUploadingData(false);
+        setIsModalOpen(false);
       }
     }
   };
@@ -238,11 +238,7 @@ const AddressForm = ({
         country={country}
         setCountry={setCountry}
       />
-      {isUploadingData ? (
-        <div className={styles.addressMgmtSpinner}>
-          <CircularProgress color="success" />
-        </div>
-      ) : (
+      {!isUploadingData ? (
         <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
@@ -263,6 +259,10 @@ const AddressForm = ({
               isAddAddressForm ? addAddress : updateAddress
             )}
           />
+        </div>
+      ) : (
+        <div className={styles.addressMgmtSpinner}>
+          <CircularProgress color="success" />
         </div>
       )}
     </div>

@@ -25,6 +25,7 @@ import {
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 import AddressForm from './AddressForm';
 import AddressTypeChangeModal from './AddressTypeChangeModal';
+import AddressDeleteModal from './AddressDeleteModal';
 
 export interface UpdatedAddress {
   id: string;
@@ -123,13 +124,14 @@ const AddressManagement = () => {
             fetchUserAddresses={fetchUserAddresses}
           />
         );
-      // case ADDRESS_ACTIONS.DELETE:
-      //   return (
-      //     <AddressDeleteModal
-      //       setIsModalOpen={setIsModalOpen}
-      //       deleteAddress={deleteAddress}
-      //     />
-      //   );
+      case ADDRESS_ACTIONS.DELETE:
+        return (
+          <AddressDeleteModal
+            setIsModalOpen={setIsModalOpen}
+            addressId={selectedAddressForAction?.id}
+            fetchUserAddresses={fetchUserAddresses}
+          />
+        );
     }
   }, [
     addressAction,

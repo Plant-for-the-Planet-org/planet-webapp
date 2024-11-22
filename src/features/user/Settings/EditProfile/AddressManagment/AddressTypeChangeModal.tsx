@@ -14,6 +14,7 @@ import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useContext, useMemo, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { APIError, CountryCode, handleError } from '@planet-sdk/common';
+import { CircularProgress } from '@mui/material';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
@@ -78,13 +79,8 @@ const AddressTypeChangeModal = ({
         token,
         logoutUser
       );
-      if (res) {
-        fetchUserAddresses();
-        setIsUploadingData(false);
-        setIsModalOpen(false);
-      }
+      if (res) fetchUserAddresses();
     } catch (error) {
-      setIsUploadingData(false);
       setErrors(handleError(error as APIError));
     } finally {
       setIsUploadingData(false);
@@ -93,13 +89,13 @@ const AddressTypeChangeModal = ({
   };
   return (
     <div className={styles.addrConfirmContainer}>
-      <h1 className={styles.addressActionHeader}>
+      <h2>
         {tProfile('addressType', {
           address: isSetPrimaryAction
             ? ADDRESS_TYPE.PRIMARY
             : ADDRESS_TYPE.MAILING,
         })}
-      </h1>
+      </h2>
       <p>
         {tProfile('addressConfirmationMessage', {
           addressType: isSetBillingAction
@@ -119,26 +115,33 @@ const AddressTypeChangeModal = ({
       {isPrimaryAddressAlreadyPresent && (
         <p className={styles.address}>{primaryFormattedAddress}</p>
       )}
-      <div className={styles.buttonContainer}>
-        <WebappButton
-          text={tCommon('cancel')}
-          elementType="button"
-          variant="secondary"
-          onClick={() => setIsModalOpen(false)}
-        />
-        <WebappButton
-          text={tProfile('confirm')}
-          elementType="button"
-          variant="primary"
-          onClick={() =>
-            updateAddress(
-              addressAction === ADDRESS_ACTIONS.SET_PRIMARY
-                ? ADDRESS_TYPE.PRIMARY
-                : ADDRESS_TYPE.MAILING
-            )
-          }
-        />
-      </div>
+
+      {!isUploadingData ? (
+        <div className={styles.buttonContainer}>
+          <WebappButton
+            text={tCommon('cancel')}
+            elementType="button"
+            variant="secondary"
+            onClick={() => setIsModalOpen(false)}
+          />
+          <WebappButton
+            text={tProfile('confirm')}
+            elementType="button"
+            variant="primary"
+            onClick={() =>
+              updateAddress(
+                addressAction === ADDRESS_ACTIONS.SET_PRIMARY
+                  ? ADDRESS_TYPE.PRIMARY
+                  : ADDRESS_TYPE.MAILING
+              )
+            }
+          />
+        </div>
+      ) : (
+        <div className={styles.addressMgmtSpinner}>
+          <CircularProgress color="success" />
+        </div>
+      )}
     </div>
   );
 };
