@@ -31,5 +31,3 @@ export type ProfileV2Props = PrivateProfileV2Props | PublicProfileV2Props;
 
 export type AddressAction =
   (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
-
-export type AddressType = 'primary' | 'mailing' | 'other';

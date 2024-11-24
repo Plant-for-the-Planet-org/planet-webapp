@@ -1,13 +1,11 @@
 import type { SetState } from '../../../../../common/types/common';
-import type {
-  AddressAction,
-  AddressType,
-} from '../../../../../common/types/profile';
+import type { AddressAction } from '../../../../../common/types/profile';
+import type { AddressType } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Popover } from '@mui/material';
-import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
+import KebabMenuIcon from '../../../../../../../public/assets/images/icons/KebabMenuIcon';
 import styles from '../AddressManagement.module.scss';
 
 export const ADDRESS_ACTIONS = {
@@ -80,7 +78,7 @@ const AddressActionsMenu = ({
   return (
     <div>
       <button onClick={openPopover} className={styles.kebabMenuButton}>
-        <KababMenuIcon />
+        <KebabMenuIcon />
       </button>
       <Popover
         id={id}
