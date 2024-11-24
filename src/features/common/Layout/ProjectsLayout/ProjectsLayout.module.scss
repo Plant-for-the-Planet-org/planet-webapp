@@ -1,0 +1,92 @@
+@import '../../../../theme/theme';
+
+// define a variable for the space around the layout
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+$layoutPaddingBottom: 30px;
+$topMobileNavigationSpace: 77px;
+$bottomMobileFooterSpace: 49px;
+
+.impersonationMode,
+.embedMode,
+.projectsLayout {
+  margin-top: 80px;
+  height: calc(100vh - 80px);
+  background: linear-gradient(
+      0deg,
+      rgba(172, 172, 172, 0.15) 0%,
+      rgba(172, 172, 172, 0.15) 100%
+    ),
+    #fff;
+  padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
+  position: relative;
+  overflow: hidden;
+}
+.embedMode {
+  margin-top: 0px;
+  height: 100vh;
+}
+.impersonationMode {
+  margin-top: 125px;
+  height: calc(100vh - 125px);
+}
+
+.mainContent {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contentContainer {
+  width: 378px;
+  max-width: 100%;
+  background: transparent;
+}
+
+.mapContainer {
+  flex: 1;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.mapFeatureExplorerOverlay {
+  position: absolute;
+  top: calc($layoutPaddingTop + 10px);
+  right: calc($layoutPaddingSide + 10px);
+  z-index: 1;
+}
+
+// styles for mobile layout
+.mobileProjectsLayout {
+  position: fixed;
+  top: $topMobileNavigationSpace;
+  left: 0;
+  right: 0;
+  bottom: $bottomMobileFooterSpace;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: white;
+  padding-top: 24px;
+
+  &.mapMode {
+    top: 0;
+    padding-top: 0;
+  }
+}
+
+.mobileContentContainer {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: auto;
+}
+
+.mobileMapContainer {
+  width: inherit;
+  height: 100%;
+  position: relative;
+}
