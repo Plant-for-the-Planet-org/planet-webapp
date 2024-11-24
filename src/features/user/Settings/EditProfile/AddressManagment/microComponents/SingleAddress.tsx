@@ -1,6 +1,6 @@
 import type { UpdatedAddress } from '..';
 import type { SetState } from '../../../../../common/types/common';
-import type { AddressAction } from './AddressActionMenu';
+import type { AddressAction } from '../../../../../common/types/profile';
 
 import styles from '../AddressManagement.module.scss';
 import AddressDetails from './AddressDetails';
@@ -18,7 +18,7 @@ const SingleAddress = ({
   setAddressAction,
 }: Props) => {
   return (
-    <div className={styles.addressContainer}>
+    <div className={styles.singleAddressContainer}>
       <AddressDetails userAddress={userAddress} />
       <AddressActionsMenu
         type={userAddress.type}

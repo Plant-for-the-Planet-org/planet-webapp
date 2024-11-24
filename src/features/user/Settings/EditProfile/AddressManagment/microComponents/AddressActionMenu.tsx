@@ -1,4 +1,8 @@
 import type { SetState } from '../../../../../common/types/common';
+import type {
+  AddressAction,
+  AddressType,
+} from '../../../../../common/types/profile';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -6,16 +10,12 @@ import { Popover } from '@mui/material';
 import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
 import styles from '../AddressManagement.module.scss';
 
-export type AddressType = 'primary' | 'mailing' | 'other';
 export const ADDRESS_ACTIONS = {
   EDIT: 'edit',
   DELETE: 'delete',
   SET_PRIMARY: 'setPrimary',
   SET_BILLING: 'setBilling',
 } as const;
-
-export type AddressAction =
-  (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
 
 export interface AddressActionItem {
   label: string;

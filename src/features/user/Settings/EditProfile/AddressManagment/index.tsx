@@ -1,5 +1,6 @@
 import type { Address } from '@planet-sdk/common';
-import type { AddressAction } from './microComponents/AddressActionMenu';
+import type { AddressAction } from '../../../../common/types/profile';
+import type { AddressType } from '../../../../common/types/profile';
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -8,8 +9,6 @@ import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
-
-export type AddressType = 'primary' | 'mailing' | 'other';
 
 export interface UpdatedAddress extends Address {
   id: string;

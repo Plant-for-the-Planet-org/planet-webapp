@@ -1,8 +1,9 @@
-import { CountryCode } from '@planet-sdk/common';
-import { UpdatedAddress } from '..';
-import styles from '../AddressManagement.module.scss';
-import { useTranslations } from 'next-intl';
+import type { CountryCode } from '@planet-sdk/common';
+import type { UpdatedAddress } from '..';
+
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import styles from '../AddressManagement.module.scss';
 
 interface Props {
   userAddress: UpdatedAddress;
