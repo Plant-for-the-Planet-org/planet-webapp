@@ -40,12 +40,12 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile(`actions.${ADDRESS_ACTIONS.EDIT}`),
+      label: tProfile(`actions.edit`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile(`actions.${ADDRESS_ACTIONS.DELETE}`),
+      label: tProfile(`actions.delete`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
