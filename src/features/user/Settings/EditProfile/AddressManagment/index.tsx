@@ -1,6 +1,5 @@
 import type { Address } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
-import type { AddressType } from '../../../../common/types/profile';
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -10,19 +9,11 @@ import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 
-export interface UpdatedAddress extends Address {
-  id: string;
-  type: AddressType;
-  name: string | null;
-  state: string | null;
-  isPrimary: boolean | null;
-  address2: string | null;
-}
 export const addressTypeOrder = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
   const { user } = useUserProps();
   const tProfile = useTranslations('Profile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
+  const [userAddresses, setUserAddresses] = useState<Address[]>(
     user?.addresses
   ); // need to update planet-sdk to include addresses key
   const [addressAction, setAddressAction] = useState<AddressAction | null>(

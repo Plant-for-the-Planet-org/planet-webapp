@@ -1,13 +1,13 @@
-import type { UpdatedAddress } from '..';
 import type { SetState } from '../../../../../common/types/common';
 import type { AddressAction } from '../../../../../common/types/profile';
+import type { Address } from '@planet-sdk/common';
 
 import styles from '../AddressManagement.module.scss';
 import AddressDetails from './AddressDetails';
 import AddressActionsMenu from './AddressActionMenu';
 
 interface Props {
-  userAddress: UpdatedAddress;
+  userAddress: Address;
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
 }

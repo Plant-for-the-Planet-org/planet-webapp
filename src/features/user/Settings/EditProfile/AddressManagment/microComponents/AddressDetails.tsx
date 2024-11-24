@@ -1,12 +1,11 @@
-import type { CountryCode } from '@planet-sdk/common';
-import type { UpdatedAddress } from '..';
+import type { CountryCode, Address } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../AddressManagement.module.scss';
 
 interface Props {
-  userAddress: UpdatedAddress;
+  userAddress: Address;
 }
 const AddressDetails = ({ userAddress }: Props) => {
   const { zipCode, city, state, country, address, address2, type } =
