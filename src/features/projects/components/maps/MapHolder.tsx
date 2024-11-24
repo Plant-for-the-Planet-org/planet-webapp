@@ -15,13 +15,8 @@ const MapHolder = ({ setshowVideo }: Props) => {
   const router = useRouter();
 
   const showMapLayout =
-    router.pathname === '/' ||
-    router.pathname === '/[p]' ||
-    router.pathname === '/[p]/[id]' ||
-    router.pathname === '/sites/[slug]/[locale]' ||
-    router.pathname === '/sites/[slug]/[locale]/[p]' ||
-    (router.pathname === '/sites/[slug]/[locale]/[p]/[id]' &&
-      (project !== null || projects !== null));
+    router.pathname.includes('projects-archive') &&
+    (project !== null || projects !== null);
 
   return (
     <>

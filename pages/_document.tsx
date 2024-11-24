@@ -25,11 +25,19 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="dns-prefetch" href="https://www.plant-for-the-planet.org/" />
+          <link
+            rel="dns-prefetch"
+            href="https://www.plant-for-the-planet.org/"
+          />
           <link
             rel="preconnect"
             href="https://fonts.googleapis.com/"
             crossOrigin="true"
+          />
+          <link
+            rel="preload"
+            as="image"
+            href="/assets/images/project-contribution-default-landscape.png"
           />
           {/* Commented code below to avoid inserting emotion css <style> tags above global/module scss */}
           {/* <meta name="emotion-insertion-point" content="" /> */}

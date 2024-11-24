@@ -17,7 +17,8 @@ export default function ProjectTabs(): ReactElement {
   const containerClasses =
     embed !== 'true'
       ? styles.VegetationChangeContainer
-      : router.pathname.includes('/[p]') && showProjectDetails === 'false'
+      : router.pathname.includes('/projects-archive/[p]') &&
+        showProjectDetails === 'false'
       ? `${styles.embed_VegetationChangeContainer} ${styles['no-project-details']}`
       : styles.embed_VegetationChangeContainer;
 
