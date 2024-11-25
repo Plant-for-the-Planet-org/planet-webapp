@@ -1,8 +1,5 @@
 import type { Address } from '@planet-sdk/common';
-import {
-  ADDRESS_ACTIONS,
-  type AddressAction,
-} from './microComponents/AddressActionMenu';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -13,22 +10,13 @@ import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
 import AddressForm from './AddressForm';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
+import { ADDRESS_ACTIONS } from './microComponents/AddressActionMenu';
 
-export type AddressType = 'primary' | 'mailing' | 'other';
-
-export interface UpdatedAddress extends Address {
-  id: string;
-  type: AddressType;
-  name: string | null;
-  state: string | null;
-  isPrimary: boolean | null;
-  address2: string | null;
-}
 export const addressTypeOrder = ['primary', 'mailing', 'other'];
 const AddressManagement = () => {
   const { user } = useUserProps();
   const tProfile = useTranslations('Profile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<UpdatedAddress[]>(
+  const [userAddresses, setUserAddresses] = useState<Address[]>(
     user?.addresses
   );
   const [addressAction, setAddressAction] = useState<AddressAction | null>(

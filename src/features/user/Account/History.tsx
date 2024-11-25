@@ -17,7 +17,6 @@ import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
 import Grid from '@mui/material/Grid';
 import MembershipCta from './components/MembershipCta';
-
 interface Props {
   filter: string | null;
   setFilter: (filter: string) => void;

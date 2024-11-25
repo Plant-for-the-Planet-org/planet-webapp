@@ -1,12 +1,13 @@
 import type { SetState } from '../../../../../common/types/common';
+import type { AddressAction } from '../../../../../common/types/profile';
+import type { AddressType } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Popover } from '@mui/material';
-import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
+import KebabMenuIcon from '../../../../../../../public/assets/images/icons/KebabMenuIcon';
 import styles from '../AddressManagement.module.scss';
 
-export type AddressType = 'primary' | 'mailing' | 'other';
 export const ADDRESS_ACTIONS = {
   ADD: 'add',
   EDIT: 'edit',
@@ -14,9 +15,6 @@ export const ADDRESS_ACTIONS = {
   SET_PRIMARY: 'setPrimary',
   SET_BILLING: 'setBilling',
 } as const;
-
-export type AddressAction =
-  (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
 
 export interface AddressActionItem {
   label: string;
@@ -41,12 +39,12 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile(`actions.${ADDRESS_ACTIONS.EDIT}`),
+      label: tProfile(`actions.edit`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile(`actions.${ADDRESS_ACTIONS.DELETE}`),
+      label: tProfile(`actions.delete`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
@@ -81,7 +79,7 @@ const AddressActionsMenu = ({
   return (
     <div>
       <button onClick={openPopover} className={styles.kebabMenuButton}>
-        <KababMenuIcon />
+        <KebabMenuIcon />
       </button>
       <Popover
         id={id}

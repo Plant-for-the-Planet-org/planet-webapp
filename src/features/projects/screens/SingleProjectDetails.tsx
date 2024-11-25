@@ -85,7 +85,7 @@ function SingleProjectDetails(): ReactElement {
       setHoveredPl(null);
       setSelectedPl(null);
       router.push(
-        `/${project.slug}/${
+        `/projects-archive/${project.slug}/${
           isEmbed
             ? `${
                 callbackUrl != undefined
@@ -100,7 +100,7 @@ function SingleProjectDetails(): ReactElement {
         window.history.go(-2);
       } else {
         router.replace({
-          pathname: `/${locale}`,
+          pathname: `/${locale}/projects-archive`,
           query: {
             ...(isEmbed ? { embed: 'true' } : {}),
             ...(isEmbed && callbackUrl !== undefined
@@ -200,8 +200,8 @@ function SingleProjectDetails(): ReactElement {
             <div className={'projectSnippetContainer'}>
               <ProjectSnippet
                 project={project}
-                editMode={false}
                 displayPopup={false}
+                editMode={false}
               />
             </div>
             {hoveredPl || selectedPl ? (

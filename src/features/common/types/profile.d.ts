@@ -1,6 +1,7 @@
 import { User, UserPublicProfile } from '@planet-sdk/common';
 import { SetState } from './common';
 import { PublicUser } from './user';
+import { ADDRESS_ACTIONS } from '../../user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
 
 export interface UserFeaturesProps {
   handleShare: () => void;
@@ -25,3 +26,8 @@ export type PublicProfileV2Props = {
 };
 
 export type ProfileV2Props = PrivateProfileV2Props | PublicProfileV2Props;
+
+// address management
+
+export type AddressAction =
+  (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];

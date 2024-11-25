@@ -12,9 +12,11 @@
     },
     "ecosystem": {
       "tropical-moist-forests": "Tropical Moist Forests",
+      "tropical-forests": "Tropical Forests",
       "tropical-dry-forests": "Tropical Dry Forests",
       "tropical-coniferous-forests": "Tropical Coniferous Forests",
       "tropical-grasslands-forests": "Tropical Grasslands Forests",
+      "temperate": "Temperate",
       "temperate-broadleaf-forests": "Temperate Broadleaf Forests",
       "temperate-coniferous-forests": "Temperate Coniferous Forests",
       "temperate-grasslands-forests": "Temperate Grassland Forests",
@@ -25,6 +27,25 @@
       "montane-grasslands": "Montane Grasslands",
       "boreal-forests": "Boreal Forests",
       "tundra": "Tundra"
+    },
+    "interventionTypes": {
+      "assisting-seed-rain": "Assisting Seed Rain",
+      "control-remove-livestock": "Control/Remove Livestock",
+      "cut-suppressing-grass": "Cut/Suppressing Grass",
+      "direct-seeding": "Direct Seeding",
+      "enrichment-planting": "Enrichment Planting",
+      "establish-firebreaks": "Establish Firebreaks",
+      "fire-patrols": "Fire Patrols",
+      "fire-suppression-team": "Fire Suppression Team",
+      "liberating-regenerants": "Liberating Regenerants",
+      "maintenance": "Maintenance",
+      "marking-regenerants": "Marking Regenerants",
+      "other-interventions": "Other Interventions",
+      "planting-trees": "Planting Trees",
+      "removal-contaminated-soil": "Removal of Contaminated Soil",
+      "removal-invasive-species": "Removal of Invasive Species",
+      "soil-improvement": "Soil Improvement",
+      "stop-tree-harvesting": "Stop Tree Harvesting"
     },
     "tpoName": "By {tpoName}"
   }

@@ -4,7 +4,7 @@ import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import ProjectTypeIcon from '../ProjectTypeIcon';
+import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useLocale } from 'next-intl';
@@ -49,7 +49,7 @@ export default function Markers({
   };
   const goToProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/${projectSlug}/${
+      `/${locale}/projects-archive/${projectSlug}${
         embed === 'true'
           ? `${
               callbackUrl != undefined

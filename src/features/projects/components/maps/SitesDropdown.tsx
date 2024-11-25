@@ -34,7 +34,7 @@ export default function SitesDropdown(): ReactElement {
     setSelectedPl(null);
     setSelectedSite(event.target.value as unknown as number);
     router.push(
-      `/${project.slug}/?site=${
+      `/projects-archive/${project.slug}?site=${
         geoJson.features[event.target.value as unknown as number].properties.id
       }`
     );
@@ -44,7 +44,7 @@ export default function SitesDropdown(): ReactElement {
   const dropdownContainerClasses = `${
     embed === 'true' ? styles.embed_dropdownContainer : styles.dropdownContainer
   } ${
-    router.pathname.includes('/[p]')
+    router.pathname.includes('/projects-archive/[p]')
       ? styles['dropdownContainer--reduce-right-offset']
       : ''
   }`;
@@ -54,7 +54,7 @@ export default function SitesDropdown(): ReactElement {
       ? styles.embed_projectSitesButton
       : styles.projectSitesButton
   } ${
-    router.pathname.includes('/[p]')
+    router.pathname.includes('/projects-archive/[p]')
       ? styles['projectSitesButton--reduce-right-offset']
       : ''
   }`;
