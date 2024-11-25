@@ -12,11 +12,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TransferDetails from './TransferDetails';
-import {
-  PaymentHistoryRecord,
-  RecipientBank,
-} from '../../../common/types/payments';
-import Certificates, { shouldEnableCertificate } from './Certificates';
+import Downloads, { canHaveCertificates } from './Downloads';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../../utils/projectV2';
 
@@ -437,11 +433,12 @@ export default function AccountRecord({
     ? styles.recordModal
     : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
 
-  const showCertificate = useMemo(() => {
+  const showDownloads = useMemo(() => {
     if (
-      (shouldEnableCertificate(record.purpose) &&
+      (canHaveCertificates(record.purpose) &&
         (record?.details?.donorCertificate ||
-          record?.details?.giftCertificate)) ||
+          record?.details?.giftCertificate ||
+          record?.details?.codesUrl)) ||
       record?.details?.taxDeductibleReceipt
     ) {
       return true;
@@ -488,11 +485,11 @@ export default function AccountRecord({
               <TransferDetails account={record.details.account} />
             )}
             {showStatusNote(record)}
-            {showCertificate && (
+            {showDownloads && (
               <>
                 <div className={styles.title}>{t('downloads')}</div>
                 <div className={styles.detailGrid}>
-                  <Certificates
+                  <Downloads
                     recordDetails={record.details}
                     purpose={record.purpose}
                   />
