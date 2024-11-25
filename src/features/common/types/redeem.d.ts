@@ -1,24 +1,36 @@
+import type {
+  CountryCode,
+  ProjectPurpose,
+  UnitTypes,
+} from '@planet-sdk/common';
+import type { Nullable } from '@planet-sdk/common/build/types/util';
+
 export interface Organization {
-  name: string
-  slug: string
+  name: string;
+  slug: string;
 }
 export interface Project {
-  id: string
-  name: string
-  slug: string
-  country: string
-  location: string
-  coordinates: number[]
-  organization: Organization
+  id: string;
+  name: string;
+  slug: string;
+  image: Nullable<string>;
+  country: CountryCode;
+  purpose: ProjectPurpose;
+  classification: Nullable<string>;
+  coordinates: number[];
+  organization: Organization;
 }
+
 export interface RedeemedCodeData {
-    id: string
-    type: string
-    code: string
-    units: number
-    status: string
-    project: Project
-  }
-  
-  
-  
+  guid: string;
+  type: 'invitation' | 'code';
+  code: string;
+  units: number;
+  unitType: UnitTypes;
+  recipientName: string;
+  recipientEmail: Nullable<string>;
+  message: Nullable<string>;
+  notifyRecipient: boolean;
+  status: string;
+  project: Project;
+}
