@@ -3,6 +3,7 @@ import type { AddressSuggestionsType } from '../../../../../common/types/geocode
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { FormData } from '../AddressForm';
 import type { SetState } from '../../../../../common/types/common';
+import type { FormData } from '../AddressForm';
 
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
