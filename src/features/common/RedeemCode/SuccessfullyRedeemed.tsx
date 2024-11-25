@@ -28,7 +28,7 @@ export const SuccessfullyRedeemed = ({
       </div>
 
       <div className={styles.successMessage}>
-        {redeemedCodeData?.project.classification === 'membership'
+        {redeemedCodeData?.project?.classification === 'membership'
           ? tRedeem.rich('membershipRedeemSuccessMessage', {
               line1: (chunks) => <p>{chunks}</p>,
               line2: (chunks) => <p>{chunks}</p>,

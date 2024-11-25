@@ -270,7 +270,7 @@ export interface ProjectOption {
   unitCost: number;
   currency: string;
   unit?: UnitType;
-  purpose: string;
+  purpose: 'trees' | 'conservation' | 'funds';
   allowDonations: boolean;
 }
 

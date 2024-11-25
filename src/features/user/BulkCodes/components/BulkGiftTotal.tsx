@@ -39,15 +39,15 @@ const BulkGiftTotal = ({
       label={tBulkCodes('total')}
       disabled
       inputProps={{ readOnly: true }}
-      value={tBulkCodes('summaryTotal', {
-        formattedAmount: getFormattedCurrency(
-          locale,
-          currency as string,
-          amount
-        ),
-        units,
-        pluralizedUnitType: getPluralizedUnitType(unit, units),
-      })}
+      value={
+        currency
+          ? tBulkCodes('summaryTotal', {
+              formattedAmount: getFormattedCurrency(locale, currency, amount),
+              units,
+              pluralizedUnitType: getPluralizedUnitType(unit, units),
+            })
+          : ''
+      }
     ></TextField>
   );
 };
