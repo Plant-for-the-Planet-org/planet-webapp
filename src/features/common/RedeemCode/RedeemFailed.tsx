@@ -1,9 +1,10 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SerializedError } from '@planet-sdk/common';
+
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import { useTranslations } from 'next-intl';
 import Button from '@mui/material/Button';
-import { SerializedError } from '@planet-sdk/common';
 
 export interface RedeemFailedProps {
   errorMessages: SerializedError[] | null;

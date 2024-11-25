@@ -1,6 +1,7 @@
+import type { ReactElement } from 'react';
+import type { RedeemedCodeData } from '../types/redeem';
+
 import { useLocale, useTranslations } from 'next-intl';
-import { ReactElement } from 'react';
-import { RedeemedCodeData } from '../types/redeem';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
