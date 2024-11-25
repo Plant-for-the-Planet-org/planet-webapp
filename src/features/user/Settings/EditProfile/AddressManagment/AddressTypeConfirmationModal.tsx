@@ -1,7 +1,7 @@
 import type { SetState } from '../../../../common/types/common';
-import type { APIError, CountryCode, Address } from '@planet-sdk/common';
+import type { APIError, Address } from '@planet-sdk/common';
 
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
@@ -11,7 +11,7 @@ import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { getFormattedAddress } from '../../../../../utils/addressManagement';
+import FormattedAddressBlock from './microComponents/FormattedAddressBlock';
 
 interface Props {
   mode: 'primary' | 'mailing';
@@ -30,25 +30,11 @@ const AddressTypeConfirmationModal = ({
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
-  const tCountry = useTranslations('Country');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  const countryName = tCountry(
-    userAddress?.country.toLowerCase() as Lowercase<CountryCode>
-  );
 
-  const formattedAddress = useMemo(
-    () =>
-      getFormattedAddress(
-        userAddress?.zipCode,
-        userAddress?.city,
-        userAddress?.state,
-        countryName
-      ),
-    [userAddress, countryName]
-  );
   const updateAddress = async (addressType: 'primary' | 'mailing') => {
     if (!contextLoaded || !user) return;
     setIsUploadingData(true);
@@ -82,11 +68,7 @@ const AddressTypeConfirmationModal = ({
       </p>
       {userAddress && (
         <div className={styles.address}>
-          <address>
-            <p>{userAddress?.address}</p>
-            {userAddress?.address2 && <p>{userAddress?.address2}</p>}
-            <p>{formattedAddress}</p>
-          </address>
+          <FormattedAddressBlock userAddress={userAddress} />
         </div>
       )}
       {!isUploadingData ? (
