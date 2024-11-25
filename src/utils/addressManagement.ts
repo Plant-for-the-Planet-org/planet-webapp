@@ -1,4 +1,4 @@
-import { UpdatedAddress } from '../features/user/Settings/EditProfile/AddressManagment';
+import type { Address } from '@planet-sdk/common';
 
 export const ADDRESS_TYPE = {
   PRIMARY: 'primary',
@@ -41,7 +41,7 @@ export const validationPattern = {
 };
 
 export const findAddressByType = (
-  addresses: UpdatedAddress[],
+  addresses: Address[],
   addressType: 'primary' | 'mailing'
 ) => {
   return addresses.find((address) => address.type === addressType);

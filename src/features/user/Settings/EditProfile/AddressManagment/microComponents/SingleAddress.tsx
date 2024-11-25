@@ -1,21 +1,17 @@
-import type { UpdatedAddress } from '..';
 import type { SetState } from '../../../../../common/types/common';
-import type { AddressAction } from './AddressActionMenu';
-import type { CountryCode } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../../common/types/profile';
+import type { Address } from '@planet-sdk/common';
 
-import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import { formatAddress } from '../../../../../../utils/addressManagement';
 import styles from '../AddressManagement.module.scss';
-import AddressContent from './AddressContent';
+import AddressDetails from './AddressDetails';
 import AddressActionsMenu from './AddressActionMenu';
 
 interface Props {
-  userAddress: UpdatedAddress;
+  userAddress: Address;
   addressCount: number;
   setIsModalOpen: SetState<boolean>;
   setAddressAction: SetState<AddressAction | null>;
-  setSelectedAddressForAction: SetState<UpdatedAddress | null>;
+  setSelectedAddressForAction: SetState<Address | null>;
 }
 
 const SingleAddress = ({
@@ -25,29 +21,11 @@ const SingleAddress = ({
   setAddressAction,
   setSelectedAddressForAction,
 }: Props) => {
-  const tCountry = useTranslations('Country');
-  const { type } = userAddress;
-  const getCountryFullForm = (countryCode: string | undefined) => {
-    return countryCode
-      ? tCountry(countryCode.toLowerCase() as Lowercase<CountryCode>)
-      : '';
-  };
-  const getFormattedAddress = (address: UpdatedAddress) => {
-    const { address: userAddress, zipCode, city, state, country } = address;
-    const countryFullForm = getCountryFullForm(country);
-    return formatAddress(userAddress, zipCode, city, state, countryFullForm);
-  };
-
-  const formattedAddress = useMemo(
-    () => getFormattedAddress(userAddress),
-    [userAddress]
-  );
-
   return (
-    <div className={styles.addressContainer}>
-      <AddressContent type={type} userAddress={formattedAddress} />
+    <div className={styles.singleAddressContainer}>
+      <AddressDetails userAddress={userAddress} />
       <AddressActionsMenu
-        type={type}
+        type={userAddress.type}
         addressCount={addressCount}
         setAddressAction={setAddressAction}
         setIsModalOpen={setIsModalOpen}

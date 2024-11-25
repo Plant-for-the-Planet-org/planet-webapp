@@ -1,22 +1,23 @@
+import type { SetState } from '../../../../common/types/common';
+import type { APIError, CountryCode, Address } from '@planet-sdk/common';
+
 import { formatAddress } from '../../../../../utils/addressManagement';
 import styles from './AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
 import WebappButton from '../../../../common/WebappButton';
-import { SetState } from '../../../../common/types/common';
 import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { UpdatedAddress } from '.';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useContext, useMemo, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { APIError, CountryCode, handleError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 
 interface Props {
   type: 'primary' | 'mailing';
   setIsModalOpen: SetState<boolean>;
-  address: UpdatedAddress | undefined;
-  selectedAddressForAction: UpdatedAddress | null;
+  address: Address | undefined;
+  selectedAddressForAction: Address | null;
   fetchUserAddresses: () => Promise<void>;
 }
 
@@ -40,7 +41,7 @@ const AddressTypeConfirmationModal = ({
       ? tCountry(countryCode.toLowerCase() as Lowercase<CountryCode>)
       : '';
   };
-  const getFormattedAddress = (address: UpdatedAddress) => {
+  const getFormattedAddress = (address: Address) => {
     const { address: userAddress, zipCode, city, state, country } = address;
     const countryFullForm = getCountryFullForm(country);
     return formatAddress(userAddress, zipCode, city, state, countryFullForm);
@@ -58,7 +59,7 @@ const AddressTypeConfirmationModal = ({
       type: addressType,
     };
     try {
-      const res = await putAuthenticatedRequest<UpdatedAddress>(
+      const res = await putAuthenticatedRequest<Address>(
         tenantConfig.id,
         `/app/addresses/${selectedAddressForAction?.id}`,
         bodyToSend,

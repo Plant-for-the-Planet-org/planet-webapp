@@ -6,7 +6,14 @@
   margin: 40px 0 20px;
 }
 
-.addressContainer {
+.addressListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.singleAddressContainer {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -15,9 +22,6 @@
   font-size: $fontSmall;
   font-weight: 400;
   padding: 24px 10px 24px 24px;
-  .address {
-    max-width: 346px;
-  }
   .kebabMenuButton {
     height: 34px;
     width: 34px;
@@ -37,12 +41,12 @@
   }
 }
 
-.addressSubContainer {
+.addressDetails {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 16px;
-  .addressTag {
+  span {
     padding: 5px 10px;
     max-width: fit-content;
     border-radius: 6px;
@@ -51,6 +55,9 @@
     font-size: $fontXSmall;
     line-height: 16px;
     font-weight: 600;
+  }
+  p {
+    margin-top: 2px;
   }
 }
 

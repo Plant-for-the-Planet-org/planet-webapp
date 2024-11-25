@@ -173,7 +173,7 @@ export default function TransitionsModal({
     // TODOO - loader while changing the locale
     if (modalLanguage !== locale) {
       const { asPath, pathname } = router;
-      if (pathname === '/sites/[slug]/[locale]') {
+      if (pathname === '/sites/[slug]/[locale]' || pathname === `/${locale}`) {
         router.replace(encodeURI(`/${modalLanguage}`));
       } else {
         const splitPathnames = asPath.split('/');

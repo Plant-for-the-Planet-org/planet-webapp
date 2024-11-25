@@ -1,14 +1,16 @@
+import type { SetState } from '../../../../common/types/common';
+import type { APIError } from '@planet-sdk/common';
+
 import { useContext, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { handleError } from '@planet-sdk/common';
+import { CircularProgress } from '@mui/material';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { SetState } from '../../../../common/types/common';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import { useTranslations } from 'next-intl';
 import { deleteAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { APIError, handleError } from '@planet-sdk/common';
-import { CircularProgress } from '@mui/material';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;

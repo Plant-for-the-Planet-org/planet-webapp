@@ -13,7 +13,7 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
-import ProjectTypeIcon from './ProjectTypeIcon';
+import ProjectTypeIcon from '../../common/ProjectTypeIcon';
 import {
   ConservationProjectConcise,
   ConservationProjectExtended,
@@ -28,6 +28,7 @@ import {
 } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { useTenant } from '../../common/Layout/TenantContext';
+import styles from '../styles/ProjectSnippet.module.scss';
 
 interface Props {
   project:
@@ -95,18 +96,18 @@ export default function ProjectSnippet({
 
   const donateButtonBackgroundColor =
     project.isTopProject && project.isApproved
-      ? 'topApproved'
-      : 'topUnapproved';
+      ? `${styles.topApproved}`
+      : `${styles.topUnapproved}`;
 
   const progressBarBackgroundColor =
     project.isTopProject && project.isApproved
-      ? 'topApproved'
+      ? `${styles.topApproved}`
       : project.allowDonations
-      ? 'topUnapproved'
-      : 'notDonatable';
+      ? `${styles.topUnapproved}`
+      : `${styles.notDonatable}`;
 
   return (
-    <div className={'singleProject'}>
+    <div className={styles.singleProject}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
@@ -119,7 +120,7 @@ export default function ProjectSnippet({
           setSelectedSite(0);
           if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
-            `/${locale}/${project.slug}/${
+            `/${locale}/projects-archive/${project.slug}${
               embed === 'true'
                 ? `${
                     callbackUrl != undefined
@@ -130,13 +131,13 @@ export default function ProjectSnippet({
             }`
           );
         }}
-        className={`projectImage ${
-          selectedPl || hoveredPl ? 'projectCollapsed' : ''
+        className={`${styles.projectImage} ${
+          selectedPl || hoveredPl ? styles.projectCollapsed : ''
         }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
-            className={'projectImageFile'}
+            className={styles.projectImageFile}
             style={{
               backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
               backgroundPosition: 'center',
@@ -146,9 +147,9 @@ export default function ProjectSnippet({
         {project.purpose === 'trees' &&
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={true} />}
-        <div className={'projectImageBlock'}>
-          <div className={'projectEcosystemOrTypeContainer'}>
-            <div className={'projectTypeIcon'}>
+        <div className={styles.projectImageBlock}>
+          <div className={styles.projectEcosystemOrTypeContainer}>
+            <div className={styles.projectTypeIcon}>
               <ProjectTypeIcon
                 projectType={
                   project.purpose === 'conservation'
@@ -159,19 +160,19 @@ export default function ProjectSnippet({
             </div>
             <div>
               {ecosystem !== null && (
-                <div className={'projectEcosystem'}>
+                <div className={styles.projectEcosystem}>
                   {tManageProjects(`ecosystemTypes.${ecosystem}`)}
                   {project.purpose === 'trees' && ' /'}
                 </div>
               )}
-              <div className={'projectType'}>
+              <div className={styles.projectType}>
                 {project.purpose === 'trees' &&
                   project.classification &&
                   tDonate(project.classification)}
               </div>
             </div>
           </div>
-          <p className={'projectName'}>
+          <p className={styles.projectName}>
             {truncateString(project.name, 54)}
             {project.purpose === 'trees' && project.isApproved && (
               <VerifiedBadge displayPopup={displayPopup} project={project} />
@@ -180,16 +181,16 @@ export default function ProjectSnippet({
         </div>
       </div>
 
-      <div className={'progressBar'}>
+      <div className={styles.progressBar}>
         <div
-          className={`progressBarHighlight ${progressBarBackgroundColor}`}
+          className={`${styles.progressBarHighlight} ${progressBarBackgroundColor}`}
           style={{ width: progressPercentage + '%' }}
         />
       </div>
-      <div className={'projectInfo'}>
-        <div className={'projectData'}>
-          <div className={'targetLocation'}>
-            <div className={'target'}>
+      <div className={styles.projectInfo}>
+        <div className={styles.projectData}>
+          <div className={styles.targetLocation}>
+            <div className={styles.target}>
               {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
@@ -212,7 +213,7 @@ export default function ProjectSnippet({
           </div>
           {!project.allowDonations ? (
             <div
-              className={'projectHoverIcon'}
+              className={styles.projectHoverIcon}
               {...bindHover(projectInfoPopupState)}
             >
               <ProjectInfo color={'#828282'} />
@@ -230,7 +231,7 @@ export default function ProjectSnippet({
                   e.stopPropagation();
                 }}
               >
-                <div className="projectInfoPopupContainer">
+                <div className={styles.projectInfoPopupContainer}>
                   {tenantConfig.config.slug === 'salesforce'
                     ? `${tCommon('salesforceDisabledDonateButtonText')}`
                     : `${tCommon('disabledDonateButtonText')}`}
@@ -239,7 +240,7 @@ export default function ProjectSnippet({
               {tCommon('notDonatable')}
             </div>
           ) : (
-            <div className={'perUnitCost'}>
+            <div className={styles.perUnitCost}>
               {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
                 {project.unitType === 'tree' && tDonate('perTree')}
@@ -249,12 +250,12 @@ export default function ProjectSnippet({
           )}
         </div>
 
-        <div className={'projectCost'}>
+        <div className={styles.projectCost}>
           {project.allowDonations && !disableDonations && (
             <button
               id={`ProjSnippetDonate_${project.id}`}
               onClick={handleOpen}
-              className={`donateButton ${donateButtonBackgroundColor}`}
+              className={`${styles.donateButton} ${donateButtonBackgroundColor}`}
               data-test-id="donateButton"
             >
               {tCommon('donate')}
@@ -263,7 +264,7 @@ export default function ProjectSnippet({
         </div>
       </div>
       <div
-        className={'projectTPOName'}
+        className={styles.projectTPOName}
         onClick={() => {
           embed === 'true'
             ? window.open(`/t/${project.tpo.slug}`, '_top')

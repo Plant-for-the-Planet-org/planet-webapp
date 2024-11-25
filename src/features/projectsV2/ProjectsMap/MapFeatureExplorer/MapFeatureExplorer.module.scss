@@ -1,0 +1,103 @@
+@import '../../../../theme/theme';
+
+.mapFeatureExplorer {
+  @include smTabletView {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.exploreMainContainer {
+  max-width: 182px;
+  background-color: $backgroundColor;
+  border-radius: 12px;
+  margin-top: 10px;
+  padding: 14px 16px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+
+  @include xsPhoneView {
+    position: absolute;
+  }
+}
+
+.exploreContainer {
+  width: 150px;
+}
+
+.toggleMainContainer {
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggleContainer {
+  display: flex;
+  font-size: $fontXSmall;
+  font-weight: 400;
+  align-items: center;
+  gap: 4px;
+}
+
+.switchContainer {
+  height: 14px;
+  width: 24px;
+}
+
+.infoIconContainer {
+  margin-top: 2px;
+}
+
+.rangeMainContainer {
+  width: 150px;
+  height: 30px;
+  background-color: rgba(var(--deforestration-range-background-new), 0.1);
+  margin-top: 6px;
+  border-radius: 6px;
+}
+.rangeContainer {
+  padding-left: 8px;
+  display: flex;
+  gap: 12px;
+}
+
+.playIconContainer {
+  display: flex;
+  margin-top: 8px;
+}
+
+.sliderContainer {
+  width: 107px;
+  display: flex;
+  margin-top: 10px;
+}
+
+.yearRangeContainer {
+  display: flex;
+  padding-left: 22px;
+  padding-right: 8px;
+  justify-content: space-between;
+  margin-top: 1px;
+}
+.endYear,
+.startYear {
+  font-size: $fontXXXXSmallNew;
+  font-weight: 400;
+}
+
+.exploreDescription {
+  padding: 8px;
+  height: fit-content;
+  margin-top: 14px;
+  background-color: rgba(var(--explore-description-background-color-new), 1);
+  font-size: $fontXXSmall;
+  border-radius: 6px;
+}
+
+.hrLine {
+  width: 150px;
+  height: 0.4px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  background: $horizontalLineColor;
+}

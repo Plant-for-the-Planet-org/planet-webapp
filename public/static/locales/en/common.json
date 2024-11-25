@@ -1,5 +1,6 @@
 {
   "Common": {
+    "and": "and",
     "tree": "{count, plural, =1 {Tree} other {Trees}}",
     "m2": "m²",
     "by": "By {tpoName}",

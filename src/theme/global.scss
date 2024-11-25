@@ -1,10 +1,6 @@
 @import './theme';
 @import '~vizzuality-components/dist/bundle';
 
-.maplibregl-control-container .maplibregl-ctrl-bottom-right {
-  bottom: 30px;
-}
-
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
 }
@@ -66,20 +62,21 @@ body {
 }
 
 .planet-links {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 .planet-links:hover {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 .planet-links:visited {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
+  primaryDarkColor: $primaryDarkColor;
 }
 
 a {

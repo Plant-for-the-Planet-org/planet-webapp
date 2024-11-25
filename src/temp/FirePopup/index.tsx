@@ -3,8 +3,8 @@ import React from 'react';
 import styles from './FirePopup.module.scss';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
-import InfoIconPopup from '../components/InfoIconPopup';
-import RightArrowIcon from '../icons/RightArrowIcon';
+import InfoIconPopup from '../../features/projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
+import RightArrowIcon from '../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -17,7 +17,7 @@ export default function FirePopup({ isOpen }: Props) {
   const anchorRef = React.useRef(null);
   const [arrowRef, setArrowRef] = React.useState<HTMLSpanElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
-  const t = useTranslations('ProjectDetails');
+  const tProjectDetails = useTranslations('ProjectDetails');
 
   return (
     <>
@@ -47,15 +47,15 @@ export default function FirePopup({ isOpen }: Props) {
         <aside className={styles.popupContainer}>
           <header className={styles.popupTitle}>
             <h2 className={styles.titleText}>
-              <FirePopupIcon width={18} /> {t('forestFire')}
+              <FirePopupIcon width={18} /> {tProjectDetails('forestFire')}
             </h2>
             <p className={styles.timeDuration}>
-              {t('hoursAgo', {
+              {tProjectDetails('hoursAgo', {
                 hours: 21,
               })}
               <InfoIconPopup width={9} height={9} color={'#828282'}>
                 <div className={styles.infoIconPopupContainer}>
-                  {t('firePopupText')}
+                  {tProjectDetails('firePopupText')}
                 </div>
               </InfoIconPopup>
             </p>
@@ -63,13 +63,13 @@ export default function FirePopup({ isOpen }: Props) {
           <div className={styles.popupText}>
             <p className={styles.coordinates}>18.71122, -87.71138</p>
             <p>
-              {t.rich('highAlertConfidenceText', {
+              {tProjectDetails.rich('highAlertConfidenceText', {
                 important: (chunks) => <span>{chunks}</span>,
               })}
             </p>
             <div className={styles.setUpAlertsContainer}>
               <p className={styles.setUpAlerts}>
-                {t.rich('setUpAlertsText', {
+                {tProjectDetails.rich('setUpAlertsText', {
                   important: (chunks) => <span>{chunks}</span>,
                 })}
               </p>

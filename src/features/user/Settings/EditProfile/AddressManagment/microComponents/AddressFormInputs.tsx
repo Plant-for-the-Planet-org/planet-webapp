@@ -2,6 +2,7 @@ import type { Control, FieldErrors } from 'react-hook-form';
 import type { AddressSuggestionsType } from '../../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
+import type { AddressFormData } from '../AddressForm';
 
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -12,7 +13,6 @@ import styles from '../AddressManagement.module.scss';
 import AddressInput from './AddressInput';
 import CountrySelect from '../../../../../common/InputTypes/AutoCompleteCountry';
 import { allCountries } from '../../../../../../utils/constants/countries';
-import { AddressFormData } from '../AddressForm';
 
 interface Props {
   handleInputChange: (value: string) => void;
