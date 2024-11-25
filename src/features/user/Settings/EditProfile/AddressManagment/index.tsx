@@ -1,7 +1,7 @@
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -45,7 +45,7 @@ const AddressManagement = () => {
     });
   }, [userAddresses]);
 
-  const fetchUserAddresses = async () => {
+  const fetchUserAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
       const res = await getAuthenticatedRequest<Address[]>(
@@ -58,7 +58,7 @@ const AddressManagement = () => {
     } catch (error) {
       setErrors(handleError(error as APIError));
     }
-  };
+  }, [user, token, contextLoaded, tenantConfig.id, logoutUser]);
 
   useEffect(() => {
     fetchUserAddresses();
@@ -112,7 +112,7 @@ const AddressManagement = () => {
       case ADDRESS_ACTIONS.SET_PRIMARY:
         return (
           <AddressTypeConfirmationModal
-            mode={ADDRESS_TYPE.PRIMARY}
+            addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
             {...addrTypeConfProps}
           />
@@ -120,7 +120,7 @@ const AddressManagement = () => {
       case ADDRESS_ACTIONS.SET_BILLING:
         return (
           <AddressTypeConfirmationModal
-            mode={ADDRESS_TYPE.MAILING}
+            addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
             {...addrTypeConfProps}
           />

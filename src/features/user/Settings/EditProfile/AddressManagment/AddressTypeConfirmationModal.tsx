@@ -14,7 +14,7 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import FormattedAddressBlock from './microComponents/FormattedAddressBlock';
 
 interface Props {
-  mode: 'primary' | 'mailing';
+  addressType: 'primary' | 'mailing';
   setIsModalOpen: SetState<boolean>;
   userAddress: Address | undefined;
   selectedAddressForAction: Address | null;
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const AddressTypeConfirmationModal = ({
-  mode,
+  addressType,
   setIsModalOpen,
   userAddress,
   selectedAddressForAction,
@@ -59,10 +59,10 @@ const AddressTypeConfirmationModal = ({
   };
   return (
     <div className={styles.addrConfirmContainer}>
-      <h2>{tProfile(`addressType.${mode}`)}</h2>
+      <h2>{tProfile(`addressType.${addressType}`)}</h2>
       <p>
         {tProfile('addressConfirmationMessage', {
-          addressType: mode,
+          addressType,
           isAddressSet: !!userAddress,
         })}
       </p>
@@ -83,7 +83,7 @@ const AddressTypeConfirmationModal = ({
             text={tProfile('confirm')}
             elementType="button"
             variant="primary"
-            onClick={() => updateAddress(mode)}
+            onClick={() => updateAddress(addressType)}
           />
         </div>
       ) : (

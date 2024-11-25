@@ -28,12 +28,12 @@ const AddressDeleteModal = ({
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const deleteAddress = async () => {
     if (!contextLoaded || !user) return;
     try {
-      setIsUploadingData(true);
+      setIsLoading(true);
       await deleteAuthenticatedRequest(
         tenantConfig.id,
         `/app/addresses/${addressId}`,
@@ -45,14 +45,14 @@ const AddressDeleteModal = ({
       setErrors(handleError(error as APIError));
     } finally {
       setIsModalOpen(false);
-      setIsUploadingData(false);
+      setIsLoading(false);
     }
   };
   return (
     <div className={styles.addrConfirmContainer}>
       <h2>{tProfile('deleteAddress')}</h2>
       <p>{tProfile('deleteAddressConfirmationMessage')}</p>
-      {!isUploadingData ? (
+      {!isLoading ? (
         <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
