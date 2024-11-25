@@ -4,14 +4,13 @@ import type {
 } from '../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
-import type { UpdatedAddress } from '.';
+import type { Address, APIError } from '@planet-sdk/common';
 
 import { useState, useContext, useMemo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { CircularProgress } from '@mui/material';
 import GeocoderArcGIs from 'geocoder-arcgis';
-import { APIError, handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
 import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
@@ -21,6 +20,7 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 import AddressFormInputs from './microComponents/AddressFormInputs';
+import { handleError } from '@planet-sdk/common';
 
 export type FormData = {
   address: string;
@@ -33,7 +33,7 @@ export type FormData = {
 interface Props {
   formType: string;
   setIsModalOpen: SetState<boolean>;
-  setUserAddresses: SetState<UpdatedAddress[]>;
+  setUserAddresses: SetState<Address[]>;
 }
 const geocoder = new GeocoderArcGIs(
   process.env.ESRI_CLIENT_SECRET
@@ -148,7 +148,7 @@ const AddressForm = ({ formType, setIsModalOpen, setUserAddresses }: Props) => {
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<UpdatedAddress>(
+        const res = await postAuthenticatedRequest<Address>(
           tenantConfig.id,
           '/app/addresses',
           bodyToSend,
