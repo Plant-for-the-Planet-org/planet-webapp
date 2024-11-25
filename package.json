@@ -6,6 +6,7 @@
     ".next/cache"
   ],
   "scripts": {
+    "dev-https": "next dev --experimental-https",
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "analyze": "ANALYZE=true npm run build",
@@ -56,7 +57,7 @@
     "@mui/x-date-pickers": "^5.0.15",
     "@netlify/plugin-nextjs": "^4.33.0",
     "@next/bundle-analyzer": "^10.2.3",
-    "@planet-sdk/common": "^0.1.41",
+    "@planet-sdk/common": "^0.1.43",
     "@prisma/client": "^4.13.0",
     "@sentry/browser": "^6.15.0",
     "@sentry/integrations": "^6.19.2",
@@ -101,7 +102,7 @@
     "negotiator": "^0.6.3",
     "next": "^13.5.7",
     "next-connect": "^0.13.0",
-    "next-intl": "^3.19.1",
+    "next-intl": "^3.25.1",
     "next-useragent": "^2.7.0",
     "node-cache": "^5.1.2",
     "npm": "^10.2.2",
@@ -133,6 +134,7 @@
     "styled-jsx": "^5.0.0",
     "supercluster": "^8.0.1",
     "superjson": "^1.12.3",
+    "swiper": "^11.1.14",
     "uuid": "^8.3.2",
     "vizzuality-components": "^3.0.3",
     "xlsx": "^0.18.5",

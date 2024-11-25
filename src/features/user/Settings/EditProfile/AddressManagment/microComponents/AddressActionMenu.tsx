@@ -1,19 +1,16 @@
 import type { SetState } from '../../../../../common/types/common';
+import type { AddressAction } from '../../../../../common/types/profile';
+import type { AddressType, Address } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Popover } from '@mui/material';
-import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
+import KebabMenuIcon from '../../../../../../../public/assets/images/icons/KebabMenuIcon';
 import styles from '../AddressManagement.module.scss';
 import {
   ADDRESS_ACTIONS,
   ADDRESS_TYPE,
 } from '../../../../../../utils/addressManagement';
-import { UpdatedAddress } from '..';
-
-export type AddressType = (typeof ADDRESS_TYPE)[keyof typeof ADDRESS_TYPE];
-export type AddressAction =
-  (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
 
 export interface AddressActionItem {
   label: string;
@@ -25,8 +22,8 @@ interface Props {
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
-  setSelectedAddressForAction: SetState<UpdatedAddress | null>;
-  userAddress: UpdatedAddress;
+  setSelectedAddressForAction: SetState<Address | null>;
+  userAddress: Address;
 }
 
 const AddressActionsMenu = ({
@@ -44,12 +41,12 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile(`actions.${ADDRESS_ACTIONS.EDIT}`),
+      label: tProfile(`actions.edit`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile(`actions.${ADDRESS_ACTIONS.DELETE}`),
+      label: tProfile(`actions.delete`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
@@ -90,7 +87,7 @@ const AddressActionsMenu = ({
   return (
     <div>
       <button onClick={openPopover} className={styles.kebabMenuButton}>
-        <KababMenuIcon />
+        <KebabMenuIcon />
       </button>
       <Popover
         id={id}

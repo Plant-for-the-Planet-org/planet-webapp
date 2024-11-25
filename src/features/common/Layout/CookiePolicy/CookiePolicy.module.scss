@@ -40,12 +40,12 @@
 }
 
 .cookieContent > a {
-  color: $primaryColor;
+  color: $primaryDarkColor;
   cursor: pointer;
 }
 
 .cookieContent > a:visited {
-  color: $primaryColor;
+  color: $primaryDarkColor;
 }
 
 @include xsPhoneView {
@@ -77,5 +77,6 @@
 }
 :export {
   primaryColor: $primaryColor;
+  primaryDarkColor: $primaryDarkColor;
   primaryFontColor: $primaryFontColor;
 }

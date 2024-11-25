@@ -4,14 +4,15 @@ import type {
 } from '../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
-import type { UpdatedAddress } from '.';
+import type { Address, APIError } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useState, useContext, useMemo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { CircularProgress } from '@mui/material';
 import GeocoderArcGIs from 'geocoder-arcgis';
-import { APIError, handleError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
 import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
@@ -24,7 +25,6 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useDebouncedEffect } from '../../../../../utils/useDebouncedEffect';
 import AddressFormInputs from './microComponents/AddressFormInputs';
-import { AddressAction } from './microComponents/AddressActionMenu';
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 
 export type FormData = {
@@ -38,8 +38,8 @@ export type FormData = {
 interface Props {
   formType: 'edit' | 'add';
   setIsModalOpen: SetState<boolean>;
-  setUserAddresses?: SetState<UpdatedAddress[]>;
-  selectedAddressForAction?: UpdatedAddress | null;
+  setUserAddresses?: SetState<Address[]>;
+  selectedAddressForAction?: Address | null;
   addressAction?: AddressAction | null;
   fetchUserAddresses?: () => Promise<void>;
 }
@@ -166,7 +166,7 @@ const AddressForm = ({
       type: selectedAddressForAction.type,
     };
     try {
-      const res = await putAuthenticatedRequest<UpdatedAddress>(
+      const res = await putAuthenticatedRequest<Address>(
         tenantConfig.id,
         `/app/addresses/${selectedAddressForAction?.id}`,
         bodyToSend,
@@ -194,7 +194,7 @@ const AddressForm = ({
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<UpdatedAddress>(
+        const res = await postAuthenticatedRequest<Address>(
           tenantConfig.id,
           '/app/addresses',
           bodyToSend,

@@ -48,7 +48,7 @@ export default function CookiePolicy() {
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >
-        <CloseIcon color={styles.primaryColor} />
+        <CloseIcon color={styles.primaryDarkColor} />
       </button>
       <div className={styles.cookieContent}>
         {t('privacyPolicyNotice')}{' '}

@@ -1,6 +1,7 @@
+import type { AddressType } from '@planet-sdk/common';
+
 import styles from '../AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
-import { AddressType } from './AddressActionMenu';
 
 interface Props {
   type: AddressType;

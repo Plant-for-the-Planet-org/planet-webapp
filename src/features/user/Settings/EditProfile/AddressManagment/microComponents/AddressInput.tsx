@@ -1,5 +1,7 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { Control, Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+
+import { Controller } from 'react-hook-form';
 
 interface AddressOption {
   text: string;

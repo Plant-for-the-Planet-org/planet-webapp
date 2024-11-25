@@ -23,6 +23,7 @@ import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/
 import { APIError, handleError, UserPublicProfile } from '@planet-sdk/common';
 import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
+import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
 
 interface Props {
   pageProps: PageProps;
@@ -66,10 +67,12 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
       <GetPublicUserProfileMeta userprofile={profile} />
       <MyForestProvider>
         <PublicProfileOuterContainer>
-          <PublicProfileLayout
-            profile={profile}
-            isProfileLoaded={profile !== null}
-          />
+          <ProjectsProvider>
+            <PublicProfileLayout
+              profile={profile}
+              isProfileLoaded={profile !== null}
+            />
+          </ProjectsProvider>
         </PublicProfileOuterContainer>
       </MyForestProvider>
     </>
@@ -83,7 +86,7 @@ export default PublicProfilePage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
@@ -112,7 +115,16 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'donate', 'profile', 'project'],
+    filenames: [
+      'common',
+      'me',
+      'country',
+      'donate',
+      'profile',
+      'project',
+      'projectDetails',
+      'allProjects',
+    ],
   });
 
   return {

@@ -1,5 +1,3 @@
-import { AddressType } from '../features/user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
-
 export const ADDRESS_TYPE = {
   PRIMARY: 'primary',
   MAILING: 'mailing',

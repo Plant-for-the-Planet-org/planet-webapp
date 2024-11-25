@@ -10,6 +10,7 @@ import { useMyForest } from '../../../common/Layout/MyForestContext';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import React from 'react';
+import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -95,9 +96,10 @@ const CommunityContributions = ({
       <div className={styles.header}>
         <div className={styles.infoIcon}>
           <CustomTooltip
-            height={15}
-            width={14}
-            color={themeProperties.mediumGrayColor}
+            triggerElement={
+              <NewInfoIcon width={14} color={themeProperties.mediumGrayColor} />
+            }
+            showTooltipPopups={true}
           >
             <div className={styles.infoIconPopupContainer}>
               {profilePageType === 'private'

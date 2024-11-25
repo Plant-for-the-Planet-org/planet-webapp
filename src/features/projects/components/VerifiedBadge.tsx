@@ -7,17 +7,18 @@ import {
 } from 'material-ui-popup-state/hooks';
 import TopProjectReports from './projectDetails/TopProjectReports';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import {
-  TreeProjectConcise,
-  TreeProjectExtended,
-} from '@planet-sdk/common/build/types/project';
+import { Review } from '@planet-sdk/common';
+import styles from '../styles/ProjectSnippet.module.scss';
 
 interface Props {
   displayPopup: boolean;
-  project: TreeProjectConcise | TreeProjectExtended;
+  projectReviews: Review[] | undefined;
 }
 
-const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
+const VerifiedBadge = ({
+  displayPopup,
+  projectReviews,
+}: Props): ReactElement => {
   const verifiedPopupState = usePopupState({
     variant: 'popover',
     popupId: 'verifiedPopover',
@@ -25,15 +26,15 @@ const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
   return (
     <>
       {' '}
-      <span className={'verifiedIcon'}>
+      <span className={styles.verifiedIcon}>
         <VerifiedIcon
           sx={{ width: '100%' }}
           {...bindHover(verifiedPopupState)}
         />
       </span>
       {displayPopup &&
-        project.reviews !== undefined &&
-        project.reviews.length > 0 && (
+        projectReviews !== undefined &&
+        projectReviews.length > 0 && (
           <HoverPopover
             {...bindPopover(verifiedPopupState)}
             anchorOrigin={{
@@ -49,7 +50,7 @@ const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
             }}
           >
             <div className="topProjectReportsContainer">
-              <TopProjectReports projectReviews={project.reviews} />
+              <TopProjectReports projectReviews={projectReviews} />
             </div>
           </HoverPopover>
         )}
