@@ -1,6 +1,12 @@
-import React, { ReactElement, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  PaymentHistoryRecord,
+  RecipientBank,
+} from '../../../common/types/payments';
+
+import React, { useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
@@ -84,7 +90,7 @@ export function RecordHeader({
       <div className={styles.right}>
         <p className={`${styles.top} ${styles[netAmountStatus]}`}>
           {netAmountStatus === 'outgoing' && '-'}
-          {getFormatedCurrency(locale, record.currency, record.netAmount)}
+          {getFormattedCurrency(locale, record.currency, record.netAmount)}
         </p>
         <p className={`${styles.recordStatus} ${styles[record.status]}`}>
           {tMe(record.status)}
@@ -133,7 +139,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('paidAmount')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.paidAmount
@@ -145,7 +151,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('totalAmount')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.totalAmount
@@ -194,7 +200,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('refundAmount')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.refundAmount
@@ -211,7 +217,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             })}
           </p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.unitCost
@@ -237,7 +243,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('disputeFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.disputeFee
@@ -249,7 +255,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('planetFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.planetFee
@@ -261,7 +267,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('transactionFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.transactionFee
@@ -273,7 +279,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('transferFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.transferFee
