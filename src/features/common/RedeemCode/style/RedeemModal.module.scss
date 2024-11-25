@@ -171,17 +171,15 @@
   text-align: center;
 }
 
-.codeTreeCount {
-  font-size: 35px;
+.successMessage {
+  font-size: 25px;
   font-weight: bold;
   display: flex;
-  flex-direction: row;
-  text-align: center;
-  align-items: baseline;
+  flex-direction: column;
+  gap: 10px;
   color: $primaryColor;
-  > span {
-    font-size: 25px;
-    margin-left: 6px;
+  > p {
+    text-align: center;
   }
 }
 

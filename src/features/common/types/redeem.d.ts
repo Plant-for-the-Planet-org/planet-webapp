@@ -1,6 +1,8 @@
 import type {
   CountryCode,
+  FundProjectClassification,
   ProjectPurpose,
+  TreeProjectClassification,
   UnitTypes,
 } from '@planet-sdk/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
@@ -16,7 +18,9 @@ export interface Project {
   image: Nullable<string>;
   country: CountryCode;
   purpose: ProjectPurpose;
-  classification: Nullable<string>;
+  classification: Nullable<
+    TreeProjectClassification | FundProjectClassification
+  >;
   coordinates: number[];
   organization: Organization;
 }
