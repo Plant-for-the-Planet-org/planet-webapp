@@ -20,14 +20,13 @@ export const ADDRESS_FORM_TYPE = {
 } as const;
 export const addressTypeOrder = ['primary', 'mailing', 'other'];
 
-export const formatAddress = (
-  address: string | undefined,
+export const getFormattedAddress = (
   zipCode: string | undefined,
   city: string | undefined,
-  state: string | null,
-  country: string
+  state: string | null | undefined,
+  countryName: string
 ) => {
-  const cleanAddress = [address, `${zipCode} ${city}`, state, country]
+  const cleanAddress = [zipCode, city, state, countryName]
     .filter(Boolean)
     .join(', ')
     .replace(/\s+/g, ' ')

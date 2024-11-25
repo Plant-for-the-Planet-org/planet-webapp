@@ -1,30 +1,30 @@
 import type { SetState } from '../../../../common/types/common';
 import type { APIError, CountryCode, Address } from '@planet-sdk/common';
 
-import { formatAddress } from '../../../../../utils/addressManagement';
-import styles from './AddressManagement.module.scss';
+import { useContext, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { handleError } from '@planet-sdk/common';
+import { CircularProgress } from '@mui/material';
+import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
 import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { useContext, useMemo, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError } from '@planet-sdk/common';
-import { CircularProgress } from '@mui/material';
+import { getFormattedAddress } from '../../../../../utils/addressManagement';
 
 interface Props {
-  type: 'primary' | 'mailing';
+  mode: 'primary' | 'mailing';
   setIsModalOpen: SetState<boolean>;
-  address: Address | undefined;
+  userAddress: Address | undefined;
   selectedAddressForAction: Address | null;
   fetchUserAddresses: () => Promise<void>;
 }
 
 const AddressTypeConfirmationModal = ({
-  type,
+  mode,
   setIsModalOpen,
-  address,
+  userAddress,
   selectedAddressForAction,
   fetchUserAddresses,
 }: Props) => {
@@ -35,23 +35,20 @@ const AddressTypeConfirmationModal = ({
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState(false);
-
-  const getCountryFullForm = (countryCode: string | undefined) => {
-    return countryCode
-      ? tCountry(countryCode.toLowerCase() as Lowercase<CountryCode>)
-      : '';
-  };
-  const getFormattedAddress = (address: Address) => {
-    const { address: userAddress, zipCode, city, state, country } = address;
-    const countryFullForm = getCountryFullForm(country);
-    return formatAddress(userAddress, zipCode, city, state, countryFullForm);
-  };
-
-  const formattedAddress = useMemo(
-    () => (address ? getFormattedAddress(address) : null),
-    [address]
+  const countryName = tCountry(
+    userAddress?.country.toLowerCase() as Lowercase<CountryCode>
   );
 
+  const formattedAddress = useMemo(
+    () =>
+      getFormattedAddress(
+        userAddress?.zipCode,
+        userAddress?.city,
+        userAddress?.state,
+        countryName
+      ),
+    [userAddress, countryName]
+  );
   const updateAddress = async (addressType: 'primary' | 'mailing') => {
     if (!contextLoaded || !user) return;
     setIsUploadingData(true);
@@ -76,14 +73,22 @@ const AddressTypeConfirmationModal = ({
   };
   return (
     <div className={styles.addrConfirmContainer}>
-      <h2>{tProfile(`addressType.${type}`)}</h2>
+      <h2>{tProfile(`addressType.${mode}`)}</h2>
       <p>
         {tProfile('addressConfirmationMessage', {
-          addressType: type,
-          isAddressSet: !!address,
+          addressType: mode,
+          isAddressSet: !!userAddress,
         })}
       </p>
-      {formattedAddress && <p className={styles.address}>{formattedAddress}</p>}
+      {userAddress && (
+        <div className={styles.address}>
+          <address>
+            <p>{userAddress?.address}</p>
+            {userAddress?.address2 && <p>{userAddress?.address2}</p>}
+            <p>{formattedAddress}</p>
+          </address>
+        </div>
+      )}
       {!isUploadingData ? (
         <div className={styles.buttonContainer}>
           <WebappButton
@@ -96,7 +101,7 @@ const AddressTypeConfirmationModal = ({
             text={tProfile('confirm')}
             elementType="button"
             variant="primary"
-            onClick={() => updateAddress(type)}
+            onClick={() => updateAddress(mode)}
           />
         </div>
       ) : (
