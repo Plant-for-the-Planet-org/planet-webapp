@@ -1,7 +1,7 @@
-import { User, UserPublicProfile } from '@planet-sdk/common';
-import { SetState } from './common';
-import { PublicUser } from './user';
-import { ADDRESS_ACTIONS } from '../../user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
+import type { User, UserPublicProfile } from '@planet-sdk/common';
+import type { SetState } from './common';
+import type { PublicUser } from './user';
+import type { ADDRESS_ACTIONS } from '../../user/Settings/EditProfile/AddressManagment/microComponents/AddressActionMenu';
 
 export interface UserFeaturesProps {
   handleShare: () => void;

@@ -14,7 +14,7 @@ const AddressDetails = ({ userAddress }: Props) => {
   const tCountry = useTranslations('Country');
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
 
-  const formattedAddress = useMemo(() => {
+  const cityStatePostalString = useMemo(() => {
     return [zipCode, city, state, countryName]
       .filter(Boolean)
       .join(', ')
@@ -29,8 +29,8 @@ const AddressDetails = ({ userAddress }: Props) => {
       )}
       <address>
         <p>{address}</p>
-        {address2 && <p>{address2}</p>}
-        <p>{formattedAddress}</p>
+        {address2 !== null && <p>{address2}</p>}
+        <p>{cityStatePostalString}</p>
       </address>
     </div>
   );
