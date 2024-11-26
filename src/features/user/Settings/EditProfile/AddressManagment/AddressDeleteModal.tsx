@@ -50,7 +50,7 @@ const AddressDeleteModal = ({
   };
   return (
     <div className={styles.addrConfirmContainer}>
-      <h2>{tProfile('deleteAddress')}</h2>
+      <h2 className={styles.header}>{tProfile('deleteAddress')}</h2>
       <p>{tProfile('deleteAddressConfirmationMessage')}</p>
       {!isLoading ? (
         <div className={styles.buttonContainer}>

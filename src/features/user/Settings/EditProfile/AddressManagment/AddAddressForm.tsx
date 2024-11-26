@@ -150,7 +150,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
   };
   return (
     <div className={styles.addressFormContainer}>
-      <h2>{tProfile('addAddress')}</h2>
+      <h2 className={styles.header}>{tProfile('addAddress')}</h2>
       <AddressFormInputs
         handleInputChange={handleInputChange}
         handleAddressSelect={handleAddressSelect}
@@ -166,7 +166,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
           <CircularProgress color="success" />
         </div>
       ) : (
-        <div className={styles.formButtonContainer}>
+        <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
             variant="secondary"

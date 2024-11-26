@@ -59,7 +59,9 @@ const AddressTypeConfirmationModal = ({
   };
   return (
     <div className={styles.addrConfirmContainer}>
-      <h2>{tProfile(`addressType.${addressType}`)}</h2>
+      <h2 className={styles.header}>
+        {tProfile(`addressType.${addressType}`)}
+      </h2>
       <p>
         {tProfile('addressConfirmationMessage', {
           addressType,

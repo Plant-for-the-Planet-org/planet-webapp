@@ -153,7 +153,7 @@ const EditAddressForm = ({
 
   return (
     <div className={styles.addressFormContainer}>
-      <h2>{tProfile('editAddress')}</h2>
+      <h2 className={styles.header}>{tProfile('editAddress')}</h2>
       <AddressFormInputs
         handleInputChange={handleInputChange}
         handleAddressSelect={handleAddressSelect}
@@ -169,7 +169,7 @@ const EditAddressForm = ({
           <CircularProgress color="success" />
         </div>
       ) : (
-        <div className={styles.formButtonContainer}>
+        <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
             variant="secondary"

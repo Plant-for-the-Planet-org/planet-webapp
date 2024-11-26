@@ -19,7 +19,6 @@ import {
   findAddressByType,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
-
 import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
 import AddressDeleteModal from './AddressDeleteModal';
 import EditAddressForm from './EditAddressForm';
@@ -131,8 +130,8 @@ const AddressManagement = () => {
     fetchUserAddresses,
     primaryAddress,
     billingAddress,
+    addressAction,
   ]);
-
   return userAddresses.length > 0 ? (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
