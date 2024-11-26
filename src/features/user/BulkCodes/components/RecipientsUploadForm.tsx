@@ -1,9 +1,7 @@
-import { useState, ReactElement, useMemo } from 'react';
-import { parse, ParseResult } from 'papaparse';
-import { useTranslations } from 'next-intl';
-import UploadWidget from './UploadWidget';
-import RecipientsTable from './RecipientsTable';
-import {
+import type { ReactElement } from 'react';
+import type { ParseResult } from 'papaparse';
+import type { SetState } from '../../../common/types/common';
+import type {
   Recipient,
   TableHeader,
   FileImportError,
@@ -11,9 +9,13 @@ import {
   ExtendedRecipient,
 } from '../BulkCodesTypes';
 
+import { useState, useMemo } from 'react';
+import { parse } from 'papaparse';
+import { useTranslations } from 'next-intl';
+import UploadWidget from './UploadWidget';
+import RecipientsTable from './RecipientsTable';
 import styles from '../BulkCodes.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
-import { SetState } from '../../../common/types/common';
 
 const acceptedHeaders: (keyof Recipient)[] = [
   'recipient_name',
@@ -25,6 +27,7 @@ const acceptedHeaders: (keyof Recipient)[] = [
 ];
 
 const MAX_RECIPIENTS = 1000;
+const RECIPIENT_NAME_MAX_LENGTH = 35;
 
 interface RecipientsUploadFormProps {
   setLocalRecipients: SetState<Recipient[]>;
@@ -145,10 +148,15 @@ const RecipientsUploadForm = ({
 
     // Check if email is valid
     const invalidEmailIndexes: number[] = [];
+    const longRecipientNameIndexes: number[] = [];
+
     recipients.forEach((recipient, index) => {
-      const { recipient_email } = recipient;
+      const { recipient_email, recipient_name } = recipient;
       if (!isEmailValid(recipient_email) && recipient_email.length !== 0) {
         invalidEmailIndexes.push(index + 1);
+      }
+      if (recipient_name.length > RECIPIENT_NAME_MAX_LENGTH) {
+        longRecipientNameIndexes.push(index + 1);
       }
     });
 
@@ -157,6 +165,16 @@ const RecipientsUploadForm = ({
         type: 'invalidEmails',
         message: t('errorUploadCSV.invalidEmails', {
           rowList: invalidEmailIndexes.join(', '),
+        }),
+      });
+      return false;
+    }
+
+    if (longRecipientNameIndexes.length > 0) {
+      setParseError({
+        type: 'longRecipientNames',
+        message: t('errorUploadCSV.longRecipientNames', {
+          rowList: longRecipientNameIndexes.join(', '),
         }),
       });
       return false;

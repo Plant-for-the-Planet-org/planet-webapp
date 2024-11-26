@@ -1,5 +1,5 @@
 // TODO - review types and make more specific where possible
-import { CurrencyCode } from '@planet-sdk/common';
+import type { CurrencyCode } from '@planet-sdk/common';
 
 export interface PaymentOptions {
   currency: CurrencyCode;
@@ -42,6 +42,7 @@ type FileImportErrorCode =
   | 'unitsNotProvided'
   | 'notifyNotPossible'
   | 'invalidEmails'
+  | 'longRecipientNames'
   | 'instructionRowError'
   | 'generalError';
 

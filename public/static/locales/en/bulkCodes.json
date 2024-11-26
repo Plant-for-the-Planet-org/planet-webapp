@@ -76,12 +76,14 @@
       "notifyNotPossible": "Email and name are missing for some recipients that are to be notified.",
       "instructionRowError": "An error occurred on the 1st row. Please check if you have deleted the instructions, or if there is additional data.",
       "invalidEmails": "recipient_email contains dummy/invalid emails on the following rows: {rowList}. Please remove invalid emails or add valid emails.",
+      "longRecipientNames": "recipient_name is too long on the following rows: {rowList}. Please provide names that are 35 characters or less.",
       "generalError": "Something went wrong. Please try after a while."
     },
     "errorAddRecipient": {
       "unitsNotProvided": "Mandatory",
       "requiredForNotifications": "Required (to email recipients)",
-      "emailInvalid": "Invalid email"
+      "emailInvalid": "Invalid email",
+      "longRecipientName": "Max length - 35 characters"
     },
     "successUploadCSV": {
       "ignoredColumns": "Extra columns were ignored"
