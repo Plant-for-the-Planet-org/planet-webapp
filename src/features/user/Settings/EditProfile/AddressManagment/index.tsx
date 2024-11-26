@@ -14,15 +14,16 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   ADDRESS_ACTIONS,
-  ADDRESS_FORM_TYPE,
   ADDRESS_TYPE,
   addressTypeOrder,
   findAddressByType,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
-import AddressForm from './AddressForm';
+
 import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
 import AddressDeleteModal from './AddressDeleteModal';
+import EditAddressForm from './EditAddressForm';
+import AddAddressForm from './AddAddressForm';
 
 const AddressManagement = () => {
   const tProfile = useTranslations('Profile.addressManagement');
@@ -85,18 +86,15 @@ const AddressManagement = () => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
-          <AddressForm
-            formType={ADDRESS_FORM_TYPE.ADD_ADDRESS}
+          <AddAddressForm
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
         return (
-          <AddressForm
-            formType={ADDRESS_FORM_TYPE.EDIT_ADDRESS}
+          <EditAddressForm
             setIsModalOpen={setIsModalOpen}
-            addressAction={addressAction}
             selectedAddressForAction={selectedAddressForAction}
             fetchUserAddresses={fetchUserAddresses}
           />
@@ -104,8 +102,8 @@ const AddressManagement = () => {
       case ADDRESS_ACTIONS.DELETE:
         return (
           <AddressDeleteModal
-            setIsModalOpen={setIsModalOpen}
             addressId={selectedAddressForAction?.id}
+            setIsModalOpen={setIsModalOpen}
             fetchUserAddresses={fetchUserAddresses}
           />
         );
@@ -127,7 +125,6 @@ const AddressManagement = () => {
         );
     }
   }, [
-    addressAction,
     setIsModalOpen,
     setUserAddresses,
     selectedAddressForAction,

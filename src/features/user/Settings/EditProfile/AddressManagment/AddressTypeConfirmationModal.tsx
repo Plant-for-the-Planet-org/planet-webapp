@@ -36,7 +36,7 @@ const AddressTypeConfirmationModal = ({
   const [isUploadingData, setIsUploadingData] = useState(false);
 
   const updateAddress = async (addressType: 'primary' | 'mailing') => {
-    if (!contextLoaded || !user) return;
+    if (!contextLoaded || !user || !token) return;
     setIsUploadingData(true);
     const bodyToSend = {
       type: addressType,
@@ -66,7 +66,7 @@ const AddressTypeConfirmationModal = ({
           isAddressSet: !!userAddress,
         })}
       </p>
-      {userAddress && (
+      {userAddress !== undefined && (
         <div className={styles.address}>
           <FormattedAddressBlock userAddress={userAddress} />
         </div>

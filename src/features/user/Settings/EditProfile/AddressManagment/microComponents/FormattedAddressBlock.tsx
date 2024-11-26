@@ -13,15 +13,15 @@ const FormattedAddressBlock = ({ userAddress }: Props) => {
   const tCountry = useTranslations('Country');
   const { zipCode, city, state, country, address, address2 } = userAddress;
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
-  const formattedAddress = useMemo(
+  const cityStatePostalString = useMemo(
     () => getFormattedAddress(zipCode, city, state, countryName),
     [zipCode, city, state, countryName]
   );
   return (
     <address>
       <p>{address}</p>
-      {address2 && <p>{address2}</p>}
-      <p>{formattedAddress}</p>
+      {address2 !== null && <p>{address2}</p>}
+      <p>{cityStatePostalString}</p>
     </address>
   );
 };

@@ -31,7 +31,7 @@ const AddressDeleteModal = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const deleteAddress = async () => {
-    if (!contextLoaded || !user) return;
+    if (!contextLoaded || !user || !token) return;
     try {
       setIsLoading(true);
       await deleteAuthenticatedRequest(

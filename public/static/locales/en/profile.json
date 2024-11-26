@@ -149,18 +149,14 @@
       },
       "addNewAddress": "Add New Address",
       "addAddress": "Add Address",
-      "address2": "Address 2(optional)",
       "editAddress": "Edit Address",
-      "delete": "Delete",
       "deleteAddress": "Delete Address",
+      "delete": "Delete",
       "saveChanges": "Save Changes",
-      "formType": {
-        "add": "Add Address",
-        "edit": "Edit Address"
-      },
       "addressConfirmationMessage": "Are you sure you want to set this address as your {addressType, select, mailing {billing} other {{addressType}}} address? {isAddressSet, select, true {This will replace your current {addressType, select, mailing {billing} other {{addressType}}} address.} other {}}",
       "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address.",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "address2": "Address 2(optional)"
     }
   }
 }
