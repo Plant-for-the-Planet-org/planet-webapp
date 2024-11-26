@@ -157,7 +157,7 @@ const EditAddressForm = ({
 
   return (
     <div className={styles.addressFormContainer}>
-      <h2>{tProfile('formType.edit')}</h2>
+      <h2>{tProfile('editAddress')}</h2>
       <AddressFormInputs
         handleInputChange={handleInputChange}
         handleAddressSelect={handleAddressSelect}

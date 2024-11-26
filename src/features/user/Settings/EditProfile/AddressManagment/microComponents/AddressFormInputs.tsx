@@ -1,7 +1,7 @@
 import type { Control, FieldErrors } from 'react-hook-form';
 import type { AddressSuggestionsType } from '../../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
-import type { FormData } from '../AddressForm';
+import type { FormData } from '../AddAddressForm';
 import type { SetState } from '../../../../../common/types/common';
 
 import { TextField } from '@mui/material';

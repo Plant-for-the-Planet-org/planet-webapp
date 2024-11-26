@@ -149,13 +149,9 @@
       },
       "addNewAddress": "Add New Address",
       "addAddress": "Add Address",
-      "address2": "Address 2(optional)",
       "editAddress": "Edit Address",
-      "saveChanges": "Save Changes",
-      "formType": {
-        "add": "Add Address",
-        "edit": "Edit Address"
-      }
+      "address2": "Address 2(optional)",
+      "saveChanges": "Save Changes"
     }
   }
 }

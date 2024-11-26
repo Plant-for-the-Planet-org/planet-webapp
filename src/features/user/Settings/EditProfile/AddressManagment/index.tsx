@@ -9,7 +9,6 @@ import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import AddressForm from './AddressForm';
 import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
@@ -19,6 +18,7 @@ import {
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 import EditAddressForm from './EditAddressForm';
+import AddAddressForm from './AddAddressForm';
 
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
@@ -69,10 +69,9 @@ const AddressManagement = () => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
-          <AddressForm
-            formType="add"
+          <AddAddressForm
             setIsModalOpen={setIsModalOpen}
-            setUserAddresses={setUserAddresses} // to update the address list
+            setUserAddresses={setUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
@@ -80,12 +79,11 @@ const AddressManagement = () => {
           <EditAddressForm
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            fetchUserAddresses={fetchUserAddresses} // to update the address list
+            fetchUserAddresses={fetchUserAddresses}
           />
         );
     }
   }, [
-    addressAction,
     setIsModalOpen,
     setUserAddresses,
     selectedAddressForAction,
