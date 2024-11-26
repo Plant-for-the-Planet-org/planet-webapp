@@ -3,14 +3,13 @@
 .addressManagement {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 40px;
   gap: 20px;
 }
 
 .addressManagementTitle {
   font-size: $fontLarge;
   font-weight: 600;
-  margin: 40px 0 20px;
 }
 
 .addressListContainer {
