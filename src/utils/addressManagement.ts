@@ -52,6 +52,19 @@ export const geocoder = new GeocoderArcGIs(
     : {}
 );
 
+/**
+ * Suggests address options based on user input.
+ *
+ * This function queries the geocoder's `suggest` method with the provided input value
+ * and optional country code to fetch address suggestions categorized as "Address".
+ * It filters out suggestions marked as collections (`isCollection`) to ensure only
+ * individual address suggestions are returned.
+ *
+ * @param value - The input string to search for address suggestions.
+ * @param country - The optional country code to narrow down the address suggestions.
+ * @returns A promise that resolves to an array of valid address suggestions or an empty array.
+ */
+
 export const suggestAddress = async (
   value: string,
   country: ExtendedCountryCode | ''
@@ -73,6 +86,17 @@ export const suggestAddress = async (
   return [];
 };
 
+/**
+ * Fetches detailed address information based on the input value.
+ *
+ * This function uses the geocoder's `findAddressCandidates` method to search for
+ * address candidates and retrieves key information such as formatted address, city,
+ * and postal code (ZIP code). If no candidates are found, it returns `null`.
+ *
+ * @param value - The input string to search for address details.
+ * @returns A promise that resolves to an object containing address details (address, city, zipCode)
+ *          or `null` if no candidates are found or an error occurs.
+ */
 export const fetchAddressDetails = async (
   value: string
 ): Promise<{
