@@ -123,7 +123,7 @@ const EditAddressForm = ({
   };
 
   const updateAddress = async (data: FormData) => {
-    if (!contextLoaded || !user) return;
+    if (!contextLoaded || !user || !token) return;
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
@@ -147,6 +147,7 @@ const EditAddressForm = ({
       setErrors(handleError(error as APIError));
     } finally {
       setIsUploadingData(false);
+      setIsModalOpen(false);
     }
   };
 

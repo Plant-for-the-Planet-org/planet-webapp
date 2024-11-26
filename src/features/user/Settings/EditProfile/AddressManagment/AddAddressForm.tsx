@@ -113,7 +113,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
   };
 
   const addAddress = async (data: FormData) => {
-    if (!contextLoaded || !user) return;
+    if (!contextLoaded || !user || !token) return;
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
