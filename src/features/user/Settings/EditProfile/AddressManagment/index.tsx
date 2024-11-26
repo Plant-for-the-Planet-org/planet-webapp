@@ -18,6 +18,7 @@ import {
   addressTypeOrder,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
+import EditAddressForm from './EditAddressForm';
 
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
@@ -76,10 +77,8 @@ const AddressManagement = () => {
         );
       case ADDRESS_ACTIONS.EDIT:
         return (
-          <AddressForm
-            formType="edit"
+          <EditAddressForm
             setIsModalOpen={setIsModalOpen}
-            addressAction={addressAction}
             selectedAddressForAction={selectedAddressForAction}
             fetchUserAddresses={fetchUserAddresses} // to update the address list
           />
