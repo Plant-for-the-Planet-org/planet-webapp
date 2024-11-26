@@ -10,7 +10,6 @@ import { CircularProgress } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
-import COUNTRY_ADDRESS_POSTALS from '../../../../../utils/countryZipCode';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
@@ -21,6 +20,7 @@ import {
   ADDRESS_TYPE,
   fetchAddressDetails,
   geocoder,
+  getPostalRegex,
   suggestAddress,
 } from '../../../../../utils/addressManagement';
 
@@ -101,12 +101,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
     [inputValue]
   );
 
-  const postalRegex = useMemo(() => {
-    const filteredCountry = COUNTRY_ADDRESS_POSTALS.find(
-      (item) => item.abbrev === country
-    );
-    return filteredCountry?.postal;
-  }, [country]);
+  const postalRegex = useMemo(() => getPostalRegex(country), [country]);
 
   const resetForm = () => {
     reset(defaultAddressDetail);
