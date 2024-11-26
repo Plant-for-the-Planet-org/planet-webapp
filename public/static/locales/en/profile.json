@@ -134,6 +134,20 @@
         "lifeOnLand": "Life on land",
         "partnership": "Partnerships for the goals"
       }
+    },
+    "addressManagement": {
+      "addressManagementTitle": "Address",
+      "addressTags": {
+        "primary": "Primary Address",
+        "mailing": "Billing Address"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "setAsPrimaryAddress": "Set as Primary Address",
+        "setAsBillingAddress": "Set as Billing Address"
+      },
+      "addAddress": "Add New Address"
     }
   }
 }
