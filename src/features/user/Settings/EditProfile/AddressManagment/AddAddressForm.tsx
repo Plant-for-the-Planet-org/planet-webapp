@@ -118,33 +118,32 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
   };
 
   const addAddress = async (data: FormData) => {
+    if (!contextLoaded || !user) return;
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
       country,
       type: ADDRESS_TYPE.OTHER,
     };
-    if (contextLoaded && user) {
-      try {
-        const res = await postAuthenticatedRequest<Address>(
-          tenantConfig.id,
-          '/app/addresses',
-          bodyToSend,
-          token,
-          logoutUser
-        );
-        if (res && setUserAddresses) {
-          setUserAddresses((prevAddresses) => [...prevAddresses, res]);
-          handleCancel();
-        }
-      } catch (error) {
-        resetForm();
-        setIsUploadingData(false);
-        setErrors(handleError(error as APIError));
-      } finally {
-        setIsUploadingData(false);
-        setIsModalOpen(false);
+    try {
+      const res = await postAuthenticatedRequest<Address>(
+        tenantConfig.id,
+        '/app/addresses',
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      if (res && setUserAddresses) {
+        setUserAddresses((prevAddresses) => [...prevAddresses, res]);
+        handleCancel();
       }
+    } catch (error) {
+      resetForm();
+      setIsUploadingData(false);
+      setErrors(handleError(error as APIError));
+    } finally {
+      setIsUploadingData(false);
+      setIsModalOpen(false);
     }
   };
   const handleInputChange = (value: string) => {
