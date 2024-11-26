@@ -9,15 +9,13 @@ export default function EditProfile(): React.ReactElement | null {
   const t = useTranslations('Me');
 
   return (
-    <>
-      <DashboardView title={t('editProfile')} subtitle={null}>
-        <SingleColumnView>
-          <CenteredContainer>
-            <EditProfileForm />
-          </CenteredContainer>
-          <AddressManagement />
-        </SingleColumnView>
-      </DashboardView>
-    </>
+    <DashboardView title={t('editProfile')} subtitle={null}>
+      <SingleColumnView>
+        <CenteredContainer>
+          <EditProfileForm />
+        </CenteredContainer>
+        <AddressManagement />
+      </SingleColumnView>
+    </DashboardView>
   );
 }

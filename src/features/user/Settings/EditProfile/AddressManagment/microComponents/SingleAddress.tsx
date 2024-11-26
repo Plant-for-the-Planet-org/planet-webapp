@@ -10,7 +10,7 @@ interface Props {
   userAddress: Address;
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
-  setSelectedAddressForAction: SetState<UpdatedAddress | null>;
+  setSelectedAddressForAction: SetState<Address | null>;
   setIsModalOpen: SetState<boolean>;
 }
 
