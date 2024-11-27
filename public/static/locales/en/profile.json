@@ -155,7 +155,7 @@
       "saveChanges": "Save Changes",
       "addressConfirmationMessage": "Are you sure you want to set this address as your {addressType, select, mailing {billing} other {{addressType}}} address? {isAddressSet, select, true {This will replace your current {addressType, select, mailing {billing} other {{addressType}}} address.} other {}}",
       "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address.",
-      "maxAddressesMessage": "You have reached the maximum number of addresses ! Remove one to add a new address.",
+      "maxAddressesMessage": "You have reached the maximum number of addresses! Remove one to add a new address.",
       "confirm": "Confirm",
       "address2": "Address 2(optional)"
     }
