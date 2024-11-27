@@ -132,6 +132,8 @@ const AddressManagement = () => {
     billingAddress,
     addressAction,
   ]);
+  const maxAddressLimit = 5;
+  const canAddMoreAddresses = userAddresses.length < maxAddressLimit;
   return userAddresses.length > 0 ? (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
@@ -144,13 +146,17 @@ const AddressManagement = () => {
           setSelectedAddressForAction={setSelectedAddressForAction}
           setIsModalOpen={setIsModalOpen}
         />
-        <WebappButton
-          text={tProfile('addNewAddress')}
-          elementType="button"
-          onClick={toggleAddAddressModal}
-          variant="primary"
-          buttonClasses={styles.addAddressButton}
-        />
+        {canAddMoreAddresses ? (
+          <WebappButton
+            text={tProfile('addNewAddress')}
+            elementType="button"
+            onClick={toggleAddAddressModal}
+            variant="primary"
+            buttonClasses={styles.addAddressButton}
+          />
+        ) : (
+          <p className={styles.maxAddress}>{tProfile('maxAddressesMessage')}</p>
+        )}
       </CenteredContainer>
       <Modal open={isModalOpen}>
         <>{renderModalContent}</>
