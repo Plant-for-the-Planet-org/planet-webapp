@@ -4,6 +4,9 @@
 $layoutPaddingTop: 24px;
 $layoutPaddingSide: 20px;
 $layoutPaddingBottom: 30px;
+$topMobileNavigationSpace: 77px;
+$bottomMobileFooterSpace: 49px;
+
 .impersonationMode,
 .embedMode,
 .projectsLayout {
@@ -55,42 +58,31 @@ $layoutPaddingBottom: 30px;
 }
 
 // styles for mobile layout
-
 .mobileProjectsLayout {
-  width: 100%;
-  height: calc(100vh - 58px);
-  position: relative;
+  position: fixed;
+  top: $topMobileNavigationSpace;
+  left: 0;
+  right: 0;
+  bottom: $bottomMobileFooterSpace;
   display: flex;
-  justify-content: center;
-  margin-top: 58px;
-  padding-top: $layoutPaddingTop;
+  flex-direction: column;
   overflow: hidden;
-  &.mapMode {
-    height: 100vh;
-    margin-top: 0px;
-    padding-top: 0px;
-  }
-}
+  background: white;
+  padding-top: 24px;
 
-.viewButton {
-  position: absolute;
-  top: 13px;
-  right: 20px;
-  z-index: 1;
-  &.viewButtonShifted {
-    top: 95px;
+  &.mapMode {
+    top: 0;
+    padding-top: 0;
   }
 }
 
 .mobileContentContainer {
-  padding: 0px 12px;
-  height: 100%;
+  flex: 1;
+  position: relative;
   width: 100%;
-  margin-top: 20px;
-  @include xsPhoneView {
-    padding: 0px;
-    margin-top: 20px;
-  }
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: auto;
 }
 
 .mobileMapContainer {
