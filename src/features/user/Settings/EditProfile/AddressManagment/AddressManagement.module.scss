@@ -10,15 +10,11 @@ $padding-standard: 24px;
   justify-content: $justify;
 }
 
-@mixin centered-absolute {
+@mixin modal-container {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-}
-
-@mixin modal-container {
-  @include centered-absolute;
   padding: 20px;
   border-radius: $border-radius-lg;
   background: rgba(255, 255, 255, 1);
@@ -27,8 +23,7 @@ $padding-standard: 24px;
 // Base Components
 
 .addressManagement {
-  display: flex;
-  flex-direction: column;
+  @include flex-container(column);
   margin-top: 40px;
   gap: 20px;
 }
@@ -39,8 +34,7 @@ $padding-standard: 24px;
 }
 
 .addressListContainer {
-  display: flex;
-  flex-direction: column;
+  @include flex-container(column);
   gap: 16px;
   width: 100%;
 }
@@ -73,9 +67,7 @@ $padding-standard: 24px;
 }
 
 .addressDetails {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  @include flex-container(column, center);
   gap: 16px;
   span {
     padding: 5px 10px;
@@ -94,11 +86,11 @@ $padding-standard: 24px;
 
 // Address Types
 .primary {
-  background: rgba(0, 122, 73, 1);
+  background: $primaryDarkColor;
 }
 
 .mailing {
-  background: rgba(45, 156, 219, 1);
+  background: $mediumBlueColor;
 }
 
 // Address Actions
