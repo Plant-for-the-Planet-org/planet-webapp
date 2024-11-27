@@ -1,0 +1,34 @@
+@import '../../../../theme/theme';
+
+.projectDescription {
+  width: 100%;
+  background-color: $aboutProjectBackgroundColorNew;
+  color: #2f3336; //to be removed
+  border-radius: 14px;
+  font-size: $fontXSmall;
+  button {
+    display: flex;
+    gap: 6px;
+    font-weight: 700;
+    font-size: $fontXXSmall;
+    color: rgba(0, 122, 73, 1);
+    padding-left: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+  }
+}
+.infoTitle {
+  font-weight: 700;
+  padding: 16px 16px 0;
+}
+
+.infoText {
+  padding: 4px 16px 7px;
+}
+
+.hideText {
+  display: none;
+}
+.showText {
+  display: inline;
+}

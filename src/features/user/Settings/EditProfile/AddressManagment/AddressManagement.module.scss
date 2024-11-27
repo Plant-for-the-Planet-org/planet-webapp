@@ -25,7 +25,27 @@ $padding-standard: 24px;
 }
 
 // Base Components
-.addressContainer {
+
+.addressManagement {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  gap: 20px;
+}
+
+.addressManagementTitle {
+  font-size: $fontLarge;
+  font-weight: 600;
+}
+
+.addressListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.singleAddressContainer {
   @include flex-container;
   width: 100%;
   background: rgba(242, 242, 242, 0.5);
@@ -33,34 +53,33 @@ $padding-standard: 24px;
   font-size: $fontSmall;
   font-weight: 400;
   padding: $padding-standard 10px $padding-standard $padding-standard;
-  .address {
-    max-width: 346px;
+  .kebabMenuButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    svg {
+      height: 20px;
+      width: 12px;
+    }
+    &:hover {
+      background-color: rgba(120, 120, 120, 0.1);
+    }
   }
 }
 
-.kebabMenuButton {
-  @include flex-container(row, center);
-  align-items: center;
-  height: 34px;
-  width: 34px;
-  border-radius: 50%;
-  background-color: transparent;
-  cursor: pointer;
-  svg {
-    height: 20px;
-    width: 12px;
-  }
-  &:hover {
-    background-color: rgba(120, 120, 120, 0.1);
-  }
-}
-
-.addressSubContainer {
-  @include flex-container(column, center);
+.addressDetails {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   gap: 16px;
-  .addressTag {
+  span {
     padding: 5px 10px;
-    max-width: 112px;
+    max-width: fit-content;
     border-radius: 6px;
     text-align: center;
     color: #fff;
@@ -68,12 +87,9 @@ $padding-standard: 24px;
     line-height: 16px;
     font-weight: 600;
   }
-}
-
-.addNewAddressButton {
-  width: 342px;
-  height: 40px;
-  margin-top: 40px;
+  p {
+    margin-top: 2px;
+  }
 }
 
 // Address Types
@@ -105,10 +121,11 @@ $padding-standard: 24px;
 
 // Modal Forms
 
-.addressActionHeader {
+.header {
   font-weight: 700;
   font-size: $fontSixteen;
 }
+
 .addressFormContainer {
   @include flex-container(column);
   @include modal-container;
@@ -122,8 +139,7 @@ $padding-standard: 24px;
     @include flex-container;
     gap: 8px;
     button {
-      min-width: 252px;
-      min-height: 40px;
+      flex: 1 1;
     }
   }
 }
@@ -140,13 +156,12 @@ $padding-standard: 24px;
     font-weight: 400;
     padding: $padding-standard;
   }
-
   .buttonContainer {
     @include flex-container;
+    gap: 8px;
     margin-top: 40px;
     button {
-      min-width: 206px;
-      min-height: 40px;
+      flex: 1 1;
     }
   }
 }

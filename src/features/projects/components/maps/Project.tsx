@@ -100,7 +100,8 @@ export default function Project({
     ) {
       setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
-    if (selectedPl) router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
+    if (selectedPl)
+      router.push(`/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`);
   }, [selectedPl]);
 
   React.useEffect(() => {

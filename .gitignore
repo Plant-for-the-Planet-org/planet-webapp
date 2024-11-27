@@ -37,6 +37,8 @@ cypress.env.json
 # certificates
 ./certificates/localhost.crt
 ./certificates/localhost.key
+certificates/localhost-key.pem
+certificates/localhost.pem
 
 # tenant
 # tenant.config.js

@@ -1,21 +1,16 @@
 import type { SetState } from '../../../../../common/types/common';
+import type { AddressAction } from '../../../../../common/types/profile';
+import type { AddressType, Address } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Popover } from '@mui/material';
-import KababMenuIcon from '../../../../../../../public/assets/images/icons/KababMenuIcon';
+import KebabMenuIcon from '../../../../../../../public/assets/images/icons/KebabMenuIcon';
 import styles from '../AddressManagement.module.scss';
 import {
   ADDRESS_ACTIONS,
-  ADDRESS_FORM_TYPE,
   ADDRESS_TYPE,
 } from '../../../../../../utils/addressManagement';
-
-export type AddressType = (typeof ADDRESS_TYPE)[keyof typeof ADDRESS_TYPE];
-export type AddressAction =
-  (typeof ADDRESS_ACTIONS)[keyof typeof ADDRESS_ACTIONS];
-export type AddressFormType =
-  (typeof ADDRESS_FORM_TYPE)[keyof typeof ADDRESS_FORM_TYPE];
 
 export interface AddressActionItem {
   label: string;
@@ -27,6 +22,8 @@ interface Props {
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
+  setSelectedAddressForAction: SetState<Address | null>;
+  userAddress: Address;
 }
 
 const AddressActionsMenu = ({
@@ -34,6 +31,8 @@ const AddressActionsMenu = ({
   addressCount,
   setAddressAction,
   setIsModalOpen,
+  setSelectedAddressForAction,
+  userAddress,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
@@ -42,24 +41,24 @@ const AddressActionsMenu = ({
 
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile('edit'),
+      label: tProfile(`actions.edit`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile('delete'),
+      label: tProfile(`actions.delete`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: tProfile('setAsPrimaryAddress'),
+      label: tProfile('actions.setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
       ),
     },
     {
-      label: tProfile('setAsBillingAddress'),
+      label: tProfile('actions.setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
@@ -76,6 +75,7 @@ const AddressActionsMenu = ({
   };
 
   const handleActionClick = (action: AddressAction) => {
+    setSelectedAddressForAction(userAddress);
     setIsModalOpen(true);
     setAddressAction(action);
     setPopoverAnchor(null);
@@ -87,7 +87,7 @@ const AddressActionsMenu = ({
   return (
     <div>
       <button onClick={openPopover} className={styles.kebabMenuButton}>
-        <KababMenuIcon />
+        <KebabMenuIcon />
       </button>
       <Popover
         id={id}

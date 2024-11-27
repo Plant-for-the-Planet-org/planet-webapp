@@ -21,13 +21,13 @@
   &.impersonationMode {
     top: 49px;
     @include xsPhoneView {
-      top: 62px;
+      top: 40px;
     }
   }
   @include xsPhoneView {
     border-radius: 12px;
-    width: 95%;
-    top: 38px;
+    width: calc(100% - 20px);
+    top: 16px;
     padding: 8.5px;
     border: 1px solid rgba(211, 211, 211, 0.5);
   }

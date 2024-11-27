@@ -1,6 +1,7 @@
+import type { AddressType } from '@planet-sdk/common';
+
 import styles from '../AddressManagement.module.scss';
 import { useTranslations } from 'next-intl';
-import { AddressType } from './AddressActionMenu';
 
 interface Props {
   type: AddressType;
@@ -12,7 +13,7 @@ const AddressContent = ({ type, userAddress }: Props) => {
     <div className={styles.addressSubContainer}>
       {type !== 'other' && (
         <span className={`${styles.addressTag} ${styles[type]}`}>
-          {tProfile('addressType', { address: type })}
+          {tProfile(`addressType.${type}`)}
         </span>
       )}
       <div className={styles.address}>{userAddress}</div>

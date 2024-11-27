@@ -16,6 +16,8 @@ import { Geometry } from '@turf/turf';
 import { useTenant } from '../../common/Layout/TenantContext';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
+import { useRouter } from 'next/router';
+import { generateProjectLink } from '../../../utils/projectV2';
 
 interface UserProjectsType {
   type: string;
@@ -31,6 +33,7 @@ function SingleProject({ project }: { project: Properties }) {
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
   const locale = useLocale();
+  const router = useRouter();
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -87,7 +90,7 @@ function SingleProject({ project }: { project: Properties }) {
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
-        <Link href={'/' + project.id}>
+        <Link href={generateProjectLink(project.id, router.asPath, locale)}>
           <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
         <Link href={`/profile/projects/${project.id}?type=basic-details`}>
@@ -106,7 +109,6 @@ export default function ProjectsContainer() {
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
-
   async function loadProjects() {
     if (user) {
       try {

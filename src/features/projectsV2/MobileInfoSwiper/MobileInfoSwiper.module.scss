@@ -1,0 +1,96 @@
+@import '../../../theme/theme';
+
+.mobileInfoSwiper {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  padding: 6px;
+}
+
+.swiperContentContainer {
+  border-radius: 12px;
+  background-color: $primaryLightGreenBgColor;
+
+  :global(.swiper) {
+    :global(.swiper-pagination-bullet-active) {
+      background-color: $primaryDarkColor;
+    }
+
+    :global(.swiper-pagination-bullets.swiper-pagination-horizontal) {
+      width: fit-content;
+      left: 10px;
+    }
+  }
+}
+
+.logoContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.slideContainer {
+  max-height: min(60vh, 500px);
+  overflow: auto;
+  margin: 12px 12px 36px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  background: $light;
+
+  :global(.image-slider-container) {
+    height: 192px;
+  }
+
+  :global(.image-slider-container),
+  :global(.single-plant-location-image) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  :global(.plant-location-header-container),
+  :global(.single-plant-location-heading) {
+    padding: 12px 20px;
+
+    :global(.tree-count) {
+      color: $primaryDarkColor;
+      font-size: $fontXSmall;
+      font-weight: 700;
+
+      span {
+        font-weight: 700;
+      }
+    }
+
+    :global(.hid) {
+      font-size: $fontXSmall;
+    }
+  }
+
+  :global(.planting-details-group) {
+    flex-direction: column;
+    background-color: $primaryLightGreenBgColor;
+    gap: 12px;
+  }
+
+  :global(.planting-details-item) {
+    background-color: $light;
+  }
+
+  :global(.species-container) {
+    background-color: $light;
+  }
+
+  :global(.sample-trees-container) {
+    background-color: $light;
+
+    :global(.sample-tree-container) {
+      background-color: $primaryLightGreenBgColor;
+    }
+  }
+
+  :global(.plant-info-card) {
+    background-color: $primaryLightGreenBgColor;
+  }
+}
