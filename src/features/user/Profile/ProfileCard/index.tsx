@@ -1,3 +1,5 @@
+import type { ProfileV2Props } from '../../../common/types/profile';
+
 import React from 'react';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -8,8 +10,8 @@ import {
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ProfileV2Props } from '../../../common/types/profile';
 import ProfileActions from './ProfileActions';
+import DonorCircleMemberBadge from './MicroComponents/DonorCircleMemberBadge';
 
 const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
   const t = useTranslations('Profile');
@@ -17,10 +19,12 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
   const userImageUrl = userProfile?.image
     ? getImageUrl('profile', 'thumb', userProfile.image)
     : '';
-
   return (
     <div className={styles.profileCardContainer}>
-      <div className={styles.profileBackground}></div>
+      <div className={styles.profileBackground}>
+        {/* planet-sdk need to be updated  to include isMember*/}
+        {isPrivateAccount && userProfile.isMember && <DonorCircleMemberBadge />}
+      </div>
       <div className={styles.profilePicture}>
         {/* if no user profile picture exists or image is fetched from CDN in development env, show default profile image */}
         {userImageUrl && !userImageUrl.includes('development') ? (

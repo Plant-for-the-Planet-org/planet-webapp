@@ -14,9 +14,38 @@
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 8rem;
-
+  position: relative;
   @include mdTabletView {
     flex: 1;
+  }
+}
+
+.donorCircleMemberBadge {
+  width: max-content;
+  display: flex;
+  gap: 9px;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(211, 234, 221, 1);
+  border-radius: 16px;
+  padding: 8px 16px;
+  color: $primaryDarkColor;
+  font-size: $fontXSmall;
+  line-height: 16.34px;
+  font-weight: 700;
+  svg path {
+    fill: $primaryDarkColor;
+  }
+  @include xsPhoneView {
+    top: 35%;
+  }
+  @include smTabletView {
+    top: 35%;
+  }
+  @include lgLaptopView {
+    top: 60%;
   }
 }
 
