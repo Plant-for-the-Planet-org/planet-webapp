@@ -36,7 +36,7 @@ const AddressFormInputs = ({
   setCountry,
 }: Props) => {
   const t = useTranslations('EditProfile');
-  const tProfile = useTranslations('Profile');
+  const tAddressManagement = useTranslations('Profile');
   return (
     <form className={styles.addressForm}>
       <AddressInput
@@ -56,7 +56,7 @@ const AddressFormInputs = ({
       <AddressInput
         name="address2"
         control={control}
-        label={tProfile('addressManagement.address2')}
+        label={tAddressManagement('addressManagement.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
           required: t('validationErrors.addressRequired'),

@@ -24,7 +24,7 @@ const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<Address[]>(
     user?.addresses ?? []
   );
@@ -91,7 +91,7 @@ const AddressManagement = () => {
   return userAddresses.length > 0 ? (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
-        {tProfile('addressManagementTitle')}
+        {tAddressManagement('addressManagementTitle')}
       </h2>
       <CenteredContainer>
         <AddressList
@@ -101,7 +101,7 @@ const AddressManagement = () => {
           setIsModalOpen={setIsModalOpen}
         />
         <WebappButton
-          text={tProfile('addNewAddress')}
+          text={tAddressManagement('addNewAddress')}
           elementType="button"
           onClick={toggleAddAddressModal}
           variant="primary"

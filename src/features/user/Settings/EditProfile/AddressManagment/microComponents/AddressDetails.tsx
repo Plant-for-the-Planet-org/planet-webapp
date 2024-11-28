@@ -10,7 +10,7 @@ interface Props {
 const AddressDetails = ({ userAddress }: Props) => {
   const { zipCode, city, state, country, address, address2, type } =
     userAddress;
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCountry = useTranslations('Country');
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
 
@@ -25,7 +25,9 @@ const AddressDetails = ({ userAddress }: Props) => {
   return (
     <div className={styles.addressDetails}>
       {type !== 'other' && (
-        <span className={styles[type]}>{tProfile(`addressTags.${type}`)}</span>
+        <span className={styles[type]}>
+          {tAddressManagement(`addressTags.${type}`)}
+        </span>
       )}
       <address>
         <p>{address}</p>

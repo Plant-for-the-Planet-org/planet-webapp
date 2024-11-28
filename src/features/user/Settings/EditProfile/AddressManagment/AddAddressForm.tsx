@@ -56,7 +56,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
     defaultValues: defaultAddressDetail,
   });
 
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -150,7 +150,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
   };
   return (
     <div className={styles.addressFormContainer}>
-      <h2>{tProfile('addAddress')}</h2>
+      <h2>{tAddressManagement('addAddress')}</h2>
       <AddressFormInputs
         handleInputChange={handleInputChange}
         handleAddressSelect={handleAddressSelect}
@@ -175,7 +175,7 @@ const AddAddressForm = ({ setIsModalOpen, setUserAddresses }: Props) => {
             buttonClasses={styles.cancelButton}
           />
           <WebappButton
-            text={tProfile('addAddress')}
+            text={tAddressManagement('addAddress')}
             variant="primary"
             elementType="button"
             onClick={handleSubmit(addAddress)}

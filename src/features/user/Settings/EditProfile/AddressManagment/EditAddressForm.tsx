@@ -60,7 +60,7 @@ const EditAddressForm = ({
     defaultValues: defaultAddressDetail,
   });
 
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -153,7 +153,7 @@ const EditAddressForm = ({
 
   return (
     <div className={styles.addressFormContainer}>
-      <h2>{tProfile('editAddress')}</h2>
+      <h2>{tAddressManagement('editAddress')}</h2>
       <AddressFormInputs
         handleInputChange={handleInputChange}
         handleAddressSelect={handleAddressSelect}
@@ -178,7 +178,7 @@ const EditAddressForm = ({
             buttonClasses={styles.cancelButton}
           />
           <WebappButton
-            text={tProfile('saveChanges')}
+            text={tAddressManagement('saveChanges')}
             variant="primary"
             elementType="button"
             onClick={handleSubmit(updateAddress)}
