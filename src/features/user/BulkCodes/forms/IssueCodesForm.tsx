@@ -373,7 +373,7 @@ const IssueCodesForm = (): ReactElement | null => {
               amount={totalAmount}
               currency={planetCashAccount?.currency}
               units={getTotalUnits()}
-              unit={project?.unit}
+              unitType={project?.unitType}
             />
           </div>
           <BulkCodesError />

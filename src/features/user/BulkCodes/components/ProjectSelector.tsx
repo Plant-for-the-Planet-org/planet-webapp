@@ -1,19 +1,21 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
+import type { PaymentOptions } from '../BulkCodesTypes';
+import type { APIError, ProjectMinimal } from '@planet-sdk/common';
+
+import React from 'react';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { PaymentOptions } from '../BulkCodesTypes';
-import { ProjectOption } from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface ProjectSelectorProps {
-  projectList: ProjectOption[];
-  project: ProjectOption | null;
-  setProject?: (project: ProjectOption | null) => void;
+  projectList: ProjectMinimal[];
+  project: ProjectMinimal | null;
+  setProject?: (project: ProjectMinimal | null) => void;
   active?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
@@ -27,11 +29,6 @@ const ProjectSelector = ({
 }: ProjectSelectorProps): ReactElement | null => {
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
-  const defaultUnit = (project: ProjectOption | null) => {
-    if (project?.purpose === 'conservation') return 'm2';
-
-    return 'tree';
-  };
   const { user, token, logoutUser, contextLoaded } = useUserProps();
 
   const fetchPaymentOptions = async (guid: string) => {
@@ -49,16 +46,16 @@ const ProjectSelector = ({
     return paymentOptions;
   };
 
-  const handleProjectChange = async (project: ProjectOption | null) => {
+  const handleProjectChange = async (project: ProjectMinimal | null) => {
     // fetch project details
     if (project && user && token && contextLoaded) {
       try {
-        const paymentOptions = await fetchPaymentOptions(project.guid);
-        // Add to project object
+        const paymentOptions = await fetchPaymentOptions(project.id);
+        // Add/update project object
         if (paymentOptions) {
           project.currency = paymentOptions.currency;
           project.unitCost = paymentOptions.unitCost;
-          project.unit = paymentOptions.unit;
+          project.unitType = paymentOptions.unitType;
           project.purpose = paymentOptions.purpose;
         }
       } catch (err) {
@@ -82,7 +79,7 @@ const ProjectSelector = ({
       <UnitCostDisplay
         unitCost={project ? project.unitCost : '-'}
         currency={planetCashAccount ? planetCashAccount.currency : ''}
-        unit={project?.unit ? project.unit : defaultUnit(project)}
+        unitType={project?.unitType}
       />
     </>
   );

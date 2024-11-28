@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import type { APIError } from '@planet-sdk/common';
-import type { MapProject } from '../../common/types/ProjectPropsContextInterface';
+import type { APIError, ProjectMinimal } from '@planet-sdk/common';
 
 import { useLocale, useTranslations } from 'next-intl';
 import React, { useEffect, useCallback, useContext, useState } from 'react';
@@ -60,7 +59,10 @@ export default function BulkCodes({
       },
       {
         label: t('tabIssueCodes'),
-        link: `/profile/bulk-codes/${bulkMethod}/${project?.guid}`,
+        link:
+          project !== null
+            ? `/profile/bulk-codes/${bulkMethod}/${project.id}`
+            : '',
         step: BulkCodeSteps.ISSUE_CODES,
         disabled: bulkMethod === null || project === null,
       },
@@ -70,11 +72,11 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<MapProject[]>(
+        const fetchedProjects = await getRequest<ProjectMinimal[]>(
           `${tenantConfig?.id}`,
           `/app/projects`,
           {
-            _scope: 'map',
+            _scope: 'minimal',
             currency: planetCashAccount.currency,
             tenant: tenantConfig?.id,
             'filter[purpose]': 'trees,conservation',
@@ -91,26 +93,17 @@ export default function BulkCodes({
           const allowedCHFProjects = ['yucatan'];
           setProjectList(
             // Filter projects which allow donations, and store only required values in context
-            fetchedProjects
-              .filter((project) => {
-                return (
-                  project.properties.allowDonations &&
-                  (planetCashAccount.currency !== 'CHF' ||
-                    (planetCashAccount.currency === 'CHF' &&
-                      allowedCHFProjects.includes(project.properties.slug)))
-                );
-              })
-              .map((project) => {
-                return {
-                  guid: project.properties.id,
-                  slug: project.properties.slug,
-                  name: project.properties.name,
-                  unitCost: project.properties.unitCost,
-                  currency: project.properties.currency,
-                  purpose: project.properties.purpose,
-                  allowDonations: project.properties.allowDonations,
-                };
-              })
+            fetchedProjects.filter((project) => {
+              return (
+                project.allowDonations &&
+                project.unitCost > 0 &&
+                project.classification !== 'membership' &&
+                project.classification !== 'endowment' &&
+                (planetCashAccount.currency !== 'CHF' ||
+                  (planetCashAccount.currency === 'CHF' &&
+                    allowedCHFProjects.includes(project.slug)))
+              );
+            })
           );
         }
       } catch (err) {

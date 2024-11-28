@@ -13,6 +13,7 @@ import type {
   Tpo,
   DefaultPaymentConfig,
   Certificate,
+  UnitTypes,
 } from '@planet-sdk/common';
 import type { FeatureCollection as GeoJson } from 'geojson';
 import type { SetState } from './common';
@@ -264,17 +265,15 @@ interface ProjectCertificatesProps {
 }
 
 export interface ProjectOption {
-  guid: string;
+  id: string;
   slug: string;
   name: string;
   unitCost: number;
   currency: string;
-  unit?: UnitType;
+  unitType?: UnitTypes;
   purpose: 'trees' | 'conservation' | 'funds';
   allowDonations: boolean;
 }
-
-export type UnitType = 'tree' | 'm2' | 'ha';
 
 export type ProfileProject = ProfileProjectConservation | ProfileProjectTrees;
 
