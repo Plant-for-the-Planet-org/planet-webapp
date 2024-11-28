@@ -1,7 +1,7 @@
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -25,7 +25,9 @@ const AddressManagement = () => {
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const tProfile = useTranslations('Profile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<Address[]>([]);
+  const [userAddresses, setUserAddresses] = useState<Address[]>(
+    user?.addresses ?? []
+  );
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -55,10 +57,6 @@ const AddressManagement = () => {
       setErrors(handleError(error as APIError));
     }
   };
-
-  useEffect(() => {
-    fetchUserAddresses();
-  }, []);
 
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
