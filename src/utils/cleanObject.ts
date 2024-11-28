@@ -1,29 +1,52 @@
-type ObjectValue = number | string | boolean | GeneralArray | GeneralObject;
+type ObjectValue =
+  | number
+  | string
+  | boolean
+  | GeneralArray
+  | GeneralObject
+  | undefined
+  | null;
+
 type GeneralObject = { [key: string]: ObjectValue };
 type GeneralArray = Array<ObjectValue>;
 
 /**
- * Removes all the null,  empty objects, "" (empty string values), undefined values from the object
+ * Removes all null, empty objects, empty strings, and undefined values from the object
+ * while preserving the original type of the input
  */
-const cleanObject = (object: GeneralObject | GeneralArray) => {
-  Object.entries(object).forEach(([key, value]) => {
+function cleanObject<T>(obj: T): T {
+  if (!obj || typeof obj !== 'object') {
+    return obj;
+  }
+
+  const shouldRemove = (value: unknown) =>
+    (value && typeof value === 'object' && !Object.keys(value).length) ||
+    value === null ||
+    value === undefined ||
+    value === '';
+
+  Object.entries(obj as GeneralObject).forEach(([key, value]) => {
     if (value && typeof value === 'object') {
       cleanObject(value);
     }
-    if (
-      (value && typeof value === 'object' && !Object.keys(value).length) ||
-      value === null ||
-      value === undefined ||
-      value === ''
-    ) {
-      if (Array.isArray(object)) {
-        object.splice(Number(key), 1);
+    if (shouldRemove(value)) {
+      if (Array.isArray(obj)) {
+        delete obj[Number(key)];
       } else {
-        delete object[key];
+        delete (obj as GeneralObject)[key];
       }
     }
   });
-  return object;
-};
+
+  // For arrays, we need to clean up the empty slots left by delete
+  if (Array.isArray(obj)) {
+    // Filter out empty slots and recreate the array
+    const cleaned = obj.filter(() => true);
+    obj.length = 0;
+    obj.push(...cleaned);
+  }
+
+  return obj;
+}
 
 export default cleanObject;

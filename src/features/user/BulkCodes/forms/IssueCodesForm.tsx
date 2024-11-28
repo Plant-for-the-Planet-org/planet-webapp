@@ -1,5 +1,10 @@
 import type { FormEvent, ReactElement } from 'react';
-import type { APIError, SerializedError, Donation } from '@planet-sdk/common';
+import type {
+  APIError,
+  SerializedError,
+  Donation,
+  PrepaidDonationRequest,
+} from '@planet-sdk/common';
 import type { Recipient } from '../../../common/Layout/BulkCodeContext';
 import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
 
@@ -117,13 +122,13 @@ const IssueCodesForm = (): ReactElement | null => {
     const token = await getAccessTokenSilently();
     setIsProcessing(true);
     if (project) {
-      const donationData = {
+      const donationData: PrepaidDonationRequest = {
         purpose: project.purpose,
-        project: project.guid,
+        project: project.id,
         prePaid: true,
         comment,
-        treeCount: getTotalUnits(),
-        gift: {},
+        quantity: getTotalUnits(),
+        gift: undefined,
       };
       switch (bulkMethod) {
         case BulkCodeMethods.GENERIC:
