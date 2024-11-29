@@ -9,12 +9,14 @@ interface Props {
 }
 const AddressDetails = ({ userAddress }: Props) => {
   const { type } = userAddress;
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
 
   return (
     <div className={styles.addressDetails}>
       {type !== 'other' && (
-        <span className={styles[type]}>{tProfile(`addressType.${type}`)}</span>
+        <span className={styles[type]}>
+          {tAddressManagement(`addressType.${type}`)}
+        </span>
       )}
       <FormattedAddressBlock userAddress={userAddress} />
     </div>

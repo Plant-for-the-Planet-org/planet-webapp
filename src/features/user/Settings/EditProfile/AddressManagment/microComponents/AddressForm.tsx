@@ -1,42 +1,115 @@
-import type { Control, FieldErrors } from 'react-hook-form';
 import type { AddressSuggestionsType } from '../../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
-import type { AddressFormData } from '../AddressForm';
+import type { Nullable } from '@planet-sdk/common/build/types/util';
+import type { FormData } from '../AddAddress';
 
-import { TextField } from '@mui/material';
+import { useCallback, useMemo, useState } from 'react';
+import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { Controller } from 'react-hook-form';
-import { validationPattern } from '../../../../../../utils/addressManagement';
+import { Controller, useForm } from 'react-hook-form';
+import {
+  fetchAddressDetails,
+  geocoder,
+  getPostalRegex,
+  suggestAddress,
+  validationPattern,
+} from '../../../../../../utils/addressManagement';
 import InlineFormDisplayGroup from '../../../../../common/Layout/Forms/InlineFormDisplayGroup';
 import styles from '../AddressManagement.module.scss';
 import AddressInput from './AddressInput';
 import CountrySelect from '../../../../../common/InputTypes/AutoCompleteCountry';
 import { allCountries } from '../../../../../../utils/constants/countries';
+import AddressFormButtons from './AddressFormButtons';
+import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 
 interface Props {
-  handleInputChange: (value: string) => void;
-  handleAddressSelect: (value: string) => void;
-  addressSuggestions: AddressSuggestionsType[];
-  control: Control<AddressFormData, any>;
-  errors: FieldErrors<AddressFormData>;
-  postalRegex: RegExp | undefined;
   country: ExtendedCountryCode | '';
   setCountry: SetState<ExtendedCountryCode | ''>;
+  label: string;
+  processFormData: (data: FormData) => Promise<void>;
+  defaultAddressDetail: {
+    address: string | undefined;
+    address2: Nullable<string> | undefined;
+    city: string | undefined;
+    zipCode: string | undefined;
+    state: Nullable<string> | undefined;
+  };
+  setIsModalOpen: SetState<boolean>;
+  isLoading: boolean;
 }
 
-const AddressFormInputs = ({
-  handleInputChange,
-  handleAddressSelect,
-  addressSuggestions,
-  control,
-  errors,
-  postalRegex,
+const AddressForm = ({
   country,
   setCountry,
+  defaultAddressDetail,
+  setIsModalOpen,
+  label,
+  processFormData,
+  isLoading,
 }: Props) => {
   const t = useTranslations('EditProfile');
-  const tProfile = useTranslations('Profile');
+  const tAddressManagement = useTranslations('Profile');
+  const [addressSuggestions, setAddressSuggestions] = useState<
+    AddressSuggestionsType[]
+  >([]);
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    defaultValues: defaultAddressDetail,
+  });
+  const [inputValue, setInputValue] = useState('');
+  const postalRegex = useMemo(() => getPostalRegex(country), [country]);
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
+  const handleSuggestAddress = useCallback(
+    async (value: string) => {
+      const suggestions = await suggestAddress(value, country);
+      setAddressSuggestions(suggestions);
+    },
+    [geocoder, country]
+  );
+
+  useDebouncedEffect(
+    () => {
+      if (inputValue) {
+        handleSuggestAddress(inputValue);
+      }
+    },
+    700,
+    [inputValue]
+  );
+  const handleGetAddress = useCallback(
+    async (value: string) => {
+      const details = await fetchAddressDetails(value);
+      if (details) {
+        setValue('address', details.address, { shouldValidate: true });
+        setValue('city', details.city, { shouldValidate: true });
+        setValue('zipCode', details.zipCode, { shouldValidate: true });
+      }
+      setAddressSuggestions([]);
+    },
+    [geocoder, setValue]
+  );
+  const handleAddressSelect = (address: string) => {
+    handleGetAddress(address);
+  };
+
+  const resetForm = () => {
+    reset(defaultAddressDetail);
+    setAddressSuggestions([]);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    resetForm();
+  };
   return (
     <form className={styles.addressForm}>
       <AddressInput
@@ -56,7 +129,7 @@ const AddressFormInputs = ({
       <AddressInput
         name="address2"
         control={control}
-        label={tProfile('addressManagement.address2')}
+        label={tAddressManagement('addressManagement.addressForm.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
           required: t('validationErrors.addressRequired'),
@@ -138,8 +211,19 @@ const AddressFormInputs = ({
           onChange={setCountry}
         />
       </InlineFormDisplayGroup>
+      {isLoading ? (
+        <div className={styles.addressMgmtSpinner}>
+          <CircularProgress color="success" />
+        </div>
+      ) : (
+        <AddressFormButtons
+          text={label}
+          handleSubmit={handleSubmit(processFormData)}
+          handleCancel={handleCancel}
+        />
+      )}
     </form>
   );
 };
 
-export default AddressFormInputs;
+export default AddressForm;
