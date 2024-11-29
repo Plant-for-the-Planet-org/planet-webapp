@@ -22,7 +22,6 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
   return (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileBackground}>
-        {/* planet-sdk need to be updated  to include isMember*/}
         {isPrivateAccount && userProfile.isMember && <DonorCircleMemberBadge />}
       </div>
       <div className={styles.profilePicture}>
@@ -45,11 +44,7 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
         )}
         <div className={styles.profileNameAndDescriptionContainer}>
           <h2>{userProfile?.displayName}</h2>
-          <p>
-            {t('myProfile.userDescription', {
-              bio: userProfile?.bio,
-            })}
-          </p>
+          <p>{userProfile?.bio}</p>
         </div>
 
         {profilePageType === 'private' ? (
