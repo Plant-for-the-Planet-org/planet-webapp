@@ -83,7 +83,7 @@ function ContributionsMap({
           position="bottom-right"
           style={{
             position: 'absolute',
-            bottom: '34px',
+            bottom: '32px',
             right: '0px',
           }}
           showCompass={false}
