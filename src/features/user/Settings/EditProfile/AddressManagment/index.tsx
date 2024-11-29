@@ -87,19 +87,22 @@ const AddressManagement = () => {
     selectedAddressForAction,
     fetchUserAddresses,
   ]);
-
+  const shouldRenderAddressList =
+    user?.addresses !== undefined && user.addresses.length > 0;
   return (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
         {tAddressManagement('addressManagementTitle')}
       </h2>
       <CenteredContainer>
-        <AddressList
-          addresses={sortedAddresses}
-          setAddressAction={setAddressAction}
-          setSelectedAddressForAction={setSelectedAddressForAction}
-          setIsModalOpen={setIsModalOpen}
-        />
+        {shouldRenderAddressList && (
+          <AddressList
+            addresses={sortedAddresses}
+            setAddressAction={setAddressAction}
+            setSelectedAddressForAction={setSelectedAddressForAction}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
         <WebappButton
           text={tAddressManagement('addNewAddress')}
           elementType="button"
