@@ -12,6 +12,7 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import AddressForm from './microComponents/AddressForm';
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 import AddressFormWrapper from './microComponents/AddressFormWrapper';
+import { getStoredConfig } from '../../../../../utils/storeConfig';
 
 export type FormData = {
   address: string | undefined;
@@ -37,11 +38,11 @@ const defaultAddressDetail = {
 const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
   const tAddressManagement = useTranslations('Profile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const configCountry = getStoredConfig('country');
+  const userCountry = user?.country || configCountry || 'DE';
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [country, setCountry] = useState<ExtendedCountryCode | ''>(
-    user?.country ?? 'DE'
-  );
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>(userCountry);
   const [isLoading, setIsLoading] = useState(false);
 
   const addAddress = useCallback(
