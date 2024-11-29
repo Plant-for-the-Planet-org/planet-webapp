@@ -8,13 +8,11 @@ import {
   DefaultUserProfileImage,
   SettingsIcon,
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import ProfileActions from './ProfileActions';
 import DonorCircleMemberBadge from './MicroComponents/DonorCircleMemberBadge';
 
 const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
-  const t = useTranslations('Profile');
   const isPrivateAccount = profilePageType === 'private';
   const userImageUrl = userProfile?.image
     ? getImageUrl('profile', 'thumb', userProfile.image)
