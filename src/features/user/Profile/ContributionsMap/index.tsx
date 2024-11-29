@@ -79,7 +79,11 @@ function ContributionsMap({
           supportedTreecounter={supportedTreecounter}
         />
         <MapCredits />
-        <NavigationControl position="bottom-right" showCompass={false} />
+        <NavigationControl
+          position="bottom-right"
+          style={{ position: 'relative', bottom: '34px' }}
+          showCompass={false}
+        />
       </Map>
       <ContributionStats />
     </div>
