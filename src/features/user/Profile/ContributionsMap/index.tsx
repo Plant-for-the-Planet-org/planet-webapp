@@ -81,7 +81,11 @@ function ContributionsMap({
         <MapCredits />
         <NavigationControl
           position="bottom-right"
-          style={{ position: 'relative', bottom: '34px' }}
+          style={{
+            position: 'absolute',
+            bottom: '34px',
+            right: '0px',
+          }}
           showCompass={false}
         />
       </Map>
