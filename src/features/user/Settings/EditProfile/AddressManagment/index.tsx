@@ -104,7 +104,7 @@ const AddressManagement = () => {
           />
         )}
         <WebappButton
-          text={tAddressManagement('addNewAddress')}
+          text={tAddressManagement('addAddress')}
           elementType="button"
           onClick={toggleAddAddressModal}
           variant="primary"

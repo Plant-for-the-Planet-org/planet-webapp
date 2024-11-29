@@ -91,13 +91,13 @@ const EditAddress = ({
   );
 
   return (
-    <AddressFormWrapper label={tAddressManagement('editAddress')}>
+    <AddressFormWrapper label={tAddressManagement('addressForm.editAddress')}>
       <AddressForm
         country={country}
         setCountry={setCountry}
         setIsModalOpen={setIsModalOpen}
         isLoading={isLoading}
-        label={tAddressManagement('saveChanges')}
+        label={tAddressManagement('addressForm.saveChanges')}
         defaultAddressDetail={defaultAddressDetail}
         processFormData={updateAddress}
       />

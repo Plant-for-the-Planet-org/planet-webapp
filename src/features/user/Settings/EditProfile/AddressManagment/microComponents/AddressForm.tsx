@@ -129,7 +129,7 @@ const AddressForm = ({
       <AddressInput
         name="address2"
         control={control}
-        label={tAddressManagement('addressManagement.address2')}
+        label={tAddressManagement('addressManagement.addressForm.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
           required: t('validationErrors.addressRequired'),

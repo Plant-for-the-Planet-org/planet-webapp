@@ -86,13 +86,13 @@ const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
   );
 
   return (
-    <AddressFormWrapper label={tAddressManagement('addAddress')}>
+    <AddressFormWrapper label={tAddressManagement('addressForm.addAddress')}>
       <AddressForm
         country={country}
         setCountry={setCountry}
         setIsModalOpen={setIsModalOpen}
         isLoading={isLoading}
-        label={tAddressManagement('addAddress')}
+        label={tAddressManagement('addressForm.addAddress')}
         defaultAddressDetail={defaultAddressDetail}
         processFormData={addAddress}
       />
