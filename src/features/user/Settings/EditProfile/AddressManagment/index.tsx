@@ -1,7 +1,7 @@
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -21,15 +21,17 @@ import {
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
 import AddressDeleteModal from './AddressDeleteModal';
-import EditAddressForm from './EditAddressForm';
-import AddAddressForm from './AddAddressForm';
+import EditAddress from './EditAddress';
+import AddAddress from './AddAddress';
 
 const AddressManagement = () => {
-  const tProfile = useTranslations('Profile.addressManagement');
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [userAddresses, setUserAddresses] = useState<Address[]>([]);
+  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const [userAddresses, setUserAddresses] = useState<Address[]>(
+    user?.addresses ?? []
+  );
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -60,10 +62,6 @@ const AddressManagement = () => {
     }
   }, [user, token, contextLoaded, tenantConfig.id, logoutUser]);
 
-  useEffect(() => {
-    fetchUserAddresses();
-  }, []);
-
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
@@ -85,14 +83,14 @@ const AddressManagement = () => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
-          <AddAddressForm
+          <AddAddress
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
         return (
-          <EditAddressForm
+          <EditAddress
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
             fetchUserAddresses={fetchUserAddresses}
@@ -132,20 +130,24 @@ const AddressManagement = () => {
     billingAddress,
     addressAction,
   ]);
-  return userAddresses.length > 0 ? (
+  const shouldRenderAddressList =
+    user?.addresses !== undefined && user.addresses.length > 0;
+  return (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
-        {tProfile('addressManagementTitle')}
+        {tAddressManagement('addressManagementTitle')}
       </h2>
       <CenteredContainer>
-        <AddressList
-          addresses={sortedAddresses}
-          setAddressAction={setAddressAction}
-          setSelectedAddressForAction={setSelectedAddressForAction}
-          setIsModalOpen={setIsModalOpen}
-        />
+        {shouldRenderAddressList && (
+          <AddressList
+            addresses={sortedAddresses}
+            setAddressAction={setAddressAction}
+            setSelectedAddressForAction={setSelectedAddressForAction}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
         <WebappButton
-          text={tProfile('addNewAddress')}
+          text={tAddressManagement('addAddress')}
           elementType="button"
           onClick={toggleAddAddressModal}
           variant="primary"
@@ -156,7 +158,7 @@ const AddressManagement = () => {
         <>{renderModalContent}</>
       </Modal>
     </section>
-  ) : null;
+  );
 };
 
 export default AddressManagement;
