@@ -17,8 +17,8 @@ import {
   addressTypeOrder,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
-import EditAddressForm from './EditAddressForm';
-import AddAddressForm from './AddAddressForm';
+import EditAddress from './EditAddress';
+import AddAddress from './AddAddress';
 
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
@@ -67,14 +67,14 @@ const AddressManagement = () => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
-          <AddAddressForm
+          <AddAddress
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
         return (
-          <EditAddressForm
+          <EditAddress
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
             fetchUserAddresses={fetchUserAddresses}
@@ -88,7 +88,7 @@ const AddressManagement = () => {
     fetchUserAddresses,
   ]);
 
-  return userAddresses.length > 0 ? (
+  return (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
         {tAddressManagement('addressManagementTitle')}
@@ -112,7 +112,7 @@ const AddressManagement = () => {
         <>{renderModalContent}</>
       </Modal>
     </section>
-  ) : null;
+  );
 };
 
 export default AddressManagement;

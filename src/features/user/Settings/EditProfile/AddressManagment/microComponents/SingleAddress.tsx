@@ -25,7 +25,6 @@ const SingleAddress = ({
     <div className={styles.singleAddressContainer}>
       <AddressDetails userAddress={userAddress} />
       <AddressActionsMenu
-        type={userAddress.type}
         addressCount={addressCount}
         setAddressAction={setAddressAction}
         setIsModalOpen={setIsModalOpen}

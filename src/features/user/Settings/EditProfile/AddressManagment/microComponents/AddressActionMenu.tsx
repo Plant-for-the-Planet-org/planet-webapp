@@ -1,6 +1,6 @@
 import type { SetState } from '../../../../../common/types/common';
 import type { AddressAction } from '../../../../../common/types/profile';
-import type { AddressType, Address } from '@planet-sdk/common';
+import type { Address } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -18,7 +18,6 @@ export interface AddressActionItem {
   shouldRender: boolean;
 }
 interface Props {
-  type: AddressType;
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
@@ -27,7 +26,6 @@ interface Props {
 }
 
 const AddressActionsMenu = ({
-  type,
   addressCount,
   setAddressAction,
   setIsModalOpen,
@@ -38,7 +36,7 @@ const AddressActionsMenu = ({
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
-
+  const { type } = userAddress;
   const addressActionConfig: AddressActionItem[] = [
     {
       label: tAddressManagement(`actions.edit`),
