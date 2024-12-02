@@ -14,9 +14,29 @@
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 8rem;
-
   @include mdTabletView {
     flex: 1;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.donorCircleMemberBadge {
+  width: max-content;
+  height: fit-content;
+  display: flex;
+  gap: 9px;
+  margin-bottom: 4.5rem;
+  background: rgba(211, 234, 221, 1);
+  border-radius: 16px;
+  padding: 8px 16px;
+  color: $primaryDarkColor;
+  font-size: $fontXSmall;
+  line-height: 16.34px;
+  font-weight: 700;
+  svg path {
+    fill: $primaryDarkColor;
   }
 }
 
