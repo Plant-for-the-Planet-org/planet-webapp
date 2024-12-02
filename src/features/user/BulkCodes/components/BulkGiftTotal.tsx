@@ -56,9 +56,9 @@ const BulkGiftTotal = ({
     <TextField
       label={tBulkCodes('total')}
       disabled
-      inputProps={{ readOnly: true, 'aria-label': tBulkCodes('total') }}
+      inputProps={{ 'aria-label': tBulkCodes('total') }}
       value={displayedTotal}
-    ></TextField>
+    />
   );
 };
 

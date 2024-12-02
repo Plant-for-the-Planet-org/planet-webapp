@@ -22,17 +22,17 @@ const UnitCostDisplay = ({
       <TextField
         label={t('costPerUnit')}
         value={`${unitCost} ${currency}`}
-        inputProps={{ readOnly: true, 'aria-label': t('costPerUnit') }}
+        inputProps={{ 'aria-label': t('costPerUnit') }}
         disabled
-      ></TextField>
+      />
       <TextField
         label={t('unitOfMeasurement')}
         value={
           unitType && unitType !== 'currency' ? t(`units.${unitType}`) : '-'
         }
-        inputProps={{ readOnly: true, 'aria-label': t('unitOfMeasurement') }}
+        inputProps={{ 'aria-label': t('unitOfMeasurement') }}
         disabled
-      ></TextField>
+      />
     </InlineFormDisplayGroup>
   );
 };

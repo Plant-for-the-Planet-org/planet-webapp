@@ -1,13 +1,11 @@
 // TODO - review types and make more specific where possible
-import type { CurrencyCode, UnitTypes } from '@planet-sdk/common';
+import type { CurrencyCode } from '@planet-sdk/common';
 
 export interface PaymentOptionsBase {
   currency: CurrencyCode;
   unitCost: number;
-  purpose: 'trees' | 'conservation' | 'funds';
   id: string;
   name: string;
-  unitType: UnitTypes;
 }
 
 export interface TreePaymentOptions extends PaymentOptionsBase {
