@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import type { APIError, ProjectMinimal } from '@planet-sdk/common';
+import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import { useLocale, useTranslations } from 'next-intl';
 import React, { useEffect, useCallback, useContext, useState } from 'react';
@@ -61,7 +61,7 @@ export default function BulkCodes({
         label: t('tabIssueCodes'),
         link:
           project !== null
-            ? `/profile/bulk-codes/${bulkMethod}/${project.id}`
+            ? `/profile/bulk-codes/${bulkMethod}/${project.guid}`
             : '',
         step: BulkCodeSteps.ISSUE_CODES,
         disabled: bulkMethod === null || project === null,
@@ -72,16 +72,9 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<ProjectMinimal[]>(
+        const fetchedProjects = await getRequest<CountryProject[]>(
           `${tenantConfig?.id}`,
-          `/app/projects`,
-          {
-            _scope: 'minimal',
-            currency: planetCashAccount.currency,
-            tenant: tenantConfig?.id,
-            'filter[purpose]': 'trees,conservation',
-            locale: locale,
-          }
+          `/app/countryProjects/${planetCashAccount.country}`
         );
 
         // map fetchedProjects to desired form and setProject
@@ -95,7 +88,6 @@ export default function BulkCodes({
             // Filter projects which allow donations, and store only required values in context
             fetchedProjects.filter((project) => {
               return (
-                project.allowDonations &&
                 project.unitCost > 0 &&
                 project.classification !== 'membership' &&
                 project.classification !== 'endowment' &&

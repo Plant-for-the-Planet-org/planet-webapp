@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import type { PaymentOptions } from '../BulkCodesTypes';
-import type { APIError, ProjectMinimal } from '@planet-sdk/common';
+import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import React from 'react';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -13,9 +13,9 @@ import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface ProjectSelectorProps {
-  projectList: ProjectMinimal[];
-  project: ProjectMinimal | null;
-  setProject?: (project: ProjectMinimal | null) => void;
+  projectList: CountryProject[];
+  project: CountryProject | null;
+  setProject?: (project: CountryProject | null) => void;
   active?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
@@ -46,11 +46,11 @@ const ProjectSelector = ({
     return paymentOptions;
   };
 
-  const handleProjectChange = async (project: ProjectMinimal | null) => {
+  const handleProjectChange = async (project: CountryProject | null) => {
     // fetch project details
     if (project && user && token && contextLoaded) {
       try {
-        const paymentOptions = await fetchPaymentOptions(project.id);
+        const paymentOptions = await fetchPaymentOptions(project.guid);
         // Add/update project object
         if (paymentOptions) {
           project.currency = paymentOptions.currency;

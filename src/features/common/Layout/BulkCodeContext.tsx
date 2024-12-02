@@ -3,7 +3,7 @@ import type { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants
 import type {
   CountryCode,
   CurrencyCode,
-  ProjectMinimal,
+  CountryProject,
 } from '@planet-sdk/common';
 
 import { useContext, createContext, useMemo, useState } from 'react';
@@ -44,10 +44,10 @@ interface BulkCodeContextInterface {
   setBulkMethod: SetState<BulkCodeMethods | null>;
   planetCashAccount: PlanetCashAccount | null;
   setPlanetCashAccount: SetState<PlanetCashAccount | null>;
-  project: ProjectMinimal | null;
-  setProject: SetState<ProjectMinimal | null>;
-  projectList: ProjectMinimal[] | null;
-  setProjectList: SetState<ProjectMinimal[] | null>;
+  project: CountryProject | null;
+  setProject: SetState<CountryProject | null>;
+  projectList: CountryProject[] | null;
+  setProjectList: SetState<CountryProject[] | null>;
   bulkGiftData: BulkGiftData | null;
   setBulkGiftData: SetState<BulkGiftData | null>;
   totalUnits: number | null;
@@ -60,8 +60,8 @@ export const BulkCodeProvider: FC = ({ children }) => {
   const [bulkMethod, setBulkMethod] = useState<BulkCodeMethods | null>(null);
   const [planetCashAccount, setPlanetCashAccount] =
     useState<PlanetCashAccount | null>(null);
-  const [project, setProject] = useState<ProjectMinimal | null>(null);
-  const [projectList, setProjectList] = useState<ProjectMinimal[] | null>(null);
+  const [project, setProject] = useState<CountryProject | null>(null);
+  const [projectList, setProjectList] = useState<CountryProject[] | null>(null);
   const [bulkGiftData, setBulkGiftData] = useState<BulkGiftData | null>(null);
   const [totalUnits, setTotalUnits] = useState<number | null>(null);
 

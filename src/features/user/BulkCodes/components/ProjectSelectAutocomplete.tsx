@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 
 export interface BaseProject {
-  id: string;
+  guid: string;
   name: string;
   slug: string;
 }
@@ -54,11 +54,11 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
       popupIcon={SearchIcon()}
       options={projectList}
       getOptionLabel={(option) => option.name}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option, value) => option.guid === value.guid}
       value={localProject}
       onChange={(_event, newValue) => setLocalProject(newValue as T | null)}
       renderOption={(props, option) => (
-        <span {...props} key={option.id}>
+        <span {...props} key={option.guid}>
           {option.name}
         </span>
       )}

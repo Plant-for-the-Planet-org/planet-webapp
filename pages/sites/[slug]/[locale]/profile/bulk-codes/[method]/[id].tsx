@@ -77,7 +77,7 @@ export default function BulkCodeIssueCodesPage({
 
             if (paymentOptions) {
               const retrievedProject = projectList.find(
-                (project) => project.id === paymentOptions.id
+                (project) => project.guid === paymentOptions.id
               );
               if (!retrievedProject) {
                 throw new Error('Project not found');

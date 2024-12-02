@@ -124,7 +124,7 @@ const IssueCodesForm = (): ReactElement | null => {
     if (project) {
       const donationData: PrepaidDonationRequest = {
         purpose: project.purpose,
-        project: project.id,
+        project: project.guid,
         prePaid: true,
         comment,
         quantity: getTotalUnits(),

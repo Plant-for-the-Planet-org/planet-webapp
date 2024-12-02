@@ -265,7 +265,7 @@ interface ProjectCertificatesProps {
 }
 
 export interface ProjectOption {
-  id: string;
+  guid: string;
   slug: string;
   name: string;
   unitCost: number;

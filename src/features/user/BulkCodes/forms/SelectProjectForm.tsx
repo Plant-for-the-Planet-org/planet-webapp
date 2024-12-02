@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { ProjectMinimal } from '@planet-sdk/common';
+import type { CountryProject } from '@planet-sdk/common';
 
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -19,14 +19,14 @@ const SelectProjectForm = (): ReactElement | null => {
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
   const { user } = useUserProps();
 
-  const [localProject, setLocalProject] = useState<ProjectMinimal | null>(
+  const [localProject, setLocalProject] = useState<CountryProject | null>(
     project
   );
 
   const handleFormSubmit = () => {
     if (localProject) {
       setProject(localProject);
-      router.push(`/profile/bulk-codes/${method}/${localProject.id}`);
+      router.push(`/profile/bulk-codes/${method}/${localProject.guid}`);
     }
   };
 
