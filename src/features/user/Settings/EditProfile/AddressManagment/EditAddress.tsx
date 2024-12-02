@@ -11,7 +11,7 @@ import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import AddressForm from './microComponents/AddressForm';
-import AddressFormWrapper from './microComponents/AddressFormWrapper';
+import AddressFormLayout from './microComponents/AddressFormLayout';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
@@ -84,7 +84,7 @@ const EditAddress = ({
   );
 
   return (
-    <AddressFormWrapper label={tAddressManagement('addressForm.editAddress')}>
+    <AddressFormLayout label={tAddressManagement('addressForm.editAddress')}>
       <AddressForm
         country={country}
         setCountry={setCountry}
@@ -94,7 +94,7 @@ const EditAddress = ({
         defaultAddressDetail={defaultAddressDetail}
         processFormData={updateAddress}
       />
-    </AddressFormWrapper>
+    </AddressFormLayout>
   );
 };
 
