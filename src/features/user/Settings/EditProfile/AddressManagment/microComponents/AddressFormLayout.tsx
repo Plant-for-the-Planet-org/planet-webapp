@@ -7,7 +7,7 @@ interface Props {
 }
 const AddressFormLayout = ({ children, label }: Props) => {
   return (
-    <div className={styles.addressFormContainer}>
+    <div className={styles.addressFormLayout}>
       <h2>{label}</h2>
       {children}
     </div>

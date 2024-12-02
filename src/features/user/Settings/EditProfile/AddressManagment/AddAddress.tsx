@@ -11,7 +11,7 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import AddressForm from './microComponents/AddressForm';
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
-import AddressFormWrapper from './microComponents/AddressFormWrapper';
+import AddressFormLayout from './microComponents/AddressFormLayout';
 import { getStoredConfig } from '../../../../../utils/storeConfig';
 
 export type FormData = {
@@ -39,10 +39,12 @@ const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
   const tAddressManagement = useTranslations('Profile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const configCountry = getStoredConfig('country');
-  const userCountry = user?.country || configCountry || 'DE';
+  const defaultCountry = user?.country || configCountry || 'DE';
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [country, setCountry] = useState<ExtendedCountryCode | ''>(userCountry);
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>(
+    defaultCountry
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const addAddress = useCallback(
@@ -87,7 +89,7 @@ const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
   );
 
   return (
-    <AddressFormWrapper label={tAddressManagement('addressForm.addAddress')}>
+    <AddressFormLayout label={tAddressManagement('addressForm.addAddress')}>
       <AddressForm
         country={country}
         setCountry={setCountry}
@@ -97,7 +99,7 @@ const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
         defaultAddressDetail={defaultAddressDetail}
         processFormData={addAddress}
       />
-    </AddressFormWrapper>
+    </AddressFormLayout>
   );
 };
 

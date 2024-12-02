@@ -95,7 +95,7 @@
 }
 // address action form
 
-.addressFormContainer {
+.addressFormLayout {
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -121,9 +121,9 @@
 
 .formButtonContainer {
   display: flex;
-  gap: 8px;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
+  margin-top: 25px;
   .addAddressButton,
   .cancelButton {
     min-width: 252px;
@@ -131,13 +131,14 @@
 }
 
 @include xsPhoneView {
-  .addressFormContainer {
+  .addressFormLayout {
     min-width: fit-content;
     width: 95%;
   }
   .formButtonContainer {
     display: flex;
     flex-direction: column;
+    gap: 8px;
     .addAddressButton,
     .cancelButton {
       width: 100%;
