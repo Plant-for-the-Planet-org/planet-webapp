@@ -2,7 +2,7 @@
   "Profile": {
     "myProfile": {
       "memberSince": "Member since {date}",
-      "userDescription": "{bio}"
+      "donorCircleMember": "Donor Circle-Member"
     },
     "feature": {
       "redeem": "Redeem",
