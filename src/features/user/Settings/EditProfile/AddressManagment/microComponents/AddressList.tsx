@@ -8,9 +8,16 @@ import styles from '../AddressManagement.module.scss';
 interface Props {
   addresses: Address[];
   setAddressAction: SetState<AddressAction | null>;
+  setSelectedAddressForAction: SetState<Address | null>;
+  setIsModalOpen: SetState<boolean>;
 }
 
-const AddressList = ({ addresses, setAddressAction }: Props) => {
+const AddressList = ({
+  addresses,
+  setAddressAction,
+  setSelectedAddressForAction,
+  setIsModalOpen,
+}: Props) => {
   const addressCount = addresses?.length;
 
   return (
@@ -21,6 +28,8 @@ const AddressList = ({ addresses, setAddressAction }: Props) => {
           userAddress={address}
           addressCount={addressCount}
           setAddressAction={setAddressAction}
+          setSelectedAddressForAction={setSelectedAddressForAction}
+          setIsModalOpen={setIsModalOpen}
         />
       ))}
     </div>

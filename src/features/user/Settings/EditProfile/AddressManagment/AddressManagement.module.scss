@@ -67,10 +67,6 @@
   }
 }
 
-.addAddressButton {
-  margin-top: 40px;
-}
-
 .primary {
   background: rgba(0, 122, 73, 1);
 }
@@ -96,4 +92,63 @@
 
 .addressActions li:not(:last-child) {
   border-bottom: 1px solid rgba(189, 189, 189, 1);
+}
+// address action form
+
+.addressFormLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-width: 565px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  padding: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  h2 {
+    font-weight: 700;
+    font-size: $fontSixteen;
+  }
+}
+
+.addressForm {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+.formButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 25px;
+  .addAddressButton,
+  .cancelButton {
+    min-width: 252px;
+  }
+}
+
+@include xsPhoneView {
+  .addressFormLayout {
+    min-width: fit-content;
+    width: 95%;
+  }
+  .formButtonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .addAddressButton,
+    .cancelButton {
+      width: 100%;
+    }
+  }
+}
+
+// Form spinner
+
+.addressMgmtSpinner {
+  display: flex;
+  justify-content: center;
 }

@@ -147,7 +147,13 @@
         "setAsPrimaryAddress": "Set as Primary Address",
         "setAsBillingAddress": "Set as Billing Address"
       },
-      "addAddress": "Add New Address"
+      "addAddress": "Add New Address",
+      "addressForm": {
+        "addAddress": "Add Address",
+        "editAddress": "Edit Address",
+        "saveChanges": "Save Changes",
+        "address2": "Address 2(optional)"
+      }
     }
   }
 }
