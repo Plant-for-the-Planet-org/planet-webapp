@@ -77,7 +77,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     if (!isLoading)
       if (isAuthenticated) loadToken();
       else setContextLoaded(true);
-  }, [isLoading, isAuthenticated, getAccessTokenSilently, loginWithRedirect]);
+  }, [isLoading, isAuthenticated]);
 
   const logoutUser = (
     returnUrl: string | undefined = `${window.location.origin}/`
