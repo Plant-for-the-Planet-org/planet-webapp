@@ -1,8 +1,7 @@
 {
   "Profile": {
     "myProfile": {
-      "memberSince": "Membro dal {date}",
-      "userDescription": "{bio}"
+      "memberSince": "Membro dal {date}"
     },
     "feature": {
       "redeem": "Riscatto",

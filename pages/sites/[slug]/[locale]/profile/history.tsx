@@ -1,5 +1,14 @@
-import React, { ReactElement } from 'react';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { APIError } from '@planet-sdk/common';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  Filters,
+  PaymentHistory,
+} from '../../../../../src/features/common/types/payments';
+
+import React from 'react';
+import { useTranslations } from 'next-intl';
 import { getAuthenticatedRequest } from '../../../../../src/utils/apiRequests/api';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
@@ -7,13 +16,9 @@ import { useUserProps } from '../../../../../src/features/common/Layout/UserProp
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
-import {
-  Filters,
-  PaymentHistory,
-} from '../../../../../src/features/common/types/payments';
+import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
-import {
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -23,7 +28,6 @@ import {
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
@@ -40,9 +44,9 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
-  const [paymentHistory, setpaymentHistory] =
+  const [paymentHistory, setPaymentHistory] =
     React.useState<PaymentHistory | null>(null);
-  const [accountingFilters, setaccountingFilters] =
+  const [accountingFilters, setAccountingFilters] =
     React.useState<Filters | null>(null);
 
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -72,7 +76,7 @@ function AccountHistory({ pageProps }: Props): ReactElement {
           token,
           logoutUser
         );
-        setpaymentHistory({
+        setPaymentHistory({
           ...paymentHistory,
           items: [...paymentHistory.items, ...newPaymentHistory.items],
           _links: newPaymentHistory._links,
@@ -93,11 +97,11 @@ function AccountHistory({ pageProps }: Props): ReactElement {
             token,
             logoutUser
           );
-          setpaymentHistory(paymentHistory);
+          setPaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
-          setaccountingFilters(paymentHistory._filters);
+          setAccountingFilters(paymentHistory._filters);
         } catch (err) {
           setErrors(handleError(err as APIError));
           redirect('/profile');
@@ -114,7 +118,7 @@ function AccountHistory({ pageProps }: Props): ReactElement {
             token,
             logoutUser
           );
-          setpaymentHistory(paymentHistory);
+          setPaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
@@ -176,7 +180,7 @@ export default AccountHistory;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,

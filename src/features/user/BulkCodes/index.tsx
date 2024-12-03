@@ -1,11 +1,9 @@
+import type { ReactElement } from 'react';
+import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import type { APIError, CountryProject } from '@planet-sdk/common';
+
 import { useLocale, useTranslations } from 'next-intl';
-import React, {
-  ReactElement,
-  useEffect,
-  useCallback,
-  useContext,
-  useState,
-} from 'react';
+import React, { useEffect, useCallback, useContext, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';
@@ -16,9 +14,7 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import { handleError, APIError } from '@planet-sdk/common';
-import { MapProject } from '../../common/types/ProjectPropsContextInterface';
+import { handleError } from '@planet-sdk/common';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -63,7 +59,10 @@ export default function BulkCodes({
       },
       {
         label: t('tabIssueCodes'),
-        link: `/profile/bulk-codes/${bulkMethod}/${project?.guid}`,
+        link:
+          project !== null
+            ? `/profile/bulk-codes/${bulkMethod}/${project.guid}`
+            : '',
         step: BulkCodeSteps.ISSUE_CODES,
         disabled: bulkMethod === null || project === null,
       },
@@ -73,16 +72,9 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<MapProject[]>(
+        const fetchedProjects = await getRequest<CountryProject[]>(
           `${tenantConfig?.id}`,
-          `/app/projects`,
-          {
-            _scope: 'map',
-            currency: planetCashAccount.currency,
-            tenant: tenantConfig?.id,
-            'filter[purpose]': 'trees',
-            locale: locale,
-          }
+          `/app/countryProjects/${planetCashAccount.country}`
         );
 
         // map fetchedProjects to desired form and setProject
@@ -94,27 +86,16 @@ export default function BulkCodes({
           const allowedCHFProjects = ['yucatan'];
           setProjectList(
             // Filter projects which allow donations, and store only required values in context
-            fetchedProjects
-              .filter((project) => {
-                return (
-                  project.properties.allowDonations &&
-                  project.properties.unitType === 'tree' &&
-                  (planetCashAccount.currency !== 'CHF' ||
-                    (planetCashAccount.currency === 'CHF' &&
-                      allowedCHFProjects.includes(project.properties.slug)))
-                );
-              })
-              .map((project) => {
-                return {
-                  guid: project.properties.id,
-                  slug: project.properties.slug,
-                  name: project.properties.name,
-                  unitCost: project.properties.unitCost,
-                  currency: project.properties.currency,
-                  purpose: project.properties.purpose,
-                  allowDonations: project.properties.allowDonations,
-                };
-              })
+            fetchedProjects.filter((project) => {
+              return (
+                project.unitCost > 0 &&
+                project.classification !== 'membership' &&
+                project.classification !== 'endowment' &&
+                (planetCashAccount.currency !== 'CHF' ||
+                  (planetCashAccount.currency === 'CHF' &&
+                    allowedCHFProjects.includes(project.slug)))
+              );
+            })
           );
         }
       } catch (err) {
@@ -129,7 +110,7 @@ export default function BulkCodes({
 
   useEffect(() => {
     if (contextLoaded && !planetCashAccount) {
-      const userPlanetCash = user.planetCash;
+      const userPlanetCash = user?.planetCash;
       if (userPlanetCash) {
         setPlanetCashAccount({
           guid: userPlanetCash.account,

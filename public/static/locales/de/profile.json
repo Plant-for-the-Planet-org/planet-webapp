@@ -2,7 +2,7 @@
   "Profile": {
     "myProfile": {
       "memberSince": "Mitglied seit {date}",
-      "userDescription": "{bio}"
+      "donorCircleMember": "Fördermitglied"
     },
     "feature": {
       "redeem": "Einlösen",

@@ -1,4 +1,4 @@
-import {
+import type {
   AllowedSeasonMonths,
   SiteOwnerTypes,
   Image,
@@ -13,14 +13,15 @@ import {
   Tpo,
   DefaultPaymentConfig,
   Certificate,
+  UnitTypes,
 } from '@planet-sdk/common';
-import { FeatureCollection as GeoJson } from 'geojson';
-import { SetState } from './common';
-import { ChangeEvent } from 'react';
-import { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
-import { Nullable } from '@planet-sdk/common/build/types/util';
-import { Polygon } from 'geojson';
-import { Option } from '../../user/ManageProjects/components/ProjectSites';
+import type { FeatureCollection as GeoJson } from 'geojson';
+import type { SetState } from './common';
+import type { ChangeEvent } from 'react';
+import type { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
+import type { Nullable } from '@planet-sdk/common/build/types/util';
+import type { Polygon } from 'geojson';
+import type { Option } from '../../user/ManageProjects/components/ProjectSites';
 
 export interface UploadImage extends Image {
   isDefault: boolean;
@@ -269,8 +270,8 @@ export interface ProjectOption {
   name: string;
   unitCost: number;
   currency: string;
-  unit?: 'tree' | 'm2' | 'ha';
-  purpose: string;
+  unitType?: UnitTypes;
+  purpose: 'trees' | 'conservation' | 'funds';
   allowDonations: boolean;
 }
 

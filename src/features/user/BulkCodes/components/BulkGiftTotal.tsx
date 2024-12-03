@@ -1,46 +1,64 @@
+import type { ReactElement } from 'react';
+import type { CurrencyCode, UnitTypes } from '@planet-sdk/common';
+
+import { useMemo } from 'react';
 import { TextField } from '@mui/material';
-import { ReactElement } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { CurrencyCode } from '@planet-sdk/common';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 interface BulkGiftTotalProps {
   amount?: number;
   currency?: CurrencyCode;
   units?: number;
-  unit?: 'tree' | 'm2' | 'ha';
+  unitType?: UnitTypes;
 }
 
 const BulkGiftTotal = ({
   amount = 0,
   currency,
   units = 0,
-  unit = 'tree',
+  unitType,
 }: BulkGiftTotalProps): ReactElement | null => {
   const tCommon = useTranslations('Common');
   const tBulkCodes = useTranslations('BulkCodes');
   const locale = useLocale();
 
-  const getUnit = (_unit: string, _units?: number) => {
-    if (_unit === 'tree') {
-      return tCommon('tree', { count: _units });
-    } else if (_unit === 'm2') {
-      return 'm2';
-    } else return 'ha';
+  const getPluralizedUnitType = (unitType: UnitTypes, units: number) => {
+    switch (unitType) {
+      case 'tree':
+        return tCommon('tree', { count: units });
+      case 'm2':
+        return tCommon('m2');
+      default:
+        return '';
+    }
   };
+
+  const displayedTotal = useMemo(() => {
+    if (!unitType || !currency || amount < 0 || units < 0) return '';
+
+    try {
+      const formattedAmount = getFormattedCurrency(locale, currency, amount);
+      if (unitType === 'currency') return formattedAmount;
+
+      return tBulkCodes('summaryTotal', {
+        formattedAmount,
+        units,
+        pluralizedUnitType: getPluralizedUnitType(unitType, units),
+      });
+    } catch (error) {
+      console.error('Error formatting currency:', error);
+      return '';
+    }
+  }, [locale, currency, amount, unitType, units]);
 
   return (
     <TextField
       label={tBulkCodes('total')}
       disabled
-      inputProps={{ readOnly: true }}
-      value={`${getFormatedCurrency(
-        locale,
-        currency as string,
-        amount
-      )} for ${units} ${getUnit(unit, units)}`}
-      // TODOO translation and pluralization
-    ></TextField>
+      inputProps={{ 'aria-label': tBulkCodes('total') }}
+      value={displayedTotal}
+    />
   );
 };
 

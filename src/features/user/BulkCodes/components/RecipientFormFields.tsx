@@ -1,9 +1,11 @@
+import type { Control, FieldErrors } from 'react-hook-form';
+import type { Recipient } from '../BulkCodesTypes';
+
 import { TableCell, TextField, MenuItem } from '@mui/material';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
-import { Recipient } from '../BulkCodesTypes';
 
 interface Props {
   control: Control<Recipient>;
@@ -30,6 +32,10 @@ const RecipientFormFields = ({ control, errors }: Props) => {
           rules={{
             validate: {
               requiredForNotifications: validateRequiredIfNotify,
+            },
+            maxLength: {
+              value: 35,
+              message: t('errorAddRecipient.longRecipientName'),
             },
           }}
           render={({ field }) => (

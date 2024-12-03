@@ -1,4 +1,8 @@
-import React, { ReactElement, useState, ChangeEvent } from 'react';
+import type { ReactElement, ChangeEvent } from 'react';
+import type { SetState } from '../../../common/types/common';
+import type { Recipient, TableHeader } from '../BulkCodesTypes';
+
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,8 +12,6 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import IconButton from '@mui/material/IconButton';
-import { SetState } from '../../../common/types/common';
-import { Recipient, TableHeader } from '../BulkCodesTypes';
 import themeProperties from '../../../../theme/themeProperties';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';

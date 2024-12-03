@@ -36,6 +36,7 @@
       "tree": "tree",
       "m2": "m²"
     },
+    "summaryTotal": "{formattedAmount} for {units} {pluralizedUnitType}",
     "unitsPerCode": "Units per Code*",
     "totalNumberOfCodes": "Total Number of Codes*",
     "occasion": "Occasion",
@@ -75,12 +76,14 @@
       "notifyNotPossible": "Email and name are missing for some recipients that are to be notified.",
       "instructionRowError": "An error occurred on the 1st row. Please check if you have deleted the instructions, or if there is additional data.",
       "invalidEmails": "recipient_email contains dummy/invalid emails on the following rows: {rowList}. Please remove invalid emails or add valid emails.",
+      "longRecipientNames": "recipient_name is too long on the following rows: {rowList}. Please provide names that are 35 characters or less.",
       "generalError": "Something went wrong. Please try after a while."
     },
     "errorAddRecipient": {
       "unitsNotProvided": "Mandatory",
       "requiredForNotifications": "Required (to email recipients)",
-      "emailInvalid": "Invalid email"
+      "emailInvalid": "Invalid email",
+      "longRecipientName": "Max length - 35 characters"
     },
     "successUploadCSV": {
       "ignoredColumns": "Extra columns were ignored"
@@ -97,7 +100,7 @@
       "recipient_name": "Optional. Name of the recipient, shown on the certificate and if opted in, in the mail sent to the recipient. Required if you want to send emails.",
       "recipient_email": "Optional. Required to send certificate to the recipient by email.",
       "recipient_notify": "Optional. Select Yes if you want Plant-for-the-Planet to inform the recipient via email automatically.",
-      "units": "Mandatory. Number of trees that are given to the recipient, e.g., 5 for 5 trees",
+      "units": "Mandatory. Number of units (trees or m²) that are given to the recipient, e.g. 5 for 5 trees or 5 m².",
       "recipient_message": "Optional. Message to the recipient that is included in the email if notify is yes. A default message will be sent if not provided."
     },
     "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly...",

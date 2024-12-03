@@ -1,16 +1,18 @@
-import React, { ReactElement, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  PaymentHistoryRecord,
+  RecipientBank,
+} from '../../../common/types/payments';
+
+import React, { useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TransferDetails from './TransferDetails';
-import {
-  PaymentHistoryRecord,
-  RecipientBank,
-} from '../../../common/types/payments';
-import Certificates, { shouldEnableCertificate } from './Certificates';
+import Downloads, { canHaveCertificates } from './Downloads';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../../utils/projectV2';
 
@@ -84,7 +86,7 @@ export function RecordHeader({
       <div className={styles.right}>
         <p className={`${styles.top} ${styles[netAmountStatus]}`}>
           {netAmountStatus === 'outgoing' && '-'}
-          {getFormatedCurrency(locale, record.currency, record.netAmount)}
+          {getFormattedCurrency(locale, record.currency, record.netAmount)}
         </p>
         <p className={`${styles.recordStatus} ${styles[record.status]}`}>
           {tMe(record.status)}
@@ -133,7 +135,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('paidAmount')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.paidAmount
@@ -145,7 +147,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('totalAmount')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.totalAmount
@@ -194,7 +196,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('refundAmount')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.refundAmount
@@ -211,7 +213,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             })}
           </p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.unitCost
@@ -237,7 +239,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('disputeFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.disputeFee
@@ -249,7 +251,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('planetFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.planetFee
@@ -261,7 +263,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('transactionFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.transactionFee
@@ -273,7 +275,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('transferFee')}</p>
           <p>
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               record.currency,
               record.details.fees.transferFee
@@ -431,11 +433,12 @@ export default function AccountRecord({
     ? styles.recordModal
     : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
 
-  const showCertificate = useMemo(() => {
+  const showDownloads = useMemo(() => {
     if (
-      (shouldEnableCertificate(record.purpose) &&
+      (canHaveCertificates(record.purpose) &&
         (record?.details?.donorCertificate ||
-          record?.details?.giftCertificate)) ||
+          record?.details?.giftCertificate ||
+          record?.details?.codesUrl)) ||
       record?.details?.taxDeductibleReceipt
     ) {
       return true;
@@ -482,11 +485,11 @@ export default function AccountRecord({
               <TransferDetails account={record.details.account} />
             )}
             {showStatusNote(record)}
-            {showCertificate && (
+            {showDownloads && (
               <>
                 <div className={styles.title}>{t('downloads')}</div>
                 <div className={styles.detailGrid}>
-                  <Certificates
+                  <Downloads
                     recordDetails={record.details}
                     purpose={record.purpose}
                   />
