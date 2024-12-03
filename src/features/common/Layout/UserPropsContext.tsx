@@ -53,6 +53,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [refetchUserData, setRefetchUserData] = React.useState(false);
+  const [redirectCount, setRedirectCount] = React.useState(0);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -67,17 +68,24 @@ export const UserPropsProvider: FC = ({ children }) => {
         const accessToken = await getAccessTokenSilently();
         setToken(accessToken);
       } catch (error) {
-        console.error('Error fetching access token:', error);
-        loginWithRedirect({
-          redirectUri: `${window.location.origin}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+        if (process.env.NODE_ENV === 'development')
+          console.error('Error fetching access token:', error);
+
+        if (redirectCount < 3) {
+          setRedirectCount((prev) => prev + 1);
+          loginWithRedirect({
+            redirectUri: `${window.location.origin}/login`,
+            ui_locales: localStorage.getItem('language') || 'en',
+          });
+        } else {
+          console.error('Redirect limit reached, unable to authenticate user.');
+        }
       }
     }
     if (!isLoading)
       if (isAuthenticated) loadToken();
       else setContextLoaded(true);
-  }, [isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated, redirectCount]);
 
   const logoutUser = (
     returnUrl: string | undefined = `${window.location.origin}/`
