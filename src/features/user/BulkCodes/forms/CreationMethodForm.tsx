@@ -1,9 +1,10 @@
-import React, { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { SelectorOptionProps } from '../components/SelectorOption';
+
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import SelectorOption, {
-  SelectorOptionProps,
-} from '../components/SelectorOption';
+import SelectorOption from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';

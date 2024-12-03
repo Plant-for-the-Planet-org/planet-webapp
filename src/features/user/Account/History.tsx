@@ -1,4 +1,7 @@
-import React, { ReactElement, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { Filters, PaymentHistory } from '../../common/types/payments';
+
+import React, { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
@@ -14,7 +17,6 @@ import CustomSnackbar from '../../common/CustomSnackbar';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import { APIError, handleError } from '@planet-sdk/common'; */
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
-import { Filters, PaymentHistory } from '../../common/types/payments';
 import Grid from '@mui/material/Grid';
 import MembershipCta from './components/MembershipCta';
 interface Props {

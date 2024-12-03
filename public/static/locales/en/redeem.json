@@ -16,6 +16,8 @@
     "redeemingCode": "Redeeming Code...",
     "redeem": "Redeem",
     "redeemDescription": "Redeem your tree voucher and other codes.",
+    "redeemSuccessMessage": "<line1>Awesome!</line1><line2>We've added the contribution to your profile!</line2>",
+    "membershipRedeemSuccessMessage": "<line1>Awesome!</line1><line2>You are now a Donor-Circle member!</line2>",
     "successfullyRedeemed": "Successfully Redeemed",
     "redeemAnotherCode": "Redeem Another Code"
   }

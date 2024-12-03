@@ -1,40 +1,42 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import type { ReactElement } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
-
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-import { ProjectOption } from '../../../common/types/project';
 
-const MuiAutocomplete = styled(Autocomplete<ProjectOption>)(
-  (/* { theme } */) => {
-    return {
-      '& .MuiAutocomplete-popupIndicatorOpen': {
-        transform: 'none',
-      },
-      '& .Mui-disabled .iconFillColor': {
-        fillOpacity: '38%',
-      },
-    };
-  }
-);
+export interface BaseProject {
+  guid: string;
+  name: string;
+  slug: string;
+}
 
-interface ProjectSelectAutocompleteProps {
-  projectList: ProjectOption[];
-  project: ProjectOption | null;
-  handleProjectChange?: (project: ProjectOption | null) => void;
+const MuiAutocomplete = styled(Autocomplete<BaseProject>)((/* { theme } */) => {
+  return {
+    '& .MuiAutocomplete-popupIndicatorOpen': {
+      transform: 'none',
+    },
+    '& .Mui-disabled .iconFillColor': {
+      fillOpacity: '38%',
+    },
+  };
+});
+
+interface ProjectSelectAutocompleteProps<T extends BaseProject> {
+  projectList: T[];
+  project: T | null;
+  handleProjectChange?: (project: T | null) => void;
   active?: boolean;
 }
 
 // TODO - move this to a common folder
-const ProjectSelectAutocomplete = ({
+const ProjectSelectAutocomplete = <T extends BaseProject>({
   projectList,
   project = null,
   handleProjectChange,
   active = true,
-}: ProjectSelectAutocompleteProps): ReactElement | null => {
-  const [localProject, setLocalProject] = useState<ProjectOption | null>(
-    project
-  );
+}: ProjectSelectAutocompleteProps<T>): ReactElement | null => {
+  const [localProject, setLocalProject] = useState<T | null>(project);
   const t = useTranslations('BulkCodes');
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const ProjectSelectAutocomplete = ({
       getOptionLabel={(option) => option.name}
       isOptionEqualToValue={(option, value) => option.guid === value.guid}
       value={localProject}
-      onChange={(_event, newValue) => setLocalProject(newValue)}
+      onChange={(_event, newValue) => setLocalProject(newValue as T | null)}
       renderOption={(props, option) => (
         <span {...props} key={option.guid}>
           {option.name}

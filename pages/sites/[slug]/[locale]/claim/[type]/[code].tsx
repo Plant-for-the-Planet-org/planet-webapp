@@ -1,7 +1,18 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
+
+import React from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -9,20 +20,13 @@ import {
   RedeemFailed,
   SuccessfullyRedeemed,
 } from '../../../../../../src/features/common/RedeemCode';
-import { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { v4 } from 'uuid';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
@@ -184,7 +188,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,

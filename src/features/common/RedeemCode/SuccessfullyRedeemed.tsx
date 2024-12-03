@@ -1,9 +1,9 @@
-import { useLocale, useTranslations } from 'next-intl';
-import { ReactElement } from 'react';
-import { RedeemedCodeData } from '../types/redeem';
+import type { ReactElement } from 'react';
+import type { RedeemedCodeData } from '../types/redeem';
+
+import { useTranslations } from 'next-intl';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import Button from '@mui/material/Button';
 
 export interface SuccessfullyRedeemedProps {
@@ -17,9 +17,7 @@ export const SuccessfullyRedeemed = ({
   redeemAnotherCode,
   closeRedeem,
 }: SuccessfullyRedeemedProps): ReactElement => {
-  const tCommon = useTranslations('Common');
   const tRedeem = useTranslations('Redeem');
-  const locale = useLocale();
 
   return (
     <div className={styles.routeRedeemModal}>
@@ -29,17 +27,16 @@ export const SuccessfullyRedeemed = ({
         </button>
       </div>
 
-      <div className={styles.codeTreeCount}>
-        {getFormattedNumber(locale, Number(redeemedCodeData?.units))}
-        <span>
-          {tCommon('tree', {
-            count: Number(redeemedCodeData?.units),
-          })}
-        </span>
-      </div>
-
-      <div className={styles.codeTreeCount}>
-        <span>{tRedeem('successfullyRedeemed')}</span>
+      <div className={styles.successMessage}>
+        {redeemedCodeData?.project?.classification === 'membership'
+          ? tRedeem.rich('membershipRedeemSuccessMessage', {
+              line1: (chunks) => <p>{chunks}</p>,
+              line2: (chunks) => <p>{chunks}</p>,
+            })
+          : tRedeem.rich('redeemSuccessMessage', {
+              line1: (chunks) => <p>{chunks}</p>,
+              line2: (chunks) => <p>{chunks}</p>,
+            })}
       </div>
 
       <div className={styles.redeemCodeButtonContainer}>

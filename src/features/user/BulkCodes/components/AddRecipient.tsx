@@ -1,10 +1,11 @@
+import type { SetState } from '../../../common/types/common';
+import type { Recipient } from '../BulkCodesTypes';
+
 import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../../common/types/common';
 import themeProperties from '../../../../theme/themeProperties';
-import { Recipient } from '../BulkCodesTypes';
 import AddIcon from '../../../../../public/assets/images/icons/AddIcon';
 import RecipientFormFields from './RecipientFormFields';
 import ActionContainer from './ActionContainer';

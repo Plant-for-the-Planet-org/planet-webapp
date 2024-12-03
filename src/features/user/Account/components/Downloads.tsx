@@ -1,34 +1,31 @@
-import { ReactElement } from 'react';
-import { useTranslations } from 'next-intl';
-import DownloadCodes from './DownloadCodes';
-import {
+import type { ReactElement } from 'react';
+import type {
   DonationPurpose,
   PaymentDetails,
 } from '../../../common/types/payments';
+
+import { useTranslations } from 'next-intl';
+import DownloadCodes from './DownloadCodes';
 import styles from '../AccountHistory.module.scss';
 
-interface CertificatesProps {
+interface DownloadsProps {
   recordDetails: PaymentDetails;
   purpose: DonationPurpose;
 }
 
-export const shouldEnableCertificate = (purpose: DonationPurpose) => {
-  if (purpose === 'bouquet' || purpose === 'composite') {
-    return false;
-  } else {
-    return true;
-  }
+export const canHaveCertificates = (purpose: DonationPurpose) => {
+  return !(purpose === 'bouquet' || purpose === 'composite');
 };
 
-export default function Certificates({
+export default function Downloads({
   recordDetails,
   purpose,
-}: CertificatesProps): ReactElement {
+}: DownloadsProps): ReactElement {
   const t = useTranslations('Me');
 
   return (
     <>
-      {recordDetails?.donorCertificate && shouldEnableCertificate(purpose) && (
+      {recordDetails?.donorCertificate && canHaveCertificates(purpose) && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails?.donorCertificate}
@@ -50,7 +47,7 @@ export default function Certificates({
           </a>
         </div>
       )}
-      {recordDetails?.giftCertificate && shouldEnableCertificate(purpose) && (
+      {recordDetails?.giftCertificate && canHaveCertificates(purpose) && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails.giftCertificate}
@@ -61,7 +58,7 @@ export default function Certificates({
           </a>
         </div>
       )}
-      {recordDetails?.codesUrl && (
+      {recordDetails?.codesUrl && canHaveCertificates(purpose) && (
         <DownloadCodes codesUrl={recordDetails.codesUrl} />
       )}
     </>

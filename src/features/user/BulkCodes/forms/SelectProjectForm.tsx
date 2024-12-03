@@ -1,15 +1,16 @@
-import React, { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { CountryProject } from '@planet-sdk/common';
+
+import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
-
 import ProjectSelector from '../components/ProjectSelector';
 import BulkCodesError from '../components/BulkCodesError';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { ProjectOption } from '../../../common/types/project';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const SelectProjectForm = (): ReactElement | null => {
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
   const { user } = useUserProps();
 
-  const [localProject, setLocalProject] = useState<ProjectOption | null>(
+  const [localProject, setLocalProject] = useState<CountryProject | null>(
     project
   );
 

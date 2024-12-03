@@ -1,6 +1,14 @@
+import type { FormEvent, ReactElement } from 'react';
+import type {
+  APIError,
+  SerializedError,
+  Donation,
+  PrepaidDonationRequest,
+} from '@planet-sdk/common';
+import type { Recipient } from '../../../common/Layout/BulkCodeContext';
+import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
+
 import React, {
-  FormEvent,
-  ReactElement,
   useContext,
   useState,
   useEffect,
@@ -16,7 +24,7 @@ import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
-import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
+import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -24,16 +32,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { Recipient as LocalRecipient } from '../BulkCodesTypes';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
-import {
-  handleError,
-  APIError,
-  SerializedError,
-  Donation,
-} from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
@@ -120,13 +122,13 @@ const IssueCodesForm = (): ReactElement | null => {
     const token = await getAccessTokenSilently();
     setIsProcessing(true);
     if (project) {
-      const donationData = {
+      const donationData: PrepaidDonationRequest = {
         purpose: project.purpose,
         project: project.guid,
         prePaid: true,
         comment,
-        treeCount: getTotalUnits(),
-        gift: {},
+        quantity: getTotalUnits(),
+        gift: undefined,
       };
       switch (bulkMethod) {
         case BulkCodeMethods.GENERIC:
@@ -185,7 +187,7 @@ const IssueCodesForm = (): ReactElement | null => {
             case 'planet_cash_insufficient_credit':
               _serializedErrors.push({
                 message: t('donationError.planet_cash_insufficient_credit', {
-                  availableBalance: getFormatedCurrency(
+                  availableBalance: getFormattedCurrency(
                     locale,
                     planetCashAccount?.currency as string,
                     error.parameters && error.parameters['available_credit']
@@ -371,7 +373,7 @@ const IssueCodesForm = (): ReactElement | null => {
               amount={totalAmount}
               currency={planetCashAccount?.currency}
               units={getTotalUnits()}
-              unit={project?.unit}
+              unitType={project?.unitType}
             />
           </div>
           <BulkCodesError />
