@@ -1,8 +1,7 @@
 {
   "Profile": {
     "myProfile": {
-      "memberSince": "Členem od {date}",
-      "userDescription": "{bio}"
+      "memberSince": "Členem od {date}"
     },
     "feature": {
       "redeem": "Vykoupit",
