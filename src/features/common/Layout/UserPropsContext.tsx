@@ -63,13 +63,21 @@ export const UserPropsProvider: FC = ({ children }) => {
 
   React.useEffect(() => {
     async function loadToken() {
-      const accessToken = await getAccessTokenSilently();
-      setToken(accessToken);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        setToken(accessToken);
+      } catch (error) {
+        console.error('Error fetching access token:', error);
+        loginWithRedirect({
+          redirectUri: `${window.location.origin}/login`,
+          ui_locales: localStorage.getItem('language') || 'en',
+        });
+      }
     }
     if (!isLoading)
       if (isAuthenticated) loadToken();
       else setContextLoaded(true);
-  }, [isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated, getAccessTokenSilently, loginWithRedirect]);
 
   const logoutUser = (
     returnUrl: string | undefined = `${window.location.origin}/`
