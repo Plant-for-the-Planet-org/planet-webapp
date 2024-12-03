@@ -36,6 +36,7 @@
       "tree": "Baum",
       "m2": "m²"
     },
+    "summaryTotal": "{formattedAmount} für {units} {pluralizedUnitType}",
     "unitsPerCode": "Einheiten pro Code*",
     "totalNumberOfCodes": "Gesamtzahl der Codes*",
     "occasion": "Anlass",
@@ -75,12 +76,14 @@
       "notifyNotPossible": "E-Mail und Name fehlen bei einigen Empfängern, die benachrichtigt werden sollen.",
       "instructionRowError": "In der 1. Zeile ist ein Fehler aufgetreten. Bitte prüfe, ob du die Anweisungen gelöscht hast oder ob zusätzliche Daten vorhanden sind.",
       "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {rowList}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
+      "longRecipientNames": "recipient_name ist in den folgenden Zeilen zu lang: {rowList}. Bitte geben Sie Namen an, die höchstens 35 Zeichen lang sind.",
       "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
     },
     "errorAddRecipient": {
       "unitsNotProvided": "Pflicht",
       "requiredForNotifications": "Benötigt (für Email Empfänger)",
-      "emailInvalid": "Ungültige Email"
+      "emailInvalid": "Ungültige Email",
+      "longRecipientName": "Maximale Länge - 35 Zeichen"
     },
     "successUploadCSV": {
       "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
@@ -97,7 +100,7 @@
       "recipient_name": "Optional. Name des Empfängers, wird auf der Urkunde angezeigt, und falls eingewilligt, in der Email, die an diesen geschickt wird. Benötigt, wenn Emails verschickt werden sollen.",
       "recipient_email": "Optional. Benötigt um die Urkunde per Email an den Empfänger zu schicken.",
       "recipient_notify": "Optional. Wähle \"Ja\", wenn du möchtest, dass Plant-for-the-Planet den Empfänger automatisch per Email informiert.",
-      "units": "Pflicht. Anzahl der Bäume für den Empfänger, z.B, 5 für 5 Bäume.",
+      "units": "Pflichtfeld. Anzahl der Einheiten (Bäume oder m²) für den Empfänger, z.B., 5 für 5 Bäume oder 5 m².",
       "recipient_message": "Optional. Nachricht an den Empfänger, die in der Email enthalten ist, wenn Benachrichtigen auf \"Ja\" steht. Wenn nichts angegeben wird, wird eine Standardnachricht gesendet."
     },
     "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",

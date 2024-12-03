@@ -16,6 +16,8 @@
     "redeemingCode": "Löse Code ein...",
     "redeem": "Einlösen",
     "redeemDescription": "Löse Baumgutscheine und andere Codes ein.",
+    "redeemSuccessMessage": "<line1>Großartig!</line1><line2>Wir haben den Beitrag zu deinem Profil hinzugefügt!</line2>",
+    "membershipRedeemSuccessMessage": "<line1>Fantastisch!</line1><line2>Sie sind jetzt Fördermitglied!</line2>",
     "successfullyRedeemed": "Erfolgreich eingelöst",
     "redeemAnotherCode": "Einen anderen Code einlösen"
   }

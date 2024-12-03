@@ -1,8 +1,7 @@
 {
   "Profile": {
     "myProfile": {
-      "memberSince": "Miembro desde {date}",
-      "userDescription": "{bio}"
+      "memberSince": "Miembro desde {date}"
     },
     "feature": {
       "redeem": "Canjear",
