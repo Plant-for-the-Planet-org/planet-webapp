@@ -1,13 +1,13 @@
-import {
-  useAuth0,
-  User as Auth0User,
-  RedirectLoginOptions,
-} from '@auth0/auth0-react';
+import type { FC } from 'react';
+import type { RedirectLoginOptions } from '@auth0/auth0-react';
+import type { User } from '@planet-sdk/common/build/types/user';
+import type { SetState } from '../types/common';
+import type { User as Auth0User } from '@auth0/auth0-react';
+
+import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { FC, useContext } from 'react';
+import React, { useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { User } from '@planet-sdk/common/build/types/user';
-import { SetState } from '../types/common';
 import { useTenant } from './TenantContext';
 
 interface UserPropsContextInterface {
