@@ -26,7 +26,7 @@ const DeleteAddress = ({
   updateUserAddresses,
   setAddressAction,
 }: Props) => {
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -58,8 +58,8 @@ const DeleteAddress = ({
   };
   return (
     <div className={styles.addressActionContainer}>
-      <h2 className={styles.header}>{tProfile('deleteAddress')}</h2>
-      <p>{tProfile('deleteAddressConfirmationMessage')}</p>
+      <h2 className={styles.header}>{tAddressManagement('deleteAddress')}</h2>
+      <p>{tAddressManagement('deleteAddressConfirmationMessage')}</p>
       {!isLoading ? (
         <div className={styles.buttonContainer}>
           <WebappButton
@@ -69,7 +69,7 @@ const DeleteAddress = ({
             onClick={handleCancel}
           />
           <WebappButton
-            text={tProfile('delete')}
+            text={tAddressManagement('delete')}
             elementType="button"
             variant="primary"
             onClick={deleteAddress}

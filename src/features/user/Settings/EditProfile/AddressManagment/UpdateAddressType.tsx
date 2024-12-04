@@ -31,7 +31,7 @@ const UpdateAddressType = ({
   updateUserAddresses,
   setAddressAction,
 }: Props) => {
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -68,11 +68,11 @@ const UpdateAddressType = ({
   return (
     <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
-        {tProfile(`addressType.${addressType}`)}
+        {tAddressManagement(`addressType.${addressType}`)}
       </h2>
       <p>
-        {tProfile('addressConfirmationMessage', {
-          addressType: tProfile(`addressType.${addressType}`),
+        {tAddressManagement('addressConfirmationMessage', {
+          addressType: tAddressManagement(`addressType.${addressType}`),
           isAddressSet: !!userAddress,
         })}
       </p>
@@ -90,7 +90,7 @@ const UpdateAddressType = ({
             onClick={handleCancel}
           />
           <WebappButton
-            text={tProfile('confirm')}
+            text={tAddressManagement('confirm')}
             elementType="button"
             variant="primary"
             onClick={() => updateAddress(addressType)}
