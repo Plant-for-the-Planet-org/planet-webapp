@@ -1,6 +1,8 @@
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
+import type { FormData } from './AddAddress';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
@@ -12,24 +14,18 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import AddressForm from './microComponents/AddressForm';
 import AddressFormLayout from './microComponents/AddressFormLayout';
 
-export type FormData = {
-  address: string | undefined;
-  address2: string | null;
-  city: string | undefined;
-  zipCode: string | undefined;
-  state: string | null;
-};
-
 interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address | null;
-  fetchUserAddresses?: () => Promise<void>;
+  updateUserAddresses?: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const EditAddress = ({
   setIsModalOpen,
   selectedAddressForAction,
-  fetchUserAddresses,
+  updateUserAddresses,
+  setAddressAction,
 }: Props) => {
   const defaultAddressDetail = {
     address: selectedAddressForAction?.address,
@@ -65,14 +61,15 @@ const EditAddress = ({
           token,
           logoutUser
         );
-        if (res && fetchUserAddresses) {
-          fetchUserAddresses();
+        if (res && updateUserAddresses) {
+          updateUserAddresses();
         }
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {
         setIsLoading(false);
         setIsModalOpen(false);
+        setAddressAction(null);
       }
     },
     [
@@ -84,7 +81,7 @@ const EditAddress = ({
       selectedAddressForAction?.id,
       tenantConfig.id,
       logoutUser,
-      fetchUserAddresses,
+      updateUserAddresses,
       handleError,
       putAuthenticatedRequest,
     ]
@@ -100,6 +97,7 @@ const EditAddress = ({
         label={tAddressManagement('addressForm.saveChanges')}
         defaultAddressDetail={defaultAddressDetail}
         processFormData={updateAddress}
+        setAddressAction={setAddressAction}
       />
     </AddressFormLayout>
   );

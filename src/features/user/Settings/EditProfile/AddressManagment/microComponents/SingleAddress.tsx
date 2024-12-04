@@ -9,9 +9,9 @@ import AddressActionsMenu from './AddressActionMenu';
 interface Props {
   userAddress: Address;
   addressCount: number;
+  setIsModalOpen: SetState<boolean>;
   setAddressAction: SetState<AddressAction | null>;
   setSelectedAddressForAction: SetState<Address | null>;
-  setIsModalOpen: SetState<boolean>;
 }
 
 const SingleAddress = ({

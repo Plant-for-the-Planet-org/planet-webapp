@@ -8,7 +8,7 @@ interface Props {
 const AddressFormLayout = ({ children, label }: Props) => {
   return (
     <div className={styles.addressFormLayout}>
-      <h2>{label}</h2>
+      <h2 className={styles.header}>{label}</h2>
       {children}
     </div>
   );

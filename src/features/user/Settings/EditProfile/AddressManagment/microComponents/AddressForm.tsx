@@ -1,8 +1,9 @@
 import type { AddressSuggestionsType } from '../../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
-import type { FormData } from '../AddAddress';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
+import type { FormData } from '../AddAddress';
+import type { AddressAction } from '../../../../../common/types/profile';
 
 import { useCallback, useMemo, useState } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
@@ -37,6 +38,7 @@ interface Props {
   };
   setIsModalOpen: SetState<boolean>;
   isLoading: boolean;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const AddressForm = ({
@@ -47,9 +49,10 @@ const AddressForm = ({
   label,
   processFormData,
   isLoading,
+  setAddressAction,
 }: Props) => {
   const t = useTranslations('EditProfile');
-  const tAddressManagement = useTranslations('Profile');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const [addressSuggestions, setAddressSuggestions] = useState<
     AddressSuggestionsType[]
   >([]);
@@ -108,6 +111,7 @@ const AddressForm = ({
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setAddressAction(null);
     resetForm();
   };
   return (
@@ -129,7 +133,7 @@ const AddressForm = ({
       <AddressInput
         name="address2"
         control={control}
-        label={tAddressManagement('addressManagement.addressForm.address2')}
+        label={tAddressManagement('addressForm.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
           required: t('validationErrors.addressRequired'),

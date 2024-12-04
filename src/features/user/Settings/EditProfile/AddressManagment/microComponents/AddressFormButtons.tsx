@@ -11,7 +11,7 @@ interface Props {
 const AddressFormButtons = ({ text, handleSubmit, handleCancel }: Props) => {
   const tCommon = useTranslations('Common');
   return (
-    <div className={styles.formButtonContainer}>
+    <div className={styles.buttonContainer}>
       <WebappButton
         text={tCommon('cancel')}
         variant="secondary"

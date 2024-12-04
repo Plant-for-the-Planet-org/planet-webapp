@@ -1,7 +1,7 @@
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -14,9 +14,13 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   ADDRESS_ACTIONS,
+  ADDRESS_TYPE,
   addressTypeOrder,
+  findAddressByType,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
+import UpdateAddressType from './UpdateAddressType';
+import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
 
@@ -43,7 +47,7 @@ const AddressManagement = () => {
     });
   }, [userAddresses]);
 
-  const fetchUserAddresses = async () => {
+  const updateUserAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
       const res = await getAuthenticatedRequest<Address[]>(
@@ -56,12 +60,20 @@ const AddressManagement = () => {
     } catch (error) {
       setErrors(handleError(error as APIError));
     }
-  };
+  }, [user, token, contextLoaded, tenantConfig.id, logoutUser]);
 
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
+  const primaryAddress = useMemo(
+    () => findAddressByType(userAddresses, ADDRESS_TYPE.PRIMARY),
+    [userAddresses]
+  );
+  const billingAddress = useMemo(
+    () => findAddressByType(userAddresses, ADDRESS_TYPE.MAILING),
+    [userAddresses]
+  );
 
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
@@ -70,6 +82,7 @@ const AddressManagement = () => {
           <AddAddress
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
@@ -77,7 +90,39 @@ const AddressManagement = () => {
           <EditAddress
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            fetchUserAddresses={fetchUserAddresses}
+            updateUserAddresses={updateUserAddresses}
+            setAddressAction={setAddressAction}
+          />
+        );
+      case ADDRESS_ACTIONS.DELETE:
+        return (
+          <DeleteAddress
+            addressId={selectedAddressForAction?.id}
+            setIsModalOpen={setIsModalOpen}
+            updateUserAddresses={updateUserAddresses}
+            setAddressAction={setAddressAction}
+          />
+        );
+      case ADDRESS_ACTIONS.SET_PRIMARY:
+        return (
+          <UpdateAddressType
+            addressType={ADDRESS_TYPE.PRIMARY}
+            userAddress={primaryAddress}
+            setAddressAction={setAddressAction}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            updateUserAddresses={updateUserAddresses}
+          />
+        );
+      case ADDRESS_ACTIONS.SET_BILLING:
+        return (
+          <UpdateAddressType
+            addressType={ADDRESS_TYPE.MAILING}
+            userAddress={billingAddress}
+            setAddressAction={setAddressAction}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            updateUserAddresses={updateUserAddresses}
           />
         );
     }
@@ -85,7 +130,10 @@ const AddressManagement = () => {
     setIsModalOpen,
     setUserAddresses,
     selectedAddressForAction,
-    fetchUserAddresses,
+    updateUserAddresses,
+    primaryAddress,
+    billingAddress,
+    addressAction,
   ]);
   const shouldRenderAddressList =
     user?.addresses !== undefined && user.addresses.length > 0;

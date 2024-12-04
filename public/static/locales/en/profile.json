@@ -137,7 +137,7 @@
     },
     "addressManagement": {
       "addressManagementTitle": "Address",
-      "addressTags": {
+      "addressType": {
         "primary": "Primary Address",
         "mailing": "Billing Address"
       },
@@ -147,6 +147,12 @@
         "setAsPrimaryAddress": "Set as Primary Address",
         "setAsBillingAddress": "Set as Billing Address"
       },
+      "deleteAddress": "Delete Address",
+      "delete": "Delete",
+      "setAddressConfirmation": "Are you sure you want to set this address as your {addressType}?",
+      "replaceAddressWarning": " This will replace your current {addressType}.",
+      "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address.",
+      "confirm": "Confirm",
       "addAddress": "Add New Address",
       "addressForm": {
         "addAddress": "Add Address",

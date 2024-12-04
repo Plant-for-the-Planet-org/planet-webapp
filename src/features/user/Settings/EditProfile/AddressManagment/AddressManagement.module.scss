@@ -94,12 +94,15 @@
   border-bottom: 1px solid rgba(189, 189, 189, 1);
 }
 // address action form
-
+.header {
+  font-weight: 700;
+  font-size: $fontSixteen;
+}
 .addressFormLayout {
+  min-width: 565px;
   display: flex;
   flex-direction: column;
   gap: 40px;
-  min-width: 565px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
   padding: 20px;
@@ -107,26 +110,48 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  h2 {
-    font-weight: 700;
-    font-size: $fontSixteen;
+  .addressForm {
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 25px;
+    button {
+      flex: 1 1;
+    }
   }
 }
-
-.addressForm {
+.addressActionContainer {
+  width: 468px;
   display: flex;
+  gap: 10px;
   flex-direction: column;
-  gap: 23px;
-}
-
-.formButtonContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 25px;
-  .addAddressButton,
-  .cancelButton {
-    min-width: 252px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  padding: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  .address {
+    width: 100%;
+    background: rgba(242, 242, 242, 0.5);
+    border-radius: 8px;
+    font-size: $fontSmall;
+    font-weight: 400;
+    padding: 24px;
+  }
+  .buttonContainer {
+    display: flex;
+    gap: 20px;
+    margin-top: 34px;
+    button {
+      flex: 1 1;
+    }
   }
 }
 
@@ -134,18 +159,22 @@
   .addressFormLayout {
     min-width: fit-content;
     width: 95%;
+    .buttonContainer {
+      display: flex;
+      flex-direction: column;
+      button {
+        width: 100%;
+      }
+    }
   }
-  .formButtonContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    .addAddressButton,
-    .cancelButton {
-      width: 100%;
+  .addressActionContainer {
+    width: 95%;
+    .buttonContainer {
+      flex-direction: column;
+      gap: 8px;
     }
   }
 }
-
 // Form spinner
 
 .addressMgmtSpinner {
