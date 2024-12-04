@@ -72,7 +72,7 @@ const UpdateAddressType = ({
       </h2>
       <p>
         {tProfile('addressConfirmationMessage', {
-          addressType,
+          addressType: tProfile(`addressType.${addressType}`),
           isAddressSet: !!userAddress,
         })}
       </p>
