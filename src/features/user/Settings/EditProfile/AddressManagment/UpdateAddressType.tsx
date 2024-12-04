@@ -1,5 +1,6 @@
 import type { SetState } from '../../../../common/types/common';
 import type { APIError, Address } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -19,6 +20,7 @@ interface Props {
   userAddress: Address | undefined;
   selectedAddressForAction: Address | null;
   updateUserAddresses: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const UpdateAddressType = ({
@@ -27,6 +29,7 @@ const UpdateAddressType = ({
   userAddress,
   selectedAddressForAction,
   updateUserAddresses,
+  setAddressAction,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
@@ -55,7 +58,12 @@ const UpdateAddressType = ({
     } finally {
       setIsUploadingData(false);
       setIsModalOpen(false);
+      setAddressAction(null);
     }
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setAddressAction(null);
   };
   return (
     <div className={styles.addrConfirmContainer}>
@@ -79,7 +87,7 @@ const UpdateAddressType = ({
             text={tCommon('cancel')}
             elementType="button"
             variant="secondary"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCancel}
           />
           <WebappButton
             text={tProfile('confirm')}

@@ -3,6 +3,7 @@ import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { FormData } from '../AddAddress';
+import type { AddressAction } from '../../../../../common/types/profile';
 
 import { useCallback, useMemo, useState } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
@@ -37,6 +38,7 @@ interface Props {
   };
   setIsModalOpen: SetState<boolean>;
   isLoading: boolean;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const AddressForm = ({
@@ -47,6 +49,7 @@ const AddressForm = ({
   label,
   processFormData,
   isLoading,
+  setAddressAction,
 }: Props) => {
   const t = useTranslations('EditProfile');
   const tAddressManagement = useTranslations('Profile');
@@ -108,6 +111,7 @@ const AddressForm = ({
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setAddressAction(null);
     resetForm();
   };
   return (

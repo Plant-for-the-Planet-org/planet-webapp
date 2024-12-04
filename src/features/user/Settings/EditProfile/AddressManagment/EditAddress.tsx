@@ -2,6 +2,7 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { FormData } from './AddAddress';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
@@ -17,12 +18,14 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address | null;
   updateUserAddresses?: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const EditAddress = ({
   setIsModalOpen,
   selectedAddressForAction,
   updateUserAddresses,
+  setAddressAction,
 }: Props) => {
   const defaultAddressDetail = {
     address: selectedAddressForAction?.address,
@@ -66,6 +69,7 @@ const EditAddress = ({
       } finally {
         setIsLoading(false);
         setIsModalOpen(false);
+        setAddressAction(null);
       }
     },
     [
@@ -93,6 +97,7 @@ const EditAddress = ({
         label={tAddressManagement('addressForm.saveChanges')}
         defaultAddressDetail={defaultAddressDetail}
         processFormData={updateAddress}
+        setAddressAction={setAddressAction}
       />
     </AddressFormLayout>
   );

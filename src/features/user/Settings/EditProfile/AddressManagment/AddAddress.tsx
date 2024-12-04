@@ -1,6 +1,7 @@
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
@@ -25,6 +26,7 @@ export type FormData = {
 interface Props {
   setIsModalOpen: SetState<boolean>;
   setUserAddresses: SetState<Address[]>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const defaultAddressDetail = {
@@ -35,7 +37,11 @@ const defaultAddressDetail = {
   state: '',
 };
 
-const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
+const AddAddress = ({
+  setIsModalOpen,
+  setUserAddresses,
+  setAddressAction,
+}: Props) => {
   const tAddressManagement = useTranslations('Profile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const configCountry = getStoredConfig('country');
@@ -72,6 +78,7 @@ const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
       } finally {
         setIsLoading(false);
         setIsModalOpen(false);
+        setAddressAction(null);
       }
     },
     [
@@ -98,6 +105,7 @@ const AddAddress = ({ setIsModalOpen, setUserAddresses }: Props) => {
         label={tAddressManagement('addressForm.addAddress')}
         defaultAddressDetail={defaultAddressDetail}
         processFormData={addAddress}
+        setAddressAction={setAddressAction}
       />
     </AddressFormLayout>
   );

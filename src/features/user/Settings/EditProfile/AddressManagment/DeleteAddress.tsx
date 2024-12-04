@@ -1,5 +1,6 @@
 import type { SetState } from '../../../../common/types/common';
 import type { APIError } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -16,12 +17,14 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   addressId: string | undefined;
   updateUserAddresses: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
 const DeleteAddress = ({
   setIsModalOpen,
   addressId,
   updateUserAddresses,
+  setAddressAction,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
@@ -46,7 +49,12 @@ const DeleteAddress = ({
     } finally {
       setIsModalOpen(false);
       setIsLoading(false);
+      setAddressAction(null);
     }
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setAddressAction(null);
   };
   return (
     <div className={styles.addrConfirmContainer}>
@@ -58,7 +66,7 @@ const DeleteAddress = ({
             text={tCommon('cancel')}
             elementType="button"
             variant="secondary"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCancel}
           />
           <WebappButton
             text={tProfile('delete')}

@@ -79,6 +79,7 @@ const AddressManagement = () => {
     selectedAddressForAction,
     updateUserAddresses,
   };
+  console.log(isModalOpen, addressAction, '==1');
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
@@ -86,6 +87,7 @@ const AddressManagement = () => {
           <AddAddress
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
@@ -94,6 +96,7 @@ const AddressManagement = () => {
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
             updateUserAddresses={updateUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.DELETE:
@@ -102,6 +105,7 @@ const AddressManagement = () => {
             addressId={selectedAddressForAction?.id}
             setIsModalOpen={setIsModalOpen}
             updateUserAddresses={updateUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.SET_PRIMARY:
@@ -109,6 +113,7 @@ const AddressManagement = () => {
           <UpdateAddressType
             addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
+            setAddressAction={setAddressAction}
             {...addrTypeConfProps}
           />
         );
@@ -117,6 +122,7 @@ const AddressManagement = () => {
           <UpdateAddressType
             addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
+            setAddressAction={setAddressAction}
             {...addrTypeConfProps}
           />
         );
