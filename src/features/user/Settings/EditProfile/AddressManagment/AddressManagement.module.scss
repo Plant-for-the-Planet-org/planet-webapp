@@ -98,13 +98,11 @@
   border-bottom: 1px solid rgba(189, 189, 189, 1);
 }
 // address action form
-
 .header {
   font-weight: 700;
   font-size: $fontSixteen;
 }
-
-.addressFormContainer {
+.addressFormLayout {
   min-width: 565px;
   display: flex;
   flex-direction: column;
@@ -125,12 +123,13 @@
     display: flex;
     justify-content: space-between;
     gap: 8px;
+    margin-top: 25px;
     button {
       flex: 1 1;
     }
   }
 }
-.addrConfirmContainer {
+.addressActionContainer {
   width: 468px;
   display: flex;
   gap: 10px;
@@ -161,7 +160,7 @@
 }
 
 @include xsPhoneView {
-  .addressFormContainer {
+  .addressFormLayout {
     min-width: fit-content;
     width: 95%;
     .buttonContainer {
@@ -172,7 +171,7 @@
       }
     }
   }
-  .addrConfirmContainer {
+  .addressActionContainer {
     width: 95%;
     .buttonContainer {
       flex-direction: column;
@@ -180,7 +179,6 @@
     }
   }
 }
-
 // Form spinner
 
 .addressMgmtSpinner {

@@ -1,7 +1,7 @@
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -20,17 +20,19 @@ import {
   MAX_ADDRESS_LIMIT,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
-import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
-import AddressDeleteModal from './AddressDeleteModal';
-import EditAddressForm from './EditAddressForm';
-import AddAddressForm from './AddAddressForm';
+import UpdateAddressType from './UpdateAddressType';
+import DeleteAddress from './DeleteAddress';
+import EditAddress from './EditAddress';
+import AddAddress from './AddAddress';
 
 const AddressManagement = () => {
-  const tProfile = useTranslations('Profile.addressManagement');
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [userAddresses, setUserAddresses] = useState<Address[]>([]);
+  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const [userAddresses, setUserAddresses] = useState<Address[]>(
+    user?.addresses ?? []
+  );
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -46,7 +48,7 @@ const AddressManagement = () => {
     });
   }, [userAddresses]);
 
-  const fetchUserAddresses = useCallback(async () => {
+  const updateUserAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
       const res = await getAuthenticatedRequest<Address[]>(
@@ -61,10 +63,6 @@ const AddressManagement = () => {
     }
   }, [user, token, contextLoaded, tenantConfig.id, logoutUser]);
 
-  useEffect(() => {
-    fetchUserAddresses();
-  }, []);
-
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
@@ -77,50 +75,55 @@ const AddressManagement = () => {
     () => findAddressByType(userAddresses, ADDRESS_TYPE.MAILING),
     [userAddresses]
   );
-  const addrTypeConfProps = {
-    setIsModalOpen,
-    selectedAddressForAction,
-    fetchUserAddresses,
-  };
+
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
-          <AddAddressForm
+          <AddAddress
             setIsModalOpen={setIsModalOpen}
             setUserAddresses={setUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
         return (
-          <EditAddressForm
+          <EditAddress
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            fetchUserAddresses={fetchUserAddresses}
+            updateUserAddresses={updateUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.DELETE:
         return (
-          <AddressDeleteModal
+          <DeleteAddress
             addressId={selectedAddressForAction?.id}
             setIsModalOpen={setIsModalOpen}
-            fetchUserAddresses={fetchUserAddresses}
+            updateUserAddresses={updateUserAddresses}
+            setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.SET_PRIMARY:
         return (
-          <AddressTypeConfirmationModal
+          <UpdateAddressType
             addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
-            {...addrTypeConfProps}
+            setAddressAction={setAddressAction}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            updateUserAddresses={updateUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.SET_BILLING:
         return (
-          <AddressTypeConfirmationModal
+          <UpdateAddressType
             addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
-            {...addrTypeConfProps}
+            setAddressAction={setAddressAction}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            updateUserAddresses={updateUserAddresses}
           />
         );
     }
@@ -128,42 +131,48 @@ const AddressManagement = () => {
     setIsModalOpen,
     setUserAddresses,
     selectedAddressForAction,
-    fetchUserAddresses,
+    updateUserAddresses,
     primaryAddress,
     billingAddress,
     addressAction,
   ]);
 
   const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;
-  return userAddresses.length > 0 ? (
+  const shouldRenderAddressList =
+    user?.addresses !== undefined && user.addresses.length > 0;
+  return (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
-        {tProfile('addressManagementTitle')}
+        {tAddressManagement('addressManagementTitle')}
       </h2>
       <CenteredContainer>
-        <AddressList
-          addresses={sortedAddresses}
-          setAddressAction={setAddressAction}
-          setSelectedAddressForAction={setSelectedAddressForAction}
-          setIsModalOpen={setIsModalOpen}
-        />
+        {shouldRenderAddressList && (
+          <AddressList
+            addresses={sortedAddresses}
+            setAddressAction={setAddressAction}
+            setSelectedAddressForAction={setSelectedAddressForAction}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
         {canAddMoreAddresses ? (
           <WebappButton
-            text={tProfile('addNewAddress')}
+            text={tAddressManagement('addAddress')}
             elementType="button"
             onClick={toggleAddAddressModal}
             variant="primary"
             buttonClasses={styles.addAddressButton}
           />
         ) : (
-          <p className={styles.maxAddress}>{tProfile('maxAddressesMessage')}</p>
+          <p className={styles.maxAddress}>
+            {tAddressManagement('maxAddressesMessage')}
+          </p>
         )}
       </CenteredContainer>
       <Modal open={isModalOpen}>
         <>{renderModalContent}</>
       </Modal>
     </section>
-  ) : null;
+  );
 };
 
 export default AddressManagement;

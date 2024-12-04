@@ -1,5 +1,6 @@
 import type { SetState } from '../../../../common/types/common';
 import type { APIError, Address } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -18,17 +19,19 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   userAddress: Address | undefined;
   selectedAddressForAction: Address | null;
-  fetchUserAddresses: () => Promise<void>;
+  updateUserAddresses: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
-const AddressTypeConfirmationModal = ({
+const UpdateAddressType = ({
   addressType,
   setIsModalOpen,
   userAddress,
   selectedAddressForAction,
-  fetchUserAddresses,
+  updateUserAddresses,
+  setAddressAction,
 }: Props) => {
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -49,22 +52,27 @@ const AddressTypeConfirmationModal = ({
         token,
         logoutUser
       );
-      if (res) fetchUserAddresses();
+      if (res) updateUserAddresses();
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
       setIsUploadingData(false);
       setIsModalOpen(false);
+      setAddressAction(null);
     }
   };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setAddressAction(null);
+  };
   return (
-    <div className={styles.addrConfirmContainer}>
+    <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
-        {tProfile(`addressType.${addressType}`)}
+        {tAddressManagement(`addressType.${addressType}`)}
       </h2>
       <p>
-        {tProfile('addressConfirmationMessage', {
-          addressType,
+        {tAddressManagement('addressConfirmationMessage', {
+          addressType: tAddressManagement(`addressType.${addressType}`),
           isAddressSet: !!userAddress,
         })}
       </p>
@@ -79,10 +87,10 @@ const AddressTypeConfirmationModal = ({
             text={tCommon('cancel')}
             elementType="button"
             variant="secondary"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCancel}
           />
           <WebappButton
-            text={tProfile('confirm')}
+            text={tAddressManagement('confirm')}
             elementType="button"
             variant="primary"
             onClick={() => updateAddress(addressType)}
@@ -97,4 +105,4 @@ const AddressTypeConfirmationModal = ({
   );
 };
 
-export default AddressTypeConfirmationModal;
+export default UpdateAddressType;

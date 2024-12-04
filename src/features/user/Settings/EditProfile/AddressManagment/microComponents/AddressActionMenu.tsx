@@ -1,6 +1,6 @@
 import type { SetState } from '../../../../../common/types/common';
 import type { AddressAction } from '../../../../../common/types/profile';
-import type { AddressType, Address } from '@planet-sdk/common';
+import type { Address } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -18,7 +18,6 @@ export interface AddressActionItem {
   shouldRender: boolean;
 }
 interface Props {
-  type: AddressType;
   addressCount: number;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
@@ -27,38 +26,37 @@ interface Props {
 }
 
 const AddressActionsMenu = ({
-  type,
   addressCount,
   setAddressAction,
   setIsModalOpen,
   setSelectedAddressForAction,
   userAddress,
 }: Props) => {
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
-
+  const { type } = userAddress;
   const addressActionConfig: AddressActionItem[] = [
     {
-      label: tProfile(`actions.edit`),
+      label: tAddressManagement(`actions.edit`),
       action: ADDRESS_ACTIONS.EDIT,
       shouldRender: true,
     },
     {
-      label: tProfile(`actions.delete`),
+      label: tAddressManagement(`actions.delete`),
       action: ADDRESS_ACTIONS.DELETE,
       shouldRender: addressCount > 1,
     },
     {
-      label: tProfile('actions.setAsPrimaryAddress'),
+      label: tAddressManagement('actions.setAsPrimaryAddress'),
       action: ADDRESS_ACTIONS.SET_PRIMARY,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
       ),
     },
     {
-      label: tProfile('actions.setAsBillingAddress'),
+      label: tAddressManagement('actions.setAsBillingAddress'),
       action: ADDRESS_ACTIONS.SET_BILLING,
       shouldRender: !(
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
