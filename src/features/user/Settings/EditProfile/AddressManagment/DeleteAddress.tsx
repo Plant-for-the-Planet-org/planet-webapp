@@ -1,5 +1,6 @@
 import type { SetState } from '../../../../common/types/common';
 import type { APIError } from '@planet-sdk/common';
+import type { AddressAction } from '../../../../common/types/profile';
 
 import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -15,15 +16,17 @@ import { deleteAuthenticatedRequest } from '../../../../../utils/apiRequests/api
 interface Props {
   setIsModalOpen: SetState<boolean>;
   addressId: string | undefined;
-  fetchUserAddresses: () => Promise<void>;
+  updateUserAddresses: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | null>;
 }
 
-const AddressDeleteModal = ({
+const DeleteAddress = ({
   setIsModalOpen,
   addressId,
-  fetchUserAddresses,
+  updateUserAddresses,
+  setAddressAction,
 }: Props) => {
-  const tProfile = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -40,28 +43,33 @@ const AddressDeleteModal = ({
         token,
         logoutUser
       );
-      fetchUserAddresses();
+      updateUserAddresses();
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
       setIsModalOpen(false);
       setIsLoading(false);
+      setAddressAction(null);
     }
   };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setAddressAction(null);
+  };
   return (
-    <div className={styles.addrConfirmContainer}>
-      <h2 className={styles.header}>{tProfile('deleteAddress')}</h2>
-      <p>{tProfile('deleteAddressConfirmationMessage')}</p>
+    <div className={styles.addressActionContainer}>
+      <h2 className={styles.header}>{tAddressManagement('deleteAddress')}</h2>
+      <p>{tAddressManagement('deleteAddressConfirmationMessage')}</p>
       {!isLoading ? (
         <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
             elementType="button"
             variant="secondary"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCancel}
           />
           <WebappButton
-            text={tProfile('delete')}
+            text={tAddressManagement('delete')}
             elementType="button"
             variant="primary"
             onClick={deleteAddress}
@@ -75,4 +83,4 @@ const AddressDeleteModal = ({
     </div>
   );
 };
-export default AddressDeleteModal;
+export default DeleteAddress;

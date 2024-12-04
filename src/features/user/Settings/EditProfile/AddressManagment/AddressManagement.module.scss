@@ -117,8 +117,7 @@ $padding-standard: 24px;
   font-weight: 700;
   font-size: $fontSixteen;
 }
-
-.addressFormContainer {
+.addressFormLayout {
   @include flex-container(column);
   @include modal-container;
   min-width: 565px;
@@ -130,12 +129,13 @@ $padding-standard: 24px;
   .buttonContainer {
     @include flex-container;
     gap: 8px;
+    margin-top: 25px;
     button {
       flex: 1 1;
     }
   }
 }
-.addrConfirmContainer {
+.addressActionContainer {
   @include flex-container(column);
   @include modal-container;
   width: 468px;
@@ -160,7 +160,7 @@ $padding-standard: 24px;
 
 // Mobile style
 @include xsPhoneView {
-  .addressFormContainer {
+  .addressFormLayout {
     min-width: fit-content;
     width: 95%;
     .buttonContainer {
@@ -170,7 +170,7 @@ $padding-standard: 24px;
       }
     }
   }
-  .addrConfirmContainer {
+  .addressActionContainer {
     width: 95%;
     min-width: fit-content;
     .buttonContainer {
@@ -179,7 +179,6 @@ $padding-standard: 24px;
     }
   }
 }
-
 // Form spinner
 
 .addressMgmtSpinner {
