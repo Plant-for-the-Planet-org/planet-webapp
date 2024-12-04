@@ -26,6 +26,10 @@ $padding-standard: 24px;
   @include flex-container(column);
   margin-top: 40px;
   gap: 20px;
+  .maxAddress {
+    font-size: $fontXSmall;
+    color: #6c757d;
+  }
 }
 
 .addressManagementTitle {

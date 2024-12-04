@@ -152,6 +152,7 @@
       "setAddressConfirmation": "Are you sure you want to set this address as your {addressType}?",
       "replaceAddressWarning": " This will replace your current {addressType}.",
       "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address.",
+      "maxAddressesMessage": "You have reached the maximum number of addresses! Remove one to add a new address.",
       "confirm": "Confirm",
       "addAddress": "Add New Address",
       "addressForm": {
