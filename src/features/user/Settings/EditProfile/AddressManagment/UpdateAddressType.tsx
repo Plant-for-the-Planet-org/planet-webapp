@@ -71,10 +71,13 @@ const UpdateAddressType = ({
         {tAddressManagement(`addressType.${addressType}`)}
       </h2>
       <p>
-        {tAddressManagement('addressConfirmationMessage', {
+        {tAddressManagement('setAddressConfirmation', {
           addressType: tAddressManagement(`addressType.${addressType}`),
-          isAddressSet: !!userAddress,
         })}
+        {userAddress &&
+          tAddressManagement('replaceAddressWarning', {
+            addressType: tAddressManagement(`addressType.${addressType}`),
+          })}
       </p>
       {userAddress !== undefined && (
         <div className={styles.address}>
