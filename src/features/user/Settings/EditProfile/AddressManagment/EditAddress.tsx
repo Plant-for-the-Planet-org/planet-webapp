@@ -16,13 +16,13 @@ import AddressFormLayout from './microComponents/AddressFormLayout';
 interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address | null;
-  fetchUserAddresses?: () => Promise<void>;
+  updateUserAddresses?: () => Promise<void>;
 }
 
 const EditAddress = ({
   setIsModalOpen,
   selectedAddressForAction,
-  fetchUserAddresses,
+  updateUserAddresses,
 }: Props) => {
   const defaultAddressDetail = {
     address: selectedAddressForAction?.address,
@@ -58,8 +58,8 @@ const EditAddress = ({
           token,
           logoutUser
         );
-        if (res && fetchUserAddresses) {
-          fetchUserAddresses();
+        if (res && updateUserAddresses) {
+          updateUserAddresses();
         }
       } catch (error) {
         setErrors(handleError(error as APIError));
@@ -77,7 +77,7 @@ const EditAddress = ({
       selectedAddressForAction?.id,
       tenantConfig.id,
       logoutUser,
-      fetchUserAddresses,
+      updateUserAddresses,
       handleError,
       putAuthenticatedRequest,
     ]

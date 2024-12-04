@@ -19,8 +19,8 @@ import {
   findAddressByType,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
-import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
-import AddressDeleteModal from './AddressDeleteModal';
+import UpdateAddressType from './UpdateAddressType';
+import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
 
@@ -47,7 +47,7 @@ const AddressManagement = () => {
     });
   }, [userAddresses]);
 
-  const fetchUserAddresses = useCallback(async () => {
+  const updateUserAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
       const res = await getAuthenticatedRequest<Address[]>(
@@ -77,7 +77,7 @@ const AddressManagement = () => {
   const addrTypeConfProps = {
     setIsModalOpen,
     selectedAddressForAction,
-    fetchUserAddresses,
+    updateUserAddresses,
   };
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
@@ -93,20 +93,20 @@ const AddressManagement = () => {
           <EditAddress
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            fetchUserAddresses={fetchUserAddresses}
+            updateUserAddresses={updateUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.DELETE:
         return (
-          <AddressDeleteModal
+          <DeleteAddress
             addressId={selectedAddressForAction?.id}
             setIsModalOpen={setIsModalOpen}
-            fetchUserAddresses={fetchUserAddresses}
+            updateUserAddresses={updateUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.SET_PRIMARY:
         return (
-          <AddressTypeConfirmationModal
+          <UpdateAddressType
             addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
             {...addrTypeConfProps}
@@ -114,7 +114,7 @@ const AddressManagement = () => {
         );
       case ADDRESS_ACTIONS.SET_BILLING:
         return (
-          <AddressTypeConfirmationModal
+          <UpdateAddressType
             addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
             {...addrTypeConfProps}
@@ -125,7 +125,7 @@ const AddressManagement = () => {
     setIsModalOpen,
     setUserAddresses,
     selectedAddressForAction,
-    fetchUserAddresses,
+    updateUserAddresses,
     primaryAddress,
     billingAddress,
     addressAction,

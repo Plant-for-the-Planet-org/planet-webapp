@@ -15,13 +15,13 @@ import { deleteAuthenticatedRequest } from '../../../../../utils/apiRequests/api
 interface Props {
   setIsModalOpen: SetState<boolean>;
   addressId: string | undefined;
-  fetchUserAddresses: () => Promise<void>;
+  updateUserAddresses: () => Promise<void>;
 }
 
-const AddressDeleteModal = ({
+const DeleteAddress = ({
   setIsModalOpen,
   addressId,
-  fetchUserAddresses,
+  updateUserAddresses,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
@@ -40,7 +40,7 @@ const AddressDeleteModal = ({
         token,
         logoutUser
       );
-      fetchUserAddresses();
+      updateUserAddresses();
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
@@ -75,4 +75,4 @@ const AddressDeleteModal = ({
     </div>
   );
 };
-export default AddressDeleteModal;
+export default DeleteAddress;

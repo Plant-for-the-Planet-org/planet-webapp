@@ -18,15 +18,15 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   userAddress: Address | undefined;
   selectedAddressForAction: Address | null;
-  fetchUserAddresses: () => Promise<void>;
+  updateUserAddresses: () => Promise<void>;
 }
 
-const AddressTypeConfirmationModal = ({
+const UpdateAddressType = ({
   addressType,
   setIsModalOpen,
   userAddress,
   selectedAddressForAction,
-  fetchUserAddresses,
+  updateUserAddresses,
 }: Props) => {
   const tProfile = useTranslations('Profile.addressManagement');
   const tCommon = useTranslations('Common');
@@ -49,7 +49,7 @@ const AddressTypeConfirmationModal = ({
         token,
         logoutUser
       );
-      if (res) fetchUserAddresses();
+      if (res) updateUserAddresses();
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
@@ -97,4 +97,4 @@ const AddressTypeConfirmationModal = ({
   );
 };
 
-export default AddressTypeConfirmationModal;
+export default UpdateAddressType;
