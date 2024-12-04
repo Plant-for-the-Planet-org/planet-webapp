@@ -17,6 +17,7 @@ import {
   ADDRESS_TYPE,
   addressTypeOrder,
   findAddressByType,
+  MAX_ADDRESS_LIMIT,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 import UpdateAddressType from './UpdateAddressType';
@@ -135,6 +136,8 @@ const AddressManagement = () => {
     billingAddress,
     addressAction,
   ]);
+
+  const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;
   const shouldRenderAddressList =
     user?.addresses !== undefined && user.addresses.length > 0;
   return (
@@ -151,13 +154,19 @@ const AddressManagement = () => {
             setIsModalOpen={setIsModalOpen}
           />
         )}
-        <WebappButton
-          text={tAddressManagement('addAddress')}
-          elementType="button"
-          onClick={toggleAddAddressModal}
-          variant="primary"
-          buttonClasses={styles.addAddressButton}
-        />
+        {canAddMoreAddresses ? (
+          <WebappButton
+            text={tAddressManagement('addAddress')}
+            elementType="button"
+            onClick={toggleAddAddressModal}
+            variant="primary"
+            buttonClasses={styles.addAddressButton}
+          />
+        ) : (
+          <p className={styles.maxAddress}>
+            {tAddressManagement('maxAddressesMessage')}
+          </p>
+        )}
       </CenteredContainer>
       <Modal open={isModalOpen}>
         <>{renderModalContent}</>
