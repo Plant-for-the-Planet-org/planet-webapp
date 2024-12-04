@@ -57,7 +57,7 @@ const DeleteAddress = ({
     setAddressAction(null);
   };
   return (
-    <div className={styles.addrConfirmContainer}>
+    <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>{tProfile('deleteAddress')}</h2>
       <p>{tProfile('deleteAddressConfirmationMessage')}</p>
       {!isLoading ? (

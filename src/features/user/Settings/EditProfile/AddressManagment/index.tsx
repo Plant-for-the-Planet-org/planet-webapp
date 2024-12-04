@@ -74,12 +74,7 @@ const AddressManagement = () => {
     () => findAddressByType(userAddresses, ADDRESS_TYPE.MAILING),
     [userAddresses]
   );
-  const addrTypeConfProps = {
-    setIsModalOpen,
-    selectedAddressForAction,
-    updateUserAddresses,
-  };
-  console.log(isModalOpen, addressAction, '==1');
+
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
@@ -114,7 +109,9 @@ const AddressManagement = () => {
             addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
             setAddressAction={setAddressAction}
-            {...addrTypeConfProps}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            updateUserAddresses={updateUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.SET_BILLING:
@@ -123,7 +120,9 @@ const AddressManagement = () => {
             addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
             setAddressAction={setAddressAction}
-            {...addrTypeConfProps}
+            setIsModalOpen={setIsModalOpen}
+            selectedAddressForAction={selectedAddressForAction}
+            updateUserAddresses={updateUserAddresses}
           />
         );
     }

@@ -66,7 +66,7 @@ const UpdateAddressType = ({
     setAddressAction(null);
   };
   return (
-    <div className={styles.addrConfirmContainer}>
+    <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
         {tProfile(`addressType.${addressType}`)}
       </h2>
