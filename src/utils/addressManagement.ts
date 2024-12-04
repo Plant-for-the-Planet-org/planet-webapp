@@ -28,6 +28,8 @@ export const ADDRESS_FORM_TYPE = {
 } as const;
 export const addressTypeOrder = ['primary', 'mailing', 'other'];
 
+export const MAX_ADDRESS_LIMIT = 5;
+
 export const getFormattedAddress = (
   zipCode: string | undefined,
   city: string | undefined,

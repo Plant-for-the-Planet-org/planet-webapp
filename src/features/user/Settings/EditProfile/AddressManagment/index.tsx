@@ -17,6 +17,7 @@ import {
   ADDRESS_TYPE,
   addressTypeOrder,
   findAddressByType,
+  MAX_ADDRESS_LIMIT,
 } from '../../../../../utils/addressManagement';
 import CenteredContainer from '../../../../common/Layout/CenteredContainer';
 import AddressTypeConfirmationModal from './AddressTypeConfirmationModal';
@@ -132,8 +133,8 @@ const AddressManagement = () => {
     billingAddress,
     addressAction,
   ]);
-  const maxAddressLimit = 5;
-  const canAddMoreAddresses = userAddresses.length < maxAddressLimit;
+
+  const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;
   return userAddresses.length > 0 ? (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
