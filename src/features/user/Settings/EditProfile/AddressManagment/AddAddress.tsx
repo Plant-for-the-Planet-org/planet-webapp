@@ -42,7 +42,7 @@ const AddAddress = ({
   setUserAddresses,
   setAddressAction,
 }: Props) => {
-  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const configCountry = getStoredConfig('country');
   const defaultCountry = user?.country || configCountry || 'DE';

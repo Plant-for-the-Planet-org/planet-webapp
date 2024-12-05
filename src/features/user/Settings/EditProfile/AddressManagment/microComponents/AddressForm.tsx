@@ -52,7 +52,6 @@ const AddressForm = ({
   setAddressAction,
 }: Props) => {
   const t = useTranslations('EditProfile');
-  const tAddressManagement = useTranslations('Profile.addressManagement');
   const [addressSuggestions, setAddressSuggestions] = useState<
     AddressSuggestionsType[]
   >([]);
@@ -133,7 +132,7 @@ const AddressForm = ({
       <AddressInput
         name="address2"
         control={control}
-        label={tAddressManagement('addressForm.address2')}
+        label={t('addressManagement.addressForm.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
           required: t('validationErrors.addressRequired'),

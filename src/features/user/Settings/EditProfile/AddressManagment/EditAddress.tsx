@@ -35,7 +35,7 @@ const EditAddress = ({
     state: selectedAddressForAction?.state,
   };
 
-  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);

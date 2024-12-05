@@ -29,7 +29,7 @@ const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<Address[]>(
     user?.addresses ?? []
   );
@@ -156,7 +156,7 @@ const AddressManagement = () => {
         )}
         {canAddMoreAddresses ? (
           <WebappButton
-            text={tAddressManagement('addAddress')}
+            text={tAddressManagement('actions.addAddress')}
             elementType="button"
             onClick={toggleAddAddressModal}
             variant="primary"
@@ -164,7 +164,7 @@ const AddressManagement = () => {
           />
         ) : (
           <p className={styles.maxAddress}>
-            {tAddressManagement('maxAddressesMessage')}
+            {tAddressManagement('addressNotifications.maxAddressesMessage')}
           </p>
         )}
       </CenteredContainer>
