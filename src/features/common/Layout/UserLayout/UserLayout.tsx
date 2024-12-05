@@ -277,6 +277,11 @@ const UserLayout: FC = ({ children }) => {
           path: '/profile/payouts',
           hideItem: !(user?.type === 'tpo'),
         },
+        {
+          title: 'Donation Receipts',
+          path: '/profile/donation-receipts',
+          hideItem: false,
+        },
         // Localize with translations if you ever activate this!!
         // {
         //   title: 'Payment Methods',

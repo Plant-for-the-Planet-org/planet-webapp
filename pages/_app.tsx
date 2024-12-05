@@ -47,6 +47,7 @@ import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import { NextPage } from 'next';
 import { SetState } from '../src/features/common/types/common';
+import {DonationReceiptContextProvider} from "../src/features/common/Layout/DonationReceiptContext";
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -291,6 +292,7 @@ const PlanetWeb = ({
                           <MuiThemeProvider theme={materialTheme}>
                             <CssBaseline />
                             <UserPropsProvider>
+                              <DonationReceiptContextProvider>
                               <PlanetCashProvider>
                                 <PayoutsProvider>
                                   <Layout>
@@ -309,6 +311,7 @@ const PlanetWeb = ({
                                   </Layout>
                                 </PayoutsProvider>
                               </PlanetCashProvider>
+                              </DonationReceiptContextProvider>
                             </UserPropsProvider>
                           </MuiThemeProvider>
                         </ThemeProvider>

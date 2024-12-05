@@ -125,7 +125,7 @@ const nextConfig = {
     WEBHOOK_URL: process.env.WEBHOOK_URL,
   },
   trailingSlash: false,
-  reactStrictMode: true,
+  reactStrictMode: false,
   poweredByHeader: false,
   typescript: {
     // !! WARN !!

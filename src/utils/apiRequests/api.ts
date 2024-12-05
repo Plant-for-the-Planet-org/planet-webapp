@@ -1,8 +1,8 @@
 import { getQueryString } from './getQueryString';
-import getsessionId from './getSessionId';
+import getSessionId from './getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { validateToken } from './validateToken';
-import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+import { ImpersonationData } from '../../types/impersonation';
 import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
@@ -16,7 +16,7 @@ export async function getAccountInfo(
   const lang = localStorage.getItem('language') || 'en';
   const header = {
     'tenant-key': `${tenant}`,
-    'X-SESSION-ID': await getsessionId(),
+    'X-SESSION-ID': await getSessionId(),
     Authorization: `Bearer ${token}`,
     'x-locale': lang,
   };
@@ -56,7 +56,7 @@ export function getRequest<T>(
           method: 'GET',
           headers: {
             'tenant-key': `${tenant}`,
-            'X-SESSION-ID': await getsessionId(),
+            'X-SESSION-ID': await getSessionId(),
             'x-locale': query.locale || lang,
             'x-accept-versions': version ? version : '1.0.3',
           },
@@ -96,7 +96,7 @@ export function getAuthenticatedRequest<T>(
         if (token && validateToken(token)) {
           const headers = {
             'tenant-key': `${tenant}`,
-            'X-SESSION-ID': await getsessionId(),
+            'X-SESSION-ID': await getSessionId(),
             Authorization: `Bearer ${token}`,
             'x-locale': lang,
             'x-accept-versions': version ? version : '1.0.3',
@@ -147,7 +147,7 @@ export function postAuthenticatedRequest<T>(
           const header = {
             'Content-Type': 'application/json',
             'tenant-key': `${tenant}`,
-            'X-SESSION-ID': await getsessionId(),
+            'X-SESSION-ID': await getSessionId(),
             Authorization: `Bearer ${token}`,
             'x-locale': lang,
             ...(headers ? headers : {}),
@@ -196,7 +196,7 @@ export function postRequest<T>(
           headers: {
             'Content-Type': 'application/json',
             'tenant-key': `${tenant}`,
-            'X-SESSION-ID': await getsessionId(),
+            'X-SESSION-ID': await getSessionId(),
             'x-locale': lang,
           },
         });
@@ -231,7 +231,7 @@ export function deleteAuthenticatedRequest<T>(
           const header = {
             'Content-Type': 'application/json',
             'tenant-key': `${tenant}`,
-            'X-SESSION-ID': await getsessionId(),
+            'X-SESSION-ID': await getSessionId(),
             Authorization: `Bearer ${token}`,
             'x-locale': lang,
           };
@@ -278,7 +278,7 @@ export function putAuthenticatedRequest<T>(
           const header = {
             'Content-Type': 'application/json',
             'tenant-key': `${tenant}`,
-            'X-SESSION-ID': await getsessionId(),
+            'X-SESSION-ID': await getSessionId(),
             Authorization: `Bearer ${token}`,
             'x-locale': lang,
           };

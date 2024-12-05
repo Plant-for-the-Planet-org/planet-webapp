@@ -69,7 +69,7 @@ export const geocoder = new GeocoderArcGIs(
  * Suggests address options based on user input.
  *
  * This function queries the geocoder's `suggest` method with the provided input value
- * and optional country code to fetch address suggestions categorized as "Address".
+ * and optional country code to fetch address suggestions categorized as "AddressPanel".
  * It filters out suggestions marked as collections (`isCollection`) to ensure only
  * individual address suggestions are returned.
  *

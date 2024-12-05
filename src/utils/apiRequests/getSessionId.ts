@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
 
-export default async function getsessionId() {
+export default async function getSessionId() {
   let sessionId;
   if (typeof Storage !== 'undefined') {
     sessionId = localStorage.getItem('sessionId');

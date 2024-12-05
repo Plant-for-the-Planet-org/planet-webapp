@@ -1,4 +1,4 @@
-import getsessionId from './apiRequests/getSessionId';
+import getSessionId from './apiRequests/getSessionId';
 import countriesData from '../utils/countryCurrency/countriesData.json';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
@@ -6,7 +6,7 @@ export async function storeConfig(tenantConfig: Tenant) {
   await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
       'tenant-key': `${tenantConfig?.id}`,
-      'X-SESSION-ID': await getsessionId(),
+      'X-SESSION-ID': await getSessionId(),
     },
   })
     .then(async (res) => {
