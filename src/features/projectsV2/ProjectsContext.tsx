@@ -171,7 +171,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       });
       return filteredProjects;
     },
-    []
+    [locale]
   );
 
   const filteredProjects = useMemo(() => {
