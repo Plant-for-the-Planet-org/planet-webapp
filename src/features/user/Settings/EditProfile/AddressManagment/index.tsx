@@ -164,7 +164,7 @@ const AddressManagement = () => {
           />
         ) : (
           <p className={styles.maxAddress}>
-            {tAddressManagement('addressNotifications.maxAddressesMessage')}
+            {tAddressManagement('maxAddressesMessage')}
           </p>
         )}
       </CenteredContainer>

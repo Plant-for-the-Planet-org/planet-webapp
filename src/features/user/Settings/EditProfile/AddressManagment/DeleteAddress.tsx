@@ -59,7 +59,7 @@ const DeleteAddress = ({
   return (
     <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
-        {tAddressManagement('deleteAction.deleteAddress')}
+        {tAddressManagement('deleteAction.title')}
       </h2>
       <p>
         {tAddressManagement('deleteAction.deleteAddressConfirmationMessage')}
@@ -73,7 +73,7 @@ const DeleteAddress = ({
             onClick={handleCancel}
           />
           <WebappButton
-            text={tAddressManagement('deleteAction.delete')}
+            text={tAddressManagement('deleteAction.deleteButton')}
             elementType="button"
             variant="primary"
             onClick={deleteAddress}

@@ -71,11 +71,11 @@ const UpdateAddressType = ({
         {tAddressManagement(`addressType.${addressType}`)}
       </h2>
       <p>
-        {tAddressManagement('addressPrompts.setAddressConfirmation', {
+        {tAddressManagement('updateAddressType.setAddressConfirmation', {
           addressType: tAddressManagement(`addressType.${addressType}`),
         })}
         {userAddress &&
-          tAddressManagement('addressNotifications.replaceAddressWarning', {
+          tAddressManagement('updateAddressType.replaceAddressWarning', {
             addressType: tAddressManagement(`addressType.${addressType}`),
           })}
       </p>
@@ -93,7 +93,7 @@ const UpdateAddressType = ({
             onClick={handleCancel}
           />
           <WebappButton
-            text={tAddressManagement('addressPrompts.confirm')}
+            text={tAddressManagement('updateAddressType.confirmButton')}
             elementType="button"
             variant="primary"
             onClick={() => updateAddress(addressType)}

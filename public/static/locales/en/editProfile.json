@@ -83,18 +83,16 @@
         "addAddress": "Add New Address"
       },
       "deleteAction": {
-        "deleteAddress": "Delete Address",
-        "delete": "Delete",
+        "title": "Delete Address",
+        "deleteButton": "Delete",
         "deleteAddressConfirmationMessage": "Are you sure you want to delete this address? If you want to use it again, please add it as a new address."
       },
-      "addressPrompts": {
+      "updateAddressType": {
         "setAddressConfirmation": "Are you sure you want to set this address as your {addressType}?",
-        "confirm": "Confirm"
+        "replaceAddressWarning": "This will replace your current {addressType}.",
+        "confirmButton": "Confirm"
       },
-      "addressNotifications": {
-        "maxAddressesMessage": "You have reached the maximum number of addresses! Remove one to add a new address.",
-        "replaceAddressWarning": "This will replace your current {addressType}."
-      },
+      "maxAddressesMessage": "You have reached the maximum number of addresses! Remove one to add a new address.",
       "addressForm": {
         "addAddress": "Add Address",
         "editAddress": "Edit Address",
