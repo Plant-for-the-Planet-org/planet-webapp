@@ -9,7 +9,7 @@ interface Props {
 }
 const AddressDetails = ({ userAddress }: Props) => {
   const { type } = userAddress;
-  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
 
   return (
     <div className={styles.addressDetails}>

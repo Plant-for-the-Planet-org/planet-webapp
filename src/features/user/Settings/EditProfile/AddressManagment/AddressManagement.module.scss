@@ -1,9 +1,5 @@
 @import '../../../../../theme/theme';
 
-$border-radius-sm: 8px;
-$border-radius-lg: 16px;
-$padding-standard: 24px;
-
 @mixin flex-container($direction: row, $justify: space-between) {
   display: flex;
   flex-direction: $direction;
@@ -16,16 +12,16 @@ $padding-standard: 24px;
   top: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
-  border-radius: $border-radius-lg;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 1);
 }
 
 // Base Components
-
 .addressManagement {
   @include flex-container(column);
   margin-top: 40px;
   gap: 20px;
+
   .maxAddress {
     font-size: $fontXSmall;
     color: #6c757d;
@@ -47,10 +43,11 @@ $padding-standard: 24px;
   @include flex-container;
   width: 100%;
   background: rgba(242, 242, 242, 0.5);
-  border-radius: $border-radius-sm;
+  border-radius: 8px;
   font-size: $fontSmall;
   font-weight: 400;
-  padding: $padding-standard 10px $padding-standard $padding-standard;
+  padding: 24px 10px 24px 24px;
+
   .kebabMenuButton {
     display: flex;
     justify-content: center;
@@ -60,10 +57,12 @@ $padding-standard: 24px;
     border-radius: 50%;
     background-color: transparent;
     cursor: pointer;
+
     svg {
       height: 20px;
       width: 12px;
     }
+
     &:hover {
       background-color: rgba(120, 120, 120, 0.1);
     }
@@ -73,6 +72,7 @@ $padding-standard: 24px;
 .addressDetails {
   @include flex-container(column, center);
   gap: 16px;
+
   span {
     padding: 5px 10px;
     max-width: fit-content;
@@ -83,6 +83,7 @@ $padding-standard: 24px;
     line-height: 16px;
     font-weight: 600;
   }
+
   p {
     margin-top: 2px;
   }
@@ -103,12 +104,15 @@ $padding-standard: 24px;
   cursor: pointer;
   padding: 2px 12px;
   list-style: none;
+
   .action {
     font-size: $fontXSmall;
     font-weight: 400;
   }
+
   li {
-    padding: 8px 0px;
+    padding: 8px 0;
+
     &:not(:last-child) {
       border-bottom: 1px solid rgba(189, 189, 189, 1);
     }
@@ -116,75 +120,86 @@ $padding-standard: 24px;
 }
 
 // Modal Forms
-
 .header {
   font-weight: 700;
   font-size: $fontSixteen;
 }
+
 .addressFormLayout {
   @include flex-container(column);
   @include modal-container;
   min-width: 565px;
   gap: 40px;
+
   .addressForm {
     @include flex-container(column);
     gap: 23px;
   }
+
   .buttonContainer {
     @include flex-container;
     gap: 8px;
     margin-top: 25px;
-    button {
-      flex: 1 1;
-    }
-  }
-}
-.addressActionContainer {
-  @include flex-container(column);
-  @include modal-container;
-  width: 468px;
-  gap: 10px;
-  .address {
-    width: 100%;
-    background: rgba(242, 242, 242, 0.5);
-    border-radius: $border-radius-sm;
-    font-size: $fontSmall;
-    font-weight: 400;
-    padding: $padding-standard;
-  }
-  .buttonContainer {
-    @include flex-container;
-    gap: 8px;
-    margin-top: 40px;
+
     button {
       flex: 1 1;
     }
   }
 }
 
-// Mobile style
+.addressActionContainer {
+  @include flex-container(column);
+  @include modal-container;
+  width: 468px;
+  gap: 10px;
+
+  .address {
+    width: 100%;
+    background: rgba(242, 242, 242, 0.5);
+    border-radius: 8px;
+    font-size: $fontSmall;
+    font-weight: 400;
+    padding: 24px;
+  }
+
+  .buttonContainer {
+    @include flex-container;
+    gap: 8px;
+    margin-top: 40px;
+
+    button {
+      flex: 1 1;
+    }
+  }
+}
+
+// Mobile Style
 @include xsPhoneView {
   .addressFormLayout {
     min-width: fit-content;
     width: 95%;
+
     .buttonContainer {
       @include flex-container(column);
+
       button {
         width: 100%;
       }
     }
   }
+
   .addressActionContainer {
     width: 95%;
     min-width: fit-content;
+
     .buttonContainer {
       flex-direction: column;
       gap: 8px;
     }
   }
 }
-// Form spinner
 
+// Form Spinner
 .addressMgmtSpinner {
   @include flex-container(row, center);
 }

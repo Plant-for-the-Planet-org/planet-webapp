@@ -32,7 +32,7 @@ const AddressActionsMenu = ({
   setSelectedAddressForAction,
   userAddress,
 }: Props) => {
-  const tAddressManagement = useTranslations('Profile.addressManagement');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
