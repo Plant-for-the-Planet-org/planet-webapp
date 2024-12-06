@@ -114,10 +114,10 @@
   position: relative;
   left: 50%;
   top: 50%;
+  transform: translate(-50%, -50%);
   width: 398px;
   height: 524px;
   background: #fff;
-  transform: translate(-50%, -50%);
   border-radius: 16px;
   padding: 18px;
   display: flex;
