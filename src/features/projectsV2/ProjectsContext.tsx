@@ -191,12 +191,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       if (page !== 'project-list' || !currencyCode) {
         return;
       }
-      if (projects !== null) {
-        return;
-      }
+      const projectLocale = localStorage.getItem('projectLocale');
+      if (projectLocale === locale && projects !== null) return;
+
       setIsLoading(true);
       setIsError(false);
-
+      localStorage.setItem('projectLocale', locale);
       try {
         const fetchedProjects = await getRequest<MapProject[]>(
           tenantConfig.id,
