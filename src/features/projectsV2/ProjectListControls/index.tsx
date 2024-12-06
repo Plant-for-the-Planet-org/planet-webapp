@@ -22,6 +22,7 @@ export interface ProjectListControlsProps {
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   filteredProjects: MapProject[] | undefined;
+  isSalesforceTenant: boolean;
 }
 const ProjectListControls = ({
   projectCount,
@@ -33,11 +34,12 @@ const ProjectListControls = ({
   debouncedSearchValue,
   setDebouncedSearchValue,
   filteredProjects,
+  isSalesforceTenant,
 }: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-
+  const tCommon = useTranslations('Common');
   const hasFilterApplied = selectedClassification.length > 0;
 
   const projectListTabProps = {
@@ -78,7 +80,15 @@ const ProjectListControls = ({
               })}
             </div>
           ) : (
-            <ProjectListTabLargeScreen {...projectListTabProps} />
+            <>
+              {isSalesforceTenant ? (
+                <h2 className={styles.salesforceHeaderText}>
+                  {tCommon('stopTalkingStartPlanting')}
+                </h2>
+              ) : (
+                <ProjectListTabLargeScreen {...projectListTabProps} />
+              )}
+            </>
           )}
           <SearchAndFilter {...searchAndFilterProps} />
         </div>
