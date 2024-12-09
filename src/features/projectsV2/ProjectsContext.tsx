@@ -100,6 +100,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   >([]);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [projectLocale, setProjectLocale] = useState('');
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
@@ -188,15 +189,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   useEffect(() => {
     async function loadProjects() {
-      if (page !== 'project-list' || !currencyCode) {
-        return;
-      }
-      const projectLocale = localStorage.getItem('projectLocale');
+      setProjectLocale(locale);
+      if (page !== 'project-list' || !currencyCode) return;
       if (projectLocale === locale && projects !== null) return;
 
       setIsLoading(true);
       setIsError(false);
-      localStorage.setItem('projectLocale', locale);
       try {
         const fetchedProjects = await getRequest<MapProject[]>(
           tenantConfig.id,
