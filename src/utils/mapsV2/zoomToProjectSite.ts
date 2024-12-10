@@ -22,6 +22,7 @@ export function zoomInToProjectSite(
   geoJson: SitesGeoJSON | null,
   selectedSite: number,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
+  setIsSiteZoomComplete: (newValue: boolean) => void,
   duration = 1200
 ) {
   if (!geoJson || !mapRef.current) {
@@ -66,5 +67,6 @@ export function zoomInToProjectSite(
       },
     };
     handleViewStateChange(newViewState);
+    setIsSiteZoomComplete(true);
   });
 }
