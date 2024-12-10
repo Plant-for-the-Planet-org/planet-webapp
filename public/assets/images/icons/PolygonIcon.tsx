@@ -1,5 +1,6 @@
+import type { IconProps } from '../../../../src/features/common/types/common';
+
 import React from 'react';
-import { IconProps } from '../../../../src/features/common/types/common';
 
 function PolygonIcon({ color = '#2F3336' }: IconProps) {
   return (

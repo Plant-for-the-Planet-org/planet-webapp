@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import nc from 'next-connect';
-import db from '../../../../../src/utils/connectDB';
-import {
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type {
   PlantLocationDetails,
   PlantLocationDetailsQueryRes,
 } from '../../../../../src/features/common/types/dataExplorer';
+
+import nc from 'next-connect';
+import db from '../../../../../src/utils/connectDB';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 

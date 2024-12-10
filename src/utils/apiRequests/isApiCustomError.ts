@@ -1,4 +1,4 @@
-import { ApiCustomError } from '../../features/common/types/apiErrors';
+import type { ApiCustomError } from '../../features/common/types/apiErrors';
 
 /**
  * Checks if res contains an error_code property.

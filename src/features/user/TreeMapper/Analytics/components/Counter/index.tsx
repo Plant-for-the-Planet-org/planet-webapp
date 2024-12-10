@@ -1,3 +1,8 @@
+import type {
+  TotalSpeciesPlanted,
+  TotalTreesPlanted,
+} from '../../../../../common/types/dataExplorer';
+
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
@@ -7,10 +12,6 @@ import { Grid } from '@mui/material';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import {
-  TotalSpeciesPlanted,
-  TotalTreesPlanted,
-} from '../../../../../common/types/dataExplorer';
 
 export const Counter = () => {
   const { project, fromDate, toDate } = useAnalytics();

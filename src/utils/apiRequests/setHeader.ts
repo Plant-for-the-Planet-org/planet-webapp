@@ -1,4 +1,4 @@
-import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+import type { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
 /**
  * Sets keys for header in impersonation mode
  */

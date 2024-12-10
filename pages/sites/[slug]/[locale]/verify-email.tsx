@@ -1,4 +1,13 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { AbstractIntlMessages } from 'next-intl';
+
+import React from 'react';
 import Footer from '../../../../src/features/common/Layout/Footer';
 import LandingSection from '../../../../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from '../../../../src/features/common/VerifyEmail/VerifyEmail';
@@ -8,14 +17,7 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import { defaultTenant } from '../../../../tenant.config';
-import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {

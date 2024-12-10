@@ -1,6 +1,7 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { IconProps } from '../../../../../src/features/common/types/common';
+
 import themeProperties from '../../../../../src/theme/themeProperties';
-import { IconProps } from '../../../../../src/features/common/types/common';
 
 const TopProjectIcon = ({
   color = themeProperties.primaryColor,

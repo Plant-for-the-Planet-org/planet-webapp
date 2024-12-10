@@ -1,4 +1,6 @@
-import { useState, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
+
+import { useState } from 'react';
 import { Typography, Popover } from '@mui/material';
 import styles from './MapCredit.module.scss';
 import { InfoIcon } from '../../../../../../../../../public/assets/images/ProfilePageIcons/index';

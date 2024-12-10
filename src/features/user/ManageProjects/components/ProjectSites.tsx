@@ -1,4 +1,16 @@
-import React, { ChangeEvent, ReactElement } from 'react';
+import type { ChangeEvent, ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  SiteDetails,
+  ProjectSitesProps,
+  GeoLocation,
+  EditSiteProps,
+  Site,
+  SitesScopeProjects,
+} from '../../../common/types/project';
+import type { FeatureCollection as GeoJson } from 'geojson';
+
+import React from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -28,18 +40,9 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import {
-  SiteDetails,
-  ProjectSitesProps,
-  GeoLocation,
-  EditSiteProps,
-  Site,
-  SitesScopeProjects,
-} from '../../../common/types/project';
-import { FeatureCollection as GeoJson } from 'geojson';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const MapStatic = ReactMapboxGl({

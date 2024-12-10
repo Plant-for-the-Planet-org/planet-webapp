@@ -1,9 +1,10 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { BankAccount } from '../../../common/types/payouts';
+
 import { styled, Grid, Button, Divider } from '@mui/material';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { BankAccount } from '../../../common/types/payouts';
 
 // TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
 const AccountDetailsGrid = styled('article')(({ theme }) => ({

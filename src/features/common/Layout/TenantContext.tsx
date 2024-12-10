@@ -1,7 +1,8 @@
-import { useContext, createContext, useMemo, useState, FC } from 'react';
+import type { FC } from 'react';
+import type { SetState } from '../types/common';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { SetState } from '../types/common';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { useContext, createContext, useMemo, useState } from 'react';
 import { defaultTenant } from '../../../../tenant.config';
 
 interface TenantContextInterface {

@@ -1,5 +1,7 @@
-import { createContext, FC, useState, useContext } from 'react';
-import { BankAccount, PayoutMinAmounts } from '../types/payouts';
+import type { FC } from 'react';
+import type { BankAccount, PayoutMinAmounts } from '../types/payouts';
+
+import { createContext, useState, useContext } from 'react';
 
 interface PayoutsContextInterface {
   accounts: BankAccount[] | null;

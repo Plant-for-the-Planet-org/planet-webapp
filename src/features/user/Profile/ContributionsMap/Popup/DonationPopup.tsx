@@ -1,13 +1,14 @@
-import { Popup } from 'react-map-gl-v7';
-import { PointFeature } from 'supercluster';
-import style from '../ContributionsMap.module.scss';
-import { SetState } from '../../../../common/types/common';
-import ProjectInfoSection from './ProjectInfoSection';
-import PopupImageSection from './PopupImageSection';
-import {
+import type { PointFeature } from 'supercluster';
+import type { SetState } from '../../../../common/types/common';
+import type {
   ProfilePageType,
   DonationProperties,
 } from '../../../../common/types/myForest';
+
+import { Popup } from 'react-map-gl-v7';
+import style from '../ContributionsMap.module.scss';
+import ProjectInfoSection from './ProjectInfoSection';
+import PopupImageSection from './PopupImageSection';
 
 interface DonationPopupProps {
   superclusterResponse: PointFeature<DonationProperties>;

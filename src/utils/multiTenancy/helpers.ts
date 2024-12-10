@@ -1,4 +1,5 @@
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
 import redisClient from '../../redis-client';
 import { cacheKeyPrefix } from '../constants/cacheKeyPrefix';
 

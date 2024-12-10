@@ -1,7 +1,8 @@
-import {
+import type {
   GiftGivenDetails,
   GiftReceivedDetails,
 } from '../../../common/types/myForest';
+
 import GiftLabel from './GiftLabel';
 import styles from './MyContributions.module.scss';
 

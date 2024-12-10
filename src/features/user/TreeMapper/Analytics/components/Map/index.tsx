@@ -1,25 +1,4 @@
-import {
-  ChangeEvent,
-  MutableRefObject,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { TextField } from '@mui/material';
-import { useTranslations } from 'next-intl';
-import { Search } from '@mui/icons-material';
-import moment from 'moment';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import * as turf from '@turf/turf';
-import MapGL, {
-  Layer,
-  NavigationControl,
-  Source,
-  ViewportProps,
-} from 'react-map-gl';
-
-import {
+import type {
   DistinctSpecies,
   PlantLocation,
   PlantLocationDetailsApiResponse,
@@ -28,8 +7,20 @@ import {
   FeatureCollection,
   SinglePlantLocationApiResponse,
 } from '../../../../../common/types/dataExplorer';
+import type { ProjectType } from '../ProjectTypeSelector';
+import type { ChangeEvent, MutableRefObject } from 'react';
+import type { ViewportProps } from 'react-map-gl';
+
+import { useContext, useEffect, useRef, useState } from 'react';
+import { TextField } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { Search } from '@mui/icons-material';
+import moment from 'moment';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import * as turf from '@turf/turf';
+import MapGL, { Layer, NavigationControl, Source } from 'react-map-gl';
+
 import { Container } from '../Container';
-import { ProjectType } from '../ProjectTypeSelector';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';

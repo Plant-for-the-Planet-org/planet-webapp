@@ -1,5 +1,7 @@
-import { TextField, TextFieldProps, styled } from '@mui/material';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { TextFieldProps } from '@mui/material';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import { TextField, styled } from '@mui/material';
 import { useTenant } from '../Layout/TenantContext';
 
 interface StyledTextFieldType {

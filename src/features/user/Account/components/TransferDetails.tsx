@@ -1,7 +1,8 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { BankAccount } from '../../../common/types/payments';
+
 import { useTranslations } from 'next-intl';
 import styles from '../AccountHistory.module.scss';
-import { BankAccount } from '../../../common/types/payments';
 
 interface TransferDetailsProps {
   account: BankAccount;

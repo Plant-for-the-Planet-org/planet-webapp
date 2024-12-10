@@ -1,9 +1,13 @@
-import styles from './MyContributions.module.scss';
-import { EcosystemTypes, TreeProjectClassification } from '@planet-sdk/common';
-import {
+import type {
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import type {
   GiftGivenDetails,
   GiftReceivedDetails,
 } from '../../../common/types/myForest';
+
+import styles from './MyContributions.module.scss';
 import GiftLabel from './GiftLabel';
 import ProjectHeader from './ProjectHeader';
 

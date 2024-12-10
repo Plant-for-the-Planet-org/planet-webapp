@@ -1,10 +1,12 @@
-import React, { ReactElement, RefObject } from 'react';
+import type { ReactElement, RefObject } from 'react';
+import type { ExploreOption } from '../../../common/types/ProjectPropsContextInterface';
+import type { SetState } from '../../../common/types/common';
+
+import React from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { useTranslations } from 'next-intl';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-import { ExploreOption } from '../../../common/types/ProjectPropsContextInterface';
-import { SetState } from '../../../common/types/common';
 
 interface Props {
   infoRef: RefObject<HTMLDivElement>;

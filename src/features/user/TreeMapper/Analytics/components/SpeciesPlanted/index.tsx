@@ -1,3 +1,6 @@
+import type { ApexOptions } from 'apexcharts';
+import type { ISpeciesPlanted } from '../../../../../common/types/dataExplorer';
+
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -9,12 +12,10 @@ import DownloadSolid from '../../../../../../../public/assets/images/icons/share
 import ReactDOMServer from 'react-dom/server';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { format } from 'date-fns';
-import { ApexOptions } from 'apexcharts';
 import { Container } from '../Container';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { ISpeciesPlanted } from '../../../../../common/types/dataExplorer';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,

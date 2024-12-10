@@ -1,21 +1,24 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React, { useState, useEffect } from 'react';
 import TopProgressBar from '../../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import PlanetCash, {
   PlanetCashTabs,
 } from '../../../../../../src/features/user/PlanetCash';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';

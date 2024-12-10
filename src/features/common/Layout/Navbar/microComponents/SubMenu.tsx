@@ -1,7 +1,8 @@
+import type { SubmenuItem } from '@planet-sdk/common';
+
 import { lang_path } from '../../../../../utils/constants/wpLanguages';
 import GetSubMenuIcons from '../getSubMenu';
 import { useTranslations, useLocale } from 'next-intl';
-import { SubmenuItem } from '@planet-sdk/common';
 import Link from 'next/link';
 
 export interface SubMenuProps {

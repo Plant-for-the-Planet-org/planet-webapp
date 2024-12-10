@@ -1,3 +1,5 @@
+import type { ProfileV2Props } from '../../../../common/types/profile';
+
 import React, { useState } from 'react';
 import {
   AllDonations,
@@ -9,7 +11,6 @@ import styles from './ProfileActions.module.scss';
 import RedeemModal from '../RedeemModal';
 import SocialMediaShareButton from './SocialMediaShareButton';
 import { useTranslations } from 'next-intl';
-import { ProfileV2Props } from '../../../../common/types/profile';
 import WebappButton from '../../../../common/WebappButton';
 
 const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {

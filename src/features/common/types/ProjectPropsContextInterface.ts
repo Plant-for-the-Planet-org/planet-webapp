@@ -1,22 +1,22 @@
-import {
+import type {
   ProjectMapInfo,
   TreeProjectConcise,
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
-import {
+import type {
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
-import {
+import type {
   ProjectPurposeTypes,
   ProjectSite,
 } from '@planet-sdk/common/build/types/project/common';
-import { FeatureCollection, Polygon, MultiPolygon } from 'geojson';
-import { SetState } from './common';
-import { RefObject } from 'react';
-import { MapRef } from 'react-map-gl/src/components/static-map';
-import { FlyToInterpolator } from 'react-map-gl';
-import { PlantLocation, SamplePlantLocation } from './plantLocation';
+import type { FeatureCollection, Polygon, MultiPolygon } from 'geojson';
+import type { SetState } from './common';
+import type { RefObject } from 'react';
+import type { MapRef } from 'react-map-gl/src/components/static-map';
+import type { FlyToInterpolator } from 'react-map-gl';
+import type { PlantLocation, SamplePlantLocation } from './plantLocation';
 
 export type ExploreOption =
   | 'Deforestation'

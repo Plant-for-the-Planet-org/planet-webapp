@@ -1,16 +1,18 @@
+import type { ReactElement } from 'react';
+import type {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
+
 import Link from 'next/link';
-import React, { ReactElement } from 'react';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import React from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import { useTranslations } from 'next-intl';
 import BlackTree from '../../../../../public/assets/images/icons/project/BlackTree';
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import {
-  ConservationProjectExtended,
-  TreeProjectExtended,
-} from '@planet-sdk/common';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;

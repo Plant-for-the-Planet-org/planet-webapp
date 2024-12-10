@@ -1,3 +1,6 @@
+import type { APIError } from '@planet-sdk/common';
+import type { Subscription } from '../../common/types/payments';
+
 import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
@@ -20,8 +23,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Subscription } from '../../common/types/payments';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 const MuiCalendarPicker = styled(CalendarPicker<Date>)({

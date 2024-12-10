@@ -1,9 +1,10 @@
-import { ComponentProps } from 'react';
-import getImageUrl from '../../../../utils/getImageURL';
-import {
+import type { ComponentProps } from 'react';
+import type {
   MyContributionsSingleRegistration,
   MyForestProject,
 } from '../../../common/types/myForest';
+import getImageUrl from '../../../../utils/getImageURL';
+
 import ItemImage from './ItemImage';
 import styles from './MyContributions.module.scss';
 import RegistrationSummary from './RegistrationSummary';

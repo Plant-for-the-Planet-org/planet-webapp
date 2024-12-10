@@ -1,3 +1,5 @@
+import type { Review } from '@planet-sdk/common/build/types/project/common';
+
 import React from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -6,7 +8,6 @@ import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useTranslations } from 'next-intl';
-import { Review } from '@planet-sdk/common/build/types/project/common';
 
 interface Props {
   projectReviews: Review[] | undefined;

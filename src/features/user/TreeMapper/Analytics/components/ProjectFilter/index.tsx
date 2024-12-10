@@ -1,13 +1,12 @@
+import type { Project } from '../../../../../common/Layout/AnalyticsContext';
+import type { SxProps } from '@mui/material';
+
 import React, { useState } from 'react';
-import {
-  Project,
-  useAnalytics,
-} from '../../../../../common/Layout/AnalyticsContext';
+import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Grid from '@mui/material/Grid';
 import themeProperties from '../../../../../../theme/themeProperties';
-import { SxProps } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

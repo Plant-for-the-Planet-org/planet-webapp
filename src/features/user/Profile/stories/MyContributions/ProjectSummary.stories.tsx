@@ -1,4 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import ProjectSummary from '../../MyContributions/ProjectSummary';
 
 const meta: Meta<typeof ProjectSummary> = {

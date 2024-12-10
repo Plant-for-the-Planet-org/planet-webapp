@@ -1,5 +1,6 @@
+import type { TreeProjectClassification } from '@planet-sdk/common';
+
 import { useMemo } from 'react';
-import { TreeProjectClassification } from '@planet-sdk/common';
 import themeProperties from '../../../../../theme/themeProperties';
 import {
   NaturalRegeneration,

@@ -1,13 +1,15 @@
-import styles from './index.module.scss';
-import ProjectTypeSelector, { ProjectType } from '../../../ProjectTypeSelector';
-import { MuiAutoComplete } from '../../../../../../../common/InputTypes/MuiAutoComplete';
-import SitesSelectorAutocomplete from '../SiteSelectorAutocomplete';
-import { TextField } from '@mui/material';
-import { SetState } from '../../../../../../../common/types/common';
-import {
+import type { ProjectType } from '../../../ProjectTypeSelector';
+import type { SetState } from '../../../../../../../common/types/common';
+import type {
   Feature,
   FeatureCollection,
 } from '../../../../../../../common/types/dataExplorer';
+
+import styles from './index.module.scss';
+import ProjectTypeSelector from '../../../ProjectTypeSelector';
+import { MuiAutoComplete } from '../../../../../../../common/InputTypes/MuiAutoComplete';
+import SitesSelectorAutocomplete from '../SiteSelectorAutocomplete';
+import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 interface Props {

@@ -1,11 +1,11 @@
-import { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
-import { ExtractedProjectData } from '../features/user/Profile/ContributionsMap/Markers/DonationClusterMarker';
-import themeProperties from '../theme/themeProperties';
-import { PointFeature } from 'supercluster';
-import { DonationProperties } from '../features/common/types/myForest';
-import { ProgressDataType } from '../features/user/Profile/ForestProgress/ForestProgressItem';
-import { ContributionStats } from '../features/common/types/myForest';
+import type { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
+import type { ExtractedProjectData } from '../features/user/Profile/ContributionsMap/Markers/DonationClusterMarker';
+import type { PointFeature } from 'supercluster';
+import type { DonationProperties } from '../features/common/types/myForest';
+import type { ProgressDataType } from '../features/user/Profile/ForestProgress/ForestProgressItem';
+import type { ContributionStats } from '../features/common/types/myForest';
 
+import themeProperties from '../theme/themeProperties';
 export type Accumulator = {
   maxContributionCount: number;
   maxContributingObject: ExtractedProjectData | null;

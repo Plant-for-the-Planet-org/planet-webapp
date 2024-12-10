@@ -1,4 +1,6 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { Review } from '@planet-sdk/common';
+
 import VerifiedIcon from '@mui/icons-material/Verified';
 import {
   bindPopover,
@@ -7,7 +9,6 @@ import {
 } from 'material-ui-popup-state/hooks';
 import TopProjectReports from './projectDetails/TopProjectReports';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import { Review } from '@planet-sdk/common';
 import styles from '../styles/ProjectSnippet.module.scss';
 
 interface Props {

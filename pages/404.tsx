@@ -1,12 +1,13 @@
-import Custom404Image from '../public/assets/images/Custom404Image';
-import { useRouter } from 'next/router';
-import Footer from '../src/features/common/Layout/Footer';
-import {
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
+
+import Custom404Image from '../public/assets/images/Custom404Image';
+import { useRouter } from 'next/router';
+import Footer from '../src/features/common/Layout/Footer';
 import getMessagesForPage from '../src/utils/language/getMessagesForPage';
 
 interface Props {
