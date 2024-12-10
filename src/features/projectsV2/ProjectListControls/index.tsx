@@ -41,7 +41,6 @@ const ProjectListControls = ({
   const tAllProjects = useTranslations('AllProjects');
   const tCommon = useTranslations('Common');
   const hasFilterApplied = selectedClassification.length > 0;
-  const shouldDisplayTabs = !shouldHideProjectTabs;
 
   const projectListTabProps = {
     setIsFilterOpen,
@@ -79,15 +78,16 @@ const ProjectListControls = ({
       );
     }
 
-    if (shouldDisplayTabs)
-      return <ProjectListTabLargeScreen {...projectListTabProps} />;
+    if (shouldHideProjectTabs) {
+      return (
+        <h2 className={styles.projectListHeaderText}>
+          {tCommon('stopTalkingStartPlanting')}
+        </h2>
+      );
+    }
 
-    return (
-      <h2 className={styles.projectListHeaderText}>
-        {tCommon('stopTalkingStartPlanting')}
-      </h2>
-    );
-  }, [hasFilterApplied, shouldDisplayTabs, filteredProjects]);
+    return <ProjectListTabLargeScreen {...projectListTabProps} />;
+  }, [hasFilterApplied, shouldHideProjectTabs, filteredProjects]);
 
   return (
     <>

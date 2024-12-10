@@ -33,8 +33,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const { mapOptions, updateMapOption } = useProjectsMap();
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   const { tenantConfig } = useTenant();
-  const shouldHideProjectTabs =
-    tenantConfig.topProjectsOnly !== undefined && tenantConfig.topProjectsOnly;
+  const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
   if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
