@@ -1,4 +1,7 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SubmitForReviewProps } from '../../../common/types/project';
+
+import React from 'react';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
@@ -8,7 +11,6 @@ import NotReviewed from '../../../../../public/assets/images/icons/manageProject
 import router from 'next/router';
 import { Button, FormControlLabel, Switch } from '@mui/material';
 import { ProjectCreationTabs } from '..';
-import { SubmitForReviewProps } from '../../../common/types/project';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 function SubmitForReview({

@@ -1,7 +1,9 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import type { SetState } from '../../types/common';
+
+import { useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
-import { SetState } from '../../types/common';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import {

@@ -1,5 +1,6 @@
+import type { AbstractIntlMessages } from 'next-intl';
+
 import deepmerge from 'deepmerge';
-import { AbstractIntlMessages } from 'next-intl';
 
 // Update this when a new file is added
 type TRANSLATION_FILE_NAMES =

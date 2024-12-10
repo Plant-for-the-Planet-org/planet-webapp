@@ -1,6 +1,7 @@
+import type { User } from '@planet-sdk/common';
+
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
-import { User } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';

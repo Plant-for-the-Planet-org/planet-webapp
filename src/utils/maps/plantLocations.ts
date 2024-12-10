@@ -1,12 +1,14 @@
+import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { SetState } from '../../features/common/types/common';
+import type { PlantLocation } from '../../features/common/types/plantLocation';
+import type { Position } from 'geojson';
+import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
+
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
-import { SetState } from '../../features/common/types/common';
-import { PlantLocation } from '../../features/common/types/plantLocation';
-import { Position } from 'geojson';
-import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
+import { handleError } from '@planet-sdk/common';
 /**
  * Zooms the map to a multiple tree plant location
  * @param {Position} coordinates

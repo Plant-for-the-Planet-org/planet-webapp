@@ -1,12 +1,13 @@
-import { useTranslations } from 'next-intl';
-import style from '../ContributionsMap.module.scss';
-import { CountryCode } from '@planet-sdk/common';
-import DonateButton from '../../MyContributions/DonateButton';
-import { PointFeature } from 'supercluster';
-import {
+import type { CountryCode } from '@planet-sdk/common';
+import type { PointFeature } from 'supercluster';
+import type {
   ProfilePageType,
   DonationProperties,
 } from '../../../../common/types/myForest';
+
+import { useTranslations } from 'next-intl';
+import style from '../ContributionsMap.module.scss';
+import DonateButton from '../../MyContributions/DonateButton';
 
 interface ProjectInfoSectionProps {
   superclusterResponse: PointFeature<DonationProperties>;

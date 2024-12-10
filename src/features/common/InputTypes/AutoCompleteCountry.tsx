@@ -1,12 +1,14 @@
 /* eslint-disable no-use-before-define */
-import { useState, ReactElement, useEffect, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import type { CountryType, ExtendedCountryCode } from '../types/country';
+import type { SetState } from '../types/common';
+
+import { useState, useEffect } from 'react';
 import { TextField } from '@mui/material';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
-import { CountryType, ExtendedCountryCode } from '../types/country';
 import { allCountries } from '../../../utils/constants/countries';
-import { SetState } from '../types/common';
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11

@@ -1,10 +1,12 @@
-import React, { ReactElement, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
+
+import React, { useEffect } from 'react';
 import styles from '../../styles/Filters.module.scss';
 import { useTranslations } from 'next-intl';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
-import { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 

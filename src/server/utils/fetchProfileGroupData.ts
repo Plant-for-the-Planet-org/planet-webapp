@@ -1,5 +1,6 @@
+import type { ProfileGroupQueryResult } from '../../features/common/types/myForest';
+
 import prisma from '../../../prisma/client';
-import { ProfileGroupQueryResult } from '../../features/common/types/myForest';
 
 export async function fetchProfileGroupData(profileId: number) {
   const data = await prisma.$queryRaw<ProfileGroupQueryResult[]>`

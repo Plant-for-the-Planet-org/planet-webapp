@@ -1,4 +1,12 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { APIError, Certificate } from '@planet-sdk/common';
+import type {
+  CertificateScopeProjects,
+  ProjectCertificatesProps,
+} from '../../../common/types/project';
+import type { SxProps } from '@mui/material';
+
+import React from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -16,20 +24,10 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import {
-  SxProps,
-  TextField,
-  Button,
-  FormControlLabel,
-  Switch,
-} from '@mui/material';
+import { TextField, Button, FormControlLabel, Switch } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { handleError, APIError, Certificate } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import {
-  CertificateScopeProjects,
-  ProjectCertificatesProps,
-} from '../../../common/types/project';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useTenant } from '../../../common/Layout/TenantContext';
 

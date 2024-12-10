@@ -1,9 +1,10 @@
+import type { ProgressDataType } from '../ForestProgressItem';
+
 import {
   TreesPlantedIcon,
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
-import { ProgressDataType } from '../ForestProgressItem';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import styles from '../ForestProgress.module.scss';

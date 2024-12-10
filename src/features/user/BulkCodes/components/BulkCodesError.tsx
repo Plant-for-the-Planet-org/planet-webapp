@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';

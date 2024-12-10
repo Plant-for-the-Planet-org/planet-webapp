@@ -1,16 +1,17 @@
+import type { PointFeature } from 'supercluster';
+import type {
+  DonationProperties,
+  MyContributionsSingleRegistration,
+  ProfilePageType,
+} from '../../../../common/types/myForest';
+
 import { Marker } from 'react-map-gl-v7';
-import { PointFeature } from 'supercluster';
 import style from '../Common/common.module.scss';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import { useState } from 'react';
 import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 import DonationPopup from '../Popup/DonationPopup';
 import RegisteredTreesPopup from '../Popup/RegisteredTreesPopup';
-import {
-  DonationProperties,
-  MyContributionsSingleRegistration,
-  ProfilePageType,
-} from '../../../../common/types/myForest';
 
 interface PointMarkersProps {
   superclusterResponse: PointFeature<

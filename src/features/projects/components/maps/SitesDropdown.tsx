@@ -1,16 +1,17 @@
+import type { ReactElement } from 'react';
+import type {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
+import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
+import React from 'react';
 import { FormControl, NativeSelect } from '@mui/material';
-import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import {
-  ConservationProjectExtended,
-  TreeProjectExtended,
-} from '@planet-sdk/common/build/types/project/extended';
-import { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function SitesDropdown(): ReactElement {
   const {

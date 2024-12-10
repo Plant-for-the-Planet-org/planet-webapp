@@ -1,19 +1,22 @@
-import { Marker, ViewState } from 'react-map-gl-v7/maplibre';
-import { MutableRefObject, useEffect, useState } from 'react';
-import { PointFeature } from 'supercluster';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type {
+  DonationProperties,
+  DonationSuperclusterProperties,
+} from '../../../../common/types/myForest';
+import type { ProjectPurpose } from './ProjectTypeIcon';
+import type { MutableRefObject } from 'react';
+import type { PointFeature } from 'supercluster';
+import type { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
+
+import { Marker } from 'react-map-gl-v7/maplibre';
+import { useEffect, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import ClusterIcon from './ClusterIcon';
-import { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 import {
   getDonationClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestUtils';
-import {
-  DonationProperties,
-  DonationSuperclusterProperties,
-} from '../../../../common/types/myForest';
-import { ProjectPurpose } from './ProjectTypeIcon';
 import style from '../Common/common.module.scss';
 
 export interface DonationClusterMarkerProps {

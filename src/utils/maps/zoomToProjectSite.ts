@@ -1,12 +1,13 @@
-import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
-import * as d3 from 'd3-ease';
-import * as turf from '@turf/turf';
-import {
+import type {
   SiteViewPort,
   SitesGeoJSON,
   ViewPort,
 } from '../../features/common/types/ProjectPropsContextInterface';
-import { SetState } from '../../features/common/types/common';
+import type { SetState } from '../../features/common/types/common';
+
+import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
+import * as d3 from 'd3-ease';
+import * as turf from '@turf/turf';
 
 export default function zoomToProjectSite(
   geoJson: SitesGeoJSON | null,

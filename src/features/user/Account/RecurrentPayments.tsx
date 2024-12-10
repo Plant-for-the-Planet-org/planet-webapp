@@ -1,7 +1,8 @@
+import type { Subscription } from '../../common/types/payments';
+
 import React from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import Recurrency from './Recurrency';
-import { Subscription } from '../../common/types/payments';
 import { useTranslations } from 'next-intl';
 
 interface Props {

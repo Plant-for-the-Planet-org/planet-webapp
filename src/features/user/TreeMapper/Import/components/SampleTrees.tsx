@@ -1,4 +1,14 @@
-import React, { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type { Geometry } from '@turf/turf';
+import type { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
+import type {
+  Measurements,
+  PlantLocationMulti,
+  SampleTree,
+} from '../../../../common/types/plantLocation';
+
+import React, { useState } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
@@ -7,17 +17,10 @@ import { useTranslations } from 'next-intl';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import {
-  Measurements,
-  PlantLocationMulti,
-  SampleTree,
-} from '../../../../common/types/plantLocation';
-import { Geometry } from '@turf/turf';
-import { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 
 interface Props {
   handleNext: Function;

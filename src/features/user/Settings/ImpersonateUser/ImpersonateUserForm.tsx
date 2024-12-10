@@ -1,4 +1,6 @@
-import { ReactElement, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';

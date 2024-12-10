@@ -1,4 +1,6 @@
-import React, { ReactElement, SyntheticEvent, useState } from 'react';
+import type { ReactElement, SyntheticEvent } from 'react';
+
+import React, { useState } from 'react';
 import CopyIcon from '../../../../public/assets/images/icons/CopyIcon';
 import styles from './styles.module.scss';
 import Snackbar from '@mui/material/Snackbar';

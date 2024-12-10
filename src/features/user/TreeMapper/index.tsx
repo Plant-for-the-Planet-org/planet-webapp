@@ -1,4 +1,15 @@
-import React, { ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  ExtendedScopePlantLocations,
+  PlantLocation as PlantLocationType,
+  PlantLocationMulti,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import type { Links } from '../../common/types/payments';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
@@ -9,16 +20,8 @@ import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
-import {
-  ExtendedScopePlantLocations,
-  PlantLocation as PlantLocationType,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
-import { Links } from '../../common/types/payments';
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,

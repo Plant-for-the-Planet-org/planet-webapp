@@ -1,8 +1,9 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { Project } from '../../../../common/Layout/AnalyticsContext';
+
+import React, { useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
-
-import { Project } from '../../../../common/Layout/AnalyticsContext';
 
 const MuiAutocomplete = styled(Autocomplete)(() => {
   return {

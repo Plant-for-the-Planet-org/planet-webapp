@@ -1,4 +1,4 @@
-import { CountryCode, CurrencyCode } from '@planet-sdk/common';
+import type { CountryCode, CurrencyCode } from '@planet-sdk/common';
 
 type ExtendedCountryCode = CountryCode | 'auto';
 

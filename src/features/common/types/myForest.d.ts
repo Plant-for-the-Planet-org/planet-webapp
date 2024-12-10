@@ -1,11 +1,11 @@
-import { Point, Polygon } from 'geojson';
-import { DateString } from './common';
-import {
+import type { Point, Polygon } from 'geojson';
+import type { DateString } from './common';
+import type {
   CountryCode,
   EcosystemTypes,
   TreeProjectClassification,
 } from '@planet-sdk/common';
-import { ClusterProperties } from 'supercluster';
+import type { ClusterProperties } from 'supercluster';
 
 export type ContributionStats = {
   giftsReceivedCount: number;

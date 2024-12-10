@@ -1,4 +1,4 @@
-import { UserType } from '@planet-sdk/common';
+import type { UserType } from '@planet-sdk/common';
 
 /**
  * Returns translated value of `type`

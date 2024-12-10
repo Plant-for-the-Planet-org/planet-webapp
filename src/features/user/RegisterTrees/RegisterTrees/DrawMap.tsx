@@ -1,11 +1,13 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { ViewportProps } from '../../../common/types/map';
+
+import React from 'react';
 import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
 import { useTranslations } from 'next-intl';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import { ViewportProps } from '../../../common/types/map';
 
 interface Props {
   setGeometry: Function;

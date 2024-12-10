@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import SatelliteLayer from './SatelliteLayer';

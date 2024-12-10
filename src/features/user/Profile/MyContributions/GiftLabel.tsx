@@ -1,10 +1,11 @@
-import { useTranslations } from 'next-intl';
-import styles from './MyContributions.module.scss';
-import GiftIcon from '../../../../../public/assets/images/icons/Gift';
-import {
+import type {
   GiftReceivedDetails,
   GiftGivenDetails,
 } from '../../../common/types/myForest';
+
+import { useTranslations } from 'next-intl';
+import styles from './MyContributions.module.scss';
+import GiftIcon from '../../../../../public/assets/images/icons/Gift';
 
 type Props = {
   giftDetails: GiftGivenDetails | GiftReceivedDetails;

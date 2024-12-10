@@ -1,14 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type {
+  FeatureCollection,
+  UncleanSite,
+} from '../../../../../src/features/common/types/dataExplorer';
+
 import db from '../../../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
   rateLimiter,
   speedLimiter,
 } from '../../../../../src/middlewares/rate-limiter';
-import {
-  FeatureCollection,
-  UncleanSite,
-} from '../../../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../../../src/redis-client';
 import { cacheKeyPrefix } from '../../../../../src/utils/constants/cacheKeyPrefix';
 

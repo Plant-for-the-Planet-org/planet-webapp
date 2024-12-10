@@ -1,4 +1,17 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common';
+import type {
+  Imagery,
+  RasterData,
+  ViewPort,
+} from '../../../common/types/ProjectPropsContextInterface';
+import type { SetState } from '../../../common/types/common';
+import type { Position } from 'geojson';
+
+import React from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
@@ -7,17 +20,6 @@ import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
 import { zoomToPolygonPlantLocation } from '../../../../../src/utils/maps/plantLocations';
-import {
-  TreeProjectExtended,
-  ConservationProjectExtended,
-} from '@planet-sdk/common';
-import {
-  Imagery,
-  RasterData,
-  ViewPort,
-} from '../../../common/types/ProjectPropsContextInterface';
-import { SetState } from '../../../common/types/common';
-import { Position } from 'geojson';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;

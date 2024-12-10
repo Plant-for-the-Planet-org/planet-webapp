@@ -1,4 +1,8 @@
-import { ReactElement, useState, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { ProjectOption } from '../../../common/types/project';
+import type { ExtendedCountryCode } from '../../../common/types/country';
+
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button, Switch, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
@@ -14,12 +18,10 @@ import {
   MuiAutoComplete,
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
-import { ProjectOption } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
-import { ExtendedCountryCode } from '../../../common/types/country';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;

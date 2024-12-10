@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import styles from './Stories.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { lang_path } from '../../../../utils/constants/wpLanguages';

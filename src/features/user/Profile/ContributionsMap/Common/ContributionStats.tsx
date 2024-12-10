@@ -1,10 +1,11 @@
+import type { JSX } from 'react';
+
 import {
   ProjectStatIcon,
   CountryStatIcon,
 } from '../../../../../../public/assets/images/icons/myForestMapIcons';
 import style from './common.module.scss';
 import { useTranslations } from 'next-intl';
-import { JSX } from 'react';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 interface StatItemProps {

@@ -1,4 +1,10 @@
-import React, { Dispatch, ReactElement, SetStateAction, useMemo } from 'react';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import type {
+  MultipleDestinations,
+  Subscription,
+} from '../../../common/types/payments';
+import React, { useMemo } from 'react';
+
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -6,10 +12,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import {
-  MultipleDestinations,
-  Subscription,
-} from '../../../common/types/payments';
 
 interface HeaderProps {
   record: Subscription;

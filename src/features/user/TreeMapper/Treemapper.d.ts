@@ -1,4 +1,5 @@
-import { DateString } from '../../common/types/common';
+import type { DateString } from '../../common/types/common';
+
 export interface DeviceLocation {
   coordinates: number[];
   type: string;
