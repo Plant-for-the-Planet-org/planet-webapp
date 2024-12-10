@@ -14,6 +14,7 @@ import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
+import { FillColor } from '../../../../utils/constants/intervention';
 
 export default function PlantLocations(): React.ReactElement {
   const {
@@ -23,6 +24,7 @@ export default function PlantLocations(): React.ReactElement {
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
+    selectedIntervention
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
 
@@ -132,7 +134,7 @@ export default function PlantLocations(): React.ReactElement {
   if (!plantLocations || plantLocations.length === 0) {
     return <></>;
   }
-  const features = plantLocations.map((el) => {
+  const features = plantLocations.filter(d => d.type === selectedIntervention).map((el) => {
     const isSelected =
       selectedPlantLocation && selectedPlantLocation.id === el.id;
     const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
@@ -141,6 +143,7 @@ export default function PlantLocations(): React.ReactElement {
       opacity:
         el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
       dateDiff: getDateDiff(el),
+      type: el.type
     });
     return GeoJSON;
   });
@@ -159,7 +162,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`plant-polygon-layer`}
           type="fill"
           paint={{
-            'fill-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'fill-color': isSatelliteView ? FillColor : FillColor,
             'fill-opacity': ['get', 'opacity'],
           }}
           filter={['==', ['geometry-type'], 'Polygon']}
@@ -168,7 +171,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`point-layer`}
           type="circle"
           paint={{
-            'circle-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'circle-color': isSatelliteView ? FillColor : FillColor,
             'circle-opacity': [
               'case',
               [
@@ -186,7 +189,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`line-selected`}
           type="line"
           paint={{
-            'line-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'line-color': isSatelliteView ? '#ffffff' : FillColor,
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
@@ -205,31 +208,30 @@ export default function PlantLocations(): React.ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {selectedPlantLocation &&
-        selectedPlantLocation.type === 'multi-tree-registration' &&
-        viewState.zoom > 14 &&
-        selectedPlantLocation.sampleInterventions
+          selectedPlantLocation.type === 'multi-tree-registration' &&
+          viewState.zoom > 14 &&
+          selectedPlantLocation.sampleInterventions
           ? selectedPlantLocation.sampleInterventions.map((spl) => {
-              return (
-                <Marker
-                  key={`${spl.id}-sample`}
-                  latitude={spl.geometry.coordinates[1]}
-                  longitude={spl.geometry.coordinates[0]}
-                  anchor="center"
-                >
-                  <div
-                    key={`${spl.id}-marker`}
-                    className={`${styles.single} ${
-                      spl.hid === selectedSamplePlantLocation?.hid
-                        ? styles.singleSelected
-                        : ''
+            return (
+              <Marker
+                key={`${spl.id}-sample`}
+                latitude={spl.geometry.coordinates[1]}
+                longitude={spl.geometry.coordinates[0]}
+                anchor="center"
+              >
+                <div
+                  key={`${spl.id}-marker`}
+                  className={`${styles.single} ${spl.hid === selectedSamplePlantLocation?.hid
+                    ? styles.singleSelected
+                    : ''
                     }`}
-                    role="button"
-                    tabIndex={0}
-                    onClick={(e) => openPl(e, spl)}
-                  />
-                </Marker>
-              );
-            })
+                  role="button"
+                  tabIndex={0}
+                  onClick={(e) => openPl(e, spl)}
+                />
+              </Marker>
+            );
+          })
           : null}
       </Source>
     </>
