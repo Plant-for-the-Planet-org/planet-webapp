@@ -3,6 +3,7 @@ import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 
 import ProjectSiteDropdown from './ProjectSiteDropDown';
+import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { useProjectsMap } from '../ProjectsMapContext';
 import { useProjects } from '../ProjectsContext';
@@ -10,6 +11,7 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
+import { AllIntervention } from '../../../utils/constants/intervention';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -60,6 +62,15 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     projectSites: singleProject?.sites,
+    selectedPlantLocation,
+    setSelectedPlantLocation,
+    setSelectedSamplePlantLocation,
+  };
+
+  const InterventionDropdownProps = {
+    selectedSite,
+    setSelectedSite,
+    allIntervention: AllIntervention,
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
@@ -120,7 +131,10 @@ const MapControls = ({
           ) : (
             <>
               {hasProjectSites && (
+                <>
                 <ProjectSiteDropdown {...siteDropdownProps} />
+                <InterventionDropDown {...InterventionDropdownProps} />
+                </>
               )}
             </>
           )}
