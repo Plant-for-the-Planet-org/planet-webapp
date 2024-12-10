@@ -8,6 +8,7 @@ import ProjectListControlForMobile from './ProjectListControls/ProjectListContro
 import ProjectList from './ProjectList';
 import { useProjectsMap } from './ProjectsMapContext';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
+import { useTenant } from '../common/Layout/TenantContext';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -31,6 +32,8 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   } = useProjects();
   const { mapOptions, updateMapOption } = useProjectsMap();
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
+  const { tenantConfig } = useTenant();
+  const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
   if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
@@ -47,6 +50,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     debouncedSearchValue,
     setDebouncedSearchValue,
     filteredProjects,
+    shouldHideProjectTabs,
   };
   const projectListControlMobileProps = {
     debouncedSearchValue,
