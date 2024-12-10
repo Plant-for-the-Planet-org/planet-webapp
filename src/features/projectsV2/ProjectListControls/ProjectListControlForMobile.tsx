@@ -33,7 +33,7 @@ interface ProjectListControlForMobileProps {
   filteredProjects: MapProject[] | undefined;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
-  isSalesforceTenant: boolean;
+  shouldHideProjectTabs: boolean;
 }
 
 const ProjectListControlForMobile = ({
@@ -53,7 +53,7 @@ const ProjectListControlForMobile = ({
   setIsSearching,
   mapOptions,
   updateMapOption,
-  isSalesforceTenant,
+  shouldHideProjectTabs,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
@@ -61,7 +61,7 @@ const ProjectListControlForMobile = ({
   const hasFilterApplied = selectedClassification.length > 0;
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
-    !hasFilterApplied && selectedMode !== 'map' && !isSalesforceTenant;
+    !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
   const shouldDisplayMapFeatureExplorer = selectedMode === 'map';
   const projectListControlsMobileClasses = `${
     styles.projectListControlsMobile

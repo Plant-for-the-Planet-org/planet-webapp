@@ -33,7 +33,8 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const { mapOptions, updateMapOption } = useProjectsMap();
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   const { tenantConfig } = useTenant();
-  const isSalesforceTenant = tenantConfig.config.slug === 'salesforce';
+  const shouldHideProjectTabs =
+    tenantConfig.topProjectsOnly !== undefined && tenantConfig.topProjectsOnly;
   if ((isLoading || isError) && filteredProjects?.length === 0) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
@@ -50,7 +51,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     debouncedSearchValue,
     setDebouncedSearchValue,
     filteredProjects,
-    isSalesforceTenant,
+    shouldHideProjectTabs,
   };
   const projectListControlMobileProps = {
     debouncedSearchValue,
