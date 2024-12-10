@@ -39,7 +39,7 @@ export const FillColor: any = [
     'maintenance', MAINTENANCE,
     SINGLE_TREE
 ]
-export type INTERVENTION_TYPE = 'single-tree-registration' | 'multi-tree-registration' | 'removal-invasive-species' | 'fire-suppression' | 'fire-patrol' | 'fencing' | 'marking-regenerant' | 'liberating-regenerant' | 'grass-suppression' | 'firebreaks' | 'assisting-seed-rain' | 'soil-improvement' | 'stop-tree-harvesting' | 'direct-seeding' | 'enrichment-planting' | 'other-intervention' | 'maintenance' | 'unknown' | 'default'
+export type INTERVENTION_TYPE = 'single-tree-registration' | 'multi-tree-registration' | 'removal-invasive-species' | 'fire-suppression' | 'fire-patrol' | 'fencing' | 'marking-regenerant' | 'liberating-regenerant' | 'grass-suppression' | 'firebreaks' | 'assisting-seed-rain' | 'soil-improvement' | 'stop-tree-harvesting' | 'direct-seeding' | 'enrichment-planting' | 'other-intervention' | 'maintenance' | 'unknown' | 'default' | 'all'
 
 
 export const AllIntervention: Array<{
@@ -76,4 +76,9 @@ export const AllIntervention: Array<{
 { label: 'Stop Tree Harvesting', value: 'stop-tree-harvesting', index: 0 },
 { label: 'Maintenance', value: 'maintenance', index: 0 },
 { label: 'Other Intervention', value: 'other-intervention', index: 0 },
+{
+    label: 'All Intervention',
+    value: 'all',
+    index: 0,
+}
     ]

@@ -135,10 +135,11 @@ export default function PlantLocations(): React.ReactElement {
     return <></>;
   }
   const features = plantLocations.filter(d =>
+    selectedIntervention === 'all' || 
     (selectedIntervention !== 'default' && d.type === selectedIntervention) ||
     (selectedIntervention === 'default' &&
       (d.type === 'multi-tree-registration' || d.type === 'single-tree-registration'))
-  ).map((el) => {
+).map((el) => {
     const isSelected =
       selectedPlantLocation && selectedPlantLocation.id === el.id;
     const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
