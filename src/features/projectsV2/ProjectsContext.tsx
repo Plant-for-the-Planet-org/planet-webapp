@@ -58,6 +58,8 @@ interface ProjectsState {
   topProjects: MapProject[] | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
+  selectedIntervention: string;
+  setSelectedIntervention: SetState<string>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -92,6 +94,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
+  const [selectedIntervention, setSelectedIntervention] = useState<string>('default');
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -238,6 +241,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject(null);
       setHoveredPlantLocation(null);
       setSelectedSite(null);
+      setSelectedIntervention('default')
       setPreventShallowPush(false);
       setPlantLocations(null);
     }
@@ -442,6 +446,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation,
       selectedSite,
       setSelectedSite,
+      selectedIntervention,
+      setSelectedIntervention,
       setPreventShallowPush,
     }),
     [
@@ -461,6 +467,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       hoveredPlantLocation,
       selectedSite,
       preventShallowPush,
+      selectedIntervention
     ]
   );
 
