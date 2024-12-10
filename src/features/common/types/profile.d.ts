@@ -1,6 +1,6 @@
-import { User, UserPublicProfile } from '@planet-sdk/common';
-import { SetState } from './common';
-import { PublicUser } from './user';
+import type { User, UserPublicProfile } from '@planet-sdk/common';
+import type { SetState } from './common';
+import type { PublicUser } from './user';
 
 export interface UserFeaturesProps {
   handleShare: () => void;

@@ -1,10 +1,18 @@
+import type {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../../common/types/geocoder';
+import type { AlertColor } from '@mui/lab';
+import type { APIError } from '@planet-sdk/common';
+import type { ExtendedCountryCode } from '../../../common/types/country';
+import type { User } from '@planet-sdk/common/build/types/user';
+
 import { styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
-import { User } from '@planet-sdk/common/build/types/user';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
@@ -23,14 +31,8 @@ import {
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
-import {
-  AddressSuggestionsType,
-  AddressType,
-} from '../../../common/types/geocoder';
-import { AlertColor } from '@mui/lab';
-import { APIError, handleError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { ExtendedCountryCode } from '../../../common/types/country';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';

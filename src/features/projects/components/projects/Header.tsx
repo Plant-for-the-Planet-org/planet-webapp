@@ -1,8 +1,10 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SetState } from '../../../common/types/common';
+import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+
+import React from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../../common/types/common';
-import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 interface Props {
   showTopProjectsList: boolean;

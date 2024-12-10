@@ -1,4 +1,6 @@
-import React, { ReactElement, useContext } from 'react';
+import type { ReactElement } from 'react';
+
+import React, { useContext } from 'react';
 import styles from './VerifyEmail.module.scss';
 import { useTranslations } from 'next-intl';
 import VerifyEmailIcon from '../../../../public/assets/images/icons/VerifyEmail';

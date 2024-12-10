@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { User, UserPublicProfile } from '@planet-sdk/common';
+
 import ProfileCard from '../ProfileCard';
-import {
-  PaymentFrequencies,
-  User,
-  UserPublicProfile,
-} from '@planet-sdk/common';
+import { PaymentFrequencies } from '@planet-sdk/common';
 
 const meta: Meta<typeof ProfileCard> = {
   component: ProfileCard,

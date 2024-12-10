@@ -1,12 +1,8 @@
+import type { SetStateAction, Dispatch, FC } from 'react';
+import type { SerializedError } from '@planet-sdk/common';
+
 import { useRouter } from 'next/router';
-import React, {
-  createContext,
-  SetStateAction,
-  useState,
-  Dispatch,
-  FC,
-} from 'react';
-import { SerializedError } from '@planet-sdk/common';
+import React, { createContext, useState } from 'react';
 
 type SetState<T> = Dispatch<SetStateAction<T>>;
 

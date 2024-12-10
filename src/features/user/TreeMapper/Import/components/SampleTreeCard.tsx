@@ -1,23 +1,20 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SxProps } from '@mui/material';
+import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
+import type { SampleTree } from '../../../../common/types/plantLocation';
+import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
+
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
-import {
-  Control,
-  Controller,
-  FieldArrayWithId,
-  FieldErrors,
-} from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { InputAdornment, MenuItem, SxProps, TextField } from '@mui/material';
-
+import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
-import { PlantLocationMulti } from '../../../../common/types/plantLocation';
-
-import { SampleTree } from '../../../../common/types/plantLocation';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {

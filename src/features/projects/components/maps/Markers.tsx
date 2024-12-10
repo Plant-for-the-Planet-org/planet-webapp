@@ -1,12 +1,14 @@
+import type { ReactElement } from 'react';
+import type { SetState } from '../../../common/types/common';
+import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
-import { SetState } from '../../../common/types/common';
-import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useLocale } from 'next-intl';
 
 type PopupClosedData = {

@@ -1,9 +1,10 @@
+import type { ProfilePageType } from '../../../common/types/myForest';
+
 import styles from './ForestProgress.module.scss';
 import { calculateGraphSegmentLengths } from '../../../../utils/myForestUtils';
 import { useMemo } from 'react';
 import EditButton from './microComponents/EditButton';
 import ProgressData from './microComponents/ProgressData';
-import { ProfilePageType } from '../../../common/types/myForest';
 
 export type ProgressDataType =
   | 'treesPlanted'

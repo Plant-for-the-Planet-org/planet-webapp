@@ -1,12 +1,14 @@
+import type { ChangeEvent } from 'react';
+import type { SetState } from '../../../common/types/common';
+import type { ProgressDataType } from './ForestProgressItem';
+
 import styles from './ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import { targetColor } from '../../../../utils/myForestUtils';
-import { ChangeEvent, useMemo } from 'react';
+import { useMemo } from 'react';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
-import { SetState } from '../../../common/types/common';
 import TargetFormInputLabel from './microComponents/TargetFormInputLabel';
-import { ProgressDataType } from './ForestProgressItem';
 
 type TargetFormInputProps = {
   dataType: ProgressDataType;

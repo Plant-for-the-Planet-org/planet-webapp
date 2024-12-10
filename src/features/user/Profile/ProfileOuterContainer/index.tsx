@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import type { FC } from 'react';
+
 import styles from './ProfileOuterContainer.module.scss';
 
 const ProfileOuterContainer: FC = ({ children }) => {
