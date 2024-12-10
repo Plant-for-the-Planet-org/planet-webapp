@@ -7,33 +7,29 @@ import type {
 } from '../../../common/types/plantLocation';
 
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
+import { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 
-type SiteData = {
-  label: string;
-  id: number;
+type InterventionData = {
+  label: string
+  value: INTERVENTION_TYPE
+  index: number
 };
 interface InterventionListProps {
-  siteList: SiteData[];
-  setSelectedSite: SetState<number | null>;
+  siteList: InterventionData[];
+  setSelectedSite: SetState<string>;
   setIsMenuOpen: SetState<boolean>;
-  selectedSiteData: SiteData | undefined;
-  setSelectedPlantLocation: SetState<PlantLocation | null>;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  selectedSiteData: InterventionData | undefined;
 }
 const InterventionList = ({
   siteList,
   setSelectedSite,
   setIsMenuOpen,
   selectedSiteData,
-  setSelectedPlantLocation,
-  setSelectedSamplePlantLocation,
 }: InterventionListProps) => {
   const locale = useLocale();
-  const handleSiteSelection = (index: number) => {
-    setSelectedPlantLocation(null);
-    setSelectedSamplePlantLocation(null);
+  const handleSiteSelection = (index: number, key: string) => {
     setIsMenuOpen(false);
-    setSelectedSite(index);
+    setSelectedSite(key);
   };
 
   return (
@@ -41,10 +37,9 @@ const InterventionList = ({
       {siteList.map((site, index) => {
         return (
           <li
-            className={`${styles.listItem} ${
-              site.id === selectedSiteData?.id ? styles.selectedItem : ''
-            }`}
-            onClick={() => handleSiteSelection(index)}
+            className={`${styles.listItem} ${site.index === selectedSiteData?.index ? styles.selectedItem : ''
+              }`}
+            onClick={() => handleSiteSelection(index, site.value)}
             key={index}
           >
             <p>{site.label}</p>

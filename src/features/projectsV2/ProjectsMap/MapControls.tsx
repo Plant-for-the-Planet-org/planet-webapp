@@ -47,8 +47,9 @@ const MapControls = ({
     selectedSamplePlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
+    selectedIntervention,
+    setSelectedIntervention
   } = useProjects();
-
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
@@ -68,8 +69,8 @@ const MapControls = ({
   };
 
   const InterventionDropdownProps = {
-    selectedSite,
-    setSelectedSite,
+    selectedIntervention,
+    setSelectedIntervention,
     allIntervention: AllIntervention,
     selectedPlantLocation,
     setSelectedPlantLocation,
@@ -132,8 +133,8 @@ const MapControls = ({
             <>
               {hasProjectSites && (
                 <>
-                <ProjectSiteDropdown {...siteDropdownProps} />
-                <InterventionDropDown {...InterventionDropdownProps} />
+                  <ProjectSiteDropdown {...siteDropdownProps} />
+                  <InterventionDropDown {...InterventionDropdownProps} />
                 </>
               )}
             </>
