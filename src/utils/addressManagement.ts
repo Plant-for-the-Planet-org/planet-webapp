@@ -20,6 +20,7 @@ export const ADDRESS_ACTIONS = {
   DELETE: 'delete',
   SET_PRIMARY: 'setPrimary',
   SET_BILLING: 'setBilling',
+  UNSET_BILLING: 'unsetBilling',
 } as const;
 
 export const ADDRESS_FORM_TYPE = {

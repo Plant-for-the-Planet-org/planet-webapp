@@ -24,6 +24,7 @@ import UpdateAddressType from './UpdateAddressType';
 import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
+import UnsetBillingAddress from './UnsetBillingAddress';
 
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
@@ -124,6 +125,16 @@ const AddressManagement = () => {
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
             updateUserAddresses={updateUserAddresses}
+          />
+        );
+      case ADDRESS_ACTIONS.UNSET_BILLING:
+        return (
+          <UnsetBillingAddress
+            addressType={ADDRESS_TYPE.MAILING}
+            setIsModalOpen={setIsModalOpen}
+            setAddressAction={setAddressAction}
+            updateUserAddresses={updateUserAddresses}
+            selectedAddressForAction={selectedAddressForAction}
           />
         );
     }
