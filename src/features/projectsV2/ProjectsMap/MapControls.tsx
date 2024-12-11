@@ -120,7 +120,9 @@ const MapControls = ({
           {isMobile ? (
             <div className={styles.projectDetailsControlsContainer}>
               {hasProjectSites && (
+                <>
                 <ProjectSiteDropdown {...siteDropdownProps} />
+                <InterventionDropDown {...InterventionDropdownProps} /></>
               )}
               <button
                 className={styles.exitMapModeButton}
