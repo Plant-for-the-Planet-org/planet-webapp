@@ -12,6 +12,7 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../../common/Layout/TenantContext';
+import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 
 interface Props {
   addressType: 'mailing';
@@ -39,7 +40,7 @@ const UnsetBillingAddress = ({
     if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
     const bodyToSend = {
-      type: 'other',
+      type: ADDRESS_TYPE.OTHER,
     };
     try {
       const res = await putAuthenticatedRequest<Address>(

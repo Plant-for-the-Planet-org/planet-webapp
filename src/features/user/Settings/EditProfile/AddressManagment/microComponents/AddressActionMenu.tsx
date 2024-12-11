@@ -46,7 +46,7 @@ const AddressActionsMenu = ({
     {
       label: tAddressManagement(`actions.delete`),
       action: ADDRESS_ACTIONS.DELETE,
-      shouldRender: addressCount > 1,
+      shouldRender: addressCount > 1 && type !== ADDRESS_TYPE.PRIMARY,
     },
     {
       label: tAddressManagement('actions.setAsPrimaryAddress'),
