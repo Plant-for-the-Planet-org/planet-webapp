@@ -62,6 +62,11 @@ const AddressActionsMenu = ({
         type === ADDRESS_TYPE.MAILING || type === ADDRESS_TYPE.PRIMARY
       ),
     },
+    {
+      label: tAddressManagement('actions.unsetBillingAddress'),
+      action: ADDRESS_ACTIONS.UNSET_BILLING,
+      shouldRender: type === ADDRESS_TYPE.MAILING,
+    },
   ];
 
   const openPopover = (event: React.MouseEvent<HTMLButtonElement>) => {

@@ -80,6 +80,7 @@
         "delete": "Delete",
         "setAsPrimaryAddress": "Set as Primary Address",
         "setAsBillingAddress": "Set as Billing Address",
+        "unsetBillingAddress": "Unset Billing Address",
         "addAddress": "Add New Address"
       },
       "deleteAction": {
@@ -90,7 +91,8 @@
       "updateAddressType": {
         "setAddressConfirmation": "Are you sure you want to set this address as your {addressType}?",
         "replaceAddressWarning": "This will replace your current {addressType}.",
-        "confirmButton": "Confirm"
+        "confirmButton": "Confirm",
+        "unsetBillingAddressMessage": "Do you want to unset your billing address? Your primary address will be used as billing address."
       },
       "maxAddressesMessage": "You have reached the maximum number of addresses! Remove one to add a new address.",
       "addressForm": {
