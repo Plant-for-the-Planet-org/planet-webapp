@@ -42,7 +42,7 @@ const AddressManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sortedAddresses = useMemo(() => {
-    return userAddresses.sort((a, b) => {
+    return [...userAddresses].sort((a, b) => {
       return (
         addressTypeOrder.indexOf(a.type) - addressTypeOrder.indexOf(b.type)
       );
@@ -62,7 +62,7 @@ const AddressManagement = () => {
     } catch (error) {
       setErrors(handleError(error as APIError));
     }
-  }, [user, token, contextLoaded, tenantConfig.id, logoutUser]);
+  }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
 
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
@@ -88,6 +88,7 @@ const AddressManagement = () => {
           />
         );
       case ADDRESS_ACTIONS.EDIT:
+        if (!selectedAddressForAction) return <></>;
         return (
           <EditAddress
             setIsModalOpen={setIsModalOpen}
@@ -97,15 +98,17 @@ const AddressManagement = () => {
           />
         );
       case ADDRESS_ACTIONS.DELETE:
+        if (!selectedAddressForAction) return <></>;
         return (
           <DeleteAddress
-            addressId={selectedAddressForAction?.id}
+            addressId={selectedAddressForAction.id}
             setIsModalOpen={setIsModalOpen}
             updateUserAddresses={updateUserAddresses}
             setAddressAction={setAddressAction}
           />
         );
       case ADDRESS_ACTIONS.SET_PRIMARY:
+        if (!selectedAddressForAction) return <></>;
         return (
           <UpdateAddressType
             addressType={ADDRESS_TYPE.PRIMARY}
@@ -117,6 +120,7 @@ const AddressManagement = () => {
           />
         );
       case ADDRESS_ACTIONS.SET_BILLING:
+        if (!selectedAddressForAction) return <></>;
         return (
           <UpdateAddressType
             addressType={ADDRESS_TYPE.MAILING}
@@ -128,6 +132,7 @@ const AddressManagement = () => {
           />
         );
       case ADDRESS_ACTIONS.UNSET_BILLING:
+        if (!selectedAddressForAction) return <></>;
         return (
           <UnsetBillingAddress
             addressType={ADDRESS_TYPE.MAILING}
@@ -148,6 +153,7 @@ const AddressManagement = () => {
     primaryAddress,
     billingAddress,
     addressAction,
+    setAddressAction,
   ]);
 
   const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;

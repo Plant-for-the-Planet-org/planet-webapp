@@ -16,8 +16,8 @@ import AddressFormLayout from './microComponents/AddressFormLayout';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
-  selectedAddressForAction: Address | null;
-  updateUserAddresses?: () => Promise<void>;
+  selectedAddressForAction: Address;
+  updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
 }
 
@@ -28,11 +28,11 @@ const EditAddress = ({
   setAddressAction,
 }: Props) => {
   const defaultAddressDetail = {
-    address: selectedAddressForAction?.address,
-    address2: selectedAddressForAction?.address2,
-    city: selectedAddressForAction?.city,
-    zipCode: selectedAddressForAction?.zipCode,
-    state: selectedAddressForAction?.state,
+    address: selectedAddressForAction.address,
+    address2: selectedAddressForAction.address2,
+    city: selectedAddressForAction.city,
+    zipCode: selectedAddressForAction.zipCode,
+    state: selectedAddressForAction.state,
   };
 
   const tAddressManagement = useTranslations('EditProfile.addressManagement');

@@ -92,7 +92,7 @@ const AddressActionsMenu = ({
       <button
         onClick={openPopover}
         className={styles.kebabMenuButton}
-        aria-label="action menu"
+        aria-label={tAddressManagement('labels.actionMenu')}
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -121,6 +121,13 @@ const AddressActionsMenu = ({
                 key={key}
                 className={styles.action}
                 onClick={() => handleActionClick(item.action)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleActionClick(item.action);
+                  }
+                }}
+                tabIndex={0}
                 role="button"
                 aria-label={item.label}
               >

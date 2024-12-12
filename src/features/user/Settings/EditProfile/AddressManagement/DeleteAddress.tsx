@@ -15,7 +15,7 @@ import { deleteAuthenticatedRequest } from '../../../../../utils/apiRequests/api
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
-  addressId: string | undefined;
+  addressId: string;
   updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
 }

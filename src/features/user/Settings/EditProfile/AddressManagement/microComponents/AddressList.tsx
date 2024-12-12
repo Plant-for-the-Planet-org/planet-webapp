@@ -18,7 +18,7 @@ const AddressList = ({
   setSelectedAddressForAction,
   setIsModalOpen,
 }: Props) => {
-  const addressCount = addresses?.length ?? 0;
+  const addressCount = addresses.length;
 
   return (
     <div className={styles.addressListContainer}>

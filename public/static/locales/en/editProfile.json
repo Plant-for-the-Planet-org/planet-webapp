@@ -70,6 +70,9 @@
       "companyRequired": "Company Name is required"
     },
     "addressManagement": {
+      "labels": {
+        "actionMenu": "Action menu"
+      },
       "addressManagementTitle": "Address",
       "addressType": {
         "primary": "Primary Address",

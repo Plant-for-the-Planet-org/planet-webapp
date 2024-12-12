@@ -19,7 +19,7 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   setAddressAction: SetState<AddressAction | null>;
   updateUserAddresses: () => Promise<void>;
-  selectedAddressForAction: Address | null;
+  selectedAddressForAction: Address;
 }
 
 const UnsetBillingAddress = ({
@@ -37,8 +37,7 @@ const UnsetBillingAddress = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const unsetAddress = async () => {
-    if (!contextLoaded || !user || !token || !selectedAddressForAction?.id)
-      return;
+    if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
     const bodyToSend = {
       type: ADDRESS_TYPE.OTHER,

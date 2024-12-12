@@ -18,7 +18,7 @@ interface Props {
   addressType: 'primary' | 'mailing';
   setIsModalOpen: SetState<boolean>;
   userAddress: Address | undefined;
-  selectedAddressForAction: Address | null;
+  selectedAddressForAction: Address;
   updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
 }
@@ -47,7 +47,7 @@ const UpdateAddressType = ({
     try {
       const res = await putAuthenticatedRequest<Address>(
         tenantConfig.id,
-        `/app/addresses/${selectedAddressForAction?.id}`,
+        `/app/addresses/${selectedAddressForAction.id}`,
         bodyToSend,
         token,
         logoutUser

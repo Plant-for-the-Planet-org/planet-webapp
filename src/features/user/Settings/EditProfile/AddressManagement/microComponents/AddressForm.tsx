@@ -73,8 +73,13 @@ const AddressForm = ({
 
   const handleSuggestAddress = useCallback(
     async (value: string) => {
-      const suggestions = await suggestAddress(value, country);
-      setAddressSuggestions(suggestions);
+      try {
+        const suggestions = await suggestAddress(value, country);
+        setAddressSuggestions(suggestions);
+      } catch (error) {
+        console.error('Failed to fetch address suggestions:', error);
+        setAddressSuggestions([]);
+      }
     },
     [geocoder, country]
   );
@@ -88,15 +93,20 @@ const AddressForm = ({
     700,
     [inputValue]
   );
+
   const handleGetAddress = useCallback(
     async (value: string) => {
-      const details = await fetchAddressDetails(value);
-      if (details) {
-        setValue('address', details.address, { shouldValidate: true });
-        setValue('city', details.city, { shouldValidate: true });
-        setValue('zipCode', details.zipCode, { shouldValidate: true });
+      try {
+        const details = await fetchAddressDetails(value);
+        if (details) {
+          setValue('address', details.address, { shouldValidate: true });
+          setValue('city', details.city, { shouldValidate: true });
+          setValue('zipCode', details.zipCode, { shouldValidate: true });
+        }
+        setAddressSuggestions([]);
+      } catch (error) {
+        console.error('Failed to fetch address details:', error);
       }
-      setAddressSuggestions([]);
     },
     [geocoder, setValue]
   );
