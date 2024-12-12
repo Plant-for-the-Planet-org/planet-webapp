@@ -1,0 +1,17 @@
+@import '../../../../theme/_theme.scss';
+
+.comparisonContainer {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  :global(.maplibregl-compare) {
+    :global(.compare-swiper-vertical) {
+      background-color: $primaryColor;
+    }
+  }
+}
+
+.comparisonMap {
+  position: absolute;
+  inset: 0;
+}
