@@ -39,6 +39,7 @@
       "email": "Email",
       "address": "Adresse",
       "city": "Stadt",
+      "state": "Bundesland",
       "zipCode": "Postleitzahl",
       "country": "Land",
       "bio": "Profilbeschreibung",
@@ -61,11 +62,48 @@
       "addressInvalid": "Adresse ist ungültig. Nur diese Sonderzeichen sind erlaubt: Leerzeichen . , # - /",
       "cityRequired": "Stadt ist ein Pflichtfeld",
       "cityInvalid": "Stadt ist ungültig. Nur Buchstaben und diese Sonderzeichen sind erlaubt: Leerzeichen . , ( ) -",
+      "stateInvalid": "Bundesland ist ungültig. Es sind nur Buchstaben und folgende Sonderzeichen erlaubt: Leerzeichen . , ( ) -",
       "zipCodeRequired": "Postleitzahl ist ein Pflichtfeld",
       "zipCodeInvalid": "Postleitzahl ist ungültig",
       "websiteInvalid": "Bitte gib eine gültige Website-URL ein",
       "countryRequired": "Land ist ein Pflichtfeld",
       "companyRequired": "Firmenname ist ein Pflichtfeld"
+    },
+    "addressManagement": {
+      "labels": {
+        "actionMenu": "Aktionsmenü"
+      },
+      "addressManagementTitle": "Adresse",
+      "addressType": {
+        "primary": "Primäre Adresse",
+        "mailing": "Rechnungsadresse"
+      },
+      "actions": {
+        "edit": "Bearbeiten",
+        "delete": "Löschen",
+        "setAsPrimaryAddress": "Als primäre Adresse festlegen",
+        "setAsBillingAddress": "Als Rechnungsadresse festlegen",
+        "unsetBillingAddress": "Nicht mehr Rechnungsadresse",
+        "addAddress": "Neue Adresse hinzufügen"
+      },
+      "deleteAction": {
+        "title": "Adresse löschen",
+        "deleteButton": "Löschen",
+        "deleteAddressConfirmationMessage": "Sind Sie sicher, dass Sie diese Adresse löschen möchten? Wenn Sie sie wieder verwenden möchten, fügen Sie sie bitte als neue Adresse hinzu."
+      },
+      "updateAddressType": {
+        "setAddressConfirmation": "Sind Sie sicher, dass Sie diese Adresse als {addressType} festlegen möchten?",
+        "replaceAddressWarning": "Dies wird Ihre aktuelle {addressType} ersetzen.",
+        "confirmButton": "Bestätigen",
+        "unsetBillingAddressMessage": "Möchten Sie Ihre Rechnungsadresse ändern? Ihre Hauptadresse wird als Rechnungsadresse verwendet."
+      },
+      "maxAddressesMessage": "Sie haben die maximale Anzahl von Adressen erreicht! Entfernen Sie eine, um eine neue Adresse hinzuzufügen.",
+      "addressForm": {
+        "addAddress": "Adresse hinzufügen",
+        "editAddress": "Adresse bearbeiten",
+        "saveChanges": "Änderungen speichern",
+        "address2": "Adresse 2 (optional)"
+      }
     }
   }
 }
