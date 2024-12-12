@@ -12,7 +12,7 @@
   background-color: $backgroundColor;
   border-radius: 12px;
   margin-top: 10px;
-  padding: 14px 16px;
+  padding: 8px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
 
   @include xsPhoneView {
@@ -20,15 +20,14 @@
   }
 }
 
-.exploreContainer {
-  width: 150px;
-}
-
 .toggleMainContainer {
+  padding: 15px 9px;
   height: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 8px;
 }
 
 .toggleContainer {
@@ -86,11 +85,9 @@
 }
 
 .exploreDescription {
-  padding: 8px;
   height: fit-content;
-  margin-top: 14px;
-  background-color: rgba(var(--explore-description-background-color-new), 1);
-  font-size: $fontXXSmall;
+  margin-top: 8px;
+  font-size: $fontXXXSmallNew;
   border-radius: 6px;
 }
 

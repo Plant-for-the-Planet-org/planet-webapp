@@ -25,7 +25,7 @@ const MapSettings: FC<MapSettingsProps> = ({ mapOptions, updateMapOption }) => {
 
   return (
     <div className={styles.exploreMainContainer}>
-      <div className={styles.exploreContainer}>
+      <div>
         <div>
           {/* <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
