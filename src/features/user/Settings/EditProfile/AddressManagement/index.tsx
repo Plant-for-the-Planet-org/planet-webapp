@@ -137,6 +137,8 @@ const AddressManagement = () => {
             selectedAddressForAction={selectedAddressForAction}
           />
         );
+      default:
+        return <></>;
     }
   }, [
     setIsModalOpen,
@@ -179,8 +181,8 @@ const AddressManagement = () => {
           </p>
         )}
       </CenteredContainer>
-      <Modal open={isModalOpen}>
-        <>{renderModalContent}</>
+      <Modal open={isModalOpen} aria-labelledby="address-action-modal-title">
+        {renderModalContent}
       </Modal>
     </section>
   );

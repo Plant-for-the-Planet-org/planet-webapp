@@ -89,7 +89,13 @@ const AddressActionsMenu = ({
 
   return (
     <div>
-      <button onClick={openPopover} className={styles.kebabMenuButton}>
+      <button
+        onClick={openPopover}
+        className={styles.kebabMenuButton}
+        aria-label="action menu"
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
         <KebabMenuIcon />
       </button>
       <Popover
@@ -116,6 +122,7 @@ const AddressActionsMenu = ({
                 className={styles.action}
                 onClick={() => handleActionClick(item.action)}
                 role="button"
+                aria-label={item.label}
               >
                 {item.label}
               </li>

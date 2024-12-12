@@ -3,7 +3,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import DashboardView from '../../../common/Layout/DashboardView';
 import EditProfileForm from './EditProfileForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
-import AddressManagement from './AddressManagment';
+import AddressManagement from './AddressManagement';
 
 export default function EditProfile(): React.ReactElement | null {
   const t = useTranslations('Me');

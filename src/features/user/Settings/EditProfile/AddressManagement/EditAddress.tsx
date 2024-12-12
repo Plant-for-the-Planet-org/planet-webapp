@@ -61,9 +61,7 @@ const EditAddress = ({
           token,
           logoutUser
         );
-        if (res && updateUserAddresses) {
-          updateUserAddresses();
-        }
+        if (res && updateUserAddresses) updateUserAddresses();
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {
