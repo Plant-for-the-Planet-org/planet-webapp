@@ -2,7 +2,6 @@ import type { MapRef } from '../../common/types/projectv2';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
@@ -12,14 +11,6 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
-
-const TimeTravel = dynamic(
-  () => import('../ProjectsMap/microComponents/TimeTravel'),
-  {
-    ssr: false,
-    loading: () => <p>Loading comparison...</p>,
-  }
-);
 
 interface Props {
   mapRef: MapRef;
@@ -119,9 +110,6 @@ const SingleProjectView = ({ mapRef }: Props) => {
         />
       ) : (
         <>
-          {selectedSite !== null && isSiteZoomComplete && (
-            <TimeTravel sitesGeoJson={sitesGeoJson} />
-          )}
           <SitePolygon
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeoJson}
@@ -130,7 +118,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         </>
       )}
 
-      {/* <PlantLocations /> */}
+      <PlantLocations />
     </>
   );
 };

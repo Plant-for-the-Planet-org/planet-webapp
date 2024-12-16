@@ -3,8 +3,10 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { PlantLocationSingle } from '../../common/types/plantLocation';
 import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
+import type { SelectedTab } from './ProjectMapTabs';
 
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
@@ -19,11 +21,17 @@ import {
   getValidFeatures,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
+import MapTabs from './ProjectMapTabs';
 import { useProjects } from '../ProjectsContext';
 import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+
+const TimeTravel = dynamic(() => import('./TimeTravel'), {
+  ssr: false,
+  loading: () => <p>Loading comparison...</p>,
+});
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -54,6 +62,23 @@ function ProjectsMap(props: ProjectsMapProps) {
     selectedPlantLocation,
     selectedSamplePlantLocation,
   } = useProjects();
+  const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
+
+  const sitesGeoJson = useMemo(() => {
+    return {
+      type: 'FeatureCollection' as const,
+      features:
+        singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
+    };
+  }, [singleProject?.sites]);
+
+  useEffect(() => {
+    if (props.page === 'project-details') {
+      setSelectedTab('field');
+    } else {
+      setSelectedTab(null);
+    }
+  }, [props.page]);
 
   useDebouncedEffect(
     () => {
@@ -101,6 +126,8 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowNavigationControls = !(
     shouldShowMultiPlantLocationInfo || shouldShowSinglePlantLocationInfo
   );
+  const shouldShowMapTabs = selectedTab !== null;
+
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
@@ -182,7 +209,14 @@ function ProjectsMap(props: ProjectsMapProps) {
   return (
     <>
       <MapControls {...mapControlProps} />
+
       <div className={mapContainerClass}>
+        {shouldShowMapTabs && (
+          <MapTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        )}
+        {selectedTab === 'timeTravel' && (
+          <TimeTravel sitesGeoJson={sitesGeoJson} />
+        )}
         <Map
           {...viewState}
           {...mapState}
