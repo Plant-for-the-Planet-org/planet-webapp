@@ -1,5 +1,5 @@
 import Skeleton from 'react-loading-skeleton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ProjectsSection.module.scss';
 import { useProjects } from './ProjectsContext';
@@ -31,10 +31,23 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     selectedMode,
   } = useProjects();
   const { mapOptions, updateMapOption } = useProjectsMap();
-  const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   const { tenantConfig } = useTenant();
+
+  const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
+
+  useEffect(() => {
+    // When tenantConfig.topProjectsOnly is true, it indicates all projects returned by the projects endpoint are to be shown, without splitting them into top projects and all projects
+    if (tenantConfig.topProjectsOnly === true) {
+      setTabSelected('allProjects');
+    }
+  }, [tenantConfig.topProjectsOnly]);
+
   const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
-  if ((isLoading || isError) && filteredProjects?.length === 0) {
+
+  if (
+    (isLoading || isError || projects === null) &&
+    filteredProjects?.length === 0
+  ) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
   const projectCount = projects?.length;
@@ -62,6 +75,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     mapOptions,
     updateMapOption,
   };
+
   return (
     <>
       <ProjectsListMeta />
