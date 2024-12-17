@@ -1,3 +1,5 @@
+import type { SourceName } from '../../../utils/mapsV2/timeTravel';
+
 import React, { useState } from 'react';
 import styles from './TimeTravelDropdown.module.scss';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
@@ -5,44 +7,45 @@ import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/Dr
 import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 
 interface TimeTravelDropdownProps {
-  labelYear: string;
-  labelSource: string;
-  yearList: string[];
-  sourceList: string[];
+  defaultYear: string;
+  defaultSource: SourceName;
+  availableYears: string[];
+  availableSources: SourceName[];
   isOpen: boolean;
+  onYearChange: (year: string) => void;
+  onSourceChange: (source: SourceName) => void;
+  customClassName?: string;
 }
 
 const TimeTravelDropdown = ({
-  labelYear,
-  labelSource,
-  yearList,
-  sourceList,
+  defaultYear,
+  defaultSource,
+  availableYears,
+  availableSources,
   isOpen,
+  onYearChange,
+  onSourceChange,
+  customClassName,
 }: TimeTravelDropdownProps) => {
-  const [selectedYear, setSelectedYear] = useState(labelYear);
-  const [selectedSource, setSelectedSource] = useState(labelSource);
+  const [selectedYear, setSelectedYear] = useState(defaultYear);
+  const [selectedSource, setSelectedSource] = useState(defaultSource);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
+
   const handleChangeYear = (year: string) => {
     setSelectedYear(year);
+    onYearChange(year);
   };
 
-  const handleChangeSource = (source: string) => {
+  const handleChangeSource = (source: SourceName) => {
     setSelectedSource(source);
+    onSourceChange(source);
   };
 
-  const styleForSelectedOption = (
-    selectedOption: string,
-    labelValue: string
-  ) => {
-    if (selectedOption.toLowerCase() === labelValue.toLowerCase()) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const isOptionSelected = (option: string, selectedValue: string): boolean =>
+    option.toLowerCase() === selectedValue.toLowerCase();
 
   return (
-    <div className={styles.menuContainer}>
+    <div className={`${styles.menuContainer} ${customClassName || ''}`}>
       <button
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -62,12 +65,12 @@ const TimeTravelDropdown = ({
       {isMenuOpen && (
         <div className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>
-            {yearList?.map((year, index) => (
+            {availableYears?.map((year, index) => (
               <time
                 key={index}
                 onClick={() => handleChangeYear(year)}
                 className={`${
-                  styleForSelectedOption(year, selectedYear)
+                  isOptionSelected(year, selectedYear)
                     ? styles.selectedMenuItem
                     : styles.unselectedMenuItem
                 }`}
@@ -77,12 +80,12 @@ const TimeTravelDropdown = ({
             ))}
           </ul>
           <ul className={styles.sourceMenuContainer}>
-            {sourceList?.map((source, index) => (
+            {availableSources?.map((source, index) => (
               <li
                 key={index}
                 onClick={() => handleChangeSource(source)}
                 className={`${
-                  styleForSelectedOption(source, selectedSource)
+                  isOptionSelected(source, selectedSource)
                     ? styles.selectedMenuItem
                     : styles.unselectedMenuItem
                 }`}

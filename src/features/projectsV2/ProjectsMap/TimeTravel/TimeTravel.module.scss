@@ -1,4 +1,4 @@
-@import '../../../../theme/_theme.scss';
+@import '../../../../theme/theme';
 
 .comparisonContainer {
   position: absolute;
@@ -15,4 +15,29 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+}
+
+.beforeDropdown {
+  position: absolute;
+  top: 78px;
+  left: 10px;
+  z-index: 2;
+}
+
+.afterDropdown {
+  position: absolute;
+  top: 78px;
+  right: 10px;
+  z-index: 2;
+}
+
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  z-index: 2;
 }

@@ -68,7 +68,7 @@ const themeProperties = {
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
     grayFontColorNew: '#4F4F4F',
-    lightGrayBackgroundColorNew: '#d9d9d980',
+    lightGrayBackgroundColorNew: '#d9d9d9',
     boldFontColorNew: '#2F3336',
     selectedMenuItemColorNew: '#333',
     dividerColorNew: '#BDBDBD',
