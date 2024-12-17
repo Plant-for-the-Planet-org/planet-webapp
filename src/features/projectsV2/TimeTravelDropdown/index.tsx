@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import styles from './Dropdown.module.scss';
-import CalendarIcon from '../icons/CalendarIcon';
-import DropdownDownArrow from '../icons/DropdownDownArrow';
-import DropdownUpArrow from '../icons/DropdownUpArrow';
+import styles from './TimeTravelDropdown.module.scss';
+import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
+import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
+import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 
 interface TimeTravelDropdownProps {
   labelYear: string;
