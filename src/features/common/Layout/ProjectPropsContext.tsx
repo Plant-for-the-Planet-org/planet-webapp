@@ -25,6 +25,7 @@ import ProjectPropsContextInterface, {
 } from '../types/ProjectPropsContextInterface';
 import { MapRef } from 'react-map-gl/src/components/static-map';
 import { PlantLocation, SamplePlantLocation } from '../types/plantLocation';
+import { getTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 
 const ProjectPropsContext = createContext<ProjectPropsContextInterface | null>(
   null
@@ -115,8 +116,8 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [layersSettings, setLayersSettings] = useState<LayerSettings>({});
   const [selectedMode, setSelectedMode] = useState<MapMode>('location');
   const [rasterData, setRasterData] = useState<RasterData>({
-    evi: '',
-    imagery: {},
+    evi: undefined,
+    imagery: getTimeTravelConfig(),
   });
   const [plIds, setPlIds] = useState<string[] | null>(null);
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = useState(false);

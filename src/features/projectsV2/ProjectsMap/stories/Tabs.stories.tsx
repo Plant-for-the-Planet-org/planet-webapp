@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Tabs from '../../ProjectMapTabs/Tabs';
+import Tabs from '../ProjectMapTabs';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Projects/Details/Tabs',
@@ -11,6 +11,6 @@ type Story = StoryObj<typeof Tabs>;
 
 export const TabsView: Story = {
   args: {
-    selected: 'satellite', //initially selected option
+    selectedTab: 'field', //initially selected option
   },
 };

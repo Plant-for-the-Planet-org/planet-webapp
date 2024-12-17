@@ -1,6 +1,6 @@
 import type { MapRef } from '../../common/types/projectv2';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
@@ -25,14 +25,16 @@ const SingleProjectView = ({ mapRef }: Props) => {
     useProjectsMap();
   const router = useRouter();
 
-  const sitesGeojson = useMemo(() => {
+  const [isSiteZoomComplete, setIsSiteZoomComplete] = useState(false);
+
+  const sitesGeoJson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
       features:
         singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
     };
   }, [singleProject?.sites]);
-  const hasNoSites = sitesGeojson.features.length === 0;
+  const hasNoSites = sitesGeoJson.features.length === 0;
   // Zoom to plant location
 
   useEffect(() => {
@@ -62,12 +64,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
   // Zoom to project site
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;
-    if (sitesGeojson.features.length > 0 && selectedSite !== null) {
+    if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
+      setIsSiteZoomComplete(false);
       zoomInToProjectSite(
         mapRef,
-        sitesGeojson,
+        sitesGeoJson,
         selectedSite,
         handleViewStateChange,
+        setIsSiteZoomComplete,
         4000
       );
     } else {
@@ -85,7 +89,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeojson, router.isReady, selectedPlantLocation]);
+  }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
 
   useEffect(() => {
     const hasNoPlantLocations = !plantLocations?.length;
@@ -108,7 +112,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         <>
           <SitePolygon
             isSatelliteView={isSatelliteView}
-            geoJson={sitesGeojson}
+            geoJson={sitesGeoJson}
           />
           {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
         </>
