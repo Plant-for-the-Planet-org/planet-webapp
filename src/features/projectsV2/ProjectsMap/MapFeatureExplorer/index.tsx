@@ -8,6 +8,7 @@ import styles from './MapFeatureExplorer.module.scss';
 // import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
+import { Modal } from '@mui/material';
 
 /* interface ExploreProjectProps {
   label: string | string[];
@@ -96,11 +97,13 @@ export const MapLayerToggle = ({
 type MapFeatureExplorerProps = {
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+  isMobile?: boolean;
 };
 
 const MapFeatureExplorer = ({
   mapOptions,
   updateMapOption,
+  isMobile,
 }: MapFeatureExplorerProps) => {
   const t = useTranslations('Maps');
   const [isOpen, setIsOpen] = useState(false);
@@ -114,11 +117,21 @@ const MapFeatureExplorer = ({
         {t('explore')}
       </CustomButton>
 
-      {isOpen && (
+      {isOpen && !isMobile && (
         <MapSettings
           mapOptions={mapOptions}
           updateMapOption={updateMapOption}
         />
+      )}
+      {isMobile && (
+        <Modal open={isOpen}>
+          <MapSettings
+            mapOptions={mapOptions}
+            updateMapOption={updateMapOption}
+            isMobile={isMobile}
+            setIsOpen={setIsOpen}
+          />
+        </Modal>
       )}
     </div>
   );

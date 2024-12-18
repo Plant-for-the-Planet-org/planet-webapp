@@ -9,14 +9,39 @@
 
 .exploreMainContainer {
   max-width: 182px;
-  background-color: $backgroundColor;
+  background-color: #fff;
   border-radius: 12px;
   margin-top: 10px;
-  padding: 8px;
+  padding: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
 
   @include xsPhoneView {
     position: absolute;
+    min-width: 293px;
+    border-radius: unset;
+    right: 0px;
+    top: -10px;
+  }
+}
+
+.exploreFeatureMobileHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 4px 18px;
+
+  .exploreLabel {
+    display: flex;
+    gap: 8px;
+
+    p {
+      font-size: 14px;
+      font-weight: 700;
+      gap: 8px;
+    }
+  }
+
+  svg {
+    width: 16px;
   }
 }
 
