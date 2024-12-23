@@ -18,7 +18,6 @@ import { Modal } from '@mui/material';
 } */
 
 interface EcosystemOptionProps {
-  infoIcon: React.ReactNode;
   label: string;
   switchComponent: React.ReactNode;
 }
@@ -29,7 +28,6 @@ export interface YearRangeSliderProps {
 }
 
 export const MapLayerToggle = ({
-  infoIcon,
   label,
   switchComponent,
 }: EcosystemOptionProps) => {
@@ -37,7 +35,6 @@ export const MapLayerToggle = ({
     <>
       <div className={styles.toggleMainContainer}>
         <div className={styles.toggleContainer}>
-          <div className={styles.infoIconContainer}>{infoIcon}</div>
           <div>{label}</div>
         </div>
         <div className={styles.switchContainer}>{switchComponent}</div>

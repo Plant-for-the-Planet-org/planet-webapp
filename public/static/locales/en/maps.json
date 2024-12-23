@@ -47,6 +47,35 @@
     "showProjectDetails": "Show Project Details",
     "hideProjectList": "Hide Project List",
     "hideProjectDetails": "Hide Project Details",
-    "countries": "Countries"
+    "countries": "Countries",
+    "layers": {
+      "forests": "Forests",
+      "soil": "Soil",
+      "biodiversity": "Biodiversity",
+      "risks": "Risks",
+      "forestLayers": {
+        "forestCover": "Forest Cover",
+        "forestBiomass": "Forest Biomass",
+        "potentialAdditionalForestBiomass": "Potential Additional Forest Biomass",
+        "deforestation": "Deforestation",
+        "canopyHeight": "Canopy Height"
+      },
+      "soilLayers": {
+        "soilNitrogen": "Soil Nitrogen",
+        "soilPH": "Soil pH",
+        "soilOrganicCarbon": "Soil Organic Carbon",
+        "soilBulkDensity": "Soil Bulk Density"
+      },
+      "biodiversityLayers": {
+        "treeSpeciesDensity": "Tree Species Density",
+        "birdsDensity": "Birds Density",
+        "mammalsDensity": "Mammals Density",
+        "amphibiansDensity": "Amphibians Density"
+      },
+      "risksLayers": {
+        "fireRisk": "Fire Risk",
+        "deforestationRisk": "Deforestation Risk"
+      }
+    }
   }
 }

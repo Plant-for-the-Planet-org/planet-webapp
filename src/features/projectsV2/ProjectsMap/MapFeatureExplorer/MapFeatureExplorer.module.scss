@@ -45,6 +45,35 @@
   }
 }
 
+.exploreItemSection {
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 8px;
+  padding: 8px 9px;
+  font-size: 12px;
+  margin-bottom: 10px;
+
+  h2 {
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+}
+
+.layerSwitchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .mapLayer {
+    cursor: pointer;
+  }
+
+  hr {
+    border-top: 1px dashed rgba(189, 189, 189, 1);
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
 .toggleMainContainer {
   padding: 15px 9px;
   height: 14px;
@@ -112,7 +141,7 @@
 .exploreDescription {
   height: fit-content;
   margin-top: 8px;
-  font-size: $fontXXXSmallNew;
+  font-size: var(--font-xx-extra-small);
   border-radius: 6px;
 }
 
