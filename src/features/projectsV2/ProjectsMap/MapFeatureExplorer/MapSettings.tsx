@@ -91,7 +91,7 @@ const MapSettings: FC<MapSettingsProps> = ({
   return (
     <div className={styles.exploreMainContainer}>
       <div>
-        <div>
+        <div className={styles.exploreItemsContainer}>
           {/* <MapLayerToggle
             label={tAllProjects('currentForests')}
             switchComponent={

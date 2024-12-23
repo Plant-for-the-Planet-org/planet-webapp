@@ -14,13 +14,32 @@
   margin-top: 10px;
   padding: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+  max-height: 485px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @include xsPhoneView {
     position: absolute;
+    max-height: max-content;
     min-width: 293px;
     border-radius: unset;
     right: 0px;
     top: -10px;
+  }
+}
+
+.exploreItemsContainer {
+  max-height: 400px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include xsPhoneView {
+    max-height: max-content;
   }
 }
 
