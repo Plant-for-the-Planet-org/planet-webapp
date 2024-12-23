@@ -1,0 +1,205 @@
+@import '../../../../../theme/theme';
+
+@mixin flex-container($direction: row, $justify: space-between) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+}
+
+@mixin modal-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 1);
+}
+
+// Base Components
+.addressManagement {
+  @include flex-container(column);
+  margin-top: 40px;
+  gap: 20px;
+
+  .maxAddress {
+    font-size: $fontXSmall;
+    color: #6c757d;
+  }
+}
+
+.addressManagementTitle {
+  font-size: $fontLarge;
+  font-weight: 600;
+}
+
+.addressListContainer {
+  @include flex-container(column);
+  gap: 16px;
+  width: 100%;
+}
+
+.singleAddressContainer {
+  @include flex-container;
+  width: 100%;
+  background: rgba(242, 242, 242, 0.5);
+  border-radius: 8px;
+  font-size: $fontSmall;
+  font-weight: 400;
+  padding: 24px 10px 24px 24px;
+
+  .kebabMenuButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+
+    svg {
+      height: 20px;
+      width: 12px;
+    }
+
+    &:hover {
+      background-color: rgba(120, 120, 120, 0.1);
+    }
+  }
+}
+
+.addressDetails {
+  @include flex-container(column, center);
+  gap: 16px;
+
+  span {
+    padding: 5px 10px;
+    max-width: fit-content;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    font-size: $fontXSmall;
+    line-height: 16px;
+    font-weight: 600;
+  }
+
+  p {
+    margin-top: 2px;
+  }
+}
+
+// Address Types
+.primary {
+  background: $primaryDarkColor;
+}
+
+.mailing {
+  background: $mediumBlueColor;
+}
+
+// Address Actions
+.addressActions {
+  min-width: 184px;
+  cursor: pointer;
+  padding: 2px 12px;
+  list-style: none;
+
+  .action {
+    font-size: $fontXSmall;
+    font-weight: 400;
+  }
+
+  li {
+    padding: 8px 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(189, 189, 189, 1);
+    }
+  }
+}
+
+// Modal Forms
+.header {
+  font-weight: 700;
+  font-size: $fontSixteen;
+}
+
+.addressFormLayout {
+  @include flex-container(column);
+  @include modal-container;
+  min-width: 565px;
+  gap: 40px;
+
+  .addressForm {
+    @include flex-container(column);
+    gap: 23px;
+  }
+
+  .buttonContainer {
+    @include flex-container;
+    gap: 8px;
+    margin-top: 25px;
+
+    button {
+      flex: 1 1;
+    }
+  }
+}
+
+.addressActionContainer {
+  @include flex-container(column);
+  @include modal-container;
+  width: 468px;
+  gap: 10px;
+
+  .address {
+    width: 100%;
+    background: rgba(242, 242, 242, 0.5);
+    border-radius: 8px;
+    font-size: $fontSmall;
+    font-weight: 400;
+    padding: 24px;
+  }
+
+  .buttonContainer {
+    @include flex-container;
+    gap: 8px;
+    margin-top: 40px;
+
+    button {
+      flex: 1 1;
+    }
+  }
+}
+
+// Mobile Style
+@include xsPhoneView {
+  .addressFormLayout {
+    min-width: fit-content;
+    width: 95%;
+
+    .buttonContainer {
+      @include flex-container(column);
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+  .addressActionContainer {
+    width: 95%;
+    min-width: fit-content;
+
+    .buttonContainer {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+}
+
+// Form Spinner
+.addressMgmtSpinner {
+  @include flex-container(row, center);
+}
