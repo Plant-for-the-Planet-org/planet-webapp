@@ -21,6 +21,7 @@ interface Props {
     color: string | undefined;
     showDivider: boolean;
     additionalInfo?: AdditionalInfo;
+    shouldRender: boolean;
   }[];
   mapOptions?: MapOptions;
   updateMapOption?: (option: keyof MapOptions, value: boolean) => void;
@@ -36,26 +37,30 @@ const MapLayerControlPanel = ({
     <section className={styles.exploreItemSection}>
       {category && <h2>{category}</h2>}
       <div>
-        {exploreConfig.map((item) => (
-          <LayerSwitchContainer
-            key={item.label}
-            showDivider={item.showDivider}
-            switchComponent={
-              <StyledSwitch
-                checked={mapOptions?.['showProjects'] || false}
-                customColor={item.color}
-                onChange={(
-                  _event: ChangeEvent<HTMLInputElement>,
-                  checked: boolean
-                ) => {
-                  if (updateMapOption) updateMapOption('showProjects', checked);
-                }}
-              />
-            }
-            label={item.label}
-            additionalInfo={item.additionalInfo}
-          />
-        ))}
+        {exploreConfig.map((item) => {
+          if (!item.shouldRender) return <></>;
+          return (
+            <LayerSwitchContainer
+              key={item.label}
+              showDivider={item.showDivider}
+              switchComponent={
+                <StyledSwitch
+                  checked={mapOptions?.['showProjects'] || false}
+                  customColor={item.color}
+                  onChange={(
+                    _event: ChangeEvent<HTMLInputElement>,
+                    checked: boolean
+                  ) => {
+                    if (updateMapOption)
+                      updateMapOption('showProjects', checked);
+                  }}
+                />
+              }
+              label={item.label}
+              additionalInfo={item.additionalInfo}
+            />
+          );
+        })}
       </div>
     </section>
   );

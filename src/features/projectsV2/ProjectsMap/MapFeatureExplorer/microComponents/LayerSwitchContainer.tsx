@@ -1,10 +1,10 @@
 import type { AdditionalInfo } from './MapLayerControlPanel';
 import type { ReactNode } from 'react';
 
-import { useState } from 'react';
+// import { useState } from 'react';
 import styles from '../MapFeatureExplorer.module.scss';
-import { Popover } from '@mui/material';
-import LayerInfoPopupContent from './LayerInfoPopupContent';
+// import { Popover } from '@mui/material';
+// import LayerInfoPopupContent from './LayerInfoPopupContent';
 
 interface Props {
   label: string;
@@ -19,30 +19,30 @@ const LayerSwitchContainer = ({
   showDivider,
   additionalInfo,
 }: Props) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  // const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    setAnchorEl(e.currentTarget);
-  };
+  // const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   setAnchorEl(e.currentTarget);
+  // };
 
-  const handleMouseLeave = () => {
-    setAnchorEl(null);
-  };
+  // const handleMouseLeave = () => {
+  //   setAnchorEl(null);
+  // };
 
   return (
     <>
       <div className={styles.layerSwitchContainer}>
         <div
           className={showDivider ? styles.mapLayer : undefined}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          // onMouseEnter={handleMouseEnter}
+          // onMouseLeave={handleMouseLeave}
         >
           <p>{label}</p>
           {showDivider && <hr />}
         </div>
         <div className={styles.switchContainer}>{switchComponent}</div>
       </div>
-      {showDivider && <hr />}
+      {/* {showDivider && <hr />}
       {showDivider && (
         <Popover
           open={Boolean(anchorEl)}
@@ -73,7 +73,7 @@ const LayerSwitchContainer = ({
             handleMouseLeave={handleMouseLeave}
           />
         </Popover>
-      )}
+      )} */}
     </>
   );
 };
