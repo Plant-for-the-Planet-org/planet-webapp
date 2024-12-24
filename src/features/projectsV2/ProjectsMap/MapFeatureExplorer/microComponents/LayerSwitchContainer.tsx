@@ -17,7 +17,6 @@ const LayerSwitchContainer = ({
   label,
   switchComponent,
   showDivider,
-  additionalInfo,
 }: Props) => {
   // const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
