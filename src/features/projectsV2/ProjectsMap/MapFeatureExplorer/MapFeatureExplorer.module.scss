@@ -93,6 +93,25 @@
   }
 }
 
+.layerInfoPopupContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 189px;
+  background: #fff;
+  padding: 12px;
+  font-size: 10px;
+
+  .label {
+    font-weight: 600;
+    color: rgba(130, 130, 130, 1);
+    text-transform: uppercase;
+  }
+  .source {
+    color: $primaryDarkColor;
+  }
+}
+
 .toggleMainContainer {
   padding: 15px 9px;
   height: 14px;
@@ -159,7 +178,6 @@
 
 .exploreDescription {
   height: fit-content;
-  margin-top: 8px;
   font-size: var(--font-xx-extra-small);
   border-radius: 6px;
 }

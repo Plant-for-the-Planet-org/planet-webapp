@@ -34,50 +34,45 @@ const MapSettings: FC<MapSettingsProps> = ({
       color: undefined,
       showDivider: true,
       shouldRender: true,
+      additionalInfo: {
+        dataYears: 2018,
+        resolution: '1m',
+        description: 'Global canopy height between year 2018-2020',
+        underlyingData:
+          'Global Canopy Height Maps based on AI model (DinoV2) and remote sensing data (MAXAR and GEDI) by Meta',
+        source:
+          'https://sustainability.atmeta.com/blog/2024/04/22/using-artificial-intelligence-to-map-the-earths-forests/',
+        covariates: 'Tolan et al. 2024',
+      },
     },
     {
       label: tMaps('layers.forestLayers.deforestation'),
       color: primaryColorNew,
       showDivider: true,
       shouldRender: true,
+      additionalInfo: {
+        dataYears: 2023,
+        resolution: '30m',
+        description: 'Location of deforestation in previous year',
+        underlyingData: 'Landsat satellite programs',
+        source: 'https://www.science.org/doi/10.1126/science.1244693',
+        covariates: 'Hansen et al. 2013',
+      },
     },
     {
       label: tMaps('layers.forestLayers.forestBiomass'),
       color: primaryColorNew,
       showDivider: true,
       shouldRender: true,
-    },
-    {
-      label: tMaps('layers.forestLayers.forestCover'),
-      color: primaryColorNew,
-      showDivider: true,
-      shouldRender: true,
-    },
-  ];
-  const soilConfig = [
-    {
-      label: tMaps('layers.soilLayers.soilBulkDensity'),
-      color: undefined,
-      showDivider: true,
-      shouldRender: true,
-    },
-    {
-      label: tMaps('layers.soilLayers.soilNitrogen'),
-      color: undefined,
-      showDivider: true,
-      shouldRender: true,
-    },
-    {
-      label: tMaps('layers.soilLayers.soilOrganicCarbon'),
-      color: undefined,
-      showDivider: true,
-      shouldRender: true,
-    },
-    {
-      label: tMaps('layers.soilLayers.soilPH'),
-      color: undefined,
-      showDivider: true,
-      shouldRender: true,
+      additionalInfo: {
+        dataYears: 2023,
+        resolution: '500km',
+        description: 'Tree cover as a binary map',
+        underlyingData:
+          'AI model built by Google to classify Sentinel II images in 9 different land use and land cover classes',
+        source: 'https://dynamicworld.app/',
+        covariates: 'Dynamic World',
+      },
     },
   ];
   const projectConfig = [
@@ -138,10 +133,6 @@ const MapSettings: FC<MapSettingsProps> = ({
           <MapLayerControlPanel
             category={tMaps('layers.forests')}
             exploreConfig={forestConfig}
-          />
-          <MapLayerControlPanel
-            category={tMaps('layers.soil')}
-            exploreConfig={soilConfig}
           />
         </div>
         <div className={styles.exploreDescription}>

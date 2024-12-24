@@ -49,6 +49,11 @@
     "hideProjectDetails": "Hide Project Details",
     "countries": "Countries",
     "layers": {
+      "dataYears": "Data Years",
+      "covariates": "Covariates",
+      "description": "Description",
+      "resolution": "Resolution",
+      "underlyingData": "Underlying Data",
       "forests": "Forests",
       "soil": "Soil",
       "biodiversity": "Biodiversity",

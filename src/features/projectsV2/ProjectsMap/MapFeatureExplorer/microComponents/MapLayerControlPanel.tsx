@@ -5,12 +5,22 @@ import { StyledSwitch } from '../CustomSwitch';
 import styles from '../MapFeatureExplorer.module.scss';
 import LayerSwitchContainer from './LayerSwitchContainer';
 
+export type AdditionalInfo = {
+  dataYears: number;
+  resolution: string;
+  description: string;
+  underlyingData: string;
+  source: string;
+  covariates: string;
+};
+
 interface Props {
   category?: string;
   exploreConfig: {
     label: string;
     color: string | undefined;
     showDivider: boolean;
+    additionalInfo?: AdditionalInfo;
   }[];
   mapOptions?: MapOptions;
   updateMapOption?: (option: keyof MapOptions, value: boolean) => void;
@@ -38,13 +48,12 @@ const MapLayerControlPanel = ({
                   _event: ChangeEvent<HTMLInputElement>,
                   checked: boolean
                 ) => {
-                  if (updateMapOption) {
-                    updateMapOption('showProjects', checked);
-                  }
+                  if (updateMapOption) updateMapOption('showProjects', checked);
                 }}
               />
             }
             label={item.label}
+            additionalInfo={item.additionalInfo}
           />
         ))}
       </div>
