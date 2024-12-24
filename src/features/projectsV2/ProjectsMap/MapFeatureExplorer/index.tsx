@@ -8,6 +8,7 @@ import styles from './MapFeatureExplorer.module.scss';
 // import PlayIcon from '../../../../../public/assets/images/icons/projectV2/PlayIcon';
 import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
+import { Modal } from '@mui/material';
 
 /* interface ExploreProjectProps {
   label: string | string[];
@@ -17,7 +18,6 @@ import MapSettings from './MapSettings';
 } */
 
 interface EcosystemOptionProps {
-  infoIcon: React.ReactNode;
   label: string;
   switchComponent: React.ReactNode;
 }
@@ -28,7 +28,6 @@ export interface YearRangeSliderProps {
 }
 
 export const MapLayerToggle = ({
-  infoIcon,
   label,
   switchComponent,
 }: EcosystemOptionProps) => {
@@ -36,7 +35,6 @@ export const MapLayerToggle = ({
     <>
       <div className={styles.toggleMainContainer}>
         <div className={styles.toggleContainer}>
-          <div className={styles.infoIconContainer}>{infoIcon}</div>
           <div>{label}</div>
         </div>
         <div className={styles.switchContainer}>{switchComponent}</div>
@@ -96,11 +94,13 @@ export const MapLayerToggle = ({
 type MapFeatureExplorerProps = {
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+  isMobile?: boolean;
 };
 
 const MapFeatureExplorer = ({
   mapOptions,
   updateMapOption,
+  isMobile,
 }: MapFeatureExplorerProps) => {
   const t = useTranslations('Maps');
   const [isOpen, setIsOpen] = useState(false);
@@ -114,11 +114,21 @@ const MapFeatureExplorer = ({
         {t('explore')}
       </CustomButton>
 
-      {isOpen && (
+      {isOpen && !isMobile && (
         <MapSettings
           mapOptions={mapOptions}
           updateMapOption={updateMapOption}
         />
+      )}
+      {isMobile && (
+        <Modal open={isOpen}>
+          <MapSettings
+            mapOptions={mapOptions}
+            updateMapOption={updateMapOption}
+            isMobile={isMobile}
+            setIsOpen={setIsOpen}
+          />
+        </Modal>
       )}
     </div>
   );

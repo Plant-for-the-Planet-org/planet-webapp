@@ -9,26 +9,117 @@
 
 .exploreMainContainer {
   max-width: 182px;
-  background-color: $backgroundColor;
+  background-color: #fff;
   border-radius: 12px;
   margin-top: 10px;
-  padding: 14px 16px;
+  padding: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+  max-height: 485px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @include xsPhoneView {
     position: absolute;
+    max-height: max-content;
+    min-width: 293px;
+    border-radius: unset;
+    right: 0px;
+    top: -10px;
   }
 }
 
-.exploreContainer {
-  width: 150px;
+.exploreItemsContainer {
+  max-height: 400px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include xsPhoneView {
+    max-height: max-content;
+  }
+}
+
+.exploreFeatureMobileHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 4px 18px;
+
+  .exploreLabel {
+    display: flex;
+    gap: 8px;
+
+    p {
+      font-size: 14px;
+      font-weight: 700;
+      gap: 8px;
+    }
+  }
+
+  svg {
+    width: 16px;
+  }
+}
+
+.exploreItemSection {
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 8px;
+  padding: 8px 9px;
+  font-size: 12px;
+  margin-bottom: 10px;
+
+  h2 {
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+}
+
+.layerSwitchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .mapLayer {
+    cursor: pointer;
+  }
+
+  hr {
+    border-top: 1px dashed rgba(189, 189, 189, 1);
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+.layerInfoPopupContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 189px;
+  background: #fff;
+  padding: 12px;
+  font-size: 10px;
+
+  .label {
+    font-weight: 600;
+    color: rgba(130, 130, 130, 1);
+    text-transform: uppercase;
+  }
+  .source {
+    color: $primaryDarkColor;
+  }
 }
 
 .toggleMainContainer {
+  padding: 15px 9px;
   height: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 8px;
 }
 
 .toggleContainer {
@@ -86,11 +177,8 @@
 }
 
 .exploreDescription {
-  padding: 8px;
   height: fit-content;
-  margin-top: 14px;
-  background-color: rgba(var(--explore-description-background-color-new), 1);
-  font-size: $fontXXSmall;
+  font-size: var(--font-xx-extra-small);
   border-radius: 6px;
 }
 
