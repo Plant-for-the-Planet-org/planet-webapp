@@ -17,6 +17,7 @@ import {
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -78,7 +79,6 @@ export default function Home({ pageProps }: Props) {
     loadTenantScore();
   }, []);
 
-
   const [treesDonated, setTreesDonated] = React.useState<TreesDonated | null>(
     null
   );
@@ -103,12 +103,20 @@ export default function Home({ pageProps }: Props) {
     switch (pageProps.tenantConfig.config.slug) {
       case 'planet':
         AllPage = (
-          <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} treesDonated={treesDonated} />
+          <LeaderBoard
+            leaderboard={leaderboard}
+            tenantScore={tenantScore}
+            treesDonated={treesDonated}
+          />
         );
         return AllPage;
       case 'ttc':
         AllPage = (
-          <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} treesDonated={treesDonated}/>
+          <LeaderBoard
+            leaderboard={leaderboard}
+            tenantScore={tenantScore}
+            treesDonated={treesDonated}
+          />
         );
         return AllPage;
       default:
@@ -127,17 +135,18 @@ export default function Home({ pageProps }: Props) {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

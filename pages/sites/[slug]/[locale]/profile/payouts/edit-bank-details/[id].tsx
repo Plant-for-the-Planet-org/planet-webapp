@@ -6,6 +6,7 @@ import ManagePayouts, {
 } from '../../../../../../../src/features/user/ManagePayouts';
 import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -50,18 +51,19 @@ export default function EditBankDetailsPage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

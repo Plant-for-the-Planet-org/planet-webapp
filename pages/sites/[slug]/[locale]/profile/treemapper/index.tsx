@@ -4,6 +4,7 @@ import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/
 import TreeMapper from '../../../../../../src/features/user/TreeMapper';
 import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -51,17 +52,18 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
 
 export default TreeMapperPage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

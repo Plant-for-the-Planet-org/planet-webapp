@@ -10,6 +10,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../../../../src/features/common/types/payments';
 import RecurrentPayments from '../../../../../src/features/user/Account/RecurrentPayments';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -117,17 +118,18 @@ function RecurrentDonations({
 
 export default RecurrentDonations;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

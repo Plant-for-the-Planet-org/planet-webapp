@@ -4,6 +4,7 @@ import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { AbstractIntlMessages } from 'next-intl';
 import { Tenant } from '@planet-sdk/common';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -50,7 +51,7 @@ export default function MangrovesLandingPage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [{ params: { slug: 'salesforce', locale: 'en' } }],
     fallback: 'blocking',

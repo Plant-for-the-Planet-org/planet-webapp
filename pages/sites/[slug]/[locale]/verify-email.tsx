@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -44,17 +45,18 @@ export default function VerifyEmail({ pageProps }: Props): ReactElement {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

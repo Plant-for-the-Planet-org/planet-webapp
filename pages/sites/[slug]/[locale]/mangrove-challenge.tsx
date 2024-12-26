@@ -8,6 +8,7 @@ import {
 import { AbstractIntlMessages } from 'next-intl';
 import { Tenant } from '@planet-sdk/common';
 import {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -98,7 +99,7 @@ export default function MangroveChallenge({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [{ params: { slug: 'salesforce', locale: 'en' } }],
     fallback: 'blocking',
