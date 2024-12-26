@@ -86,26 +86,27 @@ const OtherInterventionInfo = ({
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
+  const checkForPublicData = plantLocationInfo?.metadata.public.length !== 0
+
   const content = [
-    <>
-      {shouldDisplayImageCarousel && (
-        <ImageSlider
-          key="imageSlider"
-          images={sampleInterventionSpeciesImages}
-          type="coordinate"
-          isMobile={isMobile}
-          imageSize="large"
-          allowFullView={!isMobile}
-        />
-      )}
-    </>,
+    shouldDisplayImageCarousel && (
+      <ImageSlider
+        key="imageSlider"
+        images={sampleInterventionSpeciesImages}
+        type="coordinate"
+        isMobile={isMobile}
+        imageSize="large"
+        allowFullView={!isMobile}
+      />
+    )
+    ,
     <OtherInterventionInfoHeader
       key="plantingDetails"
       plantingDensity={plantingDensity}
       plantDate={plantLocationInfo?.interventionStartDate}
       type={plantLocationInfo?.type}
     />,
-    <OtherInterventionMetaData
+    checkForPublicData && <OtherInterventionMetaData
       key="plantingDetails"
       metaData={plantLocationInfo?.metadata}
       plantDate={plantLocationInfo?.interventionStartDate}
@@ -127,12 +128,14 @@ const OtherInterventionInfo = ({
       />
     ),
   ].filter(Boolean);
-  console.log("OJK,plantLocationInfo", plantLocationInfo)
+
   return isMobile ? (
-    <MobileInfoSwiper
-      slides={content}
-      uniqueKey={plantLocationInfo?.hid || ''}
-    />
+    <>
+      <MobileInfoSwiper
+        slides={content}
+        uniqueKey={plantLocationInfo?.hid || ''}
+      />
+    </>
   ) : (
     <section className={styles.plantLocationInfoSection}>
       {content}
