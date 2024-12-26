@@ -207,7 +207,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           )}
         </Map>
       </div>
-      {/* {shouldShowMultiPlantLocationInfo && (
+      {shouldShowMultiPlantLocationInfo && (
         <MultiPlantLocationInfo
           plantLocationInfo={selectedPlantLocation}
           isMobile={props.isMobile}
@@ -223,8 +223,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           isMobile={props.isMobile}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
-      )} */}
-      <OtherInterventionInfo plantLocationInfo={selectedPlantLocation} setSelectedSamplePlantLocation={setSelectedSamplePlantLocation} isMobile={true} />
+      )}
     </>
   );
 }
