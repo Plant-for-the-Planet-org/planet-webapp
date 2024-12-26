@@ -1,11 +1,5 @@
 import { useLocale } from 'next-intl';
-import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import type { SetState } from '../../../common/types/common';
-import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
-
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
 import { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 
@@ -43,9 +37,6 @@ const InterventionList = ({
             key={index}
           >
             <p>{site.label}</p>
-            {/* <p className={styles.siteArea}>
-              {getFormattedRoundedNumber(locale, site.siteArea, 0)} ha
-            </p> */}
           </li>
         );
       })}

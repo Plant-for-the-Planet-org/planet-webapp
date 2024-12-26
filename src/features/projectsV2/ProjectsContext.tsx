@@ -35,7 +35,7 @@ interface ProjectsState {
   setSingleProject: SetState<ExtendedProject | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
-  selectedPlantLocation: PlantLocation | null;
+  selectedPlantLocation: PlantLocation | null ;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   selectedSamplePlantLocation: SamplePlantLocation | null;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;

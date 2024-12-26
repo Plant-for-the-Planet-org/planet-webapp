@@ -181,4 +181,26 @@
   .scientificName .data {
     font-style: italic;
   }
+
 }
+
+.interventionMetaDataGroup {
+  display: flex;
+  flex-direction: column,
+
+}
+
+.interventionMetaItem {
+  padding: 20px;
+  background: rgba(0, 122, 73, 0.05);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.plantMetaDataCardLabel {
+  color: rgba(0, 122, 73, 1);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+

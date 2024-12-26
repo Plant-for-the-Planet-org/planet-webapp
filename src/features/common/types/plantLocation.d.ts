@@ -1,8 +1,11 @@
+import { InterventionTypes } from '@planet-sdk/common';
 import { DateString } from './common';
 import { Links } from './payments';
 import { Polygon, Point } from 'geojson';
+import { INTERVENTION_TYPE } from '../../../utils/constants/intervention';
 
 export interface PlantLocationBase {
+  type: InterventionTypes 
   hid: string;
   id: string;
   idempotencyKey: string;
@@ -52,7 +55,9 @@ export interface PlantLocationMulti extends PlantLocationBase {
   nextMeasurementDate: null;
 }
 
-export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
+
+
+export type PlantLocation = PlantLocationSingle | PlantLocationMulti  ;
 
 export interface SamplePlantLocation extends PlantLocationBase {
   type: 'sample-tree-registration';

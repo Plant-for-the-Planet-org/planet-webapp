@@ -7,7 +7,7 @@ import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { AllIntervention, INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
-
+import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
 interface InterventionType {
   label: string
   value: INTERVENTION_TYPE
@@ -19,12 +19,14 @@ interface Props {
   allIntervention: InterventionType[];
   selectedIntervention: string;
   setSelectedIntervention: SetState<string>;
+  isMobile?: boolean
 }
 
 const InterventionDropdown = ({
   allIntervention,
   selectedIntervention,
   setSelectedIntervention,
+  isMobile
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const siteList = useMemo(() => {
@@ -46,34 +48,19 @@ const InterventionDropdown = ({
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
-        <div className={styles.siteIconAndTextContainer}>
-          {/* <SiteIcon width={27} color={'#333'} /> */}
-            <>
-              {selectedSiteData && (
-                <div className={styles.labelTextContainer}>
-                  <label className={styles.sitesLabel}>
-                    {/* <span className={styles.siteId}>
-                      {tProjectDetails('siteCount', {
-                        siteId: getId(selectedSiteData?.id),
-                        totalCount: siteList.length,
-                      })}
-                    </span>
-                    <span className={styles.separator}> • </span> */}
-                    <span>
-                      {/* {getFormattedRoundedNumber(
-                        locale,
-                        selectedSiteData?.siteArea,
-                        0
-                      )}{' '}
-                      ha */}
-                    </span>
-                  </label>
-                  <p className={styles.siteName}>
-                    {truncateString(selectedSiteData?.label, 40)}
-                  </p>
-                </div>
-              )}
-            </>
+        <div className={styles.siteIconAndTextContainer} >
+          <InterventionIcon width={27} color={'#333'} />
+          <>
+            {selectedSiteData && (
+              <div className={styles.labelTextContainer} style={{marginTop:'5px'}}>
+                {isMobile?<label className={styles.sitesLabel}>{truncateString(selectedSiteData?.label, 40)}
+                </label>:
+                <p className={styles.siteName}>
+                  {truncateString(selectedSiteData?.label, 40)}
+                </p>}
+              </div>
+            )}
+          </>
         </div>
         <div className={styles.menuArrow}>
           {isMenuOpen ? (

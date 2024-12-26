@@ -15,7 +15,7 @@ $layoutPaddingSide: 20px;
   gap: 18px;
   position: absolute;
   z-index: 2;
-  top: calc($layoutPaddingTop + 100px);
+  top: calc($layoutPaddingTop + 70px);
   right: calc($layoutPaddingSide + 10px);
 }
 .siteIconAndTextContainer {
@@ -62,7 +62,7 @@ $layoutPaddingSide: 20px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-  top: 170px;
+  top: 140px;
   right: 30px;
   max-height: 58vh;
   overflow-y: auto;
