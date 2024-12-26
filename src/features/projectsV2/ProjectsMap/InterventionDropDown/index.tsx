@@ -52,10 +52,10 @@ const InterventionDropdown = ({
           <InterventionIcon width={27} color={'#333'} />
           <>
             {selectedSiteData && (
-              <div className={styles.labelTextContainer} style={{marginTop:'5px'}}>
+              <div className={styles.labelTextContainer}>
                 {isMobile?<label className={styles.sitesLabel}>{truncateString(selectedSiteData?.label, 40)}
                 </label>:
-                <p className={styles.siteName}>
+                <p className={styles.siteName}  style={{marginTop:'5px'}}>
                   {truncateString(selectedSiteData?.label, 40)}
                 </p>}
               </div>
