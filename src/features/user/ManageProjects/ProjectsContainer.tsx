@@ -65,7 +65,9 @@ function SingleProject({ project }: { project: Properties }) {
               Number(project.countPlanted),
               1
             )}{' '}
-            {tCommon('tree', { count: Number(project.countPlanted) })}
+            {project.unitType === 'm2'
+              ? tCommon(project.unitType)
+              : tCommon('tree', { count: Number(project.countPlanted) })}
           </p>
         ) : (
           <></>
