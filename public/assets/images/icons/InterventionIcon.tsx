@@ -2,7 +2,6 @@
 
 
 import React from 'react';
-import { IconProps } from '../../../../src/features/common/types/common';
 
 function InterventionIcon() {
     return (

@@ -126,9 +126,21 @@ const ProjectDetails = ({
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
-  const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration']
-  const shouldShowOtherIntervention = (hoveredPlantLocation !== null && !PLANTATION_TYPES.includes(hoveredPlantLocation.type)) || (selectedPlantLocation !== null && !PLANTATION_TYPES.includes(selectedPlantLocation.type)) &&
-  !isMobile;
+  
+    const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration'] as const;
+
+    // Helper function with proper type checking
+    const isNonPlantationType = (location: PlantLocation | null): boolean => {
+      return location !== null && !PLANTATION_TYPES.includes(location.type);
+    };
+    
+    
+    const shouldShowOtherIntervention = (
+      isNonPlantationType(hoveredPlantLocation) ||
+      (isNonPlantationType(selectedPlantLocation) && !isMobile)
+    );
+
+
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||

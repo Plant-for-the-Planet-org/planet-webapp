@@ -52,7 +52,7 @@ const OtherInterventionInfo = ({
         plantLocationInfo.plantedSpecies &&
         plantLocationInfo.plantedSpecies.length > 0
         ? plantLocationInfo.plantedSpecies.reduce(
-          (sum: any, species: { treeCount: any; }) => sum + species.treeCount,
+          (sum, species: { treeCount: number }) => sum + species.treeCount,
           0
         )
         : 0;
@@ -64,7 +64,7 @@ const OtherInterventionInfo = ({
   }, [plantLocationInfo?.geometry, plantLocationInfo?.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    if (plantLocationInfo && plantLocationInfo.sampleInterventions.length>0) {
+    if (plantLocationInfo && plantLocationInfo.sampleInterventions.length > 0) {
       const result = plantLocationInfo.sampleInterventions && plantLocationInfo.sampleInterventions.map((item) => {
         return {
           id: item.coordinates[0].id,
