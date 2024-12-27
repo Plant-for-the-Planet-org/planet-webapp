@@ -1,5 +1,5 @@
 export const SINGLE_TREE = '#007A49';
-export const MULTI_TREE = '#68B030';
+export const MULTI_TREE = '#007A49';
 export const INVASIVE_SPECIES = '#EB5757';
 export const FIRE_SUPPRESSION = '#F2C94C';
 export const FIRE_PATROL = '#F2994A';
