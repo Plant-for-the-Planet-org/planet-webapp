@@ -127,7 +127,8 @@ const ProjectDetails = ({
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
   const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration']
-  const shouldShowOtherIntervention = (hoveredPlantLocation !== null && !PLANTATION_TYPES.includes(hoveredPlantLocation.type)) || (selectedPlantLocation !== null && !PLANTATION_TYPES.includes(selectedPlantLocation.type))
+  const shouldShowOtherIntervention = (hoveredPlantLocation !== null && !PLANTATION_TYPES.includes(hoveredPlantLocation.type)) || (selectedPlantLocation !== null && !PLANTATION_TYPES.includes(selectedPlantLocation.type)) &&
+  !isMobile;
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||

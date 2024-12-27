@@ -178,7 +178,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const mapContainerClass = `${styles.mapContainer} ${styles[mobileOS !== undefined ? mobileOS : '']
     }`;
   const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration']
-  const shouldShowOtherIntervention = (selectedPlantLocation !== null && !PLANTATION_TYPES.includes(selectedPlantLocation.type))
+  const shouldShowOtherIntervention = props.isMobile && (selectedPlantLocation !== null && !PLANTATION_TYPES.includes(selectedPlantLocation.type))
   return (
     <>
       <MapControls {...mapControlProps} />
