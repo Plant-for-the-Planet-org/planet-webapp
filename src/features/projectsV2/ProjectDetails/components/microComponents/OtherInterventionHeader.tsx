@@ -1,17 +1,13 @@
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../../styles/PlantLocationInfo.module.scss';
-import { useLocale, useTranslations } from 'next-intl';
 import { AllIntervention } from '../../../../../utils/constants/intervention';
 
 interface Props {
-  plantingDensity: number | null;
   type: string | undefined,
   plantDate: string | null | undefined;
 }
 
-const OtherInterventionInfoHeader = ({ plantingDensity, plantDate, type }: Props) => {
-  const tProjectDetails = useTranslations('ProjectDetails');
-  const locale = useLocale();
+const OtherInterventionInfoHeader = ({  plantDate, type }: Props) => {
 
   const findInterventionHeader = (valueKey: string | undefined) => {
     const found = AllIntervention.find(item => item.value === valueKey);
@@ -21,7 +17,7 @@ const OtherInterventionInfoHeader = ({ plantingDensity, plantDate, type }: Props
     {
       label: "Intervention",
       data: findInterventionHeader(type),
-      shouldRender: plantingDensity !== null,
+      shouldRender: true
     },
     {
       label: "Intervention Date",

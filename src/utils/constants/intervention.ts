@@ -16,7 +16,7 @@ export const ENRICHMENT_PLANTING = '#EB67CE';
 export const MAINTENANCE = '#6C63FF';
 export const OTHER_INTERVENTION = '#9B51E0';
 
-export const FillColor: any = [
+export const FillColor = [
     'match',
     ['get', 'type'],
     'remeasurement', 'tomato',

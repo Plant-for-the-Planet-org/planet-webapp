@@ -1,6 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import { useState, useMemo, useCallback } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useMemo } from 'react';
 import styles from './InterventionList.module.scss';
 import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';

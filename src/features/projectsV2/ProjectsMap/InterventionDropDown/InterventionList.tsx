@@ -1,4 +1,3 @@
-import { useLocale } from 'next-intl';
 import type { SetState } from '../../../common/types/common';
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
 import { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
@@ -20,7 +19,6 @@ const InterventionList = ({
   setIsMenuOpen,
   selectedSiteData,
 }: InterventionListProps) => {
-  const locale = useLocale();
   const handleSiteSelection = (index: number, key: string) => {
     setIsMenuOpen(false);
     setSelectedSite(key);

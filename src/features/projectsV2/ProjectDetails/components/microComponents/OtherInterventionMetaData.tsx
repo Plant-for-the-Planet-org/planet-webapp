@@ -1,5 +1,4 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
-import { useLocale, useTranslations } from 'next-intl';
 import { Metadata } from '../../../../common/types/plantLocation';
 
 interface Props {
@@ -9,8 +8,6 @@ interface Props {
 }
 
 const OtherInterventionMetaData = ({ metaData }: Props) => {
-  const tProjectDetails = useTranslations('ProjectDetails');
-  const locale = useLocale();
 
   function isJsonString(str: string) {
     try {
