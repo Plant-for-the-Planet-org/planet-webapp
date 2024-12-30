@@ -96,7 +96,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
-  const [selectedIntervention, setSelectedIntervention] = useState<string>('default');
+  const [selectedIntervention, setSelectedIntervention] = useState<string>('all');
   const [disableInterventionMenu, setDisableInterventionMenu] = useState<boolean>(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -244,7 +244,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject(null);
       setHoveredPlantLocation(null);
       setSelectedSite(null);
-      setSelectedIntervention('default')
+      setSelectedIntervention('all')
       setDisableInterventionMenu(false)
       setPreventShallowPush(false);
       setPlantLocations(null);
