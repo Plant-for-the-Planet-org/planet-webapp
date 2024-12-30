@@ -35,7 +35,7 @@ interface ProjectsState {
   setSingleProject: SetState<ExtendedProject | null>;
   plantLocations: PlantLocation[] | null;
   setPlantLocations: SetState<PlantLocation[] | null>;
-  selectedPlantLocation: PlantLocation | null ;
+  selectedPlantLocation: PlantLocation | null;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   selectedSamplePlantLocation: SamplePlantLocation | null;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
@@ -60,6 +60,8 @@ interface ProjectsState {
   setSelectedMode?: SetState<ViewMode>;
   selectedIntervention: string;
   setSelectedIntervention: SetState<string>;
+  disableInterventionMenu: boolean;
+  setDisableInterventionMenu: SetState<boolean>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -95,6 +97,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [selectedIntervention, setSelectedIntervention] = useState<string>('default');
+  const [disableInterventionMenu, setDisableInterventionMenu] = useState<boolean>(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -242,6 +245,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setHoveredPlantLocation(null);
       setSelectedSite(null);
       setSelectedIntervention('default')
+      setDisableInterventionMenu(false)
       setPreventShallowPush(false);
       setPlantLocations(null);
     }
@@ -447,7 +451,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedSite,
       setSelectedSite,
       selectedIntervention,
+      disableInterventionMenu,
       setSelectedIntervention,
+      setDisableInterventionMenu,
       setPreventShallowPush,
     }),
     [
@@ -467,7 +473,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       hoveredPlantLocation,
       selectedSite,
       preventShallowPush,
-      selectedIntervention
+      selectedIntervention,
+      disableInterventionMenu
     ]
   );
 

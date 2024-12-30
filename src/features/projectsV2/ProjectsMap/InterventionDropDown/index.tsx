@@ -1,5 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
 import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
@@ -19,12 +19,16 @@ interface Props {
   selectedIntervention: string;
   setSelectedIntervention: SetState<string>;
   isMobile?: boolean
+  enableInterventionFilter: () => void
+  disableInterventionMenu: boolean
 }
 
 const InterventionDropdown = ({
   allIntervention,
   selectedIntervention,
   setSelectedIntervention,
+  enableInterventionFilter,
+  disableInterventionMenu,
   isMobile
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,9 +45,18 @@ const InterventionDropdown = ({
     return AllIntervention.find(item => item.value === value);
   };
 
+    useEffect(() => {
+        if(!disableInterventionMenu){
+          setIsMenuOpen(false)
+        }
+    }, [disableInterventionMenu])
+
   const selectedSiteData = findMatchingIntervention(selectedIntervention)
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleMenu = () => {
+    enableInterventionFilter()
+    setIsMenuOpen((prev) => !prev)
+  };
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>

@@ -48,7 +48,9 @@ const MapControls = ({
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     selectedIntervention,
-    setSelectedIntervention
+    setSelectedIntervention,
+    disableInterventionMenu,
+    setDisableInterventionMenu,
   } = useProjects();
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
@@ -59,6 +61,13 @@ const MapControls = ({
   );
   const isProjectDetailsPage = page === 'project-details';
 
+  const enableInterventionFilter=()=>{
+    setDisableInterventionMenu(true)
+  }
+  const disableInterventionFilter=()=>{
+    setDisableInterventionMenu(false)
+  }
+
   const siteDropdownProps = {
     selectedSite,
     setSelectedSite,
@@ -66,6 +75,8 @@ const MapControls = ({
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
+    disableInterventionFilter,
+    disableInterventionMenu
   };
 
   const InterventionDropdownProps = {
@@ -75,6 +86,8 @@ const MapControls = ({
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
+    enableInterventionFilter,
+    disableInterventionMenu
   };
   const projectListControlProps = {
     ...siteDropdownProps,

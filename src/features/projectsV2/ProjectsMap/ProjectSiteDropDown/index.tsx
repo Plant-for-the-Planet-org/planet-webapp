@@ -5,7 +5,7 @@ import type {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { area } from '@turf/turf';
@@ -41,6 +41,8 @@ interface Props {
   selectedPlantLocation: PlantLocation | null;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  disableInterventionFilter: () => void;
+  disableInterventionMenu: boolean
 }
 
 const ProjectSiteDropdown = ({
@@ -50,6 +52,8 @@ const ProjectSiteDropdown = ({
   selectedPlantLocation,
   setSelectedPlantLocation,
   setSelectedSamplePlantLocation,
+  disableInterventionFilter,
+  disableInterventionMenu
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -72,10 +76,21 @@ const ProjectSiteDropdown = ({
     },
     [siteList]
   );
+
+  useEffect(() => {
+      if(disableInterventionMenu){
+        setIsMenuOpen(false)
+      }
+  }, [disableInterventionMenu])
+  
+
   const selectedSiteData =
     selectedSite !== null ? siteList[selectedSite] : undefined;
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev)
+    disableInterventionFilter()
+  };
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
