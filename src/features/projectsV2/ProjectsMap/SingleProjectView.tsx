@@ -11,13 +11,14 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import zoomOut from '../../../utils/mapsV2/zoomOut';
 
 interface Props {
   mapRef: MapRef;
 }
 
 const SingleProjectView = ({ mapRef }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
+  const { singleProject, selectedSite, selectedPlantLocation, plantLocations, selectedIntervention } =
     useProjects();
   if (singleProject === null) return null;
 
@@ -58,6 +59,15 @@ const SingleProjectView = ({ mapRef }: Props) => {
       }
     }
   }, [selectedPlantLocation, router.isReady]);
+
+  useEffect(() => {
+    zoomOut(
+      handleViewStateChange,
+      mapRef,
+      4000
+    );
+  }, [selectedIntervention])
+  
 
   // Zoom to project site
   useEffect(() => {
