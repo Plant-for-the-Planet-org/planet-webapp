@@ -28,7 +28,7 @@ const InterventionDropdown = ({
   isMobile
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const siteList = useMemo(() => {
+  const interventionList = useMemo(() => {
     if (!allIntervention) return [];
     return allIntervention.map((el) => ({
       label: el.label,
@@ -48,15 +48,15 @@ const InterventionDropdown = ({
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
         <div className={styles.siteIconAndTextContainer} >
-          <InterventionIcon width={27} color={'#333'} />
+          <InterventionIcon />
           <>
             {selectedSiteData && (
               <div className={styles.labelTextContainer}>
-                {isMobile?<label className={styles.sitesLabel}>{truncateString(selectedSiteData?.label, 40)}
-                </label>:
-                <p className={styles.siteName}  style={{marginTop:'5px'}}>
-                  {truncateString(selectedSiteData?.label, 40)}
-                </p>}
+                {isMobile ? <label className={styles.sitesLabel}>{truncateString(selectedSiteData?.label, 40)}
+                </label> :
+                  <p className={styles.siteName} style={{ marginTop: '5px' }}>
+                    {truncateString(selectedSiteData?.label, 40)}
+                  </p>}
               </div>
             )}
           </>
@@ -71,10 +71,11 @@ const InterventionDropdown = ({
       </div>
       {isMenuOpen && (
         <InterventionList
-          siteList={siteList}
-          setSelectedSite={setSelectedIntervention}
+          interventionList={interventionList}
+          setSelectedIntervention={setSelectedIntervention}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
+          selectedIntervention={selectedIntervention}
         />
       )}
     </>
