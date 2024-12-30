@@ -26,13 +26,13 @@ const OtherInterventionInfoHeader = ({  plantDate, type }: Props) => {
     },
   ];
   return (
-    <div className={`planting-details-group ${styles.plantingDetailsGroup}`}>
+    <div className={`intervention-header ${styles.plantingDetailsGroup}`}>
       {plantingDetails.map((item, key) => {
         if (!item.shouldRender) return;
         return (
           <div
             key={key}
-            className={`planting-details-item ${styles.plantingDetailsItem}`}
+            className={`intervention-item ${styles.plantingDetailsItem}`}
           >
             <h2 className={styles.label}>{item.label}</h2>
             <p className={styles.data}>{item.data}</p>

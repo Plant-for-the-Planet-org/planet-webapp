@@ -34,9 +34,10 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
+  gap: 10px;
 }
 .plantingDetailsItem {
-  min-width: 162px;
+  min-width: 160px;
   padding: 20px;
   background: rgba(0, 122, 73, 0.05);
   border-radius: 12px;
