@@ -4,7 +4,9 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
   :global(.maplibregl-compare) {
+    z-index: 30;
     :global(.compare-swiper-vertical) {
       background-color: $primaryColor;
     }
@@ -14,21 +16,21 @@
 .comparisonMap {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 20;
 }
 
 .beforeDropdown {
   position: absolute;
   top: 78px;
   left: 10px;
-  z-index: 2;
+  z-index: 40;
 }
 
 .afterDropdown {
   position: absolute;
   top: 78px;
   right: 10px;
-  z-index: 2;
+  z-index: 40;
 }
 
 .loadingOverlay {
@@ -39,5 +41,18 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
   color: white;
-  z-index: 2;
+  z-index: 50;
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
 }

@@ -63,6 +63,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     selectedSamplePlantLocation,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
+  const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
 
   const sitesGeoJson = useMemo(() => {
     return {
@@ -77,8 +78,15 @@ function ProjectsMap(props: ProjectsMapProps) {
       setSelectedTab('field');
     } else {
       setSelectedTab(null);
+      setWasTimeTravelMounted(false);
     }
   }, [props.page]);
+
+  useEffect(() => {
+    if (selectedTab === 'timeTravel') {
+      setWasTimeTravelMounted(true);
+    }
+  }, [selectedTab]);
 
   useDebouncedEffect(
     () => {
@@ -214,9 +222,15 @@ function ProjectsMap(props: ProjectsMapProps) {
         {shouldShowMapTabs && (
           <MapTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         )}
-        {selectedTab === 'timeTravel' && (
-          <TimeTravel sitesGeoJson={sitesGeoJson} />
-        )}
+        {shouldShowSingleProjectsView &&
+          (selectedTab === 'timeTravel' || wasTimeTravelMounted) && (
+            <div>
+              <TimeTravel
+                sitesGeoJson={sitesGeoJson}
+                isVisible={selectedTab === 'timeTravel'}
+              />
+            </div>
+          )}
         <Map
           {...viewState}
           {...mapState}

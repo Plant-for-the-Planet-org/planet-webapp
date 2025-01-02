@@ -44,9 +44,13 @@ type MapErrorCode = (typeof MAP_ERROR_CODES)[keyof typeof MAP_ERROR_CODES];
 
 interface Props {
   sitesGeoJson: FeatureCollection<Polygon | MultiPolygon, ProjectSite>;
+  isVisible: boolean;
 }
 
-export default function TimeTravel({ sitesGeoJson }: Props): ReactElement {
+export default function TimeTravel({
+  sitesGeoJson,
+  isVisible,
+}: Props): ReactElement {
   const { viewState: mainMapViewState } = useProjectsMap();
   const { setErrors } = useContext(ErrorHandlingContext);
 
@@ -448,7 +452,7 @@ export default function TimeTravel({ sitesGeoJson }: Props): ReactElement {
   };
 
   return (
-    <>
+    <div className={`${isVisible ? styles.visible : styles.hidden}`}>
       <TimeTravelDropdown
         defaultYear={selectedYearBefore}
         defaultSource={selectedSourceBefore}
@@ -486,6 +490,6 @@ export default function TimeTravel({ sitesGeoJson }: Props): ReactElement {
           className={styles.comparisonMap}
         ></div>
       </div>
-    </>
+    </div>
   );
 }
