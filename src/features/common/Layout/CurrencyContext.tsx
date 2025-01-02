@@ -24,10 +24,9 @@ export const CurrencyProvider: FC = ({ children }) => {
 
   const fetchCurrencies = async () => {
     try {
-      const currencyData = await getRequest<CurrencyList>(
-        undefined,
-        '/app/currencies'
-      );
+      const currencyData = await getRequest<CurrencyList>({
+        url: '/app/currencies',
+      });
       setFetchCount(fetchCount + 1);
       setSupportedCurrencies(
         new Set(Object.keys(currencyData) as CurrencyCode[])

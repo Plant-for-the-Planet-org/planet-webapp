@@ -31,13 +31,13 @@ export default function ProjectsContainer({ profile }: Props) {
 
   async function loadProjects() {
     try {
-      const projects = await getRequest<MapProject[]>(
-        `${tenantConfig?.id}`,
-        `/app/profiles/${profile.id}/projects`,
-        {
+      const projects = await getRequest<MapProject[]>({
+        tenant: tenantConfig?.id,
+        url: `/app/profiles/${profile.id}/projects`,
+        queryParams: {
           locale: locale,
-        }
-      );
+        },
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

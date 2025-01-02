@@ -27,9 +27,13 @@ export default function ContentSection() {
       try {
         const project = await getRequest<
           TreeProjectExtended | ConservationProjectExtended
-        >(tenantConfig.id, `/app/projects/${projectSlug}`, {
-          _scope: 'extended',
-          currency: currencyCode,
+        >({
+          tenant: tenantConfig.id,
+          url: `/app/projects/${projectSlug}`,
+          queryParams: {
+            _scope: 'extended',
+            currency: currencyCode,
+          },
         });
         setProject(project);
       } catch (err) {

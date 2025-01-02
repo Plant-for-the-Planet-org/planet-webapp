@@ -7,8 +7,8 @@ import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
-export interface GetAuthRequestOptions {
-  tenant: string | undefined;
+interface GetAuthRequestOptions {
+  tenant?: string | undefined;
   url: string;
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
@@ -17,6 +17,10 @@ export interface GetAuthRequestOptions {
   version?: string;
 }
 
+type GetRequestOptions = Omit<
+  GetAuthRequestOptions,
+  'header' | 'logoutUser' | 'token'
+>;
 //  API call to private /profile endpoint
 export async function getAccountInfo(
   tenant: string | undefined,
@@ -45,12 +49,12 @@ function isAbsoluteUrl(url: string) {
   return pattern.test(url);
 }
 
-export function getRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  queryParams?: { [key: string]: string },
-  version?: string
-) {
+export function getRequest<T>({
+  tenant,
+  url,
+  queryParams = {},
+  version,
+}: GetRequestOptions): Promise<T> {
   const lang = localStorage.getItem('language') || 'en';
   const query = { ...queryParams };
   const queryString = getQueryString(query);

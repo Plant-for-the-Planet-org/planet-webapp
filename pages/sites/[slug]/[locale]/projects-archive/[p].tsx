@@ -93,15 +93,15 @@ export default function Donate({
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
-          const project = await getRequest<ProjectExtended>(
-            pageProps.tenantConfig.id,
-            encodeURI(`/app/projects/${p}`),
-            {
+          const project = await getRequest<ProjectExtended>({
+            tenant: pageProps.tenantConfig.id,
+            url: encodeURI(`/app/projects/${p}`),
+            queryParams: {
               _scope: 'extended',
               currency: currency || '',
               locale: locale,
-            }
-          );
+            },
+          });
           if (
             project.purpose === 'conservation' ||
             project.purpose === 'trees'

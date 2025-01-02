@@ -113,17 +113,17 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(locale);
         try {
-          const projects = await getRequest<MapProject[]>(
-            pageProps.tenantConfig.id,
-            `/app/projects`,
-            {
+          const projects = await getRequest<MapProject[]>({
+            tenant: pageProps.tenantConfig.id,
+            url: `/app/projects`,
+            queryParams: {
               _scope: 'map',
               currency: currency,
               tenant: pageProps.tenantConfig.id,
               'filter[purpose]': 'trees,conservation',
               locale: locale,
-            }
-          );
+            },
+          });
           setProjects(projects);
           setProject(null);
           setShowSingleProject(false);

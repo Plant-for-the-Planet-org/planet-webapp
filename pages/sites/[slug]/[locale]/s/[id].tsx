@@ -38,10 +38,10 @@ export default function DirectGift({
 
   async function loadPublicUserData() {
     try {
-      const newProfile = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
-        `/app/profiles/${router.query.id}`
-      );
+      const newProfile = await getRequest<UserPublicProfile>({
+        tenant: tenantConfig.id,
+        url: `/app/profiles/${router.query.id}`,
+      });
       if (newProfile.type !== 'tpo') {
         localStorage.setItem(
           'directGift',
