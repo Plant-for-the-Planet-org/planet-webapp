@@ -1,6 +1,6 @@
 import type { MapRef } from '../../common/types/projectv2';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
@@ -24,8 +24,6 @@ const SingleProjectView = ({ mapRef }: Props) => {
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
   const router = useRouter();
-
-  const [isSiteZoomComplete, setIsSiteZoomComplete] = useState(false);
 
   const sitesGeoJson = useMemo(() => {
     return {
@@ -65,13 +63,11 @@ const SingleProjectView = ({ mapRef }: Props) => {
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;
     if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
-      setIsSiteZoomComplete(false);
       zoomInToProjectSite(
         mapRef,
         sitesGeoJson,
         selectedSite,
         handleViewStateChange,
-        setIsSiteZoomComplete,
         4000
       );
     } else {
