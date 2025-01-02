@@ -14,7 +14,7 @@ $layoutPaddingSide: 20px;
   cursor: pointer;
   gap: 18px;
   position: absolute;
-  z-index: 2;
+  z-index: 40;
   top: calc($layoutPaddingTop + 10px);
   right: calc($layoutPaddingSide + 10px);
 }
@@ -61,7 +61,7 @@ $layoutPaddingSide: 20px;
   width: 350px;
   font-size: $fontXSmall;
   position: absolute;
-  z-index: 4;
+  z-index: 50;
   top: 84px;
   right: 30px;
   max-height: 58vh;
