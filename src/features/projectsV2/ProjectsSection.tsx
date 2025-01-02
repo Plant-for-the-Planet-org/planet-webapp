@@ -1,5 +1,5 @@
 import Skeleton from 'react-loading-skeleton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ProjectsSection.module.scss';
 import { useProjects } from './ProjectsContext';
@@ -8,6 +8,7 @@ import ProjectListControlForMobile from './ProjectListControls/ProjectListContro
 import ProjectList from './ProjectList';
 import { useProjectsMap } from './ProjectsMapContext';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
+import { useTenant } from '../common/Layout/TenantContext';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -30,8 +31,23 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     selectedMode,
   } = useProjects();
   const { mapOptions, updateMapOption } = useProjectsMap();
+  const { tenantConfig } = useTenant();
+
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
-  if ((isLoading || isError) && filteredProjects?.length === 0) {
+
+  useEffect(() => {
+    // When tenantConfig.topProjectsOnly is true, it indicates all projects returned by the projects endpoint are to be shown, without splitting them into top projects and all projects
+    if (tenantConfig.topProjectsOnly === true) {
+      setTabSelected('allProjects');
+    }
+  }, [tenantConfig.topProjectsOnly]);
+
+  const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
+
+  if (
+    (isLoading || isError || projects === null) &&
+    filteredProjects?.length === 0
+  ) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
   const projectCount = projects?.length;
@@ -47,6 +63,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     debouncedSearchValue,
     setDebouncedSearchValue,
     filteredProjects,
+    shouldHideProjectTabs,
   };
   const projectListControlMobileProps = {
     debouncedSearchValue,
@@ -58,6 +75,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     mapOptions,
     updateMapOption,
   };
+
   return (
     <>
       <ProjectsListMeta />

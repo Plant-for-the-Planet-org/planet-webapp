@@ -1,13 +1,13 @@
-import {
-  useAuth0,
-  User as Auth0User,
-  RedirectLoginOptions,
-} from '@auth0/auth0-react';
+import type { FC } from 'react';
+import type { RedirectLoginOptions } from '@auth0/auth0-react';
+import type { User } from '@planet-sdk/common/build/types/user';
+import type { SetState } from '../types/common';
+import type { User as Auth0User } from '@auth0/auth0-react';
+
+import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { FC, useContext } from 'react';
+import React, { useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { User } from '@planet-sdk/common/build/types/user';
-import { SetState } from '../types/common';
 import { useTenant } from './TenantContext';
 
 interface UserPropsContextInterface {
@@ -53,6 +53,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [refetchUserData, setRefetchUserData] = React.useState(false);
+  const [redirectCount, setRedirectCount] = React.useState(0);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -63,13 +64,28 @@ export const UserPropsProvider: FC = ({ children }) => {
 
   React.useEffect(() => {
     async function loadToken() {
-      const accessToken = await getAccessTokenSilently();
-      setToken(accessToken);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        setToken(accessToken);
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development')
+          console.error('Error fetching access token:', error);
+
+        if (redirectCount < 3) {
+          setRedirectCount((prev) => prev + 1);
+          loginWithRedirect({
+            redirectUri: `${window.location.origin}/login`,
+            ui_locales: localStorage.getItem('language') || 'en',
+          });
+        } else {
+          console.error('Redirect limit reached, unable to authenticate user.');
+        }
+      }
     }
     if (!isLoading)
       if (isAuthenticated) loadToken();
       else setContextLoaded(true);
-  }, [isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated, redirectCount]);
 
   const logoutUser = (
     returnUrl: string | undefined = `${window.location.origin}/`

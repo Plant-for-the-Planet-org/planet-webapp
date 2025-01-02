@@ -2,7 +2,7 @@ import type { SetState } from '../../common/types/common';
 import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { MapProject } from '../../common/types/projectv2';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
 import ActiveSearchField from './microComponents/ActiveSearchField';
@@ -22,6 +22,7 @@ export interface ProjectListControlsProps {
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   filteredProjects: MapProject[] | undefined;
+  shouldHideProjectTabs: boolean;
 }
 const ProjectListControls = ({
   projectCount,
@@ -33,11 +34,12 @@ const ProjectListControls = ({
   debouncedSearchValue,
   setDebouncedSearchValue,
   filteredProjects,
+  shouldHideProjectTabs,
 }: ProjectListControlsProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-
+  const tCommon = useTranslations('Common');
   const hasFilterApplied = selectedClassification.length > 0;
 
   const projectListTabProps = {
@@ -65,21 +67,35 @@ const ProjectListControls = ({
     setSelectedClassification,
   };
 
+  const renderTabContent = useMemo(() => {
+    if (hasFilterApplied) {
+      return (
+        <div className={styles.filterResultContainer}>
+          {tAllProjects('filterResult', {
+            count: filteredProjects?.length,
+          })}
+        </div>
+      );
+    }
+
+    if (shouldHideProjectTabs) {
+      return (
+        <h2 className={styles.projectListHeaderText}>
+          {tCommon('stopTalkingStartPlanting')}
+        </h2>
+      );
+    }
+
+    return <ProjectListTabLargeScreen {...projectListTabProps} />;
+  }, [hasFilterApplied, shouldHideProjectTabs, filteredProjects]);
+
   return (
     <>
       {isSearching ? (
         <ActiveSearchField {...activeSearchFieldProps} />
       ) : (
         <div className={styles.projectListControls}>
-          {hasFilterApplied ? (
-            <div className={styles.filterResultContainer}>
-              {tAllProjects('filterResult', {
-                count: filteredProjects?.length,
-              })}
-            </div>
-          ) : (
-            <ProjectListTabLargeScreen {...projectListTabProps} />
-          )}
+          {renderTabContent}
           <SearchAndFilter {...searchAndFilterProps} />
         </div>
       )}
