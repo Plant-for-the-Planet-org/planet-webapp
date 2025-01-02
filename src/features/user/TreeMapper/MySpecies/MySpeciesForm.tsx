@@ -51,12 +51,12 @@ export default function MySpeciesForm() {
 
   const fetchMySpecies = async () => {
     try {
-      const result = await getAuthenticatedRequest<Species[]>(
-        tenantConfig.id,
-        '/treemapper/species',
+      const result = await getAuthenticatedRequest<Species[]>({
+        tenant: tenantConfig.id,
+        url: '/treemapper/species',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setSpecies(result);
     } catch (err) {
       setErrors(handleError(err as APIError));

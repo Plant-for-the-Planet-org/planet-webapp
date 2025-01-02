@@ -86,12 +86,12 @@ export default function PlanetCash({
       try {
         setIsDataLoading(true);
         setProgress && setProgress(70);
-        const accounts = await getAuthenticatedRequest<PlanetCashAccount[]>(
-          tenantConfig?.id,
-          `/app/planetCash`,
+        const accounts = await getAuthenticatedRequest<PlanetCashAccount[]>({
+          tenant: tenantConfig?.id,
+          url: `/app/planetCash`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         redirectIfNeeded(accounts);
         const sortedAccounts = sortAccountsByActive(accounts);
         setIsPlanetCashActive(accounts.some((account) => account.isActive));

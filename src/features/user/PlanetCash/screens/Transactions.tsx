@@ -63,12 +63,12 @@ const Transactions = ({
             : `/app/paymentHistory?filter=planet-cash&limit=15`;
 
         const newTransactionHistory =
-          await getAuthenticatedRequest<PaymentHistory>(
-            tenantConfig?.id,
-            apiUrl,
+          await getAuthenticatedRequest<PaymentHistory>({
+            tenant: tenantConfig?.id,
+            url: apiUrl,
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
 
         if (transactionHistory) {
           setTransactionHistory({

@@ -7,6 +7,16 @@ import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
+export interface GetAuthRequestOptions {
+  tenant: string | undefined;
+  url: string;
+  token: string | null;
+  logoutUser: (value?: string | undefined) => void;
+  header?: Record<string, string> | null;
+  queryParams?: { [key: string]: string };
+  version?: string;
+}
+
 //  API call to private /profile endpoint
 export async function getAccountInfo(
   tenant: string | undefined,
@@ -75,16 +85,15 @@ export function getRequest<T>(
     })();
   });
 }
-
-export function getAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void,
-  header: Record<string, string> | null = null,
-  queryParams?: { [key: string]: string },
-  version?: string
-) {
+export function getAuthenticatedRequest<T>({
+  tenant,
+  url,
+  token,
+  logoutUser,
+  header = null,
+  queryParams = {},
+  version = '1.0.3',
+}: GetAuthRequestOptions): Promise<T> {
   const lang = localStorage.getItem('language') || 'en';
   const query = { ...queryParams };
   const queryString = getQueryString(query);

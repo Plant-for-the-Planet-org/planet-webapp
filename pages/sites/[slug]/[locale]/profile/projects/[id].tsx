@@ -68,12 +68,12 @@ function ManageSingleProject({
       try {
         const result = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig.id,
-          `/app/profile/projects/${projectGUID}`,
+        >({
+          tenant: tenantConfig.id,
+          url: `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProject(result);
         setSetupAccess(true);
       } catch (err) {

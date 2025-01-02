@@ -52,12 +52,12 @@ function RecurrentDonations({
     setIsDataLoading(true);
     setProgress(70);
     try {
-      const recurrencies = await getAuthenticatedRequest<Subscription[]>(
-        tenantConfig.id,
-        '/app/subscriptions',
+      const recurrencies = await getAuthenticatedRequest<Subscription[]>({
+        tenant: tenantConfig.id,
+        url: '/app/subscriptions',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
           (obj) => obj.status == 'active' || obj.status == 'trialing'

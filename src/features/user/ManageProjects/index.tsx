@@ -150,12 +150,12 @@ export default function ManageProjects({
       try {
         const res = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}`,
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));

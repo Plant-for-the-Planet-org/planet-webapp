@@ -216,12 +216,12 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

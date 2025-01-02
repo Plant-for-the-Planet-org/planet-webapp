@@ -67,12 +67,12 @@ export default function ProjectMedia({
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ImagesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=images`,
+        const result = await getAuthenticatedRequest<ImagesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setUploadedImages(result.images);
       }
     } catch (err) {

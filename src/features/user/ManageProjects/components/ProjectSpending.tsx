@@ -167,12 +167,12 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ExpensesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=expenses`,
+        const result = await getAuthenticatedRequest<ExpensesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }

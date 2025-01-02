@@ -46,15 +46,13 @@ function TreeMapper(): ReactElement {
     if (next && links?.next) {
       try {
         const response =
-          await getAuthenticatedRequest<ExtendedScopePlantLocations>(
-            tenantConfig?.id,
-            links.next,
+          await getAuthenticatedRequest<ExtendedScopePlantLocations>({
+            tenant: tenantConfig?.id,
+            url: links.next,
             token,
             logoutUser,
-            {},
-            undefined,
-            '1.0.4'
-          );
+            version: '1.0.4',
+          });
         if (response?.items) {
           const newPlantLocations = response.items;
           for (const itr in newPlantLocations) {
@@ -92,16 +90,13 @@ function TreeMapper(): ReactElement {
     } else {
       try {
         const response =
-          await getAuthenticatedRequest<ExtendedScopePlantLocations>(
-            tenantConfig?.id,
-            '/treemapper/interventions?_scope=extended&limit=15',
+          await getAuthenticatedRequest<ExtendedScopePlantLocations>({
+            tenant: tenantConfig?.id,
+            url: '/treemapper/interventions?_scope=extended&limit=15',
             token,
             logoutUser,
-
-            {},
-            undefined,
-            '1.0.4'
-          );
+            version: '1.0.4',
+          });
         if (response?.items) {
           const plantLocations = response.items;
           if (plantLocations?.length === 0) {

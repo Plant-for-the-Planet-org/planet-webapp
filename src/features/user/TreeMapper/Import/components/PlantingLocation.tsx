@@ -213,12 +213,12 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
+      const projects = await getAuthenticatedRequest<MapProject[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -227,12 +227,12 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species = await getAuthenticatedRequest<Species[]>(
-        tenantConfig?.id,
-        '/treemapper/species',
+      const species = await getAuthenticatedRequest<Species[]>({
+        tenant: tenantConfig?.id,
+        url: '/treemapper/species',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setMySpecies(species);
     } catch (err) {
       setErrors(handleError(err as APIError));

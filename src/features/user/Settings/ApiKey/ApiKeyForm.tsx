@@ -48,12 +48,12 @@ export default function ApiKey() {
   const getApiKey = async () => {
     setIsUploadingData(true);
     try {
-      const res = await getAuthenticatedRequest<ApiKeyResponse>(
-        tenantConfig?.id,
-        '/app/profile/apiKey',
+      const res = await getAuthenticatedRequest<ApiKeyResponse>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/apiKey',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (res) {
         setApiKey(res.apiKey || '');
       }

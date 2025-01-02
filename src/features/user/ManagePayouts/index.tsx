@@ -76,12 +76,12 @@ export default function ManagePayouts({
       setIsDataLoading(true);
       setProgress && setProgress(70);
       try {
-        const res = await getAuthenticatedRequest<BankAccount[]>(
-          tenantConfig?.id,
-          `/app/accounts`,
+        const res = await getAuthenticatedRequest<BankAccount[]>({
+          tenant: tenantConfig?.id,
+          url: `/app/accounts`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setAccounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));

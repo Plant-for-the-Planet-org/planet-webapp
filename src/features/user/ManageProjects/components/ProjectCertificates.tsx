@@ -133,12 +133,12 @@ function ProjectCertificates({
 
     const fetchCertificates = async () => {
       try {
-        const result = await getAuthenticatedRequest<CertificateScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=certificates`,
+        const result = await getAuthenticatedRequest<CertificateScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=certificates`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setShowForm(false);
         setShowToggle(false);
         setUploadedFiles(result.certificates);

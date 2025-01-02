@@ -65,12 +65,12 @@ export default function ImportData(): ReactElement {
 
   const fetchPlantLocation = async (id: string) => {
     try {
-      const result = await getAuthenticatedRequest<PlantLocationType>(
-        tenantConfig?.id,
-        `/treemapper/interventions/${id}?_scope=extended`,
+      const result = await getAuthenticatedRequest<PlantLocationType>({
+        tenant: tenantConfig?.id,
+        url: `/treemapper/interventions/${id}?_scope=extended`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setPlantLocation(result);
     } catch (err) {
       setErrors(handleError(err as APIError));

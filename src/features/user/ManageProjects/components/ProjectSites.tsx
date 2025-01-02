@@ -335,12 +335,12 @@ export default function ProjectSites({
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest<SitesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=sites`,
+        const result = await getAuthenticatedRequest<SitesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const geoLocation = {
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,

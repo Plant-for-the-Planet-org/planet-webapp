@@ -23,12 +23,12 @@ const Analytics = () => {
   const fetchProjects = async () => {
     try {
       // TODO - update project type, this does not match completely
-      const res = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.id,
-        '/app/profile/projects?scope=map',
+      const res = await getAuthenticatedRequest<MapProject[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects?scope=map',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const projects: Project[] = [];
 
       res.forEach((_proj) => {
