@@ -8,14 +8,15 @@ on:
 jobs:
   ubuntu-job:
     name: 'ESLint on Ubuntu'
-    runs-on: ubuntu-latest  # Can be self-hosted runner also
+    runs-on: ubuntu-latest # Can be self-hosted runner also
     steps:
-
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
-      - name: Upgrade npm to latest version
-        run: sudo npm i -g npm@latest
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
 
       - name: 'Install Node Modules'
         run: npm install --legacy-peer-deps
