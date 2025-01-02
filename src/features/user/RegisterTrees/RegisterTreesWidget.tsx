@@ -189,13 +189,13 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>(
-            tenantConfig?.id,
-            `/app/contributions`,
-            submitData,
+          const res = await postAuthenticatedRequest<ContributionProperties>({
+            tenant: tenantConfig?.id,
+            url: `/app/contributions`,
+            data: submitData,
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
           setErrorMessage('');
           setContributionGUID(res.id);
           setContributionDetails(res);

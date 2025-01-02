@@ -384,7 +384,13 @@ export default function BasicDetails({
       try {
         const res = await postAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(tenantConfig?.id, `/app/projects`, submitData, token, logoutUser);
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/projects`,
+          data: submitData,
+          token,
+          logoutUser,
+        });
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);

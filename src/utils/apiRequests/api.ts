@@ -28,6 +28,15 @@ type GetRequestOptions = Omit<
   GetAuthRequestOptions,
   'header' | 'logoutUser' | 'token'
 >;
+
+interface PostAuthRequestOptions {
+  tenant: string | undefined;
+  url: string;
+  data: any;
+  token: string | null;
+  logoutUser: (value?: string | undefined) => void;
+  headers?: Record<string, string>;
+}
 //  API call to private /profile endpoint
 export async function getAccountInfo({
   tenant,
@@ -151,14 +160,14 @@ export function getAuthenticatedRequest<T>({
   });
 }
 
-export function postAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  data: any,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void,
-  headers?: Record<string, string>
-) {
+export function postAuthenticatedRequest<T>({
+  tenant,
+  url,
+  data,
+  token,
+  logoutUser,
+  headers,
+}: PostAuthRequestOptions) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {

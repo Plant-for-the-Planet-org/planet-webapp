@@ -87,13 +87,13 @@ export default function MySpeciesForm() {
       scientificSpecies: species.scientificSpecies?.id,
     };
     try {
-      await postAuthenticatedRequest(
-        tenantConfig.id,
-        `/treemapper/species`,
+      await postAuthenticatedRequest({
+        tenant: tenantConfig.id,
+        url: `/treemapper/species`,
         data,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
     } catch (err) {
       setErrors(handleError(err as APIError));
     }

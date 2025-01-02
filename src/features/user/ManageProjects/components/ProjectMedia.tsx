@@ -95,13 +95,13 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await postAuthenticatedRequest<UploadImage>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images`,
-        submitData,
+      const res = await postAuthenticatedRequest<UploadImage>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       let newUploadedImages = [...uploadedImages];
 
       if (!newUploadedImages) {

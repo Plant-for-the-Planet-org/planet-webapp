@@ -39,13 +39,13 @@ export default function UploadImages({
     };
 
     try {
-      const res = await postAuthenticatedRequest<Image>(
-        tenantConfig?.id,
-        `/app/contributions/${contributionGUID}/images`,
-        submitData,
+      const res = await postAuthenticatedRequest<Image>({
+        tenant: tenantConfig?.id,
+        url: `/app/contributions/${contributionGUID}/images`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const newUploadedImages: Image[] = uploadedImages;
       newUploadedImages.push(res);
       setUploadedImages(newUploadedImages);

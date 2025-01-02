@@ -341,13 +341,13 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest<PlantLocationType>(
-          tenantConfig?.id,
-          `/treemapper/interventions`,
-          submitData,
+        const res = await postAuthenticatedRequest<PlantLocationType>({
+          tenant: tenantConfig?.id,
+          url: `/treemapper/interventions`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setPlantLocation(res);
         setIsUploadingData(false);
         handleNext();

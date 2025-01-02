@@ -87,13 +87,13 @@ function ProjectCertificates({
     };
 
     try {
-      const res = await postAuthenticatedRequest<Certificate>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/certificates`,
-        submitData,
+      const res = await postAuthenticatedRequest<Certificate>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/certificates`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       let newUploadedFiles = uploadedFiles;
 
       if (newUploadedFiles === undefined) {

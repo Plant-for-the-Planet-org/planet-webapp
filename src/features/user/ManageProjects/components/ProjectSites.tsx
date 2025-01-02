@@ -373,13 +373,13 @@ export default function ProjectSites({
       };
 
       try {
-        const res = await postAuthenticatedRequest<Site>(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}/sites`,
-          submitData,
+        const res = await postAuthenticatedRequest<Site>({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}/sites`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const temp = siteList ? siteList : [];
         const _submitData = {
           id: res.id,

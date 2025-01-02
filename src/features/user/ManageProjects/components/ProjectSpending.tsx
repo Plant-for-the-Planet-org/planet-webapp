@@ -91,13 +91,13 @@ export default function ProjectSpending({
     };
 
     try {
-      const res = await postAuthenticatedRequest<ProjectExpense>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/expenses`,
-        submitData,
+      const res = await postAuthenticatedRequest<ProjectExpense>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/expenses`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const newUploadedFiles = uploadedFiles;
       newUploadedFiles.push(res);
       setUploadedFiles(newUploadedFiles);

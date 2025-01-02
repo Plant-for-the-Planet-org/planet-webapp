@@ -63,13 +63,13 @@ const AddAddress = ({
         type: ADDRESS_TYPE.OTHER,
       };
       try {
-        const res = await postAuthenticatedRequest<Address>(
-          tenantConfig.id,
-          '/app/addresses',
-          bodyToSend,
+        const res = await postAuthenticatedRequest<Address>({
+          tenant: tenantConfig.id,
+          url: '/app/addresses',
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         if (res && setUserAddresses) {
           setUserAddresses((prevAddresses) => [...prevAddresses, res]);
         }
