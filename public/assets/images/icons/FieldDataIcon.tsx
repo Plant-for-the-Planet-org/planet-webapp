@@ -1,7 +1,5 @@
 import type { IconProps } from '../../../../src/features/common/types/common';
 
-import React from 'react';
-
 const FieldDataIcon = ({ color }: IconProps) => {
   return (
     <svg viewBox="0 0 512 352" fill="none" xmlns="http://www.w3.org/2000/svg">
