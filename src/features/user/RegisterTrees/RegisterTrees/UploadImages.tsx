@@ -82,12 +82,12 @@ export default function UploadImages({
 
   const deleteContributionImage = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/contributions/${contributionGUID}/images/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/contributions/${contributionGUID}/images/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedImagesTemp = uploadedImages;
       const index = uploadedImagesTemp.findIndex((item) => {
         return item.id === id;

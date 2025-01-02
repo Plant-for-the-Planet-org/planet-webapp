@@ -152,12 +152,12 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
       setUploadedImages(uploadedFilesTemp);
     } catch (err) {

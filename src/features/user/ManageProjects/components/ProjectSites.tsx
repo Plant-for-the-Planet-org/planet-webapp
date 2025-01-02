@@ -410,12 +410,12 @@ export default function ProjectSites({
   const deleteProjectSite = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/sites/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/sites/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
       setIsUploadingData(false);

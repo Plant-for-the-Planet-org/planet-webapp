@@ -174,12 +174,12 @@ function ProjectCertificates({
 
   const deleteProjectCertificate = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/certificates/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/certificates/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
     } catch (err) {

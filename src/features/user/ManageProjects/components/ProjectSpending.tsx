@@ -148,12 +148,12 @@ export default function ProjectSpending({
   const deleteProjectSpending = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/expenses/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/expenses/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
       setIsUploadingData(false);

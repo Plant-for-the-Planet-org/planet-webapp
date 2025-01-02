@@ -43,6 +43,14 @@ interface PostRequestOptions {
   url: string;
   data: any;
 }
+
+interface DeleteAuthRequestOptions {
+  tenant: string | undefined;
+  url: string;
+  token: string | null;
+  logoutUser: (value?: string | undefined) => void;
+}
+
 //  API call to private /profile endpoint
 export async function getAccountInfo({
   tenant,
@@ -248,12 +256,12 @@ export function postRequest<T>({ tenant, url, data }: PostRequestOptions) {
   });
 }
 
-export function deleteAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void
-) {
+export function deleteAuthenticatedRequest<T>({
+  tenant,
+  url,
+  token,
+  logoutUser,
+}: DeleteAuthRequestOptions) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
