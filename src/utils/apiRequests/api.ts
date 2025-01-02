@@ -1,11 +1,18 @@
+import type { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { validateToken } from './validateToken';
-import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
 import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
+
+interface GetAccountInfo {
+  tenant: string | undefined;
+  token: string | null;
+  impersonationData?: ImpersonationData;
+}
 
 interface GetAuthRequestOptions {
   tenant?: string | undefined;
@@ -22,11 +29,11 @@ type GetRequestOptions = Omit<
   'header' | 'logoutUser' | 'token'
 >;
 //  API call to private /profile endpoint
-export async function getAccountInfo(
-  tenant: string | undefined,
-  token: string | null,
-  impersonationData?: ImpersonationData
-): Promise<any> {
+export async function getAccountInfo({
+  tenant,
+  token,
+  impersonationData,
+}: GetAccountInfo): Promise<any> {
   const lang = localStorage.getItem('language') || 'en';
   const header = {
     'tenant-key': `${tenant}`,

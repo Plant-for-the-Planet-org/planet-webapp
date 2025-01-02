@@ -72,7 +72,11 @@ const ImpersonateUserForm = (): ReactElement => {
     if (data.targetEmail && data.supportPin) {
       setIsProcessing(true);
       try {
-        const res = await getAccountInfo(tenantConfig?.id, token, data);
+        const res = await getAccountInfo({
+          tenant: tenantConfig?.id,
+          token,
+          impersonationData: data,
+        });
         const resJson = await res.json();
         if (res.status === 200) {
           setIsInvalidEmail(false);
