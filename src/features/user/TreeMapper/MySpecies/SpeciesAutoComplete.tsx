@@ -59,14 +59,14 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest<SpeciesSuggestionType[]>(
-          tenantConfig?.id,
-          `/suggest.php`,
-          {
+        const res = await postRequest<SpeciesSuggestionType[]>({
+          tenant: tenantConfig?.id,
+          url: `/suggest.php`,
+          data: {
             q: value,
             t: 'species',
-          }
-        );
+          },
+        });
         if (res && res.length > 0) {
           const species = res.map((item) => ({
             id: item.id,

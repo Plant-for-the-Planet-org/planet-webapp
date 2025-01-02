@@ -37,6 +37,12 @@ interface PostAuthRequestOptions {
   logoutUser: (value?: string | undefined) => void;
   headers?: Record<string, string>;
 }
+
+interface PostRequestOptions {
+  tenant: string | undefined;
+  url: string;
+  data: any;
+}
 //  API call to private /profile endpoint
 export async function getAccountInfo({
   tenant,
@@ -210,11 +216,7 @@ export function postAuthenticatedRequest<T>({
   });
 }
 
-export function postRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  data: any
-) {
+export function postRequest<T>({ tenant, url, data }: PostRequestOptions) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
