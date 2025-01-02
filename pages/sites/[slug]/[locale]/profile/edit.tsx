@@ -1,14 +1,14 @@
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
 import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
-import type { AbstractIntlMessages } from 'next-intl';
-import type { ReactElement } from 'react';
 
-import Head from 'next/head';
 import React from 'react';
+import Head from 'next/head';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useTranslations } from 'next-intl';
 import EditProfile from '../../../../../src/features/user/Settings/EditProfile';
@@ -53,7 +53,7 @@ export default EditProfilePage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
@@ -81,7 +81,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'editProfile'],
+    filenames: ['common', 'me', 'country', 'editProfile', 'profile'],
   });
 
   return {

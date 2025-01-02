@@ -1,10 +1,5 @@
-import type {
-  AddressSuggestionsType,
-  AddressType,
-} from '../../../common/types/geocoder';
 import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
-import type { ExtendedCountryCode } from '../../../common/types/country';
 import type { User } from '@planet-sdk/common/build/types/user';
 
 import { styled, TextField } from '@mui/material';
@@ -15,16 +10,12 @@ import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
-import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useLocale, useTranslations } from 'next-intl';
-import { allCountries } from '../../../../utils/constants/countries';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   MuiAutoComplete,
@@ -99,7 +90,6 @@ export default function EditProfileForm() {
     handleSubmit,
     control,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<FormData>({
     mode: 'onBlur',
@@ -119,70 +109,11 @@ export default function EditProfileForm() {
     setSnackbarOpen(false);
   };
 
-  const [country, setCountry] = React.useState<ExtendedCountryCode | ''>(
-    user?.country || 'DE'
-  );
-
   React.useEffect(() => {
     reset(defaultProfileDetails);
   }, [defaultProfileDetails]);
 
   const [updatingPic, setUpdatingPic] = React.useState(false);
-
-  const [addressSugggestions, setaddressSugggestions] = React.useState<
-    AddressSuggestionsType[]
-  >([]);
-  const geocoder = new GeocoderArcGIS(
-    process.env.ESRI_CLIENT_SECRET
-      ? {
-          client_id: process.env.ESRI_CLIENT_ID,
-          client_secret: process.env.ESRI_CLIENT_SECRET,
-        }
-      : {}
-  );
-
-  const suggestAddress = (value: string) => {
-    if (value.length > 3) {
-      geocoder
-        .suggest(value, { category: 'Address', countryCode: country })
-        .then((result: { suggestions: AddressSuggestionsType[] }) => {
-          const filterdSuggestions = result.suggestions.filter(
-            (suggestion: AddressSuggestionsType) => {
-              return !suggestion.isCollection;
-            }
-          );
-          setaddressSugggestions(filterdSuggestions);
-        })
-        .catch(console.log);
-    }
-  };
-  const getAddress = (value: string) => {
-    geocoder
-      .findAddressCandidates(value, { outfields: '*' })
-      .then((result: AddressType) => {
-        setValue('address', result.candidates[0].attributes.ShortLabel, {
-          shouldValidate: true,
-        });
-        setValue('city', result.candidates[0].attributes.City, {
-          shouldValidate: true,
-        });
-        setValue('zipCode', result.candidates[0].attributes.Postal, {
-          shouldValidate: true,
-        });
-        setaddressSugggestions([]);
-      })
-      .catch(console.log);
-  };
-
-  const [postalRegex, setPostalRegex] = React.useState(
-    COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
-  );
-  React.useEffect(() => {
-    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter(
-      (item) => item.abbrev === country
-    );
-    setPostalRegex(fiteredCountry[0]?.postal);
-  }, [country]);
 
   // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
@@ -298,7 +229,6 @@ export default function EditProfileForm() {
 
     const bodyToSend = {
       ...otherData,
-      country: country,
       isPrivate: !isPublic,
       ...(type !== 'tpo' ? { type: type } : {}),
     };
@@ -323,7 +253,6 @@ export default function EditProfileForm() {
       }
     }
   };
-  let suggestion_counter = 0;
 
   return (
     <StyledForm>
@@ -516,109 +445,6 @@ export default function EditProfileForm() {
             )}
           />
         )}
-        <Controller
-          name="address"
-          control={control}
-          rules={{
-            required: t('validationErrors.addressRequired'),
-            pattern: {
-              value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
-              message: t('validationErrors.addressInvalid'),
-            },
-          }}
-          render={({
-            field: { onChange: handleChange, value, onBlur: handleBlur },
-          }) => (
-            <TextField
-              label={`${t('fieldLabels.address')}*`}
-              onChange={(event) => {
-                suggestAddress(event.target.value);
-                handleChange(event);
-              }}
-              onBlur={() => {
-                setaddressSugggestions([]);
-                handleBlur();
-              }}
-              value={value}
-              error={errors.address !== undefined}
-              helperText={
-                errors.address !== undefined && errors.address.message
-              }
-            />
-          )}
-        />
-        {addressSugggestions
-          ? addressSugggestions.length > 0 && (
-              <div className="suggestions-container">
-                {addressSugggestions.map((suggestion) => {
-                  return (
-                    <div
-                      key={'suggestion' + suggestion_counter++}
-                      onMouseDown={() => {
-                        getAddress(suggestion['text']);
-                      }}
-                      className="suggestion"
-                    >
-                      {suggestion['text']}
-                    </div>
-                  );
-                })}
-              </div>
-            )
-          : null}
-        <InlineFormDisplayGroup>
-          <Controller
-            name="city"
-            control={control}
-            rules={{
-              required: t('validationErrors.cityRequired'),
-              pattern: {
-                value: /^[\p{L}\sß.,()-]+$/u,
-                message: t('validationErrors.cityInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={`${t('fieldLabels.city')}*`}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.city !== undefined}
-                helperText={errors.city !== undefined && errors.city.message}
-              />
-            )}
-          />
-          <Controller
-            name="zipCode"
-            control={control}
-            rules={{
-              required: t('validationErrors.zipCodeRequired'),
-              pattern: {
-                value: postalRegex as RegExp,
-                message: t('validationErrors.zipCodeInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={`${t('fieldLabels.zipCode')}*`}
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                error={errors.zipCode !== undefined}
-                helperText={
-                  errors.zipCode !== undefined && errors.zipCode.message
-                }
-              />
-            )}
-          />
-          <AutoCompleteCountry
-            defaultValue={country}
-            onChange={setCountry}
-            label={t('fieldLabels.country')}
-            name="country"
-            countries={allCountries}
-          />
-        </InlineFormDisplayGroup>
 
         <Controller
           name="bio"

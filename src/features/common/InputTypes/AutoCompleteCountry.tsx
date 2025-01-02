@@ -2,10 +2,10 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { CountryType, ExtendedCountryCode } from '../types/country';
 import type { SetState } from '../types/common';
+import type { CountryCode } from '@planet-sdk/common';
 
 import { useState, useEffect } from 'react';
 import { TextField } from '@mui/material';
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
 import { allCountries } from '../../../utils/constants/countries';
@@ -68,8 +68,8 @@ export default function CountrySelect({
 
   useEffect(() => {
     countries.sort((a, b) => {
-      const nameA = t(a.code.toLowerCase());
-      const nameB = t(b.code.toLowerCase());
+      const nameA = t(a.code.toLowerCase() as Lowercase<CountryCode>);
+      const nameB = t(b.code.toLowerCase() as Lowercase<CountryCode>);
 
       //Automatic Selection option is always at first position (if present)
       if (a.code === 'auto') return -1;
@@ -93,7 +93,8 @@ export default function CountrySelect({
       getOptionLabel={(option) => {
         const { code: countryCode, currency } = option as CountryType;
         const label =
-          (currency ? `(${currency}) ` : '') + t(countryCode.toLowerCase());
+          (currency ? `(${currency}) ` : '') +
+          t(countryCode.toLowerCase() as Lowercase<CountryCode>);
         return label;
       }}
       isOptionEqualToValue={(option, value) =>
@@ -103,7 +104,7 @@ export default function CountrySelect({
         const { code: countryCode, currency } = option as CountryType;
         const displayedOption =
           (currency ? `(${currency}) ` : '') +
-          t(countryCode.toLowerCase()) +
+          t(countryCode.toLowerCase() as Lowercase<CountryCode>) +
           (!(name == 'editProfile' || countryCode === 'auto')
             ? ` ${countryCode}`
             : '');

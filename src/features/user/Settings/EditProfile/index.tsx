@@ -5,8 +5,9 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import DashboardView from '../../../common/Layout/DashboardView';
 import EditProfileForm from './EditProfileForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
+import AddressManagement from './AddressManagement';
 
-export default function EditProfile(): ReactElement | null {
+export default function EditProfile(): React.ReactElement | null {
   const t = useTranslations('Me');
 
   return (
@@ -15,6 +16,7 @@ export default function EditProfile(): ReactElement | null {
         <CenteredContainer>
           <EditProfileForm />
         </CenteredContainer>
+        <AddressManagement />
       </SingleColumnView>
     </DashboardView>
   );
