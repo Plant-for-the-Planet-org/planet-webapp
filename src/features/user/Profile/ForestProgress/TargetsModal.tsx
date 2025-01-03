@@ -78,13 +78,13 @@ const TargetsModal = ({
         },
       };
       try {
-        const res = await putAuthenticatedRequest<User>(
-          tenantConfig?.id,
-          `/app/profile`,
-          bodyToSend,
+        const res = await putAuthenticatedRequest<User>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const newUserInfo = {
           profileId: res.id,
           slug: res.slug,

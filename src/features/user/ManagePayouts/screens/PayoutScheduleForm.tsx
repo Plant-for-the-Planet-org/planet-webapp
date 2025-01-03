@@ -44,13 +44,13 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsProcessing(true);
 
     try {
-      const res = await putAuthenticatedRequest<User>(
-        tenantConfig?.id,
-        '/app/profile',
-        { scheduleFrequency: data.scheduleFrequency },
+      const res = await putAuthenticatedRequest<User>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile',
+        data: { scheduleFrequency: data.scheduleFrequency },
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setUser(res);
       setIsSaved(true);
       setIsProcessing(false);

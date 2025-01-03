@@ -82,13 +82,13 @@ export const CancelModal = ({
     };
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/subscriptions/${record.id}?scope=cancel`,
-        bodyToSend,
+      await putAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/subscriptions/${record.id}?scope=cancel`,
+        data: bodyToSend,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       handleCancelModalClose();
       fetchRecurrentDonations();
     } catch (err) {

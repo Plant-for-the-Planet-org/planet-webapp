@@ -366,13 +366,13 @@ export default function BasicDetails({
       try {
         const res = await putAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}`,
-          submitData,
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProjectDetails(res);
         setIsUploadingData(false);
         handleNext(ProjectCreationTabs.PROJECT_MEDIA);

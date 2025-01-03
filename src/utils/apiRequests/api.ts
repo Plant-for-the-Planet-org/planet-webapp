@@ -51,6 +51,14 @@ interface DeleteAuthRequestOptions {
   logoutUser: (value?: string | undefined) => void;
 }
 
+interface PutAuthRequestOptions {
+  tenant: string | undefined;
+  url: string;
+  data?: any;
+  token: string | null;
+  logoutUser: (value?: string | undefined) => void;
+}
+
 //  API call to private /profile endpoint
 export async function getAccountInfo({
   tenant,
@@ -302,13 +310,13 @@ export function deleteAuthenticatedRequest<T>({
   });
 }
 
-export function putAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  data: any,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void
-) {
+export function putAuthenticatedRequest<T>({
+  tenant,
+  url,
+  data,
+  token,
+  logoutUser,
+}: PutAuthRequestOptions) {
   return new Promise<T>((resolve, reject) => {
     const lang = localStorage.getItem('language') || 'en';
     (async () => {

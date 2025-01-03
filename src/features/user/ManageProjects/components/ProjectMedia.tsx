@@ -232,13 +232,13 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest<UploadImage>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images/${id}`,
-        submitData,
+      const res = await putAuthenticatedRequest<UploadImage>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images/${id}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const tempUploadedData = uploadedImages;
       tempUploadedData[index].description = res.description;
       setUploadedImages(tempUploadedData);

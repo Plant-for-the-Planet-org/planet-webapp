@@ -41,13 +41,13 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putAuthenticatedRequest<BankAccount>(
-        tenantConfig?.id,
-        `/app/accounts/${accountToEdit?.id}`,
-        accountData,
+      const res = await putAuthenticatedRequest<BankAccount>({
+        tenant: tenantConfig?.id,
+        url: `/app/accounts/${accountToEdit?.id}`,
+        data: accountData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       // update accounts in context
       if (accounts) {
         const updatedAccounts = accounts.map((account) => {

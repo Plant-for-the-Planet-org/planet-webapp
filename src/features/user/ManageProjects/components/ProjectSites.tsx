@@ -102,13 +102,13 @@ function EditSite({
       };
 
       try {
-        const res = await putAuthenticatedRequest<Site>(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          submitData,
+        const res = await putAuthenticatedRequest<Site>({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const temp = siteList;
         let siteIndex = 0;
         temp.find((site: Site, index: number) => {

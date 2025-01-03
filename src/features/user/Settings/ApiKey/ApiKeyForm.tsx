@@ -69,13 +69,12 @@ export default function ApiKey() {
     e.preventDefault();
     setIsUploadingData(true);
     try {
-      const res = await putAuthenticatedRequest<ApiKeyResponse>(
-        tenantConfig?.id,
-        '/app/profile/apiKey',
-        undefined,
+      const res = await putAuthenticatedRequest<ApiKeyResponse>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/apiKey',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (res) {
         setApiKey(res.apiKey || '');
       }
