@@ -65,12 +65,12 @@ export default function MySpeciesForm() {
 
   const deleteSpecies = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig.id,
-        `/treemapper/species/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig.id,
+        url: `/treemapper/species/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       fetchMySpecies();
     } catch (err) {
       setErrors(handleError(err as APIError));

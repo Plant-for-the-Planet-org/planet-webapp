@@ -8,57 +8,46 @@ import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
+interface BaseRequestOptions {
+  tenant?: string | undefined;
+  url: string;
+}
+
 interface GetAccountInfo {
   tenant: string | undefined;
   token: string | null;
   impersonationData?: ImpersonationData;
 }
 
-interface GetAuthRequestOptions {
-  tenant?: string | undefined;
-  url: string;
+interface GetAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
   header?: Record<string, string> | null;
   queryParams?: { [key: string]: string };
   version?: string;
 }
-
-type GetRequestOptions = Omit<
-  GetAuthRequestOptions,
-  'header' | 'logoutUser' | 'token'
->;
-
-interface PostAuthRequestOptions {
-  tenant: string | undefined;
-  url: string;
+interface PostAuthRequestOptions extends BaseRequestOptions {
   data: any;
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
   headers?: Record<string, string>;
 }
-
-interface PostRequestOptions {
-  tenant: string | undefined;
-  url: string;
-  data: any;
-}
-
-interface DeleteAuthRequestOptions {
-  tenant: string | undefined;
-  url: string;
+interface DeleteAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
 }
-
-interface PutAuthRequestOptions {
-  tenant: string | undefined;
-  url: string;
+interface PutAuthRequestOptions extends BaseRequestOptions {
   data?: any;
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
 }
-
+interface PostRequestOptions extends BaseRequestOptions {
+  data: any;
+}
+interface GetRequestOptions extends BaseRequestOptions {
+  queryParams?: { [key: string]: string };
+  version?: string;
+}
 //  API call to private /profile endpoint
 export async function getAccountInfo({
   tenant,
