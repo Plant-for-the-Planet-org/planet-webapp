@@ -1,4 +1,5 @@
-import { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+
 import { Box, Grid, ThemeProvider, styled } from '@mui/material';
 import materialTheme from '../../../../theme/themeStyles';
 

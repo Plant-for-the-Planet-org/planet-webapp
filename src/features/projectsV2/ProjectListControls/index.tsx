@@ -87,7 +87,7 @@ const ProjectListControls = ({
     }
 
     return <ProjectListTabLargeScreen {...projectListTabProps} />;
-  }, [hasFilterApplied, shouldHideProjectTabs, filteredProjects]);
+  }, [hasFilterApplied, shouldHideProjectTabs, filteredProjects, tabSelected]);
 
   return (
     <>

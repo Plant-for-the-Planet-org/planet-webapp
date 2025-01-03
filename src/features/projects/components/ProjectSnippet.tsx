@@ -1,4 +1,12 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  ConservationProjectConcise,
+  ConservationProjectExtended,
+  TreeProjectConcise,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
+
+import React from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -14,12 +22,6 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
 import ProjectTypeIcon from '../../common/ProjectTypeIcon';
-import {
-  ConservationProjectConcise,
-  ConservationProjectExtended,
-  TreeProjectConcise,
-  TreeProjectExtended,
-} from '@planet-sdk/common';
 import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
 import {
   bindHover,

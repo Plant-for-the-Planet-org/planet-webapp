@@ -1,10 +1,11 @@
+import type { ProfileV2Props } from '../../../common/types/profile';
+import type { LeaderboardItem } from '../../../common/types/myForest';
+
 import { useEffect, useState } from 'react';
 import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
-import { ProfileV2Props } from '../../../common/types/profile';
 import ContributionListItem from './ContributionListItem';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
-import { LeaderboardItem } from '../../../common/types/myForest';
 import { useTranslations } from 'next-intl';
 import { useMyForest } from '../../../common/Layout/MyForestContext';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';

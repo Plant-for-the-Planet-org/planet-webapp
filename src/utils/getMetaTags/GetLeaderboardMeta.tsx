@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import { useTenant } from '../../features/common/Layout/TenantContext';
 import Head from 'next/head';
 

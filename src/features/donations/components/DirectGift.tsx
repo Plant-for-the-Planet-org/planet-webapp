@@ -1,8 +1,9 @@
+import type { SetState } from '../../common/types/common';
+
 import React from 'react';
 import styles from '../styles/DirectGift.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../common/types/common';
 import Link from 'next/link';
 
 export interface DirectGiftI {

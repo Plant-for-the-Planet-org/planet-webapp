@@ -1,4 +1,7 @@
-import { ChangeEvent, ReactElement, useCallback } from 'react';
+import type { ChangeEvent, ReactElement } from 'react';
+import type { BankAccount } from '../../../common/types/payouts';
+
+import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, TextField, MenuItem, CircularProgress } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -6,7 +9,6 @@ import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect'
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { BankAccount } from '../../../common/types/payouts';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { getStoredConfig } from '../../../../utils/storeConfig';
 

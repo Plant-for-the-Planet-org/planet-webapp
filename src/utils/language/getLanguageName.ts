@@ -1,3 +1,5 @@
+import type Locale from '@date-io/date-fns';
+
 import supportedLanguages from './supportedLanguages.json';
 import enLocale from 'date-fns/locale/en-US';
 import deLocale from 'date-fns/locale/de';
@@ -6,7 +8,6 @@ import esLocale from 'date-fns/locale/es';
 import frLocale from 'date-fns/locale/fr';
 import itLocale from 'date-fns/locale/it';
 import ptBRLocale from 'date-fns/locale/pt-BR';
-import Locale from '@date-io/date-fns';
 
 /**
  * * Returns country details by searching country data json file and options

@@ -1,4 +1,12 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SxProps } from '@mui/material';
+import type { APIError, ProjectExpense } from '@planet-sdk/common';
+import type {
+  ProjectSpendingProps,
+  ExpensesScopeProjects,
+} from '../../../common/types/project';
+
+import React from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -17,18 +25,14 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { SxProps, Button, TextField, IconButton } from '@mui/material';
+import { Button, TextField, IconButton } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError, ProjectExpense } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import {
-  ProjectSpendingProps,
-  ExpensesScopeProjects,
-} from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const yearDialogSx: SxProps = {

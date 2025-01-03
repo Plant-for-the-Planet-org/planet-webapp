@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from '../../../../../src/features/common/types/common';
+import type { IconProps } from '../../../../../src/features/common/types/common';
 
 function Email({ color = '#4d5153' }: IconProps) {
   return (

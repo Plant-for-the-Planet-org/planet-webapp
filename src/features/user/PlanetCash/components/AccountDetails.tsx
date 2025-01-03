@@ -1,10 +1,11 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { PlanetCashAccount } from '../../../common/types/planetcash';
+
 import { styled, Grid, Button, Divider } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { PlanetCashAccount } from '../../../common/types/planetcash';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({

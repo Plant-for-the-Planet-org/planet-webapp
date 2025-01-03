@@ -1,3 +1,7 @@
+import type { APIError } from '@planet-sdk/common';
+import type { Properties } from '../../common/types/project';
+import type { Geometry } from '@turf/turf';
+
 import Link from 'next/link';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
@@ -10,9 +14,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useLocale, useTranslations } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Properties } from '../../common/types/project';
-import { Geometry } from '@turf/turf';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';

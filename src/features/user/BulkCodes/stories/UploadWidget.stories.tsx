@@ -1,4 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import UploadWidget from '../components/UploadWidget';
 
 const meta: Meta<typeof UploadWidget> = {

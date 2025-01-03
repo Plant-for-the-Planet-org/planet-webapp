@@ -1,4 +1,6 @@
-import React, { FC, useContext } from 'react';
+import type { FC } from 'react';
+
+import React, { useContext } from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';

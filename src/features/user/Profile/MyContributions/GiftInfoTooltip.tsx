@@ -1,4 +1,6 @@
-import { Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
+import type { TooltipProps } from '@mui/material';
+
+import { Tooltip, styled, tooltipClasses } from '@mui/material';
 
 // Could be updated for reuse, but currently only needed for the GiftInfo tooltip
 

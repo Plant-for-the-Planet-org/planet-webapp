@@ -1,11 +1,13 @@
 // This page will be moved to a different place in the future, as it is not a part of the user dashboard
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import {
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { APIError, UserPublicProfile } from '@planet-sdk/common';
+
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -20,7 +22,7 @@ import { useRouter } from 'next/router';
 import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { APIError, handleError, UserPublicProfile } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';

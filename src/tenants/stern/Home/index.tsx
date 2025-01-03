@@ -1,13 +1,14 @@
+import type {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
+
 import styles from './Home.module.scss';
 import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../../common/LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
-import {
-  LeaderBoardList,
-  TenantScore,
-} from '../../../features/common/types/leaderboard';
 
 interface Props {
   leaderboard: LeaderBoardList | null;

@@ -1,4 +1,5 @@
-import { ForestProgressItemProps } from '../ForestProgressItem';
+import type { ForestProgressItemProps } from '../ForestProgressItem';
+
 import { useTranslations } from 'next-intl';
 import styles from '../ForestProgress.module.scss';
 import { EditTargetIcon } from '../../../../../../public/assets/images/icons/ProgressBarIcons';

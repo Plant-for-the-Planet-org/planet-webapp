@@ -1,3 +1,10 @@
+import type { SxProps } from '@mui/material';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  ModifyDonations,
+  Subscription,
+} from '../../common/types/payments';
+
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
@@ -11,7 +18,6 @@ import {
   Fade,
   InputAdornment,
   Autocomplete,
-  SxProps,
 } from '@mui/material';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
@@ -22,8 +28,7 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
-import { handleError, APIError } from '@planet-sdk/common';
-import { ModifyDonations, Subscription } from '../../common/types/payments';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 // interface EditDonationProps {

@@ -1,5 +1,7 @@
-import React, { ReactElement } from 'react';
-import { IconProps } from '../../../../src/features/common/types/common';
+import type { ReactElement } from 'react';
+import type { IconProps } from '../../../../src/features/common/types/common';
+
+import React from 'react';
 
 export default function EditIcon({
   color = '#333',

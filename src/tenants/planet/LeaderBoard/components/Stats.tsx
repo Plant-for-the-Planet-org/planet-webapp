@@ -1,21 +1,26 @@
+import type { ReactElement } from 'react';
+import type {
+  TenantScore,
+  TreesDonated,
+} from '../../../../features/common/types/leaderboard';
+
 import { Modal } from '@mui/material';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
-import {
-  TenantScore,
-  TreesDonated,
-} from '../../../../features/common/types/leaderboard';
 
 interface Props {
   tenantScore: TenantScore;
   treesDonated: TreesDonated;
 }
-export default function Stats({ tenantScore, treesDonated }: Props): ReactElement {
+export default function Stats({
+  tenantScore,
+  treesDonated,
+}: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState<String | null>(null);
   const tPlanet = useTranslations('Planet');
   const locale = useLocale();
@@ -30,7 +35,11 @@ export default function Stats({ tenantScore, treesDonated }: Props): ReactElemen
       <div className={styles.container}>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>
-            {localizedAbbreviatedNumber(locale, Number(treesDonated.trees_since_2019), 2)}
+            {localizedAbbreviatedNumber(
+              locale,
+              Number(treesDonated.trees_since_2019),
+              2
+            )}
           </h2>
           <h3 className={styles.statText}>{tPlanet('treesDonated')}</h3>
           <button

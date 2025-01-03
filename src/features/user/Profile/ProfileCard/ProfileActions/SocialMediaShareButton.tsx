@@ -1,10 +1,11 @@
+import type { ProfileV2Props } from '../../../../common/types/profile';
+
 import React from 'react';
 import { ShareIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import WebappButton from '../../../../common/WebappButton';
 import ShareModal from '../ShareModal';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ProfileV2Props } from '../../../../common/types/profile';
 
 interface SocialMediaShareButtonProps {
   userProfile: ProfileV2Props['userProfile'];

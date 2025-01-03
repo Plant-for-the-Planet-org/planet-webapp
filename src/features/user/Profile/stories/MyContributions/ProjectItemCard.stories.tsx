@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { MyForestProject } from '../../../../common/types/myForest';
+import type { MyContributionsSingleProject } from '../../../../common/types/myForest';
+
 import ProjectItemCard from '../../MyContributions/ProjectItemCard';
-import { MyForestProject } from '../../../../common/types/myForest';
-import { MyContributionsSingleProject } from '../../../../common/types/myForest';
 
 const meta: Meta<typeof ProjectItemCard> = {
   component: ProjectItemCard,

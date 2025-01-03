@@ -1,7 +1,8 @@
+import type { TableHeader } from '../BulkCodesTypes';
+
 import TableCell from '@mui/material/TableCell';
 import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-import { TableHeader } from '../BulkCodesTypes';
 import styles from '../BulkCodes.module.scss';
 
 interface Props {

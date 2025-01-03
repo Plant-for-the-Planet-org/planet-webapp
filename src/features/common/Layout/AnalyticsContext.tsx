@@ -1,7 +1,8 @@
-import { useContext, createContext, useMemo, useState, FC } from 'react';
-import { subYears } from 'date-fns';
+import type { FC } from 'react';
+import type { SetState } from '../types/common';
 
-import { SetState } from '../types/common';
+import { useContext, createContext, useMemo, useState } from 'react';
+import { subYears } from 'date-fns';
 
 export interface Project {
   id: string;

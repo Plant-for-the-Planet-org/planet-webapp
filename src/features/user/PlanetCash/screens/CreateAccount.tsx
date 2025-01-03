@@ -1,8 +1,10 @@
-import { ReactElement, useState, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { CountryType } from '../../../common/types/country';
+
+import { useState, useEffect } from 'react';
 import CreateAccountForm from '../components/CreateAccountForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { CountryType } from '../../../common/types/country';
 import { useTranslations } from 'next-intl';
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 

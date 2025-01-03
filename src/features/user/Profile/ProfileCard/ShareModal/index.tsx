@@ -1,3 +1,5 @@
+import type { ProfileV2Props } from '../../../../common/types/profile';
+
 import React from 'react';
 import styles from './ShareModal.module.scss';
 import { Modal, Fade, TextField } from '@mui/material';
@@ -12,7 +14,6 @@ import {
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ProfileV2Props } from '../../../../common/types/profile';
 
 const CustomCopyButton = () => {
   const t = useTranslations('Profile');

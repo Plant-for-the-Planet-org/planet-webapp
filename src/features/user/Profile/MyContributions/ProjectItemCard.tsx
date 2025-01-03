@@ -1,20 +1,21 @@
+import type {
+  MyForestProject,
+  ProfilePageType,
+} from '../../../common/types/myForest';
+import type { MyContributionsSingleProject } from '../../../common/types/myForest';
+import type { CountryCode } from '@planet-sdk/common';
+import type { ComponentProps } from 'react';
+
 import ContributionCountOverflow from './ContributionCountOverflow';
 import ContributionSummary from './ContributionSummary';
 import DonateButton from './DonateButton';
 import ItemMobileHeader from './ItemMobileHeader';
 import ProjectTotalContributions from './ProjectTotalContributions';
 import styles from './MyContributions.module.scss';
-import {
-  MyForestProject,
-  ProfilePageType,
-} from '../../../common/types/myForest';
-import { MyContributionsSingleProject } from '../../../common/types/myForest';
 import { useTranslations } from 'next-intl';
-import { CountryCode } from '@planet-sdk/common';
 import ItemImage from './ItemImage';
 import ProjectSummary from './ProjectSummary';
 import getImageUrl from '../../../../utils/getImageURL';
-import { ComponentProps } from 'react';
 
 interface Props {
   project: MyForestProject;

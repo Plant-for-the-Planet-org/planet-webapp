@@ -1,8 +1,9 @@
+import type { PointFeature } from 'supercluster';
+import type { DonationProperties } from '../../../../common/types/myForest';
+
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
 import style from '../ContributionsMap.module.scss';
-import { PointFeature } from 'supercluster';
-import { DonationProperties } from '../../../../common/types/myForest';
 
 const PopupImageSection = ({
   superclusterResponse,

@@ -1,4 +1,13 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  PlantLocation,
+  PlantLocationMulti,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
+import type { Feature, Point, Polygon } from 'geojson';
+
+import React from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
@@ -6,13 +15,6 @@ import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
-import {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
-import { Feature, Point, Polygon } from 'geojson';
 
 export default function PlantLocations(): ReactElement {
   const {

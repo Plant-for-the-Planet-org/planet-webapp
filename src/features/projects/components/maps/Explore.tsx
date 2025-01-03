@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
