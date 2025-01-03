@@ -63,17 +63,16 @@ export default function BulkCodeIssueCodesPage({
         if (router.isReady) {
           try {
             const paymentOptions =
-              await getAuthenticatedRequest<PaymentOptions>(
-                pageProps.tenantConfig.id,
-                `/app/paymentOptions/${router.query.id}`,
+              await getAuthenticatedRequest<PaymentOptions>({
+                tenant: pageProps.tenantConfig.id,
+                url: `/app/paymentOptions/${router.query.id}`,
                 token,
                 logoutUser,
-                undefined,
-                {
-                  country: planetCashAccount.country,
+                queryParams: {
+                  country: planetCashAccount?.country ?? '',
                   ...(user !== null && { legacyPriceFor: user.id }),
-                }
-              );
+                },
+              });
 
             if (paymentOptions) {
               const retrievedProject = projectList.find(

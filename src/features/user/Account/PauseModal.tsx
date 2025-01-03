@@ -90,13 +90,13 @@ export const PauseModal = ({
     };
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/subscriptions/${record.id}?scope=pause`,
-        bodyToSend,
+      await putAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/subscriptions/${record.id}?scope=pause`,
+        data: bodyToSend,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       handlePauseModalClose();
       fetchRecurrentDonations();
     } catch (err) {

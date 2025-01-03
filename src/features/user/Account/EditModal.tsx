@@ -131,13 +131,13 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       try {
-        const res = await putAuthenticatedRequest<ModifyDonations>(
-          tenantConfig?.id,
-          `/app/subscriptions/${record?.id}?scope=modify`,
-          bodyToSend,
+        const res = await putAuthenticatedRequest<ModifyDonations>({
+          tenant: tenantConfig?.id,
+          url: `/app/subscriptions/${record?.id}?scope=modify`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         if (res?.status === 'action_required') {
           window.open(res.response.confirmationUrl, '_blank');
         }

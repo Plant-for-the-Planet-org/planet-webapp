@@ -152,16 +152,16 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res = await postAuthenticatedRequest<Donation>(
-          tenantConfig?.id,
-          `/app/donations`,
-          cleanedData,
+        const res = await postAuthenticatedRequest<Donation>({
+          tenant: tenantConfig?.id,
+          url: `/app/donations`,
+          data: cleanedData,
           token,
           logoutUser,
-          {
+          headers: {
             'IDEMPOTENCY-KEY': uuidv4(),
-          }
-        );
+          },
+        });
         // if request is successful, it will have a uid
         if (res?.uid) {
           resetBulkContext();

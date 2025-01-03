@@ -39,13 +39,13 @@ const AddBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     try {
-      const res = await postAuthenticatedRequest<BankAccount>(
-        tenantConfig?.id,
-        '/app/accounts',
-        accountData,
+      const res = await postAuthenticatedRequest<BankAccount>({
+        tenant: tenantConfig?.id,
+        url: '/app/accounts',
+        data: accountData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (accounts) {
         setAccounts([...accounts, res]);
       } else {

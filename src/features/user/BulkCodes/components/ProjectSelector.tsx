@@ -19,7 +19,6 @@ interface ProjectSelectorProps {
   active?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
-
 const ProjectSelector = ({
   projectList,
   project,
@@ -32,17 +31,16 @@ const ProjectSelector = ({
   const { user, token, logoutUser, contextLoaded } = useUserProps();
 
   const fetchPaymentOptions = async (guid: string) => {
-    const paymentOptions = await getAuthenticatedRequest<PaymentOptions>(
-      `${tenantConfig?.id}`,
-      `/app/paymentOptions/${guid}`,
+    const paymentOptions = await getAuthenticatedRequest<PaymentOptions>({
+      tenant: tenantConfig?.id,
+      url: `/app/paymentOptions/${guid}`,
       token,
       logoutUser,
-      undefined,
-      {
+      queryParams: {
         country: planetCashAccount?.country || '',
         ...(user !== null && { legacyPriceFor: user.id }),
-      }
-    );
+      },
+    });
     return paymentOptions;
   };
 

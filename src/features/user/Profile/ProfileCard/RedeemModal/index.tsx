@@ -50,13 +50,13 @@ export default function RedeemModal({
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          tenantConfig?.id,
-          `/app/redeem`,
-          submitData,
+        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+          tenant: tenantConfig?.id,
+          url: `/app/redeem`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setRedeemedCodeData(res);
         setRefetchUserData(true);
         setIsLoading(false);

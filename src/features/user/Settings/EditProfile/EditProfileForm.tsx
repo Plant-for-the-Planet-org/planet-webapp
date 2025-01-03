@@ -164,13 +164,14 @@ export default function EditProfileForm() {
     imageFile: string | ArrayBuffer | null | undefined;
   }) => {
     try {
-      const res = await putAuthenticatedRequest<User>(
-        tenantConfig?.id,
-        `/app/profile`,
-        bodyToSend,
+      const res = await putAuthenticatedRequest<User>({
+        tenant: tenantConfig?.id,
+        url: `/app/profile`,
+        data: bodyToSend,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
+
       if (user) {
         const newUserInfo = { ...user, image: res.image };
         setUpdatingPic(false);
@@ -235,13 +236,13 @@ export default function EditProfileForm() {
 
     if (contextLoaded && token) {
       try {
-        const res: User = await putAuthenticatedRequest(
-          tenantConfig?.id,
-          `/app/profile`,
-          bodyToSend,
+        const res: User = await putAuthenticatedRequest({
+          tenant: tenantConfig?.id,
+          url: `/app/profile`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();

@@ -20,11 +20,15 @@ export default function ProjectGrid() {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest(tenantConfig.id, `/app/projects`, {
-          _scope: 'map',
-          currency: currencyCode,
+        const projects = await getRequest({
           tenant: tenantConfig.id,
-          'filter[purpose]': 'trees,conservation',
+          url: `/app/projects`,
+          queryParams: {
+            _scope: 'map',
+            currency: currencyCode,
+            tenant: tenantConfig.id,
+            'filter[purpose]': 'trees,conservation',
+          },
         });
         setProjects(projects as MapProject[]);
       } catch (err) {

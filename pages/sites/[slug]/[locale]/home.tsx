@@ -54,10 +54,10 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
-        const newTenantScore = await getRequest<TenantScore>(
-          pageProps.tenantConfig.id,
-          `/app/tenantScore`
-        );
+        const newTenantScore = await getRequest<TenantScore>({
+          tenant: pageProps.tenantConfig.id,
+          url: `/app/tenantScore`,
+        });
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -69,10 +69,10 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const newLeaderBoard = await getRequest<LeaderBoardList>(
-          pageProps.tenantConfig.id,
-          `/app/leaderboard`
-        );
+        const newLeaderBoard = await getRequest<LeaderBoardList>({
+          tenant: pageProps.tenantConfig.id,
+          url: `/app/leaderboard`,
+        });
         setLeaderboard(newLeaderBoard);
       } catch (err) {
         setErrors(handleError(err as APIError));

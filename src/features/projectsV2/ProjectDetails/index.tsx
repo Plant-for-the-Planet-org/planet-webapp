@@ -60,15 +60,15 @@ const ProjectDetails = ({
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProject = await getRequest<ExtendedProject>(
-          tenantConfig.id,
-          `/app/projects/${projectSlug}`,
-          {
+        const fetchedProject = await getRequest<ExtendedProject>({
+          tenant: tenantConfig.id,
+          url: `/app/projects/${projectSlug}`,
+          queryParams: {
             _scope: 'extended',
             currency: currency,
             locale: locale,
-          }
-        );
+          },
+        });
         const { purpose } = fetchedProject;
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
@@ -95,14 +95,14 @@ const ProjectDetails = ({
     async function loadPlantLocations() {
       setIsLoading(true);
       try {
-        const result = await getRequest<PlantLocation[]>(
-          tenantConfig.id,
-          `/app/plantLocations/${singleProject?.id}`,
-          {
+        const result = await getRequest<PlantLocation[]>({
+          tenant: tenantConfig.id,
+          url: `/app/plantLocations/${singleProject?.id}`,
+          queryParams: {
             _scope: 'extended',
           },
-          '1.0.4'
-        );
+          version: '1.0.4',
+        });
         setPlantLocations(result);
       } catch (err) {
         setErrors(handleError(err as APIError | ClientError));

@@ -46,13 +46,13 @@ const CreateAccountForm = ({
     setIsProcessing(true);
 
     try {
-      const res = await postAuthenticatedRequest(
-        tenantConfig?.id,
-        '/app/planetCash',
+      const res = await postAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: '/app/planetCash',
         data,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setIsAccountCreated(true);
       setAccounts([res]);
       // go to accounts tab

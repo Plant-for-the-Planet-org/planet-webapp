@@ -54,13 +54,13 @@ const EditAddress = ({
         type: selectedAddressForAction?.type,
       };
       try {
-        const res = await putAuthenticatedRequest<Address>(
-          tenantConfig.id,
-          `/app/addresses/${selectedAddressForAction?.id}`,
-          bodyToSend,
+        const res = await putAuthenticatedRequest<Address>({
+          tenant: tenantConfig.id,
+          url: `/app/addresses/${selectedAddressForAction?.id}`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         if (res && updateUserAddresses) updateUserAddresses();
       } catch (error) {
         setErrors(handleError(error as APIError));

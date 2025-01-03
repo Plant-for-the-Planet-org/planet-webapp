@@ -191,13 +191,13 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>(
-            tenantConfig?.id,
-            `/app/contributions`,
-            submitData,
+          const res = await postAuthenticatedRequest<ContributionProperties>({
+            tenant: tenantConfig?.id,
+            url: `/app/contributions`,
+            data: submitData,
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
           setErrorMessage('');
           setContributionGUID(res.id);
           setContributionDetails(res);
@@ -218,12 +218,12 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

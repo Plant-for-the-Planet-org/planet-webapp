@@ -70,14 +70,14 @@ export async function getAllPlantLocations(
   redirect: (url: string) => void
 ): Promise<PlantLocation[] | null | void> {
   try {
-    const result = await getRequest<PlantLocation[]>(
+    const result = await getRequest<PlantLocation[]>({
       tenant,
-      `/app/plantLocations/${project}`,
-      {
+      url: `/app/plantLocations/${project}`,
+      queryParams: {
         _scope: 'extended',
       },
-      '1.0.4'
-    );
+      version: '1.0.4',
+    });
     if (result) {
       return result;
     } else {
