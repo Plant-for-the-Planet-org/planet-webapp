@@ -1,9 +1,10 @@
-import { procedure } from '../../trpc';
-import prisma from '../../../../prisma/client';
-import {
+import type {
   MyForestProject,
   ProjectQueryResult,
 } from '../../../features/common/types/myForest';
+
+import { procedure } from '../../trpc';
+import prisma from '../../../../prisma/client';
 
 export const projectListsProcedure = procedure.query(async () => {
   // Get the list of projects

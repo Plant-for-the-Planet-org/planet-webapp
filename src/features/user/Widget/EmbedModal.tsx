@@ -1,3 +1,6 @@
+import type { APIError, User } from '@planet-sdk/common';
+import type { AlertColor } from '@mui/lab';
+
 import React from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
@@ -8,8 +11,7 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, User } from '@planet-sdk/common';
-import { AlertColor } from '@mui/lab';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {

@@ -1,4 +1,8 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import { type PlantLocation as PlantLocationType } from '../../../common/types/plantLocation';
+
+import React from 'react';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
@@ -15,10 +19,9 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { type PlantLocation as PlantLocationType } from '../../../common/types/plantLocation';
 
 const Stepper = styled(MuiStepper)({
   '&': {

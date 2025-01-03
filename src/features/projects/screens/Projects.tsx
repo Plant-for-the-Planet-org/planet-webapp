@@ -1,4 +1,10 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SetState } from '../../common/types/common';
+import type { MapProject } from '../../common/types/ProjectPropsContextInterface';
+import type { APIError } from '@planet-sdk/common';
+import type { Tenant } from '@planet-sdk/common';
+
+import React from 'react';
 import dynamic from 'next/dynamic';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
@@ -11,12 +17,9 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import { SetState } from '../../common/types/common';
-import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Tenant } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {

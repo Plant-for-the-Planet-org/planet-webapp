@@ -1,4 +1,6 @@
-import React, { createContext, FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+
+import React, { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
 

@@ -1,4 +1,4 @@
-import { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
+import type { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
 
 export interface Fees {
   disputeFee: number;

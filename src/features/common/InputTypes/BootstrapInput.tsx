@@ -1,6 +1,8 @@
-import { InputBase, InputBaseProps, styled } from '@mui/material';
+import type { InputBaseProps } from '@mui/material';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import { InputBase, styled } from '@mui/material';
 import { useTenant } from '../Layout/TenantContext';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 interface StyledInputBaseType {
   config: Tenant;

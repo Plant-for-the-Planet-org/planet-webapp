@@ -1,11 +1,20 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  PlantLocation,
+  PlantLocationMulti,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
+import type { RequiredMapStyle } from '../../../common/types/map';
+import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
+import type { MapEvent } from 'react-map-gl';
+
+import React from 'react';
 import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import * as turf from '@turf/turf';
 import MapGL, {
   FlyToInterpolator,
   Layer,
-  MapEvent,
   Marker,
   NavigationControl,
   Source,
@@ -17,13 +26,6 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
-import {
-  PlantLocation,
-  PlantLocationMulti,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
-import { RequiredMapStyle } from '../../../common/types/map';
-import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 
 interface Props {
   locations: PlantLocation[] | SamplePlantLocation[] | null;

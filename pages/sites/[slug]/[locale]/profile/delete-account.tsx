@@ -1,15 +1,17 @@
-import Head from 'next/head';
-import React, { ReactElement } from 'react';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
-import {
-  GetStaticPaths,
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import Head from 'next/head';
+import React from 'react';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import { useTranslations } from 'next-intl';
+import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,

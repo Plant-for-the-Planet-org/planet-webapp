@@ -1,10 +1,11 @@
-import { useLocale, useTranslations } from 'next-intl';
-import styles from './index.module.scss';
-import {
+import type {
   PlantLocationDetailsApiResponse,
   PlantLocation,
   PlantLocationProperties,
 } from '../../../../../../../common/types/dataExplorer';
+
+import { useLocale, useTranslations } from 'next-intl';
+import styles from './index.module.scss';
 import PlantLocationDetailsZeroState from '../PlantLocationDetailsZeroState';
 import TreeMapperIcon from '../TreeMapperIcon';
 import { getFormattedNumber } from '../../../../../../../../utils/getFormattedNumber';

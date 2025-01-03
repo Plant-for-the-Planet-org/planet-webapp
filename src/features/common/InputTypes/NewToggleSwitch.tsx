@@ -1,6 +1,7 @@
+import type { ChangeEvent, InputHTMLAttributes } from 'react';
+
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, InputHTMLAttributes } from 'react';
 import theme from '../../../theme/themeProperties';
 
 interface ToggleSwitchProps {

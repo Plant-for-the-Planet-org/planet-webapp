@@ -1,3 +1,20 @@
+import type { AbstractIntlMessages } from 'next-intl';
+import type { SetState } from '../../../../../src/features/common/types/common';
+import type { PlantLocation } from '../../../../../src/features/common/types/plantLocation';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type {
+  APIError,
+  TreeProjectExtended,
+  ConservationProjectExtended,
+  ProjectExtended,
+} from '@planet-sdk/common';
+
 import { useRouter } from 'next/router';
 import React from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -8,30 +25,14 @@ import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
 import ProjectDetailsMeta from '../../../../../src/utils/getMetaTags/ProjectDetailsMeta';
 import { getAllPlantLocations } from '../../../../../src/utils/maps/plantLocations';
-import { AbstractIntlMessages, useLocale } from 'next-intl';
-import {
-  handleError,
-  APIError,
-  TreeProjectExtended,
-  ConservationProjectExtended,
-  ProjectExtended,
-  ClientError,
-} from '@planet-sdk/common';
-import { SetState } from '../../../../../src/features/common/types/common';
-import { PlantLocation } from '../../../../../src/features/common/types/plantLocation';
+import { useLocale } from 'next-intl';
+import { handleError, ClientError } from '@planet-sdk/common';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { v4 } from 'uuid';
-import {
-  GetStaticPaths,
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 

@@ -1,21 +1,24 @@
-import Head from 'next/head';
-import React, { ReactElement, useEffect } from 'react';
-import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import {
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import Head from 'next/head';
+import React, { useEffect } from 'react';
+import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';

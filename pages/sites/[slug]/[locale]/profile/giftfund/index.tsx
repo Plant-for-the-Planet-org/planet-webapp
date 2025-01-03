@@ -1,20 +1,23 @@
-import React, { ReactElement } from 'react';
-import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import GiftFunds from '../../../../../../src/features/user/GiftFunds';
-import {
+import type { ReactElement } from 'react';
+import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
+import GiftFunds from '../../../../../../src/features/user/GiftFunds';
+import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';

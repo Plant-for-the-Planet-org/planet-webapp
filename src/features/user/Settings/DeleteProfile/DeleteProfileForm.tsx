@@ -1,3 +1,5 @@
+import type { APIError, SerializedError } from '@planet-sdk/common';
+
 import React from 'react';
 import styles from './DeleteProfile.module.scss';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -8,7 +10,7 @@ import router from 'next/router';
 import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { APIError, handleError, SerializedError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function DeleteProfileForm() {

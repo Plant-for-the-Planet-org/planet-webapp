@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign';
-import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
-import {
+import type {
   LeaderBoard,
   TenantScore,
 } from '../../../../src/features/common/types/campaign';
-import { AbstractIntlMessages } from 'next-intl';
-import { Tenant } from '@planet-sdk/common';
-import {
+import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
+import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+
+import React, { useEffect, useState } from 'react';
+import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign';
+import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';

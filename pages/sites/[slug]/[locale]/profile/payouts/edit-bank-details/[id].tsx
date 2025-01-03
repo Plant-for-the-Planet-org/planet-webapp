@@ -1,22 +1,25 @@
-import React, { ReactElement } from 'react';
-import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Head from 'next/head';
-import ManagePayouts, {
-  ManagePayoutTabs,
-} from '../../../../../../../src/features/user/ManagePayouts';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import {
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
+import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import ManagePayouts, {
+  ManagePayoutTabs,
+} from '../../../../../../../src/features/user/ManagePayouts';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';

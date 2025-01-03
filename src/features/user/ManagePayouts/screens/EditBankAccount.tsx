@@ -1,19 +1,23 @@
-import { ReactElement, useContext, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { FormData } from '../components/BankDetailsForm';
+import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { BankAccount } from '../../../common/types/payouts';
+
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
+import BankDetailsForm from '../components/BankDetailsForm';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
-import { BankAccount } from '../../../common/types/payouts';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const EditBankAccount = (): ReactElement | null => {

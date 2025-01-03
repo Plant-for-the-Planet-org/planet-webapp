@@ -1,5 +1,7 @@
-import { createContext, FC, useState, useContext } from 'react';
-import { PlanetCashAccount } from '../types/planetcash';
+import type { FC } from 'react';
+import type { PlanetCashAccount } from '../types/planetcash';
+
+import { createContext, useState, useContext } from 'react';
 
 interface PlanetCashContextInterface {
   accounts: PlanetCashAccount[] | null;

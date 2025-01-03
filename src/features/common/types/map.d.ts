@@ -1,8 +1,8 @@
-import Supercluster from 'supercluster';
-import { User, UserInfo } from '@planet-sdk/common';
-import { MutableRefObject } from 'react';
-import { UserPublicProfile } from '@planet-sdk/common';
-import {
+import type Supercluster from 'supercluster';
+import type { User } from '@planet-sdk/common';
+import type { MutableRefObject } from 'react';
+import type { UserPublicProfile } from '@planet-sdk/common';
+import type {
   TreeProjectClassification,
   CountryCode,
   CurrencyCode,
@@ -11,10 +11,9 @@ import {
   Tpo,
   UnitTypes,
 } from '@planet-sdk/common';
-import { Nullable } from '@planet-sdk/common/build/types/util';
-import { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
-import { FlyToInterpolator } from 'react-map-gl';
-import { SetState } from './common';
+import type { Nullable } from '@planet-sdk/common/build/types/util';
+import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
+import type { FlyToInterpolator } from 'react-map-gl';
 
 export interface ClusterMarker {
   geometry: {

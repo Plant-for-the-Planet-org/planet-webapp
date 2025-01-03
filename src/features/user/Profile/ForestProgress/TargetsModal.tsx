@@ -1,3 +1,6 @@
+import type { APIError, User } from '@planet-sdk/common';
+import type { SetState } from '../../../common/types/common';
+
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
@@ -5,9 +8,8 @@ import { useMyForest } from '../../../common/Layout/MyForestContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { handleError, APIError, User } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { SetState } from '../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';

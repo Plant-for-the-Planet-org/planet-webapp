@@ -1,12 +1,14 @@
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
-import {
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
+
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,

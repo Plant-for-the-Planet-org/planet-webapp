@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
-import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
-import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
-import { AbstractIntlMessages } from 'next-intl';
-import { Tenant } from '@planet-sdk/common';
-import {
-  GetStaticPaths,
+import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+
+import React, { useEffect } from 'react';
+import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
+import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';

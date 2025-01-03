@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import type { FC } from 'react';
+
 import styles from './PublicProfileOuterContainer.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 

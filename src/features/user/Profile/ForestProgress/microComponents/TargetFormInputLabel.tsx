@@ -1,3 +1,5 @@
+import type { ProgressDataType } from '../ForestProgressItem';
+
 import styles from '../ForestProgress.module.scss';
 import { useTranslations } from 'next-intl';
 import {
@@ -5,7 +7,6 @@ import {
   AreaRestoredIcon,
   ConservedAreaIcon,
 } from '../../../../../../public/assets/images/icons/ProgressBarIcons';
-import { ProgressDataType } from '../ForestProgressItem';
 
 type TargetFormInputLabelProps = {
   dataType: ProgressDataType;

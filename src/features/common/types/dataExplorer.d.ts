@@ -1,4 +1,4 @@
-import { Geometry } from '@turf/turf';
+import type { Geometry } from '@turf/turf';
 
 export interface IDailyFrame {
   plantedDate: string;

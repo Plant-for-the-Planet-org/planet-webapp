@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import ChildrenYouthIcon from '../../../../../public/assets/images/icons/megaMenuIcons/childrenAndYouth';
 import OverviewIcon from '../../../../../public/assets/images/icons/megaMenuIcons/overview';
 import PartnerIcon from '../../../../../public/assets/images/icons/megaMenuIcons/partners';
