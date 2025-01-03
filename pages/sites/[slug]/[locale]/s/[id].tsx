@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -72,18 +73,19 @@ export default function DirectGift({
   return tenantConfig ? <div></div> : <></>;
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

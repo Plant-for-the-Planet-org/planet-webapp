@@ -1,4 +1,5 @@
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -195,18 +196,19 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   );
 };
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        code: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          code: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

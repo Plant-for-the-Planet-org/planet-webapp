@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -185,19 +186,20 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        type: v4(),
-        code: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          type: v4(),
+          code: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

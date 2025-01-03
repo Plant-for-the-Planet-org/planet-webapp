@@ -4,6 +4,12 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { DirectGiftI } from '../../../../../src/features/donations/components/DirectGift';
 import type { SetState } from '../../../../../src/features/common/types/common';
 import type { MapProject } from '../../../../../src/features/common/types/ProjectPropsContextInterface';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -23,11 +29,6 @@ import {
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import type {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
@@ -175,17 +176,18 @@ export default function Donate({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

@@ -19,6 +19,7 @@ import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -177,17 +178,18 @@ function AccountHistory({ pageProps }: Props): ReactElement {
 
 export default AccountHistory;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

@@ -1,4 +1,5 @@
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -60,18 +61,19 @@ ProjectDetailsPage.getLayout = function getLayout(
 
 export default ProjectDetailsPage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        p: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          p: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,
