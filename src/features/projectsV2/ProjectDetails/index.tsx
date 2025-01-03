@@ -23,6 +23,8 @@ import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
+import OtherInterventionInfo from './components/OtherInterventionInfo';
+import { isNonPlantationType } from '../../../utils/constants/intervention';
 
 const ProjectDetails = ({
   currencyCode,
@@ -125,11 +127,21 @@ const ProjectDetails = ({
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
+  
+
+
+    const shouldShowOtherIntervention = (
+      isNonPlantationType(hoveredPlantLocation) ||
+      (isNonPlantationType(selectedPlantLocation) && !isMobile)
+    );
+
+
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||
       selectedSamplePlantLocation !== null) &&
     !isMobile;
+    
   const shouldShowProjectInfo =
     hoveredPlantLocation === null &&
     selectedPlantLocation === null &&
@@ -176,13 +188,17 @@ const ProjectDetails = ({
               hoveredPlantLocation?.type === 'multi-tree-registration'
                 ? hoveredPlantLocation
                 : selectedPlantLocation?.type === 'multi-tree-registration'
-                ? selectedPlantLocation
-                : undefined
+                  ? selectedPlantLocation
+                  : undefined
             }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
           />
         )}
+
+        {shouldShowOtherIntervention && <OtherInterventionInfo plantLocationInfo={selectedPlantLocation || hoveredPlantLocation} setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          isMobile={isMobile} />}
+
         {shouldShowProjectInfo && (
           <ProjectInfo
             project={singleProject}

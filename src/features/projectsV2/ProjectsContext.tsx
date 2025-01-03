@@ -58,6 +58,10 @@ interface ProjectsState {
   topProjects: MapProject[] | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
+  selectedIntervention: string;
+  setSelectedIntervention: SetState<string>;
+  disableInterventionMenu: boolean;
+  setDisableInterventionMenu: SetState<boolean>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -92,6 +96,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
+  const [selectedIntervention, setSelectedIntervention] = useState('all');
+  const [disableInterventionMenu, setDisableInterventionMenu] = useState(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -236,6 +242,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject(null);
       setHoveredPlantLocation(null);
       setSelectedSite(null);
+      setSelectedIntervention('all')
+      setDisableInterventionMenu(false)
       setPreventShallowPush(false);
       setPlantLocations(null);
     }
@@ -440,6 +448,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation,
       selectedSite,
       setSelectedSite,
+      selectedIntervention,
+      disableInterventionMenu,
+      setSelectedIntervention,
+      setDisableInterventionMenu,
       setPreventShallowPush,
     }),
     [
@@ -459,6 +471,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       hoveredPlantLocation,
       selectedSite,
       preventShallowPush,
+      selectedIntervention,
+      disableInterventionMenu
     ]
   );
 
