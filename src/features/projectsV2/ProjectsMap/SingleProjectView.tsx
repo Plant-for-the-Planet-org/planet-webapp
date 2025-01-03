@@ -60,15 +60,6 @@ const SingleProjectView = ({ mapRef }: Props) => {
     }
   }, [selectedPlantLocation, router.isReady]);
 
-  useEffect(() => {
-    zoomOut(
-      handleViewStateChange,
-      mapRef,
-      4000
-    );
-  }, [selectedIntervention])
-  
-
   // Zoom to project site
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;

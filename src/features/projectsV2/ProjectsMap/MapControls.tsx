@@ -58,7 +58,7 @@ const MapControls = ({
   const canShowSatelliteToggle = !(
     isMobile &&
     (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
-  );
+  );  
   const isProjectDetailsPage = page === 'project-details';
 
   const enableInterventionFilter=()=>{

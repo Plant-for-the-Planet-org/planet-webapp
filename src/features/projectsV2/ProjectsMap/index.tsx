@@ -25,6 +25,7 @@ import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLoc
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
+import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -177,7 +178,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   };
   const mapContainerClass = `${styles.mapContainer} ${styles[mobileOS !== undefined ? mobileOS : '']
     }`;
-  const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration']
   const shouldShowOtherIntervention = props.isMobile && (selectedPlantLocation !== null && !PLANTATION_TYPES.includes(selectedPlantLocation.type))
   return (
     <>

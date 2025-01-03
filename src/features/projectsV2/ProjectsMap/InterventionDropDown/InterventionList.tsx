@@ -20,7 +20,7 @@ const InterventionList = ({
   setIsMenuOpen,
   selectedSiteData,
 }: InterventionListProps) => {
-  const handleSiteSelection = (index: number, key: string) => {
+  const handleFilterSelection = (key: string) => {
     setIsMenuOpen(false);
     setSelectedIntervention(key);
   };
@@ -32,7 +32,7 @@ const InterventionList = ({
           <li
             className={`${styles.listItem} ${intervention.value === selectedSiteData?.value ? styles.selectedItem : ''
               }`}
-            onClick={() => handleSiteSelection(index, intervention.value)}
+            onClick={() => handleFilterSelection(intervention.value)}
             key={index}
           >
             <p>{intervention.label}</p>

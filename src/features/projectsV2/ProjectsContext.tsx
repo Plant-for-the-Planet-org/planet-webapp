@@ -96,8 +96,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
-  const [selectedIntervention, setSelectedIntervention] = useState<string>('all');
-  const [disableInterventionMenu, setDisableInterventionMenu] = useState<boolean>(false);
+  const [selectedIntervention, setSelectedIntervention] = useState('all');
+  const [disableInterventionMenu, setDisableInterventionMenu] = useState(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);

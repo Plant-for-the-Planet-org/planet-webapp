@@ -24,6 +24,7 @@ import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
+import { isNonPlantationType, PLANTATION_TYPES } from '../../../utils/constants/intervention';
 
 const ProjectDetails = ({
   currencyCode,
@@ -127,14 +128,8 @@ const ProjectDetails = ({
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
   
-    const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration'] as const;
 
-    // Helper function with proper type checking
-    const isNonPlantationType = (location: PlantLocation | null): boolean => {
-      return location !== null && !PLANTATION_TYPES.includes(location.type);
-    };
-    
-    
+
     const shouldShowOtherIntervention = (
       isNonPlantationType(hoveredPlantLocation) ||
       (isNonPlantationType(selectedPlantLocation) && !isMobile)

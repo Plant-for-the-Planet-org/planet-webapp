@@ -167,7 +167,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`plant-polygon-layer`}
           type="fill"
           paint={{
-            'fill-color': isSatelliteView ? FillColor : FillColor,
+            'fill-color': FillColor,
             'fill-opacity': ['get', 'opacity'],
           }}
           filter={['==', ['geometry-type'], 'Polygon']}
@@ -176,7 +176,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`point-layer`}
           type="circle"
           paint={{
-            'circle-color': isSatelliteView ? FillColor : FillColor,
+            'circle-color': FillColor,
             'circle-opacity': [
               'case',
               [

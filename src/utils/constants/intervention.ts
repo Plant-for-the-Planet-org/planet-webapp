@@ -1,3 +1,6 @@
+import { DataDrivenPropertyValueSpecification } from "maplibre-gl";
+import { PlantLocation, PlantLocationMulti } from "../../features/common/types/plantLocation";
+
 export const SINGLE_TREE = '#007A49';
 export const MULTI_TREE = '#007A49';
 export const INVASIVE_SPECIES = '#EB5757';
@@ -16,7 +19,7 @@ export const ENRICHMENT_PLANTING = '#EB67CE';
 export const MAINTENANCE = '#6C63FF';
 export const OTHER_INTERVENTION = '#9B51E0';
 
-export const FillColor = [
+export const FillColor: DataDrivenPropertyValueSpecification<string> = [
     'match',
     ['get', 'type'],
     'remeasurement', 'tomato',
@@ -83,3 +86,22 @@ export const AllIntervention: Array<{
         { label: 'Maintenance', value: 'maintenance', index: 0 },
         { label: 'Other Intervention', value: 'other-intervention', index: 0 }
     ]
+
+export const PLANTATION_TYPES = ['multi-tree-registration', 'single-tree-registration']
+
+// Helper function with proper type checking
+export const isNonPlantationType = (location: PlantLocation | null): boolean => {
+    return location !== null && !PLANTATION_TYPES.includes(location.type);
+};
+
+
+export const findMatchingIntervention = (value: string) => {
+    return AllIntervention.find(item => item.value === value);
+};
+
+export const isPlantLocationMulti = (location: PlantLocation | null): location is PlantLocationMulti => {
+    return location !== null && 
+      'sampleTreeCount' in location && 
+      'sampleInterventions' in location && 
+      'plantedSpecies' in location;
+  };

@@ -5,7 +5,7 @@ import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
-import { AllIntervention, INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+import { AllIntervention, findMatchingIntervention, INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
 interface InterventionType {
   label: string
@@ -41,9 +41,7 @@ const InterventionDropdown = ({
     }));
   }, [allIntervention]);
 
-  const findMatchingIntervention = (value: string) => {
-    return AllIntervention.find(item => item.value === value);
-  };
+
 
     useEffect(() => {
         if(!disableInterventionMenu){
