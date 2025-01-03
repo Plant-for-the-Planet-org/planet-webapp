@@ -1,11 +1,7 @@
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
-  GetStaticPaths,
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
