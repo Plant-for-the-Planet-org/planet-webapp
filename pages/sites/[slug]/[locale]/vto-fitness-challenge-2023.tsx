@@ -5,6 +5,7 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,

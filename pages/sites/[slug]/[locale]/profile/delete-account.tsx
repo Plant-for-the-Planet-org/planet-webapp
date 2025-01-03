@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
