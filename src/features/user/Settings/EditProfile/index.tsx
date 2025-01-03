@@ -7,7 +7,7 @@ import EditProfileForm from './EditProfileForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import AddressManagement from './AddressManagement';
 
-export default function EditProfile(): React.ReactElement | null {
+export default function EditProfile(): ReactElement {
   const t = useTranslations('Me');
 
   return (

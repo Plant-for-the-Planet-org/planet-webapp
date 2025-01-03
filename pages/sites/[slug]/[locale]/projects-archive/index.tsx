@@ -1,3 +1,10 @@
+import type { AbstractIntlMessages } from 'next-intl';
+import type { APIError } from '@planet-sdk/common';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { DirectGiftI } from '../../../../../src/features/donations/components/DirectGift';
+import type { SetState } from '../../../../../src/features/common/types/common';
+import type { MapProject } from '../../../../../src/features/common/types/ProjectPropsContextInterface';
+
 import { useRouter } from 'next/router';
 import React from 'react';
 import ProjectsList from '../../../../../src/features/projects/screens/Projects';
@@ -8,20 +15,13 @@ import { useProjectProps } from '../../../../../src/features/common/Layout/Proje
 import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
 import Filters from '../../../../../src/features/projects/components/projects/Filters';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import type {
-  DirectGiftI,
-} from '../../../../../src/features/donations/components/DirectGift';
 import DirectGift from '../../../../../src/features/donations/components/DirectGift';
 import { useLocale } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
 import { handleError } from '@planet-sdk/common';
-import type { SetState } from '../../../../../src/features/common/types/common';
-import type { MapProject } from '../../../../../src/features/common/types/ProjectPropsContextInterface';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import type {
   GetStaticProps,
@@ -29,7 +29,6 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../../tenant.config';
-import type { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
