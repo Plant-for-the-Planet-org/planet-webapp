@@ -1,14 +1,11 @@
-import {
-  ReactElement,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-} from 'react';
+import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import type { APIError } from '@planet-sdk/common';
+import type { PlanetCashAccount } from '../../common/types/planetcash';
+import type { ReactElement } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
@@ -17,9 +14,8 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { PlanetCashAccount } from '../../common/types/planetcash';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',

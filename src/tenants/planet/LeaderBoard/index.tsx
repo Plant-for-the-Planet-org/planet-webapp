@@ -1,13 +1,15 @@
-import React, { ReactElement } from 'react';
-import Footer from '../../../features/common/Layout/Footer';
-import Score from './components/Score';
-import Stats from './components/Stats';
-import Stories from './components/Stories';
-import {
+import type { ReactElement } from 'react';
+import type {
   LeaderBoardList,
   TenantScore,
   TreesDonated,
 } from '../../../features/common/types/leaderboard';
+
+import React from 'react';
+import Footer from '../../../features/common/Layout/Footer';
+import Score from './components/Score';
+import Stats from './components/Stats';
+import Stories from './components/Stories';
 
 interface Props {
   leaderboard: LeaderBoardList | null;
@@ -23,7 +25,9 @@ export default function index({
   return (
     <div>
       <Score leaderboard={leaderboard} />
-      {(tenantScore && treesDonated) && <Stats tenantScore={tenantScore} treesDonated={treesDonated}/>}
+      {tenantScore && treesDonated && (
+        <Stats tenantScore={tenantScore} treesDonated={treesDonated} />
+      )}
       <Stories />
       <Footer />
     </div>

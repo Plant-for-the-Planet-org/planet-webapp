@@ -1,9 +1,10 @@
+import type { HeaderItem } from '@planet-sdk/common';
+
 import { useTenant } from '../../TenantContext';
 import UserProfileButton from './UserProfileButton';
 import { useState, useEffect } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import NavigationItem from './NavigationItem';
-import { HeaderItem } from '@planet-sdk/common';
 
 const NavigationMenu = () => {
   const { tenantConfig } = useTenant();

@@ -1,10 +1,13 @@
-import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useDropzone, ErrorCode, FileRejection } from 'react-dropzone';
+import type { ReactElement } from 'react';
+import type { FileRejection } from 'react-dropzone';
+import type { FileImportError, UploadStates } from '../BulkCodesTypes';
+
+import { useCallback, useEffect, useState } from 'react';
+import { useDropzone, ErrorCode } from 'react-dropzone';
 import { useTranslations } from 'next-intl';
 import FileUploadIcon from '../../../../../public/assets/images/icons/FileUploadIcon';
 import FileProcessingIcon from '../../../../../public/assets/images/icons/FileProcessingIcon';
 import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
-import { FileImportError, UploadStates } from '../BulkCodesTypes';
 import styles from '../BulkCodes.module.scss';
 import handleFileUpload from '../../../../utils/handleFileUpload';
 

@@ -1,6 +1,7 @@
-import { CountryCode } from '@planet-sdk/common';
+import type { CountryCode } from '@planet-sdk/common';
+import type { DateString } from '../../../common/types/common';
+
 import styles from './MyContributions.module.scss';
-import { DateString } from '../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import format from 'date-fns/format';

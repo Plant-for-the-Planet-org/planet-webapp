@@ -1,18 +1,18 @@
+import type { IExportData } from '../../../../../common/types/dataExplorer';
+import type { SxProps } from '@mui/material';
+import type { Project } from '../../../../../common/Layout/AnalyticsContext';
+
 import styles from './index.module.scss';
 import MuiButton from '../../../../../common/InputTypes/MuiButton';
 import { utils, write } from 'xlsx';
 import { saveAs } from 'file-saver';
 import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
-import {
-  Project,
-  useAnalytics,
-} from '../../../../../common/Layout/AnalyticsContext';
+import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { useContext, useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
-import { SxProps } from '@mui/material';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslations } from 'next-intl';
@@ -24,7 +24,6 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { IExportData } from '../../../../../common/types/dataExplorer';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {

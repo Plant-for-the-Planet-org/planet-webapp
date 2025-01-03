@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
 import type {
   GetStaticProps,
@@ -5,12 +6,11 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
-import type { ReactElement } from 'react';
 
 import { useEffect } from 'react';
 import Head from 'next/head';
-import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import { useTranslations } from 'next-intl';
 import EditProfile from '../../../../../src/features/user/Settings/EditProfile';
 import {
   constructPathsForTenantSlug,

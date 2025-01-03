@@ -1,8 +1,10 @@
-import React, { ReactElement, SyntheticEvent } from 'react';
+import type { ReactElement, SyntheticEvent } from 'react';
+import type { TabItem } from './TabbedViewTypes';
+
+import React from 'react';
 import { useRouter } from 'next/router';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { TabItem } from './TabbedViewTypes';
 
 interface TabStepsProps {
   step: number | string | false;

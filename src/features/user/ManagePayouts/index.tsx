@@ -1,14 +1,11 @@
-import {
-  ReactElement,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-} from 'react';
+import type { ReactElement } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
+import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import type { APIError } from '@planet-sdk/common';
+import type { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import {
   getAuthenticatedRequest,
   getRequest,
@@ -21,8 +18,7 @@ import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
-import { handleError, APIError } from '@planet-sdk/common';
-import { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 export enum ManagePayoutTabs {

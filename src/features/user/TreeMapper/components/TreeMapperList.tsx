@@ -1,16 +1,18 @@
-import React, { ReactElement } from 'react';
-import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
-import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
-import styles from '../TreeMapper.module.scss';
-import { useTranslations } from 'next-intl';
-import {
+import type { ReactElement } from 'react';
+import type { Links } from '../../../common/types/payments';
+import type { SetState } from '../../../common/types/common';
+import type {
   PlantLocation as PlantLocationType,
   PlantLocationSingle,
   PlantLocationMulti,
 } from '../../../common/types/plantLocation';
-import { Links } from '../../../common/types/payments';
+
+import React from 'react';
+import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
+import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
+import styles from '../TreeMapper.module.scss';
+import { useTranslations } from 'next-intl';
 import PlantLocation from './PlantLocation';
-import { SetState } from '../../../common/types/common';
 
 interface Props {
   selectedLocation: PlantLocationSingle | PlantLocationMulti | null;

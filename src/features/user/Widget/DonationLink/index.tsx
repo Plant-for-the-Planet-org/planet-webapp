@@ -1,15 +1,18 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { ProjectOption } from '../../../common/types/project';
+import type { APIError } from '@planet-sdk/common';
+import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
-import { ProjectOption } from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function DonationLink(): ReactElement | null {
   const { setErrors } = useContext(ErrorHandlingContext);

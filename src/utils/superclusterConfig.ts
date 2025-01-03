@@ -1,12 +1,14 @@
-import { Bound } from '../features/common/types/map';
-import Supercluster, { ClusterProperties, PointFeature } from 'supercluster';
-import { RefObject } from 'react';
-import { MapRef } from 'react-map-gl';
-import {
+import type { Bound } from '../features/common/types/map';
+import type { ClusterProperties, PointFeature } from 'supercluster';
+import type { RefObject } from 'react';
+import type { MapRef } from 'react-map-gl';
+import type {
   DonationProperties,
   MyContributionsSingleRegistration,
 } from '../features/common/types/myForest';
-import { ViewState } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+
+import Supercluster from 'supercluster';
 
 const clusterConfig = {
   radius: 40,

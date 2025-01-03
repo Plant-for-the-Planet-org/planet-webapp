@@ -1,12 +1,8 @@
+import type { User } from '@planet-sdk/common/build/types/user';
+import type { Dispatch, FC, ReactNode, SetStateAction } from 'react';
+
 import router, { useRouter } from 'next/router';
-import React, {
-  Dispatch,
-  FC,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
@@ -28,7 +24,6 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
-import { User } from '@planet-sdk/common/build/types/user';
 
 interface SubMenuItemType {
   title: string;
