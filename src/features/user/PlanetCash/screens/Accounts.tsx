@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 import AccountDetails from '../components/AccountDetails';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';

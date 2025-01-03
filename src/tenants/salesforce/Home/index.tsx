@@ -1,3 +1,8 @@
+import type {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
+
 import Head from 'next/head';
 import Footer from '../../../features/common/Layout/Footer';
 import Landing from './components/Landing';
@@ -9,10 +14,6 @@ import ClimateAction from './components/ClimateAction';
 import Social from './components/Social';
 import React from 'react';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
-import {
-  LeaderBoardList,
-  TenantScore,
-} from '../../../features/common/types/leaderboard';
 
 interface Props {
   leaderboard: LeaderBoardList | null;

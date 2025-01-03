@@ -1,3 +1,5 @@
+import type { APIError } from '@planet-sdk/common';
+
 import React from 'react';
 import styles from './ApiKey.module.scss';
 import {
@@ -12,7 +14,7 @@ import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslations } from 'next-intl';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { Button, InputAdornment, TextField } from '@mui/material';
-import { APIError, handleError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useTenant } from '../../../common/Layout/TenantContext';
 

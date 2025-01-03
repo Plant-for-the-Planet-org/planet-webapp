@@ -1,15 +1,17 @@
+import type { ReactElement } from 'react';
+import type {
+  Imagery,
+  RasterData,
+} from '../../../common/types/ProjectPropsContextInterface';
+import type { SetState } from '../../../common/types/common';
+
 import { FormControl, NativeSelect } from '@mui/material';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
 import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import {
-  Imagery,
-  RasterData,
-} from '../../../common/types/ProjectPropsContextInterface';
-import { SetState } from '../../../common/types/common';
 
 interface Props {
   selectedYear1: string;

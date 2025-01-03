@@ -1,11 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { IExportData } from '../../../src/features/common/types/dataExplorer';
+
 import db from '../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
   rateLimiter,
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
-import { IExportData } from '../../../src/features/common/types/dataExplorer';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 

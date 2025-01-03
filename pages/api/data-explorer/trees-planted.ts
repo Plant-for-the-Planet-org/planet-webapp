@@ -1,4 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type {
+  IDailyFrame,
+  IMonthlyFrame,
+  IWeeklyFrame,
+  IYearlyFrame,
+} from '../../../src/features/common/types/dataExplorer';
+
 import db from '../../../src/utils/connectDB';
 import { TIME_FRAME } from '../../../src/features/user/TreeMapper/Analytics/components/TreePlanted/TimeFrameSelector';
 import nc from 'next-connect';
@@ -7,12 +14,6 @@ import {
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
-import {
-  IDailyFrame,
-  IMonthlyFrame,
-  IWeeklyFrame,
-  IYearlyFrame,
-} from '../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../src/redis-client';
 import { cacheKeyPrefix } from '../../../src/utils/constants/cacheKeyPrefix';
 

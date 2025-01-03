@@ -1,5 +1,5 @@
-import { Image } from '@planet-sdk/common';
-import { Geometry } from '@turf/turf';
+import type { Image } from '@planet-sdk/common';
+import type { Geometry } from '@turf/turf';
 
 export interface ContributionType {
   type: string;

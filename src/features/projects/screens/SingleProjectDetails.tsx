@@ -1,8 +1,10 @@
+import type { ReactElement } from 'react';
+
 import Modal from '@mui/material/Modal';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';

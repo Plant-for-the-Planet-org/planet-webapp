@@ -1,18 +1,21 @@
-import Head from 'next/head';
-import React, { ReactElement } from 'react';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import EditProfile from '../../../../../src/features/user/Settings/EditProfile';
-import {
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import { useEffect } from 'react';
+import Head from 'next/head';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import { useTranslations } from 'next-intl';
+import EditProfile from '../../../../../src/features/user/Settings/EditProfile';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
@@ -27,7 +30,7 @@ function EditProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
@@ -50,7 +53,7 @@ export default EditProfilePage;
 export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
+  const paths = subDomainPaths?.map((path) => {
     return {
       params: {
         slug: path.params.slug,
@@ -78,7 +81,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'editProfile'],
+    filenames: ['common', 'me', 'country', 'editProfile', 'profile'],
   });
 
   return {

@@ -1,12 +1,14 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { RequiredMapStyle } from '../../../../common/types/map';
+import type { ViewPort } from '../../../../common/types/project';
+
+import React from 'react';
 import styles from '../../TreeMapper.module.scss';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MapGL, { NavigationControl } from 'react-map-gl';
 import LayerIcon from '../../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDisabled';
 import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
-import { RequiredMapStyle } from '../../../../common/types/map';
-import { ViewPort } from '../../../../common/types/project';
 
 export default function MyTreesMap(): ReactElement {
   const [satellite, setSatellite] = React.useState(false);

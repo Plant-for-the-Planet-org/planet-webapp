@@ -1,5 +1,8 @@
-import { APIError, CurrencyCode, handleError } from '@planet-sdk/common';
-import { createContext, FC, useState, useContext, useEffect } from 'react';
+import type { APIError, CurrencyCode } from '@planet-sdk/common';
+import type { FC } from 'react';
+
+import { handleError } from '@planet-sdk/common';
+import { createContext, useState, useContext, useEffect } from 'react';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
 

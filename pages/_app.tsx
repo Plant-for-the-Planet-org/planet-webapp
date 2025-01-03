@@ -1,12 +1,20 @@
+import type { EmotionCache } from '@emotion/react';
+import type { ReactElement, ReactNode } from 'react';
+import type { AppContext, AppInitialProps, AppProps } from 'next/app';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { NextPage } from 'next';
+import type { SetState } from '../src/features/common/types/common';
+
 import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
+import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React, { ReactElement, ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
+import App from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 // NOTE - needs to be removed when old projects code is removed
 import '../src/features/projects/styles/MapPopup.scss';
@@ -43,10 +51,7 @@ import {
   getTenantConfig,
   getTenantSlug,
 } from '../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
-import { NextPage } from 'next';
-import { SetState } from '../src/features/common/types/common';
+import { NextIntlClientProvider } from 'next-intl';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),

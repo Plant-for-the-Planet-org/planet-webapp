@@ -1,14 +1,5 @@
-import {
-  FC,
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  useEffect,
-} from 'react';
-import { trpc } from '../../../utils/trpc';
-import { ErrorHandlingContext } from './ErrorHandlingContext';
-import {
+import type { FC } from 'react';
+import type {
   ProjectListResponse,
   MyForestProject,
   ContributionsResponse,
@@ -20,9 +11,13 @@ import {
   DonationProperties,
   ContributionStats,
 } from '../types/myForest';
+import type { SetState } from '../types/common';
+import type { PointFeature } from 'supercluster';
+
+import { createContext, useContext, useMemo, useState, useEffect } from 'react';
+import { trpc } from '../../../utils/trpc';
+import { ErrorHandlingContext } from './ErrorHandlingContext';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
-import { SetState } from '../types/common';
-import { PointFeature } from 'supercluster';
 
 interface UserInfo {
   profileId: string;

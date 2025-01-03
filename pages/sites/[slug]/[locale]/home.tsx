@@ -1,3 +1,16 @@
+import type { APIError } from '@planet-sdk/common';
+import type {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../../src/features/common/types/leaderboard';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { AbstractIntlMessages } from 'next-intl';
+
 import { useRouter } from 'next/router';
 import React from 'react';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
@@ -6,24 +19,13 @@ import BasicHome from '../../../../src/tenants/common/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
-import {
-  LeaderBoardList,
-  TenantScore,
-} from '../../../../src/features/common/types/leaderboard';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import { defaultTenant } from '../../../../tenant.config';
-import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {

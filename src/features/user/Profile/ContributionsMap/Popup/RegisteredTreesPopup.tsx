@@ -1,15 +1,16 @@
-import React from 'react';
-import { useTranslations } from 'next-intl';
-import { Popup } from 'react-map-gl-v7';
-import { PointFeature } from 'supercluster';
-import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
-import style from '../ContributionsMap.module.scss';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import {
+import type { PointFeature } from 'supercluster';
+import type {
   MyContributionsSingleRegistration,
   SingleRegistration,
 } from '../../../../common/types/myForest';
-import { SetState } from '../../../../common/types/common';
+import type { SetState } from '../../../../common/types/common';
+
+import React from 'react';
+import { useTranslations } from 'next-intl';
+import { Popup } from 'react-map-gl-v7';
+import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
+import style from '../ContributionsMap.module.scss';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 type RegisteredTreesInfoProps = {
   contributions: SingleRegistration[];

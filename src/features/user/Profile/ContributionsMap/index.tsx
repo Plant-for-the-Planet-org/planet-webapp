@@ -1,15 +1,18 @@
+import type { MapStyle } from 'react-map-gl-v7/maplibre';
+import type { MutableRefObject } from 'react';
+import type { ProfilePageType } from '../../../common/types/myForest';
+import type { ViewState } from 'react-map-gl-v7';
+
 import { useEffect, useState } from 'react';
-import Map, { MapStyle } from 'react-map-gl-v7/maplibre';
+import Map from 'react-map-gl-v7/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import MapCredits from './Common/MapCredits';
 import Markers from './Markers';
-import { useRef, MutableRefObject } from 'react';
+import { useRef } from 'react';
 import style from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
-import { ProfilePageType } from '../../../common/types/myForest';
-import { ViewState } from 'react-map-gl-v7';
 
 interface ContributionsMapProps {
   profilePageType: ProfilePageType;

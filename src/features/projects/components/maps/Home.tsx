@@ -1,12 +1,15 @@
-import React, { ReactElement } from 'react';
-import { FlyToInterpolator } from 'react-map-gl';
-import Markers, { PopupData } from './Markers';
-import * as d3 from 'd3-ease';
-import {
+import type { ReactElement } from 'react';
+import type { PopupData } from './Markers';
+import type {
   MapProject,
   ViewPort,
 } from '../../../common/types/ProjectPropsContextInterface';
-import { SetState } from '../../../common/types/common';
+import type { SetState } from '../../../common/types/common';
+
+import { FlyToInterpolator } from 'react-map-gl';
+import React from 'react';
+import Markers from './Markers';
+import * as d3 from 'd3-ease';
 
 interface Props {
   searchedProject: MapProject[];
