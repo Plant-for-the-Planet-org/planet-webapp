@@ -41,7 +41,10 @@ const CarouselArrow = (props: {
 };
 
 interface CarouselSliderProps {
-  carouselTitle: string;
+  carouselTitles: {
+    primary: string;
+    secondary: string;
+  };
   carouselData: ReactElement[];
   settings: Settings;
   currentSlide: number;
@@ -50,7 +53,7 @@ interface CarouselSliderProps {
 }
 
 const CarouselSlider = ({
-  carouselTitle,
+  carouselTitles,
   carouselData,
   settings,
   currentSlide,
@@ -108,7 +111,8 @@ const CarouselSlider = ({
     <div className={styles.carouselSliderContainer}>
       <div className={styles.carouselHeader}>
         <div className={styles.titleContainer}>
-          <h2>{carouselTitle}</h2>
+          <h2>{carouselTitles.primary}</h2>
+          <h2>{carouselTitles.secondary}</h2>
         </div>
         <div className={styles.arrowContainer}>
           <CarouselArrow
