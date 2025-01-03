@@ -24,7 +24,7 @@ import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
-import { isNonPlantationType, PLANTATION_TYPES } from '../../../utils/constants/intervention';
+import { isNonPlantationType } from '../../../utils/constants/intervention';
 
 const ProjectDetails = ({
   currencyCode,
@@ -141,6 +141,7 @@ const ProjectDetails = ({
       selectedPlantLocation?.type === 'single-tree-registration' ||
       selectedSamplePlantLocation !== null) &&
     !isMobile;
+    
   const shouldShowProjectInfo =
     hoveredPlantLocation === null &&
     selectedPlantLocation === null &&

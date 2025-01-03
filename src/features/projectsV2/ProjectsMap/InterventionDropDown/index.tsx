@@ -5,7 +5,7 @@ import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
-import { AllIntervention, findMatchingIntervention, INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+import {findMatchingIntervention, INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
 interface InterventionType {
   label: string

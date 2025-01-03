@@ -11,14 +11,13 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
-import zoomOut from '../../../utils/mapsV2/zoomOut';
 
 interface Props {
   mapRef: MapRef;
 }
 
 const SingleProjectView = ({ mapRef }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation, plantLocations, selectedIntervention } =
+  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
   if (singleProject === null) return null;
 
