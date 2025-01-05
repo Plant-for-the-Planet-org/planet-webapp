@@ -6,29 +6,15 @@ interface Props {
   plantDate: string | null | undefined;
 }
 
-const OtherInterventionInfoHeader = ({  plantDate, type }: Props) => {
-
-  const plantingDetails = [
-    {
-      label: "Intervention Date",
-      data: plantDate ? formatDate(plantDate) : null,
-      shouldRender: plantDate !== null,
-    },
-  ];
+const OtherInterventionInfoHeader = ({ plantDate, type }: Props) => {
   return (
     <div className={`intervention-header ${styles.otherInterventionGroup}`}>
-      {plantingDetails.map((item, key) => {
-        if (!item.shouldRender) return;
-        return (
-          <div
-            key={key}
-            className={`intervention-item ${styles.otherInterventionDetailsItem}`}
-          >
-            <h2 className={styles.label}>{item.label}</h2>
-            <p className={styles.data}>{item.data}</p>
-          </div>
-        );
-      })}
+      <div
+        className={`intervention-item ${styles.otherInterventionDetailsItem}`}
+      >
+        <h2 className={styles.label}>Intervention Date</h2>
+        <p className={styles.data}>{plantDate ? formatDate(plantDate) : null}</p>
+      </div>
     </div>
   );
 };
