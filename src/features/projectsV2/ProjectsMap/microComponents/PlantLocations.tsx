@@ -213,7 +213,7 @@ export default function PlantLocations(): React.ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {selectedPlantLocation &&
-          selectedPlantLocation.type === 'multi-tree-registration' &&
+          selectedPlantLocation.type !== 'single-tree-registration' &&
           viewState.zoom > 14 &&
           selectedPlantLocation.sampleInterventions
           ? selectedPlantLocation.sampleInterventions.map((spl) => {
