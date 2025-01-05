@@ -18,6 +18,7 @@ import ImageSlider from './microComponents/ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionInfoHeader from './microComponents/OtherInterventionHeader';
 import OtherInterventionMetaData from './microComponents/OtherInterventionMetaData';
+import InterventionHeader from './microComponents/InterventionHeader';
 
 export interface OtherInterventions extends PlantLocationBase {
   sampleTreeCount: number;
@@ -83,6 +84,7 @@ const OtherInterventionInfo = ({
   const checkForPublicData = plantLocationInfo?.metadata.public.length !== 0
 
   const content = [
+    <InterventionHeader plHid={plantLocationInfo?.hid} type={plantLocationInfo?.type} />,
     shouldDisplayImageCarousel && (
       <ImageSlider
         key="imageSlider"
@@ -92,8 +94,7 @@ const OtherInterventionInfo = ({
         imageSize="large"
         allowFullView={!isMobile}
       />
-    )
-    ,
+    ),
     <OtherInterventionInfoHeader
       key="plantingDetails"
       plantDate={plantLocationInfo?.interventionStartDate}
