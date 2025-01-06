@@ -4,12 +4,12 @@ import { AllIntervention } from '../../../../../utils/constants/intervention';
 
 interface Props {
   plHid: string | undefined;
-  type: string | undefined
+  interventionType: string | undefined
 }
 
 const InterventionHeader = ({
   plHid,
-  type
+  interventionType
 }: Props) => {
   const findInterventionHeader = (valueKey: string | undefined) => {
     const found = AllIntervention.find(item => item.value === valueKey);
@@ -20,7 +20,7 @@ const InterventionHeader = ({
       className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
     >
       <div className={`tree-count ${styles.treeCount}`}>
-         {findInterventionHeader(type)}
+         {findInterventionHeader(interventionType)}
       </div>
       <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
     </div>

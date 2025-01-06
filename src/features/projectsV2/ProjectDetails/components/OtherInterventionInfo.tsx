@@ -84,7 +84,7 @@ const OtherInterventionInfo = ({
   const checkForPublicData = plantLocationInfo?.metadata.public.length !== 0
 
   const content = [
-    <InterventionHeader plHid={plantLocationInfo?.hid} type={plantLocationInfo?.type} />,
+    <InterventionHeader plHid={plantLocationInfo?.hid} interventionType={plantLocationInfo?.type} key="interventionHeader"/>,
     shouldDisplayImageCarousel && (
       <ImageSlider
         key="imageSlider"
