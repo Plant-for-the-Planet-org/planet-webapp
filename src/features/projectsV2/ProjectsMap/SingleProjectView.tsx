@@ -61,7 +61,12 @@ const SingleProjectView = ({ mapRef }: Props) => {
 
   // Zoom to project site
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation !== null) return;
+    if (
+      !router.isReady ||
+      selectedPlantLocation !== null ||
+      plantLocations === null
+    )
+      return;
     if (sitesGeojson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
@@ -85,7 +90,13 @@ const SingleProjectView = ({ mapRef }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeojson, router.isReady, selectedPlantLocation]);
+  }, [
+    selectedSite,
+    sitesGeojson,
+    router.isReady,
+    selectedPlantLocation,
+    plantLocations,
+  ]);
 
   useEffect(() => {
     const hasNoPlantLocations = !plantLocations?.length;

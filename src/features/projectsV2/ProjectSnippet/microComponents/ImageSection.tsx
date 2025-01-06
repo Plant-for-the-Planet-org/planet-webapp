@@ -41,9 +41,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const isEmbed = embed === 'true';
 
   const handleBackButton = () => {
-    if (setPreventShallowPush) {
-      setPreventShallowPush(true);
-    }
+    if (setPreventShallowPush) setPreventShallowPush(true);
 
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/${locale}`;

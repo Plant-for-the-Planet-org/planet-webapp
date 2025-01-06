@@ -314,7 +314,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       page !== 'project-details' ||
       singleProject === null ||
       selectedSite !== null ||
-      (requestedPlantLocation && requestedSite)
+      (requestedPlantLocation && requestedSite) ||
+      plantLocations === null
     )
       return;
 
@@ -353,6 +354,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedPlantLocation,
     selectedSite,
     hasNoSites,
+    plantLocations,
   ]);
   useEffect(() => {
     if (
@@ -360,7 +362,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       page !== 'project-details' ||
       singleProject === null ||
       selectedPlantLocation !== null ||
-      preventShallowPush
+      preventShallowPush ||
+      plantLocations === null
     )
       return;
     // Handle the case where a direct link requests a specific site (via URL query)
@@ -398,6 +401,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     requestedSite,
     router.isReady,
     selectedPlantLocation,
+    plantLocations,
     preventShallowPush,
     hasNoSites,
   ]);
