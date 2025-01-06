@@ -1,14 +1,16 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
+
+import React from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
-import {
-  ConservationProjectExtended,
-  TreeProjectExtended,
-} from '@planet-sdk/common/build/types/project/extended';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;

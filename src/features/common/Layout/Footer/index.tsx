@@ -1,4 +1,6 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import UNEPLogo from '../../../../../public/assets/images/footer/UNEPLogo';
 import World from '../../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../../utils/language/getLanguageName';

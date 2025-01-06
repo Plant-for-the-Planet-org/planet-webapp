@@ -1,4 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { ISpeciesPlanted } from '../../../src/features/common/types/dataExplorer';
+
 import db from '../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
@@ -6,7 +8,6 @@ import {
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
-import { ISpeciesPlanted } from '../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../src/redis-client';
 import { cacheKeyPrefix } from '../../../src/utils/constants/cacheKeyPrefix';
 

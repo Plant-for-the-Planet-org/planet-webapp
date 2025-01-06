@@ -1,5 +1,7 @@
-import React, { ReactElement } from 'react';
-import { IconProps } from '../../../../src/features/common/types/common';
+import type { ReactElement } from 'react';
+import type { IconProps } from '../../../../src/features/common/types/common';
+
+import React from 'react';
 
 function FileProcessingIcon({ color = '#2f3336' }: IconProps): ReactElement {
   return (

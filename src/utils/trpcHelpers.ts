@@ -1,9 +1,10 @@
-import { SerializedError } from '@planet-sdk/common';
-import { SetState } from '../features/common/types/common';
-import {
+import type { SerializedError } from '@planet-sdk/common';
+import type { SetState } from '../features/common/types/common';
+import type {
   TrpcQueryResult,
   TrpcQueryResultError,
 } from '../features/common/types/trpc';
+
 import { handleError, APIError } from '@planet-sdk/common';
 
 export const updateStateWithTrpcData = <

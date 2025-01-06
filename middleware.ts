@@ -1,4 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+import { NextResponse } from 'next/server';
 import { getTenantConciseInfo } from './src/utils/multiTenancy/helpers';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';

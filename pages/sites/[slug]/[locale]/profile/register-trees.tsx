@@ -1,14 +1,17 @@
-import React, { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import {
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
+import dynamic from 'next/dynamic';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,

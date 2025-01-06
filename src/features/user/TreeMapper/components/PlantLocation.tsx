@@ -1,3 +1,11 @@
+import type {
+  PlantLocation as PlantLocationType,
+  PlantLocationBase,
+  PlantLocationMulti,
+  PlantLocationSingle,
+} from '../../../common/types/plantLocation';
+import type { SamplePlantLocation } from '../Treemapper';
+
 import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
@@ -6,13 +14,6 @@ import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
-import {
-  PlantLocation as PlantLocationType,
-  PlantLocationBase,
-  PlantLocationMulti,
-  PlantLocationSingle,
-} from '../../../common/types/plantLocation';
-import { SamplePlantLocation } from '../Treemapper';
 
 interface Props {
   location: Object;

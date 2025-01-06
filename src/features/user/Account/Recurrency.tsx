@@ -1,4 +1,7 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { Subscription } from '../../common/types/payments';
+
+import React from 'react';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from './AccountHistory.module.scss';
@@ -7,7 +10,6 @@ import { PauseModal } from './PauseModal';
 import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { EditModal } from './EditModal';
-import { Subscription } from '../../common/types/payments';
 
 interface Props {
   isDataLoading: boolean;

@@ -1,4 +1,19 @@
-import React, { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { AlertColor } from '@mui/material';
+import type {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../common/types/geocoder';
+import type { ExtendedCountryCode } from '../../common/types/country';
+import type {
+  APIError,
+  User,
+  UserType,
+  CreateUserRequest,
+  CountryCode,
+} from '@planet-sdk/common';
+
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
@@ -8,7 +23,6 @@ import {
   MenuItem,
   styled,
   TextField,
-  AlertColor,
 } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -24,19 +38,7 @@ import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-import {
-  handleError,
-  APIError,
-  User,
-  UserType,
-  CreateUserRequest,
-  CountryCode,
-} from '@planet-sdk/common';
-import {
-  AddressSuggestionsType,
-  AddressType,
-} from '../../common/types/geocoder';
-import { ExtendedCountryCode } from '../../common/types/country';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 const Alert = styled(MuiAlert)(({ theme }) => {

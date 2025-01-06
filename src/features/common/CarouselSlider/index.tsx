@@ -1,5 +1,8 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import Slider, { InnerSlider, Settings } from 'react-slick';
+import type { ReactElement } from 'react';
+import type { InnerSlider, Settings } from 'react-slick';
+
+import React, { useEffect, useRef, useState } from 'react';
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {

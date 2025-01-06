@@ -1,9 +1,4 @@
-import { procedure } from '../../trpc';
-import prisma from '../../../../prisma/client';
-import { z } from 'zod';
-import { Prisma } from '@prisma/client';
-import { TRPCError } from '@trpc/server';
-import {
+import type {
   BriefProjectQueryResult,
   ContributionStats,
   MyContributionsMapItem,
@@ -16,6 +11,12 @@ import {
   SingleRegistration,
   MySingleContribution,
 } from '../../../features/common/types/myForest';
+
+import { procedure } from '../../trpc';
+import prisma from '../../../../prisma/client';
+import { z } from 'zod';
+import { Prisma } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
 import { fetchProfile } from '../../utils/fetchProfile';
 import { fetchProfileGroupData } from '../../utils/fetchProfileGroupData';

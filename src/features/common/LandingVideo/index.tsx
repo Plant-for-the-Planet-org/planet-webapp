@@ -1,10 +1,6 @@
-import React, {
-  ReactElement,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { ReactElement } from 'react';
+
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import { useTranslations } from 'next-intl';
 import ReactPlayer from 'react-player/lazy';

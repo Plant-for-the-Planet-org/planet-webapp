@@ -1,6 +1,7 @@
+import type { ReactElement } from 'react';
+
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 
 interface SnackbarProps {
