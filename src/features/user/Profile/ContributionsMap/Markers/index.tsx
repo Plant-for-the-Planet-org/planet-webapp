@@ -1,20 +1,22 @@
-import { ClusterProperties, PointFeature } from 'supercluster';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import DonationClusterMarker from './DonationClusterMarker';
-import PointMarkers from './PointMarkers';
-import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import {
+import type { ClusterProperties, PointFeature } from 'supercluster';
+import type { MutableRefObject } from 'react';
+import type {
   DonationProperties,
   DonationSuperclusterProperties,
   MyContributionsSingleRegistration,
   ProfilePageType,
   RegistrationSuperclusterProperties,
 } from '../../../../common/types/myForest';
+import type { SetState } from '../../../../common/types/common';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
+
+import { useEffect, useRef, useState } from 'react';
+import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import DonationClusterMarker from './DonationClusterMarker';
+import PointMarkers from './PointMarkers';
+import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import * as turf from '@turf/turf';
-import { SetState } from '../../../../common/types/common';
-import { ViewState } from 'react-map-gl-v7/maplibre';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;

@@ -1,16 +1,11 @@
-import React, {
-  ReactElement,
-  useState,
-  useEffect,
-  CSSProperties,
-  useCallback,
-} from 'react';
-import { Autocomplete, TextField, styled } from '@mui/material';
-import { useTranslations } from 'next-intl';
-import {
+import type {
   Feature,
   FeatureCollection,
 } from '../../../../../../../common/types/dataExplorer';
+import type { ReactElement, CSSProperties } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Autocomplete, TextField, styled } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 const MuiAutocomplete = styled(Autocomplete)(() => {
   return {

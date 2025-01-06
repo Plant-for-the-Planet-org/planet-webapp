@@ -1,5 +1,6 @@
+import type { LeaderboardItem } from '../../../common/types/myForest';
+
 import { useTranslations } from 'next-intl';
-import { LeaderboardItem } from '../../../common/types/myForest';
 import styles from './communityContributions.module.scss';
 
 const ContributionListItem = ({

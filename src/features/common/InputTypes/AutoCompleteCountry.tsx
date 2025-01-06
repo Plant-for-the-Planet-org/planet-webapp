@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
+import type { ReactElement, ReactNode } from 'react';
 import type { CountryType, ExtendedCountryCode } from '../types/country';
 import type { SetState } from '../types/common';
-import type { ReactNode, ReactElement } from 'react';
 import type { CountryCode } from '@planet-sdk/common';
 
 import { useState, useEffect } from 'react';

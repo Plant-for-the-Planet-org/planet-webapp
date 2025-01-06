@@ -1,4 +1,4 @@
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 export const defaultTenant: Tenant = {
   id: 'ten_NxJq55pm',

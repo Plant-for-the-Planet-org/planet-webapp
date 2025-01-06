@@ -1,11 +1,13 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { GeoJSON } from 'geojson';
+import type { RequiredMapStyle } from '../../../../common/types/map';
+
+import React from 'react';
 import * as turf from '@turf/turf';
 import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import { GeoJSON } from 'geojson';
-import { RequiredMapStyle } from '../../../../common/types/map';
 
 interface Props {
   geoJson: GeoJSON | null;

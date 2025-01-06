@@ -1,18 +1,12 @@
-import React, {
-  useState,
-  createContext,
-  useRef,
-  useContext,
-  useEffect,
-  FC,
-} from 'react';
-import { ParamsContext } from './QueryParamsContext';
-import {
+import type { FC } from 'react';
+import type { MapRef } from 'react-map-gl/src/components/static-map';
+import type {
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
-import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
-import ProjectPropsContextInterface, {
+import type { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
+import type ProjectPropsContextInterface from '../types/ProjectPropsContextInterface';
+import type {
   ExploreOption,
   LayerSettings,
   MapMode,
@@ -23,9 +17,20 @@ import ProjectPropsContextInterface, {
   SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
-import { MapRef } from 'react-map-gl/src/components/static-map';
-import { PlantLocation, SamplePlantLocation } from '../types/plantLocation';
+import type {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../types/plantLocation';
+
+import React, {
+  useState,
+  createContext,
+  useRef,
+  useContext,
+  useEffect,
+} from 'react';
 import { getTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
+import { ParamsContext } from './QueryParamsContext';
 
 const ProjectPropsContext = createContext<ProjectPropsContextInterface | null>(
   null

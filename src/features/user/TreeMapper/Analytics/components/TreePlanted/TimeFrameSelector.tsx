@@ -1,4 +1,6 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import type { ReactElement } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { getTimeFrames } from '.';

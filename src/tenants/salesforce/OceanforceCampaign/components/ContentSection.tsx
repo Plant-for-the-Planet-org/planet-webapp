@@ -1,14 +1,15 @@
+import type {
+  APIError,
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common';
+
 import { useContext, useEffect, useState } from 'react';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
-import {
-  handleError,
-  APIError,
-  TreeProjectExtended,
-  ConservationProjectExtended,
-} from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';

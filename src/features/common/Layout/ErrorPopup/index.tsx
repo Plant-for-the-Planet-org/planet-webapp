@@ -1,4 +1,6 @@
-import React, { ReactElement, useContext, useEffect } from 'react';
+import type { ReactElement } from 'react';
+
+import React, { useContext, useEffect } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './ErrorPopup.module.scss';
 import { useTranslations } from 'next-intl';

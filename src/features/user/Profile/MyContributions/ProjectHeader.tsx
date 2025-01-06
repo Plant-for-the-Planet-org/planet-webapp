@@ -1,7 +1,11 @@
+import type {
+  EcosystemTypes,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+
 import styles from './MyContributions.module.scss';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { useTranslations } from 'next-intl';
-import { EcosystemTypes, TreeProjectClassification } from '@planet-sdk/common';
 import { useMemo } from 'react';
 
 type ConservationProps = {

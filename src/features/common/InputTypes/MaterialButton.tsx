@@ -1,4 +1,6 @@
-import React, { ReactNode, MouseEventHandler } from 'react';
+import type { ReactNode, MouseEventHandler } from 'react';
+
+import React from 'react';
 
 type Props = {
   children: ReactNode;

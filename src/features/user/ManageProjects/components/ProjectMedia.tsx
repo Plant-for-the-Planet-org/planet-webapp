@@ -1,11 +1,14 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  FocusEvent,
-  useContext,
-  useState,
-} from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  ProjectMediaProps,
+  UploadImage,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+  ImagesScopeProjects,
+} from '../../../common/types/project';
+import type { ReactElement, FocusEvent } from 'react';
+
+import React, { useCallback, useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -25,16 +28,9 @@ import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import {
-  ProjectMediaProps,
-  UploadImage,
-  ProfileProjectTrees,
-  ProfileProjectConservation,
-  ImagesScopeProjects,
-} from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function ProjectMedia({

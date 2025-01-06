@@ -1,3 +1,6 @@
+import type { ChangeEvent } from 'react';
+import type { CountryCode } from '@planet-sdk/common';
+
 import {
   Modal,
   Fade,
@@ -5,13 +8,7 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@mui/material';
-import React, {
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import {
   getCountryDataBy,
   sortCountriesByTranslation,
@@ -24,7 +21,6 @@ import styles from './SelectLanguageAndCountry.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useRouter } from 'next/router';
-import { CountryCode } from '@planet-sdk/common';
 import { useCurrency } from '../CurrencyContext';
 
 interface MapCountryProps {
