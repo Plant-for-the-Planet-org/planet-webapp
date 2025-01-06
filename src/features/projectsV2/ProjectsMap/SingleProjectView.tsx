@@ -1,4 +1,5 @@
 import type { MapRef } from '../../common/types/projectv2';
+import type { SelectedTab } from './ProjectMapTabs';
 
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
@@ -14,9 +15,10 @@ import ProjectLocation from './microComponents/ProjectLocation';
 
 interface Props {
   mapRef: MapRef;
+  selectedTab: SelectedTab | null;
 }
 
-const SingleProjectView = ({ mapRef }: Props) => {
+const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
   if (singleProject === null) return null;
@@ -114,7 +116,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         </>
       )}
 
-      <PlantLocations />
+      {selectedTab === 'field' && <PlantLocations />}
     </>
   );
 };

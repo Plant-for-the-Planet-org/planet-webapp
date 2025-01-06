@@ -206,6 +206,7 @@ function ProjectsMap(props: ProjectsMapProps) {
 
   const singleProjectViewProps = {
     mapRef,
+    selectedTab,
   };
   const multipleProjectsViewProps = {
     mapRef,
