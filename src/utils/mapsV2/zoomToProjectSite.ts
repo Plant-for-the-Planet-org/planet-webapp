@@ -9,13 +9,11 @@ import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
     center: [DEFAULT_VIEW_STATE.longitude, DEFAULT_VIEW_STATE.latitude],
-    zoom: 2,
+    zoom: DEFAULT_VIEW_STATE.zoom,
     duration: 1600,
   });
 
-  map.once('moveend', () => {
-    callback();
-  });
+  map.once('moveend', () => callback());
 }
 export function zoomInToProjectSite(
   mapRef: MapRef,
