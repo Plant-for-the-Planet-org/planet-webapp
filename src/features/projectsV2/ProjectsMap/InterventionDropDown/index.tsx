@@ -1,11 +1,13 @@
 import type { SetState } from '../../../common/types/common';
+import type {INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+
 import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
 import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
-import {findMatchingIntervention, INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+import {findMatchingIntervention } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
 interface InterventionType {
   label: string

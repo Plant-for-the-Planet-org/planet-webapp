@@ -1,6 +1,8 @@
 import type { SetState } from '../../../common/types/common';
+import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+
+
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
-import { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 
 type InterventionData = {
   label: string

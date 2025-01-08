@@ -1,8 +1,10 @@
+import type { INTERVENTION_TYPE } from '../../../utils/constants/intervention';
+
+
 import { InterventionTypes } from '@planet-sdk/common';
 import { DateString } from './common';
 import { Links } from './payments';
 import { Polygon, Point } from 'geojson';
-import { INTERVENTION_TYPE } from '../../../utils/constants/intervention';
 
 export interface PlantLocationBase {
   type: InterventionTypes 
