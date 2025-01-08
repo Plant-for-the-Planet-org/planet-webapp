@@ -94,7 +94,7 @@ export const leaderboardProcedure = procedure
 
       leaderboard.mostRecent = mostRecentGifts.map((gift) => ({
         name: gift.giverName,
-        units: gift.quantity,
+        units: Number(gift.quantity),
         unitType: 'tree',
         purpose: gift.purpose,
       }));
@@ -104,7 +104,7 @@ export const leaderboardProcedure = procedure
 
       leaderboard.mostTrees = topGifters.map((gifter) => ({
         name: gifter.giverName,
-        units: gifter.totalQuantity,
+        units: Number(gifter.totalQuantity),
         unitType: 'tree',
         purpose: gifter.purpose,
       }));

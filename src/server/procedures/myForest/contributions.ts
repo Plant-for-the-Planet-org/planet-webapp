@@ -432,6 +432,7 @@ export const contributionsProcedure = procedure
 
       // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
       contributions.forEach((contribution) => {
+        contribution.units = Number(contribution.units);
         stats.contributionsMadeCount++;
         populateContributedCountries(
           contribution.country,
@@ -459,6 +460,7 @@ export const contributionsProcedure = procedure
 
       // Process gift data, updating myContributionsMap and stats
       gifts.forEach((gift) => {
+        gift.quantity = Number(gift.quantity);
         stats.giftsReceivedCount++;
         stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
         populateContributedCountries(
