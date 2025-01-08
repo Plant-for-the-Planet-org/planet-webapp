@@ -5,12 +5,13 @@ import type { MapRef } from '../../features/common/types/projectv2';
 
 import * as turf from '@turf/turf';
 import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
+import { MAIN_MAP_ANIMATION_DURATIONS } from '../projectV2';
 
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
     center: [DEFAULT_VIEW_STATE.longitude, DEFAULT_VIEW_STATE.latitude],
     zoom: DEFAULT_VIEW_STATE.zoom,
-    duration: 1600,
+    duration: MAIN_MAP_ANIMATION_DURATIONS.ZOOM_OUT,
   });
 
   map.once('moveend', () => callback());

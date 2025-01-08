@@ -11,6 +11,7 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
@@ -49,12 +50,19 @@ const SingleProjectView = ({ mapRef }: Props) => {
         polygonCoordinates,
         mapRef,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else if (isPointLocation) {
       const [lon, lat] = coordinates;
       if (typeof lon === 'number' && typeof lat === 'number') {
-        zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
+        zoomToLocation(
+          handleViewStateChange,
+          lon,
+          lat,
+          20,
+          MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN,
+          mapRef
+        );
       }
     }
   }, [selectedPlantLocation, router.isReady]);
@@ -73,7 +81,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         sitesGeojson,
         selectedSite,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;

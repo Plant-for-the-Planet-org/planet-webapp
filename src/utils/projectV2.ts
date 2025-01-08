@@ -20,6 +20,11 @@ export type MobileOs = 'android' | 'ios' | undefined;
 
 const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
 
+export const MAIN_MAP_ANIMATION_DURATIONS = {
+  ZOOM_OUT: 1600,
+  ZOOM_IN: 4000,
+};
+
 type RouteParams = {
   siteId?: string | null;
   plocId?: string | null;
