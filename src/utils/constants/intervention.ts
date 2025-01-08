@@ -1,5 +1,5 @@
 import { DataDrivenPropertyValueSpecification } from "maplibre-gl";
-import { PlantLocation, PlantLocationMulti } from "../../features/common/types/plantLocation";
+import { PlantLocation } from "../../features/common/types/plantLocation";
 
 const SINGLE_TREE = '#007A49';
 const MULTI_TREE = '#007A49';

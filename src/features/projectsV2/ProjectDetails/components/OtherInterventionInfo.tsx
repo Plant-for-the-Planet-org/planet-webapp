@@ -35,17 +35,11 @@ export interface OtherInterventions extends PlantLocationBase {
   sampleTreeCount: number;
   sampleInterventions: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
-  nextMeasurementDate: null;
-  scientificName: string | null;
-  scientificSpecies: string | null;
-  tag: string | null;
-  measurements: Measurements;
-  originalGeometry: turf.Point;
-  geometry: turf.Point;
+  type: string
 }
 
 interface Props {
-  plantLocationInfo: PlantLocationMulti | null;
+  plantLocationInfo: OtherInterventions;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
@@ -68,12 +62,8 @@ const OtherInterventionInfo = ({
           0
         )
         : 0;
-    const area = plantLocationInfo?.geometry
-      ? turf.area(plantLocationInfo?.geometry)
-      : 0;
-    const plantedLocationArea = area / 10000;
-    return { totalTreesCount, plantedLocationArea };
-  }, [plantLocationInfo?.geometry, plantLocationInfo?.type]);
+    return { totalTreesCount };
+  }, [plantLocationInfo, plantLocationInfo?.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (plantLocationInfo && plantLocationInfo.sampleInterventions.length > 0) {

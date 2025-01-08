@@ -7,7 +7,6 @@ import { Links } from './payments';
 import { Polygon, Point } from 'geojson';
 
 export interface PlantLocationBase {
-  type: InterventionTypes 
   hid: string;
   id: string;
   idempotencyKey: string;

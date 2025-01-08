@@ -227,8 +227,8 @@ function ProjectsMap(props: ProjectsMapProps) {
         />
       )}
 
-      {shouldShowOtherIntervention && <OtherInterventionInfo plantLocationInfo={selectedPlantLocation} setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-        isMobile={props.isMobile} />}
+      {shouldShowOtherIntervention && selectedPlantLocation.type === 'multi-tree-registration' ? <OtherInterventionInfo plantLocationInfo={selectedPlantLocation} setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        isMobile={props.isMobile} /> : null}
     </>
   );
 }
