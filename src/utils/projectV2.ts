@@ -263,7 +263,7 @@ export const getLocalizedPath = (path: string, locale: string): string => {
   }
 
   // If path already starts with locale, return as is
-  if (cleanPath.startsWith(`/${locale}/`)) {
+  if (cleanPath.startsWith(`/${locale}`)) {
     return cleanPath;
   }
 
