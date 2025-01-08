@@ -9,7 +9,7 @@ import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import {findMatchingIntervention } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
-interface InterventionType {
+interface InterventionOptionType {
   label: string
   value: INTERVENTION_TYPE
   index: number
@@ -17,7 +17,7 @@ interface InterventionType {
 
 
 interface Props {
-  allIntervention: InterventionType[];
+  allInterventions: InterventionOptionType[];
   selectedIntervention: string;
   setSelectedIntervention: SetState<string>;
   isMobile?: boolean
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const InterventionDropdown = ({
-  allIntervention,
+  allInterventions,
   selectedIntervention,
   setSelectedIntervention,
   enableInterventionFilter,
@@ -35,13 +35,13 @@ const InterventionDropdown = ({
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const interventionList = useMemo(() => {
-    if (!allIntervention) return [];
-    return allIntervention.map((el) => ({
+    if (!allInterventions) return [];
+    return allInterventions.map((el) => ({
       label: el.label,
       index: el.index,
       value: el.value
     }));
-  }, [allIntervention]);
+  }, [allInterventions]);
 
 
 

@@ -11,7 +11,7 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
-import { AllIntervention } from '../../../utils/constants/intervention';
+import { AllInterventions } from '../../../utils/constants/intervention';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -82,7 +82,7 @@ const MapControls = ({
   const InterventionDropdownProps = {
     selectedIntervention,
     setSelectedIntervention,
-    allIntervention: AllIntervention,
+    allInterventions: AllInterventions,
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
