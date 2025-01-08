@@ -176,13 +176,13 @@ export default function ProjectMedia({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
@@ -200,13 +200,13 @@ export default function ProjectMedia({
     };
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images/${id}`,
-        submitData,
+      await putAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images/${id}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const tempUploadedData = uploadedImages;
       tempUploadedData.forEach((image) => {
         image.isDefault = false;

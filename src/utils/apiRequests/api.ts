@@ -13,9 +13,9 @@ interface BaseRequestOptions {
   url: string;
 }
 
-interface GetAccountInfo {
-  tenant: string | undefined;
+interface GetAccountInfoOptions {
   token: string | null;
+  tenant: string | undefined;
   impersonationData?: ImpersonationData;
 }
 
@@ -26,9 +26,9 @@ interface GetAuthRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
   version?: string;
 }
-interface PostAuthRequestOptions extends BaseRequestOptions {
-  data: any;
+interface PostAuthRequestOptions<T> extends BaseRequestOptions {
   token: string | null;
+  data: T;
   logoutUser: (value?: string | undefined) => void;
   headers?: Record<string, string>;
 }
@@ -36,13 +36,13 @@ interface DeleteAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PutAuthRequestOptions extends BaseRequestOptions {
-  data?: any;
+interface PutAuthRequestOptions<T> extends BaseRequestOptions {
   token: string | null;
+  data?: T;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PostRequestOptions extends BaseRequestOptions {
-  data: any;
+interface PostRequestOptions<T> extends BaseRequestOptions {
+  data: T;
 }
 interface GetRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
@@ -53,7 +53,7 @@ export async function getAccountInfo({
   tenant,
   token,
   impersonationData,
-}: GetAccountInfo): Promise<any> {
+}: GetAccountInfoOptions): Promise<any> {
   const lang = localStorage.getItem('language') || 'en';
   const header = {
     'tenant-key': `${tenant}`,
