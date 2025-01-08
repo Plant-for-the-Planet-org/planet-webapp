@@ -26,9 +26,9 @@ interface GetAuthRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
   version?: string;
 }
-interface PostAuthRequestOptions<T> extends BaseRequestOptions {
+interface PostAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
-  data: T;
+  data: any;
   logoutUser: (value?: string | undefined) => void;
   headers?: Record<string, string>;
 }
@@ -36,13 +36,13 @@ interface DeleteAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PutAuthRequestOptions<T> extends BaseRequestOptions {
+interface PutAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
-  data?: T;
+  data?: any;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PostRequestOptions<T> extends BaseRequestOptions {
-  data: T;
+interface PostRequestOptions extends BaseRequestOptions {
+  data: any;
 }
 interface GetRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
