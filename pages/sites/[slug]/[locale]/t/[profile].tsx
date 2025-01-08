@@ -1,6 +1,7 @@
 // This page will be moved to a different place in the future, as it is not a part of the user dashboard
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -85,18 +86,19 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
 export default PublicProfilePage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-        profile: v4(),
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+          profile: v4(),
+        },
+      };
+    }) ?? [];
 
   return {
     paths,
