@@ -20,6 +20,17 @@ import OtherInterventionInfoHeader from './microComponents/OtherInterventionHead
 import OtherInterventionMetaData from './microComponents/OtherInterventionMetaData';
 import InterventionHeader from './microComponents/InterventionHeader';
 
+interface MetaDataValue {
+  value: string;
+  label: string;
+}
+
+
+interface PublicMetaData {
+  [key: string]: string | MetaDataValue;
+}
+
+
 export interface OtherInterventions extends PlantLocationBase {
   sampleTreeCount: number;
   sampleInterventions: SamplePlantLocation[];
@@ -81,10 +92,54 @@ const OtherInterventionInfo = ({
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
-  const checkForPublicData = plantLocationInfo?.metadata.public.length !== 0
+
+
+  function isJsonString(str: string) {
+    try {
+      const parsed = JSON.parse(str);
+      return typeof parsed === 'object' && parsed !== null;
+    } catch (e) {
+      return false;
+    }
+  }
+
+
+  const renderMetaData = () => {
+    const checkForPublic: { value: string; key: string }[] = [];
+    const parsedData = plantLocationInfo?.metadata;
+
+    if (parsedData?.public && typeof parsedData.public === 'object' && !Array.isArray(parsedData.public)) {
+      Object.entries(parsedData.public as PublicMetaData).forEach(([key, value]) => {
+        if (key !== 'isEntireSite') {
+          if (typeof value === 'string') {
+            checkForPublic.push({ value, key });
+          } else if (typeof value === 'object' && value !== null && 'value' in value && 'label' in value) {
+            if (isJsonString(value.value)) {
+              try {
+                const parsedValue = JSON.parse(value.value);
+                if (parsedValue && typeof parsedValue === 'object' && 'value' in parsedValue) {
+                  checkForPublic.push({ value: parsedValue.value, key: value.label });
+                }
+              } catch (error) {
+                console.error('Error parsing JSON:', error);
+              }
+            } else {
+              checkForPublic.push({ value: value.value, key: value.label });
+            }
+          }
+        }
+      });
+    }
+
+    return checkForPublic;
+  };
+
+  const checkForPublicData = renderMetaData()
+
+
 
   const content = [
-    <InterventionHeader plHid={plantLocationInfo?.hid} interventionType={plantLocationInfo?.type} key="interventionHeader"/>,
+    <InterventionHeader plHid={plantLocationInfo?.hid} interventionType={plantLocationInfo?.type} key="interventionHeader" />,
     shouldDisplayImageCarousel && (
       <ImageSlider
         key="imageSlider"
@@ -100,9 +155,9 @@ const OtherInterventionInfo = ({
       plantDate={plantLocationInfo?.interventionStartDate}
       type={plantLocationInfo?.type}
     />,
-    checkForPublicData && <OtherInterventionMetaData
+    checkForPublicData.length > 0 && <OtherInterventionMetaData
       key="plantingDetails"
-      metaData={plantLocationInfo?.metadata}
+      metaData={checkForPublicData}
       plantDate={plantLocationInfo?.interventionStartDate}
       type={plantLocationInfo?.type}
     />,
@@ -122,7 +177,6 @@ const OtherInterventionInfo = ({
       />
     ),
   ].filter(Boolean);
-
   return isMobile ? (
     <>
       <MobileInfoSwiper
