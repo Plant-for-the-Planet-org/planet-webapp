@@ -41,6 +41,8 @@ interface MyForestContextInterface {
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
   contributionStats: ContributionStats | undefined;
+  isPublicProfile: boolean;
+  setIsPublicProfile: SetState<boolean>;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
@@ -66,6 +68,8 @@ export const MyForestProvider: FC = ({ children }) => {
     PointFeature<DonationProperties>[]
   >([]);
 
+  const [isPublicProfile, setIsPublicProfile] = useState(false);
+
   const _projectList = trpc.myForest.projectList.useQuery(undefined, {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -74,6 +78,7 @@ export const MyForestProvider: FC = ({ children }) => {
   const _contributions = trpc.myForest.contributions.useQuery(
     {
       profileId: `${userInfo?.profileId}`,
+      isPublicProfile,
     },
     {
       enabled: !!userInfo?.profileId && !!userInfo?.slug,
@@ -85,6 +90,7 @@ export const MyForestProvider: FC = ({ children }) => {
   const _leaderboard = trpc.myForest.leaderboard.useQuery(
     {
       profileId: `${userInfo?.profileId}`,
+      isPublicProfile,
     },
     {
       enabled: !!userInfo?.profileId && !!userInfo?.slug,
@@ -196,6 +202,8 @@ export const MyForestProvider: FC = ({ children }) => {
       userInfo,
       setUserInfo,
       contributionStats,
+      isPublicProfile,
+      setIsPublicProfile,
     }),
     [
       projectListResult,
@@ -213,6 +221,7 @@ export const MyForestProvider: FC = ({ children }) => {
       userInfo,
       setUserInfo,
       contributionStats,
+      isPublicProfile,
     ]
   );
 

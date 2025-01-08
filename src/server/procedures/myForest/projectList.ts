@@ -5,10 +5,13 @@ import type {
 
 import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
+import { getCachedData } from '../../utils/cache';
+import { cacheKeyPrefix } from '../../../utils/constants/cacheKeyPrefix';
 
 export const projectListsProcedure = procedure.query(async () => {
-  // Get the list of projects
-  const projects = await prisma.$queryRaw<ProjectQueryResult[]>`
+  const fetchProjectList = async () => {
+    // Get the list of projects
+    const projects = await prisma.$queryRaw<ProjectQueryResult[]>`
 		SELECT 
 			p.guid,
 			p.name,
@@ -34,19 +37,27 @@ export const projectListsProcedure = procedure.query(async () => {
 				AND p.deleted_at IS NULL
 				AND p.verification_status NOT IN ('incomplete' , 'pending', 'processing')
 		;
-		`;
+			`;
 
-  // Convert projects to an object with index as guid, and value as project
-  const projectsDictionary = projects.reduce<{
-    [key: string]: MyForestProject;
-  }>((dictionary, project) => {
-    const newProject: MyForestProject = {
-      ...project,
-      allowDonations: project.allowDonations ? true : false,
-    };
-    dictionary[project.guid] = newProject;
-    return dictionary;
-  }, {});
+    // Convert projects to an object with index as guid, and value as project
+    const projectsDictionary = projects.reduce<{
+      [key: string]: MyForestProject;
+    }>((dictionary, project) => {
+      const newProject: MyForestProject = {
+        ...project,
+        allowDonations: project.allowDonations ? true : false,
+      };
+      dictionary[project.guid] = newProject;
+      return dictionary;
+    }, {});
 
-  return projectsDictionary;
+    return projectsDictionary;
+  };
+
+  // Cache the project list for 15 minutes since it changes less frequently
+  return await getCachedData(
+    `${cacheKeyPrefix}_project-list`,
+    fetchProjectList,
+    15 * 60 // 15 minutes TTL
+  );
 });
