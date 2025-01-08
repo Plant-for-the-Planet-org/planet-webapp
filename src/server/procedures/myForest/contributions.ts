@@ -502,10 +502,18 @@ export const contributionsProcedure = procedure
     };
 
     if (isPublicProfile) {
-      return await getCachedData(
-        `${cacheKeyPrefix}_pp-contributions_${profileId}`,
-        fetchContributionsData
-      );
+      try {
+        return await getCachedData(
+          `${cacheKeyPrefix}_pp-contributions_${profileId}`,
+          fetchContributionsData
+        );
+      } catch (err) {
+        console.error(`Error fetching profile contributions: ${err}`);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Error fetching public profile contributions',
+        });
+      }
     }
 
     return await fetchContributionsData();

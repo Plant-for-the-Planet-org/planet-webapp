@@ -7,6 +7,7 @@ import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
 import { getCachedData } from '../../utils/cache';
 import { cacheKeyPrefix } from '../../../utils/constants/cacheKeyPrefix';
+import { TRPCError } from '@trpc/server';
 
 export const projectListsProcedure = procedure.query(async () => {
   const fetchProjectList = async () => {
@@ -55,9 +56,17 @@ export const projectListsProcedure = procedure.query(async () => {
   };
 
   // Cache the project list for 15 minutes since it changes less frequently
-  return await getCachedData(
-    `${cacheKeyPrefix}_project-list`,
-    fetchProjectList,
-    15 * 60 // 15 minutes TTL
-  );
+  try {
+    return await getCachedData(
+      `${cacheKeyPrefix}_project-list`,
+      fetchProjectList,
+      15 * 60 // 15 minutes TTL
+    );
+  } catch (err) {
+    console.error(`Error fetching project list: ${err}`);
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Error fetching project list',
+    });
+  }
 });

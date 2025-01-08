@@ -113,10 +113,18 @@ export const leaderboardProcedure = procedure
     };
 
     if (isPublicProfile) {
-      return await getCachedData(
-        `${cacheKeyPrefix}_pp-leaderboard_${profileId}`,
-        fetchLeaderboardData
-      );
+      try {
+        return await getCachedData(
+          `${cacheKeyPrefix}_pp-leaderboard_${profileId}`,
+          fetchLeaderboardData
+        );
+      } catch (err) {
+        console.error(`Error fetching profile leaderboard: ${err}`);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Error fetching public profile leaderboard',
+        });
+      }
     }
 
     return await fetchLeaderboardData();
