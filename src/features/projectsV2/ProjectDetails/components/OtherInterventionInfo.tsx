@@ -1,15 +1,12 @@
 import type {
-  Measurements,
   PlantedSpecies,
   PlantLocationBase,
-  PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import * as turf from '@turf/turf';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
@@ -94,8 +91,8 @@ const OtherInterventionInfo = ({
   }
 
 
-  const renderMetaData = () => {
-    const checkForPublic: { value: string; key: string }[] = [];
+  const createCardData = () => {
+    const checkForPublic: { key: string; value: string }[] = [];
     const parsedData = plantLocationInfo?.metadata;
 
     if (parsedData?.public && typeof parsedData.public === 'object' && !Array.isArray(parsedData.public)) {
@@ -124,7 +121,7 @@ const OtherInterventionInfo = ({
     return checkForPublic;
   };
 
-  const checkForPublicData = renderMetaData()
+  const cleanedPublicMetadata = createCardData()
 
 
 
@@ -146,9 +143,9 @@ const OtherInterventionInfo = ({
       key="interventionHeader"
       plantDate={plantLocationInfo?.interventionStartDate}
     />,
-    checkForPublicData.length > 0 && <OtherInterventionMetaData
+    cleanedPublicMetadata.length > 0 && <OtherInterventionMetaData
       key="plantingDetails"
-      metaData={checkForPublicData}
+      metaData={cleanedPublicMetadata}
       plantDate={plantLocationInfo?.interventionStartDate}
       type={plantLocationInfo?.type}
     />,

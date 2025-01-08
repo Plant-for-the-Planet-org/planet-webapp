@@ -1,7 +1,7 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
 
 interface Props {
-  metaData: { value: string; key: string }[];
+  metaData: { key: string; value: string }[];
   type: string | undefined,
   plantDate: string | null | undefined;
 }
