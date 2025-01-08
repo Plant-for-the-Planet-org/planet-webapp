@@ -2,6 +2,29 @@ import redisClient from '../../redis-client';
 
 const DEFAULT_CACHE_TTL = 5 * 60; // 5 minutes in seconds
 
+function isArrayLike(obj: any): boolean {
+  // Check if it's an object but not null
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    return false;
+  }
+
+  // Check if all keys are numeric indices
+  const keys = Object.keys(obj);
+  return keys.every((key) => {
+    const parsed = parseInt(key, 10);
+    return !isNaN(parsed) && parsed >= 0 && parsed.toString() === key;
+  });
+}
+
+function normalizeArray(obj: any): any {
+  if (isArrayLike(obj)) {
+    // Convert array-like object to proper array
+    const maxIndex = Math.max(...Object.keys(obj).map((k) => parseInt(k, 10)));
+    return Array.from({ length: maxIndex + 1 }, (_, i) => obj[i] ?? undefined);
+  }
+  return obj;
+}
+
 function deserializeComplexTypes(obj: any): any {
   // Handle direct Map objects
   if (obj && obj._type === 'Map') {
@@ -13,19 +36,17 @@ function deserializeComplexTypes(obj: any): any {
     return new Set(obj.data);
   }
 
-  // Handle objects containing Maps and Sets
+  // Handle objects containing Maps, Sets, Arrays
   if (obj && typeof obj === 'object') {
-    // Create a new object/array to avoid modifying the original
     const newObj = Array.isArray(obj) ? [...obj] : { ...obj };
 
-    // Process all properties
     for (const key of Object.keys(newObj)) {
       if (newObj[key]?._type === 'Map') {
         newObj[key] = new Map(newObj[key].data);
       } else if (newObj[key]?._type === 'Set') {
         newObj[key] = new Set(newObj[key].data);
       } else if (typeof newObj[key] === 'object' && newObj[key] !== null) {
-        newObj[key] = deserializeComplexTypes(newObj[key]);
+        newObj[key] = deserializeComplexTypes(normalizeArray(newObj[key]));
       }
     }
     return newObj;
