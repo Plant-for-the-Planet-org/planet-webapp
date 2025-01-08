@@ -45,7 +45,7 @@ export const projectListsProcedure = procedure.query(async () => {
     }>((dictionary, project) => {
       const newProject: MyForestProject = {
         ...project,
-        allowDonations: project.allowDonations ? true : false,
+        allowDonations: Boolean(project.allowDonations),
       };
       dictionary[project.guid] = newProject;
       return dictionary;
