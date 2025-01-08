@@ -18,8 +18,8 @@ interface InterventionOptionType {
 
 interface Props {
   allInterventions: InterventionOptionType[];
-  selectedIntervention: string;
-  setSelectedIntervention: SetState<string>;
+  selectedInterventionType: string;
+  setSelectedInterventionType: SetState<string>;
   isMobile?: boolean
   enableInterventionFilter: () => void
   disableInterventionMenu: boolean
@@ -27,8 +27,8 @@ interface Props {
 
 const InterventionDropdown = ({
   allInterventions,
-  selectedIntervention,
-  setSelectedIntervention,
+  selectedInterventionType,
+  setSelectedInterventionType,
   enableInterventionFilter,
   disableInterventionMenu,
   isMobile
@@ -51,7 +51,7 @@ const InterventionDropdown = ({
         }
     }, [disableInterventionMenu])
 
-  const selectedSiteData = findMatchingIntervention(selectedIntervention)
+  const selectedSiteData = findMatchingIntervention(selectedInterventionType)
 
   const toggleMenu = () => {
     enableInterventionFilter()
@@ -85,10 +85,9 @@ const InterventionDropdown = ({
       {isMenuOpen && (
         <InterventionList
           interventionList={interventionList}
-          setSelectedIntervention={setSelectedIntervention}
+          setSelectedInterventionType={setSelectedInterventionType}
           setIsMenuOpen={setIsMenuOpen}
-          selectedSiteData={selectedSiteData}
-          selectedIntervention={selectedIntervention}
+          selectedInterventionData={selectedSiteData}
         />
       )}
     </>

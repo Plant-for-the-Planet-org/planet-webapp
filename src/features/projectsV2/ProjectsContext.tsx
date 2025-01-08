@@ -58,8 +58,8 @@ interface ProjectsState {
   topProjects: MapProject[] | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
-  selectedIntervention: string;
-  setSelectedIntervention: SetState<string>;
+  selectedInterventionType: string;
+  setSelectedInterventionType: SetState<string>;
   disableInterventionMenu: boolean;
   setDisableInterventionMenu: SetState<boolean>;
 }
@@ -96,7 +96,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
-  const [selectedIntervention, setSelectedIntervention] = useState('all');
+  const [selectedInterventionType, setSelectedInterventionType] = useState('all');
   const [disableInterventionMenu, setDisableInterventionMenu] = useState(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -242,7 +242,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject(null);
       setHoveredPlantLocation(null);
       setSelectedSite(null);
-      setSelectedIntervention('all')
+      setSelectedInterventionType('all')
       setDisableInterventionMenu(false)
       setPreventShallowPush(false);
       setPlantLocations(null);
@@ -448,9 +448,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation,
       selectedSite,
       setSelectedSite,
-      selectedIntervention,
+      selectedInterventionType,
       disableInterventionMenu,
-      setSelectedIntervention,
+      setSelectedInterventionType,
       setDisableInterventionMenu,
       setPreventShallowPush,
     }),
@@ -471,7 +471,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       hoveredPlantLocation,
       selectedSite,
       preventShallowPush,
-      selectedIntervention,
+      selectedInterventionType,
       disableInterventionMenu
     ]
   );

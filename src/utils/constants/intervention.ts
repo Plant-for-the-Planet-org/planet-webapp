@@ -99,9 +99,3 @@ export const findMatchingIntervention = (value: string) => {
     return AllInterventions.find(item => item.value === value);
 };
 
-export const isPlantLocationMulti = (location: PlantLocation | null): location is PlantLocationMulti => {
-    return location !== null && 
-      'sampleTreeCount' in location && 
-      'sampleInterventions' in location && 
-      'plantedSpecies' in location;
-  };

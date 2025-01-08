@@ -139,8 +139,9 @@ const OtherInterventionInfo = ({
 
 
   const content = [
-    <InterventionHeader plHid={plantLocationInfo?.hid} interventionType={plantLocationInfo?.type} key="interventionHeader" />,
-    shouldDisplayImageCarousel && (
+    <>
+      <InterventionHeader plHid={plantLocationInfo?.hid} interventionType={plantLocationInfo?.type} key="interventionHeader" />
+      {shouldDisplayImageCarousel && (
       <ImageSlider
         key="imageSlider"
         images={sampleInterventionSpeciesImages}
@@ -149,11 +150,11 @@ const OtherInterventionInfo = ({
         imageSize="large"
         allowFullView={!isMobile}
       />
-    ),
+      )}
+    </>,
     <OtherInterventionInfoHeader
-      key="plantingDetails"
+      key="interventionHeader"
       plantDate={plantLocationInfo?.interventionStartDate}
-      type={plantLocationInfo?.type}
     />,
     checkForPublicData.length > 0 && <OtherInterventionMetaData
       key="plantingDetails"

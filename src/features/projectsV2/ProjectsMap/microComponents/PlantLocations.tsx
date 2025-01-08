@@ -24,7 +24,7 @@ export default function PlantLocations(): React.ReactElement {
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
-    selectedIntervention
+    selectedInterventionType
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
 
@@ -135,9 +135,9 @@ export default function PlantLocations(): React.ReactElement {
     return <></>;
   }
   const features = plantLocations.filter(d =>
-    selectedIntervention === 'all' || 
-    (selectedIntervention !== 'default' && d.type === selectedIntervention) ||
-    (selectedIntervention === 'default' &&
+    selectedInterventionType === 'all' || 
+    (selectedInterventionType !== 'default' && d.type === selectedInterventionType) ||
+    (selectedInterventionType === 'default' &&
       (d.type === 'multi-tree-registration' || d.type === 'single-tree-registration'))
 ).map((el) => {
     const isSelected =

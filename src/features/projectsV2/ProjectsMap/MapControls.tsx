@@ -47,8 +47,8 @@ const MapControls = ({
     selectedSamplePlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
-    selectedIntervention,
-    setSelectedIntervention,
+    selectedInterventionType,
+    setSelectedInterventionType,
     disableInterventionMenu,
     setDisableInterventionMenu,
   } = useProjects();
@@ -79,9 +79,9 @@ const MapControls = ({
     disableInterventionMenu
   };
 
-  const InterventionDropdownProps = {
-    selectedIntervention,
-    setSelectedIntervention,
+  const interventionDropDownProps = {
+    selectedInterventionType,
+    setSelectedInterventionType,
     allInterventions: AllInterventions,
     selectedPlantLocation,
     setSelectedPlantLocation,
@@ -135,7 +135,7 @@ const MapControls = ({
               {hasProjectSites && (
                 <>
                 <ProjectSiteDropdown {...siteDropdownProps} />
-                <InterventionDropDown {...InterventionDropdownProps} isMobile={isMobile}/></>
+                <InterventionDropDown {...interventionDropDownProps} isMobile={isMobile}/></>
               )}
               <button
                 className={styles.exitMapModeButton}
@@ -149,7 +149,7 @@ const MapControls = ({
               {hasProjectSites && (
                 <>
                   <ProjectSiteDropdown {...siteDropdownProps} />
-                  <InterventionDropDown {...InterventionDropdownProps} />
+                  <InterventionDropDown {...interventionDropDownProps} />
                 </>
               )}
             </>

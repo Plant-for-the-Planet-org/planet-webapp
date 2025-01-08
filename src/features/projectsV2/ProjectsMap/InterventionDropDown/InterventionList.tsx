@@ -11,28 +11,27 @@ type InterventionData = {
 };
 interface InterventionListProps {
   interventionList: InterventionData[];
-  setSelectedIntervention: SetState<string>;
+  setSelectedInterventionType: SetState<string>;
   setIsMenuOpen: SetState<boolean>;
-  selectedSiteData: InterventionData | undefined;
-  selectedIntervention: string
+  selectedInterventionData: InterventionData | undefined;
 }
 const InterventionList = ({
   interventionList,
-  setSelectedIntervention,
+  setSelectedInterventionType,
   setIsMenuOpen,
-  selectedSiteData,
+  selectedInterventionData,
 }: InterventionListProps) => {
   const handleFilterSelection = (key: string) => {
     setIsMenuOpen(false);
-    setSelectedIntervention(key);
+    setSelectedInterventionType(key);
   };
 
   return (
-    <ul className={styles.siteListOptions}>
+    <ul className={styles.interventionListOptions}>
       {interventionList.map((intervention, index) => {
         return (
           <li
-            className={`${styles.listItem} ${intervention.value === selectedSiteData?.value ? styles.selectedItem : ''
+            className={`${styles.listItem} ${intervention.value === selectedInterventionData?.value ? styles.selectedItem : ''
               }`}
             onClick={() => handleFilterSelection(intervention.value)}
             key={index}

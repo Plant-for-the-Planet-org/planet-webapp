@@ -2,11 +2,10 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 
 interface Props {
-  type: string | undefined,
   plantDate: string | null | undefined;
 }
 
-const OtherInterventionInfoHeader = ({ plantDate, type }: Props) => {
+const OtherInterventionInfoHeader = ({ plantDate }: Props) => {
   return (
     <div className={`intervention-header ${styles.otherInterventionGroup}`}>
       <div

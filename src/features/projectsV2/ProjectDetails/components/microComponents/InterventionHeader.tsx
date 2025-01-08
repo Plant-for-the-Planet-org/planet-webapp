@@ -19,7 +19,7 @@ const InterventionHeader = ({
     <div
       className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
     >
-      <div className={`tree-count ${styles.treeCount}`}>
+      <div className={`${styles.interventionTitle}`}>
          {findInterventionHeader(interventionType)}
       </div>
       <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
