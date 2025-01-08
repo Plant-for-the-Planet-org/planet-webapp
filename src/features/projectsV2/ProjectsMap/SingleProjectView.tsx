@@ -11,6 +11,10 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import FireLocations from './microComponents/FireLocations';
+import FeatureFlag, {
+  isFirealertFiresEnabled,
+} from './microComponents/FeatureFlag';
 
 interface Props {
   mapRef: MapRef;
@@ -115,6 +119,13 @@ const SingleProjectView = ({ mapRef }: Props) => {
       )}
 
       <PlantLocations />
+
+      <FeatureFlag
+        condition={isFirealertFiresEnabled()}
+        // component={FireLocations} // Pass component or children
+      >
+        <FireLocations />
+      </FeatureFlag>
     </>
   );
 };

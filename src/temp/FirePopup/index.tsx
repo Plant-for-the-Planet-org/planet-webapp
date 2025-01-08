@@ -1,23 +1,45 @@
 import { Popper } from '@mui/material';
-import React from 'react';
-import styles from './FirePopup.module.scss';
+import { useTranslations } from 'next-intl';
+import React, { useMemo } from 'react';
+import RightArrowIcon from '../../../public/assets/images/icons/projectV2/RightArrowIcon';
+import type { FireFeature } from '../../features/common/types/fireLocation';
+import InfoIconPopup from '../../features/projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
 import FireIcon from '../icons/FireIcon';
 import FirePopupIcon from '../icons/FirePopupIcon';
-import InfoIconPopup from '../../features/projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
-import RightArrowIcon from '../../../public/assets/images/icons/projectV2/RightArrowIcon';
-import { useTranslations } from 'next-intl';
+import styles from './FirePopup.module.scss';
 
 interface Props {
   isOpen: boolean;
+  feature: FireFeature;
 }
 
 // Currently contains hardcoded data, component would need refactoring based on the api/data when available.
 
-export default function FirePopup({ isOpen }: Props) {
+export default function FirePopup({ isOpen, feature }: Props) {
   const anchorRef = React.useRef(null);
   const [arrowRef, setArrowRef] = React.useState<HTMLSpanElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
   const tProjectDetails = useTranslations('ProjectDetails');
+
+  const hourseAgo = useMemo(() => {
+    const ms = Math.abs(
+      new Date().getTime() - new Date(feature.properties.eventDate).getTime()
+    );
+    return Math.round(ms / (1000 * 60 * 60));
+  }, []);
+
+  const alertConfidence = useMemo(() => {
+    switch (feature.properties.confidence) {
+      case 'high':
+        return 'highAlertConfidenceText';
+      case 'medium':
+        return 'mediumAlertConfidenceText';
+      case 'low':
+        return 'lowAlertConfidenceText';
+      default:
+        return 'defaultAlertConfidenceText';
+    }
+  }, []);
 
   return (
     <>
@@ -51,7 +73,7 @@ export default function FirePopup({ isOpen }: Props) {
             </h2>
             <p className={styles.timeDuration}>
               {tProjectDetails('hoursAgo', {
-                hours: 21,
+                hours: hourseAgo,
               })}
               <InfoIconPopup width={9} height={9} color={'#828282'}>
                 <div className={styles.infoIconPopupContainer}>
@@ -61,9 +83,12 @@ export default function FirePopup({ isOpen }: Props) {
             </p>
           </header>
           <div className={styles.popupText}>
-            <p className={styles.coordinates}>18.71122, -87.71138</p>
+            <p className={styles.coordinates}>
+              {feature.geometry.coordinates[0]},{' '}
+              {feature.geometry.coordinates[1]}
+            </p>
             <p>
-              {tProjectDetails.rich('highAlertConfidenceText', {
+              {tProjectDetails.rich(alertConfidence as any, {
                 important: (chunks) => <span>{chunks}</span>,
               })}
             </p>
