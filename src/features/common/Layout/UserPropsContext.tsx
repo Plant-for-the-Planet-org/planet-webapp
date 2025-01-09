@@ -102,7 +102,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     try {
       // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
 
-      const res = await getAccountInfo(tenantConfig?.id, token);
+      const res = await getAccountInfo({ tenant: tenantConfig?.id, token });
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson as User);

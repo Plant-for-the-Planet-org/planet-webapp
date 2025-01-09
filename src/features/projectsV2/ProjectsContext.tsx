@@ -195,17 +195,17 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProjects = await getRequest<MapProject[]>(
-          tenantConfig.id,
-          `/app/projects`,
-          {
+        const fetchedProjects = await getRequest<MapProject[]>({
+          tenant: tenantConfig.id,
+          url: `/app/projects`,
+          queryParams: {
             _scope: 'map',
             currency: currencyCode,
             tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
             locale: locale,
-          }
-        );
+          },
+        });
         setProjects(fetchedProjects);
         setProjectsLocale(locale);
       } catch (err) {

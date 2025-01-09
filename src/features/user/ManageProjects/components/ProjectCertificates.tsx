@@ -85,13 +85,13 @@ function ProjectCertificates({
     };
 
     try {
-      const res = await postAuthenticatedRequest<Certificate>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/certificates`,
-        submitData,
+      const res = await postAuthenticatedRequest<Certificate>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/certificates`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       let newUploadedFiles = uploadedFiles;
 
       if (newUploadedFiles === undefined) {
@@ -131,12 +131,12 @@ function ProjectCertificates({
 
     const fetchCertificates = async () => {
       try {
-        const result = await getAuthenticatedRequest<CertificateScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=certificates`,
+        const result = await getAuthenticatedRequest<CertificateScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=certificates`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setShowForm(false);
         setShowToggle(false);
         setUploadedFiles(result.certificates);
@@ -172,12 +172,12 @@ function ProjectCertificates({
 
   const deleteProjectCertificate = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/certificates/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/certificates/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
     } catch (err) {
