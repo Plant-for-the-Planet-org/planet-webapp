@@ -1,16 +1,20 @@
-import { ReactElement, useContext, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { FormData } from '../components/BankDetailsForm';
+import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { BankAccount } from '../../../common/types/payouts';
+
+import { useContext, useState } from 'react';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
-import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
+import BankDetailsForm from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
-import { BankAccount } from '../../../common/types/payouts';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const AddBankAccount = (): ReactElement | null => {
@@ -35,13 +39,13 @@ const AddBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     try {
-      const res = await postAuthenticatedRequest<BankAccount>(
-        tenantConfig?.id,
-        '/app/accounts',
-        accountData,
+      const res = await postAuthenticatedRequest<BankAccount>({
+        tenant: tenantConfig?.id,
+        url: '/app/accounts',
+        data: accountData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (accounts) {
         setAccounts([...accounts, res]);
       } else {

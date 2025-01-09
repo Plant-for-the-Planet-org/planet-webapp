@@ -1,4 +1,16 @@
-import React, { ChangeEvent, ReactElement } from 'react';
+import type { ChangeEvent, ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  SiteDetails,
+  ProjectSitesProps,
+  GeoLocation,
+  EditSiteProps,
+  Site,
+  SitesScopeProjects,
+} from '../../../common/types/project';
+import type { FeatureCollection as GeoJson } from 'geojson';
+
+import React from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -28,18 +40,9 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import {
-  SiteDetails,
-  ProjectSitesProps,
-  GeoLocation,
-  EditSiteProps,
-  Site,
-  SitesScopeProjects,
-} from '../../../common/types/project';
-import { FeatureCollection as GeoJson } from 'geojson';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const MapStatic = ReactMapboxGl({
@@ -102,13 +105,13 @@ function EditSite({
       };
 
       try {
-        const res = await putAuthenticatedRequest<Site>(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          submitData,
+        const res = await putAuthenticatedRequest<Site>({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const temp = siteList;
         let siteIndex = 0;
         temp.find((site: Site, index: number) => {
@@ -335,12 +338,12 @@ export default function ProjectSites({
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest<SitesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=sites`,
+        const result = await getAuthenticatedRequest<SitesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const geoLocation = {
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
@@ -373,13 +376,13 @@ export default function ProjectSites({
       };
 
       try {
-        const res = await postAuthenticatedRequest<Site>(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}/sites`,
-          submitData,
+        const res = await postAuthenticatedRequest<Site>({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}/sites`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const temp = siteList ? siteList : [];
         const _submitData = {
           id: res.id,
@@ -410,12 +413,12 @@ export default function ProjectSites({
   const deleteProjectSite = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/sites/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/sites/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
       setIsUploadingData(false);

@@ -1,5 +1,6 @@
+import type { IconProps } from '../../../../../src/features/common/types/common';
+
 import React from 'react';
-import { IconProps } from '../../../../../src/features/common/types/common';
 
 const NotionLinkIcon = ({ color = '#5f6368' }: IconProps) => {
   return (

@@ -1,3 +1,6 @@
+import type { APIError, User } from '@planet-sdk/common';
+import type { AlertColor } from '@mui/lab';
+
 import React from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
@@ -8,8 +11,7 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, User } from '@planet-sdk/common';
-import { AlertColor } from '@mui/lab';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
@@ -59,13 +61,13 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest<User>(
-          tenantConfig?.id,
-          `/app/profile`,
-          bodyToSend,
+        const res = await putAuthenticatedRequest<User>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();

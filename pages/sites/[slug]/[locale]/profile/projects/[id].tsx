@@ -1,4 +1,19 @@
-import React, { ReactElement, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  ProfileProjectConservation,
+  ProfileProjectTrees,
+} from '../../../../../../src/features/common/types/project';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import { getAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
@@ -8,24 +23,14 @@ import Footer from '../../../../../../src/features/common/Layout/Footer';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
-import { handleError, APIError } from '@planet-sdk/common';
-import {
-  ProfileProjectConservation,
-  ProfileProjectTrees,
-} from '../../../../../../src/features/common/types/project';
+import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
@@ -68,12 +73,12 @@ function ManageSingleProject({
       try {
         const result = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig.id,
-          `/app/profile/projects/${projectGUID}`,
+        >({
+          tenant: tenantConfig.id,
+          url: `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProject(result);
         setSetupAccess(true);
       } catch (err) {
@@ -124,18 +129,19 @@ function ManageSingleProject({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

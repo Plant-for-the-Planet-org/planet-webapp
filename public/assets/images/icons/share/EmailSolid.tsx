@@ -1,5 +1,6 @@
+import type { IconProps } from '../../../../../src/features/common/types/common';
+
 import React from 'react';
-import { IconProps } from '../../../../../src/features/common/types/common';
 
 function Icon({ color = 'black' }: IconProps) {
   return (

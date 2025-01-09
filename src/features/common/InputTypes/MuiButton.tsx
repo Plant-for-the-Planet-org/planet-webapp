@@ -1,4 +1,6 @@
-import { Button, styled, ButtonProps } from '@mui/material';
+import type { ButtonProps } from '@mui/material';
+
+import { Button, styled } from '@mui/material';
 
 const StyledButton = styled(Button)(({ theme }) => {
   return {

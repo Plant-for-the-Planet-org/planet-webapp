@@ -1,11 +1,14 @@
 // This page will be moved to a different place in the future, as it is not a part of the user dashboard
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
-import {
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { AbstractIntlMessages } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { APIError, UserPublicProfile } from '@planet-sdk/common';
+
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -20,7 +23,7 @@ import { useRouter } from 'next/router';
 import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { APIError, handleError, UserPublicProfile } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
@@ -43,10 +46,10 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function loadPublicProfile(slug: string) {
     try {
-      const profileData = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
-        `/app/profiles/${slug}`
-      );
+      const profileData = await getRequest<UserPublicProfile>({
+        tenant: tenantConfig.id,
+        url: `/app/profiles/${slug}`,
+      });
       setProfile(profileData);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -83,18 +86,19 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
 export default PublicProfilePage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-        profile: v4(),
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+          profile: v4(),
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

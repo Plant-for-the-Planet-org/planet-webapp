@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
 import styles from './UnderMaintenance.module.scss';

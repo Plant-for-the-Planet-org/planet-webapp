@@ -1,24 +1,29 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { APIError } from '@planet-sdk/common';
+import type { Subscription } from '../../../../../src/features/common/types/payments';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
 import { getAuthenticatedRequest } from '../../../../../src/utils/apiRequests/api';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Subscription } from '../../../../../src/features/common/types/payments';
+import { useTranslations } from 'next-intl';
+import { handleError } from '@planet-sdk/common';
 import RecurrentPayments from '../../../../../src/features/user/Account/RecurrentPayments';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
@@ -52,12 +57,12 @@ function RecurrentDonations({
     setIsDataLoading(true);
     setProgress(70);
     try {
-      const recurrencies = await getAuthenticatedRequest<Subscription[]>(
-        tenantConfig.id,
-        '/app/subscriptions',
+      const recurrencies = await getAuthenticatedRequest<Subscription[]>({
+        tenant: tenantConfig.id,
+        url: '/app/subscriptions',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
           (obj) => obj.status == 'active' || obj.status == 'trialing'
@@ -117,17 +122,18 @@ function RecurrentDonations({
 
 export default RecurrentDonations;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

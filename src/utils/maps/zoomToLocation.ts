@@ -1,7 +1,8 @@
+import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
+import type { SetState } from '../../features/common/types/common';
+
 import { FlyToInterpolator } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
-import { SetState } from '../../features/common/types/common';
 
 export default function zoomToLocation(
   viewport: ViewPort,

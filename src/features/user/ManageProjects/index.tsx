@@ -1,3 +1,11 @@
+import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  ManageProjectsProps,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+} from '../../common/types/project';
+
 import React from 'react';
 import BasicDetails from './components/BasicDetails';
 import ProjectMedia from './components/ProjectMedia';
@@ -15,14 +23,8 @@ import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
-import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
-import {
-  ManageProjectsProps,
-  ProfileProjectTrees,
-  ProfileProjectConservation,
-} from '../../common/types/project';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 export enum ProjectCreationTabs {
@@ -105,13 +107,13 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -129,13 +131,13 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -150,12 +152,12 @@ export default function ManageProjects({
       try {
         const res = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}`,
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));

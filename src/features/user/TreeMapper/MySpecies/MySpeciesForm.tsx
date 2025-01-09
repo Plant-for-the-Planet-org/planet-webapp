@@ -1,3 +1,9 @@
+import type { APIError } from '@planet-sdk/common';
+import type {
+  Species,
+  SpeciesSuggestionType,
+} from '../../../common/types/plantLocation';
+
 import React from 'react';
 import StyledForm from '../../../common/Layout/StyledForm';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
@@ -12,13 +18,9 @@ import styles from './MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
-import {
-  Species,
-  SpeciesSuggestionType,
-} from '../../../common/types/plantLocation';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface NewSpecies {
@@ -51,12 +53,12 @@ export default function MySpeciesForm() {
 
   const fetchMySpecies = async () => {
     try {
-      const result = await getAuthenticatedRequest<Species[]>(
-        tenantConfig.id,
-        '/treemapper/species',
+      const result = await getAuthenticatedRequest<Species[]>({
+        tenant: tenantConfig.id,
+        url: '/treemapper/species',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setSpecies(result);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -65,12 +67,12 @@ export default function MySpeciesForm() {
 
   const deleteSpecies = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig.id,
-        `/treemapper/species/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig.id,
+        url: `/treemapper/species/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       fetchMySpecies();
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -87,13 +89,13 @@ export default function MySpeciesForm() {
       scientificSpecies: species.scientificSpecies?.id,
     };
     try {
-      await postAuthenticatedRequest(
-        tenantConfig.id,
-        `/treemapper/species`,
+      await postAuthenticatedRequest({
+        tenant: tenantConfig.id,
+        url: `/treemapper/species`,
         data,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
     } catch (err) {
       setErrors(handleError(err as APIError));
     }

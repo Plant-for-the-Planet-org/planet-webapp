@@ -1,8 +1,9 @@
+import type { LeaderBoardList } from '../../../features/common/types/leaderboard';
+
 import React from 'react';
 import styles from './LeaderBoard.module.scss';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
-import { LeaderBoardList } from '../../../features/common/types/leaderboard';
 
 interface Props {
   leaderboard: LeaderBoardList | null;

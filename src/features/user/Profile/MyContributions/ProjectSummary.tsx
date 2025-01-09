@@ -1,10 +1,11 @@
-import { useTranslations } from 'next-intl';
-import styles from './MyContributions.module.scss';
-import {
+import type {
   CountryCode,
   EcosystemTypes,
   TreeProjectClassification,
 } from '@planet-sdk/common';
+
+import { useTranslations } from 'next-intl';
+import styles from './MyContributions.module.scss';
 import ProjectHeader from './ProjectHeader';
 
 type ConservationProps = {

@@ -1,4 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import UnitCostDisplay from '../components/UnitCostDisplay';
 
 const meta: Meta<typeof UnitCostDisplay> = {

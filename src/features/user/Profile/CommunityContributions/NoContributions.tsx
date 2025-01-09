@@ -1,9 +1,10 @@
+import type { ProfileV2Props } from '../../../common/types/profile';
+
 import { useTranslations } from 'next-intl';
 import {
   NoContributionsIcon,
   SupportUserIcon,
 } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
-import { ProfileV2Props } from '../../../common/types/profile';
 import WebappButton from '../../../common/WebappButton';
 import styles from './communityContributions.module.scss';
 

@@ -106,7 +106,10 @@ const SDGCardList = () => {
   return (
     <CarouselSlider
       carouselData={sdgCardsDataArray}
-      carouselTitle={t('infoAndCtaContainer.sdgCardsSectionHeading')}
+      carouselTitles={{
+        primary: t('infoAndCtaContainer.sdgSectionHeadingPrimary'),
+        secondary: t('infoAndCtaContainer.sdgSectionHeadingSecondary'),
+      }}
       settings={settings}
       currentSlide={currentSlide}
       setCurrentSlide={setCurrentSlide}

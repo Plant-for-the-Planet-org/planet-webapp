@@ -1,8 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Geometry } from '@turf/turf';
+import type { SinglePlantLocationApiResponse } from '../../../../../src/features/common/types/dataExplorer';
+
 import nc from 'next-connect';
 import db from '../../../../../src/utils/connectDB';
-import { Geometry } from '@turf/turf';
-import { SinglePlantLocationApiResponse } from '../../../../../src/features/common/types/dataExplorer';
 import { QueryType } from '../../../../../src/features/user/TreeMapper/Analytics/constants';
 
 const handler = nc<NextApiRequest, NextApiResponse>();

@@ -1,6 +1,7 @@
+import type { Leaderboard } from '../../../features/common/types/myForest';
+
 import { z } from 'zod';
 import { procedure } from '../../trpc';
-import { Leaderboard } from '../../../features/common/types/myForest';
 import prisma from '../../../../prisma/client';
 import { TRPCError } from '@trpc/server';
 import { Prisma } from '@prisma/client';

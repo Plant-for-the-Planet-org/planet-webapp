@@ -1,10 +1,13 @@
-import React, { ReactElement } from 'react';
-import mapboxgl, { Map } from 'mapbox-gl';
+import type { ReactElement } from 'react';
+import type { Map } from 'mapbox-gl';
+import type { Imagery } from '../../../common/types/ProjectPropsContextInterface';
+
+import React from 'react';
+import mapboxgl from 'mapbox-gl';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import ZoomButtons from './ZoomButtons';
-import { Imagery } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function TimeTravel(): ReactElement {
   const { mapRef, geoJson, rasterData, isMobile, siteViewPort, selectedMode } =

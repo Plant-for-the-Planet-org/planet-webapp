@@ -1,4 +1,10 @@
-import React, { ReactElement, RefObject } from 'react';
+import type { ReactElement, RefObject } from 'react';
+import type {
+  ConservationProjectConcise,
+  TreeProjectConcise,
+} from '@planet-sdk/common/build/types/project/map';
+import React from 'react';
+
 import getImageUrl from '../../../utils/getImageURL';
 import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -10,10 +16,6 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
 import ProjectTypeIcon from '../../common/ProjectTypeIcon';
-import {
-  ConservationProjectConcise,
-  TreeProjectConcise,
-} from '@planet-sdk/common/build/types/project/map';
 import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
 import {
   bindHover,

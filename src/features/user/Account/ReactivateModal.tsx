@@ -1,3 +1,6 @@
+import type { APIError } from '@planet-sdk/common';
+import type { Subscription } from '../../common/types/payments';
+
 import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
@@ -7,8 +10,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
-import { handleError, APIError } from '@planet-sdk/common';
-import { Subscription } from '../../common/types/payments';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 interface ReactivateModalProps {
@@ -40,13 +42,13 @@ export const ReactivateModal = ({
     setDisabled(true);
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/subscriptions/${record.id}?scope=reactivate`,
-        bodyToSend,
+      await putAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/subscriptions/${record.id}?scope=reactivate`,
+        data: bodyToSend,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       handleReactivateModalClose();
       fetchRecurrentDonations();
     } catch (err) {

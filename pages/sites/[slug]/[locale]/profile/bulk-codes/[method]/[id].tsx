@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -63,17 +64,16 @@ export default function BulkCodeIssueCodesPage({
         if (router.isReady) {
           try {
             const paymentOptions =
-              await getAuthenticatedRequest<PaymentOptions>(
-                pageProps.tenantConfig.id,
-                `/app/paymentOptions/${router.query.id}`,
+              await getAuthenticatedRequest<PaymentOptions>({
+                tenant: pageProps.tenantConfig.id,
+                url: `/app/paymentOptions/${router.query.id}`,
                 token,
                 logoutUser,
-                undefined,
-                {
-                  country: planetCashAccount.country,
+                queryParams: {
+                  country: planetCashAccount?.country ?? '',
                   ...(user !== null && { legacyPriceFor: user.id }),
-                }
-              );
+                },
+              });
 
             if (paymentOptions) {
               const retrievedProject = projectList.find(
@@ -135,19 +135,20 @@ export default function BulkCodeIssueCodesPage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        method: v4(),
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          method: v4(),
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

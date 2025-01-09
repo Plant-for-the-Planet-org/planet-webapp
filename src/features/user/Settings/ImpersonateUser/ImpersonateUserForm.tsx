@@ -1,4 +1,6 @@
-import { ReactElement, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -72,7 +74,11 @@ const ImpersonateUserForm = (): ReactElement => {
     if (data.targetEmail && data.supportPin) {
       setIsProcessing(true);
       try {
-        const res = await getAccountInfo(tenantConfig?.id, token, data);
+        const res = await getAccountInfo({
+          tenant: tenantConfig?.id,
+          token,
+          impersonationData: data,
+        });
         const resJson = await res.json();
         if (res.status === 200) {
           setIsInvalidEmail(false);
