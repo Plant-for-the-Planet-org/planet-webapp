@@ -72,10 +72,10 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<CountryProject[]>(
-          `${tenantConfig?.id}`,
-          `/app/countryProjects/${planetCashAccount.country}`
-        );
+        const fetchedProjects = await getRequest<CountryProject[]>({
+          tenant: tenantConfig?.id,
+          url: `/app/countryProjects/${planetCashAccount.country}`,
+        });
 
         // map fetchedProjects to desired form and setProject
         if (

@@ -46,10 +46,10 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function loadPublicProfile(slug: string) {
     try {
-      const profileData = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
-        `/app/profiles/${slug}`
-      );
+      const profileData = await getRequest<UserPublicProfile>({
+        tenant: tenantConfig.id,
+        url: `/app/profiles/${slug}`,
+      });
       setProfile(profileData);
     } catch (err) {
       setErrors(handleError(err as APIError));

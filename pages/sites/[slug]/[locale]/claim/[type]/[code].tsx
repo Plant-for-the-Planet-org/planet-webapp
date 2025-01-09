@@ -84,13 +84,13 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          pageProps.tenantConfig.id,
-          `/app/redeem`,
-          submitData,
+        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+          tenant: pageProps.tenantConfig.id,
+          url: `/app/redeem`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
