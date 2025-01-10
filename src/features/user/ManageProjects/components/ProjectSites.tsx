@@ -8,7 +8,11 @@ import type {
   Site,
   SitesScopeProjects,
 } from '../../../common/types/project';
-import type { FeatureCollection as GeoJson } from 'geojson';
+import type {
+  FeatureCollection as GeoJson,
+  GeoJsonProperties,
+  Geometry,
+} from 'geojson';
 
 import React from 'react';
 import styles from './../StepForm.module.scss';
@@ -258,6 +262,12 @@ interface ProjectSitesFormData {
   status: string;
 }
 
+type SubmitData = {
+  name: string;
+  geometry: GeoJson<Geometry, GeoJsonProperties>;
+  status: string;
+};
+
 export default function ProjectSites({
   handleBack,
   token,
@@ -369,14 +379,14 @@ export default function ProjectSites({
       if (!data.name) return;
 
       setIsUploadingData(true);
-      const submitData = {
+      const submitData: SubmitData = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
       try {
-        const res = await postAuthenticatedRequest<Site>({
+        const res = await postAuthenticatedRequest<Site, SubmitData>({
           tenant: tenantConfig?.id,
           url: `/app/projects/${projectGUID}/sites`,
           data: submitData,

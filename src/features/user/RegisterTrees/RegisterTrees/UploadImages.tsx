@@ -23,6 +23,11 @@ interface Props {
   token: string | null;
 }
 
+type SubmitData = {
+  imageFile: string;
+  description: string;
+};
+
 export default function UploadImages({
   contributionGUID,
   token,
@@ -36,13 +41,13 @@ export default function UploadImages({
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: SubmitData = {
       imageFile: image,
       description: '',
     };
 
     try {
-      const res = await postAuthenticatedRequest<Image>({
+      const res = await postAuthenticatedRequest<Image, SubmitData>({
         tenant: tenantConfig?.id,
         url: `/app/contributions/${contributionGUID}/images`,
         data: submitData,

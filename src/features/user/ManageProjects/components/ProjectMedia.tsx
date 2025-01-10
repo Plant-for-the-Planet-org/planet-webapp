@@ -33,6 +33,12 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
+type SubmitData = {
+  imageFile: string;
+  description: string | null;
+  isDefault: boolean;
+};
+
 export default function ProjectMedia({
   handleBack,
   token,
@@ -84,14 +90,14 @@ export default function ProjectMedia({
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
-    const submitData = {
+    const submitData: SubmitData = {
       imageFile: image,
       description: null,
       isDefault: false,
     };
 
     try {
-      const res = await postAuthenticatedRequest<UploadImage>({
+      const res = await postAuthenticatedRequest<UploadImage, SubmitData>({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}/images`,
         data: submitData,

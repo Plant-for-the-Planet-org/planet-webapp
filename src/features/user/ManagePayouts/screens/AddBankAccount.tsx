@@ -17,6 +17,21 @@ import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
+interface AccountData {
+  currency: string;
+  payoutMinAmount: string | undefined;
+  bankName: string;
+  bankCountry: string;
+  bankAddress: string;
+  holderName: string;
+  holderAddress: string;
+  accountNumber: string;
+  routingNumber: string;
+  bic: string;
+  branchCode: string;
+  remarks: string;
+}
+
 const AddBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
@@ -32,14 +47,14 @@ const AddBankAccount = (): ReactElement | null => {
 
   const handleSaveAccount = async (data: FormData) => {
     setIsProcessing(true);
-    const accountData = {
+    const accountData: AccountData = {
       ...data,
       currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
       payoutMinAmount:
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     try {
-      const res = await postAuthenticatedRequest<BankAccount>({
+      const res = await postAuthenticatedRequest<BankAccount, AccountData>({
         tenant: tenantConfig?.id,
         url: '/app/accounts',
         data: accountData,

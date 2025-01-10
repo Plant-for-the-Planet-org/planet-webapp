@@ -35,6 +35,10 @@ interface Props {
   pageProps: PageProps;
 }
 
+export type RedeemCodeSubmitData = {
+  code: string;
+};
+
 function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
@@ -79,12 +83,15 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   };
 
   async function redeemingCode(code: string): Promise<void> {
-    const submitData = {
+    const submitData: RedeemCodeSubmitData = {
       code: code,
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+        const res = await postAuthenticatedRequest<
+          RedeemedCodeData,
+          RedeemCodeSubmitData
+        >({
           tenant: pageProps.tenantConfig.id,
           url: `/app/redeem`,
           data: submitData,

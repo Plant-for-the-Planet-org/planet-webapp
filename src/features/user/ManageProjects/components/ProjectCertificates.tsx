@@ -48,6 +48,12 @@ const dialogSx: SxProps = {
   },
 };
 
+type SubmitData = {
+  issueDate: string;
+  certifierName: string;
+  pdfFile: string;
+};
+
 function ProjectCertificates({
   projectGUID,
   token,
@@ -78,14 +84,14 @@ function ProjectCertificates({
   const onSubmit = async (pdf: string) => {
     const { issueDate, certifierName } = getValues();
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: SubmitData = {
       issueDate: issueDate.getFullYear(),
       certifierName: certifierName,
       pdfFile: pdf,
     };
 
     try {
-      const res = await postAuthenticatedRequest<Certificate>({
+      const res = await postAuthenticatedRequest<Certificate, SubmitData>({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}/certificates`,
         data: submitData,

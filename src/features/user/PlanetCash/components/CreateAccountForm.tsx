@@ -25,6 +25,25 @@ interface Props {
   allowedCountries: CountryType[];
 }
 
+type SubmitData = {
+  country: ExtendedCountryCode | string;
+  activate: boolean;
+};
+
+type PlanetCash = {
+  id: string;
+  isActive: boolean;
+  ownerName: string;
+  balance: number;
+  debit: number;
+  fee: number;
+  creditLimit: number;
+  currency: 'EUR' | 'USD';
+  country: 'DE' | 'ES' | 'US';
+  topUpThreshold: number;
+  topUpAmount: number;
+};
+
 const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
@@ -42,11 +61,11 @@ const CreateAccountForm = ({
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = { country: country, activate: !isPlanetCashActive };
+    const data: Data = { country: country, activate: !isPlanetCashActive };
     setIsProcessing(true);
 
     try {
-      const res = await postAuthenticatedRequest({
+      const res = await postAuthenticatedRequest<PlanetCash, SubmitData>({
         tenant: tenantConfig?.id,
         url: '/app/planetCash',
         data,

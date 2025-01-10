@@ -66,6 +66,36 @@ type TreeFormData = FormData & {
 
 type ConservationFormData = FormData;
 
+interface SubmitDataBase {
+  name: string;
+  slug: string;
+  website: string;
+  description: string;
+  acceptDonations: boolean;
+  unitCost: number | undefined;
+  currency: 'EUR'; // Fixed currency
+  metadata: {
+    ecosystem: string;
+    visitorAssistance: boolean;
+  };
+  geometry: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
+}
+
+interface SubmitDataTrees extends SubmitDataBase {
+  unitType: 'tree' | 'm2';
+  classification: string;
+  countTarget: number;
+}
+
+interface SubmitDataConservation extends SubmitDataBase {
+  purpose: 'conservation';
+}
+
+type SubmitData = SubmitDataTrees | SubmitDataConservation;
+
 export default function BasicDetails({
   handleNext,
   token,
@@ -306,7 +336,7 @@ export default function BasicDetails({
 
   const onSubmit = async (data: TreeFormData | ConservationFormData) => {
     setIsUploadingData(true);
-    const submitData =
+    const submitData: SubmitData =
       purpose === 'trees'
         ? {
             name: data.name,
@@ -379,7 +409,8 @@ export default function BasicDetails({
     } else {
       try {
         const res = await postAuthenticatedRequest<
-          ProfileProjectTrees | ProfileProjectConservation
+          ProfileProjectTrees | ProfileProjectConservation,
+          SubmitData
         >({
           tenant: tenantConfig?.id,
           url: `/app/projects`,

@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../common/types/redeem';
+import type { RedeemCodeSubmitData } from '../../../../../../pages/sites/[slug]/[locale]/claim/[type]/[code]';
 
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -43,14 +44,17 @@ export default function RedeemModal({
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  async function redeemingCode(data: string | undefined): Promise<void> {
+  async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
-    const submitData = {
+    const submitData: RedeemCodeSubmitData = {
       code: data,
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+        const res = await postAuthenticatedRequest<
+          RedeemedCodeData,
+          RedeemCodeSubmitData
+        >({
           tenant: tenantConfig?.id,
           url: `/app/redeem`,
           data: submitData,

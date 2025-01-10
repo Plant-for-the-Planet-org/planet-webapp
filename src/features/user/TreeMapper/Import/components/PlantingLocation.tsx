@@ -10,7 +10,10 @@ import type {
   Species,
   PlantLocation as PlantLocationType,
 } from '../../../../common/types/plantLocation';
-import type { PlantingLocationFormData } from '../../Treemapper';
+import type {
+  PlantingLocationFormData,
+  SpeciesFormData,
+} from '../../Treemapper';
 import type { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../../common/types/common';
 import type { SxProps } from '@mui/material';
@@ -164,6 +167,16 @@ interface Props {
   activeMethod: string;
   setActiveMethod: Function;
 }
+
+type SubmitData = {
+  type: 'multi-tree-registration';
+  captureMode: 'external';
+  geometry: Geometry;
+  plantedSpecies: SpeciesFormData[];
+  plantDate: string;
+  registrationDate: string;
+  plantProject: string;
+};
 
 export default function PlantingLocation({
   handleNext,
@@ -329,7 +342,7 @@ export default function PlantingLocation({
   const onSubmit = async (data: PlantingLocationFormData) => {
     if (geoJson) {
       setIsUploadingData(true);
-      const submitData = {
+      const submitData: SubmitData = {
         type: 'multi-tree-registration',
         captureMode: 'external',
         geometry: geoJson,
@@ -340,7 +353,10 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest<PlantLocationType>({
+        const res = await postAuthenticatedRequest<
+          PlantLocationType,
+          SubmitData
+        >({
           tenant: tenantConfig?.id,
           url: `/treemapper/interventions`,
           data: submitData,
