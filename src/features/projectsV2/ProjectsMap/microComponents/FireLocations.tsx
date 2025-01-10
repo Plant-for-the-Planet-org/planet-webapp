@@ -21,7 +21,9 @@ export default function FireLocations(): ReactElement {
     (async () => {
       const qs = new URLSearchParams();
       qs.append('remoteId', site as string);
-      const fa_api = process.env.NEXT_PUBLIC_ENABLE_FIREALERT_ENDPOINT;
+      const fa_api =
+        process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
+        'https://firealert-development.vercel.app/api/v1';
       const url = `${fa_api}/fires?${qs.toString()}`;
       const fetchedFires = await getRequest<FireFeatureCollection>(
         undefined,
