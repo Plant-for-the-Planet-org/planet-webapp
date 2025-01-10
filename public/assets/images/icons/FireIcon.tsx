@@ -1,4 +1,4 @@
-import type { IconProps } from '../../features/common/types/common';
+import type { IconProps } from '../../../../src/features/common/types/common';
 
 import React from 'react';
 

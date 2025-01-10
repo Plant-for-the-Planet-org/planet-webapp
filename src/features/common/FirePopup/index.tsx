@@ -1,11 +1,11 @@
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
-import RightArrowIcon from '../../../public/assets/images/icons/projectV2/RightArrowIcon';
-import type { FireFeature } from '../../features/common/types/fireLocation';
-import InfoIconPopup from '../../features/projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
-import FireIcon from '../icons/FireIcon';
-import FirePopupIcon from '../icons/FirePopupIcon';
+import RightArrowIcon from '../../../../public/assets/images/icons/projectV2/RightArrowIcon';
+import type { FireFeature } from '../types/fireLocation';
+import InfoIconPopup from '../../projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
+import FireIcon from '../../../../public/assets/images/icons/FireIcon';
+import FirePopupIcon from '../../../../public/assets/images/icons/FirePopupIcon';
 import styles from './FirePopup.module.scss';
 
 interface Props {

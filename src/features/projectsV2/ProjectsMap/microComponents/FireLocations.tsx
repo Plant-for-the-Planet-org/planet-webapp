@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { Marker, Source } from 'react-map-gl-v7/maplibre';
-import FirePopup from '../../../../temp/FirePopup';
+import FirePopup from '../../../common/FirePopup';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import type {
   FireFeature,
