@@ -13,8 +13,6 @@ import type {
 } from '../types/myForest';
 import type { SetState } from '../types/common';
 import type { PointFeature } from 'supercluster';
-import type { QueryObserverResult } from '@tanstack/react-query';
-import type { TRPCClientErrorBase } from '@trpc/client';
 
 import { createContext, useContext, useMemo, useState, useEffect } from 'react';
 import { trpc } from '../../../utils/trpc';
@@ -30,17 +28,10 @@ interface UserInfo {
     areaConserved: number;
   };
 }
-type RefetchContributions = () => Promise<
-  QueryObserverResult<
-    {
-      stats: ContributionStats;
-      myContributionsMap: Map<string, MyContributionsMapItem>;
-      registrationLocationsMap: Map<string, MapLocation>;
-      projectLocationsMap: Map<string, MapLocation>;
-    },
-    TRPCClientErrorBase<any>
-  >
->;
+type ContributionsQueryRefetchType = ReturnType<
+  typeof trpc.myForest.contributions.useQuery
+>['refetch'];
+
 interface MyForestContextInterface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
@@ -54,7 +45,7 @@ interface MyForestContextInterface {
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
   contributionStats: ContributionStats | undefined;
-  refetchContributions: RefetchContributions;
+  refetchContributions: ContributionsQueryRefetchType;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
