@@ -6,12 +6,40 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../styles/ProjectListControls.module.scss';
 import { availableFilters } from '../../../../utils/projectV2';
+import {
+  TreePlanting,
+  Agroforestry,
+  NaturalRegeneration,
+  ManagedRegeneration,
+  UrbanRestoration,
+  OtherPlanting,
+  Mangroves,
+} from '../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIconsSymbol';
+// import TreePlanting from '../../../../../public/assets/images/icons/project/TreePlanting';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   selectedMode?: ViewMode;
 }
+
+const classificationItemIcons = {
+  'large-scale-planting': (
+    <TreePlanting color="black" width={'20'} height={'20'} />
+  ),
+  agroforestry: <Agroforestry color="black" width={'20'} height={'20'} />,
+  'natural-regeneration': (
+    <NaturalRegeneration color="black" width={'20'} height={'20'} />
+  ),
+  'managed-regeneration': (
+    <ManagedRegeneration color="black" width={'20'} height={'20'} />
+  ),
+  'urban-planting': (
+    <UrbanRestoration color="black" width={'20'} height={'20'} />
+  ),
+  'other-planting': <OtherPlanting color="black" width={'20'} height={'20'} />,
+  mangroves: <Mangroves color="black" width={'20'} height={'20'} />,
+};
 
 export const ClassificationDropDown = ({
   selectedClassification,
@@ -67,12 +95,13 @@ export const ClassificationDropDown = ({
               onClick={() => handleFilterSelection(filterItem)}
             >
               <div
-                className={
+                className={`${
                   selectedClassification?.includes(filterItem)
                     ? styles.classificationSelected
                     : styles.classificationUnselected
-                }
+                } ${styles.classificationItem}`}
               >
+                {classificationItemIcons[filterItem]}
                 {tAllProjects(`classificationTypes.${filterItem}`)}
               </div>
               {index !== availableFilters.length - 1 && (
