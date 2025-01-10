@@ -39,7 +39,7 @@ export default function RedeemModal({
   } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
-  const { refetchContributions } = useMyForest();
+  const { refetchContributions, refetchLeaderboard } = useMyForest();
   const [inputCode, setInputCode] = React.useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
@@ -67,6 +67,7 @@ export default function RedeemModal({
           cloneUser.score.received = cloneUser.score.received + res.units;
           setUser(cloneUser);
           refetchContributions();
+          refetchLeaderboard();
         }
       } catch (err) {
         const serializedErrors = handleError(err as APIError);

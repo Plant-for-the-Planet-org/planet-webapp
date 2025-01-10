@@ -32,6 +32,10 @@ type ContributionsQueryRefetchType = ReturnType<
   typeof trpc.myForest.contributions.useQuery
 >['refetch'];
 
+type LeaderboardQueryRefetchType = ReturnType<
+  typeof trpc.myForest.leaderboard.useQuery
+>['refetch'];
+
 interface MyForestContextInterface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
@@ -46,6 +50,7 @@ interface MyForestContextInterface {
   setUserInfo: SetState<UserInfo | null>;
   contributionStats: ContributionStats | undefined;
   refetchContributions: ContributionsQueryRefetchType;
+  refetchLeaderboard: LeaderboardQueryRefetchType;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
@@ -202,6 +207,7 @@ export const MyForestProvider: FC = ({ children }) => {
       setUserInfo,
       contributionStats,
       refetchContributions: _contributions.refetch,
+      refetchLeaderboard: _leaderboard.refetch,
     }),
     [
       projectListResult,
@@ -220,6 +226,7 @@ export const MyForestProvider: FC = ({ children }) => {
       setUserInfo,
       contributionStats,
       _contributions.refetch,
+      _leaderboard.refetch,
     ]
   );
 
