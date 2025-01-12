@@ -61,7 +61,10 @@ const CreateAccountForm = ({
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data: Data = { country: country, activate: !isPlanetCashActive };
+    const data: SubmitData = {
+      country: country,
+      activate: !isPlanetCashActive,
+    };
     setIsProcessing(true);
 
     try {
