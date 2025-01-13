@@ -25,6 +25,7 @@
   background-color: $backgroundColor;
   min-width: 200px;
   border-radius: 8px;
+  cursor: default;
   svg {
     overflow: visible;
   }
@@ -69,6 +70,8 @@
   display: flex;
   justify-content: space-between;
   gap: 13px;
+  text-wrap: nowrap;
+  cursor: pointer;
   .setUpAlerts {
     span {
       color: $dangerColorNew;
