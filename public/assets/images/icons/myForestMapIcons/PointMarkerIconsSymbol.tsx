@@ -1,11 +1,14 @@
 // Todo - move to a common location
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
-export const Agroforestry = ({ color, width, height }: IconProps) => {
+export const Agroforestry = ({
+  color = 'defaultColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
       viewBox="4 4 32 32"
-      fill="none"
       width={width}
       height={height}
       xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +25,7 @@ export const Agroforestry = ({ color, width, height }: IconProps) => {
 
 export const Conservation = ({ color }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 49">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 49">
       <path
         fill={color}
         fillRule="evenodd"
@@ -44,13 +47,16 @@ export const Conservation = ({ color }: IconProps) => {
   );
 };
 
-export const ManagedRegeneration = ({ color, width, height }: IconProps) => {
+export const ManagedRegeneration = ({
+  color = 'defaultColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
       viewBox="4 4 32 32"
       width={width}
       height={height}
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g clipPath="url(#clip0_2703_1330)">
@@ -93,14 +99,17 @@ export const ManagedRegeneration = ({ color, width, height }: IconProps) => {
   );
 };
 
-export const Mangroves = ({ color, width, height }: IconProps) => {
+export const Mangroves = ({
+  color = 'defaultColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="4 4 32 32"
       width={width}
       height={height}
-      fill="none"
     >
       <path
         fillRule="evenodd"
@@ -112,7 +121,11 @@ export const Mangroves = ({ color, width, height }: IconProps) => {
   );
 };
 
-export const NaturalRegeneration = ({ color, width, height }: IconProps) => {
+export const NaturalRegeneration = ({
+  color = 'defaultColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -131,13 +144,16 @@ export const NaturalRegeneration = ({ color, width, height }: IconProps) => {
   );
 };
 
-export const OtherPlanting = ({ color, width, height }: IconProps) => {
+export const OtherPlanting = ({
+  color = 'currentColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
       viewBox="4 4 32 32"
       width={width}
       height={height}
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -179,10 +195,13 @@ export const RegisteredTreeIcon = () => {
   );
 };
 
-export const TreePlanting = ({ color, width, height }: IconProps) => {
+export const TreePlanting = ({
+  color = 'defaultColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
-      fill="none"
       viewBox="4 4 32 32"
       width={width}
       height={height}
@@ -208,13 +227,16 @@ export const TreePlanting = ({ color, width, height }: IconProps) => {
   );
 };
 
-export const UrbanRestoration = ({ color, width, height }: IconProps) => {
+export const UrbanRestoration = ({
+  color = 'defaultColor',
+  width,
+  height,
+}: IconProps) => {
   return (
     <svg
       viewBox="4 4 32 32"
       width={width}
       height={height}
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g clipPath="url(#clip0_3579_1345)">

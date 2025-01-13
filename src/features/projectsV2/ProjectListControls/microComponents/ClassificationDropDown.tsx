@@ -24,21 +24,13 @@ interface ClassificationDropDownProps {
 }
 
 const classificationItemIcons = {
-  'large-scale-planting': (
-    <TreePlanting color="black" width={'20'} height={'20'} />
-  ),
-  agroforestry: <Agroforestry color="black" width={'20'} height={'20'} />,
-  'natural-regeneration': (
-    <NaturalRegeneration color="black" width={'20'} height={'20'} />
-  ),
-  'managed-regeneration': (
-    <ManagedRegeneration color="black" width={'20'} height={'20'} />
-  ),
-  'urban-planting': (
-    <UrbanRestoration color="black" width={'20'} height={'20'} />
-  ),
-  'other-planting': <OtherPlanting color="black" width={'20'} height={'20'} />,
-  mangroves: <Mangroves color="black" width={'20'} height={'20'} />,
+  'large-scale-planting': <TreePlanting width={'20'} height={'20'} />,
+  agroforestry: <Agroforestry width={'20'} height={'20'} />,
+  'natural-regeneration': <NaturalRegeneration width={'20'} height={'20'} />,
+  'managed-regeneration': <ManagedRegeneration width={'20'} height={'20'} />,
+  'urban-planting': <UrbanRestoration width={'20'} height={'20'} />,
+  'other-planting': <OtherPlanting width={'20'} height={'20'} />,
+  mangroves: <Mangroves width={'20'} height={'20'} />,
 };
 
 export const ClassificationDropDown = ({
