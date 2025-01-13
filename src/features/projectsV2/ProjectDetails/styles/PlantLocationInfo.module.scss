@@ -211,7 +211,7 @@
 
 }
 
-.interventionMetaDataGroup {
+.interventionMetadataGroup {
   display: flex;
   flex-direction: column;
 }
@@ -221,12 +221,5 @@
   background: rgba(0, 122, 73, 0.05);
   border-radius: 12px;
   margin-bottom: 10px;
-}
-
-.plantMetaDataCardLabel {
-  color: rgba(0, 122, 73, 1);
-  font-weight: 700;
-  font-size: 12px;
-  padding: 5px 10px;
 }
 

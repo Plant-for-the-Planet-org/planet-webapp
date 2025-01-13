@@ -13,7 +13,7 @@ import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import ImageSlider from './microComponents/ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionInfoHeader from './microComponents/OtherInterventionHeader';
-import OtherInterventionMetaData from './microComponents/OtherInterventionMetaData';
+import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import InterventionHeader from './microComponents/InterventionHeader';
 
 interface MetaDataValue {
@@ -172,9 +172,9 @@ const OtherInterventionInfo = ({
           key="interventionHeader"
           plantDate={plantLocationInfo?.interventionStartDate}
         />
-        <OtherInterventionMetaData
+        <OtherInterventionMetadata
           key="plantingDetails"
-          metaData={cleanedPublicMetadata}
+          metadata={cleanedPublicMetadata}
           plantDate={plantLocationInfo?.interventionStartDate}
           type={plantLocationInfo?.type}
         />

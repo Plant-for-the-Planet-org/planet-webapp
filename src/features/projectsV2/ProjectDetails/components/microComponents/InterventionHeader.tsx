@@ -1,6 +1,6 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { formatHid } from '../../../../../utils/projectV2';
-import { AllInterventions } from '../../../../../utils/constants/intervention';
+import {findInterventionHeader } from '../../../../../utils/constants/intervention';
 
 interface Props {
   plHid: string | undefined;
@@ -11,16 +11,13 @@ const InterventionHeader = ({
   plHid,
   interventionType
 }: Props) => {
-  const findInterventionHeader = (valueKey: string | undefined) => {
-    const found = AllInterventions.find(item => item.value === valueKey);
-    return found ? found.label : '';
-  };
+  const interventionTitle = findInterventionHeader(interventionType)
   return (
     <div
       className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
     >
       <div className={`${styles.interventionTitle}`}>
-         {findInterventionHeader(interventionType)}
+         {interventionTitle}
       </div>
       <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
     </div>
