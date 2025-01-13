@@ -28,7 +28,7 @@ import Delete from '../../../../../public/assets/images/icons/manageProjects/Del
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import { useRouter } from 'next/router';
-import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import DefaultUserProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 
@@ -274,7 +274,7 @@ export default function EditProfileForm() {
               </div>
             ) : (
               <div className={styles.noProfilePic}>
-                <DefaultUserProfileImage />
+                <DefaultUserProfileImageIcon width={100} height={100} />
               </div>
             )}
           </div>
