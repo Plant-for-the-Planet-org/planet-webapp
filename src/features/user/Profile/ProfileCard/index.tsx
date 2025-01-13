@@ -25,9 +25,7 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
         {userImageUrl && !userImageUrl.includes('development') ? (
           <Avatar alt={userProfile.displayName} src={userImageUrl} />
         ) : (
-          <Avatar>
-            <DefaultProfileImageIcon />
-          </Avatar>
+          <DefaultProfileImageIcon />
         )}
       </div>
       <div className={styles.profileDetailsContainer}>
