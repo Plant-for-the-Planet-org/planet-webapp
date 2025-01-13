@@ -165,7 +165,6 @@ const OtherInterventionInfo = ({
         />
       )}
     </>,
-
     cleanedPublicMetadata.length > 0 && (
       <>
         <OtherInterventionInfoHeader
@@ -178,7 +177,6 @@ const OtherInterventionInfo = ({
           plantDate={plantLocationInfo?.interventionStartDate}
           type={plantLocationInfo?.type}
         />
-        ,
       </>
     ),
     plantLocationInfo?.plantedSpecies &&
@@ -199,6 +197,7 @@ const OtherInterventionInfo = ({
         />
       ),
   ].filter(Boolean);
+
   return isMobile ? (
     <>
       <MobileInfoSwiper
