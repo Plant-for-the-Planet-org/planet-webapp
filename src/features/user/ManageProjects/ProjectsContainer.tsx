@@ -114,12 +114,12 @@ export default function ProjectsContainer() {
   async function loadProjects() {
     if (user) {
       try {
-        const projects = await getAuthenticatedRequest<UserProjectsType[]>(
-          tenantConfig?.id,
-          '/app/profile/projects?version=1.2',
+        const projects = await getAuthenticatedRequest<UserProjectsType[]>({
+          tenant: tenantConfig?.id,
+          url: '/app/profile/projects?version=1.2',
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProjects(projects);
       } catch (err) {
         setErrors(handleError(err as APIError));

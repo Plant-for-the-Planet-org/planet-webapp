@@ -42,13 +42,13 @@ export const ReactivateModal = ({
     setDisabled(true);
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/subscriptions/${record.id}?scope=reactivate`,
-        bodyToSend,
+      await putAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/subscriptions/${record.id}?scope=reactivate`,
+        data: bodyToSend,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       handleReactivateModalClose();
       fetchRecurrentDonations();
     } catch (err) {

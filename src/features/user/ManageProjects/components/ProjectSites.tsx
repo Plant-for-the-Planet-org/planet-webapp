@@ -105,13 +105,13 @@ function EditSite({
       };
 
       try {
-        const res = await putAuthenticatedRequest<Site>(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          submitData,
+        const res = await putAuthenticatedRequest<Site>({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const temp = siteList;
         let siteIndex = 0;
         temp.find((site: Site, index: number) => {
@@ -338,12 +338,12 @@ export default function ProjectSites({
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest<SitesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=sites`,
+        const result = await getAuthenticatedRequest<SitesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const geoLocation = {
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
@@ -376,13 +376,13 @@ export default function ProjectSites({
       };
 
       try {
-        const res = await postAuthenticatedRequest<Site>(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}/sites`,
-          submitData,
+        const res = await postAuthenticatedRequest<Site>({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}/sites`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         const temp = siteList ? siteList : [];
         const _submitData = {
           id: res.id,
@@ -413,12 +413,12 @@ export default function ProjectSites({
   const deleteProjectSite = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/sites/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/sites/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
       setIsUploadingData(false);

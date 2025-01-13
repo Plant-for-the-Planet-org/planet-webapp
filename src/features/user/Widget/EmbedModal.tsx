@@ -61,13 +61,13 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest<User>(
-          tenantConfig?.id,
-          `/app/profile`,
-          bodyToSend,
+        const res = await putAuthenticatedRequest<User>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();

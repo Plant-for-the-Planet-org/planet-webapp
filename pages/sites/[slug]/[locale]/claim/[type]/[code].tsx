@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -83,13 +84,13 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          pageProps.tenantConfig.id,
-          `/app/redeem`,
-          submitData,
+        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+          tenant: pageProps.tenantConfig.id,
+          url: `/app/redeem`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
@@ -185,19 +186,20 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        type: v4(),
-        code: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          type: v4(),
+          code: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

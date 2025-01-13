@@ -31,8 +31,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { tenantConfig } = useTenant();
   const fetchUsers = async (query: any) => {
     try {
-      const res = await postRequest(tenantConfig?.id, '/suggest.php', {
-        q: query,
+      const res = await postRequest({
+        tenant: tenantConfig?.id,
+        url: '/suggest.php',
+        data: {
+          q: query,
+        },
       });
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);

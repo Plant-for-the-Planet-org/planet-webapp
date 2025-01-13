@@ -28,6 +28,14 @@ interface UserInfo {
     areaConserved: number;
   };
 }
+type ContributionsQueryRefetchType = ReturnType<
+  typeof trpc.myForest.contributions.useQuery
+>['refetch'];
+
+type LeaderboardQueryRefetchType = ReturnType<
+  typeof trpc.myForest.leaderboard.useQuery
+>['refetch'];
+
 interface MyForestContextInterface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
@@ -43,6 +51,8 @@ interface MyForestContextInterface {
   contributionStats: ContributionStats | undefined;
   isPublicProfile: boolean;
   setIsPublicProfile: SetState<boolean>;
+  refetchContributions: ContributionsQueryRefetchType;
+  refetchLeaderboard: LeaderboardQueryRefetchType;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
@@ -204,6 +214,8 @@ export const MyForestProvider: FC = ({ children }) => {
       contributionStats,
       isPublicProfile,
       setIsPublicProfile,
+      refetchContributions: _contributions.refetch,
+      refetchLeaderboard: _leaderboard.refetch,
     }),
     [
       projectListResult,
@@ -222,6 +234,8 @@ export const MyForestProvider: FC = ({ children }) => {
       setUserInfo,
       contributionStats,
       isPublicProfile,
+      _contributions.refetch,
+      _leaderboard.refetch,
     ]
   );
 

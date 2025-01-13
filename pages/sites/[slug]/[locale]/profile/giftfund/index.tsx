@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -8,10 +9,10 @@ import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import React from 'react';
+import GiftFunds from '../../../../../../src/features/user/GiftFunds';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import GiftFunds from '../../../../../../src/features/user/GiftFunds';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -51,17 +52,18 @@ export default function Register({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

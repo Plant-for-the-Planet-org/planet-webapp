@@ -52,12 +52,12 @@ const AddressManagement = () => {
   const updateUserAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
-      const res = await getAuthenticatedRequest<Address[]>(
-        tenantConfig.id,
-        '/app/addresses',
+      const res = await getAuthenticatedRequest<Address[]>({
+        tenant: tenantConfig.id,
+        url: '/app/addresses',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (res) setUserAddresses(res);
     } catch (error) {
       setErrors(handleError(error as APIError));
