@@ -357,13 +357,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     plantLocations,
   ]);
   useEffect(() => {
+    if (requestedPlantLocation && plantLocations === null) return;
     if (
       !router.isReady ||
       page !== 'project-details' ||
       singleProject === null ||
       selectedPlantLocation !== null ||
-      preventShallowPush ||
-      plantLocations === null
+      preventShallowPush
     )
       return;
     // Handle the case where a direct link requests a specific site (via URL query)
