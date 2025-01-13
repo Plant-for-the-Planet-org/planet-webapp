@@ -386,9 +386,11 @@ export const contributionsProcedure = procedure
     })
   )
   .query(async ({ input: { profileId, isPublicProfile } }) => {
-    console.log(new Date().toLocaleString(), 'starting contributionsProcedure');
-
     const fetchContributionsData = async () => {
+      console.log(
+        new Date().toLocaleString(),
+        'starting fetching contributions data from DB'
+      );
       // Initialize return values
       const stats = initializeStats();
       /**
@@ -491,7 +493,10 @@ export const contributionsProcedure = procedure
       const sortedContributionsMap =
         getSortedContributionsMap(myContributionsMap);
 
-      console.log(new Date().toLocaleString(), 'ending contributionsProcedure');
+      console.log(
+        new Date().toLocaleString(),
+        'finished fetching contributions data from db'
+      );
 
       return {
         stats,
