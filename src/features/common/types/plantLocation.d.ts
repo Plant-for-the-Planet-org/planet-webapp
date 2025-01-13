@@ -1,11 +1,10 @@
-import type { INTERVENTION_TYPE } from '../../../utils/constants/intervention';
+import type { InterventionTypes } from '@planet-sdk/common';
+import type { DateString } from './common';
+import type { Links } from './payments';
+import type { Polygon, Point } from 'geojson';
 
-
-import { InterventionTypes } from '@planet-sdk/common';
-import { DateString } from './common';
-import { Links } from './payments';
-import { Polygon, Point } from 'geojson';
-
+// TODO - update PlantLocation types based on the latest API response.
+// TODO - consider moving this to planet-sdk
 export interface PlantLocationBase {
   hid: string;
   id: string;
@@ -63,9 +62,10 @@ export interface OtherInterventions extends PlantLocationBase {
   plantedSpecies: PlantedSpecies[];
 }
 
-
-
-export type PlantLocation = PlantLocationSingle | PlantLocationMulti | OtherInterventions ;
+export type PlantLocation =
+  | PlantLocationSingle
+  | PlantLocationMulti
+  | OtherInterventions;
 
 export interface SamplePlantLocation extends PlantLocationBase {
   type: 'sample-tree-registration';
