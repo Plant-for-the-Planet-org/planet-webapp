@@ -13,7 +13,6 @@ import type {
 } from '../common/types/plantLocation';
 import type { INTERVENTION_TYPE } from '../../utils/constants/intervention';
 
-
 import {
   createContext,
   useContext,
@@ -60,7 +59,7 @@ interface ProjectsState {
   topProjects: MapProject[] | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
-  selectedInterventionType: string;
+  selectedInterventionType: INTERVENTION_TYPE;
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   disableInterventionMenu: boolean;
   setDisableInterventionMenu: SetState<boolean>;
@@ -98,7 +97,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
-  const [selectedInterventionType, setSelectedInterventionType] = useState<INTERVENTION_TYPE>('all');
+  const [selectedInterventionType, setSelectedInterventionType] =
+    useState<INTERVENTION_TYPE>('all');
   const [disableInterventionMenu, setDisableInterventionMenu] = useState(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -244,8 +244,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSingleProject(null);
       setHoveredPlantLocation(null);
       setSelectedSite(null);
-      setSelectedInterventionType('all')
-      setDisableInterventionMenu(false)
+      setSelectedInterventionType('all');
+      setDisableInterventionMenu(false);
       setPreventShallowPush(false);
       setPlantLocations(null);
     }
@@ -474,7 +474,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedSite,
       preventShallowPush,
       selectedInterventionType,
-      disableInterventionMenu
+      disableInterventionMenu,
     ]
   );
 

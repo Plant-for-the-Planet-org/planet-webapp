@@ -1,5 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import type {INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 
 import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
@@ -7,22 +7,21 @@ import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
 import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
-import {findMatchingIntervention } from '../../../../utils/constants/intervention';
+import { findMatchingIntervention } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
 interface InterventionOptionType {
-  label: string
-  value: INTERVENTION_TYPE
-  index: number
+  label: string;
+  value: INTERVENTION_TYPE;
+  index: number;
 }
-
 
 interface Props {
   allInterventions: InterventionOptionType[];
-  selectedInterventionType: string;
-  setSelectedInterventionType: SetState<string>;
-  isMobile?: boolean
-  enableInterventionFilter: () => void
-  disableInterventionMenu: boolean
+  selectedInterventionType: INTERVENTION_TYPE;
+  setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
+  isMobile?: boolean;
+  enableInterventionFilter: () => void;
+  disableInterventionMenu: boolean;
 }
 
 const InterventionDropdown = ({
@@ -31,7 +30,7 @@ const InterventionDropdown = ({
   setSelectedInterventionType,
   enableInterventionFilter,
   disableInterventionMenu,
-  isMobile
+  isMobile,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const interventionList = useMemo(() => {
@@ -39,37 +38,42 @@ const InterventionDropdown = ({
     return allInterventions.map((el) => ({
       label: el.label,
       index: el.index,
-      value: el.value
+      value: el.value,
     }));
   }, [allInterventions]);
 
+  useEffect(() => {
+    if (!disableInterventionMenu) {
+      setIsMenuOpen(false);
+    }
+  }, [disableInterventionMenu]);
 
-
-    useEffect(() => {
-        if(!disableInterventionMenu){
-          setIsMenuOpen(false)
-        }
-    }, [disableInterventionMenu])
-
-  const interventionData = findMatchingIntervention(selectedInterventionType)
+  const interventionData = findMatchingIntervention(selectedInterventionType);
 
   const toggleMenu = () => {
-    enableInterventionFilter()
-    setIsMenuOpen((prev) => !prev)
+    enableInterventionFilter();
+    setIsMenuOpen((prev) => !prev);
   };
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
-        <div className={styles.interventionIconAndTextContainer} >
+        <div className={styles.interventionIconAndTextContainer}>
           <InterventionIcon />
           <>
             {interventionData && (
               <div className={styles.labelTextContainer}>
-                {isMobile ? <label className={styles.interventionsLabel}>{truncateString(interventionData?.label, 40)}
-                </label> :
-                  <p className={styles.interventionName} style={{ marginTop: '5px' }}>
+                {isMobile ? (
+                  <label className={styles.interventionsLabel}>
                     {truncateString(interventionData?.label, 40)}
-                  </p>}
+                  </label>
+                ) : (
+                  <p
+                    className={styles.interventionName}
+                    style={{ marginTop: '5px' }}
+                  >
+                    {truncateString(interventionData?.label, 40)}
+                  </p>
+                )}
               </div>
             )}
           </>
