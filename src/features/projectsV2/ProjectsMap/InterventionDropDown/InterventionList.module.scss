@@ -18,7 +18,7 @@ $layoutPaddingSide: 20px;
   top: calc($layoutPaddingTop + 70px);
   right: calc($layoutPaddingSide + 10px);
 }
-.siteIconAndTextContainer {
+.interventionIconAndTextContainer {
   display: flex;
   gap: 6px;
 }
@@ -26,7 +26,7 @@ $layoutPaddingSide: 20px;
   display: flex;
   flex-direction: column;
 }
-.sitesLabel {
+.interventionsLabel {
   font-size: $fontXXXSmallNew;
   color: $nonDonatableProjectBackgroundColor;
   font-weight: 600;
@@ -35,10 +35,10 @@ $layoutPaddingSide: 20px;
   }
 }
 
-.siteId {
+.interventionId {
   text-transform: uppercase;
 }
-.siteName {
+.interventionName {
   text-transform: capitalize;
   font-size: $fontXSmall;
   font-weight: 700;
@@ -104,7 +104,7 @@ $layoutPaddingSide: 20px;
 }
 
 @include xsPhoneView {
-  .siteIconAndTextContainer {
+  .interventionIconAndTextContainer {
     > svg {
       width: 16px;
     }
@@ -124,21 +124,21 @@ $layoutPaddingSide: 20px;
   }
   .labelTextContainer {
     justify-content: center;
-    .sitesLabel {
+    .interventionsLabel {
       display: flex;
       flex-direction: column;
-      .siteId {
+      .interventionId {
         text-transform: none;
       }
       .separator {
         display: none;
       }
     }
-    .siteName {
+    .interventionName {
       display: none;
     }
   }
-  .siteListOptions {
+  .interventionListOptions {
     max-width: 140px;
     padding: 8px 12px;
     top: 36px;
@@ -151,7 +151,7 @@ $layoutPaddingSide: 20px;
       font-size: $fontXXXSmallNew;
       padding: 4px 0;
       color: #333; //to be replaced
-      .siteArea {
+      .interventionArea {
         font-size: $fontXXSmall;
       }
     }

@@ -56,9 +56,16 @@ export interface PlantLocationMulti extends PlantLocationBase {
   nextMeasurementDate: null;
 }
 
+export interface OtherInterventions extends PlantLocationBase {
+  type: InterventionTypes;
+  sampleTreeCount: number;
+  sampleInterventions: SamplePlantLocation[];
+  plantedSpecies: PlantedSpecies[];
+}
 
 
-export type PlantLocation = PlantLocationSingle | PlantLocationMulti  ;
+
+export type PlantLocation = PlantLocationSingle | PlantLocationMulti | OtherInterventions ;
 
 export interface SamplePlantLocation extends PlantLocationBase {
   type: 'sample-tree-registration';

@@ -51,7 +51,7 @@ const InterventionDropdown = ({
         }
     }, [disableInterventionMenu])
 
-  const selectedSiteData = findMatchingIntervention(selectedInterventionType)
+  const interventionData = findMatchingIntervention(selectedInterventionType)
 
   const toggleMenu = () => {
     enableInterventionFilter()
@@ -60,15 +60,15 @@ const InterventionDropdown = ({
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
-        <div className={styles.siteIconAndTextContainer} >
+        <div className={styles.interventionIconAndTextContainer} >
           <InterventionIcon />
           <>
-            {selectedSiteData && (
+            {interventionData && (
               <div className={styles.labelTextContainer}>
-                {isMobile ? <label className={styles.sitesLabel}>{truncateString(selectedSiteData?.label, 40)}
+                {isMobile ? <label className={styles.interventionsLabel}>{truncateString(interventionData?.label, 40)}
                 </label> :
-                  <p className={styles.siteName} style={{ marginTop: '5px' }}>
-                    {truncateString(selectedSiteData?.label, 40)}
+                  <p className={styles.interventionName} style={{ marginTop: '5px' }}>
+                    {truncateString(interventionData?.label, 40)}
                   </p>}
               </div>
             )}
@@ -87,7 +87,7 @@ const InterventionDropdown = ({
           interventionList={interventionList}
           setSelectedInterventionType={setSelectedInterventionType}
           setIsMenuOpen={setIsMenuOpen}
-          selectedInterventionData={selectedSiteData}
+          selectedInterventionData={interventionData}
         />
       )}
     </>

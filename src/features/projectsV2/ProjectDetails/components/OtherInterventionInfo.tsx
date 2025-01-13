@@ -1,6 +1,5 @@
 import type {
-  PlantedSpecies,
-  PlantLocationBase,
+  OtherInterventions,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import type { SetState } from '../../../common/types/common';
@@ -28,15 +27,8 @@ interface PublicMetaData {
 }
 
 
-export interface OtherInterventions extends PlantLocationBase {
-  sampleTreeCount: number;
-  sampleInterventions: SamplePlantLocation[];
-  plantedSpecies: PlantedSpecies[];
-  type: string
-}
-
 interface Props {
-  plantLocationInfo: OtherInterventions;
+  plantLocationInfo: OtherInterventions | null;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
@@ -92,34 +84,56 @@ const OtherInterventionInfo = ({
 
 
   const createCardData = () => {
-    const checkForPublic: { key: string; value: string }[] = [];
+    // Initialize an array to store the cleaned key-value pairs
+    const cleanedData: { key: string; value: string }[] = [];
+  
+    // Extract metadata from the plantLocationInfo object, if it exists
     const parsedData = plantLocationInfo?.metadata;
-
+  
+    // Check if `parsedData.public` exists, is an object, and is not an array
     if (parsedData?.public && typeof parsedData.public === 'object' && !Array.isArray(parsedData.public)) {
+      // Iterate over the entries of `parsedData.public` as key-value pairs
       Object.entries(parsedData.public as PublicMetaData).forEach(([key, value]) => {
+        // Skip the entry if the key is 'isEntireSite' as it's used to show point location and no use to user
         if (key !== 'isEntireSite') {
+          // If the value is a string, directly add it to cleanedData
           if (typeof value === 'string') {
-            checkForPublic.push({ value, key });
-          } else if (typeof value === 'object' && value !== null && 'value' in value && 'label' in value) {
+            cleanedData.push({ value, key });
+          }
+          // If the value is an object with `value` and `label` properties
+          else if (typeof value === 'object' && value !== null && 'value' in value && 'label' in value) {
+            // Check if the `value` property contains a valid JSON string
             if (isJsonString(value.value)) {
               try {
+                // Parse the JSON string
                 const parsedValue = JSON.parse(value.value);
+                // If the parsed value is an object with a `value` property, add it to cleanedData
                 if (parsedValue && typeof parsedValue === 'object' && 'value' in parsedValue) {
-                  checkForPublic.push({ value: parsedValue.value, key: value.label });
+                  cleanedData.push({
+                    key: value.label, // Use the `label` property as the key
+                    value: parsedValue.value, // Use the parsed `value` property
+                  });
                 }
               } catch (error) {
+                // Log an error if JSON parsing fails
                 console.error('Error parsing JSON:', error);
               }
             } else {
-              checkForPublic.push({ value: value.value, key: value.label });
+              // If not a JSON string, add the `label` and `value` directly
+              cleanedData.push({
+                key: value.label,
+                value: value.value,
+              });
             }
           }
         }
       });
     }
-
-    return checkForPublic;
+  
+    // Return the array of cleaned key-value pairs
+    return cleanedData;
   };
+  
 
   const cleanedPublicMetadata = createCardData()
 
@@ -129,26 +143,29 @@ const OtherInterventionInfo = ({
     <>
       <InterventionHeader plHid={plantLocationInfo?.hid} interventionType={plantLocationInfo?.type} key="interventionHeader" />
       {shouldDisplayImageCarousel && (
-      <ImageSlider
-        key="imageSlider"
-        images={sampleInterventionSpeciesImages}
-        type="coordinate"
-        isMobile={isMobile}
-        imageSize="large"
-        allowFullView={!isMobile}
-      />
+        <ImageSlider
+          key="imageSlider"
+          images={sampleInterventionSpeciesImages}
+          type="coordinate"
+          isMobile={isMobile}
+          imageSize="large"
+          allowFullView={!isMobile}
+        />
       )}
     </>,
+    
+    cleanedPublicMetadata.length > 0 && <>
     <OtherInterventionInfoHeader
       key="interventionHeader"
       plantDate={plantLocationInfo?.interventionStartDate}
-    />,
-    cleanedPublicMetadata.length > 0 && <OtherInterventionMetaData
+    />
+    <OtherInterventionMetaData
       key="plantingDetails"
       metaData={cleanedPublicMetadata}
       plantDate={plantLocationInfo?.interventionStartDate}
       type={plantLocationInfo?.type}
     />,
+    </>,
     plantLocationInfo?.plantedSpecies && plantLocationInfo.plantedSpecies.length > 0 && (
       <SpeciesPlanted
         key="speciesPlanted"

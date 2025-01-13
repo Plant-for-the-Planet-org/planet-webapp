@@ -226,9 +226,15 @@ function ProjectsMap(props: ProjectsMapProps) {
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
       )}
-
-      {shouldShowOtherIntervention && selectedPlantLocation.type !== 'single-tree-registration' ? <OtherInterventionInfo plantLocationInfo={selectedPlantLocation} setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-        isMobile={props.isMobile} /> : null}
+      {shouldShowOtherIntervention ?
+        <OtherInterventionInfo
+          plantLocationInfo={selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration'
+            ? selectedPlantLocation
+            : null
+          }
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          isMobile={props.isMobile}
+        /> : null}
     </>
   );
 }

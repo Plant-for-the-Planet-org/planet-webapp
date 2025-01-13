@@ -130,17 +130,17 @@ const ProjectDetails = ({
 
 
 
-  const shouldShowOtherIntervention = (
-    isNonPlantationType(hoveredPlantLocation) ||
-    (isNonPlantationType(selectedPlantLocation) && !isMobile)
-  );
-
-
-  const shouldShowSinglePlantInfo =
-    (hoveredPlantLocation?.type === 'single-tree-registration' ||
-      selectedPlantLocation?.type === 'single-tree-registration' ||
-      selectedSamplePlantLocation !== null) &&
-    !isMobile;
+    const shouldShowOtherIntervention = (
+      isNonPlantationType(hoveredPlantLocation) ||
+      (isNonPlantationType(selectedPlantLocation) && !isMobile)
+    );
+  
+  
+    const shouldShowSinglePlantInfo =
+      (hoveredPlantLocation?.type === 'single-tree-registration' ||
+        selectedPlantLocation?.type === 'single-tree-registration' ||
+        selectedSamplePlantLocation !== null) &&
+      !isMobile;
 
   const shouldShowProjectInfo =
     hoveredPlantLocation === null &&
@@ -196,9 +196,19 @@ const ProjectDetails = ({
           />
         )}
 
-        {shouldShowOtherIntervention && (selectedPlantLocation &&
-          selectedPlantLocation.type !== 'single-tree-registration' || hoveredPlantLocation && hoveredPlantLocation.type !== 'single-tree-registration') ? <OtherInterventionInfo plantLocationInfo={selectedPlantLocation || hoveredPlantLocation} setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-            isMobile={isMobile} /> : null}
+        {shouldShowOtherIntervention ?
+          <OtherInterventionInfo
+            plantLocationInfo={
+              selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration'
+                ? selectedPlantLocation
+                : hoveredPlantLocation?.type !== 'single-tree-registration' && hoveredPlantLocation?.type !== 'multi-tree-registration'
+                  ? hoveredPlantLocation
+                  : null
+            }
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+            isMobile={isMobile}
+          /> : null}
+
 
         {shouldShowProjectInfo && (
           <ProjectInfo

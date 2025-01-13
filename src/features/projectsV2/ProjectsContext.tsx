@@ -11,6 +11,8 @@ import type {
   PlantLocation,
   SamplePlantLocation,
 } from '../common/types/plantLocation';
+import type { INTERVENTION_TYPE } from '../../utils/constants/intervention';
+
 
 import {
   createContext,
@@ -59,7 +61,7 @@ interface ProjectsState {
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
   selectedInterventionType: string;
-  setSelectedInterventionType: SetState<string>;
+  setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   disableInterventionMenu: boolean;
   setDisableInterventionMenu: SetState<boolean>;
 }
@@ -96,7 +98,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [hoveredPlantLocation, setHoveredPlantLocation] =
     useState<PlantLocation | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
-  const [selectedInterventionType, setSelectedInterventionType] = useState('all');
+  const [selectedInterventionType, setSelectedInterventionType] = useState<INTERVENTION_TYPE>('all');
   const [disableInterventionMenu, setDisableInterventionMenu] = useState(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
