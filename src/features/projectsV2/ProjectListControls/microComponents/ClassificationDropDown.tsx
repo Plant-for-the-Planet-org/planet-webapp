@@ -14,7 +14,7 @@ import {
   UrbanRestoration,
   OtherPlanting,
   Mangroves,
-} from '../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIconsSymbol';
+} from '../../../../../public/assets/images/icons/projectV2/PointMarkerIconsSymbol';
 // import TreePlanting from '../../../../../public/assets/images/icons/project/TreePlanting';
 
 interface ClassificationDropDownProps {

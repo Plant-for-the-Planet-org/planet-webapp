@@ -1,14 +1,6 @@
-import { IconProps } from '../../../../../src/features/common/types/common';
-
-const DefaultProfileImageIcon = ({ width = 48, height = 48 }: IconProps) => {
+const DefaultProfileImageIcon = () => {
   return (
-    <svg
-      width={width}
-      height={height}
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="2" y="2" width="44" height="44" rx="22" fill="#DFF4E8" />
       <rect
         x="2"
