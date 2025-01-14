@@ -101,7 +101,7 @@ export interface Properties {
   currency: string;
   image: string;
   unit: string;
-  unitType: string;
+  unitType: 'tree' | 'm2';
   unitCost: number;
   taxDeductionCountries: CountryCode[];
   isApproved: boolean;
@@ -116,6 +116,20 @@ export interface Properties {
   location: string;
   treeCost: number;
   paymentDefaults: Nullable<DefaultPaymentConfig>;
+}
+
+export interface TreeProperties extends Properties {
+  unitsContributed: Units;
+  unitsTargeted: Units;
+}
+
+export interface ConservProperties extends Properties {
+  unitsContributed: {
+    m2: number;
+  };
+  unitsTargeted: {
+    m2: number;
+  };
 }
 
 export interface ManageProjectsProps {
