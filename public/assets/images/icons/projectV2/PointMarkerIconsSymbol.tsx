@@ -2,7 +2,7 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
 export const Agroforestry = ({
-  color = 'defaultColor',
+  color = 'currentColor',
   width,
   height,
 }: IconProps) => {
@@ -48,7 +48,7 @@ export const Conservation = ({ color }: IconProps) => {
 };
 
 export const ManagedRegeneration = ({
-  color = 'defaultColor',
+  color = 'currentColor',
   width,
   height,
 }: IconProps) => {
@@ -100,7 +100,7 @@ export const ManagedRegeneration = ({
 };
 
 export const Mangroves = ({
-  color = 'defaultColor',
+  color = 'currentColor',
   width,
   height,
 }: IconProps) => {
@@ -122,7 +122,7 @@ export const Mangroves = ({
 };
 
 export const NaturalRegeneration = ({
-  color = 'defaultColor',
+  color = 'currentColor',
   width,
   height,
 }: IconProps) => {
@@ -196,7 +196,7 @@ export const RegisteredTreeIcon = () => {
 };
 
 export const TreePlanting = ({
-  color = 'defaultColor',
+  color = 'currentColor',
   width,
   height,
 }: IconProps) => {
@@ -228,7 +228,7 @@ export const TreePlanting = ({
 };
 
 export const UrbanRestoration = ({
-  color = 'defaultColor',
+  color = 'currentColor',
   width,
   height,
 }: IconProps) => {
