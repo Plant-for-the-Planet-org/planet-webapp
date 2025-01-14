@@ -8,7 +8,7 @@ const FireIcon = ({ width, height }: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
-      viewBox="5 4 24 28"
+      viewBox="7 1 22 28"
       fill="none"
     >
       <g filter="url(#filter0_d_1076_3)">
@@ -33,24 +33,24 @@ const FireIcon = ({ width, height }: IconProps) => {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
+          {/* <feColorMatrix
             in="SourceAlpha"
             type="matrix"
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
             result="hardAlpha"
-          />
+          /> */}
           <feOffset dy="6" />
-          <feGaussianBlur stdDeviation="4" />
+          {/* <feGaussianBlur stdDeviation="4" /> */}
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix
             type="matrix"
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
           />
-          <feBlend
+          {/* <feBlend
             mode="normal"
             in2="BackgroundImageFix"
             result="effect1_dropShadow_1076_3"
-          />
+          /> */}
           <feBlend
             mode="normal"
             in="SourceGraphic"

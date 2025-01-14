@@ -33,6 +33,11 @@ export default function FireLocations(): ReactElement {
         fetchedFires?.type === 'FeatureCollection' &&
         fetchedFires?.features?.length > 0
       ) {
+        // There was not direct z-index method - this is a workaround
+        // Since all popover placed on top. sort by latitude would place all the fires such that fires won't overlap popover
+        fetchedFires.features.sort((a, b) => {
+          return b.geometry.coordinates[1] - a.geometry.coordinates[1];
+        });
         setFires([...fetchedFires.features]);
       }
     })();
