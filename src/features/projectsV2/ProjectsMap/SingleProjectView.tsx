@@ -108,15 +108,12 @@ const SingleProjectView = ({ mapRef }: Props) => {
   ]);
 
   useEffect(() => {
-    if (plantLocations === null) return;
-    const hasNoPlantLocations = !plantLocations?.length;
-    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
-    // Satellite view will be:
-    // - false if there are no plant locations and no sites (i.e., a single project location only)
-    // - true if there are no plant locations but there are multiple sites
-    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations, hasNoSites]);
-
+    setIsSatelliteView(
+      singleProject.purpose === 'conservation' ||
+        (singleProject.purpose === 'trees' &&
+          (!plantLocations || plantLocations.length === 0))
+    );
+  }, [plantLocations, singleProject.purpose]);
   return (
     <>
       {hasNoSites ? (
@@ -131,7 +128,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeojson}
           />
-          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+          {isSatelliteView && <SatelliteLayer />}
         </>
       )}
 
