@@ -236,6 +236,14 @@
   top: 67px;
 }
 
+.classificationItem {
+  display: flex;
+  color: rgba($dark, 1);
+  width: 100%;
+  align-items: center;
+  gap: 4px;
+}
+
 .classificationUnselected {
   font-size: $fontXXSmall;
   line-height: normal;
