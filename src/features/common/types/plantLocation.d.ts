@@ -60,6 +60,7 @@ export interface OtherInterventions extends PlantLocationBase {
   sampleTreeCount: number;
   sampleInterventions: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
+  geometry: Point | Polygon;
 }
 
 export type PlantLocation =
