@@ -24,7 +24,7 @@ export default function PlantLocations(): React.ReactElement {
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
-    selectedInterventionType
+    selectedInterventionType,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
 
@@ -134,24 +134,30 @@ export default function PlantLocations(): React.ReactElement {
   if (!plantLocations || plantLocations.length === 0) {
     return <></>;
   }
-  const features = plantLocations.filter(d =>
-    selectedInterventionType === 'all' || 
-    (selectedInterventionType !== 'default' && d.type === selectedInterventionType) ||
-    (selectedInterventionType === 'default' &&
-      (d.type === 'multi-tree-registration' || d.type === 'single-tree-registration'))
-).map((el) => {
-    const isSelected =
-      selectedPlantLocation && selectedPlantLocation.id === el.id;
-    const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
-    const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
-      highlightLine: isSelected || isHovered,
-      opacity:
-        el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
-      dateDiff: getDateDiff(el),
-      type: el.type
+  const features = plantLocations
+    .filter(
+      (d) =>
+        selectedInterventionType === 'all' ||
+        (selectedInterventionType !== 'default' &&
+          d.type === selectedInterventionType) ||
+        (selectedInterventionType === 'default' &&
+          (d.type === 'multi-tree-registration' ||
+            d.type === 'single-tree-registration'))
+    )
+    .map((el) => {
+      const isSelected =
+        selectedPlantLocation && selectedPlantLocation.id === el.id;
+      const isHovered =
+        hoveredPlantLocation && hoveredPlantLocation.id === el.id;
+      const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
+        highlightLine: isSelected || isHovered,
+        opacity:
+          el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
+        dateDiff: getDateDiff(el),
+        type: el.type,
+      });
+      return GeoJSON;
     });
-    return GeoJSON;
-  });
 
   return (
     <>
@@ -213,30 +219,31 @@ export default function PlantLocations(): React.ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {selectedPlantLocation &&
-          selectedPlantLocation.type !== 'single-tree-registration' &&
-          viewState.zoom > 14 &&
-          selectedPlantLocation.sampleInterventions
+        selectedPlantLocation.type !== 'single-tree-registration' &&
+        viewState.zoom > 14 &&
+        selectedPlantLocation.sampleInterventions
           ? selectedPlantLocation.sampleInterventions.map((spl) => {
-            return (
-              <Marker
-                key={`${spl.id}-sample`}
-                latitude={spl.geometry.coordinates[1]}
-                longitude={spl.geometry.coordinates[0]}
-                anchor="center"
-              >
-                <div
-                  key={`${spl.id}-marker`}
-                  className={`${styles.single} ${spl.hid === selectedSamplePlantLocation?.hid
-                    ? styles.singleSelected
-                    : ''
+              return (
+                <Marker
+                  key={`${spl.id}-sample`}
+                  latitude={spl.geometry.coordinates[1]}
+                  longitude={spl.geometry.coordinates[0]}
+                  anchor="center"
+                >
+                  <div
+                    key={`${spl.id}-marker`}
+                    className={`${styles.single} ${
+                      spl.hid === selectedSamplePlantLocation?.hid
+                        ? styles.singleSelected
+                        : ''
                     }`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={(e) => openPl(e, spl)}
-                />
-              </Marker>
-            );
-          })
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => openPl(e, spl)}
+                  />
+                </Marker>
+              );
+            })
           : null}
       </Source>
     </>

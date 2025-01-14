@@ -12,7 +12,9 @@ const OtherInterventionInfoHeader = ({ plantDate }: Props) => {
         className={`intervention-item ${styles.otherInterventionDetailsItem}`}
       >
         <h2 className={styles.label}>Intervention Date</h2>
-        <p className={styles.data}>{plantDate ? formatDate(plantDate) : null}</p>
+        <p className={styles.data}>
+          {plantDate ? formatDate(plantDate) : null}
+        </p>
       </div>
     </div>
   );

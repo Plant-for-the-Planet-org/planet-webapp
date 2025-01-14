@@ -42,7 +42,7 @@ interface Props {
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
   disableInterventionFilter: () => void;
-  disableInterventionMenu: boolean
+  disableInterventionMenu: boolean;
 }
 
 const ProjectSiteDropdown = ({
@@ -53,7 +53,7 @@ const ProjectSiteDropdown = ({
   setSelectedPlantLocation,
   setSelectedSamplePlantLocation,
   disableInterventionFilter,
-  disableInterventionMenu
+  disableInterventionMenu,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -78,18 +78,17 @@ const ProjectSiteDropdown = ({
   );
 
   useEffect(() => {
-      if(disableInterventionMenu){
-        setIsMenuOpen(false)
-      }
-  }, [disableInterventionMenu])
-  
+    if (disableInterventionMenu) {
+      setIsMenuOpen(false);
+    }
+  }, [disableInterventionMenu]);
 
   const selectedSiteData =
     selectedSite !== null ? siteList[selectedSite] : undefined;
 
   const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev)
-    disableInterventionFilter()
+    setIsMenuOpen((prev) => !prev);
+    disableInterventionFilter();
   };
   return (
     <>

@@ -128,19 +128,15 @@ const ProjectDetails = ({
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
 
+  const shouldShowOtherIntervention =
+    isNonPlantationType(hoveredPlantLocation) ||
+    (isNonPlantationType(selectedPlantLocation) && !isMobile);
 
-
-    const shouldShowOtherIntervention = (
-      isNonPlantationType(hoveredPlantLocation) ||
-      (isNonPlantationType(selectedPlantLocation) && !isMobile)
-    );
-  
-  
-    const shouldShowSinglePlantInfo =
-      (hoveredPlantLocation?.type === 'single-tree-registration' ||
-        selectedPlantLocation?.type === 'single-tree-registration' ||
-        selectedSamplePlantLocation !== null) &&
-      !isMobile;
+  const shouldShowSinglePlantInfo =
+    (hoveredPlantLocation?.type === 'single-tree-registration' ||
+      selectedPlantLocation?.type === 'single-tree-registration' ||
+      selectedSamplePlantLocation !== null) &&
+    !isMobile;
 
   const shouldShowProjectInfo =
     hoveredPlantLocation === null &&
@@ -188,27 +184,29 @@ const ProjectDetails = ({
               hoveredPlantLocation?.type === 'multi-tree-registration'
                 ? hoveredPlantLocation
                 : selectedPlantLocation?.type === 'multi-tree-registration'
-                  ? selectedPlantLocation
-                  : undefined
+                ? selectedPlantLocation
+                : undefined
             }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
           />
         )}
 
-        {shouldShowOtherIntervention ?
+        {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
             plantLocationInfo={
-              selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration'
+              selectedPlantLocation?.type !== 'single-tree-registration' &&
+              selectedPlantLocation?.type !== 'multi-tree-registration'
                 ? selectedPlantLocation
-                : hoveredPlantLocation?.type !== 'single-tree-registration' && hoveredPlantLocation?.type !== 'multi-tree-registration'
-                  ? hoveredPlantLocation
-                  : null
+                : hoveredPlantLocation?.type !== 'single-tree-registration' &&
+                  hoveredPlantLocation?.type !== 'multi-tree-registration'
+                ? hoveredPlantLocation
+                : null
             }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
-          /> : null}
-
+          />
+        ) : null}
 
         {shouldShowProjectInfo && (
           <ProjectInfo

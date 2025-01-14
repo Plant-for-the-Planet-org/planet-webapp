@@ -58,15 +58,15 @@ const MapControls = ({
   const canShowSatelliteToggle = !(
     isMobile &&
     (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
-  );  
+  );
   const isProjectDetailsPage = page === 'project-details';
 
-  const enableInterventionFilter=()=>{
-    setDisableInterventionMenu(true)
-  }
-  const disableInterventionFilter=()=>{
-    setDisableInterventionMenu(false)
-  }
+  const enableInterventionFilter = () => {
+    setDisableInterventionMenu(true);
+  };
+  const disableInterventionFilter = () => {
+    setDisableInterventionMenu(false);
+  };
 
   const siteDropdownProps = {
     selectedSite,
@@ -76,7 +76,7 @@ const MapControls = ({
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     disableInterventionFilter,
-    disableInterventionMenu
+    disableInterventionMenu,
   };
 
   const interventionDropDownProps = {
@@ -87,7 +87,7 @@ const MapControls = ({
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     enableInterventionFilter,
-    disableInterventionMenu
+    disableInterventionMenu,
   };
   const projectListControlProps = {
     ...siteDropdownProps,
@@ -134,8 +134,12 @@ const MapControls = ({
             <div className={styles.projectDetailsControlsContainer}>
               {hasProjectSites && (
                 <>
-                <ProjectSiteDropdown {...siteDropdownProps} />
-                <InterventionDropDown {...interventionDropDownProps} isMobile={isMobile}/></>
+                  <ProjectSiteDropdown {...siteDropdownProps} />
+                  <InterventionDropDown
+                    {...interventionDropDownProps}
+                    isMobile={isMobile}
+                  />
+                </>
               )}
               <button
                 className={styles.exitMapModeButton}

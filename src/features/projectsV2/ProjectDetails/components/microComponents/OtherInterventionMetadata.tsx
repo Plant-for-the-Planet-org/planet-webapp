@@ -2,16 +2,18 @@ import styles from '../../styles/PlantLocationInfo.module.scss';
 
 interface Props {
   metadata: { key: string; value: string }[];
-  type: string | undefined,
+  type: string | undefined;
   plantDate: string | null | undefined;
 }
 
 const OtherInterventionMetadata = ({ metadata }: Props) => {
-  if(metadata.length===0){
-    return null
+  if (metadata.length === 0) {
+    return null;
   }
   return (
-    <div className={`planting-details-group ${styles.interventionMetadataGroup}`}>
+    <div
+      className={`planting-details-group ${styles.interventionMetadataGroup}`}
+    >
       {metadata.map((item, key) => {
         return (
           <div
