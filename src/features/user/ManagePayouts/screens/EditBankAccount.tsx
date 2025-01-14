@@ -19,6 +19,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { AccountData } from './AddBankAccount';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
@@ -37,7 +38,7 @@ const EditBankAccount = (): ReactElement | null => {
 
   const handleSaveAccount = async (data: FormData) => {
     setIsProcessing(true);
-    const accountData = {
+    const accountData: AccountData = {
       ...data,
       currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
       payoutMinAmount:
@@ -45,7 +46,7 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putAuthenticatedRequest<BankAccount>({
+      const res = await putAuthenticatedRequest<BankAccount, AccountData>({
         tenant: tenantConfig?.id,
         url: `/app/accounts/${accountToEdit?.id}`,
         data: accountData,

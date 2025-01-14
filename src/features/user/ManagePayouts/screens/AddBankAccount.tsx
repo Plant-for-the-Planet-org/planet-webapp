@@ -17,7 +17,7 @@ import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
-interface AccountData {
+export interface AccountData {
   currency: string;
   payoutMinAmount: string | undefined;
   bankName: string;

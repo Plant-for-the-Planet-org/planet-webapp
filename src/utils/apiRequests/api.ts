@@ -36,9 +36,9 @@ interface DeleteAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PutAuthRequestOptions extends BaseRequestOptions {
+interface PutAuthRequestOptions<D> extends BaseRequestOptions {
   token: string | null;
-  data?: any;
+  data?: D;
   logoutUser: (value?: string | undefined) => void;
 }
 interface PostRequestOptions extends BaseRequestOptions {
@@ -299,13 +299,13 @@ export function deleteAuthenticatedRequest<T>({
   });
 }
 
-export function putAuthenticatedRequest<T>({
+export function putAuthenticatedRequest<T, D = unknown>({
   tenant,
   url,
   data,
   token,
   logoutUser,
-}: PutAuthRequestOptions) {
+}: PutAuthRequestOptions<D>) {
   return new Promise<T>((resolve, reject) => {
     const lang = localStorage.getItem('language') || 'en';
     (async () => {

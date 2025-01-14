@@ -36,6 +36,14 @@ export enum ProjectCreationTabs {
   PROJECT_SPENDING = 5,
   REVIEW = 6,
 }
+
+type PublishSubmitData = {
+  publish: boolean;
+};
+
+type ReviewSubmitData = {
+  reviewRequested: boolean;
+};
 export default function ManageProjects({
   GUID,
   token,
@@ -100,13 +108,14 @@ export default function ManageProjects({
 
   const submitForReview = async () => {
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: ReviewSubmitData = {
       reviewRequested: true,
     };
 
     try {
       const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
+        ProfileProjectTrees | ProfileProjectConservation,
+        ReviewSubmitData
       >({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}`,
@@ -124,13 +133,14 @@ export default function ManageProjects({
 
   const handlePublishChange = async (val: boolean) => {
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: PublishSubmitData = {
       publish: val,
     };
 
     try {
       const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
+        ProfileProjectTrees | ProfileProjectConservation,
+        PublishSubmitData
       >({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}`,

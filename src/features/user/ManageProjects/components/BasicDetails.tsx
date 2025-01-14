@@ -391,7 +391,8 @@ export default function BasicDetails({
     if (projectGUID) {
       try {
         const res = await putAuthenticatedRequest<
-          ProfileProjectTrees | ProfileProjectConservation
+          ProfileProjectTrees | ProfileProjectConservation,
+          SubmitData
         >({
           tenant: tenantConfig?.id,
           url: `/app/projects/${projectGUID}`,
