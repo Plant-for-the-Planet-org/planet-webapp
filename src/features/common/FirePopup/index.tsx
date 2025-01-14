@@ -7,6 +7,7 @@ import InfoIconPopup from '../../projectsV2/ProjectDetails/components/microCompo
 import FireIcon from '../../../../public/assets/images/icons/FireIcon';
 import FirePopupIcon from '../../../../public/assets/images/icons/FirePopupIcon';
 import styles from './FirePopup.module.scss';
+import { userAgent } from 'next/server';
 
 interface Props {
   isOpen: boolean;
@@ -39,6 +40,19 @@ export default function FirePopup({ isOpen, feature }: Props) {
       default:
         return 'defaultAlertConfidenceText';
     }
+  }, []);
+
+  const firealertAppLink = useMemo(() => {
+    let link = 'https://www.plant-for-the-planet.org/firealert/';
+    if (navigator.userAgent) {
+      console.log(navigator.userAgent);
+      if (/android/i.test(navigator.userAgent.toLowerCase())) {
+        link = 'https://play.google.com/store/apps/details?id=eco.pp.firealert';
+      } else if (/iphone/.test(navigator.userAgent.toLowerCase())) {
+        link = 'https://apps.apple.com/app/fire-alert-for-forests/id1667307676';
+      }
+    }
+    return link;
   }, []);
 
   return (
@@ -92,14 +106,19 @@ export default function FirePopup({ isOpen, feature }: Props) {
                 important: (chunks) => <span>{chunks}</span>,
               })}
             </p>
-            <div className={styles.setUpAlertsContainer}>
+            <a
+              className={styles.setUpAlertsContainer}
+              href={firealertAppLink}
+              target="_blank"
+              rel="noreferrer"
+            >
               <p className={styles.setUpAlerts}>
                 {tProjectDetails.rich('setUpAlertsText', {
                   important: (chunks) => <span>{chunks}</span>,
                 })}
               </p>
               <RightArrowIcon width={5} color={'#4F4F4F'} />
-            </div>
+            </a>
           </div>
         </aside>
       </Popper>
