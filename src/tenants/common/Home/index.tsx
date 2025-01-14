@@ -1,3 +1,8 @@
+import type {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
+
 import styles from './Home.module.scss';
 import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../LeaderBoard';
@@ -6,10 +11,6 @@ import Footer from '../../../features/common/Layout/Footer';
 import React from 'react';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
 import { useTranslations } from 'next-intl';
-import {
-  LeaderBoardList,
-  TenantScore,
-} from '../../../features/common/types/leaderboard';
 
 interface Props {
   leaderboard: LeaderBoardList | null;

@@ -1,5 +1,8 @@
-import { APIError, CurrencyCode, handleError } from '@planet-sdk/common';
-import { createContext, FC, useState, useContext, useEffect } from 'react';
+import type { APIError, CurrencyCode } from '@planet-sdk/common';
+import type { FC } from 'react';
+
+import { handleError } from '@planet-sdk/common';
+import { createContext, useState, useContext, useEffect } from 'react';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
 
@@ -24,10 +27,9 @@ export const CurrencyProvider: FC = ({ children }) => {
 
   const fetchCurrencies = async () => {
     try {
-      const currencyData = await getRequest<CurrencyList>(
-        undefined,
-        '/app/currencies'
-      );
+      const currencyData = await getRequest<CurrencyList>({
+        url: '/app/currencies',
+      });
       setFetchCount(fetchCount + 1);
       setSupportedCurrencies(
         new Set(Object.keys(currencyData) as CurrencyCode[])

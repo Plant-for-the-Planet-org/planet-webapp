@@ -1,6 +1,6 @@
-import { DateString } from './common';
-import { Links } from './payments';
-import { Polygon, Point } from 'geojson';
+import type { DateString } from './common';
+import type { Links } from './payments';
+import type { Polygon, Point } from 'geojson';
 
 export interface PlantLocationBase {
   hid: string;

@@ -1,14 +1,17 @@
+import type { Project } from '../../../common/Layout/AnalyticsContext';
+import type { APIError } from '@planet-sdk/common';
+import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+
 import React, { useEffect, useState } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
-import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
+import { useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { APIError, handleError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import NoProjectsFound from './components/NoProjectsFound';
 
@@ -23,12 +26,12 @@ const Analytics = () => {
   const fetchProjects = async () => {
     try {
       // TODO - update project type, this does not match completely
-      const res = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.id,
-        '/app/profile/projects?scope=map',
+      const res = await getAuthenticatedRequest<MapProject[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects?scope=map',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const projects: Project[] = [];
 
       res.forEach((_proj) => {

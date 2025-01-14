@@ -1,22 +1,26 @@
-import React, { ReactElement } from 'react';
-import { useRouter } from 'next/router';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import {
+import type { ReactElement } from 'react';
+import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
+import type { APIError, UserPublicProfile } from '@planet-sdk/common';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { AbstractIntlMessages } from 'next-intl';
+
+import React from 'react';
+import { useRouter } from 'next/router';
+import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
+import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
@@ -38,10 +42,10 @@ export default function DirectGift({
 
   async function loadPublicUserData() {
     try {
-      const newProfile = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
-        `/app/profiles/${router.query.id}`
-      );
+      const newProfile = await getRequest<UserPublicProfile>({
+        tenant: tenantConfig.id,
+        url: `/app/profiles/${router.query.id}`,
+      });
       if (newProfile.type !== 'tpo') {
         localStorage.setItem(
           'directGift',
@@ -69,18 +73,19 @@ export default function DirectGift({
   return tenantConfig ? <div></div> : <></>;
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

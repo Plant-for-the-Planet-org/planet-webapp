@@ -1,7 +1,8 @@
+import type { SetState } from '../../../common/types/common';
+
 import { useTenant } from '../../../common/Layout/TenantContext';
 import PlayButton from '../../../common/LandingVideo/PlayButton';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
-import { SetState } from '../../../common/types/common';
 import MapLayout from '../ProjectsMap';
 import { useRouter } from 'next/router';
 

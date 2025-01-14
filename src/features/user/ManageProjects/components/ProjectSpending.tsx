@@ -1,4 +1,12 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { SxProps } from '@mui/material';
+import type { APIError, ProjectExpense } from '@planet-sdk/common';
+import type {
+  ProjectSpendingProps,
+  ExpensesScopeProjects,
+} from '../../../common/types/project';
+
+import React from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -17,18 +25,14 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { SxProps, Button, TextField, IconButton } from '@mui/material';
+import { Button, TextField, IconButton } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError, ProjectExpense } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import {
-  ProjectSpendingProps,
-  ExpensesScopeProjects,
-} from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const yearDialogSx: SxProps = {
@@ -91,13 +95,13 @@ export default function ProjectSpending({
     };
 
     try {
-      const res = await postAuthenticatedRequest<ProjectExpense>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/expenses`,
-        submitData,
+      const res = await postAuthenticatedRequest<ProjectExpense>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/expenses`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const newUploadedFiles = uploadedFiles;
       newUploadedFiles.push(res);
       setUploadedFiles(newUploadedFiles);
@@ -148,12 +152,12 @@ export default function ProjectSpending({
   const deleteProjectSpending = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/expenses/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/expenses/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
       setIsUploadingData(false);
@@ -167,12 +171,12 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ExpensesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=expenses`,
+        const result = await getAuthenticatedRequest<ExpensesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }

@@ -1,11 +1,14 @@
-import React, {
-  ChangeEvent,
-  ReactElement,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { ChangeEvent, ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  BasicDetailsProps,
+  ProfileProjectConservation,
+  ProfileProjectTrees,
+  ViewPort,
+} from '../../../common/types/project';
+import type { ReverseAddress } from '../../../common/types/geocoder';
+
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
@@ -35,16 +38,9 @@ import GeocoderArcGIS from 'geocoder-arcgis';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import {
-  BasicDetailsProps,
-  ProfileProjectConservation,
-  ProfileProjectTrees,
-  ViewPort,
-} from '../../../common/types/project';
-import { ReverseAddress } from '../../../common/types/geocoder';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 type FormData = {
@@ -366,13 +362,13 @@ export default function BasicDetails({
       try {
         const res = await putAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}`,
-          submitData,
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/projects/${projectGUID}`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProjectDetails(res);
         setIsUploadingData(false);
         handleNext(ProjectCreationTabs.PROJECT_MEDIA);
@@ -384,7 +380,13 @@ export default function BasicDetails({
       try {
         const res = await postAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(tenantConfig?.id, `/app/projects`, submitData, token, logoutUser);
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/projects`,
+          data: submitData,
+          token,
+          logoutUser,
+        });
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);

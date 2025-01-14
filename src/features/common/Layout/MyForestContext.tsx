@@ -1,14 +1,5 @@
-import {
-  FC,
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  useEffect,
-} from 'react';
-import { trpc } from '../../../utils/trpc';
-import { ErrorHandlingContext } from './ErrorHandlingContext';
-import {
+import type { FC } from 'react';
+import type {
   ProjectListResponse,
   MyForestProject,
   ContributionsResponse,
@@ -20,9 +11,13 @@ import {
   DonationProperties,
   ContributionStats,
 } from '../types/myForest';
+import type { SetState } from '../types/common';
+import type { PointFeature } from 'supercluster';
+
+import { createContext, useContext, useMemo, useState, useEffect } from 'react';
+import { trpc } from '../../../utils/trpc';
+import { ErrorHandlingContext } from './ErrorHandlingContext';
 import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
-import { SetState } from '../types/common';
-import { PointFeature } from 'supercluster';
 
 interface UserInfo {
   profileId: string;
@@ -33,6 +28,14 @@ interface UserInfo {
     areaConserved: number;
   };
 }
+type ContributionsQueryRefetchType = ReturnType<
+  typeof trpc.myForest.contributions.useQuery
+>['refetch'];
+
+type LeaderboardQueryRefetchType = ReturnType<
+  typeof trpc.myForest.leaderboard.useQuery
+>['refetch'];
+
 interface MyForestContextInterface {
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
@@ -46,6 +49,10 @@ interface MyForestContextInterface {
   userInfo: UserInfo | null;
   setUserInfo: SetState<UserInfo | null>;
   contributionStats: ContributionStats | undefined;
+  isPublicProfile: boolean;
+  setIsPublicProfile: SetState<boolean>;
+  refetchContributions: ContributionsQueryRefetchType;
+  refetchLeaderboard: LeaderboardQueryRefetchType;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
@@ -71,6 +78,8 @@ export const MyForestProvider: FC = ({ children }) => {
     PointFeature<DonationProperties>[]
   >([]);
 
+  const [isPublicProfile, setIsPublicProfile] = useState(false);
+
   const _projectList = trpc.myForest.projectList.useQuery(undefined, {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -79,6 +88,7 @@ export const MyForestProvider: FC = ({ children }) => {
   const _contributions = trpc.myForest.contributions.useQuery(
     {
       profileId: `${userInfo?.profileId}`,
+      isPublicProfile,
     },
     {
       enabled: !!userInfo?.profileId && !!userInfo?.slug,
@@ -90,6 +100,7 @@ export const MyForestProvider: FC = ({ children }) => {
   const _leaderboard = trpc.myForest.leaderboard.useQuery(
     {
       profileId: `${userInfo?.profileId}`,
+      isPublicProfile,
     },
     {
       enabled: !!userInfo?.profileId && !!userInfo?.slug,
@@ -201,6 +212,10 @@ export const MyForestProvider: FC = ({ children }) => {
       userInfo,
       setUserInfo,
       contributionStats,
+      isPublicProfile,
+      setIsPublicProfile,
+      refetchContributions: _contributions.refetch,
+      refetchLeaderboard: _leaderboard.refetch,
     }),
     [
       projectListResult,
@@ -218,6 +233,9 @@ export const MyForestProvider: FC = ({ children }) => {
       userInfo,
       setUserInfo,
       contributionStats,
+      isPublicProfile,
+      _contributions.refetch,
+      _leaderboard.refetch,
     ]
   );
 

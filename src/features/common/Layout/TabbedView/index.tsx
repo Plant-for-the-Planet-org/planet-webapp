@@ -1,7 +1,9 @@
-import { ReactElement, ReactNode, useEffect, useState } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import type { TabItem } from './TabbedViewTypes';
+
+import { useEffect, useState } from 'react';
 import { Grid, styled } from '@mui/material';
 import TabSteps from './TabSteps';
-import { TabItem } from './TabbedViewTypes';
 
 const TabContainer = styled('div')(() => ({
   backgroundColor: 'inherit',

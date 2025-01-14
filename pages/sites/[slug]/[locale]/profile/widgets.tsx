@@ -1,21 +1,25 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
 import styles from '../../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
@@ -68,17 +72,18 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
 
 export default ProfilePage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

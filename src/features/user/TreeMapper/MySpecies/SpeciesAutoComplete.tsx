@@ -1,13 +1,16 @@
 /* eslint-disable no-use-before-define */
+import type { Control, FieldValues, FieldPath } from 'react-hook-form';
+import type { APIError } from '@planet-sdk/common';
+import type { SpeciesSuggestionType } from '../../../common/types/plantLocation';
+
 import React from 'react';
 import { postRequest } from '../../../../utils/apiRequests/api';
-import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 
 import { useTranslations } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { SpeciesSuggestionType } from '../../../common/types/plantLocation';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props<
@@ -59,14 +62,14 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest<SpeciesSuggestionType[]>(
-          tenantConfig?.id,
-          `/suggest.php`,
-          {
+        const res = await postRequest<SpeciesSuggestionType[]>({
+          tenant: tenantConfig?.id,
+          url: `/suggest.php`,
+          data: {
             q: value,
             t: 'species',
-          }
-        );
+          },
+        });
         if (res && res.length > 0) {
           const species = res.map((item) => ({
             id: item.id,

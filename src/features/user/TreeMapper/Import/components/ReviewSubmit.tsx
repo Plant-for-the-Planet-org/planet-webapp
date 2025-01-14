@@ -1,10 +1,12 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
+
+import React from 'react';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import { PlantLocationMulti } from '../../../../common/types/plantLocation';
 
 interface Props {
   plantLocation: PlantLocationMulti;

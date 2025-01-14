@@ -1,12 +1,23 @@
-import React, { ReactElement } from 'react';
-import {
-  Controller,
-  useForm,
-  useFieldArray,
-  FieldErrors,
-  FieldArrayWithId,
-  Control,
-} from 'react-hook-form';
+import type { ReactElement } from 'react';
+import type { FieldErrors, FieldArrayWithId, Control } from 'react-hook-form';
+import type {
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+  GeometryObject,
+} from 'geojson';
+import type {
+  Species,
+  PlantLocation as PlantLocationType,
+} from '../../../../common/types/plantLocation';
+import type { PlantingLocationFormData } from '../../Treemapper';
+import type { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import type { SetState } from '../../../../common/types/common';
+import type { SxProps } from '@mui/material';
+import type { APIError } from '@planet-sdk/common';
+
+import React from 'react';
+import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
@@ -14,7 +25,7 @@ import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { Button, MenuItem, SxProps, TextField } from '@mui/material';
+import { Button, MenuItem, TextField } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
@@ -27,23 +38,11 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../../common/Layout/TenantContext';
-import {
-  FeatureCollection,
-  GeoJsonProperties,
-  Geometry,
-  GeometryObject,
-} from 'geojson';
-import {
-  Species,
-  PlantLocation as PlantLocationType,
-} from '../../../../common/types/plantLocation';
-import { PlantingLocationFormData } from '../../Treemapper';
+
 // import { DevTool } from '@hookform/devtools';
-import { SetState } from '../../../../common/types/common';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -213,12 +212,12 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
+      const projects = await getAuthenticatedRequest<MapProject[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -227,12 +226,12 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species = await getAuthenticatedRequest<Species[]>(
-        tenantConfig?.id,
-        '/treemapper/species',
+      const species = await getAuthenticatedRequest<Species[]>({
+        tenant: tenantConfig?.id,
+        url: '/treemapper/species',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setMySpecies(species);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -341,13 +340,13 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest<PlantLocationType>(
-          tenantConfig?.id,
-          `/treemapper/interventions`,
-          submitData,
+        const res = await postAuthenticatedRequest<PlantLocationType>({
+          tenant: tenantConfig?.id,
+          url: `/treemapper/interventions`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setPlantLocation(res);
         setIsUploadingData(false);
         handleNext();

@@ -1,4 +1,15 @@
-import React, { ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  ExtendedScopePlantLocations,
+  PlantLocation as PlantLocationType,
+  PlantLocationMulti,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../common/types/plantLocation';
+import type { Links } from '../../common/types/payments';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
@@ -9,16 +20,8 @@ import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
-import {
-  ExtendedScopePlantLocations,
-  PlantLocation as PlantLocationType,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
-import { Links } from '../../common/types/payments';
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -46,15 +49,13 @@ function TreeMapper(): ReactElement {
     if (next && links?.next) {
       try {
         const response =
-          await getAuthenticatedRequest<ExtendedScopePlantLocations>(
-            tenantConfig?.id,
-            links.next,
+          await getAuthenticatedRequest<ExtendedScopePlantLocations>({
+            tenant: tenantConfig?.id,
+            url: links.next,
             token,
             logoutUser,
-            {},
-            undefined,
-            '1.0.4'
-          );
+            version: '1.0.4',
+          });
         if (response?.items) {
           const newPlantLocations = response.items;
           for (const itr in newPlantLocations) {
@@ -92,16 +93,13 @@ function TreeMapper(): ReactElement {
     } else {
       try {
         const response =
-          await getAuthenticatedRequest<ExtendedScopePlantLocations>(
-            tenantConfig?.id,
-            '/treemapper/interventions?_scope=extended&limit=15',
+          await getAuthenticatedRequest<ExtendedScopePlantLocations>({
+            tenant: tenantConfig?.id,
+            url: '/treemapper/interventions?_scope=extended&limit=15',
             token,
             logoutUser,
-
-            {},
-            undefined,
-            '1.0.4'
-          );
+            version: '1.0.4',
+          });
         if (response?.items) {
           const plantLocations = response.items;
           if (plantLocations?.length === 0) {

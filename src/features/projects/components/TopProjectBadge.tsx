@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
 import {
   bindPopover,
   usePopupState,

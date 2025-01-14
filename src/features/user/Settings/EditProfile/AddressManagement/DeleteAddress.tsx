@@ -37,12 +37,12 @@ const DeleteAddress = ({
     if (!contextLoaded || !user || !token) return;
     try {
       setIsLoading(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig.id,
-        `/app/addresses/${addressId}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig.id,
+        url: `/app/addresses/${addressId}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       updateUserAddresses();
     } catch (error) {
       setErrors(handleError(error as APIError));

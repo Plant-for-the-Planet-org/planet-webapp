@@ -1,14 +1,18 @@
-import Head from 'next/head';
-import React, { ReactElement } from 'react';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
-import {
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import Head from 'next/head';
+import React from 'react';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import { useTranslations } from 'next-intl';
+import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -49,17 +53,18 @@ function DeleteProfilePage({
 
 export default DeleteProfilePage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

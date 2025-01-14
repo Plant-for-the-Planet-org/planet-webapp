@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';

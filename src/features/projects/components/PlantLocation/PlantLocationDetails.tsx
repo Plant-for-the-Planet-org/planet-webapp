@@ -1,4 +1,11 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
+import type { SliderImage } from '../../components/PlantLocation/ImageSlider';
+
+import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -7,11 +14,6 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-import {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
-import { SliderImage } from '../../components/PlantLocation/ImageSlider';
 
 const ImageSlider = dynamic(
   () => import('../../components/PlantLocation/ImageSlider'),

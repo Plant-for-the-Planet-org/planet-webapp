@@ -1,8 +1,10 @@
+import type { ReactElement } from 'react';
+import type { SetState } from '../../../common/types/common';
+
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import Styles from '../../../../../src/features/user/ManageProjects/StepForm.module.scss';
-import { SetState } from '../../../common/types/common';
 
 interface ProjectSelectionProps {
   setTabSelected: SetState<number>;

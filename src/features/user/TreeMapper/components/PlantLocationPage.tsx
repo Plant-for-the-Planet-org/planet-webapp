@@ -1,4 +1,13 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type {
+  PlantLocation,
+  PlantLocationMulti,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
+import type { SetState } from '../../../common/types/common';
+
+import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
@@ -7,13 +16,6 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
-import { SetState } from '../../../common/types/common';
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/PlantLocation/ImageSlider'),

@@ -1,17 +1,11 @@
-import Document, {
-  DocumentContext,
-  DocumentInitialProps,
-  Head,
-  Html,
-  Main,
-  NextScript,
-} from 'next/document';
+import type { EmotionCache } from '@emotion/react';
+import type { AppType } from 'next/app';
+import type { DocumentContext, DocumentInitialProps } from 'next/document';
+
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '../src/createEmotionCache';
-import { EmotionCache } from '@emotion/react';
-
 import React from 'react';
-import { AppType } from 'next/app';
 
 class MyDocument extends Document {
   static async getInitialProps(

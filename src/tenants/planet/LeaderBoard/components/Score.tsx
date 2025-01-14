@@ -1,3 +1,5 @@
+import type { APIError } from '@planet-sdk/common';
+
 import React from 'react';
 import styles from './LeaderBoard.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
@@ -7,11 +9,10 @@ import MaterialTextField from '../../../../features/common/InputTypes/MaterialTe
 import { postRequest } from '../../../../utils/apiRequests/api';
 import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
-
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
@@ -30,8 +31,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { tenantConfig } = useTenant();
   const fetchUsers = async (query: any) => {
     try {
-      const res = await postRequest(tenantConfig?.id, '/suggest.php', {
-        q: query,
+      const res = await postRequest({
+        tenant: tenantConfig?.id,
+        url: '/suggest.php',
+        data: {
+          q: query,
+        },
       });
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);

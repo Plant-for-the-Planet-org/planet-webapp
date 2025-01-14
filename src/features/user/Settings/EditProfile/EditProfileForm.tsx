@@ -1,10 +1,13 @@
+import type { AlertColor } from '@mui/lab';
+import type { APIError } from '@planet-sdk/common';
+import type { User } from '@planet-sdk/common/build/types/user';
+
 import { styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
-import { User } from '@planet-sdk/common/build/types/user';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -19,8 +22,7 @@ import {
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { AlertColor } from '@mui/lab';
-import { APIError, handleError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
@@ -162,13 +164,14 @@ export default function EditProfileForm() {
     imageFile: string | ArrayBuffer | null | undefined;
   }) => {
     try {
-      const res = await putAuthenticatedRequest<User>(
-        tenantConfig?.id,
-        `/app/profile`,
-        bodyToSend,
+      const res = await putAuthenticatedRequest<User>({
+        tenant: tenantConfig?.id,
+        url: `/app/profile`,
+        data: bodyToSend,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
+
       if (user) {
         const newUserInfo = { ...user, image: res.image };
         setUpdatingPic(false);
@@ -233,13 +236,13 @@ export default function EditProfileForm() {
 
     if (contextLoaded && token) {
       try {
-        const res: User = await putAuthenticatedRequest(
-          tenantConfig?.id,
-          `/app/profile`,
-          bodyToSend,
+        const res: User = await putAuthenticatedRequest({
+          tenant: tenantConfig?.id,
+          url: `/app/profile`,
+          data: bodyToSend,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();

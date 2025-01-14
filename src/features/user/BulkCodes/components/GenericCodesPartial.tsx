@@ -1,7 +1,9 @@
+import type { ReactElement, FocusEvent } from 'react';
+import type { SetState } from '../../../common/Layout/BulkCodeContext';
+
 import { TextField } from '@mui/material';
-import { ReactElement, useState, FocusEvent } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { SetState } from '../../../common/Layout/BulkCodeContext';
 import { BulkCodeLimits } from '../../../../utils/constants/bulkCodeConstants';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 

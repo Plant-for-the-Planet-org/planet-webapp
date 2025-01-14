@@ -1,10 +1,7 @@
-import {
-  ReactElement,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type { PaymentHistory } from '../../../common/types/payments';
+import type { ReactElement } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
@@ -14,8 +11,7 @@ import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
-import { handleError, APIError } from '@planet-sdk/common';
-import { PaymentHistory } from '../../../common/types/payments';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface TransactionsProps {
@@ -63,12 +59,12 @@ const Transactions = ({
             : `/app/paymentHistory?filter=planet-cash&limit=15`;
 
         const newTransactionHistory =
-          await getAuthenticatedRequest<PaymentHistory>(
-            tenantConfig?.id,
-            apiUrl,
+          await getAuthenticatedRequest<PaymentHistory>({
+            tenant: tenantConfig?.id,
+            url: apiUrl,
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
 
         if (transactionHistory) {
           setTransactionHistory({

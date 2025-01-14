@@ -1,5 +1,15 @@
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import React, { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { ReactElement } from 'react';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import { useTranslations } from 'next-intl';
+import React from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
@@ -7,15 +17,9 @@ import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoa
 import Footer from '../../../../../../src/features/common/Layout/Footer';
 import Head from 'next/head';
 import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
-import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
@@ -96,17 +100,18 @@ export default function AddProjectType({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

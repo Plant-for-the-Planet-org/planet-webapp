@@ -1,6 +1,8 @@
-import Radio, { RadioProps } from '@mui/material/Radio';
+import type { RadioProps } from '@mui/material/Radio';
+import type { ReactElement } from 'react';
+
+import Radio from '@mui/material/Radio';
 import { styled } from '@mui/material';
-import { ReactElement } from 'react';
 
 const StyledRadio = styled(Radio)({
   color: '#000000',

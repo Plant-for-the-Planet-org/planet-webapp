@@ -1,4 +1,7 @@
-import { ReactElement, useContext, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { APIError, User } from '@planet-sdk/common';
+
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, MenuItem, CircularProgress } from '@mui/material';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
@@ -10,7 +13,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
-import { handleError, APIError, User } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const paymentFrequencies = [
@@ -44,13 +47,13 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsProcessing(true);
 
     try {
-      const res = await putAuthenticatedRequest<User>(
-        tenantConfig?.id,
-        '/app/profile',
-        { scheduleFrequency: data.scheduleFrequency },
+      const res = await putAuthenticatedRequest<User>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile',
+        data: { scheduleFrequency: data.scheduleFrequency },
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setUser(res);
       setIsSaved(true);
       setIsProcessing(false);

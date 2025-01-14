@@ -1,5 +1,6 @@
+import type { ProgressDataProps } from './ProgressData';
+
 import styles from '../ForestProgress.module.scss';
-import { ProgressDataProps } from './ProgressData';
 
 export type StackedBarGraphProps = Omit<ProgressDataProps, 'dataType'>;
 

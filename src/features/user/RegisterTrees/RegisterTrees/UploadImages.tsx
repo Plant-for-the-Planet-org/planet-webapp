@@ -1,4 +1,7 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { APIError, Image } from '@planet-sdk/common';
+
+import React from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -9,7 +12,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, Image } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
@@ -39,13 +42,13 @@ export default function UploadImages({
     };
 
     try {
-      const res = await postAuthenticatedRequest<Image>(
-        tenantConfig?.id,
-        `/app/contributions/${contributionGUID}/images`,
-        submitData,
+      const res = await postAuthenticatedRequest<Image>({
+        tenant: tenantConfig?.id,
+        url: `/app/contributions/${contributionGUID}/images`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const newUploadedImages: Image[] = uploadedImages;
       newUploadedImages.push(res);
       setUploadedImages(newUploadedImages);
@@ -82,12 +85,12 @@ export default function UploadImages({
 
   const deleteContributionImage = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/contributions/${contributionGUID}/images/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/contributions/${contributionGUID}/images/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedImagesTemp = uploadedImages;
       const index = uploadedImagesTemp.findIndex((item) => {
         return item.id === id;
