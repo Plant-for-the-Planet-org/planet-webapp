@@ -2,37 +2,24 @@ import type { ReactElement, ReactNode } from 'react';
 
 interface Props {
   condition: boolean;
-  component?: ReactNode;
   children?: ReactNode;
 }
 
 export default function FeatureFlag({
   condition,
-  component,
   children,
 }: Props): ReactElement {
-  return (
-    <>
-      {condition ? (
-        <>
-          {component}
-          {children}
-        </>
-      ) : null}
-    </>
-  );
+  return <>{condition ? <>{children}</> : null}</>;
 }
 
 export function isFirealertFiresEnabled() {
-  let isEnable = false;
+  const isEnvVariableEnabled =
+    process.env.NEXT_PUBLIC_ENABLE_FIREALERT_FIRES?.trim().toLowerCase() ===
+    'true';
+  const isQueryStringEnabled =
+    new URLSearchParams(window.location.search)
+      .get('fa-fires')
+      ?.toLowerCase() === 'true';
 
-  const envFirealertFires = process.env.NEXT_PUBLIC_ENABLE_FIREALERT_FIRES;
-  if (envFirealertFires?.trim().toLowerCase() === 'true') isEnable = true;
-
-  const qsFirealertFires = new URLSearchParams(window.location.search);
-  if (qsFirealertFires.get('fa-fires')?.toLowerCase() === 'true')
-    isEnable = true;
-
-  // console.log({ isFirealertFiresEnabled: isEnable });
-  return isEnable;
+  return isEnvVariableEnabled || isQueryStringEnabled;
 }

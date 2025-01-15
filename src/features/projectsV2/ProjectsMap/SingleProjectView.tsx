@@ -120,10 +120,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
 
       <PlantLocations />
 
-      <FeatureFlag
-        condition={isFirealertFiresEnabled()}
-        // component={FireLocations} // Pass component or children
-      >
+      <FeatureFlag condition={isFirealertFiresEnabled()}>
         <FireLocations />
       </FeatureFlag>
     </>

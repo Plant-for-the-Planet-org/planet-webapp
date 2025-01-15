@@ -1,13 +1,13 @@
+import type { FireFeature } from '../../../common/types/fireLocation';
+
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
-import RightArrowIcon from '../../../../public/assets/images/icons/projectV2/RightArrowIcon';
-import type { FireFeature } from '../types/fireLocation';
-import InfoIconPopup from '../../projectsV2/ProjectDetails/components/microComponents/InfoIconPopup';
-import FireIcon from '../../../../public/assets/images/icons/FireIcon';
-import FirePopupIcon from '../../../../public/assets/images/icons/FirePopupIcon';
+import RightArrowIcon from '../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
+import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoIconPopup';
+import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
+import FirePopupIcon from '../../../../../public/assets/images/icons/FirePopupIcon';
 import styles from './FirePopup.module.scss';
-import { userAgent } from 'next/server';
 
 interface Props {
   isOpen: boolean;
@@ -44,11 +44,11 @@ export default function FirePopup({ isOpen, feature }: Props) {
 
   const firealertAppLink = useMemo(() => {
     let link = 'https://www.plant-for-the-planet.org/firealert/';
-    if (navigator.userAgent) {
-      console.log(navigator.userAgent);
-      if (/android/i.test(navigator.userAgent.toLowerCase())) {
+    if (typeof navigator !== 'undefined' && navigator.userAgent) {
+      const ua = navigator.userAgent.toLowerCase();
+      if (ua.includes('android')) {
         link = 'https://play.google.com/store/apps/details?id=eco.pp.firealert';
-      } else if (/iphone/.test(navigator.userAgent.toLowerCase())) {
+      } else if (ua.includes('iphone')) {
         link = 'https://apps.apple.com/app/fire-alert-for-forests/id1667307676';
       }
     }
@@ -128,7 +128,7 @@ export default function FirePopup({ isOpen, feature }: Props) {
         onMouseLeave={() => setShowPopup(false)}
         className={styles.fireIcon}
       >
-        <FireIcon width={24} height={28} />
+        <FireIcon width={24} />
       </div>
     </>
   );
