@@ -100,7 +100,7 @@ const createCardData = (plantLocationInfo: OtherInterventions | null) => {
 };
 
 interface Props {
-  hoveredPlantLocation: OtherInterventions | null;
+  hoveredPlantLocation?: OtherInterventions | null;
   selectedPlantLocation: OtherInterventions | null;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;

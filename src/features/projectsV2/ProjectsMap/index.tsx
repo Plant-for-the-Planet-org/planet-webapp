@@ -177,9 +177,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapRef,
     page: props.page,
   };
-  const mapContainerClass = `${styles.mapContainer} ${
-    styles[mobileOS !== undefined ? mobileOS : '']
-  }`;
+  const mapContainerClass = `${styles.mapContainer} ${styles[mobileOS !== undefined ? mobileOS : '']
+    }`;
   const shouldShowOtherIntervention =
     props.isMobile &&
     selectedPlantLocation !== null &&
@@ -233,12 +232,8 @@ function ProjectsMap(props: ProjectsMapProps) {
       )}
       {shouldShowOtherIntervention ? (
         <OtherInterventionInfo
-          plantLocationInfo={
-            selectedPlantLocation?.type !== 'single-tree-registration' &&
-            selectedPlantLocation?.type !== 'multi-tree-registration'
-              ? selectedPlantLocation
-              : null
-          }
+          selectedPlantLocation={selectedPlantLocation && selectedPlantLocation?.type !== 'single-tree-registration' &&
+            selectedPlantLocation?.type !== 'multi-tree-registration' ? selectedPlantLocation : null}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           isMobile={props.isMobile}
         />

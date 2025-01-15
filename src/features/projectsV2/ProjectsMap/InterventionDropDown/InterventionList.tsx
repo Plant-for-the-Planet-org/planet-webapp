@@ -2,6 +2,7 @@ import type { SetState } from '../../../common/types/common';
 import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
+import OtherInterventionTitle from '../../ProjectDetails/components/OtherInterventionTitle';
 
 type InterventionData = {
   label: string;
@@ -30,15 +31,16 @@ const InterventionList = ({
       {interventionList.map((intervention, index) => {
         return (
           <li
-            className={`${styles.listItem} ${
-              intervention.value === selectedInterventionData?.value
+            className={`${styles.listItem} ${intervention.value === selectedInterventionData?.value
                 ? styles.selectedItem
                 : ''
-            }`}
+              }`}
             onClick={() => handleFilterSelection(intervention.value)}
             key={index}
           >
-            <p>{intervention.label}</p>
+            <p>
+              <OtherInterventionTitle type={intervention.value} />
+            </p>
           </li>
         );
       })}
