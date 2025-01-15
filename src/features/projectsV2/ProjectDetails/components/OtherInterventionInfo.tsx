@@ -116,12 +116,12 @@ const OtherInterventionInfo = ({
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount =
       plantLocationInfo &&
-      plantLocationInfo.plantedSpecies &&
-      plantLocationInfo.plantedSpecies.length > 0
+        plantLocationInfo.plantedSpecies &&
+        plantLocationInfo.plantedSpecies.length > 0
         ? plantLocationInfo.plantedSpecies.reduce(
-            (sum, species: { treeCount: number }) => sum + species.treeCount,
-            0
-          )
+          (sum, species: { treeCount: number }) => sum + species.treeCount,
+          0
+        )
         : 0;
     return { totalTreesCount };
   }, [plantLocationInfo, plantLocationInfo?.type]);
@@ -154,6 +154,10 @@ const OtherInterventionInfo = ({
         interventionType={plantLocationInfo?.type}
         key="interventionHeader"
       />
+      <OtherInterventionInfoHeader
+        key="interventionHeader"
+        plantDate={plantLocationInfo?.interventionStartDate}
+      />
       {shouldDisplayImageCarousel && (
         <ImageSlider
           key="imageSlider"
@@ -166,36 +170,29 @@ const OtherInterventionInfo = ({
       )}
     </>,
     cleanedPublicMetadata.length > 0 && (
-      <>
-        <OtherInterventionInfoHeader
-          key="interventionHeader"
-          plantDate={plantLocationInfo?.interventionStartDate}
-        />
-        <OtherInterventionMetadata
-          key="plantingDetails"
-          metadata={cleanedPublicMetadata}
-          plantDate={plantLocationInfo?.interventionStartDate}
-          type={plantLocationInfo?.type}
-        />
-      </>
-    ),
+      <OtherInterventionMetadata
+        key="plantingDetails"
+        metadata={cleanedPublicMetadata}
+        plantDate={plantLocationInfo?.interventionStartDate}
+        type={plantLocationInfo?.type}
+      />),
     plantLocationInfo?.plantedSpecies &&
-      plantLocationInfo.plantedSpecies.length > 0 && (
-        <SpeciesPlanted
-          key="speciesPlanted"
-          totalTreesCount={totalTreesCount}
-          plantedSpecies={plantLocationInfo.plantedSpecies}
-        />
-      ),
+    plantLocationInfo.plantedSpecies.length > 0 && (
+      <SpeciesPlanted
+        key="speciesPlanted"
+        totalTreesCount={totalTreesCount}
+        plantedSpecies={plantLocationInfo.plantedSpecies}
+      />
+    ),
     plantLocationInfo &&
-      plantLocationInfo.sampleInterventions &&
-      plantLocationInfo.sampleInterventions.length > 0 && (
-        <SampleTrees
-          key="sampleTrees"
-          sampleInterventions={plantLocationInfo.sampleInterventions}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-        />
-      ),
+    plantLocationInfo.sampleInterventions &&
+    plantLocationInfo.sampleInterventions.length > 0 && (
+      <SampleTrees
+        key="sampleTrees"
+        sampleInterventions={plantLocationInfo.sampleInterventions}
+        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+      />
+    ),
   ].filter(Boolean);
 
   return isMobile ? (
