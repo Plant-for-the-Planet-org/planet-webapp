@@ -1,25 +1,25 @@
 import styles from '../../styles/PlantLocationInfo.module.scss';
 import { formatHid } from '../../../../../utils/projectV2';
-import { findInterventionHeader } from '../../../../../utils/constants/intervention';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslations } from 'next-intl';
-import OtherInterventionTitle from '../OtherInterventionTitle';
+import { INTERVENTION_TYPE } from '../../../../../utils/constants/intervention';
 
 interface Props {
   plHid: string | undefined;
-  interventionType: string | undefined;
+  interventionType: INTERVENTION_TYPE;
   plantDate: string | null | undefined;
 }
 
 const InterventionHeader = ({ plHid, interventionType, plantDate }: Props) => {
       const tProjectDetails = useTranslations('ProjectDetails');
-  
+      const tIntervention = useTranslations('ProjectDetails.intervention');
+
   return (
     <>
       <div
         className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
       >
-        <div className={`${styles.interventionTitle}`}><OtherInterventionTitle type={interventionType?interventionType:''}/></div>
+        <div className={`${styles.interventionTitle}`}>{tIntervention(interventionType)}</div>
         <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
       </div>
       <div

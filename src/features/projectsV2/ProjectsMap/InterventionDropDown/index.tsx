@@ -9,6 +9,7 @@ import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { findMatchingIntervention } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
+import { useTranslations } from 'next-intl';
 interface InterventionOptionType {
   label: string;
   value: INTERVENTION_TYPE;
@@ -32,6 +33,8 @@ const InterventionDropdown = ({
   disableInterventionMenu,
   isMobile,
 }: Props) => {
+  const tIntervention = useTranslations('ProjectDetails.intervention');
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const interventionList = useMemo(() => {
     if (!allInterventions) return [];
@@ -64,15 +67,15 @@ const InterventionDropdown = ({
               <div className={styles.labelTextContainer}>
                 {isMobile ? (
                   <label className={styles.interventionsLabel}>
-                    {truncateString(interventionData?.label, 40)}
+                    {truncateString(tIntervention(interventionData?.value), 40)}
                   </label>
                 ) : (
                   <p
                     className={styles.interventionName}
                     style={{ marginTop: '5px' }}
                   >
-                    {truncateString(interventionData?.label, 40)}
-                  </p>
+                    {truncateString(tIntervention(interventionData?.value), 40)}
+                    </p>
                 )}
               </div>
             )}

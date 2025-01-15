@@ -69,7 +69,6 @@ export type INTERVENTION_TYPE =
   | 'enrichment-planting'
   | 'other-intervention'
   | 'maintenance'
-  | 'unknown'
   | 'default'
   | 'all';
 

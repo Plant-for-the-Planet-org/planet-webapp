@@ -2,7 +2,7 @@ import type { SetState } from '../../../common/types/common';
 import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
-import OtherInterventionTitle from '../../ProjectDetails/components/OtherInterventionTitle';
+import { useTranslations } from 'next-intl';
 
 type InterventionData = {
   label: string;
@@ -21,6 +21,7 @@ const InterventionList = ({
   setIsMenuOpen,
   selectedInterventionData,
 }: InterventionListProps) => {
+  const tProjectDetails = useTranslations("ProjectDetails.intervention");
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
     setIsMenuOpen(false);
     setSelectedInterventionType(key);
@@ -39,7 +40,7 @@ const InterventionList = ({
             key={index}
           >
             <p>
-              <OtherInterventionTitle type={intervention.value} />
+             {tProjectDetails(intervention.value)}
             </p>
           </li>
         );
