@@ -130,6 +130,7 @@
     "read-more-react": "^1.0.10",
     "sass": "^1.62.1",
     "serverless-mysql": "^1.5.4",
+    "serverless-postgres": "^2.1.1",
     "slick-carousel": "^1.8.1",
     "styled-jsx": "^5.0.0",
     "supercluster": "^8.0.1",
