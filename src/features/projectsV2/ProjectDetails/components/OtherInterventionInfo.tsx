@@ -12,7 +12,6 @@ import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import ImageSlider from './microComponents/ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
-import OtherInterventionInfoHeader from './microComponents/OtherInterventionHeader';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import InterventionHeader from './microComponents/InterventionHeader';
 
@@ -152,11 +151,8 @@ const OtherInterventionInfo = ({
       <InterventionHeader
         plHid={plantLocationInfo?.hid}
         interventionType={plantLocationInfo?.type}
-        key="interventionHeader"
-      />
-      <OtherInterventionInfoHeader
-        key="interventionHeader"
         plantDate={plantLocationInfo?.interventionStartDate}
+        key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
         <ImageSlider
