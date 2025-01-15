@@ -130,7 +130,7 @@ const ProjectDetails = ({
 
   const shouldShowOtherIntervention =
     isNonPlantationType(hoveredPlantLocation) ||
-    (isNonPlantationType(selectedPlantLocation) && !isMobile);
+    isNonPlantationType(selectedPlantLocation);
 
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
@@ -184,8 +184,8 @@ const ProjectDetails = ({
               hoveredPlantLocation?.type === 'multi-tree-registration'
                 ? hoveredPlantLocation
                 : selectedPlantLocation?.type === 'multi-tree-registration'
-                ? selectedPlantLocation
-                : undefined
+                  ? selectedPlantLocation
+                  : undefined
             }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
@@ -194,15 +194,10 @@ const ProjectDetails = ({
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
-            plantLocationInfo={
-              selectedPlantLocation?.type !== 'single-tree-registration' &&
-              selectedPlantLocation?.type !== 'multi-tree-registration'
-                ? selectedPlantLocation
-                : hoveredPlantLocation?.type !== 'single-tree-registration' &&
-                  hoveredPlantLocation?.type !== 'multi-tree-registration'
-                ? hoveredPlantLocation
-                : null
-            }
+            selectedPlantLocation={selectedPlantLocation && selectedPlantLocation?.type !== 'single-tree-registration' &&
+              selectedPlantLocation?.type !== 'multi-tree-registration' ? selectedPlantLocation : null}
+            hoveredPlantLocation={hoveredPlantLocation && hoveredPlantLocation?.type !== 'single-tree-registration' &&
+              hoveredPlantLocation?.type !== 'multi-tree-registration' ? hoveredPlantLocation : null}
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
           />

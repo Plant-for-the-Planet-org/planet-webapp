@@ -100,18 +100,20 @@ const createCardData = (plantLocationInfo: OtherInterventions | null) => {
 };
 
 interface Props {
-  plantLocationInfo: OtherInterventions | null;
+  hoveredPlantLocation: OtherInterventions | null;
+  selectedPlantLocation: OtherInterventions | null;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
 
 const OtherInterventionInfo = ({
-  plantLocationInfo,
   isMobile,
   setSelectedSamplePlantLocation,
+  selectedPlantLocation,
+  hoveredPlantLocation
 }: Props) => {
+  const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
   const tProjectDetails = useTranslations('ProjectDetails');
-
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount =
       plantLocationInfo &&
