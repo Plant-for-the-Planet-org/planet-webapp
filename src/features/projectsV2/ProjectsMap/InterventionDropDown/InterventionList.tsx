@@ -14,12 +14,14 @@ interface InterventionListProps {
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
+  hasProjectSites?: boolean
 }
 const InterventionList = ({
   interventionList,
   setSelectedInterventionType,
   setIsMenuOpen,
   selectedInterventionData,
+  hasProjectSites
 }: InterventionListProps) => {
   const tProjectDetails = useTranslations("ProjectDetails.intervention");
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
@@ -28,19 +30,19 @@ const InterventionList = ({
   };
 
   return (
-    <ul className={styles.interventionListOptions}>
+    <ul className={`${styles.interventionListOptions} ${!hasProjectSites ? styles.interventionListOptionsAbove : styles.interventionListOptionsBelow}`}>
       {interventionList.map((intervention, index) => {
         return (
           <li
             className={`${styles.listItem} ${intervention.value === selectedInterventionData?.value
-                ? styles.selectedItem
-                : ''
+              ? styles.selectedItem
+              : ''
               }`}
             onClick={() => handleFilterSelection(intervention.value)}
             key={index}
           >
             <p>
-             {tProjectDetails(intervention.value)}
+              {tProjectDetails(intervention.value)}
             </p>
           </li>
         );

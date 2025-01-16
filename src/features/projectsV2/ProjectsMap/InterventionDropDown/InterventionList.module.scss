@@ -15,9 +15,17 @@ $layoutPaddingSide: 20px;
   gap: 18px;
   position: absolute;
   z-index: 2;
-  top: calc($layoutPaddingTop + 70px);
   right: calc($layoutPaddingSide + 10px);
 }
+
+.dropdownButtonAlignmentAbove {
+  top: calc($layoutPaddingSide + 75px);
+}
+
+.dropdownButtonAlignmentBelow {
+  top: calc($layoutPaddingSide + 10px);
+}
+
 .interventionIconAndTextContainer {
   display: flex;
   gap: 6px;
@@ -62,8 +70,7 @@ $layoutPaddingSide: 20px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-  top: 140px;
-  right: 30px;
+    right: 30px;
   max-height: 42vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -75,6 +82,15 @@ $layoutPaddingSide: 20px;
     width: 100%;
   }
 }
+
+.interventionListOptionsAbove {
+  top: calc($layoutPaddingTop + 55px);
+}
+
+.interventionListOptionsBelow {
+  top: calc($layoutPaddingTop + 116px);
+}
+
 .listItem {
   display: flex;
   justify-content: space-between;
