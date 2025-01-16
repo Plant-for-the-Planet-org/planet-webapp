@@ -12,7 +12,6 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import FirePopup from '../FirePopup';
 
 export default function FireLocations(): ReactElement {
-  console.log('is this?', process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT);
   const { query } = useRouter();
 
   const { site } = query;
@@ -26,7 +25,7 @@ export default function FireLocations(): ReactElement {
       try {
         const qs = new URLSearchParams();
         qs.append('remoteId', site as string);
-        qs.append('span', '1y');
+        // qs.append('span', '1y'); // This will be needed later while making multiple options
         const fireAlertApiUrl =
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
           'https://fa.pp.eco/api/v1';
