@@ -8,6 +8,7 @@ import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoI
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import FirePopupIcon from '../../../../../public/assets/images/icons/FirePopupIcon';
 import styles from './FirePopup.module.scss';
+import { getDeviceType } from '../../../../utils/projectV2';
 
 interface Props {
   isOpen: boolean;
@@ -51,13 +52,10 @@ export default function FirePopup({ isOpen, feature }: Props) {
 
   const firealertAppLink = useMemo(() => {
     let link = 'https://www.plant-for-the-planet.org/firealert/';
-    if (typeof navigator !== 'undefined' && navigator.userAgent) {
-      const ua = navigator.userAgent.toLowerCase();
-      if (ua.includes('android')) {
-        link = 'https://play.google.com/store/apps/details?id=eco.pp.firealert';
-      } else if (ua.includes('iphone')) {
-        link = 'https://apps.apple.com/app/fire-alert-for-forests/id1667307676';
-      }
+    if (getDeviceType() === 'android') {
+      link = 'https://play.google.com/store/apps/details?id=eco.pp.firealert';
+    } else if (getDeviceType() === 'ios') {
+      link = 'https://apps.apple.com/app/fire-alert-for-forests/id1667307676';
     }
     return link;
   }, []);
@@ -113,13 +111,9 @@ export default function FirePopup({ isOpen, feature }: Props) {
               {feature.geometry.coordinates[1]}
             </p>
             <p>
-              {tProjectDetails.rich(
-                alertConfidence as
-                  | 'highAlertConfidenceText'
-                  | 'mediumAlertConfidenceText'
-                  | 'lowAlertConfidenceText',
-                { important: (chunks) => <span>{chunks}</span> }
-              )}
+              {tProjectDetails.rich(alertConfidence, {
+                important: (chunks) => <span>{chunks}</span>,
+              })}
             </p>
             <a
               className={styles.setUpAlertsContainer}

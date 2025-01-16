@@ -283,6 +283,10 @@ export const getDeviceType = (): MobileOs => {
   return undefined;
 };
 
+/**
+ * Checks if the "Firealert Fires" feature is enabled via env variable or query string.
+ * @returns boolean, Wheather this feature is enabled or not
+ */
 export function isFirealertFiresEnabled() {
   const isEnvVariableEnabled =
     process.env.NEXT_PUBLIC_ENABLE_FIREALERT_FIRES?.trim().toLowerCase() ===

@@ -25,7 +25,7 @@ export default function FireLocations(): ReactElement {
       try {
         const qs = new URLSearchParams();
         qs.append('remoteId', site as string);
-        // qs.append('span', '1y'); // This will be needed later while making multiple options
+        qs.append('span', '30d');
         const fireAlertApiUrl =
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
           'https://fa.pp.eco/api/v1';
