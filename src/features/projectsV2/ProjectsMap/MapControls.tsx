@@ -3,6 +3,7 @@ import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 
 import ProjectSiteDropdown from './ProjectSiteDropDown';
+import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { useProjectsMap } from '../ProjectsMapContext';
 import { useProjects } from '../ProjectsContext';
@@ -10,6 +11,7 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
+import { AllInterventions } from '../../../utils/constants/intervention';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -45,8 +47,11 @@ const MapControls = ({
     selectedSamplePlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
+    selectedInterventionType,
+    setSelectedInterventionType,
+    disableInterventionMenu,
+    setDisableInterventionMenu,
   } = useProjects();
-
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
@@ -56,6 +61,13 @@ const MapControls = ({
   );
   const isProjectDetailsPage = page === 'project-details';
 
+  const enableInterventionFilter = () => {
+    setDisableInterventionMenu(true);
+  };
+  const disableInterventionFilter = () => {
+    setDisableInterventionMenu(false);
+  };
+
   const siteDropdownProps = {
     selectedSite,
     setSelectedSite,
@@ -63,6 +75,19 @@ const MapControls = ({
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
+    disableInterventionFilter,
+    disableInterventionMenu,
+  };
+
+  const interventionDropDownProps = {
+    selectedInterventionType,
+    setSelectedInterventionType,
+    allInterventions: AllInterventions,
+    selectedPlantLocation,
+    setSelectedPlantLocation,
+    setSelectedSamplePlantLocation,
+    enableInterventionFilter,
+    disableInterventionMenu,
   };
   const projectListControlProps = {
     ...siteDropdownProps,
@@ -108,7 +133,13 @@ const MapControls = ({
           {isMobile ? (
             <div className={styles.projectDetailsControlsContainer}>
               {hasProjectSites && (
-                <ProjectSiteDropdown {...siteDropdownProps} />
+                <>
+                  <ProjectSiteDropdown {...siteDropdownProps} />
+                  <InterventionDropDown
+                    {...interventionDropDownProps}
+                    isMobile={isMobile}
+                  />
+                </>
               )}
               <button
                 className={styles.exitMapModeButton}
@@ -120,7 +151,10 @@ const MapControls = ({
           ) : (
             <>
               {hasProjectSites && (
-                <ProjectSiteDropdown {...siteDropdownProps} />
+                <>
+                  <ProjectSiteDropdown {...siteDropdownProps} />
+                  <InterventionDropDown {...interventionDropDownProps} />
+                </>
               )}
             </>
           )}

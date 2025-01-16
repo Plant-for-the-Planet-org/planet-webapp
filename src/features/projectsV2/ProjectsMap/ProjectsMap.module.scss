@@ -11,10 +11,12 @@
   display: flex;
   position: absolute;
   align-items: center;
-  gap: 34px;
+  justify-content: flex-end;
   top: 101px;
+  gap: 2vw;
   right: 10px;
   z-index: 2px;
+  width: 85%;
 
   > .exitMapModeButton {
     z-index: 2;
