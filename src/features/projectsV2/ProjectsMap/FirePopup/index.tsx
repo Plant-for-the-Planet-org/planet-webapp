@@ -29,11 +29,11 @@ export default function FirePopup({ isOpen, feature }: Props) {
 
     const hours = Math.round(ms / (1000 * 60 * 60));
     if (hours < 24) {
-      return `${hours}h`; // Less than 24 hours
+      return { amount: `${hours}`, unit: 'h' }; // Less than 24 hours
     }
 
     const days = Math.round(hours / 24); // Calculate days
-    return `${days}d`; // 24 hours or more
+    return { amount: `${days}`, unit: 'd' }; // 24 hours or more
   }, [feature.properties.eventDate]);
 
   const alertConfidence = useMemo(() => {
@@ -93,9 +93,13 @@ export default function FirePopup({ isOpen, feature }: Props) {
               <FirePopupIcon width={18} /> {tProjectDetails('forestFire')}
             </h2>
             <p className={styles.timeDuration}>
-              {tProjectDetails('ageAgo', {
-                age: alertAge,
-              })}
+              {alertAge.unit === 'h'
+                ? tProjectDetails('hoursAgo', {
+                    age: alertAge.amount,
+                  })
+                : tProjectDetails('daysAgo', {
+                    age: alertAge.amount,
+                  })}
               <InfoIconPopup width={9} height={9} color={'#828282'}>
                 <div className={styles.infoIconPopupContainer}>
                   {tProjectDetails('firePopupText')}
