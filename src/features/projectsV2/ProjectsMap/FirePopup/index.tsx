@@ -22,12 +22,19 @@ export default function FirePopup({ isOpen, feature }: Props) {
   const [showPopup, setShowPopup] = React.useState(isOpen);
   const tProjectDetails = useTranslations('ProjectDetails');
 
-  const hourseAgo = useMemo(() => {
+  const alertAge = useMemo(() => {
     const ms = Math.abs(
       new Date().getTime() - new Date(feature.properties.eventDate).getTime()
     );
-    return Math.round(ms / (1000 * 60 * 60));
-  }, []);
+
+    const hours = Math.round(ms / (1000 * 60 * 60));
+    if (hours < 24) {
+      return `${hours}h`; // Less than 24 hours
+    }
+
+    const days = Math.round(hours / 24); // Calculate days
+    return `${days}d`; // 24 hours or more
+  }, [feature.properties.eventDate]);
 
   const alertConfidence = useMemo(() => {
     switch (feature.properties.confidence) {
@@ -38,9 +45,9 @@ export default function FirePopup({ isOpen, feature }: Props) {
       case 'low':
         return 'lowAlertConfidenceText';
       default:
-        return 'defaultAlertConfidenceText';
+        return 'mediumAlertConfidenceText';
     }
-  }, []);
+  }, [feature.properties.confidence]);
 
   const firealertAppLink = useMemo(() => {
     let link = 'https://www.plant-for-the-planet.org/firealert/';
@@ -86,8 +93,8 @@ export default function FirePopup({ isOpen, feature }: Props) {
               <FirePopupIcon width={18} /> {tProjectDetails('forestFire')}
             </h2>
             <p className={styles.timeDuration}>
-              {tProjectDetails('hoursAgo', {
-                hours: hourseAgo,
+              {tProjectDetails('ageAgo', {
+                age: alertAge,
               })}
               <InfoIconPopup width={9} height={9} color={'#828282'}>
                 <div className={styles.infoIconPopupContainer}>
@@ -102,9 +109,13 @@ export default function FirePopup({ isOpen, feature }: Props) {
               {feature.geometry.coordinates[1]}
             </p>
             <p>
-              {tProjectDetails.rich(alertConfidence as any, {
-                important: (chunks) => <span>{chunks}</span>,
-              })}
+              {tProjectDetails.rich(
+                alertConfidence as
+                  | 'highAlertConfidenceText'
+                  | 'mediumAlertConfidenceText'
+                  | 'lowAlertConfidenceText',
+                { important: (chunks) => <span>{chunks}</span> }
+              )}
             </p>
             <a
               className={styles.setUpAlertsContainer}

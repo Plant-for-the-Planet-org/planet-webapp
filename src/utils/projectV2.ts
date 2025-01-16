@@ -282,3 +282,15 @@ export const getDeviceType = (): MobileOs => {
   if (/iPad|iPhone|iPod/.test(userAgent)) return 'ios';
   return undefined;
 };
+
+export function isFirealertFiresEnabled() {
+  const isEnvVariableEnabled =
+    process.env.NEXT_PUBLIC_ENABLE_FIREALERT_FIRES?.trim().toLowerCase() ===
+    'true';
+  const isQueryStringEnabled =
+    new URLSearchParams(window.location.search)
+      .get('fa-fires')
+      ?.toLowerCase() === 'true';
+
+  return isEnvVariableEnabled || isQueryStringEnabled;
+}

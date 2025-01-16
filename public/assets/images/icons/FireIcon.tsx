@@ -2,12 +2,11 @@ import type { IconProps } from '../../../../src/features/common/types/common';
 
 import React from 'react';
 
-const FireIcon = ({ width, height }: IconProps) => {
+const FireIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width}
-      height={height}
       viewBox="7 1 22 28"
       fill="none"
     >

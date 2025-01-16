@@ -12,9 +12,8 @@ import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonP
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
 import FireLocations from './microComponents/FireLocations';
-import FeatureFlag, {
-  isFirealertFiresEnabled,
-} from './microComponents/FeatureFlag';
+import FeatureFlag from './microComponents/FeatureFlag';
+import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
