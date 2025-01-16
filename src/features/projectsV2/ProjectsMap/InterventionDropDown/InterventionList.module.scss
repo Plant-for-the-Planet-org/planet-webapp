@@ -15,10 +15,10 @@ $layoutPaddingSide: 20px;
   gap: 18px;
   position: absolute;
   z-index: 2;
-  top: calc($layoutPaddingTop + 10px);
+  top: calc($layoutPaddingTop + 70px);
   right: calc($layoutPaddingSide + 10px);
 }
-.siteIconAndTextContainer {
+.interventionIconAndTextContainer {
   display: flex;
   gap: 6px;
 }
@@ -26,7 +26,7 @@ $layoutPaddingSide: 20px;
   display: flex;
   flex-direction: column;
 }
-.sitesLabel {
+.interventionsLabel {
   font-size: $fontXXXSmallNew;
   color: $nonDonatableProjectBackgroundColor;
   font-weight: 600;
@@ -35,10 +35,10 @@ $layoutPaddingSide: 20px;
   }
 }
 
-.siteId {
+.interventionId {
   text-transform: uppercase;
 }
-.siteName {
+.interventionName {
   text-transform: capitalize;
   font-size: $fontXSmall;
   font-weight: 700;
@@ -53,7 +53,7 @@ $layoutPaddingSide: 20px;
     overflow: visible;
   }
 }
-.siteListOptions {
+.interventionListOptions {
   background-color: $backgroundColor;
   padding: 6px 17px;
   border-radius: 12px;
@@ -62,9 +62,9 @@ $layoutPaddingSide: 20px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-  top: 84px;
+  top: 140px;
   right: 30px;
-  max-height: 58vh;
+  max-height: 42vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -104,7 +104,7 @@ $layoutPaddingSide: 20px;
 }
 
 @include xsPhoneView {
-  .siteIconAndTextContainer {
+  .interventionIconAndTextContainer {
     > svg {
       width: 16px;
     }
@@ -119,30 +119,30 @@ $layoutPaddingSide: 20px;
   .dropdownButton {
     border-radius: 10px;
     min-width: 93px;
-    padding: 7px;
+    padding: 5px;
     position: unset;
   }
   .labelTextContainer {
     justify-content: center;
-    .sitesLabel {
+    .interventionsLabel {
       display: flex;
       flex-direction: column;
-      .siteId {
+      .interventionId {
         text-transform: none;
       }
       .separator {
         display: none;
       }
     }
-    .siteName {
+    .interventionName {
       display: none;
     }
   }
-  .siteListOptions {
+  .interventionListOptions {
     max-width: 140px;
     padding: 8px 12px;
     top: 36px;
-    right: 40%;
+    right: 0px;
     min-width: 160px;
     .listItem {
       display: flex;
@@ -151,7 +151,7 @@ $layoutPaddingSide: 20px;
       font-size: $fontXXXSmallNew;
       padding: 4px 0;
       color: #333; //to be replaced
-      .siteArea {
+      .interventionArea {
         font-size: $fontXXSmall;
       }
     }

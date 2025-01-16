@@ -23,6 +23,8 @@ import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
+import OtherInterventionInfo from './components/OtherInterventionInfo';
+import { isNonPlantationType } from '../../../utils/constants/intervention';
 
 const ProjectDetails = ({
   currencyCode,
@@ -125,11 +127,17 @@ const ProjectDetails = ({
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
+
+  const shouldShowOtherIntervention =
+    isNonPlantationType(hoveredPlantLocation) ||
+    isNonPlantationType(selectedPlantLocation);
+
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||
       selectedSamplePlantLocation !== null) &&
     !isMobile;
+
   const shouldShowProjectInfo =
     hoveredPlantLocation === null &&
     selectedPlantLocation === null &&
@@ -176,13 +184,25 @@ const ProjectDetails = ({
               hoveredPlantLocation?.type === 'multi-tree-registration'
                 ? hoveredPlantLocation
                 : selectedPlantLocation?.type === 'multi-tree-registration'
-                ? selectedPlantLocation
-                : undefined
+                  ? selectedPlantLocation
+                  : undefined
             }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
           />
         )}
+
+        {shouldShowOtherIntervention ? (
+          <OtherInterventionInfo
+            selectedPlantLocation={selectedPlantLocation && selectedPlantLocation?.type !== 'single-tree-registration' &&
+              selectedPlantLocation?.type !== 'multi-tree-registration' ? selectedPlantLocation : null}
+            hoveredPlantLocation={hoveredPlantLocation && hoveredPlantLocation?.type !== 'single-tree-registration' &&
+              hoveredPlantLocation?.type !== 'multi-tree-registration' ? hoveredPlantLocation : null}
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+            isMobile={isMobile}
+          />
+        ) : null}
+
         {shouldShowProjectInfo && (
           <ProjectInfo
             project={singleProject}

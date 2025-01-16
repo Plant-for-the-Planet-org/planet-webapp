@@ -67,6 +67,28 @@
     "yearAbandonedInfo": "When was the last significant human intervention in the site? Incl. logging, agriculture, cattle grazing, human induced burning.",
     "treePerHa": "trees per ha",
     "employees": "Employees",
-    "degradationYear": "Degradation Year"
+    "degradationYear": "Degradation Year",
+    "intervention": {
+      "interventionDate": "Intervention Date",
+      "all": "All Interventions",
+      "default": "Single/Multi Tree Planting",
+      "single-tree-registration": "Single Tree Planting",
+      "multi-tree-registration": "Multi Tree Planting",
+      "fire-patrol": "Fire Patrol",
+      "fire-suppression": "Fire Suppression Team",
+      "firebreaks": "Establish Fire Breaks",
+      "fencing": "Fencing",
+      "removal-invasive-species": "Removal of Invasive Species",
+      "direct-seeding": "Direct Seeding",
+      "grass-suppression": "Grass Suppression",
+      "marking-regenerant": "Marking Regenerants",
+      "enrichment-planting": "Enrichment Planting",
+      "liberating-regenerant": "Liberating Regenerants",
+      "soil-improvement": "Soil Improvement",
+      "assisting-seed-rain": "Assisting Seed Rain",
+      "stop-tree-harvesting": "Stop Tree Harvesting",
+      "maintenance": "Maintenance",
+      "other-intervention": "Other Interventions"
+    }
   }
 }
