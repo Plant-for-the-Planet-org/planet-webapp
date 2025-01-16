@@ -1,4 +1,5 @@
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -78,13 +79,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          tenantConfig?.id,
-          `/app/redeem`,
-          submitData,
+        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+          tenant: tenantConfig?.id,
+          url: `/app/redeem`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
@@ -195,18 +196,19 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   );
 };
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        code: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          code: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

@@ -6,6 +6,7 @@ import type {
 } from '../../../../src/features/common/types/leaderboard';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -49,10 +50,10 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const newLeaderboard = await getRequest<LeaderBoardList>(
-          pageProps.tenantConfig.id,
-          `/app/leaderboard/${pageProps.tenantConfig.id}`
-        );
+        const newLeaderboard = await getRequest<LeaderBoardList>({
+          tenant: pageProps.tenantConfig.id,
+          url: `/app/leaderboard/${pageProps.tenantConfig.id}`,
+        });
         setLeaderboard(newLeaderboard);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -68,10 +69,10 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
-        const newTenantScore = await getRequest<TenantScore>(
-          pageProps.tenantConfig.id,
-          `/app/tenantScore/${pageProps.tenantConfig.id}`
-        );
+        const newTenantScore = await getRequest<TenantScore>({
+          tenant: pageProps.tenantConfig.id,
+          url: `/app/tenantScore/${pageProps.tenantConfig.id}`,
+        });
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -87,10 +88,10 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadTreesDonated() {
       try {
-        const newTreesDonated = await getRequest<TreesDonated>(
-          pageProps.tenantConfig.id,
-          `${process.env.WEBHOOK_URL}/platform/total-tree-count`
-        );
+        const newTreesDonated = await getRequest<TreesDonated>({
+          tenant: pageProps.tenantConfig.id,
+          url: `${process.env.WEBHOOK_URL}/platform/total-tree-count`,
+        });
         setTreesDonated(newTreesDonated);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -136,17 +137,18 @@ export default function Home({ pageProps }: Props) {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

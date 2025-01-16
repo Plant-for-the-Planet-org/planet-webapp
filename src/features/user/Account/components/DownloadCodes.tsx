@@ -41,7 +41,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         type: string;
         numberOfItems: number;
         items: [];
-      }>(tenantConfig?.id, codesUrl);
+      }>({ tenant: tenantConfig?.id, url: codesUrl });
       if (response) {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');

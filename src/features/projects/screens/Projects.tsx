@@ -175,10 +175,10 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getRequest<Tenant>(
-          tenantConfig.id,
-          `/app/tenants/${tenantConfig.id}`
-        );
+        const res = await getRequest<Tenant>({
+          tenant: tenantConfig.id,
+          url: `/app/tenants/${tenantConfig.id}`,
+        });
         setShouldSortProjectList(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));

@@ -95,13 +95,13 @@ export default function ProjectSpending({
     };
 
     try {
-      const res = await postAuthenticatedRequest<ProjectExpense>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/expenses`,
-        submitData,
+      const res = await postAuthenticatedRequest<ProjectExpense>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/expenses`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const newUploadedFiles = uploadedFiles;
       newUploadedFiles.push(res);
       setUploadedFiles(newUploadedFiles);
@@ -152,12 +152,12 @@ export default function ProjectSpending({
   const deleteProjectSpending = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/expenses/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/expenses/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
       setIsUploadingData(false);
@@ -171,12 +171,12 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ExpensesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=expenses`,
+        const result = await getAuthenticatedRequest<ExpensesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }

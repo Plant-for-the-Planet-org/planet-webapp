@@ -28,12 +28,12 @@ export default function DeleteProfileForm() {
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        '/app/profile',
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: '/app/profile',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setIsUploadingData(false);
       logoutUser(`${window.location.origin}/`);
     } catch (err) {

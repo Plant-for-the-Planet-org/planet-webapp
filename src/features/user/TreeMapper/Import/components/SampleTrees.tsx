@@ -143,13 +143,13 @@ export default function SampleTrees({
     setUploadStatus(newStatus);
 
     try {
-      const res: SampleTree = await postAuthenticatedRequest(
-        tenantConfig?.id,
-        `/treemapper/interventions`,
-        sampleTree,
+      const res: SampleTree = await postAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/treemapper/interventions`,
+        data: sampleTree,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;
       setSampleTrees(newSampleTrees);

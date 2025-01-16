@@ -27,10 +27,12 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
     isContributionsLoaded,
     isProjectsListLoaded,
     isLeaderboardLoaded,
+    setIsPublicProfile,
   } = useMyForest();
 
   useEffect(() => {
     if (profile) {
+      setIsPublicProfile(true);
       const _userInfo = {
         profileId: profile.id,
         slug: profile.slug,

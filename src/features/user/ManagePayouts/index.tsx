@@ -52,10 +52,10 @@ export default function ManagePayouts({
   const fetchPayoutMinAmounts = useCallback(async () => {
     if (!payoutMinAmounts) {
       try {
-        const res = await getRequest<PayoutMinAmounts>(
-          tenantConfig?.id,
-          '/app/payoutMinAmounts'
-        );
+        const res = await getRequest<PayoutMinAmounts>({
+          tenant: tenantConfig?.id,
+          url: '/app/payoutMinAmounts',
+        });
         setPayoutMinAmounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -72,12 +72,12 @@ export default function ManagePayouts({
       setIsDataLoading(true);
       setProgress && setProgress(70);
       try {
-        const res = await getAuthenticatedRequest<BankAccount[]>(
-          tenantConfig?.id,
-          `/app/accounts`,
+        const res = await getAuthenticatedRequest<BankAccount[]>({
+          tenant: tenantConfig?.id,
+          url: `/app/accounts`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setAccounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));

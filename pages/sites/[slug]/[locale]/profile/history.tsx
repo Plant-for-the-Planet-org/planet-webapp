@@ -19,6 +19,7 @@ import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -65,16 +66,18 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     if (next && paymentHistory?._links?.next) {
       try {
         const newPaymentHistory = await getAuthenticatedRequest<PaymentHistory>(
-          tenantConfig?.id,
-          `${
-            filter && accountingFilters
-              ? accountingFilters[filter] +
-                '&' +
-                paymentHistory?._links?.next.split('?').pop()
-              : paymentHistory?._links?.next
-          }`,
-          token,
-          logoutUser
+          {
+            tenant: tenantConfig.id,
+            url: `${
+              filter && accountingFilters
+                ? accountingFilters[filter] +
+                  '&' +
+                  paymentHistory?._links?.next.split('?').pop()
+                : paymentHistory?._links?.next
+            }`,
+            token,
+            logoutUser,
+          }
         );
         setPaymentHistory({
           ...paymentHistory,
@@ -91,12 +94,12 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     } else {
       if (filter === null) {
         try {
-          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>(
-            tenantConfig?.id,
-            '/app/paymentHistory?limit=15',
+          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>({
+            tenant: tenantConfig?.id,
+            url: '/app/paymentHistory?limit=15',
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
           setPaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
@@ -108,16 +111,16 @@ function AccountHistory({ pageProps }: Props): ReactElement {
         }
       } else {
         try {
-          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>(
-            tenantConfig?.id,
-            `${
+          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>({
+            tenant: tenantConfig?.id,
+            url: `${
               filter && accountingFilters
                 ? accountingFilters[filter] + '&limit=15'
                 : '/app/paymentHistory?limit=15'
             }`,
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
           setPaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
@@ -177,17 +180,18 @@ function AccountHistory({ pageProps }: Props): ReactElement {
 
 export default AccountHistory;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

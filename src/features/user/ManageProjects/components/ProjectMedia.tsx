@@ -63,12 +63,12 @@ export default function ProjectMedia({
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ImagesScopeProjects>(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}?_scope=images`,
+        const result = await getAuthenticatedRequest<ImagesScopeProjects>({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setUploadedImages(result.images);
       }
     } catch (err) {
@@ -91,13 +91,13 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await postAuthenticatedRequest<UploadImage>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images`,
-        submitData,
+      const res = await postAuthenticatedRequest<UploadImage>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       let newUploadedImages = [...uploadedImages];
 
       if (!newUploadedImages) {
@@ -148,12 +148,12 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images/${id}`,
+      await deleteAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images/${id}`,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
       setUploadedImages(uploadedFilesTemp);
     } catch (err) {
@@ -172,13 +172,13 @@ export default function ProjectMedia({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
@@ -196,13 +196,13 @@ export default function ProjectMedia({
     };
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images/${id}`,
-        submitData,
+      await putAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images/${id}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const tempUploadedData = uploadedImages;
       tempUploadedData.forEach((image) => {
         image.isDefault = false;
@@ -228,13 +228,13 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest<UploadImage>(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}/images/${id}`,
-        submitData,
+      const res = await putAuthenticatedRequest<UploadImage>({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}/images/${id}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       const tempUploadedData = uploadedImages;
       tempUploadedData[index].description = res.description;
       setUploadedImages(tempUploadedData);
