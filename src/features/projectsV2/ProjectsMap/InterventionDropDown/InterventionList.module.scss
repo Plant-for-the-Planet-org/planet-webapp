@@ -19,11 +19,11 @@ $layoutPaddingSide: 20px;
 }
 
 .dropdownButtonAlignmentAbove {
-  top: calc($layoutPaddingSide + 75px);
+  top: calc($layoutPaddingTop + 75px);
 }
 
 .dropdownButtonAlignmentBelow {
-  top: calc($layoutPaddingSide + 10px);
+  top: calc($layoutPaddingTop + 10px);
 }
 
 .interventionIconAndTextContainer {
@@ -84,11 +84,11 @@ $layoutPaddingSide: 20px;
 }
 
 .interventionListOptionsAbove {
-  top: calc($layoutPaddingTop + 55px);
+  top: calc($layoutPaddingTop + 60px);
 }
 
 .interventionListOptionsBelow {
-  top: calc($layoutPaddingTop + 116px);
+  top: calc($layoutPaddingTop + 124px);
 }
 
 .listItem {
