@@ -23,6 +23,7 @@ interface Props {
   isMobile?: boolean;
   enableInterventionFilter: () => void;
   disableInterventionMenu: boolean;
+  hasProjectSites?: boolean
 }
 
 const InterventionDropdown = ({
@@ -32,9 +33,10 @@ const InterventionDropdown = ({
   enableInterventionFilter,
   disableInterventionMenu,
   isMobile,
+  hasProjectSites
 }: Props) => {
   const tIntervention = useTranslations('ProjectDetails.intervention');
-  
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const interventionList = useMemo(() => {
     if (!allInterventions) return [];
@@ -59,7 +61,7 @@ const InterventionDropdown = ({
   };
   return (
     <>
-      <div className={styles.dropdownButton} onClick={toggleMenu}>
+      <div className={`${styles.dropdownButton} ${hasProjectSites ? styles.dropdownButtonAlignmentAbove : styles.dropdownButtonAlignmentBelow}`} onClick={toggleMenu}>
         <div className={styles.interventionIconAndTextContainer}>
           <InterventionIcon />
           <>
@@ -75,7 +77,7 @@ const InterventionDropdown = ({
                     style={{ marginTop: '5px' }}
                   >
                     {truncateString(tIntervention(interventionData?.value), 40)}
-                    </p>
+                  </p>
                 )}
               </div>
             )}
@@ -95,6 +97,7 @@ const InterventionDropdown = ({
           setSelectedInterventionType={setSelectedInterventionType}
           setIsMenuOpen={setIsMenuOpen}
           selectedInterventionData={interventionData}
+          hasProjectSites={hasProjectSites}
         />
       )}
     </>

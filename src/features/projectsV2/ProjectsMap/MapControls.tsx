@@ -113,13 +113,12 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${
-    isMobile
-      ? mobileOS === 'android'
-        ? styles.layerToggleAndroid
-        : styles.layerToggleIos
-      : styles.layerToggleDesktop
-  }`;
+  const layerToggleClass = `${styles.layerToggle} ${isMobile
+    ? mobileOS === 'android'
+      ? styles.layerToggleAndroid
+      : styles.layerToggleIos
+    : styles.layerToggleDesktop
+    }`;
 
   return (
     <>
@@ -132,15 +131,14 @@ const MapControls = ({
         <>
           {isMobile ? (
             <div className={styles.projectDetailsControlsContainer}>
-              {hasProjectSites && (
-                <>
-                  <ProjectSiteDropdown {...siteDropdownProps} />
-                  <InterventionDropDown
-                    {...interventionDropDownProps}
-                    isMobile={isMobile}
-                  />
-                </>
-              )}
+              {hasProjectSites &&
+                <ProjectSiteDropdown {...siteDropdownProps} />
+              }
+              <InterventionDropDown
+                {...interventionDropDownProps}
+                isMobile={isMobile}
+                hasProjectSites={hasProjectSites}
+              />
               <button
                 className={styles.exitMapModeButton}
                 onClick={exitMapMode}
@@ -150,12 +148,9 @@ const MapControls = ({
             </div>
           ) : (
             <>
-              {hasProjectSites && (
-                <>
-                  <ProjectSiteDropdown {...siteDropdownProps} />
-                  <InterventionDropDown {...interventionDropDownProps} />
-                </>
-              )}
+              {hasProjectSites && <ProjectSiteDropdown {...siteDropdownProps} />}
+              <InterventionDropDown {...interventionDropDownProps} hasProjectSites={hasProjectSites}
+              />
             </>
           )}
           {canShowSatelliteToggle && (
