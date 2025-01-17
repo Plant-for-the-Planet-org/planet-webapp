@@ -19,6 +19,9 @@ interface Props {
   setEmbedModalOpen: Function;
 }
 
+type SubmitData = {
+  isPrivate: boolean;
+};
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
@@ -56,12 +59,12 @@ export default function EmbedModal({
 
   const saveProfile = async () => {
     setIsUploadingData(true);
-    const bodyToSend = {
+    const bodyToSend: SubmitData = {
       isPrivate: false,
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest<User>({
+        const res = await putAuthenticatedRequest<User, SubmitData>({
           tenant: tenantConfig?.id,
           url: `/app/profile`,
           data: bodyToSend,

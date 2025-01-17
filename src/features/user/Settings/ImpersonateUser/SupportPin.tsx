@@ -21,7 +21,7 @@ const SupportPin = () => {
         token,
         logoutUser,
       });
-      if (response) {
+      if (response && user) {
         const updateUserData = { ...user };
         updateUserData['supportPin'] = response?.supportPin;
         setUser(updateUserData);

@@ -23,6 +23,10 @@ interface Props {
   setAddressAction: SetState<AddressAction | null>;
 }
 
+type SubmitData = {
+  type: 'primary' | 'mailing';
+};
+
 const UpdateAddressType = ({
   addressType,
   setIsModalOpen,
@@ -41,11 +45,11 @@ const UpdateAddressType = ({
   const updateAddress = async (addressType: 'primary' | 'mailing') => {
     if (!contextLoaded || !user || !token) return;
     setIsUploadingData(true);
-    const bodyToSend = {
+    const bodyToSend: SubmitData = {
       type: addressType,
     };
     try {
-      const res = await putAuthenticatedRequest<Address>({
+      const res = await putAuthenticatedRequest<Address, SubmitData>({
         tenant: tenantConfig.id,
         url: `/app/addresses/${selectedAddressForAction.id}`,
         data: bodyToSend,

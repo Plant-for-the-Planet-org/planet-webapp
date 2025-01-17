@@ -1,6 +1,11 @@
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
-import type { Address, APIError } from '@planet-sdk/common';
+import type {
+  Address,
+  AddressType,
+  APIError,
+  CountryCode,
+} from '@planet-sdk/common';
 import type { FormData } from './AddAddress';
 import type { AddressAction } from '../../../../common/types/profile';
 
@@ -20,6 +25,11 @@ interface Props {
   updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
 }
+
+type SubmitData = FormData & {
+  country: CountryCode | string;
+  type: AddressType;
+};
 
 const EditAddress = ({
   setIsModalOpen,
@@ -48,13 +58,13 @@ const EditAddress = ({
     async (data: FormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
-      const bodyToSend = {
+      const bodyToSend: SubmitData = {
         ...data,
         country,
         type: selectedAddressForAction?.type,
       };
       try {
-        const res = await putAuthenticatedRequest<Address>({
+        const res = await putAuthenticatedRequest<Address, SubmitData>({
           tenant: tenantConfig.id,
           url: `/app/addresses/${selectedAddressForAction?.id}`,
           data: bodyToSend,

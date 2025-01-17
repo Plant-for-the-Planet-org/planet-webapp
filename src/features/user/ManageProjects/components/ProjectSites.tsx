@@ -59,6 +59,12 @@ const Map = dynamic(() => import('./MapComponent'), {
   loading: () => <p></p>,
 });
 
+type SubmitData = {
+  name: string;
+  geometry: GeoJson<Geometry, GeoJsonProperties>;
+  status: string;
+};
+
 function EditSite({
   openModal,
   handleModalClose,
@@ -102,14 +108,14 @@ function EditSite({
   const editProjectSite = async (data: ProjectSitesFormData) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
-      const submitData = {
+      const submitData: SubmitData = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
       try {
-        const res = await putAuthenticatedRequest<Site>({
+        const res = await putAuthenticatedRequest<Site, SubmitData>({
           tenant: tenantConfig?.id,
           url: `/app/projects/${projectGUID}/sites/${siteGUID}`,
           data: submitData,
@@ -261,12 +267,6 @@ interface ProjectSitesFormData {
   name: string;
   status: string;
 }
-
-type SubmitData = {
-  name: string;
-  geometry: GeoJson<Geometry, GeoJsonProperties>;
-  status: string;
-};
 
 export default function ProjectSites({
   handleBack,
