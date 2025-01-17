@@ -9,6 +9,8 @@ interface DatabaseConfig {
   user?: string;
   password?: string;
   debug?: boolean;
+  ssl: { rejectUnauthorized: boolean };
+  maxConnections?: number;
 }
 
 interface Field {
@@ -46,6 +48,8 @@ const config: DatabaseConfig = {
   user,
   password,
   debug: process.env.NODE_ENV === 'development',
+  ssl: { rejectUnauthorized: false },
+  maxConnections: 20,
 };
 
 const db = new postgres(config);
