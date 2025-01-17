@@ -41,8 +41,8 @@ interface PutAuthRequestOptions<D> extends BaseRequestOptions {
   data?: D;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PostRequestOptions extends BaseRequestOptions {
-  data: any;
+interface PostRequestOptions<D> extends BaseRequestOptions {
+  data: D;
 }
 interface GetRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
@@ -221,7 +221,11 @@ export function postAuthenticatedRequest<T, D = unknown>({
   });
 }
 
-export function postRequest<T>({ tenant, url, data }: PostRequestOptions) {
+export function postRequest<T, D = unknown>({
+  tenant,
+  url,
+  data,
+}: PostRequestOptions<D>) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {

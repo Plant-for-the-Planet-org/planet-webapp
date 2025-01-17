@@ -178,7 +178,7 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest<User>({
+      const res = await postRequest<User, CreateUserRequest>({
         tenant: tenantConfig?.id,
         url: `/app/profile`,
         data: bodyToSend,
