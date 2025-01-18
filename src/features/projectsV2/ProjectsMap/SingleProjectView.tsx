@@ -107,6 +107,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
     requestedSite,
   ]);
 
+  // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
     const isSatelliteView =
       singleProject.purpose === 'conservation' ||
