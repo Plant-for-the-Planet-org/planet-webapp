@@ -73,18 +73,18 @@ async function fetchContributions(
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
 			SELECT 
 				c.guid,
-				COALESCE(c.quantity, c.tree_count) as units,
-				c.unit_type as unitType,
-				c.plant_date as plantDate,
-				c.contribution_type as contributionType,
-				c.plant_project_id as projectId,
+				COALESCE(c.quantity, c.tree_count) as "units",
+				c.unit_type as "unitType",
+				c.plant_date as "plantDate",
+				c.contribution_type as "contributionType",
+				c.plant_project_id as "projectId",
 				c.amount,
 				c.currency,
 				c.country,
 				c.geometry,
-				c.gift_method as giftMethod, 
-				c.gift_data->>'$.recipientName' as giftRecipient, 
-				c.gift_data->>'$.type' as giftType
+				c.gift_method as "giftMethod", 
+				c.gift_data->>'recipientName' as "giftRecipient", 
+				c.gift_data->>'type' as "giftType"
 			FROM
 				contribution c
 			WHERE
@@ -104,12 +104,12 @@ async function fetchContributions(
 async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
 			SELECT 
-				round((g.value)/100, 2) as quantity, 
-				g.metadata->>'$.giver.name' as giftGiver, 
-				g.metadata->>'$.project.id' as projectGuid, 
-				g.metadata->>'$.project.name' as projectName, 
-				g.metadata->>'$.project.country' as country, 
-				COALESCE(g.payment_date, g.redemption_date) as plantDate
+				ROUND(CAST(g.value AS NUMERIC)/100, 2) as "quantity",
+				g.metadata->'giver'->>'name' as "giftGiver",
+				g.metadata->'project'->>'id' as "projectGuid",
+				g.metadata->'project'->>'name' as "projectName",
+				g.metadata->'project'->>'country' as "country",
+				COALESCE(g.payment_date, g.redemption_date) as "plantDate"
 			FROM 
 				gift g
 			WHERE 
