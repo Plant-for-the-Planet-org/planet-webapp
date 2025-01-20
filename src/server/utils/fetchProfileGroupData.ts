@@ -4,7 +4,7 @@ import prisma from '../../../prisma/client';
 
 export async function fetchProfileGroupData(profileId: number) {
   const data = await prisma.$queryRaw<ProfileGroupQueryResult[]>`
-				SELECT pg.profile_id as profileId
+				SELECT pg.profile_id as "profileId"
 				FROM profile_group AS pg
 				WHERE pg.lft BETWEEN (
 						SELECT root.lft

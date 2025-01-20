@@ -3,6 +3,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../../../../src/features/common/types/payments';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -56,12 +57,12 @@ function RecurrentDonations({
     setIsDataLoading(true);
     setProgress(70);
     try {
-      const recurrencies = await getAuthenticatedRequest<Subscription[]>(
-        tenantConfig.id,
-        '/app/subscriptions',
+      const recurrencies = await getAuthenticatedRequest<Subscription[]>({
+        tenant: tenantConfig.id,
+        url: '/app/subscriptions',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
           (obj) => obj.status == 'active' || obj.status == 'trialing'
@@ -121,17 +122,18 @@ function RecurrentDonations({
 
 export default RecurrentDonations;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

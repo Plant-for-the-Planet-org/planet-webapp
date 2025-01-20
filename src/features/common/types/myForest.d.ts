@@ -105,7 +105,7 @@ export type ProjectQueryResult = {
   country: CountryCode;
   geometry: Point;
   image: string;
-  allowDonations: '0' | '1';
+  allowDonations: 0n | 1n | '0' | '1';
   tpoName: string;
 };
 

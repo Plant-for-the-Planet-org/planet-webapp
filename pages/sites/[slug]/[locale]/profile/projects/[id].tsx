@@ -7,6 +7,7 @@ import type {
 } from '../../../../../../src/features/common/types/project';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -72,12 +73,12 @@ function ManageSingleProject({
       try {
         const result = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig.id,
-          `/app/profile/projects/${projectGUID}`,
+        >({
+          tenant: tenantConfig.id,
+          url: `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProject(result);
         setSetupAccess(true);
       } catch (err) {
@@ -128,18 +129,19 @@ function ManageSingleProject({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

@@ -15,13 +15,12 @@ const SupportPin = () => {
   const { tenantConfig } = useTenant();
   const handleNewPin = async () => {
     try {
-      const response = await putAuthenticatedRequest<SupportPin>(
-        tenantConfig?.id,
-        '/app/profile/supportPin',
-        undefined,
+      const response = await putAuthenticatedRequest<SupportPin>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/supportPin',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       if (response) {
         const updateUserData = { ...user };
         updateUserData['supportPin'] = response?.supportPin;

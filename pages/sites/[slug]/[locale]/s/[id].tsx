@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -41,10 +42,10 @@ export default function DirectGift({
 
   async function loadPublicUserData() {
     try {
-      const newProfile = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
-        `/app/profiles/${router.query.id}`
-      );
+      const newProfile = await getRequest<UserPublicProfile>({
+        tenant: tenantConfig.id,
+        url: `/app/profiles/${router.query.id}`,
+      });
       if (newProfile.type !== 'tpo') {
         localStorage.setItem(
           'directGift',
@@ -72,18 +73,19 @@ export default function DirectGift({
   return tenantConfig ? <div></div> : <></>;
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

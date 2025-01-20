@@ -3,6 +3,7 @@ import type { SetState } from '../../../../../src/features/common/types/common';
 import type { PlantLocation } from '../../../../../src/features/common/types/plantLocation';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -94,15 +95,15 @@ export default function Donate({
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
-          const project = await getRequest<ProjectExtended>(
-            pageProps.tenantConfig.id,
-            encodeURI(`/app/projects/${p}`),
-            {
+          const project = await getRequest<ProjectExtended>({
+            tenant: pageProps.tenantConfig.id,
+            url: encodeURI(`/app/projects/${p}`),
+            queryParams: {
               _scope: 'extended',
               currency: currency || '',
               locale: locale,
-            }
-          );
+            },
+          });
           if (
             project.purpose === 'conservation' ||
             project.purpose === 'trees'
@@ -221,18 +222,19 @@ export default function Donate({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        p: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          p: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

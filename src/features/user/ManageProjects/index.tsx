@@ -107,13 +107,13 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -131,13 +131,13 @@ export default function ManageProjects({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
@@ -152,12 +152,12 @@ export default function ManageProjects({
       try {
         const res = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/profile/projects/${projectGUID}`,
+        >({
+          tenant: tenantConfig?.id,
+          url: `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
