@@ -3,13 +3,14 @@ import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention
 
 import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
-import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
-import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
+
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { findMatchingIntervention } from '../../../../utils/constants/intervention';
 import InterventionIcon from '../../../../../public/assets/images/icons/InterventionIcon';
 import { useTranslations } from 'next-intl';
+import DropdownUpArrow from '../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
+import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 interface InterventionOptionType {
   label: string;
   value: INTERVENTION_TYPE;
@@ -23,7 +24,7 @@ interface Props {
   isMobile?: boolean;
   enableInterventionFilter: () => void;
   disableInterventionMenu: boolean;
-  hasProjectSites?: boolean
+  hasProjectSites?: boolean;
 }
 
 const InterventionDropdown = ({
@@ -33,7 +34,7 @@ const InterventionDropdown = ({
   enableInterventionFilter,
   disableInterventionMenu,
   isMobile,
-  hasProjectSites
+  hasProjectSites,
 }: Props) => {
   const tIntervention = useTranslations('ProjectDetails.intervention');
 
@@ -61,7 +62,14 @@ const InterventionDropdown = ({
   };
   return (
     <>
-      <div className={`${styles.dropdownButton} ${hasProjectSites ? styles.dropdownButtonAlignmentAbove : styles.dropdownButtonAlignmentBelow}`} onClick={toggleMenu}>
+      <div
+        className={`${styles.dropdownButton} ${
+          hasProjectSites
+            ? styles.dropdownButtonAlignmentAbove
+            : styles.dropdownButtonAlignmentBelow
+        }`}
+        onClick={toggleMenu}
+      >
         <div className={styles.interventionIconAndTextContainer}>
           <InterventionIcon />
           <>
