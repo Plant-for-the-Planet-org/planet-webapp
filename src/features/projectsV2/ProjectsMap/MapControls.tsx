@@ -60,10 +60,12 @@ const MapControls = ({
     singleProject?.sites?.length > 1;
   const canShowSatelliteToggle =
     !(
-    isMobile &&
-    (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
+      isMobile &&
+      (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
     ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
+  const canShowInterventionDropdown =
+    isProjectDetailsPage && selectedTab === 'field';
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
@@ -117,12 +119,13 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${isMobile
-    ? mobileOS === 'android'
-      ? styles.layerToggleAndroid
-      : styles.layerToggleIos
-    : styles.layerToggleDesktop
-    }`;
+  const layerToggleClass = `${styles.layerToggle} ${
+    isMobile
+      ? mobileOS === 'android'
+        ? styles.layerToggleAndroid
+        : styles.layerToggleIos
+      : styles.layerToggleDesktop
+  }`;
 
   return (
     <>
@@ -135,14 +138,16 @@ const MapControls = ({
         <>
           {isMobile ? (
             <div className={styles.projectDetailsControlsContainer}>
-              {hasProjectSites &&
+              {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
-              }
-              <InterventionDropDown
-                {...interventionDropDownProps}
-                isMobile={isMobile}
-                hasProjectSites={hasProjectSites}
-              />
+              )}
+              {canShowInterventionDropdown && (
+                <InterventionDropDown
+                  {...interventionDropDownProps}
+                  isMobile={isMobile}
+                  hasProjectSites={hasProjectSites}
+                />
+              )}
               <button
                 className={styles.exitMapModeButton}
                 onClick={exitMapMode}
@@ -152,9 +157,15 @@ const MapControls = ({
             </div>
           ) : (
             <>
-              {hasProjectSites && <ProjectSiteDropdown {...siteDropdownProps} />}
-              <InterventionDropDown {...interventionDropDownProps} hasProjectSites={hasProjectSites}
-              />
+              {hasProjectSites && (
+                <ProjectSiteDropdown {...siteDropdownProps} />
+              )}
+              {canShowInterventionDropdown && (
+                <InterventionDropDown
+                  {...interventionDropDownProps}
+                  hasProjectSites={hasProjectSites}
+                />
+              )}
             </>
           )}
           {canShowSatelliteToggle && (
