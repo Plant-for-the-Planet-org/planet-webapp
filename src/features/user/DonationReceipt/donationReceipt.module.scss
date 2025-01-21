@@ -1,0 +1,43 @@
+@import '../../../theme/theme';
+
+.donationReceiptLayout {
+  width: 100vw;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+  background: var(--background-base);
+}
+
+.donationReceiptContainer {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  min-height: 60px;
+  margin-top: 60px;
+  flex-shrink: 0;
+}
+
+.receiptVerificationHeader {
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-family: 400;
+    color: rgba(51, 51, 51, 1);
+  }
+}
+
+.receiptDataSection {
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px;
+  background: #fff;
+  height: 60px;
+}

@@ -16,7 +16,7 @@ import {
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import DonationReceiptLayout from '../../../../src/features/user/TaxReceipt/DonationReceiptLayout';
+import DonationReceiptLayout from '../../../../src/features/user/DonationReceipt/DonationReceiptLayout';
 
 interface PageProps {
   messages: AbstractIntlMessages;
