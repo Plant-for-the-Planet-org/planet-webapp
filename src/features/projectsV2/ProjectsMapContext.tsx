@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { ViewState } from 'react-map-gl-v7';
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
+import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
 
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
@@ -63,6 +64,8 @@ interface ProjectsMapState {
    * Updates the state of a single map-related option.
    */
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+  timeTravelConfig: ProjectTimeTravelConfig | null;
+  setTimeTravelConfig: SetState<ProjectTimeTravelConfig | null>;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
@@ -73,6 +76,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     showProjects: true,
   });
+  const [timeTravelConfig, setTimeTravelConfig] =
+    useState<ProjectTimeTravelConfig | null>(null);
 
   const handleViewStateChange = (newViewState: Partial<ExtendedViewState>) => {
     setViewState((prev) => ({
@@ -109,6 +114,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       setIsSatelliteView,
       mapOptions,
       updateMapOption,
+      timeTravelConfig,
+      setTimeTravelConfig,
     }),
     [mapState, viewState, mapOptions, isSatelliteView]
   );
