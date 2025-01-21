@@ -1,6 +1,7 @@
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
+import type { SelectedTab } from './ProjectMapTabs';
 
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
@@ -15,6 +16,7 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 
 interface MapControlsProps {
   isMobile: boolean;
+  selectedTab: SelectedTab | null;
   selectedMode: ViewMode | undefined;
   setSelectedMode: SetState<ViewMode> | undefined;
   page: 'project-list' | 'project-details';
@@ -24,6 +26,7 @@ interface MapControlsProps {
 const MapControls = ({
   isMobile,
   selectedMode,
+  selectedTab,
   setSelectedMode,
   page,
   mobileOS,
@@ -55,10 +58,11 @@ const MapControls = ({
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
-  const canShowSatelliteToggle = !(
+  const canShowSatelliteToggle =
+    !(
     isMobile &&
     (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
-  );
+    ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
 
   const enableInterventionFilter = () => {

@@ -142,6 +142,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const mapControlProps = {
     selectedMode: props.isMobile ? props.selectedMode : undefined,
     setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
+    selectedTab,
     isMobile: props.isMobile,
     page: props.page,
     mobileOS,
