@@ -1,10 +1,15 @@
 import type { SourceName } from '../../../utils/mapsV2/timeTravel';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './TimeTravelDropdown.module.scss';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
 import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
+
+const SOURCE_LABELS = {
+  esri: 'Esri',
+};
 
 interface TimeTravelDropdownProps {
   defaultYear: string;
@@ -27,6 +32,8 @@ const TimeTravelDropdown = ({
   onSourceChange,
   customClassName,
 }: TimeTravelDropdownProps) => {
+  const tTimeTravel = useTranslations('ProjectDetails.timeTravel');
+
   const [selectedYear, setSelectedYear] = useState(defaultYear);
   const [selectedSource, setSelectedSource] = useState(defaultSource);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
@@ -52,8 +59,14 @@ const TimeTravelDropdown = ({
       >
         <div className={styles.menuButtonTitle}>
           <CalendarIcon width={14} color={`${'var(--bold-font-color-new)'}`} />
-          <p>
-            <span>{selectedYear} </span>via {selectedSource}
+          <p className={styles.menuButtonText}>
+            {tTimeTravel.rich('sourceAttributionLabel', {
+              year: selectedYear,
+              source: SOURCE_LABELS[selectedSource],
+              highlight: (chunks) => (
+                <span className={styles.highlighted}>{chunks}</span>
+              ),
+            })}
           </p>
         </div>
         {isMenuOpen ? (
@@ -90,7 +103,7 @@ const TimeTravelDropdown = ({
                     : styles.unselectedMenuItem
                 }`}
               >
-                {source}
+                {SOURCE_LABELS[source]}
               </li>
             ))}
           </ul>

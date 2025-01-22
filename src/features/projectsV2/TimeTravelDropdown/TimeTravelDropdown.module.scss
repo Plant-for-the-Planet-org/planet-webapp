@@ -2,10 +2,6 @@
 
 .menuContainer {
   font-size: $fontXSmall;
-  /* position: absolute;
-  top: 78px;
-  left: 10px;
-  z-index: 2; */
 }
 
 .menuButton {
@@ -20,17 +16,19 @@
   font-size: $fontXXSmall;
   gap: 4px;
   cursor: pointer;
-  p {
+  .menuButtonText {
     margin: 0 0 0 6px;
   }
-  span {
+  .highlighted {
     font-weight: 700;
   }
 }
+
 .menuButtonTitle {
   display: flex;
   align-items: center;
 }
+
 .menuItems {
   display: flex;
   width: fit-content;
@@ -38,6 +36,7 @@
   border-radius: 8px;
   color: $grayFontColorNew;
 }
+
 .yearMenuContainer {
   border-radius: 8px 0 0 8px;
   background-color: $lightGrayBackgroundColorNew;
@@ -51,6 +50,7 @@
     cursor: pointer;
   }
 }
+
 .sourceMenuContainer {
   background: $light;
   padding: 16px;

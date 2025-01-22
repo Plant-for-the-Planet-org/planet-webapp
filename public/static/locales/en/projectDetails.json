@@ -89,6 +89,9 @@
       "stop-tree-harvesting": "Stop Tree Harvesting",
       "maintenance": "Maintenance",
       "other-intervention": "Other Interventions"
+    },
+    "timeTravel": {
+      "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}"
     }
   }
 }
