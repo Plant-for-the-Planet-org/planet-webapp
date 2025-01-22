@@ -119,7 +119,9 @@
       "amountDonated": "Amount Donated",
       "paymentDate": "Payment Date",
       "recipientInfoHeader": "Receipt will be issued to",
-      "taxIdentificationNumber": "Tax Identification Number (TIN)"
+      "taxIdentificationNumber": "Tax Identification Number (TIN)",
+      "modifyContactInformation": "Modify Contact Information",
+      "confirm": "Confirm"
     }
   }
 }

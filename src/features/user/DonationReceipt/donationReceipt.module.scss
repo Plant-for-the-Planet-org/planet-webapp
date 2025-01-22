@@ -128,3 +128,12 @@
     font-weight: 700;
   }
 }
+
+.receiptActions {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  svg {
+    width: 13px;
+  }
+}

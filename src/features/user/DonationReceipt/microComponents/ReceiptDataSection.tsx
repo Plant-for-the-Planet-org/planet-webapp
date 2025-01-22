@@ -1,6 +1,7 @@
 import styles from '../donationReceipt.module.scss';
 import { donationData } from '../utils';
 import DonationData from './DonationData';
+import ReceiptActions from './ReceiptActions';
 import RecipientDetails from './RecipientDetails';
 
 const ReceiptDataSection = () => {
@@ -8,7 +9,7 @@ const ReceiptDataSection = () => {
     <section className={styles.receiptDataSection}>
       <DonationData donations={donationData.donations} />
       <RecipientDetails donar={donationData.donor} />
-      <div className={styles.receiptActions}></div>
+      <ReceiptActions />
     </section>
   );
 };
