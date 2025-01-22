@@ -18,14 +18,14 @@ export const donationData = {
   amount: 10.0,
   donations: [
     {
-      reference: 'H01VDF',
-      amount: 10.0,
-      paymentDate: '2020-01-01',
+      reference: 'H01VDFUJ',
+      amount: `$10.0`,
+      paymentDate: 'October 15, 2024',
     },
     {
-      reference: '046S22',
-      amount: 50.0,
-      paymentDate: '2024-06-06T14:53:31+00:00',
+      reference: '046S2290',
+      amount: `$50.0`,
+      paymentDate: 'November 15, 2024',
     },
   ],
 };

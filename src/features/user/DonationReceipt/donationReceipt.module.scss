@@ -39,5 +39,53 @@
   border-radius: 16px;
   padding: 16px;
   background: #fff;
-  height: 60px;
+}
+
+.donationRecord {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 16px 16px 16px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+}
+
+.paymentDate {
+  text-align: right;
+}
+
+.amountDonated {
+  text-align: center;
+}
+
+.record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  .amount {
+    flex: 1;
+    text-align: center;
+  }
+
+  .reference {
+    flex: 1;
+    text-align: left;
+  }
+
+  .date {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.record:not(:last-child) {
+  border-bottom: 1px solid #ccc;
 }

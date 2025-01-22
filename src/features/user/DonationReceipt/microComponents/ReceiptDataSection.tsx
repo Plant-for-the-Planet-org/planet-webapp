@@ -1,9 +1,13 @@
 import styles from '../donationReceipt.module.scss';
+import { donationData } from '../utils';
+import DonationData from './DonationData';
 
 const ReceiptDataSection = () => {
   return (
     <section className={styles.receiptDataSection}>
-      <div></div>
+      <DonationData donations={donationData.donations} />
+      <div className={styles.recipientDetails}></div>
+      <div className={styles.receiptActions}></div>
     </section>
   );
 };

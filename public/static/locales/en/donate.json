@@ -114,7 +114,10 @@
     "donationReceipt": {
       "verifyTaxHeaderPrimary": "Verify your data to download tax receipt",
       "verifyTaxHeaderSecondary": "once the data is verified, it can not be changed again for this receipt",
-      "downloadTaxReceipt": "Download tax receipt"
+      "downloadTaxReceipt": "Download tax receipt",
+      "referenceNumber": "Reference Number",
+      "amountDonated": "Amount Donated",
+      "paymentDate": "Payment Date"
     }
   }
 }
