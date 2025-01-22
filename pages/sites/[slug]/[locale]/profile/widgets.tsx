@@ -54,15 +54,19 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
       <Head>
         <title>{t('widgets')}</title>
       </Head>
-      {user?.isPrivate === false ? (
-        <div className={styles.widgetsContainer}>
-          <iframe
-            src={`${process.env.WIDGET_URL}?user=${user?.id}&tenantkey=${tenantConfig.id}`}
-            className={styles.widgetIFrame}
-          />
-        </div>
-      ) : (
-        <EmbedModal {...embedModalProps} />
+      {user !== null && (
+        <>
+          {user.isPrivate === false ? (
+            <div className={styles.widgetsContainer}>
+              <iframe
+                src={`${process.env.WIDGET_URL}?user=${user.slug}&tenantkey=${tenantConfig.id}`}
+                className={styles.widgetIFrame}
+              />
+            </div>
+          ) : (
+            <EmbedModal {...embedModalProps} />
+          )}
+        </>
       )}
     </UserLayout>
   ) : (
