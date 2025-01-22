@@ -2,7 +2,7 @@ import styles from './donationReceipt.module.scss';
 import { donationData } from './utils';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
 import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
-import ReceiptFooterSection from './microComponents/ReceiptFooterSection';
+import ReceiptListRedirect from './microComponents/ReceiptListRedirect';
 
 export const DonationReceiptLayout = () => {
   return (
@@ -10,7 +10,7 @@ export const DonationReceiptLayout = () => {
       <div className={styles.donationReceiptContainer}>
         <ReceiptVerificationHeader downloadUrl={donationData.downloadUrl} />
         <ReceiptDataSection />
-        <ReceiptFooterSection />
+        <ReceiptListRedirect />
       </div>
     </div>
   );
