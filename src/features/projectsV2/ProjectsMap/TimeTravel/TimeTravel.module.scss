@@ -9,6 +9,7 @@
     z-index: 30;
     :global(.compare-swiper-vertical) {
       background-color: $primaryColor;
+      top: 75%;
     }
   }
 }
