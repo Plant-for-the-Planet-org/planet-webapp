@@ -8,6 +8,9 @@
   align-items: center;
   margin-top: 80px;
   background: var(--background-base);
+  @include xsPhoneView {
+    padding: 0 2%;
+  }
 }
 
 .donationReceiptContainer {
@@ -18,7 +21,9 @@
   max-width: 760px;
   min-height: 60px;
   margin-top: 60px;
-  flex-shrink: 0;
+  @include xsPhoneView {
+    align-items: center;
+  }
 }
 
 .receiptVerificationHeader {
