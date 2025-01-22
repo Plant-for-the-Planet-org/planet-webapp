@@ -121,7 +121,8 @@
       "recipientInfoHeader": "Receipt will be issued to",
       "taxIdentificationNumber": "Tax Identification Number (TIN)",
       "modifyContactInformation": "Modify Contact Information",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "download": "Download"
     }
   }
 }

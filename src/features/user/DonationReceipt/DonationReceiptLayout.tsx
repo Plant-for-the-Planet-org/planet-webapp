@@ -8,9 +8,7 @@ export const DonationReceiptLayout = () => {
   return (
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
-        <ReceiptVerificationHeader
-          verificationDate={donationData.verificationDate}
-        />
+        <ReceiptVerificationHeader downloadUrl={donationData.downloadUrl} />
         <ReceiptDataSection />
         <ReceiptFooterSection />
       </div>

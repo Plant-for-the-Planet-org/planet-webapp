@@ -9,7 +9,7 @@ const ReceiptDataSection = () => {
     <section className={styles.receiptDataSection}>
       <DonationData donations={donationData.donations} />
       <RecipientDetails donar={donationData.donor} />
-      <ReceiptActions />
+      <ReceiptActions downloadUrl={donationData.downloadUrl} />
     </section>
   );
 };

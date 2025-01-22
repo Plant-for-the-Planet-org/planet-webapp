@@ -137,7 +137,14 @@
 .receiptActions {
   margin-top: 40px;
   display: flex;
-  justify-content: space-between;
+  gap: 12px;
+  padding: 0px 10px;
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+  button {
+    flex: 1 1;
+  }
   svg {
     width: 13px;
   }

@@ -28,4 +28,5 @@ export const donationData = {
       paymentDate: 'November 15, 2024',
     },
   ],
+  downloadUrl: null,
 };
