@@ -117,7 +117,9 @@
       "downloadTaxReceipt": "Download tax receipt",
       "referenceNumber": "Reference Number",
       "amountDonated": "Amount Donated",
-      "paymentDate": "Payment Date"
+      "paymentDate": "Payment Date",
+      "recipientInfoHeader": "Receipt will be issued to",
+      "taxIdentificationNumber": "Tax Identification Number (TIN)"
     }
   }
 }

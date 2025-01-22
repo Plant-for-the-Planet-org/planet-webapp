@@ -11,7 +11,7 @@ export const donationData = {
     email: 't.hicool.de',
     country: 'DE',
     zipCode: '22113',
-    address1: 'Springfield, 210',
+    address1: 'Springfield, 210, Springfield, 2100',
     address2: null,
     reference: 't.coolmblue.ce',
   },

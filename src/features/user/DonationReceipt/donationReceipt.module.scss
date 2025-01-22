@@ -89,3 +89,42 @@
 .record:not(:last-child) {
   border-bottom: 1px solid #ccc;
 }
+
+.recipientDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: rgba(242, 242, 242, 0.5);
+  width: 100%;
+  border-radius: 9px;
+  margin-top: 25px;
+  padding: 10px 15px;
+
+  .header {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .details {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+}
+
+.address,
+.firstName,
+.lastName,
+.companyName,
+.tin {
+  display: flex;
+  flex-direction: column;
+  color: rgba(130, 130, 130, 1);
+  gap: 7px;
+  .header {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
