@@ -16,7 +16,7 @@ import {
 } from 'react';
 import MaplibreCompare from '@maplibre/maplibre-gl-compare';
 import '@maplibre/maplibre-gl-compare/dist/maplibre-gl-compare.css';
-import { Map } from 'maplibre-gl';
+import { Map as MaplibreMap } from 'maplibre-gl';
 import { useProjectsMap } from '../../ProjectsMapContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import TimeTravelDropdown from '../../TimeTravelDropdown';
@@ -57,8 +57,8 @@ export default function TimeTravel({
   const comparisonContainer = useRef<HTMLDivElement>(null);
   const beforeContainer = useRef<HTMLDivElement>(null);
   const afterContainer = useRef<HTMLDivElement>(null);
-  const beforeMapRef = useRef<Map | null>(null);
-  const afterMapRef = useRef<Map | null>(null);
+  const beforeMapRef = useRef<MaplibreMap | null>(null);
+  const afterMapRef = useRef<MaplibreMap | null>(null);
   const compareRef = useRef<MaplibreCompare | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -150,7 +150,7 @@ export default function TimeTravel({
     try {
       validateData();
 
-      const before = new Map({
+      const before = new MaplibreMap({
         container: beforeContainer.current || '',
         style: EMPTY_STYLE,
         center: [mainMapViewState.longitude, mainMapViewState.latitude],
@@ -172,7 +172,7 @@ export default function TimeTravel({
         setBeforeLoaded(true);
       });
 
-      const after = new Map({
+      const after = new MaplibreMap({
         container: afterContainer.current || '',
         style: EMPTY_STYLE,
         center: [mainMapViewState.longitude, mainMapViewState.latitude],
