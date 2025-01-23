@@ -51,7 +51,7 @@ const convertToZYXFormat = (url: string): string => {
     .replace('{col}', '{x}');
 };
 
-interface SingleYearTimeTravelData {
+export interface SingleYearTimeTravelData {
   year: string;
   rasterUrl: string;
 }

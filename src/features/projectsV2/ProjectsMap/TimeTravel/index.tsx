@@ -2,6 +2,8 @@ import type { ReactElement } from 'react';
 import type {
   SourceName,
   ProjectTimeTravelSources,
+  ProjectTimeTravelConfig,
+  SingleYearTimeTravelData,
 } from '../../../../utils/mapsV2/timeTravel';
 import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import type { ProjectSite } from '@planet-sdk/common/build/types/project';
@@ -260,10 +262,118 @@ export default function TimeTravel({
     }
   }, [beforeLoaded, afterLoaded]);
 
+  // Utility function for generating layer IDs
+  const getEsriLayerIds = (prefix: 'before' | 'after', year: string) => {
+    return {
+      layerId: `${prefix}-imagery-esri-${year}-layer`,
+      polygonLayerId: `project-polygon-layer-esri-${year}`,
+      sourceId: `${prefix}-imagery-esri-${year}`,
+      polygonSourceId: `project-polygon-esri-${year}`,
+    };
+  };
+
+  // Source-specific layer handlers
+  const handleEsriLayers = (
+    map: MaplibreMap,
+    prefix: 'before' | 'after',
+    selectedYear: string,
+    yearData: SingleYearTimeTravelData,
+    sitesGeoJson: FeatureCollection<Polygon | MultiPolygon, ProjectSite>
+  ) => {
+    const { sourceId, layerId, polygonSourceId, polygonLayerId } =
+      getEsriLayerIds(prefix, yearData.year);
+
+    // Add raster source and layer
+    if (!map.getSource(sourceId)) {
+      map.addSource(sourceId, {
+        type: 'raster',
+        tiles: [yearData.rasterUrl],
+        tileSize: 256,
+        attribution: 'layer attribution',
+      });
+    }
+
+    if (!map.getLayer(layerId)) {
+      map.addLayer({
+        id: layerId,
+        type: 'raster',
+        source: sourceId,
+      });
+    }
+
+    // Add polygon source and layer
+    if (!map.getSource(polygonSourceId)) {
+      map.addSource(polygonSourceId, {
+        type: 'geojson',
+        data: sitesGeoJson,
+      });
+    }
+
+    if (!map.getLayer(polygonLayerId)) {
+      map.addLayer({
+        id: polygonLayerId,
+        type: 'line',
+        source: polygonSourceId,
+        layout: {},
+        paint: {
+          'line-color': '#fff',
+          'line-width': 4,
+        },
+      });
+    }
+
+    return [layerId, polygonLayerId];
+  };
+
+  const handleMapLayers = (
+    map: MaplibreMap,
+    prefix: 'before' | 'after',
+    source: SourceName,
+    selectedYear: string,
+    timeTravelConfig: ProjectTimeTravelConfig & {
+      sources: ProjectTimeTravelSources;
+    },
+    sitesGeoJson: FeatureCollection<Polygon | MultiPolygon, ProjectSite>
+  ) => {
+    const sourceData = timeTravelConfig.sources[source];
+    if (!sourceData) return;
+
+    // First remove any existing layers for this source
+    sourceData.forEach((year) => {
+      if (source === 'esri') {
+        const { layerId, polygonLayerId } = getEsriLayerIds(prefix, year.year);
+
+        if (map.getLayer(polygonLayerId)) {
+          map.removeLayer(polygonLayerId);
+        }
+        if (map.getLayer(layerId)) {
+          map.removeLayer(layerId);
+        }
+      }
+      // Add cases for other sources here
+    });
+
+    // Find the configuration for the selected year
+    const yearConfig = sourceData.find((year) => year.year === selectedYear);
+
+    if (!yearConfig) {
+      throw new Error(`Configuration not found for year ${selectedYear}`);
+    }
+
+    // Add new layers based on source type
+    switch (source) {
+      case 'esri':
+        handleEsriLayers(map, prefix, selectedYear, yearConfig, sitesGeoJson);
+        break;
+      // Add cases for other sources here
+      default:
+        throw new Error(`Unsupported source type: ${source}`);
+    }
+  };
+
   const loadLayers = useCallback(() => {
     if (
-      !timeTravelConfig ||
-      !timeTravelConfig.sources ||
+      !timeTravelConfig?.sources ||
       !beforeMapRef.current ||
       !afterMapRef.current
     )
@@ -272,147 +382,25 @@ export default function TimeTravel({
     try {
       validateData();
 
-      // Handle before map layers
-      if (timeTravelConfig.sources.esri) {
-        // First remove all existing layers from before map
-        timeTravelConfig.sources.esri.forEach((year) => {
-          const layerId = `before-imagery-esri-${year.year}-layer`;
-          const polygonLayerId = `project-polygon-layer-esri-${year.year}`;
+      // Handle before map
+      handleMapLayers(
+        beforeMapRef.current,
+        'before',
+        selectedSourceBefore,
+        selectedYearBefore,
+        { ...timeTravelConfig, sources: timeTravelConfig.sources },
+        sitesGeoJson
+      );
 
-          if (beforeMapRef.current?.getLayer(polygonLayerId)) {
-            beforeMapRef.current.removeLayer(polygonLayerId);
-          }
-          if (beforeMapRef.current?.getLayer(layerId)) {
-            beforeMapRef.current.removeLayer(layerId);
-          }
-        });
-
-        // Add new layers if source is esri
-        if (selectedSourceBefore === 'esri') {
-          const beforeYear = timeTravelConfig.sources.esri.find(
-            (year) => year.year === selectedYearBefore
-          );
-
-          if (!beforeYear) {
-            throw new Error(
-              `Configuration not found for year ${selectedYearBefore}`
-            );
-          }
-
-          const sourceId = `before-imagery-esri-${beforeYear.year}`;
-          const layerId = `${sourceId}-layer`;
-          const polygonSourceId = `project-polygon-esri-${beforeYear.year}`;
-          const polygonLayerId = `project-polygon-layer-esri-${beforeYear.year}`;
-
-          if (!beforeMapRef.current.getSource(sourceId)) {
-            beforeMapRef.current.addSource(sourceId, {
-              type: 'raster',
-              tiles: [beforeYear.rasterUrl],
-              tileSize: 256,
-              attribution: 'layer attribution',
-            });
-          }
-
-          if (!beforeMapRef.current.getLayer(layerId)) {
-            beforeMapRef.current.addLayer({
-              id: layerId,
-              type: 'raster',
-              source: sourceId,
-            });
-          }
-
-          if (!beforeMapRef.current.getSource(polygonSourceId)) {
-            beforeMapRef.current.addSource(polygonSourceId, {
-              type: 'geojson',
-              data: sitesGeoJson,
-            });
-          }
-
-          if (!beforeMapRef.current.getLayer(polygonLayerId)) {
-            beforeMapRef.current.addLayer({
-              id: polygonLayerId,
-              type: 'line',
-              source: polygonSourceId,
-              layout: {},
-              paint: {
-                'line-color': '#fff',
-                'line-width': 4,
-              },
-            });
-          }
-        }
-      }
-
-      // Handle after map layers (similar logic)
-      if (timeTravelConfig.sources.esri) {
-        // First remove all existing layers from after map
-        timeTravelConfig.sources.esri.forEach((year) => {
-          const layerId = `after-imagery-esri-${year.year}-layer`;
-          const polygonLayerId = `project-polygon-layer-esri-${year.year}`;
-
-          if (afterMapRef.current?.getLayer(polygonLayerId)) {
-            afterMapRef.current.removeLayer(polygonLayerId);
-          }
-          if (afterMapRef.current?.getLayer(layerId)) {
-            afterMapRef.current.removeLayer(layerId);
-          }
-        });
-
-        // Add new layers if source is esri
-        if (selectedSourceAfter === 'esri') {
-          const afterYear = timeTravelConfig.sources.esri.find(
-            (year) => year.year === selectedYearAfter
-          );
-
-          if (!afterYear) {
-            throw new Error(
-              `Configuration not found for year ${selectedYearAfter}`
-            );
-          }
-
-          const sourceId = `after-imagery-esri-${afterYear.year}`;
-          const layerId = `${sourceId}-layer`;
-          const polygonSourceId = `project-polygon-esri-${afterYear.year}`;
-          const polygonLayerId = `project-polygon-layer-esri-${afterYear.year}`;
-
-          if (!afterMapRef.current.getSource(sourceId)) {
-            afterMapRef.current.addSource(sourceId, {
-              type: 'raster',
-              tiles: [afterYear.rasterUrl],
-              tileSize: 256,
-              attribution: 'layer attribution',
-            });
-          }
-
-          if (!afterMapRef.current.getLayer(layerId)) {
-            afterMapRef.current.addLayer({
-              id: layerId,
-              type: 'raster',
-              source: sourceId,
-            });
-          }
-
-          if (!afterMapRef.current.getSource(polygonSourceId)) {
-            afterMapRef.current.addSource(polygonSourceId, {
-              type: 'geojson',
-              data: sitesGeoJson,
-            });
-          }
-
-          if (!afterMapRef.current.getLayer(polygonLayerId)) {
-            afterMapRef.current.addLayer({
-              id: polygonLayerId,
-              type: 'line',
-              source: polygonSourceId,
-              layout: {},
-              paint: {
-                'line-color': '#fff',
-                'line-width': 4,
-              },
-            });
-          }
-        }
-      }
+      // Handle after map
+      handleMapLayers(
+        afterMapRef.current,
+        'after',
+        selectedSourceAfter,
+        selectedYearAfter,
+        { ...timeTravelConfig, sources: timeTravelConfig.sources },
+        sitesGeoJson
+      );
 
       setIsLoading(false);
     } catch (err) {
