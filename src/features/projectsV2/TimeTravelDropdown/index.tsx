@@ -7,7 +7,7 @@ import CalendarIcon from '../../../../public/assets/images/icons/projectV2/Calen
 import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 
-const SOURCE_LABELS = {
+const SOURCE_LABELS: Record<SourceName, string> = {
   esri: 'Esri',
 };
 
