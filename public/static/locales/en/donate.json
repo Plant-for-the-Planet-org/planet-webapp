@@ -122,7 +122,11 @@
       "taxIdentificationNumber": "Tax Identification Number (TIN)",
       "modifyContactInformation": "Modify Contact Information",
       "confirm": "Confirm",
-      "download": "Download"
+      "download": "Download",
+      "viewAllTaxReceipts": "View All Tax Receipts",
+      "donationReceiptsManagementInfo": "Easily access and manage all your donation receipts. See issued receipts ready for download and track pending receipts still being processed.",
+      "contactSupportMessage": "For any questions or issues, please contact us",
+      "supportContactDetails": "<strong>Email:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink> <strong>Phone:</strong> +49 8808 9345"
     }
   }
 }
