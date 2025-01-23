@@ -11,6 +11,8 @@ import { Marker, Source } from 'react-map-gl-v7/maplibre';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import FirePopup from '../FirePopup';
 
+const ALERT_DURATION = '30d';
+
 export default function FireLocations(): ReactElement {
   const { query } = useRouter();
 
@@ -23,13 +25,13 @@ export default function FireLocations(): ReactElement {
 
     const fetchFires = async () => {
       try {
-        const qs = new URLSearchParams();
-        qs.append('remoteId', site as string);
-        qs.append('span', '30d');
+        const searchParams = new URLSearchParams();
+        searchParams.append('remoteId', site as string);
+        searchParams.append('span', ALERT_DURATION);
         const fireAlertApiUrl =
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
           'https://fa.pp.eco/api/v1';
-        const url = `${fireAlertApiUrl}/fires?${qs.toString()}`;
+        const url = `${fireAlertApiUrl}/fires?${searchParams.toString()}`;
         const fetchedFires = await getRequest<FireFeatureCollection>({ url });
         if (
           fetchedFires?.type === 'FeatureCollection' &&
