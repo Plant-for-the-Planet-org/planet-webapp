@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import type { Address, UserType } from '@planet-sdk/common';
-import type { SetState } from '../types/common';
 
 import { useMemo, useState, createContext, useContext } from 'react';
 
@@ -17,7 +16,7 @@ interface DonationReceiptItemView {
   reference: string;
 }
 
-interface DonationReceiptData {
+export interface DonationReceiptData {
   dtn: string | null;
   challenge: string | null;
   year: string | null;
@@ -38,7 +37,7 @@ interface DonationReceiptData {
 
 interface DonationReceiptContextInterface {
   donationReceiptData: DonationReceiptData | null;
-  setDonationReceiptData: SetState<DonationReceiptData | null>;
+  updateDonationReceiptData: (data: Partial<DonationReceiptData>) => void;
 }
 
 const DonationReceiptContext =
@@ -48,12 +47,24 @@ export const DonationReceiptProvider: FC = ({ children }) => {
   const [donationReceiptData, setDonationReceiptData] =
     useState<DonationReceiptData | null>(null);
 
+  const updateDonationReceiptData = (data: Partial<DonationReceiptData>) => {
+    setDonationReceiptData((prevState) => {
+      if (!prevState) {
+        return { ...data } as DonationReceiptData;
+      }
+      return {
+        ...prevState,
+        ...data,
+      } as DonationReceiptData;
+    });
+  };
+
   const value: DonationReceiptContextInterface = useMemo(
     () => ({
-      setDonationReceiptData,
       donationReceiptData,
+      updateDonationReceiptData,
     }),
-    [setDonationReceiptData, donationReceiptData]
+    [updateDonationReceiptData, donationReceiptData]
   );
 
   return (
@@ -67,7 +78,7 @@ export const useDonationReceipt = (): DonationReceiptContextInterface => {
   const context = useContext(DonationReceiptContext);
   if (!context)
     throw new Error(
-      'DonationReceiptContext must be used within AnalyticsProvider'
+      'DonationReceiptContext must be used within DonationReceiptProvider'
     );
   return context;
 };
