@@ -145,75 +145,100 @@ export default function TimeTravel({
     sitesGeoJson,
   ]);
 
+  const initializeMap = (
+    container: HTMLDivElement | null,
+    viewState: {
+      longitude: number;
+      latitude: number;
+      zoom: number;
+    },
+    onError: (error: Error, code: MapErrorCode) => void,
+    onLoad: (map: MaplibreMap) => void
+  ): MaplibreMap | null => {
+    if (!container) {
+      onError(
+        new Error('Map container element not found'),
+        MAP_ERROR_CODES.INITIALIZATION
+      );
+      return null;
+    }
+
+    const map = new MaplibreMap({
+      container,
+      style: EMPTY_STYLE,
+      center: [viewState.longitude, viewState.latitude],
+      zoom: viewState.zoom,
+      dragPan: true,
+      scrollZoom: false,
+      attributionControl: false,
+    });
+
+    map.on('error', (e) => {
+      onError(
+        new Error(`Map error: ${e.error.message}`),
+        MAP_ERROR_CODES.INITIALIZATION
+      );
+    });
+
+    map.on('load', () => {
+      onLoad(map);
+    });
+
+    return map;
+  };
+
   // Initialize the side by side comparison map
   useEffect(() => {
-    if (typeof window === 'undefined' || !timeTravelConfig) return;
+    if (
+      typeof window === 'undefined' ||
+      !timeTravelConfig ||
+      !beforeContainer.current ||
+      !afterContainer.current
+    ) {
+      return;
+    }
 
     try {
       validateData();
 
-      const before = new MaplibreMap({
-        container: beforeContainer.current || '',
-        style: EMPTY_STYLE,
-        center: [mainMapViewState.longitude, mainMapViewState.latitude],
-        zoom: mainMapViewState.zoom,
-        dragPan: true,
-        scrollZoom: false,
-        attributionControl: false,
-      });
+      const beforeMap = initializeMap(
+        beforeContainer.current,
+        mainMapViewState,
+        handleMapError,
+        (map) => {
+          beforeMapRef.current = map;
+          setBeforeLoaded(true);
+        }
+      );
 
-      before.on('error', (e) => {
-        handleMapError(
-          new Error(`Before map error: ${e.error.message}`),
-          MAP_ERROR_CODES.INITIALIZATION
-        );
-      });
+      const afterMap = initializeMap(
+        afterContainer.current,
+        mainMapViewState,
+        handleMapError,
+        (map) => {
+          afterMapRef.current = map;
+          setAfterLoaded(true);
+        }
+      );
 
-      before.on('load', () => {
-        beforeMapRef.current = before;
-        setBeforeLoaded(true);
-      });
+      if (!beforeMap || !afterMap) {
+        return;
+      }
 
-      const after = new MaplibreMap({
-        container: afterContainer.current || '',
-        style: EMPTY_STYLE,
-        center: [mainMapViewState.longitude, mainMapViewState.latitude],
-        zoom: mainMapViewState.zoom,
-        dragPan: true,
-        scrollZoom: false,
-        attributionControl: false,
-      });
-
-      before.on('error', (e) => {
-        handleMapError(
-          new Error(`After map error: ${e.error.message}`),
-          MAP_ERROR_CODES.INITIALIZATION
-        );
-      });
-
-      after.on('load', () => {
-        afterMapRef.current = after;
-        setAfterLoaded(true);
-      });
+      // Cleanup function
+      return () => {
+        beforeMap.remove();
+        afterMap.remove();
+        if (compareRef.current) {
+          compareRef.current.remove();
+        }
+      };
     } catch (err) {
       handleMapError(
         err instanceof Error ? err : new Error('Failed to initialize maps'),
         MAP_ERROR_CODES.INITIALIZATION
       );
     }
-
-    // Cleanup function
-    return () => {
-      if (beforeMapRef.current) {
-        beforeMapRef.current.remove();
-      }
-      if (afterMapRef.current) {
-        afterMapRef.current.remove();
-      }
-      if (compareRef.current) {
-        compareRef.current.remove();
-      }
-    };
   }, []);
 
   // Handle view state changes - syncs the zoom with the field data map
