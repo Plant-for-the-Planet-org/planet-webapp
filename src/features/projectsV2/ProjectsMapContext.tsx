@@ -117,7 +117,7 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       timeTravelConfig,
       setTimeTravelConfig,
     }),
-    [mapState, viewState, mapOptions, isSatelliteView]
+    [mapState, viewState, mapOptions, isSatelliteView, timeTravelConfig]
   );
 
   return (

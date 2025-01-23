@@ -80,14 +80,19 @@ const getLatestByYear = (items: WaybackItem[]): SingleYearTimeTravelData[] => {
   }));
 };
 
-export type ProjectTimeTravelConfig = {
+export type ProjectTimeTravelSources = {
   [key in SourceName]?: SingleYearTimeTravelData[];
+};
+
+export type ProjectTimeTravelConfig = {
+  projectId: string;
+  sources: ProjectTimeTravelSources | null;
 };
 
 export const getProjectTimeTravelConfig = async (
   projectId: string,
   projectPointGeometry: Point
-): Promise<ProjectTimeTravelConfig> => {
+): Promise<ProjectTimeTravelConfig | null> => {
   const CACHE_KEY = `${cacheKeyPrefix}_time-travel_${projectId}`;
   // TODO - change temp cache time
   const CACHE_TIME_IN_SECONDS = 60 * 5; /* 60 * 60 * 24 */
@@ -102,9 +107,12 @@ export const getProjectTimeTravelConfig = async (
     );
 
     if (esriWaybackItems.length === 0) {
-      return {};
+      return { projectId: projectId, sources: null };
     } else {
-      return { esri: getLatestByYear(esriWaybackItems) };
+      return {
+        projectId: projectId,
+        sources: { esri: getLatestByYear(esriWaybackItems) },
+      };
     }
   }
 
@@ -117,6 +125,6 @@ export const getProjectTimeTravelConfig = async (
   } catch (err) {
     console.error('Error fetching time travel data:', err);
     // Return empty config on error to gracefully degrade
-    return {};
+    return null;
   }
 };

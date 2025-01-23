@@ -50,8 +50,14 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   // const [mobileOS, setMobileOS] = useState<MobileOs>(null);
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
-  const { viewState, handleViewStateChange, mapState, mapOptions } =
-    useProjectsMap();
+  const {
+    viewState,
+    handleViewStateChange,
+    mapState,
+    mapOptions,
+    timeTravelConfig,
+    setTimeTravelConfig,
+  } = useProjectsMap();
   const {
     plantLocations,
     setHoveredPlantLocation,
@@ -79,6 +85,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     if (props.page === 'project-details') {
       setSelectedTab('field');
     } else {
+      setTimeTravelConfig(null);
       setSelectedTab(null);
       setWasTimeTravelMounted(false);
     }
@@ -136,6 +143,14 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowNavigationControls = !(
     shouldShowMultiPlantLocationInfo || shouldShowSinglePlantLocationInfo
   );
+  const isTimeTravelEnabled =
+    shouldShowSingleProjectsView &&
+    timeTravelConfig !== null &&
+    timeTravelConfig.sources !== null &&
+    timeTravelConfig.projectId === singleProject?.id;
+  const shouldShowTimeTravel =
+    isTimeTravelEnabled &&
+    (selectedTab === 'timeTravel' || wasTimeTravelMounted);
   const shouldShowMapTabs = selectedTab !== null;
 
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
@@ -228,17 +243,20 @@ function ProjectsMap(props: ProjectsMapProps) {
 
       <div className={mapContainerClass}>
         {shouldShowMapTabs && (
-          <MapTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+          <MapTabs
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
+            isTimeTravelEnabled={isTimeTravelEnabled}
+          />
         )}
-        {shouldShowSingleProjectsView &&
-          (selectedTab === 'timeTravel' || wasTimeTravelMounted) && (
-            <div>
-              <TimeTravel
-                sitesGeoJson={sitesGeoJson}
-                isVisible={selectedTab === 'timeTravel'}
-              />
-            </div>
-          )}
+        {shouldShowTimeTravel && (
+          <div>
+            <TimeTravel
+              sitesGeoJson={sitesGeoJson}
+              isVisible={selectedTab === 'timeTravel'}
+            />
+          </div>
+        )}
         <Map
           {...viewState}
           {...mapState}

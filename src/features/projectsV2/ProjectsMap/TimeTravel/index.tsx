@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type {
   SourceName,
-  ProjectTimeTravelConfig,
+  ProjectTimeTravelSources,
 } from '../../../../utils/mapsV2/timeTravel';
 import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import type { ProjectSite } from '@planet-sdk/common/build/types/project';
@@ -68,22 +68,27 @@ export default function TimeTravel({
   const [afterDropdownOpen, setAfterDropdownOpen] = useState(false);
 
   const availableYears = useMemo(() => {
-    if (timeTravelConfig === null) return [];
-    return timeTravelConfig[DEFAULT_SOURCE]?.map((item) => item.year) || [];
+    if (timeTravelConfig === null || timeTravelConfig.sources === null) {
+      return [];
+    }
+    return (
+      timeTravelConfig.sources[DEFAULT_SOURCE]?.map((item) => item.year) || []
+    );
   }, [timeTravelConfig]);
 
   const availableSources = useMemo(() => {
-    if (timeTravelConfig === null) return [];
-    return Object.keys(timeTravelConfig) as Array<
-      keyof ProjectTimeTravelConfig
+    if (timeTravelConfig === null || timeTravelConfig.sources === null)
+      return [];
+    return Object.keys(timeTravelConfig.sources) as Array<
+      keyof ProjectTimeTravelSources
     >;
   }, [timeTravelConfig]);
 
   const [selectedSourceBefore, setSelectedSourceBefore] = useState<
-    keyof ProjectTimeTravelConfig
+    keyof ProjectTimeTravelSources
   >(availableSources[0] || DEFAULT_SOURCE);
   const [selectedSourceAfter, setSelectedSourceAfter] = useState<
-    keyof ProjectTimeTravelConfig
+    keyof ProjectTimeTravelSources
   >(availableSources[0] || DEFAULT_SOURCE);
   const [selectedYearBefore, setSelectedYearBefore] = useState(
     availableYears[0] || DEFAULT_BEFORE_YEAR
@@ -104,20 +109,24 @@ export default function TimeTravel({
       throw new Error('Invalid or missing GeoJSON data');
     }
 
-    if (!timeTravelConfig || Object.keys(timeTravelConfig).length === 0) {
+    if (
+      timeTravelConfig === null ||
+      timeTravelConfig.sources === null ||
+      Object.keys(timeTravelConfig.sources).length === 0
+    ) {
       throw new Error('Time travel configuration not available');
     }
 
-    const beforeYearExists = timeTravelConfig[selectedSourceBefore]?.some(
-      (item) => item.year === selectedYearBefore
-    );
+    const beforeYearExists = timeTravelConfig.sources[
+      selectedSourceBefore
+    ]?.some((item) => item.year === selectedYearBefore);
     if (!beforeYearExists) {
       throw new Error(
         `Year ${selectedYearBefore} not found in source ${selectedSourceBefore}`
       );
     }
 
-    const afterYearExists = timeTravelConfig[selectedSourceAfter]?.some(
+    const afterYearExists = timeTravelConfig.sources[selectedSourceAfter]?.some(
       (item) => item.year === selectedYearAfter
     );
     if (!afterYearExists) {
@@ -252,16 +261,21 @@ export default function TimeTravel({
   }, [beforeLoaded, afterLoaded]);
 
   const loadLayers = useCallback(() => {
-    if (!timeTravelConfig || !beforeMapRef.current || !afterMapRef.current)
+    if (
+      !timeTravelConfig ||
+      !timeTravelConfig.sources ||
+      !beforeMapRef.current ||
+      !afterMapRef.current
+    )
       return;
 
     try {
       validateData();
 
       // Handle before map layers
-      if (timeTravelConfig.esri) {
+      if (timeTravelConfig.sources.esri) {
         // First remove all existing layers from before map
-        timeTravelConfig.esri.forEach((year) => {
+        timeTravelConfig.sources.esri.forEach((year) => {
           const layerId = `before-imagery-esri-${year.year}-layer`;
           const polygonLayerId = `project-polygon-layer-esri-${year.year}`;
 
@@ -275,7 +289,7 @@ export default function TimeTravel({
 
         // Add new layers if source is esri
         if (selectedSourceBefore === 'esri') {
-          const beforeYear = timeTravelConfig.esri.find(
+          const beforeYear = timeTravelConfig.sources.esri.find(
             (year) => year.year === selectedYearBefore
           );
 
@@ -330,9 +344,9 @@ export default function TimeTravel({
       }
 
       // Handle after map layers (similar logic)
-      if (timeTravelConfig.esri) {
+      if (timeTravelConfig.sources.esri) {
         // First remove all existing layers from after map
-        timeTravelConfig.esri.forEach((year) => {
+        timeTravelConfig.sources.esri.forEach((year) => {
           const layerId = `after-imagery-esri-${year.year}-layer`;
           const polygonLayerId = `project-polygon-layer-esri-${year.year}`;
 
@@ -346,7 +360,7 @@ export default function TimeTravel({
 
         // Add new layers if source is esri
         if (selectedSourceAfter === 'esri') {
-          const afterYear = timeTravelConfig.esri.find(
+          const afterYear = timeTravelConfig.sources.esri.find(
             (year) => year.year === selectedYearAfter
           );
 

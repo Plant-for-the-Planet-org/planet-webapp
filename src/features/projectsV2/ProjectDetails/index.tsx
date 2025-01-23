@@ -82,9 +82,7 @@ const ProjectDetails = ({
             fetchedProject.id,
             fetchedProject.geoLocation
           );
-          if (Object.keys(timeTravelConfig).length > 0) {
-            setTimeTravelConfig(timeTravelConfig);
-          }
+          setTimeTravelConfig(timeTravelConfig);
         } else {
           throw new ClientError(404, {
             error_type: 'project_not_available',
