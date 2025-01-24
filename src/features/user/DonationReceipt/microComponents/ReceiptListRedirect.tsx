@@ -1,21 +1,30 @@
+import { useCallback } from 'react';
 import ContactIcon from '../../../../../public/assets/images/icons/ContactIcon';
 import RedirectRightArrowIcon from '../../../../../public/assets/images/icons/RedirectRightArrowIcon';
 import styles from '../donationReceipt.module.scss';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
 
 const ReceiptListRedirect = () => {
   const t = useTranslations('Donate.donationReceipt');
+  const router = useRouter();
+  const locale = useLocale();
 
-  //TODO: logic need to be implemented
-  const handleOnclick = () => {};
+  const redirectToReceiptListPage = useCallback(() => {
+    router.push('/profile/donation-receipts');
+  }, [locale]);
+
   return (
     <section className={styles.receiptListRedirect}>
       <div className={styles.receiptListRedirectContainer}>
-        <div className={styles.receiptListRedirectSubContainer}>
+        <div>
           <h3>{t('viewAllTaxReceipts')}</h3>
           <p>{t('donationReceiptsManagementInfo')}</p>
         </div>
-        <button onClick={handleOnclick}>
+        <button
+          onClick={redirectToReceiptListPage}
+          className={styles.redirectButton}
+        >
           <RedirectRightArrowIcon />
         </button>
       </div>

@@ -168,6 +168,10 @@
   display: flex;
   justify-content: space-between;
 
+  .redirectButton {
+    cursor: pointer;
+  }
+
   h3 {
     font-weight: 600;
     font-size: 14px;

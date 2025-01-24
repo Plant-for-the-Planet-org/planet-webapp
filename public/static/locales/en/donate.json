@@ -112,6 +112,7 @@
     "filters": "Filters",
     "perM2": "per m²",
     "donationReceipt": {
+      "receipts": "Receipts",
       "verifyTaxHeaderPrimary": "Verify your data to download tax receipt",
       "verifyTaxHeaderSecondary": "once the data is verified, it can not be changed again for this receipt",
       "downloadTaxReceipt": "Download tax receipt",
