@@ -4,6 +4,7 @@ import WebappButton from '../../../common/WebappButton';
 import styles from '../donationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
+import { useCallback } from 'react';
 
 type Props = {
   downloadUrl: string | null;
@@ -14,6 +15,9 @@ const ReceiptActions = ({ downloadUrl }: Props) => {
   const router = useRouter();
 
   // logic is pending
+  const redirectToUserDataForm = useCallback(() => {
+    router.push(`/profile/donation-receipt/modify-user-data`);
+  }, []);
   const confirmRecipientData = () => {};
 
   return (
@@ -34,9 +38,7 @@ const ReceiptActions = ({ downloadUrl }: Props) => {
             text={t('modifyContactInformation')}
             elementType="button"
             icon={<EditIcon />}
-            onClick={() =>
-              router.push(`/profile/tax-receipt/modify-recipient-data`)
-            }
+            onClick={redirectToUserDataForm}
           />
           <WebappButton
             variant="primary"
