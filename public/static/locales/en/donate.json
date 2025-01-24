@@ -122,7 +122,9 @@
       "taxIdentificationNumber": "Tax Identification Number (TIN)",
       "modifyContactInformation": "Modify Contact Information",
       "confirm": "Confirm",
-      "download": "Download"
+      "download": "Download",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "name": "{type, select, individual {Name} organization {Company Name} other {}}"
     }
   }
 }

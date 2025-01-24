@@ -1,5 +1,11 @@
 @import '../../../theme/theme';
 
+.donationReceiptSkeleton {
+  display: flex;
+  justify-content: center;
+  margin-top: 110px;
+}
+
 .donationReceiptLayout {
   width: 100vw;
   height: calc(100vh - 80px);
@@ -120,8 +126,7 @@
 }
 
 .address,
-.firstName,
-.lastName,
+.Name,
 .companyName,
 .tin {
   display: flex;

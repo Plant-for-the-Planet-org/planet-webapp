@@ -1,14 +1,11 @@
+import type { Donation } from '../../../common/Layout/DonationReceiptContext';
+
 import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';
-
-type Donations = {
-  reference: string;
-  amount: string;
-  paymentDate: string;
-};
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 type Props = {
-  donations: Donations[];
+  donations: Donation[];
 };
 
 const DonationData = ({ donations }: Props) => {
@@ -22,13 +19,18 @@ const DonationData = ({ donations }: Props) => {
           <span className={styles.paymentDate}>{t('paymentDate')}</span>
         </div>
         <ul>
-          {donations.map((dtn) => {
+          {donations?.map((dtn) => {
             return (
               <li className={styles.record} key={dtn.reference}>
                 <span className={styles.reference}>{dtn.reference}</span>
-                <span className={styles.amount}>{dtn.amount}</span>
+                <span className={styles.amount}>
+                  {t('donationAmount', {
+                    currency: dtn.currency,
+                    amount: dtn.amount,
+                  })}
+                </span>
                 <time className={styles.date} dateTime={dtn.paymentDate}>
-                  {dtn.paymentDate}
+                  {formatDate(dtn.paymentDate)}
                 </time>
               </li>
             );
