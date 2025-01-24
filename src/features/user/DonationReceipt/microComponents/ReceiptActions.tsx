@@ -15,16 +15,17 @@ const ReceiptActions = ({ downloadUrl }: Props) => {
 
   // logic is pending
   const confirmRecipientData = () => {};
-  const handleDownload = () => {};
+
   return (
     <div className={styles.receiptActions}>
       {downloadUrl ? (
         <WebappButton
           variant="primary"
           text={t('download')}
-          elementType="button"
+          elementType="link"
           icon={<DownloadIcon color="#fff" />}
-          onClick={handleDownload}
+          href={downloadUrl}
+          target={'_blank'}
         />
       ) : (
         <>
