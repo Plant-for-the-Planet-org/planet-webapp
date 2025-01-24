@@ -1,5 +1,11 @@
 @import '../../../theme/theme';
 
+.donationReceiptSkeleton {
+  display: flex;
+  justify-content: center;
+  margin-top: 110px;
+}
+
 .donationReceiptLayout {
   width: 100vw;
   height: calc(100vh - 80px);
@@ -120,14 +126,14 @@
 }
 
 .address,
-.firstName,
-.lastName,
+.Name,
 .companyName,
 .tin {
   display: flex;
   flex-direction: column;
   color: rgba(130, 130, 130, 1);
   gap: 7px;
+
   .header {
     font-size: 12px;
     font-weight: 700;
@@ -139,12 +145,17 @@
   display: flex;
   gap: 12px;
   padding: 0px 10px;
+  justify-content: flex-end;
+
   @include xsPhoneView {
     flex-direction: column;
+    align-items: flex-end;
   }
+
   button {
     flex: 1 1;
   }
+
   svg {
     width: 13px;
   }

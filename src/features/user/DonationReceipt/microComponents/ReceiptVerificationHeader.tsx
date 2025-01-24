@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';
 
 type Props = {
-  downloadUrl: number | null;
+  downloadUrl: string | null;
 };
 
 const ReceiptVerificationHeader = ({ downloadUrl }: Props) => {

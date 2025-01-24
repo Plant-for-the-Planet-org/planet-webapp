@@ -1,3 +1,4 @@
+import type { Donor } from '../../../../features/common/Layout/DonationReceiptContext';
 import type { CountryCode } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
@@ -5,30 +6,16 @@ import styles from '../donationReceipt.module.scss';
 import { getFormattedAddress } from '../../../../utils/addressManagement';
 import { useMemo } from 'react';
 
-type Donar = {
-  tin: string | null;
-  city: string;
-  name: string;
-  type: string;
-  email: string;
-  country: string;
-  zipCode: string;
-  address1: string;
-  address2: string | null;
-  reference: string;
-  companyName?: string;
-};
-
 interface Props {
-  donar: Donar;
+  donar: Donor | undefined;
 }
 
 const RecipientDetails = ({ donar }: Props) => {
+  if (!donar) return null;
+
   const t = useTranslations('Donate');
   const tCountry = useTranslations('Country');
-
   const { zipCode, city, country, address1, address2 } = donar;
-
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
   const cityStatePostalString = useMemo(
     () => getFormattedAddress(zipCode, city, null, countryName),
@@ -41,24 +28,22 @@ const RecipientDetails = ({ donar }: Props) => {
         {t('donationReceipt.recipientInfoHeader')}
       </h3>
       <div className={styles.details}>
-        <div className={styles.firstName}>
-          <span className={styles.header}>{t('firstName')}</span>
-          <span>John</span>
-        </div>
-        <div className={styles.lastName}>
-          <span className={styles.header}>{t('lastName')}</span>
-          <span>Doe</span>
-        </div>
-        <div className={styles.companyName}>
-          <span className={styles.header}>{t('companyName')}</span>
-          <span>{donar.companyName ? donar.companyName : '-'}</span>
-        </div>
-        <div className={styles.tin}>
+        <div className={styles.Name}>
           <span className={styles.header}>
-            {t('donationReceipt.taxIdentificationNumber')}
+            {t('donationReceipt.name', {
+              type: donar.type,
+            })}
           </span>
-          <span>{donar.tin ? donar.tin : '-'}</span>
+          <span>{donar.name}</span>
         </div>
+        {donar.tin && (
+          <div className={styles.tin}>
+            <span className={styles.header}>
+              {t('donationReceipt.taxIdentificationNumber')}
+            </span>
+            <span>{donar.tin}</span>
+          </div>
+        )}
         <div className={styles.address}>
           <span className={styles.header}>Address</span>
           <address>
