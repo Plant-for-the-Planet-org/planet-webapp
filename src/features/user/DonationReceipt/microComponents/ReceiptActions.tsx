@@ -7,18 +7,19 @@ import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/Do
 
 type Props = {
   downloadUrl: string | null;
+  verificationDate: string | null;
 };
 
-const ReceiptActions = ({ downloadUrl }: Props) => {
+const ReceiptActions = ({ downloadUrl, verificationDate }: Props) => {
   const t = useTranslations('Donate.donationReceipt');
   const router = useRouter();
 
   // logic is pending
   const confirmRecipientData = () => {};
-
+  const isReceiptVerified = verificationDate !== null && downloadUrl !== null;
   return (
     <div className={styles.receiptActions}>
-      {downloadUrl ? (
+      {isReceiptVerified ? (
         <WebappButton
           variant="primary"
           text={t('download')}

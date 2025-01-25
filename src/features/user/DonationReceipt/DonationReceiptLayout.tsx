@@ -63,12 +63,13 @@ export const DonationReceiptLayout = () => {
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
         <ReceiptVerificationHeader
-          downloadUrl={donationReceiptData.downloadUrl}
+          verificationDate={donationReceiptData.verificationDate}
         />
         <ReceiptDataSection
           donations={donationReceiptData.donations}
           donor={donationReceiptData.donor}
           downloadUrl={donationReceiptData.downloadUrl}
+          verificationDate={donationReceiptData.verificationDate}
         />
         <ReceiptListRedirect />
       </div>

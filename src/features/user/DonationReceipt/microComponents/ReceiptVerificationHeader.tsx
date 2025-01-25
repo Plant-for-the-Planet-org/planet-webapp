@@ -2,14 +2,14 @@ import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';
 
 type Props = {
-  downloadUrl: string | null;
+  verificationDate: string | null;
 };
 
-const ReceiptVerificationHeader = ({ downloadUrl }: Props) => {
+const ReceiptVerificationHeader = ({ verificationDate }: Props) => {
   const t = useTranslations('Donate.donationReceipt');
   return (
     <section className={styles.receiptVerificationHeader}>
-      {downloadUrl ? (
+      {verificationDate ? (
         <h2>{t('downloadTaxReceipt')}</h2>
       ) : (
         <>

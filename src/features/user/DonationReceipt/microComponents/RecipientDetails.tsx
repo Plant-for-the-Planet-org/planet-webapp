@@ -44,17 +44,17 @@ const RecipientDetails = ({ donar }: Props) => {
             <span>{donar.tin}</span>
           </div>
         )}
-        <div className={styles.address}>
-          <span className={styles.header}>Address</span>
+      </div>
+      <div className={styles.address}>
+        <span className={styles.header}>Address</span>
+        <address>
+          {address1},{cityStatePostalString}
+        </address>
+        {address2 && (
           <address>
-            {address1},{cityStatePostalString}
+            {address2},{cityStatePostalString}
           </address>
-          {address2 && (
-            <address>
-              {address2},{cityStatePostalString}
-            </address>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );

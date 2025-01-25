@@ -12,14 +12,23 @@ interface Prop {
   donations: Donation[];
   donor: Donor;
   downloadUrl: string | null;
+  verificationDate: string | null;
 }
 
-const ReceiptDataSection = ({ donations, donor, downloadUrl }: Prop) => {
+const ReceiptDataSection = ({
+  donations,
+  donor,
+  downloadUrl,
+  verificationDate,
+}: Prop) => {
   return (
     <section className={styles.receiptDataSection}>
       <DonationData donations={donations} />
       <RecipientDetails donar={donor} />
-      <ReceiptActions downloadUrl={downloadUrl} />
+      <ReceiptActions
+        downloadUrl={downloadUrl}
+        verificationDate={verificationDate}
+      />
     </section>
   );
 };
