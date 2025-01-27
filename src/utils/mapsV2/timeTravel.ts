@@ -98,6 +98,13 @@ export const getProjectTimeTravelConfig = async (
   const CACHE_TIME_IN_SECONDS = 60 * 5; /* 60 * 60 * 24 */
 
   async function fetchTimeTravelData(): Promise<ProjectTimeTravelConfig> {
+    if (
+      !Array.isArray(projectPointGeometry?.coordinates) ||
+      projectPointGeometry.coordinates.length !== 2
+    ) {
+      throw new Error('Invalid project point geometry');
+    }
+
     const esriWaybackItems = await getWaybackItemsWithLocalChanges(
       {
         longitude: projectPointGeometry.coordinates[0],
