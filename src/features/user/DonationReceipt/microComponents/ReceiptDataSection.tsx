@@ -1,12 +1,20 @@
+import { useCallback, useContext, useState } from 'react';
 import {
   useDonationReceipt,
   type ReceiptData,
 } from '../../../common/Layout/DonationReceiptContext';
+import type { APIError } from '@planet-sdk/common';
 
+import { handleError } from '@planet-sdk/common';
 import styles from '../donationReceipt.module.scss';
 import DonationData from './DonationData';
 import ReceiptActions from './ReceiptActions';
 import RecipientDetails from './RecipientDetails';
+import { getVerificationDate, RECEIPT_STATUS } from '../utils';
+import { useTenant } from '../../../common/Layout/TenantContext';
+import { putRequest } from '../../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { CircularProgress } from '@mui/material';
 
 interface Prop {
   donationReceiptData: ReceiptData | null;
@@ -15,6 +23,9 @@ interface Prop {
 const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
   if (!donationReceiptData) return null;
   const { updateDonationReceiptData } = useDonationReceipt();
+  const { tenantConfig } = useTenant();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     issuedDonations,
     downloadUrl,
@@ -26,19 +37,57 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
     challenge,
     year,
   } = donationReceiptData;
+
+  const confirmDonorData = useCallback(async () => {
+    if (operation !== RECEIPT_STATUS.VERIFY) return;
+
+    if (hasDonorDataChanged) {
+      //TODO: PUT Authentication request logic
+    }
+
+    try {
+      setIsLoading(true);
+      const data = await putRequest({
+        tenant: tenantConfig.id,
+        url: `/app/donationReceipt/verify`,
+        data: {
+          dtn,
+          challenge,
+          year,
+          verificationDate: getVerificationDate(),
+        },
+      });
+      if (data) updateDonationReceiptData(data);
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [
+    operation,
+    hasDonorDataChanged,
+    tenantConfig.id,
+    dtn,
+    challenge,
+    year,
+    updateDonationReceiptData,
+  ]);
+
   return (
     <section className={styles.receiptDataSection}>
       <DonationData donations={issuedDonations} />
       <RecipientDetails donor={donor} address={address} />
-      <ReceiptActions
-        downloadUrl={downloadUrl}
-        operation={operation}
-        hasDonorDataChanged={hasDonorDataChanged}
-        dtn={dtn}
-        challenge={challenge}
-        year={year}
-        updateDonationReceiptData={updateDonationReceiptData}
-      />
+      {!isLoading ? (
+        <ReceiptActions
+          downloadUrl={downloadUrl}
+          operation={operation}
+          confirmDonorData={confirmDonorData}
+        />
+      ) : (
+        <div className={styles.receiptVerificationSpinner}>
+          <CircularProgress color="success" />
+        </div>
+      )}
     </section>
   );
 };

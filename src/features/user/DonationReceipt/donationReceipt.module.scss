@@ -107,8 +107,8 @@
   gap: 20px;
   background: rgba(242, 242, 242, 0.5);
   width: 100%;
+  margin-top: 20px;
   border-radius: 9px;
-  margin-top: 25px;
   padding: 10px 15px;
 
   .header {
@@ -158,4 +158,10 @@
   svg {
     width: 13px;
   }
+}
+
+.receiptVerificationSpinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 }

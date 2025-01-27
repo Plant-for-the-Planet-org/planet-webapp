@@ -5,8 +5,8 @@ import { useContext, useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import { useRouter } from 'next/router';
+import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import styles from './donationReceipt.module.scss';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
 import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
@@ -60,9 +60,7 @@ export const DonationReceiptLayout = () => {
   return showReceipt ? (
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
-        <ReceiptVerificationHeader
-          verificationDate={donationReceiptData.verificationDate}
-        />
+        <ReceiptVerificationHeader operation={donationReceiptData.operation} />
         <ReceiptDataSection donationReceiptData={donationReceiptData} />
         <ReceiptListRedirect />
       </div>

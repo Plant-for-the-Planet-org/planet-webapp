@@ -42,3 +42,9 @@ export const formatReceiptData = (
     hasDonorDataChanged: false,
   };
 };
+
+export const getVerificationDate = () => {
+  const isoDate = new Date().toISOString();
+  const verificationDate = isoDate.replace('T', ' ').split('.')[0];
+  return verificationDate;
+};
