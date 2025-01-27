@@ -1,3 +1,5 @@
+import { RECEIPT_STATUS } from '../utils';
+
 import { useRouter } from 'next/router';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
@@ -7,19 +9,20 @@ import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/Do
 
 type Props = {
   downloadUrl: string | null;
-  verificationDate: string | null;
+  operation: (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];
 };
 
-const ReceiptActions = ({ downloadUrl, verificationDate }: Props) => {
+const ReceiptActions = ({ downloadUrl, operation }: Props) => {
   const t = useTranslations('Donate.donationReceipt');
   const router = useRouter();
 
   // logic is pending
   const confirmRecipientData = () => {};
-  const isReceiptVerified = verificationDate !== null && downloadUrl !== null;
+  const showDowloadButton =
+    operation === RECEIPT_STATUS.DOWNLOAD && downloadUrl !== null;
   return (
     <div className={styles.receiptActions}>
-      {isReceiptVerified ? (
+      {showDowloadButton ? (
         <WebappButton
           variant="primary"
           text={t('download')}

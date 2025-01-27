@@ -1,4 +1,7 @@
-import type { Donor } from '../../../../features/common/Layout/DonationReceiptContext';
+import type {
+  AddressView,
+  DonorView,
+} from '../../../../features/common/Layout/DonationReceiptContext';
 import type { CountryCode } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
@@ -7,16 +10,19 @@ import { getFormattedAddress } from '../../../../utils/addressManagement';
 import { useMemo } from 'react';
 
 interface Props {
-  donar: Donor | undefined;
+  donor: DonorView | undefined;
+  address: AddressView | undefined;
 }
 
-const RecipientDetails = ({ donar }: Props) => {
-  if (!donar) return null;
+const RecipientDetails = ({ donor, address }: Props) => {
+  if (address === undefined || donor === undefined) return null;
 
   const t = useTranslations('Donate');
   const tCountry = useTranslations('Country');
-  const { zipCode, city, country, address1, address2 } = donar;
+  const { country, zipCode, city, address1, address2 } = address;
+  const { type, name, tin } = donor;
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
+
   const cityStatePostalString = useMemo(
     () => getFormattedAddress(zipCode, city, null, countryName),
     [zipCode, city, countryName]
@@ -31,17 +37,17 @@ const RecipientDetails = ({ donar }: Props) => {
         <div className={styles.Name}>
           <span className={styles.header}>
             {t('donationReceipt.name', {
-              type: donar.type,
+              type,
             })}
           </span>
-          <span>{donar.name}</span>
+          <span>{name}</span>
         </div>
-        {donar.tin && (
+        {tin && (
           <div className={styles.tin}>
             <span className={styles.header}>
               {t('donationReceipt.taxIdentificationNumber')}
             </span>
-            <span>{donar.tin}</span>
+            <span>{tin}</span>
           </div>
         )}
       </div>

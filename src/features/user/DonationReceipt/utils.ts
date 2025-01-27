@@ -1,32 +1,43 @@
-export const donationData = {
-  dtn: 'H0GH9ADF',
-  challenge: 'T.HIL',
-  year: '2020',
-  verificationDate: null,
-  donor: {
-    tin: null,
-    city: 'Hamburg',
-    name: 'Pue GmbH',
-    type: 'organization',
-    email: 't.hicool.de',
-    country: 'DE',
-    zipCode: '22113',
-    address1: 'Springfield, 210, Springfield, 2100',
-    address2: null,
-    reference: 't.coolmblue.ce',
-  },
-  amount: 10.0,
-  donations: [
-    {
-      reference: 'H01VDFUJ',
-      amount: `$10.0`,
-      paymentDate: 'October 15, 2024',
+import type {
+  ReceiptDataAPI,
+  ReceiptData,
+} from '../../common/Layout/DonationReceiptContext';
+
+export const RECEIPT_STATUS = {
+  VERIFY: 'verify',
+  DOWNLOAD: 'download',
+  ISSUE: 'issue',
+} as const;
+
+export const formatReceiptData = (
+  data: Partial<ReceiptDataAPI>
+): ReceiptData => {
+  return {
+    dtn: data.dtn || '',
+    year: data.year || '',
+    challenge: data.challenge || '',
+    amount: data.amount || 0,
+    currency: data.currency || '',
+    paymentDate: data.paymentDate || '',
+    verificationDate: data.verificationDate || null,
+    downloadUrl: data.downloadUrl || '',
+    donationCount: data.donationCount || 0,
+    operation:
+      data.verificationDate === null
+        ? RECEIPT_STATUS.VERIFY
+        : RECEIPT_STATUS.DOWNLOAD,
+    donor: {
+      tin: data.donor?.tin || null,
+      name: data.donor?.name || '',
+      type: data.donor?.type || null,
     },
-    {
-      reference: '046S2290',
-      amount: `$50.0`,
-      paymentDate: 'November 15, 2024',
+    address: {
+      city: data.donor?.city || '',
+      country: data.donor?.country || '',
+      zipCode: data.donor?.zipCode || '',
+      address1: data.donor?.address1 || '',
+      address2: data.donor?.address2 || null,
     },
-  ],
-  downloadUrl: null,
+    issuedDonations: data.donations || null,
+  };
 };

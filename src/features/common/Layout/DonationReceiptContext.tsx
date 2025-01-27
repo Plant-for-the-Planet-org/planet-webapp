@@ -1,8 +1,16 @@
 import type { FC } from 'react';
 
 import { useMemo, useState, createContext, useContext } from 'react';
+import { formatReceiptData } from '../../user/DonationReceipt/utils';
 
-export type Donor = {
+export type IssuedDonationView = {
+  amount: number;
+  currency: string;
+  paymentDate: string;
+  reference: string;
+};
+
+export type DonorAPI = {
   tin: string | null;
   city: string;
   name: string;
@@ -15,32 +23,48 @@ export type Donor = {
   reference: string;
 };
 
-export type Donation = {
-  amount: number;
-  currency: string;
-  paymentDate: string;
-  reference: string;
+export type DonorView = {
+  tin: string | null;
+  name: string;
+  type: 'individual' | 'organization' | null;
 };
 
-export type ReceiptData = {
-  dtn: string;
-  challenge: string;
-  year: string;
+export type AddressView = {
+  city: string;
   country: string;
-  reference: string;
+  zipCode: string;
+  address1: string;
+  address2: string | null;
+};
+
+type ReceiptDataBase = {
+  dtn: string;
+  year: string;
+  challenge: string;
   amount: number;
   currency: string;
   paymentDate: string;
   verificationDate: string | null;
-  donor: Donor;
   downloadUrl: string;
   donationCount: number;
-  donations: Donation[];
 };
+
+export interface ReceiptDataAPI extends ReceiptDataBase {
+  country: string;
+  reference: string;
+  donor: DonorAPI;
+  donations: IssuedDonationView[];
+}
+export interface ReceiptData extends ReceiptDataBase {
+  operation: 'verify' | 'download';
+  donor: DonorView;
+  address: AddressView;
+  issuedDonations: IssuedDonationView[] | null;
+}
 
 interface DonationReceiptContextInterface {
   donationReceiptData: ReceiptData | null;
-  updateDonationReceiptData: (data: Partial<ReceiptData>) => void;
+  updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
 }
 
 const DonationReceiptContext =
@@ -49,16 +73,13 @@ const DonationReceiptContext =
 export const DonationReceiptProvider: FC = ({ children }) => {
   const [donationReceiptData, setDonationReceiptData] =
     useState<ReceiptData | null>(null);
-  const updateDonationReceiptData = (data: Partial<ReceiptData>) => {
-    setDonationReceiptData((prevState) => {
-      if (!prevState) {
-        return { ...data } as ReceiptData;
-      }
-      return {
-        ...prevState,
-        ...data,
-      } as ReceiptData;
-    });
+
+  const updateDonationReceiptData = (data: Partial<ReceiptDataAPI>) => {
+    const formattedData = formatReceiptData(data);
+    setDonationReceiptData((prevState) => ({
+      ...prevState,
+      ...formattedData,
+    }));
   };
 
   const value: DonationReceiptContextInterface = useMemo(
