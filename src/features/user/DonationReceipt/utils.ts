@@ -39,5 +39,6 @@ export const formatReceiptData = (
       address2: data.donor?.address2 || null,
     },
     issuedDonations: data.donations || null,
+    hasDonorDataChanged: false,
   };
 };

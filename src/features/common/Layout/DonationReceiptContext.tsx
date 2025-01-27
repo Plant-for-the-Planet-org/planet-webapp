@@ -60,6 +60,7 @@ export interface ReceiptData extends ReceiptDataBase {
   donor: DonorView;
   address: AddressView;
   issuedDonations: IssuedDonationView[] | null;
+  hasDonorDataChanged: boolean; // Set it to true if the user modifies the data during the receipt verification process
 }
 
 interface DonationReceiptContextInterface {
