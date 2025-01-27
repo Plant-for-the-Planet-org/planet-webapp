@@ -9,7 +9,7 @@ import { handleError } from '@planet-sdk/common';
 import styles from '../donationReceipt.module.scss';
 import DonationData from './DonationData';
 import ReceiptActions from './ReceiptActions';
-import RecipientDetails from './RecipientDetails';
+import DonorDetails from './DonorDetails';
 import { getVerificationDate, RECEIPT_STATUS } from '../utils';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { putRequest } from '../../../../utils/apiRequests/api';
@@ -76,7 +76,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
   return (
     <section className={styles.receiptDataSection}>
       <DonationData donations={issuedDonations} />
-      <RecipientDetails donor={donor} address={address} />
+      <DonorDetails donor={donor} address={address} />
       {!isLoading ? (
         <ReceiptActions
           downloadUrl={downloadUrl}

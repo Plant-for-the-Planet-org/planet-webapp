@@ -14,7 +14,7 @@ interface Props {
   address: AddressView | undefined;
 }
 
-const RecipientDetails = ({ donor, address }: Props) => {
+const DonorDetails = ({ donor, address }: Props) => {
   if (address === undefined || donor === undefined) return null;
 
   const t = useTranslations('Donate');
@@ -29,7 +29,7 @@ const RecipientDetails = ({ donor, address }: Props) => {
   );
 
   return (
-    <div className={styles.recipientDetails}>
+    <div className={styles.donorDetails}>
       <h3 className={styles.header}>
         {t('donationReceipt.recipientInfoHeader')}
       </h3>
@@ -66,4 +66,4 @@ const RecipientDetails = ({ donor, address }: Props) => {
   );
 };
 
-export default RecipientDetails;
+export default DonorDetails;
