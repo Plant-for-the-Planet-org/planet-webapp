@@ -1,8 +1,9 @@
 import type { FireFeature } from '../../../common/types/fireLocation';
+import type { PopperProps } from '@mui/material';
 
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import RightArrowIcon from '../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoIconPopup';
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
@@ -19,9 +20,22 @@ interface Props {
 
 export default function FirePopup({ isOpen, feature }: Props) {
   const anchorRef = React.useRef(null);
+  const popperRef = React.useRef<HTMLDivElement>(null);
   const [arrowRef, setArrowRef] = React.useState<HTMLSpanElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
+  const [popperPlacement, setPopperPlacement] =
+    React.useState<PopperProps['placement']>('top');
   const tProjectDetails = useTranslations('ProjectDetails');
+
+  useEffect(() => {
+    if (popperRef.current?.getAttribute('data-popper-placement')) {
+      setPopperPlacement(
+        popperRef.current?.getAttribute(
+          'data-popper-placement'
+        ) as PopperProps['placement']
+      );
+    }
+  }, [popperRef?.current?.getAttribute('data-popper-placement')]);
 
   const alertAge = useMemo(() => {
     const ms = Math.abs(
@@ -65,9 +79,11 @@ export default function FirePopup({ isOpen, feature }: Props) {
       <Popper
         id="fire-popup"
         open={showPopup}
+        ref={popperRef}
         anchorEl={anchorRef.current}
         placement="top"
-        disablePortal={true}
+        className={styles.popperWrapper}
+        disablePortal={false}
         onMouseLeave={() => setShowPopup(false)}
         onMouseEnter={() => setShowPopup(true)}
         modifiers={[
@@ -76,15 +92,43 @@ export default function FirePopup({ isOpen, feature }: Props) {
             enabled: true,
             options: {
               element: arrowRef,
+              padding: 8,
             },
           },
           {
             name: 'flip',
-            enabled: false,
+            enabled: true,
+            options: {
+              fallbackPlacements: ['bottom'],
+              altBoundary: true,
+              padding: 4,
+              boundary: document.querySelector('canvas.maplibregl-canvas'),
+            },
+          },
+          {
+            name: 'preventOverflow',
+            enabled: true,
+            options: {
+              altAxis: true,
+              altBoundary: true,
+              padding: 4,
+              boundary: document.querySelector('canvas.maplibregl-canvas'),
+            },
           },
         ]}
       >
-        <span className={styles.arrow} ref={setArrowRef} />
+        {/* <div className={styles.arrow} ref={setArrowRef} /> */}
+        {popperPlacement === 'top' ? (
+          <div
+            className={`${styles.arrowTop} fire-popup-arrow`}
+            ref={setArrowRef}
+          />
+        ) : (
+          <div
+            className={`${styles.arrowBottom} fire-popup-arrow`}
+            ref={setArrowRef}
+          />
+        )}
         <aside className={styles.popupContainer}>
           <header className={styles.popupTitle}>
             <h2 className={styles.titleText}>

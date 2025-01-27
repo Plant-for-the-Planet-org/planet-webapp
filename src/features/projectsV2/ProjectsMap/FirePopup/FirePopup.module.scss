@@ -1,14 +1,32 @@
 @import '../../../../theme/theme';
 
+$backgroundColor: #fff;
+$light: #fff;
+$dangerColorNew: #e86f56;
+$dangerBackgroundColor: rgba(249, 220, 214);
+// $fontXSmall: '12px';
+
 .arrow {
-  display: block;
-  height: 0px;
-  width: 0px;
+  // height: 8px;
+  // width: 8px;
   border: 10px solid transparent;
   border-top-color: $light;
   position: absolute;
-  bottom: -19px;
-  left: calc(50% - 10px);
+  bottom: -20px;
+  // left: calc(50% - 10px);
+}
+
+.arrowTop {
+  border: 10px solid transparent;
+  border-top-color: $light;
+  position: absolute;
+  bottom: -20px;
+}
+.arrowBottom {
+  border: 10px solid transparent;
+  border-bottom-color: $dangerBackgroundColor;
+  position: absolute;
+  top: -20px;
 }
 
 //fireIcon style : to be removed
@@ -16,8 +34,9 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20%;
-  padding-top: 20px;
+  // margin-top: 20%;
+  padding-top: 12px;
+  padding-bottom: 12px;
   cursor: pointer;
 }
 
