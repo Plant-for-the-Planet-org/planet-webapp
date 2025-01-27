@@ -91,7 +91,8 @@
       "other-intervention": "Other Interventions"
     },
     "timeTravel": {
-      "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}"
+      "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}",
+      "timeTravelOptionsLabel": "Time Travel Options"
     }
   }
 }

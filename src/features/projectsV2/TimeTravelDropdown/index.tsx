@@ -56,6 +56,8 @@ const TimeTravelDropdown = ({
       <button
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-expanded={isMenuOpen}
+        aria-label={tTimeTravel('timeTravelOptionsLabel')}
       >
         <div className={styles.menuButtonTitle}>
           <CalendarIcon width={14} color={`${'var(--bold-font-color-new)'}`} />
@@ -81,6 +83,9 @@ const TimeTravelDropdown = ({
             {availableYears?.map((year, index) => (
               <time
                 key={index}
+                dateTime={`${year}`}
+                role="button"
+                aria-selected={isOptionSelected(year, selectedYear)}
                 onClick={() => handleChangeYear(year)}
                 className={`${
                   isOptionSelected(year, selectedYear)
