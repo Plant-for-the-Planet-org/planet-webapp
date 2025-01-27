@@ -1,6 +1,7 @@
 import type { WaybackItem } from '@vannizhang/wayback-core';
 import type { Point } from 'geojson';
 
+// To remove timeTravelConfig (along with json file) once we remove the old maps code
 import timeTravelConfig from '../../../public/data/maps/time-travel.json';
 import { getWaybackItemsWithLocalChanges } from '@vannizhang/wayback-core';
 import { cacheKeyPrefix } from '../constants/cacheKeyPrefix';
@@ -20,6 +21,7 @@ const SOURCE_BASE_URLS: Record<SourceName, string> = {
   esri: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile',
 };
 
+// To remove once we remove the old maps code
 /** Process data for all time travel sources */
 export const getTimeTravelConfig = (): TimeTravelConfig => {
   const result: TimeTravelConfig = {};

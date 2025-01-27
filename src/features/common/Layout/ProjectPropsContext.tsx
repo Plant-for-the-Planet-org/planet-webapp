@@ -1,3 +1,4 @@
+// Changes in this file can be ignored as it was just used to get the old time travel feature working
 import type { FC } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type {

@@ -1,3 +1,4 @@
+// Changes in this file can be ignored as it was just used to get the old time travel feature working
 import type { ReactElement } from 'react';
 import type {
   TreeProjectExtended,
