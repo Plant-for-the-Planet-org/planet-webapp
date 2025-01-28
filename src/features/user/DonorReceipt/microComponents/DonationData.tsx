@@ -1,11 +1,11 @@
-import type { Donation } from '../../../common/Layout/DonationReceiptContext';
+import type { IssuedDonationView } from '../donorReceipt';
 
 import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 type Props = {
-  donations: Donation[];
+  donations: IssuedDonationView[] | null;
 };
 
 const DonationData = ({ donations }: Props) => {

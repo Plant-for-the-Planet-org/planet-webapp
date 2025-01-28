@@ -1,15 +1,18 @@
+import type { Operation } from './ReceiptActions';
+
 import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';
+import { RECEIPT_STATUS } from '../utils';
 
 type Props = {
-  downloadUrl: string | null;
+  operation: Operation;
 };
 
-const ReceiptVerificationHeader = ({ downloadUrl }: Props) => {
+const ReceiptVerificationHeader = ({ operation }: Props) => {
   const t = useTranslations('Donate.donationReceipt');
   return (
     <section className={styles.receiptVerificationHeader}>
-      {downloadUrl ? (
+      {operation === RECEIPT_STATUS.DOWNLOAD ? (
         <h2>{t('downloadTaxReceipt')}</h2>
       ) : (
         <>

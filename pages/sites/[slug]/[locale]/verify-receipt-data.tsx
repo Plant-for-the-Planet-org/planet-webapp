@@ -16,8 +16,8 @@ import {
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import DonationReceiptLayout from '../../../../src/features/user/DonationReceipt/DonationReceiptLayout';
-import { DonationReceiptProvider } from '../../../../src/features/common/Layout/DonationReceiptContext';
+import DonorReceiptLayout from '../../../../src/features/user/DonorReceipt/DonorReceiptLayout';
+import { DonorReceiptProvider } from '../../../../src/features/common/Layout/DonorReceiptContext';
 
 interface PageProps {
   messages: AbstractIntlMessages;
@@ -39,9 +39,9 @@ export default function DonationReceipt({
   }, [router.isReady]);
 
   return (
-    <DonationReceiptProvider>
-      <DonationReceiptLayout />
-    </DonationReceiptProvider>
+    <DonorReceiptProvider>
+      <DonorReceiptLayout />
+    </DonorReceiptProvider>
   );
 }
 
