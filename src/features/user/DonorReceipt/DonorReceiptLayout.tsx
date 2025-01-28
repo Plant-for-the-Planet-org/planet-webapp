@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI } from '../../common/Layout/DonorReceiptContext';
+import type { ReceiptDataAPI } from './donorReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';

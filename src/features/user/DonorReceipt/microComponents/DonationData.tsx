@@ -1,4 +1,4 @@
-import type { IssuedDonationView } from '../../../common/Layout/DonorReceiptContext';
+import type { IssuedDonationView } from '../donorReceipt';
 
 import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';

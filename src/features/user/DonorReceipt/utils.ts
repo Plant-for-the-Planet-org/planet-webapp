@@ -1,7 +1,4 @@
-import type {
-  ReceiptDataAPI,
-  ReceiptData,
-} from '../../common/Layout/DonorReceiptContext';
+import type { ReceiptDataAPI, ReceiptData } from './donorReceipt';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
