@@ -1,9 +1,4 @@
-import { procedure } from '../../trpc';
-import prisma from '../../../../prisma/client';
-import { z } from 'zod';
-import { Prisma } from '@prisma/client';
-import { TRPCError } from '@trpc/server';
-import {
+import type {
   BriefProjectQueryResult,
   ContributionStats,
   MyContributionsMapItem,
@@ -16,9 +11,17 @@ import {
   SingleRegistration,
   MySingleContribution,
 } from '../../../features/common/types/myForest';
+
+import { procedure } from '../../trpc';
+import prisma from '../../../../prisma/client';
+import { z } from 'zod';
+import { Prisma } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
 import { fetchProfile } from '../../utils/fetchProfile';
 import { fetchProfileGroupData } from '../../utils/fetchProfileGroupData';
+import { getCachedData } from '../../utils/cache';
+import { cacheKeyPrefix } from '../../../utils/constants/cacheKeyPrefix';
 
 function initializeStats(): ContributionStats {
   return {
@@ -70,18 +73,18 @@ async function fetchContributions(
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
 			SELECT 
 				c.guid,
-				COALESCE(c.quantity, c.tree_count) as units,
-				c.unit_type as unitType,
-				c.plant_date as plantDate,
-				c.contribution_type as contributionType,
-				c.plant_project_id as projectId,
+				COALESCE(c.quantity, c.tree_count) as "units",
+				c.unit_type as "unitType",
+				c.plant_date as "plantDate",
+				c.contribution_type as "contributionType",
+				c.plant_project_id as "projectId",
 				c.amount,
 				c.currency,
 				c.country,
 				c.geometry,
-				c.gift_method as giftMethod, 
-				c.gift_data->>'$.recipientName' as giftRecipient, 
-				c.gift_data->>'$.type' as giftType
+				c.gift_method as "giftMethod", 
+				c.gift_data->>'recipientName' as "giftRecipient", 
+				c.gift_data->>'type' as "giftType"
 			FROM
 				contribution c
 			WHERE
@@ -101,12 +104,12 @@ async function fetchContributions(
 async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
 			SELECT 
-				round((g.value)/100, 2) as quantity, 
-				g.metadata->>'$.giver.name' as giftGiver, 
-				g.metadata->>'$.project.id' as projectGuid, 
-				g.metadata->>'$.project.name' as projectName, 
-				g.metadata->>'$.project.country' as country, 
-				COALESCE(g.payment_date, g.redemption_date) as plantDate
+				ROUND(CAST(g.value AS NUMERIC)/100, 2) as "quantity",
+				g.metadata->'giver'->>'name' as "giftGiver",
+				g.metadata->'project'->>'id' as "projectGuid",
+				g.metadata->'project'->>'name' as "projectName",
+				g.metadata->'project'->>'country' as "country",
+				COALESCE(g.payment_date, g.redemption_date) as "plantDate"
 			FROM 
 				gift g
 			WHERE 
@@ -379,117 +382,144 @@ export const contributionsProcedure = procedure
   .input(
     z.object({
       profileId: z.string(),
+      isPublicProfile: z.boolean().optional(),
     })
   )
-  .query(async ({ input: { profileId } }) => {
-    console.log(new Date().toLocaleString(), 'starting contributionsProcedure');
+  .query(async ({ input: { profileId, isPublicProfile } }) => {
+    const fetchContributionsData = async () => {
+      console.log(
+        new Date().toLocaleString(),
+        'starting fetching contributions data from DB'
+      );
+      // Initialize return values
+      const stats = initializeStats();
+      /**
+       * Map of project guid / contribution id (to identify registrations) to contribution data.
+       * This groups data for donations and gifts by project, and tree registrations by contribution id
+       * */
+      const myContributionsMap: Map<string, MyContributionsMapItem> = new Map();
+      /** Maps contribution id to geometry of registered tree */
+      const registrationLocationsMap = new Map<string, MapLocation>();
+      const projectLocationsMap = new Map<string, MapLocation>();
 
-    // Initialize return values
-    const stats = initializeStats();
-    /**
-     * Map of project guid / contribution id (to identify registrations) to contribution data.
-     * This groups data for donations and gifts by project, and tree registrations by contribution id
-     * */
-    const myContributionsMap: Map<string, MyContributionsMapItem> = new Map();
-    /** Maps contribution id to geometry of registered tree */
-    const registrationLocationsMap = new Map<string, MapLocation>();
-    const projectLocationsMap = new Map<string, MapLocation>();
+      // Check that the profile actually exists
+      const profile = await fetchProfile(profileId);
 
-    // Check that the profile actually exists
-    const profile = await fetchProfile(profileId);
+      if (!profile) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Profile not found',
+        });
+      }
 
-    if (!profile) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Profile not found',
+      // Check if the profile is associated with a profile group, and fetch all profile ids for that group (parent and children)
+      const profileGroupData = await fetchProfileGroupData(profile.id);
+      const profileIds =
+        profileGroupData.length > 0
+          ? profileGroupData.map(({ profileId }) => profileId)
+          : [profile.id];
+
+      // Fetch eligible projects
+      const projects = await fetchProjects();
+      /** Map of project id to project information */
+      const projectIdMap = new Map(
+        projects.map((project) => [project.id, project])
+      );
+      const projectGuidMap = new Map(
+        projects.map((project) => [project.guid, project])
+      );
+
+      const contributions = await fetchContributions(profileIds);
+      const gifts = await fetchGifts(profileIds);
+
+      // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
+      contributions.forEach((contribution) => {
+        contribution.units = Number(contribution.units);
+        stats.contributionsMadeCount++;
+        populateContributedCountries(
+          contribution.country,
+          projectIdMap.get(contribution.projectId)?.country,
+          stats.contributedCountries
+        );
+        if (contribution.contributionType === 'planting') {
+          handleRegistrationContribution(
+            contribution,
+            stats,
+            myContributionsMap,
+            registrationLocationsMap,
+            projectIdMap.get(contribution.projectId) || null
+          );
+        } else {
+          handleDonationContribution(
+            contribution,
+            projectIdMap,
+            stats,
+            myContributionsMap,
+            projectLocationsMap
+          );
+        }
       });
+
+      // Process gift data, updating myContributionsMap and stats
+      gifts.forEach((gift) => {
+        gift.quantity = Number(gift.quantity);
+        stats.giftsReceivedCount++;
+        stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
+        populateContributedCountries(
+          gift.country,
+          projectGuidMap.get(gift.projectGuid)?.country,
+          stats.contributedCountries
+        );
+        // Handle individual gift contributions if the project is in the eligible project set
+        const project = projectGuidMap.get(gift.projectGuid);
+        if (project) {
+          handleGiftContribution(
+            gift,
+            project,
+            stats,
+            myContributionsMap,
+            projectLocationsMap
+          );
+        }
+      });
+
+      // combine latestGifts and latestDonations into latestContributions for each project
+      myContributionsMap.forEach((item) => {
+        if (item.type === 'project') {
+          mergeAndSortLatestContributions(item);
+        }
+      });
+
+      const sortedContributionsMap =
+        getSortedContributionsMap(myContributionsMap);
+
+      console.log(
+        new Date().toLocaleString(),
+        'finished fetching contributions data from db'
+      );
+
+      return {
+        stats,
+        myContributionsMap: sortedContributionsMap,
+        registrationLocationsMap,
+        projectLocationsMap,
+      };
+    };
+
+    if (isPublicProfile) {
+      try {
+        return await getCachedData(
+          `${cacheKeyPrefix}_pp-contributions_${profileId}`,
+          fetchContributionsData
+        );
+      } catch (err) {
+        console.error(`Error fetching profile contributions: ${err}`);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Error fetching public profile contributions',
+        });
+      }
     }
 
-    // Check if the profile is associated with a profile group, and fetch all profile ids for that group (parent and children)
-    const profileGroupData = await fetchProfileGroupData(profile.id);
-    const profileIds =
-      profileGroupData.length > 0
-        ? profileGroupData.map(({ profileId }) => profileId)
-        : [profile.id];
-
-    // Fetch eligible projects
-    const projects = await fetchProjects();
-    /** Map of project id to project information */
-    const projectIdMap = new Map(
-      projects.map((project) => [project.id, project])
-    );
-    const projectGuidMap = new Map(
-      projects.map((project) => [project.guid, project])
-    );
-
-    const contributions = await fetchContributions(profileIds);
-    const gifts = await fetchGifts(profileIds);
-
-    // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
-    contributions.forEach((contribution) => {
-      stats.contributionsMadeCount++;
-      populateContributedCountries(
-        contribution.country,
-        projectIdMap.get(contribution.projectId)?.country,
-        stats.contributedCountries
-      );
-      if (contribution.contributionType === 'planting') {
-        handleRegistrationContribution(
-          contribution,
-          stats,
-          myContributionsMap,
-          registrationLocationsMap,
-          projectIdMap.get(contribution.projectId) || null
-        );
-      } else {
-        handleDonationContribution(
-          contribution,
-          projectIdMap,
-          stats,
-          myContributionsMap,
-          projectLocationsMap
-        );
-      }
-    });
-
-    // Process gift data, updating myContributionsMap and stats
-    gifts.forEach((gift) => {
-      stats.giftsReceivedCount++;
-      stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
-      populateContributedCountries(
-        gift.country,
-        projectGuidMap.get(gift.projectGuid)?.country,
-        stats.contributedCountries
-      );
-      // Handle individual gift contributions if the project is in the eligible project set
-      const project = projectGuidMap.get(gift.projectGuid);
-      if (project) {
-        handleGiftContribution(
-          gift,
-          project,
-          stats,
-          myContributionsMap,
-          projectLocationsMap
-        );
-      }
-    });
-
-    // combine latestGifts and latestDonations into latestContributions for each project
-    myContributionsMap.forEach((item) => {
-      if (item.type === 'project') {
-        mergeAndSortLatestContributions(item);
-      }
-    });
-
-    const sortedContributionsMap =
-      getSortedContributionsMap(myContributionsMap);
-
-    console.log(new Date().toLocaleString(), 'ending contributionsProcedure');
-
-    return {
-      stats,
-      myContributionsMap: sortedContributionsMap,
-      registrationLocationsMap,
-      projectLocationsMap,
-    };
+    return await fetchContributionsData();
   });

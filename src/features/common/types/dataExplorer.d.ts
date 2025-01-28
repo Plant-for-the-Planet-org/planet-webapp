@@ -1,4 +1,4 @@
-import { Geometry } from '@turf/turf';
+import type { Point, Polygon } from 'geojson';
 
 export interface IDailyFrame {
   plantedDate: string;
@@ -58,7 +58,7 @@ export interface TotalSpeciesPlanted {
 }
 
 export interface Feature {
-  geometry: Geometry;
+  geometry: Point | Polygon;
   properties: {
     name: string;
   };
@@ -72,7 +72,7 @@ export type FeatureCollection = {
 
 export interface UncleanSite {
   name: string;
-  geometry: string;
+  geometry: Point | Polygon;
 }
 
 export interface UncleanDistinctSpecies {
@@ -87,7 +87,7 @@ export interface UncleanPlantLocations {
 }
 
 export interface PlantLocation {
-  geometry: Geometry;
+  geometry: Point | Polygon;
   properties: {
     guid: string;
     treeCount: number;
@@ -111,7 +111,7 @@ export interface Measurements {
 export interface SamplePlantLocation {
   tag: string | null;
   guid: string;
-  geometry: Geometry;
+  geometry: Point;
   measurements: Measurements;
 }
 
@@ -121,7 +121,7 @@ export interface PlantedSpecies {
 }
 
 export interface PlantLocationDetailsQueryRes {
-  result: string;
+  result: PlantLocationDetails;
 }
 
 export interface PlantLocationProperties {
@@ -167,7 +167,7 @@ export interface PlantLocationDetailsApiResponse {
 }
 
 export interface SinglePlantLocationApiResponse {
-  geometry: Geometry;
+  geometry: Point | Polygon;
   properties: {
     guid: string;
     treeCount: number;

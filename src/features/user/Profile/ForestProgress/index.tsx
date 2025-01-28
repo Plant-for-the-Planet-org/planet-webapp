@@ -1,10 +1,11 @@
+import type { ProfilePageType } from '../../../common/types/myForest';
+
 import { useState, useEffect } from 'react';
 import styles from './ForestProgress.module.scss';
 import TargetsModal from './TargetsModal';
 import { useMyForest } from '../../../common/Layout/MyForestContext';
 import EmptyProgress from './EmptyProgress';
 import ForestProgressItem from './ForestProgressItem';
-import { ProfilePageType } from '../../../common/types/myForest';
 import {
   checkProgressEnabled,
   aggregateProgressData,

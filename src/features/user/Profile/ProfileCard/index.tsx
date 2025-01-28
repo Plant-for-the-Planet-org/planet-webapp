@@ -4,10 +4,8 @@ import React from 'react';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './ProfileCard.module.scss';
-import {
-  DefaultUserProfileImage,
-  SettingsIcon,
-} from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import { SettingsIcon } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import Link from 'next/link';
 import ProfileActions from './ProfileActions';
 import DonorCircleMemberBadge from './MicroComponents/DonorCircleMemberBadge';
@@ -27,9 +25,7 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
         {userImageUrl && !userImageUrl.includes('development') ? (
           <Avatar alt={userProfile.displayName} src={userImageUrl} />
         ) : (
-          <Avatar>
-            <DefaultUserProfileImage />
-          </Avatar>
+          <DefaultProfileImageIcon />
         )}
       </div>
       <div className={styles.profileDetailsContainer}>

@@ -1,4 +1,16 @@
-import React, { ReactElement, useEffect } from 'react';
+import type { ReactElement } from 'react';
+import type { SxProps } from '@mui/material';
+import type { APIError, InterventionTypes } from '@planet-sdk/common';
+import type {
+  DetailedAnalysisProps,
+  SiteOwners,
+  PlantingSeason,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+  InterventionOption,
+} from '../../../common/types/project';
+
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
@@ -8,10 +20,10 @@ import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/I
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
-import { SxProps, TextField, Button, Tooltip } from '@mui/material';
+import { handleError } from '@planet-sdk/common';
+import { TextField, Button, Tooltip } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, InterventionTypes } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -20,14 +32,6 @@ import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import {
-  DetailedAnalysisProps,
-  SiteOwners,
-  PlantingSeason,
-  ProfileProjectTrees,
-  ProfileProjectConservation,
-  InterventionOption,
-} from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const dialogSx: SxProps = {
@@ -367,13 +371,13 @@ export default function DetailedAnalysis({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
+      >({
+        tenant: tenantConfig?.id,
+        url: `/app/projects/${projectGUID}`,
+        data: submitData,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjectDetails(res);
       setIsUploadingData(false);
       setIsInterventionsMissing(null);

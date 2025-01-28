@@ -1,21 +1,25 @@
-import React, { ReactElement } from 'react';
-import ProjectsContainer from '../../../../../../src/features/user/ManageProjects/ProjectsContainer';
-import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
+import ProjectsContainer from '../../../../../../src/features/user/ManageProjects/ProjectsContainer';
+import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import { useTranslations } from 'next-intl';
+import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
@@ -50,17 +54,18 @@ export default function Register({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

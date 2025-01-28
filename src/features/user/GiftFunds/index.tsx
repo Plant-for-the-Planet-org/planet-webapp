@@ -1,3 +1,5 @@
+import type { GiftFund } from '@planet-sdk/common/build/types/user';
+
 import React, { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
@@ -5,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
-import { GiftFund } from '@planet-sdk/common/build/types/user';
 
 const GiftFunds = () => {
   const t = useTranslations('Giftfunds');

@@ -1,3 +1,11 @@
+import type { ApexOptions } from 'apexcharts';
+import type {
+  IDailyFrame,
+  IMonthlyFrame,
+  IWeeklyFrame,
+  IYearlyFrame,
+} from '../../../../../common/types/dataExplorer';
+
 import { differenceInDays, format } from 'date-fns';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
@@ -7,16 +15,9 @@ import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
-import { ApexOptions } from 'apexcharts';
 import { Tooltip } from './Tooltip';
 import { Container } from '../Container';
 import TimeFrameSelector, { TIME_FRAME } from './TimeFrameSelector';
-import {
-  IDailyFrame,
-  IMonthlyFrame,
-  IWeeklyFrame,
-  IYearlyFrame,
-} from '../../../../../common/types/dataExplorer';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
@@ -507,6 +508,10 @@ export const TreePlanted = () => {
           xaxis: {
             ...options.xaxis,
             categories: categories,
+            labels: {
+              ...options.xaxis?.labels,
+              rotateAlways: data.length > 15,
+            },
           },
           tooltip: {
             custom: function ({ series: s, dataPointIndex }) {

@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
 import { Button } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

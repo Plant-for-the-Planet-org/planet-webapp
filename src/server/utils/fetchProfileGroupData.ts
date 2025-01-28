@@ -1,9 +1,10 @@
+import type { ProfileGroupQueryResult } from '../../features/common/types/myForest';
+
 import prisma from '../../../prisma/client';
-import { ProfileGroupQueryResult } from '../../features/common/types/myForest';
 
 export async function fetchProfileGroupData(profileId: number) {
   const data = await prisma.$queryRaw<ProfileGroupQueryResult[]>`
-				SELECT pg.profile_id as profileId
+				SELECT pg.profile_id as "profileId"
 				FROM profile_group AS pg
 				WHERE pg.lft BETWEEN (
 						SELECT root.lft

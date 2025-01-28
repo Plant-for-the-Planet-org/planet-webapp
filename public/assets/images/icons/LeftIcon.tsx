@@ -1,5 +1,6 @@
+import type { IconProps } from '../../../../src/features/common/types/common';
+
 import React from 'react';
-import { IconProps } from '../../../../src/features/common/types/common';
 
 function CancelIcon({ color = 'black' }: IconProps) {
   return (

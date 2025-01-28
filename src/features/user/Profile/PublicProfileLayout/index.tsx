@@ -1,6 +1,7 @@
+import type { UserPublicProfile } from '@planet-sdk/common';
+
 import styles from './PublicProfileLayout.module.scss';
 import ProfileCard from '../ProfileCard';
-import { UserPublicProfile } from '@planet-sdk/common';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
@@ -26,10 +27,12 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
     isContributionsLoaded,
     isProjectsListLoaded,
     isLeaderboardLoaded,
+    setIsPublicProfile,
   } = useMyForest();
 
   useEffect(() => {
     if (profile) {
+      setIsPublicProfile(true);
       const _userInfo = {
         profileId: profile.id,
         slug: profile.slug,

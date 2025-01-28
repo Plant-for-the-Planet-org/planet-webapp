@@ -1,5 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import MapGL, { MapEvent, NavigationControl, Popup } from 'react-map-gl';
+import type { MapEvent } from 'react-map-gl';
+import type { PopupData } from './maps/Markers';
+import type { PlantLocation } from '../../common/types/plantLocation';
+import type { ReactElement } from 'react';
+
+import React, { useEffect, useState } from 'react';
+import MapGL, { NavigationControl, Popup } from 'react-map-gl';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
 import Project from '../components/maps/Project';
@@ -11,8 +16,6 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import { useTranslations } from 'next-intl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import { PopupData } from './maps/Markers';
-import { PlantLocation } from '../../common/types/plantLocation';
 
 interface ShowDetailsProps {
   coordinates: [number, number] | null;

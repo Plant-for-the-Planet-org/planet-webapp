@@ -1,10 +1,13 @@
-import React, { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+
+import React, { useState } from 'react';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { unparse } from 'papaparse';
 import styles from '../AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface DownloadCodesProps {
@@ -38,7 +41,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         type: string;
         numberOfItems: number;
         items: [];
-      }>(tenantConfig?.id, codesUrl);
+      }>({ tenant: tenantConfig?.id, url: codesUrl });
       if (response) {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');

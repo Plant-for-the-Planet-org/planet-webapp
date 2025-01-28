@@ -24,6 +24,8 @@ import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocat
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
+import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -54,7 +56,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     selectedPlantLocation,
     selectedSamplePlantLocation,
   } = useProjects();
-
   useDebouncedEffect(
     () => {
       const map = mapRef.current;
@@ -142,7 +143,6 @@ function ProjectsMap(props: ProjectsMapProps) {
       if (props.page !== 'project-details') return;
       const hasNoSites = singleProject?.sites?.length === 0;
       const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
-
       const isSamePlantLocation =
         result?.geometry.type === 'Point' &&
         result.id === selectedPlantLocation?.id;
@@ -150,6 +150,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         selectedPlantLocation?.type === 'single-tree-registration';
       const isMultiTree =
         selectedPlantLocation?.type === 'multi-tree-registration';
+      // const isOther = selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration';
       // Clear sample plant location on clicking outside.
       // Clicks on sample plant location will not propagate on the map
       setSelectedSamplePlantLocation(null);
@@ -176,9 +177,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapRef,
     page: props.page,
   };
-  const mapContainerClass = `${styles.mapContainer} ${
-    styles[mobileOS !== undefined ? mobileOS : '']
-  }`;
+  const mapContainerClass = `${styles.mapContainer} ${styles[mobileOS !== undefined ? mobileOS : '']
+    }`;
+  const shouldShowOtherIntervention =
+    props.isMobile &&
+    selectedPlantLocation !== null &&
+    !PLANTATION_TYPES.includes(selectedPlantLocation.type);
   return (
     <>
       <MapControls {...mapControlProps} />
@@ -226,6 +230,14 @@ function ProjectsMap(props: ProjectsMapProps) {
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
         />
       )}
+      {shouldShowOtherIntervention ? (
+        <OtherInterventionInfo
+          selectedPlantLocation={selectedPlantLocation && selectedPlantLocation?.type !== 'single-tree-registration' &&
+            selectedPlantLocation?.type !== 'multi-tree-registration' ? selectedPlantLocation : null}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          isMobile={props.isMobile}
+        />
+      ) : null}
     </>
   );
 }

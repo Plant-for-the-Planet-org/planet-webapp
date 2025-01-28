@@ -1,14 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import db from '../../../../../src/utils/connectDB';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type {
+  FeatureCollection,
+  UncleanSite,
+} from '../../../../../src/features/common/types/dataExplorer';
+
+import { query } from '../../../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
   rateLimiter,
   speedLimiter,
 } from '../../../../../src/middlewares/rate-limiter';
-import {
-  FeatureCollection,
-  UncleanSite,
-} from '../../../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../../../src/redis-client';
 import { cacheKeyPrefix } from '../../../../../src/utils/constants/cacheKeyPrefix';
 
@@ -40,29 +41,28 @@ handler.get(async (req, response) => {
   }
 
   try {
-    const query = `
+    const queryText = `
 			SELECT 
-					s.name, s.geometry 
-				FROM plant_project_site s
-        INNER JOIN project p ON s.plant_project_id = p.id
-        WHERE 
-						p.guid = ?`;
+				s.name, s.geometry 
+			FROM plant_project_site s
+      INNER JOIN project p ON s.plant_project_id = p.id
+      WHERE 
+				p.guid = $1
+		`;
 
-    const res = await db.query<UncleanSite[]>(query, [projectId]);
+    const res = await query<UncleanSite>(queryText, [projectId]);
 
     const sites: FeatureCollection['features'] = [];
 
     for (const site of res) {
       sites.push({
-        geometry: JSON.parse(site.geometry),
+        geometry: site.geometry,
         properties: {
           name: site.name,
         },
         type: 'Feature',
       });
     }
-
-    await db.end();
 
     const featureCollection = {
       type: 'FeatureCollection',
@@ -76,8 +76,7 @@ handler.get(async (req, response) => {
     response.status(200).json({ data: featureCollection });
   } catch (err) {
     console.error(`Error fetching sites for ${projectId}:`, err);
-  } finally {
-    db.quit();
+    response.status(500).json({ error: 'Failed to fetch sites' });
   }
 });
 

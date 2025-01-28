@@ -1,4 +1,6 @@
-import { TreeProjectClassification } from '@planet-sdk/common';
+import type { TreeProjectClassification } from '@planet-sdk/common';
+import type { ProjectPurpose } from './ProjectTypeIcon';
+
 import {
   MangrovesClusterMarker,
   NaturalRegenerationClusterMarker,
@@ -9,7 +11,6 @@ import {
   ConservationClusterMarker,
   OtherPlantingClusterMarker,
 } from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
-import { ProjectPurpose } from './ProjectTypeIcon';
 
 type ClusterIconProps = {
   classification: TreeProjectClassification | undefined | null;

@@ -1,16 +1,20 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -47,17 +51,18 @@ export default function BulkCodePage({ pageProps }: Props): ReactElement {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

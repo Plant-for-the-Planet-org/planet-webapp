@@ -1,6 +1,7 @@
+import type { MySingleContribution } from '../../../common/types/myForest';
+
 import { useTranslations } from 'next-intl';
 import GiftIcon from '../../../../../public/assets/images/icons/Gift';
-import { MySingleContribution } from '../../../common/types/myForest';
 import styles from './MyContributions.module.scss';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';

@@ -17,6 +17,7 @@ import {
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
 import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 interface RedeemModal {
   redeemModalOpen: boolean;
   handleRedeemModalClose: () => void;
@@ -38,6 +39,7 @@ export default function RedeemModal({
   } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
+  const { refetchContributions, refetchLeaderboard } = useMyForest();
   const [inputCode, setInputCode] = React.useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
@@ -50,13 +52,13 @@ export default function RedeemModal({
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          tenantConfig?.id,
-          `/app/redeem`,
-          submitData,
+        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+          tenant: tenantConfig?.id,
+          url: `/app/redeem`,
+          data: submitData,
           token,
-          logoutUser
-        );
+          logoutUser,
+        });
         setRedeemedCodeData(res);
         setRefetchUserData(true);
         setIsLoading(false);
@@ -64,6 +66,8 @@ export default function RedeemModal({
           const cloneUser = { ...user };
           cloneUser.score.received = cloneUser.score.received + res.units;
           setUser(cloneUser);
+          refetchContributions();
+          refetchLeaderboard();
         }
       } catch (err) {
         const serializedErrors = handleError(err as APIError);

@@ -14,6 +14,7 @@ import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
+import { FillColor } from '../../../../utils/constants/intervention';
 
 export default function PlantLocations(): React.ReactElement {
   const {
@@ -23,6 +24,7 @@ export default function PlantLocations(): React.ReactElement {
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
+    selectedInterventionType,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
 
@@ -132,18 +134,30 @@ export default function PlantLocations(): React.ReactElement {
   if (!plantLocations || plantLocations.length === 0) {
     return <></>;
   }
-  const features = plantLocations.map((el) => {
-    const isSelected =
-      selectedPlantLocation && selectedPlantLocation.id === el.id;
-    const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
-    const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
-      highlightLine: isSelected || isHovered,
-      opacity:
-        el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
-      dateDiff: getDateDiff(el),
+  const features = plantLocations
+    .filter(
+      (d) =>
+        selectedInterventionType === 'all' ||
+        (selectedInterventionType !== 'default' &&
+          d.type === selectedInterventionType) ||
+        (selectedInterventionType === 'default' &&
+          (d.type === 'multi-tree-registration' ||
+            d.type === 'single-tree-registration'))
+    )
+    .map((el) => {
+      const isSelected =
+        selectedPlantLocation && selectedPlantLocation.id === el.id;
+      const isHovered =
+        hoveredPlantLocation && hoveredPlantLocation.id === el.id;
+      const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
+        highlightLine: isSelected || isHovered,
+        opacity:
+          el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
+        dateDiff: getDateDiff(el),
+        type: el.type,
+      });
+      return GeoJSON;
     });
-    return GeoJSON;
-  });
 
   return (
     <>
@@ -159,7 +173,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`plant-polygon-layer`}
           type="fill"
           paint={{
-            'fill-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'fill-color': FillColor,
             'fill-opacity': ['get', 'opacity'],
           }}
           filter={['==', ['geometry-type'], 'Polygon']}
@@ -168,7 +182,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`point-layer`}
           type="circle"
           paint={{
-            'circle-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'circle-color': FillColor,
             'circle-opacity': [
               'case',
               [
@@ -186,7 +200,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`line-selected`}
           type="line"
           paint={{
-            'line-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'line-color': isSatelliteView ? '#ffffff' : FillColor,
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
@@ -205,7 +219,7 @@ export default function PlantLocations(): React.ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {selectedPlantLocation &&
-        selectedPlantLocation.type === 'multi-tree-registration' &&
+        selectedPlantLocation.type !== 'single-tree-registration' &&
         viewState.zoom > 14 &&
         selectedPlantLocation.sampleInterventions
           ? selectedPlantLocation.sampleInterventions.map((spl) => {

@@ -1,14 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Point, Polygon } from 'geojson';
+import type { SinglePlantLocationApiResponse } from '../../../../../src/features/common/types/dataExplorer';
+
+import { query } from '../../../../../src/utils/connectDB';
 import nc from 'next-connect';
-import db from '../../../../../src/utils/connectDB';
-import { Geometry } from '@turf/turf';
-import { SinglePlantLocationApiResponse } from '../../../../../src/features/common/types/dataExplorer';
 import { QueryType } from '../../../../../src/features/user/TreeMapper/Analytics/constants';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 interface UncleanPlantLocations {
-  geometry: string;
+  geometry: Point | Polygon;
   guid: string;
   treeCount: number;
   name: string;
@@ -19,49 +20,57 @@ handler.post(async (req, response) => {
     req.body;
 
   try {
-    let query = `
+    let queryText = `
 			SELECT 
-					iv.guid,
-					iv.trees_planted as treeCount,
-					iv.geometry,
-					COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS name
-        FROM intervention iv
-        LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
-        LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
-        JOIN project pp ON iv.plant_project_id = pp.id
-        WHERE 
-						pp.guid = ? AND 
-						iv.deleted_at IS NULL AND 
-						iv.type in ('multi-tree-registration', 'single-tree-registration')
+				iv.guid,
+				CAST(iv.trees_planted AS INTEGER) as "treeCount",
+				iv.geometry,
+				COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS "name"
+			FROM intervention iv
+			LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+			LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
+			JOIN project pp ON iv.plant_project_id = pp.id
+			WHERE 
+				pp.guid = $1 AND 
+				iv.deleted_at IS NULL AND 
+				iv.type in ('multi-tree-registration', 'single-tree-registration')
 			`;
 
     const values = [projectId];
+    let paramIndex = 2;
 
     if (queryType !== QueryType.DATE) {
-      query += ' AND DATE(iv.intervention_start_date) BETWEEN ? AND ?';
+      queryText += ` AND DATE(iv.intervention_start_date) BETWEEN $${paramIndex} AND $${
+        paramIndex + 1
+      }`;
       values.push(fromDate, toDate);
+      paramIndex += 2;
     }
 
     if (queryType) {
       if (queryType === QueryType.DATE) {
         // Filter by date
-        query += ' AND DATE(iv.intervention_start_date) = ?';
+        queryText += ` AND DATE(iv.intervention_start_date) = $${paramIndex}`;
         values.push(searchQuery);
+        paramIndex++;
       } else if (queryType === QueryType.HID) {
         // Filter by HID
-        query += ' AND iv.hid = ?';
+        queryText += ` AND iv.hid = $${paramIndex}`;
         values.push(searchQuery);
+        paramIndex++;
       }
     }
 
     if (species !== 'All') {
       // Filter by species name
-      query +=
-        ' AND (ss.name = ? OR ps.other_species = ? OR iv.other_species = ?)';
+      queryText += ` AND (ss.name = $${paramIndex} OR ps.other_species = $${
+        paramIndex + 1
+      } OR iv.other_species = $${paramIndex + 2})`;
       values.push(species, species, species);
+      paramIndex += 3;
     }
 
-    const qRes = await db.query<UncleanPlantLocations[]>(query, values);
+    const qRes = await query<UncleanPlantLocations>(queryText, values);
 
     const plantLocations: SinglePlantLocationApiResponse[] = qRes.map(
       (plantLocation) => ({
@@ -70,11 +79,9 @@ handler.post(async (req, response) => {
           guid: plantLocation.guid,
           treeCount: plantLocation.treeCount,
         },
-        geometry: JSON.parse(plantLocation.geometry) as Geometry,
+        geometry: plantLocation.geometry,
       })
     );
-
-    await db.end();
 
     response.setHeader(
       'Cache-Control',
@@ -85,8 +92,6 @@ handler.post(async (req, response) => {
   } catch (err) {
     console.error('Error fetching plant location data:', err);
     response.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    db.quit();
   }
 });
 

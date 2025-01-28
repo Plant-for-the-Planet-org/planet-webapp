@@ -1,3 +1,6 @@
+import type { APIError, UserPublicProfile } from '@planet-sdk/common';
+import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+
 import dynamic from 'next/dynamic';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
@@ -7,8 +10,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import styles from './TpoProjects.module.scss';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
-import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const ProjectSnippet = dynamic(
@@ -31,13 +33,13 @@ export default function ProjectsContainer({ profile }: Props) {
 
   async function loadProjects() {
     try {
-      const projects = await getRequest<MapProject[]>(
-        `${tenantConfig?.id}`,
-        `/app/profiles/${profile.id}/projects`,
-        {
+      const projects = await getRequest<MapProject[]>({
+        tenant: tenantConfig?.id,
+        url: `/app/profiles/${profile.id}/projects`,
+        queryParams: {
           locale: locale,
-        }
-      );
+        },
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

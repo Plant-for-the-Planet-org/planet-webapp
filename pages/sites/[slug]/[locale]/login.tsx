@@ -1,4 +1,14 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { AbstractIntlMessages } from 'next-intl';
+
+import React from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
@@ -6,15 +16,8 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import { defaultTenant } from '../../../../tenant.config';
-import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
@@ -83,17 +86,18 @@ export default function Login({ pageProps }: Props): ReactElement {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

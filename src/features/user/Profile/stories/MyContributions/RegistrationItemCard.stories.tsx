@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import RegistrationItemCard from '../../MyContributions/RegistrationItemCard';
-import {
+import type {
   MyContributionsSingleRegistration,
   MyForestProject,
 } from '../../../../common/types/myForest';
+
+import RegistrationItemCard from '../../MyContributions/RegistrationItemCard';
 
 const meta: Meta<typeof RegistrationItemCard> = {
   component: RegistrationItemCard,

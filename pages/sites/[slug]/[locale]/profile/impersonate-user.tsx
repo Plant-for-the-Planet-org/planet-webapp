@@ -1,21 +1,25 @@
-import Head from 'next/head';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
-import { ReactElement, useEffect } from 'react';
-import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
+import type { AbstractIntlMessages } from 'next-intl';
+import type { ReactElement } from 'react';
+import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+
+import Head from 'next/head';
+import { useTranslations } from 'next-intl';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
+import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
+import { useEffect } from 'react';
+import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
@@ -56,17 +60,18 @@ const ImpersonateUserPage = ({
 
 export default ImpersonateUserPage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

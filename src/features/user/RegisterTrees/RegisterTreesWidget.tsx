@@ -1,4 +1,15 @@
-import { MenuItem, SxProps, TextField, Button } from '@mui/material';
+import type { ContributionProperties } from './RegisterTrees/SingleContribution';
+import type { APIError } from '@planet-sdk/common';
+import type { ViewportProps } from '../../common/types/map';
+import type {
+  RegisterTreesFormProps,
+  RegisterTreeGeometry,
+  ProjectGeoJsonProps,
+} from '../../common/types/map';
+import { handleError } from '@planet-sdk/common';
+import type { SxProps } from '@mui/material';
+
+import { MenuItem, TextField, Button } from '@mui/material';
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -18,11 +29,8 @@ import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
-import SingleContribution, {
-  ContributionProperties,
-} from './RegisterTrees/SingleContribution';
+import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -30,12 +38,6 @@ import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { ViewportProps } from '../../common/types/map';
-import {
-  RegisterTreesFormProps,
-  RegisterTreeGeometry,
-  ProjectGeoJsonProps,
-} from '../../common/types/map';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -189,13 +191,13 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>(
-            tenantConfig?.id,
-            `/app/contributions`,
-            submitData,
+          const res = await postAuthenticatedRequest<ContributionProperties>({
+            tenant: tenantConfig?.id,
+            url: `/app/contributions`,
+            data: submitData,
             token,
-            logoutUser
-          );
+            logoutUser,
+          });
           setErrorMessage('');
           setContributionGUID(res.id);
           setContributionDetails(res);
@@ -216,12 +218,12 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>({
+        tenant: tenantConfig?.id,
+        url: '/app/profile/projects',
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

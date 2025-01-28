@@ -1,7 +1,9 @@
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import type { SetState } from '../../types/common';
+
+import { useState } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import { SetState } from '../../types/common';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';

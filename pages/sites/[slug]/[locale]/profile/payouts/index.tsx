@@ -1,23 +1,27 @@
-import React, { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { AbstractIntlMessages } from 'next-intl';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+import React, { useState } from 'react';
 import TopProgressBar from '../../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../src/features/user/ManagePayouts';
-import { AbstractIntlMessages, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
@@ -68,17 +72,18 @@ export default function OverviewPage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

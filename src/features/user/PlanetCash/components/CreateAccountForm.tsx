@@ -1,4 +1,12 @@
-import { ReactElement, useState, useContext, FormEvent } from 'react';
+import type { ReactElement, FormEvent } from 'react';
+import type {
+  CountryType,
+  ExtendedCountryCode,
+} from '../../../common/types/country';
+import { useRouter } from 'next/router';
+import type { APIError, SerializedError } from '@planet-sdk/common';
+
+import { useState, useContext } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import CustomSnackbar from '../../../common/CustomSnackbar';
@@ -9,12 +17,7 @@ import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import {
-  CountryType,
-  ExtendedCountryCode,
-} from '../../../common/types/country';
-import { useRouter } from 'next/router';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
@@ -43,13 +46,13 @@ const CreateAccountForm = ({
     setIsProcessing(true);
 
     try {
-      const res = await postAuthenticatedRequest(
-        tenantConfig?.id,
-        '/app/planetCash',
+      const res = await postAuthenticatedRequest({
+        tenant: tenantConfig?.id,
+        url: '/app/planetCash',
         data,
         token,
-        logoutUser
-      );
+        logoutUser,
+      });
       setIsAccountCreated(true);
       setAccounts([res]);
       // go to accounts tab

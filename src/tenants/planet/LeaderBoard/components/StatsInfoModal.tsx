@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+
+import React from 'react';
 import styles from './Stats.module.scss';
 import { useTranslations } from 'next-intl';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
