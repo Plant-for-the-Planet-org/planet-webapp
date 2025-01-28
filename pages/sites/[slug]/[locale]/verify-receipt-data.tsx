@@ -16,7 +16,7 @@ import {
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import DonorReceiptLayout from '../../../../src/features/user/DonationReceipt/DonorReceiptLayout';
+import DonorReceiptLayout from '../../../../src/features/user/DonorReceipt/DonorReceiptLayout';
 import { DonorReceiptProvider } from '../../../../src/features/common/Layout/DonorReceiptContext';
 
 interface PageProps {

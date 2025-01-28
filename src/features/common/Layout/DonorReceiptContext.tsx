@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
 import { useMemo, useState, createContext, useContext } from 'react';
-import { formatReceiptData } from '../../user/DonationReceipt/utils';
+import { formatReceiptData } from '../../user/DonorReceipt/utils';
 
 export type IssuedDonationView = {
   amount: number;
