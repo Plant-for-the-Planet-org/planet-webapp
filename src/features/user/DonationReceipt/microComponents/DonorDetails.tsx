@@ -34,7 +34,7 @@ const DonorDetails = ({ donor, address }: Props) => {
         {t('donationReceipt.recipientInfoHeader')}
       </h3>
       <div className={styles.details}>
-        <div className={styles.Name}>
+        <div className={styles.donorName}>
           <span className={styles.header}>
             {t('donationReceipt.name', {
               type,

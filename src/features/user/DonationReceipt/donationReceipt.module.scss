@@ -1,17 +1,40 @@
 @import '../../../theme/theme';
 
+@mixin flex-layout(
+  $display: flex,
+  $flex-direction: null,
+  $justify-content: null,
+  $align-items: null,
+  $gap: null
+) {
+  display: $display;
+
+  @if $justify-content {
+    justify-content: $justify-content;
+  }
+
+  @if $align-items {
+    align-items: $align-items;
+  }
+
+  @if $gap {
+    gap: $gap;
+  }
+
+  @if $flex-direction {
+    flex-direction: $flex-direction;
+  }
+}
+
 .donationReceiptSkeleton {
-  display: flex;
-  justify-content: center;
+  @include flex-layout(flex, null, center);
   margin-top: 110px;
 }
 
 .donationReceiptLayout {
+  @include flex-layout(flex, column, null, center);
   width: 100vw;
   height: calc(100vh - 80px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-top: 80px;
   background: var(--background-base);
   @include xsPhoneView {
@@ -20,27 +43,25 @@
 }
 
 .donationReceiptContainer {
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
+  @include flex-layout(flex, column, null, null, 20px);
   width: 100%;
   max-width: 760px;
   min-height: 60px;
   margin-top: 60px;
   @include xsPhoneView {
-    align-items: center;
+    @include flex-layout(flex, null, null, center);
   }
 }
 
 .receiptVerificationHeader {
   h2 {
-    font-size: 20px;
+    font-size: $fontLarge;
     font-weight: 600;
   }
 
   h3 {
-    font-size: 14px;
-    font-family: 400;
+    font-size: $fontSmall;
+    font-weight: 400;
     color: rgba(51, 51, 51, 1);
   }
 }
@@ -53,15 +74,12 @@
 }
 
 .donationRecord {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  @include flex-layout(flex, column, null, null, 12px);
   width: 100%;
   padding: 6px 16px 16px 16px;
 
   .header {
-    display: flex;
-    justify-content: space-between;
+    @include flex-layout(flex, null, space-between);
     font-weight: 600;
   }
 }
@@ -75,9 +93,7 @@
 }
 
 .record {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include flex-layout(flex, null, space-between, center);
   padding-top: 8px;
   padding-bottom: 8px;
 
@@ -102,9 +118,7 @@
 }
 
 .donorDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  @include flex-layout(flex, column, null, null, 20px);
   background: rgba(242, 242, 242, 0.5);
   width: 100%;
   margin-top: 20px;
@@ -113,42 +127,35 @@
 
   .header {
     font-weight: 600;
-    font-size: 14px;
+    font-size: $fontSmall;
   }
 
   .details {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+    @include flex-layout(flex, row, space-between, null, 28px);
     flex-wrap: wrap;
-    gap: 28px;
   }
 }
 
 .address,
-.Name,
+.donorName,
 .companyName,
 .tin {
-  display: flex;
-  flex-direction: column;
+  @include flex-layout(flex, column, null, null, 7px);
   color: rgba(130, 130, 130, 1);
-  gap: 7px;
 
   .header {
-    font-size: 12px;
+    font-size: $fontXSmall;
     font-weight: 700;
   }
 }
 
 .receiptActions {
+  @include flex-layout(flex, null, flex-end, null, 12px);
   margin-top: 40px;
-  display: flex;
-  gap: 12px;
   padding: 0px 10px;
-  justify-content: flex-end;
 
   @include xsPhoneView {
-    flex-direction: column;
+    @include flex-layout(flex, column);
   }
 
   button {
@@ -161,7 +168,6 @@
 }
 
 .receiptVerificationSpinner {
-  display: flex;
-  justify-content: center;
+  @include flex-layout(flex, null, center);
   margin-top: 40px;
 }
