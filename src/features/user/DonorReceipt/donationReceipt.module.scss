@@ -26,7 +26,7 @@
   }
 }
 
-.donationReceiptSkeleton {
+.donorReceiptSkeleton {
   @include flex-layout(flex, null, center);
   margin-top: 110px;
 }
@@ -42,7 +42,7 @@
   }
 }
 
-.donationReceiptContainer {
+.donorReceiptContainer {
   @include flex-layout(flex, column, null, null, 20px);
   width: 100%;
   max-width: 760px;
@@ -77,6 +77,10 @@
   @include flex-layout(flex, column, null, null, 12px);
   width: 100%;
   padding: 6px 16px 16px 16px;
+
+  @include xsPhoneView {
+    padding: 6px 6px 16px 6px;
+  }
 
   .header {
     @include flex-layout(flex, null, space-between);

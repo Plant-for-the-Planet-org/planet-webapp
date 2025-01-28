@@ -58,14 +58,14 @@ export const DonorReceiptLayout = () => {
 
   return showReceipt ? (
     <div className={styles.donorReceiptLayout}>
-      <div className={styles.donationReceiptContainer}>
+      <div className={styles.donorReceiptContainer}>
         <ReceiptVerificationHeader operation={donorReceiptData.operation} />
         <ReceiptDataSection donorReceiptData={donorReceiptData} />
         <ReceiptListRedirect />
       </div>
     </div>
   ) : (
-    <div className={styles.donationReceiptSkeleton}>
+    <div className={styles.donorReceiptSkeleton}>
       <Skeleton height={700} width={760} />
     </div>
   );
