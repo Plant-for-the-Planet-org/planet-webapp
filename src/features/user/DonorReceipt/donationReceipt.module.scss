@@ -66,6 +66,7 @@
   }
 }
 
+.receiptListRedirect,
 .receiptDataSection {
   width: 100%;
   border-radius: 16px;
@@ -178,4 +179,36 @@
 .receiptVerificationSpinner {
   @include flex-layout(flex, null, center);
   margin-top: 40px;
+}
+
+.receiptListRedirectContainer {
+  @include flex-layout(flex, null, space-between);
+  background: rgba(242, 242, 242, 0.5);
+  border-radius: 9px;
+  padding: 8px;
+  .redirectButton {
+    cursor: pointer;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: $fontSmall;
+  }
+
+  p {
+    font-size: $fontXSmall;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    max-width: 500px;
+  }
+}
+
+.contactInfo {
+  @include flex-layout(flex, null, null, null, 30px);
+  margin-top: 30px;
+
+  .contactSupportMessage {
+    font-weight: 400;
+    font-size: $fontSmall;
+  }
 }
