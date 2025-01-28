@@ -10,7 +10,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import ReceiptCardList from '../../../../../../src/features/user/DonationReceipt/ReceiptCardList';
+import ReceiptCardList from '../../../../../../src/features/user/DonorReceipt/ReceiptCardList';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,

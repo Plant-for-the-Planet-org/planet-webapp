@@ -10,7 +10,7 @@ import type { Tenant } from '@planet-sdk/common';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import UserDataForm from '../../../../../../src/features/user/DonationReceipt/UserDataForm';
+import UserDataForm from '../../../../../../src/features/user/DonorReceipt/UserDataForm';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
