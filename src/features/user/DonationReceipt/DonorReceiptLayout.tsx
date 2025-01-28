@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI } from '../../common/Layout/DonationReceiptContext';
+import type { ReceiptDataAPI } from '../../common/Layout/DonorReceiptContext';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
-import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
+import { useDonorReceipt } from '../../common/Layout/DonorReceiptContext';
 import styles from './donationReceipt.module.scss';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
 import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
@@ -15,15 +15,14 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-export const DonationReceiptLayout = () => {
+export const DonorReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { tenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { dtn, year, challenge } = router.query;
-  const { updateDonationReceiptData, donationReceiptData } =
-    useDonationReceipt();
-  const showReceipt = !isLoading && donationReceiptData !== null;
+  const { updateDonorReceiptData, donorReceiptData } = useDonorReceipt();
+  const showReceipt = !isLoading && donorReceiptData !== null;
 
   useEffect(() => {
     if (!(dtn || year || challenge || router.isReady)) return;
@@ -45,7 +44,7 @@ export const DonationReceiptLayout = () => {
             challenge,
           },
         });
-        if (data) updateDonationReceiptData(data);
+        if (data) updateDonorReceiptData(data);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');
@@ -58,10 +57,10 @@ export const DonationReceiptLayout = () => {
   }, [dtn, year, challenge, router.isReady]);
 
   return showReceipt ? (
-    <div className={styles.donationReceiptLayout}>
+    <div className={styles.donorReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
-        <ReceiptVerificationHeader operation={donationReceiptData.operation} />
-        <ReceiptDataSection donationReceiptData={donationReceiptData} />
+        <ReceiptVerificationHeader operation={donorReceiptData.operation} />
+        <ReceiptDataSection donorReceiptData={donorReceiptData} />
         <ReceiptListRedirect />
       </div>
     </div>
@@ -72,4 +71,4 @@ export const DonationReceiptLayout = () => {
   );
 };
 
-export default DonationReceiptLayout;
+export default DonorReceiptLayout;

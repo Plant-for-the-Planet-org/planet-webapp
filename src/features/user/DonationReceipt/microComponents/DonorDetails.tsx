@@ -1,13 +1,13 @@
 import type {
   AddressView,
   DonorView,
-} from '../../../../features/common/Layout/DonationReceiptContext';
+} from '../../../common/Layout/DonorReceiptContext';
 import type { CountryCode } from '@planet-sdk/common';
 
+import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../donationReceipt.module.scss';
 import { getFormattedAddress } from '../../../../utils/addressManagement';
-import { useMemo } from 'react';
 
 interface Props {
   donor: DonorView | undefined;

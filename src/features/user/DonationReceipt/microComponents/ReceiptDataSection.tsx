@@ -1,11 +1,10 @@
-import { useCallback, useContext, useState } from 'react';
-import {
-  useDonationReceipt,
-  type ReceiptData,
-} from '../../../common/Layout/DonationReceiptContext';
+import type { ReceiptData } from '../../../common/Layout/DonorReceiptContext';
 import type { APIError } from '@planet-sdk/common';
 
+import { useCallback, useContext, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
+import { CircularProgress } from '@mui/material';
+import { useDonorReceipt } from '../../../common/Layout/DonorReceiptContext';
 import styles from '../donationReceipt.module.scss';
 import DonationData from './DonationData';
 import ReceiptActions from './ReceiptActions';
@@ -14,15 +13,14 @@ import { getVerificationDate, RECEIPT_STATUS } from '../utils';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { putRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { CircularProgress } from '@mui/material';
 
 interface Prop {
-  donationReceiptData: ReceiptData | null;
+  donorReceiptData: ReceiptData | null;
 }
 
-const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
-  if (!donationReceiptData) return null;
-  const { updateDonationReceiptData } = useDonationReceipt();
+const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
+  if (!donorReceiptData) return null;
+  const { updateDonorReceiptData } = useDonorReceipt();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +34,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-  } = donationReceiptData;
+  } = donorReceiptData;
 
   const confirmDonorData = useCallback(async () => {
     if (operation !== RECEIPT_STATUS.VERIFY) return;
@@ -57,7 +55,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
           verificationDate: getVerificationDate(),
         },
       });
-      if (data) updateDonationReceiptData(data);
+      if (data) updateDonorReceiptData(data);
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
@@ -70,7 +68,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-    updateDonationReceiptData,
+    updateDonorReceiptData,
   ]);
 
   return (

@@ -1,6 +1,6 @@
-import { RECEIPT_STATUS } from '../utils';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
+import { RECEIPT_STATUS } from '../utils';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../donationReceipt.module.scss';

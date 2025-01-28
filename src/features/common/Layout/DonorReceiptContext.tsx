@@ -63,46 +63,48 @@ export interface ReceiptData extends ReceiptDataBase {
   hasDonorDataChanged: boolean; // Set it to true if the user modifies the data during the receipt verification process
 }
 
-interface DonationReceiptContextInterface {
-  donationReceiptData: ReceiptData | null;
-  updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
+interface DonorReceiptContextInterface {
+  donorReceiptData: ReceiptData | null;
+  updateDonorReceiptData: (data: Partial<ReceiptDataAPI>) => void;
 }
 
-const DonationReceiptContext =
-  createContext<DonationReceiptContextInterface | null>(null);
+const DonorReceiptContext = createContext<DonorReceiptContextInterface | null>(
+  null
+);
 
-export const DonationReceiptProvider: FC = ({ children }) => {
-  const [donationReceiptData, setDonationReceiptData] =
-    useState<ReceiptData | null>(null);
+export const DonorReceiptProvider: FC = ({ children }) => {
+  const [donorReceiptData, setDonorReceiptData] = useState<ReceiptData | null>(
+    null
+  );
 
-  const updateDonationReceiptData = (data: Partial<ReceiptDataAPI>) => {
+  const updateDonorReceiptData = (data: Partial<ReceiptDataAPI>) => {
     const formattedData = formatReceiptData(data);
-    setDonationReceiptData((prevState) => ({
+    setDonorReceiptData((prevState) => ({
       ...prevState,
       ...formattedData,
     }));
   };
 
-  const value: DonationReceiptContextInterface = useMemo(
+  const value: DonorReceiptContextInterface = useMemo(
     () => ({
-      donationReceiptData,
-      updateDonationReceiptData,
+      donorReceiptData,
+      updateDonorReceiptData,
     }),
-    [updateDonationReceiptData, donationReceiptData]
+    [updateDonorReceiptData, donorReceiptData]
   );
 
   return (
-    <DonationReceiptContext.Provider value={value}>
+    <DonorReceiptContext.Provider value={value}>
       {children}
-    </DonationReceiptContext.Provider>
+    </DonorReceiptContext.Provider>
   );
 };
 
-export const useDonationReceipt = (): DonationReceiptContextInterface => {
-  const context = useContext(DonationReceiptContext);
+export const useDonorReceipt = (): DonorReceiptContextInterface => {
+  const context = useContext(DonorReceiptContext);
   if (!context)
     throw new Error(
-      'DonationReceiptContext must be used within DonationReceiptProvider'
+      'DonorReceiptContext must be used within DonorReceiptProvider'
     );
   return context;
 };
