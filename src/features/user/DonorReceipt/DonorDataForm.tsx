@@ -1,4 +1,4 @@
-const UserDataForm = () => {
+const DonorDataForm = () => {
   return (
     <section>
       <div></div>
@@ -6,4 +6,4 @@ const UserDataForm = () => {
   );
 };
 
-export default UserDataForm;
+export default DonorDataForm;
