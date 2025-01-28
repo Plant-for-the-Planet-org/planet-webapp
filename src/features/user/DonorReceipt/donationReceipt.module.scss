@@ -167,6 +167,10 @@
   }
 }
 
+.downloadButtonContainer {
+  @include flex-layout(flex, null, flex-end);
+}
+
 .receiptVerificationSpinner {
   @include flex-layout(flex, null, center);
   margin-top: 40px;

@@ -27,14 +27,16 @@ const ReceiptActions = ({
   return (
     <div className={styles.receiptActions}>
       {showDowloadButton ? (
-        <WebappButton
-          variant="primary"
-          text={t('download')}
-          elementType="link"
-          icon={<DownloadIcon color="#fff" />}
-          href={downloadUrl}
-          target={'_blank'}
-        />
+        <div className={styles.downloadButtonContainer}>
+          <WebappButton
+            variant="primary"
+            text={t('download')}
+            elementType="link"
+            icon={<DownloadIcon color="#fff" />}
+            href={downloadUrl}
+            target={'_blank'}
+          />
+        </div>
       ) : (
         <>
           <WebappButton
