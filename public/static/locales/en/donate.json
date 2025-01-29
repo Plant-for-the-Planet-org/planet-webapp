@@ -130,7 +130,8 @@
       "supportContactDetails": "<strong>Email:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink> <strong>Phone:</strong> +49 8808 9345",
       "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
       "name": "{type, select, individual {Name} organization {Company Name} other {}}",
-      "donorContactManagement": "Donor Contact Management"
+      "donorContactManagement": "Donor Contact Management",
+      "contactManagementHeader": "Update Profile and address"
     }
   }
 }

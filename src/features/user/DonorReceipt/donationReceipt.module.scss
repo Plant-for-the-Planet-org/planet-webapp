@@ -33,7 +33,7 @@
 
 .donorReceiptLayout {
   @include flex-layout(flex, column, null, center);
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 80px);
   margin-top: 80px;
   background: var(--background-base);
@@ -211,4 +211,23 @@
     font-weight: 400;
     font-size: $fontSmall;
   }
+}
+
+// donor contact management  styles
+
+.donorContactManagement {
+  @include flex-layout(flex, column, null, center);
+  width: 100%;
+  max-width: 760px;
+  margin-top: 55px;
+
+  .headerContainer {
+    @include flex-layout(flex);
+  }
+}
+
+.contactManagementHeader {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0 0 16px;
 }
