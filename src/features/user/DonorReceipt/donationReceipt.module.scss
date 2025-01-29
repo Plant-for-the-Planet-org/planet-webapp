@@ -223,6 +223,10 @@
 
   .headerContainer {
     @include flex-layout(flex);
+
+    button {
+      cursor: pointer;
+    }
   }
 }
 

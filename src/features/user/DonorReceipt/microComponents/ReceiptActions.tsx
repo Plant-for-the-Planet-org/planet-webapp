@@ -25,7 +25,7 @@ const ReceiptActions = ({
 
   const navigateToDonorContactManagement = useCallback(() => {
     router.push(`/profile/donation-receipt/donor-contact-management`);
-  }, []);
+  }, [router]);
 
   const showDowloadButton =
     operation === RECEIPT_STATUS.DOWNLOAD && downloadUrl !== null;

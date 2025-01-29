@@ -17,13 +17,16 @@ import {
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useDonorReceipt } from '../../../../../../src/features/common/Layout/DonorReceiptContext';
+import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function ModifyDonorData() {
   const t = useTranslations('Donate.donationReceipt');
+  const { donorReceiptData } = useDonorReceipt();
   return (
     <UserLayout>
       <Head>{t('donorContactManagement')}</Head>
-      <DonorContactManagement />
+      {donorReceiptData ? <DonorContactManagement /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }
