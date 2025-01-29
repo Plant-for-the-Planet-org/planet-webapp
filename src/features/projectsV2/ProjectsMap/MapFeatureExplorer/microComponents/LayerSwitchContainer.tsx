@@ -1,4 +1,4 @@
-import type { AdditionalInfo } from './MapLayerControlPanel';
+import type { AdditionalInfo } from './MapSettingsSection';
 import type { ReactNode } from 'react';
 
 // import { useState } from 'react';

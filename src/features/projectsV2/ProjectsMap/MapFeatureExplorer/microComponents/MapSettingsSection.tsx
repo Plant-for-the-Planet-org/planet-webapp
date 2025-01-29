@@ -27,7 +27,7 @@ interface Props {
   updateMapOption?: (option: keyof MapOptions, value: boolean) => void;
 }
 
-const MapLayerControlPanel = ({
+const MapSettingsSection = ({
   category,
   exploreConfig,
   mapOptions,
@@ -66,4 +66,4 @@ const MapLayerControlPanel = ({
   );
 };
 
-export default MapLayerControlPanel;
+export default MapSettingsSection;

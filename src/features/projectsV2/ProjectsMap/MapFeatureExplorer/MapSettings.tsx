@@ -9,7 +9,7 @@ import styles from './MapFeatureExplorer.module.scss';
 // import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
-import MapLayerControlPanel from './microComponents/MapLayerControlPanel';
+import MapSettingsSection from './microComponents/MapSettingsSection';
 import MobileMapSettingsLayout from './MobileMapSettingsLayout';
 
 type MapSettingsProps = {
@@ -86,36 +86,24 @@ const MapSettings: FC<MapSettingsProps> = ({
 
   const content = (
     <>
-      <MapLayerControlPanel
+      <MapSettingsSection
         exploreConfig={projectConfig}
         updateMapOption={updateMapOption}
         mapOptions={mapOptions}
       />
-      <MapLayerControlPanel
+      <MapSettingsSection
         category={tMaps('layers.forests')}
         exploreConfig={forestConfig}
       />
-      <MapLayerControlPanel
+      <MapSettingsSection
         category={tMaps('layers.forests')}
         exploreConfig={forestConfig}
       />
-      <MapLayerControlPanel
+      <MapSettingsSection
         category={tMaps('layers.forests')}
         exploreConfig={forestConfig}
       />
-      <MapLayerControlPanel
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      />
-      <MapLayerControlPanel
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      />
-      <MapLayerControlPanel
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      />
-      <MapLayerControlPanel
+      <MapSettingsSection
         category={tMaps('layers.forests')}
         exploreConfig={forestConfig}
       />
@@ -169,42 +157,7 @@ const MapSettings: FC<MapSettingsProps> = ({
               />
             }
           /> */}
-        <MapLayerControlPanel
-          exploreConfig={projectConfig}
-          updateMapOption={updateMapOption}
-          mapOptions={mapOptions}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <MapLayerControlPanel
-          category={tMaps('layers.forests')}
-          exploreConfig={forestConfig}
-        />
-        <div className={styles.exploreDescription}>
-          {tMaps('3trilliontrees')}
-        </div>
+        {content}
       </div>
     </div>
   );

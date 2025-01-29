@@ -1,4 +1,4 @@
-import type { AdditionalInfo } from './MapLayerControlPanel';
+import type { AdditionalInfo } from './MapSettingsSection';
 import type { SetState } from '../../../../common/types/common';
 
 import { useTranslations } from 'next-intl';
