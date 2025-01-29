@@ -90,6 +90,13 @@ export default function FirePopup({ isOpen, feature }: Props) {
     return { amount: `${days}`, unit: 'd' }; // 24 hours or more
   }, [feature.properties.eventDate]);
 
+  const alertCoordinates = useMemo(() => {
+    const [lng, lat] = feature.geometry.coordinates;
+    const latString = lat >= 0 ? `${Math.abs(lat)}°N` : `${Math.abs(lat)}°S`;
+    const lngString = lng >= 0 ? `${Math.abs(lng)}°E` : `${Math.abs(lng)}°W`;
+    return `${latString}, ${lngString}`;
+  }, [feature.geometry.coordinates]);
+
   const alertConfidence = useMemo(() => {
     const confidenceMap: Record<string, string> = {
       high: 'highAlertConfidenceText',
@@ -155,10 +162,7 @@ export default function FirePopup({ isOpen, feature }: Props) {
             </p>
           </header>
           <div className={styles.popupText}>
-            <p className={styles.coordinates}>
-              {feature.geometry.coordinates[0]},{' '}
-              {feature.geometry.coordinates[1]}
-            </p>
+            <p className={styles.coordinates}>{alertCoordinates}</p>
             <p>
               {tProjectDetails.rich(alertConfidence, {
                 important: (chunks) => <span>{chunks}</span>,
