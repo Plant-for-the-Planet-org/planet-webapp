@@ -6,16 +6,6 @@ $dangerColorNew: #e86f56;
 $dangerBackgroundColor: rgba(249, 220, 214);
 // $fontXSmall: '12px';
 
-.arrow {
-  // height: 8px;
-  // width: 8px;
-  border: 10px solid transparent;
-  border-top-color: $light;
-  position: absolute;
-  bottom: -20px;
-  // left: calc(50% - 10px);
-}
-
 .arrowTop {
   border: 10px solid transparent;
   border-top-color: $light;

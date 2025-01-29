@@ -1,5 +1,6 @@
 import type { FireFeature } from '../../../common/types/fireLocation';
 import type { PopperProps } from '@mui/material';
+import type { Modifier } from '@popperjs/core';
 
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -16,12 +17,46 @@ interface Props {
   feature: FireFeature;
 }
 
-// Currently contains hardcoded data, component would need refactoring based on the api/data when available.
+function popperModifiers(options: {
+  arrowRef: React.SetStateAction<HTMLElement | null>;
+  clippingBoundary: HTMLElement | null;
+}): Partial<Modifier<any, any>>[] | undefined {
+  return [
+    {
+      name: 'arrow',
+      enabled: true,
+      options: {
+        element: options.arrowRef,
+        padding: 8,
+      },
+    },
+    {
+      name: 'flip',
+      enabled: true,
+      options: {
+        fallbackPlacements: ['bottom'],
+        altBoundary: true,
+        padding: 4,
+        boundary: options.clippingBoundary,
+      },
+    },
+    {
+      name: 'preventOverflow',
+      enabled: true,
+      options: {
+        altAxis: true,
+        altBoundary: true,
+        padding: 4,
+        boundary: options.clippingBoundary,
+      },
+    },
+  ];
+}
 
 export default function FirePopup({ isOpen, feature }: Props) {
   const anchorRef = React.useRef(null);
   const popperRef = React.useRef<HTMLDivElement>(null);
-  const [arrowRef, setArrowRef] = React.useState<HTMLSpanElement | null>(null);
+  const [arrowRef, setArrowRef] = React.useState<HTMLElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(isOpen);
   const [popperPlacement, setPopperPlacement] =
     React.useState<PopperProps['placement']>('top');
@@ -52,23 +87,26 @@ export default function FirePopup({ isOpen, feature }: Props) {
   }, [feature.properties.eventDate]);
 
   const alertConfidence = useMemo(() => {
-    switch (feature.properties.confidence) {
-      case 'high':
-        return 'highAlertConfidenceText';
-      case 'medium':
-        return 'mediumAlertConfidenceText';
-      case 'low':
-        return 'lowAlertConfidenceText';
-      default:
-        return 'mediumAlertConfidenceText';
-    }
+    type ConfidencesType =
+      | 'highAlertConfidenceText'
+      | 'mediumAlertConfidenceText'
+      | 'lowAlertConfidenceText';
+    const confidenceMap: Record<string, string> = {
+      high: 'highAlertConfidenceText',
+      medium: 'mediumAlertConfidenceText',
+      low: 'lowAlertConfidenceText',
+    };
+
+    return (confidenceMap[feature.properties.confidence] ||
+      'mediumAlertConfidenceText') as ConfidencesType;
   }, [feature.properties.confidence]);
 
   const firealertAppLink = useMemo(() => {
+    const deviceType = getDeviceType();
     let link = 'https://www.plant-for-the-planet.org/firealert/';
-    if (getDeviceType() === 'android') {
+    if (deviceType === 'android') {
       link = 'https://play.google.com/store/apps/details?id=eco.pp.firealert';
-    } else if (getDeviceType() === 'ios') {
+    } else if (deviceType === 'ios') {
       link = 'https://apps.apple.com/app/fire-alert-for-forests/id1667307676';
     }
     return link;
@@ -86,48 +124,15 @@ export default function FirePopup({ isOpen, feature }: Props) {
         disablePortal={false}
         onMouseLeave={() => setShowPopup(false)}
         onMouseEnter={() => setShowPopup(true)}
-        modifiers={[
-          {
-            name: 'arrow',
-            enabled: true,
-            options: {
-              element: arrowRef,
-              padding: 8,
-            },
-          },
-          {
-            name: 'flip',
-            enabled: true,
-            options: {
-              fallbackPlacements: ['bottom'],
-              altBoundary: true,
-              padding: 4,
-              boundary: document.querySelector('canvas.maplibregl-canvas'),
-            },
-          },
-          {
-            name: 'preventOverflow',
-            enabled: true,
-            options: {
-              altAxis: true,
-              altBoundary: true,
-              padding: 4,
-              boundary: document.querySelector('canvas.maplibregl-canvas'),
-            },
-          },
-        ]}
+        modifiers={popperModifiers({
+          arrowRef,
+          clippingBoundary: document.querySelector('canvas.maplibregl-canvas'),
+        })}
       >
-        {/* <div className={styles.arrow} ref={setArrowRef} /> */}
         {popperPlacement === 'top' ? (
-          <div
-            className={`${styles.arrowTop} fire-popup-arrow`}
-            ref={setArrowRef}
-          />
+          <div className={`${styles.arrowTop}`} ref={setArrowRef} />
         ) : (
-          <div
-            className={`${styles.arrowBottom} fire-popup-arrow`}
-            ref={setArrowRef}
-          />
+          <div className={`${styles.arrowBottom}`} ref={setArrowRef} />
         )}
         <aside className={styles.popupContainer}>
           <header className={styles.popupTitle}>
