@@ -10,7 +10,7 @@ import type { Tenant } from '@planet-sdk/common';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import DonorDataForm from '../../../../../../src/features/user/DonorReceipt/DonorDataForm';
+import DonorContactManagement from '../../../../../../src/features/user/DonorReceipt/DonorContactManagement';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -22,8 +22,8 @@ export default function ModifyDonorData() {
   const t = useTranslations('Donate.donationReceipt');
   return (
     <UserLayout>
-      <Head>{t('modifyDonorData')}</Head>
-      <DonorDataForm />
+      <Head>{t('donorContactManagement')}</Head>
+      <DonorContactManagement />
     </UserLayout>
   );
 }
