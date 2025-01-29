@@ -22,11 +22,13 @@
 
   @include xsPhoneView {
     position: absolute;
-    max-height: max-content;
+    max-height: 100vh;
+    height: 100vh;
+    overflow-y: scroll;
     min-width: 293px;
-    border-radius: unset;
+    border-radius: 12px 0 0 12px;
     right: 0px;
-    top: -10px;
+    margin-top: 0;
   }
 }
 
@@ -40,27 +42,6 @@
 
   @include xsPhoneView {
     max-height: max-content;
-  }
-}
-
-.exploreFeatureMobileHeader {
-  display: flex;
-  justify-content: space-between;
-  padding: 3px 4px 18px;
-
-  .exploreLabel {
-    display: flex;
-    gap: 8px;
-
-    p {
-      font-size: 14px;
-      font-weight: 700;
-      gap: 8px;
-    }
-  }
-
-  svg {
-    width: 16px;
   }
 }
 
