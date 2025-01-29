@@ -16,6 +16,10 @@ interface Props {
   isOpen: boolean;
   feature: FireFeature;
 }
+type ConfidencesType =
+  | 'highAlertConfidenceText'
+  | 'mediumAlertConfidenceText'
+  | 'lowAlertConfidenceText';
 
 function popperModifiers(options: {
   arrowRef: React.SetStateAction<HTMLElement | null>;
@@ -87,10 +91,6 @@ export default function FirePopup({ isOpen, feature }: Props) {
   }, [feature.properties.eventDate]);
 
   const alertConfidence = useMemo(() => {
-    type ConfidencesType =
-      | 'highAlertConfidenceText'
-      | 'mediumAlertConfidenceText'
-      | 'lowAlertConfidenceText';
     const confidenceMap: Record<string, string> = {
       high: 'highAlertConfidenceText',
       medium: 'mediumAlertConfidenceText',
