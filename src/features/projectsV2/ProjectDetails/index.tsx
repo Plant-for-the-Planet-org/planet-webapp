@@ -25,6 +25,8 @@ import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
+import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
+import { useProjectsMap } from '../ProjectsMapContext';
 
 const ProjectDetails = ({
   currencyCode,
@@ -47,6 +49,7 @@ const ProjectDetails = ({
     setSelectedSamplePlantLocation,
     setPreventShallowPush,
   } = useProjects();
+  const { setTimeTravelConfig } = useProjectsMap();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
@@ -71,9 +74,15 @@ const ProjectDetails = ({
             locale: locale,
           },
         });
+
         const { purpose } = fetchedProject;
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
+          const timeTravelConfig = await getProjectTimeTravelConfig(
+            fetchedProject.id,
+            fetchedProject.geoLocation
+          );
+          setTimeTravelConfig(timeTravelConfig);
         } else {
           throw new ClientError(404, {
             error_type: 'project_not_available',
@@ -184,8 +193,8 @@ const ProjectDetails = ({
               hoveredPlantLocation?.type === 'multi-tree-registration'
                 ? hoveredPlantLocation
                 : selectedPlantLocation?.type === 'multi-tree-registration'
-                  ? selectedPlantLocation
-                  : undefined
+                ? selectedPlantLocation
+                : undefined
             }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
@@ -194,10 +203,20 @@ const ProjectDetails = ({
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
-            selectedPlantLocation={selectedPlantLocation && selectedPlantLocation?.type !== 'single-tree-registration' &&
-              selectedPlantLocation?.type !== 'multi-tree-registration' ? selectedPlantLocation : null}
-            hoveredPlantLocation={hoveredPlantLocation && hoveredPlantLocation?.type !== 'single-tree-registration' &&
-              hoveredPlantLocation?.type !== 'multi-tree-registration' ? hoveredPlantLocation : null}
+            selectedPlantLocation={
+              selectedPlantLocation &&
+              selectedPlantLocation?.type !== 'single-tree-registration' &&
+              selectedPlantLocation?.type !== 'multi-tree-registration'
+                ? selectedPlantLocation
+                : null
+            }
+            hoveredPlantLocation={
+              hoveredPlantLocation &&
+              hoveredPlantLocation?.type !== 'single-tree-registration' &&
+              hoveredPlantLocation?.type !== 'multi-tree-registration'
+                ? hoveredPlantLocation
+                : null
+            }
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
             isMobile={isMobile}
           />

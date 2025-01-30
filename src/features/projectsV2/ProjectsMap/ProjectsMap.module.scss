@@ -80,6 +80,10 @@
         height: 100% !important;
       }
     }
+
+    .maplibregl-ctrl-bottom-right {
+      z-index: 40;
+    }
   }
 }
 
