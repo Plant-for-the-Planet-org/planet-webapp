@@ -107,16 +107,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
     requestedSite,
   ]);
 
+  // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
-    if (plantLocations === null) return;
-    const hasNoPlantLocations = !plantLocations?.length;
-    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
-    // Satellite view will be:
-    // - false if there are no plant locations and no sites (i.e., a single project location only)
-    // - true if there are no plant locations but there are multiple sites
-    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations, hasNoSites]);
+    const isSatelliteView =
+      singleProject.purpose === 'conservation' ||
+      (singleProject.purpose === 'trees' && plantLocations?.length === 0);
 
+    setIsSatelliteView(isSatelliteView);
+  }, [plantLocations, singleProject.purpose]);
   return (
     <>
       {hasNoSites ? (
@@ -131,7 +129,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeojson}
           />
-          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+          {isSatelliteView && <SatelliteLayer />}
         </>
       )}
 
