@@ -220,6 +220,7 @@ export default function PlantLocations(): React.ReactElement {
         />
         {selectedPlantLocation &&
         selectedPlantLocation.type !== 'single-tree-registration' &&
+        (selectedInterventionType === 'multi-tree-registration' || selectedInterventionType === 'enrichment-planting' ||  selectedInterventionType ==='all' ||  selectedInterventionType === 'default') &&
         viewState.zoom > 14 &&
         selectedPlantLocation.sampleInterventions
           ? selectedPlantLocation.sampleInterventions.map((spl) => {
