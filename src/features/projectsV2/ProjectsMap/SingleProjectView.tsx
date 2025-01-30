@@ -12,6 +12,9 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import FireLocations from './microComponents/FireLocations';
+import FeatureFlag from './microComponents/FeatureFlag';
+import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
@@ -115,8 +118,10 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
           {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
         </>
       )}
-
       {selectedTab === 'field' && <PlantLocations />}
+      <FeatureFlag condition={isFirealertFiresEnabled()}>
+        <FireLocations />
+      </FeatureFlag>
     </>
   );
 };
