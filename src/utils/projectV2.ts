@@ -251,14 +251,12 @@ export const areMapCoordsEqual = (
 export const getLocalizedPath = (path: string, locale: string): string => {
   // Strip query parameters if present
   const pathWithoutQuery = path.split('?')[0];
-
   // Remove trailing slash if present
   const cleanPath = pathWithoutQuery.endsWith('/')
     ? pathWithoutQuery.slice(0, -1)
     : pathWithoutQuery;
-
   // Handle root path special case
-  if (cleanPath === '' || cleanPath === '/') {
+  if (cleanPath === '' || cleanPath === '/' || cleanPath === `/${locale}`) {
     return `/${locale}`;
   }
 

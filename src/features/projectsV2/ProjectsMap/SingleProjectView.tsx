@@ -20,13 +20,13 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef }: Props) => {
+  const router = useRouter();
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
   if (singleProject === null) return null;
-
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
-  const router = useRouter();
 
   const sitesGeojson = useMemo(() => {
     return {
@@ -37,7 +37,6 @@ const SingleProjectView = ({ mapRef }: Props) => {
   }, [singleProject?.sites]);
   const hasNoSites = sitesGeojson.features.length === 0;
   // Zoom to plant location
-
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
     const { geometry } = selectedPlantLocation;
@@ -60,11 +59,16 @@ const SingleProjectView = ({ mapRef }: Props) => {
         zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
       }
     }
-  }, [selectedPlantLocation, router.isReady]);
+  }, [selectedPlantLocation, router.isReady, requestedPlantLocation]);
 
   // Zoom to project site
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation !== null) return;
+    if (
+      !router.isReady ||
+      selectedPlantLocation !== null ||
+      Boolean(requestedPlantLocation)
+    )
+      return;
     if (sitesGeojson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
@@ -75,6 +79,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
       );
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
+      if (!(singleProject.sites?.length === 0)) return;
 
       if (typeof latitude === 'number' && typeof longitude === 'number') {
         // Zoom into the project location that has no site
@@ -88,9 +93,17 @@ const SingleProjectView = ({ mapRef }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeojson, router.isReady, selectedPlantLocation]);
+  }, [
+    selectedSite,
+    sitesGeojson,
+    router.isReady,
+    selectedPlantLocation,
+    requestedPlantLocation,
+    requestedSite,
+  ]);
 
   useEffect(() => {
+    if (plantLocations === null) return;
     const hasNoPlantLocations = !plantLocations?.length;
     const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
     // Satellite view will be:
