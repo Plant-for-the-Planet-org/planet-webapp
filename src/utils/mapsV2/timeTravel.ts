@@ -96,8 +96,7 @@ export const getProjectTimeTravelConfig = async (
   projectPointGeometry: Point
 ): Promise<ProjectTimeTravelConfig | null> => {
   const CACHE_KEY = `${cacheKeyPrefix}_time-travel_${projectId}`;
-  // TODO - change temp cache time
-  const CACHE_TIME_IN_SECONDS = 60 * 5; /* 60 * 60 * 24 */
+  const CACHE_TIME_IN_SECONDS = 60 * 60 * 24 * 30; // cached for 30 days
 
   async function fetchTimeTravelData(): Promise<ProjectTimeTravelConfig> {
     if (
