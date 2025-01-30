@@ -11,6 +11,7 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
@@ -48,12 +49,19 @@ const SingleProjectView = ({ mapRef }: Props) => {
         polygonCoordinates,
         mapRef,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else if (isPointLocation) {
       const [lon, lat] = coordinates;
       if (typeof lon === 'number' && typeof lat === 'number') {
-        zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
+        zoomToLocation(
+          handleViewStateChange,
+          lon,
+          lat,
+          20,
+          MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN,
+          mapRef
+        );
       }
     }
   }, [selectedPlantLocation, router.isReady, requestedPlantLocation]);
@@ -72,7 +80,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         sitesGeojson,
         selectedSite,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
@@ -99,16 +107,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
     requestedSite,
   ]);
 
+  // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
-    if (plantLocations === null) return;
-    const hasNoPlantLocations = !plantLocations?.length;
-    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
-    // Satellite view will be:
-    // - false if there are no plant locations and no sites (i.e., a single project location only)
-    // - true if there are no plant locations but there are multiple sites
-    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations, hasNoSites]);
+    const isSatelliteView =
+      singleProject.purpose === 'conservation' ||
+      (singleProject.purpose === 'trees' && plantLocations?.length === 0);
 
+    setIsSatelliteView(isSatelliteView);
+  }, [plantLocations, singleProject.purpose]);
   return (
     <>
       {hasNoSites ? (
@@ -123,7 +129,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeojson}
           />
-          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+          {isSatelliteView && <SatelliteLayer />}
         </>
       )}
 

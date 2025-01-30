@@ -4,7 +4,7 @@ import type { SetState } from '../../common/types/common';
 import type { PlantLocationSingle } from '../../common/types/plantLocation';
 import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
@@ -24,6 +24,7 @@ import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocat
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
@@ -109,6 +110,25 @@ function ProjectsMap(props: ProjectsMapProps) {
     page: props.page,
     mobileOS,
   };
+
+  useEffect(() => {
+    if (props.page === 'project-details') return;
+    //Wrapping the logic in Promise.resolve().then() defers the map-related code until after synchronous tasks finish,
+    //Giving the map time to initialize fully. This ensures mapRef.current is ready for interaction.
+    Promise.resolve().then(() => {
+      if (mapRef.current) {
+        const map = mapRef.current.getMap
+          ? mapRef.current.getMap()
+          : mapRef.current;
+        zoomOutMap(map, () => {
+          handleViewStateChange({
+            ...map.getCenter(),
+            zoom: map.getZoom(),
+          });
+        });
+      }
+    });
+  }, [props.page]);
 
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
