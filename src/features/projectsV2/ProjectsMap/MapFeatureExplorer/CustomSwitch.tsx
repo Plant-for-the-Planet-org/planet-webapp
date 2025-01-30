@@ -1,4 +1,5 @@
 import { Switch, styled } from '@mui/material';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface SwitchProps {
   customColor?: string;
@@ -34,9 +35,9 @@ export const StyledSwitch = styled(SmallSwitch, {
   shouldForwardProp: (prop) => prop !== 'customColor',
 })<SwitchProps>(({ customColor }) => ({
   '.MuiSwitch-switchBase.Mui-checked': {
-    color: customColor,
+    color: customColor || themeProperties.primaryDarkColor,
   },
   '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-    backgroundColor: customColor,
+    backgroundColor: customColor || themeProperties.primaryDarkColor,
   },
 }));

@@ -1,23 +1,32 @@
 import type { AdditionalInfo } from './MapSettingsSection';
-import type { ReactNode } from 'react';
+import type { ChangeEvent, ReactNode } from 'react';
+import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
 
-// import { useState } from 'react';
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from '../MapFeatureExplorer.module.scss';
+// import { Popover } from '@mui/material';
+// import LayerInfoPopupContent from './LayerInfoPopupContent';
+import { StyledSwitch } from '../CustomSwitch';
+import { MapOptions } from 'maplibre-gl';
+
 // import { Popover } from '@mui/material';
 // import LayerInfoPopupContent from './LayerInfoPopupContent';
 
 interface Props {
-  label: string;
+  layerConfig: LayerConfig;
+  /* label: string;
   switchComponent: ReactNode;
   showDivider: boolean;
-  additionalInfo?: AdditionalInfo;
+  additionalInfo?: AdditionalInfo; */
 }
 
-const LayerSwitchContainer = ({
-  label,
-  switchComponent,
-  showDivider,
-}: Props) => {
+const SingleLayerOption = ({ layerConfig }: Props) => {
+  const tExplore = useTranslations('Maps.exploreLayers');
+  // const hasInfoPopover = layerConfig.additionalInfo !== undefined;
+
+  if (!layerConfig.isAvailable) return <></>;
+
   // const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
   // const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -30,19 +39,18 @@ const LayerSwitchContainer = ({
 
   return (
     <>
-      <div className={styles.layerSwitchContainer}>
+      <div className={styles.singleLayerOption}>
         <div
-          className={showDivider ? styles.mapLayer : undefined}
-          // onMouseEnter={handleMouseEnter}
-          // onMouseLeave={handleMouseLeave}
+        // onMouseEnter={handleMouseEnter}
+        // onMouseLeave={handleMouseLeave}
         >
-          <p>{label}</p>
-          {showDivider && <hr />}
+          <p>{tExplore(`settingsLabels.${layerConfig.key}`)}</p>
         </div>
-        <div className={styles.switchContainer}>{switchComponent}</div>
+        <div className={styles.switchContainer}>
+          <StyledSwitch customColor={layerConfig.color} />
+        </div>
       </div>
-      {/* {showDivider && <hr />}
-      {showDivider && (
+      {/* {hasInfoPopover && (
         <Popover
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
@@ -68,7 +76,7 @@ const LayerSwitchContainer = ({
           <LayerInfoPopupContent
             anchorEl={anchorEl}
             setAnchorEl={setAnchorEl}
-            additionalInfo={additionalInfo}
+            additionalInfo={layerConfig.additionalInfo}
             handleMouseLeave={handleMouseLeave}
           />
         </Popover>
@@ -77,4 +85,4 @@ const LayerSwitchContainer = ({
   );
 };
 
-export default LayerSwitchContainer;
+export default SingleLayerOption;
