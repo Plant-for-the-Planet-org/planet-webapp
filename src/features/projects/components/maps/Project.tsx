@@ -1,3 +1,4 @@
+// Changes in this file can be ignored as it was just used to get the old time travel feature working
 import type { ReactElement } from 'react';
 import type {
   TreeProjectExtended,
@@ -82,13 +83,13 @@ export default function Project({
       if (result2) {
         // Raster data for multipolygons is not supported and is returned with an error message (but a 200 response) for such projects.
         // In this case rasterData.evi will not exist and is not set as a result
-        setRasterData({
+        /* setRasterData({
           ...rasterData,
           imagery: result.imagery,
           evi: result2.evi || '',
-        });
+        }); */
       } else {
-        setRasterData({ ...rasterData, imagery: result.imagery });
+        /* setRasterData({ ...rasterData, imagery: result.imagery }); */
       }
     }
   }

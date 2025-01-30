@@ -1,6 +1,4 @@
-import type { IconProps } from '../../features/common/types/common';
-
-import React from 'react';
+import type { IconProps } from '../../../../../src/features/common/types/common';
 
 const DropdownDownArrow = ({ width }: IconProps) => {
   return (

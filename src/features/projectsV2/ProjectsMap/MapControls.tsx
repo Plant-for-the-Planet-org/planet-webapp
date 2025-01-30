@@ -1,6 +1,7 @@
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
+import type { SelectedTab } from './ProjectMapTabs';
 
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
@@ -15,6 +16,7 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 
 interface MapControlsProps {
   isMobile: boolean;
+  selectedTab: SelectedTab | null;
   selectedMode: ViewMode | undefined;
   setSelectedMode: SetState<ViewMode> | undefined;
   page: 'project-list' | 'project-details';
@@ -24,6 +26,7 @@ interface MapControlsProps {
 const MapControls = ({
   isMobile,
   selectedMode,
+  selectedTab,
   setSelectedMode,
   page,
   mobileOS,
@@ -55,11 +58,14 @@ const MapControls = ({
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
-  const canShowSatelliteToggle = !(
-    isMobile &&
-    (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
-  );
+  const canShowSatelliteToggle =
+    !(
+      isMobile &&
+      (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
+    ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
+  const canShowInterventionDropdown =
+    isProjectDetailsPage && selectedTab === 'field';
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
@@ -113,12 +119,13 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${isMobile
-    ? mobileOS === 'android'
-      ? styles.layerToggleAndroid
-      : styles.layerToggleIos
-    : styles.layerToggleDesktop
-    }`;
+  const layerToggleClass = `${styles.layerToggle} ${
+    isMobile
+      ? mobileOS === 'android'
+        ? styles.layerToggleAndroid
+        : styles.layerToggleIos
+      : styles.layerToggleDesktop
+  }`;
 
   return (
     <>
@@ -131,14 +138,16 @@ const MapControls = ({
         <>
           {isMobile ? (
             <div className={styles.projectDetailsControlsContainer}>
-              {hasProjectSites &&
+              {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
-              }
-              <InterventionDropDown
-                {...interventionDropDownProps}
-                isMobile={isMobile}
-                hasProjectSites={hasProjectSites}
-              />
+              )}
+              {canShowInterventionDropdown && (
+                <InterventionDropDown
+                  {...interventionDropDownProps}
+                  isMobile={isMobile}
+                  hasProjectSites={hasProjectSites}
+                />
+              )}
               <button
                 className={styles.exitMapModeButton}
                 onClick={exitMapMode}
@@ -148,9 +157,15 @@ const MapControls = ({
             </div>
           ) : (
             <>
-              {hasProjectSites && <ProjectSiteDropdown {...siteDropdownProps} />}
-              <InterventionDropDown {...interventionDropDownProps} hasProjectSites={hasProjectSites}
-              />
+              {hasProjectSites && (
+                <ProjectSiteDropdown {...siteDropdownProps} />
+              )}
+              {canShowInterventionDropdown && (
+                <InterventionDropDown
+                  {...interventionDropDownProps}
+                  hasProjectSites={hasProjectSites}
+                />
+              )}
             </>
           )}
           {canShowSatelliteToggle && (
