@@ -244,10 +244,12 @@
   width: 100%;
   background-color: #fff;
   border-radius: 16px;
-  padding: 16px;
+  padding: 26px 10px 22px 10px;
 
   .donorNameContainer {
     @include flex-layout(flex, null, null, null, 10px);
+    margin: 0px 12px;
+
     @include xsPhoneView {
       @include flex-layout(flex, column, null, null, 10px);
     }
@@ -274,5 +276,18 @@
     position: absolute;
     right: 13px;
     top: 13px;
+  }
+}
+
+.donorContactFormAction {
+  @include flex-layout(flex, null, space-between, null, 12px);
+  margin-top: 68px;
+  margin: 68px 12px 0px 12px;
+
+  button {
+    flex: 1;
+  }
+  @include xsPhoneView {
+    flex-direction: column;
   }
 }

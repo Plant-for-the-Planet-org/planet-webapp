@@ -9,6 +9,7 @@ import { getFormattedAddress } from '../../../../utils/addressManagement';
 import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
 import StyledCheckbox from './StyledCheckBox';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
+import WebappButton from '../../../common/WebappButton';
 
 type Props = {
   donorReceiptData: ReceiptData | null;
@@ -17,6 +18,9 @@ type Props = {
 
 const DonorContactForm = ({ donorReceiptData, user }: Props) => {
   const tCountry = useTranslations('Country');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
+  const t = useTranslations('Donate');
+
   if (!user) return null;
   const {
     handleSubmit,
@@ -31,14 +35,16 @@ const DonorContactForm = ({ donorReceiptData, user }: Props) => {
       selectedAddressId: '',
     },
   });
-  const t = useTranslations('Donate');
 
   //TODO: logic is pending
   const onSubmit = (data: any) => {};
   //TODO: logic is pending
   const handleChange = (id: string) => {};
+  //TODO: logic is pending
+  const handleAddNewAddress = () => [];
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.donorContactForm}>
+    <form className={styles.donorContactForm}>
       <div className={styles.donorNameContainer}>
         {donorReceiptData?.donor.type === 'organization' ? (
           <Controller
@@ -138,6 +144,20 @@ const DonorContactForm = ({ donorReceiptData, user }: Props) => {
           );
         })}
       </section>
+      <div className={styles.donorContactFormAction}>
+        <WebappButton
+          text={tAddressManagement('actions.addAddress')}
+          elementType="button"
+          onClick={handleAddNewAddress}
+          variant="secondary"
+        />
+        <WebappButton
+          text={t('donationReceipt.saveDataAndReturn')}
+          elementType="button"
+          onClick={handleSubmit(onSubmit)}
+          variant="primary"
+        />
+      </div>
     </form>
   );
 };

@@ -132,7 +132,8 @@
       "name": "{type, select, individual {Name} organization {Company Name} other {}}",
       "donorContactManagement": "Donor Contact Management",
       "contactManagementHeader": "Update profile and address",
-      "tin": "Tax Identification Number (TIN)"
+      "tin": "Tax Identification Number (TIN)",
+      "saveDataAndReturn": "Save data and return"
     }
   }
 }
