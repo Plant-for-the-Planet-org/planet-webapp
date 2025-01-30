@@ -4,11 +4,14 @@ import styles from './donationReceipt.module.scss';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useDonorReceipt } from '../../common/Layout/DonorReceiptContext';
+import DonorContactForm from './microComponents/DonorContactForm';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 
 const DonorContactManagement = () => {
   const t = useTranslations('Donate.donationReceipt');
   const router = useRouter();
   const { donorReceiptData } = useDonorReceipt();
+  const { user } = useUserProps();
 
   const navigateToVerificationPage = useCallback(() => {
     if (donorReceiptData) {
@@ -30,7 +33,7 @@ const DonorContactManagement = () => {
             {t('contactManagementHeader')}
           </h2>
         </div>
-        <form></form>
+        <DonorContactForm donorReceiptData={donorReceiptData} user={user} />
       </div>
     </section>
   );

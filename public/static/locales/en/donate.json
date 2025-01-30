@@ -131,7 +131,8 @@
       "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
       "name": "{type, select, individual {Name} organization {Company Name} other {}}",
       "donorContactManagement": "Donor Contact Management",
-      "contactManagementHeader": "Update Profile and address"
+      "contactManagementHeader": "Update profile and address",
+      "tin": "Tax Identification Number (TIN)"
     }
   }
 }

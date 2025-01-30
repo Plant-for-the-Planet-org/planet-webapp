@@ -216,7 +216,7 @@
 // donor contact management  styles
 
 .donorContactManagement {
-  @include flex-layout(flex, column, null, center);
+  @include flex-layout(flex, column, null, null, 23px);
   width: 100%;
   max-width: 760px;
   margin-top: 55px;
@@ -226,6 +226,10 @@
 
     button {
       cursor: pointer;
+
+      svg {
+        margin-left: 0px !important;
+      }
     }
   }
 }
@@ -234,4 +238,41 @@
   font-size: 20px;
   font-weight: 600;
   margin: 10px 0 0 16px;
+}
+
+.donorContactForm {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 16px;
+
+  .donorNameContainer {
+    @include flex-layout(flex, null, null, null, 10px);
+    @include xsPhoneView {
+      @include flex-layout(flex, column, null, null, 10px);
+    }
+  }
+}
+
+.donorAddressSection {
+  margin-top: 30px;
+}
+
+.address {
+  @include flex-layout(flex, row, null, center, 6px);
+  border-radius: 9px;
+  padding: 24px;
+  background: rgba(242, 242, 242, 0.5);
+  position: relative;
+
+  address {
+    max-width: 500px;
+  }
+
+  button {
+    cursor: pointer;
+    position: absolute;
+    right: 13px;
+    top: 13px;
+  }
 }
