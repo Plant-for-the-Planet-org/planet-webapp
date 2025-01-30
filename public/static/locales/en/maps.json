@@ -72,40 +72,13 @@
         "amphibiansDensity": "Amphibians Density",
         "fireRisk": "Fire Risk",
         "deforestationRisk": "Deforestation Risk"
-      }
-    },
-    "layers": {
-      "dataYears": "Data Years",
-      "covariates": "Covariates",
-      "description": "Description",
-      "resolution": "Resolution",
-      "underlyingData": "Underlying Data",
-      "forests": "Forests",
-      "soil": "Soil",
-      "biodiversity": "Biodiversity",
-      "risks": "Risks",
-      "forestLayers": {
-        "forestCover": "Forest Cover",
-        "forestBiomass": "Forest Biomass",
-        "potentialAdditionalForestBiomass": "Potential Additional Forest Biomass",
-        "deforestation": "Deforestation",
-        "canopyHeight": "Canopy Height"
       },
-      "soilLayers": {
-        "soilNitrogen": "Soil Nitrogen",
-        "soilPH": "Soil pH",
-        "soilOrganicCarbon": "Soil Organic Carbon",
-        "soilBulkDensity": "Soil Bulk Density"
-      },
-      "biodiversityLayers": {
-        "treeSpeciesDensity": "Tree Species Density",
-        "birdsDensity": "Birds Density",
-        "mammalsDensity": "Mammals Density",
-        "amphibiansDensity": "Amphibians Density"
-      },
-      "risksLayers": {
-        "fireRisk": "Fire Risk",
-        "deforestationRisk": "Deforestation Risk"
+      "additionalInfo": {
+        "dataYears": "Data years",
+        "resolution": "Resolution",
+        "description": "Description",
+        "underlyingData": "Underlying Data",
+        "source": "Source"
       }
     }
   }

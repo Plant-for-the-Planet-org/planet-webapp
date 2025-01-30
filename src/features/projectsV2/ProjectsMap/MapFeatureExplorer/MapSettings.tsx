@@ -8,7 +8,6 @@ import styles from './MapFeatureExplorer.module.scss';
 // import { StyledSwitch } from './CustomSwitch';
 // import { YearRangeSlider } from '.';
 import { useTranslations } from 'next-intl';
-import themeProperties from '../../../../theme/themeProperties';
 import MapSettingsSection from './microComponents/MapSettingsSection';
 import MobileMapSettingsLayout from './MobileMapSettingsLayout';
 import { mapSettingsConfig } from '../../../../utils/mapsV2/mapSettings.config';
@@ -41,27 +40,6 @@ const MapSettings: FC<MapSettingsProps> = ({
         config={mapSettingsConfig.biodiversity}
       />
       <MapSettingsSection groupKey="risks" config={mapSettingsConfig.risks} />
-      {/* <MapSettingsSection
-        exploreConfig={projectConfig}
-        updateMapOption={updateMapOption}
-        mapOptions={mapOptions}
-      />
-      <MapSettingsSection
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      />
-      <MapSettingsSection
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      />
-      <MapSettingsSection
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      />
-      <MapSettingsSection
-        category={tMaps('layers.forests')}
-        exploreConfig={forestConfig}
-      /> */}
       <div className={styles.exploreDescription}>{tMaps('3trilliontrees')}</div>
     </>
   );
@@ -78,38 +56,10 @@ const MapSettings: FC<MapSettingsProps> = ({
     <div className={styles.exploreMainContainer}>
       <div className={styles.exploreItemsContainer}>
         {/* <MapLayerToggle
-            label={tAllProjects('currentForests')}
-            switchComponent={
-              <StyledSwitch customColor={`${primaryColorNew}`} />
-            }
-          /> */}
-        {/* <div className={styles.hrLine} />
-          <MapLayerToggle
-            infoIcon={<InfoIcon width={'10px'} />}
-            label={tAllProjects('restorationPotential')}
-            switchComponent={
-              <StyledSwitch customColor={`${restorationToggleColorNew}`} />
-            }
-          />
-          <div className={styles.hrLine} />
-          <MapLayerToggle
             infoIcon={<InfoIcon width={'10px'} />}
             label={tAllProjects('deforestation')}
             switchComponent={
               <StyledSwitch customColor={`${deforestrationToggleColorNew}`} />
-            }
-          /> */}
-        {/* <div className={styles.hrLine} /> */}
-        {/* <MapLayerToggle
-            label={tAllProjects('projects')}
-            switchComponent={
-              <StyledSwitch
-                checked={mapOptions['showProjects']}
-                onChange={(
-                  _event: ChangeEvent<HTMLInputElement>,
-                  checked: boolean
-                ) => updateMapOption('showProjects', checked)}
-              />
             }
           /> */}
         {content}

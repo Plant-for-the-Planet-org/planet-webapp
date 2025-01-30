@@ -1,4 +1,4 @@
-import type { AdditionalInfo } from './MapSettingsSection';
+import type { AdditionalInfo } from '../../../../../utils/mapsV2/mapSettings.config';
 import type { SetState } from '../../../../common/types/common';
 
 import { useTranslations } from 'next-intl';
@@ -7,57 +7,66 @@ import styles from '../MapFeatureExplorer.module.scss';
 interface Props {
   additionalInfo: AdditionalInfo | undefined;
   handleMouseLeave: () => void;
-  setAnchorEl: SetState<HTMLDivElement | null>;
-  anchorEl: HTMLDivElement | null;
+  setAnchorElement: SetState<HTMLDivElement | null>;
+  anchorElement: HTMLDivElement | null;
 }
 
 const LayerInfoPopupContent = ({
   additionalInfo,
   handleMouseLeave,
-  setAnchorEl,
-  anchorEl,
+  setAnchorElement,
+  anchorElement,
 }: Props) => {
-  const tMaps = useTranslations('Maps');
+  const tExplore = useTranslations('Maps.exploreLayers');
   return (
     <div
       className={styles.layerInfoPopupContainer}
-      onMouseEnter={() => setAnchorEl(anchorEl)}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={(e) => {
+        setAnchorElement(anchorElement);
+        e.stopPropagation();
+      }}
+      onMouseLeave={() => setTimeout(handleMouseLeave, 500)}
     >
       {additionalInfo?.dataYears && (
         <div>
-          <p className={styles.label}>{tMaps('layers.dataYears')}</p>
+          <p className={styles.label}>{tExplore('additionalInfo.dataYears')}</p>
           <p>{additionalInfo?.dataYears}</p>
         </div>
       )}
       {additionalInfo?.resolution && (
         <div>
-          <p className={styles.label}>{tMaps('layers.resolution')}</p>
+          <p className={styles.label}>
+            {tExplore('additionalInfo.resolution')}
+          </p>
           <p>~{additionalInfo?.resolution}</p>
         </div>
       )}
       {additionalInfo?.description && (
         <div>
-          <p className={styles.label}>{tMaps('layers.description')}</p>
+          <p className={styles.label}>
+            {tExplore('additionalInfo.description')}
+          </p>
           <p>{additionalInfo.description}</p>
         </div>
       )}
       {additionalInfo?.underlyingData && (
         <div>
-          <p className={styles.label}>{tMaps('layers.underlyingData')}</p>
+          <p className={styles.label}>
+            {tExplore('additionalInfo.underlyingData')}
+          </p>
           <p>{additionalInfo.underlyingData}</p>
         </div>
       )}
-      {additionalInfo?.covariates && (
+      {additionalInfo?.source && (
         <div>
-          <p>{tMaps('layers.covariates')}</p>
+          <p>{tExplore('additionalInfo.source')}</p>
           <a
-            href={additionalInfo.source}
+            href={additionalInfo.source.url}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.source}
           >
-            {additionalInfo.covariates}
+            {additionalInfo.source.text}
           </a>
         </div>
       )}

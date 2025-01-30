@@ -17,7 +17,7 @@ type MapSettings =
   | 'fireRisk'
   | 'deforestationRisk';
 
-interface AdditionalInfo {
+export interface AdditionalInfo {
   resolution: string;
   dataYears: string;
   description: string;

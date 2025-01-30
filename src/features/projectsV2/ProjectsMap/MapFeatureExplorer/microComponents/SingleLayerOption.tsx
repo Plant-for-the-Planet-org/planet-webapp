@@ -1,17 +1,11 @@
-import type { AdditionalInfo } from './MapSettingsSection';
-import type { ChangeEvent, ReactNode } from 'react';
 import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import styles from '../MapFeatureExplorer.module.scss';
-// import { Popover } from '@mui/material';
-// import LayerInfoPopupContent from './LayerInfoPopupContent';
+import { Popover } from '@mui/material';
+import LayerInfoPopupContent from './LayerInfoPopupContent';
 import { StyledSwitch } from '../CustomSwitch';
-import { MapOptions } from 'maplibre-gl';
-
-// import { Popover } from '@mui/material';
-// import LayerInfoPopupContent from './LayerInfoPopupContent';
+import styles from '../MapFeatureExplorer.module.scss';
 
 interface Props {
   layerConfig: LayerConfig;
@@ -23,26 +17,30 @@ interface Props {
 
 const SingleLayerOption = ({ layerConfig }: Props) => {
   const tExplore = useTranslations('Maps.exploreLayers');
-  // const hasInfoPopover = layerConfig.additionalInfo !== undefined;
+  const hasInfoPopover = layerConfig.additionalInfo !== undefined;
 
   if (!layerConfig.isAvailable) return <></>;
 
-  // const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
-  // const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   setAnchorEl(e.currentTarget);
-  // };
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setAnchor(e.currentTarget);
+  };
 
-  // const handleMouseLeave = () => {
-  //   setAnchorEl(null);
-  // };
+  const handleMouseLeave = () => {
+    setAnchor(null);
+  };
 
   return (
     <>
       <div className={styles.singleLayerOption}>
         <div
-        // onMouseEnter={handleMouseEnter}
-        // onMouseLeave={handleMouseLeave}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={`${styles.layerLabel} ${
+            hasInfoPopover ? styles.additionalInfo : ''
+          }`}
         >
           <p>{tExplore(`settingsLabels.${layerConfig.key}`)}</p>
         </div>
@@ -50,11 +48,11 @@ const SingleLayerOption = ({ layerConfig }: Props) => {
           <StyledSwitch customColor={layerConfig.color} />
         </div>
       </div>
-      {/* {hasInfoPopover && (
+      {hasInfoPopover && (
         <Popover
-          open={Boolean(anchorEl)}
-          onClose={() => setAnchorEl(null)}
-          anchorEl={anchorEl}
+          open={Boolean(anchor)}
+          onClose={() => setAnchor(null)}
+          anchorEl={anchor}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'left',
@@ -74,13 +72,13 @@ const SingleLayerOption = ({ layerConfig }: Props) => {
           }}
         >
           <LayerInfoPopupContent
-            anchorEl={anchorEl}
-            setAnchorEl={setAnchorEl}
+            anchorElement={anchor}
+            setAnchorElement={setAnchor}
             additionalInfo={layerConfig.additionalInfo}
             handleMouseLeave={handleMouseLeave}
           />
         </Popover>
-      )} */}
+      )}
     </>
   );
 };

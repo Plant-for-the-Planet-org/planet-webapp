@@ -1,23 +1,9 @@
-import type { ChangeEvent } from 'react';
-import type {
-  LayerConfig,
-  MapSettingsConfig,
-} from '../../../../../utils/mapsV2/mapSettings.config';
+import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
 import type { MapOptions } from '../../../ProjectsMapContext';
 
-import { StyledSwitch } from '../CustomSwitch';
-import styles from '../MapFeatureExplorer.module.scss';
-import SingleLayerOption from './SingleLayerOption';
 import { useTranslations } from 'next-intl';
-
-export type AdditionalInfo = {
-  dataYears: number;
-  resolution: string;
-  description: string;
-  underlyingData: string;
-  source: string;
-  covariates: string;
-};
+import SingleLayerOption from './SingleLayerOption';
+import styles from '../MapFeatureExplorer.module.scss';
 
 /* interface Props {
   category?: string;
@@ -51,9 +37,11 @@ const renderSectionContent = ({ config, groupKey }: Props) => {
 
   return (
     <div>
-      {config.map((item) => {
-        if (!item.isAvailable) return <></>;
-        return <SingleLayerOption key={item.key} layerConfig={item} />;
+      {config.map((layerConfig) => {
+        if (!layerConfig.isAvailable) return <></>;
+        return (
+          <SingleLayerOption key={layerConfig.key} layerConfig={layerConfig} />
+        );
       })}
     </div>
   );

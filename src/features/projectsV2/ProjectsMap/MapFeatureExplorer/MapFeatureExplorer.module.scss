@@ -70,6 +70,11 @@
     border-bottom: none;
   }
 
+  .layerLabel.additionalInfo p {
+    text-decoration: $horizontalLineColor dashed underline;
+    text-underline-offset: 2px;
+  }
+
   .mapLayer {
     cursor: pointer;
   }
