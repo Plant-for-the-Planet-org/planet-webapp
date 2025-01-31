@@ -48,7 +48,12 @@ const MobileMapSettingsLayout = ({ setIsOpen, children }: Props) => {
           <ExploreIcon />
           <p>{tMaps('explore')}</p>
         </div>
-        <button className={styles.closeButton} onClick={() => setIsOpen(false)}>
+        <button
+          className={styles.closeButton}
+          onClick={() => setIsOpen(false)}
+          aria-label={tMaps('exploreLayers.closeButton')}
+          type="button"
+        >
           <CrossIcon />
         </button>
       </div>

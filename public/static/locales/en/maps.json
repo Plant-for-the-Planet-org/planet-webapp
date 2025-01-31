@@ -49,6 +49,7 @@
     "hideProjectDetails": "Hide Project Details",
     "countries": "Countries",
     "exploreLayers": {
+      "closeButton": "Close",
       "groups": {
         "forests": "Forest",
         "soil": "Soil",

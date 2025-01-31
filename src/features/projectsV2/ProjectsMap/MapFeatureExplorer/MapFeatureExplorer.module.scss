@@ -41,6 +41,8 @@
     position: absolute;
     max-height: 100vh;
     height: 100vh;
+    height: -webkit-fill-available;
+    height: stretch;
     overflow-y: scroll;
     min-width: 293px;
     border-radius: 12px 0 0 12px;
@@ -58,7 +60,7 @@
   }
 
   @include xsPhoneView {
-    max-height: max-content;
+    max-height: none;
   }
 }
 
