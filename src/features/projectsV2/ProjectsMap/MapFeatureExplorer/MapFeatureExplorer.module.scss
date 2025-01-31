@@ -99,16 +99,6 @@
       }
     }
   }
-
-  .mapLayer {
-    cursor: pointer;
-  }
-
-  hr {
-    border-top: 1px dashed rgba(189, 189, 189, 1);
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
 }
 
 .layerInfoPopupContainer {
@@ -130,43 +120,13 @@
   }
 }
 
-.toggleMainContainer {
-  padding: 15px 9px;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(0, 122, 73, 0.05);
-  border-radius: 8px;
-}
-
-.toggleContainer {
-  display: flex;
-  font-size: $fontXSmall;
-  font-weight: 400;
-  align-items: center;
-  gap: 4px;
-}
-
 .switchContainer {
   height: 14px;
   width: 24px;
-}
-
-.infoIconContainer {
-  margin-top: 2px;
 }
 
 .exploreDescription {
   height: fit-content;
   font-size: var(--font-xx-extra-small);
   border-radius: 6px;
-}
-
-.hrLine {
-  width: 150px;
-  height: 0.4px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  background: $horizontalLineColor;
 }

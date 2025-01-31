@@ -8,27 +8,6 @@ import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
 import styles from './MapFeatureExplorer.module.scss';
 
-interface EcosystemOptionProps {
-  label: string;
-  switchComponent: React.ReactNode;
-}
-
-export const MapLayerToggle = ({
-  label,
-  switchComponent,
-}: EcosystemOptionProps) => {
-  return (
-    <>
-      <div className={styles.toggleMainContainer}>
-        <div className={styles.toggleContainer}>
-          <div>{label}</div>
-        </div>
-        <div className={styles.switchContainer}>{switchComponent}</div>
-      </div>
-    </>
-  );
-};
-
 type MapFeatureExplorerProps = {
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
