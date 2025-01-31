@@ -33,6 +33,16 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
+type PostSubmitData = {
+  imageFile: string;
+  description: string | null;
+  isDefault: boolean;
+};
+
+type VideoSubmitData = {
+  videoUrl: string;
+};
+
 export default function ProjectMedia({
   handleBack,
   token,
@@ -84,14 +94,14 @@ export default function ProjectMedia({
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
-    const submitData = {
+    const submitData: PostSubmitData = {
       imageFile: image,
       description: null,
       isDefault: false,
     };
 
     try {
-      const res = await postAuthenticatedRequest<UploadImage>({
+      const res = await postAuthenticatedRequest<UploadImage, PostSubmitData>({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}/images`,
         data: submitData,
@@ -165,13 +175,14 @@ export default function ProjectMedia({
   const onSubmit = async (data: { youtubeURL: string }) => {
     // Add isDirty test here
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: VideoSubmitData = {
       videoUrl: data.youtubeURL,
     };
 
     try {
       const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
+        ProfileProjectTrees | ProfileProjectConservation,
+        VideoSubmitData
       >({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}`,

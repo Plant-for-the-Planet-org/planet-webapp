@@ -29,6 +29,16 @@ interface Props {
   setAddressAction: SetState<AddressAction | null>;
 }
 
+type SubmitData = {
+  country: '' | ExtendedCountryCode;
+  type: 'other';
+  address: string | undefined;
+  address2: string | null;
+  city: string | undefined;
+  zipCode: string | undefined;
+  state: string | null;
+};
+
 const defaultAddressDetail = {
   address: '',
   address2: '',
@@ -57,13 +67,13 @@ const AddAddress = ({
     async (data: FormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
-      const bodyToSend = {
+      const bodyToSend: SubmitData = {
         ...data,
         country,
         type: ADDRESS_TYPE.OTHER,
       };
       try {
-        const res = await postAuthenticatedRequest<Address>({
+        const res = await postAuthenticatedRequest<Address, SubmitData>({
           tenant: tenantConfig.id,
           url: '/app/addresses',
           data: bodyToSend,
