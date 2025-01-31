@@ -1,6 +1,7 @@
 import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
+import type { MouseEvent } from 'react';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Popover } from '@mui/material';
 import LayerInfoPopupContent from './LayerInfoPopupContent';
@@ -9,49 +10,57 @@ import styles from '../MapFeatureExplorer.module.scss';
 
 interface Props {
   layerConfig: LayerConfig;
-  /* label: string;
-  switchComponent: ReactNode;
-  showDivider: boolean;
-  additionalInfo?: AdditionalInfo; */
 }
 
 const SingleLayerOption = ({ layerConfig }: Props) => {
   const tExplore = useTranslations('Maps.exploreLayers');
   const hasInfoPopover = layerConfig.additionalInfo !== undefined;
-
-  if (!layerConfig.isAvailable) return <></>;
-
   const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setAnchor(e.currentTarget);
-  };
+  if (!layerConfig.isAvailable) return null;
 
-  const handleMouseLeave = () => {
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent<HTMLParagraphElement>) => {
+      setAnchor(e.currentTarget);
+    },
+    []
+  );
+
+  const handleClose = () => {
     setAnchor(null);
   };
 
+  const handleMouseLeave = useCallback((e: MouseEvent) => {
+    const relatedTarget = e.relatedTarget as HTMLElement;
+    const isMovingToPopover = relatedTarget?.closest('[role="presentation"]');
+
+    if (!isMovingToPopover) {
+      handleClose();
+    }
+  }, []);
+
   return (
-    <>
-      <div className={styles.singleLayerOption}>
-        <div
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className={`${styles.layerLabel} ${
-            hasInfoPopover ? styles.additionalInfo : ''
-          }`}
+    <div className={styles.singleLayerOption}>
+      <div
+        className={`${styles.layerLabel} ${
+          hasInfoPopover ? styles.additionalInfo : ''
+        }`}
+      >
+        <p
+          onMouseEnter={hasInfoPopover ? handleMouseEnter : undefined}
+          onMouseLeave={hasInfoPopover ? handleMouseLeave : undefined}
         >
-          <p>{tExplore(`settingsLabels.${layerConfig.key}`)}</p>
-        </div>
-        <div className={styles.switchContainer}>
-          <StyledSwitch customColor={layerConfig.color} />
-        </div>
+          {tExplore(`settingsLabels.${layerConfig.key}`)}
+        </p>
       </div>
+      <div className={styles.switchContainer}>
+        <StyledSwitch customColor={layerConfig.color} />
+      </div>
+
       {hasInfoPopover && (
         <Popover
           open={Boolean(anchor)}
-          onClose={() => setAnchor(null)}
+          onClose={handleClose}
           anchorEl={anchor}
           anchorOrigin={{
             vertical: 'top',
@@ -63,23 +72,24 @@ const SingleLayerOption = ({ layerConfig }: Props) => {
           }}
           disableRestoreFocus
           sx={{
-            pointerEvents: 'auto', // Enable pointer events
             '& .MuiPaper-root': {
               borderRadius: '12px',
               marginTop: '-8px',
-              pointerEvents: 'auto', // Ensure interaction inside Popover works
             },
           }}
+          onMouseLeave={handleClose}
         >
-          <LayerInfoPopupContent
-            anchorElement={anchor}
-            setAnchorElement={setAnchor}
-            additionalInfo={layerConfig.additionalInfo}
-            handleMouseLeave={handleMouseLeave}
-          />
+          <div onMouseEnter={(e) => e.stopPropagation()}>
+            <LayerInfoPopupContent
+              anchorElement={anchor}
+              setAnchorElement={setAnchor}
+              additionalInfo={layerConfig.additionalInfo}
+              handleMouseLeave={handleClose}
+            />
+          </div>
         </Popover>
       )}
-    </>
+    </div>
   );
 };
 

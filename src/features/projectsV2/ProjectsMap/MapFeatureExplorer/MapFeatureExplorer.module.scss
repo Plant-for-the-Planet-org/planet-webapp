@@ -88,9 +88,16 @@
     border-bottom: none;
   }
 
-  .layerLabel.additionalInfo p {
-    text-decoration: $horizontalLineColor dashed underline;
-    text-underline-offset: 2px;
+  .layerLabel {
+    cursor: default;
+
+    &.additionalInfo {
+      cursor: help;
+      p {
+        text-decoration: $horizontalLineColor dashed underline;
+        text-underline-offset: 2px;
+      }
+    }
   }
 
   .mapLayer {
