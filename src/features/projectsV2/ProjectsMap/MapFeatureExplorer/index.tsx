@@ -111,7 +111,10 @@ const MapFeatureExplorer = ({
         onClick={() => setIsOpen(!isOpen)}
         className={isOpen ? 'active' : ''}
       >
-        {t('explore')}
+        <div className={styles.exploreButtonContent}>
+          <h3>{t('explore')}</h3>
+          {!isMobile && <p>Ecological Data Layers</p>}
+        </div>
       </CustomButton>
 
       {isOpen && !isMobile && (

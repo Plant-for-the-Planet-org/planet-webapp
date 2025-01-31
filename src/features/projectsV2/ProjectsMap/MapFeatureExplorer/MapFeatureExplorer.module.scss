@@ -7,6 +7,23 @@
   }
 }
 
+.exploreButtonContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  h3 {
+    font-size: $fontSmall;
+    @include xsPhoneView {
+      font-size: $fontXXSmall;
+    }
+  }
+
+  p {
+    font-weight: 400;
+  }
+}
+
 .exploreMainContainer {
   max-width: 240px;
   background-color: #fff;
