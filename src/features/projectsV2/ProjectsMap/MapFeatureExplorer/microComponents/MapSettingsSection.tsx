@@ -5,19 +5,6 @@ import { useTranslations } from 'next-intl';
 import SingleLayerOption from './SingleLayerOption';
 import styles from '../MapFeatureExplorer.module.scss';
 
-/* interface Props {
-  category?: string;
-  exploreConfig: {
-    label: string;
-    color: string | undefined;
-    showDivider: boolean;
-    additionalInfo?: AdditionalInfo;
-    shouldRender: boolean;
-  }[];
-  mapOptions?: MapOptions;
-  updateMapOption?: (option: keyof MapOptions, value: boolean) => void;
-} */
-
 interface SingleLayerSectionProps {
   groupKey?: undefined;
   config: LayerConfig;
@@ -28,11 +15,25 @@ interface GroupedLayerSectionProps {
   config: LayerConfig[];
 }
 
-type Props = SingleLayerSectionProps | GroupedLayerSectionProps;
+type Props = (SingleLayerSectionProps | GroupedLayerSectionProps) & {
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+};
 
-const renderSectionContent = ({ config, groupKey }: Props) => {
+const renderSectionContent = ({
+  config,
+  groupKey,
+  mapOptions,
+  updateMapOption,
+}: Props) => {
   if (groupKey === undefined) {
-    return <SingleLayerOption layerConfig={config} />;
+    return (
+      <SingleLayerOption
+        layerConfig={config}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
+      />
+    );
   }
 
   return (
@@ -40,7 +41,12 @@ const renderSectionContent = ({ config, groupKey }: Props) => {
       {config.map((layerConfig) => {
         if (!layerConfig.isAvailable) return <></>;
         return (
-          <SingleLayerOption key={layerConfig.key} layerConfig={layerConfig} />
+          <SingleLayerOption
+            key={layerConfig.key}
+            layerConfig={layerConfig}
+            mapOptions={mapOptions}
+            updateMapOption={updateMapOption}
+          />
         );
       })}
     </div>
@@ -60,32 +66,6 @@ const MapSettingsSection = (props: Props) => {
     <section className={styles.exploreItemSection}>
       {shouldShowGroup && <h2>{tExplore(`groups.${groupKey}`)}</h2>}
       {sectionContent}
-      {/* <div>
-        {exploreConfig.map((item) => {
-          if (!item.shouldRender) return <></>;
-          return (
-            <SingleLayerOption
-              key={item.label}
-              showDivider={item.showDivider}
-              switchComponent={
-                <StyledSwitch
-                  checked={mapOptions?.['showProjects'] || false}
-                  customColor={item.color}
-                  onChange={(
-                    _event: ChangeEvent<HTMLInputElement>,
-                    checked: boolean
-                  ) => {
-                    if (updateMapOption)
-                      updateMapOption('showProjects', checked);
-                  }}
-                />
-              }
-              label={item.label}
-              additionalInfo={item.additionalInfo}
-            />
-          );
-        })}
-      </div> */}
     </section>
   );
 };

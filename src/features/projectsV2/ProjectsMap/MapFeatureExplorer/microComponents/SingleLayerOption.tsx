@@ -1,5 +1,6 @@
 import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
-import type { MouseEvent } from 'react';
+import type { ChangeEvent, MouseEvent } from 'react';
+import type { MapOptions } from '../../../ProjectsMapContext';
 
 import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -10,9 +11,15 @@ import styles from '../MapFeatureExplorer.module.scss';
 
 interface Props {
   layerConfig: LayerConfig;
+  mapOptions: MapOptions;
+  updateMapOption: (option: keyof MapOptions, value: boolean) => void;
 }
 
-const SingleLayerOption = ({ layerConfig }: Props) => {
+const SingleLayerOption = ({
+  layerConfig,
+  mapOptions,
+  updateMapOption,
+}: Props) => {
   const tExplore = useTranslations('Maps.exploreLayers');
   const hasInfoPopover = layerConfig.additionalInfo !== undefined;
   const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
@@ -54,7 +61,13 @@ const SingleLayerOption = ({ layerConfig }: Props) => {
         </p>
       </div>
       <div className={styles.switchContainer}>
-        <StyledSwitch customColor={layerConfig.color} />
+        <StyledSwitch
+          customColor={layerConfig.color}
+          checked={mapOptions[layerConfig.key] || false}
+          onChange={(_event: ChangeEvent<HTMLInputElement>, checked: boolean) =>
+            updateMapOption(layerConfig.key, checked)
+          }
+        />
       </div>
 
       {hasInfoPopover && (

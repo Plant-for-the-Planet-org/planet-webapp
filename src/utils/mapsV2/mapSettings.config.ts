@@ -1,5 +1,5 @@
 // Types for the configuration
-type MapSettings =
+export type MapLayerOptionsType =
   | 'projects'
   | 'forestCover'
   | 'forestBiomass'
@@ -29,7 +29,7 @@ export interface AdditionalInfo {
 }
 
 export interface LayerConfig {
-  key: MapSettings;
+  key: MapLayerOptionsType;
   isAvailable: boolean;
   additionalInfo?: AdditionalInfo;
   color?: string;

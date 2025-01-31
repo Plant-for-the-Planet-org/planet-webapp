@@ -128,7 +128,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowSingleProjectsView =
     singleProject !== null && props.page === 'project-details';
   const shouldShowMultipleProjectsView =
-    mapOptions.showProjects &&
+    Boolean(mapOptions.projects) &&
     projects &&
     projects.length > 0 &&
     !shouldShowSingleProjectsView;

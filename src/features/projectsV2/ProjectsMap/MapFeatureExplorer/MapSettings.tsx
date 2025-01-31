@@ -29,17 +29,35 @@ const MapSettings: FC<MapSettingsProps> = ({
 
   const content = (
     <>
-      <MapSettingsSection config={mapSettingsConfig.projects} />
+      <MapSettingsSection
+        config={mapSettingsConfig.projects}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
+      />
       <MapSettingsSection
         groupKey="forests"
         config={mapSettingsConfig.forests}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
       />
-      <MapSettingsSection groupKey="soil" config={mapSettingsConfig.soil} />
+      <MapSettingsSection
+        groupKey="soil"
+        config={mapSettingsConfig.soil}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
+      />
       <MapSettingsSection
         groupKey="biodiversity"
         config={mapSettingsConfig.biodiversity}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
       />
-      <MapSettingsSection groupKey="risks" config={mapSettingsConfig.risks} />
+      <MapSettingsSection
+        groupKey="risks"
+        config={mapSettingsConfig.risks}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
+      />
       <div className={styles.exploreDescription}>{tMaps('3trilliontrees')}</div>
     </>
   );

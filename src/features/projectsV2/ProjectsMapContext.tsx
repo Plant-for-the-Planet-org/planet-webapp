@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { ViewState } from 'react-map-gl-v7';
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
+import type { MapLayerOptionsType } from '../../utils/mapsV2/mapSettings.config';
 import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
 
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
@@ -46,8 +47,11 @@ const DEFAULT_MAP_STATE: MapState = {
   maxZoom: 20,
 };
 
+/**
+ * Contains current state of map settings (set using MapFeatureExplorer)
+ */
 export type MapOptions = {
-  showProjects: boolean;
+  [key in MapLayerOptionsType]?: boolean;
 };
 
 interface ProjectsMapState {
@@ -74,7 +78,7 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [isSatelliteView, setIsSatelliteView] = useState(false);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
-    showProjects: true,
+    projects: true,
   });
   const [timeTravelConfig, setTimeTravelConfig] =
     useState<ProjectTimeTravelConfig | null>(null);
