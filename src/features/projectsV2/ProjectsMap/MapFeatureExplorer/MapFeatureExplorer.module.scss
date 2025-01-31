@@ -8,7 +8,7 @@
 }
 
 .exploreMainContainer {
-  max-width: 182px;
+  max-width: 240px;
   background-color: #fff;
   border-radius: 12px;
   margin-top: 10px;
@@ -62,6 +62,7 @@
 .singleLayerOption {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   align-items: center;
   padding: 6px 0;
   border-bottom: 1px solid $horizontalLineColor;

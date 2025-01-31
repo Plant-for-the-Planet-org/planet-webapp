@@ -59,7 +59,7 @@ const LayerInfoPopupContent = ({
       )}
       {additionalInfo?.source && (
         <div>
-          <p>{tExplore('additionalInfo.source')}</p>
+          <p className={styles.label}>{tExplore('additionalInfo.source')}</p>
           <a
             href={additionalInfo.source.url}
             target="_blank"
