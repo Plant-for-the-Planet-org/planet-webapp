@@ -1,6 +1,8 @@
 import type { ReceiptData } from '../donorReceipt';
-import type { User } from '@planet-sdk/common';
+import type { Address, User } from '@planet-sdk/common';
 import type { Control, RegisterOptions } from 'react-hook-form';
+import type { SetState } from '../../../common/types/common';
+import type { AddressAction } from '../../../common/types/profile';
 
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -9,10 +11,14 @@ import styles from '../donationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddress from './DonorAddress';
+import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
 
 type Props = {
   donorReceiptData: ReceiptData | null;
   user: User | null;
+  setSelectedAddressForAction: SetState<Address | null>;
+  setAddressAction: SetState<AddressAction | null>;
+  setIsModalOpen: SetState<boolean>;
 };
 
 type FormValues = {
@@ -42,7 +48,13 @@ const FormInput = ({ name, control, rules, error, label }: FormInputProps) => {
   );
 };
 
-const DonorContactForm = ({ donorReceiptData, user }: Props) => {
+const DonorContactForm = ({
+  donorReceiptData,
+  user,
+  setSelectedAddressForAction,
+  setAddressAction,
+  setIsModalOpen,
+}: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('Donate');
 
@@ -63,10 +75,11 @@ const DonorContactForm = ({ donorReceiptData, user }: Props) => {
   const onSubmit = (data: any) => {
     console.log(data, '==1');
   };
-  //TODO: logic is pending
-  const handleChange = (id: string) => {};
-  //TODO: logic is pending
-  const handleAddNewAddress = () => [];
+
+  const handleAddNewAddress = () => {
+    setIsModalOpen(true);
+    setAddressAction(ADDRESS_ACTIONS.ADD);
+  };
 
   return (
     <form className={styles.donorContactForm}>
@@ -100,7 +113,15 @@ const DonorContactForm = ({ donorReceiptData, user }: Props) => {
 
       <section className={styles.donorAddressSection}>
         {user.addresses.map((address) => {
-          return <DonorAddress key={address.id} address={address} />;
+          return (
+            <DonorAddress
+              key={address.id}
+              address={address}
+              setSelectedAddressForAction={setSelectedAddressForAction}
+              setAddressAction={setAddressAction}
+              setIsModalOpen={setIsModalOpen}
+            />
+          );
         })}
       </section>
       <div className={styles.donorContactFormAction}>
