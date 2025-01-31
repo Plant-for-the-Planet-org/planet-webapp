@@ -157,43 +157,6 @@
   margin-top: 2px;
 }
 
-.rangeMainContainer {
-  width: 150px;
-  height: 30px;
-  background-color: rgba(var(--deforestration-range-background-new), 0.1);
-  margin-top: 6px;
-  border-radius: 6px;
-}
-.rangeContainer {
-  padding-left: 8px;
-  display: flex;
-  gap: 12px;
-}
-
-.playIconContainer {
-  display: flex;
-  margin-top: 8px;
-}
-
-.sliderContainer {
-  width: 107px;
-  display: flex;
-  margin-top: 10px;
-}
-
-.yearRangeContainer {
-  display: flex;
-  padding-left: 22px;
-  padding-right: 8px;
-  justify-content: space-between;
-  margin-top: 1px;
-}
-.endYear,
-.startYear {
-  font-size: $fontXXXXSmallNew;
-  font-weight: 400;
-}
-
 .exploreDescription {
   height: fit-content;
   font-size: var(--font-xx-extra-small);
