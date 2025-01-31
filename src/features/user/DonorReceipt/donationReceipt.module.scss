@@ -33,7 +33,7 @@
 
 .donorReceiptLayout {
   @include flex-layout(flex, column, null, center);
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 80px);
   margin-top: 80px;
   background: var(--background-base);
@@ -210,5 +210,84 @@
   .contactSupportMessage {
     font-weight: 400;
     font-size: $fontSmall;
+  }
+}
+
+// donor contact management  styles
+
+.donorContactManagement {
+  @include flex-layout(flex, column, null, null, 23px);
+  width: 100%;
+  max-width: 760px;
+  margin-top: 55px;
+
+  .headerContainer {
+    @include flex-layout(flex);
+
+    button {
+      cursor: pointer;
+
+      svg {
+        margin-left: 0px !important;
+      }
+    }
+  }
+}
+
+.contactManagementHeader {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0 0 16px;
+}
+
+.donorContactForm {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 26px 19px 22px 19px;
+
+  .donorNameContainer {
+    @include flex-layout(flex, null, null, null, 10px);
+    margin: 0px 12px;
+
+    @include xsPhoneView {
+      @include flex-layout(flex, column, null, null, 10px);
+    }
+  }
+}
+
+.donorAddressSection {
+  margin-top: 30px;
+
+  .address {
+    @include flex-layout(flex, row, null, center, 6px);
+    border-radius: 9px;
+    padding: 24px;
+    background: rgba(242, 242, 242, 0.5);
+    position: relative;
+
+    address {
+      max-width: 500px;
+    }
+
+    button {
+      cursor: pointer;
+      position: absolute;
+      right: 13px;
+      top: 13px;
+    }
+  }
+}
+
+.donorContactFormAction {
+  @include flex-layout(flex, null, space-between, null, 12px);
+  margin-top: 68px;
+  margin: 68px 12px 0px 12px;
+
+  button {
+    flex: 1;
+  }
+  @include xsPhoneView {
+    flex-direction: column;
   }
 }
