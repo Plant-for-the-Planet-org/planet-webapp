@@ -19,7 +19,7 @@ const MapFeatureExplorer = ({
   updateMapOption,
   isMobile,
 }: MapFeatureExplorerProps) => {
-  const t = useTranslations('Maps');
+  const tExplore = useTranslations('Maps.exploreLayers');
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className={styles.mapFeatureExplorer}>
@@ -29,8 +29,8 @@ const MapFeatureExplorer = ({
         className={isOpen ? 'active' : ''}
       >
         <div className={styles.exploreButtonContent}>
-          <h3>{t('explore')}</h3>
-          {!isMobile && <p>Ecological Data Layers</p>}
+          <h3>{tExplore('title')}</h3>
+          {!isMobile && <p>{tExplore('subtitle')}</p>}
         </div>
       </CustomButton>
 

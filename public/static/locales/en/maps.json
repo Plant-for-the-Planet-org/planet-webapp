@@ -49,6 +49,8 @@
     "hideProjectDetails": "Hide Project Details",
     "countries": "Countries",
     "exploreLayers": {
+      "title": "Explore",
+      "subtitle": "Ecological Data Layers",
       "closeButton": "Close",
       "groups": {
         "forests": "Forest",
