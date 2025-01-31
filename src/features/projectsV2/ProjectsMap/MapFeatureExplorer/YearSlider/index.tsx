@@ -1,7 +1,7 @@
 // Unused code - for future reference while implementing the deforestation timeline slider
 
 import { useState } from 'react';
-import { SmallSlider } from '../CustomSlider';
+import { SmallSlider } from './CustomSlider';
 import styles from './YearSlider.module.scss';
 import PlayIcon from '../../../../../../public/assets/images/icons/projectV2/PlayIcon';
 
