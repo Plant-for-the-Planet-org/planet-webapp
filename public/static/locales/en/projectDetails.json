@@ -9,8 +9,11 @@
     "seeLess": "see less",
     "seeMore": "see more",
     "forestFire": "Forest Fire",
-    "hoursAgo": "{hours}h ago",
+    "hoursAgo": "{age}h ago",
+    "daysAgo": "{age}d ago",
     "highAlertConfidenceText": "<important>High</important> alert confidence",
+    "mediumAlertConfidenceText": "<important>Medium</important> alert confidence",
+    "lowAlertConfidenceText": "<important>Low</important> alert confidence",
     "setUpAlertsText": "Set up alerts with <important>FireAlert</important>",
     "firstTreePlanted": "First tree planted",
     "plantingSeasons": "planting seasons",
@@ -89,6 +92,10 @@
       "stop-tree-harvesting": "Stop Tree Harvesting",
       "maintenance": "Maintenance",
       "other-intervention": "Other Interventions"
+    },
+    "timeTravel": {
+      "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}",
+      "timeTravelOptionsLabel": "Time Travel Options"
     }
   }
 }

@@ -112,7 +112,8 @@
       "m2": "m²"
     },
     "infoAndCtaContainer": {
-      "sdgCardsSectionHeading": "Wiederherstellung von Ökosystemen und Bekämpfung der Klimakrise für die SDGs",
+      "sdgSectionHeadingPrimary": "Restoring Ecosystems & Fighting the Climate Crisis.",
+      "sdgSectionHeadingSecondary": "Contributing to the Sustainable Development Goals.",
       "pfpDonorCircleMember": "Plant-for-the-Planet Donor Circle-Mitglied",
       "publicProfileActions": {
         "becomeAMember": "Mitglied werden",

@@ -1,4 +1,5 @@
 import type { MapRef } from '../../common/types/projectv2';
+import type { SelectedTab } from './ProjectMapTabs';
 
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
@@ -11,12 +12,16 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import FireLocations from './microComponents/FireLocations';
+import FeatureFlag from './microComponents/FeatureFlag';
+import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
+  selectedTab: SelectedTab | null;
 }
 
-const SingleProjectView = ({ mapRef }: Props) => {
+const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
   if (singleProject === null) return null;
@@ -25,14 +30,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
     useProjectsMap();
   const router = useRouter();
 
-  const sitesGeojson = useMemo(() => {
+  const sitesGeoJson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
       features:
         singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
     };
   }, [singleProject?.sites]);
-  const hasNoSites = sitesGeojson.features.length === 0;
+  const hasNoSites = sitesGeoJson.features.length === 0;
   // Zoom to plant location
 
   useEffect(() => {
@@ -62,10 +67,10 @@ const SingleProjectView = ({ mapRef }: Props) => {
   // Zoom to project site
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation !== null) return;
-    if (sitesGeojson.features.length > 0 && selectedSite !== null) {
+    if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
-        sitesGeojson,
+        sitesGeoJson,
         selectedSite,
         handleViewStateChange,
         4000
@@ -85,7 +90,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeojson, router.isReady, selectedPlantLocation]);
+  }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
 
   useEffect(() => {
     const hasNoPlantLocations = !plantLocations?.length;
@@ -108,13 +113,15 @@ const SingleProjectView = ({ mapRef }: Props) => {
         <>
           <SitePolygon
             isSatelliteView={isSatelliteView}
-            geoJson={sitesGeojson}
+            geoJson={sitesGeoJson}
           />
           {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
         </>
       )}
-
-      <PlantLocations />
+      {selectedTab === 'field' && <PlantLocations />}
+      <FeatureFlag condition={isFirealertFiresEnabled()}>
+        <FireLocations />
+      </FeatureFlag>
     </>
   );
 };
