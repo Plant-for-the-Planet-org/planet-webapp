@@ -41,7 +41,15 @@ const MapFeatureExplorer = ({
         />
       )}
       {isMobile && (
-        <Modal open={isOpen}>
+        <Modal
+          open={isOpen}
+          aria-labelledby="map-settings-menu"
+          onClose={(_event, reason) => {
+            if (reason === 'backdropClick') {
+              setIsOpen(false);
+            }
+          }}
+        >
           <MapSettings
             mapOptions={mapOptions}
             updateMapOption={updateMapOption}
