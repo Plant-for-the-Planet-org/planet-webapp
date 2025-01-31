@@ -244,7 +244,7 @@
   width: 100%;
   background-color: #fff;
   border-radius: 16px;
-  padding: 26px 10px 22px 10px;
+  padding: 26px 19px 22px 19px;
 
   .donorNameContainer {
     @include flex-layout(flex, null, null, null, 10px);
@@ -258,24 +258,24 @@
 
 .donorAddressSection {
   margin-top: 30px;
-}
 
-.address {
-  @include flex-layout(flex, row, null, center, 6px);
-  border-radius: 9px;
-  padding: 24px;
-  background: rgba(242, 242, 242, 0.5);
-  position: relative;
+  .address {
+    @include flex-layout(flex, row, null, center, 6px);
+    border-radius: 9px;
+    padding: 24px;
+    background: rgba(242, 242, 242, 0.5);
+    position: relative;
 
-  address {
-    max-width: 500px;
-  }
+    address {
+      max-width: 500px;
+    }
 
-  button {
-    cursor: pointer;
-    position: absolute;
-    right: 13px;
-    top: 13px;
+    button {
+      cursor: pointer;
+      position: absolute;
+      right: 13px;
+      top: 13px;
+    }
   }
 }
 
