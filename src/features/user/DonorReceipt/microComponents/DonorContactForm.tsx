@@ -19,11 +19,10 @@ type FormValues = {
   firstName: string;
   lastName: string;
   tin: string | null;
-  companyName: string;
 };
 
 type FormInputProps = {
-  name: 'firstName' | 'lastName' | 'companyName' | 'tin';
+  name: 'firstName' | 'lastName' | 'tin';
   control: Control<FormValues, undefined>;
   rules?: RegisterOptions<FormValues, keyof FormValues>;
   error?: boolean;
@@ -57,12 +56,13 @@ const DonorContactForm = ({ donorReceiptData, user }: Props) => {
       firstName: user.firstname,
       lastName: user.lastname,
       tin: user.tin,
-      companyName: user.firstname,
     },
   });
 
   //TODO: logic is pending
-  const onSubmit = (data: any) => {};
+  const onSubmit = (data: any) => {
+    console.log(data, '==1');
+  };
   //TODO: logic is pending
   const handleChange = (id: string) => {};
   //TODO: logic is pending
@@ -71,32 +71,22 @@ const DonorContactForm = ({ donorReceiptData, user }: Props) => {
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        {donorReceiptData?.donor.type === 'organization' ? (
+        <InlineFormDisplayGroup>
           <FormInput
-            name={'companyName'}
+            name={'firstName'}
             control={control}
-            rules={{ required: t('companyRequired') }}
-            label={t('companyName')}
+            rules={{ required: t('firstNameRequired') }}
+            label={t('firstName')}
             error={!!errors.firstName}
           />
-        ) : (
-          <InlineFormDisplayGroup>
-            <FormInput
-              name={'firstName'}
-              control={control}
-              rules={{ required: t('firstNameRequired') }}
-              label={t('firstName')}
-              error={!!errors.firstName}
-            />
-            <FormInput
-              name={'lastName'}
-              control={control}
-              rules={{ required: t('lastNameRequired') }}
-              label={t('lastName')}
-              error={!!errors.lastName}
-            />
-          </InlineFormDisplayGroup>
-        )}
+          <FormInput
+            name={'lastName'}
+            control={control}
+            rules={{ required: t('lastNameRequired') }}
+            label={t('lastName')}
+            error={!!errors.lastName}
+          />
+        </InlineFormDisplayGroup>
         {donorReceiptData?.donor.tin && (
           <FormInput
             name={'tin'}
