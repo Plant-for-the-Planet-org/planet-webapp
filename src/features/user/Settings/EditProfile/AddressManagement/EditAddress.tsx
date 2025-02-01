@@ -17,8 +17,8 @@ import AddressFormLayout from './microComponents/AddressFormLayout';
 interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address;
-  updateUserAddresses?: () => Promise<void>;
-  setAddressAction: SetState<AddressAction | null>;
+  updateUserAddresses: () => Promise<void>;
+  setAddressAction: SetState<AddressAction | DonorAddressAction | null>;
 }
 
 const EditAddress = ({

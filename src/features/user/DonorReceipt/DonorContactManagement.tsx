@@ -1,9 +1,10 @@
 import type { AddressAction } from '../../common/types/profile';
-import type { Address } from '@planet-sdk/common';
+import type { APIError, Address } from '@planet-sdk/common';
 
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
-import { useCallback, useMemo, useState } from 'react';
+import { handleError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import styles from './donationReceipt.module.scss';
@@ -13,18 +14,41 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
+import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { useTenant } from '../../common/Layout/TenantContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const DonorContactManagement = () => {
   const t = useTranslations('Donate.donationReceipt');
   const router = useRouter();
   const { donorReceiptData } = useDonorReceipt();
-  const { user } = useUserProps();
+  const { user, token, contextLoaded, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
   const [selectedAddressForAction, setSelectedAddressForAction] =
     useState<Address | null>(null);
+  const [donorAddresses, setDonorAddresses] = useState<Address[]>(
+    user?.addresses ?? []
+  );
+
+  const updateDonorAddresses = useCallback(async () => {
+    if (!user || !token || !contextLoaded) return;
+    try {
+      const res = await getAuthenticatedRequest<Address[]>({
+        tenant: tenantConfig.id,
+        url: '/app/addresses',
+        token,
+        logoutUser,
+      });
+      if (res) setDonorAddresses(res);
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+    }
+  }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
 
   const navigateToVerificationPage = useCallback(() => {
     if (donorReceiptData) {
@@ -44,6 +68,7 @@ const DonorContactManagement = () => {
             selectedAddressForAction={selectedAddressForAction}
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
+            updateUserAddresses={updateDonorAddresses}
           />
         );
       case ADDRESS_ACTIONS.ADD:
@@ -51,6 +76,7 @@ const DonorContactManagement = () => {
           <AddAddress
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
+            setUserAddresses={setDonorAddresses}
           />
         );
       default:
@@ -70,6 +96,7 @@ const DonorContactManagement = () => {
           </h2>
         </div>
         <DonorContactForm
+          donorAddresses={donorAddresses}
           donorReceiptData={donorReceiptData}
           user={user}
           setSelectedAddressForAction={setSelectedAddressForAction}

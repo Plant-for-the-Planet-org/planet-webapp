@@ -25,7 +25,7 @@ export type FormData = {
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
-  setUserAddresses?: SetState<Address[]>;
+  setUserAddresses: SetState<Address[]>;
   setAddressAction: SetState<AddressAction | null>;
 }
 

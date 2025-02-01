@@ -14,6 +14,7 @@ import DonorAddress from './DonorAddress';
 import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
 
 type Props = {
+  donorAddresses: Address[];
   donorReceiptData: ReceiptData | null;
   user: User | null;
   setSelectedAddressForAction: SetState<Address | null>;
@@ -25,12 +26,13 @@ type FormValues = {
   firstName: string;
   lastName: string;
   tin: string | null;
+  companyName: string | null;
 };
 
 type FormInputProps = {
-  name: 'firstName' | 'lastName' | 'tin';
-  control: Control<FormValues, undefined>;
-  rules?: RegisterOptions<FormValues, keyof FormValues>;
+  name: keyof FormValues;
+  control: Control<FormValues>;
+  rules?: RegisterOptions<FormValues>;
   error?: boolean;
   label: string;
 };
@@ -49,6 +51,7 @@ const FormInput = ({ name, control, rules, error, label }: FormInputProps) => {
 };
 
 const DonorContactForm = ({
+  donorAddresses,
   donorReceiptData,
   user,
   setSelectedAddressForAction,
@@ -68,6 +71,7 @@ const DonorContactForm = ({
       firstName: user.firstname,
       lastName: user.lastname,
       tin: user.tin,
+      companyName: user.name,
     },
   });
 
@@ -84,22 +88,33 @@ const DonorContactForm = ({
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        <InlineFormDisplayGroup>
+        {donorReceiptData?.donor.type === 'organization' && (
           <FormInput
-            name={'firstName'}
+            name={'companyName'}
             control={control}
-            rules={{ required: t('firstNameRequired') }}
-            label={t('firstName')}
-            error={!!errors.firstName}
+            rules={{ required: t('companyRequired') }}
+            label={t('companyName')}
+            error={!!errors.companyName}
           />
-          <FormInput
-            name={'lastName'}
-            control={control}
-            rules={{ required: t('lastNameRequired') }}
-            label={t('lastName')}
-            error={!!errors.lastName}
-          />
-        </InlineFormDisplayGroup>
+        )}
+        {donorReceiptData?.donor.type === 'individual' && (
+          <InlineFormDisplayGroup>
+            <FormInput
+              name={'firstName'}
+              control={control}
+              rules={{ required: t('firstNameRequired') }}
+              label={t('firstName')}
+              error={!!errors.firstName}
+            />
+            <FormInput
+              name={'lastName'}
+              control={control}
+              rules={{ required: t('lastNameRequired') }}
+              label={t('lastName')}
+              error={!!errors.lastName}
+            />
+          </InlineFormDisplayGroup>
+        )}
         {donorReceiptData?.donor.tin && (
           <FormInput
             name={'tin'}
@@ -112,7 +127,7 @@ const DonorContactForm = ({
       </InlineFormDisplayGroup>
 
       <section className={styles.donorAddressSection}>
-        {user.addresses.map((address) => {
+        {donorAddresses.map((address) => {
           return (
             <DonorAddress
               key={address.id}

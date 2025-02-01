@@ -257,6 +257,7 @@
 }
 
 .donorAddressSection {
+  @include flex-layout(flex, column, null, null, 10px);
   margin-top: 30px;
 
   .address {
