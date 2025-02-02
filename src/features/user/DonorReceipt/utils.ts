@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI, ReceiptData } from './donorReceipt';
+import type { ReceiptDataAPI, ReceiptData, AddressView } from './donorReceipt';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
@@ -44,4 +44,23 @@ export const getVerificationDate = () => {
   const isoDate = new Date().toISOString();
   const verificationDate = isoDate.replace('T', ' ').split('.')[0];
   return verificationDate;
+};
+
+/**
+ * Compares the receipt address with the profile address to determine if they match.
+ * Since the receipt address lacks a GUID, it checks for a field-by-field match.
+ *
+ * @param profileAddress - The address stored in the user's profile.
+ * @param receiptAddress - The receipt address to be compared.
+ * @returns {boolean} - Returns `true` if both addresses match, otherwise `false`.
+ */
+export const isMatchingAddress = (
+  profileAddress: Record<string, any>,
+  receiptAddress: AddressView | undefined
+) => {
+  if (!receiptAddress) return false;
+  return Object.entries(receiptAddress).every(
+    ([key, value]) =>
+      profileAddress[key === 'address1' ? 'address' : key] === value
+  );
 };

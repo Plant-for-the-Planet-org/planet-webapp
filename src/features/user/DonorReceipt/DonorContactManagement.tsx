@@ -60,9 +60,9 @@ const DonorContactManagement = () => {
   }, [donorReceiptData, router]);
 
   const renderModalContent = useMemo(() => {
-    if (!selectedAddressForAction) return <></>;
     switch (addressAction) {
       case ADDRESS_ACTIONS.EDIT:
+        if (!selectedAddressForAction) return <></>;
         return (
           <EditAddress
             selectedAddressForAction={selectedAddressForAction}

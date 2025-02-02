@@ -12,6 +12,7 @@ import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddress from './DonorAddress';
 import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
+import { useState } from 'react';
 
 type Props = {
   donorAddresses: Address[];
@@ -33,18 +34,23 @@ type FormInputProps = {
   name: keyof FormValues;
   control: Control<FormValues>;
   rules?: RegisterOptions<FormValues>;
-  error?: boolean;
   label: string;
 };
 
-const FormInput = ({ name, control, rules, error, label }: FormInputProps) => {
+const FormInput = ({ name, control, rules, label }: FormInputProps) => {
   return (
     <Controller
       name={name}
       control={control}
       rules={rules}
-      render={({ field }) => (
-        <TextField {...field} variant="outlined" label={label} error={error} />
+      render={({ field, fieldState }) => (
+        <TextField
+          {...field}
+          variant="outlined"
+          label={label}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
       )}
     />
   );
@@ -60,13 +66,12 @@ const DonorContactForm = ({
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('Donate');
+  const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
+    null
+  );
+  if (!user || !donorReceiptData) return null;
 
-  if (!user) return null;
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       firstName: user.firstname,
       lastName: user.lastname,
@@ -88,40 +93,36 @@ const DonorContactForm = ({
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        {donorReceiptData?.donor.type === 'organization' && (
+        {donorReceiptData.donor.type === 'organization' && (
           <FormInput
             name={'companyName'}
             control={control}
             rules={{ required: t('companyRequired') }}
             label={t('companyName')}
-            error={!!errors.companyName}
           />
         )}
-        {donorReceiptData?.donor.type === 'individual' && (
+        {donorReceiptData.donor.type === 'individual' && (
           <InlineFormDisplayGroup>
             <FormInput
               name={'firstName'}
               control={control}
               rules={{ required: t('firstNameRequired') }}
               label={t('firstName')}
-              error={!!errors.firstName}
             />
             <FormInput
               name={'lastName'}
               control={control}
               rules={{ required: t('lastNameRequired') }}
               label={t('lastName')}
-              error={!!errors.lastName}
             />
           </InlineFormDisplayGroup>
         )}
-        {donorReceiptData?.donor.tin && (
+        {donorReceiptData.donor.tin && (
           <FormInput
             name={'tin'}
             control={control}
             rules={{ required: t('tinRequired') }}
             label={t('donationReceipt.tin')}
-            error={!!errors.tin}
           />
         )}
       </InlineFormDisplayGroup>
@@ -135,6 +136,9 @@ const DonorContactForm = ({
               setSelectedAddressForAction={setSelectedAddressForAction}
               setAddressAction={setAddressAction}
               setIsModalOpen={setIsModalOpen}
+              receiptAddress={donorReceiptData?.address}
+              checkedAddressGuid={checkedAddressGuid}
+              setCheckedAddressGuid={setCheckedAddressGuid}
             />
           );
         })}

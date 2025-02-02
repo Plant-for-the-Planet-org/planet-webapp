@@ -1,8 +1,9 @@
 import type { Address, CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
+import type { AddressView } from '../donorReceipt';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   ADDRESS_ACTIONS,
@@ -12,12 +13,16 @@ import StyledCheckbox from './StyledCheckbox';
 import styles from '../donationReceipt.module.scss';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
+import { isMatchingAddress } from '../utils';
 
 type Props = {
   address: Address;
   setSelectedAddressForAction: SetState<Address | null>;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
+  receiptAddress: AddressView | undefined;
+  checkedAddressGuid: string | null;
+  setCheckedAddressGuid: SetState<string | null>;
 };
 
 const DonorAddress = ({
@@ -25,13 +30,12 @@ const DonorAddress = ({
   setSelectedAddressForAction,
   setAddressAction,
   setIsModalOpen,
+  receiptAddress,
+  checkedAddressGuid,
+  setCheckedAddressGuid,
 }: Props) => {
   const tCountry = useTranslations('Country');
   const { zipCode, city, country } = address;
-
-  const onSelectAddress = (guid: string) => {
-    console.log(guid);
-  };
 
   const formattedAddress = useMemo(
     () =>
@@ -44,10 +48,17 @@ const DonorAddress = ({
     [zipCode, city, country]
   );
 
+  useEffect(() => {
+    if (isMatchingAddress(address, receiptAddress)) {
+      setCheckedAddressGuid(address.id);
+    }
+  }, [address, receiptAddress]);
+
   return (
     <div className={styles.address}>
       <StyledCheckbox
-        onChange={() => onSelectAddress(address.id)}
+        checked={checkedAddressGuid === address.id}
+        onChange={() => setCheckedAddressGuid(address.id)}
         checkedIcon={<DonorAddressCheckIcon />}
       />
       <div>
