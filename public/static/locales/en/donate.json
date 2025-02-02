@@ -134,7 +134,8 @@
       "donorContactManagement": "Donor Contact Management",
       "contactManagementHeader": "Update profile and address",
       "tin": "Tax Identification Number (TIN)",
-      "saveDataAndReturn": "Save data and return"
+      "saveDataAndReturn": "Save data and return",
+      "addressRequired": "Please choose an address to proceed."
     }
   }
 }

@@ -4,6 +4,7 @@ import type { Control, RegisterOptions } from 'react-hook-form';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
 
+import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -12,7 +13,6 @@ import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddress from './DonorAddress';
 import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
-import { useState } from 'react';
 
 type Props = {
   donorAddresses: Address[];
@@ -23,11 +23,12 @@ type Props = {
   setIsModalOpen: SetState<boolean>;
 };
 
-type FormValues = {
+export type FormValues = {
   firstName: string;
   lastName: string;
-  tin: string | null;
-  companyName: string | null;
+  tin: string;
+  companyName: string;
+  addressGuid: string;
 };
 
 type FormInputProps = {
@@ -69,14 +70,19 @@ const DonorContactForm = ({
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
     null
   );
-  if (!user || !donorReceiptData) return null;
+  if (!user) return null;
 
-  const { handleSubmit, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      firstName: user.firstname,
-      lastName: user.lastname,
-      tin: user.tin,
-      companyName: user.name,
+      firstName: user.firstname || '',
+      lastName: user.lastname || '',
+      tin: user.tin || '',
+      companyName: user.name || '',
+      addressGuid: checkedAddressGuid || '',
     },
   });
 
@@ -93,7 +99,7 @@ const DonorContactForm = ({
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        {donorReceiptData.donor.type === 'organization' && (
+        {donorReceiptData?.donor.type === 'organization' && (
           <FormInput
             name={'companyName'}
             control={control}
@@ -101,7 +107,7 @@ const DonorContactForm = ({
             label={t('companyName')}
           />
         )}
-        {donorReceiptData.donor.type === 'individual' && (
+        {user.type === 'individual' && (
           <InlineFormDisplayGroup>
             <FormInput
               name={'firstName'}
@@ -117,7 +123,7 @@ const DonorContactForm = ({
             />
           </InlineFormDisplayGroup>
         )}
-        {donorReceiptData.donor.tin && (
+        {donorReceiptData?.donor.tin && (
           <FormInput
             name={'tin'}
             control={control}
@@ -139,9 +145,15 @@ const DonorContactForm = ({
               receiptAddress={donorReceiptData?.address}
               checkedAddressGuid={checkedAddressGuid}
               setCheckedAddressGuid={setCheckedAddressGuid}
+              control={control}
             />
           );
         })}
+        {errors.addressGuid?.message && (
+          <span className={styles.errorMessage}>
+            {errors.addressGuid?.message}
+          </span>
+        )}
       </section>
       <div className={styles.donorContactFormAction}>
         <WebappButton

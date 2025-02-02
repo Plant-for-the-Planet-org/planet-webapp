@@ -260,6 +260,12 @@
   @include flex-layout(flex, column, null, null, 10px);
   margin-top: 30px;
 
+  .errorMessage {
+    font-size: 12px;
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+
   .address {
     @include flex-layout(flex, row, null, center, 6px);
     border-radius: 9px;

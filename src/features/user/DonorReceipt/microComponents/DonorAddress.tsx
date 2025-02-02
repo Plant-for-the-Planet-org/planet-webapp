@@ -2,7 +2,10 @@ import type { Address, CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
 import type { AddressView } from '../donorReceipt';
+import type { FormValues } from './DonorContactForm';
+import type { Control } from 'react-hook-form';
 
+import { Controller } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -23,6 +26,7 @@ type Props = {
   receiptAddress: AddressView | undefined;
   checkedAddressGuid: string | null;
   setCheckedAddressGuid: SetState<string | null>;
+  control: Control<FormValues>;
 };
 
 const DonorAddress = ({
@@ -33,8 +37,10 @@ const DonorAddress = ({
   receiptAddress,
   checkedAddressGuid,
   setCheckedAddressGuid,
+  control,
 }: Props) => {
   const tCountry = useTranslations('Country');
+  const t = useTranslations('Donate.donationReceipt');
   const { zipCode, city, country } = address;
 
   const formattedAddress = useMemo(
@@ -56,10 +62,21 @@ const DonorAddress = ({
 
   return (
     <div className={styles.address}>
-      <StyledCheckbox
-        checked={checkedAddressGuid === address.id}
-        onChange={() => setCheckedAddressGuid(address.id)}
-        checkedIcon={<DonorAddressCheckIcon />}
+      <Controller
+        name="addressGuid"
+        control={control}
+        rules={{ required: t('addressRequired') }}
+        render={({ field }) => (
+          <StyledCheckbox
+            {...field}
+            checked={checkedAddressGuid === address.id}
+            onChange={() => {
+              field.onChange(address.id);
+              setCheckedAddressGuid(address.id);
+            }}
+            checkedIcon={<DonorAddressCheckIcon />}
+          />
+        )}
       />
       <div>
         <address>
