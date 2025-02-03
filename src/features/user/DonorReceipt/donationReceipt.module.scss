@@ -176,7 +176,7 @@
   @include flex-layout(flex, null, flex-end);
 }
 
-.receiptVerificationSpinner {
+.donorReceiptSpinner {
   @include flex-layout(flex, null, center);
   margin-top: 40px;
 }

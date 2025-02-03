@@ -82,7 +82,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
           confirmDonorData={confirmDonorData}
         />
       ) : (
-        <div className={styles.receiptVerificationSpinner}>
+        <div className={styles.donorReceiptSpinner}>
           <CircularProgress color="success" />
         </div>
       )}

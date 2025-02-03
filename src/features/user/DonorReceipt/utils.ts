@@ -59,7 +59,6 @@ export const isMatchingAddress = (
   profileAddress: Record<string, any>,
   receiptAddress: AddressView | undefined
 ) => {
-  console.log(receiptAddress, '==add1');
   if (!receiptAddress) return false;
   return Object.entries(receiptAddress).every(
     ([key, value]) =>
