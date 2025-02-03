@@ -81,6 +81,7 @@ const DonorContactForm = ({
     handleSubmit,
     control,
     formState: { errors },
+    setValue,
   } = useForm({
     defaultValues: {
       firstName: user.firstname || '',
@@ -145,6 +146,7 @@ const DonorContactForm = ({
               checkedAddressGuid={checkedAddressGuid}
               setCheckedAddressGuid={setCheckedAddressGuid}
               control={control}
+              setValue={setValue}
             />
           );
         })}

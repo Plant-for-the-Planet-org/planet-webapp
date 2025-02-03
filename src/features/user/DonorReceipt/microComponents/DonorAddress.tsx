@@ -3,7 +3,7 @@ import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
 import type { AddressView } from '../donorReceipt';
 import type { FormValues } from './DonorContactForm';
-import type { Control } from 'react-hook-form';
+import type { Control, UseFormSetValue } from 'react-hook-form';
 
 import { Controller } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
@@ -27,6 +27,7 @@ type Props = {
   checkedAddressGuid: string | null;
   setCheckedAddressGuid: SetState<string | null>;
   control: Control<FormValues>;
+  setValue: UseFormSetValue<FormValues>;
 };
 
 const DonorAddress = ({
@@ -38,6 +39,7 @@ const DonorAddress = ({
   checkedAddressGuid,
   setCheckedAddressGuid,
   control,
+  setValue,
 }: Props) => {
   const tCountry = useTranslations('Country');
   const t = useTranslations('Donate.donationReceipt');
@@ -55,8 +57,10 @@ const DonorAddress = ({
   );
 
   useEffect(() => {
-    if (isMatchingAddress(address, receiptAddress))
+    if (isMatchingAddress(address, receiptAddress)) {
       setCheckedAddressGuid(address.id);
+      setValue('addressGuid', address.id, { shouldValidate: true });
+    }
   }, [address, receiptAddress]);
 
   return (

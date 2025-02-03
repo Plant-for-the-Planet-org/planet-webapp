@@ -118,6 +118,7 @@ const DonorContactManagement = () => {
         navigateToVerificationPage();
       } catch (error) {
         setErrors(handleError(error as APIError));
+        setIsLoading(false);
       }
     },
     [
@@ -130,6 +131,7 @@ const DonorContactManagement = () => {
       setDonorReceiptData,
       navigateToVerificationPage,
       setErrors,
+      setIsLoading,
     ]
   );
 
