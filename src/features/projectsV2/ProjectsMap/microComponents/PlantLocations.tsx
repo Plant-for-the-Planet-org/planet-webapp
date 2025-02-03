@@ -159,6 +159,21 @@ export default function PlantLocations(): React.ReactElement {
       return GeoJSON;
     });
 
+  const isValidInterventionType = [
+    'multi-tree-registration',
+    'enrichment-planting',
+    'all',
+    'default'
+  ].includes(selectedInterventionType);
+
+  const shouldShowSampleMarkers =
+    selectedPlantLocation &&
+    selectedPlantLocation.type !== 'single-tree-registration' &&
+    isValidInterventionType &&
+    viewState.zoom > 14 &&
+    selectedPlantLocation.sampleInterventions;
+
+
   return (
     <>
       <Source
@@ -218,34 +233,22 @@ export default function PlantLocations(): React.ReactElement {
           }}
           filter={['!=', ['get', 'dateDiff'], '']}
         />
-        {selectedPlantLocation &&
-        selectedPlantLocation.type !== 'single-tree-registration' &&
-        (selectedInterventionType === 'multi-tree-registration' || selectedInterventionType === 'enrichment-planting' ||  selectedInterventionType ==='all' ||  selectedInterventionType === 'default') &&
-        viewState.zoom > 14 &&
-        selectedPlantLocation.sampleInterventions
-          ? selectedPlantLocation.sampleInterventions.map((spl) => {
-              return (
-                <Marker
-                  key={`${spl.id}-sample`}
-                  latitude={spl.geometry.coordinates[1]}
-                  longitude={spl.geometry.coordinates[0]}
-                  anchor="center"
-                >
-                  <div
-                    key={`${spl.id}-marker`}
-                    className={`${styles.single} ${
-                      spl.hid === selectedSamplePlantLocation?.hid
-                        ? styles.singleSelected
-                        : ''
-                    }`}
-                    role="button"
-                    tabIndex={0}
-                    onClick={(e) => openPl(e, spl)}
-                  />
-                </Marker>
-              );
-            })
-          : null}
+        {shouldShowSampleMarkers ? selectedPlantLocation.sampleInterventions.map((spl) => (
+          <Marker
+            key={`${spl.id}-sample`}
+            latitude={spl.geometry.coordinates[1]}
+            longitude={spl.geometry.coordinates[0]}
+            anchor="center"
+          >
+            <div
+              key={`${spl.id}-marker`}
+              className={`${styles.single} ${spl.hid === selectedSamplePlantLocation?.hid ? styles.singleSelected : ''
+                }`}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => openPl(e, spl)}
+            />
+          </Marker>)) : null}
       </Source>
     </>
   );
