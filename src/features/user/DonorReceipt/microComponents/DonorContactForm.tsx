@@ -1,10 +1,11 @@
 import type { ReceiptData } from '../donorReceipt';
-import type { Address, User } from '@planet-sdk/common';
+import type { Address, APIError, User } from '@planet-sdk/common';
 import type { Control, RegisterOptions } from 'react-hook-form';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { handleError } from '@planet-sdk/common';
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,14 +14,24 @@ import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddress from './DonorAddress';
 import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { useTenant } from '../../../common/Layout/TenantContext';
+import { getUpdatedDonorDetails } from '../utils';
 
 type Props = {
   donorAddresses: Address[];
   donorReceiptData: ReceiptData | null;
   user: User | null;
+  setUser: SetState<User | null>;
+  token: string | null;
+  contextLoaded: boolean;
+  logoutUser: (returnUrl?: string | undefined) => void;
   setSelectedAddressForAction: SetState<Address | null>;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
+  navigateToVerificationPage: () => void;
+  setDonorReceiptData: SetState<ReceiptData | null>;
 };
 
 export type FormValues = {
@@ -61,15 +72,24 @@ const DonorContactForm = ({
   donorAddresses,
   donorReceiptData,
   user,
+  setUser,
+  token,
+  contextLoaded,
+  logoutUser,
   setSelectedAddressForAction,
   setAddressAction,
   setIsModalOpen,
+  navigateToVerificationPage,
+  setDonorReceiptData,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('Donate');
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
     null
   );
+  const [isUploadingData, setIsUploadingData] = useState(false);
   if (!user) return null;
 
   const {
@@ -86,16 +106,65 @@ const DonorContactForm = ({
     },
   });
 
-  //TODO: logic is pending
-  const onSubmit = (data: any) => {
-    console.log(data, '==1');
+  const onSubmit = async (data: FormValues) => {
+    if (!user || !token || !contextLoaded) return;
+
+    const bodyToSend =
+      user.type === 'individual'
+        ? {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            tin: data.tin,
+          }
+        : { name: data.companyName, tin: data.tin };
+    setIsUploadingData(true);
+    try {
+      const res = await putAuthenticatedRequest<User | null>({
+        tenant: tenantConfig.id,
+        url: '/app/profile',
+        data: bodyToSend,
+        token,
+        logoutUser,
+      });
+      if (!res) return;
+      setUser(res);
+      setDonorReceiptData((prevState) => {
+        if (!prevState) return null;
+
+        const { donorName, address1, address2, country, zipCode, city } =
+          getUpdatedDonorDetails(res, data.addressGuid);
+
+        return {
+          ...prevState,
+          donor: {
+            ...prevState.donor,
+            tin: res.tin,
+            name: donorName,
+          },
+          address: {
+            ...prevState.address,
+            guid: data.addressGuid,
+            address1,
+            address2,
+            country,
+            zipCode,
+            city,
+          },
+          hasDonorDataChanged: true,
+        };
+      });
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+    } finally {
+      setIsUploadingData(false);
+      navigateToVerificationPage();
+    }
   };
 
   const handleAddNewAddress = () => {
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
-
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>

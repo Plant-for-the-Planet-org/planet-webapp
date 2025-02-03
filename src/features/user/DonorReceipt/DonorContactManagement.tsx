@@ -21,8 +21,8 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 const DonorContactManagement = () => {
   const t = useTranslations('Donate.donationReceipt');
   const router = useRouter();
-  const { donorReceiptData } = useDonorReceipt();
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
+  const { donorReceiptData, setDonorReceiptData } = useDonorReceipt();
+  const { user, token, contextLoaded, logoutUser, setUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,9 +99,15 @@ const DonorContactManagement = () => {
           donorAddresses={donorAddresses}
           donorReceiptData={donorReceiptData}
           user={user}
+          setUser={setUser}
+          token={token}
+          contextLoaded={contextLoaded}
+          logoutUser={logoutUser}
           setSelectedAddressForAction={setSelectedAddressForAction}
           setAddressAction={setAddressAction}
           setIsModalOpen={setIsModalOpen}
+          navigateToVerificationPage={navigateToVerificationPage}
+          setDonorReceiptData={setDonorReceiptData}
         />
       </div>
       <Modal open={isModalOpen} aria-labelledby="address-action-modal-title">

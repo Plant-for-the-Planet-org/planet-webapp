@@ -55,9 +55,8 @@ const DonorAddress = ({
   );
 
   useEffect(() => {
-    if (isMatchingAddress(address, receiptAddress)) {
+    if (isMatchingAddress(address, receiptAddress))
       setCheckedAddressGuid(address.id);
-    }
   }, [address, receiptAddress]);
 
   return (

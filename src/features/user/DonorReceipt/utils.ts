@@ -1,3 +1,4 @@
+import type { User } from '@planet-sdk/common';
 import type { ReceiptDataAPI, ReceiptData, AddressView } from './donorReceipt';
 
 export const RECEIPT_STATUS = {
@@ -58,9 +59,48 @@ export const isMatchingAddress = (
   profileAddress: Record<string, any>,
   receiptAddress: AddressView | undefined
 ) => {
+  console.log(receiptAddress, '==add1');
   if (!receiptAddress) return false;
   return Object.entries(receiptAddress).every(
     ([key, value]) =>
       profileAddress[key === 'address1' ? 'address' : key] === value
   );
+};
+
+/**
+ * Extracts donor details and address information from a user object.
+ *
+ * @param {User} res - The user object containing donor information, including addresses.
+ * @param {string} addressGuid - The unique identifier for the address to retrieve.
+ * @returns {{
+ *   donorName: string;
+ *   address1: string;
+ *   address2: string;
+ *   zipCode: string;
+ *   city: string;
+ *   country: string;
+ * }} - An object containing the donor's name and the details of the specified address.
+ *
+ * - If the user is an individual, the donor name is derived from `firstname` and `lastname`.
+ * - If the user is an organization, the donor name is taken from `name`, defaulting to an empty string if not provided.
+ * - The address is retrieved based on the provided `addressGuid`, and if no matching address is found, default empty strings are returned for address fields.
+ */
+
+export const getUpdatedDonorDetails = (res: User, addressGuid: string) => {
+  const donorName =
+    res.type === 'individual'
+      ? `${res.firstname} ${res.lastname}`
+      : res.name ?? '';
+  const donorAddress = res.addresses.find(
+    (address) => address.id === addressGuid
+  );
+
+  return {
+    donorName,
+    address1: donorAddress?.address ?? '',
+    address2: donorAddress?.address2 ?? '',
+    zipCode: donorAddress?.zipCode ?? '',
+    city: donorAddress?.city ?? '',
+    country: donorAddress?.country ?? '',
+  };
 };
