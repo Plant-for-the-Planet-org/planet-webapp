@@ -53,7 +53,9 @@
 
 .exploreItemsContainer {
   max-height: 400px;
+  overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
