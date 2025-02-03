@@ -69,7 +69,7 @@ const DonorContactManagement = () => {
 
   const updateDonorProfile = useCallback(
     async (data: FormValues) => {
-      if (!user || !token || !contextLoaded) return;
+      if (!(user && token && contextLoaded)) return;
 
       const bodyToSend =
         user.type === 'individual'

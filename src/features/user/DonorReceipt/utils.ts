@@ -35,6 +35,7 @@ export const formatReceiptData = (
       zipCode: data.donor?.zipCode || '',
       address1: data.donor?.address1 || '',
       address2: data.donor?.address2 || null,
+      guid: null,
     },
     issuedDonations: data.donations || null,
     hasDonorDataChanged: false,
@@ -49,7 +50,8 @@ export const getVerificationDate = () => {
 
 /**
  * Compares the receipt address with the profile address to determine if they match.
- * Since the receipt address lacks a GUID, it checks for a field-by-field match.
+ * Since the receipt address lacks a GUID, it performs a field-by-field comparison.
+ * (Note: The GUID is only available once the donor has completed the process on the donor contact management page.)
  *
  * @param profileAddress - The address stored in the user's profile.
  * @param receiptAddress - The receipt address to be compared.
@@ -60,7 +62,8 @@ export const isMatchingAddress = (
   receiptAddress: AddressView | undefined
 ) => {
   if (!receiptAddress) return false;
-  return Object.entries(receiptAddress).every(
+  const { guid: _guid, ...filteredReceiptAddress } = receiptAddress;
+  return Object.entries(filteredReceiptAddress).every(
     ([key, value]) =>
       profileAddress[key === 'address1' ? 'address' : key] === value
   );

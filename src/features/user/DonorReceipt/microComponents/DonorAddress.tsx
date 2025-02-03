@@ -61,7 +61,7 @@ const DonorAddress = ({
       setCheckedAddressGuid(address.id);
       setValue('addressGuid', address.id, { shouldValidate: true });
     }
-  }, [address, receiptAddress]);
+  }, [address, receiptAddress, setValue]);
 
   return (
     <div className={styles.address}>

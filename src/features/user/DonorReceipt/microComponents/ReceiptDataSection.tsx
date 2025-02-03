@@ -11,8 +11,12 @@ import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
 import { getVerificationDate, RECEIPT_STATUS } from '../utils';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { putRequest } from '../../../../utils/apiRequests/api';
+import {
+  putAuthenticatedRequest,
+  putRequest,
+} from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface Prop {
   donorReceiptData: ReceiptData | null;
@@ -22,6 +26,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
   if (!donorReceiptData) return null;
   const { updateDonorReceiptData } = useDonorReceipt();
   const { tenantConfig } = useTenant();
+  const { token, user, contextLoaded, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -38,23 +43,34 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
 
   const confirmDonorData = useCallback(async () => {
     if (operation !== RECEIPT_STATUS.VERIFY) return;
-
-    if (hasDonorDataChanged) {
-      //TODO: PUT Authentication request logic
-    }
+    setIsLoading(true);
+    const requestData = {
+      tenant: tenantConfig.id,
+      url: `/app/donationReceipt/verify`,
+      data: {
+        dtn,
+        challenge,
+        year,
+        verificationDate: getVerificationDate(),
+      },
+    };
 
     try {
-      setIsLoading(true);
-      const data = await putRequest({
-        tenant: tenantConfig.id,
-        url: `/app/donationReceipt/verify`,
-        data: {
-          dtn,
-          challenge,
-          year,
-          verificationDate: getVerificationDate(),
-        },
-      });
+      if (hasDonorDataChanged) {
+        if (!(address.guid && token && user && contextLoaded)) return;
+        const authData = await putAuthenticatedRequest({
+          ...requestData,
+          data: { ...requestData.data, receiptAddress: address.guid },
+          token,
+          logoutUser,
+        });
+        if (authData) {
+          updateDonorReceiptData(authData);
+          return;
+        }
+      }
+
+      const data = await putRequest(requestData);
       if (data) updateDonorReceiptData(data);
     } catch (error) {
       setErrors(handleError(error as APIError));
@@ -68,7 +84,17 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
+    address.guid,
+    token,
+    contextLoaded,
+    putAuthenticatedRequest,
+    logoutUser,
+    putRequest,
     updateDonorReceiptData,
+    getVerificationDate,
+    handleError,
+    setErrors,
+    setIsLoading,
   ]);
 
   return (
