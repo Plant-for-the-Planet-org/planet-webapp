@@ -30,6 +30,7 @@ import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
+import ExploreLayers from './ExploreLayers';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -277,6 +278,7 @@ function ProjectsMap(props: ProjectsMapProps) {
               : undefined
           }
         >
+          {props.page === 'project-list' && <ExploreLayers />}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}
