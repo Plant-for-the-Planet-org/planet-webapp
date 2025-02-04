@@ -6,6 +6,8 @@ import type { MapLayerOptionsType } from './mapSettings.config';
 
 import { useEffect, useRef } from 'react';
 import { useProjectsMap } from '../../features/projectsV2/ProjectsMapContext';
+import { tempLayersData } from './tempLayersConfig';
+
 const toCamelCase = (str: string): string => {
   return str
     .toLowerCase()
@@ -61,6 +63,15 @@ export const useFetchLayers = () => {
       } catch (error) {
         console.error('Error fetching layers:', error);
         setExploreLayersData(null);
+      } finally {
+        if (exploreLayersData === null) {
+          const layersData = tempLayersData.reduce((acc, layer) => {
+            const key = toCamelCase(layer.name) as MapLayerOptionsType;
+            acc[key] = layer;
+            return acc;
+          }, {} as ExploreLayersData);
+          setExploreLayersData(layersData);
+        }
       }
     };
 
