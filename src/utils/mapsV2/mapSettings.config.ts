@@ -52,7 +52,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   forests: [
     {
       key: 'forestCover',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~500m (Downscaled)',
         dataYears: '2023',
@@ -67,7 +67,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'forestBiomass',
-      isAvailable: true,
+      isAvailable: false,
       color: '#27AE60',
       additionalInfo: {
         resolution: '~500km',
@@ -83,7 +83,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'potentialForestBiomass',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~500km',
         dataYears: '2016',
@@ -99,7 +99,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestation',
-      isAvailable: true,
+      isAvailable: false,
       color: '#EB5757',
       additionalInfo: {
         resolution: '~30m',
@@ -114,7 +114,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'canopyHeight',
-      isAvailable: true,
+      isAvailable: false,
       color: '#2F80ED',
       additionalInfo: {
         resolution: '~1m',
@@ -132,7 +132,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   soil: [
     {
       key: 'soilNitrogen',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
@@ -148,7 +148,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilPH',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
@@ -163,7 +163,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilOrganicCarbon',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
@@ -197,7 +197,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   biodiversity: [
     {
       key: 'treeSpeciesDensity',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~3km',
         dataYears: '2005-2015',
@@ -213,7 +213,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'birdsDensity',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~10km',
         dataYears: '2013-2018',
@@ -229,7 +229,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'mammalsDensity',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~10km',
         dataYears: '2013-2018',
@@ -244,7 +244,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'amphibiansDensity',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~10km',
         dataYears: '2013-2018',
@@ -261,7 +261,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   risks: [
     {
       key: 'fireRisk',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~55km',
         dataYears: '1980-2023',
@@ -275,7 +275,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestationRisk',
-      isAvailable: true,
+      isAvailable: false,
       additionalInfo: {
         resolution: '~30m',
         dataYears: '2023',

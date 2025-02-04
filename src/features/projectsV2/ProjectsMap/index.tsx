@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
+import { useFetchLayers } from '../../../utils/mapsV2/useFetchLayers';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
 import {
@@ -29,6 +30,7 @@ import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
+import ExploreLayers from './ExploreLayers';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -48,7 +50,9 @@ export type ProjectsMapMobileProps = {
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
-  // const [mobileOS, setMobileOS] = useState<MobileOs>(null);
+  // Fetch layers data
+  useFetchLayers();
+
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const {
     viewState,
@@ -203,18 +207,15 @@ function ProjectsMap(props: ProjectsMapProps) {
         selectedPlantLocation?.type === 'single-tree-registration';
       const isMultiTree =
         selectedPlantLocation?.type === 'multi-tree-registration';
-      // const isOther = selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration';
-      // Clear sample plant location on clicking outside.
-      // Clicks on sample plant location will not propagate on the map
+
       setSelectedSamplePlantLocation(null);
-      // Clear plant location info if clicked twice (single or multi tree) // point plant location
+
       if (isSamePlantLocation && (isSingleTree || isMultiTree)) {
         setSelectedPlantLocation(null);
         setSelectedSite(hasNoSites ? null : 0);
         return;
       }
 
-      // Set selected plant location if a result is found
       if (result) {
         setSelectedSite(null);
         setSelectedPlantLocation(result);
@@ -227,17 +228,21 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapRef,
     selectedTab,
   };
+
   const multipleProjectsViewProps = {
     mapRef,
     page: props.page,
   };
+
   const mapContainerClass = `${styles.mapContainer} ${
     styles[mobileOS !== undefined ? mobileOS : '']
   }`;
+
   const shouldShowOtherIntervention =
     props.isMobile &&
     selectedPlantLocation !== null &&
     !PLANTATION_TYPES.includes(selectedPlantLocation.type);
+
   return (
     <>
       <MapControls {...mapControlProps} />
@@ -273,6 +278,7 @@ function ProjectsMap(props: ProjectsMapProps) {
               : undefined
           }
         >
+          {props.page === 'project-list' && <ExploreLayers />}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}
