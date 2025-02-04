@@ -1,38 +1,15 @@
 @import '../../../theme/theme';
 
-@mixin flex-layout(
-  $display: flex,
-  $flex-direction: null,
-  $justify-content: null,
-  $align-items: null,
-  $gap: null
-) {
-  display: $display;
-
-  @if $justify-content {
-    justify-content: $justify-content;
-  }
-
-  @if $align-items {
-    align-items: $align-items;
-  }
-
-  @if $gap {
-    gap: $gap;
-  }
-
-  @if $flex-direction {
-    flex-direction: $flex-direction;
-  }
-}
-
 .donationReceiptSkeleton {
-  @include flex-layout(flex, null, center);
+  display: flex;
+  justify-content: center;
   margin-top: 110px;
 }
 
 .donationReceiptLayout {
-  @include flex-layout(flex, column, null, center);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100vw;
   height: calc(100vh - 80px);
   margin-top: 80px;
@@ -43,13 +20,15 @@
 }
 
 .donationReceiptContainer {
-  @include flex-layout(flex, column, null, null, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 100%;
   max-width: 760px;
   min-height: 60px;
   margin-top: 60px;
   @include xsPhoneView {
-    @include flex-layout(flex, null, null, center);
+    align-items: center;
   }
 }
 
@@ -74,7 +53,9 @@
 }
 
 .donationRecord {
-  @include flex-layout(flex, column, null, null, 12px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   width: 100%;
   padding: 6px 16px 16px 16px;
 
@@ -83,7 +64,8 @@
   }
 
   .header {
-    @include flex-layout(flex, null, space-between);
+    display: flex;
+    justify-content: space-between;
     font-weight: 700;
   }
 }
@@ -97,7 +79,9 @@
 }
 
 .record {
-  @include flex-layout(flex, null, space-between, center);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 8px;
   padding-bottom: 8px;
 
@@ -122,7 +106,9 @@
 }
 
 .donorDetails {
-  @include flex-layout(flex, column, null, null, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background: rgba(242, 242, 242, 0.5);
   width: 100%;
   margin-top: 20px;
@@ -135,7 +121,10 @@
   }
 
   .details {
-    @include flex-layout(flex, row, space-between, null, 28px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 28px;
     flex-wrap: wrap;
   }
 }
@@ -144,7 +133,9 @@
 .donorName,
 .companyName,
 .tin {
-  @include flex-layout(flex, column, null, null, 7px);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
   color: rgba(130, 130, 130, 1);
 
   .header {
@@ -154,12 +145,14 @@
 }
 
 .receiptActions {
-  @include flex-layout(flex, null, flex-end, null, 12px);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
   margin-top: 40px;
   padding: 0px 10px;
 
   @include xsPhoneView {
-    @include flex-layout(flex, column);
+    flex-direction: column;
   }
 
   button {
@@ -172,10 +165,12 @@
 }
 
 .downloadButtonContainer {
-  @include flex-layout(flex, null, flex-end);
+  display: flex;
+  justify-content: flex-end;
 }
 
 .receiptVerificationSpinner {
-  @include flex-layout(flex, null, center);
+  display: flex;
+  justify-content: center;
   margin-top: 40px;
 }
