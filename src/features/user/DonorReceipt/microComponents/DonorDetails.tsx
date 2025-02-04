@@ -3,7 +3,7 @@ import type { CountryCode } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import { getFormattedAddress } from '../../../../utils/addressManagement';
 
 interface Props {

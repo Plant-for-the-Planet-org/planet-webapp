@@ -5,7 +5,7 @@ import { useCallback, useContext, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 import { useDonorReceipt } from '../../../common/Layout/DonorReceiptContext';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import DonationData from './DonationData';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';

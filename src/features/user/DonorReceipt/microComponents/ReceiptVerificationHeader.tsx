@@ -1,7 +1,7 @@
 import type { Operation } from './ReceiptActions';
 
 import { useTranslations } from 'next-intl';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import { RECEIPT_STATUS } from '../utils';
 
 type Props = {

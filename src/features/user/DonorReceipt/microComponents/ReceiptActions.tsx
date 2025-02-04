@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { RECEIPT_STATUS } from '../utils';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 
 export type Operation = (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];

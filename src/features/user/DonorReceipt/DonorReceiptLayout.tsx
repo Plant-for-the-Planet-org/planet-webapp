@@ -7,7 +7,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
 import { useDonorReceipt } from '../../common/Layout/DonorReceiptContext';
-import styles from './donationReceipt.module.scss';
+import styles from './DonationReceipt.module.scss';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
 import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
 import ReceiptListRedirect from './microComponents/ReceiptListRedirect';

@@ -1,7 +1,7 @@
 import type { IssuedDonationView } from '../donorReceipt';
 
 import { useTranslations } from 'next-intl';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 type Props = {
