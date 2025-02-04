@@ -41,6 +41,8 @@ export default getRequestConfig(async ({ locale }) => {
     ...(
       await import(`./public/static/locales/${locale}/treemapperAnalytics.json`)
     ).default,
+    ...(await import(`./public/static/locales/${locale}/donationReceipt.json`))
+      .default,
   };
 
   const defaultMessages = {
@@ -67,6 +69,8 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/en/tenants.json`)).default,
     ...(await import(`./public/static/locales/en/treemapper.json`)).default,
     ...(await import(`./public/static/locales/en/treemapperAnalytics.json`))
+      .default,
+    ...(await import(`./public/static/locales/en/donationReceipt.json`))
       .default,
   };
 

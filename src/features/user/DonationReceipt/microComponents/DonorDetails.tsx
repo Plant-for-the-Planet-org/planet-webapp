@@ -14,7 +14,7 @@ interface Props {
 const DonorDetails = ({ donor, address }: Props) => {
   if (address === undefined || donor === undefined) return null;
 
-  const t = useTranslations('Donate');
+  const tReceipt = useTranslations('DonationReceipt');
   const tCountry = useTranslations('Country');
   const { country, zipCode, city, address1, address2 } = address;
   const { type, name, tin } = donor;
@@ -27,13 +27,11 @@ const DonorDetails = ({ donor, address }: Props) => {
 
   return (
     <div className={styles.donorDetails}>
-      <h3 className={styles.header}>
-        {t('donationReceipt.recipientInfoHeader')}
-      </h3>
+      <h3 className={styles.header}>{tReceipt('recipientInfoHeader')}</h3>
       <div className={styles.details}>
         <div className={styles.donorName}>
           <span className={styles.header}>
-            {t('donationReceipt.name', {
+            {tReceipt('donorInfo.name', {
               type,
             })}
           </span>
@@ -42,7 +40,7 @@ const DonorDetails = ({ donor, address }: Props) => {
         {tin && (
           <div className={styles.tin}>
             <span className={styles.header}>
-              {t('donationReceipt.taxIdentificationNumber')}
+              {tReceipt('donationDetails.taxIdentificationNumber')}
             </span>
             <span>{tin}</span>
           </div>

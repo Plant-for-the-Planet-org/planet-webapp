@@ -19,7 +19,7 @@ const ReceiptActions = ({
   operation,
   confirmReceiptData,
 }: Props) => {
-  const t = useTranslations('Donate.donationReceipt');
+  const tReceipt = useTranslations('DonationReceipt');
   const router = useRouter();
 
   const showDowloadButton =
@@ -30,7 +30,7 @@ const ReceiptActions = ({
         <div className={styles.downloadButtonContainer}>
           <WebappButton
             variant="primary"
-            text={t('download')}
+            text={tReceipt('download')}
             elementType="link"
             icon={<DownloadIcon color="#fff" />}
             href={downloadUrl}
@@ -41,7 +41,7 @@ const ReceiptActions = ({
         <>
           <WebappButton
             variant="secondary"
-            text={t('modifyContactInformation')}
+            text={tReceipt('modifyContactInformation')}
             elementType="button"
             icon={<EditIcon />}
             onClick={() =>
@@ -50,7 +50,7 @@ const ReceiptActions = ({
           />
           <WebappButton
             variant="primary"
-            text={t('confirm')}
+            text={tReceipt('confirm')}
             elementType="button"
             onClick={confirmReceiptData}
           />

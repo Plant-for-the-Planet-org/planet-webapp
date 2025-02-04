@@ -9,15 +9,15 @@ type Props = {
 };
 
 const VerifyReceiptHeader = ({ operation }: Props) => {
-  const t = useTranslations('Donate.donationReceipt');
+  const tReceipt = useTranslations('DonationReceipt');
   return (
     <section className={styles.verifyReceiptHeader}>
       {operation === RECEIPT_STATUS.DOWNLOAD ? (
-        <h2>{t('downloadTaxReceipt')}</h2>
+        <h2>{tReceipt('downloadTaxReceipt')}</h2>
       ) : (
         <>
-          <h2>{t('verifyTaxHeaderPrimary')}</h2>
-          <h3>{t('verifyTaxHeaderSecondary')}</h3>
+          <h2>{tReceipt('verifyTaxHeaderPrimary')}</h2>
+          <h3>{tReceipt('verifyTaxHeaderSecondary')}</h3>
         </>
       )}
     </section>

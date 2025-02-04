@@ -9,14 +9,18 @@ type Props = {
 };
 
 const DonationData = ({ donations }: Props) => {
-  const t = useTranslations('Donate.donationReceipt');
+  const tReceipt = useTranslations('DonationReceipt');
   return (
     <div className={styles.donationData}>
       <div className={styles.donationRecord}>
         <div className={styles.header}>
-          <span>{t('referenceNumber')}</span>
-          <span className={styles.amountDonated}>{t('amountDonated')}</span>
-          <span className={styles.paymentDate}>{t('paymentDate')}</span>
+          <span>{tReceipt('donationDetails.referenceNumber')}</span>
+          <span className={styles.amountDonated}>
+            {tReceipt('donationDetails.amountDonated')}
+          </span>
+          <span className={styles.paymentDate}>
+            {tReceipt('donationDetails.paymentDate')}
+          </span>
         </div>
         <ul>
           {donations?.map((dtn) => {
@@ -24,7 +28,7 @@ const DonationData = ({ donations }: Props) => {
               <li className={styles.record} key={dtn.reference}>
                 <span className={styles.reference}>{dtn.reference}</span>
                 <span className={styles.amount}>
-                  {t('donationAmount', {
+                  {tReceipt('donationDetails.donationAmount', {
                     currency: dtn.currency,
                     amount: dtn.amount,
                   })}

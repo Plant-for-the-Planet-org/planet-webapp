@@ -26,7 +26,8 @@ type TRANSLATION_FILE_NAMES =
   | 'registerTrees'
   | 'tenants'
   | 'treemapper'
-  | 'treemapperAnalytics';
+  | 'treemapperAnalytics'
+  | 'donationReceipt';
 
 interface MessageConfig {
   /**
