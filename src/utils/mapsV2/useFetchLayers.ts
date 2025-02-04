@@ -1,11 +1,16 @@
-import type { ExploreLayersData } from '../../features/projectsV2/ProjectsMapContext';
+import type {
+  ExploreLayersData,
+  SingleExploreLayerConfig,
+} from '../../features/projectsV2/ProjectsMapContext';
 import type { MapLayerOptionsType } from './mapSettings.config';
 
 import { useEffect, useRef } from 'react';
 import { useProjectsMap } from '../../features/projectsV2/ProjectsMapContext';
-
-// Get the type of a single layer from ExploreLayersData
-type APILayer = ExploreLayersData[MapLayerOptionsType];
+const toCamelCase = (str: string): string => {
+  return str
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
+};
 
 export const useFetchLayers = () => {
   const { exploreLayersData, setExploreLayersData } = useProjectsMap();
@@ -39,7 +44,7 @@ export const useFetchLayers = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const layers = (await response.json()) as APILayer[];
+        const layers = (await response.json()) as SingleExploreLayerConfig[];
 
         if (!Array.isArray(layers) || layers.length === 0) {
           setExploreLayersData(null);
@@ -47,9 +52,7 @@ export const useFetchLayers = () => {
         }
 
         const layersData = layers.reduce((tempLayersData, layer) => {
-          const key = layer.name
-            .toLowerCase()
-            .replace(/\s+/g, '_') as MapLayerOptionsType;
+          const key = toCamelCase(layer.name) as MapLayerOptionsType;
           tempLayersData[key] = layer;
           return tempLayersData;
         }, {} as ExploreLayersData);

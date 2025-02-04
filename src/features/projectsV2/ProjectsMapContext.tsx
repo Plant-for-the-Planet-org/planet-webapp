@@ -54,21 +54,23 @@ export type MapOptions = {
   [key in MapLayerOptionsType]?: boolean;
 };
 
+export type SingleExploreLayerConfig = {
+  uuid: string;
+  name: string;
+  description: string;
+  earthEngineAssetId: string;
+  visParams: VisParams;
+  zoomConfig: LayerZoomConfig;
+  tileUrl: string;
+  googleEarthUrl: string;
+  metadata: Record<never, never>;
+  enabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type ExploreLayersData = {
-  [key in MapLayerOptionsType]: {
-    uuid: string;
-    name: string;
-    description: string;
-    earthEngineAssetId: string;
-    visParams: VisParams;
-    zoomConfig: LayerZoomConfig;
-    tileUrl: string;
-    googleEarthUrl: string;
-    metadata: Record<never, never>;
-    enabled: boolean;
-    createdAt: string;
-    updatedAt: string;
-  };
+  [key in MapLayerOptionsType]?: SingleExploreLayerConfig;
 };
 
 type VisParams = {
