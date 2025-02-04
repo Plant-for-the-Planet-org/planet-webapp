@@ -2,10 +2,10 @@ import type { FC } from 'react';
 import type {
   ReceiptData,
   ReceiptDataAPI,
-} from '../../user/DonorReceipt/donationReceipt';
+} from '../../user/DonationReceipt/donationReceipt';
 
 import { useMemo, useState, createContext, useContext } from 'react';
-import { formatReceiptData } from '../../user/DonorReceipt/utils';
+import { formatReceiptData } from '../../user/DonationReceipt/utils';
 
 interface DonationReceiptContextInterface {
   donationReceiptData: ReceiptData | null;
