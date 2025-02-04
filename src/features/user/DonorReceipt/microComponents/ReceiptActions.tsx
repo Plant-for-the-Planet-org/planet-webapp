@@ -11,13 +11,13 @@ export type Operation = (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];
 type Props = {
   downloadUrl: string | null;
   operation: Operation;
-  confirmDonorData: () => Promise<void>;
+  confirmReceiptData: () => Promise<void>;
 };
 
 const ReceiptActions = ({
   downloadUrl,
   operation,
-  confirmDonorData,
+  confirmReceiptData,
 }: Props) => {
   const t = useTranslations('Donate.donationReceipt');
   const router = useRouter();
@@ -52,7 +52,7 @@ const ReceiptActions = ({
             variant="primary"
             text={t('confirm')}
             elementType="button"
-            onClick={confirmDonorData}
+            onClick={confirmReceiptData}
           />
         </>
       )}

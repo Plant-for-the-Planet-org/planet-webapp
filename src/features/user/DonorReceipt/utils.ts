@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI, ReceiptData } from './donorReceipt';
+import type { ReceiptDataAPI, ReceiptData } from './donationReceipt';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',

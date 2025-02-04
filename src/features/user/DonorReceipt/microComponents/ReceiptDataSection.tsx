@@ -1,10 +1,10 @@
-import type { ReceiptData } from '../donorReceipt';
+import type { ReceiptData } from '../donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useCallback, useContext, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
-import { useDonorReceipt } from '../../../common/Layout/DonorReceiptContext';
+import { useDonationReceipt } from '../../../common/Layout/DonationReceiptContext';
 import styles from '../DonationReceipt.module.scss';
 import DonationData from './DonationData';
 import ReceiptActions from './ReceiptActions';
@@ -15,12 +15,12 @@ import { putRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 interface Prop {
-  donorReceiptData: ReceiptData | null;
+  donationReceiptData: ReceiptData | null;
 }
 
-const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
-  if (!donorReceiptData) return null;
-  const { updateDonorReceiptData } = useDonorReceipt();
+const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
+  if (!donationReceiptData) return null;
+  const { updateDonationReceiptData } = useDonationReceipt();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +34,9 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-  } = donorReceiptData;
+  } = donationReceiptData;
 
-  const confirmDonorData = useCallback(async () => {
+  const confirmReceiptData = useCallback(async () => {
     if (operation !== RECEIPT_STATUS.VERIFY) return;
 
     if (hasDonorDataChanged) {
@@ -55,7 +55,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
           verificationDate: getVerificationDate(),
         },
       });
-      if (data) updateDonorReceiptData(data);
+      if (data) updateDonationReceiptData(data);
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
@@ -68,7 +68,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-    updateDonorReceiptData,
+    updateDonationReceiptData,
   ]);
 
   return (
@@ -79,7 +79,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
         <ReceiptActions
           downloadUrl={downloadUrl}
           operation={operation}
-          confirmDonorData={confirmDonorData}
+          confirmReceiptData={confirmReceiptData}
         />
       ) : (
         <div className={styles.receiptVerificationSpinner}>

@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI } from './donorReceipt';
+import type { ReceiptDataAPI } from './donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
-import { useDonorReceipt } from '../../common/Layout/DonorReceiptContext';
+import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
 import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
@@ -15,14 +15,15 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-export const DonorReceiptLayout = () => {
+const DonationReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { tenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { dtn, year, challenge } = router.query;
-  const { updateDonorReceiptData, donorReceiptData } = useDonorReceipt();
-  const showReceipt = !isLoading && donorReceiptData !== null;
+  const { updateDonationReceiptData, donationReceiptData } =
+    useDonationReceipt();
+  const showReceipt = !isLoading && donationReceiptData !== null;
 
   useEffect(() => {
     if (!(dtn || year || challenge || router.isReady)) return;
@@ -44,7 +45,7 @@ export const DonorReceiptLayout = () => {
             challenge,
           },
         });
-        if (data) updateDonorReceiptData(data);
+        if (data) updateDonationReceiptData(data);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');
@@ -57,18 +58,18 @@ export const DonorReceiptLayout = () => {
   }, [dtn, year, challenge, router.isReady]);
 
   return showReceipt ? (
-    <div className={styles.donorReceiptLayout}>
-      <div className={styles.donorReceiptContainer}>
-        <ReceiptVerificationHeader operation={donorReceiptData.operation} />
-        <ReceiptDataSection donorReceiptData={donorReceiptData} />
+    <div className={styles.donationReceiptLayout}>
+      <div className={styles.donationReceiptContainer}>
+        <ReceiptVerificationHeader operation={donationReceiptData.operation} />
+        <ReceiptDataSection donationReceiptData={donationReceiptData} />
         <ReceiptListRedirect />
       </div>
     </div>
   ) : (
-    <div className={styles.donorReceiptSkeleton}>
+    <div className={styles.donationReceiptSkeleton}>
       <Skeleton height={700} width={760} />
     </div>
   );
 };
 
-export default DonorReceiptLayout;
+export default DonationReceiptLayout;
