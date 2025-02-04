@@ -54,6 +54,34 @@ export type MapOptions = {
   [key in MapLayerOptionsType]?: boolean;
 };
 
+export type ExploreLayersData = {
+  [key in MapLayerOptionsType]: {
+    uuid: string;
+    name: string;
+    description: string;
+    earthEngineAssetId: string;
+    visParams: VisParams;
+    zoomConfig: LayerZoomConfig;
+    tileUrl: string;
+    googleEarthUrl: string;
+    metadata: Record<never, never>;
+    enabled: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+};
+
+type VisParams = {
+  max: number;
+  min: number;
+  palette: string[];
+};
+
+type LayerZoomConfig = {
+  minZoom: number;
+  maxZoom: number;
+};
+
 interface ProjectsMapState {
   viewState: ViewState;
   handleViewStateChange: (newViewState: Partial<ExtendedViewState>) => void;
@@ -70,6 +98,8 @@ interface ProjectsMapState {
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
   timeTravelConfig: ProjectTimeTravelConfig | null;
   setTimeTravelConfig: SetState<ProjectTimeTravelConfig | null>;
+  exploreLayersData: ExploreLayersData | null;
+  setExploreLayersData: SetState<ExploreLayersData | null>;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
@@ -82,6 +112,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   });
   const [timeTravelConfig, setTimeTravelConfig] =
     useState<ProjectTimeTravelConfig | null>(null);
+  const [exploreLayersData, setExploreLayersData] =
+    useState<ExploreLayersData | null>(null);
 
   const handleViewStateChange = (newViewState: Partial<ExtendedViewState>) => {
     setViewState((prev) => ({
@@ -120,6 +152,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       updateMapOption,
       timeTravelConfig,
       setTimeTravelConfig,
+      exploreLayersData,
+      setExploreLayersData,
     }),
     [mapState, viewState, mapOptions, isSatelliteView, timeTravelConfig]
   );
