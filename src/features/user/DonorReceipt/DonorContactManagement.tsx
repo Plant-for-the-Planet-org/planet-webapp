@@ -131,7 +131,6 @@ const DonorContactManagement = () => {
       setDonorReceiptData,
       navigateToVerificationPage,
       setErrors,
-      setIsLoading,
     ]
   );
 
@@ -158,7 +157,7 @@ const DonorContactManagement = () => {
       default:
         return <></>;
     }
-  }, [addressAction, selectedAddressForAction]);
+  }, [addressAction, selectedAddressForAction, updateDonorAddresses]);
 
   return (
     <section className={styles.donorReceiptLayout}>

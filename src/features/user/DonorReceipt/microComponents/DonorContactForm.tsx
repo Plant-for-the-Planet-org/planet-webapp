@@ -96,6 +96,7 @@ const DonorContactForm = ({
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
+
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
@@ -107,7 +108,7 @@ const DonorContactForm = ({
             label={t('companyName')}
           />
         )}
-        {user.type === 'individual' && (
+        {donorReceiptData?.donor.type === 'individual' && (
           <InlineFormDisplayGroup>
             <FormInput
               name={'firstName'}
