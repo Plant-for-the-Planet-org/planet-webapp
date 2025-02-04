@@ -57,7 +57,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
 
     try {
       if (hasDonorDataChanged) {
-        if (!(address.guid && token && user && contextLoaded)) return;
+        if (!address.guid || !token || !user || !contextLoaded) return;
         const authData = await putAuthenticatedRequest({
           ...requestData,
           data: { ...requestData.data, receiptAddress: address.guid },

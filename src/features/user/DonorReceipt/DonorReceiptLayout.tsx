@@ -26,20 +26,14 @@ export const DonorReceiptLayout = () => {
 
   useEffect(() => {
     if (
-      !router.isReady ||
-      !dtn ||
-      !year ||
-      !challenge ||
-      donorReceiptData?.hasDonorDataChanged
-    )
-      return;
-
-    if (
       typeof dtn !== 'string' ||
       typeof year !== 'string' ||
       typeof challenge !== 'string'
     )
       return;
+    if (!router.isReady || !dtn || !year || !challenge) return;
+    if (donorReceiptData !== null) return;
+
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {
@@ -62,7 +56,7 @@ export const DonorReceiptLayout = () => {
     };
 
     fetchReceiptData();
-  }, [dtn, year, challenge, router.isReady]);
+  }, [dtn, year, challenge, router.isReady, donorReceiptData]);
   return showReceipt ? (
     <div className={styles.donorReceiptLayout}>
       <div className={styles.donorReceiptContainer}>
