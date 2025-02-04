@@ -6,16 +6,16 @@ export type IssuedDonationView = {
 };
 
 export type DonorAPI = {
+  reference: string;
   tin: string | null;
-  city: string;
-  name: string;
   type: 'individual' | 'organization';
+  name: string;
   email: string;
-  country: string;
-  zipCode: string;
   address1: string;
   address2: string | null;
-  reference: string;
+  city: string;
+  zipCode: string;
+  country: string;
 };
 
 export type DonorView = {

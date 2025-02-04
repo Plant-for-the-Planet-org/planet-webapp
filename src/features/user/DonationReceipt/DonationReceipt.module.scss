@@ -52,7 +52,7 @@
   background: #fff;
 }
 
-.donationRecord {
+.donationsTable {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -120,7 +120,7 @@
     font-size: $fontSmall;
   }
 
-  .details {
+  .donorInfo {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -129,7 +129,7 @@
   }
 }
 
-.address,
+.addressInfo,
 .donorName,
 .companyName,
 .tin {

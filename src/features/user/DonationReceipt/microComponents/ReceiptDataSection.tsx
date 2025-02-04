@@ -6,7 +6,7 @@ import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 import { useDonationReceipt } from '../../../common/Layout/DonationReceiptContext';
 import styles from '../DonationReceipt.module.scss';
-import DonationData from './DonationData';
+import DonationsTable from './DonationsTable';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
 import { getVerificationDate, RECEIPT_STATUS } from '../utils';
@@ -73,7 +73,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
 
   return (
     <section className={styles.receiptDataSection}>
-      <DonationData donations={issuedDonations} />
+      <DonationsTable donations={issuedDonations} />
       <DonorDetails donor={donor} address={address} />
       {!isLoading ? (
         <ReceiptActions

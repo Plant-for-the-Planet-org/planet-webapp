@@ -17,7 +17,6 @@ const DonorDetails = ({ donor, address }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   const tCountry = useTranslations('Country');
   const { country, zipCode, city, address1, address2 } = address;
-  const { type, name, tin } = donor;
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
 
   const cityStatePostalString = useMemo(
@@ -28,25 +27,25 @@ const DonorDetails = ({ donor, address }: Props) => {
   return (
     <div className={styles.donorDetails}>
       <h3 className={styles.header}>{tReceipt('recipientInfoHeader')}</h3>
-      <div className={styles.details}>
+      <div className={styles.donorInfo}>
         <div className={styles.donorName}>
           <span className={styles.header}>
             {tReceipt('donorInfo.name', {
-              type,
+              type: donor.type,
             })}
           </span>
-          <span>{name}</span>
+          <span>{donor.name}</span>
         </div>
-        {tin && (
+        {donor.tin !== null && (
           <div className={styles.tin}>
             <span className={styles.header}>
               {tReceipt('donationDetails.taxIdentificationNumber')}
             </span>
-            <span>{tin}</span>
+            <span>{donor.tin}</span>
           </div>
         )}
       </div>
-      <div className={styles.address}>
+      <div className={styles.addressInfo}>
         <span className={styles.header}>Address</span>
         <address>
           {address1},{cityStatePostalString}
