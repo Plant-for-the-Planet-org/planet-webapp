@@ -80,6 +80,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
           downloadUrl={downloadUrl}
           operation={operation}
           confirmReceiptData={confirmReceiptData}
+          isReceiptVerified={donationReceiptData.verificationDate !== null}
         />
       ) : (
         <div className={styles.receiptVerificationSpinner}>

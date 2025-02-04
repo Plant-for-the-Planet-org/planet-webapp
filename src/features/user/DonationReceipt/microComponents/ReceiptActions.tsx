@@ -12,21 +12,25 @@ type Props = {
   downloadUrl: string | null;
   operation: Operation;
   confirmReceiptData: () => Promise<void>;
+  isReceiptVerified: boolean;
 };
 
 const ReceiptActions = ({
   downloadUrl,
   operation,
   confirmReceiptData,
+  isReceiptVerified,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   const router = useRouter();
 
-  const showDowloadButton =
-    operation === RECEIPT_STATUS.DOWNLOAD && downloadUrl !== null;
+  const showDownloadButton =
+    operation === RECEIPT_STATUS.DOWNLOAD &&
+    downloadUrl !== null &&
+    isReceiptVerified;
   return (
     <div className={styles.receiptActions}>
-      {showDowloadButton ? (
+      {showDownloadButton ? (
         <div className={styles.downloadButtonContainer}>
           <WebappButton
             variant="primary"
