@@ -9,11 +9,11 @@ import { useRouter } from 'next/router';
 import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
-import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
-import ReceiptListRedirect from './microComponents/ReceiptListRedirect';
+import VerifyReceiptHeader from './microComponents/VerifyReceiptHeader';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter ';
 
 const DonationReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,9 +60,9 @@ const DonationReceiptLayout = () => {
   return showReceipt ? (
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
-        <ReceiptVerificationHeader operation={donationReceiptData.operation} />
+        <VerifyReceiptHeader operation={donationReceiptData.operation} />
         <ReceiptDataSection donationReceiptData={donationReceiptData} />
-        <ReceiptListRedirect />
+        <VerifyReceiptFooter />
       </div>
     </div>
   ) : (

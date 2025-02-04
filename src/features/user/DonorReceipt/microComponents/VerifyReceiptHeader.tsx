@@ -8,10 +8,10 @@ type Props = {
   operation: Operation;
 };
 
-const ReceiptVerificationHeader = ({ operation }: Props) => {
+const VerifyReceiptHeader = ({ operation }: Props) => {
   const t = useTranslations('Donate.donationReceipt');
   return (
-    <section className={styles.receiptVerificationHeader}>
+    <section className={styles.verifyReceiptHeader}>
       {operation === RECEIPT_STATUS.DOWNLOAD ? (
         <h2>{t('downloadTaxReceipt')}</h2>
       ) : (
@@ -24,4 +24,4 @@ const ReceiptVerificationHeader = ({ operation }: Props) => {
   );
 };
 
-export default ReceiptVerificationHeader;
+export default VerifyReceiptHeader;
