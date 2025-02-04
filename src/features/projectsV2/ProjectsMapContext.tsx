@@ -54,6 +54,10 @@ export type MapOptions = {
   [key in MapLayerOptionsType]?: boolean;
 };
 
+export type ExploreLayersData = {
+  [key in MapLayerOptionsType]?: SingleExploreLayerConfig;
+};
+
 export type SingleExploreLayerConfig = {
   uuid: string;
   name: string;
@@ -67,10 +71,6 @@ export type SingleExploreLayerConfig = {
   enabled: boolean;
   createdAt: string;
   updatedAt: string;
-};
-
-export type ExploreLayersData = {
-  [key in MapLayerOptionsType]?: SingleExploreLayerConfig;
 };
 
 type VisParams = {
@@ -102,6 +102,7 @@ interface ProjectsMapState {
   setTimeTravelConfig: SetState<ProjectTimeTravelConfig | null>;
   exploreLayersData: ExploreLayersData | null;
   setExploreLayersData: SetState<ExploreLayersData | null>;
+  isExploreMode: boolean;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
@@ -116,6 +117,15 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     useState<ProjectTimeTravelConfig | null>(null);
   const [exploreLayersData, setExploreLayersData] =
     useState<ExploreLayersData | null>(null);
+  const [isExploreMode, setIsExploreMode] = useState(false);
+
+  // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
+  useEffect(() => {
+    const enabledLayers = Object.entries(mapOptions).filter(
+      ([key, value]) => key !== 'projects' && value === true
+    );
+    setIsExploreMode(enabledLayers.length > 0);
+  }, [mapOptions]);
 
   const handleViewStateChange = (newViewState: Partial<ExtendedViewState>) => {
     setViewState((prev) => ({
@@ -152,12 +162,21 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       setIsSatelliteView,
       mapOptions,
       updateMapOption,
-      timeTravelConfig,
-      setTimeTravelConfig,
       exploreLayersData,
       setExploreLayersData,
+      isExploreMode,
+      timeTravelConfig,
+      setTimeTravelConfig,
     }),
-    [mapState, viewState, mapOptions, isSatelliteView, timeTravelConfig]
+    [
+      mapState,
+      viewState,
+      mapOptions,
+      isSatelliteView,
+      exploreLayersData,
+      isExploreMode,
+      timeTravelConfig,
+    ]
   );
 
   return (

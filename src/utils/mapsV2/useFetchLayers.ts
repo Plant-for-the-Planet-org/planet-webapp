@@ -6,6 +6,7 @@ import type { MapLayerOptionsType } from './mapSettings.config';
 
 import { useEffect, useRef } from 'react';
 import { useProjectsMap } from '../../features/projectsV2/ProjectsMapContext';
+
 const toCamelCase = (str: string): string => {
   return str
     .toLowerCase()
