@@ -2,7 +2,7 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
-
+import { useMemo } from 'react'
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
@@ -54,7 +54,21 @@ const MapControls = ({
     setSelectedInterventionType,
     disableInterventionMenu,
     setDisableInterventionMenu,
+    plantLocations
   } = useProjects();
+
+
+  const uniquePlantTypes = useMemo(() => {
+    if (!plantLocations) return [];
+
+    const uniqueTypes = new Set(
+      plantLocations?.map(location => location.type)
+    );
+
+    return Array.from(uniqueTypes);
+  }, [plantLocations]);
+
+
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
@@ -119,13 +133,14 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${
-    isMobile
+  const layerToggleClass = `${styles.layerToggle} ${isMobile
       ? mobileOS === 'android'
         ? styles.layerToggleAndroid
         : styles.layerToggleIos
       : styles.layerToggleDesktop
-  }`;
+    }`;
+
+
 
   return (
     <>
@@ -141,13 +156,14 @@ const MapControls = ({
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
-              {canShowInterventionDropdown && (
+              {canShowInterventionDropdown && uniquePlantTypes.length > 0 ? (
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   isMobile={isMobile}
                   hasProjectSites={hasProjectSites}
+                  existingIntervention={uniquePlantTypes}
                 />
-              )}
+              ) : null}
               <button
                 className={styles.exitMapModeButton}
                 onClick={exitMapMode}
@@ -160,12 +176,13 @@ const MapControls = ({
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
-              {canShowInterventionDropdown && (
+              {canShowInterventionDropdown && uniquePlantTypes.length > 0 ? (
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   hasProjectSites={hasProjectSites}
+                  existingIntervention={uniquePlantTypes}
                 />
-              )}
+              ) : null}
             </>
           )}
           {canShowSatelliteToggle && (
