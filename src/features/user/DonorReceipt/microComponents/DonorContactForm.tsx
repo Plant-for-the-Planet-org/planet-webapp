@@ -101,15 +101,11 @@ const DonorContactForm = ({
       addressGuid: checkedAddressGuid || '',
     },
   });
-  const isUserDataChanged = useMemo(
-    () =>
-      Boolean(
-        dirtyFields.firstName ||
-          dirtyFields.lastName ||
-          dirtyFields.companyName ||
-          dirtyFields.tin
-      ),
-    [dirtyFields]
+  const isUserDataChanged = Boolean(
+    dirtyFields.firstName ||
+      dirtyFields.lastName ||
+      dirtyFields.companyName ||
+      dirtyFields.tin
   );
   const handleAddNewAddress = () => {
     setIsModalOpen(true);
