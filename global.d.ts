@@ -35,6 +35,8 @@ type MessagesTreemapper =
   typeof import('./public/static/locales/en/treemapper.json');
 type MessagesTreemapperAnalytics =
   typeof import('./public/static/locales/en/treemapperAnalytics.json');
+type MessagesDonationReceipt =
+  typeof import('./public/static/locales/en/donationReceipt.json');
 
 type Messages = MessagesAllProjects &
   MessagesBulkCodes &
@@ -58,6 +60,7 @@ type Messages = MessagesAllProjects &
   MessagesRegisterTrees &
   MessagesTenants &
   MessagesTreemapper &
-  MessagesTreemapperAnalytics;
+  MessagesTreemapperAnalytics &
+  MessagesDonationReceipt;
 
 declare interface IntlMessages extends Messages {}
