@@ -15,13 +15,15 @@ interface InterventionListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
   hasProjectSites?: boolean
+  existingIntervention: string[]
 }
 const InterventionList = ({
   interventionList,
   setSelectedInterventionType,
   setIsMenuOpen,
   selectedInterventionData,
-  hasProjectSites
+  hasProjectSites,
+  existingIntervention
 }: InterventionListProps) => {
   const tProjectDetails = useTranslations("ProjectDetails.intervention");
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
@@ -29,9 +31,18 @@ const InterventionList = ({
     setSelectedInterventionType(key);
   };
 
+
+
   return (
     <ul className={`${styles.interventionListOptions} ${!hasProjectSites ? styles.interventionListOptionsAbove : styles.interventionListOptionsBelow}`}>
       {interventionList.map((intervention, index) => {
+        const exists = existingIntervention.includes(intervention.value);
+        if (!exists && intervention.value !== 'all') {
+          return null;
+        }
+        if (intervention.value == 'all' && existingIntervention.length === 1) {
+          return
+        }
         return (
           <li
             className={`${styles.listItem} ${intervention.value === selectedInterventionData?.value

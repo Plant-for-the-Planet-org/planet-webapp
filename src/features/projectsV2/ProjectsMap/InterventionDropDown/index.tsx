@@ -25,6 +25,7 @@ interface Props {
   enableInterventionFilter: () => void;
   disableInterventionMenu: boolean;
   hasProjectSites?: boolean;
+  existingIntervention: string[]
 }
 
 const InterventionDropdown = ({
@@ -35,6 +36,7 @@ const InterventionDropdown = ({
   disableInterventionMenu,
   isMobile,
   hasProjectSites,
+  existingIntervention
 }: Props) => {
   const tIntervention = useTranslations('ProjectDetails.intervention');
 
@@ -54,20 +56,29 @@ const InterventionDropdown = ({
     }
   }, [disableInterventionMenu]);
 
-  const interventionData = findMatchingIntervention(selectedInterventionType);
 
   const toggleMenu = () => {
     enableInterventionFilter();
     setIsMenuOpen((prev) => !prev);
   };
+
+  const showVisibleOption = () => {
+    if (existingIntervention.length === 1) {
+      return findMatchingIntervention(existingIntervention[0]);
+    }
+    return findMatchingIntervention(selectedInterventionType);
+  }
+
+  const interventionData = showVisibleOption()
+
+
   return (
     <>
       <div
-        className={`${styles.dropdownButton} ${
-          hasProjectSites
+        className={`${styles.dropdownButton} ${hasProjectSites
             ? styles.dropdownButtonAlignmentAbove
             : styles.dropdownButtonAlignmentBelow
-        }`}
+          }`}
         onClick={toggleMenu}
       >
         <div className={styles.interventionIconAndTextContainer}>
@@ -106,6 +117,7 @@ const InterventionDropdown = ({
           setIsMenuOpen={setIsMenuOpen}
           selectedInterventionData={interventionData}
           hasProjectSites={hasProjectSites}
+          existingIntervention={existingIntervention}
         />
       )}
     </>
