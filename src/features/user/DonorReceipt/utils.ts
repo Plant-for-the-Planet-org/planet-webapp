@@ -88,7 +88,10 @@ export const isMatchingAddress = (
  * - The address is retrieved based on the provided `addressGuid`, and if no matching address is found, default empty strings are returned for address fields.
  */
 
-export const getUpdatedDonorDetails = (res: User, addressGuid: string) => {
+export const getUpdatedDonorDetails = (
+  res: User,
+  addressGuid: string | null
+) => {
   const donorName =
     res.type === 'individual'
       ? `${res.firstname} ${res.lastname}`
