@@ -4,7 +4,7 @@ import type { Control, RegisterOptions } from 'react-hook-form';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
 
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';

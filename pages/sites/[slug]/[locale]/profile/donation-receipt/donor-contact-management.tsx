@@ -27,7 +27,6 @@ export default function ModifyDonorData() {
     <UserLayout>
       <Head>{t('donorContactManagement')}</Head>
       {donorReceiptData ? <DonorContactManagement /> : <AccessDeniedLoader />}
-      <DonorContactManagement />
     </UserLayout>
   );
 }
