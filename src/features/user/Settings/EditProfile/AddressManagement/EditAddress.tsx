@@ -18,7 +18,7 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address;
   updateUserAddresses: () => Promise<void>;
-  setAddressAction: SetState<AddressAction | null>;
+  setAddressAction: SetState<AddressAction | DonorAddressAction | null>;
 }
 
 const EditAddress = ({

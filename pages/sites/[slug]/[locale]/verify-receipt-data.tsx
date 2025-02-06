@@ -17,7 +17,6 @@ import getMessagesForPage from '../../../../src/utils/language/getMessagesForPag
 import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import DonorReceiptLayout from '../../../../src/features/user/DonorReceipt/DonorReceiptLayout';
-import { DonorReceiptProvider } from '../../../../src/features/common/Layout/DonorReceiptContext';
 
 interface PageProps {
   messages: AbstractIntlMessages;
@@ -38,11 +37,7 @@ export default function DonationReceipt({
     if (router.isReady) setTenantConfig(tenantConfig);
   }, [router.isReady]);
 
-  return (
-    <DonorReceiptProvider>
-      <DonorReceiptLayout />
-    </DonorReceiptProvider>
-  );
+  return <DonorReceiptLayout />;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

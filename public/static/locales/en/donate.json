@@ -43,6 +43,7 @@
     "cityRequired": "City is required",
     "countryRequired": "Country is required",
     "companyRequired": "Company Name is required",
+    "tinRequired": "Tin is required",
     "paymentDetails": "Payment Details",
     "validationFailed": "Validation Failed",
     "seedingYourDonation": "Seeding your donation",
@@ -130,7 +131,11 @@
       "supportContactDetails": "<strong>Email:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink> <strong>Phone:</strong> +49 8808 9345",
       "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
       "name": "{type, select, individual {Name} organization {Company Name} other {}}",
-      "modifyDonorData": "Modify Donor Data"
+      "donorContactManagement": "Donor Contact Management",
+      "contactManagementHeader": "Update profile and address",
+      "tin": "Tax Identification Number (TIN)",
+      "saveDataAndReturn": "Save data and return",
+      "addressRequired": "Please choose an address to proceed."
     }
   }
 }

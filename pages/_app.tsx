@@ -52,6 +52,7 @@ import {
   getTenantSlug,
 } from '../src/utils/multiTenancy/helpers';
 import { NextIntlClientProvider } from 'next-intl';
+import { DonorReceiptProvider } from '../src/features/common/Layout/DonorReceiptContext';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -302,12 +303,14 @@ const PlanetWeb = ({
                                     <ProjectPropsProvider>
                                       <BulkCodeProvider>
                                         <AnalyticsProvider>
-                                          {isMap ? (
-                                            <MapHolder
-                                              setshowVideo={setshowVideo}
-                                            />
-                                          ) : null}
-                                          {pageContent}
+                                          <DonorReceiptProvider>
+                                            {isMap ? (
+                                              <MapHolder
+                                                setshowVideo={setshowVideo}
+                                              />
+                                            ) : null}
+                                            {pageContent}
+                                          </DonorReceiptProvider>
                                         </AnalyticsProvider>
                                       </BulkCodeProvider>
                                     </ProjectPropsProvider>
