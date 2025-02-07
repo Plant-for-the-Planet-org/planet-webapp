@@ -10,6 +10,7 @@ import { useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   ADDRESS_ACTIONS,
+  ADDRESS_TYPE,
   getFormattedAddress,
 } from '../../../../utils/addressManagement';
 import StyledCheckbox from './StyledCheckbox';
@@ -43,6 +44,7 @@ const DonorAddress = ({
 }: Props) => {
   const tCountry = useTranslations('Country');
   const t = useTranslations('Donate.donationReceipt');
+  const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { zipCode, city, country } = address;
 
   const formattedAddress = useMemo(
@@ -64,33 +66,40 @@ const DonorAddress = ({
   }, [address, receiptAddress, setValue]);
 
   return (
-    <div className={styles.address}>
-      <Controller
-        name="addressGuid"
-        control={control}
-        rules={{ required: t('addressRequired') }}
-        render={({ field }) => (
-          <StyledCheckbox
-            {...field}
-            checked={checkedAddressGuid === address.id}
-            onChange={() => {
-              field.onChange(address.id);
-              setCheckedAddressGuid(address.id);
-            }}
-            checkedIcon={<DonorAddressCheckIcon />}
-          />
-        )}
-      />
-      <div>
-        <address>
-          {address.address},{formattedAddress}
-        </address>
-        {address.address2 && (
+    <section className={styles.addressInfoContainer}>
+      <div className={styles.addressInfoSubContainer}>
+        <Controller
+          name="addressGuid"
+          control={control}
+          rules={{ required: t('addressRequired') }}
+          render={({ field }) => (
+            <StyledCheckbox
+              {...field}
+              checked={checkedAddressGuid === address.id}
+              onChange={() => {
+                field.onChange(address.id);
+                setCheckedAddressGuid(address.id);
+              }}
+              checkedIcon={<DonorAddressCheckIcon />}
+            />
+          )}
+        />
+        <div>
           <address>
-            {address.address2},{formattedAddress}
+            {address.address},{formattedAddress}
           </address>
-        )}
+          {address.address2 && (
+            <address>
+              {address.address2},{formattedAddress}
+            </address>
+          )}
+        </div>
       </div>
+      {address.type === ADDRESS_TYPE.PRIMARY && (
+        <span className={styles.addressType}>
+          {tAddressManagement(`addressType.${address.type}`)}
+        </span>
+      )}
       <button
         onClick={(e) => {
           e.preventDefault();
@@ -102,7 +111,7 @@ const DonorAddress = ({
       >
         <EditIcon />
       </button>
-    </div>
+    </section>
   );
 };
 

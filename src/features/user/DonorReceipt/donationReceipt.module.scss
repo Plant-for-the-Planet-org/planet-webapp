@@ -266,15 +266,32 @@
     margin-left: 4px;
   }
 
-  .address {
-    @include flex-layout(flex, row, null, center, 6px);
+  .addressInfoContainer {
+    @include flex-layout(flex, row, null, center, 32px);
     border-radius: 9px;
     padding: 24px;
     background: rgba(242, 242, 242, 0.5);
     position: relative;
+    flex-wrap: wrap;
 
-    address {
-      max-width: 500px;
+    .addressInfoSubContainer {
+      display: flex;
+      align-items: center;
+
+      address {
+        max-width: 415px;
+      }
+    }
+
+    .addressType {
+      padding: 5px 10px;
+      max-width: fit-content;
+      border-radius: 6px;
+      text-align: center;
+      font-size: var(--font-x-extra-small);
+      font-weight: 600;
+      background-color: var(--primary-dark-color);
+      color: #fff;
     }
 
     button {
