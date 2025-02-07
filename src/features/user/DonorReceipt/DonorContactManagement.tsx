@@ -72,6 +72,7 @@ const DonorContactManagement = () => {
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
+            showPrimaryAddressToggle={true}
           />
         );
       case ADDRESS_ACTIONS.ADD:
@@ -79,7 +80,8 @@ const DonorContactManagement = () => {
           <AddAddress
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
-            setUserAddresses={setDonorAddresses}
+            updateUserAddresses={updateDonorAddresses}
+            showPrimaryAddressToggle={true}
           />
         );
       default:

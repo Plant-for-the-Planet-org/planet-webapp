@@ -4,7 +4,7 @@ import type { Address, APIError } from '@planet-sdk/common';
 import type { FormData } from './AddAddress';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useState, useContext, useCallback } from 'react';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
@@ -13,12 +13,14 @@ import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import AddressForm from './microComponents/AddressForm';
 import AddressFormLayout from './microComponents/AddressFormLayout';
+import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address;
   updateUserAddresses: () => Promise<void>;
-  setAddressAction: SetState<AddressAction | DonorAddressAction | null>;
+  setAddressAction: SetState<AddressAction | null>;
+  showPrimaryAddressToggle: boolean;
 }
 
 const EditAddress = ({
@@ -26,6 +28,7 @@ const EditAddress = ({
   selectedAddressForAction,
   updateUserAddresses,
   setAddressAction,
+  showPrimaryAddressToggle,
 }: Props) => {
   const defaultAddressDetail = {
     address: selectedAddressForAction.address,
@@ -43,6 +46,14 @@ const EditAddress = ({
     selectedAddressForAction?.country ?? 'DE'
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [checkedPrimaryAddress, setCheckedPrimaryAddress] = useState(false);
+
+  useEffect(() => {
+    if (selectedAddressForAction)
+      setCheckedPrimaryAddress(
+        selectedAddressForAction.type === ADDRESS_TYPE.PRIMARY
+      );
+  }, [selectedAddressForAction]);
 
   const updateAddress = useCallback(
     async (data: FormData) => {
@@ -51,7 +62,9 @@ const EditAddress = ({
       const bodyToSend = {
         ...data,
         country,
-        type: selectedAddressForAction?.type,
+        type: checkedPrimaryAddress
+          ? ADDRESS_TYPE.PRIMARY
+          : selectedAddressForAction?.type,
       };
       try {
         const res = await putAuthenticatedRequest<Address>({
@@ -61,7 +74,7 @@ const EditAddress = ({
           token,
           logoutUser,
         });
-        if (res && updateUserAddresses) updateUserAddresses();
+        if (res) updateUserAddresses();
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {
@@ -82,6 +95,7 @@ const EditAddress = ({
       updateUserAddresses,
       handleError,
       putAuthenticatedRequest,
+      checkedPrimaryAddress,
     ]
   );
 
@@ -96,6 +110,9 @@ const EditAddress = ({
         defaultAddressDetail={defaultAddressDetail}
         processFormData={updateAddress}
         setAddressAction={setAddressAction}
+        showPrimaryAddressToggle={showPrimaryAddressToggle}
+        checkedPrimaryAddress={checkedPrimaryAddress}
+        setCheckedPrimaryAddress={setCheckedPrimaryAddress}
       />
     </AddressFormLayout>
   );

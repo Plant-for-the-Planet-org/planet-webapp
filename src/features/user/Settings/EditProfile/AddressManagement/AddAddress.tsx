@@ -25,8 +25,9 @@ export type FormData = {
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
-  setUserAddresses: SetState<Address[]>;
   setAddressAction: SetState<AddressAction | null>;
+  showPrimaryAddressToggle: boolean;
+  updateUserAddresses: () => Promise<void>;
 }
 
 const defaultAddressDetail = {
@@ -39,8 +40,9 @@ const defaultAddressDetail = {
 
 const AddAddress = ({
   setIsModalOpen,
-  setUserAddresses,
   setAddressAction,
+  showPrimaryAddressToggle,
+  updateUserAddresses,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
@@ -52,6 +54,7 @@ const AddAddress = ({
     defaultCountry
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [checkedPrimaryAddress, setCheckedPrimaryAddress] = useState(false);
 
   const addAddress = useCallback(
     async (data: FormData) => {
@@ -60,7 +63,7 @@ const AddAddress = ({
       const bodyToSend = {
         ...data,
         country,
-        type: ADDRESS_TYPE.OTHER,
+        type: checkedPrimaryAddress ? ADDRESS_TYPE.PRIMARY : ADDRESS_TYPE.OTHER,
       };
       try {
         const res = await postAuthenticatedRequest<Address>({
@@ -70,9 +73,7 @@ const AddAddress = ({
           token,
           logoutUser,
         });
-        if (res && setUserAddresses) {
-          setUserAddresses((prevAddresses) => [...prevAddresses, res]);
-        }
+        if (res) updateUserAddresses();
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {
@@ -87,11 +88,12 @@ const AddAddress = ({
       token,
       country,
       logoutUser,
-      setUserAddresses,
       handleError,
       setIsLoading,
       setIsModalOpen,
       postAuthenticatedRequest,
+      checkedPrimaryAddress,
+      updateUserAddresses,
     ]
   );
 
@@ -106,6 +108,9 @@ const AddAddress = ({
         defaultAddressDetail={defaultAddressDetail}
         processFormData={addAddress}
         setAddressAction={setAddressAction}
+        showPrimaryAddressToggle={showPrimaryAddressToggle}
+        setCheckedPrimaryAddress={setCheckedPrimaryAddress}
+        checkedPrimaryAddress={checkedPrimaryAddress}
       />
     </AddressFormLayout>
   );

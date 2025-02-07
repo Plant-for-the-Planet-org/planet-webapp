@@ -23,6 +23,7 @@ import CountrySelect from '../../../../../common/InputTypes/AutoCompleteCountry'
 import { allCountries } from '../../../../../../utils/constants/countries';
 import AddressFormButtons from './AddressFormButtons';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
+import PrimaryAddressToggle from './PrimaryAddressToggle';
 
 interface Props {
   country: ExtendedCountryCode | '';
@@ -39,6 +40,9 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   isLoading: boolean;
   setAddressAction: SetState<AddressAction | null>;
+  showPrimaryAddressToggle: boolean;
+  checkedPrimaryAddress: boolean;
+  setCheckedPrimaryAddress: SetState<boolean>;
 }
 
 const AddressForm = ({
@@ -50,6 +54,9 @@ const AddressForm = ({
   processFormData,
   isLoading,
   setAddressAction,
+  showPrimaryAddressToggle,
+  checkedPrimaryAddress,
+  setCheckedPrimaryAddress,
 }: Props) => {
   const t = useTranslations('EditProfile');
   const [addressSuggestions, setAddressSuggestions] = useState<
@@ -224,6 +231,12 @@ const AddressForm = ({
           onChange={setCountry}
         />
       </InlineFormDisplayGroup>
+      {showPrimaryAddressToggle && (
+        <PrimaryAddressToggle
+          checkedPrimaryAddress={checkedPrimaryAddress}
+          setCheckedPrimaryAddress={setCheckedPrimaryAddress}
+        />
+      )}
       {isLoading ? (
         <div className={styles.addressMgmtSpinner}>
           <CircularProgress color="success" />
