@@ -41,8 +41,8 @@ interface Props {
   isLoading: boolean;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
-  checkedPrimaryAddress: boolean;
-  setCheckedPrimaryAddress: SetState<boolean>;
+  primaryAddressChecked: boolean;
+  setPrimaryAddressChecked: SetState<boolean>;
 }
 
 const AddressForm = ({
@@ -55,8 +55,8 @@ const AddressForm = ({
   isLoading,
   setAddressAction,
   showPrimaryAddressToggle,
-  checkedPrimaryAddress,
-  setCheckedPrimaryAddress,
+  primaryAddressChecked,
+  setPrimaryAddressChecked,
 }: Props) => {
   const t = useTranslations('EditProfile');
   const [addressSuggestions, setAddressSuggestions] = useState<
@@ -233,8 +233,8 @@ const AddressForm = ({
       </InlineFormDisplayGroup>
       {showPrimaryAddressToggle && (
         <PrimaryAddressToggle
-          checkedPrimaryAddress={checkedPrimaryAddress}
-          setCheckedPrimaryAddress={setCheckedPrimaryAddress}
+          primaryAddressChecked={primaryAddressChecked}
+          setPrimaryAddressChecked={setPrimaryAddressChecked}
         />
       )}
       {isLoading ? (

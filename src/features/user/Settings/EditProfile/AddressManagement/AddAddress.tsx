@@ -54,7 +54,7 @@ const AddAddress = ({
     defaultCountry
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [checkedPrimaryAddress, setCheckedPrimaryAddress] = useState(false);
+  const [primaryAddressChecked, setPrimaryAddressChecked] = useState(false);
 
   const addAddress = useCallback(
     async (data: FormData) => {
@@ -63,7 +63,7 @@ const AddAddress = ({
       const bodyToSend = {
         ...data,
         country,
-        type: checkedPrimaryAddress ? ADDRESS_TYPE.PRIMARY : ADDRESS_TYPE.OTHER,
+        type: primaryAddressChecked ? ADDRESS_TYPE.PRIMARY : ADDRESS_TYPE.OTHER,
       };
       try {
         const res = await postAuthenticatedRequest<Address>({
@@ -92,7 +92,7 @@ const AddAddress = ({
       setIsLoading,
       setIsModalOpen,
       postAuthenticatedRequest,
-      checkedPrimaryAddress,
+      primaryAddressChecked,
       updateUserAddresses,
     ]
   );
@@ -109,8 +109,8 @@ const AddAddress = ({
         processFormData={addAddress}
         setAddressAction={setAddressAction}
         showPrimaryAddressToggle={showPrimaryAddressToggle}
-        setCheckedPrimaryAddress={setCheckedPrimaryAddress}
-        checkedPrimaryAddress={checkedPrimaryAddress}
+        primaryAddressChecked={primaryAddressChecked}
+        setPrimaryAddressChecked={setPrimaryAddressChecked}
       />
     </AddressFormLayout>
   );

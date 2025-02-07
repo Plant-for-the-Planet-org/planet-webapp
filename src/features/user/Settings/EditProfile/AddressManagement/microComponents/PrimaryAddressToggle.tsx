@@ -5,13 +5,13 @@ import NewToggleSwitch from '../../../../../common/InputTypes/NewToggleSwitch';
 import styles from '../AddressManagement.module.scss';
 
 interface Props {
-  checkedPrimaryAddress: boolean;
-  setCheckedPrimaryAddress: SetState<boolean>;
+  primaryAddressChecked: boolean;
+  setPrimaryAddressChecked: SetState<boolean>;
 }
 
 const PrimaryAddressToggle = ({
-  checkedPrimaryAddress,
-  setCheckedPrimaryAddress,
+  primaryAddressChecked,
+  setPrimaryAddressChecked,
 }: Props) => {
   const t = useTranslations('EditProfile');
 
@@ -19,8 +19,8 @@ const PrimaryAddressToggle = ({
     <div className={styles.toggleContainer}>
       <span>{t('addressManagement.actions.setAsPrimaryAddress')}</span>
       <NewToggleSwitch
-        checked={checkedPrimaryAddress}
-        onChange={(e) => setCheckedPrimaryAddress(e.target.checked)}
+        checked={primaryAddressChecked}
+        onChange={(e) => setPrimaryAddressChecked(e.target.checked)}
       />
     </div>
   );

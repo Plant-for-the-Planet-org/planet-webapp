@@ -46,11 +46,11 @@ const EditAddress = ({
     selectedAddressForAction?.country ?? 'DE'
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [checkedPrimaryAddress, setCheckedPrimaryAddress] = useState(false);
+  const [primaryAddressChecked, setPrimaryAddressChecked] = useState(false);
 
   useEffect(() => {
     if (selectedAddressForAction)
-      setCheckedPrimaryAddress(
+      setPrimaryAddressChecked(
         selectedAddressForAction.type === ADDRESS_TYPE.PRIMARY
       );
   }, [selectedAddressForAction]);
@@ -62,7 +62,7 @@ const EditAddress = ({
       const bodyToSend = {
         ...data,
         country,
-        type: checkedPrimaryAddress
+        type: primaryAddressChecked
           ? ADDRESS_TYPE.PRIMARY
           : selectedAddressForAction?.type,
       };
@@ -95,7 +95,7 @@ const EditAddress = ({
       updateUserAddresses,
       handleError,
       putAuthenticatedRequest,
-      checkedPrimaryAddress,
+      primaryAddressChecked,
     ]
   );
 
@@ -111,8 +111,8 @@ const EditAddress = ({
         processFormData={updateAddress}
         setAddressAction={setAddressAction}
         showPrimaryAddressToggle={showPrimaryAddressToggle}
-        checkedPrimaryAddress={checkedPrimaryAddress}
-        setCheckedPrimaryAddress={setCheckedPrimaryAddress}
+        primaryAddressChecked={primaryAddressChecked}
+        setPrimaryAddressChecked={setPrimaryAddressChecked}
       />
     </AddressFormLayout>
   );
