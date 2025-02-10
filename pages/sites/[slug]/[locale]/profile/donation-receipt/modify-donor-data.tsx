@@ -10,7 +10,7 @@ import type { Tenant } from '@planet-sdk/common';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import DonorDataForm from '../../../../../../src/features/user/DonorReceipt/DonorDataForm';
+import DonorDataForm from '../../../../../../src/features/user/DonationReceipt/DonorDataForm';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -19,10 +19,10 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 export default function ModifyDonorData() {
-  const t = useTranslations('Donate.donationReceipt');
+  const t = useTranslations('DonationReceipt');
   return (
     <UserLayout>
-      <Head>{t('modifyDonorData')}</Head>
+      <Head>{t('donorInfo.modifyDonorData')}</Head>
       <DonorDataForm />
     </UserLayout>
   );
@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'donate'],
+    filenames: ['common', 'me', 'country', 'donationReceipt'],
   });
 
   return {

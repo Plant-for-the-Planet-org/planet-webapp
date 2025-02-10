@@ -45,7 +45,7 @@
   }
 }
 
-.receiptListRedirect,
+.verifyReceiptFooter,
 .receiptDataSection {
   width: 100%;
   border-radius: 16px;
@@ -176,8 +176,9 @@
   margin-top: 40px;
 }
 
-.receiptListRedirectContainer {
-  @include flex-layout(flex, null, space-between);
+.verifyReceiptFooterContainer {
+  display: flex;
+  justify-content: space-between;
   background: rgba(242, 242, 242, 0.5);
   border-radius: 9px;
   padding: 8px;
@@ -199,7 +200,8 @@
 }
 
 .contactInfo {
-  @include flex-layout(flex, null, null, null, 30px);
+  display: flex;
+  gap: 30px;
   margin-top: 30px;
 
   .contactSupportMessage {
