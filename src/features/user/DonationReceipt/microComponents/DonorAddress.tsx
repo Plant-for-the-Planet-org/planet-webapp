@@ -1,7 +1,7 @@
 import type { Address, CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
-import type { AddressView } from '../donorReceipt';
+import type { AddressView } from '../donationReceipt';
 import type { FormValues } from './DonorContactForm';
 import type { Control, UseFormSetValue } from 'react-hook-form';
 
@@ -14,7 +14,7 @@ import {
   getFormattedAddress,
 } from '../../../../utils/addressManagement';
 import StyledCheckbox from './StyledCheckbox';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
 import { isMatchingAddress } from '../utils';

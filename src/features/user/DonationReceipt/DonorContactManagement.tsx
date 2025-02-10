@@ -7,7 +7,7 @@ import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
-import styles from './donationReceipt.module.scss';
+import styles from './DonationReceipt.module.scss';
 import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { useUserProps } from '../../common/Layout/UserPropsContext';

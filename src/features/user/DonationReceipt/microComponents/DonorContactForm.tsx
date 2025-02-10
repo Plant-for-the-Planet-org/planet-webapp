@@ -9,7 +9,7 @@ import { handleError } from '@planet-sdk/common';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddress from './DonorAddress';
