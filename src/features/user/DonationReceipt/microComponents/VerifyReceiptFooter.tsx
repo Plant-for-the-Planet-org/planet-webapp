@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import ContactIcon from '../../../../../public/assets/images/icons/ContactIcon';
 import RedirectRightArrowIcon from '../../../../../public/assets/images/icons/RedirectRightArrowIcon';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
