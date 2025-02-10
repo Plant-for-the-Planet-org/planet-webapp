@@ -1,4 +1,4 @@
-import type { ReceiptData } from '../donorReceipt';
+import type { ReceiptData } from '../donationReceipt';
 import type { APIError, Address, User } from '@planet-sdk/common';
 import type { Control, RegisterOptions } from 'react-hook-form';
 import type { SetState } from '../../../common/types/common';
@@ -22,8 +22,8 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 
 type Props = {
   donorAddresses: Address[];
-  donorReceiptData: ReceiptData | null;
-  setDonorReceiptData: SetState<ReceiptData | null>;
+  donationReceiptData: ReceiptData | undefined;
+  setDonationReceiptData: SetState<ReceiptData | undefined>;
   setSelectedAddressForAction: SetState<Address | null>;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
@@ -67,8 +67,8 @@ const FormInput = ({ name, control, rules, label }: FormInputProps) => {
 
 const DonorContactForm = ({
   donorAddresses,
-  donorReceiptData,
-  setDonorReceiptData,
+  donationReceiptData,
+  setDonationReceiptData,
   setSelectedAddressForAction,
   setAddressAction,
   setIsModalOpen,
@@ -77,7 +77,7 @@ const DonorContactForm = ({
   navigateToVerificationPage,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const t = useTranslations('Donate');
+  const t = useTranslations('DonationReceipt');
   const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
@@ -141,8 +141,8 @@ const DonorContactForm = ({
           setUser(updatedUser);
         }
 
-        setDonorReceiptData((prev) => {
-          if (!prev) return null;
+        setDonationReceiptData((prev) => {
+          if (!prev) return undefined;
           const { donorName, address1, address2, country, zipCode, city } =
             getUpdatedDonorDetails(updatedUser, checkedAddressGuid);
 
@@ -180,7 +180,7 @@ const DonorContactForm = ({
       logoutUser,
       setUser,
       checkedAddressGuid,
-      setDonorReceiptData,
+      setDonationReceiptData,
       navigateToVerificationPage,
       setErrors,
     ]
@@ -189,36 +189,36 @@ const DonorContactForm = ({
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        {donorReceiptData?.donor.type === 'organization' && (
+        {donationReceiptData?.donor.type === 'organization' && (
           <FormInput
             name={'companyName'}
             control={control}
-            rules={{ required: t('companyRequired') }}
-            label={t('companyName')}
+            rules={{ required: t('donorInfo.companyRequired') }}
+            label={t('donorInfo.companyName')}
           />
         )}
-        {donorReceiptData?.donor.type === 'individual' && (
+        {donationReceiptData?.donor.type === 'individual' && (
           <InlineFormDisplayGroup>
             <FormInput
               name={'firstName'}
               control={control}
-              rules={{ required: t('firstNameRequired') }}
-              label={t('firstName')}
+              rules={{ required: t('donorInfo.firstNameRequired') }}
+              label={t('donorInfo.firstName')}
             />
             <FormInput
               name={'lastName'}
               control={control}
-              rules={{ required: t('lastNameRequired') }}
-              label={t('lastName')}
+              rules={{ required: t('donorInfo.lastNameRequired') }}
+              label={t('donorInfo.lastName')}
             />
           </InlineFormDisplayGroup>
         )}
-        {donorReceiptData?.donor.tin !== null && (
+        {donationReceiptData?.donor.tin !== null && (
           <FormInput
             name={'tin'}
             control={control}
-            rules={{ required: t('tinRequired') }}
-            label={t('donationReceipt.tin')}
+            rules={{ required: t('donorInfo.tinRequired') }}
+            label={t('donorInfo.tin')}
           />
         )}
       </InlineFormDisplayGroup>
@@ -232,7 +232,7 @@ const DonorContactForm = ({
               setSelectedAddressForAction={setSelectedAddressForAction}
               setAddressAction={setAddressAction}
               setIsModalOpen={setIsModalOpen}
-              receiptAddress={donorReceiptData?.address}
+              receiptAddress={donationReceiptData?.address}
               checkedAddressGuid={checkedAddressGuid}
               setCheckedAddressGuid={setCheckedAddressGuid}
               control={control}
@@ -255,14 +255,14 @@ const DonorContactForm = ({
             variant="secondary"
           />
           <WebappButton
-            text={t('donationReceipt.saveDataAndReturn')}
+            text={t('saveDataAndReturn')}
             elementType="button"
             onClick={handleSubmit(updateDonorInfo)}
             variant="primary"
           />
         </div>
       ) : (
-        <div className={styles.donorReceiptSpinner}>
+        <div className={styles.donationReceiptSpinner}>
           <CircularProgress color="success" />
         </div>
       )}

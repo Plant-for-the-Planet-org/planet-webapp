@@ -1,39 +1,16 @@
 @import '../../../theme/theme';
 
-@mixin flex-layout(
-  $display: flex,
-  $flex-direction: null,
-  $justify-content: null,
-  $align-items: null,
-  $gap: null
-) {
-  display: $display;
-
-  @if $justify-content {
-    justify-content: $justify-content;
-  }
-
-  @if $align-items {
-    align-items: $align-items;
-  }
-
-  @if $gap {
-    gap: $gap;
-  }
-
-  @if $flex-direction {
-    flex-direction: $flex-direction;
-  }
+.donationReceiptSkeleton {
+  display: flex;
+  justify-content: center;
+  margin-top: 146px;
 }
 
-.donorReceiptSkeleton {
-  @include flex-layout(flex, null, center);
-  margin-top: 110px;
-}
-
-.donorReceiptLayout {
-  @include flex-layout(flex, column, null, center);
-  width: 100%;
+.donationReceiptLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
   height: calc(100vh - 80px);
   margin-top: 80px;
   background: var(--background-base);
@@ -42,18 +19,20 @@
   }
 }
 
-.donorReceiptContainer {
-  @include flex-layout(flex, column, null, null, 20px);
+.donationReceiptContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 100%;
   max-width: 760px;
   min-height: 60px;
   margin-top: 60px;
   @include xsPhoneView {
-    @include flex-layout(flex, null, null, center);
+    align-items: center;
   }
 }
 
-.receiptVerificationHeader {
+.verifyReceiptHeader {
   h2 {
     font-size: $fontLarge;
     font-weight: 600;
@@ -66,7 +45,7 @@
   }
 }
 
-.receiptListRedirect,
+.verifyReceiptFooter,
 .receiptDataSection {
   width: 100%;
   border-radius: 16px;
@@ -74,8 +53,10 @@
   background: #fff;
 }
 
-.donationRecord {
-  @include flex-layout(flex, column, null, null, 12px);
+.donationsTable {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   width: 100%;
   padding: 6px 16px 16px 16px;
 
@@ -84,7 +65,8 @@
   }
 
   .header {
-    @include flex-layout(flex, null, space-between);
+    display: flex;
+    justify-content: space-between;
     font-weight: 700;
   }
 }
@@ -98,7 +80,9 @@
 }
 
 .record {
-  @include flex-layout(flex, null, space-between, center);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 8px;
   padding-bottom: 8px;
 
@@ -123,7 +107,9 @@
 }
 
 .donorDetails {
-  @include flex-layout(flex, column, null, null, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background: rgba(242, 242, 242, 0.5);
   width: 100%;
   margin-top: 20px;
@@ -135,17 +121,22 @@
     font-size: $fontSmall;
   }
 
-  .details {
-    @include flex-layout(flex, row, space-between, null, 28px);
+  .donorInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 28px;
     flex-wrap: wrap;
   }
 }
 
-.address,
+.addressInfo,
 .donorName,
 .companyName,
 .tin {
-  @include flex-layout(flex, column, null, null, 7px);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
   color: rgba(130, 130, 130, 1);
 
   .header {
@@ -155,12 +146,14 @@
 }
 
 .receiptActions {
-  @include flex-layout(flex, null, flex-end, null, 12px);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
   margin-top: 40px;
   padding: 0px 10px;
 
   @include xsPhoneView {
-    @include flex-layout(flex, column);
+    flex-direction: column;
   }
 
   button {
@@ -173,16 +166,19 @@
 }
 
 .downloadButtonContainer {
-  @include flex-layout(flex, null, flex-end);
+  display: flex;
+  justify-content: flex-end;
 }
 
-.donorReceiptSpinner {
-  @include flex-layout(flex, null, center);
+.donationReceiptSpinner {
+  display: flex;
+  justify-content: center;
   margin-top: 40px;
 }
 
-.receiptListRedirectContainer {
-  @include flex-layout(flex, null, space-between);
+.verifyReceiptFooterContainer {
+  display: flex;
+  justify-content: space-between;
   background: rgba(242, 242, 242, 0.5);
   border-radius: 9px;
   padding: 8px;
@@ -204,7 +200,8 @@
 }
 
 .contactInfo {
-  @include flex-layout(flex, null, null, null, 30px);
+  display: flex;
+  gap: 30px;
   margin-top: 30px;
 
   .contactSupportMessage {
@@ -216,13 +213,15 @@
 // donor contact management  styles
 
 .donorContactManagement {
-  @include flex-layout(flex, column, null, null, 23px);
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
   width: 100%;
   max-width: 760px;
   margin-top: 55px;
 
   .headerContainer {
-    @include flex-layout(flex);
+    display: flex;
 
     button {
       cursor: pointer;
@@ -247,17 +246,22 @@
   padding: 26px 19px 22px 19px;
 
   .donorNameContainer {
-    @include flex-layout(flex, null, null, null, 10px);
+    display: flex;
+    gap: 10px;
     margin: 0px 12px;
 
     @include xsPhoneView {
-      @include flex-layout(flex, column, null, null, 10px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
   }
 }
 
 .donorAddressSection {
-  @include flex-layout(flex, column, null, null, 10px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 30px;
 
   .errorMessage {
@@ -267,7 +271,10 @@
   }
 
   .addressInfoContainer {
-    @include flex-layout(flex, row, null, center, 32px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
     border-radius: 9px;
     padding: 24px;
     background: rgba(242, 242, 242, 0.5);
@@ -304,7 +311,9 @@
 }
 
 .donorContactFormAction {
-  @include flex-layout(flex, null, space-between, null, 12px);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 68px;
   margin: 68px 12px 0px 12px;
 

@@ -5,8 +5,8 @@ import styles from '../donationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-const ReceiptListRedirect = () => {
-  const t = useTranslations('Donate.donationReceipt');
+const VerifyReceiptFooter = () => {
+  const t = useTranslations('DonationReceipt');
   const router = useRouter();
 
   const redirectToReceiptListPage = useCallback(() => {
@@ -14,8 +14,8 @@ const ReceiptListRedirect = () => {
   }, []);
 
   return (
-    <section className={styles.receiptListRedirect}>
-      <div className={styles.receiptListRedirectContainer}>
+    <section className={styles.verifyReceiptFooter}>
+      <div className={styles.verifyReceiptFooterContainer}>
         <div>
           <h3>{t('viewAllTaxReceipts')}</h3>
           <p>{t('donationReceiptsManagementInfo')}</p>
@@ -54,4 +54,4 @@ const ReceiptListRedirect = () => {
   );
 };
 
-export default ReceiptListRedirect;
+export default VerifyReceiptFooter;

@@ -1,12 +1,12 @@
-import type { ReceiptData } from '../donorReceipt';
+import type { VerifiedReceiptDataAPI, ReceiptData } from '../donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useCallback, useContext, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
-import { useDonorReceipt } from '../../../common/Layout/DonorReceiptContext';
-import styles from '../donationReceipt.module.scss';
-import DonationData from './DonationData';
+import { useDonationReceipt } from '../../../common/Layout/DonationReceiptContext';
+import styles from '../DonationReceipt.module.scss';
+import DonationsTable from './DonationsTable';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
 import { getVerificationDate, RECEIPT_STATUS } from '../utils';
@@ -19,18 +19,17 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface Prop {
-  donorReceiptData: ReceiptData | null;
+  donationReceiptData: ReceiptData;
 }
 
-const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
-  if (!donorReceiptData) return null;
-  const { updateDonorReceiptData } = useDonorReceipt();
+const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
+  const { updateDonationReceiptData } = useDonationReceipt();
   const { tenantConfig } = useTenant();
   const { token, user, contextLoaded, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
   const {
-    issuedDonations,
+    donations,
     downloadUrl,
     operation,
     donor,
@@ -39,9 +38,9 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-  } = donorReceiptData;
+  } = donationReceiptData;
 
-  const confirmDonorData = useCallback(async () => {
+  const confirmReceiptData = useCallback(async () => {
     if (operation !== RECEIPT_STATUS.VERIFY) return;
     setIsLoading(true);
     const requestData = {
@@ -58,20 +57,20 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     try {
       if (hasDonorDataChanged) {
         if (!address.guid || !token || !user || !contextLoaded) return;
-        const authData = await putAuthenticatedRequest({
+        const authData = await putAuthenticatedRequest<VerifiedReceiptDataAPI>({
           ...requestData,
           data: { ...requestData.data, receiptAddress: address.guid },
           token,
           logoutUser,
         });
         if (authData) {
-          updateDonorReceiptData(authData);
+          updateDonationReceiptData(authData);
           return;
         }
       }
 
-      const data = await putRequest(requestData);
-      if (data) updateDonorReceiptData(data);
+      const data = await putRequest<VerifiedReceiptDataAPI>(requestData);
+      if (data) updateDonationReceiptData(data);
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
@@ -87,28 +86,25 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     address.guid,
     token,
     contextLoaded,
-    putAuthenticatedRequest,
-    logoutUser,
-    putRequest,
-    updateDonorReceiptData,
+    updateDonationReceiptData,
     getVerificationDate,
-    handleError,
     setErrors,
     setIsLoading,
   ]);
 
   return (
     <section className={styles.receiptDataSection}>
-      <DonationData donations={issuedDonations} />
+      <DonationsTable donations={donations} />
       <DonorDetails donor={donor} address={address} />
       {!isLoading ? (
         <ReceiptActions
           downloadUrl={downloadUrl}
           operation={operation}
-          confirmDonorData={confirmDonorData}
+          confirmReceiptData={confirmReceiptData}
+          isReceiptVerified={donationReceiptData.verificationDate !== null}
         />
       ) : (
-        <div className={styles.donorReceiptSpinner}>
+        <div className={styles.donationReceiptSpinner}>
           <CircularProgress color="success" />
         </div>
       )}

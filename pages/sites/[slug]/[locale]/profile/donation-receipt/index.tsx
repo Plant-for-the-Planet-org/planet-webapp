@@ -10,7 +10,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import ReceiptCardList from '../../../../../../src/features/user/DonorReceipt/ReceiptCardList';
+import ReceiptCardList from '../../../../../../src/features/user/DonationReceipt/ReceiptCardList';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -19,7 +19,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 export default function DonationReceiptsPage() {
-  const t = useTranslations('Donate.donationReceipt');
+  const t = useTranslations('DonationReceipt');
   return (
     <UserLayout>
       <Head>
@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'donate'],
+    filenames: ['common', 'me', 'country', 'donationReceipt'],
   });
 
   return {

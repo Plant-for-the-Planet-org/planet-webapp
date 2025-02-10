@@ -10,23 +10,27 @@ import type { Tenant } from '@planet-sdk/common';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import DonorContactManagement from '../../../../../../src/features/user/DonorReceipt/DonorContactManagement';
+import DonorContactManagement from '../../../../../../src/features/user/DonationReceipt/DonorContactManagement';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useDonorReceipt } from '../../../../../../src/features/common/Layout/DonorReceiptContext';
+import { useDonationReceipt } from '../../../../../../src/features/common/Layout/DonationReceiptContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function ModifyDonorData() {
-  const t = useTranslations('Donate.donationReceipt');
-  const { donorReceiptData } = useDonorReceipt();
+  const t = useTranslations('DonationReceipt');
+  const { donationReceiptData } = useDonationReceipt();
   return (
     <UserLayout>
       <Head>{t('donorContactManagement')}</Head>
-      {donorReceiptData ? <DonorContactManagement /> : <AccessDeniedLoader />}
+      {donationReceiptData ? (
+        <DonorContactManagement />
+      ) : (
+        <AccessDeniedLoader />
+      )}
     </UserLayout>
   );
 }
@@ -63,7 +67,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'donate', 'editProfile'],
+    filenames: ['common', 'me', 'country', 'donationReceipt', 'editProfile'],
   });
 
   return {

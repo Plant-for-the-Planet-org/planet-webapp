@@ -1,5 +1,9 @@
 import type { User } from '@planet-sdk/common';
-import type { ReceiptDataAPI, ReceiptData, AddressView } from './donorReceipt';
+import type {
+  AddressView,
+  ReceiptData,
+  VerifiedReceiptDataAPI,
+} from './donationReceipt';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
@@ -8,7 +12,7 @@ export const RECEIPT_STATUS = {
 } as const;
 
 export const formatReceiptData = (
-  data: Partial<ReceiptDataAPI>
+  data: Partial<VerifiedReceiptDataAPI>
 ): ReceiptData => {
   return {
     dtn: data.dtn || '',
@@ -20,10 +24,6 @@ export const formatReceiptData = (
     verificationDate: data.verificationDate || null,
     downloadUrl: data.downloadUrl || '',
     donationCount: data.donationCount || 0,
-    operation:
-      data.verificationDate === null
-        ? RECEIPT_STATUS.VERIFY
-        : RECEIPT_STATUS.DOWNLOAD,
     donor: {
       tin: data.donor?.tin || null,
       name: data.donor?.name || '',
@@ -37,8 +37,9 @@ export const formatReceiptData = (
       address2: data.donor?.address2 || null,
       guid: null,
     },
-    issuedDonations: data.donations || null,
+    donations: data.donations || [],
     hasDonorDataChanged: false,
+    operation: data.downloadUrl ? 'download' : 'verify',
   };
 };
 

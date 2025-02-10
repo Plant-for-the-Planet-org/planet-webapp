@@ -8,7 +8,7 @@ import { handleError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import styles from './donationReceipt.module.scss';
-import { useDonorReceipt } from '../../common/Layout/DonorReceiptContext';
+import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
@@ -19,9 +19,9 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const DonorContactManagement = () => {
-  const t = useTranslations('Donate.donationReceipt');
+  const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const { donorReceiptData, setDonorReceiptData } = useDonorReceipt();
+  const { donationReceiptData, setDonationReceiptData } = useDonationReceipt();
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -37,15 +37,15 @@ const DonorContactManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigateToVerificationPage = useCallback(() => {
-    if (donorReceiptData) {
-      const { dtn, challenge, year } = donorReceiptData;
+    if (donationReceiptData) {
+      const { dtn, challenge, year } = donationReceiptData;
       router
         .push(
           `/verify-receipt-data?dtn=${dtn}&challenge=${challenge}&year=${year}`
         )
         .then(() => setIsLoading(false));
     }
-  }, [donorReceiptData, router]);
+  }, [donationReceiptData, router]);
 
   const updateDonorAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
@@ -102,8 +102,8 @@ const DonorContactManagement = () => {
         </div>
         <DonorContactForm
           donorAddresses={donorAddresses}
-          donorReceiptData={donorReceiptData}
-          setDonorReceiptData={setDonorReceiptData}
+          donationReceiptData={donationReceiptData}
+          setDonationReceiptData={setDonationReceiptData}
           setSelectedAddressForAction={setSelectedAddressForAction}
           setAddressAction={setAddressAction}
           setIsModalOpen={setIsModalOpen}

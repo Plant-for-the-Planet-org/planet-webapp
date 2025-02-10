@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI } from './donorReceipt';
+import type { UnverifiedReceiptDataAPI } from './donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -6,38 +6,39 @@ import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
-import { useDonorReceipt } from '../../common/Layout/DonorReceiptContext';
-import styles from './donationReceipt.module.scss';
+import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
+import styles from './DonationReceipt.module.scss';
 import ReceiptDataSection from './microComponents/ReceiptDataSection';
-import ReceiptVerificationHeader from './microComponents/ReceiptVerificationHeader';
-import ReceiptListRedirect from './microComponents/ReceiptListRedirect';
+import VerifyReceiptHeader from './microComponents/VerifyReceiptHeader';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter';
 
-export const DonorReceiptLayout = () => {
+const DonationReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { tenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { dtn, year, challenge } = router.query;
-  const { updateDonorReceiptData, donorReceiptData } = useDonorReceipt();
-  const showReceipt = !isLoading && donorReceiptData !== null;
+  const { updateDonationReceiptData, donationReceiptData } =
+    useDonationReceipt();
+  const showReceipt = !isLoading && !!donationReceiptData;
 
   useEffect(() => {
+    if (!router.isReady) return;
+    if (!dtn || !year || !challenge) router.replace('/'); // Redirect to home if any parameter is missing
     if (
       typeof dtn !== 'string' ||
       typeof year !== 'string' ||
       typeof challenge !== 'string'
     )
       return;
-    if (!router.isReady || !dtn || !year || !challenge) return;
-    if (donorReceiptData !== null) return;
-
+    if (donationReceiptData?.hasDonorDataChanged) return;
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {
-        const data = await getRequest<ReceiptDataAPI>({
+        const data = await getRequest<UnverifiedReceiptDataAPI>({
           tenant: tenantConfig.id,
           url: '/app/donationReceipt',
           queryParams: {
@@ -46,7 +47,7 @@ export const DonorReceiptLayout = () => {
             challenge,
           },
         });
-        if (data) updateDonorReceiptData(data);
+        if (data) updateDonationReceiptData(data);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');
@@ -56,20 +57,24 @@ export const DonorReceiptLayout = () => {
     };
 
     fetchReceiptData();
-  }, [dtn, year, challenge, router.isReady, donorReceiptData]);
-  return showReceipt ? (
-    <div className={styles.donorReceiptLayout}>
-      <div className={styles.donorReceiptContainer}>
-        <ReceiptVerificationHeader operation={donorReceiptData.operation} />
-        <ReceiptDataSection donorReceiptData={donorReceiptData} />
-        <ReceiptListRedirect />
+  }, [dtn, year, challenge, router.isReady]);
+
+  if (!showReceipt) {
+    return (
+      <div className={styles.donationReceiptSkeleton}>
+        <Skeleton height={700} width={760} />
       </div>
-    </div>
-  ) : (
-    <div className={styles.donorReceiptSkeleton}>
-      <Skeleton height={700} width={760} />
+    );
+  }
+  return (
+    <div className={styles.donationReceiptLayout}>
+      <div className={styles.donationReceiptContainer}>
+        <VerifyReceiptHeader operation={donationReceiptData.operation} />
+        <ReceiptDataSection donationReceiptData={donationReceiptData} />
+        <VerifyReceiptFooter />
+      </div>
     </div>
   );
 };
 
-export default DonorReceiptLayout;
+export default DonationReceiptLayout;

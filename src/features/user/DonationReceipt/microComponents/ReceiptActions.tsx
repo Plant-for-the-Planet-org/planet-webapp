@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { RECEIPT_STATUS } from '../utils';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 import { useCallback } from 'react';
 
@@ -12,30 +12,34 @@ export type Operation = (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];
 type Props = {
   downloadUrl: string | null;
   operation: Operation;
-  confirmDonorData: () => Promise<void>;
+  confirmReceiptData: () => Promise<void>;
+  isReceiptVerified: boolean;
 };
 
 const ReceiptActions = ({
   downloadUrl,
   operation,
-  confirmDonorData,
+  confirmReceiptData,
+  isReceiptVerified,
 }: Props) => {
-  const t = useTranslations('Donate.donationReceipt');
+  const tReceipt = useTranslations('DonationReceipt');
   const router = useRouter();
 
   const navigateToDonorContactManagement = useCallback(() => {
     router.push(`/profile/donation-receipt/donor-contact-management`);
   }, [router]);
 
-  const showDowloadButton =
-    operation === RECEIPT_STATUS.DOWNLOAD && downloadUrl !== null;
+  const showDownloadButton =
+    operation === RECEIPT_STATUS.DOWNLOAD &&
+    downloadUrl !== null &&
+    isReceiptVerified;
   return (
     <div className={styles.receiptActions}>
-      {showDowloadButton ? (
+      {showDownloadButton ? (
         <div className={styles.downloadButtonContainer}>
           <WebappButton
             variant="primary"
-            text={t('download')}
+            text={tReceipt('download')}
             elementType="link"
             icon={<DownloadIcon color="#fff" />}
             href={downloadUrl}
@@ -46,16 +50,16 @@ const ReceiptActions = ({
         <>
           <WebappButton
             variant="secondary"
-            text={t('modifyContactInformation')}
+            text={tReceipt('modifyContactInformation')}
             elementType="button"
             icon={<EditIcon />}
             onClick={navigateToDonorContactManagement}
           />
           <WebappButton
             variant="primary"
-            text={t('confirm')}
+            text={tReceipt('confirm')}
             elementType="button"
-            onClick={confirmDonorData}
+            onClick={confirmReceiptData}
           />
         </>
       )}
