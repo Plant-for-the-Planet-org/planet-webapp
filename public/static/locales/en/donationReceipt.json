@@ -16,6 +16,7 @@
     "recipientInfoHeader": "Receipt will be issued to",
     "modifyContactInformation": "Modify Contact Information",
     "confirm": "Confirm",
-    "download": "Download"
+    "download": "Download",
+    "InvalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again."
   }
 }

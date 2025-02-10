@@ -45,6 +45,7 @@
   }
 }
 
+.invalidReceiptNotice,
 .receiptDataSection {
   width: 100%;
   border-radius: 16px;
@@ -173,4 +174,11 @@
   display: flex;
   justify-content: center;
   margin-top: 40px;
+}
+
+.invalidReceiptErrorMessage {
+  background-color: rgba(255, 243, 243, 0.5);
+  border-radius: 9px;
+  color: rgba(235, 87, 87, 1);
+  padding: 16px;
 }

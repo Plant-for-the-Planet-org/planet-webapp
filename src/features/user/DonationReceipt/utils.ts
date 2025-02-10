@@ -33,7 +33,7 @@ export const formatReceiptData = (
     },
     donations: data.donations || [],
     hasDonorDataChanged: false,
-    operation: data.downloadUrl ? 'download' : 'verify',
+    operation: data.verificationDate === null ? 'verify' : 'download',
   };
 };
 
