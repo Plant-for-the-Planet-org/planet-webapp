@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI } from './donationReceipt';
+import type { UnverifiedReceiptDataAPI } from './donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -23,10 +23,11 @@ const DonationReceiptLayout = () => {
   const { dtn, year, challenge } = router.query;
   const { updateDonationReceiptData, donationReceiptData } =
     useDonationReceipt();
-  const showReceipt = !isLoading && donationReceiptData !== null;
+  const showReceipt = !isLoading && !!donationReceiptData;
 
   useEffect(() => {
-    if (!(dtn || year || challenge || router.isReady)) return;
+    if (!router.isReady) return;
+    if (!dtn || !year || !challenge) router.replace('/'); // Redirect to home if any parameter is missing
     if (
       typeof dtn !== 'string' ||
       typeof year !== 'string' ||
@@ -36,7 +37,7 @@ const DonationReceiptLayout = () => {
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {
-        const data = await getRequest<ReceiptDataAPI>({
+        const data = await getRequest<UnverifiedReceiptDataAPI>({
           tenant: tenantConfig.id,
           url: '/app/donationReceipt',
           queryParams: {
@@ -57,17 +58,20 @@ const DonationReceiptLayout = () => {
     fetchReceiptData();
   }, [dtn, year, challenge, router.isReady]);
 
-  return showReceipt ? (
+  if (!showReceipt) {
+    return (
+      <div className={styles.donationReceiptSkeleton}>
+        <Skeleton height={700} width={760} />
+      </div>
+    );
+  }
+  return (
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
         <VerifyReceiptHeader operation={donationReceiptData.operation} />
         <ReceiptDataSection donationReceiptData={donationReceiptData} />
         <VerifyReceiptFooter />
       </div>
-    </div>
-  ) : (
-    <div className={styles.donationReceiptSkeleton}>
-      <Skeleton height={700} width={760} />
     </div>
   );
 };

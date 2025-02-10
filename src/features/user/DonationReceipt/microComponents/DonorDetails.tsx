@@ -7,13 +7,11 @@ import styles from '../DonationReceipt.module.scss';
 import { getFormattedAddress } from '../../../../utils/addressManagement';
 
 interface Props {
-  donor: DonorView | undefined;
-  address: AddressView | undefined;
+  donor: DonorView;
+  address: AddressView;
 }
 
 const DonorDetails = ({ donor, address }: Props) => {
-  if (address === undefined || donor === undefined) return null;
-
   const tReceipt = useTranslations('DonationReceipt');
   const tCountry = useTranslations('Country');
   const { country, zipCode, city, address1, address2 } = address;

@@ -1,25 +1,26 @@
 import type { FC } from 'react';
 import type {
   ReceiptData,
-  ReceiptDataAPI,
+  VerifiedReceiptDataAPI,
 } from '../../user/DonationReceipt/donationReceipt';
 
 import { useMemo, useState, createContext, useContext } from 'react';
 import { formatReceiptData } from '../../user/DonationReceipt/utils';
 
 interface DonationReceiptContextInterface {
-  donationReceiptData: ReceiptData | null;
-  updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
+  donationReceiptData: ReceiptData | undefined;
+  updateDonationReceiptData: (data: Partial<VerifiedReceiptDataAPI>) => void;
 }
 
 const DonationReceiptContext =
   createContext<DonationReceiptContextInterface | null>(null);
 
 export const DonationReceiptProvider: FC = ({ children }) => {
-  const [donationReceiptData, setDonationReceiptData] =
-    useState<ReceiptData | null>(null);
+  const [donationReceiptData, setDonationReceiptData] = useState<
+    ReceiptData | undefined
+  >();
 
-  const updateDonationReceiptData = (data: Partial<ReceiptDataAPI>) => {
+  const updateDonationReceiptData = (data: Partial<VerifiedReceiptDataAPI>) => {
     const formattedData = formatReceiptData(data);
     setDonationReceiptData((prevState) => ({
       ...prevState,
