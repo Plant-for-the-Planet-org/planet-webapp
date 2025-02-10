@@ -1,12 +1,12 @@
-import type { ReceiptData } from '../donorReceipt';
+import type { VerifiedReceiptDataAPI, ReceiptData } from '../donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useCallback, useContext, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
-import { useDonorReceipt } from '../../../common/Layout/DonorReceiptContext';
-import styles from '../donationReceipt.module.scss';
-import DonationData from './DonationData';
+import { useDonationReceipt } from '../../../common/Layout/DonationReceiptContext';
+import styles from '../DonationReceipt.module.scss';
+import DonationsTable from './DonationsTable';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
 import { getVerificationDate, RECEIPT_STATUS } from '../utils';
@@ -15,17 +15,16 @@ import { putRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 interface Prop {
-  donorReceiptData: ReceiptData | null;
+  donationReceiptData: ReceiptData;
 }
 
-const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
-  if (!donorReceiptData) return null;
-  const { updateDonorReceiptData } = useDonorReceipt();
+const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
+  const { updateDonationReceiptData } = useDonationReceipt();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
   const {
-    issuedDonations,
+    donations,
     downloadUrl,
     operation,
     donor,
@@ -34,18 +33,17 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-  } = donorReceiptData;
+  } = donationReceiptData;
 
-  const confirmDonorData = useCallback(async () => {
+  const confirmReceiptData = useCallback(async () => {
     if (operation !== RECEIPT_STATUS.VERIFY) return;
-
     if (hasDonorDataChanged) {
       //TODO: PUT Authentication request logic
     }
 
     try {
       setIsLoading(true);
-      const data = await putRequest({
+      const data = await putRequest<VerifiedReceiptDataAPI>({
         tenant: tenantConfig.id,
         url: `/app/donationReceipt/verify`,
         data: {
@@ -55,7 +53,7 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
           verificationDate: getVerificationDate(),
         },
       });
-      if (data) updateDonorReceiptData(data);
+      if (data) updateDonationReceiptData(data);
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
@@ -68,18 +66,19 @@ const ReceiptDataSection = ({ donorReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
-    updateDonorReceiptData,
+    updateDonationReceiptData,
   ]);
 
   return (
     <section className={styles.receiptDataSection}>
-      <DonationData donations={issuedDonations} />
+      <DonationsTable donations={donations} />
       <DonorDetails donor={donor} address={address} />
       {!isLoading ? (
         <ReceiptActions
           downloadUrl={downloadUrl}
           operation={operation}
-          confirmDonorData={confirmDonorData}
+          confirmReceiptData={confirmReceiptData}
+          isReceiptVerified={donationReceiptData.verificationDate !== null}
         />
       ) : (
         <div className={styles.receiptVerificationSpinner}>

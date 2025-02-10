@@ -1,23 +1,20 @@
-import type { AddressView, DonorView } from '../donorReceipt';
+import type { AddressView, DonorView } from '../donationReceipt';
 import type { CountryCode } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import styles from '../donationReceipt.module.scss';
+import styles from '../DonationReceipt.module.scss';
 import { getFormattedAddress } from '../../../../utils/addressManagement';
 
 interface Props {
-  donor: DonorView | undefined;
-  address: AddressView | undefined;
+  donor: DonorView;
+  address: AddressView;
 }
 
 const DonorDetails = ({ donor, address }: Props) => {
-  if (address === undefined || donor === undefined) return null;
-
-  const t = useTranslations('Donate');
+  const tReceipt = useTranslations('DonationReceipt');
   const tCountry = useTranslations('Country');
   const { country, zipCode, city, address1, address2 } = address;
-  const { type, name, tin } = donor;
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
 
   const cityStatePostalString = useMemo(
@@ -27,28 +24,26 @@ const DonorDetails = ({ donor, address }: Props) => {
 
   return (
     <div className={styles.donorDetails}>
-      <h3 className={styles.header}>
-        {t('donationReceipt.recipientInfoHeader')}
-      </h3>
-      <div className={styles.details}>
+      <h3 className={styles.header}>{tReceipt('recipientInfoHeader')}</h3>
+      <div className={styles.donorInfo}>
         <div className={styles.donorName}>
           <span className={styles.header}>
-            {t('donationReceipt.name', {
-              type,
+            {tReceipt('donorInfo.name', {
+              type: donor.type,
             })}
           </span>
-          <span>{name}</span>
+          <span>{donor.name}</span>
         </div>
-        {tin && (
+        {donor.tin !== null && (
           <div className={styles.tin}>
             <span className={styles.header}>
-              {t('donationReceipt.taxIdentificationNumber')}
+              {tReceipt('donationDetails.taxIdentificationNumber')}
             </span>
-            <span>{tin}</span>
+            <span>{donor.tin}</span>
           </div>
         )}
       </div>
-      <div className={styles.address}>
+      <div className={styles.addressInfo}>
         <span className={styles.header}>Address</span>
         <address>
           {address1},{cityStatePostalString}
