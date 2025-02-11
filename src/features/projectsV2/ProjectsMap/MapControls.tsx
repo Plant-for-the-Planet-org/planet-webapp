@@ -61,11 +61,11 @@ const MapControls = ({
   const uniquePlantTypes = useMemo(() => {
     if (!plantLocations) return [];
 
-    const uniqueTypes = new Set(
-      plantLocations?.map(location => location.type)
-    );
-
-    return Array.from(uniqueTypes);
+    const types = new Set();
+    for (let i = 0; i < plantLocations.length; i++) {
+      types.add(plantLocations[i].type);
+    }
+    return [...types];
   }, [plantLocations]);
 
 
@@ -134,10 +134,10 @@ const MapControls = ({
   };
 
   const layerToggleClass = `${styles.layerToggle} ${isMobile
-      ? mobileOS === 'android'
-        ? styles.layerToggleAndroid
-        : styles.layerToggleIos
-      : styles.layerToggleDesktop
+    ? mobileOS === 'android'
+      ? styles.layerToggleAndroid
+      : styles.layerToggleIos
+    : styles.layerToggleDesktop
     }`;
 
 
@@ -156,15 +156,15 @@ const MapControls = ({
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
-              {canShowInterventionDropdown && uniquePlantTypes.length > 0 ? (
+              {canShowInterventionDropdown && uniquePlantTypes.length > 0 && (
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   isMobile={isMobile}
                   hasProjectSites={hasProjectSites}
                   existingIntervention={uniquePlantTypes}
                 />
-              ) : null}
-              <button
+              )}
+              < button
                 className={styles.exitMapModeButton}
                 onClick={exitMapMode}
               >
@@ -176,13 +176,13 @@ const MapControls = ({
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
-              {canShowInterventionDropdown && uniquePlantTypes.length > 0 ? (
+              {canShowInterventionDropdown && uniquePlantTypes.length > 0 &&
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   hasProjectSites={hasProjectSites}
                   existingIntervention={uniquePlantTypes}
                 />
-              ) : null}
+              }
             </>
           )}
           {canShowSatelliteToggle && (
@@ -194,7 +194,8 @@ const MapControls = ({
             </button>
           )}
         </>
-      )}
+      )
+      }
     </>
   );
 };

@@ -63,10 +63,11 @@ const InterventionDropdown = ({
   };
 
   const showVisibleOption = () => {
-    if (existingIntervention.length === 1) {
-      return findMatchingIntervention(existingIntervention[0]);
-    }
-    return findMatchingIntervention(selectedInterventionType);
+    const interventionToCheck = existingIntervention.length === 1
+      ? existingIntervention[0]
+      : selectedInterventionType;
+  
+    return findMatchingIntervention(interventionToCheck);
   }
 
   const interventionData = showVisibleOption()
