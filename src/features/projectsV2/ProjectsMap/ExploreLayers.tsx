@@ -31,7 +31,12 @@ export default function ExploreLayers(): ReactElement | null {
           return null;
         }
 
-        const tiles = [layerData.tileUrl];
+        const tiles = [
+          layerData.tileUrl.replace(
+            'https://storage.googleapis.com/planet-layers',
+            'https://layers-t.plant-for-the-planet.org'
+          ),
+        ];
 
         return (
           <Source
