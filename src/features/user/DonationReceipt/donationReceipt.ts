@@ -1,3 +1,5 @@
+import type { RECEIPT_STATUS } from './utils';
+
 export type Donations = {
   amount: number;
   currency: string;
@@ -35,6 +37,8 @@ export interface ReceiptData extends ReceiptDataBase {
   address: AddressView;
   hasDonorDataChanged: boolean; // Set it to true if the user modifies the data during the receipt verification process
 }
+
+export type Operation = (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];
 
 // latest API
 

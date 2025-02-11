@@ -76,7 +76,6 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
       {!isLoading ? (
         <ReceiptActions
           downloadUrl={downloadUrl}
-          operation={operation}
           confirmReceiptData={confirmReceiptData}
           isReceiptVerified={donationReceiptData.verificationDate !== null}
         />
