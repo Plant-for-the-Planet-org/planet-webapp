@@ -16,6 +16,40 @@ import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
 import { FillColor } from '../../../../utils/constants/intervention';
 
+interface SampleTreeMarkerProps {
+  sample: SamplePlantLocation;
+  selectedSamplePlantLocation: SamplePlantLocation | null;
+  openPl: (
+    e: React.MouseEvent<HTMLDivElement>,
+    pl: SamplePlantLocation
+  ) => void;
+}
+
+const SampleTreeMarker = ({
+  sample,
+  selectedSamplePlantLocation,
+  openPl,
+}: SampleTreeMarkerProps) => (
+  <Marker
+    key={`${sample.id}-sample`}
+    latitude={sample.geometry.coordinates[1]}
+    longitude={sample.geometry.coordinates[0]}
+    anchor="center"
+  >
+    <div
+      key={`${sample.id}-marker`}
+      className={`${styles.single} ${
+        sample.hid === selectedSamplePlantLocation?.hid
+          ? styles.singleSelected
+          : ''
+      }`}
+      role="button"
+      tabIndex={0}
+      onClick={(e) => openPl(e, sample)}
+    />
+  </Marker>
+);
+
 export default function PlantLocations(): React.ReactElement {
   const {
     plantLocations,
@@ -159,12 +193,11 @@ export default function PlantLocations(): React.ReactElement {
       return GeoJSON;
     });
 
-
   const isValidInterventionType = [
     'multi-tree-registration',
     'enrichment-planting',
     'all',
-    'default'
+    'default',
   ].includes(selectedInterventionType);
 
   const shouldRenderMarkers =
@@ -173,24 +206,6 @@ export default function PlantLocations(): React.ReactElement {
     isValidInterventionType &&
     viewState.zoom > 14 &&
     selectedPlantLocation.sampleInterventions;
-
-  const SampleTreeMarker = ({ sample, selectedSamplePlantLocation, openPl }: { sample: SamplePlantLocation, selectedSamplePlantLocation: SamplePlantLocation | null, openPl: (e: React.MouseEvent<HTMLDivElement>, pl: SamplePlantLocation) => void }) => (
-    <Marker
-      key={`${sample.id}-sample`}
-      latitude={sample.geometry.coordinates[1]}
-      longitude={sample.geometry.coordinates[0]}
-      anchor="center"
-    >
-      <div
-        key={`${sample.id}-marker`}
-        className={`${styles.single} ${sample.hid === selectedSamplePlantLocation?.hid ? styles.singleSelected : ''
-          }`}
-        role="button"
-        tabIndex={0}
-        onClick={(e) => openPl(e, sample)}
-      />
-    </Marker>
-  );
 
   return (
     <>
@@ -253,13 +268,13 @@ export default function PlantLocations(): React.ReactElement {
         />
         {shouldRenderMarkers
           ? selectedPlantLocation.sampleInterventions.map((sample) => (
-            <SampleTreeMarker
-              key={sample.id}
-              sample={sample}
-              selectedSamplePlantLocation={selectedSamplePlantLocation}
-              openPl={openPl}
-            />
-          ))
+              <SampleTreeMarker
+                key={sample.id}
+                sample={sample}
+                selectedSamplePlantLocation={selectedSamplePlantLocation}
+                openPl={openPl}
+              />
+            ))
           : null}
       </Source>
     </>
