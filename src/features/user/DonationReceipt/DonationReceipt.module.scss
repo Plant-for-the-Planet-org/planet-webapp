@@ -106,13 +106,18 @@
   border-bottom: 1px solid #ccc;
 }
 
+.totalAmount {
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+}
+
 .donorDetails {
   display: flex;
   flex-direction: column;
   gap: 20px;
   background: rgba(242, 242, 242, 0.5);
   width: 100%;
-  margin-top: 20px;
   border-radius: 9px;
   padding: 10px 15px;
 
