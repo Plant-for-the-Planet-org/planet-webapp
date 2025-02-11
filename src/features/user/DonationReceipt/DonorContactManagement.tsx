@@ -1,7 +1,7 @@
 import type { AddressAction } from '../../common/types/profile';
 import type { APIError, Address } from '@planet-sdk/common';
 
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -62,6 +62,10 @@ const DonorContactManagement = () => {
     }
   }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
 
+  useEffect(() => {
+    updateDonorAddresses();
+  }, [updateDonorAddresses]);
+
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.EDIT:
@@ -73,6 +77,7 @@ const DonorContactManagement = () => {
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
+            setDonationReceiptData={setDonationReceiptData}
           />
         );
       case ADDRESS_ACTIONS.ADD:
@@ -82,6 +87,7 @@ const DonorContactManagement = () => {
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
+            setDonationReceiptData={setDonationReceiptData}
           />
         );
       default:
@@ -90,7 +96,7 @@ const DonorContactManagement = () => {
   }, [addressAction, selectedAddressForAction, updateDonorAddresses]);
 
   return (
-    <section className={styles.donorReceiptLayout}>
+    <section className={styles.donationReceiptLayout}>
       <div className={styles.donorContactManagement}>
         <div className={styles.headerContainer}>
           <button onClick={navigateToVerificationPage}>

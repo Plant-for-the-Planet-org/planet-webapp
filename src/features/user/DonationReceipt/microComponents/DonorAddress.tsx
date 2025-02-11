@@ -43,7 +43,7 @@ const DonorAddress = ({
   setValue,
 }: Props) => {
   const tCountry = useTranslations('Country');
-  const t = useTranslations('Donate.donationReceipt');
+  const t = useTranslations('DonationReceipt');
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { zipCode, city, country } = address;
 

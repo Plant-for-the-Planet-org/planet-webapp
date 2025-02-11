@@ -1,4 +1,4 @@
-import type { User } from '@planet-sdk/common';
+import type { Address, User } from '@planet-sdk/common';
 import type {
   AddressView,
   ReceiptData,
@@ -88,20 +88,21 @@ export const isMatchingAddress = (
 
 export const getUpdatedDonorDetails = (
   res: User,
+  donorAddresses: Address[],
   addressGuid: string | null
 ) => {
   const donorName =
     res.type === 'individual'
       ? `${res.firstname} ${res.lastname}`
       : res.name ?? '';
-  const donorAddress = res.addresses.find(
+  const donorAddress = donorAddresses.find(
     (address) => address.id === addressGuid
   );
 
   return {
     donorName,
     address1: donorAddress?.address ?? '',
-    address2: donorAddress?.address2 ?? '',
+    address2: donorAddress?.address2 ?? null,
     zipCode: donorAddress?.zipCode ?? '',
     city: donorAddress?.city ?? '',
     country: donorAddress?.country ?? '',

@@ -144,7 +144,11 @@ const DonorContactForm = ({
         setDonationReceiptData((prev) => {
           if (!prev) return undefined;
           const { donorName, address1, address2, country, zipCode, city } =
-            getUpdatedDonorDetails(updatedUser, checkedAddressGuid);
+            getUpdatedDonorDetails(
+              updatedUser,
+              donorAddresses,
+              checkedAddressGuid
+            );
 
           return {
             ...prev,
