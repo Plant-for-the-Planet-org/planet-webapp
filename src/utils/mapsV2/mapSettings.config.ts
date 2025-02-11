@@ -52,7 +52,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   forests: [
     {
       key: 'forestCover',
-      isAvailable: false,
+      isAvailable: true,
       additionalInfo: {
         resolution: '~500m (Downscaled)',
         dataYears: '2023',
@@ -83,7 +83,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'biomassPotential',
-      isAvailable: false,
+      isAvailable: true,
       additionalInfo: {
         resolution: '~500km',
         dataYears: '2016',
