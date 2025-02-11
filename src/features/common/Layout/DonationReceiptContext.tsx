@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type {
   ReceiptData,
-  VerifiedReceiptDataAPI,
+  ReceiptDataAPI,
 } from '../../user/DonationReceipt/donationReceipt';
 import type { SetState } from '../types/common';
 
@@ -11,7 +11,7 @@ import { formatReceiptData } from '../../user/DonationReceipt/utils';
 interface DonationReceiptContextInterface {
   donationReceiptData: ReceiptData | undefined;
   setDonationReceiptData: SetState<ReceiptData | undefined>;
-  updateDonationReceiptData: (data: Partial<VerifiedReceiptDataAPI>) => void;
+  updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
 }
 
 const DonationReceiptContext =
@@ -22,7 +22,7 @@ export const DonationReceiptProvider: FC = ({ children }) => {
     ReceiptData | undefined
   >();
 
-  const updateDonationReceiptData = (data: Partial<VerifiedReceiptDataAPI>) => {
+  const updateDonationReceiptData = (data: Partial<ReceiptDataAPI>) => {
     const formattedData = formatReceiptData(data);
     setDonationReceiptData((prevState) => ({
       ...prevState,

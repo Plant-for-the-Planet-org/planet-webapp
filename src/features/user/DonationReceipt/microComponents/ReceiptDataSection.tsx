@@ -1,4 +1,4 @@
-import type { VerifiedReceiptDataAPI, ReceiptData } from '../donationReceipt';
+import type { ReceiptData, ReceiptDataAPI } from '../donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useCallback, useContext, useState } from 'react';
@@ -57,7 +57,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
     try {
       if (hasDonorDataChanged) {
         if (!address.guid || !token || !user || !contextLoaded) return;
-        const authData = await putAuthenticatedRequest<VerifiedReceiptDataAPI>({
+        const authData = await putAuthenticatedRequest<ReceiptDataAPI>({
           ...requestData,
           data: { ...requestData.data, receiptAddress: address.guid },
           token,
@@ -69,7 +69,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
         }
       }
 
-      const data = await putRequest<VerifiedReceiptDataAPI>(requestData);
+      const data = await putRequest<ReceiptDataAPI>(requestData);
       if (data) updateDonationReceiptData(data);
     } catch (error) {
       setErrors(handleError(error as APIError));
@@ -99,7 +99,6 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
       {!isLoading ? (
         <ReceiptActions
           downloadUrl={downloadUrl}
-          operation={operation}
           confirmReceiptData={confirmReceiptData}
           isReceiptVerified={donationReceiptData.verificationDate !== null}
         />

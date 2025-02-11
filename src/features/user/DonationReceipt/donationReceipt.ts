@@ -1,6 +1,8 @@
-export type DonationView = {
+import type { RECEIPT_STATUS } from './utils';
+
+export type Donations = {
   amount: number;
-  currency?: string; // need to update
+  currency: string;
   paymentDate: string;
   reference: string;
 };
@@ -20,35 +22,28 @@ export type AddressView = {
   guid: string | null;
 };
 
-type ReceiptDataBase = {
+interface ReceiptDataBase {
   dtn: string;
   year: string;
   challenge: string;
   amount: number;
-  currency: string;
-  paymentDate: string;
   verificationDate: string | null;
   downloadUrl: string;
-  donationCount: number;
-};
+  donations: Donations[];
+}
 
 export interface ReceiptData extends ReceiptDataBase {
   operation: 'download' | 'verify';
   donor: DonorView;
   address: AddressView;
-  donations: DonationView[];
   hasDonorDataChanged: boolean; // Set it to true if the user modifies the data during the receipt verification process
 }
 
+export type Operation = (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];
+
 // latest API
 
-export interface DonationAPI {
-  amount: number;
-  paymentDate: string;
-  reference: string;
-}
-
-export type DonorAPI = {
+export interface DonorAPI {
   reference: string;
   tin: string | null;
   type: 'individual' | 'organization';
@@ -59,25 +54,16 @@ export type DonorAPI = {
   city: string;
   zipCode: string;
   country: string;
-};
-export interface UnverifiedReceiptDataAPI {
-  amount: number;
-  challenge: string;
-  year: string;
-  dtn: string;
-  donations: DonationAPI[];
-  donor: DonorAPI;
 }
 
-export interface VerifiedReceiptDataAPI extends UnverifiedReceiptDataAPI {
-  country: string;
+export interface ReceiptDataAPI extends ReceiptDataBase {
+  paymentDate: string;
   currency: string;
   donationCount: number;
-  downloadUrl: string;
+  country: string;
+  donor: DonorAPI;
   issueDate: string;
-  paymentDate: string;
   reference: string;
   status: string;
-  template: string;
-  verificationDate: string;
+  template: 'single' | 'summary';
 }

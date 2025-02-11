@@ -34,6 +34,7 @@
     "donorContactManagement": "Donor Contact Management",
     "contactManagementHeader": "Update profile and address",
     "saveDataAndReturn": "Save data and return",
-    "addressRequired": "Please choose an address to proceed."
+    "addressRequired": "Please choose an address to proceed.",
+    "InvalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again."
   }
 }

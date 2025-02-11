@@ -1,4 +1,4 @@
-import type { UnverifiedReceiptDataAPI } from './donationReceipt';
+import type { ReceiptDataAPI } from './donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -14,20 +14,26 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter';
+import ReceiptValidationError from './microComponents/ReceiptValidationError';
 
 const DonationReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isInvalidReceipt, setIsInvalidReceipt] = useState(false);
   const { tenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { dtn, year, challenge } = router.query;
   const { updateDonationReceiptData, donationReceiptData } =
     useDonationReceipt();
-  const showReceipt = !isLoading && !!donationReceiptData;
 
   useEffect(() => {
     if (!router.isReady) return;
-    if (!dtn || !year || !challenge) router.replace('/'); // Redirect to home if any parameter is missing
+    setIsInvalidReceipt(!dtn || !year || !challenge);
+    setIsLoading(false);
+  }, [dtn, year, challenge, router.isReady]);
+
+  useEffect(() => {
+    if (!router.isReady || isInvalidReceipt) return;
     if (
       typeof dtn !== 'string' ||
       typeof year !== 'string' ||
@@ -38,7 +44,7 @@ const DonationReceiptLayout = () => {
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {
-        const data = await getRequest<UnverifiedReceiptDataAPI>({
+        const data = await getRequest<ReceiptDataAPI>({
           tenant: tenantConfig.id,
           url: '/app/donationReceipt',
           queryParams: {
@@ -49,7 +55,12 @@ const DonationReceiptLayout = () => {
         });
         if (data) updateDonationReceiptData(data);
       } catch (err) {
-        setErrors(handleError(err as APIError));
+        const errorResponse = err as APIError;
+        setErrors(handleError(errorResponse));
+        if (errorResponse.statusCode === 400) {
+          setIsInvalidReceipt(true);
+          return;
+        }
         redirect('/');
       } finally {
         setIsLoading(false);
@@ -57,21 +68,37 @@ const DonationReceiptLayout = () => {
     };
 
     fetchReceiptData();
-  }, [dtn, year, challenge, router.isReady]);
+  }, [dtn, year, challenge, router.isReady, isInvalidReceipt]);
 
-  if (!showReceipt) {
+  if (isInvalidReceipt) {
+    return (
+      <div className={styles.donationReceiptLayout}>
+        <div className={styles.donationReceiptContainer}>
+          <ReceiptValidationError />
+          <VerifyReceiptFooter />
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !router.isReady) {
     return (
       <div className={styles.donationReceiptSkeleton}>
         <Skeleton height={700} width={760} />
       </div>
     );
   }
+
   return (
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>
-        <VerifyReceiptHeader operation={donationReceiptData.operation} />
-        <ReceiptDataSection donationReceiptData={donationReceiptData} />
-        <VerifyReceiptFooter />
+        {donationReceiptData && (
+          <>
+            <VerifyReceiptHeader operation={donationReceiptData.operation} />
+            <ReceiptDataSection donationReceiptData={donationReceiptData} />
+            <VerifyReceiptFooter />
+          </>
+        )}
       </div>
     </div>
   );
