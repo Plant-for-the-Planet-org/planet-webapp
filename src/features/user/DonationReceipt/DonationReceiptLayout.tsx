@@ -40,6 +40,7 @@ const DonationReceiptLayout = () => {
       typeof challenge !== 'string'
     )
       return;
+    if (donationReceiptData?.hasDonorDataChanged) return;
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {

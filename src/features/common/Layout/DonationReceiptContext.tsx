@@ -3,12 +3,14 @@ import type {
   ReceiptData,
   ReceiptDataAPI,
 } from '../../user/DonationReceipt/donationReceipt';
+import type { SetState } from '../types/common';
 
 import { useMemo, useState, createContext, useContext } from 'react';
 import { formatReceiptData } from '../../user/DonationReceipt/utils';
 
 interface DonationReceiptContextInterface {
   donationReceiptData: ReceiptData | undefined;
+  setDonationReceiptData: SetState<ReceiptData | undefined>;
   updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
 }
 
@@ -31,9 +33,10 @@ export const DonationReceiptProvider: FC = ({ children }) => {
   const value: DonationReceiptContextInterface = useMemo(
     () => ({
       donationReceiptData,
+      setDonationReceiptData,
       updateDonationReceiptData,
     }),
-    [updateDonationReceiptData, donationReceiptData]
+    [updateDonationReceiptData, donationReceiptData, setDonationReceiptData]
   );
 
   return (

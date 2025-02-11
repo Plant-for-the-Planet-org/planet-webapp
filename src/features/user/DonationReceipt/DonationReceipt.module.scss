@@ -171,7 +171,7 @@
   justify-content: flex-end;
 }
 
-.receiptVerificationSpinner {
+.donationReceiptSpinner {
   display: flex;
   justify-content: center;
   margin-top: 40px;
@@ -210,6 +210,122 @@
     font-size: $fontSmall;
   }
 }
+
+// donor contact management  styles
+
+.donorContactManagement {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+  width: 100%;
+  max-width: 760px;
+  margin-top: 55px;
+
+  .headerContainer {
+    display: flex;
+
+    button {
+      cursor: pointer;
+
+      svg {
+        margin-left: 0px !important;
+      }
+    }
+  }
+}
+
+.contactManagementHeader {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0 0 16px;
+}
+
+.donorContactForm {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 26px 19px 22px 19px;
+
+  .donorNameContainer {
+    display: flex;
+    gap: 10px;
+    margin: 0px 12px;
+
+    @include xsPhoneView {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+}
+
+.donorAddressSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+
+  .errorMessage {
+    font-size: 12px;
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+
+  .addressInfoContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+    border-radius: 9px;
+    padding: 24px;
+    background: rgba(242, 242, 242, 0.5);
+    position: relative;
+    flex-wrap: wrap;
+
+    .addressInfoSubContainer {
+      display: flex;
+      align-items: center;
+
+      address {
+        max-width: 415px;
+      }
+    }
+
+    .addressType {
+      padding: 5px 10px;
+      max-width: fit-content;
+      border-radius: 6px;
+      text-align: center;
+      font-size: var(--font-x-extra-small);
+      font-weight: 600;
+      background-color: var(--primary-dark-color);
+      color: #fff;
+    }
+
+    button {
+      cursor: pointer;
+      position: absolute;
+      right: 13px;
+      top: 13px;
+    }
+  }
+}
+
+.donorContactFormAction {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 68px;
+  margin: 68px 12px 0px 12px;
+
+  button {
+    flex: 1;
+  }
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+}
+
 .receiptValidationError {
   .errorMessage {
     background-color: rgba(255, 243, 243, 0.5);

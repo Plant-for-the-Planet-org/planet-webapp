@@ -43,6 +43,7 @@
     "cityRequired": "City is required",
     "countryRequired": "Country is required",
     "companyRequired": "Company Name is required",
+    "tinRequired": "Tin is required",
     "paymentDetails": "Payment Details",
     "validationFailed": "Validation Failed",
     "seedingYourDonation": "Seeding your donation",

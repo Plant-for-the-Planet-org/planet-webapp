@@ -20,9 +20,9 @@ const ReceiptActions = ({
   const tReceipt = useTranslations('DonationReceipt');
   const router = useRouter();
 
-  const redirectToUserDataForm = useCallback(() => {
-    router.push(`/profile/donation-receipt/modify-user-data`);
-  }, []);
+  const navigateToDonorContactManagement = useCallback(() => {
+    router.push(`/profile/donation-receipt/donor-contact-management`);
+  }, [router]);
 
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
   return (
@@ -45,7 +45,7 @@ const ReceiptActions = ({
             text={tReceipt('modifyContactInformation')}
             elementType="button"
             icon={<EditIcon />}
-            onClick={redirectToUserDataForm}
+            onClick={navigateToDonorContactManagement}
           />
           <WebappButton
             variant="primary"

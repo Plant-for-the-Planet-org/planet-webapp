@@ -19,6 +19,7 @@ export type AddressView = {
   zipCode: string;
   address1: string;
   address2: string | null;
+  guid: string | null;
 };
 
 interface ReceiptDataBase {
