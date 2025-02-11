@@ -110,21 +110,6 @@
     "projectType": "Project Type",
     "restoration": "Restoration",
     "filters": "Filters",
-    "perM2": "per m²",
-    "donationReceipt": {
-      "verifyTaxHeaderPrimary": "Verify your data to download tax receipt",
-      "verifyTaxHeaderSecondary": "once the data is verified, it can not be changed again for this receipt",
-      "downloadTaxReceipt": "Download tax receipt",
-      "referenceNumber": "Reference Number",
-      "amountDonated": "Amount Donated",
-      "paymentDate": "Payment Date",
-      "recipientInfoHeader": "Receipt will be issued to",
-      "taxIdentificationNumber": "Tax Identification Number (TIN)",
-      "modifyContactInformation": "Modify Contact Information",
-      "confirm": "Confirm",
-      "download": "Download",
-      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
-      "name": "{type, select, individual {Name} organization {Company Name} other {}}"
-    }
+    "perM2": "per m²"
   }
 }
