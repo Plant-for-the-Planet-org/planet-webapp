@@ -1,4 +1,4 @@
-import type { Operation } from './ReceiptActions';
+import type { Operation } from '../donationReceipt';
 
 import { useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';

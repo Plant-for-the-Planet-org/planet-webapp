@@ -1,4 +1,4 @@
-import type { ReceiptData, VerifiedReceiptDataAPI } from './donationReceipt';
+import type { ReceiptData, ReceiptDataAPI } from './donationReceipt';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
@@ -7,18 +7,15 @@ export const RECEIPT_STATUS = {
 } as const;
 
 export const formatReceiptData = (
-  data: Partial<VerifiedReceiptDataAPI>
+  data: Partial<ReceiptDataAPI>
 ): ReceiptData => {
   return {
     dtn: data.dtn || '',
     year: data.year || '',
     challenge: data.challenge || '',
     amount: data.amount || 0,
-    currency: data.currency || '',
-    paymentDate: data.paymentDate || '',
     verificationDate: data.verificationDate || null,
     downloadUrl: data.downloadUrl || '',
-    donationCount: data.donationCount || 0,
     donor: {
       tin: data.donor?.tin || null,
       name: data.donor?.name || '',
@@ -33,7 +30,7 @@ export const formatReceiptData = (
     },
     donations: data.donations || [],
     hasDonorDataChanged: false,
-    operation: data.downloadUrl ? 'download' : 'verify',
+    operation: data.verificationDate === null ? 'verify' : 'download',
   };
 };
 
