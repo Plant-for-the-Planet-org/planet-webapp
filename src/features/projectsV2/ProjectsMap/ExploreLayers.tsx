@@ -47,6 +47,8 @@ export default function ExploreLayers(): ReactElement | null {
             type="raster"
             tiles={tiles}
             tileSize={128}
+            minzoom={layerData.zoomConfig.minZoom}
+            maxzoom={layerData.zoomConfig.maxZoom}
           >
             <Layer id={`${layerKey}-layer`} source={layerKey} type="raster" />
           </Source>
