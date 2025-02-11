@@ -3,7 +3,7 @@ export type MapLayerOptionsType =
   | 'projects'
   | 'forestCover'
   | 'forestBiomass'
-  | 'potentialForestBiomass'
+  | 'biomassPotential'
   | 'deforestation'
   | 'canopyHeight'
   | 'soilNitrogen'
@@ -82,7 +82,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
     },
     {
-      key: 'potentialForestBiomass',
+      key: 'biomassPotential',
       isAvailable: false,
       additionalInfo: {
         resolution: '~500km',
