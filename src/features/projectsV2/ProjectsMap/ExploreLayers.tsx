@@ -5,26 +5,28 @@ import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.conf
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
 
-const getEnabledLayers = (mapOptions: MapOptions): MapLayerOptionsType[] => {
-  const enabledLayers: MapLayerOptionsType[] = [];
+const getSelectedLayerKeys = (
+  mapOptions: MapOptions
+): MapLayerOptionsType[] => {
+  const selectedLayers: MapLayerOptionsType[] = [];
   Object.entries(mapOptions).forEach(([key, value]) => {
     if (key !== 'projects' && value === true) {
-      enabledLayers.push(key as MapLayerOptionsType);
+      selectedLayers.push(key as MapLayerOptionsType);
     }
   });
-  return enabledLayers;
+  return selectedLayers;
 };
 
 export default function ExploreLayers(): ReactElement | null {
   const { exploreLayersData, mapOptions } = useProjectsMap();
   if (!exploreLayersData) return null;
 
-  const enabledLayers = getEnabledLayers(mapOptions);
-  if (enabledLayers.length === 0) return null;
+  const selectedLayers = getSelectedLayerKeys(mapOptions);
+  if (selectedLayers.length === 0) return null;
 
   return (
     <>
-      {enabledLayers.map((layerKey) => {
+      {selectedLayers.map((layerKey) => {
         const layerData = exploreLayersData[layerKey];
 
         if (!layerData || !layerData.tileUrl) {

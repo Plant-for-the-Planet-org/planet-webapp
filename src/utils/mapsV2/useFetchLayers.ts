@@ -5,6 +5,7 @@ import type {
 import type { MapLayerOptionsType } from './mapSettings.config';
 
 import { useEffect, useRef } from 'react';
+import { mapSettingsConfig } from './mapSettings.config';
 import { useProjectsMap } from '../../features/projectsV2/ProjectsMapContext';
 
 const toCamelCase = (str: string): string => {
@@ -51,6 +52,26 @@ export const useFetchLayers = () => {
           setExploreLayersData(null);
           return;
         }
+
+        const availableLayers = new Set(
+          layers
+            .filter((layer) => layer.enabled)
+            .map((layer) => toCamelCase(layer.name))
+        );
+
+        // Update isAvailable in mapSettingsConfig based on API response
+        Object.entries(mapSettingsConfig).forEach(([key, section]) => {
+          if (key === 'projects') {
+            // projects is always available
+            return;
+          }
+
+          if (Array.isArray(section)) {
+            section.forEach((layer) => {
+              layer.isAvailable = availableLayers.has(layer.key);
+            });
+          }
+        });
 
         const layersData = layers.reduce((tempLayersData, layer) => {
           const key = toCamelCase(layer.name) as MapLayerOptionsType;

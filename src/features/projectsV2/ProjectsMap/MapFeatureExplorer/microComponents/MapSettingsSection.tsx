@@ -25,13 +25,13 @@ const GroupedLayers = ({
   mapOptions,
   updateMapOption,
 }: { config: LayerConfig[] } & BaseProps) => {
-  const availableLayers = config.filter(
+  const availableLayersConfig = config.filter(
     (layerConfig) => layerConfig.isAvailable
   );
 
   return (
     <div>
-      {availableLayers.map((layerConfig) => (
+      {availableLayersConfig.map((layerConfig) => (
         <SingleLayerOption
           key={layerConfig.key}
           layerConfig={layerConfig}
