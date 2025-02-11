@@ -4,8 +4,8 @@ import styles from '../DonationReceipt.module.scss';
 const ReceiptValidationError = () => {
   const tReceipt = useTranslations('DonationReceipt');
   return (
-    <section className={styles.ReceiptValidationError}>
-      <p className={styles.invalidReceiptErrorMessage}>
+    <section className={styles.receiptValidationError}>
+      <p className={styles.errorMessage}>
         {tReceipt.rich('InvalidReceiptMessage', {
           b: (chunks) => <strong>{chunks}</strong>,
         })}

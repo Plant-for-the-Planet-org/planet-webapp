@@ -1,4 +1,4 @@
-import type { UnverifiedReceiptDataAPI } from './donationReceipt';
+import type { ReceiptDataAPI } from './donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -43,7 +43,7 @@ const DonationReceiptLayout = () => {
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {
-        const data = await getRequest<UnverifiedReceiptDataAPI>({
+        const data = await getRequest<ReceiptDataAPI>({
           tenant: tenantConfig.id,
           url: '/app/donationReceipt',
           queryParams: {

@@ -1,4 +1,4 @@
-import type { VerifiedReceiptDataAPI, ReceiptData } from '../donationReceipt';
+import type { ReceiptData, ReceiptDataAPI } from '../donationReceipt';
 import type { APIError } from '@planet-sdk/common';
 
 import { useCallback, useContext, useState } from 'react';
@@ -43,7 +43,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
 
     try {
       setIsLoading(true);
-      const data = await putRequest<VerifiedReceiptDataAPI>({
+      const data = await putRequest<ReceiptDataAPI>({
         tenant: tenantConfig.id,
         url: `/app/donationReceipt/verify`,
         data: {
