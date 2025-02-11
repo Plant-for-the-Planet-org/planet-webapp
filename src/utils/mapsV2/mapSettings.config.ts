@@ -30,7 +30,10 @@ export interface AdditionalInfo {
 
 export interface LayerConfig {
   key: MapLayerOptionsType;
-  isAvailable: boolean | null; // null means the availability is not yet determined
+  /** Indicates whether the layer should be enabled in the UI */
+  canShow: boolean;
+  /** Indicates whether layer data is available from API. null indicates unknown status */
+  isAvailable: boolean | null;
   additionalInfo?: AdditionalInfo;
   color?: string;
 }
@@ -48,11 +51,13 @@ export interface MapSettingsConfig {
 export const mapSettingsConfig: MapSettingsConfig = {
   projects: {
     key: 'projects',
+    canShow: true,
     isAvailable: true,
   },
   forests: [
     {
       key: 'forestCover',
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~500m (Downscaled)',
@@ -68,6 +73,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'forestBiomass',
+      canShow: false,
       isAvailable: null,
       color: '#27AE60',
       additionalInfo: {
@@ -84,6 +90,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'biomassPotential',
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~500km',
@@ -100,6 +107,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestation',
+      canShow: false,
       isAvailable: null,
       color: '#EB5757',
       additionalInfo: {
@@ -115,6 +123,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'canopyHeight',
+      canShow: false,
       isAvailable: null,
       color: '#2F80ED',
       additionalInfo: {
@@ -133,6 +142,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   soil: [
     {
       key: 'soilNitrogen',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -149,6 +159,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilPH',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -164,6 +175,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilOrganicCarbon',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -180,6 +192,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilBulkDensity',
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -198,6 +211,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   biodiversity: [
     {
       key: 'treeSpeciesDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~3km',
@@ -214,6 +228,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'birdsDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -230,6 +245,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'mammalsDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -245,6 +261,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'amphibiansDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -262,6 +279,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   risks: [
     {
       key: 'fireRisk',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~55km',
@@ -276,6 +294,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestationRisk',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~30m',

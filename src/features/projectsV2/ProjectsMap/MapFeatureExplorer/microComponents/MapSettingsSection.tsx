@@ -18,7 +18,8 @@ type Props = BaseProps &
   );
 
 const isValidGroup = (config: LayerConfig[]): boolean =>
-  config.length > 0 && config.some((layerConfig) => layerConfig.isAvailable);
+  config.length > 0 &&
+  config.some((layerConfig) => layerConfig.isAvailable && layerConfig.canShow);
 
 const GroupedLayers = ({
   config,
@@ -26,7 +27,7 @@ const GroupedLayers = ({
   updateMapOption,
 }: { config: LayerConfig[] } & BaseProps) => {
   const availableLayersConfig = config.filter(
-    (layerConfig) => layerConfig.isAvailable
+    (layerConfig) => layerConfig.isAvailable && layerConfig.canShow
   );
 
   return (
