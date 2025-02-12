@@ -1,7 +1,5 @@
 import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
 import type { MapOptions } from '../../../ProjectsMapContext';
-
-import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import SingleLayerOption from './SingleLayerOption';
 import styles from '../MapFeatureExplorer.module.scss';
@@ -20,25 +18,20 @@ type Props = BaseProps &
   );
 
 const isValidGroup = (config: LayerConfig[]): boolean =>
-  config.length > 0 &&
-  config.some((layerConfig) => layerConfig.isAvailable && layerConfig.canShow);
+  config.length > 0 && config.some((layerConfig) => layerConfig.isAvailable);
 
 const GroupedLayers = ({
   config,
   mapOptions,
   updateMapOption,
 }: { config: LayerConfig[] } & BaseProps) => {
-  const availableLayersConfig = useMemo(
-    () =>
-      config.filter(
-        (layerConfig) => layerConfig.isAvailable && layerConfig.canShow
-      ),
-    [config]
+  const availableLayers = config.filter(
+    (layerConfig) => layerConfig.isAvailable
   );
 
   return (
     <div>
-      {availableLayersConfig.map((layerConfig) => (
+      {availableLayers.map((layerConfig) => (
         <SingleLayerOption
           key={layerConfig.key}
           layerConfig={layerConfig}
