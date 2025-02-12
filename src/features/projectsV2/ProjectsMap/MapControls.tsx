@@ -2,7 +2,7 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
-import { useMemo } from 'react'
+import { useMemo } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
@@ -54,9 +54,8 @@ const MapControls = ({
     setSelectedInterventionType,
     disableInterventionMenu,
     setDisableInterventionMenu,
-    plantLocations
+    plantLocations,
   } = useProjects();
-
 
   const uniquePlantTypes = useMemo(() => {
     if (!plantLocations) return [];
@@ -68,7 +67,6 @@ const MapControls = ({
     return [...types];
   }, [plantLocations]);
 
-
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
@@ -79,7 +77,9 @@ const MapControls = ({
     ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
   const canShowInterventionDropdown =
-    isProjectDetailsPage && selectedTab === 'field';
+    isProjectDetailsPage &&
+    selectedTab === 'field' &&
+    uniquePlantTypes.length > 0;
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
@@ -133,14 +133,13 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${isMobile
-    ? mobileOS === 'android'
-      ? styles.layerToggleAndroid
-      : styles.layerToggleIos
-    : styles.layerToggleDesktop
-    }`;
-
-
+  const layerToggleClass = `${styles.layerToggle} ${
+    isMobile
+      ? mobileOS === 'android'
+        ? styles.layerToggleAndroid
+        : styles.layerToggleIos
+      : styles.layerToggleDesktop
+  }`;
 
   return (
     <>
@@ -156,7 +155,7 @@ const MapControls = ({
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
-              {canShowInterventionDropdown && uniquePlantTypes.length > 0 && (
+              {canShowInterventionDropdown && (
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   isMobile={isMobile}
@@ -164,7 +163,7 @@ const MapControls = ({
                   existingIntervention={uniquePlantTypes}
                 />
               )}
-              < button
+              <button
                 className={styles.exitMapModeButton}
                 onClick={exitMapMode}
               >
@@ -176,13 +175,13 @@ const MapControls = ({
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
-              {canShowInterventionDropdown && uniquePlantTypes.length > 0 &&
+              {canShowInterventionDropdown && (
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   hasProjectSites={hasProjectSites}
                   existingIntervention={uniquePlantTypes}
                 />
-              }
+              )}
             </>
           )}
           {canShowSatelliteToggle && (
@@ -194,8 +193,7 @@ const MapControls = ({
             </button>
           )}
         </>
-      )
-      }
+      )}
     </>
   );
 };
