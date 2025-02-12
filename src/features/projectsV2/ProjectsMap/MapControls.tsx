@@ -2,7 +2,7 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
-
+import { useMemo } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
@@ -54,7 +54,19 @@ const MapControls = ({
     setSelectedInterventionType,
     disableInterventionMenu,
     setDisableInterventionMenu,
+    plantLocations,
   } = useProjects();
+
+  const uniquePlantTypes = useMemo(() => {
+    if (!plantLocations) return [];
+
+    const types = new Set();
+    for (let i = 0; i < plantLocations.length; i++) {
+      types.add(plantLocations[i].type);
+    }
+    return [...types];
+  }, [plantLocations]);
+
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
@@ -65,7 +77,9 @@ const MapControls = ({
     ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
   const canShowInterventionDropdown =
-    isProjectDetailsPage && selectedTab === 'field';
+    isProjectDetailsPage &&
+    selectedTab === 'field' &&
+    uniquePlantTypes.length > 1;
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
@@ -146,6 +160,7 @@ const MapControls = ({
                   {...interventionDropDownProps}
                   isMobile={isMobile}
                   hasProjectSites={hasProjectSites}
+                  existingIntervention={uniquePlantTypes}
                 />
               )}
               <button
@@ -164,6 +179,7 @@ const MapControls = ({
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   hasProjectSites={hasProjectSites}
+                  existingIntervention={uniquePlantTypes}
                 />
               )}
             </>
