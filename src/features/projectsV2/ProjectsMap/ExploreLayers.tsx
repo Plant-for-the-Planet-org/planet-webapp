@@ -8,6 +8,8 @@ import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.conf
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
 
+const TILE_SIZE = 128;
+
 const getSelectedLayerKeys = (
   mapOptions: MapOptions
 ): MapLayerOptionsType[] => {
@@ -47,7 +49,7 @@ export default function ExploreLayers(): ReactElement | null {
             id={layerKey}
             type="raster"
             tiles={tiles}
-            tileSize={128}
+            tileSize={TILE_SIZE}
             minzoom={layerData.zoomConfig.minZoom}
             maxzoom={layerData.zoomConfig.maxZoom}
           >
