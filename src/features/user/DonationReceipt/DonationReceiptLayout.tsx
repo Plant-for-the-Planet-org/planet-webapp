@@ -1,4 +1,4 @@
-import type { ReceiptDataAPI } from './donationReceipt';
+import type { ReceiptDataAPI } from './donationReceiptTypes';
 import type { APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ import VerifyReceiptHeader from './microComponents/VerifyReceiptHeader';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter ';
+import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter';
 import ReceiptValidationError from './microComponents/ReceiptValidationError';
 
 const DonationReceiptLayout = () => {
