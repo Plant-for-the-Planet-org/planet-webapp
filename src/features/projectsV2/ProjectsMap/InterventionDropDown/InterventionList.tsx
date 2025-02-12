@@ -14,36 +14,41 @@ interface InterventionListProps {
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
-  hasProjectSites?: boolean
+  hasProjectSites?: boolean;
 }
 const InterventionList = ({
   interventionList,
   setSelectedInterventionType,
   setIsMenuOpen,
   selectedInterventionData,
-  hasProjectSites
+  hasProjectSites,
 }: InterventionListProps) => {
-  const tProjectDetails = useTranslations("ProjectDetails.intervention");
+  const tProjectDetails = useTranslations('ProjectDetails.intervention');
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
     setIsMenuOpen(false);
     setSelectedInterventionType(key);
   };
 
   return (
-    <ul className={`${styles.interventionListOptions} ${!hasProjectSites ? styles.interventionListOptionsAbove : styles.interventionListOptionsBelow}`}>
+    <ul
+      className={`${styles.interventionListOptions} ${
+        !hasProjectSites
+          ? styles.interventionListOptionsAbove
+          : styles.interventionListOptionsBelow
+      }`}
+    >
       {interventionList.map((intervention, index) => {
         return (
           <li
-            className={`${styles.listItem} ${intervention.value === selectedInterventionData?.value
-              ? styles.selectedItem
-              : ''
-              }`}
+            className={`${styles.listItem} ${
+              intervention.value === selectedInterventionData?.value
+                ? styles.selectedItem
+                : ''
+            }`}
             onClick={() => handleFilterSelection(intervention.value)}
             key={index}
           >
-            <p>
-              {tProjectDetails(intervention.value)}
-            </p>
+            <p>{tProjectDetails(intervention.value)}</p>
           </li>
         );
       })}
