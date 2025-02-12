@@ -23,6 +23,7 @@
     "contactSupportMessage": "For any questions or issues, please contact us",
     "supportContactDetails": "<strong>Email:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink> <strong>Phone:</strong> +49 8808 9345",
     "receipts": "Receipts",
-    "InvalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again."
+    "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+    "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."
   }
 }
