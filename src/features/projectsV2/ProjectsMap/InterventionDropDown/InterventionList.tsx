@@ -15,6 +15,7 @@ interface InterventionListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
   hasProjectSites?: boolean;
+  existingIntervention: string[];
 }
 const InterventionList = ({
   interventionList,
@@ -22,11 +23,22 @@ const InterventionList = ({
   setIsMenuOpen,
   selectedInterventionData,
   hasProjectSites,
+  existingIntervention,
 }: InterventionListProps) => {
   const tProjectDetails = useTranslations('ProjectDetails.intervention');
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
     setIsMenuOpen(false);
     setSelectedInterventionType(key);
+  };
+
+  const shouldRenderIntervention = (interventionValue: string) => {
+    const showAllIntervention = interventionValue === 'all';
+    const showExisitingIntervention =
+      existingIntervention.includes(interventionValue);
+    if (showAllIntervention && existingIntervention.length === 1) {
+      return false;
+    }
+    return showExisitingIntervention || showAllIntervention;
   };
 
   return (
@@ -37,7 +49,11 @@ const InterventionList = ({
           : styles.interventionListOptionsBelow
       }`}
     >
-      {interventionList.map((intervention, index) => {
+      {interventionList.map((intervention) => {
+        if (!shouldRenderIntervention(intervention.value)) {
+          return null;
+        }
+
         return (
           <li
             className={`${styles.listItem} ${
@@ -46,7 +62,7 @@ const InterventionList = ({
                 : ''
             }`}
             onClick={() => handleFilterSelection(intervention.value)}
-            key={index}
+            key={intervention.value} // Use unique value as key
           >
             <p>{tProjectDetails(intervention.value)}</p>
           </li>
