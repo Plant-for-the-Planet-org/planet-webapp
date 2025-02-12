@@ -47,7 +47,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsProcessing(true);
 
     try {
-      const res = await putAuthenticatedRequest<User>({
+      const res = await putAuthenticatedRequest<User, FormData>({
         tenant: tenantConfig?.id,
         url: '/app/profile',
         data: { scheduleFrequency: data.scheduleFrequency },

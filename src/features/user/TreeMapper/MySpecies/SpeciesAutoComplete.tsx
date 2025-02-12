@@ -25,7 +25,10 @@ interface Props<
   helperText?: React.ReactNode;
   // mySpecies?: any;
 }
-
+type SubmitData = {
+  q: string;
+  t: 'species';
+};
 export default function SpeciesSelect<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
@@ -62,7 +65,7 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest<SpeciesSuggestionType[]>({
+        const res = await postRequest<SpeciesSuggestionType[], SubmitData>({
           tenant: tenantConfig?.id,
           url: `/suggest.php`,
           data: {

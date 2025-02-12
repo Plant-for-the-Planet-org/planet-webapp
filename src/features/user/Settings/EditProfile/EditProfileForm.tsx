@@ -59,6 +59,9 @@ type ProfileTypeOption = {
   value: 'individual' | 'organization' | 'education';
 };
 
+type SubmitData = {
+  imageFile: string | ArrayBuffer | null | undefined;
+};
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -160,11 +163,9 @@ export default function EditProfileForm() {
     reset();
   }, [type]);
 
-  const handleUserProfileImage = async (bodyToSend: {
-    imageFile: string | ArrayBuffer | null | undefined;
-  }) => {
+  const handleUserProfileImage = async (bodyToSend: SubmitData) => {
     try {
-      const res = await putAuthenticatedRequest<User>({
+      const res = await putAuthenticatedRequest<User, SubmitData>({
         tenant: tenantConfig?.id,
         url: `/app/profile`,
         data: bodyToSend,

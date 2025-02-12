@@ -61,6 +61,14 @@ const dialogSx: SxProps = {
   },
 };
 
+type SubmitData = {
+  treeCount: string;
+  treeSpecies: string;
+  plantProject: string | null;
+  plantDate: Date;
+  geometry: RegisterTreeGeometry;
+};
+
 function RegisterTreesForm({
   setContributionGUID,
   setContributionDetails,
@@ -183,7 +191,7 @@ function RegisterTreesForm({
             geometry.features?.length >= 1))
       ) {
         setIsUploadingData(true);
-        const submitData = {
+        const submitData: SubmitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
           plantProject: data.plantProject,
@@ -191,7 +199,10 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>({
+          const res = await postAuthenticatedRequest<
+            ContributionProperties,
+            SubmitData
+          >({
             tenant: tenantConfig?.id,
             url: `/app/contributions`,
             data: submitData,

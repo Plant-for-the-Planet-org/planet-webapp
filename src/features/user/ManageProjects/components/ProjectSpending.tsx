@@ -56,7 +56,11 @@ type FormData = {
   year: Date;
   amount: number;
 };
-
+type SubmitData = {
+  year: number;
+  amount: number;
+  pdfFile: string | ArrayBuffer | null | undefined;
+};
 export default function ProjectSpending({
   handleBack,
   token,
@@ -88,14 +92,14 @@ export default function ProjectSpending({
     const updatedAmount = getValues('amount');
     const year = getValues('year');
 
-    const submitData = {
+    const submitData: SubmitData = {
       year: year.getFullYear(),
       amount: updatedAmount,
       pdfFile: pdf,
     };
 
     try {
-      const res = await postAuthenticatedRequest<ProjectExpense>({
+      const res = await postAuthenticatedRequest<ProjectExpense, SubmitData>({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}/expenses`,
         data: submitData,
