@@ -3,7 +3,7 @@ export type MapLayerOptionsType =
   | 'projects'
   | 'forestCover'
   | 'forestBiomass'
-  | 'potentialForestBiomass'
+  | 'biomassPotential'
   | 'deforestation'
   | 'canopyHeight'
   | 'soilNitrogen'
@@ -30,7 +30,10 @@ export interface AdditionalInfo {
 
 export interface LayerConfig {
   key: MapLayerOptionsType;
-  isAvailable: boolean;
+  /** Indicates whether the layer should be enabled in the UI */
+  canShow: boolean;
+  /** Indicates whether layer data is available from API. null indicates unknown status */
+  isAvailable: boolean | null;
   additionalInfo?: AdditionalInfo;
   color?: string;
 }
@@ -44,15 +47,18 @@ export interface MapSettingsConfig {
 }
 
 // Configuration object
+// isAvailable is set to null initially, and will be updated based on the API response (except for projects which are always available)
 export const mapSettingsConfig: MapSettingsConfig = {
   projects: {
     key: 'projects',
+    canShow: true,
     isAvailable: true,
   },
   forests: [
     {
       key: 'forestCover',
-      isAvailable: true,
+      canShow: true,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~500m (Downscaled)',
         dataYears: '2023',
@@ -67,7 +73,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'forestBiomass',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       color: '#27AE60',
       additionalInfo: {
         resolution: '~500km',
@@ -82,13 +89,14 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
     },
     {
-      key: 'potentialForestBiomass',
-      isAvailable: true,
+      key: 'biomassPotential',
+      canShow: true,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~500km',
         dataYears: '2016',
         description:
-          'Global additional potential biomass with and without considering agricultural and human settelements.',
+          'Global additional potential biomass with and without considering agricultural and human settlements.',
         underlyingData:
           'Remote sensing (MODIS, LiDAR) based Machine Learning models',
         source: {
@@ -99,7 +107,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestation',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       color: '#EB5757',
       additionalInfo: {
         resolution: '~30m',
@@ -114,7 +123,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'canopyHeight',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       color: '#2F80ED',
       additionalInfo: {
         resolution: '~1m',
@@ -132,12 +142,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
   soil: [
     {
       key: 'soilNitrogen',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'cg/kg; 0-30 cm horrizon (A weighted average for all depths)',
+          'cg/kg; 0-30 cm horizon (A weighted average for all depths)',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -148,11 +159,12 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilPH',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
-        description: '0-30 cm horrizon (A weighted average for all depths)',
+        description: '0-30 cm horizon (A weighted average for all depths)',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -163,12 +175,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilOrganicCarbon',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'dg/kg; 0-30 cm horrizon (A weighted average for all depths)',
+          'dg/kg; 0-30 cm horizon (A weighted average for all depths)',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -179,12 +192,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilBulkDensity',
-      isAvailable: true,
+      canShow: true,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'cg/cm3; cg/kg; 0-30 cm horrizon (A weighted average for all depths)',
+          'cg/cm3; cg/kg; 0-30 cm horizon (A weighted average for all depths)',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -197,7 +211,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
   biodiversity: [
     {
       key: 'treeSpeciesDensity',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~3km',
         dataYears: '2005-2015',
@@ -213,7 +228,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'birdsDensity',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
         dataYears: '2013-2018',
@@ -229,7 +245,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'mammalsDensity',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
         dataYears: '2013-2018',
@@ -244,7 +261,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'amphibiansDensity',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
         dataYears: '2013-2018',
@@ -261,7 +279,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
   risks: [
     {
       key: 'fireRisk',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~55km',
         dataYears: '1980-2023',
@@ -275,7 +294,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestationRisk',
-      isAvailable: true,
+      canShow: false,
+      isAvailable: null,
       additionalInfo: {
         resolution: '~30m',
         dataYears: '2023',

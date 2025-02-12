@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
+import { useFetchLayers } from '../../../utils/mapsV2/useFetchLayers';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
 import {
@@ -29,6 +30,7 @@ import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
+import ExploreLayers from './ExploreLayers';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -48,7 +50,9 @@ export type ProjectsMapMobileProps = {
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
-  // const [mobileOS, setMobileOS] = useState<MobileOs>(null);
+  // Fetch layers data
+  useFetchLayers();
+
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const {
     viewState,
@@ -57,6 +61,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapOptions,
     timeTravelConfig,
     setTimeTravelConfig,
+    isExploreMode,
   } = useProjectsMap();
   const {
     plantLocations,
@@ -153,6 +158,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     isTimeTravelEnabled &&
     (selectedTab === 'timeTravel' || wasTimeTravelMounted);
   const shouldShowMapTabs = selectedTab !== null;
+  const shouldShowExploreLayers =
+    props.page === 'project-list' && isExploreMode;
 
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
@@ -227,17 +234,21 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapRef,
     selectedTab,
   };
+
   const multipleProjectsViewProps = {
     mapRef,
     page: props.page,
   };
+
   const mapContainerClass = `${styles.mapContainer} ${
     styles[mobileOS !== undefined ? mobileOS : '']
   }`;
+
   const shouldShowOtherIntervention =
     props.isMobile &&
     selectedPlantLocation !== null &&
     !PLANTATION_TYPES.includes(selectedPlantLocation.type);
+
   return (
     <>
       <MapControls {...mapControlProps} />
@@ -273,6 +284,7 @@ function ProjectsMap(props: ProjectsMapProps) {
               : undefined
           }
         >
+          {shouldShowExploreLayers && <ExploreLayers />}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}
