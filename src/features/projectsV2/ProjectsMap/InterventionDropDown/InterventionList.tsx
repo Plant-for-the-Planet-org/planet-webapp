@@ -14,8 +14,8 @@ interface InterventionListProps {
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
-  hasProjectSites?: boolean
-  existingIntervention: string[]
+  hasProjectSites?: boolean;
+  existingIntervention: string[];
 }
 const InterventionList = ({
   interventionList,
@@ -23,9 +23,9 @@ const InterventionList = ({
   setIsMenuOpen,
   selectedInterventionData,
   hasProjectSites,
-  existingIntervention
+  existingIntervention,
 }: InterventionListProps) => {
-  const tProjectDetails = useTranslations("ProjectDetails.intervention");
+  const tProjectDetails = useTranslations('ProjectDetails.intervention');
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
     setIsMenuOpen(false);
     setSelectedInterventionType(key);
@@ -33,19 +33,21 @@ const InterventionList = ({
 
   const shouldRenderIntervention = (interventionValue: string) => {
     const showAllIntervention = interventionValue === 'all';
-    const showExisitingIntervention = existingIntervention.includes(interventionValue);
+    const showExistingIntervention =
+      existingIntervention.includes(interventionValue);
     if (showAllIntervention && existingIntervention.length === 1) {
       return false;
     }
-    return showExisitingIntervention || showAllIntervention;
+    return showExistingIntervention || showAllIntervention;
   };
-
-
 
   return (
     <ul
-      className={`${styles.interventionListOptions} ${!hasProjectSites ? styles.interventionListOptionsAbove : styles.interventionListOptionsBelow
-        }`}
+      className={`${styles.interventionListOptions} ${
+        !hasProjectSites
+          ? styles.interventionListOptionsAbove
+          : styles.interventionListOptionsBelow
+      }`}
     >
       {interventionList.map((intervention) => {
         if (!shouldRenderIntervention(intervention.value)) {
@@ -54,8 +56,11 @@ const InterventionList = ({
 
         return (
           <li
-            className={`${styles.listItem} ${intervention.value === selectedInterventionData?.value ? styles.selectedItem : ''
-              }`}
+            className={`${styles.listItem} ${
+              intervention.value === selectedInterventionData?.value
+                ? styles.selectedItem
+                : ''
+            }`}
             onClick={() => handleFilterSelection(intervention.value)}
             key={intervention.value} // Use unique value as key
           >
