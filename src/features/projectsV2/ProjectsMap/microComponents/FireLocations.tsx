@@ -30,7 +30,7 @@ export default function FireLocations(): ReactElement {
         searchParams.append('span', ALERT_DURATION);
         const fireAlertApiUrl =
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
-          'https://fa.pp.eco/api/v1';
+          'https://firealert.plant-for-the-planet.org/api/v1';
         const url = `${fireAlertApiUrl}/fires?${searchParams.toString()}`;
         const fetchedFires = await getRequest<FireFeatureCollection>({ url });
         if (
