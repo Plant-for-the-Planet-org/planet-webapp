@@ -79,7 +79,7 @@ const MapControls = ({
   const canShowInterventionDropdown =
     isProjectDetailsPage &&
     selectedTab === 'field' &&
-    uniquePlantTypes.length > 0;
+    uniquePlantTypes.length > 1;
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
