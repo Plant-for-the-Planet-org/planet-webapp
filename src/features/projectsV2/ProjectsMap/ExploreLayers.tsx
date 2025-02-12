@@ -1,5 +1,8 @@
 import type { ReactElement } from 'react';
-import type { MapOptions } from '../ProjectsMapContext';
+import type {
+  MapOptions,
+  SingleExploreLayerConfig,
+} from '../ProjectsMapContext';
 import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
@@ -8,13 +11,14 @@ import { useProjectsMap } from '../ProjectsMapContext';
 const getSelectedLayerKeys = (
   mapOptions: MapOptions
 ): MapLayerOptionsType[] => {
-  const selectedLayers: MapLayerOptionsType[] = [];
-  Object.entries(mapOptions).forEach(([key, value]) => {
-    if (key !== 'projects' && value === true) {
-      selectedLayers.push(key as MapLayerOptionsType);
-    }
-  });
-  return selectedLayers;
+  return Object.entries(mapOptions)
+    .filter(([key, value]) => key !== 'projects' && value === true)
+    .map(([key]) => key as MapLayerOptionsType);
+};
+
+type ValidLayer = {
+  layerKey: MapLayerOptionsType;
+  layerData: SingleExploreLayerConfig;
 };
 
 export default function ExploreLayers(): ReactElement | null {
@@ -24,15 +28,17 @@ export default function ExploreLayers(): ReactElement | null {
   const selectedLayers = getSelectedLayerKeys(mapOptions);
   if (selectedLayers.length === 0) return null;
 
+  const validLayers = selectedLayers.reduce<ValidLayer[]>((acc, layerKey) => {
+    const layerData = exploreLayersData[layerKey];
+    if (layerData?.tileUrl) {
+      acc.push({ layerKey, layerData });
+    }
+    return acc;
+  }, []);
+
   return (
     <>
-      {selectedLayers.map((layerKey) => {
-        const layerData = exploreLayersData[layerKey];
-
-        if (!layerData || !layerData.tileUrl) {
-          return null;
-        }
-
+      {validLayers.map(({ layerKey, layerData }) => {
         const tiles = [layerData.tileUrl];
 
         return (
