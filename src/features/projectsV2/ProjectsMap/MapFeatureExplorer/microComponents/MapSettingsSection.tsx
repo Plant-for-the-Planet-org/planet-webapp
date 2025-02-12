@@ -1,5 +1,7 @@
 import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
 import type { MapOptions } from '../../../ProjectsMapContext';
+
+import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import SingleLayerOption from './SingleLayerOption';
 import styles from '../MapFeatureExplorer.module.scss';
@@ -26,8 +28,12 @@ const GroupedLayers = ({
   mapOptions,
   updateMapOption,
 }: { config: LayerConfig[] } & BaseProps) => {
-  const availableLayersConfig = config.filter(
-    (layerConfig) => layerConfig.isAvailable && layerConfig.canShow
+  const availableLayersConfig = useMemo(
+    () =>
+      config.filter(
+        (layerConfig) => layerConfig.isAvailable && layerConfig.canShow
+      ),
+    [config]
   );
 
   return (
