@@ -6,9 +6,11 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 type Props = {
   donations: Donations[];
+  amount: number | null;
+  currency: string | null;
 };
 
-const DonationsTable = ({ donations }: Props) => {
+const DonationsTable = ({ donations, amount, currency }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   return (
     <div className={styles.donationsTable}>
@@ -24,29 +26,33 @@ const DonationsTable = ({ donations }: Props) => {
         </span>
       </div>
       <ul role="table">
-        {donations?.map((dtn) => {
+        {donations?.map(({ reference, currency, amount, paymentDate }) => {
           return (
-            <li className={styles.record} key={dtn.reference} role="row">
+            <li className={styles.record} key={reference} role="row">
               <span className={styles.reference} role="cell">
-                {dtn.reference}
+                {reference}
               </span>
               <span className={styles.amount} role="cell">
                 {tReceipt('donationDetails.donationAmount', {
-                  currency: dtn.currency,
-                  amount: dtn.amount,
+                  currency,
+                  amount,
                 })}
               </span>
-              <time
-                className={styles.date}
-                dateTime={dtn.paymentDate}
-                role="cell"
-              >
-                {formatDate(dtn.paymentDate)}
+              <time className={styles.date} dateTime={paymentDate} role="cell">
+                {formatDate(paymentDate)}
               </time>
             </li>
           );
         })}
       </ul>
+      {amount !== null && (
+        <div className={styles.totalAmount}>
+          {tReceipt('donationDetails.donationAmount', {
+            currency,
+            amount,
+          })}
+        </div>
+      )}
     </div>
   );
 };
