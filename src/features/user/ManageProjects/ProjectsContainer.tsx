@@ -1,9 +1,12 @@
 import type { APIError } from '@planet-sdk/common';
-import type { Properties } from '../../common/types/project';
 import type { Geometry } from '@turf/turf';
+import type {
+  ConservProperties,
+  TreeProperties,
+} from '../../common/types/project';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useMemo } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
@@ -24,10 +27,14 @@ import { generateProjectLink } from '../../../utils/projectV2';
 interface UserProjectsType {
   type: string;
   geometry: Geometry;
-  properties: Properties;
+  properties: TreeProperties | ConservProperties;
 }
 
-function SingleProject({ project }: { project: Properties }) {
+function SingleProject({
+  project,
+}: {
+  project: TreeProperties | ConservProperties;
+}) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -36,6 +43,14 @@ function SingleProject({ project }: { project: Properties }) {
   const tCountry = useTranslations('Country');
   const locale = useLocale();
   const router = useRouter();
+  const count =
+    project.unitType === 'tree'
+      ? (project as TreeProperties).unitsContributed?.tree
+      : project.unitsContributed.m2;
+  const formattedCount = useMemo(
+    () => localizedAbbreviatedNumber(locale, Number(count), 1),
+    [count]
+  );
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -60,18 +75,8 @@ function SingleProject({ project }: { project: Properties }) {
             tCountry((project.country || '').toLowerCase())
           )}
         </p>
-        {project.purpose === 'trees' ? (
-          <p>
-            {localizedAbbreviatedNumber(
-              locale,
-              Number(project.countPlanted),
-              1
-            )}{' '}
-            {tCommon('tree', { count: Number(project.countPlanted) })}
-          </p>
-        ) : (
-          <></>
-        )}
+        {count !== undefined &&
+          tCommon(`unitTypes.${project.unitType}`, { formattedCount, count })}
         <div className={styles.projectLabels}>
           {/* Needed in future */}
           {/* {!project.isFeatured && (
