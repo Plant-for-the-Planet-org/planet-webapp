@@ -20,20 +20,10 @@ const ReceiptActions = ({
   const router = useRouter();
 
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
+
   return (
     <div className={styles.receiptActions}>
-      {showDownloadButton ? (
-        <div className={styles.downloadButtonContainer}>
-          <WebappButton
-            variant="primary"
-            text={tReceipt('download')}
-            elementType="link"
-            icon={<DownloadIcon color="#fff" />}
-            href={downloadUrl}
-            target={'_blank'}
-          />
-        </div>
-      ) : (
+      {!isReceiptVerified ? (
         <>
           <WebappButton
             variant="secondary"
@@ -51,6 +41,23 @@ const ReceiptActions = ({
             onClick={confirmReceiptData}
           />
         </>
+      ) : showDownloadButton ? (
+        <div className={styles.downloadButtonContainer}>
+          <WebappButton
+            variant="primary"
+            text={tReceipt('download')}
+            elementType="link"
+            icon={<DownloadIcon color="#fff" />}
+            href={downloadUrl}
+            target={'_blank'}
+          />
+        </div>
+      ) : (
+        <div className={styles.receiptError}>
+          {tReceipt.rich('missingReceiptInformation', {
+            b: (chunks) => <strong>{chunks}</strong>,
+          })}
+        </div>
       )}
     </div>
   );
