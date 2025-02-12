@@ -1,4 +1,4 @@
-import type { AddressView, DonorView } from '../donationReceipt';
+import type { AddressView, DonorView } from '../donationReceiptTypes';
 import type { CountryCode } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
