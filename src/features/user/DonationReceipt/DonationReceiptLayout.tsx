@@ -74,6 +74,7 @@ const DonationReceiptLayout = () => {
       <div className={styles.donationReceiptLayout}>
         <div className={styles.donationReceiptContainer}>
           <ReceiptValidationError />
+          <VerifyReceiptFooter />
         </div>
       </div>
     );
@@ -86,6 +87,7 @@ const DonationReceiptLayout = () => {
       </div>
     );
   }
+
   return (
     <div className={styles.donationReceiptLayout}>
       <div className={styles.donationReceiptContainer}>

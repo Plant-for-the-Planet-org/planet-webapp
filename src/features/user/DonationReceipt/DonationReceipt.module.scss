@@ -45,6 +45,7 @@
   }
 }
 
+.verifyReceiptFooter,
 .receiptValidationError,
 .receiptDataSection {
   width: 100%;
@@ -181,6 +182,39 @@
   margin-top: 40px;
 }
 
+.verifyReceiptFooterContainer {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(242, 242, 242, 0.5);
+  border-radius: 9px;
+  padding: 8px;
+  .redirectButton {
+    cursor: pointer;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: $fontSmall;
+  }
+
+  p {
+    font-size: $fontXSmall;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    max-width: 500px;
+  }
+}
+
+.contactInfo {
+  display: flex;
+  gap: 30px;
+  // margin-top: 30px;
+
+  .contactSupportMessage {
+    font-weight: 400;
+    font-size: $fontSmall;
+  }
+}
 .receiptValidationError {
   .errorMessage {
     background-color: rgba(255, 243, 243, 0.5);
