@@ -1,0 +1,199 @@
+@import '../../../theme/theme';
+
+.donationReceiptSkeleton {
+  display: flex;
+  justify-content: center;
+  margin-top: 146px;
+}
+
+.donationReceiptLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  min-height: calc(100vh - 80px);
+  margin-top: 80px;
+  background: var(--background-base);
+  @include xsPhoneView {
+    padding: 0 2%;
+  }
+}
+
+.donationReceiptContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 760px;
+  min-height: 60px;
+  margin-top: 60px;
+  @include xsPhoneView {
+    align-items: center;
+  }
+}
+
+.verifyReceiptHeader {
+  h2 {
+    font-size: $fontLarge;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: $fontSmall;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+  }
+}
+
+.receiptValidationError,
+.receiptDataSection {
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px;
+  background: #fff;
+}
+
+.donationsTable {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 16px 16px 16px;
+
+  @include xsPhoneView {
+    padding: 6px 6px 16px 6px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+  }
+}
+
+.paymentDate {
+  text-align: right;
+}
+
+.amountDonated {
+  text-align: center;
+}
+
+.record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  .amount {
+    flex: 1;
+    text-align: center;
+  }
+
+  .reference {
+    flex: 1;
+    text-align: left;
+  }
+
+  .date {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.record:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.totalAmount {
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+}
+
+.donorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: rgba(242, 242, 242, 0.5);
+  width: 100%;
+  border-radius: 9px;
+  padding: 10px 15px;
+
+  .header {
+    font-weight: 700;
+    font-size: $fontSmall;
+  }
+
+  .donorInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+}
+
+.addressInfo,
+.donorName,
+.companyName,
+.tin {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: rgba(130, 130, 130, 1);
+
+  .header {
+    font-size: $fontXSmall;
+    font-weight: 700;
+  }
+}
+
+.receiptActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 40px;
+  padding: 0px 10px;
+
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+
+  button {
+    flex: 1 1;
+  }
+
+  svg {
+    width: 13px;
+  }
+}
+
+.downloadButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.receiptVerificationSpinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.receiptValidationError {
+  .errorMessage {
+    background-color: rgba(255, 243, 243, 0.5);
+    border-radius: 9px;
+    color: rgba(235, 87, 87, 1);
+    padding: 16px;
+  }
+}
+
+.receiptError {
+  background-color: rgba(255, 243, 243, 0.5);
+  border-radius: 9px;
+  color: rgba(235, 87, 87, 1);
+  padding: 16px;
+  width: 100%;
+}
