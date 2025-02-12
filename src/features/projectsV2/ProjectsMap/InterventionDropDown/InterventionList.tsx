@@ -33,12 +33,12 @@ const InterventionList = ({
 
   const shouldRenderIntervention = (interventionValue: string) => {
     const showAllIntervention = interventionValue === 'all';
-    const showExisitingIntervention =
+    const showExistingIntervention =
       existingIntervention.includes(interventionValue);
     if (showAllIntervention && existingIntervention.length === 1) {
       return false;
     }
-    return showExisitingIntervention || showAllIntervention;
+    return showExistingIntervention || showAllIntervention;
   };
 
   return (
