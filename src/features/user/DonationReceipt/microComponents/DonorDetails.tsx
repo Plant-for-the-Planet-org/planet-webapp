@@ -48,7 +48,7 @@ const DonorDetails = ({ donor, address }: Props) => {
         <address>
           {address1},{cityStatePostalString}
         </address>
-        {address2 && (
+        {address2 !== null && (
           <address>
             {address2},{cityStatePostalString}
           </address>
