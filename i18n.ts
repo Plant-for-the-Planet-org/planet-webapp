@@ -13,6 +13,8 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/${locale}/donate.json`)).default,
     ...(await import(`./public/static/locales/${locale}/donationLink.json`))
       .default,
+    ...(await import(`./public/static/locales/${locale}/donationReceipt.json`))
+      .default,
     ...(await import(`./public/static/locales/${locale}/editProfile.json`))
       .default,
     ...(await import(`./public/static/locales/${locale}/giftfunds.json`))
@@ -50,6 +52,8 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/en/country.json`)).default,
     ...(await import(`./public/static/locales/en/donate.json`)).default,
     ...(await import(`./public/static/locales/en/donationLink.json`)).default,
+    ...(await import(`./public/static/locales/en/donationReceipt.json`))
+      .default,
     ...(await import(`./public/static/locales/en/editProfile.json`)).default,
     ...(await import(`./public/static/locales/en/giftfunds.json`)).default,
     ...(await import(`./public/static/locales/en/leaderboard.json`)).default,

@@ -1,0 +1,23 @@
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "name": "{type, select, individual {Name} organization {Company Name} other {}}"
+    },
+    "donationDetails": {
+      "referenceNumber": "Reference Number",
+      "amountDonated": "Amount Donated",
+      "paymentDate": "Payment Date",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Tax Identification Number (TIN)"
+    },
+    "verifyTaxHeaderPrimary": "Verify your data to download tax receipt",
+    "verifyTaxHeaderSecondary": "once the data is verified, it can not be changed again for this receipt",
+    "downloadTaxReceipt": "Download tax receipt",
+    "recipientInfoHeader": "Receipt will be issued to",
+    "modifyContactInformation": "Modify Contact Information",
+    "confirm": "Confirm",
+    "download": "Download",
+    "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+    "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."
+  }
+}
