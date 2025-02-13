@@ -3,7 +3,8 @@
     "donorInfo": {
       "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
       "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
-      "addressMissing": "Address is missing/invalid"
+      "addressMissing": "Address is missing/invalid",
+      "modifyDonorData": "Modify Donor Data"
     },
     "donationDetails": {
       "referenceNumber": "Reference Number",
@@ -19,6 +20,12 @@
     "modifyContactInformation": "Modify Contact Information",
     "confirm": "Confirm",
     "download": "Download",
+    "viewAllTaxReceipts": "View All Tax Receipts",
+    "donationReceiptsManagementInfo": "Easily access and manage all your donation receipts. See issued receipts ready for download and track pending receipts still being processed.",
+    "contactSupportMessage": "For any questions or issues, please contact us",
+    "emailDetails": "<strong>Email:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink>",
+    "phoneDetails": "<strong>Phone:</strong> +49 8808 9345",
+    "receipts": "Receipts",
     "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
     "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
     "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."

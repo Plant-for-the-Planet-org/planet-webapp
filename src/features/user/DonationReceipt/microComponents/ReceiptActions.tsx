@@ -4,6 +4,7 @@ import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
+import { useCallback } from 'react';
 
 type Props = {
   downloadUrl: string | null;
@@ -19,7 +20,6 @@ const ReceiptActions = ({
   isContactInfoInvalid,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
-  const router = useRouter();
 
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
 
@@ -30,11 +30,10 @@ const ReceiptActions = ({
           <WebappButton
             variant="secondary"
             text={tReceipt('modifyContactInformation')}
-            elementType="button"
+            elementType="link"
+            target="_self"
             icon={<EditIcon />}
-            onClick={() =>
-              router.push(`/profile/tax-receipt/modify-recipient-data`)
-            }
+            href={'/profile/donation-receipt/modify-user-data'}
           />
           {!isContactInfoInvalid && (
             <WebappButton
