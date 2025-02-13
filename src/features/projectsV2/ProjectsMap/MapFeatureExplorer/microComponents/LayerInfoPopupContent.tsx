@@ -38,7 +38,7 @@ const LayerInfoPopupContent = ({
           <p className={styles.label}>
             {tExplore('additionalInfo.resolution')}
           </p>
-          <p>~{additionalInfo?.resolution}</p>
+          <p>{additionalInfo?.resolution}</p>
         </div>
       )}
       {additionalInfo?.description && (
