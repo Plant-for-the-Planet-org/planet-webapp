@@ -1,31 +1,25 @@
-// import { useCallback } from 'react';
 import ContactIcon from '../../../../../public/assets/images/icons/ContactIcon';
 // import RedirectRightArrowIcon from '../../../../../public/assets/images/icons/RedirectRightArrowIcon';
 import styles from '../DonationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
-// import { useRouter } from 'next/router';
 
 const VerifyReceiptFooter = () => {
   const t = useTranslations('DonationReceipt');
-  // const router = useRouter();
-
-  // const redirectToReceiptListPage = useCallback(() => {
-  //   router.push('/profile/donation-receipt');
-  // }, []);
 
   return (
     <section className={styles.verifyReceiptFooter}>
-      {/* <div className={styles.verifyReceiptFooterContainer}>
+      {/* <div className={styles.taxReceiptOverview}>
         <div>
           <h3>{t('viewAllTaxReceipts')}</h3>
           <p>{t('donationReceiptsManagementInfo')}</p>
         </div>
-        <button
-          onClick={redirectToReceiptListPage}
+        <a
+          href="/profile/donation-receipt"
+          target={'_blank'}
           className={styles.redirectButton}
         >
           <RedirectRightArrowIcon />
-        </button>
+        </a>
       </div> */}
       <div className={styles.contactInfo}>
         <ContactIcon />
@@ -33,21 +27,28 @@ const VerifyReceiptFooter = () => {
           <div className={styles.contactSupportMessage}>
             {t('contactSupportMessage')}
           </div>
-          <span>
-            {t.rich('supportContactDetails', {
-              supportLink: (chunk) => (
-                <a
-                  className="planet-links"
-                  href="mailto:spende@plant-for-the-planet.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {chunk}
-                </a>
-              ),
-              strong: (chunk) => <strong>{chunk}</strong>,
-            })}
-          </span>
+          <div className={styles.contactDetails}>
+            <span>
+              {t.rich('emailDetails', {
+                supportLink: (chunk) => (
+                  <a
+                    className="planet-links"
+                    href="mailto:spende@plant-for-the-planet.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {chunk}
+                  </a>
+                ),
+                strong: (chunk) => <strong>{chunk}</strong>,
+              })}
+            </span>
+            <span>
+              {t.rich('phoneDetails', {
+                strong: (chunk) => <strong>{chunk}</strong>,
+              })}
+            </span>
+          </div>
         </div>
       </div>
     </section>

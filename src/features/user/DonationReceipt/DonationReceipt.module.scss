@@ -26,7 +26,7 @@
   width: 100%;
   max-width: 760px;
   min-height: 60px;
-  margin-top: 60px;
+  margin: 60px 0 20px;
   @include xsPhoneView {
     align-items: center;
   }
@@ -162,10 +162,10 @@
     flex-direction: column;
   }
 
+  a,
   button {
-    flex: 1 1;
+    width: 100%;
   }
-
   svg {
     width: 13px;
   }
@@ -182,9 +182,10 @@
   margin-top: 40px;
 }
 
-.verifyReceiptFooterContainer {
+.taxReceiptOverview {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: rgba(242, 242, 242, 0.5);
   border-radius: 9px;
   padding: 8px;
@@ -207,12 +208,19 @@
 
 .contactInfo {
   display: flex;
-  gap: 30px;
+  gap: 16px;
   // margin-top: 30px;
 
   .contactSupportMessage {
     font-weight: 400;
     font-size: $fontSmall;
+  }
+
+  .contactDetails {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 26px;
+    row-gap: 0px;
   }
 }
 .receiptValidationError {

@@ -18,11 +18,6 @@ const ReceiptActions = ({
   isReceiptVerified,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
-  const router = useRouter();
-
-  const redirectToUserDataForm = useCallback(() => {
-    router.push(`/profile/donation-receipt/modify-user-data`);
-  }, []);
 
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
 
@@ -33,9 +28,10 @@ const ReceiptActions = ({
           <WebappButton
             variant="secondary"
             text={tReceipt('modifyContactInformation')}
-            elementType="button"
+            elementType="link"
+            target="_self"
             icon={<EditIcon />}
-            onClick={redirectToUserDataForm}
+            href={'/profile/donation-receipt/modify-user-data'}
           />
           <WebappButton
             variant="primary"
