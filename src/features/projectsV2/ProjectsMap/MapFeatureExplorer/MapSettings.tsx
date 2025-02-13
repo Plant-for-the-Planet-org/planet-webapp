@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import type { MapOptions } from '../../ProjectsMapContext';
 import type { SetState } from '../../../common/types/common';
 
-import { useTranslations } from 'next-intl';
 import MapSettingsSection from './microComponents/MapSettingsSection';
 import MobileMapSettingsLayout from './MobileMapSettingsLayout';
 import { mapSettingsConfig } from '../../../../utils/mapsV2/mapSettings.config';
@@ -21,8 +20,6 @@ const MapSettings: FC<MapSettingsProps> = ({
   isMobile,
   setIsOpen,
 }) => {
-  const tMaps = useTranslations('Maps');
-
   const content = (
     <>
       <MapSettingsSection
@@ -54,7 +51,6 @@ const MapSettings: FC<MapSettingsProps> = ({
         mapOptions={mapOptions}
         updateMapOption={updateMapOption}
       />
-      <div className={styles.exploreDescription}>{tMaps('3trilliontrees')}</div>
     </>
   );
 

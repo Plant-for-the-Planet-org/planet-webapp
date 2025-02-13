@@ -78,6 +78,10 @@
     margin-bottom: 6px;
     font-size: $fontSmall;
   }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 
 .singleLayerOption {
