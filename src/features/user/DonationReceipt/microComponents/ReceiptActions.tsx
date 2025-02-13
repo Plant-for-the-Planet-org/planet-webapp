@@ -9,12 +9,14 @@ type Props = {
   downloadUrl: string | null;
   confirmReceiptData: () => Promise<void>;
   isReceiptVerified: boolean;
+  isDonorContactInvalid: boolean;
 };
 
 const ReceiptActions = ({
   downloadUrl,
   confirmReceiptData,
   isReceiptVerified,
+  isDonorContactInvalid,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   const router = useRouter();
@@ -34,12 +36,14 @@ const ReceiptActions = ({
               router.push(`/profile/tax-receipt/modify-recipient-data`)
             }
           />
-          <WebappButton
-            variant="primary"
-            text={tReceipt('confirm')}
-            elementType="button"
-            onClick={confirmReceiptData}
-          />
+          {!isDonorContactInvalid && (
+            <WebappButton
+              variant="primary"
+              text={tReceipt('confirm')}
+              elementType="button"
+              onClick={confirmReceiptData}
+            />
+          )}
         </>
       ) : showDownloadButton ? (
         <div className={styles.downloadButtonContainer}>

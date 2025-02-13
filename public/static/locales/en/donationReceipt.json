@@ -1,7 +1,9 @@
 {
   "DonationReceipt": {
     "donorInfo": {
-      "name": "{type, select, individual {Name} organization {Company Name} other {}}"
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
+      "addressMissing": "Address is missing/invalid"
     },
     "donationDetails": {
       "referenceNumber": "Reference Number",
@@ -18,6 +20,7 @@
     "confirm": "Confirm",
     "download": "Download",
     "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+    "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
     "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."
   }
 }
