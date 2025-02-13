@@ -73,7 +73,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
   const { address1, zipCode, city, country } = address;
   const hasMultipleDonations = donations.length > 1;
   const isAddressInvalid = !address1 || !zipCode || !city || !country;
-  const isDonorContactInvalid = isAddressInvalid || !donor.name;
+  const isContactInfoInvalid = isAddressInvalid || !donor.name;
   return (
     <section className={styles.receiptDataSection}>
       <DonationsTable
@@ -91,7 +91,7 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
           downloadUrl={downloadUrl}
           confirmReceiptData={confirmReceiptData}
           isReceiptVerified={donationReceiptData.verificationDate !== null}
-          isDonorContactInvalid={isDonorContactInvalid}
+          isContactInfoInvalid={isContactInfoInvalid}
         />
       ) : (
         <div className={styles.receiptVerificationSpinner}>

@@ -65,7 +65,7 @@ const DonorAddress = ({
       ) : (
         <ErrorMessage message={tReceipt('donorInfo.addressMissing')} />
       )}
-      {address2 && (
+      {address2 !== null && (
         <address>
           {address2}, {cityStatePostalString}
         </address>
@@ -91,7 +91,7 @@ const DonorDetails = ({ donor, address, isAddressInvalid }: Props) => {
       <h3 className={styles.header}>{tReceipt('recipientInfoHeader')}</h3>
       <div className={styles.donorInfo}>
         <DonorName donor={donor} />
-        {donor.tin && (
+        {donor.tin !== null && (
           <DonorTIN
             tin={donor.tin}
             label={tReceipt('donationDetails.taxIdentificationNumber')}
