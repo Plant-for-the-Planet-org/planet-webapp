@@ -8,7 +8,7 @@ const VerifyReceiptFooter = () => {
 
   return (
     <section className={styles.verifyReceiptFooter}>
-      {/* <div className={styles.taxReceiptOverview}>
+      {/* <div className={styles.viewTaxReceiptsAction}>
         <div>
           <h3>{t('viewAllTaxReceipts')}</h3>
           <p>{t('donationReceiptsManagementInfo')}</p>
