@@ -1,4 +1,4 @@
-import type { ReceiptData } from '../donationReceipt';
+import type { ReceiptData } from '../donationReceiptTypes';
 import type { APIError, Address, User } from '@planet-sdk/common';
 import type { Control, RegisterOptions } from 'react-hook-form';
 import type { SetState } from '../../../common/types/common';
@@ -141,7 +141,7 @@ const DonorContactForm = ({
           setUser(updatedUser);
         }
 
-        setDonationReceiptData((prev) => {
+        setDonationReceiptData((prev: ReceiptData | undefined) => {
           if (!prev) return undefined;
           const { donorName, address1, address2, country, zipCode, city } =
             getUpdatedDonorDetails(
@@ -156,6 +156,11 @@ const DonorContactForm = ({
               ...prev.donor,
               tin: updatedUser.tin,
               name: donorName,
+              type:
+                updatedUser.type === 'individual' ||
+                updatedUser.type === 'organization'
+                  ? updatedUser.type
+                  : null,
             },
             address: {
               ...prev.address,
@@ -193,7 +198,7 @@ const DonorContactForm = ({
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        {donationReceiptData?.donor.type === 'organization' && (
+        {user.type === 'organization' && (
           <FormInput
             name={'companyName'}
             control={control}
@@ -201,7 +206,7 @@ const DonorContactForm = ({
             label={t('donorInfo.companyName')}
           />
         )}
-        {donationReceiptData?.donor.type === 'individual' && (
+        {user.type === 'individual' && (
           <InlineFormDisplayGroup>
             <FormInput
               name={'firstName'}
@@ -217,7 +222,7 @@ const DonorContactForm = ({
             />
           </InlineFormDisplayGroup>
         )}
-        {donationReceiptData?.donor.tin !== null && (
+        {user.tin !== null && (
           <FormInput
             name={'tin'}
             control={control}
