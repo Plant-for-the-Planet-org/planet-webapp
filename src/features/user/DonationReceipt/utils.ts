@@ -3,7 +3,7 @@ import type {
   AddressView,
   ReceiptData,
   ReceiptDataAPI,
-} from './donationReceipt';
+} from './donationReceiptTypes';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
@@ -19,6 +19,7 @@ export const formatReceiptData = (
     year: data.year || '',
     challenge: data.challenge || '',
     amount: data.amount || 0,
+    currency: data.currency || '',
     verificationDate: data.verificationDate || null,
     downloadUrl: data.downloadUrl || '',
     donor: {

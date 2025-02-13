@@ -1,4 +1,4 @@
-import type { ReceiptData, ReceiptDataAPI } from '../donationReceipt';
+import type { ReceiptData, ReceiptDataAPI } from '../donationReceiptTypes';
 import type { APIError } from '@planet-sdk/common';
 
 import { useCallback, useContext, useState } from 'react';
@@ -38,6 +38,8 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
     dtn,
     challenge,
     year,
+    amount,
+    currency,
   } = donationReceiptData;
 
   const confirmReceiptData = useCallback(async () => {
@@ -91,10 +93,14 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
     setErrors,
     setIsLoading,
   ]);
-
+  const hasMultipleDonations = donations.length > 1;
   return (
     <section className={styles.receiptDataSection}>
-      <DonationsTable donations={donations} />
+      <DonationsTable
+        donations={donations}
+        amount={hasMultipleDonations ? amount : null}
+        currency={hasMultipleDonations ? currency : null}
+      />
       <DonorDetails donor={donor} address={address} />
       {!isLoading ? (
         <ReceiptActions

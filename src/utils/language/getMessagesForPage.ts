@@ -10,6 +10,7 @@ type TRANSLATION_FILE_NAMES =
   | 'country'
   | 'donate'
   | 'donationLink'
+  | 'donationReceipt'
   | 'editProfile'
   | 'giftfunds'
   | 'leaderboard'
@@ -26,8 +27,7 @@ type TRANSLATION_FILE_NAMES =
   | 'registerTrees'
   | 'tenants'
   | 'treemapper'
-  | 'treemapperAnalytics'
-  | 'donationReceipt';
+  | 'treemapperAnalytics';
 
 interface MessageConfig {
   /**

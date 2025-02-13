@@ -1,4 +1,4 @@
-import type { AddressView, DonorView } from '../donationReceipt';
+import type { AddressView, DonorView } from '../donationReceiptTypes';
 import type { CountryCode } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
@@ -48,7 +48,7 @@ const DonorDetails = ({ donor, address }: Props) => {
         <address>
           {address1},{cityStatePostalString}
         </address>
-        {address2 && (
+        {address2 !== null && (
           <address>
             {address2},{cityStatePostalString}
           </address>

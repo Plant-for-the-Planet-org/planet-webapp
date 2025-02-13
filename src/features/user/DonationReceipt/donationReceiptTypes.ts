@@ -26,6 +26,7 @@ interface ReceiptDataBase {
   dtn: string;
   year: string;
   challenge: string;
+  currency: string;
   amount: number;
   verificationDate: string | null;
   downloadUrl: string;
@@ -58,7 +59,6 @@ export interface DonorAPI {
 
 export interface ReceiptDataAPI extends ReceiptDataBase {
   paymentDate: string;
-  currency: string;
   donationCount: number;
   country: string;
   donor: DonorAPI;

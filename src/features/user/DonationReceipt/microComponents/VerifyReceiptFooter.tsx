@@ -1,21 +1,21 @@
-import { useCallback } from 'react';
+// import { useCallback } from 'react';
 import ContactIcon from '../../../../../public/assets/images/icons/ContactIcon';
-import RedirectRightArrowIcon from '../../../../../public/assets/images/icons/RedirectRightArrowIcon';
+// import RedirectRightArrowIcon from '../../../../../public/assets/images/icons/RedirectRightArrowIcon';
 import styles from '../DonationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 const VerifyReceiptFooter = () => {
   const t = useTranslations('DonationReceipt');
-  const router = useRouter();
+  // const router = useRouter();
 
-  const redirectToReceiptListPage = useCallback(() => {
-    router.push('/profile/donation-receipt');
-  }, []);
+  // const redirectToReceiptListPage = useCallback(() => {
+  //   router.push('/profile/donation-receipt');
+  // }, []);
 
   return (
     <section className={styles.verifyReceiptFooter}>
-      <div className={styles.verifyReceiptFooterContainer}>
+      {/* <div className={styles.verifyReceiptFooterContainer}>
         <div>
           <h3>{t('viewAllTaxReceipts')}</h3>
           <p>{t('donationReceiptsManagementInfo')}</p>
@@ -26,7 +26,7 @@ const VerifyReceiptFooter = () => {
         >
           <RedirectRightArrowIcon />
         </button>
-      </div>
+      </div> */}
       <div className={styles.contactInfo}>
         <ContactIcon />
         <div>

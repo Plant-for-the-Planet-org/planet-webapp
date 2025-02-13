@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import type {
   ReceiptData,
   ReceiptDataAPI,
-} from '../../user/DonationReceipt/donationReceipt';
+} from '../../user/DonationReceipt/donationReceiptTypes';
 import type { SetState } from '../types/common';
 
 import { useMemo, useState, createContext, useContext } from 'react';

@@ -35,6 +35,7 @@
     "contactManagementHeader": "Update profile and address",
     "saveDataAndReturn": "Save data and return",
     "addressRequired": "Please choose an address to proceed.",
-    "InvalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again."
+    "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+    "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."
   }
 }
