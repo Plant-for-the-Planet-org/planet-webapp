@@ -7,23 +7,23 @@ interface SwitchProps {
 
 const baseSwitchStyle = {
   '.MuiSwitch-track': {
-    height: '7px',
-    width: '18px',
+    height: '10px', // Increased from 7px
+    width: '27px', // Increased from 18px
   },
   '.MuiSwitch-thumb': {
-    width: '11px',
-    height: '11px',
+    width: '16px', // Increased from 11px
+    height: '16px', // Increased from 11px
   },
   '.MuiSwitch-switchBase': {
     padding: '1px',
   },
   '&.MuiSwitch-root': {
-    width: '38px',
-    height: '26px',
-    padding: '3px',
+    width: '57px', // Increased from 38px
+    height: '39px', // Increased from 26px
+    padding: '4px', // Slightly increased from 3px
   },
   '.MuiSwitch-switchBase.Mui-checked': {
-    transform: 'translateX(11px)',
+    transform: 'translateX(16px)', // Increased from 11px to match new dimensions
   },
 };
 
