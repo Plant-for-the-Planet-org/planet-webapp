@@ -1,5 +1,6 @@
 import type { AddressAction } from '../../common/types/profile';
 import type { APIError, Address } from '@planet-sdk/common';
+import type { ReceiptDataAPI } from './donationReceiptTypes';
 
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -14,14 +15,27 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import {
+  getAuthenticatedRequest,
+  getRequest,
+} from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+
+type StoredReceiptData = {
+  dtn: string;
+  year: string;
+  challenge: string;
+};
 
 const DonorContactManagement = () => {
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const { donationReceiptData, setDonationReceiptData } = useDonationReceipt();
+  const {
+    donationReceiptData,
+    setDonationReceiptData,
+    updateDonationReceiptData,
+  } = useDonationReceipt();
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -47,6 +61,47 @@ const DonorContactManagement = () => {
     }
   }, [donationReceiptData, router]);
 
+  useEffect(() => {
+    if (donationReceiptData) return;
+    const receiptDataString = sessionStorage.getItem('receiptData');
+    const parsedData: StoredReceiptData = receiptDataString
+      ? JSON.parse(receiptDataString)
+      : null;
+    if (!parsedData) {
+      router.push('/');
+      return;
+    }
+    const { dtn, year, challenge } = parsedData;
+    const fetchReceiptData = async () => {
+      try {
+        const data = await getRequest<ReceiptDataAPI>({
+          tenant: tenantConfig.id,
+          url: '/app/donationReceipt',
+          queryParams: {
+            dtn,
+            year,
+            challenge,
+          },
+        });
+        if (data) {
+          updateDonationReceiptData(data);
+          sessionStorage.removeItem('receiptData');
+        }
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        router.push('/');
+      }
+    };
+
+    fetchReceiptData();
+  }, [
+    tenantConfig.id,
+    updateDonationReceiptData,
+    handleError,
+    donationReceiptData,
+    router,
+  ]);
+
   const updateDonorAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
@@ -64,7 +119,7 @@ const DonorContactManagement = () => {
 
   useEffect(() => {
     updateDonorAddresses();
-  }, [updateDonorAddresses]);
+  }, []);
 
   const renderModalContent = useMemo(() => {
     switch (addressAction) {

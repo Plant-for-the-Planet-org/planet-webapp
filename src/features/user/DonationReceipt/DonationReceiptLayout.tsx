@@ -34,13 +34,13 @@ const DonationReceiptLayout = () => {
 
   useEffect(() => {
     if (!router.isReady || isInvalidReceipt) return;
+    if (donationReceiptData?.hasDonorDataChanged || donationReceiptData) return;
     if (
       typeof dtn !== 'string' ||
       typeof year !== 'string' ||
       typeof challenge !== 'string'
     )
       return;
-    if (donationReceiptData?.hasDonorDataChanged) return;
     const fetchReceiptData = async () => {
       setIsLoading(true);
       try {
@@ -53,7 +53,9 @@ const DonationReceiptLayout = () => {
             challenge,
           },
         });
-        if (data) updateDonationReceiptData(data);
+        if (data) {
+          updateDonationReceiptData(data);
+        }
       } catch (err) {
         const errorResponse = err as APIError;
         setErrors(handleError(errorResponse));
@@ -68,7 +70,14 @@ const DonationReceiptLayout = () => {
     };
 
     fetchReceiptData();
-  }, [dtn, year, challenge, router.isReady, isInvalidReceipt]);
+  }, [
+    dtn,
+    year,
+    challenge,
+    router.isReady,
+    isInvalidReceipt,
+    donationReceiptData,
+  ]);
 
   if (isInvalidReceipt) {
     return (

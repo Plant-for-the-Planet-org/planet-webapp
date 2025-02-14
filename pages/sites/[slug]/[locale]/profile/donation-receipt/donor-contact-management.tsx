@@ -17,16 +17,19 @@ import {
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useDonationReceipt } from '../../../../../../src/features/common/Layout/DonationReceiptContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import { useDonationReceipt } from '../../../../../../src/features/common/Layout/DonationReceiptContext';
 
 export default function ModifyDonorData() {
   const t = useTranslations('DonationReceipt');
   const { donationReceiptData } = useDonationReceipt();
+  const receiptDataString = sessionStorage.getItem('receiptData');
+  const fromVerificationPage =
+    receiptDataString !== null || donationReceiptData !== undefined;
   return (
     <UserLayout>
       <Head>{t('donorContactManagement')}</Head>
-      {donationReceiptData ? (
+      {fromVerificationPage ? (
         <DonorContactManagement />
       ) : (
         <AccessDeniedLoader />

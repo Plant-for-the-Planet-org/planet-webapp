@@ -123,8 +123,8 @@ const DonorContactForm = ({
           const body =
             user?.type === 'individual'
               ? {
-                  firstName: data.firstName,
-                  lastName: data.lastName,
+                  firstname: data.firstName,
+                  lastname: data.lastName,
                   tin: data.tin,
                 }
               : { name: data.companyName, tin: data.tin };

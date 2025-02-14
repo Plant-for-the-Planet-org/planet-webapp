@@ -5,6 +5,7 @@ import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 import { useCallback } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 type Props = {
   downloadUrl: string | null;
@@ -19,10 +20,27 @@ const ReceiptActions = ({
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   const router = useRouter();
+  const { isAuthenticated } = useAuth0();
 
   const navigateToDonorContactManagement = useCallback(() => {
     router.push(`/profile/donation-receipt/donor-contact-management`);
-  }, [router]);
+    const { dtn, year, challenge } = router.query;
+    if (
+      typeof dtn !== 'string' ||
+      typeof year !== 'string' ||
+      typeof challenge !== 'string'
+    )
+      return;
+    if (!isAuthenticated)
+      sessionStorage.setItem(
+        'receiptData',
+        JSON.stringify({
+          dtn,
+          year,
+          challenge,
+        })
+      );
+  }, [router, isAuthenticated]);
 
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
 
