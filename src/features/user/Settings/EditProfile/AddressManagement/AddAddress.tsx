@@ -2,7 +2,6 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
-import type { ReceiptData } from '../../../DonationReceipt/donationReceipt';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
@@ -29,7 +28,6 @@ interface Props {
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
   updateUserAddresses: () => Promise<void>;
-  setDonationReceiptData?: SetState<ReceiptData | undefined>;
 }
 
 const defaultAddressDetail = {
@@ -45,7 +43,6 @@ const AddAddress = ({
   setAddressAction,
   showPrimaryAddressToggle,
   updateUserAddresses,
-  setDonationReceiptData,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { contextLoaded, user, token, logoutUser } = useUserProps();
@@ -76,17 +73,7 @@ const AddAddress = ({
           token,
           logoutUser,
         });
-        if (res) {
-          updateUserAddresses();
-          if (setDonationReceiptData)
-            setDonationReceiptData((prev) => {
-              if (!prev) return undefined;
-              return {
-                ...prev,
-                hasDonorDataChanged: true,
-              };
-            });
-        }
+        if (res) updateUserAddresses();
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {

@@ -3,7 +3,6 @@ import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { FormData } from './AddAddress';
 import type { AddressAction } from '../../../../common/types/profile';
-import type { ReceiptData } from '../../../DonationReceipt/donationReceipt';
 
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
@@ -22,7 +21,6 @@ interface Props {
   updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
-  setDonationReceiptData?: SetState<ReceiptData | undefined>;
 }
 
 const EditAddress = ({
@@ -31,7 +29,6 @@ const EditAddress = ({
   updateUserAddresses,
   setAddressAction,
   showPrimaryAddressToggle,
-  setDonationReceiptData,
 }: Props) => {
   const defaultAddressDetail = {
     address: selectedAddressForAction.address,
@@ -77,17 +74,7 @@ const EditAddress = ({
           token,
           logoutUser,
         });
-        if (res) {
-          updateUserAddresses();
-          if (setDonationReceiptData)
-            setDonationReceiptData((prev) => {
-              if (!prev) return undefined;
-              return {
-                ...prev,
-                hasDonorDataChanged: true,
-              };
-            });
-        }
+        if (res) updateUserAddresses();
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {

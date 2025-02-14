@@ -12,7 +12,7 @@ import { Controller, useForm } from 'react-hook-form';
 import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import DonorAddress from './DonorAddress';
+import DonorAddressList from './DonorAddressList';
 import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
 import { getUpdatedDonorDetails } from '../utils';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -235,7 +235,7 @@ const DonorContactForm = ({
       <section className={styles.donorAddressSection}>
         {donorAddresses.map((address) => {
           return (
-            <DonorAddress
+            <DonorAddressList
               key={address.id}
               address={address}
               setSelectedAddressForAction={setSelectedAddressForAction}

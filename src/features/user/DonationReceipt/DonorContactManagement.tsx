@@ -132,7 +132,6 @@ const DonorContactManagement = () => {
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
-            setDonationReceiptData={setDonationReceiptData}
           />
         );
       case ADDRESS_ACTIONS.ADD:
@@ -142,7 +141,6 @@ const DonorContactManagement = () => {
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
-            setDonationReceiptData={setDonationReceiptData}
           />
         );
       default:
