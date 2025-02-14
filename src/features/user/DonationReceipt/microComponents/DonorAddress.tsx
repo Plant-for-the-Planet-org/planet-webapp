@@ -1,7 +1,7 @@
 import type { Address, CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
-import type { AddressView } from '../donationReceipt';
+import type { AddressView } from '../donationReceiptTypes';
 import type { FormValues } from './DonorContactForm';
 import type { Control, UseFormSetValue } from 'react-hook-form';
 

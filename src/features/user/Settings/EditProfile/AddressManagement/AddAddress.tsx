@@ -2,7 +2,7 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
-import type { ReceiptData } from '../../../DonationReceipt/donationReceipt';
+import type { ReceiptData } from '../../../DonationReceipt/donationReceiptTypes';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
