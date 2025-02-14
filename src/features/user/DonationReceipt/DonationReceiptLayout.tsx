@@ -15,6 +15,7 @@ import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter';
 import ReceiptValidationError from './microComponents/ReceiptValidationError';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const DonationReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ const DonationReceiptLayout = () => {
   const { dtn, year, challenge } = router.query;
   const { updateDonationReceiptData, donationReceiptData } =
     useDonationReceipt();
+  const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -33,8 +35,7 @@ const DonationReceiptLayout = () => {
   }, [dtn, year, challenge, router.isReady]);
 
   useEffect(() => {
-    if (!router.isReady || isInvalidReceipt) return;
-    if (donationReceiptData?.hasDonorDataChanged || donationReceiptData) return;
+    if (!router.isReady || isInvalidReceipt || donationReceiptData) return;
     if (
       typeof dtn !== 'string' ||
       typeof year !== 'string' ||
@@ -55,6 +56,15 @@ const DonationReceiptLayout = () => {
         });
         if (data) {
           updateDonationReceiptData(data);
+          if (!isAuthenticated)
+            sessionStorage.setItem(
+              'receiptData',
+              JSON.stringify({
+                dtn,
+                year,
+                challenge,
+              })
+            );
         }
       } catch (err) {
         const errorResponse = err as APIError;
