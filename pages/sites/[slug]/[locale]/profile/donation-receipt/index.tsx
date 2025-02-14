@@ -10,7 +10,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import ReceiptCardList from '../../../../../../src/features/user/DonationReceipt/ReceiptCardList';
+import DonationReceipts from '../../../../../../src/features/user/DonationReceipt/DonationReceipts';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -25,7 +25,7 @@ export default function DonationReceiptsPage() {
       <Head>
         <title>{t('receipts')}</title>
       </Head>
-      <ReceiptCardList />
+      <DonationReceipts />
     </UserLayout>
   );
 }
