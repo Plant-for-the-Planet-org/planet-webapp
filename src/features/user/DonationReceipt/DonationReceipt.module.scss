@@ -122,6 +122,16 @@
   border-radius: 9px;
   padding: 10px 15px;
 
+  .errorMessageContainer {
+    display: flex;
+    gap: 5px;
+
+    .errorMessage {
+      font-size: 12px;
+      color: rgba(235, 87, 87, 1);
+    }
+  }
+
   .header {
     font-weight: 700;
     font-size: $fontSmall;

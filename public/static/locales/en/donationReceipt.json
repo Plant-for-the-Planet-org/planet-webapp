@@ -5,11 +5,13 @@
       "firstNameRequired": "First Name field is required",
       "lastName": "Last Name",
       "lastNameRequired": "Last Name field is required",
-      "name": "{type, select, individual {Name} organization {Company Name} other {}}",
       "tin": "Tax Identification Number (TIN)",
       "companyName": "Company Name",
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
       "companyRequired": "Company Name field is Required",
       "tinRequired": "Tin field is required",
+      "addressMissing": "Address is missing/invalid",
       "modifyDonorData": "Modify Donor Data"
     },
     "donationDetails": {
@@ -37,6 +39,7 @@
     "saveDataAndReturn": "Save data and return",
     "addressRequired": "Please choose an address to proceed.",
     "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+    "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
     "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."
   }
 }

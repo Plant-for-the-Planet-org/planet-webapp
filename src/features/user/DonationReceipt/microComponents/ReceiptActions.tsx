@@ -8,12 +8,14 @@ type Props = {
   downloadUrl: string | null;
   confirmReceiptData: () => Promise<void>;
   isReceiptVerified: boolean;
+  isContactInfoInvalid: boolean;
 };
 
 const ReceiptActions = ({
   downloadUrl,
   confirmReceiptData,
   isReceiptVerified,
+  isContactInfoInvalid,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
 
@@ -31,12 +33,14 @@ const ReceiptActions = ({
             icon={<EditIcon />}
             href={'/profile/donation-receipt/donor-contact-management'}
           />
-          <WebappButton
-            variant="primary"
-            text={tReceipt('confirm')}
-            elementType="button"
-            onClick={confirmReceiptData}
-          />
+          {!isContactInfoInvalid && (
+            <WebappButton
+              variant="primary"
+              text={tReceipt('confirm')}
+              elementType="button"
+              onClick={confirmReceiptData}
+            />
+          )}
         </>
       ) : showDownloadButton ? (
         <div className={styles.downloadButtonContainer}>
