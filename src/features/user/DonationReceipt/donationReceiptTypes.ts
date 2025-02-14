@@ -1,6 +1,6 @@
 import type { RECEIPT_STATUS } from './utils';
 
-export type Donations = {
+export type Donation = {
   amount: number;
   currency: string;
   paymentDate: string;
@@ -30,7 +30,7 @@ interface ReceiptDataBase {
   amount: number;
   verificationDate: string | null;
   downloadUrl: string;
-  donations: Donations[];
+  donations: Donation[];
 }
 
 export interface ReceiptData extends ReceiptDataBase {
@@ -66,4 +66,57 @@ export interface ReceiptDataAPI extends ReceiptDataBase {
   reference: string;
   status: string;
   template: 'single' | 'summary';
+}
+
+// receipt list
+
+export interface DonationReceiptsStatus {
+  issued: Issued[];
+  unissued: Unissued[];
+}
+
+export interface Issued {
+  dtn: string;
+  issueDate: string;
+  challenge: string;
+  year: string;
+  country: string;
+  reference: string;
+  amount: number;
+  currency: string;
+  paymentDate: string;
+  verificationDate: string | null;
+  donor: DonorAPI;
+  downloadUrl: string;
+  donationCount: number;
+  donations: Donation[];
+  status: string;
+  template: string;
+}
+
+export interface Unissued {
+  amount: string;
+  country: string;
+  currency: string;
+  donationCount: number;
+  issuableDate: string;
+  donations: UnissuedDonation[];
+  paymentDate: string;
+  template: string;
+  tinIsRequired: boolean;
+  type: string;
+  uids: string[];
+  year: number;
+}
+
+export interface UnissuedDonation {
+  amount: number;
+  currency: string;
+  groupMode: string;
+  isEndowment: boolean;
+  issuableDate: string;
+  paymentDate: string;
+  purpose: string;
+  tinIsRequired: boolean;
+  uid: string;
 }
