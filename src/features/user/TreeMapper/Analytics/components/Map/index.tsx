@@ -435,6 +435,15 @@ export const MapContainer = () => {
             >
               <Source type="geojson" data={plantLocations}>
                 <Layer
+                  id={`point-layer`}
+                  type="circle"
+                  paint={{
+                    'circle-color': '#007A49',
+                    'circle-opacity': 0.5,
+                  }}
+                  filter={['==', ['geometry-type'], 'Point']}
+                />
+                <Layer
                   id="plant-locations-fill"
                   type="fill"
                   paint={{
