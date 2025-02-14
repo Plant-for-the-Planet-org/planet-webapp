@@ -76,7 +76,7 @@ const SingleLayerOption = ({
           onClose={handleClose}
           anchorEl={anchor}
           anchorOrigin={{
-            vertical: 'top',
+            vertical: 'bottom',
             horizontal: 'left',
           }}
           transformOrigin={{
@@ -87,7 +87,7 @@ const SingleLayerOption = ({
           sx={{
             '& .MuiPaper-root': {
               borderRadius: '12px',
-              marginTop: '-8px',
+              marginTop: '-2px',
             },
           }}
           onMouseLeave={handleClose}
