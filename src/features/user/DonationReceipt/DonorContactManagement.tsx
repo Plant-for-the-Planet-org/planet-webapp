@@ -144,7 +144,7 @@ const DonorContactManagement = () => {
   }, [addressAction, selectedAddressForAction, updateDonorAddresses]);
 
   return (
-    <section className={styles.donationReceiptLayout}>
+    <section className={styles.donorContactManagementLayout}>
       <div className={styles.donorContactManagement}>
         <div className={styles.headerContainer}>
           <button onClick={navigateToVerificationPage}>
