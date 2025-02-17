@@ -2,17 +2,10 @@ import type {
   ExploreLayersData,
   SingleExploreLayerConfig,
 } from '../../features/projectsV2/ProjectsMapContext';
-import type { MapLayerOptionsType } from './mapSettings.config';
 
 import { useEffect, useRef } from 'react';
 import { mapSettingsConfig } from './mapSettings.config';
 import { useProjectsMap } from '../../features/projectsV2/ProjectsMapContext';
-
-const toCamelCase = (str: string): string => {
-  return str
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
-};
 
 export const useFetchLayers = () => {
   const { exploreLayersData, setExploreLayersData } = useProjectsMap();
@@ -54,9 +47,7 @@ export const useFetchLayers = () => {
         }
 
         const availableLayers = new Set(
-          layers
-            .filter((layer) => layer.enabled)
-            .map((layer) => toCamelCase(layer.name))
+          layers.filter((layer) => layer.enabled).map((layer) => layer.key)
         );
 
         // Update isAvailable in mapSettingsConfig based on API response
@@ -74,8 +65,7 @@ export const useFetchLayers = () => {
         });
 
         const layersData = layers.reduce((tempLayersData, layer) => {
-          const key = toCamelCase(layer.name) as MapLayerOptionsType;
-          tempLayersData[key] = layer;
+          tempLayersData[layer.key] = layer;
           return tempLayersData;
         }, {} as ExploreLayersData);
 

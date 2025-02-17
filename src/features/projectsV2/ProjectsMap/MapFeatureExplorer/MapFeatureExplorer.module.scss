@@ -55,10 +55,21 @@
   max-height: 400px;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: $primaryColorNew #fff;
 
   &::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primaryColorNew;
+    border-radius: 10px;
+    border: 2px solid #fff;
   }
 
   @include xsPhoneView {

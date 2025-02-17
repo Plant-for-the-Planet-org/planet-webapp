@@ -61,6 +61,7 @@ export type ExploreLayersData = {
 export type SingleExploreLayerConfig = {
   uuid: string;
   name: string;
+  key: MapLayerOptionsType;
   description: string;
   earthEngineAssetId: string;
   visParams: VisParams;

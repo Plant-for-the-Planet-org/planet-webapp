@@ -142,7 +142,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   soil: [
     {
       key: 'soilNitrogen',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -159,7 +159,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilPH',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -175,7 +175,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'soilOrganicCarbon',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~250m',
@@ -211,7 +211,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   biodiversity: [
     {
       key: 'treeSpeciesDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~3km',
