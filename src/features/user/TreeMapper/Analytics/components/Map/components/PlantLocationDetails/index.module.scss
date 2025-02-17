@@ -136,8 +136,11 @@
           .individualSpeciesContainer {
             display: flex;
 
-            .speciesName {
+            > *:not(:last-child) {
               border-right: 1px solid #68b03066;
+            }
+
+            .speciesName {
               width: 120px;
               white-space: nowrap;
               overflow: hidden;
@@ -147,7 +150,6 @@
             }
 
             .count {
-              border-right: 1px solid #68b03066;
               display: flex;
               justify-content: center;
               align-items: center;

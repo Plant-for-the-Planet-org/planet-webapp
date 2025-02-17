@@ -77,13 +77,16 @@ const ListOfSpeciesPlanted = ({
               <div className={styles.count}>
                 {getFormattedNumber(locale, species.treeCount)}
               </div>
-              <div className={styles.totalPercentage}>
-                {(
-                  (species.treeCount / plantLocationDetails.totalPlantedTrees) *
-                  100
-                ).toFixed(2)}
-                %
-              </div>
+              {plantLocationDetails.totalPlantedTrees > 1 && (
+                <div className={styles.totalPercentage}>
+                  {(
+                    (species.treeCount /
+                      plantLocationDetails.totalPlantedTrees) *
+                    100
+                  ).toFixed(2)}
+                  %
+                </div>
+              )}
             </div>
           );
         })}
