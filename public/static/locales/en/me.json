@@ -137,6 +137,12 @@
     "referred": "Referred",
     "in-dispute": "In Dispute",
     "dispute-lost": "Dispute Lost",
+    "closed": "Closed",
+    "missing-account": "Bank Account Missing",
+    "open": "Open",
+    "processing": "Processing",
+    "review-required": "Payout Under Review",
+    "signed": "Signed",
     "nameForest": "{name}'s Forest",
     "taxReceipt": "Tax Receipt",
     "history": "History",
@@ -183,7 +189,6 @@
     "transferFee": "Transfer Fee",
     "giftComment": "Comment (Private)",
     "giftOccasion": "Occasion",
-    "open": "Open",
     "downloads": "Downloads",
     "account": "Account",
     "loadMore": "Load More",
@@ -284,7 +289,6 @@
     "composite-donation": "Mixed Donation",
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
-    "processing": "Processing",
     "bankDetails": "Bank Details",
     "refundAmount": "Refunded Amount"
   }
