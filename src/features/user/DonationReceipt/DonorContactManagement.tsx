@@ -49,7 +49,6 @@ const DonorContactManagement = () => {
     user?.addresses ?? []
   );
   const [isLoading, setIsLoading] = useState(false);
-
   const navigateToVerificationPage = useCallback(() => {
     if (donationReceiptData) {
       const { dtn, challenge, year } = donationReceiptData;
@@ -116,10 +115,6 @@ const DonorContactManagement = () => {
       setErrors(handleError(error as APIError));
     }
   }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
-
-  useEffect(() => {
-    updateDonorAddresses();
-  }, []);
 
   const renderModalContent = useMemo(() => {
     switch (addressAction) {

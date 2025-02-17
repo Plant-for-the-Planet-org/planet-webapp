@@ -39,7 +39,7 @@ const EditAddress = ({
   };
 
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>(
@@ -74,7 +74,38 @@ const EditAddress = ({
           token,
           logoutUser,
         });
-        if (res) updateUserAddresses();
+        if (res) {
+          updateUserAddresses();
+          setUser((prev) => {
+            if (!prev) return null;
+
+            const updatedAddresses = prev.addresses.reduce<Address[]>(
+              (acc, addr) => {
+                if (addr.id === res.id) return acc;
+
+                if (res.isPrimary && addr.isPrimary) {
+                  acc.push({
+                    ...addr,
+                    isPrimary: false,
+                    type: ADDRESS_TYPE.OTHER,
+                  });
+                } else {
+                  acc.push(addr);
+                }
+
+                return acc;
+              },
+              []
+            );
+
+            updatedAddresses.push(res);
+
+            return {
+              ...prev,
+              addresses: updatedAddresses,
+            };
+          });
+        }
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {
@@ -92,7 +123,7 @@ const EditAddress = ({
       selectedAddressForAction?.id,
       tenantConfig.id,
       logoutUser,
-      updateUserAddresses,
+      // updateUserAddresses,
       handleError,
       putAuthenticatedRequest,
       primaryAddressChecked,

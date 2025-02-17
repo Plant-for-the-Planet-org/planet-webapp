@@ -45,7 +45,7 @@ const AddAddress = ({
   updateUserAddresses,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const configCountry = getStoredConfig('country');
   const defaultCountry = user?.country || configCountry || 'DE';
   const { tenantConfig } = useTenant();
@@ -73,7 +73,26 @@ const AddAddress = ({
           token,
           logoutUser,
         });
-        if (res) updateUserAddresses();
+        if (res) {
+          setUser((prev) => {
+            if (!prev) return null;
+
+            const updatedAddresses =
+              res.type === ADDRESS_TYPE.PRIMARY
+                ? prev.addresses.map((addr) =>
+                    addr.type === ADDRESS_TYPE.PRIMARY
+                      ? { ...addr, type: ADDRESS_TYPE.OTHER }
+                      : addr
+                  )
+                : prev.addresses;
+
+            return {
+              ...prev,
+              addresses: [...updatedAddresses, res],
+            };
+          });
+          updateUserAddresses();
+        }
       } catch (error) {
         setErrors(handleError(error as APIError));
       } finally {
