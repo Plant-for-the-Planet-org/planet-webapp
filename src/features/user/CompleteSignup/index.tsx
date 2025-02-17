@@ -492,6 +492,10 @@ export default function CompleteSignup(): ReactElement | null {
                         value: postalRegex as RegExp,
                         message: t('validationErrors.zipCodeInvalid'),
                       },
+                      maxLength: {
+                        value: 15,
+                        message: t('validationErrors.zipCodeInvalid'),
+                      },
                     }}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
