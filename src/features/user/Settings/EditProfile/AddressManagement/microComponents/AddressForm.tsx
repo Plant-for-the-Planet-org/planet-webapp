@@ -182,6 +182,10 @@ const AddressForm = ({
               value: postalRegex as RegExp,
               message: t('validationErrors.zipCodeInvalid'),
             },
+            maxLength: {
+              value: 15,
+              message: t('validationErrors.zipCodeInvalid'),
+            },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
