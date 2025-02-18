@@ -262,8 +262,9 @@ export const getLocalizedPath = (path: string, locale: string): string => {
     return `/${locale}`;
   }
 
-  // If path already starts with locale, return as is
-  if (cleanPath.startsWith(`/${locale}/`)) {
+  // If path already contains locale as a segment, return as is
+  const pathSegments = cleanPath.split('/').filter(Boolean);
+  if (pathSegments[0] === locale) {
     return cleanPath;
   }
 
