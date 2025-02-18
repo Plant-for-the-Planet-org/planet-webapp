@@ -31,11 +31,8 @@ type StoredReceiptData = {
 const DonorContactManagement = () => {
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const {
-    donationReceiptData,
-    setDonationReceiptData,
-    updateDonationReceiptData,
-  } = useDonationReceipt();
+  const { donationReceiptData, updateDonationReceiptData } =
+    useDonationReceipt();
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -157,7 +154,7 @@ const DonorContactManagement = () => {
         <DonorContactForm
           donorAddresses={donorAddresses}
           donationReceiptData={donationReceiptData}
-          setDonationReceiptData={setDonationReceiptData}
+          updateDonationReceiptData={updateDonationReceiptData}
           setSelectedAddressForAction={setSelectedAddressForAction}
           setAddressAction={setAddressAction}
           setIsModalOpen={setIsModalOpen}

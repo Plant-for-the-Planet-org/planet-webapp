@@ -55,7 +55,6 @@ const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
         verificationDate: getVerificationDate(),
       },
     };
-
     try {
       if (hasDonorDataChanged) {
         if (!address.guid || !token || !user || !contextLoaded) return;

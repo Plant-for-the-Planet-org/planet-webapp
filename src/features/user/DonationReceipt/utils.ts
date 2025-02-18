@@ -33,10 +33,10 @@ export const formatReceiptData = (
       zipCode: data.donor?.zipCode || '',
       address1: data.donor?.address1 || '',
       address2: data.donor?.address2 || null,
-      guid: null,
+      guid: data.donor?.guid ?? null,
     },
     donations: data.donations || [],
-    hasDonorDataChanged: false,
+    hasDonorDataChanged: data.hasDonorDataChanged ?? false,
     operation: data.verificationDate === null ? 'verify' : 'download',
   };
 };
@@ -69,43 +69,45 @@ export const isMatchingAddress = (
 };
 
 /**
- * Extracts donor details and address information from a user object.
+ * Retrieves updated donor details, including the donor's name and address information.
  *
  * @param {User} res - The user object containing donor information, including addresses.
- * @param {string} addressGuid - The unique identifier for the address to retrieve.
+ * @param {Address[]} donorAddresses - The list of donor addresses associated with the user.
+ * @param {string | null} addressGuid - The unique identifier for the address to retrieve.
  * @returns {{
- *   donorName: string;
+ *   name: string;
  *   address1: string;
- *   address2: string;
+ *   address2: string | null;
  *   zipCode: string;
  *   city: string;
  *   country: string;
- * }} - An object containing the donor's name and the details of the specified address.
+ *   tin: string | null;
+ * }} - An object containing the donor's name, tax identification number (TIN), and the details of the specified address.
  *
- * - If the user is an individual, the donor name is derived from `firstname` and `lastname`.
+ * - If the user is an individual, the donor name is constructed from `firstname` and `lastname`.
  * - If the user is an organization, the donor name is taken from `name`, defaulting to an empty string if not provided.
- * - The address is retrieved based on the provided `addressGuid`, and if no matching address is found, default empty strings are returned for address fields.
+ * - The address is retrieved using the provided `addressGuid`. If no matching address is found, default values (empty strings or `null`) are returned for the address fields.
+ * - The donor's TIN is included if available; otherwise, `null` is returned.
  */
-
 export const getUpdatedDonorDetails = (
   res: User,
-  donorAddresses: Address[],
   addressGuid: string | null
 ) => {
-  const donorName =
+  const name =
     res.type === 'individual'
       ? `${res.firstname} ${res.lastname}`
       : res.name ?? '';
-  const donorAddress = donorAddresses.find(
+  const donorAddress = res.addresses.find(
     (address) => address.id === addressGuid
   );
 
   return {
-    donorName,
+    name,
     address1: donorAddress?.address ?? '',
     address2: donorAddress?.address2 ?? null,
     zipCode: donorAddress?.zipCode ?? '',
     city: donorAddress?.city ?? '',
     country: donorAddress?.country ?? '',
+    tin: res.tin ?? null,
   };
 };

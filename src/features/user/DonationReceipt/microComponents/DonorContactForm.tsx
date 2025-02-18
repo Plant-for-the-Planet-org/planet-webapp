@@ -1,4 +1,4 @@
-import type { ReceiptData } from '../donationReceiptTypes';
+import type { ReceiptData, ReceiptDataAPI } from '../donationReceiptTypes';
 import type { APIError, Address, User } from '@planet-sdk/common';
 import type { Control, RegisterOptions } from 'react-hook-form';
 import type { SetState } from '../../../common/types/common';
@@ -23,7 +23,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 type Props = {
   donorAddresses: Address[];
   donationReceiptData: ReceiptData | undefined;
-  setDonationReceiptData: SetState<ReceiptData | undefined>;
+  updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
   setSelectedAddressForAction: SetState<Address | null>;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
@@ -68,7 +68,7 @@ const FormInput = ({ name, control, rules, label }: FormInputProps) => {
 const DonorContactForm = ({
   donorAddresses,
   donationReceiptData,
-  setDonationReceiptData,
+  updateDonationReceiptData,
   setSelectedAddressForAction,
   setAddressAction,
   setIsModalOpen,
@@ -79,13 +79,12 @@ const DonorContactForm = ({
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('DonationReceipt');
   const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
+  if (!user || !donationReceiptData) return null;
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
     null
   );
-
-  if (!user) return null;
 
   const {
     handleSubmit,
@@ -140,39 +139,38 @@ const DonorContactForm = ({
           if (!updatedUser) return;
           setUser(updatedUser);
         }
-
-        setDonationReceiptData((prev: ReceiptData | undefined) => {
-          if (!prev) return undefined;
-          const { donorName, address1, address2, country, zipCode, city } =
-            getUpdatedDonorDetails(
-              updatedUser,
-              donorAddresses,
-              checkedAddressGuid
-            );
-
-          return {
-            ...prev,
-            donor: {
-              ...prev.donor,
-              tin: updatedUser.tin,
-              name: donorName,
-              type:
-                updatedUser.type === 'individual' ||
-                updatedUser.type === 'organization'
-                  ? updatedUser.type
-                  : null,
-            },
-            address: {
-              ...prev.address,
-              guid: checkedAddressGuid,
-              address1,
-              address2,
-              country,
-              zipCode,
-              city,
-            },
-            hasDonorDataChanged: true,
-          };
+        const {
+          amount,
+          currency,
+          donations,
+          dtn,
+          year,
+          challenge,
+          downloadUrl,
+          verificationDate,
+        } = donationReceiptData;
+        // The donor can only modify their name, TIN, and address in the Donor Contact Management page.
+        // The rest of the donation receipt data remains unchanged.
+        const donorDetails = getUpdatedDonorDetails(
+          updatedUser,
+          checkedAddressGuid
+        );
+        updateDonationReceiptData({
+          donor: {
+            ...donorDetails,
+            type:
+              updatedUser.type === 'individual' ? 'individual' : 'organization',
+            guid: checkedAddressGuid,
+          },
+          hasDonorDataChanged: true,
+          amount,
+          currency,
+          donations,
+          dtn,
+          year,
+          challenge,
+          downloadUrl,
+          verificationDate,
         });
         navigateToVerificationPage();
       } catch (err) {
@@ -189,8 +187,8 @@ const DonorContactForm = ({
       logoutUser,
       setUser,
       checkedAddressGuid,
-      setDonationReceiptData,
       navigateToVerificationPage,
+      updateDonationReceiptData,
       setErrors,
     ]
   );
