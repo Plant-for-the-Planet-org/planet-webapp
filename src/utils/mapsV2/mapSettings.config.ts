@@ -228,7 +228,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'birdsDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -245,7 +245,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'mammalsDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -261,7 +261,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'amphibiansDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -279,7 +279,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
   risks: [
     {
       key: 'fireRisk',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~55km',
