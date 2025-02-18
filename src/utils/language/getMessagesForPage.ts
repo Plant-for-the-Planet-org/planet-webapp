@@ -10,6 +10,7 @@ type TRANSLATION_FILE_NAMES =
   | 'country'
   | 'donate'
   | 'donationLink'
+  | 'donationReceipt'
   | 'editProfile'
   | 'giftfunds'
   | 'leaderboard'
