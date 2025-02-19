@@ -5,6 +5,7 @@ import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
+import DonationInfo from './DonationInfo';
 
 type Prop = {
   donationInfo: ReceiptDataAPI;
@@ -12,38 +13,39 @@ type Prop = {
 
 const IssuedReceiptCard = ({ donationInfo }: Prop) => {
   const tReceipt = useTranslations('DonationReceipt');
+  const {
+    verificationDate,
+    downloadUrl,
+    dtn,
+    year,
+    challenge,
+    currency,
+    amount,
+    donationCount,
+    reference,
+    issueDate,
+  } = donationInfo;
 
-  const isReceiptVerified = Boolean(
-    donationInfo.verificationDate && donationInfo.downloadUrl
-  );
+  const isReceiptVerified = Boolean(verificationDate && downloadUrl);
   const buttonProps = isReceiptVerified
     ? {
         text: tReceipt('download'),
-        href: donationInfo.downloadUrl,
+        href: downloadUrl,
         icon: <DownloadIcon color="#fff" />,
       }
     : {
         text: tReceipt('verifyAndDownload'),
-        href: `/verify-receipt-data?dtn=${donationInfo.dtn}&year=${donationInfo.year}&challenge=${donationInfo.challenge}`,
+        href: `/verify-receipt-data?dtn=${dtn}&year=${year}&challenge=${challenge}`,
       };
   return (
     <div className={styles.donationReceiptCard}>
-      <div className={styles.donationInfo}>
-        <span className={styles.amount}>
-          {tReceipt('donationDetails.donationAmount', {
-            currency: donationInfo.currency,
-            amount: donationInfo.amount,
-          })}
-        </span>
-        <span>
-          {tReceipt('donationInfo', {
-            count: donationInfo.donationCount,
-            reference: donationInfo.reference,
-            date: formatDate(donationInfo.issueDate),
-          })}
-        </span>
-      </div>
-
+      <DonationInfo
+        currency={currency}
+        amount={amount}
+        count={donationCount}
+        reference={reference}
+        date={formatDate(issueDate)}
+      />
       <WebappButton
         variant="primary"
         elementType="link"
