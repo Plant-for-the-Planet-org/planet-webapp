@@ -123,7 +123,7 @@ const EditAddress = ({
       selectedAddressForAction?.id,
       tenantConfig.id,
       logoutUser,
-      // updateUserAddresses,
+      updateUserAddresses,
       handleError,
       putAuthenticatedRequest,
       primaryAddressChecked,
