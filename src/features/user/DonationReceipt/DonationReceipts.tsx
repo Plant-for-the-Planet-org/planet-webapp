@@ -8,10 +8,13 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
 
 const DonationReceipts = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
+  const tReceipt = useTranslations('DonationReceipt');
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
 
@@ -36,6 +39,12 @@ const DonationReceipts = () => {
 
   return (
     <section className={styles.donationReceiptLayout}>
+      <h1 className={styles.receiptListHeader}>{tReceipt('taxReceipts')}</h1>
+      <section className={styles.donationReceipts}>
+        {donationReceipts?.issued.map((item) => {
+          return <IssuedReceiptCard key={item.dtn} donationInfo={item} />;
+        })}
+      </section>
       <footer className={styles.receiptListFooter}>
         <SupportAssistanceInfo />
       </footer>

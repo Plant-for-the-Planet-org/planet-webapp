@@ -73,30 +73,11 @@ export interface ReceiptDataAPI extends ReceiptDataBase {
 // receipt list
 
 export interface DonationReceiptsStatus {
-  issued: Issued[];
-  unissued: Unissued[];
+  issued: ReceiptDataAPI[];
+  unissued: UnissuedReceiptDataAPI[];
 }
 
-export interface Issued {
-  dtn: string;
-  issueDate: string;
-  challenge: string;
-  year: string;
-  country: string;
-  reference: string;
-  amount: number;
-  currency: string;
-  paymentDate: string;
-  verificationDate: string | null;
-  donor: DonorAPI;
-  downloadUrl: string;
-  donationCount: number;
-  donations: Donation[];
-  status: string;
-  template: string;
-}
-
-export interface Unissued {
+export interface UnissuedReceiptDataAPI {
   amount: string;
   country: string;
   currency: string;

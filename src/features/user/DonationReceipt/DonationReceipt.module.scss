@@ -377,8 +377,41 @@
 
 // donation receipt list
 
+.receiptListHeader {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.donationReceipts {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  margin-top: 21px;
+}
+
+.donationReceiptCard {
+  display: flex;
+  row-gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 12px;
+  border-radius: 16px;
+  background-color: #fff;
+
+  .donationInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .amount {
+    font-size: 24px;
+    font-weight: 400;
+  }
+}
 .receiptListFooter {
   border-radius: 16px;
   padding: 16px;
-  background: #fff;
+  margin-top: 34px;
+  background-color: #fff;
 }
