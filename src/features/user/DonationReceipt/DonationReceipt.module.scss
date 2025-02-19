@@ -1,5 +1,13 @@
 @import '../../../theme/theme';
 
+.layoutBase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  background: var(--background-base);
+}
+
 .donationReceiptSkeleton {
   display: flex;
   justify-content: center;
@@ -7,13 +15,9 @@
 }
 
 .donationReceiptLayout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @extend .layoutBase;
   width: 100vw;
-  min-height: calc(100vh - 80px);
   margin-top: 80px;
-  background: var(--background-base);
   @include xsPhoneView {
     padding: 0 2%;
   }
@@ -163,7 +167,7 @@
 
 .receiptActions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 12px;
   margin-top: 40px;
   padding: 0px 10px;
@@ -182,8 +186,7 @@
 }
 
 .downloadButtonContainer {
-  display: flex;
-  justify-content: flex-end;
+  min-width: 287px;
 }
 
 .donationReceiptSpinner {
@@ -235,6 +238,12 @@
 }
 
 // donor contact management  styles
+
+.donorContactManagementLayout {
+  @extend .layoutBase;
+  width: calc(100vw - 119px);
+  margin: 80px auto 0 auto;
+}
 
 .donorContactManagement {
   display: flex;

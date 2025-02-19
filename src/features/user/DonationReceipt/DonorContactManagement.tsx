@@ -31,11 +31,8 @@ type StoredReceiptData = {
 const DonorContactManagement = () => {
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const {
-    donationReceiptData,
-    setDonationReceiptData,
-    updateDonationReceiptData,
-  } = useDonationReceipt();
+  const { donationReceiptData, updateDonationReceiptData } =
+    useDonationReceipt();
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -49,7 +46,6 @@ const DonorContactManagement = () => {
     user?.addresses ?? []
   );
   const [isLoading, setIsLoading] = useState(false);
-
   const navigateToVerificationPage = useCallback(() => {
     if (donationReceiptData) {
       const { dtn, challenge, year } = donationReceiptData;
@@ -117,10 +113,6 @@ const DonorContactManagement = () => {
     }
   }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
 
-  useEffect(() => {
-    updateDonorAddresses();
-  }, []);
-
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.EDIT:
@@ -132,7 +124,6 @@ const DonorContactManagement = () => {
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
-            setDonationReceiptData={setDonationReceiptData}
           />
         );
       case ADDRESS_ACTIONS.ADD:
@@ -142,7 +133,6 @@ const DonorContactManagement = () => {
             setAddressAction={setAddressAction}
             updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
-            setDonationReceiptData={setDonationReceiptData}
           />
         );
       default:
@@ -151,7 +141,7 @@ const DonorContactManagement = () => {
   }, [addressAction, selectedAddressForAction, updateDonorAddresses]);
 
   return (
-    <section className={styles.donationReceiptLayout}>
+    <section className={styles.donorContactManagementLayout}>
       <div className={styles.donorContactManagement}>
         <div className={styles.headerContainer}>
           <button onClick={navigateToVerificationPage}>
@@ -164,7 +154,7 @@ const DonorContactManagement = () => {
         <DonorContactForm
           donorAddresses={donorAddresses}
           donationReceiptData={donationReceiptData}
-          setDonationReceiptData={setDonationReceiptData}
+          updateDonationReceiptData={updateDonationReceiptData}
           setSelectedAddressForAction={setSelectedAddressForAction}
           setAddressAction={setAddressAction}
           setIsModalOpen={setIsModalOpen}

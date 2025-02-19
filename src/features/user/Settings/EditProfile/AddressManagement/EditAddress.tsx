@@ -3,7 +3,6 @@ import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { FormData } from './AddAddress';
 import type { AddressAction } from '../../../../common/types/profile';
-import type { ReceiptData } from '../../../DonationReceipt/donationReceipt';
 
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
@@ -22,7 +21,6 @@ interface Props {
   updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
-  setDonationReceiptData?: SetState<ReceiptData | undefined>;
 }
 
 const EditAddress = ({
@@ -31,7 +29,6 @@ const EditAddress = ({
   updateUserAddresses,
   setAddressAction,
   showPrimaryAddressToggle,
-  setDonationReceiptData,
 }: Props) => {
   const defaultAddressDetail = {
     address: selectedAddressForAction.address,
@@ -42,7 +39,7 @@ const EditAddress = ({
   };
 
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>(
@@ -79,14 +76,35 @@ const EditAddress = ({
         });
         if (res) {
           updateUserAddresses();
-          if (setDonationReceiptData)
-            setDonationReceiptData((prev) => {
-              if (!prev) return undefined;
-              return {
-                ...prev,
-                hasDonorDataChanged: true,
-              };
-            });
+          setUser((prev) => {
+            if (!prev) return null;
+
+            const updatedAddresses = prev.addresses.reduce<Address[]>(
+              (acc, addr) => {
+                if (addr.id === res.id) return acc;
+
+                if (res.isPrimary && addr.isPrimary) {
+                  acc.push({
+                    ...addr,
+                    isPrimary: false,
+                    type: ADDRESS_TYPE.OTHER,
+                  });
+                } else {
+                  acc.push(addr);
+                }
+
+                return acc;
+              },
+              []
+            );
+
+            updatedAddresses.push(res);
+
+            return {
+              ...prev,
+              addresses: updatedAddresses,
+            };
+          });
         }
       } catch (error) {
         setErrors(handleError(error as APIError));
