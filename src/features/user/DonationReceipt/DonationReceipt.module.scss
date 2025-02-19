@@ -167,7 +167,7 @@
 
 .receiptActions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 12px;
   margin-top: 40px;
   padding: 0px 10px;
@@ -186,8 +186,7 @@
 }
 
 .downloadButtonContainer {
-  display: flex;
-  justify-content: flex-end;
+  min-width: 287px;
 }
 
 .donationReceiptSpinner {
