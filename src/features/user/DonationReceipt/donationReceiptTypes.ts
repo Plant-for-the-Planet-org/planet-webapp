@@ -78,7 +78,7 @@ export interface DonationReceiptsStatus {
 }
 
 export interface UnissuedReceiptDataAPI {
-  amount: string;
+  amount: number;
   country: string;
   currency: string;
   donationCount: number;
@@ -87,7 +87,7 @@ export interface UnissuedReceiptDataAPI {
   paymentDate: string;
   template: string;
   tinIsRequired: boolean;
-  type: string;
+  type: 'multi' | 'single' | 'pending';
   uids: string[];
   year: number;
 }

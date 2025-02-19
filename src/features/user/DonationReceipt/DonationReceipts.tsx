@@ -10,6 +10,7 @@ import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
+import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
 
 const DonationReceipts = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
@@ -38,12 +39,15 @@ const DonationReceipts = () => {
   }, []);
 
   return (
-    <section className={styles.donationReceiptLayout}>
+    <section className={styles.donorContactManagementLayout}>
       <h1 className={styles.receiptListHeader}>{tReceipt('taxReceipts')}</h1>
       <section className={styles.donationReceipts}>
-        {donationReceipts?.issued.map((item) => {
-          return <IssuedReceiptCard key={item.dtn} donationInfo={item} />;
-        })}
+        {donationReceipts?.issued.map((item) => (
+          <IssuedReceiptCard key={item.dtn} donationInfo={item} />
+        ))}
+        {donationReceipts?.unissued.map((item, key) => (
+          <UnissuedReceiptCard key={key} donationInfo={item} />
+        ))}
       </section>
       <footer className={styles.receiptListFooter}>
         <SupportAssistanceInfo />
