@@ -40,6 +40,9 @@
     "addressRequired": "Please choose an address to proceed.",
     "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
     "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
-    "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below."
+    "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below.",
+    "verifyAndDownload": "Verify & Download",
+    "donationInfo": "{count} {count, plural, one {Item} other {Items}} · Reference {reference} · {date}",
+    "taxReceipts": "Tax Receipts"
   }
 }
