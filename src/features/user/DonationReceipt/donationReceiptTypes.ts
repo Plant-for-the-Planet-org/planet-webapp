@@ -19,6 +19,7 @@ export type AddressView = {
   zipCode: string;
   address1: string;
   address2: string | null;
+  guid: string | null;
 };
 
 interface ReceiptDataBase {
@@ -54,15 +55,17 @@ export interface DonorAPI {
   city: string;
   zipCode: string;
   country: string;
+  guid: string | null;
 }
 
 export interface ReceiptDataAPI extends ReceiptDataBase {
   paymentDate: string;
   donationCount: number;
   country: string;
-  donor: DonorAPI;
+  donor: Partial<DonorAPI>;
   issueDate: string;
   reference: string;
   status: string;
   template: 'single' | 'summary';
+  hasDonorDataChanged: boolean;
 }

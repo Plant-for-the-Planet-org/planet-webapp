@@ -1,10 +1,8 @@
-import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
-import { useCallback } from 'react';
 
 type Props = {
   downloadUrl: string | null;
@@ -20,7 +18,7 @@ const ReceiptActions = ({
   isContactInfoInvalid,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
-
+  const locale = useLocale();
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
 
   return (
@@ -33,7 +31,7 @@ const ReceiptActions = ({
             elementType="link"
             target="_self"
             icon={<EditIcon />}
-            href={'/profile/donation-receipt/modify-user-data'}
+            href={`/${locale}/profile/donation-receipt/donor-contact-management`}
           />
           {!isContactInfoInvalid && (
             <WebappButton
