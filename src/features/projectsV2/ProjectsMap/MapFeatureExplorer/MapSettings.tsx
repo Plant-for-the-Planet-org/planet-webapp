@@ -34,12 +34,6 @@ const MapSettings: FC<MapSettingsProps> = ({
         updateMapOption={updateMapOption}
       />
       <MapSettingsSection
-        groupKey="soil"
-        config={mapSettingsConfig.soil}
-        mapOptions={mapOptions}
-        updateMapOption={updateMapOption}
-      />
-      <MapSettingsSection
         groupKey="biodiversity"
         config={mapSettingsConfig.biodiversity}
         mapOptions={mapOptions}
@@ -48,6 +42,12 @@ const MapSettings: FC<MapSettingsProps> = ({
       <MapSettingsSection
         groupKey="risks"
         config={mapSettingsConfig.risks}
+        mapOptions={mapOptions}
+        updateMapOption={updateMapOption}
+      />
+      <MapSettingsSection
+        groupKey="soil"
+        config={mapSettingsConfig.soil}
         mapOptions={mapOptions}
         updateMapOption={updateMapOption}
       />
