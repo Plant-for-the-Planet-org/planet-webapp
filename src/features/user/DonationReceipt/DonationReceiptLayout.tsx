@@ -119,7 +119,7 @@ const DonationReceiptLayout = () => {
     );
 
   const canAccessLink = user?.email === donationReceiptData?.donor.email;
-  if (!canAccessLink)
+  if (!canAccessLink && isAuthenticated)
     return (
       <ErrorMessage
         message={tReceipt.rich('errors.accessDeniedMessage', {
