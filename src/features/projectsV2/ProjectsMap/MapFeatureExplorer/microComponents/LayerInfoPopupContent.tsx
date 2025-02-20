@@ -25,7 +25,7 @@ const LayerInfoPopupContent = ({
         setAnchorElement(anchorElement);
         e.stopPropagation();
       }}
-      onMouseLeave={() => setTimeout(handleMouseLeave, 500)}
+      onMouseLeave={handleMouseLeave}
     >
       {additionalInfo?.dataYears && (
         <div>
