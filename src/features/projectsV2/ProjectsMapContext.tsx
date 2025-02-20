@@ -147,11 +147,23 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     loadMapStyle();
   }, []);
 
+  /**
+   * Updates mapOptions, allowing it to contain only one non-project option at a time
+   * @param option option being updated
+   * @param value boolean value to set the option to
+   */
   const updateMapOption = (option: keyof MapOptions, value: boolean) => {
-    setMapOptions((prevOptions) => ({
-      ...prevOptions,
-      [option]: value,
-    }));
+    if (option === 'projects') {
+      setMapOptions((prevOptions) => ({
+        ...prevOptions,
+        [option]: value,
+      }));
+    } else {
+      setMapOptions((prevOptions) => ({
+        projects: Boolean(prevOptions.projects),
+        [option]: value,
+      }));
+    }
   };
 
   const value: ProjectsMapState | null = useMemo(
