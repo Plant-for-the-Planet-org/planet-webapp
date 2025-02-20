@@ -1,4 +1,4 @@
-import type { Address, User } from '@planet-sdk/common';
+import type { User } from '@planet-sdk/common';
 import type {
   AddressView,
   ReceiptData,
@@ -26,6 +26,7 @@ export const formatReceiptData = (
       tin: data.donor?.tin || null,
       name: data.donor?.name || '',
       type: data.donor?.type || null,
+      email: data.donor?.email || '',
     },
     address: {
       city: data.donor?.city || '',

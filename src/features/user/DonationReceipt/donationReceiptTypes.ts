@@ -11,6 +11,7 @@ export type DonorView = {
   tin: string | null;
   name: string;
   type: 'individual' | 'organization' | null;
+  email: string;
 };
 
 export type AddressView = {
