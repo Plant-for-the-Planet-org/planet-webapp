@@ -83,8 +83,8 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   return (
     <article
       className={`${styles.publicProfileLayout} ${
-        !canShowLeaderboard ? styles.noLeaderboard : ''
-      } ${isProgressBarDisabled ? styles.noProgress : ''} ${
+        !canShowLeaderboard && !isTpoProfile ? styles.noLeaderboard : ''
+      } ${isProgressBarDisabled && !isTpoProfile ? styles.noProgress : ''} ${
         isTpoProfile ? styles.tpoProfile : ''
       }`}
     >
