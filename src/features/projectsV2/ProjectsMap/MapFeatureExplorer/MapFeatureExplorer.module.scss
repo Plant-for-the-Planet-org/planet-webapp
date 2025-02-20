@@ -4,6 +4,8 @@
   @include smTabletView {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    gap: 12px;
   }
 }
 
@@ -28,13 +30,18 @@
   max-width: 240px;
   background-color: #fff;
   border-radius: 12px;
-  margin-top: 10px;
   padding: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
-  max-height: 485px;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @include smTabletView {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   @include xsPhoneView {
@@ -52,7 +59,6 @@
 }
 
 .exploreItemsContainer {
-  max-height: 400px;
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -70,6 +76,10 @@
     background-color: $primaryColorNew;
     border-radius: 10px;
     border: 2px solid #fff;
+  }
+
+  @include smTabletView {
+    flex: 1 1 auto;
   }
 
   @include xsPhoneView {
