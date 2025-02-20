@@ -8,7 +8,7 @@ const EditPermissionDeniedMessage = () => {
     <section className={styles.donorContactManagementLayout}>
       <div className={styles.donorContactManagement}>
         <p className={styles.baseErrorMessage}>
-          {tReceipt.rich('editPermissionDeniedMessage', {
+          {tReceipt.rich('errors.editPermissionDeniedMessage', {
             b: (chunks) => <strong>{chunks}</strong>,
           })}
         </p>

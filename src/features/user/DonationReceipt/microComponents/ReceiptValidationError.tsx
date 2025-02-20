@@ -6,7 +6,7 @@ const ReceiptValidationError = () => {
   return (
     <section className={styles.receiptValidationError}>
       <p className={styles.baseErrorMessage}>
-        {tReceipt.rich('invalidReceiptMessage', {
+        {tReceipt.rich('errors.invalidReceiptMessage', {
           b: (chunks) => <strong>{chunks}</strong>,
         })}
       </p>

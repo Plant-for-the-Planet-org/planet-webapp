@@ -2,17 +2,10 @@
   "DonationReceipt": {
     "donorInfo": {
       "firstName": "First Name",
-      "firstNameRequired": "First Name field is required",
       "lastName": "Last Name",
-      "lastNameRequired": "Last Name field is required",
       "tin": "Tax Identification Number (TIN)",
       "companyName": "Company Name",
-      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
-      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
-      "companyRequired": "Company Name field is Required",
-      "tinRequired": "Tin field is required",
-      "addressMissing": "Address is missing/invalid",
-      "modifyDonorData": "Modify Donor Data"
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}"
     },
     "donationDetails": {
       "referenceNumber": "Reference Number",
@@ -20,6 +13,21 @@
       "paymentDate": "Payment Date",
       "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
       "taxIdentificationNumber": "Tax Identification Number (TIN)"
+    },
+    "errors": {
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
+      "addressMissing": "Address is missing/invalid",
+      "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+      "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below.",
+      "editPermissionDeniedMessage": "<b>Error:</b> It looks like you don’t have permission to modify this contact information. If you need any assistance, please feel free to contact support."
+    },
+    "notifications": {
+      "firstNameRequired": "First Name field is required",
+      "lastNameRequired": "Last Name field is required",
+      "companyRequired": "Company Name field is Required",
+      "tinRequired": "Tin field is required",
+      "addressRequired": "Please choose an address to proceed.",
+      "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below."
     },
     "verifyTaxHeaderPrimary": "Verify your data to download tax receipt",
     "verifyTaxHeaderSecondary": "once the data is verified, it can not be changed again for this receipt",
@@ -36,11 +44,6 @@
     "receipts": "Receipts",
     "donorContactManagement": "Donor Contact Management",
     "contactManagementHeader": "Update profile and address",
-    "saveDataAndReturn": "Save data and return",
-    "addressRequired": "Please choose an address to proceed.",
-    "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
-    "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
-    "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below.",
-    "editPermissionDeniedMessage": "<b>Error:</b> It looks like you don’t have permission to modify this contact information. If you need any assistance, please feel free to contact support."
+    "saveDataAndReturn": "Save data and return"
   }
 }
