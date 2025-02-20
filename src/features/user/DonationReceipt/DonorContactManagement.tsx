@@ -21,7 +21,7 @@ import {
 } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import EditPermissionDeniedMessage from './microComponents/EditPermissionDeniedMessage';
+import EditPermissionDenied from './microComponents/EditPermissionDenied';
 
 type StoredReceiptData = {
   dtn: string;
@@ -36,7 +36,7 @@ const DonorContactManagement = () => {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
 
   const isEligibleForEdit = user?.email === donationReceiptData?.donor.email;
-  if (!isEligibleForEdit) return <EditPermissionDeniedMessage />;
+  if (!isEligibleForEdit) return <EditPermissionDenied />;
 
   const router = useRouter();
   const { tenantConfig } = useTenant();

@@ -29,7 +29,7 @@ const DonorName = ({ donor }: { donor: DonorView }) => {
       </span>
       {!donor.name ? (
         <ErrorMessage
-          message={tReceipt('errors.nameMissing', { type: donor.type })}
+          message={tReceipt('notifications.nameMissing', { type: donor.type })}
         />
       ) : (
         <span>{donor.name}</span>
@@ -63,7 +63,7 @@ const DonorAddress = ({
           {address1}, {cityStatePostalString}
         </address>
       ) : (
-        <ErrorMessage message={tReceipt('errors.addressMissing')} />
+        <ErrorMessage message={tReceipt('notifications.addressMissing')} />
       )}
       {address2 !== null && (
         <address>

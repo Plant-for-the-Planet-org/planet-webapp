@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
 import VerifyReceiptFooter from './VerifyReceiptFooter';
 
-const EditPermissionDeniedMessage = () => {
+const EditPermissionDenied = () => {
   const tReceipt = useTranslations('DonationReceipt');
   return (
     <section className={styles.donorContactManagementLayout}>
@@ -18,4 +18,4 @@ const EditPermissionDeniedMessage = () => {
   );
 };
 
-export default EditPermissionDeniedMessage;
+export default EditPermissionDenied;

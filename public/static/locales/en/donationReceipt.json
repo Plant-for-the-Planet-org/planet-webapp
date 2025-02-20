@@ -15,13 +15,14 @@
       "taxIdentificationNumber": "Tax Identification Number (TIN)"
     },
     "errors": {
-      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
-      "addressMissing": "Address is missing/invalid",
       "invalidReceiptMessage": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
       "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below.",
-      "editPermissionDeniedMessage": "<b>Error:</b> It looks like you don’t have permission to modify this contact information. If you need any assistance, please feel free to contact support."
+      "editPermissionDeniedMessage": "<b>Error:</b> It looks like you don’t have permission to modify this contact information. If you need any assistance, please feel free to contact support.",
+      "accessDeniedMessage": "<b>Error:</b> It seems you don’t have the necessary permissions to access this link. If you need any assistance, please contact support."
     },
     "notifications": {
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
+      "addressMissing": "Address is missing/invalid",
       "firstNameRequired": "First Name field is required",
       "lastNameRequired": "Last Name field is required",
       "companyRequired": "Company Name field is Required",
