@@ -133,6 +133,7 @@ const ProjectListControlForMobile = ({
             <MapFeatureExplorer
               mapOptions={mapOptions}
               updateMapOption={updateMapOption}
+              isMobile={true}
             />
           )}
           <ViewModeTabs {...viewModeTabsProps} />
