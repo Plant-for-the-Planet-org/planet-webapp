@@ -18,7 +18,7 @@ import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address;
-  updateUserAddresses: () => Promise<void>;
+  updateUserAddresses?: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
 }
@@ -75,7 +75,7 @@ const EditAddress = ({
           logoutUser,
         });
         if (res) {
-          updateUserAddresses();
+          if (updateUserAddresses) updateUserAddresses();
           setUser((prev) => {
             if (!prev) return null;
 

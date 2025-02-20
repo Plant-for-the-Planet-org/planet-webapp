@@ -7,6 +7,32 @@ import type {
 import { useMemo, useState, createContext, useContext } from 'react';
 import { formatReceiptData } from '../../user/DonationReceipt/utils';
 
+const getDefaultReceiptData = (): ReceiptData => ({
+  dtn: '',
+  year: '',
+  challenge: '',
+  amount: 0,
+  currency: '',
+  verificationDate: null,
+  downloadUrl: '',
+  donor: {
+    tin: null,
+    name: '',
+    type: null,
+  },
+  address: {
+    city: '',
+    country: '',
+    zipCode: '',
+    address1: '',
+    address2: null,
+    guid: null,
+  },
+  donations: [],
+  hasDonorDataChanged: false,
+  operation: 'verify',
+});
+
 interface DonationReceiptContextInterface {
   donationReceiptData: ReceiptData | undefined;
   updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
@@ -21,11 +47,13 @@ export const DonationReceiptProvider: FC = ({ children }) => {
   >();
 
   const updateDonationReceiptData = (data: Partial<ReceiptDataAPI>) => {
-    const formattedData = formatReceiptData(data);
-    setDonationReceiptData((prevState) => ({
-      ...prevState,
-      ...formattedData,
-    }));
+    setDonationReceiptData((prevState) => {
+      const formattedData = formatReceiptData(
+        data,
+        prevState ?? getDefaultReceiptData()
+      );
+      return { ...prevState, ...formattedData };
+    });
   };
 
   const value: DonationReceiptContextInterface = useMemo(

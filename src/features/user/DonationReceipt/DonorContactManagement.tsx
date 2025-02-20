@@ -11,14 +11,10 @@ import BackButton from '../../../../public/assets/images/icons/BackButton';
 import styles from './DonationReceipt.module.scss';
 import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-import {
-  getAuthenticatedRequest,
-  getRequest,
-} from '../../../utils/apiRequests/api';
+import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
@@ -33,7 +29,6 @@ const DonorContactManagement = () => {
   const router = useRouter();
   const { donationReceiptData, updateDonationReceiptData } =
     useDonationReceipt();
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,9 +37,7 @@ const DonorContactManagement = () => {
   );
   const [selectedAddressForAction, setSelectedAddressForAction] =
     useState<Address | null>(null);
-  const [donorAddresses, setDonorAddresses] = useState<Address[]>(
-    user?.addresses ?? []
-  );
+
   const [isLoading, setIsLoading] = useState(false);
   const navigateToVerificationPage = useCallback(() => {
     if (donationReceiptData) {
@@ -98,21 +91,6 @@ const DonorContactManagement = () => {
     router,
   ]);
 
-  const updateDonorAddresses = useCallback(async () => {
-    if (!user || !token || !contextLoaded) return;
-    try {
-      const res = await getAuthenticatedRequest<Address[]>({
-        tenant: tenantConfig.id,
-        url: '/app/addresses',
-        token,
-        logoutUser,
-      });
-      if (res) setDonorAddresses(res);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    }
-  }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
-
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.EDIT:
@@ -122,7 +100,6 @@ const DonorContactManagement = () => {
             selectedAddressForAction={selectedAddressForAction}
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
-            updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
           />
         );
@@ -131,14 +108,13 @@ const DonorContactManagement = () => {
           <AddAddress
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
-            updateUserAddresses={updateDonorAddresses}
             showPrimaryAddressToggle={true}
           />
         );
       default:
         return <></>;
     }
-  }, [addressAction, selectedAddressForAction, updateDonorAddresses]);
+  }, [addressAction, selectedAddressForAction]);
 
   return (
     <section className={styles.donorContactManagementLayout}>
@@ -152,7 +128,6 @@ const DonorContactManagement = () => {
           </h2>
         </div>
         <DonorContactForm
-          donorAddresses={donorAddresses}
           donationReceiptData={donationReceiptData}
           updateDonationReceiptData={updateDonationReceiptData}
           setSelectedAddressForAction={setSelectedAddressForAction}

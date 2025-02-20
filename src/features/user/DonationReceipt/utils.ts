@@ -12,31 +12,33 @@ export const RECEIPT_STATUS = {
 } as const;
 
 export const formatReceiptData = (
-  data: Partial<ReceiptDataAPI>
+  data: Partial<ReceiptDataAPI>,
+  prevState: ReceiptData
 ): ReceiptData => {
   return {
-    dtn: data.dtn || '',
-    year: data.year || '',
-    challenge: data.challenge || '',
-    amount: data.amount || 0,
-    currency: data.currency || '',
-    verificationDate: data.verificationDate || null,
-    downloadUrl: data.downloadUrl || '',
+    dtn: data.dtn ?? prevState.dtn,
+    year: data.year ?? prevState.year,
+    challenge: data.challenge ?? prevState.challenge,
+    amount: data.amount ?? prevState.amount,
+    currency: data.currency ?? prevState.currency,
+    verificationDate: data.verificationDate ?? prevState.verificationDate,
+    downloadUrl: data.downloadUrl ?? prevState.downloadUrl,
     donor: {
-      tin: data.donor?.tin || null,
-      name: data.donor?.name || '',
-      type: data.donor?.type || null,
+      tin: data.donor?.tin ?? prevState.donor.tin,
+      name: data.donor?.name ?? prevState.donor.name,
+      type: data.donor?.type ?? prevState.donor.type,
     },
     address: {
-      city: data.donor?.city || '',
-      country: data.donor?.country || '',
-      zipCode: data.donor?.zipCode || '',
-      address1: data.donor?.address1 || '',
-      address2: data.donor?.address2 || null,
-      guid: data.donor?.guid ?? null,
+      city: data.donor?.city ?? prevState.address.city,
+      country: data.donor?.country ?? prevState.address.country,
+      zipCode: data.donor?.zipCode ?? prevState.address.zipCode,
+      address1: data.donor?.address1 ?? prevState.address.address1,
+      address2: data.donor?.address2 ?? prevState.address.address2,
+      guid: data.donor?.guid ?? prevState.address.guid,
     },
-    donations: data.donations || [],
-    hasDonorDataChanged: data.hasDonorDataChanged ?? false,
+    donations: data.donations ?? prevState.donations,
+    hasDonorDataChanged:
+      data.hasDonorDataChanged ?? prevState.hasDonorDataChanged,
     operation: data.verificationDate === null ? 'verify' : 'download',
   };
 };
@@ -57,15 +59,15 @@ export const getVerificationDate = () => {
  * @returns {boolean} - Returns `true` if both addresses match, otherwise `false`.
  */
 export const isMatchingAddress = (
-  profileAddress: Record<string, any>,
+  profileAddress: Address,
   receiptAddress: AddressView | undefined
 ) => {
   if (!receiptAddress) return false;
   const { guid: _guid, ...filteredReceiptAddress } = receiptAddress;
-  return Object.entries(filteredReceiptAddress).every(
-    ([key, value]) =>
-      profileAddress[key === 'address1' ? 'address' : key] === value
-  );
+  return Object.entries(filteredReceiptAddress).every(([key, value]) => {
+    const mappedKey = key === 'address1' ? 'address' : key;
+    return profileAddress[mappedKey as keyof Address] === value;
+  });
 };
 
 /**
