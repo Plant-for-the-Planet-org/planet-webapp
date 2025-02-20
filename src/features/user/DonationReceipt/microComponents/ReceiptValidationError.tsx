@@ -5,7 +5,7 @@ const ReceiptValidationError = () => {
   const tReceipt = useTranslations('DonationReceipt');
   return (
     <section className={styles.receiptValidationError}>
-      <p className={styles.errorMessage}>
+      <p className={styles.baseErrorMessage}>
         {tReceipt.rich('invalidReceiptMessage', {
           b: (chunks) => <strong>{chunks}</strong>,
         })}

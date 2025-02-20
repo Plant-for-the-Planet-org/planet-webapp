@@ -21,6 +21,7 @@ import {
 } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import EditPermissionDeniedMessage from './microComponents/EditPermissionDeniedMessage';
 
 type StoredReceiptData = {
   dtn: string;
@@ -30,10 +31,14 @@ type StoredReceiptData = {
 
 const DonorContactManagement = () => {
   const t = useTranslations('DonationReceipt');
-  const router = useRouter();
   const { donationReceiptData, updateDonationReceiptData } =
     useDonationReceipt();
   const { user, token, contextLoaded, logoutUser } = useUserProps();
+
+  const isEligibleForEdit = user?.email === donationReceiptData?.donor.email;
+  if (!isEligibleForEdit) return <EditPermissionDeniedMessage />;
+
+  const router = useRouter();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +51,7 @@ const DonorContactManagement = () => {
     user?.addresses ?? []
   );
   const [isLoading, setIsLoading] = useState(false);
+
   const navigateToVerificationPage = useCallback(() => {
     if (donationReceiptData) {
       const { dtn, challenge, year } = donationReceiptData;

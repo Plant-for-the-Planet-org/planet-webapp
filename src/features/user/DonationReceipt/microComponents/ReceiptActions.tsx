@@ -54,7 +54,7 @@ const ReceiptActions = ({
           />
         </div>
       ) : (
-        <div className={styles.receiptError}>
+        <div className={styles.missingInfoError}>
           {tReceipt.rich('missingReceiptInformation', {
             b: (chunks) => <strong>{chunks}</strong>,
           })}
