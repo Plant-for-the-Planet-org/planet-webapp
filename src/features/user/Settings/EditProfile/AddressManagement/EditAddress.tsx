@@ -36,6 +36,7 @@ const EditAddress = ({
     city: selectedAddressForAction.city,
     zipCode: selectedAddressForAction.zipCode,
     state: selectedAddressForAction.state,
+    type: selectedAddressForAction.type,
   };
 
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
