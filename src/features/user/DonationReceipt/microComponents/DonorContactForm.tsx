@@ -1,280 +1,173 @@
-import type { ReceiptData, ReceiptDataAPI } from '../donationReceiptTypes';
-import type { APIError, Address, User } from '@planet-sdk/common';
-import type { Control, RegisterOptions } from 'react-hook-form';
-import type { SetState } from '../../../common/types/common';
-import type { AddressAction } from '../../../common/types/profile';
+import type {Address, User} from '@planet-sdk/common';
+import type {Control, RegisterOptions} from 'react-hook-form';
+import type {SetState} from '../../../common/types/common';
+import type {AddressAction} from '../../../common/types/profile';
 
-import { useCallback, useContext, useState } from 'react';
-import { handleError } from '@planet-sdk/common';
-import { CircularProgress, TextField } from '@mui/material';
-import { useTranslations } from 'next-intl';
-import { Controller, useForm } from 'react-hook-form';
+import {useEffect} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import {CircularProgress, TextField} from '@mui/material';
+import {useTranslations} from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddressList from './DonorAddressList';
-import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
-import { getUpdatedDonorDetails } from '../utils';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+
+export type FormValues = {
+    firstName: string;
+    lastName: string;
+    tin: string;
+    companyName: string;
+    addressGuid: string;
+};
 
 type Props = {
-  donorAddresses: Address[];
-  donationReceiptData: ReceiptData | undefined;
-  updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
-  setSelectedAddressForAction: SetState<Address | null>;
-  setAddressAction: SetState<AddressAction | null>;
-  setIsModalOpen: SetState<boolean>;
-  isLoading: boolean;
-  setIsLoading: SetState<boolean>;
-  navigateToVerificationPage: () => void;
-};
-export type FormValues = {
-  firstName: string;
-  lastName: string;
-  tin: string;
-  companyName: string;
-  addressGuid: string;
+    user: User | null;
+    donorAddresses: Address[];
+    onSubmit: (data: FormValues) => void;
+    setSelectedAddressForAction: SetState<Address | null>;
+    setAddressAction: SetState<AddressAction | null>;
+    setIsModalOpen: SetState<boolean>;
+    isLoading: boolean;
+    setIsLoading: SetState<boolean>;
+    checkedAddressGuid: string | null;
+    setCheckedAddressGuid: SetState<string | null>;
 };
 
 type FormInputProps = {
-  name: keyof FormValues;
-  control: Control<FormValues>;
-  rules?: RegisterOptions<FormValues>;
-  label: string;
+    name: keyof FormValues;
+    control: Control<FormValues>;
+    rules?: RegisterOptions<FormValues>;
+    label: string;
 };
 
-const FormInput = ({ name, control, rules, label }: FormInputProps) => {
-  return (
+const FormInput = ({name, control, rules, label}: FormInputProps) => (
     <Controller
-      name={name}
-      control={control}
-      rules={rules}
-      render={({ field, fieldState }) => (
-        <TextField
-          {...field}
-          variant="outlined"
-          label={label}
-          error={!!fieldState.error}
-          helperText={fieldState.error?.message}
-        />
-      )}
+        name={name}
+        control={control}
+        rules={rules}
+        render={({field, fieldState}) => (
+            <TextField
+                {...field}
+                variant="outlined"
+                label={label}
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+            />
+        )}
     />
-  );
-};
+);
 
 const DonorContactForm = ({
-  donorAddresses,
-  donationReceiptData,
-  updateDonationReceiptData,
-  setSelectedAddressForAction,
-  setAddressAction,
-  setIsModalOpen,
-  isLoading,
-  setIsLoading,
-  navigateToVerificationPage,
-}: Props) => {
-  const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const t = useTranslations('DonationReceipt');
-  const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
-  if (!user || !donationReceiptData) return null;
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
-  const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
-    null
-  );
+                              user,
+                              donorAddresses,
+                              onSubmit,
+                              setSelectedAddressForAction,
+                              setAddressAction,
+                              setIsModalOpen,
+                              isLoading,
+                              checkedAddressGuid,
+                              setCheckedAddressGuid,
+                          }: Props) => {
+    const tAddressManagement = useTranslations('EditProfile.addressManagement');
+    const t = useTranslations('DonationReceipt');
+    const {control, handleSubmit, setValue, reset, formState: {errors}} = useForm<FormValues>({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            tin: '',
+            companyName: '',
+            addressGuid: checkedAddressGuid ?? '',
+        },
+    });
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, dirtyFields },
-    setValue,
-  } = useForm({
-    defaultValues: {
-      firstName: user.firstname || '',
-      lastName: user.lastname || '',
-      tin: user.tin || '',
-      companyName: user.name || '',
-      addressGuid: checkedAddressGuid || '',
-    },
-  });
-  const isUserDataChanged = Boolean(
-    dirtyFields.firstName ||
-      dirtyFields.lastName ||
-      dirtyFields.companyName ||
-      dirtyFields.tin
-  );
-  const handleAddNewAddress = () => {
-    setIsModalOpen(true);
-    setAddressAction(ADDRESS_ACTIONS.ADD);
-  };
-
-  const updateDonorInfo = useCallback(
-    async (data: FormValues) => {
-      setIsLoading(true);
-      if (!user || !token || !contextLoaded) return;
-
-      try {
-        let updatedUser: User | null = user;
-        if (isUserDataChanged) {
-          const body =
-            user?.type === 'individual'
-              ? {
-                  firstname: data.firstName,
-                  lastname: data.lastName,
-                  tin: data.tin,
-                }
-              : { name: data.companyName, tin: data.tin };
-
-          updatedUser = await putAuthenticatedRequest<User | null>({
-            tenant: tenantConfig.id,
-            url: '/app/profile',
-            data: body,
-            token,
-            logoutUser,
-          });
-
-          if (!updatedUser) return;
-          setUser(updatedUser);
+    useEffect(() => {
+        if (user) {
+            reset({
+                firstName: user.firstname ?? '',
+                lastName: user.lastname ?? '',
+                tin: user.tin ?? '',
+                companyName: user.name ?? '',
+                addressGuid: checkedAddressGuid ?? '',
+            });
         }
-        const {
-          amount,
-          currency,
-          donations,
-          dtn,
-          year,
-          challenge,
-          downloadUrl,
-          verificationDate,
-        } = donationReceiptData;
-        // The donor can only modify their name, TIN, and address in the Donor Contact Management page.
-        // The rest of the donation receipt data remains unchanged.
-        const donorDetails = getUpdatedDonorDetails(
-          updatedUser,
-          checkedAddressGuid
-        );
-        updateDonationReceiptData({
-          donor: {
-            ...donorDetails,
-            type:
-              updatedUser.type === 'individual' ? 'individual' : 'organization',
-            guid: checkedAddressGuid,
-          },
-          hasDonorDataChanged: true,
-          amount,
-          currency,
-          donations,
-          dtn,
-          year,
-          challenge,
-          downloadUrl,
-          verificationDate,
-        });
-        navigateToVerificationPage();
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-        setIsLoading(false);
-      }
-    },
-    [
-      user,
-      token,
-      contextLoaded,
-      isUserDataChanged,
-      tenantConfig.id,
-      logoutUser,
-      setUser,
-      checkedAddressGuid,
-      navigateToVerificationPage,
-      updateDonationReceiptData,
-      setErrors,
-    ]
-  );
+    }, [user, checkedAddressGuid, reset]);
 
-  return (
-    <form className={styles.donorContactForm}>
-      <InlineFormDisplayGroup>
-        {user.type === 'organization' && (
-          <FormInput
-            name={'companyName'}
-            control={control}
-            rules={{ required: t('donorInfo.companyRequired') }}
-            label={t('donorInfo.companyName')}
-          />
-        )}
-        {user.type === 'individual' && (
-          <InlineFormDisplayGroup>
-            <FormInput
-              name={'firstName'}
-              control={control}
-              rules={{ required: t('donorInfo.firstNameRequired') }}
-              label={t('donorInfo.firstName')}
-            />
-            <FormInput
-              name={'lastName'}
-              control={control}
-              rules={{ required: t('donorInfo.lastNameRequired') }}
-              label={t('donorInfo.lastName')}
-            />
-          </InlineFormDisplayGroup>
-        )}
-        {user.tin !== null && (
-          <FormInput
-            name={'tin'}
-            control={control}
-            rules={{ required: t('donorInfo.tinRequired') }}
-            label={t('donorInfo.tin')}
-          />
-        )}
-      </InlineFormDisplayGroup>
+    const handleAddNewAddress = () => {
+        setIsModalOpen(true);
+        setAddressAction('ADD' as AddressAction);
+    };
 
-      <section className={styles.donorAddressSection}>
-        {donorAddresses.map((address) => {
-          return (
-            <DonorAddressList
-              key={address.id}
-              address={address}
-              setSelectedAddressForAction={setSelectedAddressForAction}
-              setAddressAction={setAddressAction}
-              setIsModalOpen={setIsModalOpen}
-              receiptAddress={donationReceiptData?.address}
-              checkedAddressGuid={checkedAddressGuid}
-              setCheckedAddressGuid={setCheckedAddressGuid}
-              control={control}
-              setValue={setValue}
-            />
-          );
-        })}
-        {errors.addressGuid?.message && (
-          <span className={styles.errorMessage}>
-            {errors.addressGuid?.message}
-          </span>
-        )}
-      </section>
-      {!isLoading ? (
-        <div className={styles.donorContactFormAction}>
-          <WebappButton
-            text={tAddressManagement('actions.addAddress')}
-            elementType="button"
-            onClick={handleAddNewAddress}
-            variant="secondary"
-          />
-          <WebappButton
-            text={t('saveDataAndReturn')}
-            elementType="button"
-            onClick={handleSubmit(updateDonorInfo)}
-            variant="primary"
-          />
-        </div>
-      ) : (
-        <div className={styles.donationReceiptSpinner}>
-          <CircularProgress color="success" />
-        </div>
-      )}
-    </form>
-  );
+    return (
+        <form className={styles.donorContactForm} onSubmit={handleSubmit(onSubmit)}>
+            <InlineFormDisplayGroup>
+                <FormInput
+                    name="firstName"
+                    control={control}
+                    rules={{required: t('donorInfo.firstNameRequired')}}
+                    label={t('donorInfo.firstName')}
+                />
+                <FormInput
+                    name="lastName"
+                    control={control}
+                    rules={{required: t('donorInfo.lastNameRequired')}}
+                    label={t('donorInfo.lastName')}
+                />
+                <FormInput
+                    name="tin"
+                    control={control}
+                    rules={{required: t('donorInfo.tinRequired')}}
+                    label={t('donorInfo.tin')}
+                />
+                <FormInput
+                    name="companyName"
+                    control={control}
+                    label={t('donorInfo.companyName')}
+                />
+            </InlineFormDisplayGroup>
+
+            <section className={styles.donorAddressSection}>
+                {donorAddresses.map((address) => (
+                    <DonorAddressList
+                        key={address.id}
+                        address={address}
+                        setSelectedAddressForAction={setSelectedAddressForAction}
+                        setAddressAction={setAddressAction}
+                        setIsModalOpen={setIsModalOpen}
+                        checkedAddressGuid={checkedAddressGuid}
+                        setCheckedAddressGuid={setCheckedAddressGuid}
+                        control={control}
+                        setValue={setValue}
+                    />
+                ))}
+                {errors.addressGuid?.message && (
+                    <span className={styles.errorMessage}>
+                        {errors.addressGuid.message}
+                    </span>
+                )}
+            </section>
+
+            <div className={styles.donorContactFormAction}>
+                <WebappButton
+                    text={tAddressManagement('actions.addAddress')}
+                    elementType="button"
+                    onClick={handleAddNewAddress}
+                    variant="secondary"
+                />
+                <WebappButton
+                    text={t('saveDataAndReturn')}
+                    elementType="button"
+                    onClick={handleSubmit(onSubmit)}
+                    variant="primary"
+                />
+            </div>
+
+            {isLoading && (
+                <div className={styles.donationReceiptSpinner}>
+                    <CircularProgress color="success"/>
+                </div>
+            )}
+        </form>
+    );
 };
 
 export default DonorContactForm;

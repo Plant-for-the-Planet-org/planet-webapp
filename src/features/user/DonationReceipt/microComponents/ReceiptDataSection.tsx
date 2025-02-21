@@ -1,126 +1,51 @@
-import type { ReceiptData, ReceiptDataAPI } from '../donationReceiptTypes';
-import type { APIError } from '@planet-sdk/common';
+import type { ReceiptData } from '../donationReceiptTypes';
 
-import { useCallback, useContext, useState } from 'react';
-import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
-import { useDonationReceipt } from '../../../common/Layout/DonationReceiptContext';
 import styles from '../DonationReceipt.module.scss';
 import DonationsTable from './DonationsTable';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
-import { getVerificationDate, RECEIPT_STATUS } from '../utils';
-import { useTenant } from '../../../common/Layout/TenantContext';
-import {
-  putAuthenticatedRequest,
-  putRequest,
-} from '../../../../utils/apiRequests/api';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
-interface Prop {
-  donationReceiptData: ReceiptData;
+interface ReceiptDataSectionProps {
+  donationReceipt: ReceiptData;
+  isLoading: boolean;
+  confirmReceiptData: () => Promise<void>;
 }
 
-const ReceiptDataSection = ({ donationReceiptData }: Prop) => {
-  const { updateDonationReceiptData } = useDonationReceipt();
-  const { tenantConfig } = useTenant();
-  const { token, user, contextLoaded, logoutUser } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const {
-    donations,
-    downloadUrl,
-    operation,
-    donor,
-    address,
-    hasDonorDataChanged,
-    dtn,
-    challenge,
-    year,
-    amount,
-    currency,
-  } = donationReceiptData;
-
-  const confirmReceiptData = useCallback(async () => {
-    if (operation !== RECEIPT_STATUS.VERIFY) return;
-    setIsLoading(true);
-    const requestData = {
-      tenant: tenantConfig.id,
-      url: `/app/donationReceipt/verify`,
-      data: {
-        dtn,
-        challenge,
-        year,
-        verificationDate: getVerificationDate(),
-      },
-    };
-    try {
-      if (hasDonorDataChanged) {
-        if (!address.guid || !token || !user || !contextLoaded) return;
-        const authData = await putAuthenticatedRequest<ReceiptDataAPI>({
-          ...requestData,
-          data: { ...requestData.data, receiptAddress: address.guid },
-          token,
-          logoutUser,
-        });
-        if (authData) {
-          updateDonationReceiptData(authData);
-          return;
-        }
-      }
-
-      const data = await putRequest<ReceiptDataAPI>(requestData);
-      if (data) updateDonationReceiptData(data);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [
-    operation,
-    hasDonorDataChanged,
-    tenantConfig.id,
-    dtn,
-    challenge,
-    year,
-    address.guid,
-    token,
-    contextLoaded,
-    updateDonationReceiptData,
-    getVerificationDate,
-    setErrors,
-    setIsLoading,
-  ]);
-  const { address1, zipCode, city, country } = address;
+const ReceiptDataSection = ({ donationReceipt,
+                              isLoading,
+                              confirmReceiptData,
+                            }: ReceiptDataSectionProps) => {
+  const {amount, currency, downloadUrl, isVerified, donor, address, donations} = donationReceipt;
   const hasMultipleDonations = donations.length > 1;
-  const isAddressInvalid = !address1 || !zipCode || !city || !country;
+  const isAddressInvalid = !address.address1 || !address.zipCode || !address.city || !address.country;
   const isContactInfoInvalid = isAddressInvalid || !donor.name;
+
   return (
-    <section className={styles.receiptDataSection}>
-      <DonationsTable
-        donations={donations}
-        amount={hasMultipleDonations ? amount : null}
-        currency={hasMultipleDonations ? currency : null}
-      />
-      <DonorDetails
-        donor={donor}
-        address={address}
-        isAddressInvalid={isAddressInvalid}
-      />
-      {!isLoading ? (
-        <ReceiptActions
-          downloadUrl={downloadUrl}
-          confirmReceiptData={confirmReceiptData}
-          isReceiptVerified={donationReceiptData.verificationDate !== null}
-          isContactInfoInvalid={isContactInfoInvalid}
+      <section className={styles.receiptDataSection}>
+        <DonationsTable
+            donations={donations}
+            amount={hasMultipleDonations ? amount : null}
+            currency={hasMultipleDonations ? currency : null}
         />
-      ) : (
-        <div className={styles.donationReceiptSpinner}>
-          <CircularProgress color="success" />
-        </div>
-      )}
-    </section>
+        <DonorDetails
+            donor={donor}
+            address={address}
+            isAddressInvalid={isAddressInvalid}
+        />
+        {!isLoading ? (
+            <ReceiptActions
+                downloadUrl={downloadUrl}
+                confirmReceiptData={confirmReceiptData}
+                isReceiptVerified={isVerified}
+                isContactInfoInvalid={isContactInfoInvalid}
+            />
+        ) : (
+            <div className={styles.donationReceiptSpinner}>
+              <CircularProgress color="success" />
+            </div>
+        )}
+      </section>
   );
 };
 

@@ -1,173 +1,144 @@
 import type { AddressAction } from '../../common/types/profile';
-import type { APIError, Address } from '@planet-sdk/common';
-import type { ReceiptDataAPI } from './donationReceiptTypes';
+import type { APIError, Address, User } from '@planet-sdk/common';
 
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import styles from './DonationReceipt.module.scss';
-import { useDonationReceipt } from '../../common/Layout/DonationReceiptContext';
-import DonorContactForm from './microComponents/DonorContactForm';
+import DonorContactForm, { FormValues } from './microComponents/DonorContactForm';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-import {
-  getAuthenticatedRequest,
-  getRequest,
-} from '../../../utils/apiRequests/api';
-import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-type StoredReceiptData = {
-  dtn: string;
-  year: string;
-  challenge: string;
-};
+import { useServerApi } from '../../../hooks/useServerApi';
 
 const DonorContactManagement = () => {
-  const t = useTranslations('DonationReceipt');
-  const router = useRouter();
-  const { donationReceiptData, updateDonationReceiptData } =
-    useDonationReceipt();
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [addressAction, setAddressAction] = useState<AddressAction | null>(
-    null
-  );
-  const [selectedAddressForAction, setSelectedAddressForAction] =
-    useState<Address | null>(null);
-  const [donorAddresses, setDonorAddresses] = useState<Address[]>(
-    user?.addresses ?? []
-  );
-  const [isLoading, setIsLoading] = useState(false);
-  const navigateToVerificationPage = useCallback(() => {
-    if (donationReceiptData) {
-      const { dtn, challenge, year } = donationReceiptData;
-      router
-        .push(
-          `/verify-receipt-data?dtn=${dtn}&challenge=${challenge}&year=${year}`
-        )
-        .then(() => setIsLoading(false));
-    }
-  }, [donationReceiptData, router]);
+    const t = useTranslations('DonationReceipt');
+    const router = useRouter();
+    const { user, contextLoaded, setUser } = useUserProps();
+    const { setErrors } = useContext(ErrorHandlingContext);
+    const { getApiAuthenticated, putApiAuthenticated } = useServerApi();
 
-  useEffect(() => {
-    if (donationReceiptData) return;
-    const receiptDataString = sessionStorage.getItem('receiptData');
-    const parsedData: StoredReceiptData = receiptDataString
-      ? JSON.parse(receiptDataString)
-      : null;
-    if (!parsedData) {
-      router.push('/');
-      return;
-    }
-    const { dtn, year, challenge } = parsedData;
-    const fetchReceiptData = async () => {
-      try {
-        const data = await getRequest<ReceiptDataAPI>({
-          tenant: tenantConfig.id,
-          url: '/app/donationReceipt',
-          queryParams: {
-            dtn,
-            year,
-            challenge,
-          },
-        });
-        if (data) {
-          updateDonationReceiptData(data);
-          sessionStorage.removeItem('receiptData');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [addressAction, setAddressAction] = useState<AddressAction | null>(null);
+    const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+    const [donorAddresses, setDonorAddresses] = useState<Address[]>(user?.addresses ?? []);
+    const [isLoading, setIsLoading] = useState(false);
+    const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(null);
+
+    // Navigate back to the verification page
+    const navigateToVerificationPage = useCallback(() => {
+        router.push('/verify-receipt-data').then(() => setIsLoading(false));
+    }, [router]);
+
+    // Fetch user addresses
+    const updateDonorAddresses = useCallback(async () => {
+        if (!user || !contextLoaded) return;
+
+        try {
+            const addresses = await getApiAuthenticated<Address[]>('/app/addresses');
+            if (addresses) setDonorAddresses(addresses);
+        } catch (error) {
+            setErrors(handleError(error as APIError));
         }
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-        router.push('/');
-      }
+    }, [user, contextLoaded, getApiAuthenticated, setErrors]);
+
+    // Handle form submission and update user info
+    const handleUpdateDonorInfo = async (formData: FormValues) => {
+        console.log('🟢handleUpdateDonorInfo: Form data:', formData);
+        setIsLoading(true);
+        if (!user || !checkedAddressGuid) {
+            setErrors([{ message: 'User or address data missing.' }]);
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            let updatedUser = user;
+
+            // Update user profile if changed
+            if (formData.firstName !== user.firstname || formData.tin !== user.tin) {
+                const profileData = user.type === 'individual'
+                    ? { firstname: formData.firstName, lastname: formData.lastName, tin: formData.tin }
+                    : { name: formData.companyName, tin: formData.tin };
+
+                console.log('🟢handleUpdateDonorInfo: Profile data:', profileData);
+                updatedUser = await putApiAuthenticated<User>('/app/profile', profileData);
+
+                if (!updatedUser) throw new Error('Failed to update user profile.');
+                setUser(updatedUser);
+            }
+
+            // Update donor addresses
+            updateDonorAddresses();
+            alert('Donor info updated successfully.');
+        } catch (error) {
+            setErrors(handleError(error as APIError));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    fetchReceiptData();
-  }, [
-    tenantConfig.id,
-    updateDonationReceiptData,
-    handleError,
-    donationReceiptData,
-    router,
-  ]);
+    // Render modal content based on the current address action
+    const renderModalContent = () => {
+        if (!addressAction) return null;
 
-  const updateDonorAddresses = useCallback(async () => {
-    if (!user || !token || !contextLoaded) return;
-    try {
-      const res = await getAuthenticatedRequest<Address[]>({
-        tenant: tenantConfig.id,
-        url: '/app/addresses',
-        token,
-        logoutUser,
-      });
-      if (res) setDonorAddresses(res);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    }
-  }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
+        const commonProps = {
+            setIsModalOpen,
+            setAddressAction,
+            updateUserAddresses: updateDonorAddresses,
+            showPrimaryAddressToggle: true,
+        };
 
-  const renderModalContent = useMemo(() => {
-    switch (addressAction) {
-      case ADDRESS_ACTIONS.EDIT:
-        if (!selectedAddressForAction) return <></>;
-        return (
-          <EditAddress
-            selectedAddressForAction={selectedAddressForAction}
-            setIsModalOpen={setIsModalOpen}
-            setAddressAction={setAddressAction}
-            updateUserAddresses={updateDonorAddresses}
-            showPrimaryAddressToggle={true}
-          />
-        );
-      case ADDRESS_ACTIONS.ADD:
-        return (
-          <AddAddress
-            setIsModalOpen={setIsModalOpen}
-            setAddressAction={setAddressAction}
-            updateUserAddresses={updateDonorAddresses}
-            showPrimaryAddressToggle={true}
-          />
-        );
-      default:
-        return <></>;
-    }
-  }, [addressAction, selectedAddressForAction, updateDonorAddresses]);
+        switch (addressAction) {
+            case ADDRESS_ACTIONS.EDIT:
+                return selectedAddress ? (
+                    <EditAddress selectedAddressForAction={selectedAddress} {...commonProps} />
+                ) : null;
 
-  return (
-    <section className={styles.donorContactManagementLayout}>
-      <div className={styles.donorContactManagement}>
-        <div className={styles.headerContainer}>
-          <button onClick={navigateToVerificationPage}>
-            <BackButton />
-          </button>
-          <h2 className={styles.contactManagementHeader}>
-            {t('contactManagementHeader')}
-          </h2>
-        </div>
-        <DonorContactForm
-          donorAddresses={donorAddresses}
-          donationReceiptData={donationReceiptData}
-          updateDonationReceiptData={updateDonationReceiptData}
-          setSelectedAddressForAction={setSelectedAddressForAction}
-          setAddressAction={setAddressAction}
-          setIsModalOpen={setIsModalOpen}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          navigateToVerificationPage={navigateToVerificationPage}
-        />
-      </div>
-      <Modal open={isModalOpen} aria-labelledby="address-action-modal-title">
-        {renderModalContent}
-      </Modal>
-    </section>
-  );
+            case ADDRESS_ACTIONS.ADD:
+                return <AddAddress {...commonProps} />;
+
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <section className={styles.donorContactManagementLayout}>
+            <div className={styles.donorContactManagement}>
+                <header className={styles.headerContainer}>
+                    <button onClick={navigateToVerificationPage}>
+                        <BackButton />
+                    </button>
+                    <h2 className={styles.contactManagementHeader}>
+                        {t('contactManagementHeader')}
+                    </h2>
+                </header>
+
+                <DonorContactForm
+                    user={user}
+                    donorAddresses={donorAddresses}
+                    onSubmit={handleUpdateDonorInfo}
+                    setSelectedAddressForAction={setSelectedAddress}
+                    setAddressAction={setAddressAction}
+                    setIsModalOpen={setIsModalOpen}
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading}
+                    checkedAddressGuid={checkedAddressGuid}
+                    setCheckedAddressGuid={setCheckedAddressGuid}
+                />
+            </div>
+
+            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} aria-labelledby="address-action-modal-title">
+                {renderModalContent() || <div />}
+            </Modal>
+        </section>
+    );
 };
 
 export default DonorContactManagement;
