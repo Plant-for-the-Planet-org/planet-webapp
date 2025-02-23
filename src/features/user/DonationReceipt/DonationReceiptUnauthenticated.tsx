@@ -42,7 +42,7 @@ const DonationReceiptUnauthenticated = () => {
                 const data = await getApi<IssuedReceiptDataApi>(url);
 
                 if (data && isMounted) {
-                    initForVerification(data);
+                    initForVerification(data, null);
                     if (!isAuthenticated) {
                         sessionStorage.setItem('receiptData', JSON.stringify({ dtn, year, challenge }));
                     }

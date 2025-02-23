@@ -53,13 +53,13 @@ const DonationReceipts = () => {
                 return;
             }
 
-            initForIssuance(clickedReceipt, donorView, addressView, addressGuid);
+            initForIssuance(clickedReceipt, donorView, addressView, addressGuid, user);
 
         } else if (type === 'issued') {
             const clickedReceipt = receipt as IssuedReceiptDataApi;
             console.log('🟢 Issued Receipt clicked:', clickedReceipt);
 
-            initForVerification(clickedReceipt);
+            initForVerification(clickedReceipt, user);
         }
 
         router.push('/profile/donation-receipt/verify')

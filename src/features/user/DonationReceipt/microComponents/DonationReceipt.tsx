@@ -7,6 +7,7 @@ import styles from '../DonationReceipt.module.scss';
 interface DonationReceiptProps {
     donationReceipt: ReceiptData;
     isLoading: boolean;
+    isValid: boolean;
     operation: Operation;
     confirmReceiptData: () => Promise<void>;
 }
@@ -14,6 +15,7 @@ interface DonationReceiptProps {
 const DonationReceipt = ({
                              donationReceipt,
                              isLoading,
+                             isValid,
                              operation,
                              confirmReceiptData,
                          }: DonationReceiptProps) => {
@@ -25,6 +27,7 @@ const DonationReceipt = ({
                     donationReceipt={donationReceipt}
                     isLoading={isLoading}
                     confirmReceiptData={confirmReceiptData}
+                    isValid={isValid}
                 />
                 <VerifyReceiptFooter/>
             </div>

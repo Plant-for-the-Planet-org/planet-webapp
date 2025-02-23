@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useDonationReceiptContext} from '../../common/Layout/DonationReceiptContext';
 import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
@@ -19,6 +19,7 @@ const DonationReceiptWrapper = () => {
         getAddressGuid,
         getDonationUids,
         initForVerification,
+        isValid,
         getDebugState, // TODO: remove for production
     } = useDonationReceiptContext();
 
@@ -74,7 +75,7 @@ const DonationReceiptWrapper = () => {
             if (response) {
                 console.log('✅ Receipt processed successfully:', response);
                 alert('Receipt successfully processed.');
-                initForVerification(response);
+                initForVerification(response, null);
             } else {
                 console.error('❌ Failed to process receipt.');
                 alert('Failed to process receipt. Please check the details and try again.');
@@ -100,6 +101,7 @@ const DonationReceiptWrapper = () => {
             <DonationReceipt
                 donationReceipt={receiptData}
                 isLoading={isLoading}
+                isValid={isValid}
                 operation={operation}
                 confirmReceiptData={confirmReceiptData}
             />

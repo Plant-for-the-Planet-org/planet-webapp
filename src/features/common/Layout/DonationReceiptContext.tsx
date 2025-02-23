@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {
     transformAddress,
     transformDonor,
@@ -17,6 +17,8 @@ import type {
     UnissuedReceiptDataAPI,
 } from "../../user/DonationReceipt/donationReceiptTypes";
 import {RECEIPT_STATUS} from "../../user/DonationReceipt/utils";
+import {User} from "@planet-sdk/common";
+import {validateIssuedReceipt, validateUnissuedReceipt} from "../../user/DonationReceipt/DonationReceiptValidator";
 
 // Define the state structure
 interface DonationReceiptContextState {
@@ -32,8 +34,8 @@ interface DonationReceiptContextState {
     donor: DonorView | null;
     downloadUrl: string | null;
     dtn: string | null;
+    isValid: boolean;
     isVerified: boolean;
-    mustAuthenticate: boolean;
     operation: string | null;
     paymentDate: string;
     tinIsRequired: boolean;
@@ -57,7 +59,7 @@ const defaultState: DonationReceiptContextState = {
     downloadUrl: null,
     dtn: null,
     isVerified: false,
-    mustAuthenticate: false,
+    isValid: false,
     operation: null,
     paymentDate: '',
     tinIsRequired: false,
@@ -86,8 +88,9 @@ interface DonationReceiptContextInterface {
     getOperation: () => Operation;
     getDonationUids: () => string[];
     getVerificationDate: () => string | null;
-    initForVerification: (data: IssuedReceiptDataApi) => void;
-    initForIssuance: (data: UnissuedReceiptDataAPI, donor: DonorView, address: AddressView, addressGuid: string) => void;
+    initForVerification: (data: IssuedReceiptDataApi, user: User | null) => void;
+    initForIssuance: (data: UnissuedReceiptDataAPI, donor: DonorView, address: AddressView, addressGuid: string, user: User | null) => void;
+    isValid: boolean;
     updateDonorAndAddress: (donor: DonorView, address: AddressView, addressGuid: string) => void;
     clearContext: () => void;
     getDebugState: () => DonationReceiptContextState;
@@ -97,7 +100,7 @@ interface DonationReceiptContextInterface {
 const DonationReceiptContext = createContext<DonationReceiptContextInterface | null>(null);
 
 // Provider component
-export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [state, setState] = useState<DonationReceiptContextState>(loadStateFromSession);
 
     // Persist state to sessionStorage
@@ -112,17 +115,19 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
     };
 
     // Initialize context for verification
-    const initForVerification = (data: IssuedReceiptDataApi): void => {
+    const initForVerification = (data: IssuedReceiptDataApi, user: User | null): void => {
         if (!data) return;
 
         console.log('Initializing for verification:', data);
 
-        const donor = transformDonor(data.donor);
         const address = transformAddress(data.donor);
         const donations: DonationView[] = data.donations?.map((item: IssuedDonationApi) => transformIssuedDonation(item)) ?? [];
-        const mustAuthenticate = (data.tinIsRequired ?? false) && !data.donor?.tin;
+        const donor = transformDonor(data.donor);
         const isVerified = !!data.verificationDate;
         const operation = isVerified ? RECEIPT_STATUS.DOWNLOAD : RECEIPT_STATUS.VERIFY;
+        const tinIsRequired = data.tinIsRequired ?? false;
+
+        const isValid = validateIssuedReceipt(donor, address, tinIsRequired, data.donor.email, user);
 
         const newState = {
             address,
@@ -137,11 +142,11 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
             donor,
             downloadUrl: data.downloadUrl ?? null,
             dtn: data.dtn ?? null,
+            isValid,
             isVerified,
-            mustAuthenticate,
             operation,
             paymentDate: data.paymentDate,
-            tinIsRequired: data.tinIsRequired ?? false,
+            tinIsRequired,
             type: null,
             verificationDate: data.verificationDate ?? null,
             year: data.year ?? null,
@@ -151,13 +156,15 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
     };
 
     // Initialize context for issuance
-    const initForIssuance = (data: UnissuedReceiptDataAPI, donor: DonorView, address: AddressView, addressGuid: string): void => {
+    const initForIssuance = (data: UnissuedReceiptDataAPI, donor: DonorView, address: AddressView, addressGuid: string, user: User | null): void => {
         if (!data) return;
+
+        const tinIsRequired = data.tinIsRequired ?? false;
+        const isValid = validateUnissuedReceipt(donor, address, tinIsRequired, addressGuid, user);
 
         console.log('Initializing for issuance:', data);
 
         const donations: DonationView[] = data.donations?.map((item: UnissuedDonationApi) => transformUnissuedDonation(item)) ?? [];
-        const mustAuthenticate = true;
 
         const newState = {
             address,
@@ -172,8 +179,8 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
             donations,
             donor,
             downloadUrl: null,
+            isValid,
             isVerified: false,
-            mustAuthenticate,
             operation: RECEIPT_STATUS.ISSUE,
             paymentDate: data.paymentDate,
             tinIsRequired: data.tinIsRequired ?? false,
@@ -248,6 +255,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
         getVerificationDate: () => state.verificationDate,
         initForVerification,
         initForIssuance,
+        isValid: state.isValid,
         updateDonorAndAddress,
         clearContext,
         getDebugState: () => state,
