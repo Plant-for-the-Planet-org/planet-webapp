@@ -77,7 +77,7 @@ const DonorContactForm = ({
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('DonationReceipt');
   const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
-  if (!user || !donationReceiptData) return null;
+  if (!user) return null;
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(

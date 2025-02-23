@@ -39,7 +39,10 @@ export const formatReceiptData = (
     donations: data.donations ?? prevState.donations,
     hasDonorDataChanged:
       data.hasDonorDataChanged ?? prevState.hasDonorDataChanged,
-    operation: data.verificationDate === null ? 'verify' : 'download',
+    operation:
+      data.verificationDate === undefined || data.verificationDate === null
+        ? 'verify'
+        : 'download',
   };
 };
 
