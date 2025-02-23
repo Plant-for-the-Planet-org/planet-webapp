@@ -21,7 +21,6 @@ import { useTenant } from '../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 type Props = {
-  donorAddresses: Address[];
   donationReceiptData: ReceiptData | undefined;
   updateDonationReceiptData: (data: Partial<ReceiptDataAPI>) => void;
   setSelectedAddressForAction: SetState<Address | null>;
@@ -66,7 +65,6 @@ const FormInput = ({ name, control, rules, label }: FormInputProps) => {
 };
 
 const DonorContactForm = ({
-  donorAddresses,
   donationReceiptData,
   updateDonationReceiptData,
   setSelectedAddressForAction,
@@ -79,7 +77,7 @@ const DonorContactForm = ({
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('DonationReceipt');
   const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
-  if (!user || !donationReceiptData) return null;
+  if (!user) return null;
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
@@ -139,18 +137,6 @@ const DonorContactForm = ({
           if (!updatedUser) return;
           setUser(updatedUser);
         }
-        const {
-          amount,
-          currency,
-          donations,
-          dtn,
-          year,
-          challenge,
-          downloadUrl,
-          verificationDate,
-        } = donationReceiptData;
-        // The donor can only modify their name, TIN, and address in the Donor Contact Management page.
-        // The rest of the donation receipt data remains unchanged.
         const donorDetails = getUpdatedDonorDetails(
           updatedUser,
           checkedAddressGuid
@@ -163,14 +149,6 @@ const DonorContactForm = ({
             guid: checkedAddressGuid,
           },
           hasDonorDataChanged: true,
-          amount,
-          currency,
-          donations,
-          dtn,
-          year,
-          challenge,
-          downloadUrl,
-          verificationDate,
         });
         navigateToVerificationPage();
       } catch (err) {
@@ -231,7 +209,7 @@ const DonorContactForm = ({
       </InlineFormDisplayGroup>
 
       <section className={styles.donorAddressSection}>
-        {donorAddresses.map((address) => {
+        {user.addresses.map((address) => {
           return (
             <DonorAddressList
               key={address.id}

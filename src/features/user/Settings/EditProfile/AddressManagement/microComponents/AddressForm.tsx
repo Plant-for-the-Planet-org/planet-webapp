@@ -4,12 +4,14 @@ import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { FormData } from '../AddAddress';
 import type { AddressAction } from '../../../../../common/types/profile';
+import type { AddressType } from '@planet-sdk/common';
 
 import { useCallback, useMemo, useState } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import {
+  ADDRESS_TYPE,
   fetchAddressDetails,
   geocoder,
   getPostalRegex,
@@ -36,6 +38,7 @@ interface Props {
     city: string | undefined;
     zipCode: string | undefined;
     state: Nullable<string> | undefined;
+    type: AddressType;
   };
   setIsModalOpen: SetState<boolean>;
   isLoading: boolean;
@@ -231,12 +234,13 @@ const AddressForm = ({
           onChange={setCountry}
         />
       </InlineFormDisplayGroup>
-      {showPrimaryAddressToggle && (
-        <PrimaryAddressToggle
-          primaryAddressChecked={primaryAddressChecked}
-          setPrimaryAddressChecked={setPrimaryAddressChecked}
-        />
-      )}
+      {showPrimaryAddressToggle &&
+        defaultAddressDetail.type !== ADDRESS_TYPE.PRIMARY && (
+          <PrimaryAddressToggle
+            primaryAddressChecked={primaryAddressChecked}
+            setPrimaryAddressChecked={setPrimaryAddressChecked}
+          />
+        )}
       {isLoading ? (
         <div className={styles.addressMgmtSpinner}>
           <CircularProgress color="success" />

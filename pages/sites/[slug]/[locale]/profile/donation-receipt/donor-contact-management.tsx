@@ -26,6 +26,7 @@ export default function ModifyDonorData() {
   const receiptDataString = sessionStorage.getItem('receiptData');
   const fromVerificationPage =
     receiptDataString !== null || donationReceiptData !== undefined;
+
   return (
     <UserLayout>
       <Head>{t('donorContactManagement')}</Head>
