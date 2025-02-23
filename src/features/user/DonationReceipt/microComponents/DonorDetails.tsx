@@ -22,7 +22,6 @@ const ErrorMessage = ({ message }: { message: string }) => (
 
 const DonorName = ({ donor }: { donor: DonorView }) => {
   const tReceipt = useTranslations('DonationReceipt');
-  console.log(donor)
   return (
     <div className={styles.donorName}>
       <span className={styles.header}>

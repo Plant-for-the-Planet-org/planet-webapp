@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDonationReceiptContext} from '../../common/Layout/DonationReceiptContext';
 import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './DonationReceipt.module.scss';
-import {useServerApi} from "../../../hooks/useServerApi";
+import {useServerApi} from '../../../hooks/useServerApi';
 import {RECEIPT_STATUS} from './utils';
 import type {IssuedReceiptDataApi} from './donationReceiptTypes';
+
+import DebugPanel from "./DebugPanel";  // TODO: remove for production
 
 const DonationReceiptWrapper = () => {
     const {
@@ -17,6 +19,7 @@ const DonationReceiptWrapper = () => {
         getAddressGuid,
         getDonationUids,
         initForVerification,
+        getDebugState, // TODO: remove for production
     } = useDonationReceiptContext();
 
     const {putApi, putApiAuthenticated, postApiAuthenticated} = useServerApi();
@@ -24,9 +27,7 @@ const DonationReceiptWrapper = () => {
     const receiptData = getReceiptData();
     const operation = getOperation();
 
-    // Extracted confirmation logic
     const confirmReceiptData = async () => {
-
         const donor = getDonor();
         const address = getAddress();
         const addressGuid = getAddressGuid();
@@ -34,6 +35,7 @@ const DonationReceiptWrapper = () => {
 
         if (!donor || !address || !receiptData) {
             console.error('❌ Missing required data for confirmation.');
+            alert('Required donor, address, or receipt data is missing.');
             return;
         }
 
@@ -41,7 +43,7 @@ const DonationReceiptWrapper = () => {
 
         try {
             let response = null;
-            const verificationDate = new Date().toISOString().slice(0, 19).replace('T', ' ')
+            const verificationDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
             if (operation === RECEIPT_STATUS.VERIFY) {
 
                 const payload = {
@@ -79,6 +81,7 @@ const DonationReceiptWrapper = () => {
             }
         } catch (error) {
             console.error('❌ Error during receipt operation:', error);
+            alert('An error occurred while processing the receipt.');
         } finally {
             setIsLoading(false);
         }
@@ -93,12 +96,16 @@ const DonationReceiptWrapper = () => {
     }
 
     return (
-        <DonationReceipt
-            donationReceipt={receiptData}
-            isLoading={isLoading}
-            operation={operation}
-            confirmReceiptData={confirmReceiptData}
-        />
+        <div>
+            <DonationReceipt
+                donationReceipt={receiptData}
+                isLoading={isLoading}
+                operation={operation}
+                confirmReceiptData={confirmReceiptData}
+            />
+
+            <DebugPanel data={getDebugState()}/>
+        </div>
     );
 };
 

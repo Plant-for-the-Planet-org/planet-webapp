@@ -1,27 +1,32 @@
-import type { AddressAction } from '../../common/types/profile';
-import type { APIError, Address, User } from '@planet-sdk/common';
+import type {AddressAction} from '../../common/types/profile';
+import type {APIError, Address, User} from '@planet-sdk/common';
 
-import { useCallback, useContext, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { Modal } from '@mui/material';
-import { handleError } from '@planet-sdk/common';
-import { useRouter } from 'next/router';
+import {useCallback, useContext, useState} from 'react';
+import {useTranslations} from 'next-intl';
+import {Modal} from '@mui/material';
+import {handleError} from '@planet-sdk/common';
+import {useRouter} from 'next/router';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import styles from './DonationReceipt.module.scss';
-import DonorContactForm, { FormValues } from './microComponents/DonorContactForm';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
+import DonorContactForm, {FormValues} from './microComponents/DonorContactForm';
+import {useUserProps} from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
-import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useServerApi } from '../../../hooks/useServerApi';
+import {ADDRESS_ACTIONS} from '../../../utils/addressManagement';
+import {ErrorHandlingContext} from '../../common/Layout/ErrorHandlingContext';
+import {useServerApi} from '../../../hooks/useServerApi';
+import {useDonationReceiptContext} from '../../common/Layout/DonationReceiptContext';
+
+import DebugPanel from "./DebugPanel";  // TODO: remove for production
 
 const DonorContactManagement = () => {
+    const {getDebugState, getReceiptData} = useDonationReceiptContext();
+    const receiptData = getReceiptData();
     const t = useTranslations('DonationReceipt');
     const router = useRouter();
-    const { user, contextLoaded, setUser } = useUserProps();
-    const { setErrors } = useContext(ErrorHandlingContext);
-    const { getApiAuthenticated, putApiAuthenticated } = useServerApi();
+    const {user, contextLoaded, setUser} = useUserProps();
+    const {setErrors} = useContext(ErrorHandlingContext);
+    const {getApiAuthenticated, putApiAuthenticated} = useServerApi();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [addressAction, setAddressAction] = useState<AddressAction | null>(null);
@@ -32,7 +37,7 @@ const DonorContactManagement = () => {
 
     // Navigate back to the verification page
     const navigateToVerificationPage = useCallback(() => {
-        router.push('/verify-receipt-data').then(() => setIsLoading(false));
+        router.push('/profile/donation-receipt/verify').then(() => setIsLoading(false));
     }, [router]);
 
     // Fetch user addresses
@@ -52,7 +57,7 @@ const DonorContactManagement = () => {
         console.log('🟢handleUpdateDonorInfo: Form data:', formData);
         setIsLoading(true);
         if (!user || !checkedAddressGuid) {
-            setErrors([{ message: 'User or address data missing.' }]);
+            setErrors([{message: 'User or address data missing.'}]);
             setIsLoading(false);
             return;
         }
@@ -63,8 +68,8 @@ const DonorContactManagement = () => {
             // Update user profile if changed
             if (formData.firstName !== user.firstname || formData.tin !== user.tin) {
                 const profileData = user.type === 'individual'
-                    ? { firstname: formData.firstName, lastname: formData.lastName, tin: formData.tin }
-                    : { name: formData.companyName, tin: formData.tin };
+                    ? {firstname: formData.firstName, lastname: formData.lastName, tin: formData.tin}
+                    : {name: formData.companyName, tin: formData.tin};
 
                 console.log('🟢handleUpdateDonorInfo: Profile data:', profileData);
                 updatedUser = await putApiAuthenticated<User>('/app/profile', profileData);
@@ -113,7 +118,7 @@ const DonorContactManagement = () => {
             <div className={styles.donorContactManagement}>
                 <header className={styles.headerContainer}>
                     <button onClick={navigateToVerificationPage}>
-                        <BackButton />
+                        <BackButton/>
                     </button>
                     <h2 className={styles.contactManagementHeader}>
                         {t('contactManagementHeader')}
@@ -127,15 +132,20 @@ const DonorContactManagement = () => {
                     setSelectedAddressForAction={setSelectedAddress}
                     setAddressAction={setAddressAction}
                     setIsModalOpen={setIsModalOpen}
+                    tinIsRequired={receiptData?.tinIsRequired ?? false}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
                     checkedAddressGuid={checkedAddressGuid}
                     setCheckedAddressGuid={setCheckedAddressGuid}
                 />
+
+                <DebugPanel data={getDebugState()}/>
+
             </div>
 
-            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} aria-labelledby="address-action-modal-title">
-                {renderModalContent() || <div />}
+            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}
+                   aria-labelledby="address-action-modal-title">
+                {renderModalContent() || <div/>}
             </Modal>
         </section>
     );

@@ -21,16 +21,17 @@ export type FormValues = {
 };
 
 type Props = {
-    user: User | null;
-    donorAddresses: Address[];
-    onSubmit: (data: FormValues) => void;
-    setSelectedAddressForAction: SetState<Address | null>;
-    setAddressAction: SetState<AddressAction | null>;
-    setIsModalOpen: SetState<boolean>;
-    isLoading: boolean;
-    setIsLoading: SetState<boolean>;
     checkedAddressGuid: string | null;
+    donorAddresses: Address[];
+    isLoading: boolean;
+    onSubmit: (data: FormValues) => void;
+    setAddressAction: SetState<AddressAction | null>;
     setCheckedAddressGuid: SetState<string | null>;
+    setIsLoading: SetState<boolean>;
+    setIsModalOpen: SetState<boolean>;
+    setSelectedAddressForAction: SetState<Address | null>;
+    tinIsRequired: boolean;
+    user: User | null;
 };
 
 type FormInputProps = {
@@ -38,6 +39,7 @@ type FormInputProps = {
     control: Control<FormValues>;
     rules?: RegisterOptions<FormValues>;
     label: string;
+    tinIsRequired?: boolean;
 };
 
 const FormInput = ({name, control, rules, label}: FormInputProps) => (

@@ -7,10 +7,8 @@ import type {
 import type { Tenant } from '@planet-sdk/common';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import DonationReceiptUnauthenticated from '../../../../../../src/features/user/DonationReceipt/DonationReceiptUnauthenticated';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,

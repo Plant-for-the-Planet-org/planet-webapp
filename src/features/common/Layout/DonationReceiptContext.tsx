@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
     transformAddress,
     transformDonor,
@@ -66,6 +66,17 @@ const defaultState: DonationReceiptContextState = {
     year: null,
 };
 
+const loadStateFromSession = (): DonationReceiptContextState => {
+    try {
+        const storedState = sessionStorage.getItem('donationReceiptContext');
+        return storedState ? JSON.parse(storedState) : defaultState;
+    } catch (error) {
+        console.error('Failed to parse session storage:', error);
+        sessionStorage.removeItem('donationReceiptContext');
+        return defaultState;
+    }
+};
+
 // Context interface
 interface DonationReceiptContextInterface {
     getDonor: () => DonorView | null;
@@ -78,14 +89,27 @@ interface DonationReceiptContextInterface {
     initForVerification: (data: IssuedReceiptDataApi) => void;
     initForIssuance: (data: UnissuedReceiptDataAPI, donor: DonorView, address: AddressView, addressGuid: string) => void;
     updateDonorAndAddress: (donor: DonorView, address: AddressView, addressGuid: string) => void;
+    clearContext: () => void;
+    getDebugState: () => DonationReceiptContextState;
 }
 
 // Create context
 const DonationReceiptContext = createContext<DonationReceiptContextInterface | null>(null);
 
 // Provider component
-export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [state, setState] = useState<DonationReceiptContextState>(defaultState);
+export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [state, setState] = useState<DonationReceiptContextState>(loadStateFromSession);
+
+    // Persist state to sessionStorage
+    useEffect(() => {
+        sessionStorage.setItem('donationReceiptContext', JSON.stringify(state));
+    }, [state]);
+
+    // Clear context and session storage
+    const clearContext = (): void => {
+        setState(defaultState);
+        sessionStorage.removeItem('donationReceiptContext');
+    };
 
     // Initialize context for verification
     const initForVerification = (data: IssuedReceiptDataApi): void => {
@@ -100,7 +124,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
         const isVerified = !!data.verificationDate;
         const operation = isVerified ? RECEIPT_STATUS.DOWNLOAD : RECEIPT_STATUS.VERIFY;
 
-        setState({
+        const newState = {
             address,
             addressGuid: null,
             amount: data.amount ?? null,
@@ -121,7 +145,9 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
             type: null,
             verificationDate: data.verificationDate ?? null,
             year: data.year ?? null,
-        });
+        };
+
+        setState(newState);
     };
 
     // Initialize context for issuance
@@ -133,7 +159,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
         const donations: DonationView[] = data.donations?.map((item: UnissuedDonationApi) => transformUnissuedDonation(item)) ?? [];
         const mustAuthenticate = true;
 
-        setState({
+        const newState = {
             address,
             addressGuid,
             amount: data.amount ?? null,
@@ -154,7 +180,9 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
             type: data.type,
             verificationDate: null,
             year: null,
-        });
+        };
+
+        setState(newState);
     };
 
     // Update donor and address
@@ -211,6 +239,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
                     dtn,
                     isVerified: isVerified ?? false,
                     paymentDate: paymentDate,
+                    tinIsRequired: state.tinIsRequired,
                     type: state.type,
                     year,
                 }
@@ -220,6 +249,8 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
         initForVerification,
         initForIssuance,
         updateDonorAndAddress,
+        clearContext,
+        getDebugState: () => state,
     };
 
     return (
