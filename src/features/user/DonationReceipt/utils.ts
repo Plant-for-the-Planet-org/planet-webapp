@@ -56,7 +56,9 @@ export const formatReceiptData = (
     address: addressView,
     hasDonorDataChanged:
       data.hasDonorDataChanged ?? baseData.hasDonorDataChanged ?? false,
-    operation: data.verificationDate === null ? 'verify' : 'download',
+    operation: data.verificationDate
+      ? RECEIPT_STATUS.DOWNLOAD
+      : RECEIPT_STATUS.VERIFY,
   } as ReceiptData;
 };
 
