@@ -37,7 +37,9 @@ const DonorContactManagement = () => {
   const parsedData: StoredReceiptData = receiptDataString
     ? JSON.parse(receiptDataString)
     : null;
-  const isEligibleForEdit = user?.email === parsedData?.donorEmail;
+  const isEligibleForEdit =
+    user?.email ===
+    (parsedData?.donorEmail || donationReceiptData?.donor.email);
   if (!isEligibleForEdit) return <EditPermissionDenied />;
 
   const router = useRouter();
