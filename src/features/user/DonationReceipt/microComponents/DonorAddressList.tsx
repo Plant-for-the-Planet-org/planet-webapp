@@ -71,7 +71,7 @@ const DonorAddressList = ({
         <Controller
           name="addressGuid"
           control={control}
-          rules={{ required: t('addressRequired') }}
+          rules={{ required: t('notifications.addressRequired') }}
           render={({ field }) => (
             <StyledCheckbox
               {...field}

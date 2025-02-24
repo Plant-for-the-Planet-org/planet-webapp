@@ -17,18 +17,32 @@ import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import EditPermissionDenied from './microComponents/EditPermissionDenied';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 
 type StoredReceiptData = {
   dtn: string;
   year: string;
   challenge: string;
+  donorEmail: string;
 };
 
 const DonorContactManagement = () => {
   const t = useTranslations('DonationReceipt');
-  const router = useRouter();
   const { donationReceiptData, updateDonationReceiptData } =
     useDonationReceipt();
+  const { user } = useUserProps();
+
+  const receiptDataString = sessionStorage.getItem('receiptData');
+  const parsedData: StoredReceiptData = receiptDataString
+    ? JSON.parse(receiptDataString)
+    : null;
+  const isEligibleForEdit =
+    user?.email ===
+    (parsedData?.donorEmail || donationReceiptData?.donor.email);
+  if (!isEligibleForEdit) return <EditPermissionDenied />;
+
+  const router = useRouter();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,6 +53,7 @@ const DonorContactManagement = () => {
     useState<Address | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
+
   const navigateToVerificationPage = useCallback(() => {
     if (donationReceiptData) {
       const { dtn, challenge, year } = donationReceiptData;
@@ -52,10 +67,7 @@ const DonorContactManagement = () => {
 
   useEffect(() => {
     if (donationReceiptData) return;
-    const receiptDataString = sessionStorage.getItem('receiptData');
-    const parsedData: StoredReceiptData = receiptDataString
-      ? JSON.parse(receiptDataString)
-      : null;
+
     if (!parsedData) {
       router.push('/');
       return;
@@ -72,10 +84,7 @@ const DonorContactManagement = () => {
             challenge,
           },
         });
-        if (data) {
-          updateDonationReceiptData(data);
-          sessionStorage.removeItem('receiptData');
-        }
+        if (data) updateDonationReceiptData(data);
       } catch (err) {
         setErrors(handleError(err as APIError));
         router.push('/');

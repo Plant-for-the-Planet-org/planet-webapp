@@ -1,5 +1,6 @@
 import type { ReceiptDataAPI } from './donationReceiptTypes';
 import type { APIError } from '@planet-sdk/common';
+import type { ReactNode } from 'react';
 
 import { useContext, useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
@@ -14,8 +15,18 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter';
-import ReceiptValidationError from './microComponents/ReceiptValidationError';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
+import { useTranslations } from 'next-intl';
+
+const ErrorMessage = ({ message }: { message: ReactNode }) => (
+  <div className={styles.donationReceiptLayout}>
+    <div className={styles.donationReceiptContainer}>
+      <p className={styles.baseErrorMessage}>{message}</p>
+      <VerifyReceiptFooter />
+    </div>
+  </div>
+);
 
 const DonationReceiptLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +38,8 @@ const DonationReceiptLayout = () => {
   const { updateDonationReceiptData, donationReceiptData } =
     useDonationReceipt();
   const { isAuthenticated } = useAuth0();
+  const { user } = useUserProps();
+  const tReceipt = useTranslations('DonationReceipt');
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -56,15 +69,19 @@ const DonationReceiptLayout = () => {
         });
         if (data) {
           updateDonationReceiptData(data);
-          if (!isAuthenticated)
+          if (isAuthenticated) {
+            sessionStorage.removeItem('receiptData');
+          } else {
             sessionStorage.setItem(
               'receiptData',
               JSON.stringify({
                 dtn,
                 year,
                 challenge,
+                donorEmail: data.donor.email,
               })
             );
+          }
         }
       } catch (err) {
         const errorResponse = err as APIError;
@@ -89,24 +106,31 @@ const DonationReceiptLayout = () => {
     donationReceiptData,
   ]);
 
-  if (isInvalidReceipt) {
-    return (
-      <div className={styles.donationReceiptLayout}>
-        <div className={styles.donationReceiptContainer}>
-          <ReceiptValidationError />
-          <VerifyReceiptFooter />
-        </div>
-      </div>
-    );
-  }
-
-  if (isLoading || !router.isReady) {
+  if (isLoading || !router.isReady)
     return (
       <div className={styles.donationReceiptSkeleton}>
         <Skeleton height={700} width={760} />
       </div>
     );
-  }
+
+  if (isInvalidReceipt)
+    return (
+      <ErrorMessage
+        message={tReceipt.rich('errors.invalidReceiptMessage', {
+          b: (chunks) => <strong>{chunks}</strong>,
+        })}
+      />
+    );
+
+  const canAccessLink = user?.email === donationReceiptData?.donor.email;
+  if (!canAccessLink && isAuthenticated)
+    return (
+      <ErrorMessage
+        message={tReceipt.rich('errors.accessDeniedMessage', {
+          b: (chunks) => <strong>{chunks}</strong>,
+        })}
+      />
+    );
 
   return (
     <div className={styles.donationReceiptLayout}>

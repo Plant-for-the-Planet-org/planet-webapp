@@ -178,7 +178,7 @@ const DonorContactForm = ({
           <FormInput
             name={'companyName'}
             control={control}
-            rules={{ required: t('donorInfo.companyRequired') }}
+            rules={{ required: t('notifications.companyRequired') }}
             label={t('donorInfo.companyName')}
           />
         )}
@@ -187,13 +187,13 @@ const DonorContactForm = ({
             <FormInput
               name={'firstName'}
               control={control}
-              rules={{ required: t('donorInfo.firstNameRequired') }}
+              rules={{ required: t('notifications.firstNameRequired') }}
               label={t('donorInfo.firstName')}
             />
             <FormInput
               name={'lastName'}
               control={control}
-              rules={{ required: t('donorInfo.lastNameRequired') }}
+              rules={{ required: t('notifications.lastNameRequired') }}
               label={t('donorInfo.lastName')}
             />
           </InlineFormDisplayGroup>
@@ -202,7 +202,7 @@ const DonorContactForm = ({
           <FormInput
             name={'tin'}
             control={control}
-            rules={{ required: t('donorInfo.tinRequired') }}
+            rules={{ required: t('notifications.tinRequired') }}
             label={t('donorInfo.tin')}
           />
         )}

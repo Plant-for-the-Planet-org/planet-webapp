@@ -37,6 +37,7 @@ export const formatReceiptData = (
     tin: data.donor?.tin ?? baseData.donor?.tin ?? null,
     name: data.donor?.name ?? baseData.donor?.name ?? '',
     type: data.donor?.type ?? baseData.donor?.type ?? null,
+    email: data.donor?.email ?? baseData.donor?.email ?? '',
   };
 
   // Transform address data if provided, otherwise keep existing
