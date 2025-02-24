@@ -14,10 +14,10 @@ export const RECEIPT_STATUS = {
 
 export const formatReceiptData = (
   data: Partial<ReceiptDataAPI>,
-  prevState: ReceiptData | undefined
+  previousData: ReceiptData | undefined
 ): ReceiptData => {
   // If we have existing data, start with it as the base
-  const baseData: Partial<ReceiptData> = prevState || {};
+  const baseData: Partial<ReceiptData> = previousData || {};
 
   // Extract basic fields that exist in both types
   const commonFields: Partial<ReceiptData> = {
@@ -57,7 +57,9 @@ export const formatReceiptData = (
     address: addressView,
     hasDonorDataChanged:
       data.hasDonorDataChanged ?? baseData.hasDonorDataChanged ?? false,
-    operation: data.verificationDate === null ? 'verify' : 'download',
+    operation: data.verificationDate
+      ? RECEIPT_STATUS.DOWNLOAD
+      : RECEIPT_STATUS.VERIFY,
   } as ReceiptData;
 };
 
