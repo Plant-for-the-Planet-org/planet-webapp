@@ -1,6 +1,7 @@
 import type { Address, User } from '@planet-sdk/common';
 import type {
   AddressView,
+  DonorView,
   ReceiptData,
   ReceiptDataAPI,
 } from './donationReceiptTypes';
@@ -13,37 +14,50 @@ export const RECEIPT_STATUS = {
 
 export const formatReceiptData = (
   data: Partial<ReceiptDataAPI>,
-  prevState: ReceiptData
+  prevState: ReceiptData | undefined
 ): ReceiptData => {
-  return {
-    dtn: data.dtn ?? prevState.dtn,
-    year: data.year ?? prevState.year,
-    challenge: data.challenge ?? prevState.challenge,
-    amount: data.amount ?? prevState.amount,
-    currency: data.currency ?? prevState.currency,
-    verificationDate: data.verificationDate ?? prevState.verificationDate,
-    downloadUrl: data.downloadUrl ?? prevState.downloadUrl,
-    donor: {
-      tin: data.donor?.tin ?? prevState.donor.tin,
-      name: data.donor?.name ?? prevState.donor.name,
-      type: data.donor?.type ?? prevState.donor.type,
-    },
-    address: {
-      city: data.donor?.city ?? prevState.address.city,
-      country: data.donor?.country ?? prevState.address.country,
-      zipCode: data.donor?.zipCode ?? prevState.address.zipCode,
-      address1: data.donor?.address1 ?? prevState.address.address1,
-      address2: data.donor?.address2 ?? prevState.address.address2,
-      guid: data.donor?.guid ?? prevState.address.guid,
-    },
-    donations: data.donations ?? prevState.donations,
-    hasDonorDataChanged:
-      data.hasDonorDataChanged ?? prevState.hasDonorDataChanged,
-    operation:
-      data.verificationDate === undefined || data.verificationDate === null
-        ? 'verify'
-        : 'download',
+  // If we have existing data, start with it as the base
+  const baseData: Partial<ReceiptData> = prevState || {};
+
+  // Extract basic fields that exist in both types
+  const commonFields: Partial<ReceiptData> = {
+    dtn: data.dtn ?? baseData.dtn ?? '',
+    year: data.year ?? baseData.year ?? '',
+    challenge: data.challenge ?? baseData.challenge ?? '',
+    currency: data.currency ?? baseData.currency ?? '',
+    amount: data.amount ?? baseData.amount ?? 0,
+    verificationDate:
+      data.verificationDate ?? baseData.verificationDate ?? null,
+    downloadUrl: data.downloadUrl ?? baseData.downloadUrl ?? '',
+    donations: data.donations ?? baseData.donations ?? [],
   };
+
+  // Transform donor data if provided, otherwise keep existing
+  const donorView: DonorView = {
+    tin: data.donor?.tin ?? baseData.donor?.tin ?? null,
+    name: data.donor?.name ?? baseData.donor?.name ?? '',
+    type: data.donor?.type ?? baseData.donor?.type ?? null,
+  };
+
+  // Transform address data if provided, otherwise keep existing
+  const addressView: AddressView = {
+    city: data.donor?.city ?? baseData.address?.city ?? '',
+    country: data.donor?.country ?? baseData.address?.country ?? '',
+    zipCode: data.donor?.zipCode ?? baseData.address?.zipCode ?? '',
+    address1: data.donor?.address1 ?? baseData.address?.address1 ?? '',
+    address2: data.donor?.address2 ?? baseData.address?.address2 ?? null,
+    guid: data.donor?.guid ?? baseData.address?.guid ?? null,
+  };
+
+  // Construct the final ReceiptData object
+  return {
+    ...commonFields,
+    donor: donorView,
+    address: addressView,
+    hasDonorDataChanged:
+      data.hasDonorDataChanged ?? baseData.hasDonorDataChanged ?? false,
+    operation: data.verificationDate === null ? 'verify' : 'download',
+  } as ReceiptData;
 };
 
 export const getVerificationDate = () => {
