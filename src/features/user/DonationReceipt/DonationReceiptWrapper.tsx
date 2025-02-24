@@ -9,6 +9,8 @@ import {RECEIPT_STATUS} from './utils';
 import type {IssuedReceiptDataApi} from './donationReceiptTypes';
 
 import DebugPanel from "./DebugPanel";  // TODO: remove for production
+import {useUserProps} from "../../common/Layout/UserPropsContext";
+import {validateOwnership} from "./DonationReceiptValidator";
 
 const DonationReceiptWrapper = () => {
     const {
@@ -19,14 +21,17 @@ const DonationReceiptWrapper = () => {
         getAddressGuid,
         getDonationUids,
         initForVerification,
+        email,
         isValid,
         getDebugState, // TODO: remove for production
     } = useDonationReceiptContext();
 
+    const {user} = useUserProps();
     const {putApi, putApiAuthenticated, postApiAuthenticated} = useServerApi();
     const [isLoading, setIsLoading] = useState(false);
     const receiptData = getReceiptData();
     const operation = getOperation();
+    const isOwner = validateOwnership(email, user);
 
     const confirmReceiptData = async () => {
         const donor = getDonor();
@@ -87,6 +92,11 @@ const DonationReceiptWrapper = () => {
             setIsLoading(false);
         }
     };
+
+    if (!isOwner) {
+        // put out some message for now
+        return <div style={{marginTop: "200px"}}>Not authorized</div>
+    }
 
     if (!receiptData) {
         return (

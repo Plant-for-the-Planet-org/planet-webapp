@@ -23,14 +23,11 @@ const validateAddress = (address: AddressView | null): boolean => {
     );
 };
 
-function validateOwnership(issuedToEmail: string, user: User | null): boolean {
-    // If no user is logged in, skip ownership validation
-    if (!user) {
-        return true;
-    }
-
-    return issuedToEmail.trim().toLowerCase() === user.email.trim().toLowerCase();
-}
+export const validateOwnership = (issuedToEmail: string | null, user: User | null): boolean => {
+    if (!user) return true;
+    if (!issuedToEmail) return false;
+    return user.email === issuedToEmail;
+};
 
 export const validateIssuedReceipt = (
     donor: DonorView,
@@ -40,8 +37,7 @@ export const validateIssuedReceipt = (
     user: User | null
 ): boolean => {
     return validateTIN(donor, tinIsRequired, user)
-        && validateAddress(address)
-        && validateOwnership(issuedToEmail, user);
+        && validateAddress(address);
 };
 
 export const validateUnissuedReceipt = (

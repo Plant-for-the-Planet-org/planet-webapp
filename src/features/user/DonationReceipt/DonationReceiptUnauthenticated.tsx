@@ -13,27 +13,22 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { IssuedReceiptDataApi } from './donationReceiptTypes';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useServerApi } from '../../../hooks/useServerApi';
+import {useUserProps} from "../../common/Layout/UserPropsContext";
 
 const DonationReceiptUnauthenticated = () => {
     const { getApi } = useServerApi();
     const [isLoading, setIsLoading] = useState(false);
-    const [isInvalidReceipt, setIsInvalidReceipt] = useState(false);
     const { setErrors, redirect } = useContext(ErrorHandlingContext);
     const router = useRouter();
     const { dtn, year, challenge } = router.query;
-    const { initForVerification, getDonor } = useDonationReceiptContext();
+    const { initForVerification } = useDonationReceiptContext();
     const { isAuthenticated } = useAuth0();
+    const { user } = useUserProps();
 
-    // Check if query parameters are valid
-    useEffect(() => {
-        if (!router.isReady) return;
-        setIsInvalidReceipt(!dtn || !year || !challenge);
-    }, [dtn, year, challenge, router.isReady]);
+    const areParamsValid = typeof dtn === 'string' && typeof year === 'string' && typeof challenge === 'string';
 
     useEffect(() => {
-        let isMounted = true;
-        if (!router.isReady || isInvalidReceipt || getDonor()) return;
-        if (typeof dtn !== 'string' || typeof year !== 'string' || typeof challenge !== 'string') return;
+        if (!router.isReady || !areParamsValid) return;
 
         (async () => {
             setIsLoading(true);
@@ -41,8 +36,8 @@ const DonationReceiptUnauthenticated = () => {
                 const url = `/app/donationReceipt?dtn=${encodeURIComponent(dtn)}&year=${encodeURIComponent(year)}&challenge=${encodeURIComponent(challenge)}`;
                 const data = await getApi<IssuedReceiptDataApi>(url);
 
-                if (data && isMounted) {
-                    initForVerification(data, null);
+                if (data) {
+                    initForVerification(data, user);
                     if (!isAuthenticated) {
                         sessionStorage.setItem('receiptData', JSON.stringify({ dtn, year, challenge }));
                     }
@@ -51,20 +46,24 @@ const DonationReceiptUnauthenticated = () => {
                 const errorResponse = err as APIError;
                 setErrors(handleError(errorResponse));
 
-                if (errorResponse.statusCode === 400) setIsInvalidReceipt(true);
-                else redirect('/');
+                if (errorResponse.statusCode === 400) {
+                    console.error('❌ Invalid receipt parameters.');
+                } else {
+                    redirect('/');
+                }
             } finally {
-                if (isMounted) setIsLoading(false);
+                setIsLoading(false);
             }
         })();
+    }, [dtn, year, challenge, router.isReady]);
 
-        return () => {
-            isMounted = false;
-        };
-    }, [dtn, year, challenge, router.isReady, isInvalidReceipt, getDonor]);
+    if (!router.isReady) {
+        console.log('🟢 Waiting for router to be ready...');
+        return null;
+    }
 
-    // Handle invalid receipt
-    if (!dtn || !year || !challenge || isInvalidReceipt) {
+    if (!areParamsValid) {
+        console.log('❌ Invalid receipt parameters.');
         return (
             <div className={styles.donationReceiptLayout}>
                 <div className={styles.donationReceiptContainer}>
@@ -75,8 +74,7 @@ const DonationReceiptUnauthenticated = () => {
         );
     }
 
-    // Show loading skeleton while fetching data
-    if (isLoading || !router.isReady) {
+    if (isLoading) {
         return (
             <div className={styles.donationReceiptSkeleton}>
                 <Skeleton height={700} width={760} />

@@ -17,7 +17,7 @@ import type {
     UnissuedReceiptDataAPI,
 } from "../../user/DonationReceipt/donationReceiptTypes";
 import {RECEIPT_STATUS} from "../../user/DonationReceipt/utils";
-import {User} from "@planet-sdk/common";
+import type {User} from "@planet-sdk/common";
 import {validateIssuedReceipt, validateUnissuedReceipt} from "../../user/DonationReceipt/DonationReceiptValidator";
 
 // Define the state structure
@@ -34,6 +34,7 @@ interface DonationReceiptContextState {
     donor: DonorView | null;
     downloadUrl: string | null;
     dtn: string | null;
+    email: string | null;
     isValid: boolean;
     isVerified: boolean;
     operation: string | null;
@@ -58,6 +59,7 @@ const defaultState: DonationReceiptContextState = {
     donor: null,
     downloadUrl: null,
     dtn: null,
+    email: null,
     isVerified: false,
     isValid: false,
     operation: null,
@@ -81,6 +83,7 @@ const loadStateFromSession = (): DonationReceiptContextState => {
 
 // Context interface
 interface DonationReceiptContextInterface {
+    email: string | null;
     getDonor: () => DonorView | null;
     getAddress: () => AddressView | null;
     getAddressGuid: () => string | null;
@@ -88,12 +91,14 @@ interface DonationReceiptContextInterface {
     getOperation: () => Operation;
     getDonationUids: () => string[];
     getVerificationDate: () => string | null;
+    isValid: boolean;
+    getDebugState: () => DonationReceiptContextState; // TODO: remove for production
+
+    // context manipulation functions
     initForVerification: (data: IssuedReceiptDataApi, user: User | null) => void;
     initForIssuance: (data: UnissuedReceiptDataAPI, donor: DonorView, address: AddressView, addressGuid: string, user: User | null) => void;
-    isValid: boolean;
     updateDonorAndAddress: (donor: DonorView, address: AddressView, addressGuid: string) => void;
     clearContext: () => void;
-    getDebugState: () => DonationReceiptContextState;
 }
 
 // Create context
@@ -141,6 +146,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
             donations,
             donor,
             downloadUrl: data.downloadUrl ?? null,
+            email: data.donor.email,
             dtn: data.dtn ?? null,
             isValid,
             isVerified,
@@ -179,6 +185,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
             donations,
             donor,
             downloadUrl: null,
+            email: null,
             isValid,
             isVerified: false,
             operation: RECEIPT_STATUS.ISSUE,
@@ -255,6 +262,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
         getVerificationDate: () => state.verificationDate,
         initForVerification,
         initForIssuance,
+        email: state.email,
         isValid: state.isValid,
         updateDonorAndAddress,
         clearContext,
