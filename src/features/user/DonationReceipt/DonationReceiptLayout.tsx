@@ -69,7 +69,9 @@ const DonationReceiptLayout = () => {
         });
         if (data) {
           updateDonationReceiptData(data);
-          if (!isAuthenticated)
+          if (isAuthenticated) {
+            sessionStorage.removeItem('receiptData');
+          } else {
             sessionStorage.setItem(
               'receiptData',
               JSON.stringify({
@@ -79,6 +81,7 @@ const DonationReceiptLayout = () => {
                 donorEmail: data.donor.email,
               })
             );
+          }
         }
       } catch (err) {
         const errorResponse = err as APIError;
