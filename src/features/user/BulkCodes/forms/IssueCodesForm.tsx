@@ -160,6 +160,7 @@ const IssueCodesForm = (): ReactElement | null => {
           logoutUser,
           headers: {
             'IDEMPOTENCY-KEY': uuidv4(),
+            'X-Locale': locale,
           },
         });
         // if request is successful, it will have a uid
