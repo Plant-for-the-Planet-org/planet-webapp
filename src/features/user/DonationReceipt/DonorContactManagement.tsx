@@ -17,10 +17,11 @@ import {ErrorHandlingContext} from '../../common/Layout/ErrorHandlingContext';
 import {useServerApi} from '../../../hooks/useServerApi';
 import {useDonationReceiptContext} from '../../common/Layout/DonationReceiptContext';
 
-import DebugPanel from "./DebugPanel";  // TODO: remove for production
+import DebugPanel from "./DebugPanel";
+import {transformProfileToDonorView} from "./transformers";  // TODO: remove for production
 
 const DonorContactManagement = () => {
-    const {getDebugState, getReceiptData} = useDonationReceiptContext();
+    const {getDebugState, getReceiptData, updateDonorAndAddress} = useDonationReceiptContext();
     const receiptData = getReceiptData();
     const t = useTranslations('DonationReceipt');
     const router = useRouter();
@@ -80,7 +81,22 @@ const DonorContactManagement = () => {
 
             // Update donor addresses
             updateDonorAddresses();
-            alert('Donor info updated successfully.');
+            console.log('Donor info updated successfully.');
+
+            const donorView = transformProfileToDonorView(updatedUser);
+            const selectedAddress = donorAddresses.find(
+                (address) => address.id === checkedAddressGuid
+            );
+            const addressView = {
+                address1: selectedAddress?.address ?? '',
+                address2: selectedAddress?.address2 ?? '',
+                city: selectedAddress?.city ?? '',
+                zipCode: selectedAddress?.zipCode ?? '',
+                country: selectedAddress?.country ?? '',
+            };
+
+            updateDonorAndAddress(donorView, addressView, checkedAddressGuid)
+            navigateToVerificationPage();
         } catch (error) {
             setErrors(handleError(error as APIError));
         } finally {
