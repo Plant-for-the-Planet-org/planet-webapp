@@ -1,4 +1,4 @@
-import type { User } from '@planet-sdk/common';
+import type { Address, User } from '@planet-sdk/common';
 import type {
   AddressView,
   ReceiptData,

@@ -24,6 +24,7 @@ type StoredReceiptData = {
   dtn: string;
   year: string;
   challenge: string;
+  donorEmail: string;
 };
 
 const DonorContactManagement = () => {
@@ -32,7 +33,11 @@ const DonorContactManagement = () => {
     useDonationReceipt();
   const { user } = useUserProps();
 
-  const isEligibleForEdit = user?.email === donationReceiptData?.donor.email;
+  const receiptDataString = sessionStorage.getItem('receiptData');
+  const parsedData: StoredReceiptData = receiptDataString
+    ? JSON.parse(receiptDataString)
+    : null;
+  const isEligibleForEdit = user?.email === parsedData?.donorEmail;
   if (!isEligibleForEdit) return <EditPermissionDenied />;
 
   const router = useRouter();
@@ -60,10 +65,7 @@ const DonorContactManagement = () => {
 
   useEffect(() => {
     if (donationReceiptData) return;
-    const receiptDataString = sessionStorage.getItem('receiptData');
-    const parsedData: StoredReceiptData = receiptDataString
-      ? JSON.parse(receiptDataString)
-      : null;
+
     if (!parsedData) {
       router.push('/');
       return;
@@ -80,10 +82,7 @@ const DonorContactManagement = () => {
             challenge,
           },
         });
-        if (data) {
-          updateDonationReceiptData(data);
-          sessionStorage.removeItem('receiptData');
-        }
+        if (data) updateDonationReceiptData(data);
       } catch (err) {
         setErrors(handleError(err as APIError));
         router.push('/');

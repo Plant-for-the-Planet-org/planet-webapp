@@ -76,6 +76,7 @@ const DonationReceiptLayout = () => {
                 dtn,
                 year,
                 challenge,
+                donorEmail: data.donor.email,
               })
             );
         }
