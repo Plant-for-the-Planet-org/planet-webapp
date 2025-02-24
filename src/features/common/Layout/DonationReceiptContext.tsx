@@ -21,11 +21,8 @@ export const DonationReceiptProvider: FC = ({ children }) => {
   >();
 
   const updateDonationReceiptData = (data: Partial<ReceiptDataAPI>) => {
-    const formattedData = formatReceiptData(data);
-    setDonationReceiptData((prevState) => ({
-      ...prevState,
-      ...formattedData,
-    }));
+    const formattedData = formatReceiptData(data, donationReceiptData);
+    setDonationReceiptData(formattedData);
   };
 
   const value: DonationReceiptContextInterface = useMemo(

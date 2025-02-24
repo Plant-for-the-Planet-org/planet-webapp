@@ -83,8 +83,9 @@ const AddressManagement = () => {
         return (
           <AddAddress
             setIsModalOpen={setIsModalOpen}
-            setUserAddresses={setUserAddresses}
+            updateUserAddresses={updateUserAddresses}
             setAddressAction={setAddressAction}
+            showPrimaryAddressToggle={false}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
@@ -95,6 +96,7 @@ const AddressManagement = () => {
             selectedAddressForAction={selectedAddressForAction}
             updateUserAddresses={updateUserAddresses}
             setAddressAction={setAddressAction}
+            showPrimaryAddressToggle={false}
           />
         );
       case ADDRESS_ACTIONS.DELETE:
