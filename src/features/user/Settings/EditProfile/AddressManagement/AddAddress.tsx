@@ -36,6 +36,7 @@ const defaultAddressDetail = {
   city: '',
   zipCode: '',
   state: '',
+  type: ADDRESS_TYPE.OTHER,
 };
 
 const AddAddress = ({
