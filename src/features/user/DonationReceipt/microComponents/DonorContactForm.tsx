@@ -42,11 +42,14 @@ type FormInputProps = {
     tinIsRequired?: boolean;
 };
 
-const FormInput = ({name, control, rules, label}: FormInputProps) => (
+const FormInput = ({name, control, rules, label, tinIsRequired}: FormInputProps) => (
     <Controller
         name={name}
         control={control}
-        rules={rules}
+        rules={{
+            ...rules,
+            ...(tinIsRequired && name === 'tin' ? { required: 'TIN is required.' } : {}),
+        }}
         render={({field, fieldState}) => (
             <TextField
                 {...field}
@@ -69,6 +72,7 @@ const DonorContactForm = ({
                               isLoading,
                               checkedAddressGuid,
                               setCheckedAddressGuid,
+                              tinIsRequired,
                           }: Props) => {
     const tAddressManagement = useTranslations('EditProfile.addressManagement');
     const t = useTranslations('DonationReceipt');
@@ -117,7 +121,7 @@ const DonorContactForm = ({
                 <FormInput
                     name="tin"
                     control={control}
-                    rules={{required: t('donorInfo.tinRequired')}}
+                    tinIsRequired={tinIsRequired}
                     label={t('donorInfo.tin')}
                 />
                 <FormInput
