@@ -65,7 +65,7 @@ const DonorAddress = ({
       ) : (
         <ErrorMessage message={tReceipt('notifications.addressMissing')} />
       )}
-      {address2 !== null && (
+      {Boolean(address2) && (
         <address>
           {address2}, {cityStatePostalString}
         </address>

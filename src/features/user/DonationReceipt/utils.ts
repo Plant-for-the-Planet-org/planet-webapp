@@ -1,10 +1,5 @@
 import type { Address, User } from '@planet-sdk/common';
-import type {
-  AddressView,
-  DonorView,
-  ReceiptData,
-  ReceiptDataAPI,
-} from './donationReceiptTypes';
+import type { AddressView } from './donationReceiptTypes';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
@@ -12,61 +7,14 @@ export const RECEIPT_STATUS = {
   ISSUE: 'issue',
 } as const;
 
-export const formatReceiptData = (
-  data: Partial<ReceiptDataAPI>,
-  previousData: ReceiptData | undefined
-): ReceiptData => {
-  // If we have existing data, start with it as the base
-  const baseData: Partial<ReceiptData> = previousData || {};
-
-  // Extract basic fields that exist in both types
-  const commonFields: Partial<ReceiptData> = {
-    dtn: data.dtn ?? baseData.dtn ?? '',
-    year: data.year ?? baseData.year ?? '',
-    challenge: data.challenge ?? baseData.challenge ?? '',
-    currency: data.currency ?? baseData.currency ?? '',
-    amount: data.amount ?? baseData.amount ?? 0,
-    verificationDate:
-      data.verificationDate ?? baseData.verificationDate ?? null,
-    downloadUrl: data.downloadUrl ?? baseData.downloadUrl ?? '',
-    donations: data.donations ?? baseData.donations ?? [],
-  };
-
-  // Transform donor data if provided, otherwise keep existing
-  const donorView: DonorView = {
-    tin: data.donor?.tin ?? baseData.donor?.tin ?? null,
-    name: data.donor?.name ?? baseData.donor?.name ?? '',
-    type: data.donor?.type ?? baseData.donor?.type ?? null,
-    email: data.donor?.email ?? baseData.donor?.email ?? '',
-  };
-
-  // Transform address data if provided, otherwise keep existing
-  const addressView: AddressView = {
-    city: data.donor?.city ?? baseData.address?.city ?? '',
-    country: data.donor?.country ?? baseData.address?.country ?? '',
-    zipCode: data.donor?.zipCode ?? baseData.address?.zipCode ?? '',
-    address1: data.donor?.address1 ?? baseData.address?.address1 ?? '',
-    address2: data.donor?.address2 ?? baseData.address?.address2 ?? null,
-    guid: data.donor?.guid ?? baseData.address?.guid ?? null,
-  };
-
-  // Construct the final ReceiptData object
-  return {
-    ...commonFields,
-    donor: donorView,
-    address: addressView,
-    hasDonorDataChanged:
-      data.hasDonorDataChanged ?? baseData.hasDonorDataChanged ?? false,
-    operation: data.verificationDate
-      ? RECEIPT_STATUS.DOWNLOAD
-      : RECEIPT_STATUS.VERIFY,
-  } as ReceiptData;
-};
-
+export const UNISSUED_RECEIPT_TYPE = {
+  PENDING: 'pending',
+  MULTI: 'multi',
+  SINGLE: 'single',
+} as const;
 export const getVerificationDate = () => {
   const isoDate = new Date().toISOString();
-  const verificationDate = isoDate.replace('T', ' ').split('.')[0];
-  return verificationDate;
+  return isoDate.replace('T', ' ').split('.')[0];
 };
 
 /**

@@ -268,6 +268,11 @@ const UserLayout: FC = ({ children }) => {
           // hideItem: true,
         },
         {
+          title: t('donationreceipts'),
+          path: '/profile/donation-receipt',
+          // hideItem: true,
+        },
+        {
           title: t('managePayouts.menuText'),
           path: '/profile/payouts',
           hideItem: !(user?.type === 'tpo'),

@@ -94,6 +94,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   ) => {
     localStorage.removeItem('impersonationData');
     localStorage.removeItem('redirectLink');
+    sessionStorage.removeItem('donationReceiptContext');
     logout({ returnTo: returnUrl });
   };
 

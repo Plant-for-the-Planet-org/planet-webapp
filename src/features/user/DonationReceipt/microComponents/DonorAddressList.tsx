@@ -1,7 +1,6 @@
 import type { Address, CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
-import type { AddressView } from '../donationReceiptTypes';
 import type { FormValues } from './DonorContactForm';
 import type { Control, UseFormSetValue } from 'react-hook-form';
 
@@ -17,14 +16,12 @@ import StyledCheckbox from './StyledCheckbox';
 import styles from '../DonationReceipt.module.scss';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
-import { isMatchingAddress } from '../utils';
 
 type Props = {
   address: Address;
-  setSelectedAddressForAction: SetState<Address | null>;
+  setSelectedAddress: SetState<Address | null>;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
-  receiptAddress: AddressView | undefined;
   checkedAddressGuid: string | null;
   setCheckedAddressGuid: SetState<string | null>;
   control: Control<FormValues>;
@@ -33,10 +30,9 @@ type Props = {
 
 const DonorAddressList = ({
   address,
-  setSelectedAddressForAction,
+  setSelectedAddress,
   setAddressAction,
   setIsModalOpen,
-  receiptAddress,
   checkedAddressGuid,
   setCheckedAddressGuid,
   control,
@@ -58,12 +54,13 @@ const DonorAddressList = ({
     [zipCode, city, country]
   );
 
+  // Auto-select primary address if none is selected
   useEffect(() => {
-    if (isMatchingAddress(address, receiptAddress)) {
+    if (!checkedAddressGuid && address.isPrimary) {
       setCheckedAddressGuid(address.id);
       setValue('addressGuid', address.id, { shouldValidate: true });
     }
-  }, [address, receiptAddress, setValue]);
+  }, [address, checkedAddressGuid, setCheckedAddressGuid, setValue]);
 
   return (
     <section className={styles.addressInfoContainer}>
@@ -84,26 +81,29 @@ const DonorAddressList = ({
             />
           )}
         />
+
         <div>
           <address>
-            {address.address},{formattedAddress}
+            {address.address}, {formattedAddress}
           </address>
           {address.address2 && (
             <address>
-              {address.address2},{formattedAddress}
+              {address.address2}, {formattedAddress}
             </address>
           )}
         </div>
       </div>
+
       {address.type === ADDRESS_TYPE.PRIMARY && (
         <span className={styles.addressType}>
           {tAddressManagement(`addressType.${address.type}`)}
         </span>
       )}
+
       <button
         onClick={(e) => {
           e.preventDefault();
-          setSelectedAddressForAction(address);
+          setSelectedAddress(address);
           setAddressAction(ADDRESS_ACTIONS.EDIT);
           setIsModalOpen(true);
         }}

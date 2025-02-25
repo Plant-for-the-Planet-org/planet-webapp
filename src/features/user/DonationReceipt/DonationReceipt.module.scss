@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 80px);
   background: var(--background-base);
 }
 
@@ -16,7 +15,6 @@
 
 .donationReceiptLayout {
   @extend .layoutBase;
-  width: 100vw;
   margin-top: 80px;
   @include xsPhoneView {
     padding: 0 2%;
@@ -62,10 +60,10 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  padding: 6px 16px 16px 16px;
+  padding: 6px 16px 16px;
 
   @include xsPhoneView {
-    padding: 6px 6px 16px 6px;
+    padding: 6px 6px 16px;
   }
 
   .header {
@@ -221,7 +219,6 @@
 .contactInfo {
   display: flex;
   gap: 16px;
-  // margin-top: 30px;
 
   .contactSupportMessage {
     font-weight: 400;
@@ -236,12 +233,22 @@
   }
 }
 
+.verifyReceiptFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
 // donor contact management  styles
 
 .donorContactManagementLayout {
   @extend .layoutBase;
   width: calc(100vw - 119px);
-  margin: 80px auto 0 auto;
+  margin: 112px auto 0;
+
+  @include xsPhoneView {
+    width: calc(100vw - 45px);
+  }
 }
 
 .donorContactManagement {
@@ -275,7 +282,7 @@
   width: 100%;
   background-color: #fff;
   border-radius: 16px;
-  padding: 26px 19px 22px 19px;
+  padding: 26px 19px 22px;
 
   .donorNameContainer {
     display: flex;
@@ -347,7 +354,7 @@
   justify-content: space-between;
   gap: 12px;
   margin-top: 68px;
-  margin: 68px 12px 0px 12px;
+  margin: 68px 12px 0px;
 
   button {
     flex: 1;
@@ -367,4 +374,93 @@
 .missingInfoError {
   @extend .baseErrorMessage;
   width: 100%;
+}
+
+// donation receipt list
+
+.receiptListHeader {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.donationReceipts {
+  max-width: 524px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  margin-top: 21px;
+}
+
+.donationReceiptCard {
+  display: flex;
+  row-gap: 22px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 12px;
+  border-radius: 16px;
+  background-color: #fff;
+  position: relative;
+
+  .donationInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .amount {
+    font-size: 24px;
+    font-weight: 400;
+  }
+}
+.receiptListFooter {
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 46px;
+  background-color: #fff;
+}
+
+.pendingReceiptBadge {
+  background-color: rgba(0, 122, 73, 0.15);
+  font-size: $fontXSmall;
+  font-weight: 400;
+  padding: 0px 10px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 16px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.donationCount {
+  cursor: pointer;
+  color: rgba(51, 51, 51, 1);
+  span {
+    text-decoration: underline;
+    text-decoration-color: rgba(130, 130, 130, 1);
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    font-size: $fontSmall;
+  }
+}
+
+.donationTable {
+  padding: 10px;
+  border-collapse: separate;
+  border-spacing: 24px 7px;
+
+  thead {
+    font-weight: 600;
+  }
+
+  td {
+    text-align: center;
+  }
+}
+
+.closeIconContainer {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  cursor: pointer;
 }
