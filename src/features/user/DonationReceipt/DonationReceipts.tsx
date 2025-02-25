@@ -9,7 +9,7 @@ import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
 import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
@@ -21,6 +21,9 @@ import {
 } from './transformers';
 import { useRouter } from 'next/router';
 import { useServerApi } from '../../../hooks/useServerApi';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useServerApi();
@@ -29,6 +32,7 @@ const DonationReceipts = () => {
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
+  const { redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,6 +45,7 @@ const DonationReceipts = () => {
         if (response) setDonationReceipts(response);
       } catch (error) {
         handleError(error as APIError);
+        redirect('/');
       }
     })();
   }, []);
@@ -82,6 +87,13 @@ const DonationReceipts = () => {
       .push('/profile/donation-receipt/verify')
       .then(() => console.log('🚀 Navigating to verification page...'));
   };
+
+  if (!donationReceipts)
+    return (
+      <section className={styles.donorContactManagementLayout}>
+        <Skeleton height={600} width={524} />
+      </section>
+    );
 
   return (
     <section className={styles.donorContactManagementLayout}>
