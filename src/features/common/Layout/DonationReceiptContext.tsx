@@ -92,6 +92,7 @@ interface DonationReceiptContextInterface {
     getDonationUids: () => string[];
     getVerificationDate: () => string | null;
     isValid: boolean;
+    tinIsRequired: boolean;
     getDebugState: () => DonationReceiptContextState; // TODO: remove for production
 
     // context manipulation functions
@@ -253,7 +254,6 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
                     dtn,
                     isVerified: isVerified ?? false,
                     paymentDate: paymentDate,
-                    tinIsRequired: state.tinIsRequired,
                     type: state.type,
                     year,
                 }
@@ -264,6 +264,7 @@ export const DonationReceiptProvider: React.FC<{ children: React.ReactNode }> = 
         initForIssuance,
         email: state.email,
         isValid: state.isValid,
+        tinIsRequired: state.tinIsRequired,
         updateDonorAndAddress,
         clearContext,
         getDebugState: () => state,

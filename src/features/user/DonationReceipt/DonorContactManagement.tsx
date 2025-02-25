@@ -21,8 +21,7 @@ import DebugPanel from "./DebugPanel";
 import {transformProfileToDonorView} from "./transformers";  // TODO: remove for production
 
 const DonorContactManagement = () => {
-    const {getDebugState, getReceiptData, updateDonorAndAddress} = useDonationReceiptContext();
-    const receiptData = getReceiptData();
+    const {getDebugState, tinIsRequired, updateDonorAndAddress} = useDonationReceiptContext();
     const t = useTranslations('DonationReceipt');
     const router = useRouter();
     const {user, contextLoaded, setUser} = useUserProps();
@@ -148,7 +147,7 @@ const DonorContactManagement = () => {
                     setSelectedAddressForAction={setSelectedAddress}
                     setAddressAction={setAddressAction}
                     setIsModalOpen={setIsModalOpen}
-                    tinIsRequired={receiptData?.tinIsRequired ?? false}
+                    tinIsRequired={tinIsRequired ?? false}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
                     checkedAddressGuid={checkedAddressGuid}

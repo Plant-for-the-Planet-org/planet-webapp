@@ -69,7 +69,6 @@ export interface ReceiptData {
   dtn: string | null;
   isVerified: boolean;
   paymentDate: string;
-  tinIsRequired: boolean;
   type: string | null
   year: string | null;
 }
