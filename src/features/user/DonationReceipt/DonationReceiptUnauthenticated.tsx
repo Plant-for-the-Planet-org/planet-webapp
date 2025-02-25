@@ -88,13 +88,7 @@ const DonationReceiptUnauthenticated = () => {
   }
 
   // Render the receipt details using the common wrapper
-  return (
-    <div className={styles.donationReceiptLayout}>
-      <div className={styles.donationReceiptContainer}>
-        <DonationReceiptWrapper />
-      </div>
-    </div>
-  );
+  return <DonationReceiptWrapper />;
 };
 
 export default DonationReceiptUnauthenticated;

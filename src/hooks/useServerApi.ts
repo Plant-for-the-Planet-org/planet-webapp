@@ -66,143 +66,174 @@
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
  * - Localization (`x-locale`) defaults to the browser's language or 'en' if not set.
  */
+import type { ImpersonationData } from '../utils/apiRequests/impersonation';
+import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
-import apiClient, {RequestOptions} from '../utils/apiRequests/apiClient';
+import apiClient from '../utils/apiRequests/apiClient';
 import getSessionId from '../../src/utils/apiRequests/getSessionId';
-import {APIError, ClientError} from '@planet-sdk/common';
-import {setHeaderForImpersonation} from "../utils/apiRequests/setHeader";
-import {useTenant} from '../features/common/Layout/TenantContext';
-import {useUserProps} from '../features/common/Layout/UserPropsContext';
-import {validateToken} from '../utils/apiRequests/validateToken';
-import {ImpersonationData} from "../utils/apiRequests/impersonation";
+import { APIError, ClientError } from '@planet-sdk/common';
+import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
+import { useTenant } from '../features/common/Layout/TenantContext';
+import { useUserProps } from '../features/common/Layout/UserPropsContext';
+import { validateToken } from '../utils/apiRequests/validateToken';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
 export const useServerApi = () => {
-    const {token, logoutUser} = useUserProps();
-    const {tenantConfig} = useTenant();
-    const lang = localStorage.getItem('language') || 'en';
+  const { token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
+  const lang = localStorage.getItem('language') || 'en';
 
-    console.log('useServerApi initialized', {token, tenantConfig, lang});
+  function isAbsoluteUrl(url: string) {
+    const pattern = /^https?:\/\//i;
+    return pattern.test(url);
+  }
 
-    function isAbsoluteUrl(url: string) {
-        const pattern = /^https?:\/\//i;
-        return pattern.test(url);
+  const callApi = async <T>({
+    method,
+    url,
+    data,
+    queryParams,
+    authRequired = false,
+    impersonationData,
+    version,
+  }: Omit<RequestOptions, 'additionalHeaders'> & {
+    impersonationData?: ImpersonationData;
+    version?: string;
+  }): Promise<T> => {
+    const headers: Record<string, string> = {
+      'x-locale': lang,
+      'tenant-key': tenantConfig?.id || '',
+      'X-SESSION-ID': await getSessionId(),
+    };
+
+    if (authRequired) {
+      if (!token || !validateToken(token)) {
+        logoutUser?.();
+        throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
+          error_type: 'token_expired',
+          error_code: 'token_expired',
+        });
+      }
+      headers.Authorization = `Bearer ${token}`;
     }
 
-    const callApi = async <T>({
-                                  method,
-                                  url,
-                                  data,
-                                  queryParams,
-                                  authRequired = false,
-                                  impersonationData,
-                                  version,
-                              }: Omit<RequestOptions, 'additionalHeaders'> & {
-        impersonationData?: ImpersonationData;
-        version?: string;
-    }): Promise<T> => {
-        const headers: Record<string, string> = {
-            'x-locale': lang,
-            'tenant-key': tenantConfig?.id || '',
-            'X-SESSION-ID': await getSessionId(),
-        };
+    headers['x-accept-versions'] = version ? version : '1.0.3';
 
-        if (authRequired) {
-            if (!token || !validateToken(token)) {
-                logoutUser?.();
-                throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
-                    error_type: 'token_expired',
-                    error_code: 'token_expired',
-                });
-            }
-            headers.Authorization = `Bearer ${token}`;
-        }
+    const updatedHeaders = setHeaderForImpersonation(
+      headers,
+      impersonationData
+    );
 
-        headers['x-accept-versions'] = version ? version : '1.0.3';
+    const fullUrl = isAbsoluteUrl(url)
+      ? url
+      : `${process.env.API_ENDPOINT}${url}`;
 
-        const updatedHeaders = setHeaderForImpersonation(headers, impersonationData);
+    try {
+      return await apiClient<T>({
+        method,
+        url: fullUrl,
+        data,
+        queryParams,
+        additionalHeaders: updatedHeaders,
+      });
+    } catch (err) {
+      if (err instanceof APIError || err instanceof ClientError) {
+        throw err;
+      }
+      console.error('Unexpected error:', err);
+      throw new Error('An unexpected error occurred');
+    }
+  };
 
-        const fullUrl = isAbsoluteUrl(url) ? url : `${process.env.API_ENDPOINT}${url}`;
+  const getApiAuthenticated = async <T>(
+    url: string,
+    payload?: Record<string, any>,
+    impersonationData?: ImpersonationData
+  ): Promise<T> => {
+    return callApi<T>({
+      method: 'GET',
+      url,
+      queryParams: payload,
+      authRequired: true,
+      impersonationData,
+    });
+  };
 
-        try {
-            return await apiClient<T>({
-                method,
-                url: fullUrl,
-                data,
-                queryParams,
-                additionalHeaders: updatedHeaders,
-            });
-        } catch (err) {
-            if (err instanceof APIError || err instanceof ClientError) {
-                throw err;
-            }
-            console.error('Unexpected error:', err);
-            throw new Error('An unexpected error occurred');
-        }
-    };
+  const postApiAuthenticated = async <T>(
+    url: string,
+    payload?: Record<string, any>,
+    impersonationData?: ImpersonationData
+  ): Promise<T> => {
+    return callApi<T>({
+      method: 'POST',
+      url,
+      data: payload,
+      authRequired: true,
+      impersonationData,
+    });
+  };
+  const getApi = async <T>(
+    url: string,
+    payload?: Record<string, any>
+  ): Promise<T> => {
+    return callApi<T>({ method: 'GET', url, queryParams: payload });
+  };
 
+  const postApi = async <T>(
+    url: string,
+    payload?: Record<string, any>
+  ): Promise<T> => {
+    return callApi<T>({ method: 'POST', url, data: payload });
+  };
 
-    const getApiAuthenticated = async <T>(
-        url: string,
-        payload?: Record<string, any>,
-        impersonationData?: ImpersonationData
-    ): Promise<T> => {
-        return callApi<T>({
-            method: 'GET',
-            url,
-            queryParams: payload,
-            authRequired: true,
-            impersonationData,
-        });
-    };
+  const putApi = async <T>(
+    url: string,
+    payload?: Record<string, any>
+  ): Promise<T> => {
+    return callApi<T>({ method: 'PUT', url, data: payload });
+  };
 
-    const postApiAuthenticated = async <T>(
-        url: string,
-        payload?: Record<string, any>,
-        impersonationData?: ImpersonationData
-    ): Promise<T> => {
-        return callApi<T>({
-            method: 'POST',
-            url,
-            data: payload,
-            authRequired: true,
-            impersonationData,
-        });
-    };
-    const getApi = async <T>(url: string, payload?: Record<string, any>): Promise<T> => {
-        return callApi<T>({method: 'GET', url, queryParams: payload});
-    };
+  const putApiAuthenticated = async <T>(
+    url: string,
+    payload?: Record<string, any>
+  ): Promise<T> => {
+    return callApi<T>({
+      method: 'PUT',
+      url,
+      data: payload,
+      authRequired: true,
+    });
+  };
 
-    const postApi = async <T>(url: string, payload?: Record<string, any>): Promise<T> => {
-        return callApi<T>({method: 'POST', url, data: payload});
-    };
+  const deleteApi = async <T>(
+    url: string,
+    payload?: Record<string, any>
+  ): Promise<T> => {
+    return callApi<T>({ method: 'DELETE', url, queryParams: payload });
+  };
 
-    const putApi = async <T>(url: string, payload?: Record<string, any>): Promise<T> => {
-        return callApi<T>({method: 'PUT', url, data: payload});
-    };
+  const deleteApiAuthenticated = async <T>(
+    url: string,
+    payload?: Record<string, any>
+  ): Promise<T> => {
+    return callApi<T>({
+      method: 'DELETE',
+      url,
+      queryParams: payload,
+      authRequired: true,
+    });
+  };
 
-    const putApiAuthenticated = async <T>(url: string, payload?: Record<string, any>): Promise<T> => {
-        return callApi<T>({method: 'PUT', url, data: payload, authRequired: true});
-    };
-
-    const deleteApi = async <T>(url: string, payload?: Record<string, any>): Promise<T> => {
-        return callApi<T>({method: 'DELETE', url, queryParams: payload});
-    };
-
-    const deleteApiAuthenticated = async <T>(url: string, payload?: Record<string, any>): Promise<T> => {
-        return callApi<T>({method: 'DELETE', url, queryParams: payload, authRequired: true});
-    };
-
-    return {
-        callApi,
-        getApi,
-        getApiAuthenticated,
-        postApi,
-        postApiAuthenticated,
-        putApi,
-        putApiAuthenticated,
-        deleteApi,
-        deleteApiAuthenticated,
-    };
+  return {
+    callApi,
+    getApi,
+    getApiAuthenticated,
+    postApi,
+    postApiAuthenticated,
+    putApi,
+    putApiAuthenticated,
+    deleteApi,
+    deleteApiAuthenticated,
+  };
 };

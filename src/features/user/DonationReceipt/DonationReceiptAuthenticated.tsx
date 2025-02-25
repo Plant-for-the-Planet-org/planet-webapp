@@ -1,4 +1,3 @@
-
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 
 const DonationReceiptAuthenticated = () => {

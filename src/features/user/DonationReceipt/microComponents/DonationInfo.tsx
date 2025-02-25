@@ -20,11 +20,16 @@ const DonationInfo = ({ currency, amount, count, reference, date }: Props) => {
         })}
       </span>
       <span>
-        {tReceipt('donationInfo', {
-          count,
-          reference,
-          date,
-        })}
+        {count > 1
+          ? tReceipt('itemsReferenceDateMultiDonation', {
+              count,
+              reference,
+              date,
+            })
+          : tReceipt('itemsReferenceDateSingleDonation', {
+              reference,
+              date,
+            })}
       </span>
     </div>
   );

@@ -1,49 +1,42 @@
-import type {UnissuedReceiptDataAPI} from '../donationReceiptTypes';
+import type { UnissuedReceiptDataAPI } from '../donationReceiptTypes';
 import styles from '../DonationReceipt.module.scss';
 import DonationInfo from './DonationInfo';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import WebappButton from '../../../common/WebappButton';
-import {useTranslations} from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 type Prop = {
-    unissuedReceipt: UnissuedReceiptDataAPI;
-    onReceiptClick: () => void;
+  unissuedReceipt: UnissuedReceiptDataAPI;
+  onReceiptClick: () => void;
 };
 
-const UnissuedReceiptCard = ({unissuedReceipt, onReceiptClick}: Prop) => {
-    const tReceipt = useTranslations('DonationReceipt');
-    const {
-        amount,
-        currency,
-        donationCount,
-        donations,
-        paymentDate,
-        type
-    } = unissuedReceipt;
+const UnissuedReceiptCard = ({ unissuedReceipt, onReceiptClick }: Prop) => {
+  const tReceipt = useTranslations('DonationReceipt');
+  const { amount, currency, donationCount, donations, paymentDate, type } =
+    unissuedReceipt;
 
-    // get the last donation reference number
-    const reference = donations[donations.length - 1].uid;
+  // get the last donation reference number
+  const reference = donations[donations.length - 1].uid;
 
-    return (
-        <div className={styles.donationReceiptCard}>
-            <p>•</p>
-            <DonationInfo
-                amount={amount}
-                count={donationCount}
-                currency={currency}
-                date={formatDate(paymentDate)}
-                reference={reference}
-            />
-            {type !== 'pending' && (
-                <WebappButton
-                    variant="primary"
-                    elementType="button"
-                    text={tReceipt('verifyAndDownload')}
-                    onClick={onReceiptClick}
-                />
-            )}
-        </div>
-    );
+  return (
+    <div className={styles.donationReceiptCard}>
+      <DonationInfo
+        amount={amount}
+        count={donationCount}
+        currency={currency}
+        date={formatDate(paymentDate)}
+        reference={reference}
+      />
+      {type !== 'pending' && (
+        <WebappButton
+          variant="primary"
+          elementType="button"
+          text={tReceipt('verifyAndDownload')}
+          onClick={onReceiptClick}
+        />
+      )}
+    </div>
+  );
 };
 
 export default UnissuedReceiptCard;

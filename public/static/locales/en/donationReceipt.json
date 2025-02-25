@@ -46,6 +46,9 @@
     "donorContactManagement": "Donor Contact Management",
     "contactManagementHeader": "Update profile and address",
     "saveDataAndReturn": "Save data and return",
-    "taxReceipts": "Tax Receipts"
+    "taxReceipts": "Tax Receipts",
+    "verifyAndDownload": "Verify & Download",
+    "itemsReferenceDateMultiDonation": "{count, plural, one {# Item} other {# Items}} · Reference {reference} · {date}",
+    "itemsReferenceDateSingleDonation": "Reference {reference} · {date}"
   }
 }

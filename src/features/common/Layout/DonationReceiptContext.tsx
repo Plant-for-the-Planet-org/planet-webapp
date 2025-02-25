@@ -212,8 +212,6 @@ export const DonationReceiptProvider: React.FC<{
       user
     );
 
-    console.log('Initializing for issuance:', data);
-
     const donations: DonationView[] =
       data.donations?.map((item: UnissuedDonationApi) =>
         transformUnissuedDonation(item)
