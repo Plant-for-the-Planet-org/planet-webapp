@@ -27,8 +27,9 @@ const UnissuedReceiptCard = ({ unissuedReceipt, onReceiptClick }: Prop) => {
         currency={currency}
         date={formatDate(paymentDate)}
         reference={reference}
+        donations={donations}
       />
-      {type === UNISSUED_RECEIPT_TYPE.PENDING && (
+      {type !== UNISSUED_RECEIPT_TYPE.PENDING && (
         <WebappButton
           variant="primary"
           elementType="button"
@@ -36,7 +37,7 @@ const UnissuedReceiptCard = ({ unissuedReceipt, onReceiptClick }: Prop) => {
           onClick={onReceiptClick}
         />
       )}
-      {type !== UNISSUED_RECEIPT_TYPE.PENDING && (
+      {type === UNISSUED_RECEIPT_TYPE.PENDING && (
         <span className={styles.pendingReceiptBadge}>
           {tReceipt('pendingReceipt', {
             count: donationCount,

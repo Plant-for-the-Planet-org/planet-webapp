@@ -36,6 +36,7 @@ const IssuedReceiptCard = ({ issuedReceipt, onReceiptClick }: Prop) => {
         count={donationCount}
         reference={reference}
         date={formatDate(paymentDate)}
+        donations={donations}
       />
       {isReceiptVerified ? (
         <WebappButton

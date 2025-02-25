@@ -9,6 +9,7 @@
     },
     "donationDetails": {
       "referenceNumber": "Reference Number",
+      "reference": "Reference",
       "amountDonated": "Amount Donated",
       "paymentDate": "Payment Date",
       "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
@@ -48,7 +49,7 @@
     "saveDataAndReturn": "Save data and return",
     "taxReceipts": "Tax Receipts",
     "verifyAndDownload": "Verify & Download",
-    "itemsReferenceDateMultiDonation": "{count, plural, one {# Item} other {# Items}} · Reference {reference} · {date}",
+    "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u> · Reference {reference} · {date}",
     "itemsReferenceDateSingleDonation": "Reference {reference} · {date}",
     "pendingReceipt": "Pending Receipt"
   }

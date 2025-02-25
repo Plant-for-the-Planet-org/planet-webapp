@@ -422,3 +422,36 @@
   top: 0px;
   right: 0px;
 }
+
+.donationCount {
+  cursor: pointer;
+  color: rgba(51, 51, 51, 1);
+  span {
+    text-decoration: underline;
+    text-decoration-color: rgba(130, 130, 130, 1);
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    font-size: $fontSmall;
+  }
+}
+
+.donationTable {
+  padding: 10px;
+  border-collapse: separate;
+  border-spacing: 24px 7px;
+
+  thead {
+    font-weight: 600;
+  }
+
+  td {
+    text-align: center;
+  }
+}
+
+.closeIconContainer {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  cursor: pointer;
+}
