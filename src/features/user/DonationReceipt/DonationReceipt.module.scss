@@ -16,7 +16,6 @@
 
 .donationReceiptLayout {
   @extend .layoutBase;
-  width: 100vw;
   margin-top: 80px;
   @include xsPhoneView {
     padding: 0 2%;
@@ -221,7 +220,6 @@
 .contactInfo {
   display: flex;
   gap: 16px;
-  // margin-top: 30px;
 
   .contactSupportMessage {
     font-weight: 400;
@@ -234,6 +232,12 @@
     column-gap: 26px;
     row-gap: 0px;
   }
+}
+
+.verifyReceiptFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 // donor contact management  styles

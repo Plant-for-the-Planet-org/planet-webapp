@@ -132,7 +132,7 @@ const DonationReceiptWrapper = () => {
         confirmReceiptData={confirmReceiptData}
       />
 
-      <DebugPanel data={getDebugState()} />
+      {/* <DebugPanel data={getDebugState()} /> */}
     </div>
   );
 };
