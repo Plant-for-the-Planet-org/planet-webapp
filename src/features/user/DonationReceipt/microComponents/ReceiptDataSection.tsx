@@ -13,39 +13,53 @@ interface ReceiptDataSectionProps {
   isValid: boolean;
 }
 
-const ReceiptDataSection = ({ donationReceipt,
-                              isLoading,
-                              confirmReceiptData,
-                              isValid,
-                            }: ReceiptDataSectionProps) => {
-  const {amount, currency, downloadUrl, isVerified, donor, address, donations} = donationReceipt;
+const ReceiptDataSection = ({
+  donationReceipt,
+  isLoading,
+  confirmReceiptData,
+  isValid,
+}: ReceiptDataSectionProps) => {
+  const {
+    amount,
+    currency,
+    downloadUrl,
+    isVerified,
+    donor,
+    address,
+    donations,
+  } = donationReceipt;
   const hasMultipleDonations = donations.length > 1;
 
   return (
-      <section className={styles.receiptDataSection}>
-        <DonationsTable
-            donations={donations}
-            amount={hasMultipleDonations ? amount : null}
-            currency={hasMultipleDonations ? currency : null}
+    <section className={styles.receiptDataSection}>
+      <DonationsTable
+        donations={donations}
+        amount={hasMultipleDonations ? amount : null}
+        currency={hasMultipleDonations ? currency : null}
+      />
+      <DonorDetails
+        donor={donor}
+        address={address}
+        isAddressInvalid={
+          !address.address1 ||
+          !address.zipCode ||
+          !address.city ||
+          !address.country
+        }
+      />
+      {!isLoading ? (
+        <ReceiptActions
+          downloadUrl={downloadUrl}
+          confirmReceiptData={confirmReceiptData}
+          isReceiptVerified={isVerified}
+          isContactInfoInvalid={!isValid}
         />
-        <DonorDetails
-            donor={donor}
-            address={address}
-            isAddressInvalid={!address.address1 || !address.zipCode || !address.city || !address.country}
-        />
-        {!isLoading ? (
-            <ReceiptActions
-                downloadUrl={downloadUrl}
-                confirmReceiptData={confirmReceiptData}
-                isReceiptVerified={isVerified}
-                isContactInfoInvalid={!isValid}
-            />
-        ) : (
-            <div className={styles.donationReceiptSpinner}>
-              <CircularProgress color="success" />
-            </div>
-        )}
-      </section>
+      ) : (
+        <div className={styles.donationReceiptSpinner}>
+          <CircularProgress color="success" />
+        </div>
+      )}
+    </section>
   );
 };
 

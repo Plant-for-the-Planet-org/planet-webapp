@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import type { IssuedReceiptDataApi } from './donationReceiptTypes';
+
+import { useState } from 'react';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
@@ -6,11 +8,11 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './DonationReceipt.module.scss';
 import { useServerApi } from '../../../hooks/useServerApi';
 import { RECEIPT_STATUS } from './utils';
-import type { IssuedReceiptDataApi } from './donationReceiptTypes';
-
 import DebugPanel from './DebugPanel'; // TODO: remove for production
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { validateOwnership } from './DonationReceiptValidator';
+import { useTranslations } from 'next-intl';
+import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
 
 const DonationReceiptWrapper = () => {
   const {
@@ -32,6 +34,7 @@ const DonationReceiptWrapper = () => {
   const receiptData = getReceiptData();
   const operation = getOperation();
   const isOwner = validateOwnership(email, user);
+  const tReceipt = useTranslations('DonationReceipt');
 
   const confirmReceiptData = async () => {
     const donor = getDonor();
@@ -102,10 +105,14 @@ const DonationReceiptWrapper = () => {
     }
   };
 
-  if (!isOwner) {
-    // put out some message for now
-    return <div style={{ marginTop: '200px' }}>Not authorized</div>;
-  }
+  if (!isOwner)
+    return (
+      <ReceiptVerificationErrors
+        message={tReceipt.rich('errors.accessDeniedMessage', {
+          b: (chunks) => <strong>{chunks}</strong>,
+        })}
+      />
+    );
 
   if (!receiptData) {
     return (

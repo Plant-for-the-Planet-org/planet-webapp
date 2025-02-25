@@ -7,22 +7,25 @@ import { useRouter } from 'next/router';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import VerifyReceiptFooter from './microComponents/VerifyReceiptFooter';
 import { useAuth0 } from '@auth0/auth0-react';
 import type { IssuedReceiptDataApi } from './donationReceiptTypes';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useServerApi } from '../../../hooks/useServerApi';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
+import { useTranslations } from 'next-intl';
+import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
 
 const DonationReceiptUnauthenticated = () => {
   const { getApi } = useServerApi();
   const [isLoading, setIsLoading] = useState(false);
+  const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { dtn, year, challenge } = router.query;
   const { initForVerification } = useDonationReceiptContext();
   const { isAuthenticated } = useAuth0();
   const { user } = useUserProps();
+  const tReceipt = useTranslations('DonationReceipt');
 
   const areParamsValid =
     typeof dtn === 'string' &&
@@ -56,7 +59,7 @@ const DonationReceiptUnauthenticated = () => {
         setErrors(handleError(errorResponse));
 
         if (errorResponse.statusCode === 400) {
-          console.error('❌ Invalid receipt parameters.');
+          setIsReceiptInvalid(true);
         } else {
           redirect('/');
         }
@@ -68,16 +71,14 @@ const DonationReceiptUnauthenticated = () => {
 
   if (!router.isReady) return null;
 
-  if (!areParamsValid) {
-    console.log('❌ Invalid receipt parameters.');
+  if (isReceiptInvalid)
     return (
-      <div className={styles.donationReceiptLayout}>
-        <div className={styles.donationReceiptContainer}>
-          <VerifyReceiptFooter />
-        </div>
-      </div>
+      <ReceiptVerificationErrors
+        message={tReceipt.rich('errors.invalidReceipt', {
+          b: (chunks) => <strong>{chunks}</strong>,
+        })}
+      />
     );
-  }
 
   if (isLoading) {
     return (
