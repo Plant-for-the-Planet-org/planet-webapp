@@ -23,6 +23,14 @@ interface TargetsModalProps {
   conservTarget: number;
 }
 
+type SubmitData = {
+  targets: {
+    treesDonated: number;
+    areaRestored: number;
+    areaConserved: number;
+  };
+};
+
 const TargetsModal = ({
   open,
   setOpen,
@@ -66,7 +74,7 @@ const TargetsModal = ({
   const handleTargets = async () => {
     setIsTargetModalLoading(true);
     if (contextLoaded && token && open && !isTargetModalLoading) {
-      const bodyToSend = {
+      const bodyToSend: SubmitData = {
         targets: {
           treesDonated: isTreesPlantedTargetActive
             ? treesPlantedTargetLocal
@@ -80,7 +88,7 @@ const TargetsModal = ({
         },
       };
       try {
-        const res = await putAuthenticatedRequest<User>({
+        const res = await putAuthenticatedRequest<User, SubmitData>({
           tenant: tenantConfig?.id,
           url: `/app/profile`,
           data: bodyToSend,

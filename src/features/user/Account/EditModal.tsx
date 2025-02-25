@@ -131,7 +131,10 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       try {
-        const res = await putAuthenticatedRequest<ModifyDonations>({
+        const res = await putAuthenticatedRequest<
+          ModifyDonations,
+          BodyToSendType
+        >({
           tenant: tenantConfig?.id,
           url: `/app/subscriptions/${record?.id}?scope=modify`,
           data: bodyToSend,

@@ -26,9 +26,9 @@ interface GetAuthRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
   version?: string;
 }
-interface PostAuthRequestOptions extends BaseRequestOptions {
+interface PostAuthRequestOptions<D> extends BaseRequestOptions {
   token: string | null;
-  data: any;
+  data: D;
   logoutUser: (value?: string | undefined) => void;
   headers?: Record<string, string>;
 }
@@ -36,13 +36,13 @@ interface DeleteAuthRequestOptions extends BaseRequestOptions {
   token: string | null;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PutAuthRequestOptions extends BaseRequestOptions {
+interface PutAuthRequestOptions<D> extends BaseRequestOptions {
   token: string | null;
-  data?: any;
+  data?: D;
   logoutUser: (value?: string | undefined) => void;
 }
-interface PostRequestOptions extends BaseRequestOptions {
-  data: any;
+interface PostRequestOptions<D> extends BaseRequestOptions {
+  data: D;
 }
 interface GetRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
@@ -171,14 +171,14 @@ export function getAuthenticatedRequest<T>({
   });
 }
 
-export function postAuthenticatedRequest<T>({
+export function postAuthenticatedRequest<T, D = unknown>({
   tenant,
   url,
   data,
   token,
   logoutUser,
   headers,
-}: PostAuthRequestOptions) {
+}: PostAuthRequestOptions<D>) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
@@ -221,7 +221,11 @@ export function postAuthenticatedRequest<T>({
   });
 }
 
-export function postRequest<T>({ tenant, url, data }: PostRequestOptions) {
+export function postRequest<T, D = unknown>({
+  tenant,
+  url,
+  data,
+}: PostRequestOptions<D>) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
@@ -299,13 +303,13 @@ export function deleteAuthenticatedRequest<T>({
   });
 }
 
-export function putAuthenticatedRequest<T>({
+export function putAuthenticatedRequest<T, D = unknown>({
   tenant,
   url,
   data,
   token,
   logoutUser,
-}: PutAuthRequestOptions) {
+}: PutAuthRequestOptions<D>) {
   return new Promise<T>((resolve, reject) => {
     const lang = localStorage.getItem('language') || 'en';
     (async () => {
