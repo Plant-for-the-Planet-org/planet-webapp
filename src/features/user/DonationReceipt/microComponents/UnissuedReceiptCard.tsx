@@ -4,6 +4,7 @@ import DonationInfo from './DonationInfo';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import WebappButton from '../../../common/WebappButton';
 import { useTranslations } from 'next-intl';
+import { UNISSUED_RECEIPT_TYPE } from '../utils';
 
 type Prop = {
   unissuedReceipt: UnissuedReceiptDataAPI;
@@ -27,13 +28,20 @@ const UnissuedReceiptCard = ({ unissuedReceipt, onReceiptClick }: Prop) => {
         date={formatDate(paymentDate)}
         reference={reference}
       />
-      {type !== 'pending' && (
+      {type === UNISSUED_RECEIPT_TYPE.PENDING && (
         <WebappButton
           variant="primary"
           elementType="button"
           text={tReceipt('verifyAndDownload')}
           onClick={onReceiptClick}
         />
+      )}
+      {type !== UNISSUED_RECEIPT_TYPE.PENDING && (
+        <span className={styles.pendingReceiptBadge}>
+          {tReceipt('pendingReceipt', {
+            count: donationCount,
+          })}
+        </span>
       )}
     </div>
   );

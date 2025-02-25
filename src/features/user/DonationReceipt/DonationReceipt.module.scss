@@ -392,6 +392,7 @@
   padding: 12px;
   border-radius: 16px;
   background-color: #fff;
+  position: relative;
 
   .donationInfo {
     display: flex;
@@ -408,4 +409,16 @@
   padding: 16px;
   margin-top: 34px;
   background-color: #fff;
+}
+
+.pendingReceiptBadge {
+  background-color: rgba(0, 122, 73, 0.15);
+  font-size: $fontXSmall;
+  font-weight: 400;
+  padding: 0px 10px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 16px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }

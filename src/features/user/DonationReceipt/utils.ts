@@ -7,6 +7,11 @@ export const RECEIPT_STATUS = {
   ISSUE: 'issue',
 } as const;
 
+export const UNISSUED_RECEIPT_TYPE = {
+  PENDING: 'pending',
+  MULTI: 'multi',
+  SINGLE: 'single',
+} as const;
 export const getVerificationDate = () => {
   const isoDate = new Date().toISOString();
   return isoDate.replace('T', ' ').split('.')[0];
