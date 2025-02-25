@@ -17,7 +17,6 @@ import { useServerApi } from '../../../hooks/useServerApi';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
 import DebugPanel from './DebugPanel';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
 

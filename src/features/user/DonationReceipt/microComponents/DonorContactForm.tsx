@@ -123,13 +123,13 @@ const DonorContactForm = ({
         <FormInput
           name="firstName"
           control={control}
-          rules={{ required: t('donorInfo.firstNameRequired') }}
+          rules={{ required: t('notifications.firstNameRequired') }}
           label={t('donorInfo.firstName')}
         />
         <FormInput
           name="lastName"
           control={control}
-          rules={{ required: t('donorInfo.lastNameRequired') }}
+          rules={{ required: t('notifications.lastNameRequired') }}
           label={t('donorInfo.lastName')}
         />
         <FormInput
