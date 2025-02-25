@@ -48,6 +48,10 @@ interface GetRequestOptions extends BaseRequestOptions {
   queryParams?: { [key: string]: string };
   version?: string;
 }
+
+interface PutRequestOptions extends BaseRequestOptions {
+  data: any;
+}
 //  API call to private /profile endpoint
 export async function getAccountInfo({
   tenant,
@@ -252,7 +256,37 @@ export function postRequest<T>({ tenant, url, data }: PostRequestOptions) {
     })();
   });
 }
+export function putRequest<T>({ tenant, url, data }: PutRequestOptions) {
+  const lang = localStorage.getItem('language') || 'en';
 
+  return new Promise<T>((resolve, reject) => {
+    (async () => {
+      try {
+        const res = await fetch(process.env.API_ENDPOINT + url, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+            'tenant-key': `${tenant}`,
+            'X-SESSION-ID': await getsessionId(),
+            'x-locale': lang,
+          },
+        });
+        if (!res.ok) {
+          throw new APIError(res.status, await res.json());
+        }
+
+        if (res.status === 204) {
+          resolve(true as T);
+        } else {
+          resolve(await res.json());
+        }
+      } catch (error) {
+        reject(error);
+      }
+    })();
+  });
+}
 export function deleteAuthenticatedRequest<T>({
   tenant,
   url,
