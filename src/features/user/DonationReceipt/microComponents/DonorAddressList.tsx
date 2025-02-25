@@ -19,7 +19,7 @@ import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/Don
 
 type Props = {
   address: Address;
-  setSelectedAddressForAction: SetState<Address | null>;
+  setSelectedAddress: SetState<Address | null>;
   setAddressAction: SetState<AddressAction | null>;
   setIsModalOpen: SetState<boolean>;
   checkedAddressGuid: string | null;
@@ -30,7 +30,7 @@ type Props = {
 
 const DonorAddressList = ({
   address,
-  setSelectedAddressForAction,
+  setSelectedAddress,
   setAddressAction,
   setIsModalOpen,
   checkedAddressGuid,
@@ -103,7 +103,7 @@ const DonorAddressList = ({
       <button
         onClick={(e) => {
           e.preventDefault();
-          setSelectedAddressForAction(address);
+          setSelectedAddress(address);
           setAddressAction(ADDRESS_ACTIONS.EDIT);
           setIsModalOpen(true);
         }}

@@ -19,13 +19,18 @@ import DonorContactForm from './microComponents/DonorContactForm';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import DebugPanel from './DebugPanel';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
+import { validateOwnership } from './DonationReceiptValidator';
+import EditPermissionDenied from './microComponents/EditPermissionDenied';
 
 const DonorContactManagement = () => {
-  const { getDebugState, tinIsRequired, updateDonorAndAddress } =
+  const { getDebugState, updateDonorAndAddress, email } =
     useDonationReceiptContext();
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
   const { user, contextLoaded, setUser } = useUserProps();
+  const isOwner = validateOwnership(email, user);
+  if (!isOwner) return <EditPermissionDenied />;
+
   const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated, putApiAuthenticated } = useServerApi();
 
@@ -74,7 +79,12 @@ const DonorContactManagement = () => {
       let updatedUser = user;
 
       // Update user profile if changed
-      if (formData.firstName !== user.firstname || formData.tin !== user.tin) {
+      if (
+        formData.firstName !== user.firstname ||
+        formData.lastName !== user.lastname ||
+        formData.tin !== user.tin ||
+        formData.companyName !== user.name
+      ) {
         const profileData =
           user.type === 'individual'
             ? {
@@ -112,8 +122,6 @@ const DonorContactManagement = () => {
       navigateToVerificationPage();
     } catch (error) {
       setErrors(handleError(error as APIError));
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -161,12 +169,10 @@ const DonorContactManagement = () => {
           user={user}
           donorAddresses={donorAddresses}
           onSubmit={handleUpdateDonorInfo}
-          setSelectedAddressForAction={setSelectedAddress}
+          setSelectedAddress={setSelectedAddress}
           setAddressAction={setAddressAction}
           setIsModalOpen={setIsModalOpen}
-          tinIsRequired={tinIsRequired ?? false}
           isLoading={isLoading}
-          setIsLoading={setIsLoading}
           checkedAddressGuid={checkedAddressGuid}
           setCheckedAddressGuid={setCheckedAddressGuid}
         />

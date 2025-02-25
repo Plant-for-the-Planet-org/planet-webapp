@@ -11,6 +11,7 @@ import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddressList from './DonorAddressList';
+import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
 
 export type FormValues = {
   firstName: string;
@@ -27,10 +28,8 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   setAddressAction: SetState<AddressAction | null>;
   setCheckedAddressGuid: SetState<string | null>;
-  setIsLoading: SetState<boolean>;
   setIsModalOpen: SetState<boolean>;
-  setSelectedAddressForAction: SetState<Address | null>;
-  tinIsRequired: boolean;
+  setSelectedAddress: SetState<Address | null>;
   user: User | null;
 };
 
@@ -39,25 +38,13 @@ type FormInputProps = {
   control: Control<FormValues>;
   rules?: RegisterOptions<FormValues>;
   label: string;
-  tinIsRequired?: boolean;
 };
 
-const FormInput = ({
-  name,
-  control,
-  rules,
-  label,
-  tinIsRequired,
-}: FormInputProps) => (
+const FormInput = ({ name, control, rules, label }: FormInputProps) => (
   <Controller
     name={name}
     control={control}
-    rules={{
-      ...rules,
-      ...(tinIsRequired && name === 'tin'
-        ? { required: 'TIN is required.' }
-        : {}),
-    }}
+    rules={rules}
     render={({ field, fieldState }) => (
       <TextField
         {...field}
@@ -74,13 +61,12 @@ const DonorContactForm = ({
   user,
   donorAddresses,
   onSubmit,
-  setSelectedAddressForAction,
+  setSelectedAddress,
   setAddressAction,
   setIsModalOpen,
   isLoading,
   checkedAddressGuid,
   setCheckedAddressGuid,
-  tinIsRequired,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('DonationReceipt');
@@ -114,35 +100,46 @@ const DonorContactForm = ({
 
   const handleAddNewAddress = () => {
     setIsModalOpen(true);
-    setAddressAction('ADD' as AddressAction);
+    setAddressAction(ADDRESS_ACTIONS.ADD);
   };
 
   return (
-    <form className={styles.donorContactForm} onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        <FormInput
-          name="firstName"
-          control={control}
-          rules={{ required: t('notifications.firstNameRequired') }}
-          label={t('donorInfo.firstName')}
-        />
-        <FormInput
-          name="lastName"
-          control={control}
-          rules={{ required: t('notifications.lastNameRequired') }}
-          label={t('donorInfo.lastName')}
-        />
-        <FormInput
-          name="tin"
-          control={control}
-          tinIsRequired={tinIsRequired}
-          label={t('donorInfo.tin')}
-        />
-        <FormInput
-          name="companyName"
-          control={control}
-          label={t('donorInfo.companyName')}
-        />
+        {user?.type === 'individual' && (
+          <>
+            <FormInput
+              name="firstName"
+              control={control}
+              rules={{ required: t('notifications.firstNameRequired') }}
+              label={t('donorInfo.firstName')}
+            />
+            <FormInput
+              name="lastName"
+              control={control}
+              rules={{ required: t('notifications.lastNameRequired') }}
+              label={t('donorInfo.lastName')}
+            />
+          </>
+        )}
+        {Boolean(user?.tin) && (
+          <FormInput
+            name="tin"
+            control={control}
+            rules={{
+              required: t('notifications.tinRequired'),
+            }}
+            label={t('donorInfo.tin')}
+          />
+        )}
+        {user?.type !== 'individual' && (
+          <FormInput
+            name="companyName"
+            control={control}
+            label={t('donorInfo.companyName')}
+            rules={{ required: t('notifications.companyRequired') }}
+          />
+        )}
       </InlineFormDisplayGroup>
 
       <section className={styles.donorAddressSection}>
@@ -150,7 +147,7 @@ const DonorContactForm = ({
           <DonorAddressList
             key={address.id}
             address={address}
-            setSelectedAddressForAction={setSelectedAddressForAction}
+            setSelectedAddress={setSelectedAddress}
             setAddressAction={setAddressAction}
             setIsModalOpen={setIsModalOpen}
             checkedAddressGuid={checkedAddressGuid}
@@ -166,20 +163,22 @@ const DonorContactForm = ({
         )}
       </section>
 
-      <div className={styles.donorContactFormAction}>
-        <WebappButton
-          text={tAddressManagement('actions.addAddress')}
-          elementType="button"
-          onClick={handleAddNewAddress}
-          variant="secondary"
-        />
-        <WebappButton
-          text={t('saveDataAndReturn')}
-          elementType="button"
-          onClick={handleSubmit(onSubmit)}
-          variant="primary"
-        />
-      </div>
+      {!isLoading && (
+        <div className={styles.donorContactFormAction}>
+          <WebappButton
+            text={tAddressManagement('actions.addAddress')}
+            elementType="button"
+            onClick={handleAddNewAddress}
+            variant="secondary"
+          />
+          <WebappButton
+            text={t('saveDataAndReturn')}
+            elementType="button"
+            onClick={handleSubmit(onSubmit)}
+            variant="primary"
+          />
+        </div>
+      )}
 
       {isLoading && (
         <div className={styles.donationReceiptSpinner}>
