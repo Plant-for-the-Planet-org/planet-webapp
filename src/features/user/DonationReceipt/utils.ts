@@ -1,7 +1,5 @@
 import type { Address, User } from '@planet-sdk/common';
-import type {
-  AddressView
-} from './donationReceiptTypes';
+import type { AddressView } from './donationReceiptTypes';
 
 export const RECEIPT_STATUS = {
   VERIFY: 'verify',
@@ -24,15 +22,15 @@ export const getVerificationDate = () => {
  * @returns {boolean} - Returns `true` if both addresses match, otherwise `false`.
  */
 export const isMatchingAddress = (
-  profileAddress: Record<string, any>,
+  profileAddress: Address,
   receiptAddress: AddressView | undefined
 ) => {
   if (!receiptAddress) return false;
   const { guid: _guid, ...filteredReceiptAddress } = receiptAddress;
-  return Object.entries(filteredReceiptAddress).every(
-    ([key, value]) =>
-      profileAddress[key === 'address1' ? 'address' : key] === value
-  );
+  return Object.entries(filteredReceiptAddress).every(([key, value]) => {
+    const mappedKey = key === 'address1' ? 'address' : key;
+    return profileAddress[mappedKey as keyof Address] === value;
+  });
 };
 
 /**

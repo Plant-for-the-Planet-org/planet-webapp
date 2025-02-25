@@ -27,7 +27,7 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
-  updateUserAddresses: () => Promise<void>;
+  updateUserAddresses?: () => Promise<void>;
 }
 
 const defaultAddressDetail = {
@@ -36,6 +36,7 @@ const defaultAddressDetail = {
   city: '',
   zipCode: '',
   state: '',
+  type: ADDRESS_TYPE.OTHER,
 };
 
 const AddAddress = ({
@@ -91,7 +92,7 @@ const AddAddress = ({
               addresses: [...updatedAddresses, res],
             };
           });
-          updateUserAddresses();
+          if (updateUserAddresses) updateUserAddresses();
         }
       } catch (error) {
         setErrors(handleError(error as APIError));

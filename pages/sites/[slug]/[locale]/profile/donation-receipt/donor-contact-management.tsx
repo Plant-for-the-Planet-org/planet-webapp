@@ -22,8 +22,8 @@ import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoa
 export default function ModifyDonorData() {
   const t = useTranslations('DonationReceipt');
   const receiptDataString = sessionStorage.getItem('receiptData');
-  const fromVerificationPage =
-    receiptDataString !== null  !== undefined;
+  const fromVerificationPage = receiptDataString !== null;
+
   return (
     <UserLayout>
       <Head>{t('donorContactManagement')}</Head>
