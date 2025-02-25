@@ -45,6 +45,7 @@
     "receipts": "Receipts",
     "donorContactManagement": "Donor Contact Management",
     "contactManagementHeader": "Update profile and address",
-    "saveDataAndReturn": "Save data and return"
+    "saveDataAndReturn": "Save data and return",
+    "taxReceipts": "Tax Receipts"
   }
 }

@@ -63,7 +63,6 @@ const DonorContactManagement = () => {
 
   // Handle form submission and update user info
   const handleUpdateDonorInfo = async (formData: FormValues) => {
-    console.log('🟢handleUpdateDonorInfo: Form data:', formData);
     setIsLoading(true);
     if (!user || !checkedAddressGuid) {
       setErrors([{ message: 'User or address data missing.' }]);
@@ -85,7 +84,6 @@ const DonorContactManagement = () => {
               }
             : { name: formData.companyName, tin: formData.tin };
 
-        console.log('🟢handleUpdateDonorInfo: Profile data:', profileData);
         updatedUser = await putApiAuthenticated<User>(
           '/app/profile',
           profileData
@@ -97,7 +95,6 @@ const DonorContactManagement = () => {
 
       // Update donor addresses
       updateDonorAddresses();
-      console.log('Donor info updated successfully.');
 
       const donorView = transformProfileToDonorView(updatedUser);
       const selectedAddress = donorAddresses.find(

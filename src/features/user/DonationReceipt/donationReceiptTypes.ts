@@ -11,7 +11,6 @@ export type DonorView = {
   tin: string | null;
   name: string;
   type: 'individual' | 'organization' | null;
-  email: string;
 };
 
 export type AddressView = {
@@ -47,7 +46,7 @@ export interface IssuedReceiptDataApi {
   currency: string;
   donationCount: number;
   donations: IssuedDonationApi[];
-  donor: DonorApi
+  donor: DonorApi;
   downloadUrl: string;
   dtn: string;
   paymentDate: string;
@@ -66,11 +65,11 @@ export interface ReceiptData {
   donationCount: number;
   donations: DonationView[];
   donor: DonorView;
-  downloadUrl: string|null;
+  downloadUrl: string | null;
   dtn: string | null;
   isVerified: boolean;
   paymentDate: string;
-  type: string | null
+  type: string | null;
   year: string | null;
 }
 
@@ -129,4 +128,3 @@ export interface DonationView {
   currency: string;
   paymentDate: string;
 }
-
