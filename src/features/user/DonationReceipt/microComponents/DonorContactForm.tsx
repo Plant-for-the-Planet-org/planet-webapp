@@ -31,6 +31,7 @@ type Props = {
   setIsModalOpen: SetState<boolean>;
   setSelectedAddress: SetState<Address | null>;
   user: User | null;
+  tinIsRequired: boolean;
 };
 
 type FormInputProps = {
@@ -67,6 +68,7 @@ const DonorContactForm = ({
   isLoading,
   checkedAddressGuid,
   setCheckedAddressGuid,
+  tinIsRequired,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('DonationReceipt');
@@ -122,7 +124,7 @@ const DonorContactForm = ({
             />
           </>
         )}
-        {Boolean(user?.tin) && (
+        {tinIsRequired && (
           <FormInput
             name="tin"
             control={control}

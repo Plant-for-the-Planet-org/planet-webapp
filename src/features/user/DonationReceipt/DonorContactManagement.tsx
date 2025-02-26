@@ -23,7 +23,7 @@ import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 
 const DonorContactManagement = () => {
-  const { getDebugState, updateDonorAndAddress, email } =
+  const { getDebugState, updateDonorAndAddress, email, tinIsRequired } =
     useDonationReceiptContext();
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
@@ -175,6 +175,7 @@ const DonorContactManagement = () => {
           isLoading={isLoading}
           checkedAddressGuid={checkedAddressGuid}
           setCheckedAddressGuid={setCheckedAddressGuid}
+          tinIsRequired={tinIsRequired}
         />
 
         <DebugPanel data={getDebugState()} />
