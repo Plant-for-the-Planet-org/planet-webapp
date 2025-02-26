@@ -14,7 +14,7 @@ type Story = StoryObj<typeof MapFeatureExplorer>;
 
 const MapFeatureExplorerWrapper = () => {
   const [mapOptions, setMapOptions] = useState<MapOptions>({
-    showProjects: true,
+    projects: true,
   });
 
   const updateMapOption = (option: keyof MapOptions, value: boolean) => {

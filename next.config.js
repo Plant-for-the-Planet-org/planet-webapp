@@ -123,6 +123,8 @@ const nextConfig = {
     REDIS_URL: process.env.REDIS_URL,
     REDIS_TOKEN: process.env.REDIS_TOKEN,
     WEBHOOK_URL: process.env.WEBHOOK_URL,
+    LAYERS_API_KEY: process.env.LAYERS_API_KEY,
+    LAYERS_API_ENDPOINT: process.env.LAYERS_API_ENDPOINT,
   },
   trailingSlash: false,
   reactStrictMode: true,

@@ -29,7 +29,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
   const { query } = useRouter();
   const { isImpersonationModeOn } = useUserProps();
   const showContentContainer =
-    mapOptions.showProjects || page === 'project-details';
+    Boolean(mapOptions.projects) || page === 'project-details';
   const layoutClass = useMemo(() => {
     if (query.embed === 'true') return styles.embedMode;
     if (isImpersonationModeOn) return styles.impersonationMode;
