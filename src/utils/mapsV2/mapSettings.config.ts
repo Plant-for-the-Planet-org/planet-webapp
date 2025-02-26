@@ -11,9 +11,9 @@ export type MapLayerOptionsType =
   | 'soilOrganicCarbon'
   | 'soilBulkDensity'
   | 'treeSpeciesDensity'
-  | 'birdsDensity'
-  | 'mammalsDensity'
-  | 'amphibiansDensity'
+  | 'birdDensity'
+  | 'mammalDensity'
+  | 'amphibianDensity'
   | 'fireRisk'
   | 'deforestationRisk';
 
@@ -227,8 +227,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
     },
     {
-      key: 'birdsDensity',
-      canShow: true,
+      key: 'birdDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -244,8 +244,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
     },
     {
-      key: 'mammalsDensity',
-      canShow: true,
+      key: 'mammalDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -260,8 +260,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
     },
     {
-      key: 'amphibiansDensity',
-      canShow: true,
+      key: 'amphibianDensity',
+      canShow: false,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
