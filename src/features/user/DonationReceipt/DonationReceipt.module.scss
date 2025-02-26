@@ -245,7 +245,7 @@
 .donorContactManagementLayout {
   @extend .layoutBase;
   width: calc(100vw - 119px);
-  margin: 74px auto 0;
+  margin: 119px auto 18px;
 
   @include xsPhoneView {
     width: calc(100vw - 45px);
@@ -258,7 +258,6 @@
   gap: 23px;
   width: 100%;
   max-width: 760px;
-  margin-top: 55px;
 
   .headerContainer {
     display: flex;
@@ -391,11 +390,15 @@
 
 .donationReceipts {
   max-width: 524px;
+  height: 494px;
+  overflow: scroll;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 21px;
   margin-top: 21px;
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+  -ms-overflow-style: none; /* Hides scrollbar in IE/Edge */
 }
 
 .donationReceiptCard {
@@ -422,7 +425,7 @@
 .receiptListFooter {
   border-radius: 16px;
   padding: 16px;
-  margin-top: 46px;
+  margin-top: 34px;
   background-color: #fff;
 }
 

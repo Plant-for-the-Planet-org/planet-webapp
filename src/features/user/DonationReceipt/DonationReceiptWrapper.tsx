@@ -39,7 +39,11 @@ const DonationReceiptWrapper = () => {
     if (!isOwner) clearSessionStorage();
   }, [isOwner]);
 
-  if (!isOwner)
+  // The issuance of a receipt is not possible through a direct link.
+  // It can only be done via the receipt list page.
+  // The error component below is specifically dedicated to direct link access
+
+  if (!isOwner && getOperation() !== RECEIPT_STATUS.ISSUE)
     return (
       <ReceiptVerificationErrors
         message={tReceipt.rich('errors.accessDeniedMessage', {

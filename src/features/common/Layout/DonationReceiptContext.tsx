@@ -125,7 +125,7 @@ export const DonationReceiptProvider: React.FC<{
 }> = ({ children }) => {
   const [state, setState] =
     useState<DonationReceiptContextState>(loadStateFromSession);
-
+  console.log(state, '==2');
   // Persist state to sessionStorage
   useEffect(() => {
     sessionStorage.setItem('donationReceiptContext', JSON.stringify(state));
@@ -193,7 +193,7 @@ export const DonationReceiptProvider: React.FC<{
     user: User | null
   ): void => {
     if (!data) return;
-
+    console.log(data, '==unissued');
     const tinIsRequired = data.tinIsRequired ?? false;
     const isValid = validateUnissuedReceipt(
       donor,
