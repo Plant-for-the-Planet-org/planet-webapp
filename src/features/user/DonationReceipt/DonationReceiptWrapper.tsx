@@ -124,15 +124,13 @@ const DonationReceiptWrapper = () => {
   }
 
   return (
-    <div>
-      <DonationReceipt
-        donationReceipt={receiptData}
-        isLoading={isLoading}
-        isValid={isValid}
-        operation={operation}
-        confirmReceiptData={confirmReceiptData}
-      />
-    </div>
+    <DonationReceipt
+      donationReceipt={receiptData}
+      isLoading={isLoading}
+      isValid={isValid}
+      operation={operation}
+      confirmReceiptData={confirmReceiptData}
+    />
   );
 };
 

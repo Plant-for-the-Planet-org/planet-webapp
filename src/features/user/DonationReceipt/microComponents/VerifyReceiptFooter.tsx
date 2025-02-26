@@ -2,6 +2,7 @@ import RedirectRightArrowIcon from '../../../../../public/assets/images/icons/Re
 import styles from '../DonationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
 import SupportAssistanceInfo from './SupportAssistanceInfo';
+import Link from 'next/link';
 
 const VerifyReceiptFooter = () => {
   const tReceipt = useTranslations('DonationReceipt');
@@ -13,9 +14,12 @@ const VerifyReceiptFooter = () => {
           <h3>{tReceipt('viewAllTaxReceipts')}</h3>
           <p>{tReceipt('donationReceiptsManagementInfo')}</p>
         </div>
-        <a href="/profile/donation-receipt" className={styles.redirectButton}>
+        <Link
+          href="/profile/donation-receipt"
+          className={styles.redirectButton}
+        >
           <RedirectRightArrowIcon />
-        </a>
+        </Link>
       </div>
       <SupportAssistanceInfo />
     </section>
