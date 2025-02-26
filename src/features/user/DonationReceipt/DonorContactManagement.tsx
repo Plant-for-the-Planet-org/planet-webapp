@@ -20,16 +20,18 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
 import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
+import { RECEIPT_STATUS } from './donationReceiptTypes';
 
 const DonorContactManagement = () => {
-  const { updateDonorAndAddress, email, tinIsRequired } =
+  const { updateDonorAndAddress, email, tinIsRequired, getOperation } =
     useDonationReceiptContext();
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
   const { user, setUser } = useUserProps();
 
   const isOwner = validateOwnership(email, user);
-  if (!isOwner) return <EditPermissionDenied />;
+  if (!isOwner && getOperation() !== RECEIPT_STATUS.ISSUE)
+    return <EditPermissionDenied />;
 
   const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useServerApi();
