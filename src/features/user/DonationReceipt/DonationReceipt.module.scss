@@ -245,7 +245,7 @@
 .donorContactManagementLayout {
   @extend .layoutBase;
   width: calc(100vw - 119px);
-  margin: 112px auto 0;
+  margin: 74px auto 0;
 
   @include xsPhoneView {
     width: calc(100vw - 45px);
@@ -350,12 +350,17 @@
   }
 }
 
+.addressLimitMessage {
+  text-align: center;
+  margin-top: 11px;
+}
+
 .donorContactFormAction {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   margin-top: 68px;
-  margin: 68px 12px 0px;
+  margin: 42px 12px 0px;
 
   button {
     flex: 1;

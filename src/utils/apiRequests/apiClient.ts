@@ -47,9 +47,6 @@ const apiClient = async <T>(
   };
 
   try {
-    // Log the constructed URL for debugging
-    console.log('Making API call to:', fullUrl);
-
     const response = await fetch(fullUrl, {
       method: options.method,
       headers,

@@ -11,7 +11,10 @@ import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddressList from './DonorAddressList';
-import { ADDRESS_ACTIONS } from '../../../../utils/addressManagement';
+import {
+  ADDRESS_ACTIONS,
+  MAX_ADDRESS_LIMIT,
+} from '../../../../utils/addressManagement';
 
 export type FormValues = {
   firstName: string;
@@ -70,7 +73,7 @@ const DonorContactForm = ({
 }: Props) => {
   if (!user) return null;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const t = useTranslations('DonationReceipt');
+  const tReceipt = useTranslations('DonationReceipt');
   const {
     control,
     handleSubmit,
@@ -101,7 +104,7 @@ const DonorContactForm = ({
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
-
+  const hasReachedAddressLimit = user.addresses.length >= MAX_ADDRESS_LIMIT;
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
@@ -110,14 +113,14 @@ const DonorContactForm = ({
             <FormInput
               name="firstName"
               control={control}
-              rules={{ required: t('notifications.firstNameRequired') }}
-              label={t('donorInfo.firstName')}
+              rules={{ required: tReceipt('notifications.firstNameRequired') }}
+              label={tReceipt('donorInfo.firstName')}
             />
             <FormInput
               name="lastName"
               control={control}
-              rules={{ required: t('notifications.lastNameRequired') }}
-              label={t('donorInfo.lastName')}
+              rules={{ required: tReceipt('notifications.lastNameRequired') }}
+              label={tReceipt('donorInfo.lastName')}
             />
           </>
         )}
@@ -126,17 +129,17 @@ const DonorContactForm = ({
             name="tin"
             control={control}
             rules={{
-              required: t('notifications.tinRequired'),
+              required: tReceipt('notifications.tinRequired'),
             }}
-            label={t('donorInfo.tin')}
+            label={tReceipt('donorInfo.tin')}
           />
         )}
         {user.type !== 'individual' && (
           <FormInput
             name="companyName"
             control={control}
-            label={t('donorInfo.companyName')}
-            rules={{ required: t('notifications.companyRequired') }}
+            label={tReceipt('donorInfo.companyName')}
+            rules={{ required: tReceipt('notifications.companyRequired') }}
           />
         )}
       </InlineFormDisplayGroup>
@@ -160,18 +163,25 @@ const DonorContactForm = ({
             {errors.addressGuid.message}
           </span>
         )}
+        {hasReachedAddressLimit && (
+          <span className={styles.addressLimitMessage}>
+            {tReceipt('notifications.addressLimitReached')}
+          </span>
+        )}
       </section>
 
       {!isLoading && (
         <div className={styles.donorContactFormAction}>
+          {!hasReachedAddressLimit && (
+            <WebappButton
+              text={tAddressManagement('actions.addAddress')}
+              elementType="button"
+              onClick={handleAddNewAddress}
+              variant="secondary"
+            />
+          )}
           <WebappButton
-            text={tAddressManagement('actions.addAddress')}
-            elementType="button"
-            onClick={handleAddNewAddress}
-            variant="secondary"
-          />
-          <WebappButton
-            text={t('saveDataAndReturn')}
+            text={tReceipt('saveDataAndReturn')}
             elementType="button"
             onClick={handleSubmit(onSubmit)}
             variant="primary"

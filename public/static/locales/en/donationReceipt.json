@@ -29,7 +29,8 @@
       "companyRequired": "Company Name field is Required",
       "tinRequired": "Tin field is required",
       "addressRequired": "Please choose an address to proceed.",
-      "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below."
+      "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
+      "addressLimitReached": "You've reached the address limit. You can update your existing addresses, but adding a new one isn't possible."
     },
     "verifyTaxHeaderPrimary": "Verify your data to download tax receipt",
     "verifyTaxHeaderSecondary": "once the data is verified, it can not be changed again for this receipt",
