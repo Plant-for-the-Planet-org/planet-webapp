@@ -83,9 +83,7 @@ const DonationReceipts = () => {
       initForVerification(clickedReceipt, user);
     }
 
-    router
-      .push('/profile/donation-receipt/verify')
-      .then(() => console.log('🚀 Navigating to verification page...'));
+    router.push('/profile/donation-receipt/verify');
   };
 
   if (!donationReceipts)

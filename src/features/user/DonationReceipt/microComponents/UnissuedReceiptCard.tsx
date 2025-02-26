@@ -1,10 +1,11 @@
 import type { UnissuedReceiptDataAPI } from '../donationReceiptTypes';
+
 import styles from '../DonationReceipt.module.scss';
 import DonationInfo from './DonationInfo';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import WebappButton from '../../../common/WebappButton';
 import { useTranslations } from 'next-intl';
-import { UNISSUED_RECEIPT_TYPE } from '../utils';
+import { UNISSUED_RECEIPT_TYPE } from '../donationReceiptTypes';
 
 type Prop = {
   unissuedReceipt: UnissuedReceiptDataAPI;

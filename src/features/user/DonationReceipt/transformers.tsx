@@ -8,6 +8,7 @@ import type {
   UnissuedDonationApi,
 } from './donationReceiptTypes';
 import type { Address } from '@planet-sdk/common';
+import { ADDRESS_TYPE } from '../../../utils/addressManagement';
 
 export const transformIssuedDonation = (
   item: IssuedDonationApi
@@ -59,7 +60,10 @@ export const transformProfileToDonorView = (user: User): DonorView => ({
 });
 
 const getPrimaryAddress = (user: User): Address | null => {
-  return user.addresses?.find((address) => address.isPrimary === true) ?? null;
+  return (
+    user.addresses?.find((address) => address.type === ADDRESS_TYPE.PRIMARY) ??
+    null
+  );
 };
 
 export const transformProfileToPrimaryAddressView = (

@@ -2,7 +2,7 @@ import type { Operation } from '../donationReceiptTypes';
 
 import { useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
-import { RECEIPT_STATUS } from '../utils';
+import { RECEIPT_STATUS } from '../donationReceiptTypes';
 
 type Props = {
   operation: Operation;

@@ -34,7 +34,6 @@ export const validateIssuedReceipt = (
   donor: DonorView,
   address: AddressView | null,
   tinIsRequired: boolean,
-  issuedToEmail: string,
   user: User | null
 ): boolean => {
   return validateTIN(donor, tinIsRequired, user) && validateAddress(address);

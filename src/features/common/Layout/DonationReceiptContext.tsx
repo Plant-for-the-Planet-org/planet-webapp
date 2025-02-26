@@ -1,10 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import {
-  transformAddress,
-  transformDonor,
-  transformIssuedDonation,
-  transformUnissuedDonation,
-} from '../../user/DonationReceipt/transformers';
+import type { User } from '@planet-sdk/common';
 import type {
   AddressView,
   DonationView,
@@ -16,8 +10,15 @@ import type {
   UnissuedDonationApi,
   UnissuedReceiptDataAPI,
 } from '../../user/DonationReceipt/donationReceiptTypes';
-import { RECEIPT_STATUS } from '../../user/DonationReceipt/utils';
-import type { User } from '@planet-sdk/common';
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { RECEIPT_STATUS } from '../../user/DonationReceipt/donationReceiptTypes';
+import {
+  transformAddress,
+  transformDonor,
+  transformIssuedDonation,
+  transformUnissuedDonation,
+} from '../../user/DonationReceipt/transformers';
 import {
   validateIssuedReceipt,
   validateUnissuedReceipt,
@@ -96,7 +97,6 @@ interface DonationReceiptContextInterface {
   getVerificationDate: () => string | null;
   isValid: boolean;
   tinIsRequired: boolean;
-  getDebugState: () => DonationReceiptContextState; // TODO: remove for production
 
   // context manipulation functions
   initForVerification: (data: IssuedReceiptDataApi, user: User | null) => void;
@@ -155,13 +155,7 @@ export const DonationReceiptProvider: React.FC<{
       : RECEIPT_STATUS.VERIFY;
     const tinIsRequired = data.tinIsRequired ?? false;
 
-    const isValid = validateIssuedReceipt(
-      donor,
-      address,
-      tinIsRequired,
-      data.donor.email,
-      user
-    );
+    const isValid = validateIssuedReceipt(donor, address, tinIsRequired, user);
 
     const newState = {
       address,
@@ -318,7 +312,6 @@ export const DonationReceiptProvider: React.FC<{
     tinIsRequired: state.tinIsRequired,
     updateDonorAndAddress,
     clearSessionStorage,
-    getDebugState: () => state,
   };
 
   return (

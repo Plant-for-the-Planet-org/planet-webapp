@@ -1,11 +1,11 @@
-import type { Donations } from '../donationReceiptTypes';
+import type { Donation } from '../donationReceiptTypes';
 
 import { useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 type Props = {
-  donations: Donations[];
+  donations: Donation[];
   amount: number | null;
   currency: string | null;
 };
@@ -45,7 +45,7 @@ const DonationsTable = ({ donations, amount, currency }: Props) => {
           );
         })}
       </ul>
-      {amount !== null && (
+      {Boolean(amount) && (
         <div className={styles.totalAmount}>
           {tReceipt('donationDetails.donationAmount', {
             currency,

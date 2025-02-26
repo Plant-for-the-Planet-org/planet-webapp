@@ -7,8 +7,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './DonationReceipt.module.scss';
 import { useServerApi } from '../../../hooks/useServerApi';
-import { RECEIPT_STATUS } from './utils';
-import DebugPanel from './DebugPanel'; // TODO: remove for production
+import { RECEIPT_STATUS } from './donationReceiptTypes';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { validateOwnership } from './DonationReceiptValidator';
 import { useTranslations } from 'next-intl';
@@ -25,7 +24,6 @@ const DonationReceiptWrapper = () => {
     initForVerification,
     email,
     isValid,
-    getDebugState, // TODO: remove for production
     clearSessionStorage,
   } = useDonationReceiptContext();
 
@@ -58,7 +56,6 @@ const DonationReceiptWrapper = () => {
 
     if (!donor || !address || !receiptData) {
       console.error('❌ Missing required data for confirmation.');
-      alert('Required donor, address, or receipt data is missing.');
       return;
     }
 
@@ -103,17 +100,12 @@ const DonationReceiptWrapper = () => {
       }
 
       if (response) {
-        alert('Receipt successfully processed.');
         initForVerification(response, null);
       } else {
         console.error('❌ Failed to process receipt.');
-        alert(
-          'Failed to process receipt. Please check the details and try again.'
-        );
       }
     } catch (error) {
       console.error('❌ Error during receipt operation:', error);
-      alert('An error occurred while processing the receipt.');
     } finally {
       setIsLoading(false);
     }
@@ -136,8 +128,6 @@ const DonationReceiptWrapper = () => {
         operation={operation}
         confirmReceiptData={confirmReceiptData}
       />
-
-      {/* <DebugPanel data={getDebugState()} /> */}
     </div>
   );
 };

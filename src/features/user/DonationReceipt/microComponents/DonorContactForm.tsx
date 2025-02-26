@@ -23,7 +23,6 @@ export type FormValues = {
 
 type Props = {
   checkedAddressGuid: string | null;
-  donorAddresses: Address[];
   isLoading: boolean;
   onSubmit: (data: FormValues) => void;
   setAddressAction: SetState<AddressAction | null>;
@@ -60,7 +59,6 @@ const FormInput = ({ name, control, rules, label }: FormInputProps) => (
 
 const DonorContactForm = ({
   user,
-  donorAddresses,
   onSubmit,
   setSelectedAddress,
   setAddressAction,
@@ -70,6 +68,7 @@ const DonorContactForm = ({
   setCheckedAddressGuid,
   tinIsRequired,
 }: Props) => {
+  if (!user) return null;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const t = useTranslations('DonationReceipt');
   const {
@@ -89,15 +88,13 @@ const DonorContactForm = ({
   });
 
   useEffect(() => {
-    if (user) {
-      reset({
-        firstName: user.firstname ?? '',
-        lastName: user.lastname ?? '',
-        tin: user.tin ?? '',
-        companyName: user.name ?? '',
-        addressGuid: checkedAddressGuid ?? '',
-      });
-    }
+    reset({
+      firstName: user.firstname ?? '',
+      lastName: user.lastname ?? '',
+      tin: user.tin ?? '',
+      companyName: user.name ?? '',
+      addressGuid: checkedAddressGuid ?? '',
+    });
   }, [user, checkedAddressGuid, reset]);
 
   const handleAddNewAddress = () => {
@@ -108,7 +105,7 @@ const DonorContactForm = ({
   return (
     <form className={styles.donorContactForm}>
       <InlineFormDisplayGroup>
-        {user?.type === 'individual' && (
+        {user.type === 'individual' && (
           <>
             <FormInput
               name="firstName"
@@ -134,7 +131,7 @@ const DonorContactForm = ({
             label={t('donorInfo.tin')}
           />
         )}
-        {user?.type !== 'individual' && (
+        {user.type !== 'individual' && (
           <FormInput
             name="companyName"
             control={control}
@@ -145,7 +142,7 @@ const DonorContactForm = ({
       </InlineFormDisplayGroup>
 
       <section className={styles.donorAddressSection}>
-        {donorAddresses.map((address) => (
+        {user.addresses.map((address) => (
           <DonorAddressList
             key={address.id}
             address={address}

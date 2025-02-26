@@ -1,7 +1,5 @@
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 
-const DonationReceiptAuthenticated = () => {
-  return <DonationReceiptWrapper />;
-};
+const DonationReceiptAuthenticated = () => <DonationReceiptWrapper />;
 
 export default DonationReceiptAuthenticated;

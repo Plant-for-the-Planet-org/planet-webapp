@@ -1,4 +1,6 @@
 import type { APIError } from '@planet-sdk/common';
+import type { IssuedReceiptDataApi } from './donationReceiptTypes';
+
 import { useContext, useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
@@ -7,8 +9,6 @@ import { useRouter } from 'next/router';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useAuth0 } from '@auth0/auth0-react';
-import type { IssuedReceiptDataApi } from './donationReceiptTypes';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useServerApi } from '../../../hooks/useServerApi';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
@@ -16,16 +16,16 @@ import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
 
 const DonationReceiptUnauthenticated = () => {
+  const router = useRouter();
+  const tReceipt = useTranslations('DonationReceipt');
+
   const { getApi } = useServerApi();
   const [isLoading, setIsLoading] = useState(false);
   const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const router = useRouter();
   const { dtn, year, challenge } = router.query;
   const { initForVerification } = useDonationReceiptContext();
-  const { isAuthenticated } = useAuth0();
   const { user } = useUserProps();
-  const tReceipt = useTranslations('DonationReceipt');
 
   const areParamsValid =
     typeof dtn === 'string' &&
@@ -45,15 +45,7 @@ const DonationReceiptUnauthenticated = () => {
         )}`;
         const data = await getApi<IssuedReceiptDataApi>(url);
 
-        if (data) {
-          initForVerification(data, user);
-          if (!isAuthenticated) {
-            sessionStorage.setItem(
-              'receiptData',
-              JSON.stringify({ dtn, year, challenge })
-            );
-          }
-        }
+        if (data) initForVerification(data, user);
       } catch (err) {
         const errorResponse = err as APIError;
         setErrors(handleError(errorResponse));
@@ -80,15 +72,13 @@ const DonationReceiptUnauthenticated = () => {
       />
     );
 
-  if (isLoading) {
+  if (isLoading)
     return (
       <div className={styles.donationReceiptSkeleton}>
         <Skeleton height={700} width={760} />
       </div>
     );
-  }
 
-  // Render the receipt details using the common wrapper
   return <DonationReceiptWrapper />;
 };
 

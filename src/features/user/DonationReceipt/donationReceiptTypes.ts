@@ -1,4 +1,14 @@
-import type { RECEIPT_STATUS } from './utils';
+export const RECEIPT_STATUS = {
+  VERIFY: 'verify',
+  DOWNLOAD: 'download',
+  ISSUE: 'issue',
+} as const;
+
+export const UNISSUED_RECEIPT_TYPE = {
+  PENDING: 'pending',
+  MULTI: 'multi',
+  SINGLE: 'single',
+} as const;
 
 export type Donation = {
   amount: number;

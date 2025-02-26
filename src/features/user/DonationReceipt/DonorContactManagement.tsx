@@ -17,31 +17,28 @@ import { useServerApi } from '../../../hooks/useServerApi';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import DebugPanel from './DebugPanel';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
 import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 
 const DonorContactManagement = () => {
-  const { getDebugState, updateDonorAndAddress, email, tinIsRequired } =
+  const { updateDonorAndAddress, email, tinIsRequired } =
     useDonationReceiptContext();
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const { user, contextLoaded, setUser } = useUserProps();
+  const { user, setUser } = useUserProps();
+
   const isOwner = validateOwnership(email, user);
   if (!isOwner) return <EditPermissionDenied />;
 
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { getApiAuthenticated, putApiAuthenticated } = useServerApi();
+  const { putApiAuthenticated } = useServerApi();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const [donorAddresses, setDonorAddresses] = useState<Address[]>(
-    user?.addresses ?? []
-  );
   const [isLoading, setIsLoading] = useState(false);
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
     null
@@ -53,18 +50,6 @@ const DonorContactManagement = () => {
       .push('/profile/donation-receipt/verify')
       .then(() => setIsLoading(false));
   }, [router]);
-
-  // Fetch user addresses
-  const updateDonorAddresses = useCallback(async () => {
-    if (!user || !contextLoaded) return;
-
-    try {
-      const addresses = await getApiAuthenticated<Address[]>('/app/addresses');
-      if (addresses) setDonorAddresses(addresses);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    }
-  }, [user, contextLoaded, getApiAuthenticated, setErrors]);
 
   // Handle form submission and update user info
   const handleUpdateDonorInfo = async (formData: FormValues) => {
@@ -103,11 +88,8 @@ const DonorContactManagement = () => {
         setUser(updatedUser);
       }
 
-      // Update donor addresses
-      updateDonorAddresses();
-
       const donorView = transformProfileToDonorView(updatedUser);
-      const selectedAddress = donorAddresses.find(
+      const selectedAddress = user.addresses.find(
         (address) => address.id === checkedAddressGuid
       );
       const addressView = {
@@ -132,7 +114,6 @@ const DonorContactManagement = () => {
     const commonProps = {
       setIsModalOpen,
       setAddressAction,
-      updateUserAddresses: updateDonorAddresses,
       showPrimaryAddressToggle: true,
     };
 
@@ -157,7 +138,7 @@ const DonorContactManagement = () => {
     <section className={styles.donorContactManagementLayout}>
       <div className={styles.donorContactManagement}>
         <header className={styles.headerContainer}>
-          <button onClick={navigateToVerificationPage}>
+          <button onClick={navigateToVerificationPage} type="button">
             <BackButton />
           </button>
           <h2 className={styles.contactManagementHeader}>
@@ -167,7 +148,6 @@ const DonorContactManagement = () => {
 
         <DonorContactForm
           user={user}
-          donorAddresses={donorAddresses}
           onSubmit={handleUpdateDonorInfo}
           setSelectedAddress={setSelectedAddress}
           setAddressAction={setAddressAction}
@@ -177,8 +157,6 @@ const DonorContactManagement = () => {
           setCheckedAddressGuid={setCheckedAddressGuid}
           tinIsRequired={tinIsRequired}
         />
-
-        <DebugPanel data={getDebugState()} />
       </div>
 
       <Modal
