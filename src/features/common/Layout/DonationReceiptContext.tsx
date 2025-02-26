@@ -112,7 +112,7 @@ interface DonationReceiptContextInterface {
     address: AddressView,
     addressGuid: string
   ) => void;
-  clearContext: () => void;
+  clearSessionStorage: () => void;
 }
 
 // Create context
@@ -131,9 +131,8 @@ export const DonationReceiptProvider: React.FC<{
     sessionStorage.setItem('donationReceiptContext', JSON.stringify(state));
   }, [state]);
 
-  // Clear context and session storage
-  const clearContext = (): void => {
-    setState(defaultState);
+  //clean donation receipt data from the session storage
+  const clearSessionStorage = (): void => {
     sessionStorage.removeItem('donationReceiptContext');
   };
 
@@ -143,8 +142,6 @@ export const DonationReceiptProvider: React.FC<{
     user: User | null
   ): void => {
     if (!data) return;
-
-    console.log('Initializing for verification:', data);
 
     const address = transformAddress(data.donor);
     const donations: DonationView[] =
@@ -320,7 +317,7 @@ export const DonationReceiptProvider: React.FC<{
     isValid: state.isValid,
     tinIsRequired: state.tinIsRequired,
     updateDonorAndAddress,
-    clearContext,
+    clearSessionStorage,
     getDebugState: () => state,
   };
 

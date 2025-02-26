@@ -1,6 +1,6 @@
 import type { IssuedReceiptDataApi } from './donationReceiptTypes';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
@@ -26,6 +26,7 @@ const DonationReceiptWrapper = () => {
     email,
     isValid,
     getDebugState, // TODO: remove for production
+    clearSessionStorage,
   } = useDonationReceiptContext();
 
   const { user } = useUserProps();
@@ -35,6 +36,19 @@ const DonationReceiptWrapper = () => {
   const operation = getOperation();
   const isOwner = validateOwnership(email, user);
   const tReceipt = useTranslations('DonationReceipt');
+
+  useEffect(() => {
+    if (!isOwner) clearSessionStorage();
+  }, [isOwner]);
+
+  if (!isOwner)
+    return (
+      <ReceiptVerificationErrors
+        message={tReceipt.rich('errors.accessDeniedMessage', {
+          b: (chunks) => <strong>{chunks}</strong>,
+        })}
+      />
+    );
 
   const confirmReceiptData = async () => {
     const donor = getDonor();
@@ -104,15 +118,6 @@ const DonationReceiptWrapper = () => {
       setIsLoading(false);
     }
   };
-
-  if (!isOwner)
-    return (
-      <ReceiptVerificationErrors
-        message={tReceipt.rich('errors.accessDeniedMessage', {
-          b: (chunks) => <strong>{chunks}</strong>,
-        })}
-      />
-    );
 
   if (!receiptData) {
     return (
