@@ -7,6 +7,17 @@
   background: var(--background-base);
 }
 
+.donorContactManagementLayout {
+  @extend .layoutBase;
+  width: calc(100vw - 119px);
+  max-height: calc(100vh - 119px);
+  overflow-y: auto;
+  margin: 119px auto 18px;
+
+  @include xsPhoneView {
+    width: calc(100vw - 45px);
+  }
+}
 .donationReceiptSkeleton {
   display: flex;
   justify-content: center;
@@ -242,17 +253,6 @@
 
 // donor contact management  styles
 
-.donorContactManagementLayout {
-  @extend .layoutBase;
-  width: calc(100vw - 119px);
-  height: calc(100vh - 119px);
-  margin: 119px auto 18px;
-
-  @include xsPhoneView {
-    width: calc(100vw - 45px);
-  }
-}
-
 .donorContactManagement {
   display: flex;
   flex-direction: column;
@@ -391,12 +391,10 @@
 
 .donationReceipts {
   max-width: 524px;
-  height: 494px;
+  max-height: 494px;
   overflow-y: auto;
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
   gap: 21px;
   margin-top: 21px;

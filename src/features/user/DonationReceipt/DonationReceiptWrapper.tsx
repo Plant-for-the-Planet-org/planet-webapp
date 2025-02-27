@@ -93,7 +93,7 @@ const DonationReceiptWrapper = () => {
       } else if (operation === RECEIPT_STATUS.ISSUE) {
         const payload = {
           receiptAddress: addressGuid,
-          donationUids: JSON.stringify(donationUids),
+          donationUids: donationUids.join(','),
           verificationDate,
         };
 
