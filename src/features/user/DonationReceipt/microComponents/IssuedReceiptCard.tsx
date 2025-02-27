@@ -10,9 +10,14 @@ import DonationInfo from './DonationInfo';
 type Prop = {
   issuedReceipt: IssuedReceiptDataApi;
   onReceiptClick: () => void;
+  isProcessing: boolean;
 };
 
-const IssuedReceiptCard = ({ issuedReceipt, onReceiptClick }: Prop) => {
+const IssuedReceiptCard = ({
+  issuedReceipt,
+  onReceiptClick,
+  isProcessing,
+}: Prop) => {
   const tReceipt = useTranslations('DonationReceipt');
   const {
     amount,
@@ -46,13 +51,16 @@ const IssuedReceiptCard = ({ issuedReceipt, onReceiptClick }: Prop) => {
           target="_blank"
           text={tReceipt('download')}
           icon={<DownloadIcon color="#fff" />}
+          buttonClasses={styles.receiptCardButton}
         />
       ) : (
         <WebappButton
           variant="primary"
           elementType="button"
-          onClick={onReceiptClick}
-          text={tReceipt('verifyAndDownload')}
+          onClick={!isProcessing ? onReceiptClick : () => {}}
+          text={!isProcessing ? tReceipt('verifyAndDownload') : undefined}
+          icon={isProcessing ? <div className={styles.spinner} /> : undefined}
+          buttonClasses={styles.receiptCardButton}
         />
       )}
     </div>

@@ -32,6 +32,7 @@ const DonationReceipts = () => {
   const tReceipt = useTranslations('DonationReceipt');
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
+  const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
   const { redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
@@ -55,6 +56,11 @@ const DonationReceipts = () => {
     type: 'issued' | 'unissued',
     receipt: IssuedReceiptDataApi | UnissuedReceiptDataAPI
   ) => {
+    setProcessReceiptId(
+      type === 'issued'
+        ? (receipt as IssuedReceiptDataApi).donations[0].reference
+        : (receipt as UnissuedReceiptDataAPI).donations[0].uid
+    );
     if (type === 'unissued') {
       const clickedReceipt = receipt as UnissuedReceiptDataAPI;
 
@@ -87,8 +93,7 @@ const DonationReceipts = () => {
     router.push('/profile/donation-receipt/verify');
   };
   const hasNoReceipts =
-    donationReceipts?.issued.length === 0 &&
-    donationReceipts.unissued.length === 0;
+    !donationReceipts?.issued.length && !donationReceipts?.unissued.length;
 
   if (!donationReceipts)
     return (
@@ -118,6 +123,7 @@ const DonationReceipts = () => {
             key={`unissued-${receipt.donations[0].uid}`}
             unissuedReceipt={receipt}
             onReceiptClick={() => handleReceiptClick('unissued', receipt)}
+            isProcessing={processReceiptId === receipt.donations[0].uid}
           />
         ))}
         {donationReceipts?.issued.map((receipt) => (
@@ -125,6 +131,7 @@ const DonationReceipts = () => {
             key={`issued-${receipt.donations[0].reference}`}
             issuedReceipt={receipt}
             onReceiptClick={() => handleReceiptClick('issued', receipt)}
+            isProcessing={processReceiptId === receipt.donations[0].reference}
           />
         ))}
       </section>

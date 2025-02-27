@@ -10,9 +10,14 @@ import { UNISSUED_RECEIPT_TYPE } from '../donationReceiptTypes';
 type Prop = {
   unissuedReceipt: UnissuedReceiptDataAPI;
   onReceiptClick: () => void;
+  isProcessing: boolean;
 };
 
-const UnissuedReceiptCard = ({ unissuedReceipt, onReceiptClick }: Prop) => {
+const UnissuedReceiptCard = ({
+  unissuedReceipt,
+  onReceiptClick,
+  isProcessing,
+}: Prop) => {
   const tReceipt = useTranslations('DonationReceipt');
   const { amount, currency, donationCount, donations, paymentDate, type } =
     unissuedReceipt;
@@ -34,8 +39,10 @@ const UnissuedReceiptCard = ({ unissuedReceipt, onReceiptClick }: Prop) => {
         <WebappButton
           variant="primary"
           elementType="button"
-          text={tReceipt('verifyAndDownload')}
-          onClick={onReceiptClick}
+          text={!isProcessing ? tReceipt('verifyAndDownload') : undefined}
+          onClick={!isProcessing ? onReceiptClick : () => {}}
+          icon={isProcessing ? <div className={styles.spinner} /> : undefined}
+          buttonClasses={styles.receiptCardButton}
         />
       )}
       {type === UNISSUED_RECEIPT_TYPE.PENDING && (
