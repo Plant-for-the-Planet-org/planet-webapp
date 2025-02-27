@@ -52,6 +52,7 @@
     "verifyAndDownload": "Verify & Download",
     "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u> · Reference {reference} · {date}",
     "itemsReferenceDateSingleDonation": "Reference {reference} · {date}",
-    "pendingReceipt": "Pending Receipt"
+    "pendingReceipt": "Pending Receipt",
+    "noReceiptFound": "Oops! No receipt found"
   }
 }

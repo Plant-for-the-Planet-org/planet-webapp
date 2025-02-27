@@ -24,6 +24,7 @@ import { useServerApi } from '../../../hooks/useServerApi';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useServerApi();
@@ -85,11 +86,26 @@ const DonationReceipts = () => {
 
     router.push('/profile/donation-receipt/verify');
   };
+  const hasNoReceipts =
+    donationReceipts?.issued.length === 0 &&
+    donationReceipts.unissued.length === 0;
 
   if (!donationReceipts)
     return (
       <section className={styles.donorContactManagementLayout}>
         <Skeleton height={600} width={524} />
+      </section>
+    );
+
+  if (hasNoReceipts)
+    return (
+      <section className={styles.donorContactManagementLayout}>
+        <section className={styles.donationReceipts}>
+          <NoDataFound />
+          <span className={styles.noReceiptFound}>
+            {tReceipt('noReceiptFound')}
+          </span>
+        </section>
       </section>
     );
 

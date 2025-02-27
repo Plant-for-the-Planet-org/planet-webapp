@@ -4,7 +4,7 @@ import type { ProjectTabs } from '../ProjectListControls';
 import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../ProjectsSection.module.scss';
-import NoProjectFound from '../../../../public/assets/images/icons/projectV2/NoProjectFound';
+import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 import { useProjects } from '../ProjectsContext';
 import ProjectSnippet from '../ProjectSnippet';
 
@@ -50,7 +50,7 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
         sortedProjects?.map(renderProjectSnippet)
       ) : (
         <div className={styles.noProjectFoundContainer}>
-          <NoProjectFound />
+          <NoDataFound />
           <p className={styles.noProjectFoundText}>
             {tAllProjects('noProjectFound')}
           </p>

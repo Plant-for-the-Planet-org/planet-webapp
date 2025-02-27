@@ -193,7 +193,7 @@ export const DonationReceiptProvider: React.FC<{
     user: User | null
   ): void => {
     if (!data) return;
-    console.log(data, '==unissued');
+
     const tinIsRequired = data.tinIsRequired ?? false;
     const isValid = validateUnissuedReceipt(
       donor,
