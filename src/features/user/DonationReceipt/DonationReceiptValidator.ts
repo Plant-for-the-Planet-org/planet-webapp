@@ -27,7 +27,7 @@ export const validateOwnership = (
 ): boolean => {
   if (!user) return true;
   if (!issuedToEmail) return false;
-  return user.email === issuedToEmail;
+  return user.email.toLowerCase() === issuedToEmail.toLowerCase();
 };
 
 export const validateIssuedReceipt = (
