@@ -44,7 +44,7 @@ const DonationInfo = ({
       <span className={styles.amount}>
         {tReceipt('donationDetails.donationAmount', {
           currency,
-          amount: amount.toFixed(2),
+          amount: Number(amount).toFixed(2),
         })}
       </span>
       {count === 1 &&
