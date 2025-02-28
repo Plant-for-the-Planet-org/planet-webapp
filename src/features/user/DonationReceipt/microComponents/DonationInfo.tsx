@@ -35,7 +35,6 @@ const DonationInfo = ({
     },
     []
   );
-
   const closePopover = useCallback(() => {
     setPopoverAnchor(null);
   }, []);
@@ -45,7 +44,7 @@ const DonationInfo = ({
       <span className={styles.amount}>
         {tReceipt('donationDetails.donationAmount', {
           currency,
-          amount,
+          amount: Number(amount).toFixed(2),
         })}
       </span>
       {count === 1 &&
