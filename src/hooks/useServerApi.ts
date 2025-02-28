@@ -146,9 +146,9 @@ export const useServerApi = () => {
     }
   };
 
-  const getApiAuthenticated = async <T>(
+  const getApiAuthenticated = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>,
+    payload?: P,
     impersonationData?: ImpersonationData
   ): Promise<T> => {
     return callApi<T>({
@@ -160,9 +160,9 @@ export const useServerApi = () => {
     });
   };
 
-  const postApiAuthenticated = async <T>(
+  const postApiAuthenticated = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>,
+    payload?: P,
     impersonationData?: ImpersonationData
   ): Promise<T> => {
     return callApi<T>({
@@ -173,30 +173,30 @@ export const useServerApi = () => {
       impersonationData,
     });
   };
-  const getApi = async <T>(
+  const getApi = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({ method: 'GET', url, queryParams: payload });
   };
 
-  const postApi = async <T>(
+  const postApi = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({ method: 'POST', url, data: payload });
   };
 
-  const putApi = async <T>(
+  const putApi = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({ method: 'PUT', url, data: payload });
   };
 
-  const putApiAuthenticated = async <T>(
+  const putApiAuthenticated = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
@@ -206,16 +206,19 @@ export const useServerApi = () => {
     });
   };
 
-  const deleteApi = async <T>(
+  const deleteApi = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: Record<string, any>
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({ method: 'DELETE', url, queryParams: payload });
   };
 
-  const deleteApiAuthenticated = async <T>(
+  const deleteApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = {}
+  >(
     url: string,
-    payload?: Record<string, any>
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',
