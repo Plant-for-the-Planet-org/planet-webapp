@@ -80,16 +80,16 @@ const DonationReceiptWrapper = () => {
           verificationDate,
           ...(addressGuid ? { receiptAddress: addressGuid } : {}),
         };
-
-        response = addressGuid
-          ? await putApi<IssuedReceiptDataApi>(
-              '/app/donationReceipt/verify',
-              payload
-            )
-          : await putApiAuthenticated<IssuedReceiptDataApi>(
-              '/app/donationReceipt/verify',
-              payload
-            );
+        response =
+          addressGuid === null
+            ? await putApi<IssuedReceiptDataApi>(
+                '/app/donationReceipt/verify',
+                payload
+              )
+            : await putApiAuthenticated<IssuedReceiptDataApi>(
+                '/app/donationReceipt/verify',
+                payload
+              );
       } else if (operation === RECEIPT_STATUS.ISSUE) {
         const payload = {
           receiptAddress: addressGuid,
