@@ -57,11 +57,11 @@ const DonationInfo = ({
           type="button"
           onClick={openPopover}
           className={styles.donationCount}
+          aria-haspopup="true"
+          aria-expanded={Boolean(popoverAnchor)}
         >
           {tReceipt.rich('itemsReferenceDateMultiDonation', {
-            reference,
             count,
-            date,
             u: (chunks) => <span>{chunks}</span>,
           })}
         </button>

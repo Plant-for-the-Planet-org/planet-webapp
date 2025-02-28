@@ -13,11 +13,11 @@ const VerifyReceiptHeader = ({ operation }: Props) => {
   return (
     <section className={styles.verifyReceiptHeader}>
       {operation === RECEIPT_STATUS.DOWNLOAD ? (
-        <h2>{tReceipt('downloadTaxReceipt')}</h2>
+        <h2>{tReceipt('downloadDonationReceipt')}</h2>
       ) : (
         <>
-          <h2>{tReceipt('verifyTaxHeaderPrimary')}</h2>
-          <h3>{tReceipt('verifyTaxHeaderSecondary')}</h3>
+          <h2>{tReceipt('verifyDonationHeaderPrimary')}</h2>
+          <h3>{tReceipt('verifyDonationHeaderSecondary')}</h3>
         </>
       )}
     </section>

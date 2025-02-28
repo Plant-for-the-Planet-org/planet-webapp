@@ -17,14 +17,14 @@ import {
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-// import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function ModifyDonorData() {
   const t = useTranslations('DonationReceipt');
-
   return (
     <UserLayout>
-      <Head>{t('donorContactManagement')}</Head>
+      <Head>
+        <title>{t('donorContactManagement')}</title>
+      </Head>
       <DonorContactManagement />
     </UserLayout>
   );

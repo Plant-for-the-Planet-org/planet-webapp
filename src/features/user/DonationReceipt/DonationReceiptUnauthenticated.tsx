@@ -59,7 +59,15 @@ const DonationReceiptUnauthenticated = () => {
         setIsLoading(false);
       }
     })();
-  }, [dtn, year, challenge, router.isReady]);
+  }, [
+    dtn,
+    year,
+    challenge,
+    router.isReady,
+    areParamsValid,
+    user,
+    initForVerification,
+  ]);
 
   if (!router.isReady) return null;
 
