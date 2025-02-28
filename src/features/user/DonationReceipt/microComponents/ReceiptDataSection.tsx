@@ -5,6 +5,8 @@ import styles from '../DonationReceipt.module.scss';
 import DonationsTable from './DonationsTable';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useTranslations } from 'next-intl';
 
 interface ReceiptDataSectionProps {
   donationReceipt: ReceiptData;
@@ -29,7 +31,8 @@ const ReceiptDataSection = ({
     donations,
   } = donationReceipt;
   const hasMultipleDonations = donations.length > 1;
-
+  const { isAuthenticated } = useAuth0();
+  const tReceipt = useTranslations('DonationReceipt');
   return (
     <section className={styles.receiptDataSection}>
       <DonationsTable
@@ -47,6 +50,13 @@ const ReceiptDataSection = ({
           !address.country
         }
       />
+      {!isAuthenticated && (
+        <p className={styles.loginAlert}>
+          {tReceipt.rich('notifications.loginRequired', {
+            b: (chunks) => <strong>{chunks}</strong>,
+          })}
+        </p>
+      )}
       {!isLoading ? (
         <ReceiptActions
           downloadUrl={downloadUrl}

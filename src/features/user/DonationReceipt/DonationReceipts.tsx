@@ -116,7 +116,9 @@ const DonationReceipts = () => {
 
   return (
     <section className={styles.donorContactManagementLayout}>
-      <h1 className={styles.receiptListHeader}>{tReceipt('taxReceipts')}</h1>
+      <h1 className={styles.receiptListHeader}>
+        {tReceipt('donationReceipt')}
+      </h1>
       <section className={styles.donationReceipts}>
         {donationReceipts?.unissued.map((receipt) => (
           <UnissuedReceiptCard

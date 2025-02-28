@@ -178,7 +178,7 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 40px;
+  margin-top: 20px;
   padding: 0px 10px;
 
   @include xsPhoneView {
@@ -359,7 +359,6 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 68px;
   margin: 42px 12px 0px;
 
   button {
@@ -512,4 +511,10 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loginAlert {
+  font-size: 12px;
+  margin-top: 14px;
+  padding: 10px;
 }
