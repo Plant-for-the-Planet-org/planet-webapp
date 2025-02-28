@@ -35,7 +35,7 @@ const DonationsTable = ({ donations, amount, currency }: Props) => {
               <span className={styles.amount} role="cell">
                 {tReceipt('donationDetails.donationAmount', {
                   currency,
-                  amount,
+                  amount: amount.toFixed(2),
                 })}
               </span>
               <time className={styles.date} dateTime={paymentDate} role="cell">
