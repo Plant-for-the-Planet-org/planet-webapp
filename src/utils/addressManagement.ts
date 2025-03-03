@@ -1,69 +1,68 @@
-import type { Address } from '@planet-sdk/common';
-import type { ExtendedCountryCode } from '../features/common/types/country';
+import type {Address} from '@planet-sdk/common';
+import type {ExtendedCountryCode} from '../features/common/types/country';
 import type {
-  AddressSuggestionsType,
-  AddressType,
+    AddressSuggestionsType,
+    AddressType,
 } from '../features/common/types/geocoder';
 
 import GeocoderArcGIs from 'geocoder-arcgis';
 import COUNTRY_ADDRESS_POSTALS from './countryZipCode';
 
 export const ADDRESS_TYPE = {
-  PRIMARY: 'primary',
-  MAILING: 'mailing',
-  OTHER: 'other',
+    PRIMARY: 'primary',
+    MAILING: 'mailing',
+    OTHER: 'other',
 } as const;
 
 export const ADDRESS_ACTIONS = {
-  ADD: 'add',
-  EDIT: 'edit',
-  DELETE: 'delete',
-  SET_PRIMARY: 'setPrimary',
-  SET_BILLING: 'setBilling',
-  UNSET_BILLING: 'unsetBilling',
+    ADD: 'add',
+    EDIT: 'edit',
+    DELETE: 'delete',
+    SET_PRIMARY: 'setPrimary',
+    SET_BILLING: 'setBilling',
+    UNSET_BILLING: 'unsetBilling',
 } as const;
 
 export const ADDRESS_FORM_TYPE = {
-  ADD_ADDRESS: 'add',
-  EDIT_ADDRESS: 'edit',
+    ADD_ADDRESS: 'add',
+    EDIT_ADDRESS: 'edit',
 } as const;
 export const addressTypeOrder = ['primary', 'mailing', 'other'];
 
 export const MAX_ADDRESS_LIMIT = 5;
 
 export const getFormattedAddress = (
-  zipCode: string | undefined,
-  city: string | undefined,
-  state: string | null | undefined,
-  countryName: string
+    zipCode: string | null,
+    city: string | null,
+    state: string | null,
+    countryName: string
 ) => {
-  const cleanAddress = [zipCode, city, state, countryName]
-    .filter(Boolean)
-    .join(', ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return cleanAddress;
+    return [zipCode, city, state, countryName]
+        .filter(Boolean)
+        .join(', ')
+        .replace(/\s+/g, ' ')
+        .trim();
 };
 
 export const validationPattern = {
-  address: /^[\p{L}\p{N}\sß.,#/-]+$/u,
-  cityState: /^[\p{L}\sß.,()-]+$/u,
+    address: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+    cityState: /^[\p{L}\sß.,()-]+$/u,
 };
 
 export const findAddressByType = (
-  addresses: Address[],
-  addressType: 'primary' | 'mailing'
+    addresses: Address[],
+    addressType: 'primary' | 'mailing'
 ) => {
-  return addresses.find((address) => address.type === addressType);
+    return addresses.find((address) => address.type === addressType);
 };
 
 export const geocoder = new GeocoderArcGIs(
-  process.env.ESRI_CLIENT_SECRET
-    ? {
-        client_id: process.env.ESRI_CLIENT_ID,
-        client_secret: process.env.ESRI_CLIENT_SECRET,
-      }
-    : {}
+    process.env.ESRI_CLIENT_SECRET
+        ? {
+            client_id: process.env.ESRI_CLIENT_ID,
+            client_secret: process.env.ESRI_CLIENT_SECRET,
+        }
+        : {}
 );
 
 /**
@@ -80,24 +79,24 @@ export const geocoder = new GeocoderArcGIs(
  */
 
 export const suggestAddress = async (
-  value: string,
-  country: ExtendedCountryCode | ''
+    value: string,
+    country: ExtendedCountryCode | ''
 ): Promise<AddressSuggestionsType[]> => {
-  if (value.length > 3) {
-    try {
-      const result = await geocoder.suggest(value, {
-        category: 'Address',
-        countryCode: country,
-      });
-      return result.suggestions.filter(
-        (suggestion: AddressSuggestionsType) => !suggestion.isCollection
-      );
-    } catch (error) {
-      console.log(error);
-      return [];
+    if (value.length > 3) {
+        try {
+            const result = await geocoder.suggest(value, {
+                category: 'Address',
+                countryCode: country,
+            });
+            return result.suggestions.filter(
+                (suggestion: AddressSuggestionsType) => !suggestion.isCollection
+            );
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
     }
-  }
-  return [];
+    return [];
 };
 
 /**
@@ -112,29 +111,29 @@ export const suggestAddress = async (
  *          or `null` if no candidates are found or an error occurs.
  */
 export const fetchAddressDetails = async (
-  value: string
+    value: string
 ): Promise<{
-  address: string;
-  city: string;
-  zipCode: string;
+    address: string;
+    city: string;
+    zipCode: string;
 } | null> => {
-  try {
-    const result: AddressType = await geocoder.findAddressCandidates(value, {
-      outfields: '*',
-    });
-    if (result.candidates.length > 0) {
-      const { ShortLabel, City, Postal } = result.candidates[0].attributes;
-      return {
-        address: ShortLabel,
-        city: City,
-        zipCode: Postal,
-      };
+    try {
+        const result: AddressType = await geocoder.findAddressCandidates(value, {
+            outfields: '*',
+        });
+        if (result.candidates.length > 0) {
+            const {ShortLabel, City, Postal} = result.candidates[0].attributes;
+            return {
+                address: ShortLabel,
+                city: City,
+                zipCode: Postal,
+            };
+        }
+        return null;
+    } catch (error) {
+        console.log(error);
+        return null;
     }
-    return null;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
 };
 
 /**
@@ -147,8 +146,8 @@ export const fetchAddressDetails = async (
  * @returns The postal regex pattern for the given country, or `undefined` if no match is found.
  */
 export const getPostalRegex = (country: ExtendedCountryCode | '') => {
-  const filteredCountry = COUNTRY_ADDRESS_POSTALS.find(
-    (item) => item.abbrev === country
-  );
-  return filteredCountry?.postal;
+    const filteredCountry = COUNTRY_ADDRESS_POSTALS.find(
+        (item) => item.abbrev === country
+    );
+    return filteredCountry?.postal;
 };

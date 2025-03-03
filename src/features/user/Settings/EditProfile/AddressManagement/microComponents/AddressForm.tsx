@@ -4,12 +4,14 @@ import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { FormData } from '../AddAddress';
 import type { AddressAction } from '../../../../../common/types/profile';
+import type { AddressType } from '@planet-sdk/common';
 
 import { useCallback, useMemo, useState } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import {
+  ADDRESS_TYPE,
   fetchAddressDetails,
   geocoder,
   getPostalRegex,
@@ -23,6 +25,7 @@ import CountrySelect from '../../../../../common/InputTypes/AutoCompleteCountry'
 import { allCountries } from '../../../../../../utils/constants/countries';
 import AddressFormButtons from './AddressFormButtons';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
+import PrimaryAddressToggle from './PrimaryAddressToggle';
 
 interface Props {
   country: ExtendedCountryCode | '';
@@ -35,10 +38,14 @@ interface Props {
     city: string | undefined;
     zipCode: string | undefined;
     state: Nullable<string> | undefined;
+    type: AddressType;
   };
   setIsModalOpen: SetState<boolean>;
   isLoading: boolean;
   setAddressAction: SetState<AddressAction | null>;
+  showPrimaryAddressToggle: boolean;
+  primaryAddressChecked: boolean;
+  setPrimaryAddressChecked: SetState<boolean>;
 }
 
 const AddressForm = ({
@@ -50,6 +57,9 @@ const AddressForm = ({
   processFormData,
   isLoading,
   setAddressAction,
+  showPrimaryAddressToggle,
+  primaryAddressChecked,
+  setPrimaryAddressChecked,
 }: Props) => {
   const t = useTranslations('EditProfile');
   const [addressSuggestions, setAddressSuggestions] = useState<
@@ -228,6 +238,13 @@ const AddressForm = ({
           onChange={setCountry}
         />
       </InlineFormDisplayGroup>
+      {showPrimaryAddressToggle &&
+        defaultAddressDetail.type !== ADDRESS_TYPE.PRIMARY && (
+          <PrimaryAddressToggle
+            primaryAddressChecked={primaryAddressChecked}
+            setPrimaryAddressChecked={setPrimaryAddressChecked}
+          />
+        )}
       {isLoading ? (
         <div className={styles.addressMgmtSpinner}>
           <CircularProgress color="success" />
