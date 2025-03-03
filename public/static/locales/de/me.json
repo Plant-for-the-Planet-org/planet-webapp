@@ -137,6 +137,8 @@
     "referred": "Weitergeleitet",
     "in-dispute": "Strittig",
     "dispute-lost": "Streitfall verloren",
+    "open": "Offen",
+    "processing": "Processing",
     "nameForest": "Wald von {name}",
     "taxReceipt": "Spendenbescheinigung",
     "history": "Historie/Spendenbescheinigung",
@@ -183,7 +185,6 @@
     "transferFee": "Überweisungsgebühr",
     "giftComment": "Kommentar (Privat)",
     "giftOccasion": "Anlass",
-    "open": "Offen",
     "downloads": "Downloads",
     "account": "Konto",
     "loadMore": "Mehr laden",
@@ -284,7 +285,6 @@
     "composite-donation": "Mischspende",
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
-    "processing": "Processing",
     "bankDetails": "Bankverbindung",
     "refundAmount": "Erstatteter Betrag"
   }
