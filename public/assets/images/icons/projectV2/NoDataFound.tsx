@@ -1,4 +1,4 @@
-const NoProjectFound = () => {
+const NoDataFound = () => {
   return (
     <svg
       width="298"
@@ -208,4 +208,4 @@ const NoProjectFound = () => {
   );
 };
 
-export default NoProjectFound;
+export default NoDataFound;
