@@ -34,7 +34,7 @@
       "loginRequired": "<b>IMPORTANT:</b> To modify your data, you will need to log in to your profile. If you are encountering issues, please contact us via the information at the bottom of this page."
     },
     "verifyDonationHeaderPrimary": "Verify your data and download the donation receipt",
-    "verifyDonationHeaderSecondary": "<b>Please note</b>: Once the data is verified, it cannot be changed again for this receipt",
+    "verifyDonationHeaderSecondary": "Please note: Once the data is verified, it cannot be changed again for this receipt",
     "downloadDonationReceipt": "Download donation receipt",
     "recipientInfoHeader": "Receipt will be issued to",
     "modifyContactInformation": "Modify Contact Information",

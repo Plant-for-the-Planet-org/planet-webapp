@@ -12,7 +12,7 @@
       "reference": "Referenz",
       "amountDonated": "Gespendeter Betrag",
       "paymentDate": "Zahldatum",
-      "donationAmount": "{currency, select, EUR {€} USD {$} Andere {}} {amount}",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
       "taxIdentificationNumber": "Steueridentifikationsnummer (TIN)"
     },
     "errors": {
@@ -34,7 +34,7 @@
       "loginRequired": "<b>WICHTIG:</b> Um Ihre Daten zu ändern, müssen Sie sich in Ihrem Profil anmelden. Wenn Sie Probleme haben, kontaktieren Sie uns bitte über die Informationen am Ende dieser Seite."
     },
     "verifyDonationHeaderPrimary": "Bestätigen Sie Ihre Daten und laden Sie die Spendenbescheinigung herunter",
-    "verifyDonationHeaderSecondary": "<b>Bitte beachten Sie</b>: Wenn die Daten bestätigt sind, können sie für diese Bescheinigung nicht mehr geändert werden",
+    "verifyDonationHeaderSecondary": "Bitte beachten Sie: Wenn die Daten bestätigt sind, können sie für diese Bescheinigung nicht mehr geändert werden",
     "downloadDonationReceipt": "Download Spendenbescheinigung",
     "recipientInfoHeader": "Die Bescheinigung wird ausgestellt für",
     "modifyContactInformation": "Kontaktinformationen bearbeiten",
@@ -50,7 +50,7 @@
     "donorContactManagement": "Adressmanagement",
     "contactManagementHeader": "Profil und Adresse aktualisieren",
     "saveDataAndReturn": "Speichern und zurück",
-    "donationReceipt": "Spendenbescheinigung",
+    "donationReceipt": "Spendenbescheinigungen",
     "verifyAndDownload": "Bestätigen & Download",
     "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Spende} other {# Spenden}}</u>",
     "itemsReferenceDateSingleDonation": "Referenz {reference} - {date}",
