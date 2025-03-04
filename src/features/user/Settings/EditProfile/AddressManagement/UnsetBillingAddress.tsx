@@ -22,6 +22,10 @@ interface Props {
   selectedAddressForAction: Address;
 }
 
+type SubmitData = {
+  type: 'other';
+};
+
 const UnsetBillingAddress = ({
   addressType,
   setIsModalOpen,
@@ -39,11 +43,11 @@ const UnsetBillingAddress = ({
   const unsetAddress = async () => {
     if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
-    const bodyToSend = {
+    const bodyToSend: SubmitData = {
       type: ADDRESS_TYPE.OTHER,
     };
     try {
-      const res = await putAuthenticatedRequest<Address>({
+      const res = await putAuthenticatedRequest<Address, SubmitData>({
         tenant: tenantConfig.id,
         url: `/app/addresses/${selectedAddressForAction.id}`,
         data: bodyToSend,

@@ -152,7 +152,10 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res = await postAuthenticatedRequest<Donation>({
+        const res = await postAuthenticatedRequest<
+          Donation,
+          PrepaidDonationRequest
+        >({
           tenant: tenantConfig?.id,
           url: `/app/donations`,
           data: cleanedData,
