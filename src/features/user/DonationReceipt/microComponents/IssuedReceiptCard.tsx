@@ -27,6 +27,7 @@ const IssuedReceiptCard = ({
     downloadUrl,
     paymentDate,
     verificationDate,
+    template,
   } = issuedReceipt;
 
   // get the last donation reference number
@@ -40,6 +41,7 @@ const IssuedReceiptCard = ({
         amount={amount}
         count={donationCount}
         reference={reference}
+        template={template}
         date={formatDate(paymentDate)}
         donations={donations}
       />

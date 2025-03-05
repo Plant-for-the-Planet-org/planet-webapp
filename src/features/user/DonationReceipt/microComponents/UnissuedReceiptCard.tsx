@@ -19,8 +19,15 @@ const UnissuedReceiptCard = ({
   isProcessing,
 }: Prop) => {
   const tReceipt = useTranslations('DonationReceipt');
-  const { amount, currency, donationCount, donations, paymentDate, type } =
-    unissuedReceipt;
+  const {
+    amount,
+    currency,
+    donationCount,
+    donations,
+    paymentDate,
+    type,
+    template,
+  } = unissuedReceipt;
 
   // get the last donation reference number
   const reference = donations[donations.length - 1].uid;
@@ -33,6 +40,7 @@ const UnissuedReceiptCard = ({
         currency={currency}
         date={formatDate(paymentDate)}
         reference={reference}
+        template={template}
         donations={donations}
       />
       {type !== UNISSUED_RECEIPT_TYPE.PENDING && (
