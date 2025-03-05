@@ -14,6 +14,7 @@ type Props = {
   count: number;
   reference: string;
   date: string;
+  template: 'single' | 'summary' | 'endowment';
   donations: UnissuedDonationApi[] | IssuedDonationApi[];
 };
 
@@ -23,6 +24,7 @@ const DonationInfo = ({
   count,
   reference,
   date,
+  template,
   donations,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
@@ -48,10 +50,15 @@ const DonationInfo = ({
         })}
       </span>
       {count === 1 &&
-        tReceipt('itemsReferenceDateSingleDonation', {
-          reference,
-          date,
-        })}
+        (template === 'endowment'
+          ? tReceipt('itemsReferenceDateSingleEndowment', {
+              reference,
+              date,
+            })
+          : tReceipt('itemsReferenceDateSingleDonation', {
+              reference,
+              date,
+            }))}
       {count > 1 && (
         <button
           type="button"

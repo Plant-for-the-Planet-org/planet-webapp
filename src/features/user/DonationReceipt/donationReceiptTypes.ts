@@ -64,6 +64,7 @@ export interface IssuedReceiptDataApi {
   tinIsRequired: boolean | null;
   verificationDate: string | null;
   year: string;
+  template: 'single' | 'summary' | 'endowment';
 }
 
 export interface ReceiptData {
@@ -98,7 +99,7 @@ export interface UnissuedReceiptDataAPI {
   issuableDate: string;
   donations: UnissuedDonationApi[];
   paymentDate: string;
-  template: string;
+  template: 'single' | 'summary' | 'endowment';
   tinIsRequired: boolean;
   type: 'multi' | 'single' | 'pending';
   uids: string[];

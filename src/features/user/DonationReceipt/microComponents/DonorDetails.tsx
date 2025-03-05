@@ -57,7 +57,7 @@ const DonorAddress = ({
   );
   return (
     <div className={styles.addressInfo}>
-      <span className={styles.header}>Address</span>
+      <span className={styles.header}>{tReceipt('donorInfo.address')}</span>
       {!isAddressInvalid ? (
         <address>
           {address1}, {cityStatePostalString}

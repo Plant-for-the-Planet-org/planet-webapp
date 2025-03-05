@@ -5,7 +5,8 @@
       "lastName": "Last Name",
       "tin": "Tax Identification Number (TIN)",
       "companyName": "Company Name",
-      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}"
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "address": "Address"
     },
     "donationDetails": {
       "referenceNumber": "Reference Number",
@@ -54,6 +55,7 @@
     "verifyAndDownload": "Verify & Download",
     "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u>",
     "itemsReferenceDateSingleDonation": "Reference {reference} · {date}",
+    "itemsReferenceDateSingleEndowment": "Reference {reference} · Endowment · {date}",
     "pendingReceipt": "Pending Receipt(s)",
     "noReceiptFound": "Oops! No receipt found"
   }
