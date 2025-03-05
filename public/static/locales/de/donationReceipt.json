@@ -54,7 +54,7 @@
     "donationReceipt": "Spendenbescheinigungen",
     "verifyAndDownload": "Bestätigen & Download",
     "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Spende} other {# Spenden}}</u>",
-    "itemsReferenceDateSingleDonation": "Referenz {reference} - {date}",
+    "itemsReferenceDateSingleDonation": "Referenz {reference} · {date}",
     "itemsReferenceDateSingleEndowment": "Referenz {reference} · Zustiftung · {date}",
     "pendingReceipt": "Ausstehende Bescheinigung(en)",
     "noReceiptFound": "Huch! Keine Bescheinigung gefunden"
