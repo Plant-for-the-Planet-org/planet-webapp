@@ -5,7 +5,8 @@
       "lastName": "Last Name",
       "tin": "Tax Identification Number (TIN)",
       "companyName": "Company Name",
-      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}"
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "address": "Address"
     },
     "donationDetails": {
       "referenceNumber": "Reference Number",
