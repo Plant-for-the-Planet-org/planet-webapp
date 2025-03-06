@@ -12,7 +12,7 @@ import type {
 } from 'next';
 
 import React, { useEffect, useState } from 'react';
-import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign';
+import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign2024';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
