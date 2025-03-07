@@ -64,7 +64,7 @@
       "default": "Qualcosa è andato storto durante la creazione di un account. Riprovare dopo un po'."
     },
     "accountCreationSuccess": "I dati dell'account sono stati salvati con successo.",
-    "accountUpdationSuccess": "I dati del vostro conto sono stati aggiornati con successo.",
+    "accountUpdateSuccess": "I dati del vostro conto sono stati aggiornati con successo.",
     "scheduleSaveSuccess": "Il vostro piano di pagamento è stato salvato con successo.",
     "editAccountButton": "Modifica dell'account",
     "accountTitleText": "Trasferimento per {currency}",
