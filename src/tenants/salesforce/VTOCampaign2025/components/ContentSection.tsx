@@ -51,8 +51,8 @@ export default function ContentSection() {
               <li>
                 To get started, make a donation of $50 USD or more to your
                 chosen tree planting project from the provided list{' '}
-                <a href="">below</a>. You&apos;ll receive a confirmation email
-                from{' '}
+                <a href="#projects">below</a>. You&apos;ll receive a
+                confirmation email from{' '}
                 <a
                   href="https://www.plant-for-the-planet.org/"
                   target="_blank"
