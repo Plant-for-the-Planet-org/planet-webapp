@@ -1,6 +1,12 @@
 import type { ReactElement } from 'react';
 import type { SxProps } from '@mui/material';
-import type { APIError, InterventionTypes } from '@planet-sdk/common';
+import type {
+  AllowedSeasonMonths,
+  APIError,
+  InterventionTypes,
+  LandOwnershipTypes,
+  SiteOwnerTypes,
+} from '@planet-sdk/common';
 import type {
   DetailedAnalysisProps,
   SiteOwners,
@@ -69,30 +75,68 @@ const yearDialogSx: SxProps = {
 };
 
 type FormData = {
-  employeesCount: string;
-  acquisitionYear: Date | null;
-  mainChallenge: string;
-  motivation: string;
-  longTermPlan: string;
-  siteOwnerName: string;
+  employeesCount: number | null;
+  mainChallenge: string | null;
+  siteOwnerName: string | null;
+  acquisitionYear: number | null;
+  longTermPlan: string | null;
+  motivation: string | null;
 };
 
 type TreeFormData = FormData & {
   purpose: 'trees';
-  yearAbandoned: Date | null;
-  firstTreePlanted: Date | null;
-  plantingDensity: string;
-  maxPlantingDensity: string;
-  degradationYear: Date | null;
-  degradationCause: string;
+  yearAbandoned: number | null;
+  firstTreePlanted: string | null;
+  plantingDensity: number | null;
+  maxPlantingDensity: number | null;
+  degradationYear: number | null;
+  degradationCause: string | null;
 };
 
 type ConservationFormData = FormData & {
   purpose: 'conservation';
-  areaProtected: string;
-  startingProtectionYear: Date | null;
-  actions: string;
-  benefits: string;
+  actions: string | null;
+  benefits: string | null;
+  startingProtectionYear: number | null;
+  areaProtected: number | null;
+};
+
+type MetadataBase = {
+  employeesCount: number | null;
+  acquisitionYear: number | null;
+  mainInterventions: InterventionTypes[];
+  longTermPlan: string | null;
+  mainChallenge: string | null;
+  motivation: string | null;
+  siteOwnerName: string | null;
+};
+
+type TreeMetadata = MetadataBase & {
+  plantingSeasons: AllowedSeasonMonths[];
+  plantingDensity: number | null;
+  maxPlantingDensity: number | null;
+  firstTreePlanted: string | null;
+  siteOwnerType: SiteOwnerTypes[];
+  degradationCause: string | null;
+  degradationYear: number | null;
+  yearAbandoned: number | null;
+};
+
+type ConservMetadata = MetadataBase & {
+  activitySeasons: AllowedSeasonMonths[];
+  areaProtected: number | null;
+  startingProtectionYear: number | null;
+  landOwnershipType: LandOwnershipTypes[];
+  actions: string | null;
+  benefits: string | null;
+};
+
+type TreeSubmitData = {
+  metadata: TreeMetadata;
+};
+
+type ConservSubmitData = {
+  metadata: ConservMetadata;
 };
 
 export default function DetailedAnalysis({
@@ -246,31 +290,31 @@ export default function DetailedAnalysis({
     purpose === 'trees'
       ? {
           purpose: 'trees',
-          yearAbandoned: new Date(),
+          yearAbandoned: null,
           firstTreePlanted: null,
-          plantingDensity: '',
-          maxPlantingDensity: '',
-          employeesCount: '',
-          mainChallenge: '',
-          siteOwnerName: '',
-          acquisitionYear: null,
+          plantingDensity: null,
+          maxPlantingDensity: null,
           degradationYear: null,
-          degradationCause: '',
-          longTermPlan: '',
-          motivation: '',
+          degradationCause: null,
+          employeesCount: null,
+          mainChallenge: null,
+          siteOwnerName: null,
+          acquisitionYear: null,
+          longTermPlan: null,
+          motivation: null,
         }
       : {
           purpose: 'conservation',
-          actions: '',
-          benefits: '',
-          employeesCount: '',
-          acquisitionYear: null,
+          actions: null,
+          benefits: null,
           startingProtectionYear: null,
-          areaProtected: '',
-          siteOwnerName: '',
-          mainChallenge: '',
-          longTermPlan: '',
-          motivation: '',
+          areaProtected: null,
+          employeesCount: null,
+          mainChallenge: null,
+          siteOwnerName: null,
+          acquisitionYear: null,
+          longTermPlan: null,
+          motivation: null,
         };
 
   const {
@@ -284,17 +328,17 @@ export default function DetailedAnalysis({
     defaultValues: defaultFormData,
   });
 
-  const owners: string[] = [];
+  const owners: SiteOwnerTypes[] = [];
   for (let i = 0; i < siteOwners.length; i++) {
     if (siteOwners[i].isSet) {
-      owners.push(`${siteOwners[i].value}`);
+      owners.push(`${siteOwners[i].value}` as SiteOwnerTypes);
     }
   }
 
-  const months: number[] = [];
+  const months: AllowedSeasonMonths[] = [];
   for (let i = 0; i < plantingSeasons.length; i++) {
     if (plantingSeasons[i].isSet) {
-      const j = i + 1;
+      const j = (i + 1) as AllowedSeasonMonths;
       months.push(j);
     }
   }
@@ -315,62 +359,63 @@ export default function DetailedAnalysis({
       return;
     }
     setIsUploadingData(true);
-    const submitData =
+    const submitData: TreeSubmitData | ConservSubmitData =
       data.purpose === 'trees'
         ? {
             metadata: {
+              plantingSeasons: months,
+              plantingDensity: data.plantingDensity,
+              maxPlantingDensity: data.maxPlantingDensity,
+              firstTreePlanted: data.firstTreePlanted
+                ? `${new Date(data.firstTreePlanted).getFullYear()}-${
+                    new Date(data.firstTreePlanted).getMonth() + 1
+                  }-${new Date(data.firstTreePlanted).getDate()}`
+                : null,
+              siteOwnerType: owners,
               degradationCause: data.degradationCause,
               degradationYear: data.degradationYear
-                ? data.degradationYear.getFullYear()
+                ? new Date(data.degradationYear).getFullYear()
+                : null,
+              yearAbandoned: data.yearAbandoned
+                ? new Date(data.yearAbandoned).getFullYear()
                 : null,
               employeesCount: data.employeesCount,
               acquisitionYear: data.acquisitionYear
-                ? data.acquisitionYear.getFullYear()
+                ? new Date(data.acquisitionYear).getFullYear()
                 : null,
               mainInterventions: mainInterventions,
               longTermPlan: data.longTermPlan,
               mainChallenge: data.mainChallenge,
               motivation: data.motivation,
-              plantingDensity: data.plantingDensity,
-              maxPlantingDensity: data.maxPlantingDensity,
-              plantingSeasons: months,
               siteOwnerName: data.siteOwnerName,
-              siteOwnerType: owners,
-              yearAbandoned: data.yearAbandoned
-                ? data.yearAbandoned.getFullYear()
-                : null,
-              firstTreePlanted: data.firstTreePlanted
-                ? `${data.firstTreePlanted.getFullYear()}-${
-                    data.firstTreePlanted.getMonth() + 1
-                  }-${data.firstTreePlanted.getDate()}`
-                : null,
             },
           }
         : {
             metadata: {
-              acquisitionYear: data.acquisitionYear
-                ? data.acquisitionYear.getFullYear()
-                : null,
               activitySeasons: months,
               areaProtected: data.areaProtected,
-              employeesCount: data.employeesCount,
-              mainInterventions: mainInterventions,
               startingProtectionYear: data.startingProtectionYear
-                ? data.startingProtectionYear.getFullYear()
+                ? new Date(data.startingProtectionYear).getFullYear()
                 : null,
               landOwnershipType: owners,
               actions: data.actions,
+              benefits: data.benefits,
+              employeesCount: data.employeesCount,
+              acquisitionYear: data.acquisitionYear
+                ? new Date(data.acquisitionYear).getFullYear()
+                : null,
+              mainInterventions: mainInterventions,
+              longTermPlan: data.longTermPlan,
               mainChallenge: data.mainChallenge,
               motivation: data.motivation,
-              longTermPlan: data.longTermPlan,
-              benefits: data.benefits,
               siteOwnerName: data.siteOwnerName,
             },
           };
 
     try {
       const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
+        ProfileProjectTrees | ProfileProjectConservation,
+        TreeSubmitData | ConservSubmitData
       >({
         tenant: tenantConfig?.id,
         url: `/app/projects/${projectGUID}`,
@@ -397,45 +442,31 @@ export default function DetailedAnalysis({
         projectPurpose === 'trees'
           ? {
               purpose: 'trees',
-              yearAbandoned: metadata.yearAbandoned
-                ? new Date(new Date().setFullYear(metadata.yearAbandoned))
-                : new Date(),
-              firstTreePlanted: metadata.firstTreePlanted
-                ? new Date(metadata.firstTreePlanted)
-                : new Date(),
-              plantingDensity: metadata.plantingDensity?.toString() || '',
-              maxPlantingDensity: metadata.maxPlantingDensity?.toString() || '',
-              employeesCount: metadata.employeesCount?.toString() || '',
-              mainChallenge: metadata.mainChallenge || '',
-              siteOwnerName: metadata.siteOwnerName || '',
-              acquisitionYear: metadata.acquisitionYear
-                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
-                : new Date(),
-              degradationYear: metadata.degradationYear
-                ? new Date(new Date().setFullYear(metadata.degradationYear))
-                : new Date(),
-              degradationCause: metadata.degradationCause || '',
-              longTermPlan: metadata.longTermPlan || '',
-              motivation: metadata.motivation || '',
+              yearAbandoned: metadata.yearAbandoned || null,
+              firstTreePlanted: metadata.firstTreePlanted || null,
+              plantingDensity: metadata.plantingDensity || null,
+              maxPlantingDensity: metadata.maxPlantingDensity || null,
+              employeesCount: metadata.employeesCount || null,
+              mainChallenge: metadata.mainChallenge || null,
+              siteOwnerName: metadata.siteOwnerName || null,
+              acquisitionYear: metadata.acquisitionYear || null,
+              degradationYear: metadata.degradationYear || null,
+              degradationCause: metadata.degradationCause || null,
+              longTermPlan: metadata.longTermPlan || null,
+              motivation: metadata.motivation || null,
             }
           : {
               purpose: 'conservation',
-              actions: metadata.actions || '',
-              benefits: metadata.benefits || '',
-              employeesCount: metadata.employeesCount?.toString() || '',
-              acquisitionYear: metadata.acquisitionYear
-                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
-                : new Date(),
-              startingProtectionYear: metadata.startingProtectionYear
-                ? new Date(
-                    new Date().setFullYear(metadata.startingProtectionYear)
-                  )
-                : new Date(),
-              areaProtected: metadata.areaProtected?.toString() || '',
-              mainChallenge: metadata.mainChallenge || '',
-              siteOwnerName: metadata.siteOwnerName || '',
-              longTermPlan: metadata.longTermPlan || '',
-              motivation: metadata.motivation || '',
+              actions: metadata.actions || null,
+              benefits: metadata.benefits || null,
+              employeesCount: metadata.employeesCount || null,
+              acquisitionYear: metadata.acquisitionYear || null,
+              startingProtectionYear: metadata.startingProtectionYear || null,
+              areaProtected: metadata.areaProtected || null,
+              mainChallenge: metadata.mainChallenge || null,
+              siteOwnerName: metadata.siteOwnerName || null,
+              longTermPlan: metadata.longTermPlan || null,
+              motivation: metadata.motivation || null,
             };
       // set planting seasons
 
@@ -521,7 +552,6 @@ export default function DetailedAnalysis({
           );
         setInterventionOptions(initialInterventionOptions);
       }
-
       reset(formData);
     }
   }, [projectDetails]);
@@ -544,7 +574,7 @@ export default function DetailedAnalysis({
                   <Controller
                     name="yearAbandoned"
                     control={control}
-                    defaultValue={new Date()}
+                    defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
                         views={['year']}
@@ -621,7 +651,8 @@ export default function DetailedAnalysis({
                   required: tManageProjects('validation', {
                     fieldName: tManageProjects('areaProtected'),
                   }),
-                  validate: (value) => (value ? parseInt(value, 10) > 0 : true),
+                  validate: (value) =>
+                    value ? parseInt(value.toString() || '0', 10) > 0 : true,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
@@ -713,7 +744,7 @@ export default function DetailedAnalysis({
                 required: tManageProjects('validation', {
                   fieldName: tManageProjects('employeeCount'),
                 }),
-                validate: (value) => parseInt(value, 10) > 0,
+                validate: (value) => parseInt(value?.toString() || '0', 10) > 0,
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
@@ -887,7 +918,8 @@ export default function DetailedAnalysis({
                   control={control}
                   rules={{
                     validate: (value) =>
-                      value.length === 0 || parseInt(value, 10) > 1,
+                      value?.toString().length === 0 ||
+                      parseInt(value?.toString() || '0', 10) > 1,
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
