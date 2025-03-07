@@ -17,6 +17,8 @@ export type MapLayerOptionsType =
   | 'fireRisk'
   | 'deforestationRisk';
 
+export type ApiMapLayerOptionsType = Exclude<MapLayerOptionsType, 'projects'>;
+
 export interface AdditionalInfo {
   resolution: string;
   dataYears: string;
