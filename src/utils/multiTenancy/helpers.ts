@@ -63,6 +63,11 @@ export const getTenantConfigList = async (): Promise<Tenant[]> => {
     const response = await fetch(
       `${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
     );
+    // error handling for non-2xx status
+    if (!response.ok) {
+      console.error('Non-2xx status fetching tenant list:', response.status);
+      throw new Error(`Failed to fetch tenant list: ${response.status}`);
+    }
     const tenants = (await response.json()) as Tenant[];
 
     // Update Redis cache
