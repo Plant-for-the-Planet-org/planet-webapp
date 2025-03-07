@@ -64,7 +64,7 @@
       "default": "Algo ha ido mal al crear una cuenta. Por favor, inténtelo después de un rato."
     },
     "accountCreationSuccess": "Los datos de tu cuenta se han guardado correctamente.",
-    "accountUpdationSuccess": "Los datos de su cuenta se han actualizado correctamente.",
+    "accountUpdateSuccess": "Los datos de su cuenta se han actualizado correctamente.",
     "scheduleSaveSuccess": "Su calendario de pagos se ha guardado correctamente.",
     "editAccountButton": "Editar cuenta",
     "accountTitleText": "Transferencia para {currency}",

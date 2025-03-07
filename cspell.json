@@ -1,0 +1,59 @@
+// cSpell Settings
+{
+  // Version of the setting file.  Always 0.2
+  "version": "0.2",
+  // language - current active spelling language
+  "language": "en",
+  // words - list of words to be always considered correct
+  "words": [
+    "agroforestry",
+    "arcgis",
+    "ARRAYAGG",
+    "bbox",
+    "collapsable",
+    "datediff",
+    "deepmerge",
+    "Donatable",
+    "formatjs",
+    "Frontrunners",
+    "Hamington",
+    "IBAN",
+    "idempotency",
+    "leaderboard",
+    "localematcher",
+    "maplibre",
+    "maxage",
+    "MONTHNAME",
+    "multiday",
+    "multipolygons",
+    "Oceanforce",
+    "pftp",
+    "ploc",
+    "projectv",
+    "Regenerants",
+    "sepa",
+    "showTreegame",
+    "signup",
+    "Sofort",
+    "spende",
+    "supercluster",
+    "Swiper",
+    "treemapper",
+    "trilliontrees",
+    "trpc",
+    "UNEP",
+    "vizzuality",
+    "xslx",
+    "Yucatán"
+  ],
+  // flagWords - list of words to be always considered incorrect
+  // This is useful for offensive words and common spelling errors.
+  // For example "hte" should be "the"
+  "flagWords": [],
+  "ignorePaths": [
+    "public/data",
+    "public/Bulk Code - Sample CSVs",
+    "public/assets/recipient-upload-sample.*",
+    "public/static/locales/*/country.json"
+  ]
+}

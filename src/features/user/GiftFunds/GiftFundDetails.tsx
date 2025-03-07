@@ -12,7 +12,7 @@ interface Props {
 
 const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
   const { user } = useUserProps();
-  const t = useTranslations('Giftfunds');
+  const t = useTranslations('GiftFunds');
 
   const StyledContainer = styled('article')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,

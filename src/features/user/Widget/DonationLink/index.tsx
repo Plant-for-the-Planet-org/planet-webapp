@@ -69,7 +69,7 @@ export default function DonationLink(): ReactElement | null {
       subtitle={
         <div>
           <p>{t('donationLinkDescription')}</p>
-          <p>{t('qrCodeDiscription')}</p>
+          <p>{t('qrCodeDescription')}</p>
         </div>
       }
     >

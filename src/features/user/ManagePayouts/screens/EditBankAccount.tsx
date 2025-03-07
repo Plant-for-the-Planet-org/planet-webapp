@@ -149,7 +149,7 @@ const EditBankAccount = (): ReactElement | null => {
       />
       {isAccountUpdated && (
         <CustomSnackbar
-          snackbarText={t('accountUpdationSuccess')}
+          snackbarText={t('accountUpdateSuccess')}
           isVisible={isAccountUpdated}
           handleClose={closeSnackbar}
         />
