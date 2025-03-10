@@ -60,7 +60,7 @@ export default function PlanetCashTransactionsPage({
       )}
       <UserLayout>
         <Head>
-          <title>{t('planetcash.titleTransactions')}</title>
+          <title>{t('planetCash.titleTransactions')}</title>
         </Head>
         <PlanetCash
           step={PlanetCashTabs.TRANSACTIONS}

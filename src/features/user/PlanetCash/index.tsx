@@ -32,7 +32,7 @@ export default function PlanetCash({
   step,
   setProgress,
 }: PlanetCashProps): ReactElement | null {
-  const t = useTranslations('Planetcash');
+  const t = useTranslations('PlanetCash');
   const locale = useLocale();
   const { tenantConfig } = useTenant();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);

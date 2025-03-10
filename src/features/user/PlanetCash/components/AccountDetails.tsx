@@ -64,7 +64,7 @@ interface AccountDetailsProps {
 }
 
 const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
-  const t = useTranslations('Planetcash');
+  const t = useTranslations('PlanetCash');
   const locale = useLocale();
   const { token } = useUserProps();
   const { tenantConfig } = useTenant();
