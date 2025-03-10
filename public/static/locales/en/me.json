@@ -8,7 +8,7 @@
       "titleEditBankDetails": "Manage Payouts - Edit Bank Details"
     },
     "donationLinkTitle": "Build Donation Link",
-    "planetcash": {
+    "planetCash": {
       "menuText": "PlanetCash",
       "submenuText": "My PlanetCash",
       "titleAccount": "PlanetCash - Accounts",
@@ -52,7 +52,7 @@
     "uploadPhotos": "Upload Photos",
     "dragHere": "or drag here",
     "contribNotFound": "Contribution Not Found",
-    "errorOccured": "Error Occured",
+    "errorOccurred": "Error Occurred",
     "contribSuccess": "Successfully added {treeCount} {treeSpecies} 🌳 from {plantDate}",
     "moreThanOne": "minimum 1 tree required",
     "registered": "Registered",
@@ -147,7 +147,7 @@
     "taxReceipt": "Tax Receipt",
     "history": "History",
     "recurrency": "Recurring Donations",
-    "donationreceipts": "Donation Receipts",
+    "donationReceipts": "Donation Receipts",
     "new": "New",
     "beta": "Beta",
     "date": "Date",
