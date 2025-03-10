@@ -71,7 +71,13 @@
     "public/data",
     "public/Bulk Code - Sample CSVs",
     "public/assets/recipient-upload-sample.*",
-    "public/static/locales/*/country.json",
-    "public/static/locales/*/tenants.json"
+    "public/static/locales/en/country.json",
+    "public/static/locales/en/tenants.json",
+    "public/static/locales/cs/*",
+    "public/static/locales/de/*",
+    "public/static/locales/es/*",
+    "public/static/locales/fr/*",
+    "public/static/locales/it/*",
+    "public/static/locales/pt-BR/*"
   ]
 }
