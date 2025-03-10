@@ -52,6 +52,7 @@ export default function ProjectGrid() {
               project={allowedProject.properties}
               editMode={false}
               displayPopup={false}
+              disableDonations={true}
               utmCampaign="243BY4FZ71"
             />
           </div>

@@ -11,8 +11,16 @@ export default function Landing({ tenantScore, isLoaded }: Props) {
     <section className={styles.landingSection}>
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
-          <h3>MOVING Toward 5 Million Trees</h3>
-          {isLoaded && <TreeCounter planted={tenantScoreData || 0} />}
+          <h3>Moving Toward 100 Million Trees</h3>
+          {isLoaded && (
+            <>
+              <TreeCounter planted={tenantScoreData || 0} />
+              <p>
+                Since 2023, you have contributed towards over 62500 trees
+                through VTO Fitness Challenge.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </section>
