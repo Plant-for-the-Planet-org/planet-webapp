@@ -98,6 +98,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
           href={donateLink}
           target={embed ? '_top' : '_blank'}
           buttonClasses={donateButtonClass}
+          prefetch={true}
         />
       )}
     </div>
