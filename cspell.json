@@ -42,6 +42,7 @@
     "ploc",
     "projectv",
     "recurrency",
+    "regenerant",
     "Regenerants",
     "sepa",
     "showTreegame",
@@ -70,6 +71,7 @@
     "public/data",
     "public/Bulk Code - Sample CSVs",
     "public/assets/recipient-upload-sample.*",
-    "public/static/locales/*/country.json"
+    "public/static/locales/*/country.json",
+    "public/static/locales/*/tenants.json"
   ]
 }
