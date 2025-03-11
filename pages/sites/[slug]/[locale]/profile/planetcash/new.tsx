@@ -60,7 +60,7 @@ export default function PlanetCashCreatePage({
       )}
       <UserLayout>
         <Head>
-          <title>{t('planetcash.titleCreateAccount')}</title>
+          <title>{t('planetCash.titleCreateAccount')}</title>
         </Head>
         <PlanetCash
           step={PlanetCashTabs.CREATE_ACCOUNT}

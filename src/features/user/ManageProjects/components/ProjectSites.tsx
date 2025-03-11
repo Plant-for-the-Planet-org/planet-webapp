@@ -433,7 +433,7 @@ export default function ProjectSites({
       label:
         projectDetails?.purpose === 'trees'
           ? t('siteStatusPlanting')
-          : t('siteStatusNotYetprotected'),
+          : t('siteStatusNotYetProtected'),
       value:
         projectDetails?.purpose === 'trees' ? 'planting' : 'not yet protected',
     },
@@ -441,7 +441,7 @@ export default function ProjectSites({
       label:
         projectDetails?.purpose === 'trees'
           ? t('siteStatusPlanted')
-          : t('siteStatusPartiallyprotected'),
+          : t('siteStatusPartiallyProtected'),
       value:
         projectDetails?.purpose === 'trees' ? 'planted' : 'partially protected',
     },
@@ -449,7 +449,7 @@ export default function ProjectSites({
       label:
         projectDetails?.purpose === 'trees'
           ? t('siteStatusBarren')
-          : t('siteStatusFullyprotected'),
+          : t('siteStatusFullyProtected'),
       value: projectDetails?.purpose === 'trees' ? 'barren' : 'fully protected',
     },
     {
