@@ -129,7 +129,7 @@
     "project_not_available": "Project details are currently unavailable",
     "topProject": "Top Project",
     "viewReport": "View Report",
-    "reviewInfo": "The project was inspected in a multiday field review in {reviewMonth} and fullfills our <standardsLink>standards.</standardsLink>",
+    "reviewInfo": "The project was inspected in a multiday field review in {reviewMonth} and fulfills our <standardsLink>standards.</standardsLink>",
     "standardsLink": "https://www.plant-for-the-planet.org/standards/",
     "project": "Project",
     "top_project_standards_fulfilled": "The project inspection revealed that this project fulfilled at least 12 of the 19 Top Project <standardsLink>standards.</standardsLink>",
