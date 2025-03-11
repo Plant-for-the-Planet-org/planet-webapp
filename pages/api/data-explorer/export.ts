@@ -22,11 +22,13 @@ handler.post(async (req, response) => {
 				iv.intervention_start_date, 
 				COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS species, 
 				CASE WHEN iv.type='single-tree-registration' THEN 1 ELSE ps.tree_count END AS tree_count, 
-				iv.geometry, 
+				-- Convert geometry to a JSON string using to_json() and then to text
+				CASE WHEN iv.geometry IS NOT NULL THEN TO_JSON(iv.geometry)::text ELSE NULL END AS geometry, 
 				iv.type, 
 				iv.trees_allocated, 
 				iv.trees_planted, 
-				iv.metadata, 
+				-- Convert metadata to a JSON string using to_json() and then to text
+				CASE WHEN iv.metadata IS NOT NULL THEN TO_JSON(iv.metadata)::text ELSE NULL END AS metadata, 
 				iv.description, 
 				iv.plant_project_id, 
 				iv.sample_tree_count, 
