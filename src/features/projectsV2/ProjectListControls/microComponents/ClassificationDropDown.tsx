@@ -44,6 +44,7 @@ export const ClassificationDropDown = ({
   selectedMode,
 }: ClassificationDropDownProps) => {
   const tAllProjects = useTranslations('AllProjects');
+
   const handleFilterSelection = (
     filterItem: TreeProjectClassification
   ): void => {
@@ -54,14 +55,43 @@ export const ClassificationDropDown = ({
       : [...selectedClassification, filterItem];
     setSelectedClassification(newFilter);
   };
+
   const isFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
 
-  const classificationListClasses = useMemo(() => {
-    return `${styles.classificationListContainer} ${
-      selectedMode === 'list' ? styles.listMode : ''
-    }`;
-  }, [selectedMode]);
+  const classificationListClasses = `${styles.classificationListContainer} ${
+    selectedMode === 'list' ? styles.listMode : ''
+  }`;
+
+  const toggleDonatableProjects = () => {
+    setShowDonatableProjects((prev) => !prev);
+  };
+
+  const classificationFilters = useMemo(() => {
+    return availableFilters.map((filterItem, index) => (
+      <button
+        key={filterItem}
+        className={styles.filterButton}
+        onClick={() => handleFilterSelection(filterItem)}
+      >
+        <div
+          className={`${
+            selectedClassification?.includes(filterItem)
+              ? styles.selected
+              : styles.unselected
+          } 
+          ${styles.classificationItem}`}
+        >
+          {classificationItemIcons[filterItem]}
+          {tAllProjects(`classificationTypes.${filterItem}`)}
+        </div>
+        {index !== availableFilters.length - 1 && (
+          <hr className={styles.hrLine} />
+        )}
+      </button>
+    ));
+  }, [availableFilters, selectedClassification, handleFilterSelection]);
+
   return (
     <div className={classificationListClasses}>
       <button
@@ -82,9 +112,7 @@ export const ClassificationDropDown = ({
       <button
         type="button"
         className={styles.donationFilterButton}
-        onClick={() => {
-          setShowDonatableProjects((prev) => !prev);
-        }}
+        onClick={toggleDonatableProjects}
       >
         <div className={styles.donationFilterLabel}>
           <DollarIcon />
@@ -98,31 +126,7 @@ export const ClassificationDropDown = ({
         </div>
         <hr className={styles.hrLine} />
       </button>
-      <div>
-        {availableFilters.map((filterItem, index) => {
-          return (
-            <button
-              key={index}
-              className={styles.filterButton}
-              onClick={() => handleFilterSelection(filterItem)}
-            >
-              <div
-                className={`${
-                  selectedClassification?.includes(filterItem)
-                    ? styles.selected
-                    : styles.unselected
-                } ${styles.classificationItem}`}
-              >
-                {classificationItemIcons[filterItem]}
-                {tAllProjects(`classificationTypes.${filterItem}`)}
-              </div>
-              {index !== availableFilters.length - 1 && (
-                <hr className={styles.hrLine} />
-              )}
-            </button>
-          );
-        })}
-      </div>
+      <div>{classificationFilters}</div>
     </div>
   );
 };
