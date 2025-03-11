@@ -16,7 +16,6 @@ import {
   Mangroves,
 } from '../../../../../public/assets/images/icons/projectV2/PointMarkerIconsSymbol';
 import DollarIcon from '../../../../../public/assets/images/icons/projectV2/DollarIcon';
-// import TreePlanting from '../../../../../public/assets/images/icons/project/TreePlanting';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
@@ -59,13 +58,9 @@ export const ClassificationDropDown = ({
   const isFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
 
-  const classificationListClasses = `${styles.classificationListContainer} ${
+  const filterListContainerClass = `${styles.classificationListContainer} ${
     selectedMode === 'list' ? styles.listMode : ''
   }`;
-
-  const toggleDonatableProjects = () => {
-    setShowDonatableProjects((prev) => !prev);
-  };
 
   const classificationFilters = useMemo(() => {
     return availableFilters.map((filterItem, index) => (
@@ -93,7 +88,7 @@ export const ClassificationDropDown = ({
   }, [availableFilters, selectedClassification, handleFilterSelection]);
 
   return (
-    <div className={classificationListClasses}>
+    <div className={filterListContainerClass}>
       <button
         className={styles.filterButton}
         onClick={() => {
@@ -112,7 +107,7 @@ export const ClassificationDropDown = ({
       <button
         type="button"
         className={styles.donationFilterButton}
-        onClick={toggleDonatableProjects}
+        onClick={() => setShowDonatableProjects((prev) => !prev)}
       >
         <div className={styles.donationFilterLabel}>
           <DollarIcon />
