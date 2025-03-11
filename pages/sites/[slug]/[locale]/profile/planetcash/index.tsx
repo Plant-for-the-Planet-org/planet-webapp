@@ -59,7 +59,7 @@ export default function PlanetCashPage({
       )}
       <UserLayout>
         <Head>
-          <title>{t('planetcash.titleAccount')}</title>
+          <title>{t('planetCash.titleAccount')}</title>
         </Head>
         <PlanetCash step={PlanetCashTabs.ACCOUNTS} setProgress={setProgress} />
       </UserLayout>

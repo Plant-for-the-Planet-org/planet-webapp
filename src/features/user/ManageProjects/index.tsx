@@ -360,7 +360,7 @@ export default function ManageProjects({
           t('onlyEnglish')
         ) : (
           <div>
-            <div>{t('addProjetDescription')}</div>
+            <div>{t('addProjectDescription')}</div>
             <div>
               {t.rich('createProjectsEnglishOnly', {
                 noteLabel: (chunk) => <strong>{chunk}</strong>,

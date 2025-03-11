@@ -64,7 +64,7 @@
       "default": "Something went wrong while creating an account. Please try after a while."
     },
     "accountCreationSuccess": "Your account details were successfully saved.",
-    "accountUpdationSuccess": "Your account details were successfully updated.",
+    "accountUpdateSuccess": "Your account details were successfully updated.",
     "scheduleSaveSuccess": "Your payout schedule was successfully saved.",
     "editAccountButton": "Edit Account",
     "accountTitleText": "Transfer for {currency}",
