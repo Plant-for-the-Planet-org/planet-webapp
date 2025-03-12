@@ -268,7 +268,7 @@ const UserLayout: FC = ({ children }) => {
           // hideItem: true,
         },
         {
-          title: t('donationreceipts'),
+          title: t('donationReceipts'),
           path: '/profile/donation-receipt',
           // hideItem: true,
         },
@@ -338,12 +338,12 @@ const UserLayout: FC = ({ children }) => {
     },
     {
       key: 6,
-      title: t('planetcash.menuText'),
+      title: t('planetCash.menuText'),
       icon: <PlanetCashIcon />,
       flag: t('new'),
       subMenu: [
         {
-          title: t('planetcash.submenuText'),
+          title: t('planetCash.submenuText'),
           path: '/profile/planetcash',
         },
         {
