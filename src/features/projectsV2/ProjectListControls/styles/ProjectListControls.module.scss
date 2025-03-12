@@ -287,13 +287,13 @@
 
 .donationFilterButton {
   width: 100%;
+  color: rgba($dark, 1);
 
   .donationFilterLabel {
     display: flex;
     align-items: center;
     gap: 3px;
     cursor: pointer;
-    color: rgba($dark, 1);
 
     svg {
       width: 20px;
