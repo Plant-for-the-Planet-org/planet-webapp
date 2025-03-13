@@ -14,17 +14,20 @@
   background-image: url('/tenants/salesforce/images/tracker-bkgd.png');
   padding-top: 90px;
   background-size: 1440px auto;
-  @include lgLaptopView {
-    margin-top: 80px;
-    max-width: 2560px;
-  }
-  @include mdTabletView {
-    margin-top: -20px;
-    padding-bottom: 90px;
-  }
+
   @include xsPhoneView {
     padding-bottom: 90px;
     margin-top: -20px;
+  }
+  @include smTabletView {
+    margin-top: -200px;
+    padding-top: 200px;
+  }
+  @include mdTabletView {
+    padding-bottom: 90px;
+  }
+  @include lgLaptopView {
+    max-width: 2560px;
   }
 }
 
@@ -185,9 +188,7 @@
     width: 528px;
     margin: 60px auto 0;
   }
-  .leaderBoardSection {
-    margin-top: -115px;
-  }
+
   .leaderBoardBushImage {
     display: block;
     position: absolute;
