@@ -12,16 +12,16 @@ import type {
   MySingleContribution,
 } from '../../../features/common/types/myForest';
 
-import { procedure } from '../../trpc';
+import {procedure} from '../../trpc';
 import prisma from '../../../../prisma/client';
-import { z } from 'zod';
-import { Prisma } from '@prisma/client';
-import { TRPCError } from '@trpc/server';
+import {z} from 'zod';
+import {Prisma} from '@prisma/client';
+import {TRPCError} from '@trpc/server';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
-import { fetchProfile } from '../../utils/fetchProfile';
-import { fetchProfileGroupData } from '../../utils/fetchProfileGroupData';
-import { getCachedData } from '../../utils/cache';
-import { cacheKeyPrefix } from '../../../utils/constants/cacheKeyPrefix';
+import {fetchProfile} from '../../utils/fetchProfile';
+import {fetchProfileGroupData} from '../../utils/fetchProfileGroupData';
+import {getCachedData} from '../../utils/cache';
+import {cacheKeyPrefix} from '../../../utils/constants/cacheKeyPrefix';
 
 function initializeStats(): ContributionStats {
   return {
@@ -50,75 +50,89 @@ function initializeStats(): ContributionStats {
  */
 async function fetchProjects(): Promise<BriefProjectQueryResult[]> {
   const projects = await prisma.$queryRaw<BriefProjectQueryResult[]>`
-			SELECT 
-				id,
-				guid, 
-				purpose,
-				country,
-				geometry
-			FROM
-				project
-			WHERE
-				purpose IN ('trees' , 'conservation')
-					AND deleted_at IS NULL
-					AND verification_status NOT IN ('incomplete' , 'pending', 'processing')
-			;
-		`;
+      SELECT id,
+             guid,
+             purpose,
+             country,
+             geometry
+      FROM project
+      WHERE purpose IN ('trees', 'conservation')
+        AND deleted_at IS NULL
+        AND verification_status NOT IN ('incomplete', 'pending', 'processing')
+      ;
+  `;
   return projects;
+}
+
+async function fetchRegistrations(
+  profileIds: number[]
+): Promise<ContributionsQueryResult[]> {
+  return await prisma.$queryRaw<ContributionsQueryResult[]>`
+      SELECT i.guid,
+             i.trees_planted           as "units",
+             'trees'                   as "unitType",         -- TODO:probably obsolete
+             i.intervention_start_date as "plantDate",
+             'planting'                as "contributionType", -- TODO:probably obsolete
+             null                      as "projectId",        -- TODO:probably obsolete
+             null                      as amount,             -- TODO:probably obsolete
+             null                      as currency,           -- TODO:probably obsoleteprisma
+             null                      as country,            -- TODO:probably obsolete
+             i.geometry,
+             null                      as "giftMethod",       -- TODO:probably obsolete
+             null                      as "giftRecipient",    -- TODO:probably obsolete
+             null                      as "giftType"          -- TODO:probably obsolete
+      FROM intervention i
+      WHERE i.deleted_at is null
+        AND i.user_profile_id IN (${Prisma.join(profileIds)})
+        AND i.type = 'generic-tree-registration'
+      ORDER BY i.id DESC;
+  `;
 }
 
 async function fetchContributions(
   profileIds: number[]
 ): Promise<ContributionsQueryResult[]> {
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
-			SELECT 
-				c.guid,
-				COALESCE(c.quantity, c.tree_count) as "units",
-				c.unit_type as "unitType",
-				c.plant_date as "plantDate",
-				c.contribution_type as "contributionType",
-				c.plant_project_id as "projectId",
-				c.amount,
-				c.currency,
-				c.country,
-				c.geometry,
-				c.gift_method as "giftMethod", 
-				c.gift_data->>'recipientName' as "giftRecipient", 
-				c.gift_data->>'type' as "giftType"
-			FROM
-				contribution c
-			WHERE
-				c.deleted_at is null AND 
-				c.profile_id IN (${Prisma.join(profileIds)}) AND
-				(
-					(c.contribution_type = 'donation' AND c.payment_status = 'paid' AND c.purpose IN ('trees', 'conservation'))
-					OR 
-					(c.contribution_type = 'planting' AND c.is_verified = '1')
-				)
-			ORDER BY
-				c.id DESC;
-		`;
+      SELECT c.guid,
+             COALESCE(c.quantity, c.tree_count) as "units",
+             c.unit_type                        as "unitType",
+             c.plant_date                       as "plantDate",
+             c.contribution_type                as "contributionType",
+             c.plant_project_id                 as "projectId",
+             c.amount,
+             c.currency,
+             c.country,
+             c.geometry,
+             c.gift_method                      as "giftMethod",
+             c.gift_data ->> 'recipientName'    as "giftRecipient",
+             c.gift_data ->> 'type'             as "giftType"
+      FROM contribution c
+      WHERE c.deleted_at is null
+        AND c.profile_id IN (${Prisma.join(profileIds)})
+        AND (
+              (c.contribution_type = 'donation' AND c.payment_status = 'paid' AND
+               c.purpose IN ('trees', 'conservation'))
+          )
+      ORDER BY c.id DESC;
+  `;
   return contributions;
 }
 
+
 async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
-			SELECT 
-				ROUND(CAST(g.value AS NUMERIC)/100, 2) as "quantity",
-				g.metadata->'giver'->>'name' as "giftGiver",
-				g.metadata->'project'->>'id' as "projectGuid",
-				g.metadata->'project'->>'name' as "projectName",
-				g.metadata->'project'->>'country' as "country",
-				COALESCE(g.payment_date, g.redemption_date) as "plantDate"
-			FROM 
-				gift g
-			WHERE 
-				g.recipient_id IN (${Prisma.join(profileIds)}) AND 
-				g.deleted_at is null AND
-				g.value <> 0
-			ORDER BY
-				g.id DESC;
-		`;
+      SELECT ROUND(CAST(g.value AS NUMERIC) / 100, 2)    as "quantity",
+             g.metadata -> 'giver' ->> 'name'            as "giftGiver",
+             g.metadata -> 'project' ->> 'id'            as "projectGuid",
+             g.metadata -> 'project' ->> 'name'          as "projectName",
+             g.metadata -> 'project' ->> 'country'       as "country",
+             COALESCE(g.payment_date, g.redemption_date) as "plantDate"
+      FROM gift g
+      WHERE g.recipient_id IN (${Prisma.join(profileIds)})
+        AND g.deleted_at is null
+        AND g.value <> 0
+      ORDER BY g.id DESC;
+  `;
   return gifts;
 }
 
@@ -191,9 +205,9 @@ function handleDonationContribution(
     giftDetails:
       contribution.giftMethod !== null
         ? {
-            recipient: contribution.giftRecipient,
-            type: contribution.giftType,
-          }
+          recipient: contribution.giftRecipient,
+          type: contribution.giftType,
+        }
         : null,
   };
 
@@ -385,7 +399,7 @@ export const contributionsProcedure = procedure
       isPublicProfile: z.boolean().optional(),
     })
   )
-  .query(async ({ input: { profileId, isPublicProfile } }) => {
+  .query(async ({input: {profileId, isPublicProfile}}) => {
     const fetchContributionsData = async () => {
       console.log(
         new Date().toLocaleString(),
@@ -416,7 +430,7 @@ export const contributionsProcedure = procedure
       const profileGroupData = await fetchProfileGroupData(profile.id);
       const profileIds =
         profileGroupData.length > 0
-          ? profileGroupData.map(({ profileId }) => profileId)
+          ? profileGroupData.map(({profileId}) => profileId)
           : [profile.id];
 
       // Fetch eligible projects
@@ -430,6 +444,7 @@ export const contributionsProcedure = procedure
       );
 
       const contributions = await fetchContributions(profileIds);
+      const registrations = await fetchRegistrations(profileIds);
       const gifts = await fetchGifts(profileIds);
 
       // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
@@ -441,23 +456,25 @@ export const contributionsProcedure = procedure
           projectIdMap.get(contribution.projectId)?.country,
           stats.contributedCountries
         );
-        if (contribution.contributionType === 'planting') {
-          handleRegistrationContribution(
-            contribution,
-            stats,
-            myContributionsMap,
-            registrationLocationsMap,
-            projectIdMap.get(contribution.projectId) || null
-          );
-        } else {
-          handleDonationContribution(
-            contribution,
-            projectIdMap,
-            stats,
-            myContributionsMap,
-            projectLocationsMap
-          );
-        }
+        handleDonationContribution(
+          contribution,
+          projectIdMap,
+          stats,
+          myContributionsMap,
+          projectLocationsMap
+        );
+      });
+
+      registrations.forEach((contribution) => {
+        contribution.units = Number(contribution.units);
+        stats.contributionsMadeCount++;
+        handleRegistrationContribution(
+          contribution,
+          stats,
+          myContributionsMap,
+          registrationLocationsMap,
+          projectIdMap.get(contribution.projectId) || null
+        );
       });
 
       // Process gift data, updating myContributionsMap and stats
@@ -465,12 +482,14 @@ export const contributionsProcedure = procedure
         gift.quantity = Number(gift.quantity);
         stats.giftsReceivedCount++;
         stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
+        // TODO: why would gift.country be any different from projectGuidMap.get(gift.projectGuid)?.country?
         populateContributedCountries(
           gift.country,
           projectGuidMap.get(gift.projectGuid)?.country,
           stats.contributedCountries
         );
         // Handle individual gift contributions if the project is in the eligible project set
+        // TODO: what is the eligible project set?
         const project = projectGuidMap.get(gift.projectGuid);
         if (project) {
           handleGiftContribution(
