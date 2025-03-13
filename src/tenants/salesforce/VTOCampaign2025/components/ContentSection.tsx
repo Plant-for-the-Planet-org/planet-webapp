@@ -45,14 +45,14 @@ export default function ContentSection() {
             <h3>How you can participate</h3>
             <ul>
               <li>
-                All Salesforce employees worldwide are eligible to participate
-                in this inclusive challenge.
+                2025 challenge dates: April 1 - 30. All Salesforce employees
+                worldwide are welcome to participate in this inclusive, global
+                challenge.
               </li>
               <li>
-                To get started, make a donation of $50 USD or more to your
-                chosen tree planting project from the provided list{' '}
-                <a href="#projects">below</a>. You&apos;ll receive a
-                confirmation email from{' '}
+                To join, make a donation of $50 USD or more to a tree planting
+                project from the provided list <a href="#projects">below</a>.
+                You’ll receive a confirmation email from{' '}
                 <a
                   href="https://www.plant-for-the-planet.org/"
                   target="_blank"
@@ -63,31 +63,52 @@ export default function ContentSection() {
                 once your donation is processed.
               </li>
               <li>
-                After donating, submit your Salesforce Donation Match request
-                through the Employee Impact Hub, including your
-                Plant-for-the-Planet receipt. Send screenshots of both your
-                donation and match request to{' '}
+                After donating, submit your Salesforce Donation Match Request
+                (navigate to{' '}
+                <a
+                  href="https://salesforce.benevity.org/cause/840-383940108"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Plant-for-the-Planet
+                </a>{' '}
+                and click ‘Request A Match’). Upload your Plant-for-the-Planet
+                receipt and submit your request. Email the pdf or screenshots of
+                your donation AND match request to{' '}
                 <a href="mailto:abilityforceATL@gmail.com">
                   abilityforceATL@gmail.com
                 </a>{' '}
                 for verification.
               </li>
               <li>
-                Once verified, you&apos;ll be added to the Slack channel
-                #vto-fitness-movetowards5miltrees-april25 where you can log your
-                exercise minutes throughout April 2025.
+                Once verified, you’ll be added to a private Slack channel where
+                you can log your exercise minutes throughout April 2025.
               </li>
               <li>
-                Participants can earn up to one hour of VTO per day during April
-                (maximum 30 hours total). Exercise time converts to VTO at a 1:1
-                ratio up to one hour - for example, 30 minutes of exercise
-                equals 30 minutes of VTO. If you exercise for more than an hour,
-                you can still only log one hour of VTO for that day.
+                Participants can earn two hours of VTO for simply joining the
+                challenge by donating and exercising for the cause. Participants
+                can also engage in climate-focused learning that will be posted
+                in the channel for additional VTO hours. A maximum of 15 hours
+                VTO will be offered for this month-long challenge.
               </li>
               <li>
-                By participating, you&apos;re contributing to a healthier,
-                cleaner, and greener future. Review the project list below to
-                select a tree planting initiative that aligns with your values.
+                You will log your daily exercise minutes via the slack channel
+                workflow and see where you stack up on the{' '}
+                <a
+                  href="https://docs.google.com/spreadsheets/d/1jfNNM636ng0QYrZWWEtbZwu77fxcyzevcpM09lD6Rx8/edit?gid=272653129#gid=272653129"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  challenge leaderboard
+                </a>
+                . Prizes will be offered for those who come out on top! Please
+                note, exercise minutes do not equal VTO hours.
+              </li>
+              <li>
+                By participating, you’re contributing to a healthier, cleaner,
+                and greener future for us all. Now, review the project list
+                below and donate to a tree planting initiative that aligns with
+                your interests!
               </li>
             </ul>
           </div>
