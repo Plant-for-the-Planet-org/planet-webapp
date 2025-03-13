@@ -48,6 +48,8 @@ export default function AdditionalInfo() {
                   'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;'
                 }
                 allowFullScreen={true}
+                title="Salesforce Tree Planting Initiative Video"
+                loading="lazy"
               ></iframe>
             </div>
           </div>
@@ -82,12 +84,16 @@ export default function AdditionalInfo() {
           <div
             className={`${gridStyles.colMd6} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter} ${styles.logoContainer}`}
           >
-            <img src="/tenants/salesforce/images/earthforce-pp.png" alt="" />
+            +{' '}
+            <img
+              src="/tenants/salesforce/images/earthforce-pp.png"
+              alt="Earthforce + Plant-for-the-Planet logo"
+            />
           </div>
           <div
             className={`${gridStyles.colMd3} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter}`}
           >
-            <img src="/tenants/salesforce/images/1t.png" alt="" />
+            <img src="/tenants/salesforce/images/1t.png" alt="1t.org logo" />
           </div>
         </div>
       </div>
