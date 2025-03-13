@@ -113,27 +113,3 @@
     margin-bottom: 0px;
   }
 }
-
-.landingContentBottom {
-  text-align: center;
-  position: relative;
-  &:after {
-    content: '';
-    display: block;
-    background-image: url('/tenants/salesforce/images/astro-tree.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: calc(50% - 20px);
-    left: calc(50% - 180px);
-    width: 57px;
-    height: 81px;
-    transform: translate(-50%, -50%);
-    @include lgLaptopView {
-      top: calc(50% - 50px);
-      left: calc(50% - 423px);
-      width: 163px;
-      height: 234px;
-    }
-  }
-}
