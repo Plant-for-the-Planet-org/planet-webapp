@@ -55,6 +55,8 @@ const MapControls = ({
     disableInterventionMenu,
     setDisableInterventionMenu,
     plantLocations,
+    showDonatableProjects,
+    setShowDonatableProjects,
   } = useProjects();
 
   const uniquePlantTypes = useMemo(() => {
@@ -127,6 +129,8 @@ const MapControls = ({
     hasProjectSites,
     mapOptions,
     updateMapOption,
+    showDonatableProjects,
+    setShowDonatableProjects,
   };
 
   const exitMapMode = () => {
