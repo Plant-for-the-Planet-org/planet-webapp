@@ -55,7 +55,8 @@ $bottomMobileFooterSpace: 49px;
   top: calc($layoutPaddingTop + 10px);
   bottom: calc($layoutPaddingBottom + 10px);
   right: calc($layoutPaddingSide + 10px);
-  z-index: 50;
+  /* Makes the container transparent to clicks */
+  pointer-events: none;
 }
 
 // styles for mobile layout
