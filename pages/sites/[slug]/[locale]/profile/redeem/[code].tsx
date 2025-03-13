@@ -8,6 +8,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
+import type { RedeemCodeSubmitData } from '../../claim/[type]/[code]';
 
 import { useRouter } from 'next/router';
 import { useState, useEffect, useContext } from 'react';
@@ -73,13 +74,16 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
-    const submitData = {
+    const submitData: RedeemCodeSubmitData = {
       code: data,
     };
 
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>({
+        const res = await postAuthenticatedRequest<
+          RedeemedCodeData,
+          RedeemCodeSubmitData
+        >({
           tenant: tenantConfig?.id,
           url: `/app/redeem`,
           data: submitData,
