@@ -12,7 +12,7 @@ import type {
 } from 'next';
 
 import React, { useEffect, useState } from 'react';
-import SalesforceCampaign from '../../../../src/tenants/salesforce/OceanforceCampaign';
+import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign2024';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
@@ -24,14 +24,16 @@ interface Props {
   pageProps: PageProps;
 }
 
-export default function MangroveChallenge({
+export default function VTOFitnessChallenge({
   pageProps: { tenantConfig },
 }: Props) {
   const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
     mostDonated: [],
     mostRecent: [],
   });
-  const [tenantScore, setTenantScore] = useState<TenantScore>({ total: 0 });
+  const [tenantScore, setTenantScore] = useState<TenantScore>({
+    total: 0,
+  });
   const [isLoaded, setIsLoaded] = useState(false);
   const { setTenantConfig } = useTenant();
 
@@ -45,7 +47,7 @@ export default function MangroveChallenge({
     async function loadData() {
       try {
         const leaderboardRes = await fetch(
-          `${process.env.WEBHOOK_URL}/oceanforce-2023-leaderboard`
+          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-leaderboard`
         );
         if (leaderboardRes.ok && leaderboardRes.status === 200) {
           const leaderBoardArr = await leaderboardRes.json();
@@ -57,7 +59,7 @@ export default function MangroveChallenge({
 
       try {
         const tenantscoreRes = await fetch(
-          `${process.env.WEBHOOK_URL}/oceanforce-2023`
+          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-treecount`
         );
         if (tenantscoreRes.ok && tenantscoreRes.status === 200) {
           const tenantScoreArr = await tenantscoreRes.json();
@@ -75,6 +77,7 @@ export default function MangroveChallenge({
   }, []);
 
   function getCampaignPage() {
+    if (leaderBoard === null || tenantScore === null) return <></>;
     let CampaignPage;
     switch (tenantConfig.config.slug) {
       case 'salesforce':
@@ -95,7 +98,7 @@ export default function MangroveChallenge({
   return (
     <>
       <GetHomeMeta />
-      {tenantConfig && isLoaded ? getCampaignPage() : <></>}
+      {isLoaded && tenantConfig ? getCampaignPage() : <></>}
     </>
   );
 }
@@ -126,8 +129,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'country',
       'manageProjects',
       'leaderboard',
-      'allProjects',
       'projectDetails',
+      'allProjects',
       'project',
     ],
   });

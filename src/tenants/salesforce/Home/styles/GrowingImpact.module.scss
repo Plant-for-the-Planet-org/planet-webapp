@@ -81,14 +81,24 @@
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
     justify-content: space-between;
+    overflow-y: hidden;
     // align-items: center;
     height: 230px;
     padding-left: 15px;
     padding-right: 15px;
 
-    a {
+    a,
+    .references {
       text-align: center;
       color: #ffffff;
+    }
+
+    .referenceItem {
+      list-style-type: none;
+    }
+
+    a {
+      text-decoration: underline;
     }
   }
   .foliageWrapper {

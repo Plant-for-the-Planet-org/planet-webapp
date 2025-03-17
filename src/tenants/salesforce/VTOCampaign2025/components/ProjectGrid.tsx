@@ -13,8 +13,8 @@ import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState<MapProject[] | null>(null);
   const { tenantConfig } = useTenant();
+  const [projects, setProjects] = useState<MapProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
@@ -41,7 +41,7 @@ export default function ProjectGrid() {
 
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
-      .filter((project) => project.properties.allowDonations === true)
+      .filter((project) => project.properties.allowDonations)
       .map((allowedProject) => {
         return (
           <div
@@ -51,8 +51,7 @@ export default function ProjectGrid() {
             <ProjectSnippet
               project={allowedProject.properties}
               showTooltipPopups={true}
-              utmCampaign="vto-fc-2023"
-              disableDonations={true}
+              utmCampaign="251Y48Z1NR"
             />
           </div>
         );
@@ -61,7 +60,7 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div className={`${styles.projectGridContainer}`}>
+    <section className={`${styles.projectGridContainer}`} id="projects">
       <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
@@ -79,6 +78,6 @@ export default function ProjectGrid() {
           {projects ? renderAllowedProjects(projects) : <></>}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
