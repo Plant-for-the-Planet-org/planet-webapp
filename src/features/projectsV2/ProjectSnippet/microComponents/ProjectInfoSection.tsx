@@ -24,6 +24,8 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     allowDonations,
     country,
     currency,
+    utmCampaign,
+    disableDonations,
   } = props;
 
   const tCommon = useTranslations('Common');
@@ -39,7 +41,9 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     slug,
     token,
     embed || undefined,
-    callbackUrl || undefined
+    callbackUrl || undefined,
+    undefined,
+    utmCampaign || undefined
   );
   const donationLabel = useMemo(() => {
     if (unitCount === undefined) {
@@ -90,7 +94,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
         )}
       </div>
 
-      {allowDonations && (
+      {allowDonations && !disableDonations && (
         <WebappButton
           variant="primary"
           text={tCommon('donate')}

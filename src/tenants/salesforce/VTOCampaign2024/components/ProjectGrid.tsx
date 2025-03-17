@@ -7,7 +7,7 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
-import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
+import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
@@ -50,8 +50,7 @@ export default function ProjectGrid() {
           >
             <ProjectSnippet
               project={allowedProject.properties}
-              editMode={false}
-              displayPopup={false}
+              showTooltipPopups={true}
               disableDonations={true}
               utmCampaign="243BY4FZ71"
             />

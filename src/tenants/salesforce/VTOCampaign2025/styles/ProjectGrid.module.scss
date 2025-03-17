@@ -19,9 +19,18 @@
     line-height: 130%;
     text-transform: uppercase;
     color: #ffffff;
-    padding: 13px 24px;
     cursor: pointer;
     align-items: center;
+    border: none;
+
+    > div {
+      font-weight: normal;
+    }
+
+    &:hover {
+      background: #0176d3;
+      border: none;
+    }
   }
 
   .projectGrid {
@@ -77,8 +86,7 @@
   }
 
   .projectItem {
-    background-color: #ffffff;
-    border-radius: 10px;
+    border-radius: 16px;
     width: 320px;
     max-width: 100%;
   }
