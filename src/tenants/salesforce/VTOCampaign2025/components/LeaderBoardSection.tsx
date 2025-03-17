@@ -30,7 +30,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
   const locale = useLocale();
 
   return (
-    <div className={styles.leaderBoardSection}>
+    <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>Tree Donation Tracker</h2>
         {isLeaderboardAvailable ? (
@@ -107,6 +107,6 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
           <div>Leaderboard data not available.</div>
         )}
       </div>
-    </div>
+    </section>
   );
 }

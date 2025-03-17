@@ -60,7 +60,7 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div className={`${styles.projectGridContainer}`} id="projects">
+    <section className={`${styles.projectGridContainer}`} id="projects">
       <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
@@ -78,6 +78,6 @@ export default function ProjectGrid() {
           {projects ? renderAllowedProjects(projects) : <></>}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

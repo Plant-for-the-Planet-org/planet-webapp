@@ -3,7 +3,7 @@ import styles from './../styles/ContentSection.module.scss';
 
 export default function ContentSection() {
   return (
-    <div className={`${styles.contentSectionContainer}`}>
+    <section className={`${styles.contentSectionContainer}`}>
       <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
@@ -114,6 +114,6 @@ export default function ContentSection() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
