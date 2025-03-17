@@ -1,15 +1,39 @@
 @import '../../../../theme/theme';
 
-.contentSectionContainer {
+.projectGridContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
   background-size: 1440px 100%;
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
   z-index: 999;
-  margin-top: -292px;
-  padding-top: 124px;
-  .contentSection {
+  padding-top: 84px;
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    cursor: pointer;
+    align-items: center;
+    border: none;
+
+    > div {
+      font-weight: normal;
+    }
+
+    &:hover {
+      background: #0176d3;
+      border: none;
+    }
+  }
+
+  .projectGrid {
     padding-bottom: 150px;
     h2 {
       font-family: $secondaryFontFamily;
@@ -22,7 +46,7 @@
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
-        font-size: $fontXXLarge;
+        font-size: 52px;
         line-height: 100%;
         letter-spacing: -0.006em;
       }
@@ -34,6 +58,7 @@
       font-size: 24px;
       line-height: 28px;
       letter-spacing: -0.004em;
+      text-align: center;
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
@@ -42,22 +67,10 @@
         margin-bottom: 15px;
       }
     }
-    p {
-      font-family: $primaryFontFamily;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 15px;
-      line-height: 24px;
-      color: #032d60;
-      margin-bottom: 30px;
-      a {
-        text-decoration: underline;
-        color: #0b5cab;
-      }
-    }
     img {
       margin: 0 auto 30px;
       display: block;
+      width: 100%;
       @include lgLaptopView {
         margin: 0;
       }
@@ -67,69 +80,31 @@
       flex-direction: column;
       justify-content: center;
     }
+    .projectList {
+      gap: 10px;
+    }
   }
 
-  p.contentSectionSubhead,
-  p.contentSectionQuote {
+  .projectItem {
+    background-color: #ffffff;
+    border-radius: 16px;
+    width: 320px;
+    max-width: 100%;
+  }
+
+  p.contentSectionSubhead {
     font-family: $primaryFontFamily;
     font-style: normal;
+    font-weight: 300;
     font-size: $fontMedium;
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
     color: #032d60;
-
-    &.bold {
-      font-weight: 500;
-    }
-
+    margin-bottom: 30px;
     @include lgLaptopView {
       font-size: 20px;
       line-height: 30px;
-    }
-  }
-
-  p.contentSectionQuote {
-    margin-top: 20px;
-    font-weight: 400;
-    em {
-      font-style: italic;
-    }
-  }
-
-  .projectItem {
-    width: 320px;
-    max-width: 100%;
-
-    p {
-      margin-bottom: 0;
-      font-size: 18px;
-      color: #ffffff;
-    }
-  }
-
-  button {
-    background: #0176d3;
-    border-radius: 4px;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: normal;
-    font-size: $fontSmall;
-    line-height: 130%;
-    text-transform: uppercase;
-    color: #ffffff;
-    padding: 13px 24px;
-    cursor: pointer;
-
-    border: none;
-
-    > div {
-      font-weight: normal;
-    }
-
-    &:hover {
-      background: #0176d3;
-      border: none;
     }
   }
 }
