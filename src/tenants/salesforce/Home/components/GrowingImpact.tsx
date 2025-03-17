@@ -77,7 +77,7 @@ export default function GrowingImpact() {
       image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
       links: {
-        mainText: 'Click to learn more about the cause',
+        mainText: 'Learn more about the cause',
         items: [
           {
             linkText: 'Challenge 2023',
@@ -144,17 +144,20 @@ export default function GrowingImpact() {
                     )}
                   {!isSingleLinkArticle(article) && (
                     <div className={styles.references}>
-                      {article.links.mainText} -
-                      {article.links.items.map((item, index) => (
-                        <a
-                          key={index}
-                          href={item.link}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          {item.linkText}
-                        </a>
-                      ))}
+                      {article.links.mainText}:
+                      <ul>
+                        {article.links.items.map((item, index) => (
+                          <li key={index} className={styles.referenceItem}>
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                            >
+                              {item.linkText}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                   <img

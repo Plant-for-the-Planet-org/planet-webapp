@@ -93,8 +93,12 @@
       color: #ffffff;
     }
 
-    .references a {
-      margin: 0 5px;
+    .referenceItem {
+      list-style-type: none;
+    }
+
+    a {
+      text-decoration: underline;
     }
   }
   .foliageWrapper {
