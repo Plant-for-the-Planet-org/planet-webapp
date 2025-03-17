@@ -59,48 +59,42 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
                 {tLeaderboard('mostTrees')}
               </button>
             </div>
-            {leaderboard &&
-            leaderboard.mostRecent &&
-            leaderboard.mostDonated ? (
-              selectedTab === 'recent' ? (
-                <div className={styles.leaderBoardBody}>
-                  {leaderboard.mostRecent.map((leader, index) => {
-                    return (
-                      <div key={index} className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
-                          {tCommon('tree', {
-                            count: Number(leader.treeCount),
-                          })}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className={styles.leaderBoardBody}>
-                  {leaderboard.mostDonated.map((leader, index) => {
-                    return (
-                      <div key={index} className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
-                          {tCommon('tree', {
-                            count: Number(leader.treeCount),
-                          })}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              )
+            {selectedTab === 'recent' ? (
+              <div className={styles.leaderBoardBody}>
+                {leaderboard.mostRecent.map((leader, index) => {
+                  return (
+                    <div key={index} className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
+                        {tCommon('tree', {
+                          count: Number(leader.treeCount),
+                        })}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             ) : (
-              <p>loading</p>
+              <div className={styles.leaderBoardBody}>
+                {leaderboard.mostDonated.map((leader, index) => {
+                  return (
+                    <div key={index} className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {getFormattedNumber(locale, Number(leader.treeCount))}{' '}
+                        {tCommon('tree', {
+                          count: Number(leader.treeCount),
+                        })}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         ) : (
