@@ -41,7 +41,7 @@ export default function ProjectGrid() {
 
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
-      .filter((project) => project.properties.allowDonations === true)
+      .filter((project) => project.properties.allowDonations)
       .map((allowedProject) => {
         return (
           <div
