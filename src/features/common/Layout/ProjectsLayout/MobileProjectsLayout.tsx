@@ -1,12 +1,13 @@
 import type { FC } from 'react';
 import type { SetState } from '../../types/common';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
+import { ParamsContext } from '../QueryParamsContext';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -23,10 +24,11 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   setCurrencyCode,
   isMobile,
 }) => {
+  const { embed } = useContext(ParamsContext);
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
   const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
     selectedMode === 'map' ? styles.mapMode : ''
-  }`;
+  } ${embed === 'true' ? styles.embedModeMobile : ''}`;
   return (
     <ProjectsProvider
       page={page}

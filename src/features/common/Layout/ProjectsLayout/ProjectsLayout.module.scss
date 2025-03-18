@@ -75,6 +75,11 @@ $bottomMobileFooterSpace: 49px;
     top: 0;
     padding-top: 0;
   }
+
+  &.embedModeMobile {
+    top: 0;
+    bottom: 29px;
+  }
 }
 
 .mobileContentContainer {
