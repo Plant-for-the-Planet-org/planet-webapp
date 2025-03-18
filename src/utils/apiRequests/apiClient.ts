@@ -22,23 +22,12 @@ const apiClient = async <T>(
     options = await mw(options);
   }
 
-  // Ensure API endpoint is defined
-  const baseUrl = process.env.API_ENDPOINT;
-  if (!baseUrl) {
-    throw new Error(
-      'API_ENDPOINT is not defined in your environment variables.'
-    );
-  }
-
   // Construct full URL
   const queryString = options.queryParams
     ? '?' + getQueryString(options.queryParams)
     : '';
-  const fullUrl = options.url.startsWith('http')
-    ? options.url
-    : `${baseUrl}${options.url.startsWith('/') ? '' : '/'}${
-        options.url
-      }${queryString}`;
+
+  const fullUrl = `${options.url}${queryString}`;
 
   // Build headers
   const headers: Record<string, string> = {

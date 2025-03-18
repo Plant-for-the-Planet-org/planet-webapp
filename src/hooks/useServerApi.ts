@@ -76,13 +76,14 @@ import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { useTenant } from '../features/common/Layout/TenantContext';
 import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
+import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
 export const useServerApi = () => {
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
-  const lang = localStorage.getItem('language') || 'en';
+  const locale = useLocale();
 
   function isAbsoluteUrl(url: string) {
     const pattern = /^https?:\/\//i;
@@ -102,7 +103,7 @@ export const useServerApi = () => {
     version?: string;
   }): Promise<T> => {
     const headers: Record<string, string> = {
-      'x-locale': lang,
+      'x-locale': locale,
       'tenant-key': tenantConfig?.id || '',
       'X-SESSION-ID': await getSessionId(),
     };
@@ -124,10 +125,13 @@ export const useServerApi = () => {
       headers,
       impersonationData
     );
+    const baseUrl = process.env.API_ENDPOINT;
+    if (!baseUrl)
+      throw new Error(
+        'API_ENDPOINT is not defined in your environment variables.'
+      );
 
-    const fullUrl = isAbsoluteUrl(url)
-      ? url
-      : `${process.env.API_ENDPOINT}${url}`;
+    const fullUrl = isAbsoluteUrl(url) ? url : `${baseUrl}${url}`;
 
     try {
       return await apiClient<T>({
@@ -175,9 +179,10 @@ export const useServerApi = () => {
   };
   const getApi = async <T, P extends Record<string, string> = {}>(
     url: string,
-    payload?: P
+    payload?: P,
+    version?: string
   ): Promise<T> => {
-    return callApi<T>({ method: 'GET', url, queryParams: payload });
+    return callApi<T>({ method: 'GET', url, queryParams: payload, version });
   };
 
   const postApi = async <T, P extends Record<string, string> = {}>(
