@@ -24,6 +24,7 @@ const DonationReceiptWrapper = () => {
     initForVerification,
     email,
     isValid,
+    tinIsRequired,
     clearSessionStorage,
   } = useDonationReceiptContext();
 
@@ -128,6 +129,7 @@ const DonationReceiptWrapper = () => {
       donationReceipt={receiptData}
       isLoading={isLoading}
       isValid={isValid}
+      tinIsRequired={tinIsRequired}
       operation={operation}
       confirmReceiptData={confirmReceiptData}
     />
