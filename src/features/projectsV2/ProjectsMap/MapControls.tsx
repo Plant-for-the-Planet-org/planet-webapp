@@ -57,7 +57,7 @@ const MapControls = ({
     setDisableInterventionMenu,
     plantLocations,
   } = useProjects();
-  const { embed } = useContext(ParamsContext);
+  const { embed, showProjectDetails } = useContext(ParamsContext);
 
   const uniquePlantTypes = useMemo(() => {
     if (!plantLocations) return [];
@@ -82,6 +82,11 @@ const MapControls = ({
     isProjectDetailsPage &&
     selectedTab === 'field' &&
     uniquePlantTypes.length > 1;
+  const onlyMapModeAllowed =
+    embed === 'true' &&
+    isMobile &&
+    page === 'project-details' &&
+    showProjectDetails === 'false';
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
@@ -171,12 +176,14 @@ const MapControls = ({
                   existingIntervention={uniquePlantTypes}
                 />
               )}
-              <button
-                className={styles.exitMapModeButton}
-                onClick={exitMapMode}
-              >
-                <CrossIcon width={18} />
-              </button>
+              {!onlyMapModeAllowed && (
+                <button
+                  className={styles.exitMapModeButton}
+                  onClick={exitMapMode}
+                >
+                  <CrossIcon width={18} />
+                </button>
+              )}
             </div>
           ) : (
             <>

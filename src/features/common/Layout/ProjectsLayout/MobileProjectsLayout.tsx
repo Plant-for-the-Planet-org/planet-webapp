@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { SetState } from '../../types/common';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
@@ -24,8 +24,21 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   setCurrencyCode,
   isMobile,
 }) => {
-  const { embed } = useContext(ParamsContext);
+  const { embed, showProjectList, showProjectDetails } =
+    useContext(ParamsContext);
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
+
+  useEffect(() => {
+    if (embed === 'true') {
+      if (page === 'project-details' && showProjectDetails === 'false') {
+        setSelectedMode('map');
+      }
+      if (page === 'project-list' && showProjectList === 'false') {
+        setSelectedMode('map');
+      }
+    }
+  }, [page, embed, showProjectDetails, showProjectList]);
+
   const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
     selectedMode === 'map' ? styles.mapMode : ''
   } ${embed === 'true' ? styles.embedModeMobile : ''}`;
