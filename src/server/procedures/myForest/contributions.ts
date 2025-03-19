@@ -12,16 +12,16 @@ import type {
   MySingleContribution,
 } from '../../../features/common/types/myForest';
 
-import {procedure} from '../../trpc';
+import { procedure } from '../../trpc';
 import prisma from '../../../../prisma/client';
-import {z} from 'zod';
-import {Prisma} from '@prisma/client';
-import {TRPCError} from '@trpc/server';
+import { z } from 'zod';
+import { Prisma } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import getPointCoordinates from '../../../utils/getPointCoordinates';
-import {fetchProfile} from '../../utils/fetchProfile';
-import {fetchProfileGroupData} from '../../utils/fetchProfileGroupData';
-import {getCachedData} from '../../utils/cache';
-import {cacheKeyPrefix} from '../../../utils/constants/cacheKeyPrefix';
+import { fetchProfile } from '../../utils/fetchProfile';
+import { fetchProfileGroupData } from '../../utils/fetchProfileGroupData';
+import { getCachedData } from '../../utils/cache';
+import { cacheKeyPrefix } from '../../../utils/constants/cacheKeyPrefix';
 
 function initializeStats(): ContributionStats {
   return {
@@ -118,7 +118,6 @@ async function fetchContributions(
   return contributions;
 }
 
-
 async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
       SELECT ROUND(CAST(g.value AS NUMERIC) / 100, 2)    as "quantity",
@@ -205,9 +204,9 @@ function handleDonationContribution(
     giftDetails:
       contribution.giftMethod !== null
         ? {
-          recipient: contribution.giftRecipient,
-          type: contribution.giftType,
-        }
+            recipient: contribution.giftRecipient,
+            type: contribution.giftType,
+          }
         : null,
   };
 
@@ -399,7 +398,7 @@ export const contributionsProcedure = procedure
       isPublicProfile: z.boolean().optional(),
     })
   )
-  .query(async ({input: {profileId, isPublicProfile}}) => {
+  .query(async ({ input: { profileId, isPublicProfile } }) => {
     const fetchContributionsData = async () => {
       console.log(
         new Date().toLocaleString(),
@@ -430,7 +429,7 @@ export const contributionsProcedure = procedure
       const profileGroupData = await fetchProfileGroupData(profile.id);
       const profileIds =
         profileGroupData.length > 0
-          ? profileGroupData.map(({profileId}) => profileId)
+          ? profileGroupData.map(({ profileId }) => profileId)
           : [profile.id];
 
       // Fetch eligible projects
