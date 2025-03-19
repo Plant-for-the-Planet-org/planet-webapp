@@ -142,8 +142,13 @@ $layoutPaddingSide: 20px;
     max-width: 140px;
     padding: 8px 12px;
     top: 36px;
-    right: 40%;
+    right: 0;
     min-width: 160px;
+
+    &.withInterventions {
+      right: 40%;
+    }
+
     .listItem {
       display: flex;
       flex-direction: column;
