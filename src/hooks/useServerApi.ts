@@ -98,7 +98,8 @@ export const useServerApi = () => {
     authRequired = false,
     impersonationData,
     version,
-  }: Omit<RequestOptions, 'additionalHeaders'> & {
+    additionalHeaders,
+  }: RequestOptions & {
     impersonationData?: ImpersonationData;
     version?: string;
   }): Promise<T> => {
@@ -106,6 +107,7 @@ export const useServerApi = () => {
       'x-locale': locale,
       'tenant-key': tenantConfig?.id || '',
       'X-SESSION-ID': await getSessionId(),
+      ...(additionalHeaders ? additionalHeaders : {}),
     };
 
     if (authRequired) {
@@ -167,7 +169,8 @@ export const useServerApi = () => {
   const postApiAuthenticated = async <T, P extends Record<string, string> = {}>(
     url: string,
     payload?: P,
-    impersonationData?: ImpersonationData
+    impersonationData?: ImpersonationData,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
@@ -175,6 +178,7 @@ export const useServerApi = () => {
       data: payload,
       authRequired: true,
       impersonationData,
+      additionalHeaders,
     });
   };
   const getApi = async <T, P extends Record<string, string> = {}>(
