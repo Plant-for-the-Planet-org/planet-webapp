@@ -2,7 +2,7 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
@@ -13,6 +13,7 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -56,6 +57,7 @@ const MapControls = ({
     setDisableInterventionMenu,
     plantLocations,
   } = useProjects();
+  const { embed, showProjectDetails } = useContext(ParamsContext);
 
   const uniquePlantTypes = useMemo(() => {
     if (!plantLocations) return [];
@@ -80,6 +82,11 @@ const MapControls = ({
     isProjectDetailsPage &&
     selectedTab === 'field' &&
     uniquePlantTypes.length > 1;
+  const onlyMapModeAllowed =
+    embed === 'true' &&
+    isMobile &&
+    page === 'project-details' &&
+    showProjectDetails === 'false';
 
   const enableInterventionFilter = () => {
     setDisableInterventionMenu(true);
@@ -97,6 +104,7 @@ const MapControls = ({
     setSelectedSamplePlantLocation,
     disableInterventionFilter,
     disableInterventionMenu,
+    canShowInterventionDropdown,
   };
 
   const interventionDropDownProps = {
@@ -140,18 +148,24 @@ const MapControls = ({
         : styles.layerToggleIos
       : styles.layerToggleDesktop
   }`;
+  const projectListControlsContainerStyles = `${
+    styles.projectListControlsContainer
+  } ${embed === 'true' ? styles.embedModeMobile : ''}`;
+  const projectDetailsControlsContainerStyles = `${
+    styles.projectDetailsControlsContainer
+  } ${embed === 'true' ? styles.embedModeMobile : ''}`;
 
   return (
     <>
       {isMobile && page === 'project-list' && (
-        <div className={styles.projectListControlsContainer}>
+        <div className={projectListControlsContainerStyles}>
           <ProjectListControlForMobile {...projectListControlProps} />
         </div>
       )}
       {isProjectDetailsPage && (
         <>
           {isMobile ? (
-            <div className={styles.projectDetailsControlsContainer}>
+            <div className={projectDetailsControlsContainerStyles}>
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
@@ -163,12 +177,14 @@ const MapControls = ({
                   existingIntervention={uniquePlantTypes}
                 />
               )}
-              <button
-                className={styles.exitMapModeButton}
-                onClick={exitMapMode}
-              >
-                <CrossIcon width={18} />
-              </button>
+              {!onlyMapModeAllowed && (
+                <button
+                  className={styles.exitMapModeButton}
+                  onClick={exitMapMode}
+                >
+                  <CrossIcon width={18} />
+                </button>
+              )}
             </div>
           ) : (
             <>
