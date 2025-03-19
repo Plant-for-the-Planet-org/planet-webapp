@@ -104,6 +104,7 @@ const MapControls = ({
     setSelectedSamplePlantLocation,
     disableInterventionFilter,
     disableInterventionMenu,
+    canShowInterventionDropdown,
   };
 
   const interventionDropDownProps = {
