@@ -4,7 +4,7 @@ import { getQueryString } from './getQueryString';
 export interface RequestOptions {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   url: string;
-  data?: any;
+  data?: Record<string, string>;
   queryParams?: { [key: string]: string };
   additionalHeaders?: { [key: string]: string };
   authRequired?: boolean;
