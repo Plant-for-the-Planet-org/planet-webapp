@@ -10,17 +10,8 @@ export interface RequestOptions {
   authRequired?: boolean;
 }
 
-type Middleware = (options: RequestOptions) => Promise<RequestOptions>;
-
-const apiClient = async <T>(
-  requestOptions: RequestOptions,
-  middleware: Middleware[] = []
-): Promise<T> => {
-  // Apply middleware
-  let options = requestOptions;
-  for (const mw of middleware) {
-    options = await mw(options);
-  }
+const apiClient = async <T>(requestOptions: RequestOptions): Promise<T> => {
+  const options = requestOptions;
 
   // Construct full URL
   const queryString = options.queryParams
@@ -33,10 +24,6 @@ const apiClient = async <T>(
   const headers: Record<string, string> = {
     ...(options.additionalHeaders || {}),
   };
-
-  // Set 'Content-Type' to 'application/json' only for requests that send a body
-  if (['POST', 'PUT', 'DELETE'].includes(options.method))
-    headers['Content-Type'] = 'application/json';
 
   try {
     const response = await fetch(fullUrl, {
