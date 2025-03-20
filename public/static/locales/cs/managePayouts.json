@@ -64,7 +64,7 @@
       "default": "Při vytváření účtu se něco pokazilo. Zkuste to prosím po chvíli."
     },
     "accountCreationSuccess": "Údaje o vašem účtu byly úspěšně uloženy.",
-    "accountUpdationSuccess": "Údaje o vašem účtu byly úspěšně aktualizovány.",
+    "accountUpdateSuccess": "Údaje o vašem účtu byly úspěšně aktualizovány.",
     "scheduleSaveSuccess": "Váš plán výplaty byl úspěšně uložen.",
     "editAccountButton": "Upravit účet",
     "accountTitleText": "Převod pro {currency}",

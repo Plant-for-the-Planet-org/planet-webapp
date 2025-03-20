@@ -16,6 +16,11 @@
     min-width: 200px;
     border-radius: 8px;
     border: 1px solid rgba($borderColor, 0.5);
+
+    &.onlyMapMode {
+      max-width: none;
+      width: 100%;
+    }
   }
 }
 
@@ -225,15 +230,16 @@
   z-index: 2;
   box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
   left: 193px;
+
+  .listMode {
+    left: 168px;
+    top: 67px;
+  }
+
   @include xsPhoneView {
     left: 127px;
     top: 29px;
   }
-}
-
-.listMode {
-  left: 168px;
-  top: 67px;
 }
 
 .classificationItem {

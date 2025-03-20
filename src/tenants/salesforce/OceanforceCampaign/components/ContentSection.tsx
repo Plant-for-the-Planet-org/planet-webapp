@@ -10,7 +10,7 @@ import styles from './../styles/ContentSection.module.scss';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { handleError } from '@planet-sdk/common';
-import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
+import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
@@ -150,8 +150,7 @@ export default function ContentSection() {
               <div className={styles.projectItem}>
                 <ProjectSnippet
                   project={project}
-                  editMode={false}
-                  displayPopup={false}
+                  showTooltipPopups={true}
                   utmCampaign="oceanforce-2023"
                 />
               </div>

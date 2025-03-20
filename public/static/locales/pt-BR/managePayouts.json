@@ -64,7 +64,7 @@
       "default": "Algo deu errado ao criar uma conta. Por favor, tente depois de algum tempo."
     },
     "accountCreationSuccess": "Os detalhes de sua conta foram salvos com sucesso.",
-    "accountUpdationSuccess": "Os detalhes de sua conta foram atualizados com sucesso.",
+    "accountUpdateSuccess": "Os detalhes de sua conta foram atualizados com sucesso.",
     "scheduleSaveSuccess": "Sua programação de pagamentos foi salva com sucesso.",
     "editAccountButton": "Editar conta",
     "accountTitleText": "Transferência para {currency}",

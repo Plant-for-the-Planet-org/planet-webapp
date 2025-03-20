@@ -5,7 +5,7 @@ import type { MapProject } from '../../common/types/projectv2';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { MapOptions } from '../ProjectsMapContext';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
 import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
@@ -15,6 +15,7 @@ import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -62,11 +63,15 @@ const ProjectListControlForMobile = ({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const { isImpersonationModeOn } = useUserProps();
+  const { embed, showProjectList, page } = useContext(ParamsContext);
+
   const hasFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
+  const onlyMapModeAllowed =
+    embed === 'true' && page === 'project-list' && showProjectList === 'false';
   const shouldDisplayMapFeatureExplorer = selectedMode === 'map';
   const projectListControlsMobileClasses = `${
     styles.projectListControlsMobile
@@ -119,7 +124,7 @@ const ProjectListControlForMobile = ({
       {isSearching ? (
         <div className={tabContainerClasses}>
           <ActiveSearchField {...activeSearchFieldProps} />
-          <ViewModeTabs {...viewModeTabsProps} />
+          {!onlyMapModeAllowed && <ViewModeTabs {...viewModeTabsProps} />}
         </div>
       ) : (
         <div className={projectListControlsMobileClasses}>
@@ -143,7 +148,7 @@ const ProjectListControlForMobile = ({
               isMobile={true}
             />
           )}
-          <ViewModeTabs {...viewModeTabsProps} />
+          {!onlyMapModeAllowed && <ViewModeTabs {...viewModeTabsProps} />}
         </div>
       )}
       {isFilterOpen && !isSearching && (

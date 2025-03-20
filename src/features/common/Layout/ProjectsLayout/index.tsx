@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { SetState } from '../../types/common';
 
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
@@ -11,8 +11,8 @@ import {
   useProjectsMap,
 } from '../../../projectsV2/ProjectsMapContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
-import { useRouter } from 'next/router';
 import { useUserProps } from '../UserPropsContext';
+import { ParamsContext } from '../QueryParamsContext';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -26,15 +26,27 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
   page,
 }) => {
   const { mapOptions, updateMapOption } = useProjectsMap();
-  const { query } = useRouter();
   const { isImpersonationModeOn } = useUserProps();
-  const showContentContainer =
-    Boolean(mapOptions.projects) || page === 'project-details';
+  const { embed, showProjectDetails, showProjectList } =
+    useContext(ParamsContext);
+
+  const showContentContainer = useMemo(() => {
+    const hideProjectList =
+      page === 'project-list' &&
+      mapOptions.projects &&
+      !(embed === 'true' && showProjectList === 'false');
+    const hideProjectDetails =
+      page === 'project-details' &&
+      !(embed === 'true' && showProjectDetails === 'false');
+    return hideProjectList || hideProjectDetails;
+  }, [page, embed, showProjectDetails, showProjectList]);
+
   const layoutClass = useMemo(() => {
-    if (query.embed === 'true') return styles.embedMode;
+    if (embed === 'true') return styles.embedMode;
     if (isImpersonationModeOn) return styles.impersonationMode;
     return styles.projectsLayout;
-  }, [isImpersonationModeOn, query.embed]);
+  }, [isImpersonationModeOn, embed]);
+
   return (
     <div className={layoutClass}>
       <main className={styles.mainContent}>

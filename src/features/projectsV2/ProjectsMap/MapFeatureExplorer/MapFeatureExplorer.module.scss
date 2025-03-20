@@ -6,6 +6,16 @@
     flex-direction: column;
     height: 100%;
     gap: 12px;
+    pointer-events: auto;
+    position: relative;
+  }
+}
+
+.exploreButton {
+  @include smTabletView {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
   }
 }
 
@@ -27,6 +37,9 @@
 }
 
 .exploreMainContainer {
+  position: relative;
+  z-index: 50;
+  pointer-events: auto;
   max-width: 240px;
   background-color: #fff;
   border-radius: 12px;

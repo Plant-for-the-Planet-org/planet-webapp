@@ -26,7 +26,7 @@ const MapFeatureExplorer = ({
       <CustomButton
         startIcon={<ExploreIcon />}
         onClick={() => setIsOpen(!isOpen)}
-        className={isOpen ? 'active' : ''}
+        className={`${styles.exploreButton} ${isOpen ? 'active' : ''}`}
       >
         <div className={styles.exploreButtonContent}>
           <h3>{tExplore('title')}</h3>
