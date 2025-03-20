@@ -10,6 +10,7 @@ import type {
   SingleGiftReceived,
   SingleRegistration,
   MySingleContribution,
+  RegistrationsQueryResult,
 } from '../../../features/common/types/myForest';
 
 import { procedure } from '../../trpc';
@@ -66,21 +67,14 @@ async function fetchProjects(): Promise<BriefProjectQueryResult[]> {
 
 async function fetchRegistrations(
   profileIds: number[]
-): Promise<ContributionsQueryResult[]> {
-  return await prisma.$queryRaw<ContributionsQueryResult[]>`
+): Promise<RegistrationsQueryResult[]> {
+  return await prisma.$queryRaw<RegistrationsQueryResult[]>`
       SELECT i.guid,
              i.trees_planted           as "units",
-             'trees'                   as "unitType",         -- TODO:probably obsolete
              i.intervention_start_date as "plantDate",
-             'planting'                as "contributionType", -- TODO:probably obsolete
-             null                      as "projectId",        -- TODO:probably obsolete
-             null                      as amount,             -- TODO:probably obsolete
-             null                      as currency,           -- TODO:probably obsoleteprisma
-             null                      as country,            -- TODO:probably obsolete
-             i.geometry,
-             null                      as "giftMethod",       -- TODO:probably obsolete
-             null                      as "giftRecipient",    -- TODO:probably obsolete
-             null                      as "giftType"          -- TODO:probably obsolete
+						 i.plant_project_id        as "projectId",
+             null                      as country,            -- TODO:update query to include country
+             i.geometry
       FROM intervention i
       WHERE i.deleted_at is null
         AND i.user_profile_id IN (${Prisma.join(profileIds)})
@@ -143,38 +137,38 @@ async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
  * @param contribution
  */
 function handleRegistrationContribution(
-  contribution: ContributionsQueryResult,
+  registration: RegistrationsQueryResult,
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
   registrationLocationsMap: Map<string, MapLocation>,
   project: BriefProjectQueryResult | null
 ): void {
   // Updates myContributionsMap
-  myContributionsMap.set(contribution.guid, {
+  myContributionsMap.set(registration.guid, {
     type: 'registration',
-    contributionCount: 1,
-    contributionUnitType: 'tree',
-    totalContributionUnits: contribution.units,
-    country: contribution.country || null,
+    registeredCount: 1,
+    registeredUnitType: 'tree',
+    totalRegisteredUnits: registration.units,
+    country: registration.country || null,
     projectGuid: project?.guid || null,
-    contributions: [
+    registrations: [
       {
         dataType: 'treeRegistration',
-        quantity: contribution.units,
-        plantDate: contribution.plantDate,
+        quantity: registration.units,
+        plantDate: registration.plantDate,
         unitType: 'tree',
       },
     ],
   });
   // Updates stats
-  stats.treesRegistered += Number(contribution.units);
+  stats.treesRegistered += Number(registration.units);
 
   // Updates registrationLocationsMap
-  if (contribution.geometry !== null) {
-    registrationLocationsMap.set(contribution.guid, {
+  if (registration.geometry !== null) {
+    registrationLocationsMap.set(registration.guid, {
       geometry: {
         type: 'Point',
-        coordinates: getPointCoordinates(contribution.geometry),
+        coordinates: getPointCoordinates(registration.geometry),
       },
     });
   }
@@ -350,13 +344,13 @@ function getLatestPlantDate(value: MyContributionsMapItem): Date {
   const EARLIEST_DATE = new Date(0); // Earliest possible date
 
   const getPlantDate = (
-    contributions: SingleRegistration[] | MySingleContribution[]
+    items: SingleRegistration[] | MySingleContribution[]
   ): Date => {
     try {
-      if (!contributions || contributions.length === 0) {
+      if (!items || items.length === 0) {
         return EARLIEST_DATE;
       }
-      const plantDate = contributions[0].plantDate;
+      const plantDate = items[0].plantDate;
       return plantDate ? new Date(plantDate) : EARLIEST_DATE;
     } catch (error) {
       console.error('Error parsing plant date:', error);
@@ -368,7 +362,7 @@ function getLatestPlantDate(value: MyContributionsMapItem): Date {
     case 'project':
       return getPlantDate(value.latestContributions);
     case 'registration':
-      return getPlantDate(value.contributions);
+      return getPlantDate(value.registrations);
     default:
       return EARLIEST_DATE;
   }
@@ -464,15 +458,20 @@ export const contributionsProcedure = procedure
         );
       });
 
-      registrations.forEach((contribution) => {
-        contribution.units = Number(contribution.units);
+      registrations.forEach((registration) => {
+        registration.units = Number(registration.units);
         stats.contributionsMadeCount++;
+        populateContributedCountries(
+          registration.country,
+          projectIdMap.get(registration.projectId)?.country,
+          stats.contributedCountries
+        );
         handleRegistrationContribution(
-          contribution,
+          registration,
           stats,
           myContributionsMap,
           registrationLocationsMap,
-          projectIdMap.get(contribution.projectId) || null
+          projectIdMap.get(registration.projectId) || null
         );
       });
 

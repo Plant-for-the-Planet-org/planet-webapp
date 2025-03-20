@@ -75,12 +75,12 @@ export type GiftReceivedDetails = {
 
 export type MyContributionsSingleRegistration = {
   type: 'registration';
-  totalContributionUnits: number;
-  contributionUnitType: 'tree';
-  contributionCount: number;
+  totalRegisteredUnits: number;
+  registeredUnitType: 'tree';
+  registeredCount: number;
   country: CountryCode | null;
   projectGuid: string | null;
-  contributions: SingleRegistration[];
+  registrations: SingleRegistration[];
 };
 
 export type SingleRegistration = {
@@ -130,7 +130,7 @@ export type ContributionsQueryResult = {
   units: number;
   unitType: 'tree' | 'm2';
   plantDate: DateString;
-  contributionType: 'donation' | 'planting';
+  contributionType: 'donation';
   projectId: string;
   amount: number;
   currency: string;
@@ -139,6 +139,15 @@ export type ContributionsQueryResult = {
   giftMethod: string | null;
   giftRecipient: string | null;
   giftType: string | null;
+};
+
+export type RegistrationsQueryResult = {
+  guid: string;
+  units: number;
+  plantDate: DateString;
+  projectId: string;
+  country: CountryCode | '';
+  geometry: Point | Polygon | null;
 };
 
 export type GiftsQueryResult = {
