@@ -10,27 +10,27 @@ export interface RequestOptions {
   authRequired?: boolean;
 }
 
-const apiClient = async <T>(requestOptions: RequestOptions): Promise<T> => {
-  const options = requestOptions;
+const apiClient = async <T>(requestConfig: RequestOptions): Promise<T> => {
+  const config = requestConfig;
 
   // Construct full URL
-  const queryString = options.queryParams
-    ? '?' + getQueryString(options.queryParams)
+  const queryString = config.queryParams
+    ? '?' + getQueryString(config.queryParams)
     : '';
 
-  const fullUrl = `${options.url}${queryString}`;
+  const fullUrl = `${config.url}${queryString}`;
 
   // Build headers
   const headers: Record<string, string> = {
-    ...(options.additionalHeaders || {}),
+    ...(config.additionalHeaders || {}),
   };
 
   try {
     const response = await fetch(fullUrl, {
-      method: options.method,
+      method: config.method,
       headers,
-      body: ['POST', 'PUT'].includes(options.method)
-        ? JSON.stringify(options.data)
+      body: ['POST', 'PUT'].includes(config.method)
+        ? JSON.stringify(config.data)
         : undefined,
     });
 
