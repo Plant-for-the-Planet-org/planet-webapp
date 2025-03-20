@@ -19,11 +19,11 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
     projects,
   } = useProjects();
   const projectsToDisplay = useMemo(() => {
-    const hasClassificationOrSearch =
+    const hasFilterOrSearchApplied =
       debouncedSearchValue !== '' ||
       selectedClassification.length > 0 ||
       showDonatableProjects;
-    if (hasClassificationOrSearch) return filteredProjects;
+    if (hasFilterOrSearchApplied) return filteredProjects;
     return tabSelected === 'topProjects' ? topProjects : projects;
   }, [filteredProjects, tabSelected]);
 

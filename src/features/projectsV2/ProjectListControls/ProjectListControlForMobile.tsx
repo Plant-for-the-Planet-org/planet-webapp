@@ -34,7 +34,7 @@ interface ProjectListControlForMobileProps {
   filteredProjects: MapProject[] | undefined;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
-  shouldHideProjectTabs: boolean;
+  shouldHideProjectTabs?: boolean;
   showDonatableProjects: boolean;
   setShowDonatableProjects: SetState<boolean>;
 }
