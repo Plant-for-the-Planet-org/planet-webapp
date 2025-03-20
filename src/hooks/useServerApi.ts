@@ -155,7 +155,10 @@ export const useServerApi = () => {
     }
   };
 
-  const getApiAuthenticated = async <T, P extends Record<string, string> = {}>(
+  const getApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     payload?: P,
     impersonationData?: ImpersonationData
@@ -169,7 +172,10 @@ export const useServerApi = () => {
     });
   };
 
-  const postApiAuthenticated = async <T, P extends Record<string, string> = {}>(
+  const postApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     payload: P,
     additionalHeaders?: Record<string, string>
@@ -182,7 +188,10 @@ export const useServerApi = () => {
       additionalHeaders,
     });
   };
-  const getApi = async <T, P extends Record<string, string> = {}>(
+  const getApi = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     queryParams?: P,
     version?: string
@@ -190,21 +199,30 @@ export const useServerApi = () => {
     return callApi<T>({ method: 'GET', url, queryParams, version });
   };
 
-  const postApi = async <T, P extends Record<string, string> = {}>(
+  const postApi = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     payload: P
   ): Promise<T> => {
     return callApi<T>({ method: 'POST', url, data: payload });
   };
 
-  const putApi = async <T, P extends Record<string, string> = {}>(
+  const putApi = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     payload: P
   ): Promise<T> => {
     return callApi<T>({ method: 'PUT', url, data: payload });
   };
 
-  const putApiAuthenticated = async <T, P extends Record<string, string> = {}>(
+  const putApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     payload: P
   ): Promise<T> => {
