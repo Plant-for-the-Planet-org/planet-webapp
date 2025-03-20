@@ -21,17 +21,15 @@ const apiClient = async <T>(requestConfig: RequestOptions): Promise<T> => {
   const fullUrl = `${config.url}${queryString}`;
 
   // Build headers
-  const headers: Record<string, string> = {
-    ...(config.additionalHeaders || {}),
-  };
+  const headers: Record<string, string> = config.additionalHeaders ?? {};
 
   try {
     const response = await fetch(fullUrl, {
       method: config.method,
       headers,
-      body: ['POST', 'PUT'].includes(config.method)
-        ? JSON.stringify(config.data)
-        : undefined,
+      ...(config.method === 'POST' || config.method === 'PUT'
+        ? { body: JSON.stringify(config.data) }
+        : {}),
     });
 
     if (!response.ok) {
