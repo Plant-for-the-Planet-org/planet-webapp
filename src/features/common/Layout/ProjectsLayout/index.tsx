@@ -31,15 +31,19 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
     useContext(ParamsContext);
 
   const showContentContainer = useMemo(() => {
-    const hideProjectList =
-      page === 'project-list' &&
-      mapOptions.projects &&
-      !(embed === 'true' && showProjectList === 'false');
-    const hideProjectDetails =
-      page === 'project-details' &&
-      !(embed === 'true' && showProjectDetails === 'false');
-    return hideProjectList || hideProjectDetails;
-  }, [page, embed, showProjectDetails, showProjectList]);
+    if (page === 'project-list') {
+      return (
+        (embed !== 'true' || showProjectList !== 'false') &&
+        Boolean(mapOptions.projects)
+      );
+    }
+
+    if (page === 'project-details') {
+      return embed !== 'true' || showProjectDetails !== 'false';
+    }
+
+    return false;
+  }, [page, embed, showProjectList, showProjectDetails, mapOptions.projects]);
 
   const layoutClass = useMemo(() => {
     if (embed === 'true') return styles.embedMode;
