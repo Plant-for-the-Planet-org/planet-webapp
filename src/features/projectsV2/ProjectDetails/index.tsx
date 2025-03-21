@@ -55,7 +55,7 @@ const ProjectDetails = ({
   const router = useRouter();
   const { p: projectSlug } = router.query;
 
-  const fetchPlanLocations = async (projectId: string) => {
+  const fetchPlantLocations = async (projectId: string) => {
     setIsLoading(true);
     try {
       const result = await getRequest<PlantLocation[]>({
@@ -95,7 +95,7 @@ const ProjectDetails = ({
         });
         const { purpose, id: projectId } = fetchedProject;
         if (projectId && purpose === 'trees') {
-          fetchPlanLocations(projectId);
+          fetchPlantLocations(projectId);
         }
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
