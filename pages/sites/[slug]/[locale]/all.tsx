@@ -27,6 +27,7 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useServerApi } from '../../../../src/hooks/useServerApi';
 
 interface Props {
   pageProps: PageProps;
@@ -40,6 +41,7 @@ export default function Home({ pageProps }: Props) {
 
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { getApi } = useServerApi();
 
   React.useEffect(() => {
     if (router.isReady) {
@@ -50,10 +52,9 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const newLeaderboard = await getRequest<LeaderBoardList>({
-          tenant: pageProps.tenantConfig.id,
-          url: `/app/leaderboard/${pageProps.tenantConfig.id}`,
-        });
+        const newLeaderboard = await getApi<LeaderBoardList>(
+          `/app/leaderboard/${pageProps.tenantConfig.id}`
+        );
         setLeaderboard(newLeaderboard);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -69,10 +70,9 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
-        const newTenantScore = await getRequest<TenantScore>({
-          tenant: pageProps.tenantConfig.id,
-          url: `/app/tenantScore/${pageProps.tenantConfig.id}`,
-        });
+        const newTenantScore = await getApi<TenantScore>(
+          `/app/tenantScore/${pageProps.tenantConfig.id}`
+        );
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));

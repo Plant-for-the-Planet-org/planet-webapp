@@ -76,13 +76,14 @@ import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { useTenant } from '../features/common/Layout/TenantContext';
 import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
+import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
 export const useServerApi = () => {
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
-  const lang = localStorage.getItem('language') || 'en';
+  const locale = useLocale();
 
   function isAbsoluteUrl(url: string) {
     const pattern = /^https?:\/\//i;
@@ -97,15 +98,25 @@ export const useServerApi = () => {
     authRequired = false,
     impersonationData,
     version,
-  }: Omit<RequestOptions, 'additionalHeaders'> & {
+    additionalHeaders,
+  }: RequestOptions & {
     impersonationData?: ImpersonationData;
     version?: string;
   }): Promise<T> => {
     const headers: Record<string, string> = {
-      'x-locale': lang,
+      'x-locale': locale,
       'tenant-key': tenantConfig?.id || '',
       'X-SESSION-ID': await getSessionId(),
+      ...(additionalHeaders ? additionalHeaders : {}),
     };
+
+    if (version) {
+      headers['x-accept-versions'] = version ? version : '1.0.3';
+    }
+    // Set 'Content-Type' to 'application/json' only for  requests that send a body
+    if (['POST', 'PUT', 'DELETE'].includes(method)) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     if (authRequired) {
       if (!token || !validateToken(token)) {
@@ -117,17 +128,15 @@ export const useServerApi = () => {
       }
       headers.Authorization = `Bearer ${token}`;
     }
+    const finalHeader = setHeaderForImpersonation(headers, impersonationData);
 
-    headers['x-accept-versions'] = version ? version : '1.0.3';
+    const baseUrl = process.env.API_ENDPOINT;
+    if (!baseUrl)
+      throw new Error(
+        'API_ENDPOINT is not defined in your environment variables.'
+      );
 
-    const updatedHeaders = setHeaderForImpersonation(
-      headers,
-      impersonationData
-    );
-
-    const fullUrl = isAbsoluteUrl(url)
-      ? url
-      : `${process.env.API_ENDPOINT}${url}`;
+    const fullUrl = isAbsoluteUrl(url) ? url : `${baseUrl}${url}`;
 
     try {
       return await apiClient<T>({
@@ -135,7 +144,7 @@ export const useServerApi = () => {
         url: fullUrl,
         data,
         queryParams,
-        additionalHeaders: updatedHeaders,
+        additionalHeaders: finalHeader,
       });
     } catch (err) {
       if (err instanceof APIError || err instanceof ClientError) {
@@ -146,7 +155,10 @@ export const useServerApi = () => {
     }
   };
 
-  const getApiAuthenticated = async <T, P extends Record<string, string> = {}>(
+  const getApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
     payload?: P,
     impersonationData?: ImpersonationData
@@ -160,43 +172,59 @@ export const useServerApi = () => {
     });
   };
 
-  const postApiAuthenticated = async <T, P extends Record<string, string> = {}>(
+  const postApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
-    payload?: P,
-    impersonationData?: ImpersonationData
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
       data: payload,
       authRequired: true,
-      impersonationData,
+      additionalHeaders,
     });
   };
-  const getApi = async <T, P extends Record<string, string> = {}>(
+  const getApi = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
-    payload?: P
+    queryParams?: P,
+    version?: string
   ): Promise<T> => {
-    return callApi<T>({ method: 'GET', url, queryParams: payload });
+    return callApi<T>({ method: 'GET', url, queryParams, version });
   };
 
-  const postApi = async <T, P extends Record<string, string> = {}>(
+  const postApi = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
-    payload?: P
+    payload: P
   ): Promise<T> => {
     return callApi<T>({ method: 'POST', url, data: payload });
   };
 
-  const putApi = async <T, P extends Record<string, string> = {}>(
+  const putApi = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
-    payload?: P
+    payload: P
   ): Promise<T> => {
     return callApi<T>({ method: 'PUT', url, data: payload });
   };
 
-  const putApiAuthenticated = async <T, P extends Record<string, string> = {}>(
+  const putApiAuthenticated = async <
+    T,
+    P extends Record<string, string> = Record<string, string>
+  >(
     url: string,
-    payload?: P
+    payload: P
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
@@ -206,37 +234,21 @@ export const useServerApi = () => {
     });
   };
 
-  const deleteApi = async <T, P extends Record<string, string> = {}>(
-    url: string,
-    payload?: P
-  ): Promise<T> => {
-    return callApi<T>({ method: 'DELETE', url, queryParams: payload });
-  };
-
-  const deleteApiAuthenticated = async <
-    T,
-    P extends Record<string, string> = {}
-  >(
-    url: string,
-    payload?: P
-  ): Promise<T> => {
+  const deleteApiAuthenticated = async <T>(url: string): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',
       url,
-      queryParams: payload,
       authRequired: true,
     });
   };
 
   return {
-    callApi,
     getApi,
     getApiAuthenticated,
     postApi,
     postApiAuthenticated,
     putApi,
     putApiAuthenticated,
-    deleteApi,
     deleteApiAuthenticated,
   };
 };

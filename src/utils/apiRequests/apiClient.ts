@@ -4,55 +4,32 @@ import { getQueryString } from './getQueryString';
 export interface RequestOptions {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   url: string;
-  data?: any;
+  data?: Record<string, string>;
   queryParams?: { [key: string]: string };
   additionalHeaders?: { [key: string]: string };
   authRequired?: boolean;
 }
 
-type Middleware = (options: RequestOptions) => Promise<RequestOptions>;
-
-const apiClient = async <T>(
-  requestOptions: RequestOptions,
-  middleware: Middleware[] = []
-): Promise<T> => {
-  // Apply middleware
-  let options = requestOptions;
-  for (const mw of middleware) {
-    options = await mw(options);
-  }
-
-  // Ensure API endpoint is defined
-  const baseUrl = process.env.API_ENDPOINT;
-  if (!baseUrl) {
-    throw new Error(
-      'API_ENDPOINT is not defined in your environment variables.'
-    );
-  }
+const apiClient = async <T>(requestConfig: RequestOptions): Promise<T> => {
+  const config = requestConfig;
 
   // Construct full URL
-  const queryString = options.queryParams
-    ? '?' + getQueryString(options.queryParams)
+  const queryString = config.queryParams
+    ? '?' + getQueryString(config.queryParams)
     : '';
-  const fullUrl = options.url.startsWith('http')
-    ? options.url
-    : `${baseUrl}${options.url.startsWith('/') ? '' : '/'}${
-        options.url
-      }${queryString}`;
+
+  const fullUrl = `${config.url}${queryString}`;
 
   // Build headers
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...(options.additionalHeaders || {}),
-  };
+  const headers: Record<string, string> = config.additionalHeaders ?? {};
 
   try {
     const response = await fetch(fullUrl, {
-      method: options.method,
+      method: config.method,
       headers,
-      body: ['POST', 'PUT'].includes(options.method)
-        ? JSON.stringify(options.data)
-        : undefined,
+      ...(config.method === 'POST' || config.method === 'PUT'
+        ? { body: JSON.stringify(config.data) }
+        : {}),
     });
 
     if (!response.ok) {

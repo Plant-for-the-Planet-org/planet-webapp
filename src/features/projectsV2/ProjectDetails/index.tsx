@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
 import ProjectInfo from './components/ProjectInfo';
-import { getRequest } from '../../../utils/apiRequests/api';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
 import { handleError, ClientError } from '@planet-sdk/common';
@@ -27,6 +26,7 @@ import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useProjectsMap } from '../ProjectsMapContext';
+import { useServerApi } from '../../../hooks/useServerApi';
 
 const ProjectDetails = ({
   currencyCode,
@@ -51,28 +51,22 @@ const ProjectDetails = ({
   } = useProjects();
   const { setTimeTravelConfig } = useProjectsMap();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
+  const { getApi } = useServerApi();
   const { p: projectSlug } = router.query;
 
   useEffect(() => {
-    async function loadProject(
-      projectSlug: string,
-      locale: string,
-      currency: string
-    ) {
+    async function loadProject(projectSlug: string, currency: string) {
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProject = await getRequest<ExtendedProject>({
-          tenant: tenantConfig.id,
-          url: `/app/projects/${projectSlug}`,
-          queryParams: {
-            _scope: 'extended',
-            currency: currency,
-            locale: locale,
-          },
+        const fetchedProject = await getApi<
+          ExtendedProject,
+          Record<string, string>
+        >(`/app/projects/${projectSlug}`, {
+          _scope: 'extended',
+          currency: currency,
         });
 
         const { purpose } = fetchedProject;
@@ -99,21 +93,20 @@ const ProjectDetails = ({
     }
 
     if (typeof projectSlug === 'string' && currencyCode)
-      loadProject(projectSlug, locale, currencyCode);
+      loadProject(projectSlug, currencyCode);
   }, [projectSlug, locale, currencyCode]);
 
   useEffect(() => {
     async function loadPlantLocations() {
       setIsLoading(true);
       try {
-        const result = await getRequest<PlantLocation[]>({
-          tenant: tenantConfig.id,
-          url: `/app/plantLocations/${singleProject?.id}`,
-          queryParams: {
+        const result = await getApi<PlantLocation[], Record<string, string>>(
+          `/app/plantLocations/${singleProject?.id}`,
+          {
             _scope: 'extended',
           },
-          version: '1.0.4',
-        });
+          '1.0.4'
+        );
         setPlantLocations(result);
       } catch (err) {
         setErrors(handleError(err as APIError | ClientError));

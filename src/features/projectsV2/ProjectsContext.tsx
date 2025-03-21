@@ -25,10 +25,9 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../common/Layout/TenantContext';
 import { buildProjectDetailsQuery } from '../../utils/projectV2';
+import { useServerApi } from '../../hooks/useServerApi';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -110,10 +109,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [isSearching, setIsSearching] = useState(false);
   const [projectsLocale, setProjectsLocale] = useState('');
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
+  const { getApi } = useServerApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
   //* Function to filter projects based on classification
@@ -133,7 +132,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const topProjects = useMemo(
     () =>
       projects?.filter((projects) => {
-        if (projects.properties.purpose === 'trees')
+        if (projects.properties?.purpose === 'trees')
           return projects.properties.isTopProject === true;
       }),
     [projects]
@@ -203,16 +202,13 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProjects = await getRequest<MapProject[]>({
-          tenant: tenantConfig.id,
-          url: `/app/projects`,
-          queryParams: {
-            _scope: 'map',
-            currency: currencyCode,
-            tenant: tenantConfig.id,
-            'filter[purpose]': 'trees,conservation',
-            locale: locale,
-          },
+        const fetchedProjects = await getApi<
+          MapProject[],
+          Record<string, string>
+        >('/app/projects', {
+          _scope: 'map',
+          currency: currencyCode,
+          'filter[purpose]': 'trees,conservation',
         });
         setProjects(fetchedProjects);
         setProjectsLocale(locale);
