@@ -14,13 +14,16 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
     debouncedSearchValue,
     selectedClassification,
     filteredProjects,
+    showDonatableProjects,
     topProjects,
     projects,
   } = useProjects();
   const projectsToDisplay = useMemo(() => {
-    const hasClassificationOrSearch =
-      debouncedSearchValue !== '' || selectedClassification.length > 0;
-    if (hasClassificationOrSearch) return filteredProjects;
+    const hasFilterOrSearchApplied =
+      debouncedSearchValue !== '' ||
+      selectedClassification.length > 0 ||
+      showDonatableProjects;
+    if (hasFilterOrSearchApplied) return filteredProjects;
     return tabSelected === 'topProjects' ? topProjects : projects;
   }, [filteredProjects, tabSelected]);
 

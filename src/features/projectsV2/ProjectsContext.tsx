@@ -51,6 +51,8 @@ interface ProjectsState {
   setIsError: SetState<boolean>;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  showDonatableProjects: boolean;
+  setShowDonatableProjects: SetState<boolean>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
@@ -109,12 +111,18 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [projectsLocale, setProjectsLocale] = useState('');
+  const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
+  //* Function to filter projects that accept donations
+  const filterByDonation = (projects: MapProject[]) => {
+    return projects.filter((project) => project.properties.allowDonations);
+  };
 
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
@@ -186,6 +194,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const filteredProjects = useMemo(() => {
     let result = projects || [];
 
+    if (showDonatableProjects) result = filterByDonation(result);
+
     if (selectedClassification?.length > 0)
       result = filterByClassification(result);
 
@@ -193,7 +203,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       result = getSearchProjects(result, debouncedSearchValue) || result;
 
     return result;
-  }, [projects, selectedClassification, debouncedSearchValue]);
+  }, [
+    projects,
+    selectedClassification.length,
+    debouncedSearchValue,
+    showDonatableProjects,
+  ]);
 
   useEffect(() => {
     async function loadProjects() {
@@ -431,6 +446,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       topProjects,
       selectedClassification,
       setSelectedClassification,
+      showDonatableProjects,
+      setShowDonatableProjects,
       selectedMode,
       setSelectedMode,
       singleProject,
@@ -470,6 +487,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       preventShallowPush,
       selectedInterventionType,
       disableInterventionMenu,
+      showDonatableProjects,
     ]
   );
 
