@@ -36,10 +36,16 @@
       letter-spacing: -0.004em;
       color: #032d60;
       margin-bottom: 10px;
+      &.contentSectionHeader {
+        text-align: center;
+      }
       @include lgLaptopView {
         font-size: $fontXXLarge;
         line-height: 100%;
         margin-bottom: 15px;
+        &.contentSectionHeader {
+          font-size: $fontXLarge;
+        }
       }
     }
     ul {

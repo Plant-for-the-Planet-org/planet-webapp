@@ -16,8 +16,8 @@ export default function Landing({ tenantScore, isLoaded }: Props) {
             <>
               <TreeCounter planted={tenantScoreData || 0} />
               <p>
-                Since 2023, you have contributed towards over 62500 trees
-                through VTO Fitness Challenge.
+                Since 2023, you have contributed towards over 62,500 trees
+                through the VTO Fitness Challenge.
               </p>
             </>
           )}
