@@ -38,7 +38,6 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
-    plantLocations,
     setPlantLocations,
     setIsLoading,
     setIsError,
@@ -55,6 +54,26 @@ const ProjectDetails = ({
   const locale = useLocale();
   const router = useRouter();
   const { p: projectSlug } = router.query;
+
+  const fetchPlantLocations = async (projectId: string) => {
+    setIsLoading(true);
+    try {
+      const result = await getRequest<PlantLocation[]>({
+        tenant: tenantConfig.id,
+        url: `/app/plantLocations/${projectId}`,
+        queryParams: { _scope: 'extended' },
+        version: '1.0.4',
+      });
+
+      setPlantLocations(result);
+    } catch (err) {
+      setErrors(handleError(err as APIError | ClientError));
+      setIsError(true);
+      redirect('/');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     async function loadProject(
@@ -74,8 +93,10 @@ const ProjectDetails = ({
             locale: locale,
           },
         });
-
-        const { purpose } = fetchedProject;
+        const { purpose, id: projectId } = fetchedProject;
+        if (projectId && purpose === 'trees') {
+          fetchPlantLocations(projectId);
+        }
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
           const timeTravelConfig = await getProjectTimeTravelConfig(
@@ -98,39 +119,10 @@ const ProjectDetails = ({
       }
     }
 
-    if (typeof projectSlug === 'string' && currencyCode)
+    if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
       loadProject(projectSlug, locale, currencyCode);
-  }, [projectSlug, locale, currencyCode]);
-
-  useEffect(() => {
-    async function loadPlantLocations() {
-      setIsLoading(true);
-      try {
-        const result = await getRequest<PlantLocation[]>({
-          tenant: tenantConfig.id,
-          url: `/app/plantLocations/${singleProject?.id}`,
-          queryParams: {
-            _scope: 'extended',
-          },
-          version: '1.0.4',
-        });
-        setPlantLocations(result);
-      } catch (err) {
-        setErrors(handleError(err as APIError | ClientError));
-        setIsError(true);
-        redirect('/');
-      } finally {
-        setIsLoading(false);
-      }
     }
-
-    if (
-      singleProject &&
-      singleProject?.purpose === 'trees' &&
-      plantLocations === null
-    )
-      loadPlantLocations();
-  }, [singleProject]);
+  }, [projectSlug, locale, currencyCode, router.isReady]);
 
   const shouldShowPlantLocationInfo =
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
