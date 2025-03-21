@@ -32,6 +32,7 @@
       "addressRequired": "Please choose an address to proceed.",
       "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
       "addressLimitReached": "You've reached the address limit. You can update your existing addresses, but adding a new one isn't possible.",
+      "missingTIN": "<b>NOTICE:</b> Your tax identification number is missing, please click on the button below to add it.",
       "loginRequired": "<b>IMPORTANT:</b> To modify your data, you will need to log in to your profile. If you are encountering issues, please contact us via the information at the bottom of this page."
     },
     "verifyDonationHeaderPrimary": "Verify your data and download the donation receipt",

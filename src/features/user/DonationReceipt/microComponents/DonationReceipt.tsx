@@ -8,6 +8,7 @@ interface DonationReceiptProps {
   donationReceipt: ReceiptData;
   isLoading: boolean;
   isValid: boolean;
+  tinIsRequired: boolean;
   operation: Operation;
   confirmReceiptData: () => Promise<void>;
 }
@@ -16,6 +17,7 @@ const DonationReceipt = ({
   donationReceipt,
   isLoading,
   isValid,
+  tinIsRequired,
   operation,
   confirmReceiptData,
 }: DonationReceiptProps) => {
@@ -28,6 +30,7 @@ const DonationReceipt = ({
           isLoading={isLoading}
           confirmReceiptData={confirmReceiptData}
           isValid={isValid}
+          tinIsRequired={tinIsRequired}
         />
         <VerifyReceiptFooter />
       </div>
