@@ -73,7 +73,7 @@ async function fetchRegistrations(
              i.trees_planted           as "units",
              i.intervention_start_date as "plantDate",
 						 i.plant_project_id        as "projectId",
-             null                      as country,            -- TODO:update query to include country
+             i.country,
              i.geometry
       FROM intervention i
       WHERE i.deleted_at is null
