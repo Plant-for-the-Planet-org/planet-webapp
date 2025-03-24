@@ -14,6 +14,7 @@
       "mangroves": "Mangroves"
     },
     "noFilterApplied": "No Filter Applied",
+    "acceptingDonations": "Accepting Donations",
     "clearFilter": "Clear Filter",
     "allProjects": "All <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "searchProject": "Search Project",
