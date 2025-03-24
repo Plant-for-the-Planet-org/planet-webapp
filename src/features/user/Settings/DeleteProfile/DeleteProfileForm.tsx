@@ -2,7 +2,6 @@ import type { APIError, SerializedError } from '@planet-sdk/common';
 
 import React from 'react';
 import styles from './DeleteProfile.module.scss';
-import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
@@ -11,16 +10,16 @@ import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useServerApi } from '../../../../hooks/useServerApi';
 
 export default function DeleteProfileForm() {
-  const { user, token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { user, logoutUser } = useUserProps();
   const tCommon = useTranslations('Common');
   const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
   };
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { deleteApiAuthenticated } = useServerApi();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
@@ -28,12 +27,7 @@ export default function DeleteProfileForm() {
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: '/app/profile',
-        token,
-        logoutUser,
-      });
+      await deleteApiAuthenticated('/app/profile');
       setIsUploadingData(false);
       logoutUser(`${window.location.origin}/`);
     } catch (err) {

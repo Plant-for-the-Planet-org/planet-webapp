@@ -30,6 +30,7 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useServerApi } from '../../../../../../src/hooks/useServerApi';
 
 interface Props {
   pageProps: PageProps;
@@ -41,7 +42,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
     useUserProps();
-
+  const { postApiAuthenticated } = useServerApi();
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
   const [code, setCode] = React.useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
@@ -84,13 +85,10 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>({
-          tenant: pageProps.tenantConfig.id,
-          url: `/app/redeem`,
-          data: submitData,
-          token,
-          logoutUser,
-        });
+        const res = await postApiAuthenticated<RedeemedCodeData>(
+          `/app/redeem`,
+          submitData
+        );
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);

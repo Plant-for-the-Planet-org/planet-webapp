@@ -17,6 +17,7 @@ import { Button, InputAdornment, TextField } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useServerApi } from '../../../../hooks/useServerApi';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -39,6 +40,7 @@ export default function ApiKey() {
   const t = useTranslations('Me');
   const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { getApiAuthenticated, putApiAuthenticated } = useServerApi();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
@@ -50,12 +52,9 @@ export default function ApiKey() {
   const getApiKey = async () => {
     setIsUploadingData(true);
     try {
-      const res = await getAuthenticatedRequest<ApiKeyResponse>({
-        tenant: tenantConfig?.id,
-        url: '/app/profile/apiKey',
-        token,
-        logoutUser,
-      });
+      const res = await getApiAuthenticated<ApiKeyResponse>(
+        `/app/profile/apiKey`
+      );
       if (res) {
         setApiKey(res.apiKey || '');
       }
@@ -71,12 +70,9 @@ export default function ApiKey() {
     e.preventDefault();
     setIsUploadingData(true);
     try {
-      const res = await putAuthenticatedRequest<ApiKeyResponse>({
-        tenant: tenantConfig?.id,
-        url: '/app/profile/apiKey',
-        token,
-        logoutUser,
-      });
+      const res = await putApiAuthenticated<ApiKeyResponse>(
+        `/app/profile/apiKey`
+      );
       if (res) {
         setApiKey(res.apiKey || '');
       }

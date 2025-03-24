@@ -199,10 +199,7 @@ export const useServerApi = () => {
     return callApi<T>({ method: 'GET', url, queryParams, version });
   };
 
-  const postApi = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
+  const postApi = async <T, P extends object>(
     url: string,
     payload: P
   ): Promise<T> => {
@@ -224,7 +221,7 @@ export const useServerApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload: P
+    payload?: P
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
