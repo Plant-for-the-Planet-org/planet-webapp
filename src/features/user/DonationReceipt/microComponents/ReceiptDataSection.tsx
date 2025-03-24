@@ -13,6 +13,7 @@ interface ReceiptDataSectionProps {
   isLoading: boolean;
   confirmReceiptData: () => Promise<void>;
   isValid: boolean;
+  tinIsRequired: boolean;
 }
 
 const ReceiptDataSection = ({
@@ -20,6 +21,7 @@ const ReceiptDataSection = ({
   isLoading,
   confirmReceiptData,
   isValid,
+  tinIsRequired,
 }: ReceiptDataSectionProps) => {
   const {
     amount,
@@ -50,6 +52,13 @@ const ReceiptDataSection = ({
           !address.country
         }
       />
+      {tinIsRequired && !donor.tin && (
+        <p className={styles.loginAlert}>
+          {tReceipt.rich('notifications.missingTIN', {
+            b: (chunks) => <strong>{chunks}</strong>,
+          })}
+        </p>
+      )}
       {!isAuthenticated && (
         <p className={styles.loginAlert}>
           {tReceipt.rich('notifications.loginRequired', {

@@ -250,12 +250,12 @@
   gap: 4px;
 }
 
-.classificationUnselected {
+.unselected {
   font-size: $fontXXSmall;
   line-height: normal;
 }
 
-.classificationSelected {
+.selected {
   font-weight: 700;
   font-size: $fontXXSmall;
 }
@@ -289,4 +289,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.donationFilterButton {
+  width: 100%;
+  color: rgba($dark, 1);
+
+  .donationFilterLabel {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
