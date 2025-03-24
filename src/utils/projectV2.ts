@@ -40,7 +40,6 @@ const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
  */
 
 export const buildProjectDetailsQuery = (
-  asPath: string,
   query: ParsedUrlQuery,
   routeParams: RouteParams
 ): Record<string, string> => {

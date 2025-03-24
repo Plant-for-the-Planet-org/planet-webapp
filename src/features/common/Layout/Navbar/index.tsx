@@ -1,6 +1,4 @@
-import React, { useContext } from 'react';
 import { useUserProps } from '../UserPropsContext';
-import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
 import BrandLogo from './microComponents/BrandLogo';
@@ -30,7 +28,6 @@ const CommonHeader = () => {
 };
 
 export default function NavbarComponent() {
-  const { embed } = useContext(ParamsContext);
   const { tenantConfig } = useTenant();
   const { setUser, logoutUser, auth0Error } = useUserProps();
 
@@ -52,8 +49,6 @@ export default function NavbarComponent() {
       logoutUser(`${window.location.origin}/`);
     }
   }
-
-  if (embed === 'true') return null;
 
   return tenantConfig ? (
     <div className="mainNavContainer">

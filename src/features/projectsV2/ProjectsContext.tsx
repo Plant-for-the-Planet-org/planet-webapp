@@ -279,11 +279,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     siteId: string | null
   ) => {
-    const updatedQueryParams = buildProjectDetailsQuery(
-      router.asPath,
-      router.query,
-      { siteId }
-    );
+    const updatedQueryParams = buildProjectDetailsQuery(router.query, {
+      siteId,
+    });
     updateProjectDetailsPath(locale, projectSlug, updatedQueryParams);
   };
 
@@ -343,11 +341,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
     if (selectedPlantLocation) {
-      const updatedQueryParams = buildProjectDetailsQuery(
-        router.asPath,
-        router.query,
-        { plocId: selectedPlantLocation.hid }
-      );
+      const updatedQueryParams = buildProjectDetailsQuery(router.query, {
+        plocId: selectedPlantLocation.hid,
+      });
       updateProjectDetailsPath(locale, singleProject.slug, updatedQueryParams);
     }
   }, [
@@ -413,7 +409,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation(null);
       setSelectedPlantLocation(null);
       setHoveredPlantLocation(null);
-      updateSiteAndUrl(locale, singleProject.slug, hasNoSites ? undefined : 0);
     }
   }, [selectedMode, singleProject, locale, hasNoSites]);
 

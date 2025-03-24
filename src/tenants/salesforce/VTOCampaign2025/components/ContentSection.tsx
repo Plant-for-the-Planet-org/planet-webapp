@@ -9,7 +9,9 @@ export default function ContentSection() {
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <h2>For Salesforce Employees</h2>
+            <h3 className={styles.contentSectionHeader}>
+              For Salesforce Employees
+            </h3>
             <h2>
               VTO Fitness-for-a-Cause Challenge, Sponsored by Earthforce and
               Abilityforce
