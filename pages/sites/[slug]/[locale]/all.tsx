@@ -27,7 +27,7 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useServerApi } from '../../../../src/hooks/useServerApi';
+import { useApi } from '../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -41,7 +41,7 @@ export default function Home({ pageProps }: Props) {
 
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { getApi } = useServerApi();
+  const { getApi } = useApi();
 
   React.useEffect(() => {
     if (router.isReady) {

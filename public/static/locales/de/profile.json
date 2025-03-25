@@ -59,8 +59,7 @@
       "anonymousUser": "ein anonymer Nutzer",
       "contributionCountOverflow": "+{additionalCount, plural, =1 {# Spende} other {# Spenden}}",
       "treesRegisteredHeadline": "{count, plural, =1 {# Baum} other {# Bäume}}",
-      "registrationInfo": "Registriert • {date}",
-      "registrationInfoWithCountry": "Registriert • {countryName} • {date}"
+      "registrationLabel": "Registriert"
     },
     "donatePopup": {
       "totalContribution": "+{count, plural, =1 {# Spende} other {# Spenden}}",

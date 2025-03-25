@@ -23,12 +23,12 @@
  *   - `ClientError`: For client-side errors like expired tokens.
  *
  * @usage
- * Import the `useServerApi` hook and destructure the helper methods as needed:
+ * Import the `useApi` hook and destructure the helper methods as needed:
  *
  * ```typescript
- * import { useServerApi } from 'path-to/useServerApi';
+ * import { useApi } from 'path-to/useApi';
  *
- * const { getApi, postApiAuthenticated, callApi } = useServerApi();
+ * const { getApi, postApiAuthenticated, callApi } = useApi();
  *
  * // Example: Make a GET request
  * const fetchData = async () => {
@@ -58,9 +58,7 @@
  * - `postApiAuthenticated`: Makes a POST request with authentication.
  * - `putApi`: Makes a PUT request (unauthenticated).
  * - `putApiAuthenticated`: Makes a PUT request with authentication.
- * - `deleteApi`: Makes a DELETE request (unauthenticated).
  * - `deleteApiAuthenticated`: Makes a DELETE request with authentication.
- * - `callApi`: The underlying method that all helpers use for custom API calls, use for custom requirements.
  *
  * @notes
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
@@ -70,7 +68,7 @@ import type { ImpersonationData } from '../utils/apiRequests/impersonation';
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
 import apiClient from '../utils/apiRequests/apiClient';
-import getSessionId from '../../src/utils/apiRequests/getSessionId';
+import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { useTenant } from '../features/common/Layout/TenantContext';
@@ -80,15 +78,10 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
-export const useServerApi = () => {
+export const useApi = () => {
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const locale = useLocale();
-
-  function isAbsoluteUrl(url: string) {
-    const pattern = /^https?:\/\//i;
-    return pattern.test(url);
-  }
 
   const callApi = async <T>({
     method,
@@ -110,8 +103,9 @@ export const useServerApi = () => {
       ...(additionalHeaders ? additionalHeaders : {}),
     };
 
-    if (version) {
-      headers['x-accept-versions'] = version ? version : '1.0.3';
+    // Only add version header if version is explicitly provided
+    if (version !== undefined) {
+      headers['x-accept-versions'] = version || '1.0.3';
     }
     // Set 'Content-Type' to 'application/json' only for  requests that send a body
     if (['POST', 'PUT', 'DELETE'].includes(method)) {
@@ -130,18 +124,10 @@ export const useServerApi = () => {
     }
     const finalHeader = setHeaderForImpersonation(headers, impersonationData);
 
-    const baseUrl = process.env.API_ENDPOINT;
-    if (!baseUrl)
-      throw new Error(
-        'API_ENDPOINT is not defined in your environment variables.'
-      );
-
-    const fullUrl = isAbsoluteUrl(url) ? url : `${baseUrl}${url}`;
-
     try {
       return await apiClient<T>({
         method,
-        url: fullUrl,
+        url,
         data,
         queryParams,
         additionalHeaders: finalHeader,
@@ -161,7 +147,8 @@ export const useServerApi = () => {
   >(
     url: string,
     payload?: P,
-    impersonationData?: ImpersonationData
+    impersonationData?: ImpersonationData,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
@@ -169,6 +156,7 @@ export const useServerApi = () => {
       queryParams: payload,
       authRequired: true,
       impersonationData,
+      additionalHeaders,
     });
   };
 
@@ -194,16 +182,29 @@ export const useServerApi = () => {
   >(
     url: string,
     queryParams?: P,
-    version?: string
+    version?: string,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
-    return callApi<T>({ method: 'GET', url, queryParams, version });
+    return callApi<T>({
+      method: 'GET',
+      url,
+      queryParams,
+      version,
+      additionalHeaders,
+    });
   };
 
   const postApi = async <T, P extends object>(
     url: string,
-    payload: P
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
-    return callApi<T>({ method: 'POST', url, data: payload });
+    return callApi<T>({
+      method: 'POST',
+      url,
+      data: payload,
+      additionalHeaders,
+    });
   };
 
   const putApi = async <
@@ -211,9 +212,10 @@ export const useServerApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload: P
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
-    return callApi<T>({ method: 'PUT', url, data: payload });
+    return callApi<T>({ method: 'PUT', url, data: payload, additionalHeaders });
   };
 
   const putApiAuthenticated = async <
@@ -221,21 +223,27 @@ export const useServerApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload?: P
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
       data: payload,
       authRequired: true,
+      additionalHeaders,
     });
   };
 
-  const deleteApiAuthenticated = async <T>(url: string): Promise<T> => {
+  const deleteApiAuthenticated = async <T>(
+    url: string,
+    additionalHeaders?: Record<string, string>
+  ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',
       url,
       authRequired: true,
+      additionalHeaders,
     });
   };
 

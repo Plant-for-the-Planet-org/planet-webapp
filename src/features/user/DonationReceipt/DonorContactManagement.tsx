@@ -13,7 +13,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -34,7 +34,7 @@ const DonorContactManagement = () => {
     return <EditPermissionDenied />;
 
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { putApiAuthenticated } = useServerApi();
+  const { putApiAuthenticated } = useApi();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(

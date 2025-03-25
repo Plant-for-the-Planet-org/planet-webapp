@@ -6,7 +6,7 @@ import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './DonationReceipt.module.scss';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { validateOwnership } from './DonationReceiptValidator';
@@ -28,7 +28,7 @@ const DonationReceiptWrapper = () => {
   } = useDonationReceiptContext();
 
   const { user } = useUserProps();
-  const { putApi, putApiAuthenticated, postApiAuthenticated } = useServerApi();
+  const { putApi, putApiAuthenticated, postApiAuthenticated } = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const receiptData = getReceiptData();
   const operation = getOperation();

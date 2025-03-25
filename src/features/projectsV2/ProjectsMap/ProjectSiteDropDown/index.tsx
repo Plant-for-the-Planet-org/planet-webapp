@@ -43,6 +43,7 @@ interface Props {
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
   disableInterventionFilter: () => void;
   disableInterventionMenu: boolean;
+  canShowInterventionDropdown: boolean;
 }
 
 const ProjectSiteDropdown = ({
@@ -54,6 +55,7 @@ const ProjectSiteDropdown = ({
   setSelectedSamplePlantLocation,
   disableInterventionFilter,
   disableInterventionMenu,
+  canShowInterventionDropdown,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -142,6 +144,7 @@ const ProjectSiteDropdown = ({
           selectedSiteData={selectedSiteData}
           setSelectedPlantLocation={setSelectedPlantLocation}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          canShowInterventionDropdown={canShowInterventionDropdown}
         />
       )}
     </>
