@@ -1,6 +1,6 @@
 import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
-import type { User } from '@planet-sdk/common/build/types/user';
+import type { User, UserType } from '@planet-sdk/common/build/types/user';
 
 import { styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
@@ -31,6 +31,7 @@ import { useRouter } from 'next/router';
 import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import { useApi } from '../../../../hooks/useApi';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -59,15 +60,24 @@ type ProfileTypeOption = {
   value: 'individual' | 'organization' | 'education';
 };
 
+type UserProfileImage = {
+  imageFile: string | ArrayBuffer | null | undefined;
+};
+
+type ProfileUpdatePayload = Omit<FormData, 'isPublic'> & {
+  isPrivate: boolean;
+  type?: Omit<UserType, 'tpo'>;
+};
+
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { user, setUser, token, contextLoaded } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('EditProfile');
   const locale = useLocale();
   const router = useRouter();
+  const { putApiAuthenticated } = useApi();
   const defaultProfileDetails = useMemo(() => {
     return {
       firstname: user?.firstname ? user.firstname : '',
@@ -160,17 +170,12 @@ export default function EditProfileForm() {
     reset();
   }, [type]);
 
-  const handleUserProfileImage = async (bodyToSend: {
-    imageFile: string | ArrayBuffer | null | undefined;
-  }) => {
+  const handleUserProfileImage = async (bodyToSend: UserProfileImage) => {
     try {
-      const res = await putAuthenticatedRequest<User>({
-        tenant: tenantConfig?.id,
-        url: `/app/profile`,
-        data: bodyToSend,
-        token,
-        logoutUser,
-      });
+      const res = await putApiAuthenticated<User, UserProfileImage>(
+        `/app/profile`,
+        bodyToSend
+      );
 
       if (user) {
         const newUserInfo = { ...user, image: res.image };
@@ -236,13 +241,10 @@ export default function EditProfileForm() {
 
     if (contextLoaded && token) {
       try {
-        const res: User = await putAuthenticatedRequest({
-          tenant: tenantConfig?.id,
-          url: `/app/profile`,
-          data: bodyToSend,
-          token,
-          logoutUser,
-        });
+        const res = await putApiAuthenticated<User, ProfileUpdatePayload>(
+          `/app/profile`,
+          bodyToSend
+        );
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();

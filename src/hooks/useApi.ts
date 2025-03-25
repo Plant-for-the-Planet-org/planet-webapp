@@ -162,7 +162,7 @@ export const useApi = () => {
 
   const postApiAuthenticated = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
     payload: P,
@@ -194,7 +194,10 @@ export const useApi = () => {
     });
   };
 
-  const postApi = async <T, P extends object>(
+  const postApi = async <
+    T,
+    P extends Record<string, unknown> = Record<string, unknown>
+  >(
     url: string,
     payload: P,
     additionalHeaders?: Record<string, string>
@@ -209,7 +212,7 @@ export const useApi = () => {
 
   const putApi = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
     payload: P,
@@ -220,7 +223,7 @@ export const useApi = () => {
 
   const putApiAuthenticated = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
     payload: P,
