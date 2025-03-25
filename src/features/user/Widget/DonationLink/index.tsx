@@ -1,11 +1,9 @@
 import type { ReactElement } from 'react';
 import type { ProjectOption } from '../../../common/types/project';
 import type { APIError } from '@planet-sdk/common';
-import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { getRequest } from '../../../../utils/apiRequests/api';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
@@ -13,6 +11,7 @@ import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { handleError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import { useApi } from '../../../../hooks/useApi';
 
 export default function DonationLink(): ReactElement | null {
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -20,18 +19,15 @@ export default function DonationLink(): ReactElement | null {
   const t = useTranslations('DonationLink');
   const locale = useLocale();
   const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
 
   async function fetchProjectList() {
     try {
-      const projectsList = await getRequest<MapProject[]>({
+      const projectsList = await getApi(`/app/projects`, {
+        _scope: 'map',
+        'filter[purpose]': 'trees,restoration',
         tenant: tenantConfig?.id,
-        url: `/app/projects`,
-        queryParams: {
-          _scope: 'map',
-          'filter[purpose]': 'trees,restoration',
-          tenant: tenantConfig?.id,
-          locale: locale,
-        },
+        locale: locale,
       });
       if (
         projectsList &&
