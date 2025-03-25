@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
-import { useServerApi } from '../../../../hooks/useServerApi';
+import { useApi } from '../../../../hooks/useApi';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
@@ -19,7 +19,7 @@ export default function DeleteProfileForm() {
     e.preventDefault();
   };
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { deleteApiAuthenticated } = useServerApi();
+  const { deleteApiAuthenticated } = useApi();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);

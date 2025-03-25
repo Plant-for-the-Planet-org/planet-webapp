@@ -38,7 +38,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -61,7 +61,7 @@ export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const t = useTranslations('EditProfile');
   const locale = useLocale();
-  const { postApi } = useServerApi();
+  const { postApi } = useApi();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState<
     AddressSuggestionsType[]

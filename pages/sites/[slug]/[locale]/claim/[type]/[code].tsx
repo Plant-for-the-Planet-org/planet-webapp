@@ -12,7 +12,6 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
@@ -30,7 +29,7 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useServerApi } from '../../../../../../src/hooks/useServerApi';
+import { useApi } from '../../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -40,9 +39,8 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
-    useUserProps();
-  const { postApiAuthenticated } = useServerApi();
+  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { postApiAuthenticated } = useApi();
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
   const [code, setCode] = React.useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
