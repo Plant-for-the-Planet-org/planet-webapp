@@ -148,7 +148,8 @@ export const useApi = () => {
   >(
     url: string,
     payload?: P,
-    impersonationData?: ImpersonationData
+    impersonationData?: ImpersonationData,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
@@ -156,6 +157,7 @@ export const useApi = () => {
       queryParams: payload,
       authRequired: true,
       impersonationData,
+      additionalHeaders,
     });
   };
 
@@ -181,9 +183,16 @@ export const useApi = () => {
   >(
     url: string,
     queryParams?: P,
-    version?: string
+    version?: string,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
-    return callApi<T>({ method: 'GET', url, queryParams, version });
+    return callApi<T>({
+      method: 'GET',
+      url,
+      queryParams,
+      version,
+      additionalHeaders,
+    });
   };
 
   const postApi = async <
@@ -191,9 +200,15 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload: P
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
-    return callApi<T>({ method: 'POST', url, data: payload });
+    return callApi<T>({
+      method: 'POST',
+      url,
+      data: payload,
+      additionalHeaders,
+    });
   };
 
   const putApi = async <
@@ -201,9 +216,10 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload: P
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
-    return callApi<T>({ method: 'PUT', url, data: payload });
+    return callApi<T>({ method: 'PUT', url, data: payload, additionalHeaders });
   };
 
   const putApiAuthenticated = async <
@@ -211,21 +227,27 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload: P
+    payload: P,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
       data: payload,
       authRequired: true,
+      additionalHeaders,
     });
   };
 
-  const deleteApiAuthenticated = async <T>(url: string): Promise<T> => {
+  const deleteApiAuthenticated = async <T>(
+    url: string,
+    additionalHeaders?: Record<string, string>
+  ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',
       url,
       authRequired: true,
+      additionalHeaders,
     });
   };
 
