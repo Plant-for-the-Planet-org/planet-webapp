@@ -25,7 +25,7 @@ import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useProjectsMap } from '../ProjectsMapContext';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 
 const ProjectDetails = ({
   currencyCode,
@@ -51,7 +51,7 @@ const ProjectDetails = ({
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const locale = useLocale();
   const router = useRouter();
-  const { getApi } = useServerApi();
+  const { getApi } = useApi();
   const { p: projectSlug } = router.query;
 
   const fetchPlantLocations = async (projectId: string) => {

@@ -23,12 +23,12 @@
  *   - `ClientError`: For client-side errors like expired tokens.
  *
  * @usage
- * Import the `useServerApi` hook and destructure the helper methods as needed:
+ * Import the `useApi` hook and destructure the helper methods as needed:
  *
  * ```typescript
- * import { useServerApi } from 'path-to/useServerApi';
+ * import { useApi } from 'path-to/useApi';
  *
- * const { getApi, postApiAuthenticated, callApi } = useServerApi();
+ * const { getApi, postApiAuthenticated, callApi } = useApi();
  *
  * // Example: Make a GET request
  * const fetchData = async () => {
@@ -70,7 +70,7 @@ import type { ImpersonationData } from '../utils/apiRequests/impersonation';
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
 import apiClient from '../utils/apiRequests/apiClient';
-import getSessionId from '../../src/utils/apiRequests/getSessionId';
+import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { useTenant } from '../features/common/Layout/TenantContext';
@@ -80,7 +80,7 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
-export const useServerApi = () => {
+export const useApi = () => {
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const locale = useLocale();

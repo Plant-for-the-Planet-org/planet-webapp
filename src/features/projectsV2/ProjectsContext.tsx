@@ -27,7 +27,7 @@ import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import { buildProjectDetailsQuery } from '../../utils/projectV2';
-import { useServerApi } from '../../hooks/useServerApi';
+import { useApi } from '../../hooks/useApi';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -112,7 +112,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
-  const { getApi } = useServerApi();
+  const { getApi } = useApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
   //* Function to filter projects based on classification
