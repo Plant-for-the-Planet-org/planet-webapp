@@ -85,11 +85,6 @@ export const useApi = () => {
   const { tenantConfig } = useTenant();
   const locale = useLocale();
 
-  function isAbsoluteUrl(url: string) {
-    const pattern = /^https?:\/\//i;
-    return pattern.test(url);
-  }
-
   const callApi = async <T>({
     method,
     url,
@@ -130,18 +125,10 @@ export const useApi = () => {
     }
     const finalHeader = setHeaderForImpersonation(headers, impersonationData);
 
-    const baseUrl = process.env.API_ENDPOINT;
-    if (!baseUrl)
-      throw new Error(
-        'API_ENDPOINT is not defined in your environment variables.'
-      );
-
-    const fullUrl = isAbsoluteUrl(url) ? url : `${baseUrl}${url}`;
-
     try {
       return await apiClient<T>({
         method,
-        url: fullUrl,
+        url,
         data,
         queryParams,
         additionalHeaders: finalHeader,
