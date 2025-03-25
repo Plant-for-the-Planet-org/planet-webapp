@@ -58,9 +58,7 @@
  * - `postApiAuthenticated`: Makes a POST request with authentication.
  * - `putApi`: Makes a PUT request (unauthenticated).
  * - `putApiAuthenticated`: Makes a PUT request with authentication.
- * - `deleteApi`: Makes a DELETE request (unauthenticated).
  * - `deleteApiAuthenticated`: Makes a DELETE request with authentication.
- * - `callApi`: The underlying method that all helpers use for custom API calls, use for custom requirements.
  *
  * @notes
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
@@ -105,8 +103,9 @@ export const useApi = () => {
       ...(additionalHeaders ? additionalHeaders : {}),
     };
 
-    if (version) {
-      headers['x-accept-versions'] = version ? version : '1.0.3';
+    // Only add version header if version is explicitly provided
+    if (version !== undefined) {
+      headers['x-accept-versions'] = version || '1.0.3';
     }
     // Set 'Content-Type' to 'application/json' only for  requests that send a body
     if (['POST', 'PUT', 'DELETE'].includes(method)) {
