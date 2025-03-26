@@ -235,7 +235,7 @@ function RegisterTreesForm({
     if (contextLoaded && user?.type === 'tpo') {
       loadProjects();
     }
-  }, [contextLoaded, user]);
+  }, [contextLoaded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
