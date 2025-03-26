@@ -174,7 +174,7 @@ export default function EditProfileForm() {
     try {
       const res = await putApiAuthenticated<User, UserProfileImage>(
         `/app/profile`,
-        bodyToSend
+        { payload: bodyToSend }
       );
 
       if (user) {
@@ -243,7 +243,7 @@ export default function EditProfileForm() {
       try {
         const res = await putApiAuthenticated<User, ProfileUpdatePayload>(
           `/app/profile`,
-          bodyToSend
+          { payload: bodyToSend }
         );
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));

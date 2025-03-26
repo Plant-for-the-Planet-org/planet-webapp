@@ -24,10 +24,12 @@ export default function DonationLink(): ReactElement | null {
   async function fetchProjectList() {
     try {
       const projectsList = await getApi(`/app/projects`, {
-        _scope: 'map',
-        'filter[purpose]': 'trees,restoration',
-        tenant: tenantConfig?.id,
-        locale: locale,
+        queryParams: {
+          _scope: 'map',
+          'filter[purpose]': 'trees,restoration',
+          tenant: tenantConfig?.id,
+          locale: locale,
+        },
       });
       if (
         projectsList &&
