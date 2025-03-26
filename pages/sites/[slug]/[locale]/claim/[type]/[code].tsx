@@ -85,7 +85,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
       try {
         const res = await postApiAuthenticated<RedeemedCodeData>(
           `/app/redeem`,
-          submitData
+          { payload: submitData }
         );
         setRedeemedCodeData(res);
       } catch (err) {

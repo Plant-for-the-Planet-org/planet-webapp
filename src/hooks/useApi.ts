@@ -78,6 +78,14 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
+type ApiConfig<P extends Record<string, unknown> = Record<string, unknown>> = {
+  queryParams?: Record<string, string>;
+  payload?: P;
+  impersonationData?: ImpersonationData;
+  additionalHeaders?: Record<string, string>;
+  version?: string;
+};
+
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -146,34 +154,29 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload?: P,
-    impersonationData?: ImpersonationData,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
       url,
-      queryParams: payload,
       authRequired: true,
-      impersonationData,
-      additionalHeaders,
+      ...config,
     });
   };
 
   const postApiAuthenticated = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: payload,
+      data: config.payload,
       authRequired: true,
-      additionalHeaders,
+      additionalHeaders: config.additionalHeaders,
     });
   };
   const getApi = async <
@@ -181,69 +184,70 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    queryParams?: P,
-    version?: string,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
       url,
-      queryParams,
-      version,
-      additionalHeaders,
+      ...config,
     });
   };
 
-  const postApi = async <T, P extends object>(
+  const postApi = async <
+    T,
+    P extends Record<string, unknown> = Record<string, unknown>
+  >(
     url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: payload,
-      additionalHeaders,
+      data: config.payload,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
   const putApi = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
-  ): Promise<T> => {
-    return callApi<T>({ method: 'PUT', url, data: payload, additionalHeaders });
-  };
-
-  const putApiAuthenticated = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
-    url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
-      data: payload,
+      data: config.payload,
+      additionalHeaders: config.additionalHeaders,
+    });
+  };
+
+  const putApiAuthenticated = async <
+    T,
+    P extends Record<string, unknown> = Record<string, unknown>
+  >(
+    url: string,
+    config: ApiConfig<P> = {}
+  ): Promise<T> => {
+    return callApi<T>({
+      method: 'PUT',
+      url,
+      data: config.payload,
       authRequired: true,
-      additionalHeaders,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
   const deleteApiAuthenticated = async <T>(
     url: string,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',
       url,
       authRequired: true,
-      additionalHeaders,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 

@@ -206,9 +206,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
           MapProject[],
           Record<string, string>
         >('/app/projects', {
-          _scope: 'map',
-          currency: currencyCode,
-          'filter[purpose]': 'trees,conservation',
+          queryParams: {
+            _scope: 'map',
+            currency: currencyCode,
+            'filter[purpose]': 'trees,conservation',
+          },
         });
         setProjects(fetchedProjects);
         setProjectsLocale(locale);

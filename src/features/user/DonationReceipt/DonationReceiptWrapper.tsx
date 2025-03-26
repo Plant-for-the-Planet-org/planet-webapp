@@ -13,6 +13,20 @@ import { validateOwnership } from './DonationReceiptValidator';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
 
+type ReceiptVerificationPayload = {
+  dtn: string | null;
+  challenge: string | null;
+  year: string | null;
+  verificationDate: string;
+  receiptAddress?: string;
+};
+
+type DonationReceiptPayload = {
+  receiptAddress: string | null;
+  donationUids: string;
+  verificationDate: string;
+};
+
 const DonationReceiptWrapper = () => {
   const {
     getReceiptData,
@@ -72,7 +86,7 @@ const DonationReceiptWrapper = () => {
         .slice(0, 19)
         .replace('T', ' ');
       if (operation === RECEIPT_STATUS.VERIFY) {
-        const payload = {
+        const payload: ReceiptVerificationPayload = {
           dtn: receiptData.dtn,
           challenge: receiptData.challenge,
           year: receiptData.year,
@@ -82,25 +96,25 @@ const DonationReceiptWrapper = () => {
         };
         response =
           addressGuid === null
-            ? await putApi<IssuedReceiptDataApi>(
+            ? await putApi<IssuedReceiptDataApi, ReceiptVerificationPayload>(
                 '/app/donationReceipt/verify',
-                payload
+                { payload }
               )
-            : await putApiAuthenticated<IssuedReceiptDataApi>(
-                '/app/donationReceipt/verify',
-                payload
-              );
+            : await putApiAuthenticated<
+                IssuedReceiptDataApi,
+                ReceiptVerificationPayload
+              >('/app/donationReceipt/verify', { payload });
       } else if (operation === RECEIPT_STATUS.ISSUE) {
-        const payload = {
+        const payload: DonationReceiptPayload = {
           receiptAddress: addressGuid,
           donationUids: donationUids.join(','),
           verificationDate,
         };
 
-        response = await postApiAuthenticated<IssuedReceiptDataApi>(
-          '/app/donationReceipts',
-          payload
-        );
+        response = await postApiAuthenticated<
+          IssuedReceiptDataApi,
+          DonationReceiptPayload
+        >('/app/donationReceipts', { payload });
       }
 
       if (response) {
