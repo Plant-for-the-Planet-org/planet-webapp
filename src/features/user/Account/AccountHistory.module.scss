@@ -245,7 +245,7 @@
   color: $primaryFontColor;
   > .header {
     font-weight: 700;
-    font-size: 18px;
+    font-size: $fontMedium;
   }
   > .filterGrid {
     display: flex;
@@ -489,7 +489,7 @@
   border-radius: 8px;
   display: inline-flex;
   .option {
-    font-size: 14px;
+    font-size: $fontSmall;
     font-family: $primaryFontFamily;
     color: $primaryFontColor;
     font-weight: 600;

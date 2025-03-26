@@ -356,13 +356,13 @@ button {
 
 // Profile page
 .profilePageTitle {
-  font-size: 36px;
+  font-size: $fontXXLarge;
   font-weight: 800;
   margin-bottom: 20px;
   color: $primaryFontColor;
 }
 .profilePageSubTitle {
-  font-size: 16px;
+  font-size: $fontSixteen;
   margin-bottom: 20px;
   color: $primaryFontColor;
 }
@@ -711,7 +711,7 @@ input[type='number'] {
           align-items: flex-start;
           font-family: $primaryFontFamily;
           font-weight: 600;
-          font-size: 14px;
+          font-size: $fontSmall;
           position: static;
           width: 124px;
           height: 20px;
