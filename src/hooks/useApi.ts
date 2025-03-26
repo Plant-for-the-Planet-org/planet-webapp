@@ -241,13 +241,13 @@ export const useApi = () => {
 
   const deleteApiAuthenticated = async <T>(
     url: string,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',
       url,
       authRequired: true,
-      additionalHeaders,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
