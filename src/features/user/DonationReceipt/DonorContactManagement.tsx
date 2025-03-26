@@ -22,6 +22,19 @@ import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
 
+type IndividualProfile = {
+  firstname: string;
+  lastname: string;
+  tin: string;
+};
+
+type CompanyProfile = {
+  name: string;
+  tin: string;
+};
+
+type ProfileData = IndividualProfile | CompanyProfile;
+
 const DonorContactManagement = () => {
   const { updateDonorAndAddress, email, tinIsRequired, getOperation } =
     useDonationReceiptContext();
@@ -72,7 +85,7 @@ const DonorContactManagement = () => {
         formData.tin !== user.tin ||
         formData.companyName !== user.name
       ) {
-        const profileData =
+        const profileData: ProfileData =
           user.type === 'individual'
             ? {
                 firstname: formData.firstName,
@@ -81,9 +94,11 @@ const DonorContactManagement = () => {
               }
             : { name: formData.companyName, tin: formData.tin };
 
-        updatedUser = await putApiAuthenticated<User>(
+        updatedUser = await putApiAuthenticated<User, ProfileData>(
           '/app/profile',
-          profileData
+          {
+            payload: profileData,
+          }
         );
 
         if (!updatedUser) throw new Error('Failed to update user profile.');

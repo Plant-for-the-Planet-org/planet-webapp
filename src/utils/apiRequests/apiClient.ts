@@ -20,7 +20,7 @@ export interface RequestOptions {
    * Represents key-value pairs of data to be sent.
    * @example { username: 'john_doe', email: 'john@example.com' }
    */
-  data?: Record<string, string>;
+  data?: Record<string, unknown>;
   /**
    * Optional query parameters to be appended to the URL.
    * Converted to a query string.

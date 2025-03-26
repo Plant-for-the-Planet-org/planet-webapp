@@ -78,7 +78,7 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
-type ApiConfig<P extends Record<string, string> = Record<string, string>> = {
+type ApiConfig<P extends Record<string, unknown> = Record<string, unknown>> = {
   queryParams?: Record<string, string>;
   payload?: P;
   impersonationData?: ImpersonationData;
@@ -212,29 +212,32 @@ export const useApi = () => {
 
   const putApi = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
-  ): Promise<T> => {
-    return callApi<T>({ method: 'PUT', url, data: payload, additionalHeaders });
-  };
-
-  const putApiAuthenticated = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
-    url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
-      data: payload,
+      data: config.payload,
+      additionalHeaders: config.additionalHeaders,
+    });
+  };
+
+  const putApiAuthenticated = async <
+    T,
+    P extends Record<string, unknown> = Record<string, unknown>
+  >(
+    url: string,
+    config: ApiConfig<P> = {}
+  ): Promise<T> => {
+    return callApi<T>({
+      method: 'PUT',
+      url,
+      data: config.payload,
       authRequired: true,
-      additionalHeaders,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
