@@ -59,7 +59,7 @@ const ProjectDetails = ({
     try {
       const result = await getApi<PlantLocation[]>(
         `/app/plantLocations/${projectId}`,
-        { _scope: 'extended' }
+        { queryParams: { _scope: 'extended' } }
       );
       setPlantLocations(result);
     } catch (err) {
@@ -80,8 +80,7 @@ const ProjectDetails = ({
           ExtendedProject,
           Record<string, string>
         >(`/app/projects/${projectSlug}`, {
-          _scope: 'extended',
-          currency: currency,
+          queryParams: { _scope: 'extended', currency: currency },
         });
         const { purpose, id: projectId } = fetchedProject;
         if (projectId && purpose === 'trees') {

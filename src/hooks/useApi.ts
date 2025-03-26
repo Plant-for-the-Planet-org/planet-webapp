@@ -78,6 +78,14 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
+type ApiConfig<P extends Record<string, string> = Record<string, string>> = {
+  queryParams?: Record<string, string>;
+  payload?: P;
+  impersonationData?: ImpersonationData;
+  additionalHeaders?: Record<string, string>;
+  version?: string;
+};
+
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -146,17 +154,13 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    payload?: P,
-    impersonationData?: ImpersonationData,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
       url,
-      queryParams: payload,
       authRequired: true,
-      impersonationData,
-      additionalHeaders,
+      ...config,
     });
   };
 
@@ -181,16 +185,12 @@ export const useApi = () => {
     P extends Record<string, string> = Record<string, string>
   >(
     url: string,
-    queryParams?: P,
-    version?: string,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
       url,
-      queryParams,
-      version,
-      additionalHeaders,
+      ...config,
     });
   };
 
