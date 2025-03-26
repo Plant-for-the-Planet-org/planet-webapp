@@ -232,10 +232,10 @@ function RegisterTreesForm({
   }
 
   React.useEffect(() => {
-    if (contextLoaded) {
+    if (contextLoaded && user?.type === 'tpo') {
       loadProjects();
     }
-  }, [contextLoaded]);
+  }, [contextLoaded, user]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
