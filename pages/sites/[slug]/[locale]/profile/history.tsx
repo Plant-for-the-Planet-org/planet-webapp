@@ -9,7 +9,6 @@ import type {
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { getAuthenticatedRequest } from '../../../../../src/utils/apiRequests/api';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
@@ -32,6 +31,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useApi } from '../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -39,9 +39,10 @@ interface Props {
 
 function AccountHistory({ pageProps }: Props): ReactElement {
   const t = useTranslations('Me');
-  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { token, contextLoaded } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
@@ -65,19 +66,14 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     setProgress(70);
     if (next && paymentHistory?._links?.next) {
       try {
-        const newPaymentHistory = await getAuthenticatedRequest<PaymentHistory>(
-          {
-            tenant: tenantConfig.id,
-            url: `${
-              filter && accountingFilters
-                ? accountingFilters[filter] +
-                  '&' +
-                  paymentHistory?._links?.next.split('?').pop()
-                : paymentHistory?._links?.next
-            }`,
-            token,
-            logoutUser,
-          }
+        const newPaymentHistory = await getApiAuthenticated<PaymentHistory>(
+          `${
+            filter && accountingFilters
+              ? accountingFilters[filter] +
+                '&' +
+                paymentHistory?._links?.next.split('?').pop()
+              : paymentHistory?._links?.next
+          }`
         );
         setPaymentHistory({
           ...paymentHistory,
@@ -94,12 +90,9 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     } else {
       if (filter === null) {
         try {
-          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>({
-            tenant: tenantConfig?.id,
-            url: '/app/paymentHistory?limit=15',
-            token,
-            logoutUser,
-          });
+          const paymentHistory = await getApiAuthenticated<PaymentHistory>(
+            '/app/paymentHistory?limit=15'
+          );
           setPaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
@@ -111,16 +104,13 @@ function AccountHistory({ pageProps }: Props): ReactElement {
         }
       } else {
         try {
-          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>({
-            tenant: tenantConfig?.id,
-            url: `${
+          const paymentHistory = await getApiAuthenticated<PaymentHistory>(
+            `${
               filter && accountingFilters
                 ? accountingFilters[filter] + '&limit=15'
                 : '/app/paymentHistory?limit=15'
-            }`,
-            token,
-            logoutUser,
-          });
+            }`
+          );
           setPaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
