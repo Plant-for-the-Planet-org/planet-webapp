@@ -166,18 +166,17 @@ export const useApi = () => {
 
   const postApiAuthenticated = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: payload,
+      data: config.payload,
       authRequired: true,
-      additionalHeaders,
+      additionalHeaders: config.additionalHeaders,
     });
   };
   const getApi = async <
@@ -196,17 +195,16 @@ export const useApi = () => {
 
   const postApi = async <
     T,
-    P extends Record<string, string> = Record<string, string>
+    P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    payload: P,
-    additionalHeaders?: Record<string, string>
+    config: ApiConfig<P> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: payload,
-      additionalHeaders,
+      data: config.payload,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 

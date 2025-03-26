@@ -21,6 +21,12 @@ type ReceiptVerificationPayload = {
   receiptAddress?: string;
 };
 
+type DonationReceiptPayload = {
+  receiptAddress: string | null;
+  donationUids: string;
+  verificationDate: string;
+};
+
 const DonationReceiptWrapper = () => {
   const {
     getReceiptData,
@@ -99,16 +105,16 @@ const DonationReceiptWrapper = () => {
                 ReceiptVerificationPayload
               >('/app/donationReceipt/verify', { payload });
       } else if (operation === RECEIPT_STATUS.ISSUE) {
-        const payload = {
+        const payload: DonationReceiptPayload = {
           receiptAddress: addressGuid,
           donationUids: donationUids.join(','),
           verificationDate,
         };
 
-        response = await postApiAuthenticated<IssuedReceiptDataApi>(
-          '/app/donationReceipts',
-          payload
-        );
+        response = await postApiAuthenticated<
+          IssuedReceiptDataApi,
+          DonationReceiptPayload
+        >('/app/donationReceipts', { payload });
       }
 
       if (response) {
