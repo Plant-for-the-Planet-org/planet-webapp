@@ -131,9 +131,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   const topProjects = useMemo(
     () =>
-      projects?.filter((projects) => {
-        if (projects.properties?.purpose === 'trees')
-          return projects.properties.isTopProject === true;
+      projects?.filter((project) => {
+        if (project.properties.purpose === 'trees')
+          return project.properties.isTopProject === true;
       }),
     [projects]
   );

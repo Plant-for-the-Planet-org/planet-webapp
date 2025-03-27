@@ -111,7 +111,7 @@ export const useApi = () => {
       ...(additionalHeaders ? additionalHeaders : {}),
     };
 
-    // Only add version header if version is explicitly provided
+    // Only add version header if version is explicitly provided. A default could be set using an env var in the future.
     if (version !== undefined) {
       headers['x-accept-versions'] = version || '1.0.3';
     }
@@ -179,6 +179,7 @@ export const useApi = () => {
       additionalHeaders: config.additionalHeaders,
     });
   };
+
   const getApi = async <
     T,
     P extends Record<string, string> = Record<string, string>
