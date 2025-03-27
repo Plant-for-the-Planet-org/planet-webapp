@@ -7,7 +7,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import BankDetailsForm from '../components/BankDetailsForm';
@@ -15,19 +14,17 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
-  const { tenantConfig } = useTenant();
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token, logoutUser } = useUserProps();
+  const { putApiAuthenticated } = useApi();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const t = useTranslations('ManagePayouts');
 
@@ -45,13 +42,10 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putAuthenticatedRequest<BankAccount>({
-        tenant: tenantConfig?.id,
-        url: `/app/accounts/${accountToEdit?.id}`,
-        data: accountData,
-        token,
-        logoutUser,
-      });
+      const res = await putApiAuthenticated<BankAccount, FormData>(
+        `/app/accounts/${accountToEdit?.id}`,
+        { payload: accountData }
+      );
       // update accounts in context
       if (accounts) {
         const updatedAccounts = accounts.map((account) => {
