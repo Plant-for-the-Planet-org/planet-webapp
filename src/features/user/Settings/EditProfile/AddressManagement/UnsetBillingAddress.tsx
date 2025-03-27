@@ -18,7 +18,6 @@ interface Props {
   addressType: 'mailing';
   setIsModalOpen: SetState<boolean>;
   setAddressAction: SetState<AddressAction | null>;
-  updateUserAddresses: () => Promise<void>;
   selectedAddressForAction: Address;
 }
 
@@ -26,12 +25,11 @@ const UnsetBillingAddress = ({
   addressType,
   setIsModalOpen,
   setAddressAction,
-  updateUserAddresses,
   selectedAddressForAction,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +48,22 @@ const UnsetBillingAddress = ({
         token,
         logoutUser,
       });
-      if (res) updateUserAddresses();
+      if (res) {
+        setUser((prev) => {
+          if (!prev) return null;
+
+          const updatedAddresses = prev.addresses.map((addr) =>
+            addr.id === selectedAddressForAction.id
+              ? { ...addr, type: ADDRESS_TYPE.OTHER }
+              : addr
+          );
+
+          return {
+            ...prev,
+            addresses: updatedAddresses,
+          };
+        });
+      }
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
