@@ -85,35 +85,33 @@ function isAbsoluteUrl(url: string) {
  *   }
  * });
  */
-const apiClient = async <T>(requestConfig: RequestOptions): Promise<T> => {
-  const config = requestConfig;
-
+const apiClient = async <T>(options: RequestOptions): Promise<T> => {
   const apiBaseUrl = process.env.API_ENDPOINT;
   if (!apiBaseUrl)
     throw new Error(
       'API_ENDPOINT is not defined in your environment variables.'
     );
 
-  const urlPath = isAbsoluteUrl(config.url)
-    ? config.url
-    : `${apiBaseUrl}${config.url}`;
+  const urlPath = isAbsoluteUrl(options.url)
+    ? options.url
+    : `${apiBaseUrl}${options.url}`;
 
   // Construct full URL
-  const queryString = config.queryParams
-    ? '?' + getQueryString(config.queryParams)
+  const queryString = options.queryParams
+    ? '?' + getQueryString(options.queryParams)
     : '';
 
   const finalUrl = `${urlPath}${queryString}`;
 
   // Build headers
-  const headers: Record<string, string> = config.additionalHeaders ?? {};
+  const headers: Record<string, string> = options.additionalHeaders ?? {};
 
   try {
     const response = await fetch(finalUrl, {
-      method: config.method,
+      method: options.method,
       headers,
-      ...(config.method === 'POST' || config.method === 'PUT'
-        ? { body: JSON.stringify(config.data) }
+      ...(options.method === 'POST' || options.method === 'PUT'
+        ? { body: JSON.stringify(options.data) }
         : {}),
     });
 
