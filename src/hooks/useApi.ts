@@ -78,15 +78,17 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
 type ApiConfig<
-  P extends Record<string, unknown> = Record<string, unknown>,
-  M extends 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET' | 'DELETE'
+  P extends Record<string, unknown>,
+  M extends HttpMethod = 'GET' | 'DELETE'
 > = {
   queryParams?: Record<string, string>;
   impersonationData?: ImpersonationData;
   additionalHeaders?: Record<string, string>;
   version?: string;
-} & (M extends 'POST' | 'PUT' ? { payload: P } : { payload?: P });
+} & (M extends 'POST' | 'PUT' ? { payload: P } : {});
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
@@ -160,12 +162,9 @@ export const useApi = () => {
     }
   };
 
-  const getApiAuthenticated = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
+  const getApiAuthenticated = async <T>(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<never, 'GET'> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
@@ -180,23 +179,20 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'POST'> = { payload: {} as P }
+    config: ApiConfig<P, 'POST'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: config.payload ?? {},
+      data: config.payload,
       authRequired: true,
       additionalHeaders: config.additionalHeaders,
     });
   };
 
-  const getApi = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
+  const getApi = async <T>(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<never, 'GET'> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
@@ -210,12 +206,12 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'POST'> = { payload: {} as P }
+    config: ApiConfig<P, 'POST'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: config.payload ?? {},
+      data: config.payload,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -225,12 +221,12 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'PUT'> = { payload: {} as P }
+    config: ApiConfig<P, 'PUT'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
-      data: config.payload ?? {},
+      data: config.payload,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -240,12 +236,12 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'PUT'> = { payload: {} as P }
+    config: ApiConfig<P, 'PUT'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
-      data: config.payload ?? {},
+      data: config.payload,
       authRequired: true,
       additionalHeaders: config.additionalHeaders,
     });
@@ -253,7 +249,7 @@ export const useApi = () => {
 
   const deleteApiAuthenticated = async <T>(
     url: string,
-    config: ApiConfig
+    config: ApiConfig<never, 'DELETE'> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',

@@ -202,10 +202,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProjects = await getApi<
-          MapProject[],
-          Record<string, string>
-        >('/app/projects', {
+        const fetchedProjects = await getApi<MapProject[]>('/app/projects', {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
