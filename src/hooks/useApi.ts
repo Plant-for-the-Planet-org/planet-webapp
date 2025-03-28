@@ -13,6 +13,7 @@
  * - React Contexts:
  *   - `useUserProps`: To access the current user's token and handle logout on invalid tokens.
  *   - `useTenant`: To retrieve tenant-specific configurations (e.g., tenant key).
+ *   - `useLocale` : To get the current locale for setting the `x-locale` header.
  * - Utilities:
  *   - `apiClient`: A utility to make HTTP requests.
  *   - `validateToken`: To check if the provided token is valid.
@@ -28,7 +29,7 @@
  * ```typescript
  * import { useApi } from 'path-to/useApi';
  *
- * const { getApi, postApiAuthenticated, callApi } = useApi();
+ * const { getApi, postApiAuthenticated } = useApi();
  *
  * // Example: Make a GET request
  * const fetchData = async () => {
@@ -62,7 +63,6 @@
  *
  * @notes
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
- * - Localization (`x-locale`) defaults to the browser's language or 'en' if not set.
  */
 import type { ImpersonationData } from '../utils/apiRequests/impersonation';
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
@@ -158,6 +158,15 @@ export const useApi = () => {
     }
   };
 
+  /**
+   * Performs an authenticated GET request to the specified URL.
+   *
+   * @template T The expected response type
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const getApiAuthenticated = async <T>(
     url: string,
     config: ApiConfig<never, 'GET'> = {}
@@ -170,6 +179,16 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an authenticated POST request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'POST'>} config Configuration for the POST request, including payload
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const postApiAuthenticated = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
@@ -186,6 +205,14 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an unauthenticated GET request to the specified URL.
+   *
+   * @template T The expected response type
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request
+   * @returns {Promise<T>} The response data
+   */
   const getApi = async <T>(
     url: string,
     config: ApiConfig<never, 'GET'> = {}
@@ -197,6 +224,15 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an unauthenticated POST request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'POST'>} config Configuration for the POST request, including payload
+   * @returns {Promise<T>} The response data
+   */
   const postApi = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
@@ -212,6 +248,15 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an unauthenticated PUT request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'PUT'>} config Configuration for the PUT request, including payload
+   * @returns {Promise<T>} The response data
+   */
   const putApi = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
@@ -227,6 +272,16 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an authenticated PUT request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'PUT'>} config Configuration for the PUT request, including payload
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const putApiAuthenticated = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
@@ -243,6 +298,15 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an authenticated DELETE request to the specified URL.
+   *
+   * @template T The expected response type
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'DELETE'>} [config={}] Optional configuration for the request
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const deleteApiAuthenticated = async <T>(
     url: string,
     config: ApiConfig<never, 'DELETE'> = {}
