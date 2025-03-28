@@ -21,7 +21,7 @@ type ReceiptVerificationPayload = {
   receiptAddress?: string;
 };
 
-type DonationReceiptPayload = {
+type ReceiptIssuancePayload = {
   receiptAddress: string | null;
   donationUids: string;
   verificationDate: string;
@@ -105,7 +105,7 @@ const DonationReceiptWrapper = () => {
                 ReceiptVerificationPayload
               >('/app/donationReceipt/verify', { payload });
       } else if (operation === RECEIPT_STATUS.ISSUE) {
-        const payload: DonationReceiptPayload = {
+        const payload: ReceiptIssuancePayload = {
           receiptAddress: addressGuid,
           donationUids: donationUids.join(','),
           verificationDate,
@@ -113,7 +113,7 @@ const DonationReceiptWrapper = () => {
 
         response = await postApiAuthenticated<
           IssuedReceiptDataApi,
-          DonationReceiptPayload
+          ReceiptIssuancePayload
         >('/app/donationReceipts', { payload });
       }
 
