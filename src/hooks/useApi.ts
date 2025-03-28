@@ -117,11 +117,7 @@ export const useApi = () => {
 
     // Only add version header if version is explicitly provided. A default could be set using an env var in the future.
     if (version !== undefined) {
-      headers['x-accept-versions'] = version || '1.0.3';
-    }
-    // Set 'Content-Type' to 'application/json' only for  requests that send a body
-    if (['POST', 'PUT', 'DELETE'].includes(method)) {
-      headers['Content-Type'] = 'application/json';
+      headers['x-accept-versions'] = version;
     }
 
     if (authRequired) {

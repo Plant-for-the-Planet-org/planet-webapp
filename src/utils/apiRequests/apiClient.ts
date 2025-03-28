@@ -102,6 +102,11 @@ const apiClient = async <T>(options: RequestOptions): Promise<T> => {
   // Build headers
   const headers: Record<string, string> = options.additionalHeaders ?? {};
 
+  // Set 'Content-Type' to 'application/json' only for  requests that send a body
+  if (['POST', 'PUT'].includes(options.method)) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   try {
     const response = await fetch(finalUrl, {
       method: options.method,
