@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material';
 
 import theme from './themeProperties';
+import themeProperties from './themeProperties';
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
@@ -119,7 +120,7 @@ const materialTheme = createTheme({
     MuiAutocomplete: {
       styleOverrides: {
         option: {
-          fontSize: '0.875rem',
+          fontSize: themeProperties.fontSizes.fontSmall,
         },
       },
     },
@@ -138,7 +139,7 @@ const materialTheme = createTheme({
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
-          fontSize: '1rem !important',
+          fontSize: `${themeProperties.fontSizes.fontSixteen} !important`,
         },
       },
     },
