@@ -40,7 +40,7 @@ html::-webkit-scrollbar {
 body {
   color: rgba(0, 0, 0, 0.87);
   margin: 0;
-  font-size: 0.875rem;
+  font-size: $fontSmall;
   font-family: var(--primary-font-family) !important;
   font-weight: 400;
   line-height: 1.43;
@@ -659,7 +659,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* remove updown arrow on input type=number for  Firefox */
+/* remove updown arrow on input type=number for Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
 }
@@ -747,6 +747,6 @@ input[type='number'] {
     margin-top: 24px;
     margin-left: 24px;
     font-weight: bold;
-    font-size: 30px;
+    font-size: $fontXLarge;
   }
 }
