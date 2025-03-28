@@ -1,13 +1,7 @@
 import { APIError } from '@planet-sdk/common';
 import { getQueryString } from './getQueryString';
 
-export interface RequestOptions {
-  /**
-   * The HTTP method to be used for the request.
-   * Restricted to standard CRUD operations.
-   * @example 'GET' | 'POST' | 'PUT' | 'DELETE'
-   */
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type RequestOptions = {
   /**
    * The URL or path for the API endpoint.
    * Can be absolute (starting with http:// or https://)
@@ -15,12 +9,6 @@ export interface RequestOptions {
    * @example '/users' or 'https://api.example.com/users'
    */
   url: string;
-  /**
-   * Optional request payload for POST and PUT methods.
-   * Represents key-value pairs of data to be sent.
-   * @example { username: 'john_doe', email: 'john@example.com' }
-   */
-  data?: Record<string, unknown>;
   /**
    * Optional query parameters to be appended to the URL.
    * Converted to a query string.
@@ -39,7 +27,15 @@ export interface RequestOptions {
    * @default false
    */
   authRequired?: boolean;
-}
+} & /**
+ * This type enforces request payload rules based on HTTP method semantics.
+ * 'GET' and 'DELETE' requests may optionally include a 'data' payload,
+ * whereas 'POST' and 'PUT' requests must include a 'data' payload.
+ * Ensures consistency and prevents unintended omissions in API requests.
+ */ (
+  | { method: 'GET' | 'DELETE'; data?: Record<string, unknown> }
+  | { method: 'POST' | 'PUT'; data: Record<string, unknown> }
+);
 
 /**
  * Checks if a given URL is an absolute URL.
@@ -110,7 +106,7 @@ const apiClient = async <T>(options: RequestOptions): Promise<T> => {
     const response = await fetch(finalUrl, {
       method: options.method,
       headers,
-      ...(options.method === 'POST' || options.method === 'PUT'
+      ...(options.data !== undefined
         ? { body: JSON.stringify(options.data) }
         : {}),
     });
