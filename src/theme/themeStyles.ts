@@ -1,6 +1,5 @@
 import { createTheme } from '@mui/material';
 
-import theme from './themeProperties';
 import themeProperties from './themeProperties';
 
 declare module '@mui/material/styles/createPalette' {
@@ -12,19 +11,19 @@ declare module '@mui/material/styles/createPalette' {
 const materialTheme = createTheme({
   palette: {
     primary: {
-      main: theme.primaryColor,
-      contrastText: theme.light.light,
-      light: theme.light.tabBackgroundColor,
+      main: themeProperties.primaryColor,
+      contrastText: themeProperties.light.light,
+      light: themeProperties.light.tabBackgroundColor,
     },
     background: {
-      base: theme.light.backgroundBase,
-      default: theme.light.light,
+      base: themeProperties.light.backgroundBase,
+      default: themeProperties.light.light,
     },
     error: {
-      main: theme.light.dangerColor,
+      main: themeProperties.light.dangerColor,
     },
     text: {
-      primary: theme.light.primaryFontColor,
+      primary: themeProperties.light.primaryFontColor,
       secondary: 'rgba(0, 0, 0, 0.6)',
     },
   },
@@ -42,14 +41,14 @@ const materialTheme = createTheme({
       '"Segoe UI Symbol"',
     ].join(','),
     h1: {
-      fontSize: theme.fontSizes.fontRemLarge,
+      fontSize: themeProperties.fontSizes.fontXXLarge,
     },
     h2: {
-      fontSize: theme.fontSizes.fontRemMedium,
-      fontWeight: theme.fontWeight,
+      fontSize: themeProperties.fontSizes.fontLarge,
+      fontWeight: themeProperties.fontWeight,
     },
     button: {
-      fontSize: theme.fontSizes.fontRemSmall,
+      fontSize: themeProperties.fontSizes.fontMedium,
       lineHeight: 1.3333,
     },
   },
@@ -57,7 +56,7 @@ const materialTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          fontSize: theme.fontSizes.fontRemXSmall,
+          fontSize: themeProperties.fontSizes.fontSmall,
           lineHeight: 1.43,
           letterSpacing: '0.01071em',
         },
@@ -78,10 +77,10 @@ const materialTheme = createTheme({
           padding: 0,
           borderRadius: 0,
           fontSize: 'inherit',
-          fontWeight: theme.fontWeight,
+          fontWeight: themeProperties.fontWeight,
         },
         textWarning: {
-          color: theme.light.dangerColor,
+          color: themeProperties.light.dangerColor,
         },
       },
     },
@@ -89,7 +88,7 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           minHeight: 30,
-          fontSize: theme.fontSizes.fontRemXSmall,
+          fontSize: themeProperties.fontSizes.fontSmall,
         },
       },
     },
