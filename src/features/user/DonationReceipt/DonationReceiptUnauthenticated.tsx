@@ -10,7 +10,7 @@ import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptCo
 import styles from './DonationReceipt.module.scss';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
@@ -19,7 +19,7 @@ const DonationReceiptUnauthenticated = () => {
   const router = useRouter();
   const tReceipt = useTranslations('DonationReceipt');
 
-  const { getApi } = useServerApi();
+  const { getApi } = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
   const { setErrors, redirect } = useContext(ErrorHandlingContext);

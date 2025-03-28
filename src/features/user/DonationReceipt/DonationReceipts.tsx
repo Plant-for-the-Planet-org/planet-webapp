@@ -20,14 +20,14 @@ import {
   transformProfileToPrimaryAddressView,
 } from './transformers';
 import { useRouter } from 'next/router';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 
 const DonationReceipts = () => {
-  const { getApiAuthenticated } = useServerApi();
+  const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
   const tReceipt = useTranslations('DonationReceipt');
   const [donationReceipts, setDonationReceipts] =

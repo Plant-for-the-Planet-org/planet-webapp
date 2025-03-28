@@ -13,7 +13,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -21,6 +21,19 @@ import { transformProfileToDonorView } from './transformers'; // TODO: remove fo
 import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
+
+type IndividualProfile = {
+  firstname: string;
+  lastname: string;
+  tin: string;
+};
+
+type CompanyProfile = {
+  name: string;
+  tin: string;
+};
+
+type ProfileData = IndividualProfile | CompanyProfile;
 
 const DonorContactManagement = () => {
   const { updateDonorAndAddress, email, tinIsRequired, getOperation } =
@@ -34,7 +47,7 @@ const DonorContactManagement = () => {
     return <EditPermissionDenied />;
 
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { putApiAuthenticated } = useServerApi();
+  const { putApiAuthenticated } = useApi();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
@@ -72,7 +85,7 @@ const DonorContactManagement = () => {
         formData.tin !== user.tin ||
         formData.companyName !== user.name
       ) {
-        const profileData =
+        const profileData: ProfileData =
           user.type === 'individual'
             ? {
                 firstname: formData.firstName,
@@ -81,9 +94,11 @@ const DonorContactManagement = () => {
               }
             : { name: formData.companyName, tin: formData.tin };
 
-        updatedUser = await putApiAuthenticated<User>(
+        updatedUser = await putApiAuthenticated<User, ProfileData>(
           '/app/profile',
-          profileData
+          {
+            payload: profileData,
+          }
         );
 
         if (!updatedUser) throw new Error('Failed to update user profile.');

@@ -25,10 +25,9 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../common/Layout/TenantContext';
 import { buildProjectDetailsQuery } from '../../utils/projectV2';
+import { useApi } from '../../hooks/useApi';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -113,10 +112,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [projectsLocale, setProjectsLocale] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
+  const { getApi } = useApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
   //* Function to filter projects that accept donations
@@ -140,9 +139,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   const topProjects = useMemo(
     () =>
-      projects?.filter((projects) => {
-        if (projects.properties.purpose === 'trees')
-          return projects.properties.isTopProject === true;
+      projects?.filter((project) => {
+        if (project.properties.purpose === 'trees')
+          return project.properties.isTopProject === true;
       }),
     [projects]
   );
@@ -218,15 +217,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProjects = await getRequest<MapProject[]>({
-          tenant: tenantConfig.id,
-          url: `/app/projects`,
+        const fetchedProjects = await getApi<MapProject[]>('/app/projects', {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
-            tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
-            locale: locale,
           },
         });
         setProjects(fetchedProjects);
