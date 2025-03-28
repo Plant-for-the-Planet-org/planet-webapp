@@ -140,7 +140,7 @@
     gap: 5px;
 
     .errorMessage {
-      font-size: 12px;
+      font-size: $fontXSmall;
       color: rgba(235, 87, 87, 1);
     }
   }
@@ -305,7 +305,7 @@
   margin-top: 30px;
 
   .errorMessage {
-    font-size: 12px;
+    font-size: $fontXSmall;
     color: #e74c3c;
     margin-left: 4px;
   }
@@ -485,7 +485,7 @@
 
 .noReceiptFound {
   font-weight: 700;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 //
@@ -518,7 +518,7 @@
 }
 
 .loginAlert {
-  font-size: 12px;
+  font-size: $fontXSmall;
   margin-top: 14px;
   padding: 10px;
 }

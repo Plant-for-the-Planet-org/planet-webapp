@@ -78,7 +78,7 @@
   align-items: center;
 }
 .stats {
-  font-size: 12px;
+  font-size: $fontXSmall;
   font-weight: 400;
   line-height: normal;
 }
@@ -92,7 +92,7 @@
   width: 160px;
   height: 104px;
   padding: 12px 16px;
-  font-size: 12px;
+  font-size: $fontXSmall;
   font-weight: 400;
   line-height: normal;
   color: #2f3336;
