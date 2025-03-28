@@ -17,7 +17,7 @@ interface Props {
   treesDonated: TreesDonated | null;
 }
 
-export default function index({
+export default function LeaderBoard({
   leaderboard,
   tenantScore,
   treesDonated,
