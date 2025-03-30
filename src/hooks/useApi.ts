@@ -88,7 +88,7 @@ type ApiConfig<
   impersonationData?: ImpersonationData;
   additionalHeaders?: Record<string, string>;
   version?: string;
-} & (M extends 'POST' | 'PUT' ? { payload: P } : {});
+} & (M extends 'POST' | 'PUT' ? { payload: P } : Record<string, unknown>);
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
@@ -131,24 +131,13 @@ export const useApi = () => {
       headers.Authorization = `Bearer ${token}`;
     }
     const finalHeader = setHeaderForImpersonation(headers, impersonationData);
+    const requestOptions =
+      method === 'POST' || method === 'PUT'
+        ? { method, url, data, queryParams, additionalHeaders: finalHeader }
+        : { method, url, queryParams, additionalHeaders: finalHeader };
 
     try {
-      return await apiClient<T>(
-        method === 'POST' || method === 'PUT'
-          ? {
-              method,
-              url,
-              data,
-              queryParams,
-              additionalHeaders: finalHeader,
-            }
-          : {
-              method,
-              url,
-              queryParams,
-              additionalHeaders: finalHeader,
-            }
-      );
+      return await apiClient<T>(requestOptions);
     } catch (err) {
       if (err instanceof APIError || err instanceof ClientError) {
         throw err;
