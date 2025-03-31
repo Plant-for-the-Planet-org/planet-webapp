@@ -11,11 +11,6 @@ import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useDropzone } from 'react-dropzone';
-import {
-  deleteAuthenticatedRequest,
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
@@ -27,9 +22,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TextField, Button, FormControlLabel, Switch } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -48,6 +42,12 @@ const dialogSx: SxProps = {
   },
 };
 
+type CertificateSubmissionPayload = {
+  issueDate: number;
+  certifierName: string;
+  pdfFile: string;
+};
+
 function ProjectCertificates({
   projectGUID,
   token,
@@ -56,8 +56,8 @@ function ProjectCertificates({
 }: ProjectCertificatesProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { postApiAuthenticated, getApiAuthenticated, deleteApiAuthenticated } =
+    useApi();
   const {
     control,
     setValue,
@@ -78,20 +78,17 @@ function ProjectCertificates({
   const onSubmit = async (pdf: string) => {
     const { issueDate, certifierName } = getValues();
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: CertificateSubmissionPayload = {
       issueDate: issueDate.getFullYear(),
       certifierName: certifierName,
       pdfFile: pdf,
     };
 
     try {
-      const res = await postAuthenticatedRequest<Certificate>({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/certificates`,
-        data: submitData,
-        token,
-        logoutUser,
-      });
+      const res = await postApiAuthenticated<
+        Certificate,
+        CertificateSubmissionPayload
+      >(`/app/projects/${projectGUID}/certificates`, { payload: submitData });
       let newUploadedFiles = uploadedFiles;
 
       if (newUploadedFiles === undefined) {
@@ -131,12 +128,10 @@ function ProjectCertificates({
 
     const fetchCertificates = async () => {
       try {
-        const result = await getAuthenticatedRequest<CertificateScopeProjects>({
-          tenant: tenantConfig?.id,
-          url: `/app/profile/projects/${projectGUID}?_scope=certificates`,
-          token,
-          logoutUser,
-        });
+        const result = await getApiAuthenticated<CertificateScopeProjects>(
+          `/app/profile/projects/${projectGUID}`,
+          { queryParams: { _scope: 'certificates' } }
+        );
         setShowForm(false);
         setShowToggle(false);
         setUploadedFiles(result.certificates);
@@ -172,12 +167,9 @@ function ProjectCertificates({
 
   const deleteProjectCertificate = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/certificates/${id}`,
-        token,
-        logoutUser,
-      });
+      await deleteApiAuthenticated(
+        `/app/projects/${projectGUID}/certificates/${id}`
+      );
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
     } catch (err) {
