@@ -14,12 +14,6 @@ import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
 import { TextField, Button, IconButton } from '@mui/material';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import {
-  deleteAuthenticatedRequest,
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
@@ -29,9 +23,33 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
+
+type UploadImagePayload = {
+  imageFile: string;
+  description: string | null;
+  isDefault: boolean;
+};
+
+type ProjectVideoUpdatePayload = {
+  videoUrl: string;
+};
+
+type SetDefaultImagePayload = {
+  isDefault: boolean;
+};
+
+type SetDefaultImage = {
+  id: string;
+  image: string;
+  description: string | null;
+  isDefault: boolean;
+};
+
+type UploadCaptionPayload = {
+  description: string;
+};
 
 export default function ProjectMedia({
   handleBack,
@@ -43,8 +61,12 @@ export default function ProjectMedia({
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
-
+  const {
+    getApiAuthenticated,
+    deleteApiAuthenticated,
+    postApiAuthenticated,
+    putApiAuthenticated,
+  } = useApi();
   const {
     control,
     handleSubmit,
@@ -53,7 +75,6 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
-  const { tenantConfig } = useTenant();
   const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -63,12 +84,9 @@ export default function ProjectMedia({
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ImagesScopeProjects>({
-          tenant: tenantConfig?.id,
-          url: `/app/profile/projects/${projectGUID}?_scope=images`,
-          token,
-          logoutUser,
-        });
+        const result = await getApiAuthenticated<ImagesScopeProjects>(
+          `/app/profile/projects/${projectGUID}?_scope=images`
+        );
         setUploadedImages(result.images);
       }
     } catch (err) {
@@ -84,20 +102,19 @@ export default function ProjectMedia({
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
-    const submitData = {
+    const submitData: UploadImagePayload = {
       imageFile: image,
       description: null,
       isDefault: false,
     };
 
     try {
-      const res = await postAuthenticatedRequest<UploadImage>({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/images`,
-        data: submitData,
-        token,
-        logoutUser,
-      });
+      const res = await postApiAuthenticated<UploadImage, UploadImagePayload>(
+        `/app/projects/${projectGUID}/images`,
+        {
+          payload: submitData,
+        }
+      );
       let newUploadedImages = [...uploadedImages];
 
       if (!newUploadedImages) {
@@ -148,12 +165,7 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/images/${id}`,
-        token,
-        logoutUser,
-      });
+      await deleteApiAuthenticated(`/app/projects/${projectGUID}/images/${id}`);
       const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
       setUploadedImages(uploadedFilesTemp);
     } catch (err) {
@@ -165,20 +177,15 @@ export default function ProjectMedia({
   const onSubmit = async (data: { youtubeURL: string }) => {
     // Add isDirty test here
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: ProjectVideoUpdatePayload = {
       videoUrl: data.youtubeURL,
     };
 
     try {
-      const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
-      >({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}`,
-        data: submitData,
-        token,
-        logoutUser,
-      });
+      const res = await putApiAuthenticated<
+        ProfileProjectTrees | ProfileProjectConservation,
+        ProjectVideoUpdatePayload
+      >(`/app/projects/${projectGUID}`, { payload: submitData });
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
@@ -191,18 +198,17 @@ export default function ProjectMedia({
 
   const setDefaultImage = async (id: string, index: number) => {
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: SetDefaultImagePayload = {
       isDefault: true,
     };
 
     try {
-      await putAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/images/${id}`,
-        data: submitData,
-        token,
-        logoutUser,
-      });
+      await putApiAuthenticated<SetDefaultImage, SetDefaultImagePayload>(
+        `/app/projects/${projectGUID}/images/${id}`,
+        {
+          payload: submitData,
+        }
+      );
       const tempUploadedData = uploadedImages;
       tempUploadedData.forEach((image) => {
         image.isDefault = false;
@@ -223,18 +229,17 @@ export default function ProjectMedia({
     e: FocusEvent<HTMLInputElement, Element>
   ) => {
     setIsUploadingData(true);
-    const submitData = {
+    const submitData: UploadCaptionPayload = {
       description: e.target.value,
     };
 
     try {
-      const res = await putAuthenticatedRequest<UploadImage>({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/images/${id}`,
-        data: submitData,
-        token,
-        logoutUser,
-      });
+      const res = await putApiAuthenticated<UploadImage, UploadCaptionPayload>(
+        `/app/projects/${projectGUID}/images/${id}`,
+        {
+          payload: submitData,
+        }
+      );
       const tempUploadedData = uploadedImages;
       tempUploadedData[index].description = res.description;
       setUploadedImages(tempUploadedData);
