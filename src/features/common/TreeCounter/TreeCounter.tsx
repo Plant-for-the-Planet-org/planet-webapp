@@ -58,14 +58,15 @@ export function HomeCircularProgress(props: CircularProgressProps) {
   );
 }
 
-interface TpoProfileInterface {
+interface TreeCounterInterface {
   handleAddTargetModalOpen: () => void;
   planted: number;
   restoredAreaUnit: number;
   target: number;
 }
 
-export default function TpoProfile(props: TpoProfileInterface) {
+// TODO: examine logic, see if we always render HomeTreeCounter and the alternate code can be removed
+export default function TreeCounter(props: TreeCounterInterface) {
   const [progress, setProgress] = useState(0);
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
   const [screenSize, setScreenSize] = useState({
@@ -147,7 +148,7 @@ export default function TpoProfile(props: TpoProfileInterface) {
         }
       />
 
-      {isHomeTreeCounter ? (
+      {!isHomeTreeCounter ? (
         <HomeTreeCounter planted={props?.planted} target={props.target} />
       ) : (
         <div className={treeCounterStyles.treeCounterData}>
