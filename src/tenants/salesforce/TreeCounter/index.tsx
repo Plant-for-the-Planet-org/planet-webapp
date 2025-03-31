@@ -7,7 +7,7 @@ interface Props {
   shouldShowMillions?: boolean;
 }
 
-export default function TpoProfile({
+export default function TreeCounter({
   planted,
   isLight = false,
   shouldShowMillions = false,
