@@ -8,7 +8,11 @@ import type {
   Site,
   SitesScopeProjects,
 } from '../../../common/types/project';
-import type { FeatureCollection as GeoJson } from 'geojson';
+import type {
+  FeatureCollection as GeoJson,
+  GeoJsonProperties,
+  Geometry,
+} from 'geojson';
 
 import React from 'react';
 import styles from './../StepForm.module.scss';
@@ -20,12 +24,6 @@ import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
-import {
-  deleteAuthenticatedRequest,
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import {
   Fade,
@@ -41,9 +39,8 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -55,6 +52,14 @@ const Map = dynamic(() => import('./MapComponent'), {
   loading: () => <p></p>,
 });
 
+type UpdateSitePayload = {
+  name: string;
+  geometry: GeoJson<Geometry, GeoJsonProperties>;
+  status: string;
+};
+
+type CreateSitePayload = UpdateSitePayload;
+
 function EditSite({
   openModal,
   handleModalClose,
@@ -64,13 +69,12 @@ function EditSite({
   geoJsonProp,
   projectGUID,
   setSiteList,
-  token,
   seteditMode,
   siteGUID,
   siteList,
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
-  const { tenantConfig } = useTenant();
+  const { putApiAuthenticated } = useApi();
   const t = useTranslations('ManageProjects');
   const {
     handleSubmit,
@@ -82,7 +86,6 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
 
   const MapProps = {
     geoJson,
@@ -98,20 +101,19 @@ function EditSite({
   const editProjectSite = async (data: ProjectSitesFormData) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
-      const submitData = {
+      const submitData: UpdateSitePayload = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
       try {
-        const res = await putAuthenticatedRequest<Site>({
-          tenant: tenantConfig?.id,
-          url: `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          data: submitData,
-          token,
-          logoutUser,
-        });
+        const res = await putApiAuthenticated<Site, UpdateSitePayload>(
+          `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          {
+            payload: submitData,
+          }
+        );
         const temp = siteList;
         let siteIndex = 0;
         temp.find((site: Site, index: number) => {
@@ -260,11 +262,12 @@ interface ProjectSitesFormData {
 
 export default function ProjectSites({
   handleBack,
-  token,
   handleNext,
   projectGUID,
   projectDetails,
 }: ProjectSitesProps): ReactElement {
+  const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } =
+    useApi();
   const t = useTranslations('ManageProjects');
   const {
     handleSubmit,
@@ -299,13 +302,12 @@ export default function ProjectSites({
     status: '',
     geometry: {},
   };
-  const { tenantConfig } = useTenant();
+
   const [siteDetails, setSiteDetails] =
     React.useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = React.useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = React.useState<string | null>(null);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
 
   // Assigning defaultSiteDetails as default
 
@@ -338,12 +340,12 @@ export default function ProjectSites({
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest<SitesScopeProjects>({
-          tenant: tenantConfig?.id,
-          url: `/app/profile/projects/${projectGUID}?_scope=sites`,
-          token,
-          logoutUser,
-        });
+        const result = await getApiAuthenticated<SitesScopeProjects>(
+          `/app/profile/projects/${projectGUID}`,
+          {
+            queryParams: { _scope: 'sites' },
+          }
+        );
         const geoLocation = {
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
@@ -369,20 +371,19 @@ export default function ProjectSites({
       if (!data.name) return;
 
       setIsUploadingData(true);
-      const submitData = {
+      const submitData: CreateSitePayload = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
       try {
-        const res = await postAuthenticatedRequest<Site>({
-          tenant: tenantConfig?.id,
-          url: `/app/projects/${projectGUID}/sites`,
-          data: submitData,
-          token,
-          logoutUser,
-        });
+        const res = await postApiAuthenticated<Site, CreateSitePayload>(
+          `/app/projects/${projectGUID}/sites`,
+          {
+            payload: submitData,
+          }
+        );
         const temp = siteList ? siteList : [];
         const _submitData = {
           id: res.id,
@@ -413,12 +414,7 @@ export default function ProjectSites({
   const deleteProjectSite = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/sites/${id}`,
-        token,
-        logoutUser,
-      });
+      await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
       setIsUploadingData(false);
@@ -494,7 +490,6 @@ export default function ProjectSites({
     geoJsonProp: geoJson,
     projectGUID,
     setSiteList,
-    token,
     seteditMode,
     siteGUID,
     siteList,
