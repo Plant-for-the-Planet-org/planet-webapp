@@ -12,11 +12,6 @@ import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useDropzone } from 'react-dropzone';
-import {
-  deleteAuthenticatedRequest,
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
@@ -32,8 +27,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -57,6 +51,12 @@ type FormData = {
   amount: number;
 };
 
+type ProjectExpensePayload = {
+  year: number;
+  amount: number;
+  pdfFile: string | ArrayBuffer | null | undefined;
+};
+
 export default function ProjectSpending({
   handleBack,
   token,
@@ -73,7 +73,8 @@ export default function ProjectSpending({
     setValue,
     control,
   } = useForm<FormData>({ mode: 'all' });
-  const { tenantConfig } = useTenant();
+  const { postApiAuthenticated, deleteApiAuthenticated, getApiAuthenticated } =
+    useApi();
   const [amount, setAmount] = React.useState<number | string>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -81,26 +82,24 @@ export default function ProjectSpending({
   const [uploadedFiles, setUploadedFiles] = React.useState<ProjectExpense[]>(
     []
   );
-  const { logoutUser } = useUserProps();
 
   const onSubmit = async (pdf: string | ArrayBuffer | null | undefined) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('amount');
     const year = getValues('year');
 
-    const submitData = {
+    const submitData: ProjectExpensePayload = {
       year: year.getFullYear(),
       amount: updatedAmount,
       pdfFile: pdf,
     };
 
     try {
-      const res = await postAuthenticatedRequest<ProjectExpense>({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/expenses`,
-        data: submitData,
-        token,
-        logoutUser,
+      const res = await postApiAuthenticated<
+        ProjectExpense,
+        ProjectExpensePayload
+      >(`/app/projects/${projectGUID}/expenses`, {
+        payload: submitData,
       });
       const newUploadedFiles = uploadedFiles;
       newUploadedFiles.push(res);
@@ -152,12 +151,9 @@ export default function ProjectSpending({
   const deleteProjectSpending = async (id: string) => {
     try {
       setIsUploadingData(true);
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}/expenses/${id}`,
-        token,
-        logoutUser,
-      });
+      await deleteApiAuthenticated(
+        `/app/projects/${projectGUID}/expenses/${id}`
+      );
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
       setIsUploadingData(false);
@@ -171,12 +167,10 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<ExpensesScopeProjects>({
-          tenant: tenantConfig?.id,
-          url: `/app/profile/projects/${projectGUID}?_scope=expenses`,
-          token,
-          logoutUser,
-        });
+        const result = await getApiAuthenticated<ExpensesScopeProjects>(
+          `/app/profile/projects/${projectGUID}`,
+          { queryParams: { _scope: 'expenses' } }
+        );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }
