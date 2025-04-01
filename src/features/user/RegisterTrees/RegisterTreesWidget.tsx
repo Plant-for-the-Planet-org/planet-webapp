@@ -232,7 +232,7 @@ function RegisterTreesForm({
   }
 
   React.useEffect(() => {
-    if (contextLoaded) {
+    if (contextLoaded && user?.type === 'tpo') {
       loadProjects();
     }
   }, [contextLoaded]);

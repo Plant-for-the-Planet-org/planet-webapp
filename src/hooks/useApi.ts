@@ -13,6 +13,7 @@
  * - React Contexts:
  *   - `useUserProps`: To access the current user's token and handle logout on invalid tokens.
  *   - `useTenant`: To retrieve tenant-specific configurations (e.g., tenant key).
+ *   - `useLocale` : To get the current locale for setting the `x-locale` header.
  * - Utilities:
  *   - `apiClient`: A utility to make HTTP requests.
  *   - `validateToken`: To check if the provided token is valid.
@@ -28,7 +29,7 @@
  * ```typescript
  * import { useApi } from 'path-to/useApi';
  *
- * const { getApi, postApiAuthenticated, callApi } = useApi();
+ * const { getApi, postApiAuthenticated } = useApi();
  *
  * // Example: Make a GET request
  * const fetchData = async () => {
@@ -62,7 +63,6 @@
  *
  * @notes
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
- * - Localization (`x-locale`) defaults to the browser's language or 'en' if not set.
  */
 import type { ImpersonationData } from '../utils/apiRequests/impersonation';
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
@@ -78,13 +78,17 @@ import { useLocale } from 'next-intl';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
-type ApiConfig<P extends Record<string, unknown> = Record<string, unknown>> = {
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+type ApiConfig<
+  P extends Record<string, unknown>,
+  M extends HttpMethod = 'GET' | 'DELETE'
+> = {
   queryParams?: Record<string, string>;
-  payload?: P;
   impersonationData?: ImpersonationData;
   additionalHeaders?: Record<string, string>;
   version?: string;
-};
+} & (M extends 'POST' | 'PUT' ? { payload: P } : Record<string, unknown>);
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
@@ -111,13 +115,9 @@ export const useApi = () => {
       ...(additionalHeaders ? additionalHeaders : {}),
     };
 
-    // Only add version header if version is explicitly provided
+    // Only add version header if version is explicitly provided. A default could be set using an env var in the future.
     if (version !== undefined) {
-      headers['x-accept-versions'] = version || '1.0.3';
-    }
-    // Set 'Content-Type' to 'application/json' only for  requests that send a body
-    if (['POST', 'PUT', 'DELETE'].includes(method)) {
-      headers['Content-Type'] = 'application/json';
+      headers['x-accept-versions'] = version;
     }
 
     if (authRequired) {
@@ -131,15 +131,13 @@ export const useApi = () => {
       headers.Authorization = `Bearer ${token}`;
     }
     const finalHeader = setHeaderForImpersonation(headers, impersonationData);
+    const requestOptions =
+      method === 'POST' || method === 'PUT'
+        ? { method, url, data, queryParams, additionalHeaders: finalHeader }
+        : { method, url, queryParams, additionalHeaders: finalHeader };
 
     try {
-      return await apiClient<T>({
-        method,
-        url,
-        data,
-        queryParams,
-        additionalHeaders: finalHeader,
-      });
+      return await apiClient<T>(requestOptions);
     } catch (err) {
       if (err instanceof APIError || err instanceof ClientError) {
         throw err;
@@ -149,12 +147,18 @@ export const useApi = () => {
     }
   };
 
-  const getApiAuthenticated = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
+  /**
+   * Performs an authenticated GET request to the specified URL.
+   *
+   * @template T The expected response type
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
+  const getApiAuthenticated = async <T>(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<never, 'GET'> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
@@ -164,12 +168,22 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an authenticated POST request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'POST'>} config Configuration for the POST request, including payload
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const postApiAuthenticated = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<P, 'POST'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
@@ -179,12 +193,18 @@ export const useApi = () => {
       additionalHeaders: config.additionalHeaders,
     });
   };
-  const getApi = async <
-    T,
-    P extends Record<string, string> = Record<string, string>
-  >(
+
+  /**
+   * Performs an unauthenticated GET request to the specified URL.
+   *
+   * @template T The expected response type
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request
+   * @returns {Promise<T>} The response data
+   */
+  const getApi = async <T>(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<never, 'GET'> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'GET',
@@ -193,12 +213,21 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an unauthenticated POST request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'POST'>} config Configuration for the POST request, including payload
+   * @returns {Promise<T>} The response data
+   */
   const postApi = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<P, 'POST'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'POST',
@@ -208,12 +237,21 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an unauthenticated PUT request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'PUT'>} config Configuration for the PUT request, including payload
+   * @returns {Promise<T>} The response data
+   */
   const putApi = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<P, 'PUT'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
@@ -223,12 +261,22 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an authenticated PUT request to the specified URL.
+   *
+   * @template T The expected response type
+   * @template P The type of the payload
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<P, 'PUT'>} config Configuration for the PUT request, including payload
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const putApiAuthenticated = async <
     T,
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P> = {}
+    config: ApiConfig<P, 'PUT'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
@@ -239,9 +287,18 @@ export const useApi = () => {
     });
   };
 
+  /**
+   * Performs an authenticated DELETE request to the specified URL.
+   *
+   * @template T The expected response type
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'DELETE'>} [config={}] Optional configuration for the request
+   * @returns {Promise<T>} The response data
+   * @throws {ClientError} If authentication fails or token is invalid
+   */
   const deleteApiAuthenticated = async <T>(
     url: string,
-    config: ApiConfig = {}
+    config: ApiConfig<never, 'DELETE'> = {}
   ): Promise<T> => {
     return callApi<T>({
       method: 'DELETE',

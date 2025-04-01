@@ -34,7 +34,9 @@ interface ProjectListControlForMobileProps {
   filteredProjects: MapProject[] | undefined;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
-  shouldHideProjectTabs: boolean;
+  shouldHideProjectTabs?: boolean;
+  showDonatableProjects: boolean;
+  setShowDonatableProjects: SetState<boolean>;
 }
 
 const ProjectListControlForMobile = ({
@@ -55,13 +57,16 @@ const ProjectListControlForMobile = ({
   mapOptions,
   updateMapOption,
   shouldHideProjectTabs,
+  showDonatableProjects,
+  setShowDonatableProjects,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const { isImpersonationModeOn } = useUserProps();
   const { embed, showProjectList, page } = useContext(ParamsContext);
 
-  const hasFilterApplied = selectedClassification.length > 0;
+  const hasFilterApplied =
+    selectedClassification.length > 0 || showDonatableProjects;
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
@@ -110,6 +115,8 @@ const ProjectListControlForMobile = ({
     selectedClassification,
     setSelectedClassification,
     selectedMode,
+    showDonatableProjects,
+    setShowDonatableProjects,
   };
 
   return (
