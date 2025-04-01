@@ -35,19 +35,6 @@
   }
 }
 
-.singleCardIndex {
-  font-weight: 700;
-  font-size: 16.72px;
-
-  @media screen and (max-width: 620px) {
-    font-size: $fontLarge;
-  }
-
-  @media screen and (max-width: 380px) {
-    font-size: 24px;
-  }
-}
-
 .singleCardTitle {
   font-size: $fontXXSmall;
   margin-bottom: 4px;
@@ -154,13 +141,13 @@
   }
 
   .singleProfileActionCardTitle {
-    font-size: 20px;
+    font-size: $fontMedium;
     max-width: 100%;
     margin-top: 10px;
   }
 
   .singleProfileActionCardText {
-    font-size: $fontMedium;
+    font-size: $fontSixteen;
     max-width: 100%;
   }
 }

@@ -181,6 +181,7 @@
 
 .target {
   font-family: $primaryFontFamily;
+  // TODO: ask if this can be changed to 12px or 14px. Or do we add in a new variable for this?
   font-size: 13px;
   color: $primaryFontColor;
   font-weight: bold;

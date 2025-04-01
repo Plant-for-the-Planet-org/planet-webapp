@@ -8,18 +8,6 @@
   width: 100%;
 }
 
-.historyTitle {
-  font-size: 2.25rem;
-  font-weight: 700;
-  width: 100%;
-  margin-bottom: 10px;
-  margin-top: 24px;
-}
-
-.historySubtitle {
-  font-size: 1rem;
-}
-
 .section {
   display: flex;
   flex-direction: row;
@@ -177,7 +165,7 @@
   .status {
     // color: $primaryColor;
     font-family: $primaryFontFamily;
-    font-size: 11px;
+    font-size: $fontXSmall;
     font-weight: 700;
     letter-spacing: 0.5px;
     border-radius: 14px;
@@ -700,7 +688,7 @@
 
 .record {
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: $fontSmall;
   width: 100%;
   display: flex;
   flex-direction: column;
