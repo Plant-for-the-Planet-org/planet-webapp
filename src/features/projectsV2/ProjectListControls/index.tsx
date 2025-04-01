@@ -18,6 +18,8 @@ export interface ProjectListControlsProps {
   tabSelected: ProjectTabs;
   setTabSelected: SetState<ProjectTabs>;
   selectedClassification: TreeProjectClassification[];
+  showDonatableProjects: boolean;
+  setShowDonatableProjects: SetState<boolean>;
   setSelectedClassification: SetState<TreeProjectClassification[]>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
@@ -31,6 +33,8 @@ const ProjectListControls = ({
   tabSelected,
   selectedClassification,
   setSelectedClassification,
+  showDonatableProjects,
+  setShowDonatableProjects,
   debouncedSearchValue,
   setDebouncedSearchValue,
   filteredProjects,
@@ -40,7 +44,8 @@ const ProjectListControls = ({
   const [isSearching, setIsSearching] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const tCommon = useTranslations('Common');
-  const hasFilterApplied = selectedClassification.length > 0;
+  const hasFilterApplied =
+    selectedClassification.length > 0 || showDonatableProjects;
 
   const projectListTabProps = {
     setIsFilterOpen,
@@ -65,6 +70,8 @@ const ProjectListControls = ({
   const classificationDropDownProps = {
     selectedClassification,
     setSelectedClassification,
+    showDonatableProjects,
+    setShowDonatableProjects,
   };
 
   const renderTabContent = useMemo(() => {
@@ -87,7 +94,12 @@ const ProjectListControls = ({
     }
 
     return <ProjectListTabLargeScreen {...projectListTabProps} />;
-  }, [hasFilterApplied, shouldHideProjectTabs, filteredProjects, tabSelected]);
+  }, [
+    hasFilterApplied,
+    shouldHideProjectTabs,
+    filteredProjects?.length,
+    tabSelected,
+  ]);
 
   return (
     <>

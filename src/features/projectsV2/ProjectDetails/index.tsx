@@ -76,12 +76,12 @@ const ProjectDetails = ({
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProject = await getApi<
-          ExtendedProject,
-          Record<string, string>
-        >(`/app/projects/${projectSlug}`, {
-          queryParams: { _scope: 'extended', currency: currency },
-        });
+        const fetchedProject = await getApi<ExtendedProject>(
+          `/app/projects/${projectSlug}`,
+          {
+            queryParams: { _scope: 'extended', currency: currency },
+          }
+        );
         const { purpose, id: projectId } = fetchedProject;
         if (projectId && purpose === 'trees') {
           fetchPlantLocations(projectId);

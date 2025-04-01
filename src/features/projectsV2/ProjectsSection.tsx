@@ -29,6 +29,8 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     isError,
     setSelectedMode,
     selectedMode,
+    showDonatableProjects,
+    setShowDonatableProjects,
   } = useProjects();
   const { mapOptions, updateMapOption } = useProjectsMap();
   const { tenantConfig } = useTenant();
@@ -60,6 +62,8 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     setTabSelected,
     selectedClassification,
     setSelectedClassification,
+    showDonatableProjects,
+    setShowDonatableProjects,
     debouncedSearchValue,
     setDebouncedSearchValue,
     filteredProjects,
