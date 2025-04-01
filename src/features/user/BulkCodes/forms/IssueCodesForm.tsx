@@ -148,11 +148,8 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res = await postApiAuthenticated<
-          Donation,
-          PrepaidDonationRequest
-        >('/app/donations', {
-          payload: cleanedData,
+        const res = await postApiAuthenticated<Donation>('/app/donations', {
+          payload: cleanedData as unknown as Record<string, unknown>,
           additionalHeaders: {
             'IDEMPOTENCY-KEY': uuidv4(),
             'X-Locale': locale,
