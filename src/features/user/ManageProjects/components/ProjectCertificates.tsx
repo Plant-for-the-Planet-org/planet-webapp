@@ -230,7 +230,10 @@ function ProjectCertificates({
                                 </div> */}
                 <button
                   id={'trashIconProjC'}
-                  onClick={() => deleteProjectCertificate(report.id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    deleteProjectCertificate(report.id);
+                  }}
                   className={styles.reportEditButton}
                 >
                   <TrashIcon />
