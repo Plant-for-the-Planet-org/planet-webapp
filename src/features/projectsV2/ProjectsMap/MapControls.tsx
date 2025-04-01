@@ -56,6 +56,8 @@ const MapControls = ({
     disableInterventionMenu,
     setDisableInterventionMenu,
     plantLocations,
+    showDonatableProjects,
+    setShowDonatableProjects,
   } = useProjects();
   const { embed, showProjectDetails } = useContext(ParamsContext);
 
@@ -135,6 +137,8 @@ const MapControls = ({
     hasProjectSites,
     mapOptions,
     updateMapOption,
+    showDonatableProjects,
+    setShowDonatableProjects,
   };
 
   const exitMapMode = () => {

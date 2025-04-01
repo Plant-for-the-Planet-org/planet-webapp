@@ -1,13 +1,7 @@
 import { APIError } from '@planet-sdk/common';
 import { getQueryString } from './getQueryString';
 
-export interface RequestOptions {
-  /**
-   * The HTTP method to be used for the request.
-   * Restricted to standard CRUD operations.
-   * @example 'GET' | 'POST' | 'PUT' | 'DELETE'
-   */
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type RequestOptions = {
   /**
    * The URL or path for the API endpoint.
    * Can be absolute (starting with http:// or https://)
@@ -15,12 +9,6 @@ export interface RequestOptions {
    * @example '/users' or 'https://api.example.com/users'
    */
   url: string;
-  /**
-   * Optional request payload for POST and PUT methods.
-   * Represents key-value pairs of data to be sent.
-   * @example { username: 'john_doe', email: 'john@example.com' }
-   */
-  data?: Record<string, unknown>;
   /**
    * Optional query parameters to be appended to the URL.
    * Converted to a query string.
@@ -39,7 +27,15 @@ export interface RequestOptions {
    * @default false
    */
   authRequired?: boolean;
-}
+} & /**
+ * This type enforces request payload rules based on HTTP method semantics.
+ * 'GET' and 'DELETE' requests may optionally include a 'data' payload,
+ * whereas 'POST' and 'PUT' requests must include a 'data' payload.
+ * Ensures consistency and prevents unintended omissions in API requests.
+ */ (
+  | { method: 'GET' | 'DELETE'; data?: Record<string, unknown> }
+  | { method: 'POST' | 'PUT'; data: Record<string, unknown> }
+);
 
 /**
  * Checks if a given URL is an absolute URL.
@@ -85,35 +81,38 @@ function isAbsoluteUrl(url: string) {
  *   }
  * });
  */
-const apiClient = async <T>(requestConfig: RequestOptions): Promise<T> => {
-  const config = requestConfig;
-
+const apiClient = async <T>(options: RequestOptions): Promise<T> => {
   const apiBaseUrl = process.env.API_ENDPOINT;
   if (!apiBaseUrl)
     throw new Error(
       'API_ENDPOINT is not defined in your environment variables.'
     );
 
-  const urlPath = isAbsoluteUrl(config.url)
-    ? config.url
-    : `${apiBaseUrl}${config.url}`;
+  const urlPath = isAbsoluteUrl(options.url)
+    ? options.url
+    : `${apiBaseUrl}${options.url}`;
 
   // Construct full URL
-  const queryString = config.queryParams
-    ? '?' + getQueryString(config.queryParams)
+  const queryString = options.queryParams
+    ? '?' + getQueryString(options.queryParams)
     : '';
 
   const finalUrl = `${urlPath}${queryString}`;
 
   // Build headers
-  const headers: Record<string, string> = config.additionalHeaders ?? {};
+  const headers: Record<string, string> = options.additionalHeaders ?? {};
+
+  // Set 'Content-Type' to 'application/json' only for  requests that send a body
+  if (['POST', 'PUT'].includes(options.method)) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   try {
     const response = await fetch(finalUrl, {
-      method: config.method,
+      method: options.method,
       headers,
-      ...(config.method === 'POST' || config.method === 'PUT'
-        ? { body: JSON.stringify(config.data) }
+      ...(options.data !== undefined
+        ? { body: JSON.stringify(options.data) }
         : {}),
     });
 
