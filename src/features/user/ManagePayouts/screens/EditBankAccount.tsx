@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { FormData } from '../components/BankDetailsForm';
+import type { AccountFormData } from '../components/BankDetailsForm';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { BankAccount } from '../../../common/types/payouts';
 
@@ -32,7 +32,7 @@ const EditBankAccount = (): ReactElement | null => {
     setIsAccountUpdated(false);
   };
 
-  const handleSaveAccount = async (data: FormData) => {
+  const handleSaveAccount = async (data: AccountFormData) => {
     setIsProcessing(true);
     const accountData = {
       ...data,
@@ -42,7 +42,7 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putApiAuthenticated<BankAccount, FormData>(
+      const res = await putApiAuthenticated<BankAccount, AccountFormData>(
         `/app/accounts/${accountToEdit?.id}`,
         { payload: accountData }
       );
