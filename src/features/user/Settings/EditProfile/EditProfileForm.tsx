@@ -37,7 +37,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
-type FormData = {
+type ProfileFormData = {
   address: string;
   bio: string;
   city: string;
@@ -62,7 +62,7 @@ type UserProfileImage = {
   imageFile: string | ArrayBuffer | null | undefined;
 };
 
-type ProfileUpdatePayload = Omit<FormData, 'isPublic'> & {
+type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
   isPrivate: boolean;
   type?: Omit<UserType, 'tpo'>;
 };
@@ -99,7 +99,7 @@ export default function EditProfileForm() {
     control,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ProfileFormData>({
     mode: 'onBlur',
     defaultValues: defaultProfileDetails,
   });
@@ -168,11 +168,13 @@ export default function EditProfileForm() {
     reset();
   }, [type]);
 
-  const handleUserProfileImage = async (bodyToSend: UserProfileImage) => {
+  const handleUserProfileImage = async (
+    profileImagePayload: UserProfileImage
+  ) => {
     try {
       const res = await putApiAuthenticated<User, UserProfileImage>(
         `/app/profile`,
-        { payload: bodyToSend }
+        { payload: profileImagePayload }
       );
 
       if (user) {
@@ -196,13 +198,13 @@ export default function EditProfileForm() {
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = async (event) => {
           if (contextLoaded && token) {
-            const bodyToSend = {
+            const profileImagePayload = {
               imageFile: event.target?.result,
             };
             setSeverity('info');
             setSnackbarMessage(t('profilePicUpdated'));
             handleSnackbarOpen();
-            handleUserProfileImage(bodyToSend);
+            handleUserProfileImage(profileImagePayload);
           }
         };
       });
@@ -214,10 +216,10 @@ export default function EditProfileForm() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    const bodyToSend = {
+    const profileImagePayload = {
       imageFile: null,
     };
-    handleUserProfileImage(bodyToSend);
+    handleUserProfileImage(profileImagePayload);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -227,11 +229,11 @@ export default function EditProfileForm() {
     onDropAccepted: () => {},
   });
 
-  const saveProfile = async (data: FormData) => {
+  const saveProfile = async (data: ProfileFormData) => {
     setIsUploadingData(true);
     const { isPublic, ...otherData } = data;
 
-    const bodyToSend = {
+    const profilePayload = {
       ...otherData,
       isPrivate: !isPublic,
       ...(type !== 'tpo' ? { type: type } : {}),
@@ -239,9 +241,9 @@ export default function EditProfileForm() {
 
     if (contextLoaded && token) {
       try {
-        const res = await putApiAuthenticated<User, ProfileUpdatePayload>(
+        const res = await putApiAuthenticated<User, UpdateProfileApiPayload>(
           `/app/profile`,
-          { payload: bodyToSend }
+          { payload: profilePayload }
         );
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
