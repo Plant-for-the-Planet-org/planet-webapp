@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { FormData } from '../components/BankDetailsForm';
+import type { AccountFormData } from '../components/BankDetailsForm';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { BankAccount } from '../../../common/types/payouts';
 
@@ -27,16 +27,16 @@ const AddBankAccount = (): ReactElement | null => {
     setIsAccountCreated(false);
   };
 
-  const handleSaveAccount = async (data: FormData) => {
+  const handleSaveAccount = async (data: AccountFormData) => {
     setIsProcessing(true);
-    const accountData: FormData = {
+    const accountData: AccountFormData = {
       ...data,
       currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
       payoutMinAmount:
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     try {
-      const res = await postApiAuthenticated<BankAccount, FormData>(
+      const res = await postApiAuthenticated<BankAccount, AccountFormData>(
         '/app/accounts',
         {
           payload: accountData,

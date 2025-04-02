@@ -26,28 +26,28 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 
-type UploadImagePayload = {
+type UploadImageApiPayload = {
   imageFile: string;
   description: string | null;
   isDefault: boolean;
 };
 
-type ProjectVideoUpdatePayload = {
+type ProjectVideoApiPayload = {
   videoUrl: string;
 };
 
-type SetDefaultImagePayload = {
+type DefaultImageApiPayload = {
   isDefault: boolean;
 };
 
-type SetDefaultImage = {
+type DefaultImage = {
   id: string;
   image: string;
   description: string | null;
   isDefault: boolean;
 };
 
-type UploadCaptionPayload = {
+type UploadCaptionApiPayload = {
   description: string;
 };
 
@@ -102,19 +102,19 @@ export default function ProjectMedia({
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
-    const submitData: UploadImagePayload = {
+    const imagePayload: UploadImageApiPayload = {
       imageFile: image,
       description: null,
       isDefault: false,
     };
 
     try {
-      const res = await postApiAuthenticated<UploadImage, UploadImagePayload>(
-        `/app/projects/${projectGUID}/images`,
-        {
-          payload: submitData,
-        }
-      );
+      const res = await postApiAuthenticated<
+        UploadImage,
+        UploadImageApiPayload
+      >(`/app/projects/${projectGUID}/images`, {
+        payload: imagePayload,
+      });
       let newUploadedImages = [...uploadedImages];
 
       if (!newUploadedImages) {
@@ -177,15 +177,15 @@ export default function ProjectMedia({
   const onSubmit = async (data: { youtubeURL: string }) => {
     // Add isDirty test here
     setIsUploadingData(true);
-    const submitData: ProjectVideoUpdatePayload = {
+    const videoPayload: ProjectVideoApiPayload = {
       videoUrl: data.youtubeURL,
     };
 
     try {
       const res = await putApiAuthenticated<
         ProfileProjectTrees | ProfileProjectConservation,
-        ProjectVideoUpdatePayload
-      >(`/app/projects/${projectGUID}`, { payload: submitData });
+        ProjectVideoApiPayload
+      >(`/app/projects/${projectGUID}`, { payload: videoPayload });
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
@@ -198,15 +198,15 @@ export default function ProjectMedia({
 
   const setDefaultImage = async (id: string, index: number) => {
     setIsUploadingData(true);
-    const submitData: SetDefaultImagePayload = {
+    const defaultImagePayload: DefaultImageApiPayload = {
       isDefault: true,
     };
 
     try {
-      await putApiAuthenticated<SetDefaultImage, SetDefaultImagePayload>(
+      await putApiAuthenticated<DefaultImage, DefaultImageApiPayload>(
         `/app/projects/${projectGUID}/images/${id}`,
         {
-          payload: submitData,
+          payload: defaultImagePayload,
         }
       );
       const tempUploadedData = uploadedImages;
@@ -229,17 +229,17 @@ export default function ProjectMedia({
     e: FocusEvent<HTMLInputElement, Element>
   ) => {
     setIsUploadingData(true);
-    const submitData: UploadCaptionPayload = {
+    const uploadCaptionPayload: UploadCaptionApiPayload = {
       description: e.target.value,
     };
 
     try {
-      const res = await putApiAuthenticated<UploadImage, UploadCaptionPayload>(
-        `/app/projects/${projectGUID}/images/${id}`,
-        {
-          payload: submitData,
-        }
-      );
+      const res = await putApiAuthenticated<
+        UploadImage,
+        UploadCaptionApiPayload
+      >(`/app/projects/${projectGUID}/images/${id}`, {
+        payload: uploadCaptionPayload,
+      });
       const tempUploadedData = uploadedImages;
       tempUploadedData[index].description = res.description;
       setUploadedImages(tempUploadedData);

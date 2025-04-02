@@ -46,12 +46,12 @@ const yearDialogSx: SxProps = {
   },
 };
 
-type FormData = {
+type ExpenseFormData = {
   year: Date;
   amount: number;
 };
 
-type ProjectExpensePayload = {
+type ExpenseApiPayload = {
   year: number;
   amount: number;
   pdfFile: string | ArrayBuffer | null | undefined;
@@ -72,7 +72,7 @@ export default function ProjectSpending({
     getValues,
     setValue,
     control,
-  } = useForm<FormData>({ mode: 'all' });
+  } = useForm<ExpenseFormData>({ mode: 'all' });
   const { postApiAuthenticated, deleteApiAuthenticated, getApiAuthenticated } =
     useApi();
   const [amount, setAmount] = React.useState<number | string>(0);
@@ -88,19 +88,19 @@ export default function ProjectSpending({
     const updatedAmount = getValues('amount');
     const year = getValues('year');
 
-    const submitData: ProjectExpensePayload = {
+    const projectExpensePayload: ExpenseApiPayload = {
       year: year.getFullYear(),
       amount: updatedAmount,
       pdfFile: pdf,
     };
 
     try {
-      const res = await postApiAuthenticated<
-        ProjectExpense,
-        ProjectExpensePayload
-      >(`/app/projects/${projectGUID}/expenses`, {
-        payload: submitData,
-      });
+      const res = await postApiAuthenticated<ProjectExpense, ExpenseApiPayload>(
+        `/app/projects/${projectGUID}/expenses`,
+        {
+          payload: projectExpensePayload,
+        }
+      );
       const newUploadedFiles = uploadedFiles;
       newUploadedFiles.push(res);
       setUploadedFiles(newUploadedFiles);

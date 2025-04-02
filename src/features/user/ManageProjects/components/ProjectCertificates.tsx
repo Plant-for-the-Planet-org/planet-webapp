@@ -42,7 +42,7 @@ const dialogSx: SxProps = {
   },
 };
 
-type CertificateSubmissionPayload = {
+type CertificateApiPayload = {
   issueDate: number;
   certifierName: string;
   pdfFile: string;
@@ -78,7 +78,7 @@ function ProjectCertificates({
   const onSubmit = async (pdf: string) => {
     const { issueDate, certifierName } = getValues();
     setIsUploadingData(true);
-    const submitData: CertificateSubmissionPayload = {
+    const certificatePayload: CertificateApiPayload = {
       issueDate: issueDate.getFullYear(),
       certifierName: certifierName,
       pdfFile: pdf,
@@ -87,8 +87,10 @@ function ProjectCertificates({
     try {
       const res = await postApiAuthenticated<
         Certificate,
-        CertificateSubmissionPayload
-      >(`/app/projects/${projectGUID}/certificates`, { payload: submitData });
+        CertificateApiPayload
+      >(`/app/projects/${projectGUID}/certificates`, {
+        payload: certificatePayload,
+      });
       let newUploadedFiles = uploadedFiles;
 
       if (newUploadedFiles === undefined) {
