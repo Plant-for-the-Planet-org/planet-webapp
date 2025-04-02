@@ -15,13 +15,12 @@ import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import PlantLocationPage from './components/PlantLocationPage';
-import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -29,8 +28,9 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 
 function TreeMapper(): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Treemapper');
+  const { getApiAuthenticated } = useApi();
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [plantLocations, setPlantLocations] = React.useState<
@@ -40,7 +40,6 @@ function TreeMapper(): ReactElement {
     PlantLocationSingle | PlantLocationMulti | null
   >(null);
   const [links, setLinks] = React.useState<Links>();
-  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
@@ -48,14 +47,12 @@ function TreeMapper(): ReactElement {
 
     if (next && links?.next) {
       try {
-        const response =
-          await getAuthenticatedRequest<ExtendedScopePlantLocations>({
-            tenant: tenantConfig?.id,
-            url: links.next,
-            token,
-            logoutUser,
+        const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
+          links.next,
+          {
             version: '1.0.4',
-          });
+          }
+        );
         if (response?.items) {
           const newPlantLocations = response.items;
           for (const itr in newPlantLocations) {
@@ -92,14 +89,13 @@ function TreeMapper(): ReactElement {
       }
     } else {
       try {
-        const response =
-          await getAuthenticatedRequest<ExtendedScopePlantLocations>({
-            tenant: tenantConfig?.id,
-            url: '/treemapper/interventions?_scope=extended&limit=15',
-            token,
-            logoutUser,
+        const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
+          '/treemapper/interventions',
+          {
             version: '1.0.4',
-          });
+            queryParams: { _scope: 'extended', limit: '15' },
+          }
+        );
         if (response?.items) {
           const plantLocations = response.items;
           if (plantLocations?.length === 0) {

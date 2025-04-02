@@ -8,30 +8,27 @@ import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
 import { useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import NoProjectsFound from './components/NoProjectsFound';
+import { useApi } from '../../../../hooks/useApi';
 
 const Analytics = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, setProjectList, setProject } = useAnalytics();
   const [isLoaded, setIsLoaded] = useState(false);
-  const { token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {
     try {
       // TODO - update project type, this does not match completely
-      const res = await getAuthenticatedRequest<MapProject[]>({
-        tenant: tenantConfig?.id,
-        url: '/app/profile/projects?scope=map',
-        token,
-        logoutUser,
-      });
+      const res = await getApiAuthenticated<MapProject[]>(
+        '/app/profile/projects',
+        {
+          queryParams: { scope: 'map' },
+        }
+      );
       const projects: Project[] = [];
 
       res.forEach((_proj) => {
