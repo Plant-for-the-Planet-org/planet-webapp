@@ -35,6 +35,10 @@ interface Props {
   pageProps: PageProps;
 }
 
+type RedeemCodePayload = {
+  code: string;
+};
+
 function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
@@ -78,15 +82,15 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   };
 
   async function redeemingCode(code: string): Promise<void> {
-    const submitData = {
+    const submitData: RedeemCodePayload = {
       code: code,
     };
     if (contextLoaded && user) {
       try {
-        const res = await postApiAuthenticated<RedeemedCodeData>(
-          `/app/redeem`,
-          { payload: submitData }
-        );
+        const res = await postApiAuthenticated<
+          RedeemedCodeData,
+          RedeemCodePayload
+        >(`/app/redeem`, { payload: submitData });
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
