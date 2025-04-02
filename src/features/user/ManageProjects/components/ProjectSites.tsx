@@ -52,13 +52,11 @@ const Map = dynamic(() => import('./MapComponent'), {
   loading: () => <p></p>,
 });
 
-type UpdateSitePayload = {
+type SiteApiPayload = {
   name: string;
   geometry: GeoJson<Geometry, GeoJsonProperties>;
   status: string;
 };
-
-type CreateSitePayload = UpdateSitePayload;
 
 function EditSite({
   openModal,
@@ -101,17 +99,17 @@ function EditSite({
   const editProjectSite = async (data: ProjectSitesFormData) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
-      const submitData: UpdateSitePayload = {
+      const updatedSitePayload: SiteApiPayload = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
       try {
-        const res = await putApiAuthenticated<Site, UpdateSitePayload>(
+        const res = await putApiAuthenticated<Site, SiteApiPayload>(
           `/app/projects/${projectGUID}/sites/${siteGUID}`,
           {
-            payload: submitData,
+            payload: updatedSitePayload,
           }
         );
         const temp = siteList;
@@ -255,10 +253,10 @@ function EditSite({
   );
 }
 
-interface ProjectSitesFormData {
+type ProjectSitesFormData = {
   name: string;
   status: string;
-}
+};
 
 export default function ProjectSites({
   handleBack,
@@ -371,17 +369,17 @@ export default function ProjectSites({
       if (!data.name) return;
 
       setIsUploadingData(true);
-      const submitData: CreateSitePayload = {
+      const newSitePayload: SiteApiPayload = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
       try {
-        const res = await postApiAuthenticated<Site, CreateSitePayload>(
+        const res = await postApiAuthenticated<Site, SiteApiPayload>(
           `/app/projects/${projectGUID}/sites`,
           {
-            payload: submitData,
+            payload: newSitePayload,
           }
         );
         const temp = siteList ? siteList : [];

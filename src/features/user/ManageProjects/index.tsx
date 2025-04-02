@@ -32,13 +32,14 @@ export enum ProjectCreationTabs {
   REVIEW = 6,
 }
 
-type ReviewRequestPayload = {
+type RequestReviewApiPayload = {
   reviewRequested: boolean;
 };
 
-type PublishStatusPayload = {
+type PublishStatusApiPayload = {
   publish: boolean;
 };
+
 export default function ManageProjects({
   GUID,
   token,
@@ -102,16 +103,16 @@ export default function ManageProjects({
 
   const submitForReview = async () => {
     setIsUploadingData(true);
-    const submitData = {
+    const requestReviewPayload = {
       reviewRequested: true,
     };
 
     try {
       const res = await putApiAuthenticated<
         ProfileProjectTrees | ProfileProjectConservation,
-        ReviewRequestPayload
+        RequestReviewApiPayload
       >(`/app/projects/${projectGUID}`, {
-        payload: submitData,
+        payload: requestReviewPayload,
       });
       setProjectDetails(res);
       setIsUploadingData(false);
@@ -123,16 +124,16 @@ export default function ManageProjects({
 
   const handlePublishChange = async (val: boolean) => {
     setIsUploadingData(true);
-    const submitData = {
+    const publishStatusPayload = {
       publish: val,
     };
 
     try {
       const res = await putApiAuthenticated<
         ProfileProjectTrees | ProfileProjectConservation,
-        PublishStatusPayload
+        PublishStatusApiPayload
       >(`/app/projects/${projectGUID}`, {
-        payload: submitData,
+        payload: publishStatusPayload,
       });
       setProjectDetails(res);
       setIsUploadingData(false);

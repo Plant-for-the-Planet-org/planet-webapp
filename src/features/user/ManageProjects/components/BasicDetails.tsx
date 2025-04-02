@@ -38,7 +38,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 
-type FormData = {
+type BaseFormData = {
   name: string;
   slug: string;
   website: string;
@@ -53,15 +53,15 @@ type FormData = {
   };
 };
 
-type TreeFormData = FormData & {
+type TreeFormData = BaseFormData & {
   classification: string;
   countTarget: string;
   unitType: 'tree' | 'm2';
 };
 
-type ConservationFormData = FormData;
+type ConservationFormData = BaseFormData;
 
-type BaseProjectData = {
+type BaseProjectApiPayload = {
   name: string;
   slug: string;
   website: string;
@@ -79,17 +79,17 @@ type BaseProjectData = {
   };
 };
 
-type TreeProjectData = BaseProjectData & {
+type TreeProjectApiPayload = BaseProjectApiPayload & {
   classification: string;
   countTarget: number;
   unitType: 'tree' | 'm2';
 };
 
-type ConservationProjectData = BaseProjectData & {
+type ConservationProjectApiPayload = BaseProjectApiPayload & {
   purpose: 'conservation';
 };
 
-type SubmitProjectData = TreeProjectData | ConservationProjectData;
+type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
 export default function BasicDetails({
   handleNext,
@@ -329,7 +329,7 @@ export default function BasicDetails({
 
   const onSubmit = async (data: TreeFormData | ConservationFormData) => {
     setIsUploadingData(true);
-    const commonFields: BaseProjectData = {
+    const commonFields: BaseProjectApiPayload = {
       name: data.name,
       slug: data.slug,
       website: data.website,
@@ -348,7 +348,7 @@ export default function BasicDetails({
         coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
       },
     };
-    const submitData: SubmitProjectData =
+    const projectPayload: ProjectApiPayload =
       purpose === 'trees'
         ? {
             ...commonFields,
@@ -365,9 +365,9 @@ export default function BasicDetails({
       try {
         const res = await putApiAuthenticated<
           ProfileProjectTrees | ProfileProjectConservation,
-          SubmitProjectData
+          ProjectApiPayload
         >(`/app/projects/${projectGUID}`, {
-          payload: submitData,
+          payload: projectPayload,
         });
         setProjectDetails(res);
         setIsUploadingData(false);
@@ -380,8 +380,8 @@ export default function BasicDetails({
       try {
         const res = await postApiAuthenticated<
           ProfileProjectTrees | ProfileProjectConservation,
-          SubmitProjectData
-        >(`/app/projects`, { payload: submitData });
+          ProjectApiPayload
+        >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);

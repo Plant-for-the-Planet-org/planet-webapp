@@ -66,7 +66,7 @@ const yearDialogSx: SxProps = {
   },
 };
 
-type FormData = {
+type BaseFormData = {
   employeesCount: string;
   acquisitionYear: Date | null;
   mainChallenge: string;
@@ -75,7 +75,7 @@ type FormData = {
   siteOwnerName: string;
 };
 
-type TreeFormData = FormData & {
+type TreeFormData = BaseFormData & {
   purpose: 'trees';
   yearAbandoned: Date | null;
   firstTreePlanted: Date | null;
@@ -85,7 +85,7 @@ type TreeFormData = FormData & {
   degradationCause: string;
 };
 
-type ConservationFormData = FormData & {
+type ConservationFormData = BaseFormData & {
   purpose: 'conservation';
   areaProtected: string;
   startingProtectionYear: Date | null;
@@ -93,12 +93,12 @@ type ConservationFormData = FormData & {
   benefits: string;
 };
 
-type BaseMetadata = Omit<FormData, 'acquisitionYear'> & {
+type BaseProjectMetadata = Omit<BaseFormData, 'acquisitionYear'> & {
   acquisitionYear: number | null;
   mainInterventions: string[];
 };
 
-type TreeMetadata = BaseMetadata & {
+type TreeMetadata = BaseProjectMetadata & {
   degradationCause: string;
   degradationYear: number | null;
   plantingDensity: string;
@@ -109,7 +109,7 @@ type TreeMetadata = BaseMetadata & {
   firstTreePlanted: string | null;
 };
 
-type ConservationMetadata = BaseMetadata & {
+type ConservationMetadata = BaseProjectMetadata & {
   activitySeasons: number[];
   areaProtected: string;
   startingProtectionYear: number | null;
@@ -118,15 +118,15 @@ type ConservationMetadata = BaseMetadata & {
   benefits: string;
 };
 
-type SubmitTreeProjectData = {
+type TreeProjectApiPayload = {
   metadata: TreeMetadata;
 };
 
-type SubmitConservationProjectData = {
+type ConservationProjectApiPayload = {
   metadata: ConservationMetadata;
 };
 
-type SubmitProjectData = SubmitTreeProjectData | SubmitConservationProjectData;
+type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
 export default function DetailedAnalysis({
   handleBack,
@@ -273,7 +273,6 @@ export default function DetailedAnalysis({
 
   const router = useRouter();
 
-  // TODO - set up better types for Form Data
   const defaultFormData: TreeFormData | ConservationFormData =
     purpose === 'trees'
       ? {
@@ -312,7 +311,6 @@ export default function DetailedAnalysis({
     formState: { errors },
   } = useForm<TreeFormData | ConservationFormData>({
     mode: 'onBlur',
-    // TODO - set up better form types to resolve this error
     defaultValues: defaultFormData,
   });
 
@@ -347,7 +345,7 @@ export default function DetailedAnalysis({
       return;
     }
     setIsUploadingData(true);
-    const commonField: BaseMetadata = {
+    const commonFields: BaseProjectMetadata = {
       acquisitionYear: data.acquisitionYear
         ? data.acquisitionYear.getFullYear()
         : null,
@@ -359,11 +357,11 @@ export default function DetailedAnalysis({
       siteOwnerName: data.siteOwnerName,
     };
 
-    const submitData: SubmitProjectData =
+    const projectPayload: ProjectApiPayload =
       data.purpose === 'trees'
         ? {
             metadata: {
-              ...commonField,
+              ...commonFields,
               degradationCause: data.degradationCause,
               degradationYear: data.degradationYear
                 ? data.degradationYear.getFullYear()
@@ -385,7 +383,7 @@ export default function DetailedAnalysis({
           }
         : {
             metadata: {
-              ...commonField,
+              ...commonFields,
               activitySeasons: months,
               areaProtected: data.areaProtected,
               startingProtectionYear: data.startingProtectionYear
@@ -400,8 +398,8 @@ export default function DetailedAnalysis({
     try {
       const res = await putApiAuthenticated<
         ProfileProjectTrees | ProfileProjectConservation,
-        SubmitProjectData
-      >(`/app/projects/${projectGUID}`, { payload: submitData });
+        ProjectApiPayload
+      >(`/app/projects/${projectGUID}`, { payload: projectPayload });
       setProjectDetails(res);
       setIsUploadingData(false);
       setIsInterventionsMissing(null);
