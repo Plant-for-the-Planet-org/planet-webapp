@@ -16,7 +16,6 @@ import type {
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
-import { getAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../../../../src/features/common/Layout/Footer';
@@ -34,6 +33,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useApi } from '../../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -47,12 +47,13 @@ function ManageSingleProject({
   const [ready, setReady] = React.useState<boolean>(false);
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
   const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
   const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
   const [project, setProject] = React.useState<
     ProfileProjectTrees | ProfileProjectConservation | null
   >(null);
-  const { user, contextLoaded, token, logoutUser } = useUserProps();
+  const { user, contextLoaded, token } = useUserProps();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -71,14 +72,9 @@ function ManageSingleProject({
   useEffect(() => {
     async function loadProject() {
       try {
-        const result = await getAuthenticatedRequest<
+        const result = await getApiAuthenticated<
           ProfileProjectTrees | ProfileProjectConservation
-        >({
-          tenant: tenantConfig.id,
-          url: `/app/profile/projects/${projectGUID}`,
-          token,
-          logoutUser,
-        });
+        >(`/app/profile/projects/${projectGUID}`);
         setProject(result);
         setSetupAccess(true);
       } catch (err) {
