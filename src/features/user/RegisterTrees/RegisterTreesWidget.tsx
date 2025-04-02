@@ -3,7 +3,7 @@ import type { APIError } from '@planet-sdk/common';
 import type { ViewportProps } from '../../common/types/map';
 import type {
   RegisterTreesFormProps,
-  RegisterTreeGeometry,
+  RegisteredTreesGeometry,
   ProjectGeoJsonProps,
 } from '../../common/types/map';
 import { handleError } from '@planet-sdk/common';
@@ -57,12 +57,12 @@ const dialogSx: SxProps = {
   },
 };
 
-type SubmitData = {
+type RegisteredTreesApiPayload = {
   treeCount: string;
   treeSpecies: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: RegisterTreeGeometry; // Adjust this type based on the actual geometry structure (e.g., GeoJSON)
+  geometry: RegisteredTreesGeometry; // Adjust this type based on the actual geometry structure (e.g., GeoJSON)
 };
 
 function RegisterTreesForm({
@@ -90,7 +90,7 @@ function RegisterTreesForm({
     number[] | undefined
   >(undefined);
   const [geometry, setGeometry] = React.useState<
-    RegisterTreeGeometry | undefined
+    RegisteredTreesGeometry | undefined
   >(undefined);
   const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
@@ -186,7 +186,7 @@ function RegisterTreesForm({
             geometry.features?.length >= 1))
       ) {
         setIsUploadingData(true);
-        const submitData: SubmitData = {
+        const registeredTreesPayload: RegisteredTreesApiPayload = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
           plantProject: data.plantProject,
@@ -196,9 +196,9 @@ function RegisterTreesForm({
         try {
           const res = await postApiAuthenticated<
             ContributionProperties,
-            SubmitData
+            RegisteredTreesApiPayload
           >('/app/contributions', {
-            payload: submitData,
+            payload: registeredTreesPayload,
           });
           setErrorMessage('');
           setContributionGUID(res.id);
@@ -436,7 +436,7 @@ type FormData = {
   species: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: RegisterTreeGeometry | undefined;
+  geometry: RegisteredTreesGeometry | undefined;
 };
 
 export default function RegisterTreesWidget() {
