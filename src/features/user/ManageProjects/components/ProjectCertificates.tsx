@@ -229,11 +229,9 @@ function ProjectCertificates({
                                     <PencilIcon color={"#000"} />
                                 </div> */}
                 <button
+                  type="button"
                   id={'trashIconProjC'}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    deleteProjectCertificate(report.id);
-                  }}
+                  onClick={() => deleteProjectCertificate(report.id)}
                   className={styles.reportEditButton}
                 >
                   <TrashIcon />
