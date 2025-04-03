@@ -1,6 +1,6 @@
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
-import type { Address, APIError } from '@planet-sdk/common';
+import type { Address, AddressType, APIError } from '@planet-sdk/common';
 import type { FormData } from './AddAddress';
 import type { AddressAction } from '../../../../common/types/profile';
 
@@ -8,12 +8,12 @@ import { useState, useContext, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import AddressForm from './microComponents/AddressForm';
 import AddressFormLayout from './microComponents/AddressFormLayout';
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
+import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
@@ -22,6 +22,11 @@ interface Props {
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
 }
+
+type EditAddressApiPayload = FormData & {
+  country: ExtendedCountryCode | string;
+  type: AddressType;
+};
 
 const EditAddress = ({
   setIsModalOpen,
@@ -43,6 +48,7 @@ const EditAddress = ({
   const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
+  const { putApiAuthenticated } = useApi();
   const [country, setCountry] = useState<ExtendedCountryCode | ''>(
     selectedAddressForAction?.country ?? 'DE'
   );
@@ -60,7 +66,7 @@ const EditAddress = ({
     async (data: FormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
-      const bodyToSend = {
+      const bodyToSend: EditAddressApiPayload = {
         ...data,
         country,
         type: primaryAddressChecked
@@ -68,13 +74,12 @@ const EditAddress = ({
           : selectedAddressForAction?.type,
       };
       try {
-        const res = await putAuthenticatedRequest<Address>({
-          tenant: tenantConfig.id,
-          url: `/app/addresses/${selectedAddressForAction?.id}`,
-          data: bodyToSend,
-          token,
-          logoutUser,
-        });
+        const res = await putApiAuthenticated<Address, EditAddressApiPayload>(
+          `/app/addresses/${selectedAddressForAction?.id}`,
+          {
+            payload: bodyToSend,
+          }
+        );
         if (res) {
           if (updateUserAddresses) updateUserAddresses();
           setUser((prev) => {
@@ -126,7 +131,7 @@ const EditAddress = ({
       logoutUser,
       updateUserAddresses,
       handleError,
-      putAuthenticatedRequest,
+      putApiAuthenticated,
       primaryAddressChecked,
     ]
   );
