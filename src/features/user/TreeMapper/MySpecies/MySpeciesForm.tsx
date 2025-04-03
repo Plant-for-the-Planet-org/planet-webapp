@@ -18,8 +18,8 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { Button, TextField } from '@mui/material';
 import { useApi } from '../../../../hooks/useApi';
 
-interface NewSpecies extends Record<string, unknown> {
-  aliases: string | null;
+interface NewSpecies {
+  aliases: string;
   scientificSpecies: SpeciesSuggestionType | null;
 }
 
