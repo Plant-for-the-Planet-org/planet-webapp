@@ -35,7 +35,7 @@ interface Props {
   pageProps: PageProps;
 }
 
-type RedeemCodePayload = {
+type RedeemCodeApiPayload = {
   code: string;
 };
 
@@ -77,7 +77,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
-    const submitData: RedeemCodePayload = {
+    const submitData: RedeemCodeApiPayload = {
       code: data,
     };
 
@@ -85,7 +85,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
       try {
         const res = await postApiAuthenticated<
           RedeemedCodeData,
-          RedeemCodePayload
+          RedeemCodeApiPayload
         >(`/app/redeem`, {
           payload: submitData,
         });
