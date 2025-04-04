@@ -9,10 +9,9 @@ import { handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
+import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   addressType: 'mailing';
@@ -21,6 +20,10 @@ interface Props {
   updateUserAddresses: () => Promise<void>;
   selectedAddressForAction: Address;
 }
+
+type UnsetBillingAddressApiPayload = {
+  type: 'other';
+};
 
 const UnsetBillingAddress = ({
   addressType,
@@ -31,24 +34,23 @@ const UnsetBillingAddress = ({
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token } = useUserProps();
+  const { putApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
   const [isLoading, setIsLoading] = useState(false);
 
   const unsetAddress = async () => {
     if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
-    const bodyToSend = {
+    const bodyToSend: UnsetBillingAddressApiPayload = {
       type: ADDRESS_TYPE.OTHER,
     };
     try {
-      const res = await putAuthenticatedRequest<Address>({
-        tenant: tenantConfig.id,
-        url: `/app/addresses/${selectedAddressForAction.id}`,
-        data: bodyToSend,
-        token,
-        logoutUser,
+      const res = await putApiAuthenticated<
+        Address,
+        UnsetBillingAddressApiPayload
+      >(`/app/addresses/${selectedAddressForAction.id}`, {
+        payload: bodyToSend,
       });
       if (res) updateUserAddresses();
     } catch (error) {

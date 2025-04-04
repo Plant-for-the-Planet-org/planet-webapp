@@ -9,7 +9,6 @@ import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import { getAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
@@ -25,10 +24,12 @@ import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
 import UnsetBillingAddress from './UnsetBillingAddress';
+import { useApi } from '../../../../../hooks/useApi';
 
 const AddressManagement = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const [userAddresses, setUserAddresses] = useState<Address[]>(
@@ -52,12 +53,7 @@ const AddressManagement = () => {
   const updateUserAddresses = useCallback(async () => {
     if (!user || !token || !contextLoaded) return;
     try {
-      const res = await getAuthenticatedRequest<Address[]>({
-        tenant: tenantConfig.id,
-        url: '/app/addresses',
-        token,
-        logoutUser,
-      });
+      const res = await getApiAuthenticated<Address[]>('/app/addresses');
       if (res) setUserAddresses(res);
     } catch (error) {
       setErrors(handleError(error as APIError));
