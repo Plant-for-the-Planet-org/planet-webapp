@@ -34,6 +34,10 @@
 .singleProject {
   max-width: 280px;
   width: 100%;
+
+  @include xsPhoneView {
+    max-width: none;
+  }
 }
 
 .projectNotFound {
