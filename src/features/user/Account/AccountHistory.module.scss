@@ -618,7 +618,6 @@
     > .historyList {
       width: 100%;
       > .record.selected {
-        background-color: $backgroundColorDark;
         border-radius: 10px;
         max-height: 1000px;
         color: $primaryFontColor;
@@ -653,7 +652,6 @@
     > .recurrencyList {
       width: 100%;
       > .record.selected {
-        background-color: $backgroundColorDark;
         border-radius: 10px;
         // box-shadow: 1px 2px 8px -6px #707070;
         max-height: 1000px;
@@ -713,7 +711,7 @@
     display: none;
   }
   &.selected {
-    background-color: $backgroundColorDark;
+    background-color: $backgroundColor;
     border-radius: 10px;
     max-height: 1000px;
     color: $primaryFontColor;
