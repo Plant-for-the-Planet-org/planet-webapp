@@ -67,5 +67,11 @@
   color: $primaryColor;
   > p {
     text-align: center;
+
+    &.subText {
+      color: #2f3336;
+      font-weight: 400;
+      font-size: 18px;
+    }
   }
 }
