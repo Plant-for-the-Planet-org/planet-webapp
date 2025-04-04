@@ -64,63 +64,57 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   async function fetchPaymentHistory(next = false): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
-    if (next && paymentHistory?._links?.next) {
-      try {
+
+    try {
+      if (next && paymentHistory?._links?.next) {
+        // Parse the next URL to extract query parameters
+        const nextUrl = new URL(
+          paymentHistory?._links?.next,
+          window.location.origin
+        );
+        const path = nextUrl.pathname;
+        // Extract query parameters from the URL
+        const queryParams: Record<string, string> = {};
+        nextUrl.searchParams.forEach((value, key) => {
+          queryParams[key] = value;
+        });
+        // If filter is selected, add it to query params
+        if (filter !== null) queryParams.filter = filter;
+
         const newPaymentHistory = await getApiAuthenticated<PaymentHistory>(
-          `${
-            filter && accountingFilters
-              ? accountingFilters[filter] +
-                '&' +
-                paymentHistory?._links?.next.split('?').pop()
-              : paymentHistory?._links?.next
-          }`
+          path,
+          { queryParams }
         );
         setPaymentHistory({
           ...paymentHistory,
           items: [...paymentHistory.items, ...newPaymentHistory.items],
           _links: newPaymentHistory._links,
         });
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-        redirect('/profile');
-      }
-    } else {
-      if (filter === null) {
-        try {
-          const paymentHistory = await getApiAuthenticated<PaymentHistory>(
-            '/app/paymentHistory?limit=15'
-          );
-          setPaymentHistory(paymentHistory);
-          setProgress(100);
-          setIsDataLoading(false);
-          setTimeout(() => setProgress(0), 1000);
-          setAccountingFilters(paymentHistory._filters);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-          redirect('/profile');
-        }
       } else {
-        try {
-          const paymentHistory = await getApiAuthenticated<PaymentHistory>(
-            `${
-              filter && accountingFilters
-                ? accountingFilters[filter] + '&limit=15'
-                : '/app/paymentHistory?limit=15'
-            }`
-          );
-          setPaymentHistory(paymentHistory);
-          setProgress(100);
-          setIsDataLoading(false);
-          setTimeout(() => setProgress(0), 1000);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-          redirect('/profile');
-        }
+        const queryParams: Record<string, string> = {
+          limit: '15',
+        };
+
+        // If filter is selected, add it to query params
+        if (filter !== null) queryParams.filter = filter;
+        const paymentHistory = await getApiAuthenticated<PaymentHistory>(
+          '/app/paymentHistory',
+          {
+            queryParams,
+          }
+        );
+        setPaymentHistory(paymentHistory);
+        setAccountingFilters(paymentHistory._filters);
       }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
     }
+    setProgress(100);
+    setTimeout(() => {
+      setProgress(0);
+      setIsDataLoading(false);
+    }, 1000);
   }
 
   React.useEffect(() => {
