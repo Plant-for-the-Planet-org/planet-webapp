@@ -22,6 +22,8 @@ const MANGROVE_PROJECTS = [
   'proj_ekdaWSYWHRBdtAzncLVdclzP',
   'proj_h27ErrwYmhAGB5jp6nyLGEkN',
   'proj_sRvqi265caRiKyLaog760QsT',
+  'proj_axHvqnvWNSxalmdbvnplyOYo',
+  'proj_2Kf7wHIJ9HFti7bB9lwOC6cd',
 ];
 
 export default function ProjectGrid() {
