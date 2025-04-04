@@ -62,8 +62,6 @@ const getGlobalStyles = async () => {
       --secondary-font-family: ${tenantConfig
         ? tenantConfig.config.font.secondaryFontFamily
         : defaultFontFamily};
-      --font-xxxx-extra-small-new: ${fontSizes.fontXXXXSmallNew};
-      --font-xxx-extra-small-new: ${fontSizes.fontXXXSmallNew};
       --font-xx-extra-small: ${fontSizes.fontXXSmall};
       --font-x-extra-small: ${fontSizes.fontXSmall};
       --font-small: ${fontSizes.fontSmall};

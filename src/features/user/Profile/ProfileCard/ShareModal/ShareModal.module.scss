@@ -1,114 +1,110 @@
 @import '../../../../../theme/theme';
 
 .shareModalPopup {
-    background-color: #fff;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 16px;
+  min-height: 300px;
+  margin: 10px;
+  min-width: calc(100% - 20px);
+
+  .copyButton {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    border-radius: 16px;
-    min-height: 300px;
-    margin: 10px;
-    min-width: calc(100% - 20px);
-
-    .copyButton {
-        display: flex;
-        padding: 16px 43px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 12px;
-        background: #008F5C;
-        font-weight: 700;
-        font-size: 1rem;
-        color: #fff;
-        cursor: pointer;
-
-        label {
-            white-space: nowrap;
-            cursor: pointer;
-        }
-    }
-}
-
-
-.socialMediaIconContainer {
-    display: flex;
-    flex-direction: column;
+    padding: 16px 43px;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    border-radius: 12px;
+    background: #008f5c;
+    font-weight: 700;
+    font-size: $fontSixteen;
+    color: #fff;
+    cursor: pointer;
 
-    h3 {
-        font-size: 1rem;
-        color: #4F4F4F;
-        font-weight: 600;
+    label {
+      white-space: nowrap;
+      cursor: pointer;
     }
+  }
+}
 
-    >div {
-        display: flex;
-        gap: 24px;
-    }
+.socialMediaIconContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 
-    .socialMediaIcon {
-        cursor: pointer;
-        svg {
-            width: 40px;
-            height: 40px;
-            overflow: visible;
-        }
+  h3 {
+    font-size: $fontSixteen;
+    color: #4f4f4f;
+    font-weight: 600;
+  }
+
+  > div {
+    display: flex;
+    gap: 24px;
+  }
+
+  .socialMediaIcon {
+    cursor: pointer;
+    svg {
+      width: 40px;
+      height: 40px;
+      overflow: visible;
     }
+  }
 }
 
 .shareLinkContainer {
-    display: flex;
-    gap: 18px;
-    width: 90%;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  gap: 18px;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 @include mdTabletView {
-    .shareModalPopup {
-        min-width: 730px;
-        
-    }
+  .shareModalPopup {
+    min-width: 730px;
+  }
 
-    .shareLinkContainer {
-        flex-direction: row;
+  .shareLinkContainer {
+    flex-direction: row;
+  }
+
+  .socialMediaIconContainer {
+    .socialMediaIcon {
+      svg {
+        width: 56px;
+        height: 56px;
+      }
     }
-    
-    .socialMediaIconContainer {
-        .socialMediaIcon {
-            svg {
-                width: 56px;
-                height: 56px;
-            }
-        }
-    }
+  }
 }
 
 @include xsPhoneView {
-  
-    .shareModalPopup {
-        margin: 20px;
+  .shareModalPopup {
+    margin: 20px;
 
-        .copyButton {
-            padding: 13px 38px;
-            font-size: 0.9rem;
-        }
+    .copyButton {
+      padding: 13px 38px;
+      font-size: $fontSmall;
     }
+  }
 
-    .socialMediaIconContainer {
-        >div {
-            gap: 20px;
-        }
-        .socialMediaIcon {
-            svg {
-                width: 38px;
-                height: 38px;
-            }
-        }
+  .socialMediaIconContainer {
+    > div {
+      gap: 20px;
     }
-
+    .socialMediaIcon {
+      svg {
+        width: 38px;
+        height: 38px;
+      }
+    }
+  }
 }

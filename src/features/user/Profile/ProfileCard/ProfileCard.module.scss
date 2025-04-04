@@ -70,7 +70,7 @@
   gap: 10px;
 
   h2 {
-    font-size: 2rem;
+    font-size: $fontXLarge;
     font-weight: 700;
     line-height: 120%;
     padding-right: 4px;
@@ -84,7 +84,7 @@
   }
 
   p {
-    font-size: 0.75rem;
+    font-size: $fontXSmall;
     text-align: center;
   }
 }
@@ -111,7 +111,6 @@
 @include xsPhoneView {
   .profileNameAndDescriptionContainer {
     h2 {
-      font-size: 1.5rem;
       margin-top: 0;
     }
   }

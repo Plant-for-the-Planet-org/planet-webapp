@@ -35,7 +35,7 @@ $layoutPaddingSide: 20px;
   flex-direction: column;
 }
 .interventionsLabel {
-  font-size: $fontXXXSmallNew;
+  font-size: $fontXXSmall;
   color: $nonDonatableProjectBackgroundColor;
   font-weight: 600;
   span {
@@ -70,7 +70,7 @@ $layoutPaddingSide: 20px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-    right: 30px;
+  right: 30px;
   max-height: 42vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -137,6 +137,7 @@ $layoutPaddingSide: 20px;
     min-width: 93px;
     padding: 5px;
     position: unset;
+    height: 40px;
   }
   .labelTextContainer {
     justify-content: center;
@@ -160,11 +161,12 @@ $layoutPaddingSide: 20px;
     top: 36px;
     right: 0px;
     min-width: 160px;
+    z-index: 50;
     .listItem {
       display: flex;
       flex-direction: column;
       gap: 0;
-      font-size: $fontXXXSmallNew;
+      font-size: $fontXXSmall;
       padding: 4px 0;
       color: #333; //to be replaced
       .interventionArea {

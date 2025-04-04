@@ -125,7 +125,7 @@
   border-radius: 14px;
   padding: 2px 8px 2px 2px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: $fontXSmall;
 
   * {
     color: #6d4230;
@@ -181,6 +181,7 @@
 
 .target {
   font-family: $primaryFontFamily;
+  // TODO: ask if this can be changed to 12px or 14px. Or do we add in a new variable for this?
   font-size: 13px;
   color: $primaryFontColor;
   font-weight: bold;
@@ -192,7 +193,7 @@
   position: relative;
   text-align: center;
   color: $grayFontColorNew;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 400;
   line-height: 1.5em;
   // margin-top: 10px;
@@ -265,7 +266,7 @@
 }
 .projectHoverIcon {
   display: inline-flex;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 700;
   color: $nonDonatableProjectBackgroundColor;
   align-items: center;

@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from 'react';
 
 import { Box, Grid, ThemeProvider, styled } from '@mui/material';
 import materialTheme from '../../../../theme/themeStyles';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface DashboardViewProps {
   title: string;
@@ -12,7 +13,7 @@ interface DashboardViewProps {
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
-  fontSize: '1rem',
+  fontSize: themeProperties.fontSizes.fontSixteen,
   backgroundColor: theme.palette.background.base,
   marginTop: 80,
   minHeight: '100vh',

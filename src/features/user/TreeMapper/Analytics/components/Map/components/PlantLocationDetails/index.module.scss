@@ -37,7 +37,7 @@
   box-shadow: 4px 8px 16px 0px #0000001a;
   border-radius: 16px;
   background-color: #fff;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   height: 450px;
   ::-webkit-scrollbar {
     display: none;
@@ -73,7 +73,7 @@
       .header {
         width: 100%;
         padding: 0 5px;
-        font-size: 12px;
+        font-size: $fontXSmall;
         display: flex;
         justify-content: space-between;
         margin-bottom: -8px;
