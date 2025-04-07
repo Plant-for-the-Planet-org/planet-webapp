@@ -16,19 +16,17 @@ import { deleteAuthenticatedRequest } from '../../../../../utils/apiRequests/api
 interface Props {
   setIsModalOpen: SetState<boolean>;
   addressId: string;
-  updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
 }
 
 const DeleteAddress = ({
   setIsModalOpen,
   addressId,
-  updateUserAddresses,
   setAddressAction,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +41,18 @@ const DeleteAddress = ({
         token,
         logoutUser,
       });
-      updateUserAddresses();
+      setUser((prev) => {
+        if (!prev) return null;
+
+        const updatedAddress = prev.addresses.filter(
+          (address) => address.id !== addressId
+        );
+
+        return {
+          ...prev,
+          addresses: updatedAddress,
+        };
+      });
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
