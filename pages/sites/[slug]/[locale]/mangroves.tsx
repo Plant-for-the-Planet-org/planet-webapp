@@ -23,7 +23,7 @@ interface Props {
 export default function MangrovesLandingPage({
   pageProps: { tenantConfig },
 }: Props) {
-  const tenantScore = { total: 16000000 };
+  const tenantScore = { total: 20000000 };
 
   const { setTenantConfig } = useTenant();
 
