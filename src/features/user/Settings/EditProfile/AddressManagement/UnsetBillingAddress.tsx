@@ -42,7 +42,7 @@ const UnsetBillingAddress = ({
   const unsetAddress = async () => {
     if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
-    const bodyToSend: UnsetBillingAddressApiPayload = {
+    const payload: UnsetBillingAddressApiPayload = {
       type: ADDRESS_TYPE.OTHER,
     };
     try {
@@ -50,7 +50,7 @@ const UnsetBillingAddress = ({
         Address,
         UnsetBillingAddressApiPayload
       >(`/app/addresses/${selectedAddressForAction.id}`, {
-        payload: bodyToSend,
+        payload,
       });
       if (res) updateUserAddresses();
     } catch (error) {

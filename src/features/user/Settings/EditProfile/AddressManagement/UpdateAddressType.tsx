@@ -45,14 +45,14 @@ const UpdateAddressType = ({
   const updateAddress = async (addressType: AddressType) => {
     if (!contextLoaded || !user || !token) return;
     setIsUploadingData(true);
-    const bodyToSend: AddressTypeApiPayload = {
+    const payload: AddressTypeApiPayload = {
       type: addressType,
     };
     try {
       const res = await putApiAuthenticated<Address, AddressTypeApiPayload>(
         `/app/addresses/${selectedAddressForAction.id}`,
         {
-          payload: bodyToSend,
+          payload,
         }
       );
       if (res) updateUserAddresses();

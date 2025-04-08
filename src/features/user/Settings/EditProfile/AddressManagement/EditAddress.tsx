@@ -66,7 +66,7 @@ const EditAddress = ({
     async (data: FormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
-      const bodyToSend: EditAddressApiPayload = {
+      const payload: EditAddressApiPayload = {
         ...data,
         country,
         type: primaryAddressChecked
@@ -77,7 +77,7 @@ const EditAddress = ({
         const res = await putApiAuthenticated<Address, EditAddressApiPayload>(
           `/app/addresses/${selectedAddressForAction?.id}`,
           {
-            payload: bodyToSend,
+            payload,
           }
         );
         if (res) {

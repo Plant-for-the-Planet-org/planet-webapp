@@ -65,7 +65,7 @@ const AddAddress = ({
     async (data: FormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
-      const bodyToSend: AddAddressApiPayload = {
+      const payload: AddAddressApiPayload = {
         ...data,
         country,
         type: primaryAddressChecked ? ADDRESS_TYPE.PRIMARY : ADDRESS_TYPE.OTHER,
@@ -74,7 +74,7 @@ const AddAddress = ({
         const res = await postApiAuthenticated<Address, AddAddressApiPayload>(
           '/app/addresses',
           {
-            payload: bodyToSend,
+            payload,
           }
         );
         if (res) {

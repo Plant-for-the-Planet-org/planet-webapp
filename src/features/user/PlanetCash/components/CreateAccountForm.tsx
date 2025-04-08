@@ -45,7 +45,7 @@ const CreateAccountForm = ({
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data: PlanetCashStatusApiPayload = {
+    const payload: PlanetCashStatusApiPayload = {
       country: country,
       activate: !isPlanetCashActive,
     };
@@ -56,7 +56,7 @@ const CreateAccountForm = ({
         PlanetCashAccount,
         PlanetCashStatusApiPayload
       >('/app/planetCash', {
-        payload: data,
+        payload,
       });
       setIsAccountCreated(true);
       setAccounts([res]);
