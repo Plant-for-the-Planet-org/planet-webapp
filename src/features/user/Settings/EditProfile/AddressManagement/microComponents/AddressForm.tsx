@@ -26,27 +26,6 @@ import AddressFormButtons from './AddressFormButtons';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import PrimaryAddressToggle from './PrimaryAddressToggle';
 
-interface Props {
-  country: ExtendedCountryCode | '';
-  setCountry: SetState<ExtendedCountryCode | ''>;
-  label: string;
-  processFormData: (data: AddressFormData) => Promise<void>;
-  defaultAddressDetail: {
-    address: string;
-    address2: Nullable<string>;
-    city: string;
-    zipCode: string;
-    state: Nullable<string>;
-    type: AddressType;
-  };
-  setIsModalOpen: SetState<boolean>;
-  isLoading: boolean;
-  setAddressAction: SetState<AddressAction | null>;
-  showPrimaryAddressToggle: boolean;
-  primaryAddressChecked: boolean;
-  setPrimaryAddressChecked: SetState<boolean>;
-}
-
 export type AddressFormData = {
   address: string;
   address2: Nullable<string>;
@@ -54,6 +33,20 @@ export type AddressFormData = {
   zipCode: string;
   state: Nullable<string>;
 };
+
+interface Props {
+  country: ExtendedCountryCode | '';
+  setCountry: SetState<ExtendedCountryCode | ''>;
+  label: string;
+  processFormData: (data: AddressFormData) => Promise<void>;
+  defaultAddressDetail: AddressFormData & { type: AddressType };
+  setIsModalOpen: SetState<boolean>;
+  isLoading: boolean;
+  setAddressAction: SetState<AddressAction | null>;
+  showPrimaryAddressToggle: boolean;
+  primaryAddressChecked: boolean;
+  setPrimaryAddressChecked: SetState<boolean>;
+}
 
 const AddressForm = ({
   country,
