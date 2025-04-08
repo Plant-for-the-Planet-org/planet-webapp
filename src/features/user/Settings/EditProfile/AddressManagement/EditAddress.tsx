@@ -1,7 +1,7 @@
 import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, AddressType, APIError } from '@planet-sdk/common';
-import type { FormData } from './AddAddress';
+import type { AddressFormData } from './microComponents/AddressForm';
 import type { AddressAction } from '../../../../common/types/profile';
 
 import { useState, useContext, useCallback, useEffect } from 'react';
@@ -23,7 +23,7 @@ interface Props {
   showPrimaryAddressToggle: boolean;
 }
 
-type EditAddressApiPayload = FormData & {
+type EditAddressApiPayload = AddressFormData & {
   country: ExtendedCountryCode | string;
   type: AddressType;
 };
@@ -63,7 +63,7 @@ const EditAddress = ({
   }, [selectedAddressForAction]);
 
   const updateAddress = useCallback(
-    async (data: FormData) => {
+    async (data: AddressFormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
       const payload: EditAddressApiPayload = {

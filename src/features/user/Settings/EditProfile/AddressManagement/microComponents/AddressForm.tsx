@@ -2,7 +2,6 @@ import type { AddressSuggestionsType } from '../../../../../common/types/geocode
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
-import type { FormData } from '../AddAddress';
 import type { AddressAction } from '../../../../../common/types/profile';
 import type { AddressType } from '@planet-sdk/common';
 
@@ -31,7 +30,7 @@ interface Props {
   country: ExtendedCountryCode | '';
   setCountry: SetState<ExtendedCountryCode | ''>;
   label: string;
-  processFormData: (data: FormData) => Promise<void>;
+  processFormData: (data: AddressFormData) => Promise<void>;
   defaultAddressDetail: {
     address: string;
     address2: Nullable<string>;
@@ -47,6 +46,14 @@ interface Props {
   primaryAddressChecked: boolean;
   setPrimaryAddressChecked: SetState<boolean>;
 }
+
+export type AddressFormData = {
+  address: string;
+  address2: Nullable<string>;
+  city: string;
+  zipCode: string;
+  state: Nullable<string>;
+};
 
 const AddressForm = ({
   country,
@@ -71,7 +78,7 @@ const AddressForm = ({
     setValue,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<AddressFormData>({
     mode: 'onBlur',
     defaultValues: defaultAddressDetail,
   });

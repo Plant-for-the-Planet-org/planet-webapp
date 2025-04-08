@@ -2,7 +2,7 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
-import type { Nullable } from '@planet-sdk/common/build/types/util';
+import type { AddressFormData } from './microComponents/AddressForm';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
@@ -15,15 +15,7 @@ import AddressFormLayout from './microComponents/AddressFormLayout';
 import { getStoredConfig } from '../../../../../utils/storeConfig';
 import { useApi } from '../../../../../hooks/useApi';
 
-export type FormData = {
-  address: string;
-  address2: Nullable<string>;
-  city: string;
-  zipCode: string;
-  state: Nullable<string>;
-};
-
-export type AddAddressApiPayload = FormData & {
+export type AddAddressApiPayload = AddressFormData & {
   country: ExtendedCountryCode | string;
   type: 'other' | 'primary';
 };
@@ -63,7 +55,7 @@ const AddAddress = ({
   const [primaryAddressChecked, setPrimaryAddressChecked] = useState(false);
 
   const addAddress = useCallback(
-    async (data: FormData) => {
+    async (data: AddressFormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
       const payload: AddAddressApiPayload = {
