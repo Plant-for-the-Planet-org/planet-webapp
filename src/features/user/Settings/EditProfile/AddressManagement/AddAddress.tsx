@@ -2,6 +2,7 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
+import type { Nullable } from '@planet-sdk/common/build/types/util';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
@@ -15,11 +16,11 @@ import { getStoredConfig } from '../../../../../utils/storeConfig';
 import { useApi } from '../../../../../hooks/useApi';
 
 export type FormData = {
-  address: string | undefined;
-  address2: string | null;
-  city: string | undefined;
-  zipCode: string | undefined;
-  state: string | null;
+  address: string;
+  address2: Nullable<string>;
+  city: string;
+  zipCode: string;
+  state: Nullable<string>;
 };
 
 export type AddAddressApiPayload = FormData & {

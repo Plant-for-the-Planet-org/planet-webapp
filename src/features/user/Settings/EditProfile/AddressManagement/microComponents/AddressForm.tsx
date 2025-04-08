@@ -33,11 +33,11 @@ interface Props {
   label: string;
   processFormData: (data: FormData) => Promise<void>;
   defaultAddressDetail: {
-    address: string | undefined;
-    address2: Nullable<string> | undefined;
-    city: string | undefined;
-    zipCode: string | undefined;
-    state: Nullable<string> | undefined;
+    address: string;
+    address2: Nullable<string>;
+    city: string;
+    zipCode: string;
+    state: Nullable<string>;
     type: AddressType;
   };
   setIsModalOpen: SetState<boolean>;
