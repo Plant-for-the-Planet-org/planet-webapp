@@ -13,11 +13,6 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
-import {
-  getAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../utils/apiRequests/api';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -25,7 +20,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -36,6 +31,15 @@ export enum ProjectCreationTabs {
   PROJECT_SPENDING = 5,
   REVIEW = 6,
 }
+
+type RequestReviewApiPayload = {
+  reviewRequested: boolean;
+};
+
+type PublishStatusApiPayload = {
+  publish: boolean;
+};
+
 export default function ManageProjects({
   GUID,
   token,
@@ -43,10 +47,9 @@ export default function ManageProjects({
 }: ManageProjectsProps) {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
   const router = useRouter();
+  const { putApiAuthenticated, getApiAuthenticated } = useApi();
   const [tabSelected, setTabSelected] = React.useState<number>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [projectGUID, setProjectGUID] = React.useState<string>(
@@ -100,19 +103,16 @@ export default function ManageProjects({
 
   const submitForReview = async () => {
     setIsUploadingData(true);
-    const submitData = {
+    const requestReviewPayload = {
       reviewRequested: true,
     };
 
     try {
-      const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
-      >({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}`,
-        data: submitData,
-        token,
-        logoutUser,
+      const res = await putApiAuthenticated<
+        ProfileProjectTrees | ProfileProjectConservation,
+        RequestReviewApiPayload
+      >(`/app/projects/${projectGUID}`, {
+        payload: requestReviewPayload,
       });
       setProjectDetails(res);
       setIsUploadingData(false);
@@ -124,19 +124,16 @@ export default function ManageProjects({
 
   const handlePublishChange = async (val: boolean) => {
     setIsUploadingData(true);
-    const submitData = {
+    const publishStatusPayload = {
       publish: val,
     };
 
     try {
-      const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
-      >({
-        tenant: tenantConfig?.id,
-        url: `/app/projects/${projectGUID}`,
-        data: submitData,
-        token,
-        logoutUser,
+      const res = await putApiAuthenticated<
+        ProfileProjectTrees | ProfileProjectConservation,
+        PublishStatusApiPayload
+      >(`/app/projects/${projectGUID}`, {
+        payload: publishStatusPayload,
       });
       setProjectDetails(res);
       setIsUploadingData(false);
@@ -150,14 +147,9 @@ export default function ManageProjects({
     // Fetch details of the project
     const fetchProjectDetails = async () => {
       try {
-        const res = await getAuthenticatedRequest<
+        const res = await getApiAuthenticated<
           ProfileProjectTrees | ProfileProjectConservation
-        >({
-          tenant: tenantConfig?.id,
-          url: `/app/profile/projects/${projectGUID}`,
-          token,
-          logoutUser,
-        });
+        >(`/app/profile/projects/${projectGUID}`);
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -275,7 +267,6 @@ export default function ManageProjects({
         return (
           <BasicDetails
             handleNext={handleNext}
-            token={token}
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             setProjectGUID={setProjectGUID}
@@ -319,7 +310,6 @@ export default function ManageProjects({
         return (
           <ProjectSites
             handleNext={handleNext}
-            token={token}
             handleBack={handleBack}
             projectGUID={projectGUID}
             projectDetails={projectDetails}
