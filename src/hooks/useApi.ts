@@ -276,7 +276,7 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'PUT'>
+    config: ApiConfig<P, 'PUT'> = { payload: {} as P }
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
