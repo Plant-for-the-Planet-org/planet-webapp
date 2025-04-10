@@ -17,6 +17,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface Props {
   contributionGUID: string;
@@ -33,6 +34,7 @@ export default function UploadImages({
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
+  const { deleteApiAuthenticated } = useApi();
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
@@ -85,12 +87,9 @@ export default function UploadImages({
 
   const deleteContributionImage = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/contributions/${contributionGUID}/images/${id}`,
-        token,
-        logoutUser,
-      });
+      await deleteApiAuthenticated(
+        `/app/contributions/${contributionGUID}/images/${id}`
+      );
       const uploadedImagesTemp = uploadedImages;
       const index = uploadedImagesTemp.findIndex((item) => {
         return item.id === id;
