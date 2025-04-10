@@ -27,10 +27,7 @@ import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import { Button, MenuItem, TextField } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import {
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../../utils/apiRequests/api';
+import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
@@ -41,6 +38,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useApi } from '../../../../../hooks/useApi';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -174,6 +172,7 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
+  const { getApiAuthenticated } = useApi();
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -212,12 +211,9 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest<MapProject[]>({
-        tenant: tenantConfig?.id,
-        url: '/app/profile/projects',
-        token,
-        logoutUser,
-      });
+      const projects = await getApiAuthenticated<MapProject[]>(
+        '/app/profile/projects'
+      );
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -226,12 +222,9 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species = await getAuthenticatedRequest<Species[]>({
-        tenant: tenantConfig?.id,
-        url: '/treemapper/species',
-        token,
-        logoutUser,
-      });
+      const species = await getApiAuthenticated<Species[]>(
+        '/treemapper/species'
+      );
       setMySpecies(species);
     } catch (err) {
       setErrors(handleError(err as APIError));
