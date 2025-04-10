@@ -26,7 +26,10 @@ import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { buildProjectDetailsQuery } from '../../utils/projectV2';
+import {
+  buildProjectDetailsQuery,
+  isValidClassification,
+} from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
 
 interface ProjectsState {
@@ -117,6 +120,28 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const router = useRouter();
   const { getApi } = useApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
+  // Read filter from URL only on initial load
+  useEffect(() => {
+    if (router.isReady && page === 'project-list') {
+      const { filter, donatable_projects_only } = router.query;
+
+      // Initialize classification filters from URL
+      if (filter) {
+        const filterValues = typeof filter === 'string' ? [filter] : filter;
+        const validFilters = filterValues.filter(isValidClassification);
+
+        if (validFilters.length > 0) {
+          setSelectedClassification(validFilters);
+        }
+      }
+
+      // Initialize donation filter from URL
+      if (donatable_projects_only === 'true') {
+        setShowDonatableProjects(true);
+      }
+    }
+  }, [router.isReady]);
 
   //* Function to filter projects that accept donations
   const filterByDonation = (projects: MapProject[]) => {
@@ -370,6 +395,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedSite,
     hasNoSites,
   ]);
+
   useEffect(() => {
     if (
       !router.isReady ||

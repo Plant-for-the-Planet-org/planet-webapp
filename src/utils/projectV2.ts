@@ -95,6 +95,12 @@ export const availableFilters: TreeProjectClassification[] = [
   'other-planting',
 ];
 
+export const isValidClassification = (
+  value: string
+): value is TreeProjectClassification => {
+  return availableFilters.includes(value as TreeProjectClassification);
+};
+
 /**
  * Retrieves the information of a plant location based on a user's interaction with the map.
  *

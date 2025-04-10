@@ -21,7 +21,7 @@ import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
 import SingleProjectDetails from '../../../../../src/features/projects/screens/SingleProjectDetails';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import { useApi } from '../../../../../src/hooks/useApi';
 import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
 import ProjectDetailsMeta from '../../../../../src/utils/getMetaTags/ProjectDetailsMeta';
 import { getAllPlantLocations } from '../../../../../src/utils/maps/plantLocations';
@@ -48,6 +48,7 @@ export default function Donate({
   pageProps,
 }: Props) {
   const router = useRouter();
+  const { getApi } = useApi();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
     string | undefined | null
   >(undefined);
@@ -95,15 +96,15 @@ export default function Donate({
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
-          const project = await getRequest<ProjectExtended>({
-            tenant: pageProps.tenantConfig.id,
-            url: encodeURI(`/app/projects/${p}`),
-            queryParams: {
-              _scope: 'extended',
-              currency: currency || '',
-              locale: locale,
-            },
-          });
+          const project = await getApi<ProjectExtended>(
+            encodeURI(`/app/projects/${p}`),
+            {
+              queryParams: {
+                _scope: 'extended',
+                currency: currency || '',
+              },
+            }
+          );
           if (
             project.purpose === 'conservation' ||
             project.purpose === 'trees'
