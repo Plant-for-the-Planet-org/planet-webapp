@@ -4,10 +4,7 @@ import type { APIError, Image } from '@planet-sdk/common';
 import React from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
-import {
-  deleteAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslations } from 'next-intl';
@@ -17,11 +14,17 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface Props {
   contributionGUID: string;
   token: string | null;
 }
+
+type UploadImageApiPayload = {
+  imageFile: string;
+  description: string;
+};
 
 export default function UploadImages({
   contributionGUID,
@@ -33,22 +36,22 @@ export default function UploadImages({
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
+  const { postApiAuthenticated } = useApi();
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
-    const submitData = {
+    const payload: UploadImageApiPayload = {
       imageFile: image,
       description: '',
     };
 
     try {
-      const res = await postAuthenticatedRequest<Image>({
-        tenant: tenantConfig?.id,
-        url: `/app/contributions/${contributionGUID}/images`,
-        data: submitData,
-        token,
-        logoutUser,
-      });
+      const res = await postApiAuthenticated<Image, UploadImageApiPayload>(
+        `/app/contributions/${contributionGUID}/images`,
+        {
+          payload,
+        }
+      );
       const newUploadedImages: Image[] = uploadedImages;
       newUploadedImages.push(res);
       setUploadedImages(newUploadedImages);
