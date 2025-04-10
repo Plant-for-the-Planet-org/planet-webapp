@@ -11,7 +11,6 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import React from 'react';
-import { getAuthenticatedRequest } from '../../../../../src/utils/apiRequests/api';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -28,6 +27,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useApi } from '../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -39,7 +39,8 @@ function RecurrentDonations({
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { token, contextLoaded } = useUserProps();
+  const { getApiAuthenticated } = useApi();
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
@@ -57,12 +58,10 @@ function RecurrentDonations({
     setIsDataLoading(true);
     setProgress(70);
     try {
-      const recurrencies = await getAuthenticatedRequest<Subscription[]>({
-        tenant: tenantConfig.id,
-        url: '/app/subscriptions',
-        token,
-        logoutUser,
-      });
+      const recurrencies = await getApiAuthenticated<Subscription[]>(
+        '/app/subscriptions'
+      );
+
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
           (obj) => obj.status == 'active' || obj.status == 'trialing'

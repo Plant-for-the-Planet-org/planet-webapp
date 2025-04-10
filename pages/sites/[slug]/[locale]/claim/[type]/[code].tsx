@@ -12,7 +12,6 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
@@ -30,18 +29,22 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useApi } from '../../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
 }
 
+type RedeemCodePayload = {
+  code: string;
+};
+
 function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
-    useUserProps();
-
+  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { postApiAuthenticated } = useApi();
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
   const [code, setCode] = React.useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
@@ -79,18 +82,15 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   };
 
   async function redeemingCode(code: string): Promise<void> {
-    const submitData = {
+    const submitData: RedeemCodePayload = {
       code: code,
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>({
-          tenant: pageProps.tenantConfig.id,
-          url: `/app/redeem`,
-          data: submitData,
-          token,
-          logoutUser,
-        });
+        const res = await postApiAuthenticated<
+          RedeemedCodeData,
+          RedeemCodePayload
+        >(`/app/redeem`, { payload: submitData });
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);

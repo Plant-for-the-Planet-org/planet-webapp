@@ -10,11 +10,10 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -32,8 +31,8 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { user, setUser } = useUserProps();
+  const { putApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
   const {
     handleSubmit,
@@ -47,12 +46,8 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsProcessing(true);
 
     try {
-      const res = await putAuthenticatedRequest<User>({
-        tenant: tenantConfig?.id,
-        url: '/app/profile',
-        data: { scheduleFrequency: data.scheduleFrequency },
-        token,
-        logoutUser,
+      const res = await putApiAuthenticated<User>('/app/profile', {
+        payload: { scheduleFrequency: data.scheduleFrequency },
       });
       setUser(res);
       setIsSaved(true);
