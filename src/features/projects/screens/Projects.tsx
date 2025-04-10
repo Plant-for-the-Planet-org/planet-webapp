@@ -24,8 +24,8 @@ import { useApi } from '../../../hooks/useApi';
 
 interface Props {
   projects: MapProject[];
-  showProjects: Boolean;
-  setShowProjects: Function;
+  showProjects: boolean;
+  setShowProjects: SetState<boolean>;
   setsearchedProjects: SetState<MapProject[]>;
 }
 
