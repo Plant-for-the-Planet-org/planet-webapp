@@ -5,8 +5,6 @@ import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -24,7 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -46,6 +44,11 @@ interface PauseModalProps {
   record: Subscription;
   fetchRecurrentDonations: (next?: boolean | undefined) => void;
 }
+type PauseType = 'custom-date' | 'infinite';
+type PauseSubscriptionApiPayload = {
+  pauseType: PauseType;
+  pauseUntil: string | null | undefined;
+};
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -54,8 +57,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
-  const { tenantConfig } = useTenant();
-  const { token, logoutUser } = useUserProps();
+  const { putApiAuthenticated } = useApi();
   const [option, setoption] = React.useState<string>();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(
@@ -78,11 +80,12 @@ export const PauseModal = ({
 
   const pauseDonation = async () => {
     setDisabled(true);
-    const bodyToSend = {
-      pauseType:
-        option == 'pauseForMonth' || option == 'pauseUntilDate'
-          ? 'custom-date'
-          : 'infinite', //custom-date | infinite
+    const pauseType: PauseType =
+      option === 'pauseForMonth' || option === 'pauseUntilDate'
+        ? 'custom-date'
+        : 'infinite';
+    const payload = {
+      pauseType,
       pauseUntil:
         option == 'pauseForMonth' || option == 'pauseUntilDate'
           ? date?.toISOString().split('T')[0]
@@ -90,13 +93,13 @@ export const PauseModal = ({
     };
 
     try {
-      await putAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: `/app/subscriptions/${record.id}?scope=pause`,
-        data: bodyToSend,
-        token,
-        logoutUser,
-      });
+      await putApiAuthenticated<Subscription, PauseSubscriptionApiPayload>(
+        `/app/subscriptions/${record.id}`,
+        {
+          queryParams: { scope: 'pause' },
+          payload,
+        }
+      );
       handlePauseModalClose();
       fetchRecurrentDonations();
     } catch (err) {

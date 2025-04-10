@@ -1,15 +1,10 @@
 import type { SxProps } from '@mui/material';
 import type { APIError } from '@planet-sdk/common';
-import type {
-  ModifyDonations,
-  Subscription,
-} from '../../common/types/payments';
+import type { Subscription } from '../../common/types/payments';
 
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { Controller, useForm } from 'react-hook-form';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
@@ -29,14 +24,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
-
-// interface EditDonationProps {
-//   editModalOpen
-//   handleEditModalClose
-//   record: Object;
-//   // seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
-// }
+import { useApi } from '../../../hooks/useApi';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -75,9 +63,9 @@ export const EditModal = ({
   fetchRecurrentDonations,
 }: EditModalProps) => {
   const { theme } = React.useContext(ThemeContext);
-  const { tenantConfig } = useTenant();
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
+  const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
   const locale = useLocale();
   const {
@@ -87,7 +75,6 @@ export const EditModal = ({
   } = useForm<FormData>({
     mode: 'all',
   });
-  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -99,15 +86,16 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
-  interface BodyToSendType {
+  interface ModifySubscriptionApiPayload {
     nextBilling?: string | null;
     centAmount?: number;
     frequency?: string;
+    [key: string]: unknown;
   }
 
   const onSubmit = async (data: FormData) => {
     setDisabled(true);
-    const bodyToSend: BodyToSendType = {
+    const payload: ModifySubscriptionApiPayload = {
       nextBilling:
         record.method !== 'paypal'
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
@@ -118,27 +106,28 @@ export const EditModal = ({
     if (
       new Date(data.currentPeriodEnd).toDateString() ==
         new Date(record.currentPeriodEnd).toDateString() ||
-      bodyToSend.nextBilling === null
+      payload.nextBilling === null
     ) {
-      delete bodyToSend.nextBilling;
+      delete payload.nextBilling;
     }
     if (data.frequency.toLowerCase() === record.frequency) {
-      delete bodyToSend.frequency;
+      delete payload.frequency;
     }
     if (data.amount == record.amount) {
-      delete bodyToSend.centAmount;
+      delete payload.centAmount;
     }
 
-    if (Object.keys(bodyToSend).length !== 0) {
+    if (Object.keys(payload).length !== 0) {
       try {
-        const res = await putAuthenticatedRequest<ModifyDonations>({
-          tenant: tenantConfig?.id,
-          url: `/app/subscriptions/${record?.id}?scope=modify`,
-          data: bodyToSend,
-          token,
-          logoutUser,
+        const res = await putApiAuthenticated<
+          Subscription,
+          ModifySubscriptionApiPayload
+        >(`/app/subscriptions/${record?.id}`, {
+          queryParams: { scope: 'modify' },
+          payload,
         });
-        if (res?.status === 'action_required') {
+        // TODO: Confirm if 'res.status' can actually be 'action_required'. Investigate possible status values
+        if (res.status === 'action_required') {
           window.open(res.response.confirmationUrl, '_blank');
         }
         handleEditModalClose();
