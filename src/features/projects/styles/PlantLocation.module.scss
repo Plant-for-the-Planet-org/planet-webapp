@@ -8,7 +8,7 @@
   padding: 16px;
   color: $primaryFontColor;
   div:first-child {
-    font-size: 18px;
+    font-size: $fontMedium;
   }
   span {
     font-weight: 700;
@@ -131,7 +131,7 @@
   position: absolute;
   z-index: 1;
   &.singleSelected {
-    background-color:  rgba(0, 122, 73, 1);
+    background-color: rgba(0, 122, 73, 1);
   }
 }
 

@@ -5,6 +5,7 @@ import React from 'react';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import { Divider, Grid, styled } from '@mui/material';
+import themeProperties from '../../../theme/themeProperties';
 
 interface Props {
   giftFund: GiftFund;
@@ -20,7 +21,7 @@ const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
     borderRadius: 9,
     boxShadow: theme.shadows[1],
     marginBottom: 24,
-    fontSize: '0.875rem',
+    fontSize: themeProperties.fontSizes.fontSmall,
     gap: 16,
     '& .container_heading': {
       fontWeight: theme.typography.fontWeightBold,

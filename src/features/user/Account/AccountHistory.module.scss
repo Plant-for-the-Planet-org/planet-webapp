@@ -8,18 +8,6 @@
   width: 100%;
 }
 
-.historyTitle {
-  font-size: 2.25rem;
-  font-weight: 700;
-  width: 100%;
-  margin-bottom: 10px;
-  margin-top: 24px;
-}
-
-.historySubtitle {
-  font-size: 1rem;
-}
-
 .section {
   display: flex;
   flex-direction: row;
@@ -177,7 +165,7 @@
   .status {
     // color: $primaryColor;
     font-family: $primaryFontFamily;
-    font-size: 11px;
+    font-size: $fontXSmall;
     font-weight: 700;
     letter-spacing: 0.5px;
     border-radius: 14px;
@@ -245,7 +233,7 @@
   color: $primaryFontColor;
   > .header {
     font-weight: 700;
-    font-size: 18px;
+    font-size: $fontMedium;
   }
   > .filterGrid {
     display: flex;
@@ -489,7 +477,7 @@
   border-radius: 8px;
   display: inline-flex;
   .option {
-    font-size: 14px;
+    font-size: $fontSmall;
     font-family: $primaryFontFamily;
     color: $primaryFontColor;
     font-weight: 600;
@@ -630,7 +618,6 @@
     > .historyList {
       width: 100%;
       > .record.selected {
-        background-color: $backgroundColorDark;
         border-radius: 10px;
         max-height: 1000px;
         color: $primaryFontColor;
@@ -665,7 +652,6 @@
     > .recurrencyList {
       width: 100%;
       > .record.selected {
-        background-color: $backgroundColorDark;
         border-radius: 10px;
         // box-shadow: 1px 2px 8px -6px #707070;
         max-height: 1000px;
@@ -700,7 +686,7 @@
 
 .record {
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: $fontSmall;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -725,7 +711,7 @@
     display: none;
   }
   &.selected {
-    background-color: $backgroundColorDark;
+    background-color: $backgroundColor;
     border-radius: 10px;
     max-height: 1000px;
     color: $primaryFontColor;

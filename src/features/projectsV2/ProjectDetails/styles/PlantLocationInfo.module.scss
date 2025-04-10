@@ -19,7 +19,7 @@
 
 .treeCount {
   font-weight: 700;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: rgba(47, 51, 54, 1);
   span {
     font-weight: 400;
@@ -28,7 +28,7 @@
 
 .interventionTitle {
   font-weight: 700;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: rgba(47, 51, 54, 1);
   span {
     font-weight: 400;
@@ -36,20 +36,20 @@
 }
 
 .hid {
-  font-size: 14px;
+  font-size: $fontSmall;
   color: rgba(47, 51, 54, 1);
 }
 
 .plantingDetailsGroup {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: $fontXSmall;
   gap: 10px;
 }
 
 .otherInterventionGroup {
   display: flex;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 .otherInterventionDetailsItem {
@@ -68,13 +68,13 @@
 .label {
   color: rgba(0, 122, 73, 1);
   font-weight: 700;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 .showWholeArea,
 .data {
   font-weight: 400;
   margin-top: 3px;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 .showWholeArea {
@@ -89,7 +89,7 @@
   border-radius: 12px;
   color: rgba(0, 122, 73, 1);
   font-weight: 700;
-  font-size: 12px;
+  font-size: $fontXSmall;
   padding: 20px;
 }
 
@@ -111,7 +111,7 @@
     min-width: 90px;
     justify-content: space-between;
     p {
-      font-size: 12px;
+      font-size: $fontXSmall;
       font-weight: 600;
     }
   }
@@ -121,7 +121,7 @@
   background: rgba(0, 122, 73, 0.05);
   border-radius: 12px;
   padding: 20px;
-  font-size: 12px;
+  font-size: $fontXSmall;
   font-weight: 700;
   .mainLabel {
     color: rgba(0, 122, 73, 1);
@@ -144,7 +144,7 @@
 
 .scientificNameContainer {
   font-weight: 600;
-  font-size: 12px;
+  font-size: $fontXSmall;
   display: flex;
   color: rgba(47, 51, 54, 1);
   .scientificName {
@@ -166,7 +166,7 @@
 }
 
 .treeMapperLabelSubContainer {
-  font-size: 12px;
+  font-size: $fontXSmall;
   display: flex;
   gap: 2px;
   .treeMapperLabel {
@@ -181,7 +181,7 @@
 .singlePlantLocationHeading {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: $fontSmall;
   h1 {
     font-weight: 700;
   }

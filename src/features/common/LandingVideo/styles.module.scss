@@ -44,7 +44,7 @@
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
     font-weight: bold;
-    font-size: 16px;
+    font-size: $fontSixteen;
   }
   .landingVideoSkipButton:hover {
     transform: scale(1.05);
@@ -126,7 +126,6 @@
 .playButton {
   top: 100px;
 }
-
 
 @include xsPhoneView {
   .playButton {
