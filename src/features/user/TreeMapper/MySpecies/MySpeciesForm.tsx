@@ -74,7 +74,7 @@ export default function MySpeciesForm() {
 
   const addSpecies = async (species: NewSpecies) => {
     setIsUploadingData(true);
-    const data: SpeciesPayload = {
+    const payload: SpeciesPayload = {
       aliases:
         (species.aliases || species.aliases !== ''
           ? species.aliases
@@ -85,7 +85,7 @@ export default function MySpeciesForm() {
       await postApiAuthenticated<Species, SpeciesPayload>(
         `/treemapper/species`,
         {
-          payload: data,
+          payload,
         }
       );
     } catch (err) {

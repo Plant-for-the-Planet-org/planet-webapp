@@ -48,7 +48,7 @@ function TreeMapper(): ReactElement {
     if (next && links?.next) {
       try {
         const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
-          links.next,
+          links.next, // The 'links.next' URL contains query parameters and is passed as-is since no additional parameters are being added.
           {
             version: '1.0.4',
           }
