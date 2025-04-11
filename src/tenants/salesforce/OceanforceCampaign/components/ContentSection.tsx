@@ -11,14 +11,13 @@ import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHa
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
-import { getRequest } from '../../../../utils/apiRequests/api';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const currencyCode = getStoredCurrency();
-  const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
 
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
@@ -26,11 +25,9 @@ export default function ContentSection() {
   useEffect(() => {
     async function loadProject() {
       try {
-        const project = await getRequest<
+        const project = await getApi<
           TreeProjectExtended | ConservationProjectExtended
-        >({
-          tenant: tenantConfig.id,
-          url: `/app/projects/${projectSlug}`,
+        >(`/app/projects/${projectSlug}`, {
           queryParams: {
             _scope: 'extended',
             currency: currencyCode,

@@ -24,9 +24,9 @@ import { MyForestProvider } from '../../../../../src/features/common/Layout/MyFo
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
+import { useApi } from '../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -35,6 +35,7 @@ interface Props {
 const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
   const { setTenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  const { getApi } = useApi();
   const [profile, setProfile] = useState<null | UserPublicProfile>(null);
   const router = useRouter();
 
@@ -46,10 +47,9 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function loadPublicProfile(slug: string) {
     try {
-      const profileData = await getRequest<UserPublicProfile>({
-        tenant: tenantConfig.id,
-        url: `/app/profiles/${slug}`,
-      });
+      const profileData = await getApi<UserPublicProfile>(
+        `/app/profiles/${slug}`
+      );
       setProfile(profileData);
     } catch (err) {
       setErrors(handleError(err as APIError));
