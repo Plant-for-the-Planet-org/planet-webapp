@@ -16,7 +16,7 @@ import React from 'react';
 import ProjectsList from '../../../../../src/features/projects/screens/Projects';
 import ProjectsListMeta from '../../../../../src/utils/getMetaTags/ProjectsListMeta';
 import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import { useApi } from '../../../../../src/hooks/useApi';
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
 import Filters from '../../../../../src/features/projects/components/projects/Filters';
@@ -60,6 +60,7 @@ export default function Donate({
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const locale = useLocale();
   const router = useRouter();
+  const { getApi } = useApi();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
   const [showDirectGift, setShowDirectGift] = React.useState(true);
@@ -115,15 +116,11 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(locale);
         try {
-          const projects = await getRequest<MapProject[]>({
-            tenant: pageProps.tenantConfig.id,
-            url: `/app/projects`,
+          const projects = await getApi<MapProject[]>('/app/projects', {
             queryParams: {
               _scope: 'map',
               currency: currency,
-              tenant: pageProps.tenantConfig.id,
               'filter[purpose]': 'trees,conservation',
-              locale: locale,
             },
           });
           setProjects(projects);

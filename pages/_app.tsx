@@ -251,52 +251,52 @@ const PlanetWeb = ({
       >
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
-            <CurrencyProvider>
-              <TenantProvider>
-                <QueryParamsProvider>
-                  <div>
-                    <div
-                      style={
-                        showVideo &&
-                        (tenantConfig.config.slug === 'planet' ||
-                          tenantConfig.config.slug === 'ttc')
-                          ? {}
-                          : { display: 'none' }
-                      }
-                    >
-                      <VideoContainer setshowVideo={setshowVideo} />
-                    </div>
+            <TenantProvider>
+              <QueryParamsProvider>
+                <div>
+                  <div
+                    style={
+                      showVideo &&
+                      (tenantConfig.config.slug === 'planet' ||
+                        tenantConfig.config.slug === 'ttc')
+                        ? {}
+                        : { display: 'none' }
+                    }
+                  >
+                    <VideoContainer setshowVideo={setshowVideo} />
+                  </div>
 
-                    <div
-                      style={
-                        showVideo &&
-                        (tenantConfig.config.slug === 'planet' ||
-                          tenantConfig.config.slug === 'ttc')
-                          ? { display: 'none' }
-                          : {}
+                  <div
+                    style={
+                      showVideo &&
+                      (tenantConfig.config.slug === 'planet' ||
+                        tenantConfig.config.slug === 'ttc')
+                        ? { display: 'none' }
+                        : {}
+                    }
+                  >
+                    <Auth0Provider
+                      domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+                      clientId={
+                        tenantConfig.config?.auth0ClientId
+                          ? tenantConfig.config.auth0ClientId
+                          : process.env.AUTH0_CLIENT_ID
                       }
+                      redirectUri={
+                        typeof window !== 'undefined'
+                          ? window.location.origin
+                          : ''
+                      }
+                      audience={'urn:plant-for-the-planet'}
+                      cacheLocation={'localstorage'}
+                      onRedirectCallback={onRedirectCallback}
+                      useRefreshTokens={true}
                     >
-                      <Auth0Provider
-                        domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-                        clientId={
-                          tenantConfig.config?.auth0ClientId
-                            ? tenantConfig.config.auth0ClientId
-                            : process.env.AUTH0_CLIENT_ID
-                        }
-                        redirectUri={
-                          typeof window !== 'undefined'
-                            ? window.location.origin
-                            : ''
-                        }
-                        audience={'urn:plant-for-the-planet'}
-                        cacheLocation={'localstorage'}
-                        onRedirectCallback={onRedirectCallback}
-                        useRefreshTokens={true}
-                      >
-                        <ThemeProvider>
-                          <MuiThemeProvider theme={materialTheme}>
-                            <CssBaseline />
-                            <UserPropsProvider>
+                      <ThemeProvider>
+                        <MuiThemeProvider theme={materialTheme}>
+                          <CssBaseline />
+                          <UserPropsProvider>
+                            <CurrencyProvider>
                               <PlanetCashProvider>
                                 <PayoutsProvider>
                                   <Layout>
@@ -317,15 +317,15 @@ const PlanetWeb = ({
                                   </Layout>
                                 </PayoutsProvider>
                               </PlanetCashProvider>
-                            </UserPropsProvider>
-                          </MuiThemeProvider>
-                        </ThemeProvider>
-                      </Auth0Provider>
-                    </div>
+                            </CurrencyProvider>
+                          </UserPropsProvider>
+                        </MuiThemeProvider>
+                      </ThemeProvider>
+                    </Auth0Provider>
                   </div>
-                </QueryParamsProvider>
-              </TenantProvider>
-            </CurrencyProvider>
+                </div>
+              </QueryParamsProvider>
+            </TenantProvider>
           </ErrorHandlingProvider>
         </CacheProvider>
       </NextIntlClientProvider>
