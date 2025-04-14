@@ -8,9 +8,13 @@ import type { SetState } from '../types/common';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
-import { getAccountInfo } from '../../../utils/apiRequests/api';
+import React, { useCallback, useContext } from 'react';
 import { useTenant } from './TenantContext';
+import { useLocale } from 'next-intl';
+import getsessionId from '../../../utils/apiRequests/getSessionId';
+import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
+import { APIError } from '@planet-sdk/common';
+import type { ImpersonationData } from '../../../utils/apiRequests/impersonation';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -31,13 +35,13 @@ interface UserPropsContextInterface {
   loadUser: () => Promise<void>;
   refetchUserData: boolean;
   setRefetchUserData: SetState<boolean>;
+  fetchUserProfile: (impersonationData?: ImpersonationData) => Promise<User>;
 }
 
 export const UserPropsContext =
   React.createContext<UserPropsContextInterface | null>(null);
 
 export const UserPropsProvider: FC = ({ children }) => {
-  const router = useRouter();
   const {
     isLoading,
     isAuthenticated,
@@ -47,8 +51,10 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
+  const router = useRouter();
   const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = React.useState(false);
+  const locale = useLocale();
   const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<User | null>(null);
   const [userLang, setUserLang] = React.useState<string>('en');
@@ -98,36 +104,66 @@ export const UserPropsProvider: FC = ({ children }) => {
     logout({ returnTo: returnUrl });
   };
 
+  const fetchUserProfile = useCallback(
+    async (impersonationData?: ImpersonationData) => {
+      const header = {
+        'tenant-key': `${tenantConfig.id}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': locale,
+      };
+      try {
+        const response = await fetch(
+          `${process.env.API_ENDPOINT}/app/profile`,
+          {
+            method: 'GET',
+            headers: setHeaderForImpersonation(header, impersonationData),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new APIError(response.status, errorData);
+        }
+        return response.status === 204 ? true : await response.json();
+      } catch (err) {
+        console.error('Error during API call:', err);
+        throw err;
+      }
+    },
+    [token, tenantConfig.id, locale, getsessionId]
+  );
+
   async function loadUser() {
     setContextLoaded(false);
     try {
-      // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
-
-      const res = await getAccountInfo({ tenant: tenantConfig?.id, token });
-      if (res.status === 200) {
-        const resJson = await res.json();
-        setUser(resJson as User);
-      } else if (res.status === 303) {
-        // if 303 -> user does not exist in db
-        setUser(null);
-        if (typeof window !== 'undefined') {
-          router.push('/complete-signup');
-        }
-      } else if (res.status === 401) {
-        // in case of 401 - invalid token: signIn()
-        setUser(null);
-        setToken(null);
-        loginWithRedirect({
-          redirectUri: `${window.location.origin}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
-      } else if (res.status === 403) {
-        localStorage.removeItem('impersonationData');
-      } else {
-        //any other error
-      }
+      const res = await fetchUserProfile();
+      setUser(res);
     } catch (err) {
-      console.log(err);
+      if (err instanceof APIError) {
+        switch (err.statusCode) {
+          case 303:
+            setUser(null);
+            router.push('/complete-signup');
+            break;
+          case 401:
+            setUser(null);
+            setToken(null);
+            loginWithRedirect({
+              redirectUri: `${window.location.origin}/login`,
+              ui_locales: localStorage.getItem('language') || 'en',
+            });
+            break;
+          case 403:
+            localStorage.removeItem('impersonationData');
+            break;
+          default:
+            console.error('API error:', err.message);
+            break;
+        }
+      } else {
+        console.error('Unexpected error:', err);
+      }
     }
     setContextLoaded(true);
   }
@@ -170,6 +206,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     loadUser,
     refetchUserData,
     setRefetchUserData,
+    fetchUserProfile,
   };
   return (
     <UserPropsContext.Provider value={value}>
