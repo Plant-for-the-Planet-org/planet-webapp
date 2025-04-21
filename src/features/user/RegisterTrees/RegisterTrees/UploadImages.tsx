@@ -4,10 +4,7 @@ import type { APIError, Image } from '@planet-sdk/common';
 import React from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
-import {
-  deleteAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslations } from 'next-intl';

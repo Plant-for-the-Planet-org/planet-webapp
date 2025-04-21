@@ -50,6 +50,13 @@ interface EditModalProps {
   fetchRecurrentDonations: (next?: boolean | undefined) => void;
 }
 
+interface ModifySubscriptionApiPayload {
+  nextBilling?: string | null;
+  centAmount?: number;
+  frequency?: string;
+  [key: string]: unknown;
+}
+
 type FormData = {
   amount: number;
   frequency: string;
@@ -86,13 +93,6 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
-  interface ModifySubscriptionApiPayload {
-    nextBilling?: string | null;
-    centAmount?: number;
-    frequency?: string;
-    [key: string]: unknown;
-  }
-
   const onSubmit = async (data: FormData) => {
     setDisabled(true);
     const payload: ModifySubscriptionApiPayload = {
@@ -126,6 +126,7 @@ export const EditModal = ({
           queryParams: { scope: 'modify' },
           payload,
         });
+        console.log('res', res);
         // TODO: Confirm if 'res.status' can actually be 'action_required'. Investigate possible status values
         if (res.status === 'action_required') {
           window.open(res.response.confirmationUrl, '_blank');

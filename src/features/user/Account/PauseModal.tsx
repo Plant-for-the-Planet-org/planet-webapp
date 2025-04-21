@@ -80,12 +80,10 @@ export const PauseModal = ({
 
   const pauseDonation = async () => {
     setDisabled(true);
-    const pauseType: PauseType =
-      option === 'pauseForMonth' || option === 'pauseUntilDate'
-        ? 'custom-date'
-        : 'infinite';
     const payload = {
-      pauseType,
+      pauseType: (option === 'pauseForMonth' || option === 'pauseUntilDate'
+        ? 'custom-date'
+        : 'infinite') as PauseType,
       pauseUntil:
         option == 'pauseForMonth' || option == 'pauseUntilDate'
           ? date?.toISOString().split('T')[0]
