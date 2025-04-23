@@ -103,7 +103,7 @@
   background: rgba(0, 122, 73, 0.05);
   border-radius: 8px;
   padding: 8px 9px;
-  font-size: 12px;
+  font-size: $fontXSmall;
   margin-bottom: 10px;
 
   h2 {
@@ -149,7 +149,7 @@
   max-width: 189px;
   background: #fff;
   padding: 12px;
-  font-size: 10px;
+  font-size: $fontXXSmall;
 
   .label {
     font-weight: 600;

@@ -8,7 +8,7 @@
     font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
+    font-size: $sfFontLarge;
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
@@ -32,7 +32,7 @@
     color: #181818;
     small {
       font-weight: normal;
-      font-size: 15px;
+      font-size: $sfFontBase;
       line-height: 24px;
       color: #1a1a1a;
     }
