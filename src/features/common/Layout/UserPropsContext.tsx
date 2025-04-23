@@ -5,16 +5,22 @@ import type {
 import type { FC } from 'react';
 import type { User } from '@planet-sdk/common/build/types/user';
 import type { SetState } from '../types/common';
+import type { ImpersonationData } from '../../../utils/apiRequests/impersonation';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { useCallback, useContext } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useTenant } from './TenantContext';
 import { useLocale } from 'next-intl';
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
-import type { ImpersonationData } from '../../../utils/apiRequests/impersonation';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -38,8 +44,9 @@ interface UserPropsContextInterface {
   fetchUserProfile: (impersonationData?: ImpersonationData) => Promise<User>;
 }
 
-export const UserPropsContext =
-  React.createContext<UserPropsContextInterface | null>(null);
+export const UserPropsContext = createContext<UserPropsContextInterface | null>(
+  null
+);
 
 export const UserPropsProvider: FC = ({ children }) => {
   const {
@@ -52,25 +59,24 @@ export const UserPropsProvider: FC = ({ children }) => {
     error,
   } = useAuth0();
   const router = useRouter();
-  const { tenantConfig } = useTenant();
-  const [contextLoaded, setContextLoaded] = React.useState(false);
   const locale = useLocale();
-  const [token, setToken] = React.useState<string | null>(null);
-  const [profile, setUser] = React.useState<User | null>(null);
-  const [userLang, setUserLang] = React.useState<string>('en');
-  const [isImpersonationModeOn, setIsImpersonationModeOn] =
-    React.useState(false);
-  const [refetchUserData, setRefetchUserData] = React.useState(false);
-  const [redirectCount, setRedirectCount] = React.useState(0);
+  const { tenantConfig } = useTenant();
+  const [contextLoaded, setContextLoaded] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [profile, setUser] = useState<User | null>(null);
+  const [userLang, setUserLang] = useState<string>('en');
+  const [isImpersonationModeOn, setIsImpersonationModeOn] = useState(false);
+  const [refetchUserData, setRefetchUserData] = useState(false);
+  const [redirectCount, setRedirectCount] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadToken() {
       try {
         const accessToken = await getAccessTokenSilently();
@@ -168,13 +174,13 @@ export const UserPropsProvider: FC = ({ children }) => {
     setContextLoaded(true);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       loadUser();
     }
   }, [token, refetchUserData]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       !isLoading &&
       (user === undefined || error !== undefined || !isAuthenticated)
