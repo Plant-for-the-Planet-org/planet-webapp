@@ -46,7 +46,7 @@
     font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: 42px;
+    font-size: $sfFontXXL;
     line-height: 45px;
     letter-spacing: -0.006em;
     color: #032d60;
@@ -54,7 +54,7 @@
     margin-bottom: 20px;
 
     @include lgLaptopView {
-      font-size: 72px;
+      font-size: $sfFontDisplay3;
       line-height: 80px;
       text-align: center;
       font-weight: 500;
@@ -65,7 +65,7 @@
     font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
+    font-size: $sfFontLarge;
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
@@ -84,13 +84,13 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
-    font-size: 15px;
+    font-size: $sfFontBase;
     line-height: 24px;
     text-align: center;
     color: #032d60;
     margin-bottom: 20px;
     @include lgLaptopView {
-      font-size: 15px;
+      font-size: $sfFontBase;
       line-height: 24px;
     }
   }
