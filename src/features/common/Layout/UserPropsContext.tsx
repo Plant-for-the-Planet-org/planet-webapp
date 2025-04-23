@@ -105,31 +105,30 @@ export const UserPropsProvider: FC = ({ children }) => {
   };
 
   const fetchUserProfile = useCallback(
-    async (impersonationData?: ImpersonationData) => {
+    async (impersonationData?: ImpersonationData): Promise<User> => {
+      if (!process.env.API_ENDPOINT) {
+        throw new Error(
+          'API_ENDPOINT is not defined in the environment variables.'
+        );
+      }
+      const sessionId = await getsessionId();
       const header = {
         'tenant-key': `${tenantConfig.id}`,
-        'X-SESSION-ID': await getsessionId(),
+        'X-SESSION-ID': sessionId,
         Authorization: `Bearer ${token}`,
         'x-locale': locale,
       };
-      try {
-        const response = await fetch(
-          `${process.env.API_ENDPOINT}/app/profile`,
-          {
-            method: 'GET',
-            headers: setHeaderForImpersonation(header, impersonationData),
-          }
-        );
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new APIError(response.status, errorData);
-        }
-        return response.status === 204 ? true : await response.json();
-      } catch (err) {
-        console.error('Error during API call:', err);
-        throw err;
+      const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+        method: 'GET',
+        headers: setHeaderForImpersonation(header, impersonationData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new APIError(response.status, errorData);
       }
+      return await response.json();
     },
     [token, tenantConfig.id, locale, getsessionId]
   );
@@ -156,6 +155,9 @@ export const UserPropsProvider: FC = ({ children }) => {
             break;
           case 403:
             localStorage.removeItem('impersonationData');
+            break;
+          case 500:
+            console.error('Internal Server Error:', err.message);
             break;
           default:
             console.error('API error:', err.message);

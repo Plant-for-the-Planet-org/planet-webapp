@@ -89,7 +89,10 @@ const ImpersonateUserForm = (): ReactElement => {
         router.push('/profile');
       } catch (err) {
         if (err instanceof APIError) {
+          console.error('API error:', err.message);
           if (err.statusCode === 403) setIsInvalidEmail(true);
+        } else {
+          console.error('Unexpected error:', err);
         }
       } finally {
         setIsProcessing(false);
