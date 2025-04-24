@@ -119,18 +119,13 @@ export const EditModal = ({
 
     if (Object.keys(payload).length !== 0) {
       try {
-        const res = await putApiAuthenticated<
-          Subscription,
-          ModifySubscriptionApiPayload
-        >(`/app/subscriptions/${record?.id}`, {
-          queryParams: { scope: 'modify' },
-          payload,
-        });
-        console.log('res', res);
-        // TODO: Confirm if 'res.status' can actually be 'action_required'. Investigate possible status values
-        if (res.status === 'action_required') {
-          window.open(res.response.confirmationUrl, '_blank');
-        }
+        await putApiAuthenticated<Subscription, ModifySubscriptionApiPayload>(
+          `/app/subscriptions/${record?.id}`,
+          {
+            queryParams: { scope: 'modify' },
+            payload,
+          }
+        );
         handleEditModalClose();
         fetchRecurrentDonations();
       } catch (err) {
