@@ -136,7 +136,7 @@ export const UserPropsProvider: FC = ({ children }) => {
       }
       return await response.json();
     },
-    [token, tenantConfig.id, locale, getsessionId]
+    [token, tenantConfig.id, locale]
   );
 
   async function loadUser() {
