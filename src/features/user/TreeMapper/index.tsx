@@ -48,10 +48,7 @@ function TreeMapper(): ReactElement {
     if (next && links?.next) {
       try {
         const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
-          links.next, // The 'links.next' URL contains query parameters and is passed as-is since no additional parameters are being added.
-          {
-            version: '1.0.4',
-          }
+          links.next // The 'links.next' URL contains query parameters and is passed as-is since no additional parameters are being added.
         );
         if (response?.items) {
           const newPlantLocations = response.items;
@@ -92,7 +89,6 @@ function TreeMapper(): ReactElement {
         const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
           '/treemapper/interventions',
           {
-            version: '1.0.4',
             queryParams: { _scope: 'extended', limit: '15' },
           }
         );
