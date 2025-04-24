@@ -1,5 +1,5 @@
 import styles from './../styles/Landing.module.scss';
-import TreeCounter from '../../TreeCounter/TreeCounter';
+import TreeCounter from '../../TreeCounter';
 import Link from 'next/link';
 
 interface Props {
