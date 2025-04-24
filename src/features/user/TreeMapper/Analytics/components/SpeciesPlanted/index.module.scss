@@ -1,10 +1,10 @@
-@import "../../../../../../theme/theme";
+@import '../../../../../../theme/theme';
 
 .italics {
-    font-style: italic;
-  }
+  font-style: italic;
+}
 
-  .title {
-    font-size: 16px;
-    font-weight: 600;
+.title {
+  font-size: $fontSixteen;
+  font-weight: 600;
 }

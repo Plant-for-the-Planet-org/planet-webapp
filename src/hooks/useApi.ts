@@ -283,6 +283,7 @@ export const useApi = () => {
       url,
       data: config.payload,
       authRequired: true,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
