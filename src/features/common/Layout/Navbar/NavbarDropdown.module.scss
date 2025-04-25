@@ -1,0 +1,26 @@
+@import './../../../../theme/theme';
+
+// new navbar dropdown styles
+
+.navbarDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: max-content;
+  max-height: fit-content;
+  border-radius: 8px;
+  background: #ffffff;
+  color: black;
+  padding: 8px;
+
+  strong {
+    font-weight: 600;
+    font-size: $fontMedium;
+  }
+
+  .description {
+    font-weight: 400;
+    font-size: $fontSmall;
+    color: #828282;
+  }
+}
