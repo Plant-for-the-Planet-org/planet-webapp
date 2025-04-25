@@ -11,6 +11,7 @@ on:
       - develop
       - feature/redesign-explore-btn
       - feature/design-projectlist-filter
+      - feature/navbar-dropdown-item
 # List of jobs
 jobs:
   chromatic-deployment:
