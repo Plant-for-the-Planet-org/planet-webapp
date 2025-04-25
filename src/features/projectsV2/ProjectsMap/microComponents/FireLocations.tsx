@@ -8,8 +8,8 @@ import { APIError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Marker, Source } from 'react-map-gl-v7/maplibre';
-import { getRequest } from '../../../../utils/apiRequests/api';
 import FirePopup from '../FirePopup';
+import { useApi } from '../../../../hooks/useApi';
 
 const ALERT_DURATION = '30d';
 
@@ -17,7 +17,7 @@ export default function FireLocations(): ReactElement {
   const { query } = useRouter();
 
   const { site } = query;
-
+  const { getApi } = useApi();
   const [fireFeatures, setFireFeatures] = useState<FireFeature[]>([]);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function FireLocations(): ReactElement {
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
           'https://fa.pp.eco/api/v1';
         const url = `${fireAlertApiUrl}/fires?${searchParams.toString()}`;
-        const fetchedFires = await getRequest<FireFeatureCollection>({ url });
+        const fetchedFires = await getApi<FireFeatureCollection>(url);
         if (
           fetchedFires?.type === 'FeatureCollection' &&
           fetchedFires?.features?.length > 0

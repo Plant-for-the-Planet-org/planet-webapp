@@ -9,14 +9,14 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: bold;
 
   .exitImpersoantionContainer {
     margin-left: 2rem;
     cursor: pointer;
     display: flex;
-   }
+  }
 
   .exit {
     margin-left: 7px;
@@ -38,7 +38,7 @@
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px;
-  height: 16px; 
+  height: 16px;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }

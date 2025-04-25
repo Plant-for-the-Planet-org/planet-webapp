@@ -3,11 +3,9 @@ import type { APIError } from '@planet-sdk/common';
 import { type PlantLocation as PlantLocationType } from '../../../common/types/plantLocation';
 
 import React from 'react';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import {
   Step as MuiStep,
@@ -21,7 +19,7 @@ import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -46,12 +44,10 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 
 export default function ImportData(): ReactElement {
   const router = useRouter();
-  const { tenantConfig } = useTenant();
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
-  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
-
+  const { getApiAuthenticated } = useApi();
   function getSteps() {
     return [
       tTreemapper('plantingLocation'),
@@ -68,12 +64,12 @@ export default function ImportData(): ReactElement {
 
   const fetchPlantLocation = async (id: string) => {
     try {
-      const result = await getAuthenticatedRequest<PlantLocationType>({
-        tenant: tenantConfig?.id,
-        url: `/treemapper/interventions/${id}?_scope=extended`,
-        token,
-        logoutUser,
-      });
+      const result = await getApiAuthenticated<PlantLocationType>(
+        `/treemapper/interventions/${id}`,
+        {
+          queryParams: { _scope: 'extended' },
+        }
+      );
       setPlantLocation(result);
     } catch (err) {
       setErrors(handleError(err as APIError));

@@ -1,39 +1,39 @@
-@import "../../../../../../../theme/theme";
+@import '../../../../../../../theme/theme';
 
 .container {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 .header {
-    padding: 6px 5px;
-    background-color: #eee;
-    border-bottom: 1px solid #e0e0e0;
+  padding: 6px 5px;
+  background-color: #eee;
+  border-bottom: 1px solid #e0e0e0;
 
-    .title {
-        font-size: 12px;
-    }
+  .title {
+    font-size: $fontXSmall;
+  }
 }
 
 .body {
-    display: flex;
-    padding: 10px 5px;
-    align-items: center;
-    justify-content: flex-start;
-    column-gap: 5px;
+  display: flex;
+  padding: 10px 5px;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 5px;
 
-    .circle{
-        border-radius: 40px;
-        height: 12px;
-        width: 12px;
-        background-color: $primaryColor;
-    }
+  .circle {
+    border-radius: 40px;
+    height: 12px;
+    width: 12px;
+    background-color: $primaryColor;
+  }
 
-    .bodyTitle{
-        font-size: 12px;
-    }
+  .bodyTitle {
+    font-size: $fontXSmall;
+  }
 
-    .value {
-        font-weight: 600;
-        font-size: 12px;
-    }
+  .value {
+    font-weight: 600;
+    font-size: $fontXSmall;
+  }
 }
