@@ -1,30 +1,30 @@
 import type { JSX } from 'react';
 
 import { useTranslations } from 'next-intl';
-import styles from '../NavbarDropdown.module.scss';
-import { PlatformIcon } from '../../../../../../public/assets/images/icons/NavbarDropdownIcons';
+import styles from '../NavbarMenu.module.scss';
+import { PlatformIcon } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
 
 type TitleTranslationKeys = 'platform';
 
-type NavbarDropdownItemProps = {
-  headerKey: keyof typeof navbarDropdownIcons;
+type NavbarMenuItemProps = {
+  headerKey: keyof typeof navbarMenuIcons;
   description: 'platformDescription';
   title: TitleTranslationKeys;
   visible: boolean;
   link: string;
 };
 
-const navbarDropdownIcons: Record<TitleTranslationKeys, JSX.Element> = {
+const navbarMenuIcons: Record<TitleTranslationKeys, JSX.Element> = {
   platform: <PlatformIcon />,
 };
 
-const NavbarDropdownItem = ({
+const NavbarMenuItem = ({
   headerKey,
   description,
   title,
   link,
   visible,
-}: NavbarDropdownItemProps) => {
+}: NavbarMenuItemProps) => {
   if (!visible) return null;
   const tCommon = useTranslations('Common.navbarMenu');
   return (
@@ -32,9 +32,9 @@ const NavbarDropdownItem = ({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className={styles.navbarDropdownItem}
+      className={styles.navbarMenuItem}
     >
-      <span>{navbarDropdownIcons[headerKey] || null}</span>
+      <span>{navbarMenuIcons[headerKey] || null}</span>
       <p>
         <strong>{tCommon(title)}</strong>
         <br />
@@ -44,4 +44,4 @@ const NavbarDropdownItem = ({
   );
 };
 
-export default NavbarDropdownItem;
+export default NavbarMenuItem;
