@@ -138,9 +138,9 @@
     "salesforceDisabledDonateButtonText": "The project does not currently accept donations.",
     "navbarMenu": {
       "all": "All",
-      "platformTitle": "About The Platform",
-      "organisationTitle": "About Plant-for-the-Planet",
-      "toolsTitle": "More FOREST CLOUD tools",
+      "platformTitle": "About the platform",
+      "organisationTitle": "About Plant-for-the-planet",
+      "toolsTitle": "More <highlight>forest cloud</highlight> tools",
       "organisationDescription": "Since 2007, our community of 11 organisations works to empower young people to fight the climate crisis and restore forests.",
       "item": {
         "platform": "The Platform",

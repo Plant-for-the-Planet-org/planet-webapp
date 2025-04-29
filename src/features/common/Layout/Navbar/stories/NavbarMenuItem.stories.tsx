@@ -16,5 +16,6 @@ export const NavbarMenuItemView: Story = {
     title: 'platform',
     link: 'https://www.plant-for-the-planet.org/',
     visible: true,
+    onlyIcon: false,
   },
 };

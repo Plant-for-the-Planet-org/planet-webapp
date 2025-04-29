@@ -2,25 +2,72 @@
 
 // new navbar dropdown styles
 
+.navbarMenuSection {
+  background: $backgroundColor;
+  max-width: 360px;
+  padding: 22px;
+  border-radius: 20px;
+  position: relative;
+  color: $mediumGrayColor;
+
+  .sectionTitle {
+    font-size: $fontSmall;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    .highlightLabel {
+      font-weight: 700;
+    }
+  }
+
+  .sectionDescription {
+    font-size: $fontXSmall;
+    margin-top: 8px;
+  }
+}
+
+.navbarMenuItemsContainer {
+  margin-top: 16px;
+}
 .navbarMenuItem {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   max-width: max-content;
-  max-height: fit-content;
   border-radius: 8px;
-  background: #ffffff;
-  color: black;
-  padding: 8px;
+  padding: 7px;
+  background: $backgroundColor;
 
-  strong {
+  h3 {
     font-weight: 600;
     font-size: $fontMedium;
+    color: $dark;
+
+    &:hover {
+      color: $primaryDarkColor;
+    }
   }
 
   .description {
     font-weight: 400;
     font-size: $fontSmall;
-    color: #828282;
+    color: $mediumGrayColor;
   }
+}
+
+.all {
+  padding: 4px 16px;
+  border-radius: 200px;
+  background-color: $primaryDarkColorTransparent;
+  color: $primaryDarkColor;
+  font-size: $fontXSmall;
+  font-weight: 700;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.chevronIconContainer {
+  margin-left: 6px;
 }
