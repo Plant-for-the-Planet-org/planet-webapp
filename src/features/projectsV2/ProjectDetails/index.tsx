@@ -79,7 +79,12 @@ const ProjectDetails = ({
         const fetchedProject = await getApi<ExtendedProject>(
           `/app/projects/${projectSlug}`,
           {
-            queryParams: { _scope: 'extended', currency: currency },
+            queryParams: {
+              _scope: 'extended',
+              currency: currency,
+              //passing locale as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+              locale: locale,
+            },
           }
         );
         const { purpose, id: projectId } = fetchedProject;

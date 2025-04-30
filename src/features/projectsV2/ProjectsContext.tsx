@@ -252,6 +252,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
+            //passing locale as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+            locale: locale,
             'filter[purpose]': 'trees,conservation',
           },
         });
