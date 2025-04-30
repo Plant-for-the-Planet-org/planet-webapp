@@ -109,7 +109,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestation',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       color: '#EB5757',
       additionalInfo: {
@@ -230,7 +230,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'birdDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -247,7 +247,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'mammalDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -263,7 +263,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'amphibianDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
