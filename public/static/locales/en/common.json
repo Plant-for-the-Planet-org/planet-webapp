@@ -136,13 +136,14 @@
     "disabledDonateButtonText": "The project does not currently accept donations. This may be because it is fully funded, has not yet been reviewed or does not currently meet all our project standards, or chooses to use the platform exclusively for its transparency tools.",
     "notDonatable": "Not Donatable",
     "salesforceDisabledDonateButtonText": "The project does not currently accept donations.",
+    "tools": "Tools",
     "navbarMenu": {
       "all": "All",
-      "platformTitle": "About the platform",
-      "organisationTitle": "About Plant-for-the-planet",
-      "toolsTitle": "More <highlight>forest cloud</highlight> tools",
+      "platform": "About the platform",
+      "organisation": "About Plant-for-the-planet",
+      "tools": "More <highlight>forest cloud</highlight> tools",
       "organisationDescription": "Since 2007, our community of 11 organisations works to empower young people to fight the climate crisis and restore forests.",
-      "item": {
+      "menuitem": {
         "platform": "The Platform",
         "platformDescription": "Why we built this and how it works",
         "redeemCode": "Redeem Code",
@@ -153,6 +154,8 @@
         "transparency": "Transparency",
         "partner": "Partner with Us",
         "treeMapper": "TreeMapper",
+        "vtoChallenge": "VTO Challenge",
+        "mangroves": "Mangroves",
         "treeMapperDescription": "to monitor forest restoration",
         "fireAlert": "FireAlert",
         "fireAlertDescription": "to rapidly stop forest fires",
