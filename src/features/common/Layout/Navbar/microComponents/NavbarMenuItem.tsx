@@ -14,39 +14,16 @@ import {
   TracerIcon,
   RestorationAdviceIcon,
   RestorationStandardsIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  YoutubeIcon,
+  FacebookIcon,
+  VTOChallengeIcon,
+  MangrovesChallengeIcon,
 } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
+import type { MenuItem, MenuItemTitle } from '../defaultTenantConfig';
 
-type NavbarMenuItemTitle =
-  | 'platform'
-  | 'redeemCode'
-  | 'support'
-  | 'organisation'
-  | 'transparency'
-  | 'partner'
-  | 'treeMapper'
-  | 'fireAlert'
-  | 'tracer'
-  | 'restorationAdvice'
-  | 'restorationStandards';
-
-export type NavbarMenuItemProps = {
-  headerKey: keyof typeof navbarMenuIcons;
-  description?:
-    | 'platformDescription'
-    | 'redeemCodeDescription'
-    | 'supportDescription'
-    | 'treeMapperDescription'
-    | 'fireAlertDescription'
-    | 'tracerDescription'
-    | 'restorationAdviceDescription'
-    | 'restorationStandardsDescription';
-  title: NavbarMenuItemTitle;
-  visible: boolean;
-  link: string;
-  onlyIcon: boolean;
-};
-
-const navbarMenuIcons: Record<NavbarMenuItemTitle, JSX.Element> = {
+const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
   redeemCode: <RedeemCodeIcon />,
   support: <SupportIcon />,
@@ -58,18 +35,33 @@ const navbarMenuIcons: Record<NavbarMenuItemTitle, JSX.Element> = {
   tracer: <TracerIcon />,
   restorationAdvice: <RestorationAdviceIcon />,
   restorationStandards: <RestorationStandardsIcon />,
+  instagram: <InstagramIcon />,
+  youtube: <YoutubeIcon />,
+  linkedin: <LinkedinIcon />,
+  facebook: <FacebookIcon />,
+  vtoChallenge: <VTOChallengeIcon />,
+  mangroves: <MangrovesChallengeIcon />,
 };
 
+const excludedTitle = ['instagram', 'youtube', 'linkedin', 'facebook'];
+const isTranslatableTitle = (
+  title: string
+): title is Exclude<
+  MenuItemTitle,
+  'instagram' | 'youtube' | 'linkedin' | 'facebook'
+> => !excludedTitle.includes(title);
+
 const NavbarMenuItem = ({
-  headerKey,
+  menuKey,
   description,
   title,
   link,
   visible,
   onlyIcon,
-}: NavbarMenuItemProps) => {
+}: MenuItem) => {
   if (!visible) return null;
-  const tNavbarMenu = useTranslations('Common.navbarMenu.item');
+  const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
+
   return (
     <a
       href={link}
@@ -77,12 +69,12 @@ const NavbarMenuItem = ({
       rel="noopener noreferrer"
       className={styles.navbarMenuItem}
     >
-      <div>{navbarMenuIcons[headerKey] || null}</div>
+      {navbarMenuIcons[menuKey] || null}
       {!onlyIcon && (
         <div>
-          <h3>{tNavbarMenu(title)}</h3>
+          {isTranslatableTitle(title) && <span>{tNavbarMenuItem(title)}</span>}
           {description !== undefined && (
-            <p className={styles.description}>{tNavbarMenu(description)}</p>
+            <p className={styles.description}>{tNavbarMenuItem(description)}</p>
           )}
         </div>
       )}
