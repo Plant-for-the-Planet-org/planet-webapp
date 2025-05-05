@@ -1,11 +1,11 @@
-import type { SetState } from '../../../types/common';
+import type { SetState } from '../../../../types/common';
 import { type HeaderItem } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import SubMenu from './SubMenu';
-import { useTenant } from '../../TenantContext';
+import SubMenu from '../SubMenu';
+import { useTenant } from '../../../TenantContext';
 import { useMemo } from 'react';
 
 interface NavigationItemProps {
