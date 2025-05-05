@@ -2,9 +2,113 @@
 
 // new navbar dropdown styles
 
+.navMenu {
+  display: flex;
+  min-width: max-content;
+  padding: 7px;
+  gap: 7px;
+  border-radius: 24px;
+  background: linear-gradient(
+    to bottom,
+    rgba(201, 239, 217, 1),
+    rgba(215, 242, 193, 1)
+  );
+
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+
+  @include smTabletView {
+    flex-direction: column;
+  }
+
+  @include lgLaptopView {
+    flex-direction: row;
+  }
+}
+
+.about {
+  position: absolute;
+  top: 56px;
+  right: -68px;
+  @include xsPhoneView {
+    min-width: 367px;
+    top: 43px;
+    right: -125px;
+  }
+}
+
+.tools {
+  position: absolute;
+  top: 56px;
+  right: -129px;
+  @include xsPhoneView {
+    min-width: 367px;
+    top: 43px;
+    right: -57px;
+  }
+}
+
+.campaign {
+  position: absolute;
+  top: 56px;
+  right: -27px;
+  @include xsPhoneView {
+    min-width: max-content;
+    top: 43px;
+    right: -37px;
+  }
+}
+
+.platform-section {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  margin-top: 19px;
+}
+
+.organisation-section {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  margin-top: 21px;
+}
+
+.socialSites-section {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  align-items: center;
+
+  @include xsPhoneView {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  @include lgLaptopView {
+    flex-direction: column;
+  }
+}
+
+.menu-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.menu-campaign {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .navbarMenuSection {
   background: $backgroundColor;
-  max-width: 360px;
+  max-width: 405px;
   padding: 22px;
   border-radius: 20px;
   position: relative;
@@ -26,17 +130,12 @@
   }
 }
 
-.navbarMenuItemsContainer {
-  margin-top: 16px;
-}
 .navbarMenuItem {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
   max-width: max-content;
-  border-radius: 8px;
-  padding: 7px;
   background: $backgroundColor;
 
   h3 {
@@ -49,6 +148,10 @@
     }
   }
 
+  span {
+    line-height: 1.2;
+  }
+
   .description {
     font-weight: 400;
     font-size: $fontSmall;
@@ -56,18 +159,94 @@
   }
 }
 
-.all {
-  padding: 4px 16px;
+.allTools {
+  padding: 2px 18px;
   border-radius: 200px;
   background-color: $primaryDarkColorTransparent;
-  color: $primaryDarkColor;
-  font-size: $fontXSmall;
-  font-weight: 700;
   position: absolute;
   top: 10px;
   right: 10px;
+  line-height: 21px;
+
+  .label {
+    font-weight: 700;
+    font-size: $fontXSmall;
+    color: $primaryDarkColor;
+  }
 }
 
-.chevronIconContainer {
+.chevronIcon {
   margin-left: 6px;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid #c5f2e4;
+  position: absolute;
+  top: 17px;
+  left: 19px;
+
+  @include xsPhoneView {
+    top: 10px;
+  }
+}
+
+// navbar styling
+
+.navigationGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  button,
+  a {
+    font-size: $fontMedium;
+    color: $dark;
+    font-weight: 500;
+    font-family: $primaryFontFamily;
+
+    &:hover {
+      color: $primaryDarkColor;
+    }
+
+    @include xsPhoneView {
+      font-size: $fontXSmall;
+      margin-top: 2px;
+    }
+  }
+
+  button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .chevron {
+      width: 24px;
+      height: 24px;
+
+      @include xsPhoneView {
+        width: 14px;
+        height: 14px;
+        margin-left: 3px;
+      }
+    }
+
+    svg {
+      margin-top: 2px;
+    }
+  }
+
+  .arrowIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .activeNavItem {
+    color: $primaryDarkColor;
+  }
 }
