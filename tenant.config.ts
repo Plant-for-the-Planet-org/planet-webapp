@@ -1,6 +1,6 @@
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
-
-export const defaultTenant: Tenant = {
+import type { UpdatedTenant } from './src/features/common/Layout/Navbar/defaultTenantConfig';
+//TODO: update tenant type with the @planet-sdk
+export const defaultTenant: UpdatedTenant = {
   id: 'ten_NxJq55pm',
   config: {
     appDomain: 'https://web.plant-for-the-planet.org/',
@@ -27,67 +27,176 @@ export const defaultTenant: Tenant = {
     slug: 'planet',
     header: {
       items: [
-        { title: 'home', onclick: '/', visible: true, headerKey: 'home' },
+        {
+          title: 'home',
+          link: '/',
+          headerKey: 'home',
+          visible: true,
+        },
+
         {
           title: 'aboutUs',
-          onclick: 'https://www.plant-for-the-planet.org/',
-          subMenu: [
+          hasSection: true,
+          menu: [
             {
-              title: 'overview',
-              onclick: 'https://www.plant-for-the-planet.org/',
-              visible: true,
+              sectionKey: 'organisation',
+              title: 'organisation',
+              description: 'organisationDescription',
+              items: [
+                {
+                  menuKey: 'organisation',
+                  title: 'organisation',
+                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  visible: true,
+                  onlyIcon: false,
+                },
+                {
+                  menuKey: 'transparency',
+                  title: 'transparency',
+                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  visible: true,
+                  onlyIcon: false,
+                },
+                {
+                  menuKey: 'partner',
+                  title: 'partner',
+                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  visible: true,
+                  onlyIcon: false,
+                },
+              ],
             },
             {
-              title: 'childrenAndYouth',
-              onclick: 'https://www.plant-for-the-planet.org/children-youth/',
-              visible: true,
+              sectionKey: 'platform',
+              title: 'platform',
+              items: [
+                {
+                  menuKey: 'platform',
+                  title: 'platform',
+                  description: 'platformDescription',
+                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  visible: true,
+                  onlyIcon: false,
+                },
+                {
+                  menuKey: 'redeemCode',
+                  title: 'redeemCode',
+                  description: 'redeemCodeDescription',
+                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  visible: true,
+                  onlyIcon: false,
+                },
+                {
+                  menuKey: 'support',
+                  title: 'support',
+                  description: 'supportDescription',
+                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  visible: true,
+                  onlyIcon: false,
+                },
+              ],
             },
             {
-              title: 'trillionTrees',
-              onclick: 'https://www.plant-for-the-planet.org/trillion-trees/',
+              sectionKey: 'socialSites',
+              items: [
+                {
+                  menuKey: 'instagram',
+                  title: 'instagram',
+                  link: 'https://www.instagram.com/plantfortheplanet_official/',
+                  visible: true,
+                  onlyIcon: true,
+                },
+                {
+                  menuKey: 'facebook',
+                  title: 'facebook',
+                  link: 'https://www.facebook.com/plantfortheplanet',
+                  visible: true,
+                  onlyIcon: true,
+                },
+                {
+                  menuKey: 'youtube',
+                  title: 'youtube',
+                  link: 'https://www.youtube.com/user/PlantForThePlanet',
+                  visible: true,
+                  onlyIcon: true,
+                },
+                {
+                  menuKey: 'linkedin',
+                  title: 'linkedin',
+                  link: 'https://www.linkedin.com/company/plant-for-the-planet/',
+                  visible: true,
+                  onlyIcon: true,
+                },
+              ],
+            },
+          ],
+          headerKey: 'about',
+          visible: true,
+        },
+        {
+          title: 'tools',
+          hasSection: false,
+          menu: [
+            {
+              menuKey: 'treeMapper',
+              title: 'treeMapper',
+              link: 'https://www.plant-for-the-planet.org/treemapper/',
+              description: 'treeMapperDescription',
               visible: true,
+              onlyIcon: false,
             },
             {
-              title: 'yucatan',
-              onclick: 'https://www.plant-for-the-planet.org/yucatan/',
+              menuKey: 'fireAlert',
+              title: 'fireAlert',
+              link: 'https://www.plant-for-the-planet.org/firealert/',
+              description: 'fireAlertDescription',
               visible: true,
+              onlyIcon: false,
             },
             {
-              title: 'partners',
-              onclick: 'https://www.plant-for-the-planet.org/partners/',
+              menuKey: 'tracer',
+              title: 'tracer',
+              link: 'https://www.plant-for-the-planet.org/tracer/',
+              description: 'tracerDescription',
               visible: true,
+              onlyIcon: false,
             },
             {
-              title: 'changeChocolate',
-              onclick: 'https://www.plant-for-the-planet.org/change-chocolate/',
+              menuKey: 'restorationAdvice',
+              title: 'restorationAdvice',
+              link: 'https://www.plant-for-the-planet.org/advice/',
+              description: 'restorationAdviceDescription',
               visible: true,
+              onlyIcon: false,
             },
             {
-              title: 'stopTalkingStartPlanting',
-              onclick:
-                'https://www.plant-for-the-planet.org/stop-talking-start-planting/',
+              menuKey: 'restorationStandards',
+              title: 'restorationStandards',
+              link: 'https://www.plant-for-the-planet.org/standards/',
+              description: 'restorationStandardsDescription',
               visible: true,
+              onlyIcon: false,
             },
           ],
           visible: true,
-          headerKey: 'about',
+          headerKey: 'tools',
         },
         {
           title: 'leaders',
-          onclick: '/all',
+          link: '/all',
           visible: true,
           headerKey: 'leaderboard',
         },
         {
           title: 'signIn',
-          onclick: '/me',
+          link: '/me',
           visible: true,
           headerKey: 'me',
           loggedInTitle: 'me',
         },
         {
           title: 'shop',
-          onclick: 'https://thegoodshop.org',
+          link: 'https://thegoodshop.org',
           visible: false,
           headerKey: 'shop',
         },
