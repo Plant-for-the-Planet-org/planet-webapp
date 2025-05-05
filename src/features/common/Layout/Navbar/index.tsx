@@ -2,7 +2,7 @@ import { useUserProps } from '../UserPropsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
 import BrandLogo from './microComponents/BrandLogo';
-import NavigationMenu from './microComponents/NavigationMenu';
+import NavigationItems from './microComponents/NavigationItems';
 
 const ImpersonationStatusHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
@@ -22,7 +22,7 @@ const CommonHeader = () => {
       }`}
     >
       <BrandLogo />
-      <NavigationMenu />
+      <NavigationItems />
     </header>
   );
 };
