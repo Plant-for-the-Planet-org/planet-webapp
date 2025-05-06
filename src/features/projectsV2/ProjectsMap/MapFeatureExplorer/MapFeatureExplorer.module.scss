@@ -124,6 +124,10 @@
   padding: 6px 0;
   border-bottom: 1px solid $horizontalLineColor;
 
+  &.legendVisible {
+    border-bottom: none;
+  }
+
   &:last-child {
     border-bottom: none;
   }

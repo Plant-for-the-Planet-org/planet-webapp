@@ -1,6 +1,7 @@
 import type {
   ApiMapLayerOptionsType,
   LayerConfig,
+  LegendData,
 } from '../../../../../utils/mapsV2/mapSettings.config';
 import type { ChangeEvent, MouseEvent } from 'react';
 import type { MapOptions } from '../../../ProjectsMapContext';
@@ -27,10 +28,13 @@ const SingleLayerOption = ({
   if (!layerConfig.isAvailable) return null;
 
   const tExplore = useTranslations('Maps.exploreLayers');
+  const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
+
   const hasInfoPopover =
     layerConfig.additionalInfo !== undefined && layerConfig.key !== 'projects';
-  const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
   const isOptionSelected = mapOptions[layerConfig.key] === true;
+  const isLegendAvailable = layerConfig.legend !== undefined;
+  const isLegendVisible = isOptionSelected && isLegendAvailable;
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLParagraphElement>) => {
@@ -52,8 +56,12 @@ const SingleLayerOption = ({
     }
   }, []);
 
+  const singleLayerOptionStyles = `${styles.singleLayerOption} ${
+    isLegendVisible ? styles.legendVisible : ''
+  }`;
+
   return (
-    <div className={styles.singleLayerOption}>
+    <div className={singleLayerOptionStyles}>
       <div className={styles.layerControls}>
         <div
           className={`${styles.layerLabel} ${
@@ -78,8 +86,8 @@ const SingleLayerOption = ({
           />
         </div>
       </div>
-      {isOptionSelected && layerConfig.legend !== undefined && (
-        <LayerLegend legend={layerConfig.legend} />
+      {isLegendVisible && (
+        <LayerLegend legend={layerConfig.legend as LegendData} />
       )}
 
       {hasInfoPopover && (
