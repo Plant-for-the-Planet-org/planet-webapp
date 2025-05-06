@@ -11,11 +11,11 @@ type Story = StoryObj<typeof NavbarMenuSection>;
 
 export const NavbarMenuSectionView: Story = {
   args: {
-    title: 'toolsTitle',
-    headerKey: 'tools',
+    title: 'platform',
+    sectionKey: 'platform',
     items: [
       {
-        headerKey: 'treeMapper',
+        menuKey: 'treeMapper',
         title: 'treeMapper',
         link: 'https://www.plant-for-the-planet.org/partners/',
         description: 'treeMapperDescription',
@@ -23,7 +23,7 @@ export const NavbarMenuSectionView: Story = {
         onlyIcon: false,
       },
       {
-        headerKey: 'fireAlert',
+        menuKey: 'fireAlert',
         title: 'fireAlert',
         link: 'https://www.plant-for-the-planet.org/partners/',
         description: 'fireAlertDescription',
@@ -31,7 +31,7 @@ export const NavbarMenuSectionView: Story = {
         onlyIcon: false,
       },
       {
-        headerKey: 'tracer',
+        menuKey: 'tracer',
         title: 'tracer',
         link: 'https://www.plant-for-the-planet.org/partners/',
         description: 'tracerDescription',
@@ -39,7 +39,7 @@ export const NavbarMenuSectionView: Story = {
         onlyIcon: false,
       },
       {
-        headerKey: 'restorationAdvice',
+        menuKey: 'restorationAdvice',
         title: 'restorationAdvice',
         link: 'https://www.plant-for-the-planet.org/partners/',
         description: 'restorationAdviceDescription',
@@ -47,7 +47,7 @@ export const NavbarMenuSectionView: Story = {
         onlyIcon: false,
       },
       {
-        headerKey: 'restorationStandards',
+        menuKey: 'restorationStandards',
         title: 'restorationStandards',
         link: 'https://www.plant-for-the-planet.org/partners/',
         description: 'restorationStandardsDescription',

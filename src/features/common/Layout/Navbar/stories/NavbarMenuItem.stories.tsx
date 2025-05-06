@@ -11,7 +11,7 @@ type Story = StoryObj<typeof NavbarMenuItem>;
 
 export const NavbarMenuItemView: Story = {
   args: {
-    headerKey: 'platform',
+    menuKey: 'platform',
     description: 'platformDescription',
     title: 'platform',
     link: 'https://www.plant-for-the-planet.org/',
