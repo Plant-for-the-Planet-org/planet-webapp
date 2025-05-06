@@ -100,7 +100,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
         min: 1,
         max: 273,
         gradient:
-          'linear-gradient(90deg, #F3F3F3 0%, #CEDFBC 48%, #1F3000 100%)',
+          'linear-gradient(90deg, #FFFFFF 0%, #CEDFBC 48%, #036201 100%)',
       },
     },
     {
