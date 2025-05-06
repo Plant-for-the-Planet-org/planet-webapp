@@ -119,9 +119,8 @@
 
 .singleLayerOption {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  gap: 4px;
   padding: 6px 0;
   border-bottom: 1px solid $horizontalLineColor;
 
@@ -139,6 +138,45 @@
         text-underline-offset: 2px;
       }
     }
+  }
+}
+
+.layerControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.layerLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: $backgroundColor;
+  padding: 10px;
+  border-radius: 6px;
+
+  & .legendBar {
+    height: 8px;
+    border-radius: 300px;
+
+    &.legendBarCategory {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    & .legendCategoryColor {
+      flex: 1;
+    }
+  }
+
+  & .legendValues {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    margin: 0 2px;
   }
 }
 
