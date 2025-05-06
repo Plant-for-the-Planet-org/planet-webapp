@@ -1,6 +1,13 @@
+import type {
+  MenuItem,
+  MenuItemDescription,
+  MenuItemTitle,
+} from '../defaultTenantConfig';
 import type { JSX } from 'react';
 
-import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from '../NavbarMenu.module.scss';
 import {
   PlatformIcon,
@@ -21,7 +28,8 @@ import {
   VTOChallengeIcon,
   MangrovesChallengeIcon,
 } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
-import type { MenuItem, MenuItemTitle } from '../defaultTenantConfig';
+import { addLocaleToUrl, isPlanetDomain } from '../utils';
+import { isAbsoluteUrl } from '../../../../../utils/apiRequests/apiClient';
 
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
@@ -51,6 +59,21 @@ const isTranslatableTitle = (
   'instagram' | 'youtube' | 'linkedin' | 'facebook'
 > => !excludedTitle.includes(title);
 
+const renderContent = (
+  title: string,
+  description: MenuItemDescription | undefined
+) => {
+  const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
+  return (
+    <div>
+      {isTranslatableTitle(title) && <span>{tNavbarMenuItem(title)}</span>}
+      {description && (
+        <p className={styles.description}>{tNavbarMenuItem(description)}</p>
+      )}
+    </div>
+  );
+};
+
 const NavbarMenuItem = ({
   menuKey,
   description,
@@ -60,24 +83,32 @@ const NavbarMenuItem = ({
   onlyIcon,
 }: MenuItem) => {
   if (!visible) return null;
-  const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
+
+  const locale = useLocale();
+  const menuIcon = useMemo(() => navbarMenuIcons[menuKey] || null, [menuKey]);
+
+  if (!isAbsoluteUrl(link)) {
+    return (
+      <Link href={link} prefetch={false}>
+        <div className={styles.navbarMenuItem}>
+          {menuIcon}
+          {!onlyIcon && renderContent(title, description)}
+        </div>
+      </Link>
+    );
+  }
+
+  const href = isPlanetDomain(link) ? addLocaleToUrl(link, locale) : link;
 
   return (
     <a
-      href={link}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={styles.navbarMenuItem}
     >
-      {navbarMenuIcons[menuKey] || null}
-      {!onlyIcon && (
-        <div>
-          {isTranslatableTitle(title) && <span>{tNavbarMenuItem(title)}</span>}
-          {description !== undefined && (
-            <p className={styles.description}>{tNavbarMenuItem(description)}</p>
-          )}
-        </div>
-      )}
+      {menuIcon}
+      {!onlyIcon && renderContent(title, description)}
     </a>
   );
 };
