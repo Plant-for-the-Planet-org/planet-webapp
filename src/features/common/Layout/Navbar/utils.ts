@@ -1,4 +1,5 @@
 const PLANET_WORD_PRESS_DOMAIN = 'www.plant-for-the-planet.org';
+const PLANET_DONATION_DOMAIN = 'donate.plant-for-the-planet.org';
 /**
  * Adds a locale path segment to a given Plant-for-the-Planet URL.
  *
@@ -10,11 +11,17 @@ const PLANET_WORD_PRESS_DOMAIN = 'www.plant-for-the-planet.org';
  * @param locale - The locale string to insert into the URL
  * @returns The updated URL with the locale inserted
  */
-export const addLocaleToUrl = (url: string, locale: string): string =>
-  url.replace(
-    PLANET_WORD_PRESS_DOMAIN,
-    `${PLANET_WORD_PRESS_DOMAIN}/${locale}`
-  );
+export const addLocaleToUrl = (url: string, locale: string): string => {
+  try {
+    const parsedUrl = new URL(url);
+    parsedUrl.pathname = `/${locale}${parsedUrl.pathname}`;
+    return parsedUrl.toString();
+  } catch {
+    throw new Error(`Invalid URL: ${url}`);
+  }
+  // const parsedUrl = new URL(url);
+  // return `${parsedUrl.origin}/${locale}${parsedUrl.pathname}${parsedUrl.search}`;
+};
 
 /**
  * Checks if a given URL belongs to the 'www.plant-for-the-planet.org' domain.
@@ -25,7 +32,11 @@ export const addLocaleToUrl = (url: string, locale: string): string =>
 
 export const isPlanetDomain = (url: string) => {
   try {
-    return new URL(url).hostname === PLANET_WORD_PRESS_DOMAIN;
+    const hostname = new URL(url).hostname;
+    return (
+      hostname === PLANET_WORD_PRESS_DOMAIN ||
+      hostname === PLANET_DONATION_DOMAIN
+    );
   } catch {
     return false;
   }

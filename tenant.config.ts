@@ -46,7 +46,7 @@ export const defaultTenant: UpdatedTenant = {
                 {
                   menuKey: 'organisation',
                   title: 'organisation',
-                  link: 'https://www.plant-for-the-planet.org/academies/#organise',
+                  link: 'https://www.plant-for-the-planet.org/about-us/',
                   visible: true,
                   onlyIcon: false,
                 },
@@ -90,7 +90,7 @@ export const defaultTenant: UpdatedTenant = {
                   menuKey: 'support',
                   title: 'support',
                   description: 'supportDescription',
-                  link: 'https://www.plant-for-the-planet.org/donor-circle/',
+                  link: 'https://donate.plant-for-the-planet.org/?to=proj_bFH0BU0Qw02RuetpQlLOMVYX',
                   visible: true,
                   onlyIcon: false,
                 },
