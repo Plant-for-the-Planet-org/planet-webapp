@@ -37,12 +37,12 @@
 .about {
   position: absolute;
   top: 56px;
-  right: -292px;
+  right: -228px;
   @include xsPhoneView {
     min-width: 367px;
     max-height: 70vh;
     top: 43px;
-    right: -190px;
+    right: -126px;
     overflow-y: auto;
   }
 }
@@ -54,7 +54,7 @@
   @include xsPhoneView {
     min-width: 367px;
     top: 43px;
-    right: -130px;
+    right: -59px;
   }
 }
 

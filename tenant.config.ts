@@ -74,7 +74,7 @@ export const defaultTenant: UpdatedTenant = {
                   menuKey: 'platform',
                   title: 'platform',
                   description: 'platformDescription',
-                  link: 'https://www.plant-for-the-planet.org/partners/',
+                  link: '/all',
                   visible: true,
                   onlyIcon: false,
                 },
@@ -184,7 +184,7 @@ export const defaultTenant: UpdatedTenant = {
         {
           title: 'leaders',
           link: '/all',
-          visible: true,
+          visible: false,
           headerKey: 'leaderboard',
         },
         {
