@@ -59,21 +59,22 @@ export interface MenuSection {
   description?: 'organisationDescription';
 }
 
+export type MenuItemDescription =
+  | 'platformDescription'
+  | 'redeemCodeDescription'
+  | 'supportDescription'
+  | 'treeMapperDescription'
+  | 'fireAlertDescription'
+  | 'tracerDescription'
+  | 'restorationAdviceDescription'
+  | 'restorationStandardsDescription';
 export interface MenuItem {
   menuKey: MenuItemTitle;
   title: MenuItemTitle;
   link: string;
   visible: boolean;
   onlyIcon: boolean;
-  description?:
-    | 'platformDescription'
-    | 'redeemCodeDescription'
-    | 'supportDescription'
-    | 'treeMapperDescription'
-    | 'fireAlertDescription'
-    | 'tracerDescription'
-    | 'restorationAdviceDescription'
-    | 'restorationStandardsDescription';
+  description?: MenuItemDescription;
 }
 
 export type UpdatedTenantConfig = Omit<TenantConfig, 'header'> & {
