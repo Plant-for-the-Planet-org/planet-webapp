@@ -6,16 +6,23 @@
   display: flex;
   min-width: max-content;
   padding: 7px;
-  gap: 7px;
   border-radius: 24px;
   background: linear-gradient(
     to bottom,
     rgba(201, 239, 217, 1),
     rgba(215, 242, 193, 1)
   );
+}
 
+.navMenuSubContainer {
+  display: flex;
+  gap: 7px;
+  border-radius: 24px;
   @include xsPhoneView {
+    max-height: 90vh;
+    display: flex;
     flex-direction: column;
+    overflow-y: auto;
   }
 
   @include smTabletView {
@@ -30,11 +37,13 @@
 .about {
   position: absolute;
   top: 56px;
-  right: -68px;
+  right: -292px;
   @include xsPhoneView {
     min-width: 367px;
+    max-height: 70vh;
     top: 43px;
-    right: -154px;
+    right: -190px;
+    overflow-y: auto;
   }
 }
 

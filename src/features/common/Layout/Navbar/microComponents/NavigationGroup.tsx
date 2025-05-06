@@ -88,11 +88,13 @@ const NavigationGroup = ({
       )}
       {isNavMenuOpen && navItem.menu && (
         <div className={`${styles.navMenu} ${styles[navItem.headerKey]}`}>
-          {navItem.hasSection === true ? (
-            renderMenuSections(navItem.menu as MenuSection[])
-          ) : (
-            <NavbarMenu navItem={navItem} />
-          )}
+          <div className={styles.navMenuSubContainer}>
+            {navItem.hasSection === true ? (
+              renderMenuSections(navItem.menu as MenuSection[])
+            ) : (
+              <NavbarMenu navItem={navItem} />
+            )}
+          </div>
         </div>
       )}
     </div>
