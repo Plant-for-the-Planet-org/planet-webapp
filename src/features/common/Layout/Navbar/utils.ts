@@ -19,12 +19,10 @@ export const addLocaleToUrl = (url: string, locale: string): string => {
   } catch {
     throw new Error(`Invalid URL: ${url}`);
   }
-  // const parsedUrl = new URL(url);
-  // return `${parsedUrl.origin}/${locale}${parsedUrl.pathname}${parsedUrl.search}`;
 };
 
 /**
- * Checks if a given URL belongs to the 'www.plant-for-the-planet.org' domain.
+ * Checks if a given URL belongs to the 'www.plant-for-the-planet.org' or 'donate.plant-for-the-planet.org'  domain.
  *
  * @param url - The URL to check
  * @returns True if the URL is from the official domain, false otherwise
