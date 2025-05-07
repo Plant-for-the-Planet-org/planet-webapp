@@ -113,6 +113,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [projectsLocale, setProjectsLocale] = useState('');
+  const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
   const locale = useLocale();
@@ -237,7 +238,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     async function loadProjects() {
       if (page !== 'project-list' || !currencyCode) return;
-      if (projectsLocale === locale && projects !== null) return;
+      if (
+        projectsLocale === locale &&
+        projectsCurrencyCode === currencyCode &&
+        projects !== null
+      )
+        return;
 
       setIsLoading(true);
       setIsError(false);
@@ -251,6 +257,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
         });
         setProjects(fetchedProjects);
         setProjectsLocale(locale);
+        setProjectsCurrencyCode(currencyCode);
       } catch (err) {
         setErrors(handleError(err as APIError));
         setIsError(true);

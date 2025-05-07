@@ -1,21 +1,25 @@
 import type { FC } from 'react';
 import type { SetState } from '../types/common';
-import type { UpdatedTenant } from './Navbar/defaultTenantConfig';
-// import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useContext, createContext, useMemo, useState } from 'react';
-import { defaultTenant } from '../../../../tenant.config'; // TODO: This will be replaced with the Planet SDK type
 
 interface TenantContextInterface {
-  tenantConfig: UpdatedTenant;
-  setTenantConfig: SetState<UpdatedTenant>;
+  tenantConfig: Tenant;
+  setTenantConfig: SetState<Tenant>;
 }
 
 const TenantContext = createContext<TenantContextInterface | null>(null);
 
-export const TenantProvider: FC = ({ children }) => {
-  const [tenantConfig, setTenantConfig] =
-    useState<UpdatedTenant>(defaultTenant);
+interface TenantProviderProps {
+  initialTenantConfig: Tenant;
+}
+
+export const TenantProvider: FC<TenantProviderProps> = ({
+  children,
+  initialTenantConfig,
+}) => {
+  const [tenantConfig, setTenantConfig] = useState<Tenant>(initialTenantConfig);
 
   const value: TenantContextInterface | null = useMemo(
     () => ({

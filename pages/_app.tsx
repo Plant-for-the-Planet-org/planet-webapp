@@ -251,7 +251,7 @@ const PlanetWeb = ({
       >
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
-            <TenantProvider>
+            <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
               <QueryParamsProvider>
                 <div>
                   <div
