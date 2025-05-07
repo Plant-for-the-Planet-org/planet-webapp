@@ -83,7 +83,7 @@ const NavigationGroup = ({
               <DropdownDownArrow width={15} />
             )}
           </span>
-          {isNavMenuOpen && <div className={styles.triangle} />}
+          {isNavMenuOpen && <div className={styles.toolTipArrow} />}
         </button>
       )}
       {isNavMenuOpen && navItem.menu && (
