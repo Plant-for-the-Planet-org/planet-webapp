@@ -39,13 +39,13 @@ export const defaultTenant: UpdatedTenant = {
           hasSection: true,
           menu: [
             {
-              sectionKey: 'organisation',
-              title: 'organisation',
-              description: 'organisationDescription',
+              sectionKey: 'organization',
+              title: 'organization',
+              description: 'organizationDescription',
               items: [
                 {
-                  menuKey: 'organisation',
-                  title: 'organisation',
+                  menuKey: 'organization',
+                  title: 'organization',
                   link: 'https://www.plant-for-the-planet.org/about-us/',
                   visible: true,
                   onlyIcon: false,

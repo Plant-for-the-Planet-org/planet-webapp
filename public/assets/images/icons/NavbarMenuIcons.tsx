@@ -98,7 +98,7 @@ export const SupportIcon = () => {
   );
 };
 
-export const OrganisationIcon = () => {
+export const OrganizationIcon = () => {
   return (
     <svg
       width="32"

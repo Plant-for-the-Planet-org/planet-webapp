@@ -6,7 +6,7 @@ export type MenuItemTitle =
   | 'platform'
   | 'redeemCode'
   | 'support'
-  | 'organisation'
+  | 'organization'
   | 'transparency'
   | 'partner'
   | 'treeMapper'
@@ -53,10 +53,10 @@ export interface HeaderItem {
 }
 
 export interface MenuSection {
-  sectionKey?: 'platform' | 'organisation' | 'socialSites';
+  sectionKey?: 'platform' | 'organization' | 'socialSites';
   items: MenuItem[];
-  title?: 'platform' | 'organisation';
-  description?: 'organisationDescription';
+  title?: 'platform' | 'organization';
+  description?: 'organizationDescription';
 }
 
 export type MenuItemDescription =
