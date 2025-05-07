@@ -310,11 +310,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: all 0.3s ease;
+  transition: max-width 0.7s ease, white-space 0.7s ease;
   cursor: pointer;
 
   &:hover {
-    white-space: normal;
     max-width: 100%;
+    white-space: normal;
   }
 }
