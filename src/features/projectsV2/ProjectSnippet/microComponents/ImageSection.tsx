@@ -164,7 +164,7 @@ const ImageSection = (props: ImageSectionProps) => {
           </div>
         </div>
         <div className={styles.projectName}>
-          {truncateString(projectName, 30)}
+          <div className={styles.collapsibleText}>{projectName}</div>
           {isApproved && (
             <CustomTooltip
               showTooltipPopups={showTooltipPopups}
