@@ -1,10 +1,10 @@
-import { useTranslations } from 'next-intl';
 import type {
   CategoryLegendData,
   LegendData,
   RangeLegendData,
 } from '../../../../../utils/mapsV2/mapSettings.config';
 
+import { useTranslations } from 'next-intl';
 import styles from '../MapFeatureExplorer.module.scss';
 
 interface RangeLegendProps {
