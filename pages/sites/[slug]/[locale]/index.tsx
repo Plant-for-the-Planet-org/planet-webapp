@@ -80,9 +80,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig = defaultTenant;
-  //TODO: add tenant fetch config API
-  // The api has been intentionally removed for testing purpose
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -100,7 +99,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig, // This type issue will be resolved once the Planet SDK is updated with the latest tenant header configuration.
+      tenantConfig,
     },
   };
 };
