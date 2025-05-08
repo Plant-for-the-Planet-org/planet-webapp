@@ -105,11 +105,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
         },
       },
       legend: {
-        type: 'range',
-        min: 1,
-        max: 273,
-        gradient:
-          'linear-gradient(90deg, #FFFFFF 0%, #CEDFBC 48%, #036201 100%)',
+        type: 'simple',
+        color: '#036201',
       },
     },
     {
@@ -164,7 +161,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
     },
     {
       key: 'deforestation',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       color: '#EB5757',
       additionalInfo: {
@@ -176,6 +173,10 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Hansen et al. 2013',
           url: 'https://www.science.org/doi/10.1126/science.1244693',
         },
+      },
+      legend: {
+        type: 'simple',
+        color: '#FE1717',
       },
     },
     {
@@ -239,8 +240,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
       legend: {
         type: 'range',
-        min: 0,
-        max: 9.2,
+        min: 3.5,
+        max: 10,
         gradient:
           'linear-gradient(90deg, #FE4242 0%, #F3F7C7 45.5%, #6C8DFF 100%)',
       },
@@ -263,8 +264,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
       legend: {
         type: 'range',
-        min: 74,
-        max: 2431,
+        min: 2,
+        max: 4500,
         gradient:
           'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #361600 100%)',
         unit: 'dg/kg',
@@ -289,7 +290,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
       legend: {
         type: 'range',
         min: 0,
-        max: 174,
+        max: 176,
         gradient:
           'linear-gradient(90deg, #FEF27B 0%, #F9A817 48%, #E03301 100%)',
         unit: 'cg/cm3',
@@ -317,13 +318,14 @@ export const mapSettingsConfig: MapSettingsConfig = {
         type: 'range',
         min: 1,
         max: 273,
+        unit: 'species/ha',
         gradient:
           'linear-gradient(90deg, #F3F3F3 0%, #CEDFBC 48%, #1F3000 100%)',
       },
     },
     {
       key: 'birdDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -337,10 +339,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://biodiversitymapping.org/',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 678,
+        unit: 'birds/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #0A529E 100%)',
+      },
     },
     {
       key: 'mammalDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -353,10 +362,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://biodiversitymapping.org/',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 212,
+        unit: 'mammals/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #A71015 100%)',
+      },
     },
     {
       key: 'amphibianDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -368,6 +384,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Biodiversity Mapping',
           url: 'https://biodiversitymapping.org/',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 136,
+        unit: 'amphibians/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #0E903E 100%)',
       },
     },
   ],
