@@ -30,6 +30,11 @@ export interface AdditionalInfo {
   };
 }
 
+export interface SimpleLegendData {
+  type: 'simple';
+  color: string;
+}
+
 export interface RangeLegendData {
   type: 'range';
   min: number;
@@ -51,7 +56,11 @@ export interface CategoryLegendData {
   categories: { categoryKey: LegendCategoryKey; color: string }[];
 }
 
-export type LegendData = RangeLegendData | CategoryLegendData;
+export type LegendData =
+  | SimpleLegendData
+  | RangeLegendData
+  | CategoryLegendData;
+
 export interface LayerConfig {
   key: MapLayerOptionsType;
   /** Indicates whether the layer should be enabled in the UI */

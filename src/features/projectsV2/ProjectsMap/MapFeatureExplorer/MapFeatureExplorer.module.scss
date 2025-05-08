@@ -164,6 +164,10 @@
     height: 8px;
     border-radius: 300px;
 
+    &.legendBarSimple {
+      margin: 11px 0;
+    }
+
     &.legendBarCategory {
       display: flex;
       flex-direction: row;
