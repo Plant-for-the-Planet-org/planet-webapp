@@ -47,7 +47,7 @@ export type RequestOptions = {
  * isAbsoluteUrl('https://api.example.com') // returns true
  * isAbsoluteUrl('/users') // returns false
  */
-function isAbsoluteUrl(url: string) {
+export function isAbsoluteUrl(url: string) {
   const pattern = /^https?:\/\//i;
   return pattern.test(url);
 }

@@ -3,7 +3,7 @@ import SecondaryLogo from './SecondaryLogo';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 
-const BrandLogo = () => {
+const NavbarBrandLogos = () => {
   const [isMobile, setIsMobile] = useState(
     window !== undefined && window.matchMedia('(max-width: 481px)').matches
   );
@@ -26,4 +26,4 @@ const BrandLogo = () => {
   );
 };
 
-export default BrandLogo;
+export default NavbarBrandLogos;

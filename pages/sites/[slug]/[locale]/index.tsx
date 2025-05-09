@@ -31,6 +31,7 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
+      // This type issue will be resolved once the Planet SDK is updated with the latest tenant header configuration.
     }
   }, [router.isReady]);
 
@@ -81,7 +82,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 ): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [

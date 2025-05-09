@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { SetState } from '../types/common';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useContext, createContext, useMemo, useState } from 'react';
 
