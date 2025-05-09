@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import SubMenu from './SubMenu';
-import { useTenant } from '../../../TenantContext';
 import { useMemo } from 'react';
 
 interface NavigationItemProps {
@@ -25,7 +24,6 @@ const NavigationItem = ({
 }: NavigationItemProps) => {
   const router = useRouter();
   const t = useTranslations('Common');
-  const { tenantConfig } = useTenant();
   const hasSubMenu =
     navLinkOptions.subMenu !== undefined && navLinkOptions.subMenu.length > 0;
 
