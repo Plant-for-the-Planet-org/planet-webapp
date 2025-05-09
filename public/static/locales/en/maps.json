@@ -76,6 +76,14 @@
         "fireRisk": "Fire Risk",
         "deforestationRisk": "Deforestation Risk"
       },
+      "legends": {
+        "veryLow": "Very Low",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "veryHigh": "Very High",
+        "extreme": "Extreme"
+      },
       "additionalInfo": {
         "labels": {
           "dataYears": "Data years",

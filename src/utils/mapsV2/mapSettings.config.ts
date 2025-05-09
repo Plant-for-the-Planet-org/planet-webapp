@@ -30,6 +30,29 @@ export interface AdditionalInfo {
   };
 }
 
+export interface RangeLegendData {
+  type: 'range';
+  min: number;
+  max: number;
+  unit?: string;
+  gradient: string;
+}
+
+type LegendCategoryKey =
+  | 'veryLow'
+  | 'low'
+  | 'medium'
+  | 'high'
+  | 'veryHigh'
+  | 'extreme';
+
+export interface CategoryLegendData {
+  type: 'category';
+  categories: { categoryKey: LegendCategoryKey; color: string }[];
+}
+
+export type LegendData = RangeLegendData | CategoryLegendData;
+
 export interface LayerConfig {
   key: MapLayerOptionsType;
   /** Indicates whether the layer should be enabled in the UI */
@@ -38,6 +61,7 @@ export interface LayerConfig {
   isAvailable: boolean | null;
   additionalInfo?: AdditionalInfo;
   color?: string;
+  legend?: LegendData;
 }
 
 export interface MapSettingsConfig {
@@ -89,6 +113,14 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://www.pnas.org/doi/10.1073/pnas.2111312119',
         },
       },
+      legend: {
+        type: 'range',
+        min: 0,
+        max: 376,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #36670C 100%)',
+        unit: 't/ha',
+      },
     },
     {
       key: 'biomassPotential',
@@ -106,10 +138,18 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://www.pnas.org/doi/10.1073/pnas.2111312119',
         },
       },
+      legend: {
+        type: 'range',
+        min: 0,
+        max: 376,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #36670C 100%)',
+        unit: 't/ha',
+      },
     },
     {
       key: 'deforestation',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       color: '#EB5757',
       additionalInfo: {
@@ -158,6 +198,14 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
       },
+      legend: {
+        type: 'range',
+        min: 0,
+        max: 1237,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #6C8DFF 100%)',
+        unit: 'cg/kg',
+      },
     },
     {
       key: 'soilPH',
@@ -173,6 +221,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Hengl et al. 2017',
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 3.5,
+        max: 10,
+        gradient:
+          'linear-gradient(90deg, #FE4242 0%, #F3F7C7 45.5%, #6C8DFF 100%)',
       },
     },
     {
@@ -191,6 +246,14 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
       },
+      legend: {
+        type: 'range',
+        min: 2,
+        max: 4500,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #361600 100%)',
+        unit: 'dg/kg',
+      },
     },
     {
       key: 'soilBulkDensity',
@@ -207,6 +270,14 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Hengl et al. 2017',
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 0,
+        max: 176,
+        gradient:
+          'linear-gradient(90deg, #FEF27B 0%, #F9A817 48%, #E03301 100%)',
+        unit: 'cg/cm3',
       },
     },
   ],
@@ -227,10 +298,18 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://www.pnas.org/doi/full/10.1073/pnas.2115329119',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 273,
+        unit: 'species/ha',
+        gradient:
+          'linear-gradient(90deg, #F3F3F3 0%, #CEDFBC 48%, #1F3000 100%)',
+      },
     },
     {
       key: 'birdDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -244,10 +323,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://biodiversitymapping.org/',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 678,
+        unit: 'birds/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #0A529E 100%)',
+      },
     },
     {
       key: 'mammalDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -260,10 +346,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://biodiversitymapping.org/',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 212,
+        unit: 'mammals/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #A71015 100%)',
+      },
     },
     {
       key: 'amphibianDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -275,6 +368,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Biodiversity Mapping',
           url: 'https://biodiversitymapping.org/',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 136,
+        unit: 'amphibians/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #0E903E 100%)',
       },
     },
   ],
@@ -292,6 +392,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'by Plant-for-the-Planet, Fire Weather Index based analysis for last 25 years (90th percentile) based on data from Climate Data Store API',
           url: 'https://cds.climate.copernicus.eu/home',
         },
+      },
+      legend: {
+        type: 'category',
+        categories: [
+          { categoryKey: 'veryLow', color: '#F2C94C' },
+          { categoryKey: 'low', color: '#F2994A' },
+          { categoryKey: 'medium', color: '#FA7902' },
+          { categoryKey: 'high', color: '#E86F56' },
+          { categoryKey: 'veryHigh', color: '#C03418' },
+          { categoryKey: 'extreme', color: '#861E04' },
+        ],
       },
     },
     {
