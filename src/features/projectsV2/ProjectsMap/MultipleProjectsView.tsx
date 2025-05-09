@@ -14,7 +14,7 @@ interface MultipleProjectsViewProps {
 }
 
 const MultipleProjectsView = ({ mapRef, page }: MultipleProjectsViewProps) => {
-  const { isLoading, isError, filteredProjects } = useProjects();
+  const { isError, filteredProjects } = useProjects();
   const { handleViewStateChange } = useProjectsMap();
   if (isError || !filteredProjects) return null;
 
@@ -59,7 +59,7 @@ const MultipleProjectsView = ({ mapRef, page }: MultipleProjectsViewProps) => {
         regularDonatableProjects: [],
       }
     );
-  }, [filteredProjects, isLoading, isError]);
+  }, [filteredProjects]);
 
   return (
     <ProjectMarkers categorizedProjects={categorizedProjects} page={page} />
