@@ -3,9 +3,9 @@ import type { HeaderItem, NavbarItemHeaderKey } from '../defaultTenantConfig';
 import { useTenant } from '../../TenantContext';
 import UserProfileButton from './UserProfileButton';
 import { useState } from 'react';
-import NavigationGroup from './NavigationGroup';
+import NavbarItemGroup from './NavbarItemGroup';
 
-const NavigationItems = () => {
+const NavbarItems = () => {
   const { tenantConfig } = useTenant();
   const headerItems = tenantConfig.config.header.items;
   const [openMenuKey, setOpenMenuKey] = useState<NavbarItemHeaderKey | null>(
@@ -18,7 +18,7 @@ const NavigationItems = () => {
         <UserProfileButton />
       </div>
     ) : (
-      <NavigationGroup
+      <NavbarItemGroup
         navItem={navItem}
         openMenuKey={openMenuKey}
         setOpenMenuKey={setOpenMenuKey}
@@ -37,4 +37,4 @@ const NavigationItems = () => {
   ) : null;
 };
 
-export default NavigationItems;
+export default NavbarItems;

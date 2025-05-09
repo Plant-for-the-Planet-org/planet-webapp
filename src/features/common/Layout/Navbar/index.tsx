@@ -1,10 +1,10 @@
 import { useUserProps } from '../UserPropsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
-import BrandLogo from './microComponents/BrandLogo';
-import NavigationItems from './microComponents/NavigationItems';
+import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
+import NavbarItems from './microComponents/NavbarItems';
 
-const ImpersonationStatusHeader = () => {
+const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
   return isImpersonationModeOn ? (
     <div className="impersonationAlertContainer">
@@ -13,7 +13,7 @@ const ImpersonationStatusHeader = () => {
   ) : null;
 };
 
-const CommonHeader = () => {
+const MainNavigationHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
   return (
     <header
@@ -21,13 +21,13 @@ const CommonHeader = () => {
         isImpersonationModeOn ? 'impersonationMode' : ''
       }`}
     >
-      <BrandLogo />
-      <NavigationItems />
+      <NavbarBrandLogos />
+      <NavbarItems />
     </header>
   );
 };
 
-export default function NavbarComponent() {
+export default function Navbar() {
   const { tenantConfig } = useTenant();
   const { setUser, logoutUser, auth0Error } = useUserProps();
 
@@ -52,8 +52,8 @@ export default function NavbarComponent() {
 
   return tenantConfig ? (
     <div className="mainNavContainer">
-      <ImpersonationStatusHeader />
-      <CommonHeader />
+      <ImpersonationBanner />
+      <MainNavigationHeader />
     </div>
   ) : null;
 }

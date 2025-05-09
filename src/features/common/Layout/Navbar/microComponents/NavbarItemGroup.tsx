@@ -32,7 +32,7 @@ const renderMenuSections = (menu: MenuSection[]) => {
   ));
 };
 
-const NavigationGroup = ({
+const NavbarItemGroup = ({
   navItem,
   setOpenMenuKey,
   openMenuKey,
@@ -60,7 +60,7 @@ const NavigationGroup = ({
   const handleMouseLeave = () => setOpenMenuKey(null);
   return (
     <div
-      className={styles.navigationGroup}
+      className={styles.navbarItemGroup}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -101,4 +101,4 @@ const NavigationGroup = ({
   );
 };
 
-export default NavigationGroup;
+export default NavbarItemGroup;
