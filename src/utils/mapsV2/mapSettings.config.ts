@@ -30,11 +30,6 @@ export interface AdditionalInfo {
   };
 }
 
-export interface SimpleLegendData {
-  type: 'simple';
-  color: string;
-}
-
 export interface RangeLegendData {
   type: 'range';
   min: number;
@@ -56,10 +51,7 @@ export interface CategoryLegendData {
   categories: { categoryKey: LegendCategoryKey; color: string }[];
 }
 
-export type LegendData =
-  | SimpleLegendData
-  | RangeLegendData
-  | CategoryLegendData;
+export type LegendData = RangeLegendData | CategoryLegendData;
 
 export interface LayerConfig {
   key: MapLayerOptionsType;
@@ -103,10 +95,6 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Dynamic World',
           url: 'https://dynamicworld.app/',
         },
-      },
-      legend: {
-        type: 'simple',
-        color: '#036201',
       },
     },
     {
@@ -173,10 +161,6 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Hansen et al. 2013',
           url: 'https://www.science.org/doi/10.1126/science.1244693',
         },
-      },
-      legend: {
-        type: 'simple',
-        color: '#FE1717',
       },
     },
     {

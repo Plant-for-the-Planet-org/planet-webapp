@@ -2,15 +2,10 @@ import type {
   CategoryLegendData,
   LegendData,
   RangeLegendData,
-  SimpleLegendData,
 } from '../../../../../utils/mapsV2/mapSettings.config';
 
 import { useTranslations } from 'next-intl';
 import styles from '../MapFeatureExplorer.module.scss';
-
-interface SimpleLegendProps {
-  legend: SimpleLegendData;
-}
 
 interface RangeLegendProps {
   legend: RangeLegendData;
@@ -23,17 +18,6 @@ interface CategoryLegendProps {
 interface LayerLegendProps {
   legend: LegendData;
 }
-
-const SimpleLegend = ({ legend }: SimpleLegendProps) => {
-  return (
-    <div className={styles.layerLegend}>
-      <div
-        className={`${styles.legendBar} ${styles.legendBarSimple}`}
-        style={{ backgroundColor: legend.color }}
-      ></div>
-    </div>
-  );
-};
 
 const RangeLegend = ({ legend }: RangeLegendProps) => {
   return (
@@ -83,8 +67,6 @@ const CategoryLegend = ({ legend }: CategoryLegendProps) => {
 
 const LayerLegend = ({ legend }: LayerLegendProps) => {
   switch (legend.type) {
-    case 'simple':
-      return <SimpleLegend legend={legend} />;
     case 'category':
       return <CategoryLegend legend={legend} />;
     case 'range':
