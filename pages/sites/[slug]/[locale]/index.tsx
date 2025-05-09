@@ -79,8 +79,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+  const tenantConfig = defaultTenant;
+  //The tenant API has been intentionally removed for testing purposes and will be re-added before merging this PR into the develop branch.
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
