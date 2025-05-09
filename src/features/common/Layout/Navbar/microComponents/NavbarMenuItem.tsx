@@ -51,13 +51,19 @@ const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   mangroves: <MangrovesChallengeIcon />,
 };
 
-const excludedTitle = ['instagram', 'youtube', 'linkedin', 'facebook'];
+type ExcludedTitle = 'instagram' | 'youtube' | 'linkedin' | 'facebook';
+
+const excludedTitle: ExcludedTitle[] = [
+  'instagram',
+  'youtube',
+  'linkedin',
+  'facebook',
+];
+
 const isTranslatableTitle = (
   title: string
-): title is Exclude<
-  MenuItemTitle,
-  'instagram' | 'youtube' | 'linkedin' | 'facebook'
-> => !excludedTitle.includes(title);
+): title is Exclude<MenuItemTitle, ExcludedTitle> =>
+  !excludedTitle.includes(title as ExcludedTitle);
 
 const renderContent = (
   title: string,
@@ -66,8 +72,8 @@ const renderContent = (
   const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
   return (
     <div>
-      {isTranslatableTitle(title) && <span>{tNavbarMenuItem(title)}</span>}
-      {description && (
+      {isTranslatableTitle(title) && <h3>{tNavbarMenuItem(title)}</h3>}
+      {description !== undefined && (
         <p className={styles.description}>{tNavbarMenuItem(description)}</p>
       )}
     </div>
@@ -84,23 +90,17 @@ const NavbarMenuItem = ({
 }: MenuItem) => {
   if (!visible) return null;
 
-  const locale = useLocale();
   const menuIcon = useMemo(() => navbarMenuIcons[menuKey] || null, [menuKey]);
+  const content = !onlyIcon && renderContent(title, description);
+  const locale = useLocale();
+  const isExternal = isAbsoluteUrl(link);
+  const href = isExternal
+    ? isPlanetDomain(link)
+      ? addLocaleToUrl(link, locale)
+      : link
+    : link;
 
-  if (!isAbsoluteUrl(link)) {
-    return (
-      <Link href={link} prefetch={false}>
-        <div className={styles.navbarMenuItem}>
-          {menuIcon}
-          {!onlyIcon && renderContent(title, description)}
-        </div>
-      </Link>
-    );
-  }
-
-  const href = isPlanetDomain(link) ? addLocaleToUrl(link, locale) : link;
-
-  return (
+  return isExternal ? (
     <a
       href={href}
       target="_blank"
@@ -108,8 +108,15 @@ const NavbarMenuItem = ({
       className={styles.navbarMenuItem}
     >
       {menuIcon}
-      {!onlyIcon && renderContent(title, description)}
+      {content}
     </a>
+  ) : (
+    <Link href={href} prefetch={false}>
+      <div className={styles.navbarMenuItem}>
+        {menuIcon}
+        {content}
+      </div>
+    </Link>
   );
 };
 
