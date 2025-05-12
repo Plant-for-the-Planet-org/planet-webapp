@@ -28,13 +28,14 @@ export const defaultTenant: UpdatedTenant = {
     header: {
       items: [
         {
-          title: 'home',
           link: '/',
           headerKey: 'home',
           visible: true,
+          headerText: 'home',
         },
 
         {
+          headerText: 'aboutUs',
           title: 'aboutUs',
           hasSection: true,
           menu: [
@@ -134,6 +135,7 @@ export const defaultTenant: UpdatedTenant = {
           visible: true,
         },
         {
+          headerText: 'tools',
           title: 'tools',
           hasSection: false,
           menu: [
@@ -182,23 +184,17 @@ export const defaultTenant: UpdatedTenant = {
           headerKey: 'tools',
         },
         {
-          title: 'leaders',
           link: '/all',
           visible: false,
           headerKey: 'leaderboard',
+          headerText: 'leaderboard',
         },
         {
-          title: 'signIn',
+          headerText: 'signIn',
           link: '/me',
           visible: true,
           headerKey: 'me',
-          loggedInTitle: 'me',
-        },
-        {
-          title: 'shop',
-          link: 'https://thegoodshop.org',
-          visible: false,
-          headerKey: 'shop',
+          loggedInHeaderText: 'me',
         },
       ],
       tenantLogoURL: 'https://cdn.plant-for-the-planet.org/logo/svg/planet.svg',
