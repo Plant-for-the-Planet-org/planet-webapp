@@ -154,8 +154,6 @@
         "transparency": "Transparency",
         "partner": "Partner with Us",
         "treeMapper": "TreeMapper",
-        "vtoChallenge": "VTO Challenge",
-        "mangroves": "Mangroves",
         "treeMapperDescription": "to monitor forest restoration",
         "fireAlert": "FireAlert",
         "fireAlertDescription": "to rapidly stop forest fires",
@@ -164,7 +162,9 @@
         "restorationAdvice": "Restoration Advice",
         "restorationAdviceDescription": "free advice for restoration & conservation programs",
         "restorationStandards": "Restoration Standards",
-        "restorationStandardsDescription": "Quantifiable standards for restoration"
+        "restorationStandardsDescription": "Quantifiable standards for restoration",
+        "vtoChallenge": "VTO Challenge",
+        "mangroves": "Mangroves"
       }
     }
   }
