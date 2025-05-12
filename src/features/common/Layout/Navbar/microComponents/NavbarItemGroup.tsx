@@ -12,7 +12,6 @@ import DropdownDownArrow from '../../../../../../public/assets/images/icons/proj
 import themeProperties from '../../../../../theme/themeProperties';
 import NavbarMenuSection from './NavbarMenuSection';
 import { useRouter } from 'next/router';
-import NavbarMenu from './NavbarMenu';
 
 type NavItemProps = {
   navItem: HeaderItem;
@@ -39,11 +38,11 @@ const NavbarItemGroup = ({
 }: NavItemProps) => {
   if (!navItem.visible) return null;
 
-  const isNavMenuOpen = openMenuKey === navItem.headerKey;
   const { primaryDarkColor } = themeProperties;
   const tNavItem = useTranslations('Common');
   const router = useRouter();
 
+  const isNavMenuOpen = openMenuKey === navItem.headerKey;
   const isActive = () => {
     const { pathname } = router;
     const strippedPathname =
@@ -52,12 +51,13 @@ const NavbarItemGroup = ({
     if (strippedPathname === navItem.link || isNavMenuOpen) return true;
     return false;
   };
-  const isActiveClass = isActive() ? styles.activeNavItem : '';
+  const headerTextStyles = isActive() ? styles.activeNavItem : '';
 
   const handleClick = () =>
     setOpenMenuKey(isNavMenuOpen ? null : navItem.headerKey);
   const handleMouseEnter = () => setOpenMenuKey(navItem.headerKey);
   const handleMouseLeave = () => setOpenMenuKey(null);
+
   return (
     <div
       className={styles.navbarItemGroup}
@@ -66,7 +66,9 @@ const NavbarItemGroup = ({
     >
       {navItem.link ? (
         <Link href={navItem.link} prefetch={false}>
-          <span className={isActiveClass}>{tNavItem(navItem.title)}</span>
+          <span className={headerTextStyles}>
+            {tNavItem(navItem.headerText)}
+          </span>
         </Link>
       ) : (
         <button
@@ -75,7 +77,9 @@ const NavbarItemGroup = ({
           aria-haspopup="true"
           aria-expanded={isNavMenuOpen}
         >
-          <span className={isActiveClass}>{tNavItem(navItem.title)}</span>
+          <span className={headerTextStyles}>
+            {tNavItem(navItem.headerText)}
+          </span>
           <span className={styles.chevron}>
             {isNavMenuOpen ? (
               <DropdownUpArrow width={12} color={primaryDarkColor} />
@@ -86,13 +90,18 @@ const NavbarItemGroup = ({
           {isNavMenuOpen && <div className={styles.toolTipArrow} />}
         </button>
       )}
-      {isNavMenuOpen && navItem.menu && (
+      {isNavMenuOpen && navItem.menu !== undefined && (
         <div className={`${styles.navbarMenu} ${styles[navItem.headerKey]}`}>
           <div className={styles.navbarMenuSubContainer}>
             {navItem.hasSection === true ? (
-              renderMenuSections(navItem.menu as MenuSection[])
+              renderMenuSections(navItem.menu)
             ) : (
-              <NavbarMenu navItem={navItem} />
+              <NavbarMenuSection
+                items={navItem.menu}
+                title={navItem.title}
+                description={navItem.description}
+                headerKey={navItem.headerKey}
+              />
             )}
           </div>
         </div>

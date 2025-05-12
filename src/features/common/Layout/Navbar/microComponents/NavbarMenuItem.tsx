@@ -31,6 +31,8 @@ import {
 import { addLocaleToUrl, isPlanetDomain } from '../utils';
 import { isAbsoluteUrl } from '../utils';
 
+//TODO: Generalize types and props
+
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
   redeemCode: <RedeemCodeIcon />,
@@ -65,7 +67,7 @@ const isTranslatableTitle = (
 ): title is Exclude<MenuItemTitle, ExcludedTitle> =>
   !excludedTitle.includes(title as ExcludedTitle);
 
-const renderContent = (
+const renderTextContent = (
   title: string,
   description: MenuItemDescription | undefined
 ) => {
@@ -91,7 +93,7 @@ const NavbarMenuItem = ({
   if (!visible) return null;
 
   const menuIcon = useMemo(() => navbarMenuIcons[menuKey] || null, [menuKey]);
-  const content = !onlyIcon && renderContent(title, description);
+  const textContent = !onlyIcon ? renderTextContent(title, description) : null;
   const locale = useLocale();
   const isExternal = isAbsoluteUrl(link);
   const href = isExternal
@@ -108,13 +110,13 @@ const NavbarMenuItem = ({
       className={styles.navbarMenuItem}
     >
       {menuIcon}
-      {content}
+      {textContent}
     </a>
   ) : (
     <Link href={href} prefetch={false}>
       <div className={styles.navbarMenuItem}>
         {menuIcon}
-        {content}
+        {textContent}
       </div>
     </Link>
   );

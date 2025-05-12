@@ -7,6 +7,7 @@ import NavbarItemGroup from './NavbarItemGroup';
 
 const NavbarItems = () => {
   const { tenantConfig } = useTenant();
+  //TODO: remove the type assertion after updating @planet-sdk
   const headerItems = tenantConfig.config.header.items as HeaderItem[];
   const [openMenuKey, setOpenMenuKey] = useState<NavbarItemHeaderKey | null>(
     null
