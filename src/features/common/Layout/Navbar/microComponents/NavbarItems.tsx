@@ -7,7 +7,7 @@ import NavbarItemGroup from './NavbarItemGroup';
 
 const NavbarItems = () => {
   const { tenantConfig } = useTenant();
-  const headerItems = tenantConfig.config.header.items;
+  const headerItems = tenantConfig.config.header.items as HeaderItem[];
   const [openMenuKey, setOpenMenuKey] = useState<NavbarItemHeaderKey | null>(
     null
   );
@@ -19,6 +19,7 @@ const NavbarItems = () => {
       </div>
     ) : (
       <NavbarItemGroup
+        key={navItem.headerKey}
         navItem={navItem}
         openMenuKey={openMenuKey}
         setOpenMenuKey={setOpenMenuKey}
@@ -26,15 +27,12 @@ const NavbarItems = () => {
     );
   };
 
-  return headerItems.length > 0 ? (
-    <nav className={'headerItems'}>
-      {headerItems
-        .filter(
-          (headerItem) => headerItem.visible && headerItem.headerKey !== 'shop'
-        )
-        .map(renderHeaderItem)}
-    </nav>
-  ) : null;
+  const visibleItems = headerItems.filter((item) => item.visible);
+  if (visibleItems.length === 0) return null;
+
+  return (
+    <nav className={'headerItems'}>{visibleItems.map(renderHeaderItem)}</nav>
+  );
 };
 
 export default NavbarItems;
