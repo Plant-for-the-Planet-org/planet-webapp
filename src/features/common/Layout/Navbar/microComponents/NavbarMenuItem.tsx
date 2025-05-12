@@ -29,7 +29,7 @@ import {
   MangrovesChallengeIcon,
 } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
 import { addLocaleToUrl, isPlanetDomain } from '../utils';
-import { isAbsoluteUrl } from '../../../../../utils/apiRequests/apiClient';
+import { isAbsoluteUrl } from '../utils';
 
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
