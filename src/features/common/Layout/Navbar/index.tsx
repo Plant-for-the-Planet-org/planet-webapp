@@ -29,6 +29,8 @@ const MainNavigationHeader = () => {
 
 export default function Navbar() {
   const { tenantConfig } = useTenant();
+  if (!tenantConfig) return null;
+
   const { setUser, logoutUser, auth0Error } = useUserProps();
 
   if (auth0Error) {
@@ -50,10 +52,10 @@ export default function Navbar() {
     }
   }
 
-  return tenantConfig ? (
+  return (
     <div className="mainNavContainer">
       <ImpersonationBanner />
       <MainNavigationHeader />
     </div>
-  ) : null;
+  );
 }
