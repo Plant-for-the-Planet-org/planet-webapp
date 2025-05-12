@@ -32,7 +32,7 @@ const NavbarMenuSection = ({
         </h3>
       )}
 
-      <div className={styles[`${sectionKey}-section`]}>
+      <div className={styles[`${sectionKey}Menu`]}>
         {items.map((item) => {
           return (
             <NavbarMenuItem

@@ -87,8 +87,8 @@ const NavbarItemGroup = ({
         </button>
       )}
       {isNavMenuOpen && navItem.menu && (
-        <div className={`${styles.navMenu} ${styles[navItem.headerKey]}`}>
-          <div className={styles.navMenuSubContainer}>
+        <div className={`${styles.navbarMenu} ${styles[navItem.headerKey]}`}>
+          <div className={styles.navbarMenuSubContainer}>
             {navItem.hasSection === true ? (
               renderMenuSections(navItem.menu as MenuSection[])
             ) : (

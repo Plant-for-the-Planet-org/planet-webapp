@@ -2,7 +2,7 @@
 
 // new navbar dropdown styles
 
-.navMenu {
+.navbarMenu {
   display: flex;
   min-width: max-content;
   padding: 7px;
@@ -14,7 +14,7 @@
   );
 }
 
-.navMenuSubContainer {
+.navbarMenuSubContainer {
   display: flex;
   gap: 7px;
   border-radius: 24px;
@@ -69,21 +69,21 @@
   }
 }
 
-.platform-section {
+.platformMenu {
   display: flex;
   flex-direction: column;
   gap: 19px;
   margin-top: 19px;
 }
 
-.organization-section {
+.organizationMenu {
   display: flex;
   flex-direction: column;
   gap: 17px;
   margin-top: 21px;
 }
 
-.socialSites-section {
+.socialSitesMenu {
   display: flex;
   flex-direction: column;
   gap: 34px;
@@ -102,14 +102,14 @@
   }
 }
 
-.menu-tools {
+.toolsMenu {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 24px;
 }
 
-.menu-campaign {
+.campaignMenu {
   display: flex;
   flex-direction: column;
   gap: 15px;

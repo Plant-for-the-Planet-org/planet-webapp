@@ -38,7 +38,7 @@ const NavbarMenu = ({ navItem }: { navItem: HeaderItem }) => {
           </a>
         </>
       )}
-      <div className={styles[`menu-${navItem.headerKey}`]}>
+      <div className={styles[`${navItem.headerKey}Menu`]}>
         {navItem.menu?.map((menu) =>
           isNavbarMenuItem(menu) ? (
             <NavbarMenuItem
