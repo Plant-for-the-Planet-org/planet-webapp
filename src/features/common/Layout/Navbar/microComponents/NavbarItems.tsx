@@ -4,6 +4,7 @@ import { useTenant } from '../../TenantContext';
 import UserProfileButton from './UserProfileButton';
 import { useState } from 'react';
 import NavbarItemGroup from './NavbarItemGroup';
+import styles from '../Navbar.module.scss';
 
 const NavbarItems = () => {
   const { tenantConfig } = useTenant();
@@ -15,7 +16,7 @@ const NavbarItems = () => {
 
   const renderHeaderItem = (navItem: HeaderItem) => {
     return navItem.headerKey === 'me' ? (
-      <div className="profileButtonContainer" key={navItem.headerKey}>
+      <div className={styles.profileButtonContainer} key={navItem.headerKey}>
         <UserProfileButton />
       </div>
     ) : (
@@ -32,7 +33,9 @@ const NavbarItems = () => {
   if (visibleItems.length === 0) return null;
 
   return (
-    <nav className={'headerItems'}>{visibleItems.map(renderHeaderItem)}</nav>
+    <nav className={styles.headerItems}>
+      {visibleItems.map(renderHeaderItem)}
+    </nav>
   );
 };
 

@@ -1,7 +1,7 @@
 import type { MenuItem } from '../defaultTenantConfig';
 
 import { useTranslations } from 'next-intl';
-import styles from '../NavbarMenu.module.scss';
+import styles from '../Navbar.module.scss';
 import NavbarMenuItem from './NavbarMenuItem';
 import { GreenRightChevron } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
 

@@ -2,6 +2,7 @@ import PlanetLogo from './PlanetLogo';
 import SecondaryLogo from './SecondaryLogo';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
+import styles from '../Navbar.module.scss';
 
 const NavbarBrandLogos = () => {
   const [isMobile, setIsMobile] = useState(
@@ -19,7 +20,7 @@ const NavbarBrandLogos = () => {
   }, []);
 
   return (
-    <div className="brandLogos">
+    <div className={styles.brandLogos}>
       <SecondaryLogo isMobile={isMobile} />
       <PlanetLogo />
     </div>

@@ -6,7 +6,7 @@ import type {
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import styles from '../NavbarMenu.module.scss';
+import styles from '../Navbar.module.scss';
 import DropdownUpArrow from '../../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 import themeProperties from '../../../../../theme/themeProperties';

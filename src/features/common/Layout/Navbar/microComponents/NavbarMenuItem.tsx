@@ -8,7 +8,7 @@ import type { JSX } from 'react';
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import styles from '../NavbarMenu.module.scss';
+import styles from '../Navbar.module.scss';
 import {
   PlatformIcon,
   RedeemCodeIcon,

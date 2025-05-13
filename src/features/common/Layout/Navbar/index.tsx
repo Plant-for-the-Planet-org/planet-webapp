@@ -3,24 +3,26 @@ import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/Imper
 import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
+import styles from './Navbar.module.scss';
 
 const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
-  return isImpersonationModeOn ? (
-    <div className="impersonationAlertContainer">
+  if (!isImpersonationModeOn) return null;
+  return (
+    <div className={styles.impersonationAlertContainer}>
       <ImpersonationActivated />
     </div>
-  ) : null;
+  );
 };
 
 const MainNavigationHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
+
+  const headerStyles = `${styles.navContainer} ${
+    isImpersonationModeOn ? `${styles.impersonationMode}` : ''
+  }`;
   return (
-    <header
-      className={`navContainer ${
-        isImpersonationModeOn ? 'impersonationMode' : ''
-      }`}
-    >
+    <header className={headerStyles}>
       <NavbarBrandLogos />
       <NavbarItems />
     </header>
@@ -53,7 +55,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className="mainNavContainer">
+    <div className={styles.mainNavContainer}>
       <ImpersonationBanner />
       <MainNavigationHeader />
     </div>
