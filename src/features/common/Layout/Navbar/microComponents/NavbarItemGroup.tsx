@@ -1,8 +1,8 @@
 import type {
-  HeaderItem,
-  MenuSection,
+  WebHeaderItem,
+  WebMenuSection,
   NavbarItemHeaderKey,
-} from '../defaultTenantConfig';
+} from '../tenant';
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -14,12 +14,12 @@ import NavbarMenuSection from './NavbarMenuSection';
 import { useRouter } from 'next/router';
 
 type NavItemProps = {
-  navItem: HeaderItem;
+  navItem: WebHeaderItem;
   setOpenMenuKey: (key: NavbarItemHeaderKey | null) => void;
   openMenuKey: NavbarItemHeaderKey | null;
 };
 
-const renderMenuSections = (menu: MenuSection[]) => {
+const renderMenuSections = (menu: WebMenuSection[]) => {
   return menu.map((section) => (
     <NavbarMenuSection
       key={section.title}

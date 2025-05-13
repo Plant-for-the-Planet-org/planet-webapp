@@ -1,8 +1,8 @@
 import type {
-  MenuItem,
+  WebMenuItem,
   MenuItemDescription,
   MenuItemTitle,
-} from '../defaultTenantConfig';
+} from '../tenant';
 import type { JSX } from 'react';
 
 import { useMemo } from 'react';
@@ -30,8 +30,6 @@ import {
 } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
 import { addLocaleToUrl, isPlanetDomain } from '../utils';
 import { isAbsoluteUrl } from '../utils';
-
-//TODO: Generalize types and props
 
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
@@ -89,7 +87,7 @@ const NavbarMenuItem = ({
   link,
   visible,
   onlyIcon,
-}: MenuItem) => {
+}: WebMenuItem) => {
   if (!visible) return null;
 
   const menuIcon = useMemo(() => navbarMenuIcons[menuKey] || null, [menuKey]);

@@ -1,6 +1,6 @@
-import type { UpdatedTenant } from './src/features/common/Layout/Navbar/defaultTenantConfig';
-//TODO: update tenant type with the @planet-sdk
-export const defaultTenant: UpdatedTenant = {
+import type { WebTenant } from './src/features/common/Layout/Navbar/tenant';
+
+export const defaultTenant: WebTenant = {
   id: 'ten_NxJq55pm',
   config: {
     appDomain: 'https://web.plant-for-the-planet.org/',

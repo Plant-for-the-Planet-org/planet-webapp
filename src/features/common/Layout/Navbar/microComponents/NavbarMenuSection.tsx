@@ -1,4 +1,4 @@
-import type { MenuItem } from '../defaultTenantConfig';
+import type { SectionTitle, WebMenuItem } from '../tenant';
 
 import { useTranslations } from 'next-intl';
 import styles from '../Navbar.module.scss';
@@ -6,9 +6,9 @@ import NavbarMenuItem from './NavbarMenuItem';
 import { GreenRightChevron } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
 
 interface NavbarMenuSectionProps {
-  items: MenuItem[];
-  title?: string;
-  description?: string;
+  items: WebMenuItem[];
+  title?: SectionTitle;
+  description?: 'organizationDescription';
   sectionKey?: string;
   headerKey?: string;
 }

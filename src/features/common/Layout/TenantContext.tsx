@@ -1,25 +1,26 @@
 import type { FC } from 'react';
 import type { SetState } from '../types/common';
-import type { Tenant } from '@planet-sdk/common';
+import type { WebTenant } from './Navbar/tenant';
 
 import { useContext, createContext, useMemo, useState } from 'react';
 
 interface TenantContextInterface {
-  tenantConfig: Tenant;
-  setTenantConfig: SetState<Tenant>;
+  tenantConfig: WebTenant;
+  setTenantConfig: SetState<WebTenant>;
 }
 
 const TenantContext = createContext<TenantContextInterface | null>(null);
 
 interface TenantProviderProps {
-  initialTenantConfig: Tenant;
+  initialTenantConfig: WebTenant;
 }
 
 export const TenantProvider: FC<TenantProviderProps> = ({
   children,
   initialTenantConfig,
 }) => {
-  const [tenantConfig, setTenantConfig] = useState<Tenant>(initialTenantConfig);
+  const [tenantConfig, setTenantConfig] =
+    useState<WebTenant>(initialTenantConfig);
 
   const value: TenantContextInterface | null = useMemo(
     () => ({

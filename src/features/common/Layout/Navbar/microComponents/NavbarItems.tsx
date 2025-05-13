@@ -1,4 +1,4 @@
-import type { HeaderItem, NavbarItemHeaderKey } from '../defaultTenantConfig';
+import type { WebHeaderItem, NavbarItemHeaderKey } from '../tenant';
 
 import { useTenant } from '../../TenantContext';
 import UserProfileButton from './UserProfileButton';
@@ -8,13 +8,12 @@ import styles from '../Navbar.module.scss';
 
 const NavbarItems = () => {
   const { tenantConfig } = useTenant();
-  //TODO: remove the type assertion after updating @planet-sdk
-  const headerItems = tenantConfig.config.header.items as HeaderItem[];
+  const headerItems = tenantConfig.config.header.items;
   const [openMenuKey, setOpenMenuKey] = useState<NavbarItemHeaderKey | null>(
     null
   );
 
-  const renderHeaderItem = (navItem: HeaderItem) => {
+  const renderHeaderItem = (navItem: WebHeaderItem) => {
     return navItem.headerKey === 'me' ? (
       <div className={styles.profileButtonContainer} key={navItem.headerKey}>
         <UserProfileButton />
