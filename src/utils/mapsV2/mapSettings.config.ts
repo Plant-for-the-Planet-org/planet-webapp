@@ -103,7 +103,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
       isAvailable: null,
       color: '#27AE60',
       additionalInfo: {
-        resolution: '~500km',
+        resolution: '~500m',
         dataYears: '2016',
         description: 'Current biomass maps in the forested regions',
         underlyingData:
@@ -127,7 +127,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
       canShow: true,
       isAvailable: null,
       additionalInfo: {
-        resolution: '~500km',
+        resolution: '~500m',
         dataYears: '2016',
         description:
           'Global additional potential biomass with and without considering agricultural and human settlements.',
