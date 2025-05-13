@@ -1,14 +1,16 @@
-import type { SectionTitle, WebMenuItem } from '../tenant';
+import type { SectionTitle } from '../tenant';
+import type { MenuItem } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
 import styles from '../Navbar.module.scss';
 import NavbarMenuItem from './NavbarMenuItem';
 import { GreenRightChevron } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
 
+type SectionHeaderDescription = 'organizationDescription';
 interface NavbarMenuSectionProps {
-  items: WebMenuItem[];
+  items: MenuItem[];
   title?: SectionTitle;
-  description?: 'organizationDescription';
+  description?: string;
   sectionKey?: string;
   headerKey?: string;
 }
@@ -44,7 +46,7 @@ const NavbarMenuSection = ({
           )}
           {description !== undefined && (
             <h3 className={styles.sectionDescription}>
-              {tNavbarMenu(description)}
+              {tNavbarMenu(description as SectionHeaderDescription)}
             </h3>
           )}
         </div>

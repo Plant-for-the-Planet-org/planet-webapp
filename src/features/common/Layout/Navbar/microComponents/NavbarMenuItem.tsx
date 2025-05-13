@@ -1,9 +1,6 @@
-import type {
-  WebMenuItem,
-  MenuItemDescription,
-  MenuItemTitle,
-} from '../tenant';
+import type { MenuItemDescription, MenuItemTitle } from '../tenant';
 import type { JSX } from 'react';
+import type { MenuItem } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
 import Link from 'next/link';
@@ -87,11 +84,16 @@ const NavbarMenuItem = ({
   link,
   visible,
   onlyIcon,
-}: WebMenuItem) => {
+}: MenuItem) => {
   if (!visible) return null;
 
-  const menuIcon = useMemo(() => navbarMenuIcons[menuKey] || null, [menuKey]);
-  const textContent = !onlyIcon ? renderTextContent(title, description) : null;
+  const menuIcon = useMemo(
+    () => navbarMenuIcons[menuKey as MenuItemTitle] || null,
+    [menuKey]
+  );
+  const textContent = !onlyIcon
+    ? renderTextContent(title, description as MenuItemDescription)
+    : null;
   const locale = useLocale();
   const isExternal = isAbsoluteUrl(link);
   const href = isExternal

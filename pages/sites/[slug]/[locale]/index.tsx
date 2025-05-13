@@ -31,7 +31,6 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
-      // This type issue will be resolved once the Planet SDK is updated with the latest tenant header configuration.
     }
   }, [router.isReady]);
 

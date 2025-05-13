@@ -1,4 +1,5 @@
-import type { WebHeaderItem, NavbarItemHeaderKey } from '../tenant';
+import type { NavbarItemHeaderKey } from '../tenant';
+import type { HeaderItem } from '@planet-sdk/common';
 
 import { useTenant } from '../../TenantContext';
 import UserProfileButton from './UserProfileButton';
@@ -13,7 +14,7 @@ const NavbarItems = () => {
     null
   );
 
-  const renderHeaderItem = (navItem: WebHeaderItem) => {
+  const renderHeaderItem = (navItem: HeaderItem) => {
     return navItem.headerKey === 'me' ? (
       <div className={styles.profileButtonContainer} key={navItem.headerKey}>
         <UserProfileButton />

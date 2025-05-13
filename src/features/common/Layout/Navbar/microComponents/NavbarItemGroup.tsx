@@ -1,8 +1,9 @@
 import type {
-  WebHeaderItem,
-  WebMenuSection,
   NavbarItemHeaderKey,
+  NavbarItemTitleKey,
+  SectionTitle,
 } from '../tenant';
+import type { HeaderItem, MenuSection } from '@planet-sdk/common';
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -14,17 +15,17 @@ import NavbarMenuSection from './NavbarMenuSection';
 import { useRouter } from 'next/router';
 
 type NavItemProps = {
-  navItem: WebHeaderItem;
+  navItem: HeaderItem;
   setOpenMenuKey: (key: NavbarItemHeaderKey | null) => void;
   openMenuKey: NavbarItemHeaderKey | null;
 };
 
-const renderMenuSections = (menu: WebMenuSection[]) => {
+const renderMenuSections = (menu: MenuSection[]) => {
   return menu.map((section) => (
     <NavbarMenuSection
       key={section.title}
       items={section.items}
-      title={section.title}
+      title={section.title as SectionTitle}
       description={section.description}
       sectionKey={section.sectionKey}
     />
@@ -54,8 +55,11 @@ const NavbarItemGroup = ({
   const headerTextStyles = isActive() ? styles.activeNavItem : '';
 
   const handleClick = () =>
-    setOpenMenuKey(isNavMenuOpen ? null : navItem.headerKey);
-  const handleMouseEnter = () => setOpenMenuKey(navItem.headerKey);
+    setOpenMenuKey(
+      isNavMenuOpen ? null : (navItem.headerKey as NavbarItemHeaderKey)
+    );
+  const handleMouseEnter = () =>
+    setOpenMenuKey(navItem.headerKey as NavbarItemHeaderKey);
   const handleMouseLeave = () => setOpenMenuKey(null);
 
   return (
@@ -67,7 +71,7 @@ const NavbarItemGroup = ({
       {navItem.link ? (
         <Link href={navItem.link} prefetch={false}>
           <span className={headerTextStyles}>
-            {tNavItem(navItem.headerText)}
+            {tNavItem(navItem.headerText as NavbarItemTitleKey)}
           </span>
         </Link>
       ) : (
@@ -78,7 +82,7 @@ const NavbarItemGroup = ({
           aria-expanded={isNavMenuOpen}
         >
           <span className={headerTextStyles}>
-            {tNavItem(navItem.headerText)}
+            {tNavItem(navItem.headerText as NavbarItemTitleKey)}
           </span>
           <span className={styles.chevron}>
             {isNavMenuOpen ? (
@@ -98,7 +102,7 @@ const NavbarItemGroup = ({
             ) : (
               <NavbarMenuSection
                 items={navItem.menu}
-                title={navItem.title}
+                title={navItem.title as SectionTitle}
                 description={navItem.description}
                 headerKey={navItem.headerKey}
               />
