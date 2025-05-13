@@ -69,50 +69,33 @@
   }
 }
 
-.platformMenu {
+.menuStyles {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 19px;
-  margin-top: 19px;
-}
+  flex: 1;
 
-.organizationMenu {
-  display: flex;
-  flex-direction: column;
-  gap: 17px;
-  margin-top: 21px;
-}
-
-.socialSitesMenu {
-  display: flex;
-  flex-direction: column;
-  gap: 34px;
-  align-items: center;
-
-  @include xsPhoneView {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  @include smTabletView {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  @include lgLaptopView {
-    flex-direction: column;
+  &.onlyIcon {
+    align-items: center;
+    @include xsPhoneView {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    @include smTabletView {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    @include lgLaptopView {
+      flex-direction: column;
+    }
   }
 }
 
-.toolsMenu {
+.sectionHeader {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.campaignMenu {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  gap: 8px;
 }
 
 .navbarMenuSection {
@@ -122,6 +105,9 @@
   border-radius: 20px;
   position: relative;
   color: $mediumGrayColor;
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
 
   .sectionTitle {
     font-size: $fontSmall;
@@ -135,7 +121,6 @@
 
   .sectionDescription {
     font-size: $fontXSmall;
-    margin-top: 8px;
   }
 }
 
