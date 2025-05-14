@@ -51,30 +51,12 @@ const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   mangroves: <MangrovesChallengeIcon />,
 };
 
-type ExcludedTitle = 'instagram' | 'youtube' | 'linkedin' | 'facebook';
-
-const excludedTitle: ExcludedTitle[] = [
-  'instagram',
-  'youtube',
-  'linkedin',
-  'facebook',
-];
-
-const isTranslatableTitle = (
-  title: string
-): title is Exclude<MenuItemTitle, ExcludedTitle> =>
-  !excludedTitle.includes(title as ExcludedTitle);
-
-const renderTextContent = (
-  title: string,
-  description: MenuItemDescription | undefined
-) => {
-  const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
+const renderTextContent = (title: string, description: string | undefined) => {
   return (
     <div>
-      {isTranslatableTitle(title) && <h3>{tNavbarMenuItem(title)}</h3>}
+      <h3>{title}</h3>
       {description !== undefined && (
-        <p className={styles.description}>{tNavbarMenuItem(description)}</p>
+        <p className={styles.description}>{description}</p>
       )}
     </div>
   );
@@ -90,12 +72,19 @@ const NavbarMenuItem = ({
 }: MenuItem) => {
   if (!visible) return null;
 
+  const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
   const menuIcon = useMemo(
     () => navbarMenuIcons[menuKey as MenuItemTitle] || null,
     [menuKey]
   );
+  const titleTranslation = tNavbarMenuItem(title as MenuItemTitle);
+  const descriptionTranslation =
+    description !== undefined
+      ? tNavbarMenuItem(description as MenuItemDescription)
+      : undefined;
+
   const textContent = !onlyIcon
-    ? renderTextContent(title, description as MenuItemDescription)
+    ? renderTextContent(titleTranslation, descriptionTranslation)
     : null;
   const locale = useLocale();
   const isExternal = isAbsoluteUrl(link);
@@ -111,12 +100,13 @@ const NavbarMenuItem = ({
       target="_blank"
       rel="noopener noreferrer"
       className={styles.navbarMenuItem}
+      aria-label={titleTranslation}
     >
       {menuIcon}
       {textContent}
     </a>
   ) : (
-    <Link href={href} prefetch={false}>
+    <Link href={href} prefetch={false} aria-label={titleTranslation}>
       <div className={styles.navbarMenuItem}>
         {menuIcon}
         {textContent}
