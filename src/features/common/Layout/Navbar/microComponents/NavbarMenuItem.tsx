@@ -25,8 +25,11 @@ import {
   VTOChallengeIcon,
   MangrovesChallengeIcon,
 } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
-import { addLocaleToUrl, isPlanetDomain } from '../utils';
-import { isAbsoluteUrl } from '../utils';
+import {
+  addLocaleToUrl,
+  isPlanetDomain,
+} from '../../../../../utils/navbarUtils';
+import isAbsoluteUrl from '../../../../../utils/isAbsoluteUrl';
 
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,

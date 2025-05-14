@@ -1,6 +1,6 @@
 import { APIError } from '@planet-sdk/common';
 import { getQueryString } from './getQueryString';
-import { isAbsoluteUrl } from '../../features/common/Layout/Navbar/utils';
+import isAbsoluteUrl from '../isAbsoluteUrl';
 
 export type RequestOptions = {
   /**
