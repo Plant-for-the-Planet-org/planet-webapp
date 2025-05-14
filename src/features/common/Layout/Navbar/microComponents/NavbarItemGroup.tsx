@@ -14,8 +14,8 @@ import themeProperties from '../../../../../theme/themeProperties';
 import NavbarMenuSection from './NavbarMenuSection';
 import { useRouter } from 'next/router';
 
-type NavItemProps = {
-  navItem: HeaderItem;
+type NavbarItemProps = {
+  navbarItem: HeaderItem;
   setOpenMenuKey: (key: NavbarItemHeaderKey | null) => void;
   openMenuKey: NavbarItemHeaderKey | null;
 };
@@ -32,33 +32,33 @@ const renderMenuSections = (menu: MenuSection[]) => {
 };
 
 const NavbarItemGroup = ({
-  navItem,
+  navbarItem,
   setOpenMenuKey,
   openMenuKey,
-}: NavItemProps) => {
-  if (!navItem.visible) return null;
+}: NavbarItemProps) => {
+  if (!navbarItem.visible) return null;
 
   const { primaryDarkColor } = themeProperties;
-  const tNavItem = useTranslations('Common');
+  const tNavbarItem = useTranslations('Common');
   const router = useRouter();
 
-  const isNavMenuOpen = openMenuKey === navItem.headerKey;
+  const isNavMenuOpen = openMenuKey === navbarItem.headerKey;
   const isActive = () => {
     const { pathname } = router;
     const strippedPathname =
       pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '') || '/';
 
-    if (strippedPathname === navItem.link || isNavMenuOpen) return true;
+    if (strippedPathname === navbarItem.link || isNavMenuOpen) return true;
     return false;
   };
-  const headerTextStyles = isActive() ? styles.activeNavItem : '';
+  const headerTextStyles = isActive() ? styles.activeNavbarItem : '';
 
   const handleClick = () =>
     setOpenMenuKey(
-      isNavMenuOpen ? null : (navItem.headerKey as NavbarItemHeaderKey)
+      isNavMenuOpen ? null : (navbarItem.headerKey as NavbarItemHeaderKey)
     );
   const handleMouseEnter = () =>
-    setOpenMenuKey(navItem.headerKey as NavbarItemHeaderKey);
+    setOpenMenuKey(navbarItem.headerKey as NavbarItemHeaderKey);
   const handleMouseLeave = () => setOpenMenuKey(null);
 
   return (
@@ -67,10 +67,10 @@ const NavbarItemGroup = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {navItem.link ? (
-        <Link href={navItem.link} prefetch={false}>
+      {navbarItem.link ? (
+        <Link href={navbarItem.link} prefetch={false}>
           <span className={headerTextStyles}>
-            {tNavItem(navItem.headerText as NavbarItemTitleKey)}
+            {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
           </span>
         </Link>
       ) : (
@@ -81,7 +81,7 @@ const NavbarItemGroup = ({
           aria-expanded={isNavMenuOpen}
         >
           <span className={headerTextStyles}>
-            {tNavItem(navItem.headerText as NavbarItemTitleKey)}
+            {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
           </span>
           <span className={styles.chevron}>
             {isNavMenuOpen ? (
@@ -93,17 +93,17 @@ const NavbarItemGroup = ({
           {isNavMenuOpen && <div className={styles.toolTipArrow} />}
         </button>
       )}
-      {isNavMenuOpen && navItem.menu !== undefined && (
-        <div className={`${styles.navbarMenu} ${styles[navItem.headerKey]}`}>
+      {isNavMenuOpen && navbarItem.menu !== undefined && (
+        <div className={`${styles.navbarMenu} ${styles[navbarItem.headerKey]}`}>
           <div className={styles.navbarMenuSubContainer}>
-            {navItem.hasSection === true ? (
-              renderMenuSections(navItem.menu)
+            {navbarItem.hasSection === true ? (
+              renderMenuSections(navbarItem.menu)
             ) : (
               <NavbarMenuSection
-                items={navItem.menu}
-                title={navItem.title as SectionTitle}
-                description={navItem.description}
-                headerKey={navItem.headerKey}
+                items={navbarItem.menu}
+                title={navbarItem.title as SectionTitle}
+                description={navbarItem.description}
+                headerKey={navbarItem.headerKey}
               />
             )}
           </div>

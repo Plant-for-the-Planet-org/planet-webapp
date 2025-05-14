@@ -18,7 +18,7 @@ const ImpersonationBanner = () => {
 const MainNavigationHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
 
-  const headerStyles = `${styles.navContainer} ${
+  const headerStyles = `${styles.mainNavigationHeader} ${
     isImpersonationModeOn ? `${styles.impersonationMode}` : ''
   }`;
   return (
@@ -55,7 +55,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className={styles.mainNavContainer}>
+    <div className={styles.navbar}>
       <ImpersonationBanner />
       <MainNavigationHeader />
     </div>
