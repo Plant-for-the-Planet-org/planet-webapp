@@ -14,15 +14,15 @@ const NavbarItems = () => {
     null
   );
 
-  const renderHeaderItem = (navItem: HeaderItem) => {
-    return navItem.headerKey === 'me' ? (
-      <div className={styles.profileButtonContainer} key={navItem.headerKey}>
+  const renderHeaderItem = (navbarItem: HeaderItem) => {
+    return navbarItem.headerKey === 'me' ? (
+      <div className={styles.profileButtonContainer} key={navbarItem.headerKey}>
         <UserProfileButton />
       </div>
     ) : (
       <NavbarItemGroup
-        key={navItem.headerKey}
-        navItem={navItem}
+        key={navbarItem.headerKey}
+        navbarItem={navbarItem}
         openMenuKey={openMenuKey}
         setOpenMenuKey={setOpenMenuKey}
       />

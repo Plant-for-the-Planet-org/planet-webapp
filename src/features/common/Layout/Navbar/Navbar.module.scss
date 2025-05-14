@@ -1,11 +1,11 @@
 @import './../../../../theme/theme';
 
-.mainNavContainer {
+.navbar {
   display: flex;
   justify-content: center;
 }
 
-.navContainer {
+.mainNavigationHeader {
   background-color: $backgroundColor;
   display: flex;
   flex-direction: row;
@@ -245,7 +245,7 @@
     height: 15px;
   }
 
-  .activeNavItem {
+  .activeNavbarItem {
     color: $primaryDarkColor;
   }
 }
