@@ -27,7 +27,6 @@ const renderMenuSections = (menu: MenuSection[]) => {
       items={section.items}
       title={section.title as SectionTitle}
       description={section.description}
-      sectionKey={section.sectionKey}
     />
   ));
 };

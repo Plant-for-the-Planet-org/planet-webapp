@@ -11,7 +11,6 @@ interface NavbarMenuSectionProps {
   items: MenuItem[];
   title?: SectionTitle;
   description?: string;
-  sectionKey?: string;
   headerKey?: string;
 }
 
