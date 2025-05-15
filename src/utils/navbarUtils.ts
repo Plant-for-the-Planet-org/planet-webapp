@@ -29,24 +29,54 @@ export const useMobileDetection = (
 
 const PLANET_WORD_PRESS_DOMAIN = 'www.plant-for-the-planet.org';
 const PLANET_DONATION_DOMAIN = 'donate.plant-for-the-planet.org';
+const supportedLocale = ['en', 'de', 'cs', 'es', 'fr', 'it', 'pt-BR'];
+
 /**
- * Adds a locale path segment to a given Plant-for-the-Planet URL.
+ * Removes any supported locale segments from the provided URL path segments.
  *
- * Example:
- *   Input: 'https://www.plant-for-the-planet.org/some-page', 'de'
- *   Output: 'https://www.plant-for-the-planet.org/de/some-page'
- *
- * @param url - The original URL
- * @param locale - The locale string to insert into the URL
- * @returns The updated URL with the locale inserted
+ * @param segments - An array of path segments extracted from the URL pathname.
+ * @param hasTrailingSlash - A boolean indicating if the original pathname ended with a slash.
+ * @returns The cleaned pathname with supported locale segments removed and the original trailing slash preserved if applicable.
  */
+
+const removeHardcodedLocale = (
+  segments: string[],
+  hasTrailingSlash: boolean
+) => {
+  const filteredSegments = segments.filter((s) => !supportedLocale.includes(s));
+
+  const cleaned = '/' + filteredSegments.join('/');
+  return hasTrailingSlash && cleaned !== '/' ? cleaned + '/' : cleaned;
+};
+
+/**
+ * Adds the specified locale to the given URL's pathname.
+ * If the URL already contains a supported locale segment, it will be replaced with the new locale.
+ *
+ * @param url - The original URL as a string.
+ * @param locale - The locale to be added to the URL's pathname.
+ * @returns The updated URL as a string with the specified locale included in the pathname.
+ * @throws Will throw an error if the provided URL is invalid.
+ */
+
 export const addLocaleToUrl = (url: string, locale: string): string => {
   try {
     const parsedUrl = new URL(url);
-    parsedUrl.pathname = `/${locale}${parsedUrl.pathname}`;
+    const segments = parsedUrl.pathname.split('/').filter(Boolean);
+    const hasTrailingSlash = parsedUrl.pathname.endsWith('/');
+
+    // If  locale is present, remove it
+    const hasLocale = segments.some((s) => supportedLocale.includes(s));
+    const cleanedPathname = hasLocale
+      ? removeHardcodedLocale(segments, hasTrailingSlash)
+      : parsedUrl.pathname;
+
+    // Add new locale prefix
+    parsedUrl.pathname = `/${locale}${cleanedPathname}`;
     return parsedUrl.toString();
   } catch {
-    throw new Error(`Invalid URL: ${url}`);
+    console.error(`Invalid URL: ${url}`);
+    return url;
   }
 };
 
