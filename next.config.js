@@ -127,7 +127,7 @@ const nextConfig = {
     LAYERS_API_ENDPOINT: process.env.LAYERS_API_ENDPOINT,
   },
   trailingSlash: false,
-  reactStrictMode: true,
+  reactStrictMode: false,
   poweredByHeader: false,
   typescript: {
     // !! WARN !!

@@ -21,6 +21,12 @@ const {
   exploreDescriptionBackground,
   lightOrange,
   CharcoalGray,
+  mediumGrayColor,
+  lightGrayColor,
+  coreTextColor,
+  softTextColorTwo,
+  hintTextColor,
+  fieldBackgroundColor,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -84,6 +90,12 @@ const getGlobalStyles = async () => {
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
       --medium-blue-color: ${theme.mediumBlueColor};
+      --medium-gray-color: ${mediumGrayColor};
+      --light-gray-color: ${lightGrayColor};
+      --core-text-color: ${coreTextColor};
+      --soft-text-color-two: ${softTextColorTwo};
+      --hint-text-color: ${hintTextColor};
+      --field-background-color: ${fieldBackgroundColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};
