@@ -27,9 +27,12 @@ export const useMobileDetection = (
   };
 };
 
-const PLANET_WORD_PRESS_DOMAIN = 'www.plant-for-the-planet.org';
-const PLANET_DONATION_DOMAIN = 'donate.plant-for-the-planet.org';
-const supportedLocale = ['en', 'de', 'cs', 'es', 'fr', 'it', 'pt-BR'];
+const PLANET_DOMAINS = [
+  'www.plant-for-the-planet.org',
+  'donate.plant-for-the-planet.org',
+];
+
+const supportedLocales = ['en', 'de', 'cs', 'es', 'fr', 'it', 'pt-BR'];
 
 /**
  * Removes any supported locale segments from the provided URL path segments.
@@ -43,7 +46,9 @@ const removeHardcodedLocale = (
   segments: string[],
   hasTrailingSlash: boolean
 ) => {
-  const filteredSegments = segments.filter((s) => !supportedLocale.includes(s));
+  const filteredSegments = segments.filter(
+    (s) => !supportedLocales.includes(s)
+  );
 
   const cleaned = '/' + filteredSegments.join('/');
   return hasTrailingSlash && cleaned !== '/' ? cleaned + '/' : cleaned;
@@ -66,7 +71,7 @@ export const addLocaleToUrl = (url: string, locale: string): string => {
     const hasTrailingSlash = parsedUrl.pathname.endsWith('/');
 
     // If  locale is present, remove it
-    const hasLocale = segments.some((s) => supportedLocale.includes(s));
+    const hasLocale = segments.some((s) => supportedLocales.includes(s));
     const cleanedPathname = hasLocale
       ? removeHardcodedLocale(segments, hasTrailingSlash)
       : parsedUrl.pathname;
@@ -90,14 +95,18 @@ export const addLocaleToUrl = (url: string, locale: string): string => {
 export const isPlanetDomain = (url: string) => {
   try {
     const hostname = new URL(url).hostname;
-    return (
-      hostname === PLANET_WORD_PRESS_DOMAIN ||
-      hostname === PLANET_DONATION_DOMAIN
-    );
+    return PLANET_DOMAINS.includes(hostname);
   } catch {
     return false;
   }
 };
+
+/**
+ * Removes the `/sites/[slug]/[locale]` prefix from a pathname.
+ *
+ * @param pathname - The pathname to process
+ * @returns The pathname with the prefix removed
+ */
 
 export const stripSitesSlugLocale = (pathname: string) =>
   pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '');
