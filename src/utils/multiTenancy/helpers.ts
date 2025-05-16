@@ -13,7 +13,7 @@ const TENANT_LIST_CACHE_KEY = `${cacheKeyPrefix}_TENANT_CONFIG_LIST`;
 /**
  * This is the default slug that will be used if no tenant is found.
  */
-export const DEFAULT_TENANT = 'planet';
+export const DEFAULT_TENANT = 'ttc';
 
 // In-memory cache with timestamp for the full tenant list
 let tenantListCache: {
