@@ -21,7 +21,7 @@ import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
 // NOTE - needs to be removed when old projects code is removed
 import './../src/features/projects/styles/Projects.scss';
-import './../src/features/common/Layout/Navbar/Navbar.scss';
+// import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
