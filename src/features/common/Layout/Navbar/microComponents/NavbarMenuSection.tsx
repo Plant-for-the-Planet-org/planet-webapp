@@ -30,7 +30,7 @@ const NavbarMenuSection = ({
   return (
     <section
       className={styles.navbarMenuSection}
-      aria-labelledby="navbar-menu-title"
+      aria-labelledby={`navbar-menu-section-${title}`}
     >
       {hasHeader && (
         <div className={styles.sectionHeader}>
