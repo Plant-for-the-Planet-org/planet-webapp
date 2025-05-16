@@ -140,7 +140,7 @@
     "navbarMenu": {
       "all": "All",
       "platform": "About the platform",
-      "organization": "About Plant-for-the-planet",
+      "organization": "About Plant-for-the-Planet",
       "tools": "More <highlight>forest cloud</highlight> tools",
       "organizationDescription": "Since 2007, our community of 11 organizations works to empower young people to fight the climate crisis and restore forests.",
       "menuitem": {
@@ -163,10 +163,10 @@
         "restorationAdviceDescription": "free advice for restoration & conservation programs",
         "restorationStandards": "Restoration Standards",
         "restorationStandardsDescription": "Quantifiable standards for restoration",
-        "instagram": "instagram",
-        "youtube": "youtube",
-        "linkedin": "linkedin",
-        "facebook": "facebook",
+        "instagram": "Instagram",
+        "youtube": "Youtube",
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook",
         "vtoChallenge": "VTO Challenge",
         "mangroves": "Mangroves"
       }

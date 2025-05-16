@@ -222,7 +222,6 @@
     "actionInfo": "Las acciones que su organización está llevando a cabo para conservar el ecosistema.",
     "mainChallengeInfo": "El mayor reto al que se enfrenta este proyecto.",
     "motivationInfo": "La motivación para proteger este ecosistema concreto.",
-    "hectar": "hectar",
     "validation": "{fieldName} no es válido",
     "date": "Fecha",
     "plantingDensityValidation": "Introduzca la densidad de plantación",

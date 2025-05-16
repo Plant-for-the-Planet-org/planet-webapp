@@ -2,7 +2,7 @@
   "DonationLink": {
     "donationLinkTitle": "Cree su enlace de donación",
     "donationLinkDescription": "Construya el Enlace de Donación para que funcione de acuerdo a sus necesidades, para dar a sus donantes una experiencia sin problemas. Utilice Vista previa para ver cómo funcionará el resultado final.",
-    "qrCodeDiscription": "En lugar del enlace, también puede proporcionar el código QR para llegar al proyecto deseado.",
+    "qrCodeDescription": "En lugar del enlace, también puede proporcionar el código QR para llegar al proyecto deseado.",
     "labelCountry": "País",
     "labelLanguages": "Idioma",
     "countryLanguageTitle": "Establecer el país y el idioma",

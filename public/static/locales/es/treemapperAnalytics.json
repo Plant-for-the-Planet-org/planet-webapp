@@ -66,6 +66,10 @@
     "sites": "Sitios",
     "searchDateError": "La fecha de búsqueda no se encuentra entre el intervalo de fechas seleccionado.",
     "noProjectsText": "No hay proyectos disponibles.",
-    "addProjectsButton": "Añadir un proyecto"
+    "addProjectsButton": "Añadir un proyecto",
+    "plantLocationType": {
+      "single-tree-registration": "Árbol único",
+      "multi-tree-registration": "Árboles múltiples"
+    }
   }
 }

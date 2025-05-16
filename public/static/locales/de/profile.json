@@ -58,8 +58,7 @@
       "giftGivenInfo": "Geschenk an {name}",
       "anonymousUser": "ein anonymer Nutzer",
       "contributionCountOverflow": "+{additionalCount, plural, =1 {# Spende} other {# Spenden}}",
-      "treesRegisteredHeadline": "{count, plural, =1 {# Baum} other {# Bäume}}",
-      "registrationLabel": "Registriert"
+      "treesRegisteredHeadline": "{count, plural, =1 {# Baum} other {# Bäume}}"
     },
     "donatePopup": {
       "totalContribution": "+{count, plural, =1 {# Spende} other {# Spenden}}",

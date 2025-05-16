@@ -1,1 +1,33 @@
-{ }
+{
+  "Project": {
+    "classification": {
+      "natural-regeneration": "Regeneración natural",
+      "managed-regeneration": "Regeneración gestionada",
+      "large-scale-planting": "Restauración a gran escala",
+      "agroforestry": "Agroforestería",
+      "urban-planting": "Restauración urbana",
+      "other-planting": "Restauración",
+      "mangroves": "Manglares",
+      "conservation": "Conservación"
+    },
+    "ecosystem": {
+      "tropical-moist-forests": "Bosques húmedos tropicales",
+      "tropical-forests": "Bosques tropicales",
+      "tropical-dry-forests": "Bosques secos tropicales",
+      "tropical-coniferous-forests": "Bosques tropicales de coníferas",
+      "tropical-grasslands-forests": "Pastizales tropicales Bosques",
+      "temperate": "Templado",
+      "temperate-broadleaf-forests": "Bosques templados de frondosas",
+      "temperate-coniferous-forests": "Bosques templados de coníferas",
+      "temperate-grasslands-forests": "Bosques templados de pastizales",
+      "mediterranean-forests": "Bosques mediterráneos",
+      "mangroves": "Manglares",
+      "deserts": "Desiertos",
+      "flooded-grasslands": "Praderas inundadas",
+      "montane-grasslands": "Pastizales de montaña",
+      "boreal-forests": "Bosques boreales",
+      "tundra": "Tundra"
+    },
+    "tpoName": "Por {tpoName}"
+  }
+}

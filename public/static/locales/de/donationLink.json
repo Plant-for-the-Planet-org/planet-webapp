@@ -2,7 +2,7 @@
   "DonationLink": {
     "donationLinkTitle": "Erstelle deinen Spenden-Link",
     "donationLinkDescription": "Gestalte den Spenden-Link so, dass er deinen Bedürfnissen entspricht, damit deine Spender ein tolles Erlebnis haben. Verwende die Vorschau, um zu sehen, wie der Link am Ende aussehen wird.",
-    "qrCodeDiscription": "Anstelle des Links kann auch der QR-Code verwendet werden, um zum Projekt zu gelangen.",
+    "qrCodeDescription": "Anstelle des Links kann auch der QR-Code verwendet werden, um zum Projekt zu gelangen.",
     "labelCountry": "Land",
     "labelLanguages": "Sprache",
     "countryLanguageTitle": "Land und Sprache einstellen",

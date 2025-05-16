@@ -2,7 +2,7 @@
   "DonationLink": {
     "donationLinkTitle": "Vytvořte si darovací odkaz",
     "donationLinkDescription": "Vytvořte darovací odkaz tak, aby fungoval podle vašich potřeb, abyste svým dárcům zajistili hladký průběh. Pomocí Náhled uvidíte, jak bude konečný výsledek fungovat.",
-    "qrCodeDiscription": "Namísto odkazu můžete také poskytnout QR-kód, abyste dosáhli zamýšleného projektu.",
+    "qrCodeDescription": "Namísto odkazu můžete také poskytnout QR-kód, abyste dosáhli zamýšleného projektu.",
     "labelCountry": "Země",
     "labelLanguages": "Jazyk",
     "countryLanguageTitle": "Nastavení země a jazyka",

@@ -1,1 +1,38 @@
-{ }
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "tin": "Número de identificación fiscal (NIF)",
+      "companyName": "Nombre de la empresa",
+      "address": "Dirección"
+    },
+    "donationDetails": {
+      "referenceNumber": "Número de referencia",
+      "reference": "Referencia",
+      "amountDonated": "Cantidad donada",
+      "paymentDate": "Fecha de pago",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Número de identificación fiscal (NIF)"
+    },
+    "errors": {
+      "invalidReceipt": "<b>Error:</b> No se ha podido procesar la solicitud debido a que faltan datos o son incorrectos. Compruebe el enlace e inténtelo de nuevo.",
+      "missingReceiptInformation": "<b>Error:</b> Falta alguna información en el recibo. Ponte en contacto con nosotros a través de los datos que aparecen a continuación.",
+      "editPermissionDeniedMessage": "<b>Error:</b> Parece que no tienes permiso para modificar esta información de contacto. Si necesitas ayuda, ponte en contacto con el servicio de asistencia.",
+      "accessDeniedMessage": "<b>Error:</b> Parece que no tienes los permisos necesarios para acceder a este enlace. Si necesita ayuda, póngase en contacto con el servicio de asistencia."
+    },
+    "notifications": {
+      "addressMissing": "Falta la dirección/no es válida",
+      "firstNameRequired": "El campo Nombre es obligatorio",
+      "lastNameRequired": "El campo Apellido es obligatorio",
+      "companyRequired": "El campo Nombre de la empresa es obligatorio",
+      "tinRequired": "Se requiere NIF",
+      "addressRequired": "Elija una dirección para continuar.",
+      "invalidContactInfoMessage": "Su información de contacto no es válida. Actualícela haciendo clic en Modificar información de contacto.",
+      "addressLimitReached": "Has alcanzado el límite de direcciones. Puedes actualizar las direcciones existentes, pero no es posible añadir una nueva.",
+      "loginRequired": "<b>IMPORTANTE:</b> Para modificar sus datos (incluido su NIF), deberá iniciar sesión en su perfil. En caso de que le falte el NIF, tendrá que proporcionarlo a través de modificar datos antes de poder confirmar su recibo. Si tiene algún problema, póngase en contacto con nosotros a través de la información que figura al final de esta página. "
+    },
+    "verifyDonationHeaderPrimary": "Verifique sus datos y descargue el recibo de donación",
+    "verifyDonationHeaderSecondary": "Nota: Una vez verificados los datos, no se pueden volver a modificar para este recibo"
+  }
+}

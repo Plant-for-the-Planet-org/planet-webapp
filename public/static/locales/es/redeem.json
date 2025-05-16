@@ -16,6 +16,8 @@
     "redeemingCode": "Canjear código...",
     "redeem": "Canjear",
     "redeemDescription": "Canjea tuVale de árboles y otros códigos.",
+    "redeemSuccessMessage": "<line1>¡Impresionante!</line1><line2>¡Hemos añadido la contribución a tu perfil!</line2>",
+    "membershipRedeemSuccessMessage": "<line1>¡Impresionante!</line1><line2>¡Ya eres miembro del Círculo de Donantes!</line2>",
     "successfullyRedeemed": "Canjeado con éxito",
     "redeemAnotherCode": "Canjear otro código"
   }

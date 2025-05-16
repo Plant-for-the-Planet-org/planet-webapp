@@ -1,1 +1,11 @@
-{ }
+{
+  "AllProjects": {
+    "allProjects": "Todos <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "searchProject": "Buscar proyecto",
+    "topProjects": "Top Projects <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "list": "Lista",
+    "map": "Mapa",
+    "noProjectFound": "¡Uy! No se ha encontrado ningún proyecto"
+  }
+}

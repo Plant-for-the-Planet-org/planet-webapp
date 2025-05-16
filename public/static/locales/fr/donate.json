@@ -1,7 +1,5 @@
 {
   "Donate": {
-    "fortreeCountTrees": "for {treeCount} Tree",
-    "fortreeCountTrees_plural": "for {treeCount} Trees",
     "yourTreesPlantedByOnLocation": "Vos {treeCount} arbres seront plantés par {projectName} à {location}.",
     "yourTreesPlantedByOnLocation_plural": "Vos {treeCount} arbres seront plantés par {projectName} à {location}.",
     "myTreesPlantedByOnLocation": "Mes {treeCount} arbres sont plantés à {location}.",

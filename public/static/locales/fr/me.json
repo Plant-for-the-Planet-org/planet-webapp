@@ -52,7 +52,6 @@
     "uploadPhotos": "Télécharger des photos",
     "dragHere": "ou glisser ici",
     "contribNotFound": "Contribution non trouvée",
-    "errorOccurred": "Erreur commise",
     "contribSuccess": "Ajouté avec succès {treeCount} {treeSpecies} 🌳 de  {plantDate}",
     "moreThanOne": "1 arbre minimum requis",
     "registered": "Enregistré",

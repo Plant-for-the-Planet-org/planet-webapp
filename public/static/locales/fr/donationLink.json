@@ -2,7 +2,7 @@
   "DonationLink": {
     "donationLinkTitle": "Créez votre lien de don",
     "donationLinkDescription": "Créez le lien de don en fonction de vos besoins, afin d'offrir à vos donateurs une expérience agréable. Utilisez l'aperçu pour voir comment fonctionnera le résultat final.",
-    "qrCodeDiscription": "Au lieu d'un lien, vous pouvez également fournir le code QR pour accéder au projet souhaité.",
+    "qrCodeDescription": "Au lieu d'un lien, vous pouvez également fournir le code QR pour accéder au projet souhaité.",
     "labelCountry": "Pays",
     "labelLanguages": "Langue",
     "countryLanguageTitle": "Définir le pays et la langue",

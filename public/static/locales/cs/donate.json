@@ -1,7 +1,5 @@
 {
   "Donate": {
-    "fortreeCountTrees": "pro {treeCount} Stromů",
-    "fortreeCountTrees_plural": "pro {treeCount} Stromy",
     "yourTreesPlantedByOnLocation": "Váš strom {treeCount} bude vysazen na stránkách {projectName} na adrese {location}.",
     "yourTreesPlantedByOnLocation_plural": "Vaše stromy {treeCount} budou vysazeny na {projectName} na {location}.",
     "myTreesPlantedByOnLocation": "Můj {treeCount} strom je zasazen na {location}.",
