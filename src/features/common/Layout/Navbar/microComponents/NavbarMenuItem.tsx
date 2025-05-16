@@ -30,6 +30,8 @@ import {
   isPlanetDomain,
 } from '../../../../../utils/navbarUtils';
 import isAbsoluteUrl from '../../../../../utils/isAbsoluteUrl';
+import { doesLinkMatchPath } from '../../../../../utils/navbarUtils';
+import { useRouter } from 'next/router';
 
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
@@ -51,10 +53,14 @@ const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   mangroves: <MangrovesChallengeIcon />,
 };
 
-const renderTextContent = (title: string, description: string | undefined) => {
+const renderTextContent = (
+  title: string,
+  description: string | undefined,
+  activeMenuStyle: string
+) => {
   return (
     <div>
-      <h3>{title}</h3>
+      <h3 className={activeMenuStyle}>{title}</h3>
       {description !== undefined && (
         <p className={styles.description}>{description}</p>
       )}
@@ -72,27 +78,36 @@ const NavbarMenuItem = ({
 }: MenuItem) => {
   if (!visible) return null;
 
+  const router = useRouter();
+  const locale = useLocale();
+
   const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
-  const menuIcon = useMemo(
-    () => navbarMenuIcons[menuKey as MenuItemTitle] || null,
-    [menuKey]
-  );
   const titleTranslation = tNavbarMenuItem(title as MenuItemTitle);
   const descriptionTranslation =
     description !== undefined
       ? tNavbarMenuItem(description as MenuItemDescription)
       : undefined;
 
-  const textContent = !onlyIcon
-    ? renderTextContent(titleTranslation, descriptionTranslation)
-    : null;
-  const locale = useLocale();
+  const menuIcon = useMemo(
+    () => navbarMenuIcons[menuKey as MenuItemTitle] || null,
+    [menuKey]
+  );
+
   const isExternal = isAbsoluteUrl(link);
-  const href = isExternal
-    ? isPlanetDomain(link)
-      ? addLocaleToUrl(link, locale)
-      : link
-    : link;
+  const activeMenuStyle =
+    !isExternal && doesLinkMatchPath(link, router.pathname)
+      ? styles.activeItem
+      : '';
+  const textContent = !onlyIcon
+    ? renderTextContent(
+        titleTranslation,
+        descriptionTranslation,
+        activeMenuStyle
+      )
+    : null;
+
+  const href =
+    isExternal && isPlanetDomain(link) ? addLocaleToUrl(link, locale) : link;
 
   return isExternal ? (
     <a
