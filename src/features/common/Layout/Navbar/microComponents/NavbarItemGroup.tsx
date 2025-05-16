@@ -91,6 +91,7 @@ const NavbarItemGroup = ({
           role="button"
           aria-haspopup="true"
           aria-expanded={isNavMenuOpen}
+          aria-controls={`nav-menu-${navbarItem.headerKey}`}
         >
           <span className={activeNavbarItemStyles}>
             {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
