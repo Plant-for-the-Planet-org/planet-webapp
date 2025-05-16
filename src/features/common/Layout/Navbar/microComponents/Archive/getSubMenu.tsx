@@ -1,15 +1,15 @@
 import type { ReactElement } from 'react';
 
 import React from 'react';
-import ChildrenYouthIcon from '../../../../../public/assets/images/icons/megaMenuIcons/childrenAndYouth';
-import OverviewIcon from '../../../../../public/assets/images/icons/megaMenuIcons/overview';
-import PartnerIcon from '../../../../../public/assets/images/icons/megaMenuIcons/partners';
-import TrillionTreesIcon from '../../../../../public/assets/images/icons/megaMenuIcons/trillionTrees';
-import YucatanIcon from '../../../../../public/assets/images/icons/megaMenuIcons/yucatan';
-import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaMenuIcons/changeChocolate';
-import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
-import VTOChallengeIcon from '../../../../../public/assets/images/navigation/VTOChallengeIcon';
-import OceanforceChallengeIcon from '../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
+import ChildrenYouthIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/childrenAndYouth';
+import OverviewIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/overview';
+import PartnerIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/partners';
+import TrillionTreesIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/trillionTrees';
+import YucatanIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/yucatan';
+import ChangeChocolateIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/changeChocolate';
+import StopTalkingStartPlantingIcon from '../../../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
+import VTOChallengeIcon from '../../../../../../../public/assets/images/navigation/VTOChallengeIcon';
+import OceanforceChallengeIcon from '../../../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
 
 interface Props {
   title: string;

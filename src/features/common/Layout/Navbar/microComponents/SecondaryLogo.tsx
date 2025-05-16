@@ -1,4 +1,5 @@
 import { useTenant } from '../../TenantContext';
+import styles from '../Navbar.module.scss';
 
 const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
   const { tenantConfig } = useTenant();
@@ -11,14 +12,14 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
   return (
     <>
       {tenantConfig.config.header?.isSecondaryTenant && (
-        <div className="tenantLogoContainer">
+        <div className={styles.tenantLogoContainer}>
           <a href={tenantConfig.config?.header?.tenantLogoLink}>
             <img
               src={tenantConfig.config?.header?.tenantLogoURL}
-              className="tenantLogo"
+              className={styles.tenantLogo}
             />
           </a>
-          {!isMobile && <div className="logo_divider" />}
+          {!isMobile && <div className={styles.logoDivider} />}
         </div>
       )}
     </>

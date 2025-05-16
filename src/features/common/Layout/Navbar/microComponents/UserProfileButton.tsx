@@ -6,10 +6,11 @@ import DefaultProfileImageIcon from '../../../../../../public/assets/images/icon
 import SignInButton from './SignInButton';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import styles from '../Navbar.module.scss';
 
 const ProfileIconSkeleton = () => {
   return (
-    <div className="ProfileIconSkeleton">
+    <div className={styles.profileIconSkeleton}>
       <Skeleton />
     </div>
   );
@@ -34,13 +35,13 @@ const UserProfileButton = () => {
 
   return (
     <button
-      className="profileImageButton"
+      className={styles.profileImageButton}
       onClick={() => router.push(`/profile`)}
     >
       {user.image ? (
         <img src={getImageUrl('profile', 'thumb', user.image)} alt="Profile" />
       ) : (
-        <div className="userDefaultIconContainer">
+        <div className={styles.userDefaultIconContainer}>
           <DefaultProfileImageIcon />
         </div>
       )}

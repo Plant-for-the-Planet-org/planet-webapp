@@ -18,6 +18,7 @@
   width: 100%;
   padding: 10px 25px;
   border-radius: 0px;
+  height: 84px;
   &.impersonationMode {
     top: 49px;
     @include xsPhoneView {
@@ -30,6 +31,7 @@
     top: 16px;
     padding: 8.5px;
     border: 1px solid rgba(211, 211, 211, 0.5);
+    height: 60px;
   }
 }
 
@@ -78,10 +80,11 @@
   }
 }
 
-.menuItems {
+.headerItems {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 34px;
+  height: 100%;
   .profileButtonContainer {
     margin-left: 10px;
   }
@@ -119,6 +122,8 @@
     }
   }
 }
+
+// deprecated styles
 
 .subMenu {
   display: flex;
@@ -183,9 +188,10 @@
 }
 
 @include xsPhoneView {
-  .menuItems {
+  .headerItems {
     align-items: center;
-    gap: 5px;
+    gap: 20px;
+
     .profileButtonContainer {
       display: flex;
       justify-content: center;
