@@ -98,3 +98,25 @@ export const isPlanetDomain = (url: string) => {
     return false;
   }
 };
+
+export const stripSitesSlugLocale = (pathname: string) =>
+  pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '');
+
+/**
+ * Compares a given link with the current pathname,
+ * after removing the `/sites/[slug]/[locale]` prefix from the pathname.
+ *
+ * @param link - The link to compare against (e.g. `/about`)
+ * @param pathname - The current full pathname (e.g. `/sites/[slug]/[locale]/about`)
+ * @returns `true` if the link matches the stripped pathname, otherwise `false`.
+ */
+
+export const doesLinkMatchPath = (
+  link: string | undefined,
+  pathname: string
+): boolean => {
+  const strippedPathname = stripSitesSlugLocale(pathname) || '/';
+
+  if (strippedPathname === link) return true;
+  return false;
+};

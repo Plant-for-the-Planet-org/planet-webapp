@@ -3,7 +3,7 @@ import type {
   NavbarItemTitleKey,
   SectionTitle,
 } from '../tenant';
-import type { HeaderItem, MenuSection } from '@planet-sdk/common';
+import type { HeaderItem, MenuItem, MenuSection } from '@planet-sdk/common';
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -13,6 +13,11 @@ import DropdownDownArrow from '../../../../../../public/assets/images/icons/proj
 import themeProperties from '../../../../../theme/themeProperties';
 import NavbarMenuSection from './NavbarMenuSection';
 import { useRouter } from 'next/router';
+import {
+  doesLinkMatchPath,
+  stripSitesSlugLocale,
+} from '../../../../../utils/navbarUtils';
+import { useMemo } from 'react';
 
 type NavbarItemProps = {
   navbarItem: HeaderItem;
@@ -43,15 +48,22 @@ const NavbarItemGroup = ({
   const router = useRouter();
 
   const isNavMenuOpen = openMenuKey === navbarItem.headerKey;
-  const isActive = () => {
-    const { pathname } = router;
-    const strippedPathname =
-      pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '') || '/';
 
-    if (strippedPathname === navbarItem.link || isNavMenuOpen) return true;
-    return false;
-  };
-  const headerTextStyles = isActive() ? styles.activeNavbarItem : '';
+  const isMenuItemActive = useMemo(() => {
+    return (navbarItem.menu as MenuItem[])?.some(
+      (item) => item.link === stripSitesSlugLocale(router.pathname)
+    );
+  }, [navbarItem.menu, router.pathname]);
+
+  const isActive = useMemo(() => {
+    return (
+      doesLinkMatchPath(navbarItem.link, router.pathname) ||
+      isNavMenuOpen ||
+      isMenuItemActive
+    );
+  }, [navbarItem.link, router.pathname, isNavMenuOpen, isMenuItemActive]);
+
+  const activeNavbarItemStyles = isActive ? styles.activeItem : '';
 
   const handleClick = () =>
     setOpenMenuKey(
@@ -69,7 +81,7 @@ const NavbarItemGroup = ({
     >
       {navbarItem.link ? (
         <Link href={navbarItem.link} prefetch={false}>
-          <span className={headerTextStyles}>
+          <span className={activeNavbarItemStyles}>
             {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
           </span>
         </Link>
@@ -80,7 +92,7 @@ const NavbarItemGroup = ({
           aria-haspopup="true"
           aria-expanded={isNavMenuOpen}
         >
-          <span className={headerTextStyles}>
+          <span className={activeNavbarItemStyles}>
             {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
           </span>
           <span className={styles.chevron}>
