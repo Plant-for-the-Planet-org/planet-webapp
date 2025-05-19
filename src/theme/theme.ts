@@ -14,7 +14,6 @@ const {
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
   topProjectTransparentColor,
-  mediumGrayColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
