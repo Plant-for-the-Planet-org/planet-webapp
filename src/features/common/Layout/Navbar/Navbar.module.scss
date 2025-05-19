@@ -1,8 +1,17 @@
 @import './../../../../theme/theme';
 
+$impersonationBannerOffset: -142px;
+
 .navbar {
   display: flex;
   justify-content: center;
+}
+
+.impersonationBanner {
+  width: 100%;
+  position: fixed;
+  z-index: 1220;
+  top: $impersonationBannerOffset;
 }
 
 .mainNavigationHeader {
@@ -22,7 +31,7 @@
   &.impersonationMode {
     top: 49px;
     @include xsPhoneView {
-      top: 40px;
+      top: 54px;
     }
   }
   @include xsPhoneView {
