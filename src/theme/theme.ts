@@ -8,11 +8,13 @@ const {
   fontSizes,
   primaryColor,
   primaryDarkColor,
+  primaryDarkColorTransparent,
   defaultFontFamily,
   primaryLightColor,
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
   topProjectTransparentColor,
+  mediumGrayColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
@@ -79,6 +81,7 @@ const getGlobalStyles = async () => {
       --font-xxx-large: ${fontSizes.fontXXXLarge};
       --primary-color: ${primaryColor};
       --primary-dark-color: ${primaryDarkColor};
+      --primary-dark-color-transparent: ${primaryDarkColorTransparent};
       --primary-light-green-bg-color: ${primaryLightGreenBgColor};
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};

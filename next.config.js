@@ -125,6 +125,7 @@ const nextConfig = {
     WEBHOOK_URL: process.env.WEBHOOK_URL,
     LAYERS_API_KEY: process.env.LAYERS_API_KEY,
     LAYERS_API_ENDPOINT: process.env.LAYERS_API_ENDPOINT,
+    ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
   },
   trailingSlash: false,
   reactStrictMode: false,
