@@ -8,6 +8,7 @@ import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { ParamsContext } from '../QueryParamsContext';
+import { useUserProps } from '../UserPropsContext';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -27,6 +28,7 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   const { embed, showProjectList, showProjectDetails } =
     useContext(ParamsContext);
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
+  const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
     if (embed === 'true') {
@@ -41,7 +43,9 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
 
   const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
     selectedMode === 'map' ? styles.mapMode : ''
-  } ${embed === 'true' ? styles.embedModeMobile : ''}`;
+  } ${embed === 'true' ? styles.embedModeMobile : ''} ${
+    isImpersonationModeOn ? styles.impersonationMobile : ''
+  }`;
   return (
     <ProjectsProvider
       page={page}

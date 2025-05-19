@@ -9,7 +9,7 @@ const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
   if (!isImpersonationModeOn) return null;
   return (
-    <div className={styles.impersonationAlertContainer}>
+    <div className={styles.impersonationBanner}>
       <ImpersonationActivated />
     </div>
   );
