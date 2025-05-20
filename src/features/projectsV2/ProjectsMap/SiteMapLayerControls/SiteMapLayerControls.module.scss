@@ -2,14 +2,16 @@
 
 .siteMapLayerControls {
   width: 100%;
+  max-width: 100%;
   background-color: $backgroundColor;
   border-radius: 12px;
-  overflow: visible; // Changed from 'hidden' to allow dropdown to extend outside
+  overflow: visible;
   display: flex;
   flex-direction: column;
   position: absolute;
   bottom: 20px;
-  right: 10px;
+  z-index: 10;
+  box-sizing: border-box;
 
   > * {
     &:not(:last-child) {
@@ -19,27 +21,37 @@
 
   @include smTabletView {
     max-width: 384px;
+    right: 10px;
     flex-direction: row;
   }
 }
 
 .siteLayerSelector {
-  padding: 12px 12px 12px 8px;
+  position: relative;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
 
   @include xsPhoneView {
     border-radius: 12px 12px 0 0;
+  }
+
+  @include smTabletView {
+    width: auto;
+    padding: 12px 12px 12px 8px;
   }
 }
 
 .siteLayerDropdown {
   position: relative;
+  width: 100%;
 }
 
 .dropdownButton {
   background-color: $fieldBackgroundColor;
   box-sizing: border-box;
   width: 100%;
-  padding: 6px 10px 6px 6px;
+  padding: 8px 10px 8px 6px;
   border-radius: 4px;
   cursor: pointer;
   display: flex;
@@ -67,28 +79,37 @@
     color: $coreTextColor;
     font-weight: 700;
     flex: 1;
+
+    & .timePeriodTextMobile {
+      font-weight: 400;
+      margin-left: 3px;
+
+      @include smTabletView {
+        display: none;
+      }
+    }
   }
 
   @include smTabletView {
-    width: 170px;
+    width: 180px;
+    padding: 6px 10px 6px 6px;
   }
 }
 
 .optionsWrapper {
   position: absolute;
-  top: -22px;
+  bottom: calc(100% + 22px);
   left: 0;
-  transform: translateY(-100%);
-
-  overflow: hidden;
   width: 100%;
   border-radius: 4px;
+  z-index: 50;
 }
 
 .siteLayerOptions {
   background-color: $backgroundColor;
   padding: 12px;
   cursor: pointer;
+  border-radius: 4px;
 }
 
 .singleLayerOption {
@@ -112,10 +133,16 @@
   font-size: $fontXXSmall;
   color: $softTextColorTwo;
   padding: 4px 6px;
+
+  @include xsPhoneView {
+    display: none;
+  }
 }
 
 .siteLayerLegend {
   text-align: center;
+  width: 100%;
+
   @include xsPhoneView {
     border-radius: 0 0 12px 12px;
   }

@@ -4,13 +4,15 @@ import SiteMapLayerControls from '../SiteMapLayerControls';
 const meta: Meta<typeof SiteMapLayerControls> = {
   title: 'Projects/Details/SiteMapLayerControls',
   component: SiteMapLayerControls,
+  parameters: {
+    layout: 'fullscreen',
+  },
   decorators: [
     (Story) => (
       <div
         style={{
           border: '1px solid #ccc',
           height: '400px',
-          padding: '16px',
           position: 'relative',
         }}
       >

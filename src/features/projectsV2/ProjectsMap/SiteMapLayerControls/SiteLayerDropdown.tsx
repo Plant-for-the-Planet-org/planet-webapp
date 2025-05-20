@@ -57,7 +57,12 @@ const SiteLayerDropdown = () => {
     <div className={styles.siteLayerDropdown} ref={dropdownRef}>
       <div className={styles.dropdownButton} onClick={toggleDropdown}>
         <div className={styles.dropdownButtonIcon}>{selectedLayer.icon}</div>
-        <p className={styles.dropdownButtonText}>{selectedLayer.label}</p>
+        <p className={styles.dropdownButtonText}>
+          {selectedLayer.label}
+          <span className={styles.timePeriodTextMobile}>
+            (Since project begin 2018)
+          </span>
+        </p>
         <div
           className={`${styles.dropdownButtonArrow} ${
             isOpen ? styles.arrowRotated : ''
