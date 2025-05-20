@@ -1,4 +1,59 @@
-const SiteLayerOptions = () => {
-  return <div>SiteLayerOptions</div>;
+import type { ReactElement } from 'react';
+
+import styles from './SiteMapLayerControls.module.scss';
+
+export type LayerOption = {
+  id: string;
+  label: string;
+  icon: ReactElement;
+};
+
+interface SingleOptionProps {
+  option: LayerOption;
+  isSelected: boolean;
+  handleLayerSelection: (layer: LayerOption) => void;
+}
+
+const SingleLayerOption = ({
+  option,
+  isSelected,
+  handleLayerSelection,
+}: SingleOptionProps) => {
+  return (
+    <div
+      className={`${styles.singleLayerOption} ${
+        isSelected ? styles.selected : ''
+      }`}
+      onClick={() => handleLayerSelection(option)}
+    >
+      <div className={styles.optionIcon}>{option.icon}</div>
+      <p className={styles.optionLabel}>{option.label}</p>
+    </div>
+  );
+};
+
+interface SiteLayerOptionProps {
+  layerOptions: LayerOption[];
+  selectedLayer: LayerOption;
+  handleLayerSelection: (layer: LayerOption) => void;
+}
+
+const SiteLayerOptions = ({
+  layerOptions,
+  selectedLayer,
+  handleLayerSelection,
+}: SiteLayerOptionProps) => {
+  return (
+    <div className={styles.siteLayerOptions}>
+      {layerOptions.map((option) => (
+        <SingleLayerOption
+          key={option.id}
+          option={option}
+          isSelected={selectedLayer.id === option.id}
+          handleLayerSelection={handleLayerSelection}
+        />
+      ))}
+    </div>
+  );
 };
 export default SiteLayerOptions;

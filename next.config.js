@@ -128,7 +128,7 @@ const nextConfig = {
     ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
   },
   trailingSlash: false,
-  reactStrictMode: false,
+  reactStrictMode: true,
   poweredByHeader: false,
   typescript: {
     // !! WARN !!

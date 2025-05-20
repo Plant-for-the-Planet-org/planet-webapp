@@ -4,9 +4,12 @@
   width: 100%;
   background-color: $backgroundColor;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible; // Changed from 'hidden' to allow dropdown to extend outside
   display: flex;
   flex-direction: column;
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
 
   > * {
     &:not(:last-child) {
@@ -22,6 +25,14 @@
 
 .siteLayerSelector {
   padding: 12px 12px 12px 8px;
+
+  @include xsPhoneView {
+    border-radius: 12px 12px 0 0;
+  }
+}
+
+.siteLayerDropdown {
+  position: relative;
 }
 
 .dropdownButton {
@@ -63,6 +74,40 @@
   }
 }
 
+.optionsWrapper {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  transform: translateY(-100%);
+
+  overflow: hidden;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.siteLayerOptions {
+  background-color: $backgroundColor;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.singleLayerOption {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 4px;
+
+  &.selected {
+    background-color: $fieldBackgroundColor;
+    font-weight: 700;
+  }
+
+  .optionLabel {
+    font-size: $fontXSmall;
+    color: $coreTextColor;
+  }
+}
+
 .timePeriodText {
   font-size: $fontXXSmall;
   color: $softTextColorTwo;
@@ -70,5 +115,8 @@
 }
 
 .siteLayerLegend {
-  // background-color: blue;
+  text-align: center;
+  @include xsPhoneView {
+    border-radius: 0 0 12px 12px;
+  }
 }
