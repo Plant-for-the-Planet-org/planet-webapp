@@ -13,7 +13,11 @@ export const useFetchLayers = () => {
 
   useEffect(() => {
     const fetchLayers = async () => {
-      if (exploreLayersData !== null || hasAttemptedFetch.current) {
+      if (
+        exploreLayersData !== null ||
+        hasAttemptedFetch.current ||
+        process.env.ENABLE_EXPLORE !== 'true'
+      ) {
         return;
       }
 

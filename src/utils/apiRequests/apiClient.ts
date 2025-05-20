@@ -1,5 +1,6 @@
 import { APIError } from '@planet-sdk/common';
 import { getQueryString } from './getQueryString';
+import isAbsoluteUrl from '../isAbsoluteUrl';
 
 export type RequestOptions = {
   /**
@@ -36,21 +37,6 @@ export type RequestOptions = {
   | { method: 'GET' | 'DELETE'; data?: Record<string, unknown> }
   | { method: 'POST' | 'PUT'; data: Record<string, unknown> }
 );
-
-/**
- * Checks if a given URL is an absolute URL.
- *
- * @param url - The URL to check
- * @returns Boolean indicating if the URL is absolute
- *
- * @example
- * isAbsoluteUrl('https://api.example.com') // returns true
- * isAbsoluteUrl('/users') // returns false
- */
-function isAbsoluteUrl(url: string) {
-  const pattern = /^https?:\/\//i;
-  return pattern.test(url);
-}
 
 /**
  * A generic API client for making HTTP requests with flexible configuration.
