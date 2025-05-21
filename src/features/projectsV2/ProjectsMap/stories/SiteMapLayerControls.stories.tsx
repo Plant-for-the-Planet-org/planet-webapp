@@ -11,8 +11,8 @@ const meta: Meta<typeof SiteMapLayerControls> = {
     (Story) => (
       <div
         style={{
-          border: '1px solid #ccc',
-          height: '400px',
+          backgroundColor: 'green',
+          height: '550px',
           position: 'relative',
         }}
       >
