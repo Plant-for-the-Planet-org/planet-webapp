@@ -10,6 +10,7 @@ import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
+import { useLocale } from 'next-intl';
 
 const MANGROVE_PROJECTS = [
   'proj_4urzfQ47Xwv5SlNOurnXn2hU',
@@ -29,6 +30,7 @@ const MANGROVE_PROJECTS = [
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
+  const locale = useLocale();
   const { getApi } = useApi();
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
@@ -41,6 +43,8 @@ export default function ProjectGrid() {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
+            //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+            locale: locale,
             tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
           },
