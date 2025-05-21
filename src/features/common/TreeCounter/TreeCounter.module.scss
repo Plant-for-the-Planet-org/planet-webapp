@@ -119,9 +119,9 @@
   width: max-content;
   color: #4f4f4f;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: $fontXXLarge;
   @include xsPhoneView {
-    font-size: 21px;
+    font-size: $fontLarge;
   }
 }
 
@@ -140,8 +140,8 @@
 }
 
 .treesPlanted {
-  font-size: 24px;
+  font-size: $fontXLarge;
   @include xsPhoneView {
-    font-size: 11.2px;
+    font-size: $fontXSmall;
   }
 }

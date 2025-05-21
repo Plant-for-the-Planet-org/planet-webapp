@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { SetState } from '../../types/common';
 
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
@@ -11,8 +11,8 @@ import {
   useProjectsMap,
 } from '../../../projectsV2/ProjectsMapContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
-import { useRouter } from 'next/router';
 import { useUserProps } from '../UserPropsContext';
+import { ParamsContext } from '../QueryParamsContext';
 
 interface ProjectsLayoutProps {
   currencyCode: string;
@@ -26,15 +26,35 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
   page,
 }) => {
   const { mapOptions, updateMapOption } = useProjectsMap();
-  const { query } = useRouter();
   const { isImpersonationModeOn } = useUserProps();
-  const showContentContainer =
-    Boolean(mapOptions.projects) || page === 'project-details';
+  const { embed, showProjectDetails, showProjectList } =
+    useContext(ParamsContext);
+
+  const showContentContainer = useMemo(() => {
+    if (page === 'project-list') {
+      return (
+        (embed !== 'true' || showProjectList !== 'false') &&
+        Boolean(mapOptions.projects)
+      );
+    }
+
+    if (page === 'project-details') {
+      return embed !== 'true' || showProjectDetails !== 'false';
+    }
+
+    return false;
+  }, [page, embed, showProjectList, showProjectDetails, mapOptions.projects]);
+
   const layoutClass = useMemo(() => {
-    if (query.embed === 'true') return styles.embedMode;
+    if (embed === 'true') return styles.embedMode;
     if (isImpersonationModeOn) return styles.impersonationMode;
     return styles.projectsLayout;
-  }, [isImpersonationModeOn, query.embed]);
+  }, [isImpersonationModeOn, embed]);
+
+  const shouldShowMapFeatureExplorer = useMemo(() => {
+    return page === 'project-list' && process.env.ENABLE_EXPLORE === 'true';
+  }, [page, process.env.ENABLE_EXPLORE]);
+
   return (
     <div className={layoutClass}>
       <main className={styles.mainContent}>
@@ -42,7 +62,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
           <section className={styles.contentContainer}>{children}</section>
         )}
         <section className={styles.mapContainer}>
-          {page === 'project-list' && (
+          {shouldShowMapFeatureExplorer && (
             <div className={styles.mapFeatureExplorerOverlay}>
               <MapFeatureExplorer
                 mapOptions={mapOptions}

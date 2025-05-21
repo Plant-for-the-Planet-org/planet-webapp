@@ -40,7 +40,6 @@ const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
  */
 
 export const buildProjectDetailsQuery = (
-  asPath: string,
   query: ParsedUrlQuery,
   routeParams: RouteParams
 ): Record<string, string> => {
@@ -95,6 +94,12 @@ export const availableFilters: TreeProjectClassification[] = [
   'mangroves',
   'other-planting',
 ];
+
+export const isValidClassification = (
+  value: string
+): value is TreeProjectClassification => {
+  return availableFilters.includes(value as TreeProjectClassification);
+};
 
 /**
  * Retrieves the information of a plant location based on a user's interaction with the map.

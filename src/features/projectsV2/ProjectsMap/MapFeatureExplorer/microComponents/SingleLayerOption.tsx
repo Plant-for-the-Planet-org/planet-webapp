@@ -1,4 +1,7 @@
-import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
+import type {
+  ApiMapLayerOptionsType,
+  LayerConfig,
+} from '../../../../../utils/mapsV2/mapSettings.config';
 import type { ChangeEvent, MouseEvent } from 'react';
 import type { MapOptions } from '../../../ProjectsMapContext';
 
@@ -21,7 +24,8 @@ const SingleLayerOption = ({
   updateMapOption,
 }: Props) => {
   const tExplore = useTranslations('Maps.exploreLayers');
-  const hasInfoPopover = layerConfig.additionalInfo !== undefined;
+  const hasInfoPopover =
+    layerConfig.additionalInfo !== undefined && layerConfig.key !== 'projects';
   const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
   if (!layerConfig.isAvailable) return null;
@@ -94,6 +98,7 @@ const SingleLayerOption = ({
         >
           <div onMouseEnter={(e) => e.stopPropagation()}>
             <LayerInfoPopupContent
+              layerKey={layerConfig.key as ApiMapLayerOptionsType}
               anchorElement={anchor}
               setAnchorElement={setAnchor}
               additionalInfo={layerConfig.additionalInfo}

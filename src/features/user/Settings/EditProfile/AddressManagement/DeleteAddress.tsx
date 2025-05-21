@@ -7,11 +7,10 @@ import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import { deleteAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
@@ -26,21 +25,19 @@ const DeleteAddress = ({
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { contextLoaded, user, token, setUser } = useUserProps();
+
   const { setErrors } = useContext(ErrorHandlingContext);
+  const { deleteApiAuthenticated } = useApi();
   const [isLoading, setIsLoading] = useState(false);
 
   const deleteAddress = async () => {
     if (!contextLoaded || !user || !token) return;
     try {
       setIsLoading(true);
-      await deleteAuthenticatedRequest({
-        tenant: tenantConfig.id,
-        url: `/app/addresses/${addressId}`,
-        token,
-        logoutUser,
-      });
+
+      await deleteApiAuthenticated(`/app/addresses/${addressId}`);
+
       setUser((prev) => {
         if (!prev) return null;
 

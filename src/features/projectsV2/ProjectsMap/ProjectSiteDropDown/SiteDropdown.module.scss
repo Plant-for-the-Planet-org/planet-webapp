@@ -27,7 +27,7 @@ $layoutPaddingSide: 20px;
   flex-direction: column;
 }
 .sitesLabel {
-  font-size: $fontXXXSmallNew;
+  font-size: $fontXXSmall;
   color: $nonDonatableProjectBackgroundColor;
   font-weight: 600;
   span {
@@ -121,6 +121,7 @@ $layoutPaddingSide: 20px;
     min-width: 93px;
     padding: 7px;
     position: unset;
+    height: 40px;
   }
   .labelTextContainer {
     justify-content: center;
@@ -142,13 +143,14 @@ $layoutPaddingSide: 20px;
     max-width: 140px;
     padding: 8px 12px;
     top: 36px;
-    right: 40%;
+    left: 0;
     min-width: 160px;
+    z-index: 50;
     .listItem {
       display: flex;
       flex-direction: column;
       gap: 0;
-      font-size: $fontXXXSmallNew;
+      font-size: $fontXXSmall;
       padding: 4px 0;
       color: #333; //to be replaced
       .siteArea {

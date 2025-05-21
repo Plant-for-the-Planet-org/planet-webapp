@@ -5,12 +5,11 @@ import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { TextField, Button } from '@mui/material';
-import { getAccountInfo } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
+import { APIError } from '@planet-sdk/common';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -19,12 +18,12 @@ export type ImpersonationData = {
 
 const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
-  const { tenantConfig } = useTenant();
   const t = useTranslations('Me');
   const [hasUpdatedUrl, setHasUpdatedUrl] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const { token, setUser, setIsImpersonationModeOn } = useUserProps();
+  const { setUser, setIsImpersonationModeOn, fetchUserProfile } =
+    useUserProps();
   const {
     control,
     handleSubmit,
@@ -74,32 +73,28 @@ const ImpersonateUserForm = (): ReactElement => {
     if (data.targetEmail && data.supportPin) {
       setIsProcessing(true);
       try {
-        const res = await getAccountInfo({
-          tenant: tenantConfig?.id,
-          token,
-          impersonationData: data,
-        });
-        const resJson = await res.json();
-        if (res.status === 200) {
-          setIsInvalidEmail(false);
-          setIsImpersonationModeOn(true);
-          const impersonationData: ImpersonationData = {
-            targetEmail: resJson.email,
-            supportPin: resJson.supportPin,
-          };
+        const res = await fetchUserProfile(data);
+        setIsInvalidEmail(false);
+        setIsImpersonationModeOn(true);
+        const impersonationData: ImpersonationData = {
+          targetEmail: res.email,
+          supportPin: res.supportPin,
+        };
 
-          localStorage.setItem(
-            'impersonationData',
-            JSON.stringify(impersonationData)
-          );
-          setUser(resJson);
-          router.push('/profile');
-        } else {
-          setIsInvalidEmail(true);
-          setIsProcessing(false);
-        }
+        localStorage.setItem(
+          'impersonationData',
+          JSON.stringify(impersonationData)
+        );
+        setUser(res);
+        router.push('/profile');
       } catch (err) {
-        console.log(err);
+        if (err instanceof APIError) {
+          console.error('API error:', err.message);
+          if (err.statusCode === 403) setIsInvalidEmail(true);
+        } else {
+          console.error('Unexpected error:', err);
+        }
+      } finally {
         setIsProcessing(false);
       }
     }

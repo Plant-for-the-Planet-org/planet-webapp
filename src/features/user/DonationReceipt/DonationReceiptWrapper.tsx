@@ -6,12 +6,26 @@ import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './DonationReceipt.module.scss';
-import { useServerApi } from '../../../hooks/useServerApi';
+import { useApi } from '../../../hooks/useApi';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { validateOwnership } from './DonationReceiptValidator';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
+
+type ReceiptVerificationPayload = {
+  dtn: string | null;
+  challenge: string | null;
+  year: string | null;
+  verificationDate: string;
+  receiptAddress?: string;
+};
+
+type ReceiptIssuancePayload = {
+  receiptAddress: string | null;
+  donationUids: string;
+  verificationDate: string;
+};
 
 const DonationReceiptWrapper = () => {
   const {
@@ -24,11 +38,12 @@ const DonationReceiptWrapper = () => {
     initForVerification,
     email,
     isValid,
+    tinIsRequired,
     clearSessionStorage,
   } = useDonationReceiptContext();
 
   const { user } = useUserProps();
-  const { putApi, putApiAuthenticated, postApiAuthenticated } = useServerApi();
+  const { putApi, putApiAuthenticated, postApiAuthenticated } = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const receiptData = getReceiptData();
   const operation = getOperation();
@@ -72,7 +87,7 @@ const DonationReceiptWrapper = () => {
         .slice(0, 19)
         .replace('T', ' ');
       if (operation === RECEIPT_STATUS.VERIFY) {
-        const payload = {
+        const payload: ReceiptVerificationPayload = {
           dtn: receiptData.dtn,
           challenge: receiptData.challenge,
           year: receiptData.year,
@@ -82,25 +97,25 @@ const DonationReceiptWrapper = () => {
         };
         response =
           addressGuid === null
-            ? await putApi<IssuedReceiptDataApi>(
+            ? await putApi<IssuedReceiptDataApi, ReceiptVerificationPayload>(
                 '/app/donationReceipt/verify',
-                payload
+                { payload }
               )
-            : await putApiAuthenticated<IssuedReceiptDataApi>(
-                '/app/donationReceipt/verify',
-                payload
-              );
+            : await putApiAuthenticated<
+                IssuedReceiptDataApi,
+                ReceiptVerificationPayload
+              >('/app/donationReceipt/verify', { payload });
       } else if (operation === RECEIPT_STATUS.ISSUE) {
-        const payload = {
+        const payload: ReceiptIssuancePayload = {
           receiptAddress: addressGuid,
           donationUids: donationUids.join(','),
           verificationDate,
         };
 
-        response = await postApiAuthenticated<IssuedReceiptDataApi>(
-          '/app/donationReceipts',
-          payload
-        );
+        response = await postApiAuthenticated<
+          IssuedReceiptDataApi,
+          ReceiptIssuancePayload
+        >('/app/donationReceipts', { payload });
       }
 
       if (response) {
@@ -128,6 +143,7 @@ const DonationReceiptWrapper = () => {
       donationReceipt={receiptData}
       isLoading={isLoading}
       isValid={isValid}
+      tinIsRequired={tinIsRequired}
       operation={operation}
       confirmReceiptData={confirmReceiptData}
     />

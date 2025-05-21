@@ -1,10 +1,14 @@
-import type { AdditionalInfo } from '../../../../../utils/mapsV2/mapSettings.config';
+import type {
+  AdditionalInfo,
+  ApiMapLayerOptionsType,
+} from '../../../../../utils/mapsV2/mapSettings.config';
 import type { SetState } from '../../../../common/types/common';
 
 import { useTranslations } from 'next-intl';
 import styles from '../MapFeatureExplorer.module.scss';
 
 interface Props {
+  layerKey: ApiMapLayerOptionsType;
   additionalInfo: AdditionalInfo | undefined;
   handleMouseLeave: () => void;
   setAnchorElement: SetState<HTMLDivElement | null>;
@@ -12,6 +16,7 @@ interface Props {
 }
 
 const LayerInfoPopupContent = ({
+  layerKey,
   additionalInfo,
   handleMouseLeave,
   setAnchorElement,
@@ -29,44 +34,48 @@ const LayerInfoPopupContent = ({
     >
       {additionalInfo?.dataYears && (
         <div>
-          <p className={styles.label}>{tExplore('additionalInfo.dataYears')}</p>
-          <p>{additionalInfo?.dataYears}</p>
+          <p className={styles.label}>
+            {tExplore('additionalInfo.labels.dataYears')}
+          </p>
+          <p>{tExplore(`additionalInfo.${layerKey}.dataYears`)}</p>
         </div>
       )}
       {additionalInfo?.resolution && (
         <div>
           <p className={styles.label}>
-            {tExplore('additionalInfo.resolution')}
+            {tExplore('additionalInfo.labels.resolution')}
           </p>
-          <p>{additionalInfo?.resolution}</p>
+          <p>{tExplore(`additionalInfo.${layerKey}.resolution`)}</p>
         </div>
       )}
       {additionalInfo?.description && (
         <div>
           <p className={styles.label}>
-            {tExplore('additionalInfo.description')}
+            {tExplore('additionalInfo.labels.description')}
           </p>
-          <p>{additionalInfo.description}</p>
+          <p>{tExplore(`additionalInfo.${layerKey}.description`)}</p>
         </div>
       )}
       {additionalInfo?.underlyingData && (
         <div>
           <p className={styles.label}>
-            {tExplore('additionalInfo.underlyingData')}
+            {tExplore('additionalInfo.labels.underlyingData')}
           </p>
-          <p>{additionalInfo.underlyingData}</p>
+          <p>{tExplore(`additionalInfo.${layerKey}.underlyingData`)}</p>
         </div>
       )}
       {additionalInfo?.source && (
         <div>
-          <p className={styles.label}>{tExplore('additionalInfo.source')}</p>
+          <p className={styles.label}>
+            {tExplore('additionalInfo.labels.source')}
+          </p>
           <a
-            href={additionalInfo.source.url}
+            href={tExplore(`additionalInfo.${layerKey}.source.url`)}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.source}
           >
-            {additionalInfo.source.text}
+            {tExplore(`additionalInfo.${layerKey}.source.text`)}
           </a>
         </div>
       )}

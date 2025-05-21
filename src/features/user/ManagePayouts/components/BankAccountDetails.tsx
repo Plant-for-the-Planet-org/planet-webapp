@@ -5,6 +5,7 @@ import { styled, Grid, Button, Divider } from '@mui/material';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import themeProperties from '../../../../theme/themeProperties';
 
 // TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
@@ -14,7 +15,7 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   borderRadius: 9,
   width: '100%',
   boxShadow: theme.shadows[1],
-  fontSize: '0.875rem',
+  fontSize: themeProperties.fontSizes.fontSmall,
   '& .accountHeader': {
     justifyContent: 'space-between',
     rowGap: 16,

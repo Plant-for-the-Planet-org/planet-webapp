@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 const NoPlanetCashAccount = (): ReactElement | null => {
-  const t = useTranslations('Planetcash');
+  const t = useTranslations('PlanetCash');
   const router = useRouter();
 
   const handleClick = () => {

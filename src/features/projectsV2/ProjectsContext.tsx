@@ -25,10 +25,12 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../common/Layout/TenantContext';
-import { buildProjectDetailsQuery } from '../../utils/projectV2';
+import {
+  buildProjectDetailsQuery,
+  isValidClassification,
+} from '../../utils/projectV2';
+import { useApi } from '../../hooks/useApi';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -51,6 +53,8 @@ interface ProjectsState {
   setIsError: SetState<boolean>;
   selectedClassification: TreeProjectClassification[];
   setSelectedClassification: SetState<TreeProjectClassification[]>;
+  showDonatableProjects: boolean;
+  setShowDonatableProjects: SetState<boolean>;
   debouncedSearchValue: string;
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
@@ -109,12 +113,41 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [projectsLocale, setProjectsLocale] = useState('');
+  const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
+  const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
+  const { getApi } = useApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
+  // Read filter from URL only on initial load
+  useEffect(() => {
+    if (router.isReady && page === 'project-list') {
+      const { filter, donatable_projects_only } = router.query;
+
+      // Initialize classification filters from URL
+      if (filter) {
+        const filterValues = typeof filter === 'string' ? [filter] : filter;
+        const validFilters = filterValues.filter(isValidClassification);
+
+        if (validFilters.length > 0) {
+          setSelectedClassification(validFilters);
+        }
+      }
+
+      // Initialize donation filter from URL
+      if (donatable_projects_only === 'true') {
+        setShowDonatableProjects(true);
+      }
+    }
+  }, [router.isReady]);
+
+  //* Function to filter projects that accept donations
+  const filterByDonation = (projects: MapProject[]) => {
+    return projects.filter((project) => project.properties.allowDonations);
+  };
 
   //* Function to filter projects based on classification
   const filterByClassification = useCallback(
@@ -132,9 +165,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   const topProjects = useMemo(
     () =>
-      projects?.filter((projects) => {
-        if (projects.properties.purpose === 'trees')
-          return projects.properties.isTopProject === true;
+      projects?.filter((project) => {
+        if (project.properties.purpose === 'trees')
+          return project.properties.isTopProject === true;
       }),
     [projects]
   );
@@ -186,6 +219,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const filteredProjects = useMemo(() => {
     let result = projects || [];
 
+    if (showDonatableProjects) result = filterByDonation(result);
+
     if (selectedClassification?.length > 0)
       result = filterByClassification(result);
 
@@ -193,29 +228,36 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       result = getSearchProjects(result, debouncedSearchValue) || result;
 
     return result;
-  }, [projects, selectedClassification, debouncedSearchValue]);
+  }, [
+    projects,
+    selectedClassification.length,
+    debouncedSearchValue,
+    showDonatableProjects,
+  ]);
 
   useEffect(() => {
     async function loadProjects() {
       if (page !== 'project-list' || !currencyCode) return;
-      if (projectsLocale === locale && projects !== null) return;
+      if (
+        projectsLocale === locale &&
+        projectsCurrencyCode === currencyCode &&
+        projects !== null
+      )
+        return;
 
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProjects = await getRequest<MapProject[]>({
-          tenant: tenantConfig.id,
-          url: `/app/projects`,
+        const fetchedProjects = await getApi<MapProject[]>('/app/projects', {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
-            tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
-            locale: locale,
           },
         });
         setProjects(fetchedProjects);
         setProjectsLocale(locale);
+        setProjectsCurrencyCode(currencyCode);
       } catch (err) {
         setErrors(handleError(err as APIError));
         setIsError(true);
@@ -283,11 +325,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     projectSlug: string,
     siteId: string | null
   ) => {
-    const updatedQueryParams = buildProjectDetailsQuery(
-      router.asPath,
-      router.query,
-      { siteId }
-    );
+    const updatedQueryParams = buildProjectDetailsQuery(router.query, {
+      siteId,
+    });
     updateProjectDetailsPath(locale, projectSlug, updatedQueryParams);
   };
 
@@ -347,11 +387,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
     if (selectedPlantLocation) {
-      const updatedQueryParams = buildProjectDetailsQuery(
-        router.asPath,
-        router.query,
-        { plocId: selectedPlantLocation.hid }
-      );
+      const updatedQueryParams = buildProjectDetailsQuery(router.query, {
+        plocId: selectedPlantLocation.hid,
+      });
       updateProjectDetailsPath(locale, singleProject.slug, updatedQueryParams);
     }
   }, [
@@ -364,6 +402,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedSite,
     hasNoSites,
   ]);
+
   useEffect(() => {
     if (
       !router.isReady ||
@@ -417,7 +456,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedSamplePlantLocation(null);
       setSelectedPlantLocation(null);
       setHoveredPlantLocation(null);
-      updateSiteAndUrl(locale, singleProject.slug, hasNoSites ? undefined : 0);
     }
   }, [selectedMode, singleProject, locale, hasNoSites]);
 
@@ -436,6 +474,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       topProjects,
       selectedClassification,
       setSelectedClassification,
+      showDonatableProjects,
+      setShowDonatableProjects,
       selectedMode,
       setSelectedMode,
       singleProject,
@@ -475,6 +515,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       preventShallowPush,
       selectedInterventionType,
       disableInterventionMenu,
+      showDonatableProjects,
     ]
   );
 

@@ -2,8 +2,39 @@ import styles from './../styles/GrowingImpact.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import Timeline from './Timeline';
 
+type BaseArticle = {
+  id: number;
+  copy: string;
+  subCopy?: string;
+  image: string;
+  foliage: string;
+  bgColor: string;
+  partnerLogo?: string;
+};
+
+type SingleLinkArticle = BaseArticle & {
+  link: string;
+  linkCopy?: string;
+};
+
+type MultipleLinkArticle = BaseArticle & {
+  links: {
+    mainText: string;
+    items: {
+      linkText: string;
+      link: string;
+    }[];
+  };
+};
+
+type Article = SingleLinkArticle | MultipleLinkArticle;
+
+function isSingleLinkArticle(article: Article): article is SingleLinkArticle {
+  return 'link' in article;
+}
+
 export default function GrowingImpact() {
-  const articles = [
+  const articles: Article[] = [
     {
       id: 1,
       copy: 'The Field Marketing Team donated 40,000 trees on behalf of STARs accounts for Earth Day.',
@@ -42,11 +73,22 @@ export default function GrowingImpact() {
     },
     {
       id: 5,
-      copy: '2023 Fitness-for-a-Cause Challenge: Over 23,000 trees planted during Earthforce Champion month!',
+      copy: 'Fitness-for-a-Cause Challenge: Over 62,500 trees were funded during the Earthforce Champion Month in April 2023 and 2024.',
       image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
-      link: '/vto-fitness-challenge-2023',
-      linkCopy: 'Click here to learn more about the cause',
+      links: {
+        mainText: 'Learn more about the cause',
+        items: [
+          {
+            linkText: 'Challenge 2023',
+            link: '/vto-fitness-challenge-2023',
+          },
+          {
+            linkText: 'Challenge 2024',
+            link: '/vto-fitness-challenge-2024',
+          },
+        ],
+      },
       bgColor: '#0B827C',
     },
     {
@@ -89,15 +131,34 @@ export default function GrowingImpact() {
                   className={`${styles.contentContainer}`}
                 >
                   <h5>{article.copy}</h5>
-                  <h5>{article.subCopy}</h5>
-                  {article.linkCopy !== undefined && (
-                    <a
-                      href={article.link}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      {article.linkCopy}
-                    </a>
+                  {article.subCopy !== undefined && <h5>{article.subCopy}</h5>}
+                  {isSingleLinkArticle(article) &&
+                    article.linkCopy !== undefined && (
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        {article.linkCopy}
+                      </a>
+                    )}
+                  {!isSingleLinkArticle(article) && (
+                    <div className={styles.references}>
+                      {article.links.mainText}:
+                      <ul>
+                        {article.links.items.map((item, index) => (
+                          <li key={index} className={styles.referenceItem}>
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                            >
+                              {item.linkText}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                   <img
                     src={article.foliage}

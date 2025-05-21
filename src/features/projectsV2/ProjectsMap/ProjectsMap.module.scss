@@ -5,6 +5,10 @@
   width: 100%;
   top: 101px;
   z-index: 2;
+
+  &.embedModeMobile {
+    top: 24px;
+  }
 }
 
 .projectDetailsControlsContainer {
@@ -13,10 +17,12 @@
   align-items: center;
   justify-content: flex-end;
   top: 101px;
-  gap: 2vw;
+  gap: 5px;
   right: 10px;
-  z-index: 2px;
-  width: 85%;
+
+  &.embedModeMobile {
+    top: 24px;
+  }
 
   > .exitMapModeButton {
     z-index: 2;

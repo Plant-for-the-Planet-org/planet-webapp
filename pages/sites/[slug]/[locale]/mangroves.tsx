@@ -23,7 +23,7 @@ interface Props {
 export default function MangrovesLandingPage({
   pageProps: { tenantConfig },
 }: Props) {
-  const tenantScore = { total: 16000000 };
+  const tenantScore = { total: 20000000 };
 
   const { setTenantConfig } = useTenant();
 
@@ -72,7 +72,16 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'donate', 'country', 'manageProjects', 'leaderboard'],
+    filenames: [
+      'common',
+      'donate',
+      'country',
+      'manageProjects',
+      'leaderboard',
+      'allProjects',
+      'projectDetails',
+      'project',
+    ],
   });
 
   return {

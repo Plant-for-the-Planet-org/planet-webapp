@@ -3,26 +3,25 @@ import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import React, { useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
-import { getRequest } from '../../../../utils/apiRequests/api';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
-import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
+import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest({
-          tenant: tenantConfig.id,
-          url: `/app/projects`,
+        const projects = await getApi(`/app/projects`, {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
@@ -41,7 +40,7 @@ export default function ProjectGrid() {
 
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
-      .filter((project) => project.properties.allowDonations === true)
+      .filter((project) => project.properties.allowDonations)
       .map((allowedProject) => {
         return (
           <div
@@ -50,9 +49,8 @@ export default function ProjectGrid() {
           >
             <ProjectSnippet
               project={allowedProject.properties}
-              editMode={false}
-              displayPopup={false}
-              utmCampaign="243BY4FZ71"
+              showTooltipPopups={true}
+              utmCampaign="251Y48Z1NR"
             />
           </div>
         );
@@ -61,7 +59,7 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div className={`${styles.projectGridContainer}`}>
+    <section className={`${styles.projectGridContainer}`} id="projects">
       <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
@@ -79,6 +77,6 @@ export default function ProjectGrid() {
           {projects ? renderAllowedProjects(projects) : <></>}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
