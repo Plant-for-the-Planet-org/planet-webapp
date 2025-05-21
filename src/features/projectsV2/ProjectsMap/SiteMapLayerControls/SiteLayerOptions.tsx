@@ -1,12 +1,29 @@
 import type { ReactElement } from 'react';
 
 import styles from './SiteMapLayerControls.module.scss';
+import BiomassChangeIcon from '../../../../../public/assets/images/icons/projectV2/BiomassChangeIcon';
+import TreeCoverIcon from '../../../../../public/assets/images/icons/projectV2/TreeCoverIcon';
+
+export type LayerKey = 'biomass' | 'tree-cover';
 
 export type LayerOption = {
-  id: string;
+  id: LayerKey;
   label: string;
   icon: ReactElement;
 };
+
+export const availableLayerOptions: LayerOption[] = [
+  {
+    id: 'biomass',
+    label: 'Biomass Change',
+    icon: <BiomassChangeIcon />,
+  },
+  {
+    id: 'tree-cover',
+    label: 'Tree Cover Change',
+    icon: <TreeCoverIcon />,
+  },
+];
 
 interface SingleOptionProps {
   option: LayerOption;

@@ -1,30 +1,20 @@
 import type { LayerOption } from './SiteLayerOptions';
 
 import { useState, useRef, useEffect } from 'react';
-import TreeCoverIcon from '../../../../../public/assets/images/icons/projectV2/TreeCoverIcon';
-import BiomassChangeIcon from '../../../../../public/assets/images/icons/projectV2/BiomassChangeIcon';
 import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
-import SiteLayerOptions from './SiteLayerOptions';
+import SiteLayerOptions, { availableLayerOptions } from './SiteLayerOptions';
 import styles from './SiteMapLayerControls.module.scss';
 
-const layerOptions: LayerOption[] = [
-  {
-    id: 'biomass',
-    label: 'Biomass Change',
-    icon: <BiomassChangeIcon />,
-  },
-  {
-    id: 'tree-cover',
-    label: 'Tree Cover Change',
-    icon: <TreeCoverIcon />,
-  },
-];
+interface SiteLayerDropdownProps {
+  selectedLayer: LayerOption;
+  setSelectedLayer: (layer: LayerOption) => void;
+}
 
-const SiteLayerDropdown = () => {
+const SiteLayerDropdown = ({
+  selectedLayer,
+  setSelectedLayer,
+}: SiteLayerDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLayer, setSelectedLayer] = useState<LayerOption>(
-    layerOptions[0]
-  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -75,7 +65,7 @@ const SiteLayerDropdown = () => {
       {isOpen && (
         <div className={styles.optionsWrapper}>
           <SiteLayerOptions
-            layerOptions={layerOptions}
+            layerOptions={availableLayerOptions}
             selectedLayer={selectedLayer}
             handleLayerSelection={handleLayerSelection}
           />

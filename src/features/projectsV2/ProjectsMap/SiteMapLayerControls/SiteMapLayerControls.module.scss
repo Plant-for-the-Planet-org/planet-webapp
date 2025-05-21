@@ -13,23 +13,23 @@
   z-index: 10;
   box-sizing: border-box;
 
-  > * {
-    &:not(:last-child) {
-      border-right: 1px solid $hintTextColor;
-    }
-  }
-
   @include smTabletView {
     max-width: 384px;
     right: 10px;
     flex-direction: row;
+
+    > * {
+      &:not(:last-child) {
+        border-right: 1px solid $hintTextColor;
+      }
+    }
   }
 }
 
 .siteLayerSelector {
   position: relative;
   width: 100%;
-  padding: 12px;
+  padding: 10px 10px 0 10px;
   box-sizing: border-box;
 
   @include xsPhoneView {
@@ -139,11 +139,69 @@
   }
 }
 
-.siteLayerLegend {
-  text-align: center;
+.siteLayerInfo {
+  position: relative;
   width: 100%;
+  box-sizing: border-box;
+  border-radius: 0 0 12px 12px;
+  padding: 10px;
 
-  @include xsPhoneView {
-    border-radius: 0 0 12px 12px;
+  @include smTabletView {
+    border-radius: 0;
+    padding: 20px 24px 0 12px;
   }
+}
+
+.layerInfoTooltip {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0px;
+  right: 0px;
+  padding: 10px;
+  cursor: pointer;
+
+  @include smTabletView {
+    top: 0px;
+    right: 0px;
+    padding: 6px;
+    bottom: auto;
+  }
+}
+
+.layerInfoPopup {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  background-color: $backgroundColor;
+  color: $coreTextColor;
+  border-radius: 8px;
+  padding: 18px;
+
+  p {
+    font-size: $fontXXSmall;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: $fontXSmall;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: $fontMedium;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px;
+    cursor: pointer;
+  }
+}
+
+.siteLayerLegend {
 }
