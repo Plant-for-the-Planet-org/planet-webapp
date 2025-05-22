@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { useTranslations } from 'next-intl';
+import styles from '../Navbar.module.scss';
 
 const PlanetLogo = () => {
   const t = useTranslations('Common');
@@ -11,9 +12,13 @@ const PlanetLogo = () => {
       : `/assets/images/PlanetDarkLogo.svg`;
 
   return (
-    <div className="planetLogoContainer">
+    <div className={styles.planetLogoContainer}>
       <a href="https://www.plant-for-the-planet.org">
-        <img className="planetLogo" src={logoSrc} alt={t('about_pftp')} />
+        <img
+          className={styles.planetLogo}
+          src={logoSrc}
+          alt={t('about_pftp')}
+        />
       </a>
     </div>
   );
