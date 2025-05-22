@@ -1,6 +1,14 @@
 @import './../../../../theme/theme';
 
 $impersonationBannerOffset: -142px;
+$aboutRightOffset: -220px;
+$aboutRightOffsetMobile: -126px;
+$toolsRightOffset: -120px;
+$toolsRightOffsetMobile: -59px;
+$campaignRightOffset: -27px;
+$campaignRightOffsetMobile: -37px;
+$topSpacing: 56px;
+$topSpacingMobile: 43px;
 
 .navbar {
   display: flex;
@@ -232,6 +240,9 @@ $impersonationBannerOffset: -142px;
     rgba(201, 239, 217, 1),
     rgba(215, 242, 193, 1)
   );
+  @include xsPhoneView {
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .navbarMenuSubContainer {
@@ -256,36 +267,36 @@ $impersonationBannerOffset: -142px;
 
 .about {
   position: absolute;
-  top: 56px;
-  right: -228px;
+  top: $topSpacing;
+  right: $aboutRightOffset;
   @include xsPhoneView {
     min-width: 367px;
     max-height: 70vh;
-    top: 43px;
-    right: -126px;
+    top: $topSpacingMobile;
+    right: $aboutRightOffsetMobile;
     overflow-y: auto;
   }
 }
 
 .tools {
   position: absolute;
-  top: 56px;
-  right: -129px;
+  top: $topSpacing;
+  right: $toolsRightOffset;
   @include xsPhoneView {
     min-width: 367px;
-    top: 43px;
-    right: -59px;
+    top: $topSpacingMobile;
+    right: $toolsRightOffsetMobile;
   }
 }
 
 .campaign {
   position: absolute;
-  top: 56px;
-  right: -27px;
+  top: $topSpacing;
+  right: $campaignRightOffset;
   @include xsPhoneView {
     min-width: max-content;
-    top: 43px;
-    right: -37px;
+    top: $topSpacingMobile;
+    right: $campaignRightOffsetMobile;
   }
 }
 
