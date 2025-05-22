@@ -74,6 +74,7 @@ export interface MapSettingsConfig {
 
 // Configuration object
 // isAvailable is set to null initially, and will be updated based on the API response (except for projects which are always available)
+/** Note: additional info seen on hover comes from translation file. While updating this, update translation file as well */
 export const mapSettingsConfig: MapSettingsConfig = {
   projects: {
     key: 'projects',
@@ -130,7 +131,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~500m',
         dataYears: '2016',
         description:
-          'Global additional potential biomass with and without considering agricultural and human settlements.',
+          'Constrained unrealized potential aboveground biomass density (megagrams carbon per hectare) under baseline climate. Areas critical to food production and human habitation have been set to zero.',
         underlyingData:
           'Remote sensing (MODIS, LiDAR) based Machine Learning models',
         source: {
@@ -190,7 +191,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'cg/kg; 0-30 cm horizon (A weighted average for all depths)',
+          'Weighted average nitrogen concentration (cg/kg) across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -214,7 +215,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
-        description: '0-30 cm horizon (A weighted average for all depths)',
+        description:
+          'Weighted average pH concentration across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -238,7 +240,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'dg/kg; 0-30 cm horizon (A weighted average for all depths)',
+          'Weighted average Soil Organic Carbon concentration (dg/kg) across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
@@ -263,7 +265,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'cg/cm3; cg/kg; 0-30 cm horizon (A weighted average for all depths)',
+          'Weighted average Soil Bulk Density concentration (cg/cm3;) across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
