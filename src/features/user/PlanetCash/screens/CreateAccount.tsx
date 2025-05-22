@@ -11,7 +11,6 @@ import AccountListLoader from '../../../../../public/assets/images/icons/Account
 const initialAllowedCountries: CountryType[] = [
   { code: 'DE', currency: 'EUR' },
   { code: 'ES', currency: 'EUR' },
-  { code: 'US', currency: 'USD' },
 ];
 
 const CreateAccount = (): ReactElement | null => {
