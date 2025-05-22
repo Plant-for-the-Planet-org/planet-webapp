@@ -304,3 +304,17 @@
     width: 328px;
   }
 }
+
+.collapsibleText {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: max-width 0.7s ease, white-space 0.7s ease;
+  cursor: pointer;
+
+  &:hover {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
