@@ -232,6 +232,9 @@ $impersonationBannerOffset: -142px;
     rgba(201, 239, 217, 1),
     rgba(215, 242, 193, 1)
   );
+  @include xsPhoneView {
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .navbarMenuSubContainer {
@@ -257,7 +260,7 @@ $impersonationBannerOffset: -142px;
 .about {
   position: absolute;
   top: 56px;
-  right: -228px;
+  right: -220px;
   @include xsPhoneView {
     min-width: 367px;
     max-height: 70vh;
@@ -270,7 +273,7 @@ $impersonationBannerOffset: -142px;
 .tools {
   position: absolute;
   top: 56px;
-  right: -129px;
+  right: -120px;
   @include xsPhoneView {
     min-width: 367px;
     top: 43px;
