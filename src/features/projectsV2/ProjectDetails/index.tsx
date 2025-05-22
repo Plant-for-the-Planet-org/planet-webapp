@@ -26,6 +26,7 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useProjectsMap } from '../ProjectsMapContext';
 import { useApi } from '../../../hooks/useApi';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const ProjectDetails = ({
   currencyCode,
@@ -52,6 +53,7 @@ const ProjectDetails = ({
   const locale = useLocale();
   const router = useRouter();
   const { getApi } = useApi();
+  const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
 
   const fetchPlantLocations = async (projectId: string) => {
@@ -79,7 +81,13 @@ const ProjectDetails = ({
         const fetchedProject = await getApi<ExtendedProject>(
           `/app/projects/${projectSlug}`,
           {
-            queryParams: { _scope: 'extended', currency: currency },
+            queryParams: {
+              _scope: 'extended',
+              currency: currency,
+              //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+              locale: locale,
+              tenant: tenantConfig.id,
+            },
           }
         );
         const { purpose, id: projectId } = fetchedProject;
@@ -111,7 +119,7 @@ const ProjectDetails = ({
     if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
       loadProject(projectSlug, currencyCode);
     }
-  }, [projectSlug, locale, currencyCode, router.isReady]);
+  }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
   const shouldShowPlantLocationInfo =
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||

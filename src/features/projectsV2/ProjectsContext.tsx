@@ -31,6 +31,7 @@ import {
   isValidClassification,
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
+import { useTenant } from '../common/Layout/TenantContext';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -119,6 +120,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const { getApi } = useApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
@@ -252,6 +254,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
+            //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+            locale: locale,
+            tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
           },
         });
@@ -266,7 +271,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }
     }
     loadProjects();
-  }, [currencyCode, locale, page]);
+  }, [currencyCode, locale, tenantConfig.id, page]);
 
   useEffect(() => {
     if (!currencyCode && setCurrencyCode !== undefined) {
