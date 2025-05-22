@@ -24,7 +24,6 @@ interface Props {
   setIsModalOpen: SetState<boolean>;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
-  updateUserAddresses?: () => Promise<void>;
 }
 
 const defaultAddressDetail = {
@@ -40,7 +39,6 @@ const AddAddress = ({
   setIsModalOpen,
   setAddressAction,
   showPrimaryAddressToggle,
-  updateUserAddresses,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
@@ -88,7 +86,6 @@ const AddAddress = ({
               addresses: [...updatedAddresses, res],
             };
           });
-          if (updateUserAddresses) updateUserAddresses();
         }
       } catch (error) {
         setErrors(handleError(error as APIError));
@@ -109,7 +106,6 @@ const AddAddress = ({
       setIsModalOpen,
       postApiAuthenticated,
       primaryAddressChecked,
-      updateUserAddresses,
     ]
   );
 

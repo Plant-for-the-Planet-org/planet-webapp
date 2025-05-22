@@ -18,7 +18,6 @@ import { useApi } from '../../../../../hooks/useApi';
 interface Props {
   setIsModalOpen: SetState<boolean>;
   selectedAddressForAction: Address;
-  updateUserAddresses?: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
 }
@@ -31,7 +30,6 @@ type EditAddressApiPayload = AddressFormData & {
 const EditAddress = ({
   setIsModalOpen,
   selectedAddressForAction,
-  updateUserAddresses,
   setAddressAction,
   showPrimaryAddressToggle,
 }: Props) => {
@@ -81,7 +79,6 @@ const EditAddress = ({
           }
         );
         if (res) {
-          if (updateUserAddresses) updateUserAddresses();
           setUser((prev) => {
             if (!prev) return null;
 
@@ -129,7 +126,6 @@ const EditAddress = ({
       selectedAddressForAction?.id,
       tenantConfig.id,
       logoutUser,
-      updateUserAddresses,
       handleError,
       putApiAuthenticated,
       primaryAddressChecked,

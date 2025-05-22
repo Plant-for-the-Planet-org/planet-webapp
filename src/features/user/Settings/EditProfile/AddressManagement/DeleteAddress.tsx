@@ -15,19 +15,18 @@ import { useApi } from '../../../../../hooks/useApi';
 interface Props {
   setIsModalOpen: SetState<boolean>;
   addressId: string;
-  updateUserAddresses: () => Promise<void>;
   setAddressAction: SetState<AddressAction | null>;
 }
 
 const DeleteAddress = ({
   setIsModalOpen,
   addressId,
-  updateUserAddresses,
   setAddressAction,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token } = useUserProps();
+  const { contextLoaded, user, token, setUser } = useUserProps();
+
   const { setErrors } = useContext(ErrorHandlingContext);
   const { deleteApiAuthenticated } = useApi();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +35,21 @@ const DeleteAddress = ({
     if (!contextLoaded || !user || !token) return;
     try {
       setIsLoading(true);
+
       await deleteApiAuthenticated(`/app/addresses/${addressId}`);
-      updateUserAddresses();
+
+      setUser((prev) => {
+        if (!prev) return null;
+
+        const updatedAddress = prev.addresses.filter(
+          (address) => address.id !== addressId
+        );
+
+        return {
+          ...prev,
+          addresses: updatedAddress,
+        };
+      });
     } catch (error) {
       setErrors(handleError(error as APIError));
     } finally {
