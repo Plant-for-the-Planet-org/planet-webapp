@@ -10,6 +10,7 @@ import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
+import { defaultTenant } from '../tenant.config';
 
 /*
  * Global decorator to apply the styles to all stories
@@ -33,7 +34,7 @@ export const decorators = [
         >
           <MUIThemeProvider theme={materialTheme}>
             {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
-            <TenantProvider>
+            <TenantProvider initialTenantConfig={defaultTenant}>
               <UserPropsProvider>
                 <ThemeProvider theme={materialTheme}>
                   <Story />

@@ -9,7 +9,7 @@ on:
     branches:
       - hotfix/chromatic-build-issue
       - develop
-      - feature/navbar-dropdown-item
+      - feature/satellite-analysis-ui
 # List of jobs
 jobs:
   chromatic-deployment:
