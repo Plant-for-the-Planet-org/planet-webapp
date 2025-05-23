@@ -3,6 +3,7 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { TextField, styled } from '@mui/material';
 import { useTenant } from '../Layout/TenantContext';
+import themeProperties from '../../../theme/themeProperties';
 
 interface StyledTextFieldType {
   config: Tenant;
@@ -25,7 +26,7 @@ const StyledTextField = styled(TextField, {
   '& label': {
     color: 'var(--primary-font-color)',
     fontFamily: config.config.font.primaryFontFamily,
-    fontSize: '14px',
+    fontSize: themeProperties.fontSizes.fontSmall,
     top: '-3px',
   },
   '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {

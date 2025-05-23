@@ -7,12 +7,11 @@ import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -22,10 +21,10 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const t = useTranslations('Me');
-  const { token, contextLoaded, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { token, contextLoaded } = useUserProps();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
+  const { getApiAuthenticated } = useApi();
   const [transactionHistory, setTransactionHistory] =
     useState<PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
@@ -48,23 +47,24 @@ const Transactions = ({
         setIsDataLoading(true);
         setProgress && setProgress(70);
 
-        const nextPage =
-          next && transactionHistory?._links?.next
-            ? transactionHistory._links.next.split('?').pop()
-            : undefined;
+        const queryParams: Record<string, string> = {
+          filter: 'planet-cash',
+          limit: '15',
+        };
 
-        const apiUrl =
-          next && transactionHistory?._links?.next
-            ? `/app/paymentHistory?filter=planet-cash&limit=15&${nextPage}`
-            : `/app/paymentHistory?filter=planet-cash&limit=15`;
-
-        const newTransactionHistory =
-          await getAuthenticatedRequest<PaymentHistory>(
-            tenantConfig?.id,
-            apiUrl,
-            token,
-            logoutUser
+        if (transactionHistory?._links?.next && next) {
+          const nextUrl = new URL(
+            transactionHistory?._links?.next,
+            window.location.origin
           );
+
+          const page = nextUrl.searchParams.get('page');
+          if (page) queryParams.page = page;
+        }
+        const newTransactionHistory = await getApiAuthenticated<PaymentHistory>(
+          `/app/paymentHistory`,
+          { queryParams }
+        );
 
         if (transactionHistory) {
           setTransactionHistory({

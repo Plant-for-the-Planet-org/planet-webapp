@@ -134,7 +134,6 @@ export interface BasicDetailsProps {
   >;
   setProjectGUID: SetState<string>;
   projectGUID: string | unknown;
-  token: string;
   purpose: 'trees' | 'conservation';
 }
 
@@ -195,7 +194,6 @@ export interface PlantingSeason {
 
 export interface ProjectSitesProps {
   handleBack: (arg: number) => void;
-  token: string;
   handleNext: (arg: number) => void;
   projectGUID: string;
   projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
@@ -230,7 +228,6 @@ interface EditSiteProps {
   geoJsonProp: GeoJson | null;
   projectGUID: string;
   setSiteList: SetState<Site[]>;
-  token: string;
   seteditMode: Function;
   siteGUID: Nullable<string>;
   siteList: Site[];

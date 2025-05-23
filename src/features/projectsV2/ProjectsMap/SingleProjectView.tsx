@@ -1,4 +1,5 @@
 import type { MapRef } from '../../common/types/projectv2';
+import type { SelectedTab } from './ProjectMapTabs';
 
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
@@ -12,12 +13,16 @@ import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonP
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
+import FireLocations from './microComponents/FireLocations';
+import FeatureFlag from './microComponents/FeatureFlag';
+import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
+  selectedTab: SelectedTab | null;
 }
 
-const SingleProjectView = ({ mapRef }: Props) => {
+const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   const router = useRouter();
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
@@ -26,14 +31,14 @@ const SingleProjectView = ({ mapRef }: Props) => {
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
 
-  const sitesGeojson = useMemo(() => {
+  const sitesGeoJson = useMemo(() => {
     return {
       type: 'FeatureCollection' as const,
       features:
         singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
     };
   }, [singleProject?.sites]);
-  const hasNoSites = sitesGeojson.features.length === 0;
+  const hasNoSites = sitesGeoJson.features.length === 0;
   // Zoom to plant location
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
@@ -74,10 +79,10 @@ const SingleProjectView = ({ mapRef }: Props) => {
       Boolean(requestedPlantLocation)
     )
       return;
-    if (sitesGeojson.features.length > 0 && selectedSite !== null) {
+    if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
-        sitesGeojson,
+        sitesGeoJson,
         selectedSite,
         handleViewStateChange,
         MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
@@ -100,7 +105,7 @@ const SingleProjectView = ({ mapRef }: Props) => {
     }
   }, [
     selectedSite,
-    sitesGeojson,
+    sitesGeoJson,
     router.isReady,
     selectedPlantLocation,
     requestedPlantLocation,
@@ -127,13 +132,15 @@ const SingleProjectView = ({ mapRef }: Props) => {
         <>
           <SitePolygon
             isSatelliteView={isSatelliteView}
-            geoJson={sitesGeojson}
+            geoJson={sitesGeoJson}
           />
           {isSatelliteView && <SatelliteLayer />}
         </>
       )}
-
-      <PlantLocations />
+      {selectedTab === 'field' && <PlantLocations />}
+      <FeatureFlag condition={isFirealertFiresEnabled()}>
+        <FireLocations />
+      </FeatureFlag>
     </>
   );
 };

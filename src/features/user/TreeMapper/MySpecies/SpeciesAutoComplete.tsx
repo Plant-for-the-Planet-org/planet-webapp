@@ -4,14 +4,13 @@ import type { APIError } from '@planet-sdk/common';
 import type { SpeciesSuggestionType } from '../../../common/types/plantLocation';
 
 import React from 'react';
-import { postRequest } from '../../../../utils/apiRequests/api';
 import { Controller } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -25,6 +24,11 @@ interface Props<
   helperText?: React.ReactNode;
   // mySpecies?: any;
 }
+
+type SpeciesApiPayload = {
+  q: string;
+  t: string;
+};
 
 export default function SpeciesSelect<
   TFieldValues extends FieldValues,
@@ -42,7 +46,7 @@ export default function SpeciesSelect<
     SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = React.useState('');
-  const { tenantConfig } = useTenant();
+  const { postApi } = useApi();
   const t = useTranslations('Treemapper');
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -62,12 +66,13 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest<SpeciesSuggestionType[]>(
-          tenantConfig?.id,
+        const res = await postApi<SpeciesSuggestionType[], SpeciesApiPayload>(
           `/suggest.php`,
           {
-            q: value,
-            t: 'species',
+            payload: {
+              q: value,
+              t: 'species',
+            },
           }
         );
         if (res && res.length > 0) {

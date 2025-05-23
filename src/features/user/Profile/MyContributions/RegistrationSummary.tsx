@@ -9,7 +9,7 @@ import format from 'date-fns/format';
 interface Props {
   treeCount: number;
   country: CountryCode | null;
-  registrationDate: DateString;
+  registrationDate: DateString | null;
 }
 
 const RegistrationSummary = ({
@@ -20,9 +20,11 @@ const RegistrationSummary = ({
   const t = useTranslations('Profile');
   const tCountry = useTranslations('Country');
 
-  const formattedRegDate = format(new Date(registrationDate), 'PP', {
-    locale: localeMapForDate[localStorage.getItem('language') || 'en'],
-  });
+  const formattedRegDate = registrationDate
+    ? format(new Date(registrationDate), 'PP', {
+        locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+      })
+    : '';
 
   return (
     <div className={styles.registrationSummary}>
@@ -30,16 +32,13 @@ const RegistrationSummary = ({
         {t('myContributions.treesRegisteredHeadline', { count: treeCount })}
       </div>
       <div className={styles.registrationInfo}>
-        {country
-          ? t('myContributions.registrationInfoWithCountry', {
-              countryName: tCountry(
+        {`${t('myContributions.registrationLabel')}${
+          country
+            ? `  •  ${tCountry(
                 country.toLowerCase() as Lowercase<CountryCode>
-              ),
-              date: formattedRegDate,
-            })
-          : t('myContributions.registrationInfo', {
-              date: formattedRegDate,
-            })}
+              )}`
+            : ''
+        }${registrationDate !== null ? `  •  ${formattedRegDate}` : ''}`}
       </div>
     </div>
   );

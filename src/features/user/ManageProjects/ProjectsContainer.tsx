@@ -6,7 +6,6 @@ import Link from 'next/link';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
-import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -15,11 +14,11 @@ import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useLocale, useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
+import { useApi } from '../../../hooks/useApi';
 
 interface UserProjectsType {
   type: string;
@@ -106,19 +105,17 @@ function SingleProject({ project }: { project: Properties }) {
 export default function ProjectsContainer() {
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
-  const { tenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
   const [projects, setProjects] = React.useState<UserProjectsType[]>([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token, logoutUser } = useUserProps();
+  const { user, contextLoaded, token } = useUserProps();
   async function loadProjects() {
     if (user) {
       try {
-        const projects = await getAuthenticatedRequest<UserProjectsType[]>(
-          tenantConfig?.id,
-          '/app/profile/projects?version=1.2',
-          token,
-          logoutUser
+        const projects = await getApiAuthenticated<UserProjectsType[]>(
+          '/app/profile/projects',
+          { queryParams: { version: '1.2' } }
         );
         setProjects(projects);
       } catch (err) {

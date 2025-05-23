@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -18,11 +19,8 @@ import Head from 'next/head';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { getAuthenticatedRequest } from '../../../../../../../src/utils/apiRequests/api';
 import { useRouter } from 'next/router';
-
 import { useTranslations } from 'next-intl';
-
 import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
@@ -33,6 +31,7 @@ import { useTenant } from '../../../../../../../src/features/common/Layout/Tenan
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
+import { useApi } from '../../../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -45,7 +44,7 @@ export default function BulkCodeIssueCodesPage({
   const t = useTranslations('Me');
   const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
-
+  const { getApiAuthenticated } = useApi();
   const {
     project,
     setProject,
@@ -54,7 +53,7 @@ export default function BulkCodeIssueCodesPage({
     planetCashAccount,
     projectList,
   } = useBulkCode();
-  const { token, user, logoutUser, contextLoaded } = useUserProps();
+  const { token, user, contextLoaded } = useUserProps();
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
@@ -62,19 +61,15 @@ export default function BulkCodeIssueCodesPage({
       if (!project) {
         if (router.isReady) {
           try {
-            const paymentOptions =
-              await getAuthenticatedRequest<PaymentOptions>(
-                pageProps.tenantConfig.id,
-                `/app/paymentOptions/${router.query.id}`,
-                token,
-                logoutUser,
-                undefined,
-                {
-                  country: planetCashAccount.country,
+            const paymentOptions = await getApiAuthenticated<PaymentOptions>(
+              `/app/paymentOptions/${router.query.id}`,
+              {
+                queryParams: {
+                  country: planetCashAccount?.country ?? '',
                   ...(user !== null && { legacyPriceFor: user.id }),
-                }
-              );
-
+                },
+              }
+            );
             if (paymentOptions) {
               const retrievedProject = projectList.find(
                 (project) => project.guid === paymentOptions.id
@@ -135,19 +130,20 @@ export default function BulkCodeIssueCodesPage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        method: v4(),
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          method: v4(),
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

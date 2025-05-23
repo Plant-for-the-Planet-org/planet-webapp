@@ -1,0 +1,82 @@
+@import '../../../../theme/theme';
+.tabsContainer {
+  display: flex;
+  width: fit-content;
+  height: 48px;
+  border-radius: 12px;
+  background: $backgroundColor;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 5px;
+  gap: 8px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  margin: 0 auto;
+  z-index: 40;
+  color: $dark;
+}
+.singleTabOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0px 10px;
+  height: 40px;
+  border-radius: 8px;
+  gap: 6px;
+}
+
+.singleTabOption svg {
+  width: 18px;
+}
+.singleTabOption p {
+  display: none;
+}
+
+.selected {
+  padding: 0px 15px;
+  color: $backgroundColor;
+  background-color: $primaryColorNew;
+}
+
+.showSeparator1,
+.showSeparator2 {
+  background: $dark;
+  width: 0.5px;
+  height: 30px;
+  position: absolute;
+  top: 20%;
+  opacity: 0.3;
+}
+
+.showSeparator1 {
+  left: 63px;
+}
+
+.showSeparator2 {
+  left: 144px;
+}
+
+.hideSeparator {
+  display: none;
+}
+
+@include xlDesktopView {
+  .singleTabOption {
+    p {
+      display: block;
+      font-size: $fontXSmall;
+      font-weight: 700;
+    }
+  }
+  .showSeparator1 {
+    left: 164px;
+  }
+
+  .showSeparator2 {
+    left: 345px;
+  }
+}

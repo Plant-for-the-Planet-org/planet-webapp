@@ -17,15 +17,15 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 interface Props {
   projects: MapProject[];
-  showProjects: Boolean;
-  setShowProjects: Function;
+  showProjects: boolean;
+  setShowProjects: SetState<boolean>;
   setsearchedProjects: SetState<MapProject[]>;
 }
 
@@ -44,6 +44,7 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
+  const { getApi } = useApi();
   const { embed, showProjectList } = React.useContext(ParamsContext);
   const { isImpersonationModeOn } = useUserProps();
   const isEmbed = embed === 'true';
@@ -175,10 +176,7 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getRequest<Tenant>(
-          tenantConfig.id,
-          `/app/tenants/${tenantConfig.id}`
-        );
+        const res = await getApi<Tenant>(`app/tenants/${tenantConfig.id}`);
         setShouldSortProjectList(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));

@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { FormData } from '../components/BankDetailsForm';
+import type { AccountFormData } from '../components/BankDetailsForm';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { BankAccount } from '../../../common/types/payouts';
 
@@ -7,7 +7,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import BankDetailsForm from '../components/BankDetailsForm';
@@ -15,19 +14,17 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
-  const { tenantConfig } = useTenant();
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token, logoutUser } = useUserProps();
+  const { putApiAuthenticated } = useApi();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const t = useTranslations('ManagePayouts');
 
@@ -35,7 +32,7 @@ const EditBankAccount = (): ReactElement | null => {
     setIsAccountUpdated(false);
   };
 
-  const handleSaveAccount = async (data: FormData) => {
+  const handleSaveAccount = async (data: AccountFormData) => {
     setIsProcessing(true);
     const accountData = {
       ...data,
@@ -45,12 +42,9 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putAuthenticatedRequest<BankAccount>(
-        tenantConfig?.id,
+      const res = await putApiAuthenticated<BankAccount, AccountFormData>(
         `/app/accounts/${accountToEdit?.id}`,
-        accountData,
-        token,
-        logoutUser
+        { payload: accountData }
       );
       // update accounts in context
       if (accounts) {
@@ -149,7 +143,7 @@ const EditBankAccount = (): ReactElement | null => {
       />
       {isAccountUpdated && (
         <CustomSnackbar
-          snackbarText={t('accountUpdationSuccess')}
+          snackbarText={t('accountUpdateSuccess')}
           isVisible={isAccountUpdated}
           handleClose={closeSnackbar}
         />

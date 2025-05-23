@@ -1,0 +1,63 @@
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "tin": "Tax Identification Number (TIN)",
+      "companyName": "Company Name",
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "address": "Address"
+    },
+    "donationDetails": {
+      "referenceNumber": "Reference Number",
+      "reference": "Reference",
+      "amountDonated": "Amount Donated",
+      "paymentDate": "Payment Date",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Tax Identification Number (TIN)"
+    },
+    "errors": {
+      "invalidReceipt": "<b>Error:</b> Unable to process the request due to missing or incorrect details. Please check the link and try again.",
+      "missingReceiptInformation": "<b>Error:</b> Some information is missing from the receipt. Please get in touch with us using the details below.",
+      "editPermissionDeniedMessage": "<b>Error:</b> It looks like you don’t have permission to modify this contact information. If you need any assistance, please contact support.",
+      "accessDeniedMessage": "<b>Error:</b> It seems you don’t have the necessary permissions to access this link. If you need any assistance, please contact support."
+    },
+    "notifications": {
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} is missing/invalid",
+      "addressMissing": "Address is missing/invalid",
+      "firstNameRequired": "First Name field is required",
+      "lastNameRequired": "Last Name field is required",
+      "companyRequired": "Company Name field is Required",
+      "tinRequired": "TIN is required",
+      "addressRequired": "Please choose an address to proceed.",
+      "invalidContactInfoMessage": "Your contact information is invalid. Please update it by clicking Modify Contact Information below.",
+      "addressLimitReached": "You've reached the address limit. You can update your existing addresses, but adding a new one isn't possible.",
+      "missingTIN": "<b>NOTICE:</b> Your tax identification number is missing, please click on the button below to add it.",
+      "loginRequired": "<b>IMPORTANT:</b> To modify your data, you will need to log in to your profile. If you are encountering issues, please contact us via the information at the bottom of this page."
+    },
+    "verifyDonationHeaderPrimary": "Verify your data and download the donation receipt",
+    "verifyDonationHeaderSecondary": "Please note: Once the data is verified, it cannot be changed again for this receipt",
+    "downloadDonationReceipt": "Download donation receipt",
+    "recipientInfoHeader": "Receipt will be issued to",
+    "modifyContactInformation": "Modify Contact Information",
+    "confirm": "Confirm",
+    "download": "Download",
+    "viewAllDonationReceipts": "View all donation receipts",
+    "donationReceiptsManagementInfo": "Easily access and manage all of your donation receipts. See issued receipts ready for download and check for pending receipts still being processed. ",
+    "donationReceiptsManagementLogin": "You need to log in for this.",
+    "contactSupportMessage": "For any questions or issues, please contact us",
+    "emailDetails": "<strong>Email:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink>",
+    "phoneDetails": "<strong>Phone:</strong> +49 8808 9345",
+    "receipts": "Receipts",
+    "donorContactManagement": "Donor Contact Management",
+    "contactManagementHeader": "Update profile and address",
+    "saveDataAndReturn": "Save data and return",
+    "donationReceipt": "Donation Receipt",
+    "verifyAndDownload": "Verify & Download",
+    "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u>",
+    "itemsReferenceDateSingleDonation": "Reference {reference} · {date}",
+    "itemsReferenceDateSingleEndowment": "Reference {reference} · Endowment · {date}",
+    "pendingReceipt": "Pending Receipt(s)",
+    "noReceiptFound": "Oops! No receipt found"
+  }
+}

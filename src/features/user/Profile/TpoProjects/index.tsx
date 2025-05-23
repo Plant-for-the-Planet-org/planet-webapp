@@ -8,10 +8,9 @@ import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './TpoProjects.module.scss';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import { useApi } from '../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
 
 const ProjectSnippet = dynamic(
   () => import('../../../projectsV2/ProjectSnippet'),
@@ -25,7 +24,7 @@ interface Props {
 }
 
 export default function ProjectsContainer({ profile }: Props) {
-  const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
   const t = useTranslations('Donate');
   const locale = useLocale();
   const [projects, setProjects] = React.useState<MapProject[]>();
@@ -33,12 +32,8 @@ export default function ProjectsContainer({ profile }: Props) {
 
   async function loadProjects() {
     try {
-      const projects = await getRequest<MapProject[]>(
-        `${tenantConfig?.id}`,
-        `/app/profiles/${profile.id}/projects`,
-        {
-          locale: locale,
-        }
+      const projects = await getApi<MapProject[]>(
+        `/app/profiles/${profile.id}/projects`
       );
       setProjects(projects);
     } catch (err) {

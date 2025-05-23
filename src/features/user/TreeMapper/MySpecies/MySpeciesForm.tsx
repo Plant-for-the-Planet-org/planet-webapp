@@ -7,11 +7,6 @@ import type {
 import React from 'react';
 import StyledForm from '../../../common/Layout/StyledForm';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
-import {
-  deleteAuthenticatedRequest,
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import SpeciesSelect from './SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
@@ -21,21 +16,27 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface NewSpecies {
   aliases: string;
   scientificSpecies: SpeciesSuggestionType | null;
 }
 
+type SpeciesPayload = {
+  aliases: string | null;
+  scientificSpecies: string | null;
+};
+
 export default function MySpeciesForm() {
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
-  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { token, contextLoaded } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<Species[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { tenantConfig } = useTenant();
+  const { getApiAuthenticated, deleteApiAuthenticated, postApiAuthenticated } =
+    useApi();
 
   const defaultMySpeciesValue = {
     aliases: '',
@@ -53,11 +54,8 @@ export default function MySpeciesForm() {
 
   const fetchMySpecies = async () => {
     try {
-      const result = await getAuthenticatedRequest<Species[]>(
-        tenantConfig.id,
-        '/treemapper/species',
-        token,
-        logoutUser
+      const result = await getApiAuthenticated<Species[]>(
+        '/treemapper/species'
       );
       setSpecies(result);
     } catch (err) {
@@ -67,12 +65,7 @@ export default function MySpeciesForm() {
 
   const deleteSpecies = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig.id,
-        `/treemapper/species/${id}`,
-        token,
-        logoutUser
-      );
+      await deleteApiAuthenticated(`/treemapper/species/${id}`);
       fetchMySpecies();
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -81,20 +74,19 @@ export default function MySpeciesForm() {
 
   const addSpecies = async (species: NewSpecies) => {
     setIsUploadingData(true);
-    const data = {
+    const payload: SpeciesPayload = {
       aliases:
-        species.aliases || species.aliases !== ''
+        (species.aliases || species.aliases !== ''
           ? species.aliases
-          : species.scientificSpecies?.name,
-      scientificSpecies: species.scientificSpecies?.id,
+          : species.scientificSpecies?.name) ?? null,
+      scientificSpecies: species.scientificSpecies?.id ?? null,
     };
     try {
-      await postAuthenticatedRequest(
-        tenantConfig.id,
+      await postApiAuthenticated<Species, SpeciesPayload>(
         `/treemapper/species`,
-        data,
-        token,
-        logoutUser
+        {
+          payload,
+        }
       );
     } catch (err) {
       setErrors(handleError(err as APIError));

@@ -1,0 +1,115 @@
+@import '../../../../theme/theme';
+
+.landingSection {
+  height: 858px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/tenants/salesforce/images/bkgd-clouds.png');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 1440px auto;
+  padding: 150px 0 100px;
+
+  @include smTabletView {
+    margin-top: 0px;
+  }
+
+  @include mdTabletView {
+    padding: 175px 0 100px;
+  }
+
+  @include lgLaptopView {
+    max-width: 2560px;
+    padding: 185px 0 0;
+  }
+}
+
+.landingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin-bottom: 10vh;
+  @include smTabletView {
+    max-width: 70%;
+  }
+  @include lgLaptopView {
+    max-width: 1170px;
+  }
+
+  h1 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: $sfFontXXL;
+    line-height: 45px;
+    letter-spacing: -0.006em;
+    color: #032d60;
+    text-align: center;
+    margin-bottom: 20px;
+
+    @include lgLaptopView {
+      font-size: $sfFontDisplay3;
+      line-height: 80px;
+      text-align: center;
+      font-weight: 500;
+    }
+  }
+
+  h3 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: $sfFontLarge;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: -0.004em;
+    color: #032d60;
+    margin-bottom: 26px;
+    text-transform: uppercase;
+    @include lgLaptopView {
+      line-height: 100%;
+      margin-bottom: 0px;
+    }
+  }
+
+  p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $sfFontBase;
+    line-height: 24px;
+    text-align: center;
+    color: #032d60;
+    margin: 20px 0;
+    @include lgLaptopView {
+      font-size: $sfFontBase;
+      line-height: 24px;
+    }
+  }
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+}
+
+.landingContentTop {
+  text-align: center;
+  margin-bottom: 120px;
+  @include lgLaptopView {
+    margin-bottom: 0px;
+  }
+}

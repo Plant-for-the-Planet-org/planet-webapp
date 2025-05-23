@@ -14,6 +14,41 @@ import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
+import { FillColor } from '../../../../utils/constants/intervention';
+
+interface SampleTreeMarkerProps {
+  sample: SamplePlantLocation;
+  selectedSamplePlantLocation: SamplePlantLocation | null;
+  openPl: (
+    e: React.MouseEvent<HTMLDivElement>,
+    pl: SamplePlantLocation
+  ) => void;
+}
+
+const SampleTreeMarker = ({
+  sample,
+  selectedSamplePlantLocation,
+  openPl,
+}: SampleTreeMarkerProps) => (
+  <Marker
+    key={`${sample.id}-sample`}
+    latitude={sample.geometry.coordinates[1]}
+    longitude={sample.geometry.coordinates[0]}
+    anchor="center"
+  >
+    <div
+      key={`${sample.id}-marker`}
+      className={`${styles.single} ${
+        sample.hid === selectedSamplePlantLocation?.hid
+          ? styles.singleSelected
+          : ''
+      }`}
+      role="button"
+      tabIndex={0}
+      onClick={(e) => openPl(e, sample)}
+    />
+  </Marker>
+);
 
 export default function PlantLocations(): React.ReactElement {
   const {
@@ -23,6 +58,7 @@ export default function PlantLocations(): React.ReactElement {
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
     selectedSamplePlantLocation,
+    selectedInterventionType,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
 
@@ -132,18 +168,44 @@ export default function PlantLocations(): React.ReactElement {
   if (!plantLocations || plantLocations.length === 0) {
     return <></>;
   }
-  const features = plantLocations.map((el) => {
-    const isSelected =
-      selectedPlantLocation && selectedPlantLocation.id === el.id;
-    const isHovered = hoveredPlantLocation && hoveredPlantLocation.id === el.id;
-    const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
-      highlightLine: isSelected || isHovered,
-      opacity:
-        el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
-      dateDiff: getDateDiff(el),
+  const features = plantLocations
+    .filter(
+      (d) =>
+        selectedInterventionType === 'all' ||
+        (selectedInterventionType !== 'default' &&
+          d.type === selectedInterventionType) ||
+        (selectedInterventionType === 'default' &&
+          (d.type === 'multi-tree-registration' ||
+            d.type === 'single-tree-registration'))
+    )
+    .map((el) => {
+      const isSelected =
+        selectedPlantLocation && selectedPlantLocation.id === el.id;
+      const isHovered =
+        hoveredPlantLocation && hoveredPlantLocation.id === el.id;
+      const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
+        highlightLine: isSelected || isHovered,
+        opacity:
+          el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
+        dateDiff: getDateDiff(el),
+        type: el.type,
+      });
+      return GeoJSON;
     });
-    return GeoJSON;
-  });
+
+  const isValidInterventionType = [
+    'multi-tree-registration',
+    'enrichment-planting',
+    'all',
+    'default',
+  ].includes(selectedInterventionType);
+
+  const shouldRenderMarkers =
+    selectedPlantLocation &&
+    selectedPlantLocation.type !== 'single-tree-registration' &&
+    isValidInterventionType &&
+    viewState.zoom > 14 &&
+    selectedPlantLocation.sampleInterventions;
 
   return (
     <>
@@ -159,7 +221,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`plant-polygon-layer`}
           type="fill"
           paint={{
-            'fill-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'fill-color': FillColor,
             'fill-opacity': ['get', 'opacity'],
           }}
           filter={['==', ['geometry-type'], 'Polygon']}
@@ -168,7 +230,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`point-layer`}
           type="circle"
           paint={{
-            'circle-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'circle-color': FillColor,
             'circle-opacity': [
               'case',
               [
@@ -186,7 +248,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`line-selected`}
           type="line"
           paint={{
-            'line-color': isSatelliteView ? '#ffffff' : '#007A49',
+            'line-color': isSatelliteView ? '#ffffff' : FillColor,
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
@@ -204,32 +266,15 @@ export default function PlantLocations(): React.ReactElement {
           }}
           filter={['!=', ['get', 'dateDiff'], '']}
         />
-        {selectedPlantLocation &&
-        selectedPlantLocation.type === 'multi-tree-registration' &&
-        viewState.zoom > 14 &&
-        selectedPlantLocation.sampleInterventions
-          ? selectedPlantLocation.sampleInterventions.map((spl) => {
-              return (
-                <Marker
-                  key={`${spl.id}-sample`}
-                  latitude={spl.geometry.coordinates[1]}
-                  longitude={spl.geometry.coordinates[0]}
-                  anchor="center"
-                >
-                  <div
-                    key={`${spl.id}-marker`}
-                    className={`${styles.single} ${
-                      spl.hid === selectedSamplePlantLocation?.hid
-                        ? styles.singleSelected
-                        : ''
-                    }`}
-                    role="button"
-                    tabIndex={0}
-                    onClick={(e) => openPl(e, spl)}
-                  />
-                </Marker>
-              );
-            })
+        {shouldRenderMarkers
+          ? selectedPlantLocation.sampleInterventions.map((sample) => (
+              <SampleTreeMarker
+                key={sample.id}
+                sample={sample}
+                selectedSamplePlantLocation={selectedSamplePlantLocation}
+                openPl={openPl}
+              />
+            ))
           : null}
       </Source>
     </>
