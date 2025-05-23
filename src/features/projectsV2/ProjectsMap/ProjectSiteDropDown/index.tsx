@@ -5,14 +5,14 @@ import type {
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { area } from '@turf/turf';
 import SiteIcon from '../../../../../public/assets/images/icons/projectV2/SiteIcon';
 import styles from './SiteDropdown.module.scss';
-import DropdownUpArrow from '../../../../temp/icons/DropdownUpArrow';
-import DropdownDownArrow from '../../../../temp/icons/DropdownDownArrow';
+import DropdownUpArrow from '../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
+import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 import ProjectSiteList from './ProjectSiteList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
@@ -41,6 +41,9 @@ interface Props {
   selectedPlantLocation: PlantLocation | null;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  disableInterventionFilter: () => void;
+  disableInterventionMenu: boolean;
+  canShowInterventionDropdown: boolean;
 }
 
 const ProjectSiteDropdown = ({
@@ -50,6 +53,9 @@ const ProjectSiteDropdown = ({
   selectedPlantLocation,
   setSelectedPlantLocation,
   setSelectedSamplePlantLocation,
+  disableInterventionFilter,
+  disableInterventionMenu,
+  canShowInterventionDropdown,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -72,10 +78,20 @@ const ProjectSiteDropdown = ({
     },
     [siteList]
   );
+
+  useEffect(() => {
+    if (disableInterventionMenu) {
+      setIsMenuOpen(false);
+    }
+  }, [disableInterventionMenu]);
+
   const selectedSiteData =
     selectedSite !== null ? siteList[selectedSite] : undefined;
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+    disableInterventionFilter();
+  };
   return (
     <>
       <div className={styles.dropdownButton} onClick={toggleMenu}>
@@ -128,6 +144,7 @@ const ProjectSiteDropdown = ({
           selectedSiteData={selectedSiteData}
           setSelectedPlantLocation={setSelectedPlantLocation}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          canShowInterventionDropdown={canShowInterventionDropdown}
         />
       )}
     </>

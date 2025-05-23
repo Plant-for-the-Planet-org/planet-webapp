@@ -64,7 +64,7 @@
       "default": "Beim Erstellen des Kontos ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
     },
     "accountCreationSuccess": "Deine Kontodaten wurden erfolgreich gespeichert.",
-    "accountUpdationSuccess": "Dein Kontodaten wurden erfolgreich aktualisiert.",
+    "accountUpdateSuccess": "Dein Kontodaten wurden erfolgreich aktualisiert.",
     "scheduleSaveSuccess": "Dein Auszahlungsplan wurde erfolgreich gespeichert.",
     "editAccountButton": "Konto bearbeiten",
     "accountTitleText": "Überweisung in {currency}",

@@ -7,14 +7,14 @@ import CookiePolicy from './CookiePolicy';
 import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
-// import RedeemPopup from './RedeemPopup';
 import { ParamsContext } from './QueryParamsContext';
 
 const Layout: FC = ({ children }) => {
   const { theme: themeType } = useTheme();
-  const { embed } = useContext(ParamsContext);
+  const { embed, page } = useContext(ParamsContext);
 
-  const isEmbed = embed === 'true';
+  const isEmbed =
+    embed === 'true' && (page === 'project-list' || page === 'project-details');
 
   return (
     <>

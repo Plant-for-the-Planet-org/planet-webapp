@@ -119,9 +119,14 @@ export interface PaymentHistory {
   _links: Links;
   _filters: Filters;
 }
-
+export interface Project {
+  id: string;
+  name: string;
+  amount: number;
+}
 export interface Subscription {
   id: string;
+  lastUpdate: string;
   totalDonated: number;
   amount: number;
   destination: Destination;
@@ -132,30 +137,17 @@ export interface Subscription {
   cycleType: string;
   frequency: string;
   currency: string;
-  startDate?: string | null;
+  startDate: string | null;
   currentPeriodStart: string;
   currentPeriodEnd: string;
-  trialPeriodStart: string;
-  trialPeriodEnd: string;
-  endsAt?: string | null;
+  trialPeriodStart: string | null;
+  trialPeriodEnd: string | null;
+  endsAt: string | null;
   status: string;
   isSynced: boolean;
-  pauseUntil?: string | null;
+  pauseUntil: string | null;
   donorName?: string;
   bankAccount: BankAccount | null;
-}
-
-export interface ModifyDonations
-  extends Omit<
-    Subscription,
-    | 'startDate'
-    | 'currentPeriodStart'
-    | 'currentPeriodEnd'
-    | 'trialPeriodStart'
-    | 'trialPeriodStart'
-    | 'endsAt'
-    | 'donorName'
-  > {
-  lastUpdate: string;
-  bankAccount: BankAccount;
+  project: Project;
+  type: string;
 }

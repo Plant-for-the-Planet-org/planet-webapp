@@ -3,7 +3,7 @@ import type { APIError } from '@planet-sdk/common';
 import type { ViewportProps } from '../../common/types/map';
 import type {
   RegisterTreesFormProps,
-  RegisterTreeGeometry,
+  RegisteredTreesGeometry,
   ProjectGeoJsonProps,
 } from '../../common/types/map';
 import { handleError } from '@planet-sdk/common';
@@ -20,10 +20,6 @@ import MapGL, {
   NavigationControl,
 } from 'react-map-gl';
 import { useTranslations } from 'next-intl';
-import {
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
@@ -37,7 +33,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -61,13 +57,20 @@ const dialogSx: SxProps = {
   },
 };
 
+type RegisteredTreesApiPayload = {
+  treeCount: string;
+  treeSpecies: string;
+  plantProject: string | null;
+  plantDate: Date;
+  geometry: RegisteredTreesGeometry; // Adjust this type based on the actual geometry structure (e.g., GeoJSON)
+};
+
 function RegisterTreesForm({
   setContributionGUID,
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, token, contextLoaded, logoutUser, setRefetchUserData } =
-    useUserProps();
+  const { user, contextLoaded, setRefetchUserData } = useUserProps();
   const t = useTranslations('Me');
   const EMPTY_STYLE = {
     version: 8,
@@ -87,7 +90,7 @@ function RegisterTreesForm({
     number[] | undefined
   >(undefined);
   const [geometry, setGeometry] = React.useState<
-    RegisterTreeGeometry | undefined
+    RegisteredTreesGeometry | undefined
   >(undefined);
   const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
@@ -101,7 +104,7 @@ function RegisterTreesForm({
   const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [isStyleReady, setIsStyleReady] = React.useState(false);
-  const { tenantConfig } = useTenant();
+  const { postApiAuthenticated, getApiAuthenticated } = useApi();
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -183,7 +186,7 @@ function RegisterTreesForm({
             geometry.features?.length >= 1))
       ) {
         setIsUploadingData(true);
-        const submitData = {
+        const registeredTreesPayload: RegisteredTreesApiPayload = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
           plantProject: data.plantProject,
@@ -191,13 +194,12 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>(
-            tenantConfig?.id,
-            `/app/contributions`,
-            submitData,
-            token,
-            logoutUser
-          );
+          const res = await postApiAuthenticated<
+            ContributionProperties,
+            RegisteredTreesApiPayload
+          >('/app/contributions', {
+            payload: registeredTreesPayload,
+          });
           setErrorMessage('');
           setContributionGUID(res.id);
           setContributionDetails(res);
@@ -218,11 +220,8 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
-        token,
-        logoutUser
+      const projects = await getApiAuthenticated<ProjectGeoJsonProps[]>(
+        '/app/profile/projects'
       );
       setProjects(projects);
     } catch (err) {
@@ -232,7 +231,7 @@ function RegisterTreesForm({
   }
 
   React.useEffect(() => {
-    if (contextLoaded) {
+    if (contextLoaded && user?.type === 'tpo') {
       loadProjects();
     }
   }, [contextLoaded]);
@@ -437,18 +436,16 @@ type FormData = {
   species: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: RegisterTreeGeometry | undefined;
+  geometry: RegisteredTreesGeometry | undefined;
 };
 
 export default function RegisterTreesWidget() {
-  const { token } = useUserProps();
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] =
     React.useState<ContributionProperties | null>(null);
   const [registered, setRegistered] = React.useState(false);
 
   const ContributionProps = {
-    token,
     contribution: contributionDetails !== null ? contributionDetails : null,
     contributionGUID,
   };

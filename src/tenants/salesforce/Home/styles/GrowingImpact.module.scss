@@ -30,7 +30,7 @@
     font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
+    font-size: $sfFontLarge;
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
@@ -61,7 +61,7 @@
     margin-bottom: 60px;
     small {
       font-weight: normal;
-      font-size: 15px;
+      font-size: $sfFontBase;
       line-height: 24px;
       color: #1a1a1a;
     }
@@ -81,14 +81,24 @@
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
     justify-content: space-between;
+    overflow-y: hidden;
     // align-items: center;
     height: 230px;
     padding-left: 15px;
     padding-right: 15px;
 
-    a {
+    a,
+    .references {
       text-align: center;
       color: #ffffff;
+    }
+
+    .referenceItem {
+      list-style-type: none;
+    }
+
+    a {
+      text-decoration: underline;
     }
   }
   .foliageWrapper {
@@ -127,7 +137,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: bold;
-    font-size: 11px;
+    font-size: $sfFontXS;
     line-height: 15px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -139,7 +149,7 @@
     font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: $sfFontMedium;
     line-height: 26px;
     letter-spacing: -0.001em;
     color: #ffffff;

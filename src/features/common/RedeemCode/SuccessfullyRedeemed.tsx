@@ -31,11 +31,11 @@ export const SuccessfullyRedeemed = ({
         {redeemedCodeData?.project?.classification === 'membership'
           ? tRedeem.rich('membershipRedeemSuccessMessage', {
               line1: (chunks) => <p>{chunks}</p>,
-              line2: (chunks) => <p>{chunks}</p>,
+              line2: (chunks) => <p className={styles.subText}>{chunks}</p>,
             })
           : tRedeem.rich('redeemSuccessMessage', {
               line1: (chunks) => <p>{chunks}</p>,
-              line2: (chunks) => <p>{chunks}</p>,
+              line2: (chunks) => <p className={styles.subText}>{chunks}</p>,
             })}
       </div>
 

@@ -9,13 +9,12 @@ import TabbedView from '../../common/Layout/TabbedView';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
-import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -32,11 +31,11 @@ export default function PlanetCash({
   step,
   setProgress,
 }: PlanetCashProps): ReactElement | null {
-  const t = useTranslations('Planetcash');
+  const t = useTranslations('PlanetCash');
+  const { getApiAuthenticated } = useApi();
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { token, contextLoaded } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -82,11 +81,8 @@ export default function PlanetCash({
       try {
         setIsDataLoading(true);
         setProgress && setProgress(70);
-        const accounts = await getAuthenticatedRequest<PlanetCashAccount[]>(
-          tenantConfig?.id,
-          `/app/planetCash`,
-          token,
-          logoutUser
+        const accounts = await getApiAuthenticated<PlanetCashAccount[]>(
+          '/app/planetCash'
         );
         redirectIfNeeded(accounts);
         const sortedAccounts = sortAccountsByActive(accounts);

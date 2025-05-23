@@ -40,7 +40,7 @@ html::-webkit-scrollbar {
 body {
   color: rgba(0, 0, 0, 0.87);
   margin: 0;
-  font-size: 0.875rem;
+  font-size: $fontSmall;
   font-family: var(--primary-font-family) !important;
   font-weight: 400;
   line-height: 1.43;
@@ -356,13 +356,13 @@ button {
 
 // Profile page
 .profilePageTitle {
-  font-size: 36px;
+  font-size: $fontXXLarge;
   font-weight: 800;
   margin-bottom: 20px;
   color: $primaryFontColor;
 }
 .profilePageSubTitle {
-  font-size: 16px;
+  font-size: $fontSixteen;
   margin-bottom: 20px;
   color: $primaryFontColor;
 }
@@ -659,7 +659,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* remove updown arrow on input type=number for  Firefox */
+/* remove updown arrow on input type=number for Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
 }
@@ -711,7 +711,7 @@ input[type='number'] {
           align-items: flex-start;
           font-family: $primaryFontFamily;
           font-weight: 600;
-          font-size: 14px;
+          font-size: $fontSmall;
           position: static;
           width: 124px;
           height: 20px;
@@ -730,13 +730,6 @@ input[type='number'] {
   }
 }
 
-.impersonationAlertContainer {
-  width: 100%;
-  position: fixed;
-  z-index: 1220;
-  top: -142px;
-}
-
 .accessDeniedContainer {
   display: flex;
   justify-content: center;
@@ -747,6 +740,6 @@ input[type='number'] {
     margin-top: 24px;
     margin-left: 24px;
     font-weight: bold;
-    font-size: 30px;
+    font-size: $fontXLarge;
   }
 }

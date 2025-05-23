@@ -9,9 +9,9 @@ import type {
 } from '../../../../../common/types/dataExplorer';
 import type { ProjectType } from '../ProjectTypeSelector';
 import type { ChangeEvent, MutableRefObject } from 'react';
-import type { ViewportProps } from 'react-map-gl';
+import type { ViewportProps, MapRef, MapEvent } from 'react-map-gl';
 
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Search } from '@mui/icons-material';
@@ -91,7 +91,7 @@ export const MapContainer = () => {
   const { setErrors } = useContext(ErrorHandlingContext);
   const t = useTranslations('TreemapperAnalytics');
 
-  const mapRef: MutableRefObject<null> = useRef(null);
+  const mapRef: MutableRefObject<MapRef | null> = useRef(null);
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
@@ -340,6 +340,22 @@ export const MapContainer = () => {
     }
   };
 
+  const onMouseEnter = useCallback((event: MapEvent) => {
+    if (event.features && event.features.length > 0) {
+      if (mapRef.current) {
+        const map = mapRef.current.getMap();
+        map.getCanvas().style.cursor = 'pointer';
+      }
+    }
+  }, []);
+
+  const onMouseLeave = useCallback(() => {
+    if (mapRef.current) {
+      const map = mapRef.current.getMap();
+      map.getCanvas().style.cursor = '';
+    }
+  }, []);
+
   // Handle search input change
   // This will be used to filter the plant locations on the map based on the search input
   // The search input can be either a HID or a Date
@@ -432,8 +448,20 @@ export const MapContainer = () => {
               onViewStateChange={_handleViewport}
               onViewportChange={(viewport) => setViewport(viewport)}
               onClick={handleMapClick}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
+              interactiveLayerIds={['point-layer', 'plant-locations-fill']}
             >
               <Source type="geojson" data={plantLocations}>
+                <Layer
+                  id={`point-layer`}
+                  type="circle"
+                  paint={{
+                    'circle-color': '#007A49',
+                    'circle-opacity': 0.5,
+                  }}
+                  filter={['==', ['geometry-type'], 'Point']}
+                />
                 <Layer
                   id="plant-locations-fill"
                   type="fill"

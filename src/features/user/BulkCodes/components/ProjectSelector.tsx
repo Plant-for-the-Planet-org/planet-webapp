@@ -4,13 +4,12 @@ import type { PaymentOptions } from '../BulkCodesTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import React from 'react';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface ProjectSelectorProps {
   projectList: CountryProject[];
@@ -19,7 +18,6 @@ interface ProjectSelectorProps {
   active?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
-
 const ProjectSelector = ({
   projectList,
   project,
@@ -28,19 +26,17 @@ const ProjectSelector = ({
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
-  const { user, token, logoutUser, contextLoaded } = useUserProps();
+  const { user, token, contextLoaded } = useUserProps();
+  const { getApiAuthenticated } = useApi();
 
   const fetchPaymentOptions = async (guid: string) => {
-    const paymentOptions = await getAuthenticatedRequest<PaymentOptions>(
-      `${tenantConfig?.id}`,
+    const paymentOptions = await getApiAuthenticated<PaymentOptions>(
       `/app/paymentOptions/${guid}`,
-      token,
-      logoutUser,
-      undefined,
       {
-        country: planetCashAccount?.country || '',
-        ...(user !== null && { legacyPriceFor: user.id }),
+        queryParams: {
+          country: planetCashAccount?.country || '',
+          ...(user !== null && { legacyPriceFor: user.id }),
+        },
       }
     );
     return paymentOptions;

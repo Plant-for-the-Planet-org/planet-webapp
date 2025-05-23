@@ -2,10 +2,6 @@ import type { APIError } from '@planet-sdk/common';
 
 import React from 'react';
 import styles from './ApiKey.module.scss';
-import {
-  getAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../../common/CopyToClipboard';
@@ -16,7 +12,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -35,10 +31,10 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 };
 
 export default function ApiKey() {
-  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Me');
-  const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { getApiAuthenticated, putApiAuthenticated } = useApi();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
@@ -50,11 +46,8 @@ export default function ApiKey() {
   const getApiKey = async () => {
     setIsUploadingData(true);
     try {
-      const res = await getAuthenticatedRequest<ApiKeyResponse>(
-        tenantConfig?.id,
-        '/app/profile/apiKey',
-        token,
-        logoutUser
+      const res = await getApiAuthenticated<ApiKeyResponse>(
+        `/app/profile/apiKey`
       );
       if (res) {
         setApiKey(res.apiKey || '');
@@ -71,12 +64,8 @@ export default function ApiKey() {
     e.preventDefault();
     setIsUploadingData(true);
     try {
-      const res = await putAuthenticatedRequest<ApiKeyResponse>(
-        tenantConfig?.id,
-        '/app/profile/apiKey',
-        undefined,
-        token,
-        logoutUser
+      const res = await putApiAuthenticated<ApiKeyResponse>(
+        `/app/profile/apiKey`
       );
       if (res) {
         setApiKey(res.apiKey || '');

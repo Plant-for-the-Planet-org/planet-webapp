@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
-import { useTranslations } from 'next-intl';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -14,6 +14,7 @@ import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../../src/features/user/ManagePayouts';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -53,18 +54,19 @@ export default function EditBankDetailsPage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

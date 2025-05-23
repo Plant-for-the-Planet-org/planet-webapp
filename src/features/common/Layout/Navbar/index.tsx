@@ -1,37 +1,38 @@
-import React, { useContext } from 'react';
 import { useUserProps } from '../UserPropsContext';
-import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
-import BrandLogo from './microComponents/BrandLogo';
-import NavigationMenu from './microComponents/NavigationMenu';
+import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
+import NavbarItems from './microComponents/NavbarItems';
+import styles from './Navbar.module.scss';
 
-const ImpersonationStatusHeader = () => {
+const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
-  return isImpersonationModeOn ? (
-    <div className="impersonationAlertContainer">
+  if (!isImpersonationModeOn) return null;
+  return (
+    <div className={styles.impersonationBanner}>
       <ImpersonationActivated />
     </div>
-  ) : null;
+  );
 };
 
-const CommonHeader = () => {
+const MainNavigationHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
+
+  const headerStyles = `${styles.mainNavigationHeader} ${
+    isImpersonationModeOn ? `${styles.impersonationMode}` : ''
+  }`;
   return (
-    <header
-      className={`navContainer ${
-        isImpersonationModeOn ? 'impersonationMode' : ''
-      }`}
-    >
-      <BrandLogo />
-      <NavigationMenu />
+    <header className={headerStyles}>
+      <NavbarBrandLogos />
+      <NavbarItems />
     </header>
   );
 };
 
-export default function NavbarComponent() {
-  const { embed } = useContext(ParamsContext);
+export default function Navbar() {
   const { tenantConfig } = useTenant();
+  if (!tenantConfig) return null;
+
   const { setUser, logoutUser, auth0Error } = useUserProps();
 
   if (auth0Error) {
@@ -53,12 +54,10 @@ export default function NavbarComponent() {
     }
   }
 
-  if (embed === 'true') return null;
-
-  return tenantConfig ? (
-    <div className="mainNavContainer">
-      <ImpersonationStatusHeader />
-      <CommonHeader />
+  return (
+    <div className={styles.navbar}>
+      <ImpersonationBanner />
+      <MainNavigationHeader />
     </div>
-  ) : null;
+  );
 }

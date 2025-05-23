@@ -1,6 +1,13 @@
 import type { Project } from '../../../common/Layout/AnalyticsContext';
-import type { APIError } from '@planet-sdk/common';
-import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import type {
+  APIError,
+  ConservationProjectConcise,
+  ConservationProjectMetadata,
+  EcosystemTypes,
+  TreeProjectConcise,
+  TreeProjectMetadata,
+} from '@planet-sdk/common';
+import type { Feature as GeoJSONFeature, Point as GeoJSONPoint } from 'geojson';
 
 import React, { useEffect, useState } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
@@ -8,29 +15,68 @@ import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
 import { useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import NoProjectsFound from './components/NoProjectsFound';
+import { useApi } from '../../../../hooks/useApi';
+
+type OmittedProjectProps =
+  | 'ecosystem'
+  | '_scope'
+  | 'fixedRates'
+  | 'isPublished'
+  | 'reviewScore'
+  | 'reviews'
+  | 'treeCost'
+  | 'description'
+  | 'options';
+
+type BaseProject<T> = Omit<T, OmittedProjectProps> & {
+  unit: string;
+  metadata: Record<string, unknown>;
+};
+
+type TreeProject = BaseProject<TreeProjectConcise> & {
+  unit: 'tree';
+  metadata: TreeProjectMetadata;
+};
+
+type ConservationProject = BaseProject<ConservationProjectConcise> & {
+  unit: 'm2';
+  isApproved: boolean;
+  isFeatured: boolean;
+  isTopProject: boolean;
+  countPlanted: number;
+  metadata: ConservationProjectMetadata & {
+    ecosystems: EcosystemTypes;
+  };
+};
+
+export type ProjectMapInfo<T> = GeoJSONFeature<GeoJSONPoint, T>;
+/** This evaluates to
+ * {
+ * type:"Feature",
+ * geometry:Geometry object,
+ * properties:  TreeProject | ConservationProject
+ * } */
+export type ProjectApiResponse = ProjectMapInfo<
+  TreeProject | ConservationProject
+>;
 
 const Analytics = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, setProjectList, setProject } = useAnalytics();
   const [isLoaded, setIsLoaded] = useState(false);
-  const { token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {
     try {
-      // TODO - update project type, this does not match completely
-      const res = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.id,
-        '/app/profile/projects?scope=map',
-        token,
-        logoutUser
+      const res = await getApiAuthenticated<ProjectApiResponse[]>(
+        '/app/profile/projects',
+        {
+          queryParams: { scope: 'map' },
+        }
       );
       const projects: Project[] = [];
 

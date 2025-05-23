@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -10,7 +11,6 @@ import type { AbstractIntlMessages } from 'next-intl';
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
@@ -21,6 +21,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useApi } from '../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -31,6 +32,7 @@ export default function DirectGift({
 }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { getApi } = useApi();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -41,8 +43,7 @@ export default function DirectGift({
 
   async function loadPublicUserData() {
     try {
-      const newProfile = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
+      const newProfile = await getApi<UserPublicProfile>(
         `/app/profiles/${router.query.id}`
       );
       if (newProfile.type !== 'tpo') {
@@ -72,18 +73,19 @@ export default function DirectGift({
   return tenantConfig ? <div></div> : <></>;
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        id: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          id: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

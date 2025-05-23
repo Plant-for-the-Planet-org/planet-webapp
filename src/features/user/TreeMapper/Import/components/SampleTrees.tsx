@@ -11,8 +11,6 @@ import type {
 import React, { useState } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
-import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
@@ -20,7 +18,7 @@ import Papa from 'papaparse';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
-import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   handleNext: Function;
@@ -31,6 +29,19 @@ interface Props {
 type FormData = {
   sampleTrees: SampleTree[];
 };
+interface SampleTreeRequestData {
+  type: string;
+  captureMode: string;
+  geometry: Geometry;
+  plantDate: string;
+  registrationDate: string;
+  measurements: Measurements;
+  tag: string;
+  otherSpecies: string;
+  parent: string | undefined;
+  plantProject: string;
+  [key: string]: unknown;
+}
 
 export default function SampleTrees({
   handleNext,
@@ -40,10 +51,10 @@ export default function SampleTrees({
   const tTreemapper = useTranslations('Treemapper');
   const tBulkCodes = useTranslations('BulkCodes');
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { postApiAuthenticated } = useApi();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
-  const { tenantConfig } = useTenant();
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
 
@@ -132,8 +143,6 @@ export default function SampleTrees({
     });
   }, []);
 
-  const { token, logoutUser } = useUserProps();
-
   const uploadSampleTree = async (
     sampleTree: SampleTreeRequestData,
     index: number
@@ -143,12 +152,11 @@ export default function SampleTrees({
     setUploadStatus(newStatus);
 
     try {
-      const res: SampleTree = await postAuthenticatedRequest(
-        tenantConfig?.id,
+      const res = await postApiAuthenticated<SampleTree, SampleTreeRequestData>(
         `/treemapper/interventions`,
-        sampleTree,
-        token,
-        logoutUser
+        {
+          payload: sampleTree,
+        }
       );
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;
@@ -339,17 +347,4 @@ export default function SampleTrees({
       </div>
     </>
   );
-}
-
-interface SampleTreeRequestData {
-  type: string;
-  captureMode: string;
-  geometry: Geometry;
-  plantDate: string;
-  registrationDate: string;
-  measurements: Measurements;
-  tag: string;
-  otherSpecies: string;
-  parent: string | undefined;
-  plantProject: string;
 }

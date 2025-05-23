@@ -1,0 +1,62 @@
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "tin": "Steueridentifikationsnummer (TIN)",
+      "companyName": "Firmenname",
+      "name": "{type, select, individual {Name} organization {Firmenname} other {Name}}",
+      "address": "Adresse"
+    },
+    "donationDetails": {
+      "referenceNumber": "Referenznummer",
+      "reference": "Referenz",
+      "amountDonated": "Gespendeter Betrag",
+      "paymentDate": "Zahldatum",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Steueridentifikationsnummer (TIN)"
+    },
+    "errors": {
+      "invalidReceipt": "<b>Fehler:</b> Die Anfrage kann aufgrund fehlender oder falscher Angaben nicht bearbeitet werden. Bitte überprüfen Sie den Link und versuchen Sie es erneut.",
+      "missingReceiptInformation": "<b>Fehler:</b> Einige Informationen fehlen auf dem Beleg. Bitte setzen Sie sich mit uns in Verbindung, indem Sie die nachstehenden Angaben verwenden.",
+      "editPermissionDeniedMessage": "<b>Fehler:</b> Es sieht so aus, als hätten Sie keine Berechtigung, diese Kontaktinformationen zu ändern. Wenn Sie Hilfe benötigen, wenden Sie sich bitte an den Support.",
+      "accessDeniedMessage": "<b>Fehler:</b> Es scheint, dass Sie nicht über die erforderlichen Rechte verfügen, um auf diesen Link zuzugreifen. Wenn Sie Hilfe benötigen, wenden Sie sich bitte an den Support."
+    },
+    "notifications": {
+      "nameMissing": "{type, select, individual {Name} organization {Firmenname} other {Name}} fehlt/ist ungültig",
+      "addressMissing": "Adresse fehlt/ist ungültig",
+      "firstNameRequired": "Das Feld Vorname ist erforderlich",
+      "lastNameRequired": "Das Feld Nachname ist erforderlich",
+      "companyRequired": "Feld Firmenname ist erforderlich",
+      "tinRequired": "TIN ist erforderlich",
+      "addressRequired": "Bitte wählen Sie eine Adresse, um fortzufahren.",
+      "invalidContactInfoMessage": "Ihre Kontaktinformationen sind ungültig. Bitte aktualisieren Sie sie, indem Sie unten auf Kontaktinformationen ändern klicken.",
+      "addressLimitReached": "Sie haben das Adresslimit erreicht. Sie können Ihre bestehenden Adressen aktualisieren, aber es ist nicht möglich, eine neue Adresse hinzuzufügen.",
+      "loginRequired": "<b>WICHTIG:</b> Um Ihre Daten zu ändern, müssen Sie sich in Ihrem Profil anmelden. Wenn Sie Probleme haben, kontaktieren Sie uns bitte über die Informationen am Ende dieser Seite."
+    },
+    "verifyDonationHeaderPrimary": "Bestätigen Sie Ihre Daten und laden Sie die Spendenbescheinigung herunter",
+    "verifyDonationHeaderSecondary": "Bitte beachten Sie: Wenn die Daten bestätigt sind, können sie für diese Bescheinigung nicht mehr geändert werden",
+    "downloadDonationReceipt": "Download Spendenbescheinigung",
+    "recipientInfoHeader": "Die Bescheinigung wird ausgestellt für",
+    "modifyContactInformation": "Kontaktinformationen bearbeiten",
+    "confirm": "Bestätigen",
+    "download": "Download",
+    "viewAllDonationReceipts": "Alle Spendenbescheinigungen anzeigen",
+    "donationReceiptsManagementInfo": "Greifen Sie einfach auf alle Ihre Spendenbescheinigungen zu und verwalten Sie sie. Sehen Sie bereits ausgestellte Bescheinigungen, die zum Download bereitstehen und prüfen Sie ausstehende Bescheinigungen, die noch bearbeitet werden. ",
+    "donationReceiptsManagementLogin": "Hierfür müssen Sie sich anmelden.",
+    "contactSupportMessage": "Bei Fragen oder Problemen, kontaktieren Sie uns bitte unter",
+    "emailDetails": "<strong>E-Mail:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink>",
+    "phoneDetails": "<strong>Telefon:</strong> +49 8808 9345",
+    "receipts": "Bescheinigungen",
+    "donorContactManagement": "Adressmanagement",
+    "contactManagementHeader": "Profil und Adresse aktualisieren",
+    "saveDataAndReturn": "Speichern und zurück",
+    "donationReceipt": "Spendenbescheinigungen",
+    "verifyAndDownload": "Bestätigen & Download",
+    "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Spende} other {# Spenden}}</u>",
+    "itemsReferenceDateSingleDonation": "Referenz {reference} · {date}",
+    "itemsReferenceDateSingleEndowment": "Referenz {reference} · Zustiftung · {date}",
+    "pendingReceipt": "Ausstehende Bescheinigung(en)",
+    "noReceiptFound": "Huch! Keine Bescheinigung gefunden"
+  }
+}

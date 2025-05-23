@@ -11,14 +11,14 @@ import RegistrationSummary from './RegistrationSummary';
 
 interface Props {
   project?: MyForestProject;
-  contributionDetails: MyContributionsSingleRegistration;
+  registrationDetails: MyContributionsSingleRegistration;
 }
 
 export type RegistrationItemCardProps = ComponentProps<
   typeof RegistrationItemCard
 >;
 
-const RegistrationItemCard = ({ project, contributionDetails }: Props) => {
+const RegistrationItemCard = ({ project, registrationDetails }: Props) => {
   const imageSource = project?.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -29,9 +29,9 @@ const RegistrationItemCard = ({ project, contributionDetails }: Props) => {
         <ItemImage {...(project ? { imageUrl: imageSource } : {})} />
         <div className={styles.itemInfo}>
           <RegistrationSummary
-            treeCount={contributionDetails.totalContributionUnits}
-            country={contributionDetails.country}
-            registrationDate={contributionDetails.contributions[0].plantDate}
+            treeCount={registrationDetails.totalRegisteredUnits}
+            country={registrationDetails.country}
+            registrationDate={registrationDetails.registrations[0].plantDate}
           />
         </div>
       </div>

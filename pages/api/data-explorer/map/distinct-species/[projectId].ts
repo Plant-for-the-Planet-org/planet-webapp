@@ -4,7 +4,7 @@ import type {
   UncleanDistinctSpecies,
 } from '../../../../../src/features/common/types/dataExplorer';
 
-import db from '../../../../../src/utils/connectDB';
+import { query } from '../../../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
   rateLimiter,
@@ -43,20 +43,20 @@ handler.get(async (req, response) => {
   let distinctSpecies: DistinctSpecies;
 
   try {
-    const query = `
-			SELECT 
-        	DISTINCT COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS name 
-        FROM intervention iv
-				LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
-        LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
-        JOIN project pp ON iv.plant_project_id = pp.id 
-        WHERE 
-						pp.guid = ?
-						AND iv.deleted_at IS NULL
-						AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
-			`;
+    const queryText = `
+      SELECT 
+        DISTINCT COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS "name" 
+      FROM intervention iv
+      LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+      LEFT JOIN scientific_species ss ON COALESCE(iv.scientific_species_id, ps.scientific_species_id) = ss.id
+      JOIN project pp ON iv.plant_project_id = pp.id 
+      WHERE 
+        pp.guid = $1
+        AND iv.deleted_at IS NULL
+        AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
+    `;
 
-    const res = await db.query<UncleanDistinctSpecies[]>(query, [projectId]);
+    const res = await query<UncleanDistinctSpecies>(queryText, [projectId]);
 
     distinctSpecies = res.map((species) => species.name);
 
@@ -69,8 +69,7 @@ handler.get(async (req, response) => {
     response.status(200).json({ data: distinctSpecies });
   } catch (err) {
     console.error(`Error fetching distinct species for ${projectId}`, err);
-  } finally {
-    db.quit();
+    response.status(500).json({ error: 'Failed to fetch distinct species' });
   }
 });
 

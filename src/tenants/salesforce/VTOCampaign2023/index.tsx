@@ -27,7 +27,7 @@ export default function Campaign({
   return (
     <>
       <Head>
-        <title>{`VTO Fitness Challenge | ${tenantConfig.config.meta.title}`}</title>
+        <title>{`VTO Fitness Challenge 2023 | ${tenantConfig.config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} isLoaded={isLoaded} />

@@ -11,7 +11,6 @@ import AccountListLoader from '../../../../../public/assets/images/icons/Account
 const initialAllowedCountries: CountryType[] = [
   { code: 'DE', currency: 'EUR' },
   { code: 'ES', currency: 'EUR' },
-  { code: 'US', currency: 'USD' },
 ];
 
 const CreateAccount = (): ReactElement | null => {
@@ -19,7 +18,7 @@ const CreateAccount = (): ReactElement | null => {
     CountryType[] | null
   >(null);
   const { accounts, isPlanetCashActive } = usePlanetCash();
-  const t = useTranslations('Planetcash');
+  const t = useTranslations('PlanetCash');
 
   // Prevents creating a duplicate planetcash account for a country.
   // This condition cannot currently happen, as the frontend prevents users from creating multiple planet cash accounts

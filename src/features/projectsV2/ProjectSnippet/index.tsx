@@ -36,6 +36,8 @@ interface Props {
   isMobile?: boolean;
   page?: 'project-list' | 'project-details';
   setPreventShallowPush?: SetState<boolean> | undefined;
+  utmCampaign?: string;
+  disableDonations?: boolean;
 }
 
 type ProjectSnippetContentProps = Omit<Props, 'isMobile'>;
@@ -65,6 +67,8 @@ export interface ProjectInfoProps extends CommonProps {
   country: CountryCode;
   currency: CurrencyCode;
   slug: string;
+  utmCampaign?: string;
+  disableDonations?: boolean;
 }
 
 const ProjectSnippetContent = ({
@@ -72,6 +76,8 @@ const ProjectSnippetContent = ({
   showTooltipPopups,
   page,
   setPreventShallowPush,
+  utmCampaign,
+  disableDonations,
 }: ProjectSnippetContentProps) => {
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
@@ -122,6 +128,8 @@ const ProjectSnippetContent = ({
     unitCost: project.unitCost,
     country: project.country,
     currency: project.currency,
+    utmCampaign,
+    disableDonations,
   };
   return (
     <>
@@ -143,6 +151,8 @@ export default function ProjectSnippet({
   isMobile,
   page,
   setPreventShallowPush,
+  utmCampaign,
+  disableDonations,
 }: Props): ReactElement {
   const { embed, callbackUrl } = useContext(ParamsContext);
   const locale = useLocale();
@@ -160,6 +170,8 @@ export default function ProjectSnippet({
     page,
     project,
     setPreventShallowPush,
+    utmCampaign,
+    disableDonations,
   };
 
   const projectPath = useMemo(() => {

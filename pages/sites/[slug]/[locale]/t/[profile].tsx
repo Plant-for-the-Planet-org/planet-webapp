@@ -1,6 +1,7 @@
 // This page will be moved to a different place in the future, as it is not a part of the user dashboard
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -23,9 +24,9 @@ import { MyForestProvider } from '../../../../../src/features/common/Layout/MyFo
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
+import { useApi } from '../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
@@ -34,6 +35,7 @@ interface Props {
 const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
   const { setTenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  const { getApi } = useApi();
   const [profile, setProfile] = useState<null | UserPublicProfile>(null);
   const router = useRouter();
 
@@ -45,8 +47,7 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function loadPublicProfile(slug: string) {
     try {
-      const profileData = await getRequest<UserPublicProfile>(
-        tenantConfig.id,
+      const profileData = await getApi<UserPublicProfile>(
         `/app/profiles/${slug}`
       );
       setProfile(profileData);
@@ -85,18 +86,19 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
 
 export default PublicProfilePage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-        profile: v4(),
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+          profile: v4(),
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

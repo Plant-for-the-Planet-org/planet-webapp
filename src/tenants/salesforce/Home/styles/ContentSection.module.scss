@@ -41,7 +41,7 @@
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
-        font-size: 52px;
+        font-size: $sfFontDisplay1;
         line-height: 100%;
         letter-spacing: -0.006em;
       }
@@ -50,7 +50,7 @@
       font-family: $secondaryFontFamily;
       font-style: normal;
       font-weight: 500;
-      font-size: 24px;
+      font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
       // color: #ffffff;
@@ -66,7 +66,7 @@
       font-family: $primaryFontFamily;
       font-style: normal;
       font-weight: normal;
-      font-size: 15px;
+      font-size: $sfFontBase;
       line-height: 24px;
       // color: #ffffff;
       color: #032d60;
@@ -101,7 +101,7 @@
     // color: #ffffff;
     color: #032d60;
     @include lgLaptopView {
-      font-size: 20px;
+      font-size: $sfFontMedium;
       line-height: 30px;
     }
   }
@@ -122,7 +122,7 @@
 
   .treeCounterSectionTextHeader {
     font-weight: 600;
-    font-size: 30px;
+    font-size: $sfFontXL;
     line-height: 32px;
     letter-spacing: -0.4px;
     color: #080707;

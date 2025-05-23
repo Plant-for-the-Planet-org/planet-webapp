@@ -29,11 +29,22 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     isError,
     setSelectedMode,
     selectedMode,
+    showDonatableProjects,
+    setShowDonatableProjects,
   } = useProjects();
   const { mapOptions, updateMapOption } = useProjectsMap();
   const { tenantConfig } = useTenant();
 
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
+
+  useEffect(() => {
+    if (
+      (selectedClassification.length > 0 || showDonatableProjects) &&
+      tabSelected === 'topProjects'
+    ) {
+      setTabSelected('allProjects');
+    }
+  }, [selectedClassification, showDonatableProjects]);
 
   useEffect(() => {
     // When tenantConfig.topProjectsOnly is true, it indicates all projects returned by the projects endpoint are to be shown, without splitting them into top projects and all projects
@@ -60,6 +71,8 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     setTabSelected,
     selectedClassification,
     setSelectedClassification,
+    showDonatableProjects,
+    setShowDonatableProjects,
     debouncedSearchValue,
     setDebouncedSearchValue,
     filteredProjects,

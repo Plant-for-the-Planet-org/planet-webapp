@@ -10,15 +10,14 @@ import styles from './../styles/ContentSection.module.scss';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { handleError } from '@planet-sdk/common';
-import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
-import { getRequest } from '../../../../utils/apiRequests/api';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
+import { useApi } from '../../../../hooks/useApi';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const currencyCode = getStoredCurrency();
-  const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
 
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
@@ -26,11 +25,13 @@ export default function ContentSection() {
   useEffect(() => {
     async function loadProject() {
       try {
-        const project = await getRequest<
+        const project = await getApi<
           TreeProjectExtended | ConservationProjectExtended
-        >(tenantConfig.id, `/app/projects/${projectSlug}`, {
-          _scope: 'extended',
-          currency: currencyCode,
+        >(`/app/projects/${projectSlug}`, {
+          queryParams: {
+            _scope: 'extended',
+            currency: currencyCode,
+          },
         });
         setProject(project);
       } catch (err) {
@@ -146,8 +147,7 @@ export default function ContentSection() {
               <div className={styles.projectItem}>
                 <ProjectSnippet
                   project={project}
-                  editMode={false}
-                  displayPopup={false}
+                  showTooltipPopups={true}
                   utmCampaign="oceanforce-2023"
                 />
               </div>

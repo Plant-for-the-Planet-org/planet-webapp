@@ -7,6 +7,7 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import themeProperties from '../../../../theme/themeProperties';
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -15,7 +16,7 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   borderRadius: 9,
   width: '100%',
   boxShadow: theme.shadows[1],
-  fontSize: '0.875rem',
+  fontSize: themeProperties.fontSizes.fontSmall,
   '&.accountDetails--inactive': {
     opacity: '80%',
     backgroundColor: theme.palette.grey[200],
@@ -64,7 +65,7 @@ interface AccountDetailsProps {
 }
 
 const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
-  const t = useTranslations('Planetcash');
+  const t = useTranslations('PlanetCash');
   const locale = useLocale();
   const { token } = useUserProps();
   const { tenantConfig } = useTenant();

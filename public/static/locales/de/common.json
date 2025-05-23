@@ -135,6 +135,39 @@
     "top_project_standards_fulfilled": "Die Projektprüfung hat gezeigt, dass dieses Projekt mindestens 12 der 19 Top Projekt <standardsLink>Standards</standardsLink> erfüllte.",
     "disabledDonateButtonText": "Das Projekt nimmt derzeit keine Spenden an, da es entweder bereits vollständig finanziert ist, noch nicht geprüft wurde, noch nicht alle Projektstandards erfüllt oder die Plattform ausschließlich für seine Transparenzinstrumente nutzen möchte.",
     "notDonatable": "Spenden nicht möglich",
-    "salesforceDisabledDonateButtonText": "Für das Projekt werden derzeit keine Spenden angenommen."
+    "salesforceDisabledDonateButtonText": "Für das Projekt werden derzeit keine Spenden angenommen.",
+    "tools": "Werkzeuge",
+    "navbarMenu": {
+      "all": "Alle",
+      "platform": "Über die Plattform",
+      "organization": "Über Plant-for-the-Planet",
+      "tools": "Mehr <highlight>Forest Cloud</highlight> Werkzeuge",
+      "organizationDescription": "Seit 2007 setzt sich unsere Gemeinschaft aus 11 Organisationen dafür ein, junge Menschen zu befähigen, die Klimakrise zu bekämpfen und Wälder wiederherzustellen.",
+      "menuitem": {
+        "platform": "Die Plattform",
+        "platformDescription": "Warum wir sie gebaut haben und wie sie funktioniert",
+        "redeemCode": "Code einlösen",
+        "redeemCodeDescription": "Von der Baumurkunde oder der Guten Schokolade",
+        "support": "Unterstützen Sie uns mit einer Spende",
+        "supportDescription": "Halten Sie unsere Tools für alle kostenfrei",
+        "organization": "Die Organisation",
+        "transparency": "Transparenz",
+        "partner": "Werden Sie Partner",
+        "treeMapper": "TreeMapper",
+        "treeMapperDescription": "zum Monitoring der Renaturierung",
+        "fireAlert": "FireAlert",
+        "fireAlertDescription": "um Waldbrände schnell zu stoppen",
+        "tracer": "Tracer",
+        "tracerDescription": "für entwaldungsfreie Lieferketten",
+        "restorationAdvice": "Renaturierungsberatung",
+        "restorationAdviceDescription": "kostenlose Beratung für Renaturierungs- und Schutzprogramme",
+        "restorationStandards": "Renaturierungsstandards (EN)",
+        "restorationStandardsDescription": "Quantifizierbare Standards für die Renaturierung",
+        "instagram": "Instagram",
+        "youtube": "Youtube",
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook"
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import type { SetState } from '../../../../../src/features/common/types/common';
 import type { PlantLocation } from '../../../../../src/features/common/types/plantLocation';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -20,7 +21,7 @@ import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
 import SingleProjectDetails from '../../../../../src/features/projects/screens/SingleProjectDetails';
-import { getRequest } from '../../../../../src/utils/apiRequests/api';
+import { useApi } from '../../../../../src/hooks/useApi';
 import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
 import ProjectDetailsMeta from '../../../../../src/utils/getMetaTags/ProjectDetailsMeta';
 import { getAllPlantLocations } from '../../../../../src/utils/maps/plantLocations';
@@ -47,6 +48,7 @@ export default function Donate({
   pageProps,
 }: Props) {
   const router = useRouter();
+  const { getApi } = useApi();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
     string | undefined | null
   >(undefined);
@@ -94,13 +96,13 @@ export default function Donate({
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
-          const project = await getRequest<ProjectExtended>(
-            pageProps.tenantConfig.id,
+          const project = await getApi<ProjectExtended>(
             encodeURI(`/app/projects/${p}`),
             {
-              _scope: 'extended',
-              currency: currency || '',
-              locale: locale,
+              queryParams: {
+                _scope: 'extended',
+                currency: currency || '',
+              },
             }
           );
           if (
@@ -221,18 +223,19 @@ export default function Donate({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        p: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          p: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

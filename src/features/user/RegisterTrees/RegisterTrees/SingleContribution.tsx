@@ -25,7 +25,6 @@ export interface ContributionProperties {
 }
 
 interface SingleContributionProps {
-  token: string | null;
   contribution: ContributionProperties | null;
   contributionGUID: string;
   slug?: string | null;
@@ -37,14 +36,12 @@ const StaticMap = dynamic(() => import('./StaticMap'), {
 });
 
 export default function SingleContribution({
-  token,
   contribution,
   contributionGUID,
 }: SingleContributionProps): ReactElement {
   const router = useRouter();
   const UploadProps = {
     contributionGUID,
-    token,
   };
   const t = useTranslations('Me');
   return contribution !== null ? (

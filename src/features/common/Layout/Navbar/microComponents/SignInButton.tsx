@@ -5,6 +5,7 @@ import WebappButton from '../../../WebappButton';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
+import styles from '../Navbar.module.scss';
 
 export const SignInButton = () => {
   const { user, loginWithRedirect } = useUserProps();
@@ -40,7 +41,7 @@ export const SignInButton = () => {
   }
   return isMobile ? (
     <button
-      className="mobileSignInButton"
+      className={styles.mobileSignInButton}
       type="button"
       onClick={() => gotoUserPage()}
     >

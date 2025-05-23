@@ -15,7 +15,7 @@ interface Props {
   tenantScore: TenantScore | null;
 }
 
-export default function About({ leaderboard, tenantScore }: Props) {
+export default function Home({ leaderboard, tenantScore }: Props) {
   const { tenantConfig } = useTenant();
 
   return (

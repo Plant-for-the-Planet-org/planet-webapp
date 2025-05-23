@@ -37,7 +37,7 @@
     cursor: pointer;
     span {
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: $fontXSmall;
     }
   }
 }
@@ -135,13 +135,13 @@
   gap: 16px;
 
   h2 {
-    font-size: 1.37em;
+    font-size: $fontLarge;
     font-weight: 700;
     text-transform: capitalize;
   }
 
   .profileConsentSettingLabel {
-    font-size: 0.875em;
+    font-size: $fontSmall;
     font-weight: 700;
     display: inline-flex;
   }
@@ -164,7 +164,7 @@
 
 .viewPublicProfileButton,
 .saveProfileButton {
-  font-size: 1em;
+  font-size: $fontSixteen;
   font-weight: 700;
   padding: 10px 12px;
   border-radius: 12px;
@@ -266,7 +266,6 @@
 
 .noProfilePic {
   text-align: center;
-  background-color: $backgroundColorDark;
   height: 100px;
   width: 100px;
   border-radius: 100px;

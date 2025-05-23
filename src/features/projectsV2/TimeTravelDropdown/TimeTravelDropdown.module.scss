@@ -1,0 +1,76 @@
+@import '../../../theme/theme';
+
+.menuContainer {
+  font-size: $fontXSmall;
+}
+
+.menuButton {
+  border-radius: 8px;
+  width: 150px;
+  background: $light;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  justify-content: space-between;
+  font-size: $fontXXSmall;
+  gap: 4px;
+  cursor: pointer;
+  .menuButtonText {
+    margin: 0 0 0 6px;
+  }
+  .highlighted {
+    font-weight: 700;
+  }
+}
+
+.menuButtonTitle {
+  display: flex;
+  align-items: center;
+}
+
+.menuItems {
+  display: flex;
+  width: 150px;
+  margin-top: 16px;
+  border-radius: 8px;
+  color: $grayFontColorNew;
+}
+
+.yearMenuContainer {
+  border-radius: 8px 0 0 8px;
+  background-color: $lightGrayBackgroundColorNew;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  .unselectedMenuItem,
+  .selectedMenuItem {
+    opacity: 1;
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  .selectedMenuItem {
+    color: $grayFontColorNew;
+  }
+}
+
+.sourceMenuContainer {
+  background: $light;
+  padding: 16px;
+  border-radius: 0px 8px 8px 0;
+  flex: 1;
+  .unselectedMenuItem,
+  .selectedMenuItem {
+    list-style: none;
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  .selectedMenuItem {
+    color: #333; // to be replaced
+  }
+}
+
+.selectedMenuItem {
+  text-shadow: 0 0 0.01px;
+  font-weight: 700;
+}

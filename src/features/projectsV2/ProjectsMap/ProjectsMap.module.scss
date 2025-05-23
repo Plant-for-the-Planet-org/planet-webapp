@@ -5,16 +5,24 @@
   width: 100%;
   top: 101px;
   z-index: 2;
+
+  &.embedModeMobile {
+    top: 24px;
+  }
 }
 
 .projectDetailsControlsContainer {
   display: flex;
   position: absolute;
   align-items: center;
-  gap: 34px;
+  justify-content: flex-end;
   top: 101px;
+  gap: 5px;
   right: 10px;
-  z-index: 2px;
+
+  &.embedModeMobile {
+    top: 24px;
+  }
 
   > .exitMapModeButton {
     z-index: 2;
@@ -77,6 +85,10 @@
         width: 100% !important;
         height: 100% !important;
       }
+    }
+
+    .maplibregl-ctrl-bottom-right {
+      z-index: 40;
     }
   }
 }

@@ -4,50 +4,46 @@ import type { APIError, Image } from '@planet-sdk/common';
 import React from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
-import {
-  deleteAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface Props {
   contributionGUID: string;
-  token: string | null;
 }
+
+type UploadImageApiPayload = {
+  imageFile: string;
+  description: string;
+};
 
 export default function UploadImages({
   contributionGUID,
-  token,
 }: Props): ReactElement {
   const [uploadedImages, setUploadedImages] = React.useState<Image[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('Me');
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { deleteApiAuthenticated, postApiAuthenticated } = useApi();
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
-    const submitData = {
+    const payload: UploadImageApiPayload = {
       imageFile: image,
       description: '',
     };
 
     try {
-      const res = await postAuthenticatedRequest<Image>(
-        tenantConfig?.id,
+      const res = await postApiAuthenticated<Image, UploadImageApiPayload>(
         `/app/contributions/${contributionGUID}/images`,
-        submitData,
-        token,
-        logoutUser
+        {
+          payload,
+        }
       );
       const newUploadedImages: Image[] = uploadedImages;
       newUploadedImages.push(res);
@@ -85,11 +81,8 @@ export default function UploadImages({
 
   const deleteContributionImage = async (id: string) => {
     try {
-      await deleteAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/contributions/${contributionGUID}/images/${id}`,
-        token,
-        logoutUser
+      await deleteApiAuthenticated(
+        `/app/contributions/${contributionGUID}/images/${id}`
       );
       const uploadedImagesTemp = uploadedImages;
       const index = uploadedImagesTemp.findIndex((item) => {

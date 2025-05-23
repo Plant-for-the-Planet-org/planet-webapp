@@ -9,5 +9,19 @@ $fontXLarge: var(--font-x-large);
 $fontXXLarge: var(--font-xx-large);
 $fontXXXLarge: var(--font-xxx-large);
 $secondaryFontFamily: var(--secondary-font-family);
-$fontXXXSmallNew: var(--font-xxx-extra-small-new);
-$fontXXXXSmallNew: var(--font-xxxx-extra-small-new);
+
+// SF font sizes
+// Base font sizes
+$sfFontXS: 11px; // Extra small text
+$sfFontSmall: 13px; // Small text
+$sfFontBase: 15px; // Base text (most common)
+$sfFontMedium: 20px; // Medium text
+$sfFontLarge: 24px; // Large text
+$sfFontXL: 30px; // Extra large text
+$sfFontXXL: 42px; // 2X large text
+// Display / Hero font sizes
+$sfFontDisplay1: 52px; // Display text level 1
+$sfFontDisplay2: 70px; // Display text level 2
+$sfFontDisplay3: 72px; // Display text level 3
+$sfFontDisplay4: 100px; // Display text level 5
+$sfFontDisplay5: 170px; // Display text level 6

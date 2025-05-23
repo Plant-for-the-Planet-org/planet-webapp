@@ -20,7 +20,9 @@ interface ProjectSiteListProps {
   selectedSiteData: SiteData | undefined;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  canShowInterventionDropdown: boolean;
 }
+
 const ProjectSiteList = ({
   siteList,
   setSelectedSite,
@@ -28,6 +30,7 @@ const ProjectSiteList = ({
   selectedSiteData,
   setSelectedPlantLocation,
   setSelectedSamplePlantLocation,
+  canShowInterventionDropdown,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
   const handleSiteSelection = (index: number) => {
@@ -38,7 +41,11 @@ const ProjectSiteList = ({
   };
 
   return (
-    <ul className={styles.siteListOptions}>
+    <ul
+      className={`${styles.siteListOptions} ${
+        canShowInterventionDropdown ? styles.withInterventions : ''
+      }`}
+    >
       {siteList.map((site, index) => {
         return (
           <li

@@ -8,7 +8,7 @@
       "titleEditBankDetails": "Auszahlungen verwalten - Bankdaten bearbeiten"
     },
     "donationLinkTitle": "Spenden-Link erstellen",
-    "planetcash": {
+    "planetCash": {
       "menuText": "PlanetCash",
       "submenuText": "Mein PlanetCash",
       "titleAccount": "PlanetCash - Konten",
@@ -52,7 +52,7 @@
     "uploadPhotos": "Fotos hochladen",
     "dragHere": "oder hierher ziehen",
     "contribNotFound": "Beitrag nicht gefunden",
-    "errorOccured": "Aufgetretener Fehler",
+    "errorOccurred": "Aufgetretener Fehler",
     "contribSuccess": "Erfolgreich hinzugefügt {treeCount} {treeSpecies} 🌳 vom {plantDate}",
     "moreThanOne": "mindestens 1 Baum erforderlich",
     "registered": "Registriert",
@@ -137,10 +137,13 @@
     "referred": "Weitergeleitet",
     "in-dispute": "Strittig",
     "dispute-lost": "Streitfall verloren",
+    "open": "Offen",
+    "processing": "Processing",
     "nameForest": "Wald von {name}",
     "taxReceipt": "Spendenbescheinigung",
-    "history": "Historie/Spendenbescheinigung",
+    "history": "Historie",
     "recurrency": "Dauerspenden",
+    "donationReceipts": "Spendenbescheinigungen",
     "new": "Neu",
     "beta": "Beta",
     "date": "Datum",
@@ -183,7 +186,6 @@
     "transferFee": "Überweisungsgebühr",
     "giftComment": "Kommentar (Privat)",
     "giftOccasion": "Anlass",
-    "open": "Offen",
     "downloads": "Downloads",
     "account": "Konto",
     "loadMore": "Mehr laden",
@@ -284,7 +286,6 @@
     "composite-donation": "Mischspende",
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
-    "processing": "Processing",
     "bankDetails": "Bankverbindung",
     "refundAmount": "Erstatteter Betrag"
   }

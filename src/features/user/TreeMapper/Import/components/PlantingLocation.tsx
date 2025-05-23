@@ -10,7 +10,10 @@ import type {
   Species,
   PlantLocation as PlantLocationType,
 } from '../../../../common/types/plantLocation';
-import type { PlantingLocationFormData } from '../../Treemapper';
+import type {
+  PlantingLocationFormData,
+  SpeciesFormData,
+} from '../../Treemapper';
 import type { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../../common/types/common';
 import type { SxProps } from '@mui/material';
@@ -27,10 +30,6 @@ import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import { Button, MenuItem, TextField } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import {
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../../utils/apiRequests/api';
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
@@ -41,6 +40,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useApi } from '../../../../../hooks/useApi';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -165,6 +165,16 @@ interface Props {
   setActiveMethod: Function;
 }
 
+type PlantingLocationApiPayload = {
+  type: string;
+  captureMode: string;
+  geometry: Geometry;
+  plantedSpecies: SpeciesFormData[];
+  plantDate: string;
+  registrationDate: string;
+  plantProject: string;
+};
+
 export default function PlantingLocation({
   handleNext,
   userLang,
@@ -174,14 +184,15 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { getApiAuthenticated } = useApi();
+  const { user, contextLoaded } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { postApiAuthenticated } = useApi();
   const tTreemapper = useTranslations('Treemapper');
   const tMe = useTranslations('Me');
   const tMaps = useTranslations('Maps');
@@ -212,11 +223,8 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.id,
-        '/app/profile/projects',
-        token,
-        logoutUser
+      const projects = await getApiAuthenticated<MapProject[]>(
+        '/app/profile/projects'
       );
       setProjects(projects);
     } catch (err) {
@@ -226,11 +234,8 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species = await getAuthenticatedRequest<Species[]>(
-        tenantConfig?.id,
-        '/treemapper/species',
-        token,
-        logoutUser
+      const species = await getApiAuthenticated<Species[]>(
+        '/treemapper/species'
       );
       setMySpecies(species);
     } catch (err) {
@@ -329,7 +334,7 @@ export default function PlantingLocation({
   const onSubmit = async (data: PlantingLocationFormData) => {
     if (geoJson) {
       setIsUploadingData(true);
-      const submitData = {
+      const payload: PlantingLocationApiPayload = {
         type: 'multi-tree-registration',
         captureMode: 'external',
         geometry: geoJson,
@@ -340,13 +345,12 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest<PlantLocationType>(
-          tenantConfig?.id,
-          `/treemapper/interventions`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await postApiAuthenticated<
+          PlantLocationType,
+          PlantingLocationApiPayload
+        >(`/treemapper/interventions`, {
+          payload,
+        });
         setPlantLocation(res);
         setIsUploadingData(false);
         handleNext();

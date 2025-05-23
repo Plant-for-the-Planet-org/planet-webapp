@@ -4,11 +4,12 @@
   margin-left: 4px;
   width: 100%;
   text-align: right;
-  font-size: 14px;
+  font-size: $fontSmall;
 }
 
 .hyphen {
-  font-size: 40px;
+  height: 56px;
+  font-size: $fontXXLarge;
 }
 
 .density {
@@ -771,7 +772,7 @@
   .skipButton,
   .saveAndContinueButton {
     margin-left: 10px;
-    font-size: 1rem;
+    font-size: $fontSixteen;
     height: 50px;
     @include xsPhoneView {
       margin-top: 14px;

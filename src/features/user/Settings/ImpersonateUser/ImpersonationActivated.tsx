@@ -28,7 +28,7 @@ const ImpersonationActivated = () => {
 
       <div
         onClick={exitImpersonation}
-        className={styles.exitImpersoantionContainer}
+        className={styles.exitImpersonationContainer}
       >
         <div>
           <LogoutIcon />

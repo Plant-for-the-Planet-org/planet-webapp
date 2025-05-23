@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { TotalSpeciesPlanted } from '../../../src/features/common/types/dataExplorer';
 
-import db from '../../../src/utils/connectDB';
+import { query } from '../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
   rateLimiter,
@@ -42,28 +42,32 @@ handler.post(async (req, response) => {
   }
 
   try {
-    const query = `
+    const queryText = `
 			SELECT 
-					COUNT(DISTINCT COALESCE(
-							ss.name,
-							NULLIF(ps.other_species, 'Unknown'),
-							NULLIF(iv.other_species, 'Unknown')
-							)) AS totalSpeciesPlanted
-				FROM intervention iv
-				LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
-				LEFT JOIN scientific_species ss ON COALESCE(ps.scientific_species_id, iv.scientific_species_id) = ss.id
-				JOIN project pp ON iv.plant_project_id = pp.id
-				WHERE
-						iv.deleted_at IS NULL
-						AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
-						AND pp.guid = ?
-						AND iv.intervention_start_date BETWEEN ? AND ?
-			`;
+        COUNT(DISTINCT COALESCE(
+          ss.name,
+          NULLIF(ps.other_species, 'Unknown'),
+          NULLIF(iv.other_species, 'Unknown')
+        ))::integer AS "totalSpeciesPlanted"
+      FROM intervention iv
+      LEFT JOIN planted_species ps ON iv.id = ps.intervention_id
+      LEFT JOIN scientific_species ss ON COALESCE(ps.scientific_species_id, iv.scientific_species_id) = ss.id
+      JOIN project pp ON iv.plant_project_id = pp.id
+      WHERE
+        iv.deleted_at IS NULL
+        AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
+        AND pp.guid = $1
+        AND iv.intervention_start_date BETWEEN $2 AND $3
+		`;
 
-    const res = await db.query<TotalSpeciesPlanted[]>(query, [
+    // Ensure endDate includes time
+    const endDateTime = new Date(endDate);
+    endDateTime.setHours(23, 59, 59, 999);
+
+    const res = await query<TotalSpeciesPlanted[]>(queryText, [
       projectId,
       startDate,
-      `${endDate} 23:59:59.999`,
+      endDateTime,
     ]);
 
     await redisClient.set(CACHE_KEY, JSON.stringify(res[0]), {
@@ -73,8 +77,9 @@ handler.post(async (req, response) => {
     response.status(200).json({ data: res[0] });
   } catch (err) {
     console.error('Error fetching total species planted:', err);
-  } finally {
-    await db.quit();
+    response
+      .status(500)
+      .json({ error: 'Failed to fetch total species planted' });
   }
 });
 

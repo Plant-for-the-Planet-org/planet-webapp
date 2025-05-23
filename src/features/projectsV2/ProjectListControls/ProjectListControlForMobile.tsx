@@ -5,7 +5,7 @@ import type { MapProject } from '../../common/types/projectv2';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { MapOptions } from '../ProjectsMapContext';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
 import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
@@ -15,6 +15,7 @@ import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -33,7 +34,9 @@ interface ProjectListControlForMobileProps {
   filteredProjects: MapProject[] | undefined;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
-  shouldHideProjectTabs: boolean;
+  shouldHideProjectTabs?: boolean;
+  showDonatableProjects: boolean;
+  setShowDonatableProjects: SetState<boolean>;
 }
 
 const ProjectListControlForMobile = ({
@@ -54,15 +57,23 @@ const ProjectListControlForMobile = ({
   mapOptions,
   updateMapOption,
   shouldHideProjectTabs,
+  showDonatableProjects,
+  setShowDonatableProjects,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const { isImpersonationModeOn } = useUserProps();
-  const hasFilterApplied = selectedClassification.length > 0;
+  const { embed, showProjectList, page } = useContext(ParamsContext);
+
+  const hasFilterApplied =
+    selectedClassification.length > 0 || showDonatableProjects;
   const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
-  const shouldDisplayMapFeatureExplorer = selectedMode === 'map';
+  const onlyMapModeAllowed =
+    embed === 'true' && page === 'project-list' && showProjectList === 'false';
+  const shouldDisplayMapFeatureExplorer =
+    selectedMode === 'map' && process.env.ENABLE_EXPLORE === 'true';
   const projectListControlsMobileClasses = `${
     styles.projectListControlsMobile
   } ${selectedMode === 'map' ? styles.mapModeControls : ''} ${
@@ -105,6 +116,8 @@ const ProjectListControlForMobile = ({
     selectedClassification,
     setSelectedClassification,
     selectedMode,
+    showDonatableProjects,
+    setShowDonatableProjects,
   };
 
   return (
@@ -112,7 +125,7 @@ const ProjectListControlForMobile = ({
       {isSearching ? (
         <div className={tabContainerClasses}>
           <ActiveSearchField {...activeSearchFieldProps} />
-          <ViewModeTabs {...viewModeTabsProps} />
+          {!onlyMapModeAllowed && <ViewModeTabs {...viewModeTabsProps} />}
         </div>
       ) : (
         <div className={projectListControlsMobileClasses}>
@@ -133,9 +146,10 @@ const ProjectListControlForMobile = ({
             <MapFeatureExplorer
               mapOptions={mapOptions}
               updateMapOption={updateMapOption}
+              isMobile={true}
             />
           )}
-          <ViewModeTabs {...viewModeTabsProps} />
+          {!onlyMapModeAllowed && <ViewModeTabs {...viewModeTabsProps} />}
         </div>
       )}
       {isFilterOpen && !isSearching && (

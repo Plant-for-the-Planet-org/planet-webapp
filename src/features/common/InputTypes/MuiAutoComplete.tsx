@@ -1,4 +1,5 @@
 import { Autocomplete, styled } from '@mui/material';
+import themeProperties from '../../../theme/themeProperties';
 
 const MuiAutoComplete = styled(Autocomplete)((/* { theme } */) => {
   return {
@@ -13,7 +14,7 @@ const MuiAutoComplete = styled(Autocomplete)((/* { theme } */) => {
 const StyledAutoCompleteOption = styled('li')({
   '& span': {
     marginRight: 10,
-    fontSize: 18,
+    fontSize: themeProperties.fontSizes.fontMedium,
   },
 });
 

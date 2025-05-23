@@ -1,4 +1,5 @@
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -14,7 +15,6 @@ import LandingSection from '../../../../../../src/features/common/Layout/Landing
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { postAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -27,19 +27,24 @@ import {
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useApi } from '../../../../../../src/hooks/useApi';
 
 interface Props {
   pageProps: PageProps;
 }
 
+type RedeemCodeApiPayload = {
+  code: string;
+};
+
 const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Redeem');
-  const { user, contextLoaded, token, logoutUser } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
+  const { postApiAuthenticated } = useApi();
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
@@ -72,19 +77,18 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
-    const submitData = {
+    const payload: RedeemCodeApiPayload = {
       code: data,
     };
 
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          tenantConfig?.id,
-          `/app/redeem`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await postApiAuthenticated<
+          RedeemedCodeData,
+          RedeemCodeApiPayload
+        >(`/app/redeem`, {
+          payload,
+        });
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
@@ -195,18 +199,19 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   );
 };
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths?.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        code: v4(),
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          code: v4(),
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths: paths,

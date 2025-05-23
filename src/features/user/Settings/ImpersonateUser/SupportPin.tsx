@@ -1,30 +1,26 @@
 import styles from '../../../common/Layout/UserLayout/UserLayout.module.scss';
 import { useTranslations } from 'next-intl';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface SupportPin {
   supportPin: string;
 }
 
 const SupportPin = () => {
-  const { token, user, setUser, logoutUser } = useUserProps();
+  const { user, setUser } = useUserProps();
+  if (!user) return null;
   const t = useTranslations('Me');
-  const { tenantConfig } = useTenant();
+  const { putApiAuthenticated } = useApi();
   const handleNewPin = async () => {
     try {
-      const response = await putAuthenticatedRequest<SupportPin>(
-        tenantConfig?.id,
-        '/app/profile/supportPin',
-        undefined,
-        token,
-        logoutUser
+      const response = await putApiAuthenticated<SupportPin>(
+        '/app/profile/supportPin'
       );
       if (response) {
         const updateUserData = { ...user };
-        updateUserData['supportPin'] = response?.supportPin;
+        updateUserData['supportPin'] = response.supportPin;
         setUser(updateUserData);
       } else {
         return false;

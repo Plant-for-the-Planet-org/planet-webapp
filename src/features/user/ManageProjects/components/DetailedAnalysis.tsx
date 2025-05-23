@@ -17,14 +17,12 @@ import styles from './../StepForm.module.scss';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import ProjectCertificates from './ProjectCertificates';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { TextField, Button, Tooltip } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -32,7 +30,7 @@ import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -68,7 +66,7 @@ const yearDialogSx: SxProps = {
   },
 };
 
-type FormData = {
+type BaseFormData = {
   employeesCount: string;
   acquisitionYear: Date | null;
   mainChallenge: string;
@@ -77,7 +75,7 @@ type FormData = {
   siteOwnerName: string;
 };
 
-type TreeFormData = FormData & {
+type TreeFormData = BaseFormData & {
   purpose: 'trees';
   yearAbandoned: Date | null;
   firstTreePlanted: Date | null;
@@ -87,13 +85,48 @@ type TreeFormData = FormData & {
   degradationCause: string;
 };
 
-type ConservationFormData = FormData & {
+type ConservationFormData = BaseFormData & {
   purpose: 'conservation';
   areaProtected: string;
   startingProtectionYear: Date | null;
   actions: string;
   benefits: string;
 };
+
+type BaseProjectMetadata = Omit<BaseFormData, 'acquisitionYear'> & {
+  acquisitionYear: number | null;
+  mainInterventions: string[];
+};
+
+type TreeMetadata = BaseProjectMetadata & {
+  degradationCause: string;
+  degradationYear: number | null;
+  plantingDensity: string;
+  maxPlantingDensity: string;
+  plantingSeasons: number[];
+  siteOwnerType: string[];
+  yearAbandoned: number | null;
+  firstTreePlanted: string | null;
+};
+
+type ConservationMetadata = BaseProjectMetadata & {
+  activitySeasons: number[];
+  areaProtected: string;
+  startingProtectionYear: number | null;
+  landOwnershipType: string[];
+  actions: string;
+  benefits: string;
+};
+
+type TreeProjectApiPayload = {
+  metadata: TreeMetadata;
+};
+
+type ConservationProjectApiPayload = {
+  metadata: ConservationMetadata;
+};
+
+type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
 export default function DetailedAnalysis({
   handleBack,
@@ -108,8 +141,7 @@ export default function DetailedAnalysis({
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { putApiAuthenticated } = useApi();
   const [siteOwners, setSiteOwners] = React.useState<SiteOwners[]>([
     {
       id: 1,
@@ -241,7 +273,6 @@ export default function DetailedAnalysis({
 
   const router = useRouter();
 
-  // TODO - set up better types for Form Data
   const defaultFormData: TreeFormData | ConservationFormData =
     purpose === 'trees'
       ? {
@@ -280,7 +311,6 @@ export default function DetailedAnalysis({
     formState: { errors },
   } = useForm<TreeFormData | ConservationFormData>({
     mode: 'onBlur',
-    // TODO - set up better form types to resolve this error
     defaultValues: defaultFormData,
   });
 
@@ -315,26 +345,31 @@ export default function DetailedAnalysis({
       return;
     }
     setIsUploadingData(true);
-    const submitData =
+    const commonFields: BaseProjectMetadata = {
+      acquisitionYear: data.acquisitionYear
+        ? data.acquisitionYear.getFullYear()
+        : null,
+      employeesCount: data.employeesCount,
+      mainInterventions: mainInterventions,
+      longTermPlan: data.longTermPlan,
+      mainChallenge: data.mainChallenge,
+      motivation: data.motivation,
+      siteOwnerName: data.siteOwnerName,
+    };
+
+    const projectPayload: ProjectApiPayload =
       data.purpose === 'trees'
         ? {
             metadata: {
+              ...commonFields,
               degradationCause: data.degradationCause,
               degradationYear: data.degradationYear
                 ? data.degradationYear.getFullYear()
                 : null,
-              employeesCount: data.employeesCount,
-              acquisitionYear: data.acquisitionYear
-                ? data.acquisitionYear.getFullYear()
-                : null,
-              mainInterventions: mainInterventions,
-              longTermPlan: data.longTermPlan,
-              mainChallenge: data.mainChallenge,
-              motivation: data.motivation,
+
               plantingDensity: data.plantingDensity,
               maxPlantingDensity: data.maxPlantingDensity,
               plantingSeasons: months,
-              siteOwnerName: data.siteOwnerName,
               siteOwnerType: owners,
               yearAbandoned: data.yearAbandoned
                 ? data.yearAbandoned.getFullYear()
@@ -348,36 +383,23 @@ export default function DetailedAnalysis({
           }
         : {
             metadata: {
-              acquisitionYear: data.acquisitionYear
-                ? data.acquisitionYear.getFullYear()
-                : null,
+              ...commonFields,
               activitySeasons: months,
               areaProtected: data.areaProtected,
-              employeesCount: data.employeesCount,
-              mainInterventions: mainInterventions,
               startingProtectionYear: data.startingProtectionYear
                 ? data.startingProtectionYear.getFullYear()
                 : null,
               landOwnershipType: owners,
               actions: data.actions,
-              mainChallenge: data.mainChallenge,
-              motivation: data.motivation,
-              longTermPlan: data.longTermPlan,
               benefits: data.benefits,
-              siteOwnerName: data.siteOwnerName,
             },
           };
 
     try {
-      const res = await putAuthenticatedRequest<
-        ProfileProjectTrees | ProfileProjectConservation
-      >(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putApiAuthenticated<
+        ProfileProjectTrees | ProfileProjectConservation,
+        ProjectApiPayload
+      >(`/app/projects/${projectGUID}`, { payload: projectPayload });
       setProjectDetails(res);
       setIsUploadingData(false);
       setIsInterventionsMissing(null);

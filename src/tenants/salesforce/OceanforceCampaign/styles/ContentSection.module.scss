@@ -31,7 +31,7 @@
       font-family: $secondaryFontFamily;
       font-style: normal;
       font-weight: 500;
-      font-size: 24px;
+      font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
       color: #032d60;
@@ -46,7 +46,7 @@
       font-family: $primaryFontFamily;
       font-style: normal;
       font-weight: normal;
-      font-size: 15px;
+      font-size: $sfFontBase;
       line-height: 24px;
       color: #032d60;
       margin-bottom: 30px;
@@ -84,7 +84,7 @@
     }
 
     @include lgLaptopView {
-      font-size: 20px;
+      font-size: $sfFontMedium;
       line-height: 30px;
     }
   }
@@ -98,14 +98,12 @@
   }
 
   .projectItem {
-    background-color: #ffffff;
-    padding: 10px;
     width: 320px;
     max-width: 100%;
 
     p {
       margin-bottom: 0;
-      font-size: 18px;
+      font-size: $fontMedium;
       color: #ffffff;
     }
   }
@@ -122,5 +120,16 @@
     color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
+
+    border: none;
+
+    > div {
+      font-weight: normal;
+    }
+
+    &:hover {
+      background: #0176d3;
+      border: none;
+    }
   }
 }

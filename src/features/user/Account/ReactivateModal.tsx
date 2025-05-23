@@ -5,13 +5,11 @@ import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 interface ReactivateModalProps {
   reactivateModalOpen: boolean;
@@ -27,12 +25,11 @@ export const ReactivateModal = ({
   fetchRecurrentDonations,
 }: ReactivateModalProps) => {
   const [disabled, setDisabled] = React.useState(false);
-  const { tenantConfig } = useTenant();
+  const { putApiAuthenticated } = useApi();
   const { theme } = React.useContext(ThemeContext);
-  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const t = useTranslations('Me');
-  const bodyToSend = {};
+  const payload = {};
 
   React.useEffect(() => {
     setDisabled(false);
@@ -42,12 +39,14 @@ export const ReactivateModal = ({
     setDisabled(true);
 
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/subscriptions/${record.id}?scope=reactivate`,
-        bodyToSend,
-        token,
-        logoutUser
+      await putApiAuthenticated<Subscription>(
+        `/app/subscriptions/${record.id}`,
+        {
+          queryParams: {
+            scope: 'reactivate',
+          },
+          payload,
+        }
       );
       handleReactivateModalClose();
       fetchRecurrentDonations();

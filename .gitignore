@@ -52,10 +52,11 @@ certificates/localhost.pem
 build-storybook.log
 src/stories
 
-# vscode and local code
+# vscode, idea and local code
 .vscode/settings.json
 .vscode/launch.json
 .env copy.local
+.idea
 
 # TypeScript incremental compilation file
 tsconfig.tsbuildinfo

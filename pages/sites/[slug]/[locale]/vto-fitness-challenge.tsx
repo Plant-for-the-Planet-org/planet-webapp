@@ -5,13 +5,14 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
 
 import React, { useEffect, useState } from 'react';
-import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign';
+import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign2025';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
@@ -46,7 +47,7 @@ export default function VTOFitnessChallenge({
     async function loadData() {
       try {
         const leaderboardRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-leaderboard`
+          `${process.env.WEBHOOK_URL}/salesforce-vto-2025-leaderboard`
         );
         if (leaderboardRes.ok && leaderboardRes.status === 200) {
           const leaderBoardArr = await leaderboardRes.json();
@@ -58,7 +59,7 @@ export default function VTOFitnessChallenge({
 
       try {
         const tenantscoreRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2024-treecount`
+          `${process.env.WEBHOOK_URL}/salesforce-vto-2025-treecount`
         );
         if (tenantscoreRes.ok && tenantscoreRes.status === 200) {
           const tenantScoreArr = await tenantscoreRes.json();
@@ -102,7 +103,7 @@ export default function VTOFitnessChallenge({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [{ params: { slug: 'salesforce', locale: 'en' } }],
     fallback: 'blocking',
@@ -122,7 +123,16 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'donate', 'country', 'manageProjects', 'leaderboard'],
+    filenames: [
+      'common',
+      'donate',
+      'country',
+      'manageProjects',
+      'leaderboard',
+      'projectDetails',
+      'allProjects',
+      'project',
+    ],
   });
 
   return {

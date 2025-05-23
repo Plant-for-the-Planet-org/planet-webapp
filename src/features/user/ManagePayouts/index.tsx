@@ -1,15 +1,11 @@
 import type { ReactElement } from 'react';
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import {
-  getAuthenticatedRequest,
-  getRequest,
-} from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { usePayouts } from '../../common/Layout/PayoutsContext';
@@ -19,7 +15,7 @@ import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -40,44 +36,36 @@ export default function ManagePayouts({
 }: ManagePayoutsProps): ReactElement | null {
   const t = useTranslations('ManagePayouts');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const router = useRouter();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user, logoutUser } = useUserProps();
+  const { token, contextLoaded, user } = useUserProps();
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
+  const { getApi, getApiAuthenticated } = useApi();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
-  const fetchPayoutMinAmounts = useCallback(async () => {
+  const fetchPayoutMinAmounts = async () => {
     if (!payoutMinAmounts) {
       try {
-        const res = await getRequest<PayoutMinAmounts>(
-          tenantConfig?.id,
-          '/app/payoutMinAmounts'
-        );
+        const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
         setPayoutMinAmounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
       }
     }
-  }, []);
+  };
 
   useEffect(() => {
     if (!payoutMinAmounts && user?.type === 'tpo') fetchPayoutMinAmounts();
   }, [step, user]);
 
-  const fetchAccounts = useCallback(async () => {
+  const fetchAccounts = async () => {
     if (!accounts) {
       setIsDataLoading(true);
       setProgress && setProgress(70);
       try {
-        const res = await getAuthenticatedRequest<BankAccount[]>(
-          tenantConfig?.id,
-          `/app/accounts`,
-          token,
-          logoutUser
-        );
+        const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
         setAccounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -88,7 +76,7 @@ export default function ManagePayouts({
         setTimeout(() => setProgress(0), 1000);
       }
     }
-  }, []);
+  };
 
   useEffect(() => {
     if (user?.type === 'tpo') {

@@ -13,7 +13,11 @@ export interface ParamsContextType {
   showProjectList: QueryParamType;
   enableIntro: QueryParamType;
   isContextLoaded: boolean;
+  page: EmbeddablePages | null;
 }
+
+type EmbeddablePages = 'project-list' | 'project-details';
+
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
   showBackIcon: undefined,
@@ -22,6 +26,7 @@ export const ParamsContext = createContext<ParamsContextType>({
   showProjectList: undefined,
   enableIntro: undefined,
   isContextLoaded: false,
+  page: null,
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -30,6 +35,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
+  const [page, setPage] = useState<EmbeddablePages | null>(null);
 
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
@@ -40,7 +46,14 @@ const QueryParamsProvider: FC = ({ children }) => {
 
   useEffect(() => {
     if (router.isReady) {
-      const { query } = router;
+      const { query, pathname } = router;
+      if (pathname === '/sites/[slug]/[locale]') {
+        setPage('project-list');
+      } else if (query.p !== undefined) {
+        setPage('project-details');
+      } else {
+        setPage(null);
+      }
       if (query.embed) setEmbed(query.embed);
       if (query.back_icon) setShowBackIcon(query.back_icon);
       if (query.callback) setCallbackUrl(query.callback);
@@ -69,6 +82,7 @@ const QueryParamsProvider: FC = ({ children }) => {
         showProjectList,
         enableIntro,
         isContextLoaded,
+        page,
       }}
     >
       {children}

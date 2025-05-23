@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 
 const GiftFunds = () => {
-  const t = useTranslations('Giftfunds');
+  const t = useTranslations('GiftFunds');
   const router = useRouter();
   const { user } = useUserProps();
 

@@ -37,8 +37,10 @@ const ImageSection = (props: ImageSectionProps) => {
   const tProjectsCommon = useTranslations('Project');
   const router = useRouter();
   const locale = useLocale();
-  const { embed, callbackUrl } = useContext(ParamsContext);
+  const { embed, callbackUrl, showBackIcon } = useContext(ParamsContext);
   const isEmbed = embed === 'true';
+  const showBackButton =
+    page === 'project-details' && !(isEmbed && showBackIcon === 'false');
 
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
@@ -91,7 +93,7 @@ const ImageSection = (props: ImageSectionProps) => {
 
   return (
     <div className={imageContainerClasses}>
-      {page === 'project-details' && (
+      {showBackButton && (
         <button onClick={handleBackButton} className={styles.backButton}>
           <BackButton />
         </button>

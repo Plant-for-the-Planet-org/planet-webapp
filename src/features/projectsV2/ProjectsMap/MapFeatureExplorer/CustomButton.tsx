@@ -5,7 +5,8 @@ const { fontSizes, light, primaryColorNew } = theme;
 
 const CustomButton = styled(Button)(() => ({
   '&.MuiButton-root': {
-    width: '182px',
+    flex: '0 0 auto',
+    width: '240px',
     height: '47px',
     backgroundColor: `${light.light}`,
     borderRadius: '12px',

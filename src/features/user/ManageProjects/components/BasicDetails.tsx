@@ -22,10 +22,6 @@ import * as d3 from 'd3-ease';
 import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
-  postAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
-import {
   getFormattedNumber,
   parseNumber,
 } from '../../../../utils/getFormattedNumber';
@@ -39,11 +35,10 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
-type FormData = {
+type BaseFormData = {
   name: string;
   slug: string;
   website: string;
@@ -58,17 +53,46 @@ type FormData = {
   };
 };
 
-type TreeFormData = FormData & {
+type TreeFormData = BaseFormData & {
   classification: string;
   countTarget: string;
   unitType: 'tree' | 'm2';
 };
 
-type ConservationFormData = FormData;
+type ConservationFormData = BaseFormData;
+
+type BaseProjectApiPayload = {
+  name: string;
+  slug: string;
+  website: string;
+  description: string;
+  acceptDonations: boolean;
+  unitCost?: number;
+  currency: 'EUR';
+  metadata: {
+    ecosystem: string;
+    visitorAssistance: boolean;
+  };
+  geometry: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
+};
+
+type TreeProjectApiPayload = BaseProjectApiPayload & {
+  classification: string;
+  countTarget: number;
+  unitType: 'tree' | 'm2';
+};
+
+type ConservationProjectApiPayload = BaseProjectApiPayload & {
+  purpose: 'conservation';
+};
+
+type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
 export default function BasicDetails({
   handleNext,
-  token,
   projectDetails,
   setProjectDetails,
   setProjectGUID,
@@ -85,11 +109,10 @@ export default function BasicDetails({
 
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     React.useState<boolean>(false);
-  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   // Map setup
   const { theme } = useContext(ThemeContext);
-  const { logoutUser } = useUserProps();
+  const { putApiAuthenticated, postApiAuthenticated } = useApi();
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = useRef(null);
@@ -306,69 +329,46 @@ export default function BasicDetails({
 
   const onSubmit = async (data: TreeFormData | ConservationFormData) => {
     setIsUploadingData(true);
-    const submitData =
+    const commonFields: BaseProjectApiPayload = {
+      name: data.name,
+      slug: data.slug,
+      website: data.website,
+      description: data.description,
+      acceptDonations: data.acceptDonations,
+      unitCost: parseNumber(locale, Number(data.unitCost))
+        ? parseNumber(locale, Number(data.unitCost))
+        : undefined,
+      currency: 'EUR',
+      metadata: {
+        ecosystem: data.metadata.ecosystem,
+        visitorAssistance: data.metadata.visitorAssistance,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
+      },
+    };
+    const projectPayload: ProjectApiPayload =
       purpose === 'trees'
         ? {
-            name: data.name,
-            slug: data.slug,
-            website: data.website,
-            description: data.description,
-            acceptDonations: data.acceptDonations,
-            unitCost: data.unitCost
-              ? parseNumber(locale, Number(data.unitCost))
-              : undefined,
+            ...commonFields,
             unitType: (data as TreeFormData).unitType,
-            currency: 'EUR',
             classification: (data as TreeFormData).classification,
             countTarget: Number((data as TreeFormData).countTarget),
-            metadata: {
-              ecosystem: data.metadata.ecosystem,
-              visitorAssistance: data.metadata.visitorAssistance,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [
-                parseFloat(data.longitude),
-                parseFloat(data.latitude),
-              ],
-            },
           }
         : {
+            ...commonFields,
             purpose: 'conservation',
-            name: data.name,
-            slug: data.slug,
-            website: data.website,
-            description: data.description,
-            acceptDonations: data.acceptDonations,
-            unitCost: data.unitCost
-              ? parseNumber(locale, Number(data.unitCost))
-              : undefined,
-            currency: 'EUR',
-            metadata: {
-              ecosystem: data.metadata.ecosystem,
-              visitorAssistance: data.metadata.visitorAssistance,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [
-                parseFloat(data.longitude),
-                parseFloat(data.latitude),
-              ],
-            },
           };
-
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       try {
-        const res = await putAuthenticatedRequest<
-          ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/projects/${projectGUID}`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await putApiAuthenticated<
+          ProfileProjectTrees | ProfileProjectConservation,
+          ProjectApiPayload
+        >(`/app/projects/${projectGUID}`, {
+          payload: projectPayload,
+        });
         setProjectDetails(res);
         setIsUploadingData(false);
         handleNext(ProjectCreationTabs.PROJECT_MEDIA);
@@ -378,9 +378,10 @@ export default function BasicDetails({
       }
     } else {
       try {
-        const res = await postAuthenticatedRequest<
-          ProfileProjectTrees | ProfileProjectConservation
-        >(tenantConfig?.id, `/app/projects`, submitData, token, logoutUser);
+        const res = await postApiAuthenticated<
+          ProfileProjectTrees | ProfileProjectConservation,
+          ProjectApiPayload
+        >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);

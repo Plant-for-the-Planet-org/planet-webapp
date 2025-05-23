@@ -6,13 +6,12 @@ import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
 import { useTranslations } from 'next-intl';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 interface Props {
   embedModalOpen: boolean;
@@ -25,6 +24,9 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
+type ProfileStatusApiPayload = {
+  isPrivate: boolean;
+};
 export default function EmbedModal({
   embedModalOpen,
   setEmbedModalOpen,
@@ -36,10 +38,10 @@ export default function EmbedModal({
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
-  const { tenantConfig } = useTenant();
+  const { putApiAuthenticated } = useApi();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { setUser, contextLoaded, token, logoutUser } = useUserProps();
+  const { setUser, contextLoaded, token } = useUserProps();
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -56,18 +58,14 @@ export default function EmbedModal({
 
   const saveProfile = async () => {
     setIsUploadingData(true);
-    const bodyToSend = {
+    const payload: ProfileStatusApiPayload = {
       isPrivate: false,
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest<User>(
-          tenantConfig?.id,
-          `/app/profile`,
-          bodyToSend,
-          token,
-          logoutUser
-        );
+        const res = await putApiAuthenticated<User>('/app/profile', {
+          payload,
+        });
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();

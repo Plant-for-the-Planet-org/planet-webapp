@@ -14,6 +14,7 @@
       "mangroves": "Mangroven"
     },
     "noFilterApplied": "Kein Filter angewendet",
+    "acceptingDonations": "Offen für Spenden",
     "clearFilter": "Filter löschen",
     "allProjects": "Alle <projectCountContainer>({noOfProjects})</projectCountContainer>",
     "searchProject": "Projekt suchen",

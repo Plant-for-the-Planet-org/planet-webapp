@@ -5,8 +5,6 @@ import React from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -24,7 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -47,6 +45,13 @@ interface CancelModalProps {
   fetchRecurrentDonations: (next?: boolean | undefined) => void;
 }
 
+type CancellationType = 'immediate' | 'period-end' | 'custom-date';
+
+type CancelSubscriptionApiPayload = {
+  cancellationType: CancellationType;
+  cancellationDate: string | null | undefined;
+};
+
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
@@ -54,8 +59,7 @@ export const CancelModal = ({
   fetchRecurrentDonations,
 }: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { putApiAuthenticated } = useApi();
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(new Date());
@@ -69,7 +73,7 @@ export const CancelModal = ({
 
   const cancelDonation = async () => {
     setDisabled(true);
-    const bodyToSend = {
+    const payload: CancelSubscriptionApiPayload = {
       cancellationType:
         option == 'cancelImmediately'
           ? 'immediate'
@@ -81,15 +85,11 @@ export const CancelModal = ({
           ? date?.toISOString().split('T')[0]
           : null, // if custom-date is cancellationType
     };
-
     try {
-      await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/subscriptions/${record.id}?scope=cancel`,
-        bodyToSend,
-        token,
-        logoutUser
-      );
+      await putApiAuthenticated(`/app/subscriptions/${record.id}`, {
+        queryParams: { scope: 'cancel' },
+        payload,
+      });
       handleCancelModalClose();
       fetchRecurrentDonations();
     } catch (err) {

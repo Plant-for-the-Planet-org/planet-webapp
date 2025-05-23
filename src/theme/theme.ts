@@ -8,11 +8,13 @@ const {
   fontSizes,
   primaryColor,
   primaryDarkColor,
+  primaryDarkColorTransparent,
   defaultFontFamily,
   primaryLightColor,
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
   topProjectTransparentColor,
+  mediumGrayColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
@@ -62,8 +64,6 @@ const getGlobalStyles = async () => {
       --secondary-font-family: ${tenantConfig
         ? tenantConfig.config.font.secondaryFontFamily
         : defaultFontFamily};
-      --font-xxxx-extra-small-new: ${fontSizes.fontXXXXSmallNew};
-      --font-xxx-extra-small-new: ${fontSizes.fontXXXSmallNew};
       --font-xx-extra-small: ${fontSizes.fontXXSmall};
       --font-x-extra-small: ${fontSizes.fontXSmall};
       --font-small: ${fontSizes.fontSmall};
@@ -75,6 +75,7 @@ const getGlobalStyles = async () => {
       --font-xxx-large: ${fontSizes.fontXXXLarge};
       --primary-color: ${primaryColor};
       --primary-dark-color: ${primaryDarkColor};
+      --primary-dark-color-transparent: ${primaryDarkColorTransparent};
       --primary-light-green-bg-color: ${primaryLightGreenBgColor};
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
@@ -86,6 +87,7 @@ const getGlobalStyles = async () => {
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
       --medium-blue-color: ${theme.mediumBlueColor};
+      --medium-gray-color: ${mediumGrayColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};

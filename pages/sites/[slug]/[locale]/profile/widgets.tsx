@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -53,15 +54,19 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
       <Head>
         <title>{t('widgets')}</title>
       </Head>
-      {user?.isPrivate === false ? (
-        <div className={styles.widgetsContainer}>
-          <iframe
-            src={`${process.env.WIDGET_URL}?user=${user?.id}&tenantkey=${tenantConfig.id}`}
-            className={styles.widgetIFrame}
-          />
-        </div>
-      ) : (
-        <EmbedModal {...embedModalProps} />
+      {user !== null && (
+        <>
+          {user.isPrivate === false ? (
+            <div className={styles.widgetsContainer}>
+              <iframe
+                src={`${process.env.WIDGET_URL}?user=${user.slug}&tenantkey=${tenantConfig.id}`}
+                className={styles.widgetIFrame}
+              />
+            </div>
+          ) : (
+            <EmbedModal {...embedModalProps} />
+          )}
+        </>
       )}
     </UserLayout>
   ) : (
@@ -71,17 +76,18 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
 
 export default ProfilePage;
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

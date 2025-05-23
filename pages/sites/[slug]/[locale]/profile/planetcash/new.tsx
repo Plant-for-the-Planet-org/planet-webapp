@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -59,7 +60,7 @@ export default function PlanetCashCreatePage({
       )}
       <UserLayout>
         <Head>
-          <title>{t('planetcash.titleCreateAccount')}</title>
+          <title>{t('planetCash.titleCreateAccount')}</title>
         </Head>
         <PlanetCash
           step={PlanetCashTabs.CREATE_ACCOUNT}
@@ -72,17 +73,18 @@ export default function PlanetCashCreatePage({
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

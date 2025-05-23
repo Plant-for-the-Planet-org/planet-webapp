@@ -27,8 +27,6 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
@@ -36,7 +34,7 @@ import getFormattedCurrency from '../../../../utils/countryCurrency/getFormatted
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
@@ -50,9 +48,8 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, logoutUser, setRefetchUserData } = useUserProps();
-  const { tenantConfig } = useTenant();
-  const { getAccessTokenSilently } = useAuth0();
+  const { user, setRefetchUserData } = useUserProps();
+  const { postApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
   const [comment, setComment] = useState('');
@@ -119,7 +116,6 @@ const IssueCodesForm = (): ReactElement | null => {
       if (!shouldSubmit) return;
     }
 
-    const token = await getAccessTokenSilently();
     setIsProcessing(true);
     if (project) {
       const donationData: PrepaidDonationRequest = {
@@ -152,16 +148,13 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res = await postAuthenticatedRequest<Donation>(
-          tenantConfig?.id,
-          `/app/donations`,
-          cleanedData,
-          token,
-          logoutUser,
-          {
+        const res = await postApiAuthenticated<Donation>('/app/donations', {
+          payload: cleanedData as unknown as Record<string, unknown>,
+          additionalHeaders: {
             'IDEMPOTENCY-KEY': uuidv4(),
-          }
-        );
+            'X-Locale': locale,
+          },
+        });
         // if request is successful, it will have a uid
         if (res?.uid) {
           resetBulkContext();

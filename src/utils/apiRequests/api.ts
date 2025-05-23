@@ -8,12 +8,56 @@ import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
+interface BaseRequestOptions {
+  tenant?: string | undefined;
+  url: string;
+}
+
+interface GetAccountInfoOptions {
+  token: string | null;
+  tenant: string | undefined;
+  impersonationData?: ImpersonationData;
+}
+
+interface GetAuthRequestOptions extends BaseRequestOptions {
+  token: string | null;
+  logoutUser: (value?: string | undefined) => void;
+  header?: Record<string, string> | null;
+  queryParams?: { [key: string]: string };
+  version?: string;
+}
+interface PostAuthRequestOptions extends BaseRequestOptions {
+  token: string | null;
+  data: any;
+  logoutUser: (value?: string | undefined) => void;
+  headers?: Record<string, string>;
+}
+interface DeleteAuthRequestOptions extends BaseRequestOptions {
+  token: string | null;
+  logoutUser: (value?: string | undefined) => void;
+}
+interface PutAuthRequestOptions extends BaseRequestOptions {
+  token: string | null;
+  data?: any;
+  logoutUser: (value?: string | undefined) => void;
+}
+interface PostRequestOptions extends BaseRequestOptions {
+  data: any;
+}
+interface GetRequestOptions extends BaseRequestOptions {
+  queryParams?: { [key: string]: string };
+  version?: string;
+}
+
+interface PutRequestOptions extends BaseRequestOptions {
+  data: any;
+}
 //  API call to private /profile endpoint
-export async function getAccountInfo(
-  tenant: string | undefined,
-  token: string | null,
-  impersonationData?: ImpersonationData
-): Promise<any> {
+export async function getAccountInfo({
+  tenant,
+  token,
+  impersonationData,
+}: GetAccountInfoOptions): Promise<any> {
   const lang = localStorage.getItem('language') || 'en';
   const header = {
     'tenant-key': `${tenant}`,
@@ -36,12 +80,12 @@ function isAbsoluteUrl(url: string) {
   return pattern.test(url);
 }
 
-export function getRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  queryParams?: { [key: string]: string },
-  version?: string
-) {
+export function getRequest<T>({
+  tenant,
+  url,
+  queryParams = {},
+  version,
+}: GetRequestOptions): Promise<T> {
   const lang = localStorage.getItem('language') || 'en';
   const query = { ...queryParams };
   const queryString = getQueryString(query);
@@ -76,16 +120,15 @@ export function getRequest<T>(
     })();
   });
 }
-
-export function getAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void,
-  header: Record<string, string> | null = null,
-  queryParams?: { [key: string]: string },
-  version?: string
-) {
+export function getAuthenticatedRequest<T>({
+  tenant,
+  url,
+  token,
+  logoutUser,
+  header = null,
+  queryParams = {},
+  version = '1.0.3',
+}: GetAuthRequestOptions): Promise<T> {
   const lang = localStorage.getItem('language') || 'en';
   const query = { ...queryParams };
   const queryString = getQueryString(query);
@@ -132,14 +175,14 @@ export function getAuthenticatedRequest<T>(
   });
 }
 
-export function postAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  data: any,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void,
-  headers?: Record<string, string>
-) {
+export function postAuthenticatedRequest<T>({
+  tenant,
+  url,
+  data,
+  token,
+  logoutUser,
+  headers,
+}: PostAuthRequestOptions) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
@@ -182,11 +225,7 @@ export function postAuthenticatedRequest<T>(
   });
 }
 
-export function postRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  data: any
-) {
+export function postRequest<T>({ tenant, url, data }: PostRequestOptions) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
@@ -217,13 +256,43 @@ export function postRequest<T>(
     })();
   });
 }
+export function putRequest<T>({ tenant, url, data }: PutRequestOptions) {
+  const lang = localStorage.getItem('language') || 'en';
 
-export function deleteAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void
-) {
+  return new Promise<T>((resolve, reject) => {
+    (async () => {
+      try {
+        const res = await fetch(process.env.API_ENDPOINT + url, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+            'tenant-key': `${tenant}`,
+            'X-SESSION-ID': await getsessionId(),
+            'x-locale': lang,
+          },
+        });
+        if (!res.ok) {
+          throw new APIError(res.status, await res.json());
+        }
+
+        if (res.status === 204) {
+          resolve(true as T);
+        } else {
+          resolve(await res.json());
+        }
+      } catch (error) {
+        reject(error);
+      }
+    })();
+  });
+}
+export function deleteAuthenticatedRequest<T>({
+  tenant,
+  url,
+  token,
+  logoutUser,
+}: DeleteAuthRequestOptions) {
   const lang = localStorage.getItem('language') || 'en';
   return new Promise<T>((resolve, reject) => {
     (async () => {
@@ -264,13 +333,13 @@ export function deleteAuthenticatedRequest<T>(
   });
 }
 
-export function putAuthenticatedRequest<T>(
-  tenant: string | undefined,
-  url: string,
-  data: any,
-  token: string | null,
-  logoutUser: (value?: string | undefined) => void
-) {
+export function putAuthenticatedRequest<T>({
+  tenant,
+  url,
+  data,
+  token,
+  logoutUser,
+}: PutAuthRequestOptions) {
   return new Promise<T>((resolve, reject) => {
     const lang = localStorage.getItem('language') || 'en';
     (async () => {
