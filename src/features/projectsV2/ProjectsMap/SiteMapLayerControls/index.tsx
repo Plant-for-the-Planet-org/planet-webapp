@@ -34,7 +34,10 @@ const SiteMapLayerControls = () => {
         setSelectedLayer={setSelectedLayer}
         selectedLayer={selectedLayer}
       />
-      <SiteLayerInfo openInfoPopup={openLayerInfoPopup} />
+      <SiteLayerInfo
+        openInfoPopup={openLayerInfoPopup}
+        selectedLayer={selectedLayer}
+      />
     </div>
   );
 };

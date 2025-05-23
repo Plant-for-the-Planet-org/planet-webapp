@@ -28,6 +28,7 @@ const {
   softTextColorTwo,
   hintTextColor,
   fieldBackgroundColor,
+  fireRedColor,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -98,6 +99,7 @@ const getGlobalStyles = async () => {
       --soft-text-color-two: ${softTextColorTwo};
       --hint-text-color: ${hintTextColor};
       --field-background-color: ${fieldBackgroundColor};
+      --fire-red-color: ${fireRedColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};

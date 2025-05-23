@@ -14,7 +14,7 @@
   box-sizing: border-box;
 
   @include smTabletView {
-    max-width: 384px;
+    max-width: 420px;
     right: 10px;
     flex-direction: row;
 
@@ -148,7 +148,7 @@
 
   @include smTabletView {
     border-radius: 0;
-    padding: 20px 24px 0 12px;
+    padding: 20px 20px 0 12px;
   }
 }
 
@@ -204,4 +204,79 @@
 }
 
 .siteLayerLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+
+  .legendBarContainer {
+    position: relative;
+    height: 12px;
+    cursor: help;
+  }
+
+  .legendBar {
+    height: 12px;
+    width: 100%;
+    border-radius: 2px;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .averageIndicator {
+    position: absolute;
+    top: 0px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &.positive svg path {
+      stroke: $primaryDarkColor;
+    }
+
+    &.negative svg path {
+      stroke: $fireRedColor;
+    }
+
+    // Adjust alignment when near left edge
+    &.leftAligned {
+      transform: translateX(
+        0
+      ); // Align to left edge of position instead of center
+      align-items: flex-start;
+    }
+
+    // Adjust alignment when near right edge
+    &.rightAligned {
+      transform: translateX(
+        -100%
+      ); // Align to right edge of position instead of center
+      align-items: flex-end;
+    }
+  }
+
+  .averageLabel {
+    font-size: $fontXXSmall;
+    text-align: center;
+    margin-top: -10px;
+
+    .averageLabelText {
+      font-weight: 700;
+    }
+
+    .averageValue {
+      font-weight: 400;
+      color: $softTextColorTwo;
+    }
+  }
+
+  .legendValues {
+    display: flex;
+    justify-content: space-between;
+    font-size: $fontXSmall;
+    font-weight: 600;
+  }
 }

@@ -48,6 +48,7 @@ const themeProperties = {
   softTextColorTwo: '#828282',
   hintTextColor: '#bdbdbd',
   fieldBackgroundColor: '#bdbdbd33',
+  fireRedColor: '#eb5757',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
