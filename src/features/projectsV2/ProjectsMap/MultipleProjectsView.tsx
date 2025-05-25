@@ -12,8 +12,8 @@ interface MultipleProjectsViewProps {
 }
 
 const MultipleProjectsView = ({ page }: MultipleProjectsViewProps) => {
-  const { projects, isLoading, isError, filteredProjects } = useProjects();
-  if (isLoading || isError || !projects) return null;
+  const { isError, filteredProjects } = useProjects();
+  if (isError || !filteredProjects) return null;
 
   const categorizedProjects = useMemo(() => {
     return filteredProjects?.reduce<CategorizedProjects>(
@@ -38,7 +38,7 @@ const MultipleProjectsView = ({ page }: MultipleProjectsViewProps) => {
         regularDonatableProjects: [],
       }
     );
-  }, [projects, filteredProjects, isLoading, isError]);
+  }, [filteredProjects]);
 
   return (
     <ProjectMarkers categorizedProjects={categorizedProjects} page={page} />

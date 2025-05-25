@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type { ProjectOption } from '../../../common/types/project';
+import type { MapProject } from '../../../common/types/projectv2';
 import type { APIError } from '@planet-sdk/common';
 
 import React, { useContext, useEffect, useState } from 'react';
@@ -23,11 +24,12 @@ export default function DonationLink(): ReactElement | null {
 
   async function fetchProjectList() {
     try {
-      const projectsList = await getApi(`/app/projects`, {
+      const projectsList = await getApi<MapProject[]>(`/app/projects`, {
         queryParams: {
           _scope: 'map',
           'filter[purpose]': 'trees,restoration',
-          tenant: tenantConfig?.id,
+          //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+          tenant: tenantConfig.id,
           locale: locale,
         },
       });
