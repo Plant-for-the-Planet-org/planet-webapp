@@ -24,9 +24,9 @@
 
 .downloadReportContainer {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 6px;
+  margin-left: 21px;
+  margin-top: 2px;
+
   p {
     font-size: $fontXSmall;
     color: rgb(var(--review-font-color-new));
