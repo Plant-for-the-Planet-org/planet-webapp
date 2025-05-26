@@ -457,6 +457,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedPlantLocation,
     plantLocations,
     preventShallowPush,
+    requestedPlantLocation,
     hasNoSites,
   ]);
 

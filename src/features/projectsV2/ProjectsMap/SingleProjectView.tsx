@@ -25,7 +25,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   const router = useRouter();
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
-  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+  const { ploc: requestedPlantLocation } = router.query;
   if (singleProject === null) return null;
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
@@ -101,7 +101,6 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
     router.isReady,
     selectedPlantLocation,
     requestedPlantLocation,
-    requestedSite,
   ]);
 
   useEffect(() => {
