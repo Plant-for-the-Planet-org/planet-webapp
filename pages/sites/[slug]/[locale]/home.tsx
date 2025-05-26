@@ -5,6 +5,7 @@ import type {
 } from '../../../../src/features/common/types/leaderboard';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
+  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -17,7 +18,7 @@ import SalesforceHome from '../../../../src/tenants/salesforce/Home';
 import SternHome from '../../../../src/tenants/stern/Home';
 import BasicHome from '../../../../src/tenants/common/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
-import { getRequest } from '../../../../src/utils/apiRequests/api';
+import { useApi } from '../../../../src/hooks/useApi';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
@@ -34,6 +35,7 @@ interface Props {
 
 export default function Home({ pageProps }: Props) {
   const router = useRouter();
+  const { getApi } = useApi();
 
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
     null
@@ -41,7 +43,7 @@ export default function Home({ pageProps }: Props) {
   const [tenantScore, setTenantScore] = React.useState<TenantScore | null>(
     null
   );
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const { setTenantConfig } = useTenant();
 
@@ -54,10 +56,7 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
-        const newTenantScore = await getRequest<TenantScore>(
-          pageProps.tenantConfig.id,
-          `/app/tenantScore`
-        );
+        const newTenantScore = await getApi<TenantScore>('/app/tenantScore');
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -69,9 +68,8 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const newLeaderBoard = await getRequest<LeaderBoardList>(
-          pageProps.tenantConfig.id,
-          `/app/leaderboard`
+        const newLeaderBoard = await getApi<LeaderBoardList>(
+          '/app/leaderboard'
         );
         setLeaderboard(newLeaderBoard);
       } catch (err) {
@@ -131,17 +129,18 @@ export default function Home({ pageProps }: Props) {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
-  const paths = subDomainPaths.map((path) => {
-    return {
-      params: {
-        slug: path.params.slug,
-        locale: 'en',
-      },
-    };
-  });
+  const paths =
+    subDomainPaths?.map((path) => {
+      return {
+        params: {
+          slug: path.params.slug,
+          locale: 'en',
+        },
+      };
+    }) ?? [];
 
   return {
     paths,

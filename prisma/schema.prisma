@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
+    provider = "postgresql"
     url      = env("DB_CONN_URL")
 }
 
@@ -14,7 +14,7 @@ model contribution {
     treeCount            Decimal?       @map("tree_count") @db.Decimal(14, 2)
     bouquetDonationId    Int?           @map("bouquet_donation_id")
     quantity             Float?
-    deletedAt            DateTime?      @map("deleted_at") @db.DateTime(0)
+    deletedAt            DateTime?      @map("deleted_at") @db.Timestamp(0)
     contributionType     String         @map("contribution_type") @db.VarChar(20)
     isVerified           Int?           @map("is_verified")
     paymentStatus        String?        @map("payment_status") @db.VarChar(20)
@@ -23,14 +23,14 @@ model contribution {
     profile              profile?       @relation(fields: [profile_id], references: [id])
     bouquet              contribution?  @relation("bouquet", fields: [bouquetDonationId], references: [id])
     bouquetContributions contribution[] @relation("bouquet")
-    plantDate            DateTime       @map("plant_date") @db.DateTime(0)
+    plantDate            DateTime       @map("plant_date") @db.Timestamp(0)
     profile_id           Int?
     gift                 gift[]
     giftTo               Json?          @map("gift_data")
     giftMethod           String?        @map("gift_method") @db.VarChar(20)
     tenant               tenant?        @relation(fields: [tenantId], references: [id]) // Add a one-to-one relation to the tenant model
     tenantId             Int?           @map("tenant_id")
-    created              DateTime       @unique @db.DateTime(0)
+    created              DateTime       @unique @db.Timestamp(0)
 }
 
 model tenant {
@@ -45,12 +45,12 @@ model project {
     guid           String         @db.VarChar(32)
     name           String?        @db.VarChar(255)
     allowDonations Boolean        @map("accept_donations")
-    description    String?        @db.LongText
+    description    String?        @db.Text
     country        String?        @map("country") @db.VarChar(2)
     unit           String?        @map("unit_type") @db.VarChar(255)
     image          String?        @db.VarChar(255)
     purpose        String         @db.VarChar(64)
-    location       String?        @db.LongText
+    location       String?        @db.Text
     geoLongitude   Float?         @map("geo_longitude")
     geoLatitude    Float?         @map("geo_latitude")
     contribution   contribution[]
@@ -63,7 +63,7 @@ model profile {
     id           	Int            @id @default(autoincrement())
     guid         	String         @db.VarChar(32)
     name         	String?        @db.VarChar(255)
-		deleted_at		DateTime?      @map("deleted_at") @db.DateTime(0)
+		deleted_at		DateTime?      @map("deleted_at") @db.Timestamp(0)
     contribution 	contribution[]
     plantProject 	project[]
     gift         	gift[]
@@ -77,10 +77,10 @@ model gift {
     metadata       Json?
     contribution   contribution? @relation(fields: [donationId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_A47C990D4DC1279C")
     recipient      profile?      @relation(fields: [recipientId], references: [id]) // Relation field to profile
-    created        DateTime      @db.DateTime(0)
+    created        DateTime      @db.Timestamp(0)
     value          Int?
     purpose        String        @db.VarChar(32)
     type           String        @db.VarChar(50)
-    plantDate      DateTime?     @map("payment_date") @db.DateTime(0)
-    redemptionDate DateTime?     @map("redemption_date") @db.DateTime(0)
+    plantDate      DateTime?     @map("payment_date") @db.Timestamp(0)
+    redemptionDate DateTime?     @map("redemption_date") @db.Timestamp(0)
 }

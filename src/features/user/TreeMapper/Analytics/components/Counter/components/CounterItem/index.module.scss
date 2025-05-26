@@ -1,46 +1,43 @@
 @import '../../../../../../../../theme/theme';
 
 .container {
-    background-color: $backgroundColor;
-    padding: 20px;
-    text-align: center;
-    flex-grow: 1;
-    position: relative;
+  background-color: $backgroundColor;
+  padding: 20px;
+  text-align: center;
+  flex-grow: 1;
+  position: relative;
 
-    &:last-child::after {
-      display: none;
+  &:last-child::after {
+    display: none;
+  }
+
+  &:after {
+    content: ' ';
+    position: absolute;
+
+    @include mdTabletView {
+      border-right: 1px #4f4f4f solid;
+      height: 50%;
+      top: 35%;
+      right: 0;
+      margin-top: auto;
+      margin-bottom: auto;
     }
+  }
 
-    &:after {
-      content: " ";
-      position: absolute;
-
-      @include mdTabletView {
-        border-right: 1px #4f4f4f solid;
-        height: 50%;
-        top: 35%;
-        right: 0;
-        margin-top: auto;
-        margin-bottom: auto;
-      }
+  @media (min-width: 412px) and (min-height: 914px) {
+    &:nth-child(odd)::after {
+      border-right: 1px #4f4f4f solid;
+      height: 50%;
+      top: 35%;
+      right: 0;
+      margin-top: auto;
+      margin-bottom: auto;
     }
-
-    @media (min-width: 412px) and (min-height: 914px) {
-      &:nth-child(odd)::after {
-        border-right: 1px #4f4f4f solid;
-        height: 50%;
-        top: 35%;
-        right: 0;
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-    }
-    
+  }
 }
 
 .quantity {
-  font-size: 35px;
+  font-size: $fontXXLarge;
   font-weight: 500;
 }
-
-

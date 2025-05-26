@@ -64,7 +64,7 @@
       "default": "Un problème s'est produit lors de la création d'un compte. Veuillez réessayer après un certain temps."
     },
     "accountCreationSuccess": "Les données de votre compte ont été enregistrées avec succès.",
-    "accountUpdationSuccess": "Les données de votre compte ont été mises à jour avec succès.",
+    "accountUpdateSuccess": "Les données de votre compte ont été mises à jour avec succès.",
     "scheduleSaveSuccess": "Votre calendrier de paiement a été sauvegardé avec succès.",
     "editAccountButton": "Modifier le compte",
     "accountTitleText": "Transfert pour {currency}",

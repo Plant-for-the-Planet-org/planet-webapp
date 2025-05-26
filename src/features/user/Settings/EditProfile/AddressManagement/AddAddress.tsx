@@ -2,31 +2,29 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { SetState } from '../../../../common/types/common';
 import type { Address, APIError } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
+import type { AddressFormData } from './microComponents/AddressForm';
 
 import { useState, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import AddressForm from './microComponents/AddressForm';
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 import AddressFormLayout from './microComponents/AddressFormLayout';
 import { getStoredConfig } from '../../../../../utils/storeConfig';
+import { useApi } from '../../../../../hooks/useApi';
 
-export type FormData = {
-  address: string | undefined;
-  address2: string | null;
-  city: string | undefined;
-  zipCode: string | undefined;
-  state: string | null;
+export type AddAddressApiPayload = AddressFormData & {
+  country: ExtendedCountryCode | string;
+  type: 'other' | 'primary';
 };
 
 interface Props {
   setIsModalOpen: SetState<boolean>;
-  setUserAddresses: SetState<Address[]>;
   setAddressAction: SetState<AddressAction | null>;
+  showPrimaryAddressToggle: boolean;
+  updateUserAddresses?: () => Promise<void>;
 }
 
 const defaultAddressDetail = {
@@ -35,43 +33,62 @@ const defaultAddressDetail = {
   city: '',
   zipCode: '',
   state: '',
+  type: ADDRESS_TYPE.OTHER,
 };
 
 const AddAddress = ({
   setIsModalOpen,
-  setUserAddresses,
   setAddressAction,
+  showPrimaryAddressToggle,
+  updateUserAddresses,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
+  const { contextLoaded, user, token, logoutUser, setUser } = useUserProps();
   const configCountry = getStoredConfig('country');
   const defaultCountry = user?.country || configCountry || 'DE';
-  const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
+  const { postApiAuthenticated } = useApi();
   const [country, setCountry] = useState<ExtendedCountryCode | ''>(
     defaultCountry
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [primaryAddressChecked, setPrimaryAddressChecked] = useState(false);
 
   const addAddress = useCallback(
-    async (data: FormData) => {
+    async (data: AddressFormData) => {
       if (!contextLoaded || !user || !token) return;
       setIsLoading(true);
-      const bodyToSend = {
+      const payload: AddAddressApiPayload = {
         ...data,
         country,
-        type: ADDRESS_TYPE.OTHER,
+        type: primaryAddressChecked ? ADDRESS_TYPE.PRIMARY : ADDRESS_TYPE.OTHER,
       };
       try {
-        const res = await postAuthenticatedRequest<Address>(
-          tenantConfig.id,
+        const res = await postApiAuthenticated<Address, AddAddressApiPayload>(
           '/app/addresses',
-          bodyToSend,
-          token,
-          logoutUser
+          {
+            payload,
+          }
         );
-        if (res && setUserAddresses) {
-          setUserAddresses((prevAddresses) => [...prevAddresses, res]);
+        if (res) {
+          setUser((prev) => {
+            if (!prev) return null;
+
+            const updatedAddresses =
+              res.type === ADDRESS_TYPE.PRIMARY
+                ? prev.addresses.map((addr) =>
+                    addr.type === ADDRESS_TYPE.PRIMARY
+                      ? { ...addr, type: ADDRESS_TYPE.OTHER }
+                      : addr
+                  )
+                : prev.addresses;
+
+            return {
+              ...prev,
+              addresses: [...updatedAddresses, res],
+            };
+          });
+          if (updateUserAddresses) updateUserAddresses();
         }
       } catch (error) {
         setErrors(handleError(error as APIError));
@@ -87,11 +104,12 @@ const AddAddress = ({
       token,
       country,
       logoutUser,
-      setUserAddresses,
       handleError,
       setIsLoading,
       setIsModalOpen,
-      postAuthenticatedRequest,
+      postApiAuthenticated,
+      primaryAddressChecked,
+      updateUserAddresses,
     ]
   );
 
@@ -106,6 +124,9 @@ const AddAddress = ({
         defaultAddressDetail={defaultAddressDetail}
         processFormData={addAddress}
         setAddressAction={setAddressAction}
+        showPrimaryAddressToggle={showPrimaryAddressToggle}
+        primaryAddressChecked={primaryAddressChecked}
+        setPrimaryAddressChecked={setPrimaryAddressChecked}
       />
     </AddressFormLayout>
   );

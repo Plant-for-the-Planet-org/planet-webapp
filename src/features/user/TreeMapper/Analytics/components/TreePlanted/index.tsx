@@ -508,6 +508,10 @@ export const TreePlanted = () => {
           xaxis: {
             ...options.xaxis,
             categories: categories,
+            labels: {
+              ...options.xaxis?.labels,
+              rotateAlways: data.length > 15,
+            },
           },
           tooltip: {
             custom: function ({ series: s, dataPointIndex }) {

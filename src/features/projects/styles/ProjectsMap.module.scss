@@ -531,7 +531,7 @@
   position: fixed;
   bottom: 0px;
   right: 20px;
-  font-size: 11px;
+  font-size: $fontXSmall;
   color: $primaryFontColor;
   cursor: pointer;
   background-color: #f2f2f2;
@@ -606,7 +606,7 @@
 .clickForDetails {
   padding: 5px 10px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: $fontSmall;
   display: flex;
   flex-direction: row;
   justify-content: center;

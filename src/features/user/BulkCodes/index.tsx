@@ -10,11 +10,10 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { useTenant } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { getRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
+import { useApi } from '../../../hooks/useApi';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -31,7 +30,6 @@ export default function BulkCodes({
 }: BulkCodesProps): ReactElement | null {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const {
     planetCashAccount,
     setPlanetCashAccount,
@@ -42,6 +40,7 @@ export default function BulkCodes({
   } = useBulkCode();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { contextLoaded, user } = useUserProps();
+  const { getApi } = useApi();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {
@@ -72,8 +71,7 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<CountryProject[]>(
-          `${tenantConfig?.id}`,
+        const fetchedProjects = await getApi<CountryProject[]>(
           `/app/countryProjects/${planetCashAccount.country}`
         );
 

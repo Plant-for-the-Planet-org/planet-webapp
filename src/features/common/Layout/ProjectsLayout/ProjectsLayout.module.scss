@@ -53,8 +53,10 @@ $bottomMobileFooterSpace: 49px;
 .mapFeatureExplorerOverlay {
   position: absolute;
   top: calc($layoutPaddingTop + 10px);
+  bottom: calc($layoutPaddingBottom + 10px);
   right: calc($layoutPaddingSide + 10px);
-  z-index: 1;
+  /* Makes the container transparent to clicks */
+  pointer-events: none;
 }
 
 // styles for mobile layout
@@ -73,6 +75,14 @@ $bottomMobileFooterSpace: 49px;
   &.mapMode {
     top: 0;
     padding-top: 0;
+  }
+
+  &.embedModeMobile {
+    top: 0;
+    bottom: 29px;
+  }
+  &.impersonationMobile {
+    top: calc($topMobileNavigationSpace + 24px);
   }
 }
 

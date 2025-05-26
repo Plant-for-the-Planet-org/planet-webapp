@@ -8,7 +8,7 @@
       "titleEditBankDetails": "Správa výplat - Úprava bankovních údajů"
     },
     "donationLinkTitle": "Vytvořit odkaz pro darování",
-    "planetcash": {
+    "planetCash": {
       "menuText": "PlanetCash",
       "submenuText": "Moje PlanetCash",
       "titleAccount": "PlanetCash - Účty",
@@ -52,7 +52,7 @@
     "uploadPhotos": "Nahrajte fotografie",
     "dragHere": "nebo přetáhněte sem",
     "contribNotFound": "Příspěvek nebyl nalezen",
-    "errorOccured": "Vyskytla se chyba",
+    "errorOccurred": "Vyskytla se chyba",
     "contribSuccess": "Úspěšně přidán {treeCount} {treeSpecies} 🌳 z {plantDate}",
     "moreThanOne": "1 strom je minimum",
     "registered": "Registrováno",
@@ -136,6 +136,7 @@
     "referred": "Odkázáno",
     "in-dispute": "Ve sporu",
     "dispute-lost": "Ztracený spor",
+    "open": "Otevřít",
     "nameForest": "Les jménem {name}",
     "taxReceipt": "Daňový doklad",
     "history": "Historie",
@@ -182,7 +183,6 @@
     "transferFee": "Poplatek za převod",
     "giftComment": "Komentář (soukromý)",
     "giftOccasion": "Příležitost",
-    "open": "Otevřít",
     "downloads": "Ke stažení",
     "account": "Účet",
     "loadMore": "Načíst více",

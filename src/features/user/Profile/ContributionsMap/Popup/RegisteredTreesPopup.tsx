@@ -13,14 +13,14 @@ import style from '../ContributionsMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 type RegisteredTreesInfoProps = {
-  contributions: SingleRegistration[];
+  registrations: SingleRegistration[];
 };
-const RegisteredTreesInfo = ({ contributions }: RegisteredTreesInfoProps) => {
+const RegisteredTreesInfo = ({ registrations }: RegisteredTreesInfoProps) => {
   const tProfile = useTranslations('Profile.myForestMap');
   return (
     <>
-      {contributions.map((singleContribution) => {
-        const { plantDate, quantity } = singleContribution;
+      {registrations.map((singleRegistration) => {
+        const { plantDate, quantity } = singleRegistration;
 
         return (
           <>
@@ -50,7 +50,7 @@ const RegisteredTreesPopup = ({
   setIsCursorOnPopup,
 }: RegisteredTreesPopupProps) => {
   const { coordinates } = superclusterResponse.geometry;
-  const contributions = superclusterResponse.properties.contributions;
+  const registrations = superclusterResponse.properties.registrations;
   return (
     <Popup
       latitude={coordinates[1]}
@@ -64,7 +64,7 @@ const RegisteredTreesPopup = ({
         onMouseLeave={() => setIsCursorOnPopup(false)}
       >
         <RegisteredTreePopupIcon />
-        <RegisteredTreesInfo contributions={contributions} />
+        <RegisteredTreesInfo registrations={registrations} />
       </div>
     </Popup>
   );

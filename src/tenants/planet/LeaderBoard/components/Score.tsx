@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 import MaterialTextField from '../../../../features/common/InputTypes/MaterialTextField';
-import { postRequest } from '../../../../utils/apiRequests/api';
 import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
@@ -14,11 +13,25 @@ import getRandomImage from '../../../../utils/getRandomImage';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface Props {
   leaderboard: any;
 }
+
+type LeaderboardUser = {
+  treecounterId: number;
+  id: number;
+  slug: string;
+  name: string;
+  type: string;
+  mayPublish: boolean;
+  category: string;
+};
+
+type UserApiPayload = {
+  q: string;
+};
 
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
@@ -27,13 +40,18 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const tCommon = useTranslations('Common');
   const locale = useLocale();
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [users, setUsers] = React.useState([]);
-  const { tenantConfig } = useTenant();
-  const fetchUsers = async (query: any) => {
+  const [users, setUsers] = React.useState<LeaderboardUser[]>([]);
+  const { postApi } = useApi();
+  const fetchUsers = async (query: string) => {
     try {
-      const res = await postRequest(tenantConfig?.id, '/suggest.php', {
-        q: query,
-      });
+      const res = await postApi<LeaderboardUser[], UserApiPayload>(
+        '/suggest.php',
+        {
+          payload: {
+            q: query,
+          },
+        }
+      );
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);
     } catch (err) {

@@ -41,6 +41,7 @@
   width: 100%;
   min-height: 100vh;
   max-width: 1400px;
+
   .widgetsContainer {
     padding: 0px;
     margin-top: 85px;
@@ -252,7 +253,7 @@
     }
   }
   button {
-    font-size: 14px;
+    font-size: $fontSmall;
     font-weight: 400;
     &:hover {
       cursor: pointer;

@@ -1,6 +1,6 @@
 import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
-import type { User } from '@planet-sdk/common/build/types/user';
+import type { User, UserType } from '@planet-sdk/common/build/types/user';
 
 import { styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
@@ -9,7 +9,6 @@ import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -23,14 +22,14 @@ import {
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import { useRouter } from 'next/router';
-import { DefaultUserProfileImage } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
+import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import { useApi } from '../../../../hooks/useApi';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -38,7 +37,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
-type FormData = {
+type ProfileFormData = {
   address: string;
   bio: string;
   city: string;
@@ -59,15 +58,24 @@ type ProfileTypeOption = {
   value: 'individual' | 'organization' | 'education';
 };
 
+type UserProfileImage = {
+  imageFile: string | ArrayBuffer | null | undefined;
+};
+
+type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
+  isPrivate: boolean;
+  type?: Omit<UserType, 'tpo'>;
+};
+
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
+  const { user, setUser, token, contextLoaded } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('EditProfile');
   const locale = useLocale();
   const router = useRouter();
+  const { putApiAuthenticated } = useApi();
   const defaultProfileDetails = useMemo(() => {
     return {
       firstname: user?.firstname ? user.firstname : '',
@@ -91,7 +99,7 @@ export default function EditProfileForm() {
     control,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ProfileFormData>({
     mode: 'onBlur',
     defaultValues: defaultProfileDetails,
   });
@@ -160,17 +168,15 @@ export default function EditProfileForm() {
     reset();
   }, [type]);
 
-  const handleUserProfileImage = async (bodyToSend: {
-    imageFile: string | ArrayBuffer | null | undefined;
-  }) => {
+  const handleUserProfileImage = async (
+    profileImagePayload: UserProfileImage
+  ) => {
     try {
-      const res = await putAuthenticatedRequest<User>(
-        tenantConfig?.id,
+      const res = await putApiAuthenticated<User, UserProfileImage>(
         `/app/profile`,
-        bodyToSend,
-        token,
-        logoutUser
+        { payload: profileImagePayload }
       );
+
       if (user) {
         const newUserInfo = { ...user, image: res.image };
         setUpdatingPic(false);
@@ -192,13 +198,13 @@ export default function EditProfileForm() {
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = async (event) => {
           if (contextLoaded && token) {
-            const bodyToSend = {
+            const profileImagePayload = {
               imageFile: event.target?.result,
             };
             setSeverity('info');
             setSnackbarMessage(t('profilePicUpdated'));
             handleSnackbarOpen();
-            handleUserProfileImage(bodyToSend);
+            handleUserProfileImage(profileImagePayload);
           }
         };
       });
@@ -210,10 +216,10 @@ export default function EditProfileForm() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    const bodyToSend = {
+    const profileImagePayload = {
       imageFile: null,
     };
-    handleUserProfileImage(bodyToSend);
+    handleUserProfileImage(profileImagePayload);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -223,11 +229,11 @@ export default function EditProfileForm() {
     onDropAccepted: () => {},
   });
 
-  const saveProfile = async (data: FormData) => {
+  const saveProfile = async (data: ProfileFormData) => {
     setIsUploadingData(true);
     const { isPublic, ...otherData } = data;
 
-    const bodyToSend = {
+    const profilePayload = {
       ...otherData,
       isPrivate: !isPublic,
       ...(type !== 'tpo' ? { type: type } : {}),
@@ -235,12 +241,9 @@ export default function EditProfileForm() {
 
     if (contextLoaded && token) {
       try {
-        const res: User = await putAuthenticatedRequest(
-          tenantConfig?.id,
+        const res = await putApiAuthenticated<User, UpdateProfileApiPayload>(
           `/app/profile`,
-          bodyToSend,
-          token,
-          logoutUser
+          { payload: profilePayload }
         );
         setSeverity('success');
         setSnackbarMessage(t('profileSaved'));
@@ -273,7 +276,7 @@ export default function EditProfileForm() {
               </div>
             ) : (
               <div className={styles.noProfilePic}>
-                <DefaultUserProfileImage />
+                <DefaultProfileImageIcon />
               </div>
             )}
           </div>

@@ -2,8 +2,6 @@ const themeProperties = {
   defaultFontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
   fontSizes: {
-    fontXXXXSmallNew: '6px',
-    fontXXXSmallNew: '8px',
     fontXXSmall: '10px',
     fontXSmall: '12px',
     fontSmall: '14px',
@@ -13,14 +11,10 @@ const themeProperties = {
     fontXLarge: '26px',
     fontXXLarge: '36px',
     fontXXXLarge: '48px',
-    //to be converted to same unit
-    fontRemLarge: '2.25rem',
-    fontRemMedium: '1.5rem',
-    fontRemSmall: '1.125rem',
-    fontRemXSmall: '0.875rem',
   },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
+  primaryDarkColorTransparent: '#007a491a',
   primaryLightColor: '#79AE4633',
   primaryLightGreenBgColor: '#F2F8F6',
   greenHazeColor: '#2196530d',
@@ -68,7 +62,7 @@ const themeProperties = {
     disabledFontColor: '#909090',
     tabBackgroundColor: '#f4ffec',
     grayFontColorNew: '#4F4F4F',
-    lightGrayBackgroundColorNew: '#d9d9d980',
+    lightGrayBackgroundColorNew: '#d9d9d9',
     boldFontColorNew: '#2F3336',
     selectedMenuItemColorNew: '#333',
     dividerColorNew: '#BDBDBD',

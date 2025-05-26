@@ -1,9 +1,12 @@
+// Changes in this file can be ignored as it was just used to get the old time travel feature working
 import type { FC } from 'react';
+import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type {
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
 import type { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
+import type ProjectPropsContextInterface from '../types/ProjectPropsContextInterface';
 import type {
   ExploreOption,
   LayerSettings,
@@ -15,8 +18,6 @@ import type {
   SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
-import type ProjectPropsContextInterface from '../types/ProjectPropsContextInterface';
-import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type {
   PlantLocation,
   SamplePlantLocation,
@@ -29,6 +30,7 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
+import { getTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { ParamsContext } from './QueryParamsContext';
 
 const ProjectPropsContext = createContext<ProjectPropsContextInterface | null>(
@@ -120,8 +122,8 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [layersSettings, setLayersSettings] = useState<LayerSettings>({});
   const [selectedMode, setSelectedMode] = useState<MapMode>('location');
   const [rasterData, setRasterData] = useState<RasterData>({
-    evi: '',
-    imagery: {},
+    evi: undefined,
+    imagery: getTimeTravelConfig(),
   });
   const [plIds, setPlIds] = useState<string[] | null>(null);
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = useState(false);

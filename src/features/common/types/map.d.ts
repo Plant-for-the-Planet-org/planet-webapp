@@ -174,7 +174,7 @@ export interface ProjectGeoJsonProps {
   };
 }
 
-export interface RegisterTreeGeometry {
+export interface RegisteredTreesGeometry {
   features?: [];
   coordinates: [number, number] | number[][];
   type: 'Polygon' | 'Point';

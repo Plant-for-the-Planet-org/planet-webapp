@@ -40,7 +40,6 @@ const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
  */
 
 export const buildProjectDetailsQuery = (
-  asPath: string,
   query: ParsedUrlQuery,
   routeParams: RouteParams
 ): Record<string, string> => {
@@ -95,6 +94,12 @@ export const availableFilters: TreeProjectClassification[] = [
   'mangroves',
   'other-planting',
 ];
+
+export const isValidClassification = (
+  value: string
+): value is TreeProjectClassification => {
+  return availableFilters.includes(value as TreeProjectClassification);
+};
 
 /**
  * Retrieves the information of a plant location based on a user's interaction with the map.
@@ -260,8 +265,9 @@ export const getLocalizedPath = (path: string, locale: string): string => {
     return `/${locale}`;
   }
 
-  // If path already starts with locale, return as is
-  if (cleanPath.startsWith(`/${locale}/`)) {
+  // If path already contains locale as a segment, return as is
+  const pathSegments = cleanPath.split('/').filter(Boolean);
+  if (pathSegments[0] === locale) {
     return cleanPath;
   }
 
@@ -280,3 +286,19 @@ export const getDeviceType = (): MobileOs => {
   if (/iPad|iPhone|iPod/.test(userAgent)) return 'ios';
   return undefined;
 };
+
+/**
+ * Checks if the "Firealert Fires" feature is enabled via env variable or query string.
+ * @returns boolean, Wheather this feature is enabled or not
+ */
+export function isFirealertFiresEnabled() {
+  const isEnvVariableEnabled =
+    process.env.NEXT_PUBLIC_ENABLE_FIREALERT_FIRES?.trim().toLowerCase() ===
+    'true';
+  const isQueryStringEnabled =
+    new URLSearchParams(window.location.search)
+      .get('fa-fires')
+      ?.toLowerCase() === 'true';
+
+  return isEnvVariableEnabled || isQueryStringEnabled;
+}

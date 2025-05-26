@@ -33,7 +33,7 @@
   h2 {
     max-width: 300px;
     font-family: $primaryFontFamily;
-    font-size: 28px;
+    font-size: $fontXLarge;
     font-weight: bold;
     color: $light;
   }
@@ -47,7 +47,7 @@
       margin-right: 10px;
       color: $light;
       font-family: $primaryFontFamily;
-      font-size: 12.8px;
+      font-size: $fontXSmall;
       font-weight: bold;
     }
     img {
@@ -67,7 +67,7 @@
     left: 40px;
     h2 {
       max-width: 370px;
-      font-size: 40px;
+      font-size: $fontXXLarge;
     }
     div {
       margin-top: 26px;
