@@ -32,7 +32,13 @@ interface BadgeLabelprops {
 }
 const BadgeLabel = ({ icon, title }: BadgeLabelprops) => {
   return (
-    <div className={styles.projectBadge}>
+    <div
+      className={styles.projectBadge}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+    >
       <div className={styles.badgeIcon}>{icon}</div>
       <div className={styles.badgeTitle}>{title}</div>
     </div>

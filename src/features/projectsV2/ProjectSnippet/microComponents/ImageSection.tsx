@@ -1,6 +1,6 @@
 import type { ImageSectionProps } from '..';
 
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations, useLocale } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -14,6 +14,8 @@ import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { getLocalizedPath } from '../../../../utils/projectV2';
+
+const MAX_NAME_LENGTH = 32;
 
 const ImageSection = (props: ImageSectionProps) => {
   const {
@@ -83,6 +85,25 @@ const ImageSection = (props: ImageSectionProps) => {
   const imageContainerClasses = `${styles.projectImage} ${
     page === 'project-details' ? styles.projectImageSecondary : ''
   }`;
+
+  const isNameTruncated = projectName.length >= MAX_NAME_LENGTH;
+  const truncatedProjectName = truncateString(projectName, MAX_NAME_LENGTH);
+  const isTouchDevice =
+    typeof window !== 'undefined' && 'ontouchstart' in window;
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (isTouchDevice) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    },
+    [isTouchDevice]
+  );
+  const projectNameElement = (
+    <span onClick={handleClick}>
+      {isNameTruncated ? truncatedProjectName : projectName}
+    </span>
+  );
 
   const handleImageLoad = () => {
     setIsImageLoading(false);
@@ -164,12 +185,21 @@ const ImageSection = (props: ImageSectionProps) => {
           </div>
         </div>
         <div className={styles.projectName}>
-          <div className={styles.collapsibleText}>{projectName}</div>
+          {isNameTruncated ? (
+            <CustomTooltip
+              showTooltipPopups={showTooltipPopups}
+              triggerElement={projectNameElement}
+            >
+              <div className={styles.projectNameTooltip}>{projectName}</div>
+            </CustomTooltip>
+          ) : (
+            projectNameElement
+          )}
           {isApproved && (
             <CustomTooltip
               showTooltipPopups={showTooltipPopups}
               triggerElement={
-                <span className={styles.verifiedIcon}>
+                <span className={styles.verifiedIcon} onClick={handleClick}>
                   <VerifiedIcon sx={{ width: '100%' }} />
                 </span>
               }

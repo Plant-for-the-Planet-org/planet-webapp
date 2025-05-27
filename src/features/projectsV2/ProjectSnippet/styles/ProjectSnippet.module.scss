@@ -40,6 +40,7 @@
     position: absolute;
     bottom: 12px;
     left: 13px;
+    width: 100%;
   }
 }
 
@@ -305,16 +306,7 @@
   }
 }
 
-.collapsibleText {
-  max-width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: max-width 0.7s ease, white-space 0.7s ease;
-  cursor: pointer;
-
-  &:hover {
-    max-width: 100%;
-    white-space: normal;
-  }
+.projectNameTooltip {
+  padding: 0.8em;
+  max-width: 23em;
 }
