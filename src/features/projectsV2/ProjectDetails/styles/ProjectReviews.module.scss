@@ -13,26 +13,22 @@
     text-align: left;
     width: 100%;
     color: #2f3336;
-    font-size: $fontXXSmall;
+    font-size: $fontXSmall;
     font-weight: 700;
-    margin-bottom: 8px;
   }
 }
 
 .singleReviewContainer {
-  padding: 16px;
   width: 100%;
-  border-radius: 8px;
-  background-color: $light;
 }
 
 .downloadReportContainer {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 8px;
+  margin-left: 21px;
+  margin-top: 2px;
+
   p {
-    font-size: $fontXXSmall;
+    font-size: $fontXSmall;
     color: rgb(var(--review-font-color-new));
     font-weight: 700;
   }
@@ -48,8 +44,7 @@
   display: flex;
   gap: 7px;
   color: #2f3336; //to be replaced
-  font-size: $fontXXSmall;
-  margin-top: 4px;
+  font-size: $fontXSmall;
   align-items: center;
 
   a {

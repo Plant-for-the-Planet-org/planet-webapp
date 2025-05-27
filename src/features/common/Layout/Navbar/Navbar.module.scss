@@ -137,8 +137,10 @@ $topSpacingMobile: 43px;
   > img {
     border-radius: 50%;
     height: 50px;
+    width: 50px;
     @include xsPhoneView {
       height: 24px;
+      width: 24px;
     }
   }
   .userDefaultIconContainer {
