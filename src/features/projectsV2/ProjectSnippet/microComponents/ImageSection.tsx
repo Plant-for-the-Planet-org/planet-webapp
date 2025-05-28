@@ -126,6 +126,7 @@ const ImageSection = (props: ImageSectionProps) => {
         allowDonations={allowDonations}
         isTopProject={isTopProject}
         showTooltipPopups={showTooltipPopups}
+        page={page}
       />
 
       {/* Loading state */}
@@ -197,7 +198,9 @@ const ImageSection = (props: ImageSectionProps) => {
           )}
           {isApproved && (
             <CustomTooltip
-              showTooltipPopups={showTooltipPopups}
+              showTooltipPopups={
+                page !== 'project-details' && showTooltipPopups
+              }
               triggerElement={
                 <span className={styles.verifiedIcon} onClick={handleClick}>
                   <VerifiedIcon sx={{ width: '100%' }} />
