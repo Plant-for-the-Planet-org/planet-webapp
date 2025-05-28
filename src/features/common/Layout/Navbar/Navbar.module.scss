@@ -1,14 +1,43 @@
 @import './../../../../theme/theme';
 
 $impersonationBannerOffset: -142px;
-$aboutRightOffset: -199px;
-$aboutRightOffsetMobile: -126px;
-$toolsRightOffset: -99px;
-$toolsRightOffsetMobile: -59px;
-$campaignRightOffset: -27px;
-$campaignRightOffsetMobile: -37px;
-$topSpacing: 56px;
-$topSpacingMobile: 43px;
+$menuRightOffset: 20px;
+$menuRightOffsetMobile: -7px;
+$topSpacing: 69px;
+$topSpacingMobile: 52px;
+//salesforce campaign menu offsets
+$campaignRightOffset: 177px;
+$campaignRightOffsetMobile: 57px;
+
+.tools,
+.menuItemContainer {
+  position: absolute;
+  top: $topSpacing;
+  right: $menuRightOffset;
+
+  @include xsPhoneView {
+    top: $topSpacingMobile;
+    right: $menuRightOffsetMobile;
+  }
+}
+
+.about {
+  @extend .menuItemContainer;
+  @include xsPhoneView {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+.campaign {
+  position: absolute;
+  top: $topSpacing;
+  right: $campaignRightOffset;
+  @include xsPhoneView {
+    min-width: max-content;
+    right: $campaignRightOffsetMobile;
+  }
+}
 
 .navbar {
   display: flex;
@@ -244,6 +273,7 @@ $topSpacingMobile: 43px;
   );
   @include xsPhoneView {
     box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
+    min-width: 384px;
   }
 }
 
@@ -264,41 +294,6 @@ $topSpacingMobile: 43px;
 
   @include lgLaptopView {
     flex-direction: row;
-  }
-}
-
-.about {
-  position: absolute;
-  top: $topSpacing;
-  right: $aboutRightOffset;
-  @include xsPhoneView {
-    min-width: 367px;
-    max-height: 70vh;
-    top: $topSpacingMobile;
-    right: $aboutRightOffsetMobile;
-    overflow-y: auto;
-  }
-}
-
-.tools {
-  position: absolute;
-  top: $topSpacing;
-  right: $toolsRightOffset;
-  @include xsPhoneView {
-    min-width: 367px;
-    top: $topSpacingMobile;
-    right: $toolsRightOffsetMobile;
-  }
-}
-
-.campaign {
-  position: absolute;
-  top: $topSpacing;
-  right: $campaignRightOffset;
-  @include xsPhoneView {
-    min-width: max-content;
-    top: $topSpacingMobile;
-    right: $campaignRightOffsetMobile;
   }
 }
 
@@ -344,7 +339,7 @@ $topSpacingMobile: 43px;
 
   .sectionTitle {
     font-size: $fontSmall;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 
     .highlightLabel {
@@ -391,6 +386,10 @@ $topSpacingMobile: 43px;
   right: 10px;
   line-height: 21px;
 
+  @include xsPhoneView {
+    padding: 2px 10px;
+  }
+
   .label {
     font-weight: 700;
     font-size: $fontXSmall;
@@ -410,7 +409,7 @@ $topSpacingMobile: 43px;
   border-top: 10px solid transparent;
   border-bottom: 10px solid #c5f2e4;
   position: absolute;
-  top: 17px;
+  top: 21px;
   left: 19px;
 
   @include xsPhoneView {
