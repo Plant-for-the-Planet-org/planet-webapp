@@ -87,15 +87,11 @@ function ProjectsMap(props: ProjectsMapProps) {
     };
   }, [singleProject?.sites]);
 
-  //Ensure the map resizes correctly when the browser window changes size/map container is resized.
   useEffect(() => {
-    if (!mapRef.current) return;
-
-    const handleResize = () => mapRef.current?.resize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    if (!mapLoaded) return;
+    // Ensure the map resizes properly once it's fully loaded.
+    mapRef.current?.resize();
+  }, [mapLoaded]);
 
   useEffect(() => {
     if (props.page === 'project-details') {
@@ -296,6 +292,7 @@ function ProjectsMap(props: ProjectsMapProps) {
               ? ['plant-polygon-layer', 'point-layer']
               : undefined
           }
+          style={{ width: '100%', height: '100%' }}
         >
           {shouldShowExploreLayers && <ExploreLayers />}
           {shouldShowSingleProjectsView && (
