@@ -61,11 +61,20 @@
 
 .certificateDataContainer {
   display: flex;
-  justify-content: space-between;
+  gap: 7px;
+  flex-wrap: wrap;
+
+  @include xsPhoneView {
+    flex-direction: column;
+  }
   a {
     color: $certificationLinkColorNew;
     font-weight: 700;
     font-size: $fontXXSmall;
+  }
+
+  .certificateItem {
+    display: flex;
   }
 }
 
