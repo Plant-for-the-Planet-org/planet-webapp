@@ -164,7 +164,7 @@ const ProjectDetails = ({
       <div className={styles.projectDetailsContainer}>
         <ProjectSnippet
           project={singleProject}
-          showTooltipPopups={false}
+          showTooltipPopups={true}
           isMobile={isMobile}
           page="project-details"
           setPreventShallowPush={setPreventShallowPush}
