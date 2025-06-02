@@ -19,7 +19,7 @@
     "conservationImpacts": "Conservation Impacts",
     "website": "Website",
     "websiteValidationRequired": "Please enter website URL",
-    "websiteValidationInvalid": "Invalid website URL",
+    "websiteValidationInvalid": "Invalid website UR. Should start with http:// or https://",
     "aboutProject": "About Project",
     "aboutProjectValidation": "Please enter About project",
     "receiveDonations": "Receive Donations",
