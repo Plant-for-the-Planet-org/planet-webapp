@@ -1,16 +1,13 @@
-import type { Address, APIError } from '@planet-sdk/common';
+import type { Address } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useContext, useMemo, useState, useCallback } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
-import { handleError } from '@planet-sdk/common';
 import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   ADDRESS_ACTIONS,
   ADDRESS_TYPE,
@@ -24,17 +21,13 @@ import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
 import UnsetBillingAddress from './UnsetBillingAddress';
-import { useApi } from '../../../../../hooks/useApi';
 
 const AddressManagement = () => {
-  const { user, contextLoaded, token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
-  const { getApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  const { user } = useUserProps();
+  if (!user?.addresses) return null;
+  const userAddresses = user.addresses;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<Address[]>(
-    user?.addresses ?? []
-  );
+
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -49,16 +42,6 @@ const AddressManagement = () => {
       );
     });
   }, [userAddresses]);
-
-  const updateUserAddresses = useCallback(async () => {
-    if (!user || !token || !contextLoaded) return;
-    try {
-      const res = await getApiAuthenticated<Address[]>('/app/addresses');
-      if (res) setUserAddresses(res);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    }
-  }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
 
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
@@ -79,7 +62,6 @@ const AddressManagement = () => {
         return (
           <AddAddress
             setIsModalOpen={setIsModalOpen}
-            updateUserAddresses={updateUserAddresses}
             setAddressAction={setAddressAction}
             showPrimaryAddressToggle={false}
           />
@@ -90,7 +72,6 @@ const AddressManagement = () => {
           <EditAddress
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            updateUserAddresses={updateUserAddresses}
             setAddressAction={setAddressAction}
             showPrimaryAddressToggle={false}
           />
@@ -101,7 +82,6 @@ const AddressManagement = () => {
           <DeleteAddress
             addressId={selectedAddressForAction.id}
             setIsModalOpen={setIsModalOpen}
-            updateUserAddresses={updateUserAddresses}
             setAddressAction={setAddressAction}
           />
         );
@@ -114,7 +94,6 @@ const AddressManagement = () => {
             setAddressAction={setAddressAction}
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            updateUserAddresses={updateUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.SET_BILLING:
@@ -126,7 +105,6 @@ const AddressManagement = () => {
             setAddressAction={setAddressAction}
             setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            updateUserAddresses={updateUserAddresses}
           />
         );
       case ADDRESS_ACTIONS.UNSET_BILLING:
@@ -136,7 +114,6 @@ const AddressManagement = () => {
             addressType={ADDRESS_TYPE.MAILING}
             setIsModalOpen={setIsModalOpen}
             setAddressAction={setAddressAction}
-            updateUserAddresses={updateUserAddresses}
             selectedAddressForAction={selectedAddressForAction}
           />
         );
@@ -145,9 +122,7 @@ const AddressManagement = () => {
     }
   }, [
     setIsModalOpen,
-    setUserAddresses,
     selectedAddressForAction,
-    updateUserAddresses,
     primaryAddress,
     billingAddress,
     addressAction,
@@ -155,8 +130,7 @@ const AddressManagement = () => {
   ]);
 
   const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;
-  const shouldRenderAddressList =
-    user?.addresses !== undefined && user.addresses.length > 0;
+  const shouldRenderAddressList = userAddresses.length > 0;
   return (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>
