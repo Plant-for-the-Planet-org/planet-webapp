@@ -41,13 +41,13 @@ const DeleteAddress = ({
       setUser((prev) => {
         if (!prev) return null;
 
-        const updatedAddress = prev.addresses.filter(
+        const updatedAddresses = prev.addresses.filter(
           (address) => address.id !== addressId
         );
 
         return {
           ...prev,
-          addresses: updatedAddress,
+          addresses: updatedAddresses,
         };
       });
     } catch (error) {
