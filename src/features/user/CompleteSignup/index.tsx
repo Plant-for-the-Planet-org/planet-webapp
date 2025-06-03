@@ -34,12 +34,11 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useApi } from '../../../hooks/useApi';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -62,13 +61,13 @@ export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const t = useTranslations('EditProfile');
   const locale = useLocale();
+  const { postApi } = useApi();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState<
     AddressSuggestionsType[]
   >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
-  const { tenantConfig } = useTenant();
 
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -178,10 +177,8 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest<User>({
-        tenant: tenantConfig?.id,
-        url: `/app/profile`,
-        data: bodyToSend,
+      const res = await postApi<User>('/app/profile', {
+        payload: bodyToSend as unknown as Record<string, unknown>,
       });
       setRequestSent(false);
       // successful signup -> goto me page
@@ -490,6 +487,10 @@ export default function CompleteSignup(): ReactElement | null {
                       required: t('validationErrors.zipCodeRequired'),
                       pattern: {
                         value: postalRegex as RegExp,
+                        message: t('validationErrors.zipCodeInvalid'),
+                      },
+                      maxLength: {
+                        value: 15,
                         message: t('validationErrors.zipCodeInvalid'),
                       },
                     }}

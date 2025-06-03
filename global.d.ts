@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+
 // Use type safe message keys with `next-intl`
 type MessagesAllProjects =
   typeof import('./public/static/locales/en/allProjects.json');
@@ -8,6 +10,8 @@ type MessagesCountry = typeof import('./public/static/locales/en/country.json');
 type MessagesDonate = typeof import('./public/static/locales/en/donate.json');
 type MessagesDonationLink =
   typeof import('./public/static/locales/en/donationLink.json');
+type MessagesDonationReceipt =
+  typeof import('./public/static/locales/en/donationReceipt.json');
 type MessagesEditProfile =
   typeof import('./public/static/locales/en/editProfile.json');
 type MessagesGiftfunds =
@@ -42,6 +46,7 @@ type Messages = MessagesAllProjects &
   MessagesCountry &
   MessagesDonate &
   MessagesDonationLink &
+  MessagesDonationReceipt &
   MessagesEditProfile &
   MessagesGiftfunds &
   MessagesLeaderboard &

@@ -5,6 +5,7 @@ import type {
 } from '../../../common/types/country';
 import { useRouter } from 'next/router';
 import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { PlanetCashAccount } from '../../../common/types/planetcash';
 
 import { useState, useContext } from 'react';
 import { Button, CircularProgress } from '@mui/material';
@@ -13,45 +14,49 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { useTranslations } from 'next-intl';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
 
 interface Props {
   isPlanetCashActive: boolean;
   allowedCountries: CountryType[];
 }
 
+type PlanetCashStatusApiPayload = {
+  country: string | ExtendedCountryCode;
+  activate: boolean;
+};
+
 const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
-  const tPlanetCash = useTranslations('Planetcash');
+  const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
-  const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
-  const { tenantConfig } = useTenant();
+  const { postApiAuthenticated } = useApi();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = { country: country, activate: !isPlanetCashActive };
+    const payload: PlanetCashStatusApiPayload = {
+      country: country,
+      activate: !isPlanetCashActive,
+    };
     setIsProcessing(true);
 
     try {
-      const res = await postAuthenticatedRequest({
-        tenant: tenantConfig?.id,
-        url: '/app/planetCash',
-        data,
-        token,
-        logoutUser,
+      const res = await postApiAuthenticated<
+        PlanetCashAccount,
+        PlanetCashStatusApiPayload
+      >('/app/planetCash', {
+        payload,
       });
       setIsAccountCreated(true);
       setAccounts([res]);

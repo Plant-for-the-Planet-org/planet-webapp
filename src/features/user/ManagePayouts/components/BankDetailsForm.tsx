@@ -12,7 +12,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { getStoredConfig } from '../../../../utils/storeConfig';
 
-export type FormData = {
+export type AccountFormData = {
   currency: string;
   payoutMinAmount?: string;
   bankName: string;
@@ -30,11 +30,11 @@ export type FormData = {
 interface Props {
   payoutMinAmounts: { [key: string]: number } | null;
   account?: BankAccount;
-  handleSave: (data: FormData) => Promise<void>;
+  handleSave: (data: AccountFormData) => Promise<void>;
   isProcessing: boolean;
 }
 
-const extractFormValues = (account?: BankAccount): FormData => {
+const extractFormValues = (account?: BankAccount): AccountFormData => {
   const formValues = {
     currency: account?.currency || PayoutCurrency.DEFAULT,
     payoutMinAmount: account?.payoutMinAmount?.toString() || '',
@@ -65,7 +65,7 @@ const BankDetailsForm = ({
     control,
     watch,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<AccountFormData>({
     mode: 'onBlur',
     defaultValues: extractFormValues(account),
   });
@@ -90,7 +90,7 @@ const BankDetailsForm = ({
     [payoutMinAmounts, currency]
   );
 
-  const onSubmit = (data: FormData): void => {
+  const onSubmit = (data: AccountFormData): void => {
     handleSave(data);
   };
 

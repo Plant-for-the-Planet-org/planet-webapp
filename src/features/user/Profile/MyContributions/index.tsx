@@ -29,7 +29,7 @@ const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
       contributionsMap.forEach((item, key) => {
         if (item.type === 'registration') {
           items.push(
-            <RegistrationItemCard key={key} contributionDetails={item} />
+            <RegistrationItemCard key={key} registrationDetails={item} />
           );
         } else {
           items.push(

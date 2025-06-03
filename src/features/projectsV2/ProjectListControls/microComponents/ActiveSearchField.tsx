@@ -1,13 +1,14 @@
 import type { ChangeEvent } from 'react';
 import type { SetState } from '../../../common/types/common';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../styles/ProjectListControls.module.scss';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;
@@ -23,7 +24,10 @@ const ActiveSearchField = ({
   setDebouncedSearchValue,
 }: ActiveSearchFieldProps) => {
   const t = useTranslations('AllProjects');
+  const { embed, showProjectList } = useContext(ParamsContext);
+
   const [searchValue, setSearchValue] = useState(debouncedSearchValue);
+  const onlyMapModeAllowed = embed === 'true' && showProjectList === 'false';
 
   useDebouncedEffect(
     () => {
@@ -38,7 +42,11 @@ const ActiveSearchField = ({
     setIsFilterOpen(false);
   };
   return (
-    <div className={styles.activeSearchFieldContainer}>
+    <div
+      className={`${styles.activeSearchFieldContainer} ${
+        onlyMapModeAllowed ? styles.onlyMapMode : ''
+      }`}
+    >
       <button className={styles.activeSearchIcon}>
         <SearchIcon />
       </button>

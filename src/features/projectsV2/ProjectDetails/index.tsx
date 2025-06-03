@@ -11,8 +11,6 @@ import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
 import ProjectInfo from './components/ProjectInfo';
-import { getRequest } from '../../../utils/apiRequests/api';
-import { useTenant } from '../../common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
 import { handleError, ClientError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -23,6 +21,12 @@ import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
 import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
+import OtherInterventionInfo from './components/OtherInterventionInfo';
+import { isNonPlantationType } from '../../../utils/constants/intervention';
+import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
+import { useProjectsMap } from '../ProjectsMapContext';
+import { useApi } from '../../../hooks/useApi';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const ProjectDetails = ({
   currencyCode,
@@ -34,7 +38,6 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
-    plantLocations,
     setPlantLocations,
     setIsLoading,
     setIsError,
@@ -45,33 +48,59 @@ const ProjectDetails = ({
     setSelectedSamplePlantLocation,
     setPreventShallowPush,
   } = useProjects();
+  const { setTimeTravelConfig } = useProjectsMap();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   const router = useRouter();
+  const { getApi } = useApi();
+  const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
 
+  const fetchPlantLocations = async (projectId: string) => {
+    setIsLoading(true);
+    try {
+      const result = await getApi<PlantLocation[]>(
+        `/app/plantLocations/${projectId}`,
+        { queryParams: { _scope: 'extended' } }
+      );
+      setPlantLocations(result);
+    } catch (err) {
+      setErrors(handleError(err as APIError | ClientError));
+      setIsError(true);
+      redirect('/');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    async function loadProject(
-      projectSlug: string,
-      locale: string,
-      currency: string
-    ) {
+    async function loadProject(projectSlug: string, currency: string) {
       setIsLoading(true);
       setIsError(false);
       try {
-        const fetchedProject = await getRequest<ExtendedProject>({
-          tenant: tenantConfig.id,
-          url: `/app/projects/${projectSlug}`,
-          queryParams: {
-            _scope: 'extended',
-            currency: currency,
-            locale: locale,
-          },
-        });
-        const { purpose } = fetchedProject;
+        const fetchedProject = await getApi<ExtendedProject>(
+          `/app/projects/${projectSlug}`,
+          {
+            queryParams: {
+              _scope: 'extended',
+              currency: currency,
+              //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+              locale: locale,
+              tenant: tenantConfig.id,
+            },
+          }
+        );
+        const { purpose, id: projectId } = fetchedProject;
+        if (projectId && purpose === 'trees') {
+          fetchPlantLocations(projectId);
+        }
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
+          const timeTravelConfig = await getProjectTimeTravelConfig(
+            fetchedProject.id,
+            fetchedProject.geoLocation
+          );
+          setTimeTravelConfig(timeTravelConfig);
         } else {
           throw new ClientError(404, {
             error_type: 'project_not_available',
@@ -87,49 +116,26 @@ const ProjectDetails = ({
       }
     }
 
-    if (typeof projectSlug === 'string' && currencyCode)
-      loadProject(projectSlug, locale, currencyCode);
-  }, [projectSlug, locale, currencyCode]);
-
-  useEffect(() => {
-    async function loadPlantLocations() {
-      setIsLoading(true);
-      try {
-        const result = await getRequest<PlantLocation[]>({
-          tenant: tenantConfig.id,
-          url: `/app/plantLocations/${singleProject?.id}`,
-          queryParams: {
-            _scope: 'extended',
-          },
-          version: '1.0.4',
-        });
-        setPlantLocations(result);
-      } catch (err) {
-        setErrors(handleError(err as APIError | ClientError));
-        setIsError(true);
-        redirect('/');
-      } finally {
-        setIsLoading(false);
-      }
+    if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
+      loadProject(projectSlug, currencyCode);
     }
-
-    if (
-      singleProject &&
-      singleProject?.purpose === 'trees' &&
-      plantLocations === null
-    )
-      loadPlantLocations();
-  }, [singleProject]);
+  }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
   const shouldShowPlantLocationInfo =
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
+
+  const shouldShowOtherIntervention =
+    isNonPlantationType(hoveredPlantLocation) ||
+    isNonPlantationType(selectedPlantLocation);
+
   const shouldShowSinglePlantInfo =
     (hoveredPlantLocation?.type === 'single-tree-registration' ||
       selectedPlantLocation?.type === 'single-tree-registration' ||
       selectedSamplePlantLocation !== null) &&
     !isMobile;
+
   const shouldShowProjectInfo =
     hoveredPlantLocation === null &&
     selectedPlantLocation === null &&
@@ -183,6 +189,28 @@ const ProjectDetails = ({
             isMobile={isMobile}
           />
         )}
+
+        {shouldShowOtherIntervention ? (
+          <OtherInterventionInfo
+            selectedPlantLocation={
+              selectedPlantLocation &&
+              selectedPlantLocation?.type !== 'single-tree-registration' &&
+              selectedPlantLocation?.type !== 'multi-tree-registration'
+                ? selectedPlantLocation
+                : null
+            }
+            hoveredPlantLocation={
+              hoveredPlantLocation &&
+              hoveredPlantLocation?.type !== 'single-tree-registration' &&
+              hoveredPlantLocation?.type !== 'multi-tree-registration'
+                ? hoveredPlantLocation
+                : null
+            }
+            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+            isMobile={isMobile}
+          />
+        ) : null}
+
         {shouldShowProjectInfo && (
           <ProjectInfo
             project={singleProject}

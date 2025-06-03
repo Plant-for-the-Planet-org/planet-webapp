@@ -16,6 +16,11 @@
     min-width: 200px;
     border-radius: 8px;
     border: 1px solid rgba($borderColor, 0.5);
+
+    &.onlyMapMode {
+      max-width: none;
+      width: 100%;
+    }
   }
 }
 
@@ -168,6 +173,7 @@
     .buttonContainer,
     > button {
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+      border-radius: 7.78px;
     }
   }
 }
@@ -225,23 +231,32 @@
   z-index: 2;
   box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
   left: 193px;
+
+  .listMode {
+    left: 168px;
+    top: 67px;
+  }
+
   @include xsPhoneView {
     left: 127px;
     top: 29px;
   }
 }
 
-.listMode {
-  left: 168px;
-  top: 67px;
+.classificationItem {
+  display: flex;
+  color: rgba($dark, 1);
+  width: 100%;
+  align-items: center;
+  gap: 4px;
 }
 
-.classificationUnselected {
+.unselected {
   font-size: $fontXXSmall;
   line-height: normal;
 }
 
-.classificationSelected {
+.selected {
   font-weight: 700;
   font-size: $fontXXSmall;
 }
@@ -270,9 +285,26 @@
   width: max-content;
   height: 26px;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.donationFilterButton {
+  width: 100%;
+  color: rgba($dark, 1);
+
+  .donationFilterLabel {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }

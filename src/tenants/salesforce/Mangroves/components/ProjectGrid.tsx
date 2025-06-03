@@ -3,13 +3,14 @@ import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import React, { useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
-import { getRequest } from '../../../../utils/apiRequests/api';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
-import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
+import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { useApi } from '../../../../hooks/useApi';
+import { useLocale } from 'next-intl';
 
 const MANGROVE_PROJECTS = [
   'proj_4urzfQ47Xwv5SlNOurnXn2hU',
@@ -22,11 +23,15 @@ const MANGROVE_PROJECTS = [
   'proj_ekdaWSYWHRBdtAzncLVdclzP',
   'proj_h27ErrwYmhAGB5jp6nyLGEkN',
   'proj_sRvqi265caRiKyLaog760QsT',
+  'proj_axHvqnvWNSxalmdbvnplyOYo',
+  'proj_2Kf7wHIJ9HFti7bB9lwOC6cd',
 ];
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
+  const locale = useLocale();
+  const { getApi } = useApi();
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
@@ -34,12 +39,12 @@ export default function ProjectGrid() {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest<MapProject[]>({
-          tenant: tenantConfig.id,
-          url: `/app/projects`,
+        const projects = await getApi<MapProject[]>(`/app/projects`, {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
+            //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+            locale: locale,
             tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
           },
@@ -81,8 +86,7 @@ export default function ProjectGrid() {
           >
             <ProjectSnippet
               project={allowedProject.properties}
-              editMode={false}
-              displayPopup={false}
+              showTooltipPopups={true}
             />
           </div>
         );

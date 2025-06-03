@@ -36,12 +36,12 @@ const sampleProject: MyForestProject = {
 
 const sampleRegistrationDetails: MyContributionsSingleRegistration = {
   type: 'registration',
-  contributionCount: 1,
-  contributionUnitType: 'tree',
-  totalContributionUnits: 1,
+  registeredCount: 1,
+  registeredUnitType: 'tree',
+  totalRegisteredUnits: 1,
   country: 'MX',
   projectGuid: null,
-  contributions: [
+  registrations: [
     {
       dataType: 'treeRegistration',
       quantity: 1,
@@ -53,20 +53,20 @@ const sampleRegistrationDetails: MyContributionsSingleRegistration = {
 
 export const WithCountry: Story = {
   args: {
-    contributionDetails: sampleRegistrationDetails,
+    registrationDetails: sampleRegistrationDetails,
   },
 };
 
 export const WithoutCountry: Story = {
   args: {
-    contributionDetails: { ...sampleRegistrationDetails, country: null },
+    registrationDetails: { ...sampleRegistrationDetails, country: null },
   },
 };
 
 export const WithProject: Story = {
   args: {
     project: sampleProject,
-    contributionDetails: {
+    registrationDetails: {
       ...sampleRegistrationDetails,
       projectGuid: sampleProject.guid,
     },

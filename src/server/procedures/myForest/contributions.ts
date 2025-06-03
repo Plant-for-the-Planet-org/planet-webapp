@@ -10,6 +10,7 @@ import type {
   SingleGiftReceived,
   SingleRegistration,
   MySingleContribution,
+  RegistrationsQueryResult,
 } from '../../../features/common/types/myForest';
 
 import { procedure } from '../../trpc';
@@ -50,75 +51,81 @@ function initializeStats(): ContributionStats {
  */
 async function fetchProjects(): Promise<BriefProjectQueryResult[]> {
   const projects = await prisma.$queryRaw<BriefProjectQueryResult[]>`
-			SELECT 
-				id,
-				guid, 
-				purpose,
-				country,
-				geometry
-			FROM
-				project
-			WHERE
-				purpose IN ('trees' , 'conservation')
-					AND deleted_at IS NULL
-					AND verification_status NOT IN ('incomplete' , 'pending', 'processing')
-			;
-		`;
+      SELECT id,
+             guid,
+             purpose,
+             country,
+             geometry
+      FROM project
+      WHERE purpose IN ('trees', 'conservation')
+        AND deleted_at IS NULL
+        AND verification_status NOT IN ('incomplete', 'pending', 'processing')
+      ;
+  `;
   return projects;
+}
+
+async function fetchRegistrations(
+  profileIds: number[]
+): Promise<RegistrationsQueryResult[]> {
+  return await prisma.$queryRaw<RegistrationsQueryResult[]>`
+      SELECT i.guid,
+             i.trees_planted           as "units",
+             i.intervention_start_date as "plantDate",
+						 i.plant_project_id        as "projectId",
+             i.country,
+             i.geometry
+      FROM intervention i
+      WHERE i.deleted_at is null
+        AND i.user_profile_id IN (${Prisma.join(profileIds)})
+        AND i.type = 'generic-tree-registration'
+      ORDER BY i.id DESC;
+  `;
 }
 
 async function fetchContributions(
   profileIds: number[]
 ): Promise<ContributionsQueryResult[]> {
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
-			SELECT 
-				c.guid,
-				COALESCE(c.quantity, c.tree_count) as units,
-				c.unit_type as unitType,
-				c.plant_date as plantDate,
-				c.contribution_type as contributionType,
-				c.plant_project_id as projectId,
-				c.amount,
-				c.currency,
-				c.country,
-				c.geometry,
-				c.gift_method as giftMethod, 
-				c.gift_data->>'$.recipientName' as giftRecipient, 
-				c.gift_data->>'$.type' as giftType
-			FROM
-				contribution c
-			WHERE
-				c.deleted_at is null AND 
-				c.profile_id IN (${Prisma.join(profileIds)}) AND
-				(
-					(c.contribution_type = 'donation' AND c.payment_status = 'paid' AND c.purpose IN ('trees', 'conservation'))
-					OR 
-					(c.contribution_type = 'planting' AND c.is_verified = '1')
-				)
-			ORDER BY
-				c.id DESC;
-		`;
+      SELECT c.guid,
+             COALESCE(c.quantity, c.tree_count) as "units",
+             c.unit_type                        as "unitType",
+             c.plant_date                       as "plantDate",
+             c.contribution_type                as "contributionType",
+             c.plant_project_id                 as "projectId",
+             c.amount,
+             c.currency,
+             c.country,
+             c.geometry,
+             c.gift_method                      as "giftMethod",
+             c.gift_data ->> 'recipientName'    as "giftRecipient",
+             c.gift_data ->> 'type'             as "giftType"
+      FROM contribution c
+      WHERE c.deleted_at is null
+        AND c.profile_id IN (${Prisma.join(profileIds)})
+        AND (
+              (c.contribution_type = 'donation' AND c.payment_status = 'paid' AND
+               c.purpose IN ('trees', 'conservation'))
+          )
+      ORDER BY c.id DESC;
+  `;
   return contributions;
 }
 
 async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
   const gifts = await prisma.$queryRaw<GiftsQueryResult[]>`
-			SELECT 
-				round((g.value)/100, 2) as quantity, 
-				g.metadata->>'$.giver.name' as giftGiver, 
-				g.metadata->>'$.project.id' as projectGuid, 
-				g.metadata->>'$.project.name' as projectName, 
-				g.metadata->>'$.project.country' as country, 
-				COALESCE(g.payment_date, g.redemption_date) as plantDate
-			FROM 
-				gift g
-			WHERE 
-				g.recipient_id IN (${Prisma.join(profileIds)}) AND 
-				g.deleted_at is null AND
-				g.value <> 0
-			ORDER BY
-				g.id DESC;
-		`;
+      SELECT ROUND(CAST(g.value AS NUMERIC) / 100, 2)    as "quantity",
+             g.metadata -> 'giver' ->> 'name'            as "giftGiver",
+             g.metadata -> 'project' ->> 'id'            as "projectGuid",
+             g.metadata -> 'project' ->> 'name'          as "projectName",
+             g.metadata -> 'project' ->> 'country'       as "country",
+             COALESCE(g.payment_date, g.redemption_date) as "plantDate"
+      FROM gift g
+      WHERE g.recipient_id IN (${Prisma.join(profileIds)})
+        AND g.deleted_at is null
+        AND g.value <> 0
+      ORDER BY g.id DESC;
+  `;
   return gifts;
 }
 
@@ -130,38 +137,38 @@ async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
  * @param contribution
  */
 function handleRegistrationContribution(
-  contribution: ContributionsQueryResult,
+  registration: RegistrationsQueryResult,
   stats: ContributionStats,
   myContributionsMap: Map<string, MyContributionsMapItem>,
   registrationLocationsMap: Map<string, MapLocation>,
   project: BriefProjectQueryResult | null
 ): void {
   // Updates myContributionsMap
-  myContributionsMap.set(contribution.guid, {
+  myContributionsMap.set(registration.guid, {
     type: 'registration',
-    contributionCount: 1,
-    contributionUnitType: 'tree',
-    totalContributionUnits: contribution.units,
-    country: contribution.country || null,
+    registeredCount: 1,
+    registeredUnitType: 'tree',
+    totalRegisteredUnits: registration.units,
+    country: registration.country || null,
     projectGuid: project?.guid || null,
-    contributions: [
+    registrations: [
       {
         dataType: 'treeRegistration',
-        quantity: contribution.units,
-        plantDate: contribution.plantDate,
+        quantity: registration.units,
+        plantDate: registration.plantDate,
         unitType: 'tree',
       },
     ],
   });
   // Updates stats
-  stats.treesRegistered += Number(contribution.units);
+  stats.treesRegistered += Number(registration.units);
 
   // Updates registrationLocationsMap
-  if (contribution.geometry !== null) {
-    registrationLocationsMap.set(contribution.guid, {
+  if (registration.geometry !== null) {
+    registrationLocationsMap.set(registration.guid, {
       geometry: {
         type: 'Point',
-        coordinates: getPointCoordinates(contribution.geometry),
+        coordinates: getPointCoordinates(registration.geometry),
       },
     });
   }
@@ -337,13 +344,13 @@ function getLatestPlantDate(value: MyContributionsMapItem): Date {
   const EARLIEST_DATE = new Date(0); // Earliest possible date
 
   const getPlantDate = (
-    contributions: SingleRegistration[] | MySingleContribution[]
+    items: SingleRegistration[] | MySingleContribution[]
   ): Date => {
     try {
-      if (!contributions || contributions.length === 0) {
+      if (!items || items.length === 0) {
         return EARLIEST_DATE;
       }
-      const plantDate = contributions[0].plantDate;
+      const plantDate = items[0].plantDate;
       return plantDate ? new Date(plantDate) : EARLIEST_DATE;
     } catch (error) {
       console.error('Error parsing plant date:', error);
@@ -355,7 +362,7 @@ function getLatestPlantDate(value: MyContributionsMapItem): Date {
     case 'project':
       return getPlantDate(value.latestContributions);
     case 'registration':
-      return getPlantDate(value.contributions);
+      return getPlantDate(value.registrations);
     default:
       return EARLIEST_DATE;
   }
@@ -430,6 +437,7 @@ export const contributionsProcedure = procedure
       );
 
       const contributions = await fetchContributions(profileIds);
+      const registrations = await fetchRegistrations(profileIds);
       const gifts = await fetchGifts(profileIds);
 
       // Process contribution data, updating stats, myContributionsMap, and registrationLocationsMap
@@ -441,23 +449,30 @@ export const contributionsProcedure = procedure
           projectIdMap.get(contribution.projectId)?.country,
           stats.contributedCountries
         );
-        if (contribution.contributionType === 'planting') {
-          handleRegistrationContribution(
-            contribution,
-            stats,
-            myContributionsMap,
-            registrationLocationsMap,
-            projectIdMap.get(contribution.projectId) || null
-          );
-        } else {
-          handleDonationContribution(
-            contribution,
-            projectIdMap,
-            stats,
-            myContributionsMap,
-            projectLocationsMap
-          );
-        }
+        handleDonationContribution(
+          contribution,
+          projectIdMap,
+          stats,
+          myContributionsMap,
+          projectLocationsMap
+        );
+      });
+
+      registrations.forEach((registration) => {
+        registration.units = Number(registration.units);
+        stats.contributionsMadeCount++;
+        populateContributedCountries(
+          registration.country,
+          projectIdMap.get(registration.projectId)?.country,
+          stats.contributedCountries
+        );
+        handleRegistrationContribution(
+          registration,
+          stats,
+          myContributionsMap,
+          registrationLocationsMap,
+          projectIdMap.get(registration.projectId) || null
+        );
       });
 
       // Process gift data, updating myContributionsMap and stats
@@ -465,12 +480,14 @@ export const contributionsProcedure = procedure
         gift.quantity = Number(gift.quantity);
         stats.giftsReceivedCount++;
         stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
+        // TODO: why would gift.country be any different from projectGuidMap.get(gift.projectGuid)?.country?
         populateContributedCountries(
           gift.country,
           projectGuidMap.get(gift.projectGuid)?.country,
           stats.contributedCountries
         );
         // Handle individual gift contributions if the project is in the eligible project set
+        // TODO: what is the eligible project set?
         const project = projectGuidMap.get(gift.projectGuid);
         if (project) {
           handleGiftContribution(

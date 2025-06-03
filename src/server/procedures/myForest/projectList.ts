@@ -18,18 +18,22 @@ export const projectListsProcedure = procedure.query(async () => {
 			p.name,
 			p.slug,
 			p.classification,
-			COALESCE(metadata ->> '$.ecosystem', metadata ->> '$.ecosystems') as ecosystem,
+			COALESCE(metadata ->> 'ecosystem', metadata ->> 'ecosystems') as ecosystem,
 			p.purpose,
-			p.unit_type AS unitType,
+			p.unit_type AS "unitType",
 			p.country,
 			p.geometry,
 			p.image,
 			CASE 
-				WHEN p.accept_donations = 1 AND p.prohibit_donations = 0 AND p.is_active = 1 AND p.is_published = 1 AND p.is_verified = 1 
+				WHEN p.accept_donations IS TRUE 
+					AND p.prohibit_donations IS FALSE 
+					AND p.is_active IS TRUE 
+					AND p.is_published IS TRUE 
+					AND p.is_verified IS TRUE 
 				THEN TRUE 
 				ELSE FALSE 
-			END AS allowDonations,
-			prof.name AS tpoName
+			END AS "allowDonations",
+			prof.name AS "tpoName"
 		FROM
 			project p
 				INNER JOIN profile prof ON p.tpo_id = prof.id

@@ -8,7 +8,7 @@
       "titleEditBankDetails": "Gestione dei pagamenti - Modifica dei dati bancari"
     },
     "donationLinkTitle": "Link per le donazioni",
-    "planetcash": {
+    "planetCash": {
       "menuText": "PlanetCash",
       "submenuText": "Il mio PlanetCash",
       "titleAccount": "PlanetCash - Conti",
@@ -52,7 +52,7 @@
     "uploadPhotos": "Carica foto",
     "dragHere": "o trascinare qui",
     "contribNotFound": "Contributo non trovato",
-    "errorOccured": "Errore avvenuto",
+    "errorOccurred": "Errore avvenuto",
     "contribSuccess": "Aggiunto con successo {treeCount} {treeSpecies} 🌳 da {plantDate}",
     "moreThanOne": "minimo 1 albero richiesto",
     "registered": "Registrato",
@@ -136,6 +136,7 @@
     "referred": "Riferito a",
     "in-dispute": "In discussione",
     "dispute-lost": "Disputa persa",
+    "open": "Aperto",
     "nameForest": "{name}'s Forest",
     "taxReceipt": "Ricevuta fiscale",
     "history": "La storia",
@@ -182,7 +183,6 @@
     "transferFee": "Tassa di trasferimento",
     "giftComment": "Commento (privato)",
     "giftOccasion": "Occasione",
-    "open": "Aperto",
     "downloads": "Download",
     "account": "Conto",
     "loadMore": "Per saperne di più",

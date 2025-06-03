@@ -1,0 +1,177 @@
+@import '../../../../theme/theme';
+
+$layoutPaddingTop: 24px;
+$layoutPaddingSide: 20px;
+
+.dropdownButton {
+  display: flex;
+  border-radius: 12px;
+  background: $backgroundColor;
+  align-items: center;
+  padding: 12px 0px 9px 12px;
+  min-width: 350px;
+  justify-content: space-between;
+  cursor: pointer;
+  gap: 18px;
+  position: absolute;
+  z-index: 2;
+  right: calc($layoutPaddingSide + 10px);
+}
+
+.dropdownButtonAlignmentAbove {
+  top: calc($layoutPaddingTop + 75px);
+}
+
+.dropdownButtonAlignmentBelow {
+  top: calc($layoutPaddingTop + 10px);
+}
+
+.interventionIconAndTextContainer {
+  display: flex;
+  gap: 6px;
+}
+.labelTextContainer {
+  display: flex;
+  flex-direction: column;
+}
+.interventionsLabel {
+  font-size: $fontXXSmall;
+  color: $nonDonatableProjectBackgroundColor;
+  font-weight: 600;
+  span {
+    display: inline;
+  }
+}
+
+.interventionId {
+  text-transform: uppercase;
+}
+.interventionName {
+  text-transform: capitalize;
+  font-size: $fontXSmall;
+  font-weight: 700;
+  color: #333; //to be replaced
+}
+.menuArrow {
+  display: flex;
+  align-items: center;
+  margin-right: 13px;
+  svg {
+    width: 100%;
+    overflow: visible;
+  }
+}
+.interventionListOptions {
+  background-color: $backgroundColor;
+  padding: 6px 17px;
+  border-radius: 12px;
+  margin-top: 12px;
+  width: 350px;
+  font-size: $fontXSmall;
+  position: absolute;
+  z-index: 4;
+  right: 30px;
+  max-height: 42vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  > button {
+    width: 100%;
+  }
+}
+
+.interventionListOptionsAbove {
+  top: calc($layoutPaddingTop + 60px);
+}
+
+.interventionListOptionsBelow {
+  top: calc($layoutPaddingTop + 124px);
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 9px 0px;
+  color: rgba(51, 51, 51, 1);
+  cursor: pointer;
+  border-bottom: 1px solid $dividerColorNew;
+  font-weight: 400;
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+.hideDivider {
+  display: none;
+}
+.showDivider {
+  height: 0px;
+  border: 0px;
+  border-top: 1px solid $dividerColorNew;
+  margin: 0px;
+}
+.selectedItem {
+  color: #333; //to be replaced
+  text-shadow: 0 0 0.01px;
+  font-weight: 700;
+}
+
+@include xsPhoneView {
+  .interventionIconAndTextContainer {
+    > svg {
+      width: 16px;
+    }
+  }
+  .menuArrow {
+    margin-right: 5.13px;
+    svg {
+      width: 6.37px;
+      height: 4.183px;
+    }
+  }
+  .dropdownButton {
+    border-radius: 10px;
+    min-width: 93px;
+    padding: 5px;
+    position: unset;
+    height: 40px;
+  }
+  .labelTextContainer {
+    justify-content: center;
+    .interventionsLabel {
+      display: flex;
+      flex-direction: column;
+      .interventionId {
+        text-transform: none;
+      }
+      .separator {
+        display: none;
+      }
+    }
+    .interventionName {
+      display: none;
+    }
+  }
+  .interventionListOptions {
+    max-width: 140px;
+    padding: 8px 12px;
+    top: 36px;
+    right: 0px;
+    min-width: 160px;
+    z-index: 50;
+    .listItem {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      font-size: $fontXXSmall;
+      padding: 4px 0;
+      color: #333; //to be replaced
+      .interventionArea {
+        font-size: $fontXXSmall;
+      }
+    }
+  }
+}

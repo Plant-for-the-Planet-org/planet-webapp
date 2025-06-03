@@ -36,7 +36,7 @@
 }
 
 .giftTo a {
-  color: $primaryColor;
+  color: $primaryDarkColor;
   cursor: pointer;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .selectProject {
-  font-size: 20px;
+  font-size: $fontLarge;
   min-width: 150px;
   color: $primaryFontColor;
 }

@@ -1,0 +1,418 @@
+@import './../../../../theme/theme';
+
+$impersonationBannerOffset: -142px;
+$menuRightOffset: 20px;
+$menuRightOffsetMobile: -7px;
+$topSpacing: 69px;
+$topSpacingMobile: 52px;
+//salesforce campaign menu offsets
+$campaignRightOffset: 177px;
+$campaignRightOffsetMobile: 57px;
+
+.tools,
+.menuItemContainer {
+  position: absolute;
+  top: $topSpacing;
+  right: $menuRightOffset;
+
+  @include xsPhoneView {
+    top: $topSpacingMobile;
+    right: $menuRightOffsetMobile;
+  }
+}
+
+.about {
+  @extend .menuItemContainer;
+  @include xsPhoneView {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+.campaign {
+  position: absolute;
+  top: $topSpacing;
+  right: $campaignRightOffset;
+  @include xsPhoneView {
+    min-width: max-content;
+    right: $campaignRightOffsetMobile;
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+}
+
+.impersonationBanner {
+  width: 100%;
+  position: fixed;
+  z-index: 1220;
+  top: $impersonationBannerOffset;
+}
+
+.mainNavigationHeader {
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+  z-index: 1030;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  padding: 10px 25px;
+  border-radius: 0px;
+  height: 84px;
+  &.impersonationMode {
+    top: 49px;
+    @include xsPhoneView {
+      top: 54px;
+    }
+  }
+  @include xsPhoneView {
+    border-radius: 12px;
+    width: calc(100% - 20px);
+    top: 16px;
+    padding: 8.5px;
+    border: 1px solid rgba(211, 211, 211, 0.5);
+    height: 60px;
+  }
+}
+
+// header logo styles
+.tenantLogoContainer,
+.planetLogoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include xsPhoneView {
+    height: 42px;
+    a {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.tenantLogo {
+  margin-top: 0px;
+}
+
+.brandLogos {
+  display: flex;
+  align-items: center;
+  @include xsPhoneView {
+    gap: 5px;
+  }
+
+  .planetLogo,
+  .tenantLogo {
+    height: 60px;
+    @include xsPhoneView {
+      height: 32px;
+      width: 31px;
+    }
+  }
+
+  .logoDivider {
+    height: 36px;
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0rem 0.5rem;
+  }
+}
+
+.headerItems {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  height: 100%;
+  .profileButtonContainer {
+    margin-left: 10px;
+  }
+}
+
+@include xsPhoneView {
+  .headerItems {
+    align-items: center;
+    gap: 20px;
+
+    .profileButtonContainer {
+      display: flex;
+      justify-content: center;
+      margin-left: 5px;
+    }
+  }
+}
+
+// sign in button styles
+.mobileSignInButton {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 100%;
+  }
+}
+
+.profileImageButton {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  > img {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    @include xsPhoneView {
+      height: 24px;
+      width: 24px;
+    }
+  }
+  .userDefaultIconContainer {
+    width: 50px;
+    height: 50px;
+    @include xsPhoneView {
+      width: 24px;
+      height: 24px;
+    }
+    svg {
+      height: 100%;
+    }
+  }
+}
+
+.profileIconSkeleton {
+  width: 100%;
+  > span {
+    > span {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+  }
+  @include xsPhoneView {
+    > span {
+      > span {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.navbarItemGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  button,
+  a {
+    font-size: $fontMedium;
+    color: $dark;
+    font-weight: 500;
+    font-family: $primaryFontFamily;
+
+    &:hover {
+      color: $primaryDarkColor;
+    }
+
+    @include xsPhoneView {
+      font-size: $fontXSmall;
+      margin-top: 2px;
+    }
+  }
+
+  button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .chevron {
+      width: 24px;
+      height: 24px;
+
+      @include xsPhoneView {
+        width: 14px;
+        height: 14px;
+        margin-left: 3px;
+      }
+    }
+
+    svg {
+      margin-top: 2px;
+    }
+  }
+
+  .arrowIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .activeItem {
+    color: $primaryDarkColor;
+  }
+}
+
+// Navbar menu styles
+
+.navbarMenu {
+  display: flex;
+  min-width: max-content;
+  padding: 7px;
+  border-radius: 24px;
+  background: linear-gradient(
+    to bottom,
+    rgba(201, 239, 217, 1),
+    rgba(215, 242, 193, 1)
+  );
+  @include xsPhoneView {
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
+    min-width: 384px;
+  }
+}
+
+.navbarMenuSubContainer {
+  display: flex;
+  gap: 7px;
+  border-radius: 24px;
+  @include xsPhoneView {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  @include smTabletView {
+    flex-direction: column;
+  }
+
+  @include lgLaptopView {
+    flex-direction: row;
+  }
+}
+
+.menuStyles {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 19px;
+  flex: 1;
+
+  &.onlyIcon {
+    align-items: center;
+    @include xsPhoneView {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    @include smTabletView {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    @include lgLaptopView {
+      flex-direction: column;
+    }
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navbarMenuSection {
+  background: $backgroundColor;
+  max-width: 405px;
+  padding: 22px;
+  border-radius: 20px;
+  position: relative;
+  color: $mediumGrayColor;
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+
+  .sectionTitle {
+    font-size: $fontSmall;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    .highlightLabel {
+      font-weight: 700;
+    }
+  }
+
+  .sectionDescription {
+    font-size: $fontXSmall;
+  }
+}
+
+.navbarMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: max-content;
+  background: $backgroundColor;
+
+  h3 {
+    font-weight: 600;
+    font-size: $fontMedium;
+    color: $dark;
+
+    &:hover {
+      color: $primaryDarkColor;
+    }
+  }
+
+  .description {
+    font-weight: 400;
+    font-size: $fontSmall;
+    color: $mediumGrayColor;
+  }
+}
+
+.allTools {
+  padding: 2px 18px;
+  border-radius: 200px;
+  background-color: $primaryDarkColorTransparent;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  line-height: 21px;
+
+  @include xsPhoneView {
+    padding: 2px 10px;
+  }
+
+  .label {
+    font-weight: 700;
+    font-size: $fontXSmall;
+    color: $primaryDarkColor;
+  }
+}
+
+.chevronIcon {
+  margin-left: 6px;
+}
+
+.toolTipArrow {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid #c5f2e4;
+  position: absolute;
+  top: 21px;
+  left: 19px;
+
+  @include xsPhoneView {
+    top: 10px;
+  }
+}

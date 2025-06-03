@@ -2,6 +2,8 @@ import type { FC } from 'react';
 import type { ViewState } from 'react-map-gl-v7';
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
+import type { MapLayerOptionsType } from '../../utils/mapsV2/mapSettings.config';
+import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
 
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
@@ -45,8 +47,42 @@ const DEFAULT_MAP_STATE: MapState = {
   maxZoom: 20,
 };
 
+/**
+ * Contains current state of map settings (set using MapFeatureExplorer)
+ */
 export type MapOptions = {
-  showProjects: boolean;
+  [key in MapLayerOptionsType]?: boolean;
+};
+
+export type ExploreLayersData = {
+  [key in MapLayerOptionsType]?: SingleExploreLayerConfig;
+};
+
+export type SingleExploreLayerConfig = {
+  uuid: string;
+  name: string;
+  key: MapLayerOptionsType;
+  description: string;
+  earthEngineAssetId: string;
+  visParams: VisParams;
+  zoomConfig: LayerZoomConfig;
+  tileUrl: string;
+  googleEarthUrl: string;
+  metadata: Record<never, never>;
+  enabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type VisParams = {
+  max: number;
+  min: number;
+  palette: string[];
+};
+
+type LayerZoomConfig = {
+  minZoom: number;
+  maxZoom: number;
 };
 
 interface ProjectsMapState {
@@ -63,6 +99,11 @@ interface ProjectsMapState {
    * Updates the state of a single map-related option.
    */
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
+  timeTravelConfig: ProjectTimeTravelConfig | null;
+  setTimeTravelConfig: SetState<ProjectTimeTravelConfig | null>;
+  exploreLayersData: ExploreLayersData | null;
+  setExploreLayersData: SetState<ExploreLayersData | null>;
+  isExploreMode: boolean;
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
@@ -71,8 +112,21 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [isSatelliteView, setIsSatelliteView] = useState(false);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
-    showProjects: true,
+    projects: true,
   });
+  const [timeTravelConfig, setTimeTravelConfig] =
+    useState<ProjectTimeTravelConfig | null>(null);
+  const [exploreLayersData, setExploreLayersData] =
+    useState<ExploreLayersData | null>(null);
+  const [isExploreMode, setIsExploreMode] = useState(false);
+
+  // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
+  useEffect(() => {
+    const enabledLayers = Object.entries(mapOptions).filter(
+      ([key, value]) => key !== 'projects' && value === true
+    );
+    setIsExploreMode(enabledLayers.length > 0);
+  }, [mapOptions]);
 
   const handleViewStateChange = (newViewState: Partial<ExtendedViewState>) => {
     setViewState((prev) => ({
@@ -93,11 +147,23 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     loadMapStyle();
   }, []);
 
+  /**
+   * Updates mapOptions, allowing it to contain only one non-project option at a time
+   * @param option option being updated
+   * @param value boolean value to set the option to
+   */
   const updateMapOption = (option: keyof MapOptions, value: boolean) => {
-    setMapOptions((prevOptions) => ({
-      ...prevOptions,
-      [option]: value,
-    }));
+    if (option === 'projects') {
+      setMapOptions((prevOptions) => ({
+        ...prevOptions,
+        [option]: value,
+      }));
+    } else {
+      setMapOptions((prevOptions) => ({
+        projects: Boolean(prevOptions.projects),
+        [option]: value,
+      }));
+    }
   };
 
   const value: ProjectsMapState | null = useMemo(
@@ -109,8 +175,21 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       setIsSatelliteView,
       mapOptions,
       updateMapOption,
+      exploreLayersData,
+      setExploreLayersData,
+      isExploreMode,
+      timeTravelConfig,
+      setTimeTravelConfig,
     }),
-    [mapState, viewState, mapOptions, isSatelliteView]
+    [
+      mapState,
+      viewState,
+      mapOptions,
+      isSatelliteView,
+      exploreLayersData,
+      isExploreMode,
+      timeTravelConfig,
+    ]
   );
 
   return (
