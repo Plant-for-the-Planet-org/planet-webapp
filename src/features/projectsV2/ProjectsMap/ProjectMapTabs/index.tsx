@@ -5,6 +5,7 @@ import SingleTab from './SingleTab';
 // import SatelliteAnalysisIcon from '../../../../temp/icons/SatelliteAnalysisIcon';
 import { useTranslations } from 'next-intl';
 import FieldDataIcon from '../../../../../public/assets/images/icons/FieldDataIcon';
+import TimeTravelIcon from '../../../../../public/assets/images/icons/TimeTravelIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
 
 export type SelectedTab = 'field' | 'timeTravel';
@@ -87,7 +88,7 @@ const MapTabs = ({
       {isTimeTravelEnabled && (
         <SingleTab
           icon={
-            <SatelliteIcon
+            <TimeTravelIcon
               color={
                 selectedTab === 'timeTravel'
                   ? `${'var(--light)'}`

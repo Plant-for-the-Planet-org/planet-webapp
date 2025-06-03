@@ -1,4 +1,4 @@
-import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
+import TimeTravelIcon from '../../../../../public/assets/images/icons/TimeTravelIcon';
 import type { Meta, StoryObj } from '@storybook/react';
 import SingleTab from '../ProjectMapTabs/SingleTab';
 
@@ -12,7 +12,7 @@ type Story = StoryObj<typeof SingleTab>;
 
 export const Selected: Story = {
   args: {
-    icon: <SatelliteIcon color={'#fff'} />,
+    icon: <TimeTravelIcon color={'#fff'} />,
     title: 'Time Travel',
     isSelected: true,
     onClickHandler: () => {},
@@ -21,7 +21,7 @@ export const Selected: Story = {
 
 export const Unselected: Story = {
   args: {
-    icon: <SatelliteIcon color={'#000'} />,
+    icon: <TimeTravelIcon color={'#000'} />,
     title: 'Time Travel',
     isSelected: false,
     onClickHandler: () => {},
