@@ -89,8 +89,6 @@ interface ProjectsMapState {
   viewState: ViewState;
   handleViewStateChange: (newViewState: Partial<ExtendedViewState>) => void;
   mapState: MapState;
-  isSatelliteView: boolean;
-  setIsSatelliteView: SetState<boolean>;
   /**
    * Contains the current state (enabled/disabled) of various map-related options.
    */
@@ -110,7 +108,6 @@ const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
 export const ProjectsMapProvider: FC = ({ children }) => {
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
-  const [isSatelliteView, setIsSatelliteView] = useState(false);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     projects: true,
   });
@@ -171,8 +168,6 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       mapState,
       viewState,
       handleViewStateChange,
-      isSatelliteView,
-      setIsSatelliteView,
       mapOptions,
       updateMapOption,
       exploreLayersData,
@@ -185,7 +180,6 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       mapState,
       viewState,
       mapOptions,
-      isSatelliteView,
       exploreLayersData,
       isExploreMode,
       timeTravelConfig,

@@ -22,12 +22,10 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
-    useProjects();
+  const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
   if (singleProject === null) return null;
 
-  const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
-    useProjectsMap();
+  const { handleViewStateChange } = useProjectsMap();
   const router = useRouter();
 
   const sitesGeoJson = useMemo(() => {
@@ -92,15 +90,6 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
     }
   }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
 
-  useEffect(() => {
-    const hasNoPlantLocations = !plantLocations?.length;
-    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
-    // Satellite view will be:
-    // - false if there are no plant locations and no sites (i.e., a single project location only)
-    // - true if there are no plant locations but there are multiple sites
-    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations, hasNoSites]);
-
   return (
     <>
       {hasNoSites ? (
@@ -112,10 +101,10 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
       ) : (
         <>
           <SitePolygon
-            isSatelliteView={isSatelliteView}
+            isSatelliteBackground={selectedTab === 'satellite'}
             geoJson={sitesGeoJson}
           />
-          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+          {selectedTab === 'satellite' && <SatelliteLayer />}
         </>
       )}
       {selectedTab === 'field' && <PlantLocations />}

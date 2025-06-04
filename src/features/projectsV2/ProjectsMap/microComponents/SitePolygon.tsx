@@ -5,12 +5,12 @@ import { Layer, Source } from 'react-map-gl-v7/maplibre';
 
 interface Props {
   geoJson: FeatureCollection;
-  isSatelliteView: boolean;
+  isSatelliteBackground: boolean;
 }
 
 export default function SitePolygon({
   geoJson,
-  isSatelliteView,
+  isSatelliteBackground,
 }: Props): React.ReactElement {
   return (
     <Source id="project-site" type="geojson" data={geoJson}>
@@ -19,7 +19,7 @@ export default function SitePolygon({
         type="line"
         source="project-site"
         paint={{
-          'line-color': isSatelliteView ? '#fff' : '#007A49',
+          'line-color': isSatelliteBackground ? '#fff' : '#007A49',
           'line-width': 4,
         }}
         layout={{

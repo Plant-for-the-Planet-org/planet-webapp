@@ -60,7 +60,7 @@ export default function PlantLocations(): React.ReactElement {
     selectedSamplePlantLocation,
     selectedInterventionType,
   } = useProjects();
-  const { isSatelliteView, viewState } = useProjectsMap();
+  const { viewState } = useProjectsMap();
 
   const t = useTranslations('Maps');
   const locale = useLocale();
@@ -248,7 +248,7 @@ export default function PlantLocations(): React.ReactElement {
           id={`line-selected`}
           type="line"
           paint={{
-            'line-color': isSatelliteView ? '#ffffff' : FillColor,
+            'line-color': FillColor,
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
@@ -262,7 +262,7 @@ export default function PlantLocations(): React.ReactElement {
             'text-font': ['Ubuntu Regular'],
           }}
           paint={{
-            'text-color': isSatelliteView ? '#ffffff' : '#2f3336',
+            'text-color': '#2f3336',
           }}
           filter={['!=', ['get', 'dateDiff'], '']}
         />
