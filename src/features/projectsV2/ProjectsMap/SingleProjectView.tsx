@@ -15,6 +15,7 @@ import ProjectLocation from './microComponents/ProjectLocation';
 import FireLocations from './microComponents/FireLocations';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
+import { useFetchSiteLayers } from '../../../utils/mapsV2/useFetchSiteLayers';
 
 interface Props {
   mapRef: MapRef;
@@ -23,6 +24,8 @@ interface Props {
 
 const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation } = useProjects();
+  useFetchSiteLayers();
+
   if (singleProject === null) return null;
 
   const { handleViewStateChange } = useProjectsMap();
