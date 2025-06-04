@@ -1,37 +1,37 @@
-import type { SliderImage } from '../../../../common/types/projectv2';
 import styles from '../../styles/Slider.module.scss';
 
 interface Props {
   imageURL: string;
-  carouselImage: SliderImage;
-  leftAlignment: number;
+  imageDescription: string | null | undefined;
   isImageModalOpenOnMobile: boolean | undefined;
+  isModalOpen: boolean;
+  totalImages: number;
+  currentImage: number;
 }
 
 export const SingleCarouselImage = ({
   imageURL,
-  carouselImage,
-  leftAlignment,
+  imageDescription,
   isImageModalOpenOnMobile,
+  isModalOpen,
+  totalImages,
+  currentImage,
 }: Props) => {
-  const contentClassName = `${styles.carouselContent} ${
-    isImageModalOpenOnMobile ? styles.carouselContentExpand : ''
-  }`;
   return (
     <div
-      className={contentClassName}
+      className={
+        isImageModalOpenOnMobile
+          ? styles.carouselContentMobile
+          : styles.carouselContent
+      }
       style={{
         background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),url(${imageURL})`,
       }}
     >
-      {carouselImage?.description && (
-        <p
-          className={styles.carouselContentText}
-          style={{ left: `${leftAlignment}px` }}
-        >
-          {carouselImage?.description}
-        </p>
+      {imageDescription && !isImageModalOpenOnMobile && (
+        <p>{imageDescription}</p>
       )}
+      {isModalOpen && <p>{`${currentImage} / ${totalImages}`}</p>}
     </div>
   );
 };
