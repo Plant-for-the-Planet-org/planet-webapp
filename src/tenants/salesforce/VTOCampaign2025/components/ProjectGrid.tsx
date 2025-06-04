@@ -10,10 +10,12 @@ import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
+import { useLocale } from 'next-intl';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
+  const locale = useLocale();
   const { getApi } = useApi();
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
@@ -21,15 +23,16 @@ export default function ProjectGrid() {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getApi(`/app/projects`, {
+        const projects = await getApi<MapProject[]>(`/app/projects`, {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
             tenant: tenantConfig.id,
+            locale: locale,
             'filter[purpose]': 'trees,conservation',
           },
         });
-        setProjects(projects as MapProject[]);
+        setProjects(projects);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');

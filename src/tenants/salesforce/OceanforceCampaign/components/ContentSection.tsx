@@ -12,12 +12,16 @@ import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurren
 import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { useApi } from '../../../../hooks/useApi';
+import { useLocale } from 'next-intl';
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const currencyCode = getStoredCurrency();
   const { getApi } = useApi();
+  const locale = useLocale();
+  const { tenantConfig } = useTenant();
 
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
@@ -31,6 +35,8 @@ export default function ContentSection() {
           queryParams: {
             _scope: 'extended',
             currency: currencyCode,
+            locale: locale,
+            tenant: tenantConfig.id,
           },
         });
         setProject(project);
@@ -42,7 +48,7 @@ export default function ContentSection() {
     if (projectSlug) {
       loadProject();
     }
-  }, [projectSlug, currencyCode]);
+  }, [projectSlug, currencyCode, locale, tenantConfig.id]);
   return (
     <div className={`${styles.contentSectionContainer}`}>
       <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>

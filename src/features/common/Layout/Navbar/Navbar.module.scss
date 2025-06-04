@@ -1,8 +1,54 @@
 @import './../../../../theme/theme';
 
+$impersonationBannerOffset: -142px;
+$menuRightOffset: 20px;
+$menuRightOffsetMobile: -7px;
+$topSpacing: 69px;
+$topSpacingMobile: 52px;
+//salesforce campaign menu offsets
+$campaignRightOffset: 177px;
+$campaignRightOffsetMobile: 57px;
+
+.tools,
+.menuItemContainer {
+  position: absolute;
+  top: $topSpacing;
+  right: $menuRightOffset;
+
+  @include xsPhoneView {
+    top: $topSpacingMobile;
+    right: $menuRightOffsetMobile;
+  }
+}
+
+.about {
+  @extend .menuItemContainer;
+  @include xsPhoneView {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+.campaign {
+  position: absolute;
+  top: $topSpacing;
+  right: $campaignRightOffset;
+  @include xsPhoneView {
+    min-width: max-content;
+    right: $campaignRightOffsetMobile;
+  }
+}
+
 .navbar {
   display: flex;
   justify-content: center;
+}
+
+.impersonationBanner {
+  width: 100%;
+  position: fixed;
+  z-index: 1220;
+  top: $impersonationBannerOffset;
 }
 
 .mainNavigationHeader {
@@ -22,7 +68,7 @@
   &.impersonationMode {
     top: 49px;
     @include xsPhoneView {
-      top: 40px;
+      top: 54px;
     }
   }
   @include xsPhoneView {
@@ -120,8 +166,10 @@
   > img {
     border-radius: 50%;
     height: 50px;
+    width: 50px;
     @include xsPhoneView {
       height: 24px;
+      width: 24px;
     }
   }
   .userDefaultIconContainer {
@@ -223,6 +271,10 @@
     rgba(201, 239, 217, 1),
     rgba(215, 242, 193, 1)
   );
+  @include xsPhoneView {
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
+    min-width: 384px;
+  }
 }
 
 .navbarMenuSubContainer {
@@ -242,41 +294,6 @@
 
   @include lgLaptopView {
     flex-direction: row;
-  }
-}
-
-.about {
-  position: absolute;
-  top: 56px;
-  right: -228px;
-  @include xsPhoneView {
-    min-width: 367px;
-    max-height: 70vh;
-    top: 43px;
-    right: -126px;
-    overflow-y: auto;
-  }
-}
-
-.tools {
-  position: absolute;
-  top: 56px;
-  right: -129px;
-  @include xsPhoneView {
-    min-width: 367px;
-    top: 43px;
-    right: -59px;
-  }
-}
-
-.campaign {
-  position: absolute;
-  top: 56px;
-  right: -27px;
-  @include xsPhoneView {
-    min-width: max-content;
-    top: 43px;
-    right: -37px;
   }
 }
 
@@ -322,7 +339,7 @@
 
   .sectionTitle {
     font-size: $fontSmall;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 
     .highlightLabel {
@@ -369,6 +386,10 @@
   right: 10px;
   line-height: 21px;
 
+  @include xsPhoneView {
+    padding: 2px 10px;
+  }
+
   .label {
     font-weight: 700;
     font-size: $fontXSmall;
@@ -388,7 +409,7 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid #c5f2e4;
   position: absolute;
-  top: 17px;
+  top: 21px;
   left: 19px;
 
   @include xsPhoneView {
