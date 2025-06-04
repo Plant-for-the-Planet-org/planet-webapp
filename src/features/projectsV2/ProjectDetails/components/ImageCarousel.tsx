@@ -1,17 +1,21 @@
 import type { SliderImage } from '../../../common/types/projectv2';
+import type { SetState } from '../../../common/types/common';
 
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
 import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   images: SliderImage[] | undefined;
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
-  leftAlignment: number;
   isImageModalOpenOnMobile?: boolean;
+  currentIndex: number;
+  setCurrentIndex: SetState<number>;
+  isModalOpen: boolean;
 }
 
 const ImageCarousel = ({
@@ -19,19 +23,17 @@ const ImageCarousel = ({
   type,
   imageSize,
   imageHeight,
-  leftAlignment,
   isImageModalOpenOnMobile,
+  currentIndex,
+  setCurrentIndex,
+  isModalOpen,
 }: Props) => {
-  const [projectImages, setProjectImages] = useState<
-    {
-      content: () => React.ReactElement;
-    }[]
-  >([]);
   const pattern = /^https:\/\//i;
-  useEffect(() => {
+
+  const projectImages = useMemo(() => {
     if (images && images?.length > 0) {
-      const result = images
-        .map((carouselImage) => {
+      return images
+        .map((carouselImage, key) => {
           if (carouselImage?.image) {
             const imageURL = pattern.test(carouselImage.image)
               ? carouselImage.image
@@ -40,19 +42,24 @@ const ImageCarousel = ({
               content: () => (
                 <SingleCarouselImage
                   imageURL={imageURL}
-                  carouselImage={carouselImage}
-                  leftAlignment={leftAlignment}
+                  imageDescription={carouselImage.description}
                   isImageModalOpenOnMobile={isImageModalOpenOnMobile}
+                  isModalOpen={isModalOpen}
+                  totalImages={images?.length}
+                  currentImage={key + 1}
                 />
               ),
             };
           }
           return null;
         })
-        .filter((image) => image !== null && image !== undefined);
-      setProjectImages(result);
+        .filter(
+          (image): image is { content: () => React.ReactElement } =>
+            image !== null
+        );
     }
-  }, [images]);
+    return [];
+  }, [type, imageSize, images, isImageModalOpenOnMobile, isModalOpen]);
 
   if (projectImages?.length === 0) return <></>;
   return (
@@ -62,20 +69,17 @@ const ImageCarousel = ({
       width={'100%'}
       height={imageHeight}
       loop={true}
-      progressContainerStyles={{
-        position: 'absolute',
-        bottom: 18,
-        right: 18,
-        left: leftAlignment,
-        padding: '7px 0 5px 0',
-        maxWidth: '90%',
-      }}
-      progressStyles={{ background: '#27AE60', height: 3.35 }}
+      progressContainerStyles={
+        isModalOpen ? { display: 'none' } : { bottom: '6px', width: '93%' }
+      }
+      progressStyles={{ background: themeProperties.greenTwo, height: 3.35 }}
       progressWrapperStyles={{
         height: 3.35,
         background: 'rgba(255, 255, 255, 0.50)',
       }}
-      // storyContainerStyles={{ borderRadius: 13 }}
+      currentIndex={currentIndex}
+      onStoryStart={(index: number) => setCurrentIndex(index)}
+      key={currentIndex}
     />
   );
 };
