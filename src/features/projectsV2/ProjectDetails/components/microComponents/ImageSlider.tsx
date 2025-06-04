@@ -9,6 +9,7 @@ import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/Cr
 import SlidePrevButtonIcon from '../../../../../../public/assets/images/icons/projectV2/SlidePrevButtonIcon';
 import SlideNextButtonIcon from '../../../../../../public/assets/images/icons/projectV2/SlideNextButtonIcon';
 import themeProperties from '../../../../../theme/themeProperties';
+import { useTranslations } from 'next-intl';
 
 interface ImageSliderProps {
   images: Image[];
@@ -32,18 +33,24 @@ const SliderButton = ({
   className,
 }: SliderButtonProps) => {
   const { primaryDarkColor, light } = themeProperties;
+  const tImageSlider = useTranslations('ProjectDetails');
   const Icon = direction === 'prev' ? SlidePrevButtonIcon : SlideNextButtonIcon;
   return (
     <button
-      role="button"
       className={className}
       onClick={onClick}
       disabled={disabled}
+      aria-label={`${
+        direction === 'prev'
+          ? tImageSlider('previousImage')
+          : tImageSlider('nextImage')
+      }`}
     >
       <Icon color={disabled ? light.dividerColorNew : primaryDarkColor} />
     </button>
   );
 };
+
 const ImageSlider = ({
   images,
   imageSize,
@@ -56,6 +63,15 @@ const ImageSlider = ({
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
   const isFirstImage = currentIndex === 0;
   const isLastImage = currentIndex === images.length - 1;
+
+  const renderSliderButton = (dir: 'prev' | 'next', className: string) => (
+    <SliderButton
+      direction={dir}
+      disabled={dir === 'prev' ? isFirstImage : isLastImage}
+      onClick={() => setCurrentIndex(currentIndex + (dir === 'prev' ? -1 : 1))}
+      className={className}
+    />
+  );
   return (
     <>
       {!isModalOpen && (
@@ -92,14 +108,7 @@ const ImageSlider = ({
           }}
         >
           <>
-            {!isMobile && (
-              <SliderButton
-                direction="prev"
-                disabled={isFirstImage}
-                onClick={() => setCurrentIndex(currentIndex - 1)}
-                className={styles.sliderButton}
-              />
-            )}
+            {!isMobile && renderSliderButton('prev', styles.sliderButton)}
             <div className={styles.expandedImageSliderContainer}>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -108,14 +117,8 @@ const ImageSlider = ({
                 <CrossIcon width={isMobile ? 10 : 18} />
               </button>
 
-              {isMobile && (
-                <SliderButton
-                  direction="prev"
-                  disabled={isFirstImage}
-                  onClick={() => setCurrentIndex(currentIndex - 1)}
-                  className={styles.prevMobileSliderButton}
-                />
-              )}
+              {isMobile &&
+                renderSliderButton('prev', styles.prevMobileSliderButton)}
 
               <ImageCarousel
                 images={images}
@@ -127,24 +130,10 @@ const ImageSlider = ({
                 currentIndex={currentIndex}
                 isModalOpen={isModalOpen}
               />
-
-              {isMobile && (
-                <SliderButton
-                  direction="next"
-                  disabled={isLastImage}
-                  onClick={() => setCurrentIndex(currentIndex + 1)}
-                  className={styles.nextMobileSliderButton}
-                />
-              )}
+              {isMobile &&
+                renderSliderButton('next', styles.nextMobileSliderButton)}
             </div>
-            {!isMobile && (
-              <SliderButton
-                direction="next"
-                disabled={isLastImage}
-                onClick={() => setCurrentIndex(currentIndex + 1)}
-                className={styles.sliderButton}
-              />
-            )}
+            {!isMobile && renderSliderButton('next', styles.sliderButton)}
           </>
         </Modal>
       )}
