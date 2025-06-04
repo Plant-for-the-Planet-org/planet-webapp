@@ -65,7 +65,7 @@
       "stateInvalid": "State is invalid. Only letters and these special characters are allowed: space . , ( ) -",
       "zipCodeRequired": "Zip Code is required",
       "zipCodeInvalid": "Zip Code is invalid",
-      "websiteInvalid": "Please enter valid Website URL",
+      "websiteInvalid": "Please enter valid Website URL starting with http:// or https://",
       "countryRequired": "Country is required",
       "companyRequired": "Company Name is required"
     },

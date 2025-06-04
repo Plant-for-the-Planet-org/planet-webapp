@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from '../../styles/ProjectInfo.module.scss';
 import RightArrowIcon from '../../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 
@@ -8,14 +8,27 @@ interface Props {
     title: string | null;
     link: string | null;
     shouldOpenNewTab: boolean;
+    isExternalLink?: boolean;
   };
 }
 
 const SingleContactDetail = ({ contactInfo }: Props) => {
-  const { link, shouldOpenNewTab, icon, title } = contactInfo;
+  const { link, shouldOpenNewTab, icon, title, isExternalLink } = contactInfo;
+
+  const processedLink = useMemo(() => {
+    if (!link) return undefined;
+
+    if (isExternalLink) {
+      if (!link.startsWith('http://') && !link.startsWith('https://')) {
+        return `https://${link}`;
+      }
+    }
+    return link;
+  }, [link, isExternalLink]);
+
   return (
     <a
-      href={link || undefined}
+      href={processedLink || undefined}
       target={shouldOpenNewTab ? '_blank' : '_self'}
       rel="noreferrer"
       className={styles.singleContact}

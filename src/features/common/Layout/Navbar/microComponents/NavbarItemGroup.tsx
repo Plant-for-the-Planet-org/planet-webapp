@@ -74,40 +74,46 @@ const NavbarItemGroup = ({
   const handleMouseLeave = () => setOpenMenuKey(null);
 
   return (
-    <div
-      className={styles.navbarItemGroup}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {navbarItem.link ? (
-        <Link href={navbarItem.link} prefetch={false}>
-          <span className={activeNavbarItemStyles}>
-            {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
-          </span>
-        </Link>
-      ) : (
-        <button
-          onClick={handleClick}
-          role="button"
-          aria-haspopup="true"
-          aria-expanded={isNavMenuOpen}
-          aria-controls={`nav-menu-${navbarItem.headerKey}`}
-        >
-          <span className={activeNavbarItemStyles}>
-            {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
-          </span>
-          <span className={styles.chevron}>
-            {isNavMenuOpen ? (
-              <DropdownUpArrow width={12} color={primaryDarkColor} />
-            ) : (
-              <DropdownDownArrow width={15} />
-            )}
-          </span>
-          {isNavMenuOpen && <div className={styles.toolTipArrow} />}
-        </button>
-      )}
+    <>
+      <div
+        className={styles.navbarItemGroup}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {navbarItem.link ? (
+          <Link href={navbarItem.link} prefetch={false}>
+            <span className={activeNavbarItemStyles}>
+              {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
+            </span>
+          </Link>
+        ) : (
+          <button
+            onClick={handleClick}
+            role="button"
+            aria-haspopup="true"
+            aria-expanded={isNavMenuOpen}
+            aria-controls={`nav-menu-${navbarItem.headerKey}`}
+          >
+            <span className={activeNavbarItemStyles}>
+              {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
+            </span>
+            <span className={styles.chevron}>
+              {isNavMenuOpen ? (
+                <DropdownUpArrow width={12} color={primaryDarkColor} />
+              ) : (
+                <DropdownDownArrow width={15} />
+              )}
+            </span>
+            {isNavMenuOpen && <div className={styles.toolTipArrow} />}
+          </button>
+        )}
+      </div>
       {isNavMenuOpen && navbarItem.menu !== undefined && (
-        <div className={`${styles.navbarMenu} ${styles[navbarItem.headerKey]}`}>
+        <div
+          className={`${styles.navbarMenu} ${styles[navbarItem.headerKey]}`}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <div className={styles.navbarMenuSubContainer}>
             {navbarItem.hasSection === true ? (
               renderMenuSections(navbarItem.menu)
@@ -122,7 +128,7 @@ const NavbarItemGroup = ({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
