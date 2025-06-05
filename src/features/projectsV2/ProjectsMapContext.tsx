@@ -64,7 +64,7 @@ export type SingleExploreLayerConfig = {
   key: MapLayerOptionsType;
   description: string;
   earthEngineAssetId: string;
-  visParams: VisParams;
+  visParams: VisParams | {};
   zoomConfig: LayerZoomConfig;
   tileUrl: string;
   googleEarthUrl: string;
@@ -85,6 +85,25 @@ type LayerZoomConfig = {
   maxZoom: number;
 };
 
+export type SiteLayersData = {
+  [key: string]: SingleSiteLayerConfig[];
+};
+
+export type SingleSiteLayerConfig = {
+  uuid: string;
+  name: string;
+  key: string;
+  description: string | null;
+  visParams: Partial<VisParams>;
+  zoomConfig: Partial<LayerZoomConfig>;
+  tileUrl: string;
+  googleEarthUrl: string;
+  metadata: Record<never, never>;
+  siteUuid: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 interface ProjectsMapState {
   viewState: ViewState;
   handleViewStateChange: (newViewState: Partial<ExtendedViewState>) => void;
@@ -101,6 +120,8 @@ interface ProjectsMapState {
   setTimeTravelConfig: SetState<ProjectTimeTravelConfig | null>;
   exploreLayersData: ExploreLayersData | null;
   setExploreLayersData: SetState<ExploreLayersData | null>;
+  siteLayersData: SiteLayersData;
+  setSiteLayersData: SetState<SiteLayersData>;
   isExploreMode: boolean;
 }
 
@@ -115,6 +136,7 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     useState<ProjectTimeTravelConfig | null>(null);
   const [exploreLayersData, setExploreLayersData] =
     useState<ExploreLayersData | null>(null);
+  const [siteLayersData, setSiteLayersData] = useState<SiteLayersData>({});
   const [isExploreMode, setIsExploreMode] = useState(false);
 
   // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
@@ -172,6 +194,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       updateMapOption,
       exploreLayersData,
       setExploreLayersData,
+      siteLayersData,
+      setSiteLayersData,
       isExploreMode,
       timeTravelConfig,
       setTimeTravelConfig,
@@ -181,6 +205,7 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       viewState,
       mapOptions,
       exploreLayersData,
+      siteLayersData,
       isExploreMode,
       timeTravelConfig,
     ]
