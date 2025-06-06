@@ -14,7 +14,6 @@ const {
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
   topProjectTransparentColor,
-  mediumGrayColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
@@ -23,6 +22,13 @@ const {
   exploreDescriptionBackground,
   lightOrange,
   CharcoalGray,
+  mediumGrayColor,
+  lightGrayColor,
+  coreTextColor,
+  softTextColorTwo,
+  hintTextColor,
+  fieldBackgroundColor,
+  fireRedColor,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -88,6 +94,12 @@ const getGlobalStyles = async () => {
       --horizontal-line-color: ${horizontalLineColorNew};
       --medium-blue-color: ${theme.mediumBlueColor};
       --medium-gray-color: ${mediumGrayColor};
+      --light-gray-color: ${lightGrayColor};
+      --core-text-color: ${coreTextColor};
+      --soft-text-color-two: ${softTextColorTwo};
+      --hint-text-color: ${hintTextColor};
+      --field-background-color: ${fieldBackgroundColor};
+      --fire-red-color: ${fireRedColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};

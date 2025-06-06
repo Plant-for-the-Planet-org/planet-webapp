@@ -44,6 +44,11 @@ const themeProperties = {
   deforestrationToggleColorNew: 'rgba(235, 87, 87, 1)',
   exploreDescriptionBackground: '242, 242, 242',
   greenTwo: '#27ae60',
+  coreTextColor: '#333333',
+  softTextColorTwo: '#828282',
+  hintTextColor: '#bdbdbd',
+  fieldBackgroundColor: '#bdbdbd33',
+  fireRedColor: '#eb5757',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
