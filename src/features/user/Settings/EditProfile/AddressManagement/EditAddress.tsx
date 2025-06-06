@@ -48,19 +48,28 @@ const EditAddress = ({
       );
   }, [selectedAddressForAction]);
 
-  const handleEdit = useCallback(async (data: AddressFormData) => {
-    const payload: EditAddressApiPayload = {
-      ...data,
-      country,
-      type: primaryAddressChecked
-        ? ADDRESS_TYPE.PRIMARY
-        : selectedAddressForAction.type,
-    };
+  const handleEdit = useCallback(
+    async (data: AddressFormData) => {
+      const payload: EditAddressApiPayload = {
+        ...data,
+        country,
+        type: primaryAddressChecked
+          ? ADDRESS_TYPE.PRIMARY
+          : selectedAddressForAction.type,
+      };
 
-    await editAddress(selectedAddressForAction.id, payload).finally(
-      handleCancel
-    );
-  }, []);
+      await editAddress(selectedAddressForAction.id, payload).finally(
+        handleCancel
+      );
+    },
+    [
+      country,
+      primaryAddressChecked,
+      selectedAddressForAction,
+      editAddress,
+      handleCancel,
+    ]
+  );
 
   return (
     <AddressFormLayout label={tAddressManagement('addressForm.editAddress')}>
