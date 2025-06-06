@@ -18,7 +18,7 @@ const LayerInfoPopup = forwardRef<HTMLDivElement, LayerInfoPopupProps>(
           type="button"
           onClick={closePopup}
         >
-          <CrossIcon width={18} />
+          <CrossIcon width={14} />
         </button>
         <div className={styles.popupContent}>
           <h2>{`${selectedLayer.label} Map`}</h2>
