@@ -31,6 +31,7 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
+import SiteLayers from './SiteLayers';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -62,6 +63,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     timeTravelConfig,
     setTimeTravelConfig,
     isExploreMode,
+    siteLayersData,
   } = useProjectsMap();
   const {
     plantLocations,
@@ -74,6 +76,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     singleProject,
     selectedPlantLocation,
     selectedSamplePlantLocation,
+    selectedSiteId,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
@@ -160,6 +163,11 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowMapTabs = selectedTab !== null;
   const shouldShowExploreLayers =
     props.page === 'project-list' && isExploreMode;
+  const shouldShowSiteLayers =
+    props.page === 'project-details' &&
+    selectedTab === 'satellite' &&
+    selectedSiteId !== null &&
+    siteLayersData[selectedSiteId] !== undefined;
 
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
@@ -285,6 +293,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           }
         >
           {shouldShowExploreLayers && <ExploreLayers />}
+          {shouldShowSiteLayers && <SiteLayers selectedSiteLayer={'biomass'} />}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}
