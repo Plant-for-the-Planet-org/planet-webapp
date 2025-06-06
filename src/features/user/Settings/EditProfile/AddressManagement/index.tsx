@@ -1,7 +1,7 @@
 import type { Address } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import AddressList from './microComponents/AddressList';
@@ -56,10 +56,10 @@ const AddressManagement = () => {
     [userAddresses]
   );
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setIsModalOpen(false);
     setAddressAction(null);
-  };
+  }, [setIsModalOpen, setAddressAction]);
 
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
