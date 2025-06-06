@@ -2,7 +2,6 @@ import type { AddressSuggestionsType } from '../../../../../common/types/geocode
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
-import type { AddressAction } from '../../../../../common/types/profile';
 import type { AddressType } from '@planet-sdk/common';
 
 import { useCallback, useMemo, useState } from 'react';
@@ -40,23 +39,21 @@ interface Props {
   label: string;
   processFormData: (data: AddressFormData) => Promise<void>;
   defaultAddressDetail: AddressFormData & { type: AddressType };
-  setIsModalOpen: SetState<boolean>;
   isLoading: boolean;
-  setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
   primaryAddressChecked: boolean;
   setPrimaryAddressChecked: SetState<boolean>;
+  handleCancel: () => void;
 }
 
 const AddressForm = ({
   country,
   setCountry,
   defaultAddressDetail,
-  setIsModalOpen,
+  handleCancel,
   label,
   processFormData,
   isLoading,
-  setAddressAction,
   showPrimaryAddressToggle,
   primaryAddressChecked,
   setPrimaryAddressChecked,
@@ -128,11 +125,7 @@ const AddressForm = ({
     reset(defaultAddressDetail);
     setAddressSuggestions([]);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setAddressAction(null);
-    resetForm();
-  };
+
   return (
     <form className={styles.addressForm}>
       <AddressInput
@@ -253,7 +246,10 @@ const AddressForm = ({
         <AddressFormButtons
           text={label}
           handleSubmit={handleSubmit(processFormData)}
-          handleCancel={handleCancel}
+          handleCancel={() => {
+            handleCancel();
+            resetForm();
+          }}
         />
       )}
     </form>

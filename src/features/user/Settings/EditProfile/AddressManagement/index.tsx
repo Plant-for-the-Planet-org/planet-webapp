@@ -56,24 +56,27 @@ const AddressManagement = () => {
     [userAddresses]
   );
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setAddressAction(null);
+  };
+
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
           <AddAddress
-            setIsModalOpen={setIsModalOpen}
-            setAddressAction={setAddressAction}
             showPrimaryAddressToggle={false}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
         if (!selectedAddressForAction) return <></>;
         return (
           <EditAddress
-            setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            setAddressAction={setAddressAction}
             showPrimaryAddressToggle={false}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.DELETE:
@@ -81,8 +84,7 @@ const AddressManagement = () => {
         return (
           <DeleteAddress
             addressId={selectedAddressForAction.id}
-            setIsModalOpen={setIsModalOpen}
-            setAddressAction={setAddressAction}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.SET_PRIMARY:
@@ -91,9 +93,8 @@ const AddressManagement = () => {
           <UpdateAddressType
             addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
-            setAddressAction={setAddressAction}
-            setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.SET_BILLING:
@@ -102,9 +103,8 @@ const AddressManagement = () => {
           <UpdateAddressType
             addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
-            setAddressAction={setAddressAction}
-            setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.UNSET_BILLING:
@@ -112,9 +112,8 @@ const AddressManagement = () => {
         return (
           <UnsetBillingAddress
             addressType={ADDRESS_TYPE.MAILING}
-            setIsModalOpen={setIsModalOpen}
-            setAddressAction={setAddressAction}
             selectedAddressForAction={selectedAddressForAction}
+            handleCancel={handleCancel}
           />
         );
       default:
