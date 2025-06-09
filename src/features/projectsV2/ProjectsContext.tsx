@@ -530,6 +530,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedSamplePlantLocation,
       hoveredPlantLocation,
       selectedSite,
+      selectedSiteId,
       preventShallowPush,
       selectedInterventionType,
       disableInterventionMenu,

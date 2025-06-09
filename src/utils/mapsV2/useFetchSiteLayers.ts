@@ -72,5 +72,5 @@ export const useFetchSiteLayers = () => {
     };
 
     fetchSiteLayers();
-  }, [selectedSiteId]);
+  }, [selectedSiteId, siteLayersData]);
 };
