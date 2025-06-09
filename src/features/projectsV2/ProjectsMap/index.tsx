@@ -65,6 +65,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     setTimeTravelConfig,
     isExploreMode,
     siteLayersData,
+    selectedSiteLayer,
   } = useProjectsMap();
   const {
     plantLocations,
@@ -168,7 +169,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     props.page === 'project-details' &&
     selectedTab === 'satellite' &&
     selectedSiteId !== null &&
-    siteLayersData[selectedSiteId]?.length > 0;
+    siteLayersData[selectedSiteId]?.length > 0 &&
+    selectedSiteLayer !== null;
 
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
@@ -294,7 +296,9 @@ function ProjectsMap(props: ProjectsMapProps) {
           }
         >
           {shouldShowExploreLayers && <ExploreLayers />}
-          {shouldShowSiteLayers && <SiteLayers selectedSiteLayer={'biomass'} />}
+          {shouldShowSiteLayers && (
+            <SiteLayers selectedSiteLayerKey={selectedSiteLayer.id} />
+          )}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}

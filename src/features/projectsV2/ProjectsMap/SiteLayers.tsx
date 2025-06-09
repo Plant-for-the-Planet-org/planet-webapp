@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import type { SiteLayerKey } from '../../../utils/mapsV2/siteLayerOptions';
 
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
 import { useProjectsMap } from '../ProjectsMapContext';
@@ -8,11 +9,11 @@ const TILE_SIZE = 128;
 
 interface SiteLayersProps {
   // Probably needs to be moved to context instead of props
-  selectedSiteLayer: 'biomass';
+  selectedSiteLayerKey: SiteLayerKey;
 }
 
 const SiteLayers = ({
-  selectedSiteLayer,
+  selectedSiteLayerKey,
 }: SiteLayersProps): ReactElement | null => {
   const { siteLayersData } = useProjectsMap();
   const { selectedSiteId } = useProjects();
@@ -22,7 +23,7 @@ const SiteLayers = ({
   }
 
   const displayedLayerData = siteLayersData[selectedSiteId].find(
-    (singleLayer) => singleLayer.key === selectedSiteLayer
+    (singleLayer) => singleLayer.key === selectedSiteLayerKey
   );
 
   if (!displayedLayerData) {
@@ -33,15 +34,15 @@ const SiteLayers = ({
 
   return (
     <Source
-      key={selectedSiteLayer}
-      id={selectedSiteLayer}
+      key={selectedSiteLayerKey}
+      id={selectedSiteLayerKey}
       type="raster"
       tiles={tiles}
       tileSize={TILE_SIZE}
     >
       <Layer
-        id={`${selectedSiteLayer}-layer`}
-        source={selectedSiteLayer}
+        id={`${selectedSiteLayerKey}-layer`}
+        source={selectedSiteLayerKey}
         type="raster"
       />
     </Source>

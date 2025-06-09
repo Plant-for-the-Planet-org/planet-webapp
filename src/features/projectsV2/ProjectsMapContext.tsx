@@ -4,6 +4,7 @@ import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
 import type { MapLayerOptionsType } from '../../utils/mapsV2/mapSettings.config';
 import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
+import type { SiteLayerOption } from '../../utils/mapsV2/siteLayerOptions';
 
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
@@ -122,6 +123,8 @@ interface ProjectsMapState {
   setExploreLayersData: SetState<ExploreLayersData | null>;
   siteLayersData: SiteLayersData;
   setSiteLayersData: SetState<SiteLayersData>;
+  selectedSiteLayer: SiteLayerOption | null;
+  setSelectedSiteLayer: SetState<SiteLayerOption | null>;
   isExploreMode: boolean;
 }
 
@@ -137,6 +140,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [exploreLayersData, setExploreLayersData] =
     useState<ExploreLayersData | null>(null);
   const [siteLayersData, setSiteLayersData] = useState<SiteLayersData>({});
+  const [selectedSiteLayer, setSelectedSiteLayer] =
+    useState<SiteLayerOption | null>(null);
   const [isExploreMode, setIsExploreMode] = useState(false);
 
   // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
@@ -196,6 +201,8 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       setExploreLayersData,
       siteLayersData,
       setSiteLayersData,
+      selectedSiteLayer,
+      setSelectedSiteLayer,
       isExploreMode,
       timeTravelConfig,
       setTimeTravelConfig,
@@ -206,6 +213,7 @@ export const ProjectsMapProvider: FC = ({ children }) => {
       mapOptions,
       exploreLayersData,
       siteLayersData,
+      selectedSiteLayer,
       isExploreMode,
       timeTravelConfig,
     ]

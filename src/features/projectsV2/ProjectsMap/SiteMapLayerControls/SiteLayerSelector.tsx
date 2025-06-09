@@ -1,23 +1,10 @@
-import type { LayerOption } from './SiteLayerOptions';
-
 import SiteLayerDropdown from './SiteLayerDropdown';
 import styles from './SiteMapLayerControls.module.scss';
 
-interface SiteLayerSelectorProps {
-  setSelectedLayer: (layer: LayerOption) => void;
-  selectedLayer: LayerOption;
-}
-
-const SiteLayerSelector = ({
-  setSelectedLayer,
-  selectedLayer,
-}: SiteLayerSelectorProps) => {
+const SiteLayerSelector = () => {
   return (
     <div className={styles.siteLayerSelector}>
-      <SiteLayerDropdown
-        selectedLayer={selectedLayer}
-        setSelectedLayer={setSelectedLayer}
-      />
+      <SiteLayerDropdown />
       <p className={styles.timePeriodText}>Since project begin 2018</p>
     </div>
   );

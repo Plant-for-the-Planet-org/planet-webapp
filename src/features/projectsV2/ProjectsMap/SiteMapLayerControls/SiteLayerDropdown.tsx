@@ -1,28 +1,46 @@
-import type { LayerOption } from './SiteLayerOptions';
+import type { SiteLayerOption } from '../../../../utils/mapsV2/siteLayerOptions';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { useProjectsMap } from '../../ProjectsMapContext';
+import { useProjects } from '../../ProjectsContext';
+import { allSiteLayerOptions } from '../../../../utils/mapsV2/siteLayerOptions';
 import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
-import SiteLayerOptions, { availableLayerOptions } from './SiteLayerOptions';
+import SiteLayerOptions from './SiteLayerOptions';
 import styles from './SiteMapLayerControls.module.scss';
 
-interface SiteLayerDropdownProps {
-  selectedLayer: LayerOption;
-  setSelectedLayer: (layer: LayerOption) => void;
-}
-
-const SiteLayerDropdown = ({
-  selectedLayer,
-  setSelectedLayer,
-}: SiteLayerDropdownProps) => {
+const SiteLayerDropdown = () => {
+  const { selectedSiteLayer, setSelectedSiteLayer, siteLayersData } =
+    useProjectsMap();
+  const { selectedSiteId } = useProjects();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const availableLayerOptions = useMemo(() => {
+    if (!selectedSiteId || !siteLayersData[selectedSiteId]) {
+      return [];
+    }
+    const fetchedLayerKeys = siteLayersData[selectedSiteId].map(
+      (layer) => layer.key
+    );
+    return allSiteLayerOptions.filter((option) =>
+      fetchedLayerKeys.includes(option.id)
+    );
+  }, [selectedSiteId, siteLayersData]);
+
+  const isDropdownDisabled = availableLayerOptions.length <= 1;
+
+  // Don't render if no layer is selected
+  if (!selectedSiteLayer || !availableLayerOptions.length) {
+    return null;
+  }
+
   const toggleDropdown = () => {
+    if (isDropdownDisabled) return;
     setIsOpen((prev) => !prev);
   };
 
-  const handleLayerSelection = (newLayer: LayerOption) => {
-    setSelectedLayer(newLayer);
+  const handleLayerSelection = (newLayer: SiteLayerOption) => {
+    setSelectedSiteLayer(newLayer);
     toggleDropdown();
   };
 
@@ -45,10 +63,17 @@ const SiteLayerDropdown = ({
 
   return (
     <div className={styles.siteLayerDropdown} ref={dropdownRef}>
-      <div className={styles.dropdownButton} onClick={toggleDropdown}>
-        <div className={styles.dropdownButtonIcon}>{selectedLayer.icon}</div>
+      <div
+        className={`${styles.dropdownButton} ${
+          isDropdownDisabled ? styles.disabled : ''
+        }`}
+        onClick={toggleDropdown}
+      >
+        <div className={styles.dropdownButtonIcon}>
+          {selectedSiteLayer.icon}
+        </div>
         <p className={styles.dropdownButtonText}>
-          {selectedLayer.label}
+          {selectedSiteLayer.label}
           <span className={styles.timePeriodTextMobile}>
             (Since project begin 2018)
           </span>
@@ -66,7 +91,7 @@ const SiteLayerDropdown = ({
         <div className={styles.optionsWrapper}>
           <SiteLayerOptions
             layerOptions={availableLayerOptions}
-            selectedLayer={selectedLayer}
+            selectedLayer={selectedSiteLayer}
             handleLayerSelection={handleLayerSelection}
           />
         </div>
