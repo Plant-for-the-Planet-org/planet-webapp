@@ -63,6 +63,11 @@ $zoomControlsWidth: 29px;
   gap: 4px;
   align-items: center;
 
+  &.disabled {
+    cursor: auto;
+    opacity: 0.7;
+  }
+
   .dropdownButtonIcon,
   .dropdownButtonArrow {
     display: flex;
