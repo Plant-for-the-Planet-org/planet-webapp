@@ -32,6 +32,7 @@ import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventio
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import SiteLayers from './SiteLayers';
+import SiteMapLayerControls from './SiteMapLayerControls';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -167,7 +168,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     props.page === 'project-details' &&
     selectedTab === 'satellite' &&
     selectedSiteId !== null &&
-    siteLayersData[selectedSiteId] !== undefined;
+    siteLayersData[selectedSiteId]?.length > 0;
 
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
@@ -304,6 +305,7 @@ function ProjectsMap(props: ProjectsMapProps) {
             <NavigationControl position="bottom-right" showCompass={false} />
           )}
         </Map>
+        {shouldShowSiteLayers && <SiteMapLayerControls />}
       </div>
       {shouldShowMultiPlantLocationInfo && (
         <MultiPlantLocationInfo
