@@ -1,4 +1,4 @@
-import type { LayerOption } from './SiteLayerOptions';
+import type { SiteLayerOption } from '../../../../utils/mapsV2/siteLayerOptions';
 
 import { forwardRef } from 'react';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
@@ -6,7 +6,7 @@ import styles from './SiteMapLayerControls.module.scss';
 
 interface LayerInfoPopupProps {
   closePopup: () => void;
-  selectedLayer: LayerOption;
+  selectedLayer: SiteLayerOption;
 }
 
 const LayerInfoPopup = forwardRef<HTMLDivElement, LayerInfoPopupProps>(

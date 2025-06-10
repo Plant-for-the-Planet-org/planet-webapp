@@ -1,10 +1,9 @@
-import type { LayerOption } from './SiteLayerOptions';
+import type { SiteLayerOption } from '../../../../utils/mapsV2/siteLayerOptions';
 
 import PercentLegend from './PercentLegend';
 import RangeLegend from './RangeLegend';
-
 interface SiteLayerLegendProps {
-  selectedLayer: LayerOption;
+  selectedLayer: SiteLayerOption;
 }
 
 const SiteLayerLegend = ({ selectedLayer }: SiteLayerLegendProps) => {

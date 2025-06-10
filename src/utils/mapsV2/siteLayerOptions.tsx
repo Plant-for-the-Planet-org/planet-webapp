@@ -4,7 +4,7 @@ import BiomassChangeIcon from '../../../public/assets/images/icons/projectV2/Bio
 import TreeCoverIcon from '../../../public/assets/images/icons/projectV2/TreeCoverIcon';
 
 export type SiteLayerKey = 'biomass' | 'treeCover';
-type SiteLayerLabel = 'biomassChange' | 'treeCoverChange';
+export type SiteLayerLabel = 'biomassChange' | 'treeCoverChange';
 
 export type RangeLegendData = {
   type: 'range';

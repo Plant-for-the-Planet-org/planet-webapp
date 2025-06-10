@@ -1,4 +1,4 @@
-import type { PercentLegendData } from './SiteLayerOptions';
+import type { PercentLegendData } from '../../../../utils/mapsV2/siteLayerOptions';
 
 import styles from './SiteMapLayerControls.module.scss';
 
