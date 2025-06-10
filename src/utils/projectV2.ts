@@ -304,3 +304,18 @@ export function isFirealertFiresEnabled() {
 
   return isEnvVariableEnabled || isQueryStringEnabled;
 }
+
+export function getProjectStartingYear(
+  project: ExtendedProject
+): string | null {
+  if (project.purpose === 'trees' && project.metadata.firstTreePlanted) {
+    return new Date(project.metadata.firstTreePlanted).getFullYear().toString();
+  }
+  if (
+    project.purpose === 'conservation' &&
+    project.metadata.startingProtectionYear
+  ) {
+    return project.metadata.startingProtectionYear.toString();
+  }
+  return null;
+}

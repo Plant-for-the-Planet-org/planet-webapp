@@ -236,6 +236,13 @@
           }
         }
       }
+    },
+    "siteLayers": {
+      "labels": {
+        "biomassChange": "Biomass Change",
+        "treeCoverChange": "Tree Cover Change"
+      },
+      "projectStart": "Since project begin {startingYear}"
     }
   }
 }

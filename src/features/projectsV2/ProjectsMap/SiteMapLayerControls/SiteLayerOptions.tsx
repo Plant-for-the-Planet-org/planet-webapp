@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { SiteLayerOption } from '../../../../utils/mapsV2/siteLayerOptions';
 
 import styles from './SiteMapLayerControls.module.scss';
@@ -12,6 +13,8 @@ const SingleLayerOption = ({
   isSelected,
   handleLayerSelection,
 }: SingleOptionProps) => {
+  const tSiteLayers = useTranslations('Maps.siteLayers');
+
   return (
     <div
       className={`${styles.singleLayerOption} ${
@@ -20,7 +23,9 @@ const SingleLayerOption = ({
       onClick={() => handleLayerSelection(option)}
     >
       <div className={styles.optionIcon}>{option.icon}</div>
-      <p className={styles.optionLabel}>{option.label}</p>
+      <p className={styles.optionLabel}>
+        {tSiteLayers(`labels.${option.label}`)}
+      </p>
     </div>
   );
 };

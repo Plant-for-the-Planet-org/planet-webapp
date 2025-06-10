@@ -7,11 +7,14 @@ import { allSiteLayerOptions } from '../../../../utils/mapsV2/siteLayerOptions';
 import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 import SiteLayerOptions from './SiteLayerOptions';
 import styles from './SiteMapLayerControls.module.scss';
+import { useTranslations } from 'next-intl';
+import { getProjectStartingYear } from '../../../../utils/projectV2';
 
 const SiteLayerDropdown = () => {
+  const tSiteLayers = useTranslations('Maps.siteLayers');
   const { selectedSiteLayer, setSelectedSiteLayer, siteLayersData } =
     useProjectsMap();
-  const { selectedSiteId } = useProjects();
+  const { selectedSiteId, singleProject } = useProjects();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +33,7 @@ const SiteLayerDropdown = () => {
   const isDropdownDisabled = availableLayerOptions.length <= 1;
 
   // Don't render if no layer is selected
-  if (!selectedSiteLayer || !availableLayerOptions.length) {
+  if (!selectedSiteLayer || !availableLayerOptions.length || !singleProject) {
     return null;
   }
 
@@ -61,6 +64,8 @@ const SiteLayerDropdown = () => {
     };
   }, []);
 
+  const startingYear = getProjectStartingYear(singleProject);
+
   return (
     <div className={styles.siteLayerDropdown} ref={dropdownRef}>
       <div
@@ -73,9 +78,9 @@ const SiteLayerDropdown = () => {
           {selectedSiteLayer.icon}
         </div>
         <p className={styles.dropdownButtonText}>
-          {selectedSiteLayer.label}
+          {tSiteLayers(`labels.${selectedSiteLayer.label}`)}
           <span className={styles.timePeriodTextMobile}>
-            (Since project begin 2018)
+            {tSiteLayers('projectStart', { startingYear })}
           </span>
         </p>
         <div

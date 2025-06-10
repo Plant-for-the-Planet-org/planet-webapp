@@ -3,7 +3,8 @@ import type { ReactElement } from 'react';
 import BiomassChangeIcon from '../../../public/assets/images/icons/projectV2/BiomassChangeIcon';
 import TreeCoverIcon from '../../../public/assets/images/icons/projectV2/TreeCoverIcon';
 
-export type SiteLayerKey = 'biomass' | 'tree-cover';
+export type SiteLayerKey = 'biomass' | 'treeCover';
+type SiteLayerLabel = 'biomassChange' | 'treeCoverChange';
 
 export type RangeLegendData = {
   type: 'range';
@@ -23,16 +24,17 @@ export type LegendData = RangeLegendData | PercentLegendData;
 
 export type SiteLayerOption = {
   id: SiteLayerKey;
-  label: string;
+  label: SiteLayerLabel;
   icon: ReactElement;
   legend: LegendData;
   comingSoon?: boolean;
 };
 
+// TODO: translations and remove hardcoded text
 export const allSiteLayerOptions: SiteLayerOption[] = [
   {
     id: 'biomass',
-    label: 'Biomass Change',
+    label: 'biomassChange',
     icon: <BiomassChangeIcon />,
     legend: {
       type: 'range',
@@ -45,8 +47,8 @@ export const allSiteLayerOptions: SiteLayerOption[] = [
     },
   },
   {
-    id: 'tree-cover',
-    label: 'Tree Cover Change',
+    id: 'treeCover',
+    label: 'treeCoverChange',
     icon: <TreeCoverIcon />,
     legend: {
       type: 'percent',
