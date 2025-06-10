@@ -308,8 +308,20 @@ export function isFirealertFiresEnabled() {
 export function getProjectStartingYear(
   project: ExtendedProject
 ): string | null {
+  if (!project || !project.metadata) {
+    return null;
+  }
+
   if (project.purpose === 'trees' && project.metadata.firstTreePlanted) {
-    return new Date(project.metadata.firstTreePlanted).getFullYear().toString();
+    try {
+      const date = new Date(project.metadata.firstTreePlanted);
+      if (isNaN(date.getTime())) {
+        return null;
+      }
+      return date.getFullYear().toString();
+    } catch {
+      return null;
+    }
   }
   if (
     project.purpose === 'conservation' &&
