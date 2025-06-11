@@ -24,6 +24,8 @@ import UnsetBillingAddress from './UnsetBillingAddress';
 
 const AddressManagement = () => {
   const { user } = useUserProps();
+  // If addresses is null (not an empty array), it indicates a malformed API response
+  // Normal users without addresses will have an empty array, not null
   if (!user?.addresses) return null;
   const userAddresses = user.addresses;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
