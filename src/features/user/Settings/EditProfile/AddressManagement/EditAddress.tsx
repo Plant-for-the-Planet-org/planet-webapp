@@ -1,6 +1,7 @@
+import type { Address } from '@planet-sdk/common';
 import type { ExtendedCountryCode } from '../../../../common/types/country';
-import type { Address, AddressType } from '@planet-sdk/common';
 import type { AddressFormData } from './microComponents/AddressForm';
+import type { EditAddressApiPayload } from './useAddressOperations';
 
 import { useState, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
@@ -14,11 +15,6 @@ interface Props {
   showPrimaryAddressToggle: boolean;
   handleCancel: () => void;
 }
-
-export type EditAddressApiPayload = AddressFormData & {
-  country: ExtendedCountryCode | string;
-  type: AddressType;
-};
 
 const EditAddress = ({
   selectedAddressForAction,

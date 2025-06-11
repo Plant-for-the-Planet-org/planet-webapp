@@ -12,10 +12,6 @@ interface Props {
   handleCancel: () => void;
 }
 
-export type UnsetBillingAddressApiPayload = {
-  type: 'other';
-};
-
 const UnsetBillingAddress = ({
   addressType,
   selectedAddressForAction,
