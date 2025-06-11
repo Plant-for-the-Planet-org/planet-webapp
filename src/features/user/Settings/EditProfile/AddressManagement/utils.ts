@@ -21,7 +21,7 @@ export const updateAddressesAfterAdd = (
     newAddress.type === ADDRESS_TYPE.PRIMARY
       ? user.addresses.map((address) =>
           address.type === ADDRESS_TYPE.PRIMARY
-            ? { ...address, type: ADDRESS_TYPE.OTHER }
+            ? { ...address, type: ADDRESS_TYPE.OTHER, isPrimary: false }
             : address
         )
       : user.addresses;
@@ -97,11 +97,15 @@ export const updateAddressesAfterTypeChange = (
 
   const updatedAddresses = user.addresses.map((address) => {
     if (address.id === updatedAddress.id) {
-      return { ...address, type: newType };
+      return {
+        ...address,
+        type: newType,
+        isPrimary: newType === ADDRESS_TYPE.PRIMARY,
+      };
     }
 
     if (address.type === newType) {
-      return { ...address, type: ADDRESS_TYPE.OTHER };
+      return { ...address, type: ADDRESS_TYPE.OTHER, isPrimary: false };
     }
 
     return address;

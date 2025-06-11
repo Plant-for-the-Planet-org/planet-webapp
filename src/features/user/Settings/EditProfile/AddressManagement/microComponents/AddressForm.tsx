@@ -247,8 +247,8 @@ const AddressForm = ({
           text={label}
           handleSubmit={handleSubmit(processFormData)}
           handleCancel={() => {
-            handleCancel();
             resetForm();
+            handleCancel();
           }}
         />
       )}
