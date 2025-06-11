@@ -29,6 +29,72 @@ export interface Site {
   status: string;
 }
 
+type VerificationStatus =
+  | 'incomplete'
+  | 'accepted'
+  | 'processing'
+  | 'denied'
+  | 'pending';
+
+export interface ExtendedProfileProjectPropertiesTrees
+  extends Omit<
+    ProfileProjectPropertiesTrees,
+    | 'isPublished'
+    | 'countTarget'
+    | 'treeCost'
+    | 'unit'
+    | 'paymentDefaults'
+    | 'location'
+    | 'minTreeCount'
+    | 'countPlanted'
+    | 'tpo'
+    | 'reviews'
+  > {
+  //TODO: Remove these from the root level of the response
+  acquisitionYear: null;
+  enableInterventions: null;
+  firstTreePlanted: null;
+  plantingSeasons: Nullable<AllowedSeasonMonths[]>;
+  siteOwnerType: Nullable<SiteOwnerTypes[]>;
+  visitorAssistance: Nullable<boolean>;
+
+  publish: boolean;
+  //TODO: verify is allowDonation and acceptDonations are the same
+  acceptDonations: boolean;
+  //TODO: Update the planet SDK to allow string or number (countTarget and treeCost)
+  countTarget: string | number;
+  geoLongitude: number;
+  geoLatitude: number;
+  isVerified: boolean;
+  intensity: Nullable<string>;
+  reviewRequested: boolean;
+  revisionPeriodicityLevel: Nullable<string>;
+  survivalRate: Nullable<number>;
+  survivalRateStatus: Nullable<string>;
+  treeCost: string | number;
+  verificationStatus: VerificationStatus;
+  videoUrl: Nullable<string>;
+  website: Nullable<string>;
+}
+
+export interface ExtendedProfileProjectPropertiesConservation
+  extends Omit<
+    ProfileProjectPropertiesConservation,
+    'unit' | 'tpo' | 'isPublished' | 'reviews' | 'countPlanted'
+  > {
+  countTarget: null;
+  geoLatitude: number;
+  geoLongitude: number;
+  isVerified: boolean;
+  acceptDonations: boolean;
+  publish: boolean;
+  reviewRequested: boolean;
+  classification: null;
+  verificationStatus: VerificationStatus;
+  videoUrl: Nullable<string>;
+  website: Nullable<string>;
+}
+
 export type CertificateScopeProjects = ExtendedProfileProjectProperties & {
   _scope: string;
   certificates: Certificate[];
@@ -200,69 +266,3 @@ export interface ProjectOption {
 export type ExtendedProfileProjectProperties =
   | ExtendedProfileProjectPropertiesConservation
   | ExtendedProfileProjectPropertiesTrees;
-
-type VerificationStatus =
-  | 'incomplete'
-  | 'accepted'
-  | 'processing'
-  | 'denied'
-  | 'pending';
-
-export interface ExtendedProfileProjectPropertiesTrees
-  extends Omit<
-    ProfileProjectPropertiesTrees,
-    | 'isPublished'
-    | 'countTarget'
-    | 'treeCost'
-    | 'unit'
-    | 'paymentDefaults'
-    | 'location'
-    | 'minTreeCount'
-    | 'countPlanted'
-    | 'tpo'
-    | 'reviews'
-  > {
-  //TODO: Remove these from the root level of the response
-  acquisitionYear: null;
-  enableInterventions: null;
-  firstTreePlanted: null;
-  plantingSeasons: Nullable<AllowedSeasonMonths[]>;
-  siteOwnerType: Nullable<SiteOwnerTypes[]>;
-  visitorAssistance: Nullable<boolean>;
-
-  publish: boolean;
-  //TODO: verify is allowDonation and acceptDonations are the same
-  acceptDonations: boolean;
-  //TODO: Update the planet SDK to allow string or number (countTarget and treeCost)
-  countTarget: string | number;
-  geoLongitude: number;
-  geoLatitude: number;
-  isVerified: boolean;
-  intensity: Nullable<string>;
-  reviewRequested: boolean;
-  revisionPeriodicityLevel: Nullable<string>;
-  survivalRate: Nullable<number>;
-  survivalRateStatus: Nullable<string>;
-  treeCost: string | number;
-  verificationStatus: VerificationStatus;
-  videoUrl: Nullable<string>;
-  website: Nullable<string>;
-}
-
-export interface ExtendedProfileProjectPropertiesConservation
-  extends Omit<
-    ProfileProjectPropertiesConservation,
-    'unit' | 'tpo' | 'isPublished' | 'reviews' | 'countPlanted'
-  > {
-  countTarget: null;
-  geoLatitude: number;
-  geoLongitude: number;
-  isVerified: boolean;
-  acceptDonations: boolean;
-  publish: boolean;
-  reviewRequested: boolean;
-  classification: null;
-  verificationStatus: VerificationStatus;
-  videoUrl: Nullable<string>;
-  website: Nullable<string>;
-}
