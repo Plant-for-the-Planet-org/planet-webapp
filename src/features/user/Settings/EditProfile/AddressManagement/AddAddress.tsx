@@ -50,7 +50,7 @@ const AddAddress = ({ handleCancel, showPrimaryAddressToggle }: Props) => {
       };
       await addAddress(payload).finally(handleCancel);
     },
-    [country, primaryAddressChecked, addAddress]
+    [country, primaryAddressChecked, addAddress, handleCancel]
   );
 
   return (
