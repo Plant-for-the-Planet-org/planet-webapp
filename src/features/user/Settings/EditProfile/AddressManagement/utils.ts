@@ -52,7 +52,10 @@ export const updateAddressesAfterEdit = (
     (nonEditedAddresses, address) => {
       if (address.id === editedAddress.id) return nonEditedAddresses;
 
-      if (editedAddress.isPrimary && address.isPrimary) {
+      if (
+        editedAddress.type === ADDRESS_TYPE.PRIMARY &&
+        address.type === ADDRESS_TYPE.PRIMARY
+      ) {
         nonEditedAddresses.push({
           ...address,
           isPrimary: false,
