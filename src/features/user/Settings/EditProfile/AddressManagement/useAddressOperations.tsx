@@ -52,34 +52,44 @@ export const useAddressOperations = () => {
 
   const addAddress = async (payload: AddAddressApiPayload) => {
     await safeExecute(async () => {
-      const res = await postApiAuthenticated<Address, AddAddressApiPayload>(
-        '/app/addresses',
-        { payload }
-      );
-      if (res) setUser((prev) => updateAddressesAfterAdd(prev, res));
+      const addAddressResponse = await postApiAuthenticated<
+        Address,
+        AddAddressApiPayload
+      >('/app/addresses', { payload });
+      if (addAddressResponse)
+        setUser((existingUserDetails) =>
+          updateAddressesAfterAdd(existingUserDetails, addAddressResponse)
+        );
     });
   };
 
   const editAddress = async (id: string, payload: EditAddressApiPayload) => {
     await safeExecute(async () => {
-      const res = await putApiAuthenticated<Address, EditAddressApiPayload>(
-        `/app/addresses/${id}`,
-        { payload }
-      );
-      if (res) setUser((prev) => updateAddressesAfterEdit(prev, res));
+      const editAddressResponse = await putApiAuthenticated<
+        Address,
+        EditAddressApiPayload
+      >(`/app/addresses/${id}`, { payload });
+      if (editAddressResponse)
+        setUser((existingUserDetails) =>
+          updateAddressesAfterEdit(existingUserDetails, editAddressResponse)
+        );
     });
   };
 
   const updateAddressType = async (id: string, addressType: AddressType) => {
     await safeExecute(async () => {
       const payload: AddressTypeApiPayload = { type: addressType };
-      const res = await putApiAuthenticated<Address, AddressTypeApiPayload>(
-        `/app/addresses/${id}`,
-        { payload }
-      );
-      if (res)
-        setUser((prev) =>
-          updateAddressesAfterTypeChange(prev, res, addressType)
+      const updateAddressResponse = await putApiAuthenticated<
+        Address,
+        AddressTypeApiPayload
+      >(`/app/addresses/${id}`, { payload });
+      if (updateAddressResponse)
+        setUser((existingUserDetails) =>
+          updateAddressesAfterTypeChange(
+            existingUserDetails,
+            updateAddressResponse,
+            addressType
+          )
         );
     });
   };
@@ -87,17 +97,17 @@ export const useAddressOperations = () => {
   const unsetBillingAddress = async (id: string) => {
     await safeExecute(async () => {
       const payload: UnsetBillingAddressApiPayload = { type: 'other' };
-      const res = await putApiAuthenticated<
+      const updateAddressResponse = await putApiAuthenticated<
         Address,
         UnsetBillingAddressApiPayload
       >(`/app/addresses/${id}`, { payload });
-      if (res) {
-        setUser((prev) =>
-          prev
+      if (updateAddressResponse) {
+        setUser((existingUserDetails) =>
+          existingUserDetails
             ? {
-                ...prev,
-                addresses: prev.addresses.map((addr) =>
-                  addr.id === id ? { ...addr, type: 'other' } : addr
+                ...existingUserDetails,
+                addresses: existingUserDetails.addresses.map((address) =>
+                  address.id === id ? { ...address, type: 'other' } : address
                 ),
               }
             : null
@@ -109,11 +119,13 @@ export const useAddressOperations = () => {
   const deleteAddress = async (id: string) => {
     await safeExecute(async () => {
       await deleteApiAuthenticated(`/app/addresses/${id}`);
-      setUser((prev) =>
-        prev
+      setUser((existingUserDetails) =>
+        existingUserDetails
           ? {
-              ...prev,
-              addresses: prev.addresses.filter((addr) => addr.id !== id),
+              ...existingUserDetails,
+              addresses: existingUserDetails.addresses.filter(
+                (address) => address.id !== id
+              ),
             }
           : null
       );

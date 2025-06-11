@@ -19,10 +19,10 @@ export const updateAddressesAfterAdd = (
 
   const updatedAddresses =
     newAddress.type === ADDRESS_TYPE.PRIMARY
-      ? user.addresses.map((addr) =>
-          addr.type === ADDRESS_TYPE.PRIMARY
-            ? { ...addr, type: ADDRESS_TYPE.OTHER }
-            : addr
+      ? user.addresses.map((address) =>
+          address.type === ADDRESS_TYPE.PRIMARY
+            ? { ...address, type: ADDRESS_TYPE.OTHER }
+            : address
         )
       : user.addresses;
 
@@ -48,17 +48,24 @@ export const updateAddressesAfterEdit = (
 ): User | null => {
   if (!user) return null;
 
-  const updatedAddresses = user.addresses.reduce<Address[]>((acc, addr) => {
-    if (addr.id === editedAddress.id) return acc;
+  const updatedAddresses = user.addresses.reduce<Address[]>(
+    (nonEditedAddresses, address) => {
+      if (address.id === editedAddress.id) return nonEditedAddresses;
 
-    if (editedAddress.isPrimary && addr.isPrimary) {
-      acc.push({ ...addr, isPrimary: false, type: ADDRESS_TYPE.OTHER });
-    } else {
-      acc.push(addr);
-    }
+      if (editedAddress.isPrimary && address.isPrimary) {
+        nonEditedAddresses.push({
+          ...address,
+          isPrimary: false,
+          type: ADDRESS_TYPE.OTHER,
+        });
+      } else {
+        nonEditedAddresses.push(address);
+      }
 
-    return acc;
-  }, []);
+      return nonEditedAddresses;
+    },
+    []
+  );
 
   updatedAddresses.push(editedAddress);
 
@@ -85,16 +92,16 @@ export const updateAddressesAfterTypeChange = (
 ): User | null => {
   if (!user) return null;
 
-  const updatedAddresses = user.addresses.map((addr) => {
-    if (addr.id === updatedAddress.id) {
-      return { ...addr, type: newType };
+  const updatedAddresses = user.addresses.map((address) => {
+    if (address.id === updatedAddress.id) {
+      return { ...address, type: newType };
     }
 
-    if (addr.type === newType) {
-      return { ...addr, type: ADDRESS_TYPE.OTHER };
+    if (address.type === newType) {
+      return { ...address, type: ADDRESS_TYPE.OTHER };
     }
 
-    return addr;
+    return address;
   });
 
   return {
