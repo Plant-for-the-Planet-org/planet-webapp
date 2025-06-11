@@ -97,7 +97,11 @@ export const updateAddressesAfterTypeChange = (
 
   const updatedAddresses = user.addresses.map((address) => {
     if (address.id === updatedAddress.id) {
-      return { ...address, type: newType };
+      return {
+        ...address,
+        type: newType,
+        isPrimary: newType === ADDRESS_TYPE.PRIMARY,
+      };
     }
 
     if (address.type === newType) {
