@@ -1,93 +1,35 @@
-import type { SetState } from '../../../../common/types/common';
-import type { APIError, Address } from '@planet-sdk/common';
-import type { AddressAction } from '../../../../common/types/profile';
+import type { Address } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import FormattedAddressBlock from './microComponents/FormattedAddressBlock';
-import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
-import { useApi } from '../../../../../hooks/useApi';
+import { useAddressOperations } from './useAddressOperations';
 
 type AddressType = 'primary' | 'mailing';
 interface Props {
   addressType: AddressType;
-  setIsModalOpen: SetState<boolean>;
   userAddress: Address | undefined;
   selectedAddressForAction: Address;
-  setAddressAction: SetState<AddressAction | null>;
+  handleCancel: () => void;
 }
-
-type AddressTypeApiPayload = {
-  type: AddressType;
-};
 
 const UpdateAddressType = ({
   addressType,
-  setIsModalOpen,
   userAddress,
   selectedAddressForAction,
-  setAddressAction,
+  handleCancel,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token, setUser } = useUserProps();
-  const { putApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = useState(false);
+  const { updateAddressType, isLoading } = useAddressOperations();
 
-  const updateAddress = async (addressType: AddressType) => {
-    if (!contextLoaded || !user || !token) return;
-    setIsUploadingData(true);
-    const payload: AddressTypeApiPayload = {
-      type: addressType,
-    };
-    try {
-      const res = await putApiAuthenticated<Address, AddressTypeApiPayload>(
-        `/app/addresses/${selectedAddressForAction.id}`,
-        {
-          payload,
-        }
-      );
-      if (res) {
-        setUser((prev) => {
-          if (!prev) return null;
+  const handleAddressType = () =>
+    updateAddressType(selectedAddressForAction.id, addressType).finally(
+      handleCancel
+    );
 
-          const updatedAddresses = prev.addresses.map((addr) => {
-            if (addr.id === selectedAddressForAction.id)
-              return { ...addr, type: addressType };
-
-            if (addr.type === addressType)
-              return {
-                ...addr,
-                type: ADDRESS_TYPE.OTHER,
-              };
-
-            return addr;
-          });
-          return {
-            ...prev,
-            addresses: updatedAddresses,
-          };
-        });
-      }
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    } finally {
-      setIsUploadingData(false);
-      setIsModalOpen(false);
-      setAddressAction(null);
-    }
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setAddressAction(null);
-  };
   return (
     <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
@@ -107,7 +49,7 @@ const UpdateAddressType = ({
           <FormattedAddressBlock userAddress={userAddress} />
         </div>
       )}
-      {!isUploadingData ? (
+      {!isLoading ? (
         <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
@@ -119,7 +61,7 @@ const UpdateAddressType = ({
             text={tAddressManagement('updateAddressType.confirmButton')}
             elementType="button"
             variant="primary"
-            onClick={() => updateAddress(addressType)}
+            onClick={handleAddressType}
           />
         </div>
       ) : (
