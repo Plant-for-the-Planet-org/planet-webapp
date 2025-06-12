@@ -15,6 +15,7 @@ interface Props {
   isTopProject: boolean;
   allowDonations: boolean;
   showTooltipPopups: boolean;
+  page: 'project-list' | 'project-details' | undefined;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -32,7 +33,13 @@ interface BadgeLabelprops {
 }
 const BadgeLabel = ({ icon, title }: BadgeLabelprops) => {
   return (
-    <div className={styles.projectBadge}>
+    <div
+      className={styles.projectBadge}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+    >
       <div className={styles.badgeIcon}>{icon}</div>
       <div className={styles.badgeTitle}>{title}</div>
     </div>
@@ -44,6 +51,7 @@ const ProjectBadge = ({
   isTopProject,
   allowDonations,
   showTooltipPopups,
+  page,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -120,7 +128,9 @@ const ProjectBadge = ({
 
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
 
-  const shouldShowPopup = showTooltipPopups && displayPopup;
+  const shouldShowPopup =
+    showTooltipPopups && displayPopup && page !== 'project-details';
+
   const badgeContent = <BadgeLabel icon={icon} title={title} />;
 
   return displayPopup ? (
