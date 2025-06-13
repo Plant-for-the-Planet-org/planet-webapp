@@ -28,6 +28,25 @@
       "boreal-forests": "Boreale Wälder",
       "tundra": "Tundra"
     },
+    "interventionTypes": {
+      "assisting-seed-rain": "Unterstützung von Saatregen",
+      "control-remove-livestock": "Kontrolle/Entfernung von Viehbestand",
+      "cut-suppressing-grass": "Gras schneiden/unterdrücken",
+      "direct-seeding": "Direktsaat",
+      "enrichment-planting": "Anreicherungspflanzung",
+      "establish-firebreaks": "Feuerschneisen einrichten",
+      "fire-patrols": "Feuerpatrouillen",
+      "fire-suppression-team": "Brandbekämpfungs-Team",
+      "liberating-regenerants": "Freilegen von Regenerierungen",
+      "maintenance": "Pflege",
+      "marking-regenerants": "Markieren von Regenerierungen",
+      "other-interventions": "Andere Interventionen",
+      "planting-trees": "Baumpflanzungen",
+      "removal-contaminated-soil": "Beseitigung kontaminierter Böden",
+      "removal-invasive-species": "Beseitigung invasiver Arten",
+      "soil-improvement": "Bodenverbesserung",
+      "stop-tree-harvesting": "Stopp von Baumernte"
+    },
     "tpoName": "Von {tpoName}"
   }
 }

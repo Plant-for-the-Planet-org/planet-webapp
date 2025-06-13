@@ -32,7 +32,8 @@
       "addressRequired": "Bitte wählen Sie eine Adresse, um fortzufahren.",
       "invalidContactInfoMessage": "Ihre Kontaktinformationen sind ungültig. Bitte aktualisieren Sie sie, indem Sie unten auf Kontaktinformationen ändern klicken.",
       "addressLimitReached": "Sie haben das Adresslimit erreicht. Sie können Ihre bestehenden Adressen aktualisieren, aber es ist nicht möglich, eine neue Adresse hinzuzufügen.",
-      "loginRequired": "<b>WICHTIG:</b> Um Ihre Daten zu ändern, müssen Sie sich in Ihrem Profil anmelden. Wenn Sie Probleme haben, kontaktieren Sie uns bitte über die Informationen am Ende dieser Seite."
+      "missingTIN": "<b>HINWEIS:</b> Es fehlt Ihre Steueridentifikationsnummer. Bitte klicken Sie auf die Schaltfläche unten, um sie hinzuzufügen.",
+      "loginRequired": "<b>WICHTIG:</b> Um Ihre Daten zu bearbeiten, müssen Sie sich in Ihrem Profil anmelden. Wenn Sie Probleme dabei haben, kontaktieren Sie uns bitte über die Informationen am Ende dieser Seite."
     },
     "verifyDonationHeaderPrimary": "Bestätigen Sie Ihre Daten und laden Sie die Spendenbescheinigung herunter",
     "verifyDonationHeaderSecondary": "Bitte beachten Sie: Wenn die Daten bestätigt sind, können sie für diese Bescheinigung nicht mehr geändert werden",

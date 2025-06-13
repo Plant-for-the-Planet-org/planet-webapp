@@ -129,7 +129,7 @@
     "project_not_available": "Projektdetails sind derzeit nicht verfügbar",
     "topProject": "Top Projekt",
     "viewReport": "Report anzeigen",
-    "reviewInfo": "Das Projekt wurde im Rahmen einer mehrtägigen Überprüfung vor Ort im {reviewMonth} geprüft und erfüllt unsere <standardsLink>Standards</standardsLink>",
+    "reviewInfo": "Das Projekt wurde im Rahmen einer mehrtägigen Überprüfung vor Ort im {reviewMonth} geprüft und erfüllt unsere <standardsLink>Standards</standardsLink>.",
     "standardsLink": "https://www.plant-for-the-planet.org/de/standards/",
     "project": "Projekt",
     "top_project_standards_fulfilled": "Die Projektprüfung hat gezeigt, dass dieses Projekt mindestens 12 der 19 Top Projekt <standardsLink>Standards</standardsLink> erfüllte.",
@@ -166,7 +166,9 @@
         "instagram": "Instagram",
         "youtube": "Youtube",
         "linkedin": "LinkedIn",
-        "facebook": "Facebook"
+        "facebook": "Facebook",
+        "vtoChallenge": "VTO Challenge",
+        "mangroves": "Mangroven"
       }
     }
   }
