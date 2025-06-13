@@ -1,4 +1,4 @@
-import type { RangeLegendData } from './SiteLayerOptions';
+import type { RangeLegendData } from '../../../../utils/mapsV2/siteLayerOptions';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import AverageIndicator from './AverageIndicator';
