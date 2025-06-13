@@ -95,6 +95,10 @@ export interface ExtendedProfileProjectPropertiesConservation
   website: Nullable<string>;
 }
 
+export type ExtendedProfileProjectProperties =
+  | ExtendedProfileProjectPropertiesConservation
+  | ExtendedProfileProjectPropertiesTrees;
+
 export type CertificateScopeProjects = ExtendedProfileProjectProperties & {
   _scope: string;
   certificates: Certificate[];
@@ -262,7 +266,3 @@ export interface ProjectOption {
   purpose: 'trees' | 'conservation' | 'funds';
   allowDonations: boolean;
 }
-
-export type ExtendedProfileProjectProperties =
-  | ExtendedProfileProjectPropertiesConservation
-  | ExtendedProfileProjectPropertiesTrees;
