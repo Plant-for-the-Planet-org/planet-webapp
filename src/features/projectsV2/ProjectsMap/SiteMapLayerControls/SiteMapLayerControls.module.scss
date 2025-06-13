@@ -1,7 +1,6 @@
 @import '../../../../theme/theme';
 
 $nonMobileMargin: 10px;
-$zoomControlsWidth: 29px;
 
 .siteMapLayerControls {
   width: 100%;
@@ -19,7 +18,7 @@ $zoomControlsWidth: 29px;
   @include smTabletView {
     max-width: 420px;
     bottom: $nonMobileMargin;
-    right: calc($nonMobileMargin + $zoomControlsWidth + 10px);
+    left: $nonMobileMargin;
     flex-direction: row;
 
     > * {
