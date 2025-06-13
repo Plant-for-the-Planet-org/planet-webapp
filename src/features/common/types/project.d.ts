@@ -132,7 +132,7 @@ export interface BasicDetailsProps {
   projectDetails: ExtendedProfileProjectProperties | null;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   setProjectGUID: SetState<string>;
-  projectGUID: string | unknown;
+  projectGUID: string;
   purpose: 'trees' | 'conservation';
 }
 
