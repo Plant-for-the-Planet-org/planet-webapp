@@ -2,16 +2,6 @@ import type Supercluster from 'supercluster';
 import type { User } from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
-import type {
-  TreeProjectClassification,
-  CountryCode,
-  CurrencyCode,
-  TreeProjectMetadata,
-  DefaultPaymentConfig,
-  Tpo,
-  UnitTypes,
-} from '@planet-sdk/common';
-import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
 
@@ -138,40 +128,6 @@ export interface ViewportProps {
   transitionDuration?: number | undefined;
   transitionInterpolator?: FlyToInterpolator | undefined;
   transitionEasing?: (normalizedTime: number) => number;
-}
-
-export interface ProjectGeoJsonProps {
-  type: 'Feature';
-  geometry: {
-    type: string;
-    coordinates: number[];
-  };
-  properties: {
-    allowDonations: boolean;
-    classification: TreeProjectClassification;
-    countPlanted: number;
-    countTarget: number;
-    country: CountryCode;
-    currency: CurrencyCode;
-    id: string;
-    image: string;
-    isApproved: boolean;
-    isFeatured: boolean;
-    isTopProject: boolean;
-    location: Nullable<string>;
-    metadata: TreeProjectMetadata;
-    minTreeCount: number;
-    name: string;
-    paymentDefaults: Nullable<DefaultPaymentConfig>;
-    purpose: 'trees';
-    unit: 'tree';
-    slug: string;
-    taxDeductionCountries: CountryCode[];
-    tpo: Tpo;
-    treeCost: number;
-    unitCost: number;
-    unitType: UnitTypes;
-  };
 }
 
 export interface RegisteredTreesGeometry {

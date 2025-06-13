@@ -2,8 +2,7 @@ import type { ChangeEvent, ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
 import type {
   BasicDetailsProps,
-  ProfileProjectConservation,
-  ProfileProjectTrees,
+  ExtendedProfileProjectProperties,
   ViewPort,
 } from '../../../common/types/project';
 import type { ReverseAddress } from '../../../common/types/geocoder';
@@ -364,7 +363,7 @@ export default function BasicDetails({
     if (projectGUID) {
       try {
         const res = await putApiAuthenticated<
-          ProfileProjectTrees | ProfileProjectConservation,
+          ExtendedProfileProjectProperties,
           ProjectApiPayload
         >(`/app/projects/${projectGUID}`, {
           payload: projectPayload,
@@ -379,7 +378,7 @@ export default function BasicDetails({
     } else {
       try {
         const res = await postApiAuthenticated<
-          ProfileProjectTrees | ProfileProjectConservation,
+          ExtendedProfileProjectProperties,
           ProjectApiPayload
         >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);

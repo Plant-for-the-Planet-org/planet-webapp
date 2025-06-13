@@ -14,10 +14,9 @@ import type {
   PlantingLocationFormData,
   SpeciesFormData,
 } from '../../Treemapper';
-import type { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../../common/types/common';
 import type { SxProps } from '@mui/material';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 
 import React from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
@@ -39,7 +38,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useApi } from '../../../../../hooks/useApi';
 
 // import { DevTool } from '@hookform/devtools';
@@ -187,7 +185,7 @@ export default function PlantingLocation({
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [projects, setProjects] = React.useState<MapProject[]>([]);
+  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
@@ -223,7 +221,7 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getApiAuthenticated<MapProject[]>(
+      const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
         '/app/profile/projects'
       );
       setProjects(projects);

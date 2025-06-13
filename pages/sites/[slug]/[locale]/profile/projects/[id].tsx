@@ -1,10 +1,7 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { APIError } from '@planet-sdk/common';
-import type {
-  ProfileProjectConservation,
-  ProfileProjectTrees,
-} from '../../../../../../src/features/common/types/project';
+import type { ExtendedProfileProjectProperties } from '../../../../../../src/features/common/types/project';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
@@ -50,9 +47,8 @@ function ManageSingleProject({
   const { getApiAuthenticated } = useApi();
   const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
   const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
-  const [project, setProject] = React.useState<
-    ProfileProjectTrees | ProfileProjectConservation | null
-  >(null);
+  const [project, setProject] =
+    React.useState<ExtendedProfileProjectProperties | null>(null);
   const { user, contextLoaded, token } = useUserProps();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
@@ -72,9 +68,10 @@ function ManageSingleProject({
   useEffect(() => {
     async function loadProject() {
       try {
-        const result = await getApiAuthenticated<
-          ProfileProjectTrees | ProfileProjectConservation
-        >(`/app/profile/projects/${projectGUID}`);
+        const result =
+          await getApiAuthenticated<ExtendedProfileProjectProperties>(
+            `/app/profile/projects/${projectGUID}`
+          );
         setProject(result);
         setSetupAccess(true);
       } catch (err) {

@@ -1,13 +1,5 @@
 import type { Project } from '../../../common/Layout/AnalyticsContext';
-import type {
-  APIError,
-  ConservationProjectConcise,
-  ConservationProjectMetadata,
-  EcosystemTypes,
-  TreeProjectConcise,
-  TreeProjectMetadata,
-} from '@planet-sdk/common';
-import type { Feature as GeoJSONFeature, Point as GeoJSONPoint } from 'geojson';
+import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 
 import React, { useEffect, useState } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
@@ -20,49 +12,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import NoProjectsFound from './components/NoProjectsFound';
 import { useApi } from '../../../../hooks/useApi';
 
-type OmittedProjectProps =
-  | 'ecosystem'
-  | '_scope'
-  | 'fixedRates'
-  | 'isPublished'
-  | 'reviewScore'
-  | 'reviews'
-  | 'treeCost'
-  | 'description'
-  | 'options';
-
-type BaseProject<T> = Omit<T, OmittedProjectProps> & {
-  unit: string;
-  metadata: Record<string, unknown>;
-};
-
-type TreeProject = BaseProject<TreeProjectConcise> & {
-  unit: 'tree';
-  metadata: TreeProjectMetadata;
-};
-
-type ConservationProject = BaseProject<ConservationProjectConcise> & {
-  unit: 'm2';
-  isApproved: boolean;
-  isFeatured: boolean;
-  isTopProject: boolean;
-  countPlanted: number;
-  metadata: ConservationProjectMetadata & {
-    ecosystems: EcosystemTypes;
-  };
-};
-
-export type ProjectMapInfo<T> = GeoJSONFeature<GeoJSONPoint, T>;
-/** This evaluates to
- * {
- * type:"Feature",
- * geometry:Geometry object,
- * properties:  TreeProject | ConservationProject
- * } */
-export type ProjectApiResponse = ProjectMapInfo<
-  TreeProject | ConservationProject
->;
-
 const Analytics = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, setProjectList, setProject } = useAnalytics();
@@ -72,7 +21,7 @@ const Analytics = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await getApiAuthenticated<ProjectApiResponse[]>(
+      const res = await getApiAuthenticated<ProfileProjectFeature[]>(
         '/app/profile/projects',
         {
           queryParams: { scope: 'map' },

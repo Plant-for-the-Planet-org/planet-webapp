@@ -1,10 +1,9 @@
 import type { ContributionProperties } from './RegisterTrees/SingleContribution';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 import type { ViewportProps } from '../../common/types/map';
 import type {
   RegisterTreesFormProps,
   RegisteredTreesGeometry,
-  ProjectGeoJsonProps,
 } from '../../common/types/map';
 import { handleError } from '@planet-sdk/common';
 import type { SxProps } from '@mui/material';
@@ -101,7 +100,7 @@ function RegisterTreesForm({
   });
   const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
-  const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
+  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [isStyleReady, setIsStyleReady] = React.useState(false);
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
@@ -220,7 +219,7 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getApiAuthenticated<ProjectGeoJsonProps[]>(
+      const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
         '/app/profile/projects'
       );
       setProjects(projects);

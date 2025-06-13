@@ -5,9 +5,8 @@ import type {
   DetailedAnalysisProps,
   SiteOwners,
   PlantingSeason,
-  ProfileProjectTrees,
-  ProfileProjectConservation,
   InterventionOption,
+  ExtendedProfileProjectProperties,
 } from '../../../common/types/project';
 
 import React, { useEffect } from 'react';
@@ -397,7 +396,7 @@ export default function DetailedAnalysis({
 
     try {
       const res = await putApiAuthenticated<
-        ProfileProjectTrees | ProfileProjectConservation,
+        ExtendedProfileProjectProperties,
         ProjectApiPayload
       >(`/app/projects/${projectGUID}`, { payload: projectPayload });
       setProjectDetails(res);
