@@ -15,7 +15,6 @@ import type { ChangeEvent } from 'react';
 import type { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { Polygon } from 'geojson';
-import type { Option } from '../../user/ManageProjects/components/ProjectSites';
 
 export interface UploadImage extends Image {
   isDefault: boolean;
