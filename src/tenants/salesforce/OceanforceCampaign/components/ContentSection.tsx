@@ -11,13 +11,16 @@ import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHa
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import { useApi } from '../../../../hooks/useApi';
+import { useLocale } from 'next-intl';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const currencyCode = getStoredCurrency();
+  const { getApi } = useApi();
+  const locale = useLocale();
   const { tenantConfig } = useTenant();
 
   const [project, setProject] = useState<
@@ -26,14 +29,14 @@ export default function ContentSection() {
   useEffect(() => {
     async function loadProject() {
       try {
-        const project = await getRequest<
+        const project = await getApi<
           TreeProjectExtended | ConservationProjectExtended
-        >({
-          tenant: tenantConfig.id,
-          url: `/app/projects/${projectSlug}`,
+        >(`/app/projects/${projectSlug}`, {
           queryParams: {
             _scope: 'extended',
             currency: currencyCode,
+            locale: locale,
+            tenant: tenantConfig.id,
           },
         });
         setProject(project);
@@ -45,7 +48,7 @@ export default function ContentSection() {
     if (projectSlug) {
       loadProject();
     }
-  }, [projectSlug, currencyCode]);
+  }, [projectSlug, currencyCode, locale, tenantConfig.id]);
   return (
     <div className={`${styles.contentSectionContainer}`}>
       <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>

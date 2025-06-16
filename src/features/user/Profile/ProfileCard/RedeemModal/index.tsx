@@ -6,7 +6,6 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
@@ -16,27 +15,23 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { useApi } from '../../../../../hooks/useApi';
 interface RedeemModal {
   redeemModalOpen: boolean;
   handleRedeemModalClose: () => void;
 }
 
+type RedeemCodeApiPayload = {
+  code: string;
+};
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
   const t = useTranslations('Redeem');
-  const { tenantConfig } = useTenant();
-  const {
-    user,
-    contextLoaded,
-    token,
-    setUser,
-    logoutUser,
-    setRefetchUserData,
-  } = useUserProps();
+  const { postApiAuthenticated } = useApi();
+  const { user, contextLoaded, setUser, setRefetchUserData } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
   const { refetchContributions, refetchLeaderboard } = useMyForest();
@@ -45,19 +40,18 @@ export default function RedeemModal({
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  async function redeemingCode(data: string | undefined): Promise<void> {
+  async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
-    const submitData = {
+    const payload = {
       code: data,
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest<RedeemedCodeData>({
-          tenant: tenantConfig?.id,
-          url: `/app/redeem`,
-          data: submitData,
-          token,
-          logoutUser,
+        const res = await postApiAuthenticated<
+          RedeemedCodeData,
+          RedeemCodeApiPayload
+        >(`/app/redeem`, {
+          payload,
         });
         setRedeemedCodeData(res);
         setRefetchUserData(true);

@@ -81,6 +81,9 @@ $bottomMobileFooterSpace: 49px;
     top: 0;
     bottom: 29px;
   }
+  &.impersonationMobile {
+    top: calc($topMobileNavigationSpace + 24px);
+  }
 }
 
 .mobileContentContainer {

@@ -10,7 +10,7 @@
   opacity: 0;
 
   .footnote {
-    font-size: 13px;
+    font-size: $sfFontSmall;
   }
 }
 
@@ -18,40 +18,6 @@
   opacity: 1;
 }
 
-.treeCounterComma {
-  font-family: $secondaryFontFamily;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 100%;
-  text-align: center;
-  color: #032d60;
-  @include lgLaptopView {
-    font-size: 80px;
-    line-height: 100px;
-  }
-}
-
-.treeCounterNumber {
-  display: inline-block;
-  position: relative;
-  height: 40px;
-  font-family: $secondaryFontFamily;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 40px;
-  text-align: center;
-  color: #032d60;
-  font-size: 70px;
-  @include mdTabletView {
-    font-size: 100px;
-  }
-  @include lgLaptopView {
-    height: 170px;
-    font-size: 170px;
-    line-height: 170px;
-  }
-}
 .treeCounterValue {
   display: block;
   position: relative;
@@ -61,14 +27,14 @@
   line-height: 70px;
   text-align: center;
   color: #032d60;
-  font-size: 70px;
+  font-size: $sfFontDisplay2;
   @include mdTabletView {
     line-height: 100px;
-    font-size: 100px;
+    font-size: $sfFontDisplay4;
   }
   @include lgLaptopView {
     height: 170px;
-    font-size: 170px;
+    font-size: $sfFontDisplay5;
     line-height: 170px;
   }
 }
@@ -78,23 +44,6 @@
   color: #4f4f4f;
 }
 
-.treeCounterDataField > .countNumber {
-  color: #4f4f4f;
-  font-family: $primaryFontFamily;
-  font-weight: bold;
-  text-align: center;
-  font-size: calc(36px + (42 - 36) * ((100vw - 300px) / (1600 - 300)));
-  margin-bottom: 10px;
-}
-.treeCounterDataField > .countLabel {
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-weight: 400;
-  text-align: center;
-  font-size: $fontSmall;
-  max-width: 180px;
-  margin-top: 2px;
-}
 .backgroundCircle {
   border: 20px solid $light;
   border-radius: 50%;

@@ -1,70 +1,35 @@
-import type { SetState } from '../../../../common/types/common';
-import type { APIError, Address } from '@planet-sdk/common';
-import type { AddressAction } from '../../../../common/types/profile';
+import type { Address } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { handleError } from '@planet-sdk/common';
 import { CircularProgress } from '@mui/material';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
-import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { useTenant } from '../../../../common/Layout/TenantContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import FormattedAddressBlock from './microComponents/FormattedAddressBlock';
+import { useAddressOperations } from './useAddressOperations';
 
+type AddressType = 'primary' | 'mailing';
 interface Props {
-  addressType: 'primary' | 'mailing';
-  setIsModalOpen: SetState<boolean>;
+  addressType: AddressType;
   userAddress: Address | undefined;
   selectedAddressForAction: Address;
-  updateUserAddresses: () => Promise<void>;
-  setAddressAction: SetState<AddressAction | null>;
+  handleCancel: () => void;
 }
 
 const UpdateAddressType = ({
   addressType,
-  setIsModalOpen,
   userAddress,
   selectedAddressForAction,
-  updateUserAddresses,
-  setAddressAction,
+  handleCancel,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = useState(false);
+  const { updateAddressType, isLoading } = useAddressOperations();
 
-  const updateAddress = async (addressType: 'primary' | 'mailing') => {
-    if (!contextLoaded || !user || !token) return;
-    setIsUploadingData(true);
-    const bodyToSend = {
-      type: addressType,
-    };
-    try {
-      const res = await putAuthenticatedRequest<Address>({
-        tenant: tenantConfig.id,
-        url: `/app/addresses/${selectedAddressForAction.id}`,
-        data: bodyToSend,
-        token,
-        logoutUser,
-      });
-      if (res) updateUserAddresses();
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    } finally {
-      setIsUploadingData(false);
-      setIsModalOpen(false);
-      setAddressAction(null);
-    }
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setAddressAction(null);
-  };
+  const handleAddressType = () =>
+    updateAddressType(selectedAddressForAction.id, addressType).finally(
+      handleCancel
+    );
+
   return (
     <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
@@ -84,7 +49,7 @@ const UpdateAddressType = ({
           <FormattedAddressBlock userAddress={userAddress} />
         </div>
       )}
-      {!isUploadingData ? (
+      {!isLoading ? (
         <div className={styles.buttonContainer}>
           <WebappButton
             text={tCommon('cancel')}
@@ -96,7 +61,7 @@ const UpdateAddressType = ({
             text={tAddressManagement('updateAddressType.confirmButton')}
             elementType="button"
             variant="primary"
-            onClick={() => updateAddress(addressType)}
+            onClick={handleAddressType}
           />
         </div>
       ) : (

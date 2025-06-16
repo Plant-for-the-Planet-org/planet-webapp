@@ -56,6 +56,7 @@ const ContactDetails = ({
       title: extractWebsiteURLTitle(),
       link: websiteURL,
       shouldOpenNewTab: true,
+      isExternalLink: true,
     },
     {
       icon: (

@@ -153,7 +153,7 @@
   border-radius: 14px;
   padding: 2px 8px 2px 2px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: $fontXSmall;
 
   * {
     color: #6d4230;
@@ -204,7 +204,7 @@
 
 .target {
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontXSmall;
   color: $primaryFontColor;
   font-weight: bold;
   margin-right: 4px;
@@ -216,7 +216,7 @@
   text-align: center;
   color: #4f4f4f;
   height: 34px;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 400;
   line-height: 1.5em;
   margin-top: 10px;
@@ -299,7 +299,7 @@
 }
 .projectHoverIcon {
   display: inline-flex;
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 700;
   color: var(--non-donatable-project-background-color);
   align-items: center;

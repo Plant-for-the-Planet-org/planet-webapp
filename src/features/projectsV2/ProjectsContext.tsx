@@ -26,8 +26,12 @@ import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-import { buildProjectDetailsQuery } from '../../utils/projectV2';
+import {
+  buildProjectDetailsQuery,
+  isValidClassification,
+} from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
+import { useTenant } from '../common/Layout/TenantContext';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -110,13 +114,37 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [projectsLocale, setProjectsLocale] = useState('');
+  const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const { getApi } = useApi();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
+  // Read filter from URL only on initial load
+  useEffect(() => {
+    if (router.isReady && page === 'project-list') {
+      const { filter, donatable_projects_only } = router.query;
+
+      // Initialize classification filters from URL
+      if (filter) {
+        const filterValues = typeof filter === 'string' ? [filter] : filter;
+        const validFilters = filterValues.filter(isValidClassification);
+
+        if (validFilters.length > 0) {
+          setSelectedClassification(validFilters);
+        }
+      }
+
+      // Initialize donation filter from URL
+      if (donatable_projects_only === 'true') {
+        setShowDonatableProjects(true);
+      }
+    }
+  }, [router.isReady]);
 
   //* Function to filter projects that accept donations
   const filterByDonation = (projects: MapProject[]) => {
@@ -212,7 +240,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     async function loadProjects() {
       if (page !== 'project-list' || !currencyCode) return;
-      if (projectsLocale === locale && projects !== null) return;
+      if (
+        projectsLocale === locale &&
+        projectsCurrencyCode === currencyCode &&
+        projects !== null
+      )
+        return;
 
       setIsLoading(true);
       setIsError(false);
@@ -221,11 +254,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
+            //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
+            locale: locale,
+            tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
           },
         });
         setProjects(fetchedProjects);
         setProjectsLocale(locale);
+        setProjectsCurrencyCode(currencyCode);
       } catch (err) {
         setErrors(handleError(err as APIError));
         setIsError(true);
@@ -234,7 +271,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }
     }
     loadProjects();
-  }, [currencyCode, locale, page]);
+  }, [currencyCode, locale, tenantConfig.id, page]);
 
   useEffect(() => {
     if (!currencyCode && setCurrencyCode !== undefined) {
@@ -370,6 +407,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedSite,
     hasNoSites,
   ]);
+
   useEffect(() => {
     if (
       !router.isReady ||

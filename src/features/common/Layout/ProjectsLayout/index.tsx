@@ -51,6 +51,10 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
     return styles.projectsLayout;
   }, [isImpersonationModeOn, embed]);
 
+  const shouldShowMapFeatureExplorer = useMemo(() => {
+    return page === 'project-list' && process.env.ENABLE_EXPLORE === 'true';
+  }, [page, process.env.ENABLE_EXPLORE]);
+
   return (
     <div className={layoutClass}>
       <main className={styles.mainContent}>
@@ -58,7 +62,7 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
           <section className={styles.contentContainer}>{children}</section>
         )}
         <section className={styles.mapContainer}>
-          {page === 'project-list' && (
+          {shouldShowMapFeatureExplorer && (
             <div className={styles.mapFeatureExplorerOverlay}>
               <MapFeatureExplorer
                 mapOptions={mapOptions}

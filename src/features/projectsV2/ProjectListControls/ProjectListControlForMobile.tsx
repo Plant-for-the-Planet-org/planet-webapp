@@ -72,7 +72,8 @@ const ProjectListControlForMobile = ({
     !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
   const onlyMapModeAllowed =
     embed === 'true' && page === 'project-list' && showProjectList === 'false';
-  const shouldDisplayMapFeatureExplorer = selectedMode === 'map';
+  const shouldDisplayMapFeatureExplorer =
+    selectedMode === 'map' && process.env.ENABLE_EXPLORE === 'true';
   const projectListControlsMobileClasses = `${
     styles.projectListControlsMobile
   } ${selectedMode === 'map' ? styles.mapModeControls : ''} ${

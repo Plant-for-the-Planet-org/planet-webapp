@@ -1,3 +1,5 @@
+@import '../../../../theme/theme';
+
 .contributionPopup,
 .registeredTreePopup {
   > div {
@@ -55,11 +57,11 @@
 
 .trees {
   font-weight: 700;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 .countryAndTpo {
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 400;
   margin-bottom: 8px;
   overflow: hidden;
@@ -82,7 +84,7 @@
   bottom: 10px;
   color: #fff;
   .projectName {
-    font-size: 10px;
+    font-size: $fontXXSmall;
     font-weight: 600;
     height: 15px;
   }
@@ -101,19 +103,18 @@
 }
 
 .registeredTrees {
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: 700;
   margin-top: 5px;
 }
 
 .registeredTreeLabel {
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 600;
   line-height: 120%;
 }
 
 .registeredTreeDate {
-  font-size: 10px;
+  font-size: $fontXXSmall;
   font-weight: 600;
 }
-

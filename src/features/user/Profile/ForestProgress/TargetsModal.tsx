@@ -5,15 +5,14 @@ import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
 import { useMyForest } from '../../../common/Layout/MyForestContext';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
+import { useApi } from '../../../../hooks/useApi';
 
 interface TargetsModalProps {
   open: boolean;
@@ -23,6 +22,14 @@ interface TargetsModalProps {
   conservTarget: number;
 }
 
+type ForestProgressTargetApiPayload = {
+  targets: {
+    treesDonated: number;
+    areaRestored: number;
+    areaConserved: number;
+  };
+};
+
 const TargetsModal = ({
   open,
   setOpen,
@@ -31,11 +38,10 @@ const TargetsModal = ({
   conservTarget,
 }: TargetsModalProps) => {
   const { setUserInfo } = useMyForest();
-  const { contextLoaded, token, logoutUser, setRefetchUserData } =
-    useUserProps();
+  const { contextLoaded, token, setRefetchUserData } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
+  const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
-  const { tenantConfig } = useTenant();
   // states to manage modal
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
   const [treesPlantedTargetLocal, setTreesPlantedTargetLocal] = useState(0);
@@ -66,7 +72,7 @@ const TargetsModal = ({
   const handleTargets = async () => {
     setIsTargetModalLoading(true);
     if (contextLoaded && token && open && !isTargetModalLoading) {
-      const bodyToSend = {
+      const payload: ForestProgressTargetApiPayload = {
         targets: {
           treesDonated: isTreesPlantedTargetActive
             ? treesPlantedTargetLocal
@@ -80,12 +86,11 @@ const TargetsModal = ({
         },
       };
       try {
-        const res = await putAuthenticatedRequest<User>({
-          tenant: tenantConfig?.id,
-          url: `/app/profile`,
-          data: bodyToSend,
-          token,
-          logoutUser,
+        const res = await putApiAuthenticated<
+          User,
+          ForestProgressTargetApiPayload
+        >('/app/profile', {
+          payload,
         });
         const newUserInfo = {
           profileId: res.id,

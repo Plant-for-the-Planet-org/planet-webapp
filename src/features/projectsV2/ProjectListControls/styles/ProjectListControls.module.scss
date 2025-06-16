@@ -173,6 +173,7 @@
     .buttonContainer,
     > button {
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
+      border-radius: 7.78px;
     }
   }
 }
@@ -284,7 +285,7 @@
   width: max-content;
   height: 26px;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: 600;
   display: flex;
   align-items: center;

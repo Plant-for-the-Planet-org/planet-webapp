@@ -15,7 +15,6 @@ import type { AbstractIntlMessages } from 'next-intl';
 
 import React from 'react';
 import LeaderBoard from '../../../../src/tenants/planet/LeaderBoard';
-import { getRequest } from '../../../../src/utils/apiRequests/api';
 import GetLeaderboardMeta from '../../../../src/utils/getMetaTags/GetLeaderboardMeta';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
@@ -88,10 +87,9 @@ export default function Home({ pageProps }: Props) {
   React.useEffect(() => {
     async function loadTreesDonated() {
       try {
-        const newTreesDonated = await getRequest<TreesDonated>({
-          tenant: pageProps.tenantConfig.id,
-          url: `${process.env.WEBHOOK_URL}/platform/total-tree-count`,
-        });
+        const newTreesDonated = await getApi<TreesDonated>(
+          `${process.env.WEBHOOK_URL}/platform/total-tree-count`
+        );
         setTreesDonated(newTreesDonated);
       } catch (err) {
         setErrors(handleError(err as APIError));

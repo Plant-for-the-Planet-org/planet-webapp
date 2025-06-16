@@ -2,8 +2,6 @@ import type { AddressSuggestionsType } from '../../../../../common/types/geocode
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
-import type { FormData } from '../AddAddress';
-import type { AddressAction } from '../../../../../common/types/profile';
 import type { AddressType } from '@planet-sdk/common';
 
 import { useCallback, useMemo, useState } from 'react';
@@ -27,36 +25,35 @@ import AddressFormButtons from './AddressFormButtons';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import PrimaryAddressToggle from './PrimaryAddressToggle';
 
+export type AddressFormData = {
+  address: string;
+  address2: Nullable<string>;
+  city: string;
+  zipCode: string;
+  state: Nullable<string>;
+};
+
 interface Props {
   country: ExtendedCountryCode | '';
   setCountry: SetState<ExtendedCountryCode | ''>;
   label: string;
-  processFormData: (data: FormData) => Promise<void>;
-  defaultAddressDetail: {
-    address: string | undefined;
-    address2: Nullable<string> | undefined;
-    city: string | undefined;
-    zipCode: string | undefined;
-    state: Nullable<string> | undefined;
-    type: AddressType;
-  };
-  setIsModalOpen: SetState<boolean>;
+  processFormData: (data: AddressFormData) => Promise<void>;
+  defaultAddressDetail: AddressFormData & { type: AddressType };
   isLoading: boolean;
-  setAddressAction: SetState<AddressAction | null>;
   showPrimaryAddressToggle: boolean;
   primaryAddressChecked: boolean;
   setPrimaryAddressChecked: SetState<boolean>;
+  handleCancel: () => void;
 }
 
 const AddressForm = ({
   country,
   setCountry,
   defaultAddressDetail,
-  setIsModalOpen,
+  handleCancel,
   label,
   processFormData,
   isLoading,
-  setAddressAction,
   showPrimaryAddressToggle,
   primaryAddressChecked,
   setPrimaryAddressChecked,
@@ -71,7 +68,7 @@ const AddressForm = ({
     setValue,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<AddressFormData>({
     mode: 'onBlur',
     defaultValues: defaultAddressDetail,
   });
@@ -128,11 +125,7 @@ const AddressForm = ({
     reset(defaultAddressDetail);
     setAddressSuggestions([]);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setAddressAction(null);
-    resetForm();
-  };
+
   return (
     <form className={styles.addressForm}>
       <AddressInput
@@ -253,7 +246,10 @@ const AddressForm = ({
         <AddressFormButtons
           text={label}
           handleSubmit={handleSubmit(processFormData)}
-          handleCancel={handleCancel}
+          handleCancel={() => {
+            resetForm();
+            handleCancel();
+          }}
         />
       )}
     </form>

@@ -3,34 +3,36 @@ import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import React, { useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import { useApi } from '../../../../hooks/useApi';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
+import { useLocale } from 'next-intl';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 export default function ProjectGrid() {
+  const { getApi } = useApi();
+  const locale = useLocale();
+  const { tenantConfig } = useTenant();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  const { tenantConfig } = useTenant();
 
   useEffect(() => {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest({
-          tenant: tenantConfig.id,
-          url: `/app/projects`,
+        const projects = await getApi<MapProject[]>('/app/projects', {
           queryParams: {
             _scope: 'map',
             currency: currencyCode,
+            locale: locale,
             tenant: tenantConfig.id,
             'filter[purpose]': 'trees,conservation',
           },
         });
-        setProjects(projects as MapProject[]);
+        setProjects(projects);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');
