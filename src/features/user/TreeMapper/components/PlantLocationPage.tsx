@@ -173,29 +173,29 @@ export function LocationDetails({
               </div>
             </div>
             <div className={styles.measurements}>
-              <div className={styles.singleDetail}>
-                <p className={styles.title}>{tTreemapper('date')}</p>
-                {location.history?.map((h, index) => (
-                  <div className={styles.value} key={index}>
-                    {formatDate(h?.created)}
+              {(location.interventionStartDate !== null ||
+                location?.plantDate !== null) && (
+                <div className={styles.singleDetail}>
+                  <p className={styles.title}>{tTreemapper('date')}</p>
+                  <div className={styles.value}>
+                    {formatDate(
+                      location?.interventionStartDate || location?.plantDate
+                    )}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
+
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('height')}</p>
-                {location.history?.map((h, index) => (
-                  <div className={styles.value} key={index}>
-                    {h?.measurements?.height} {tTreemapper('m')}
-                  </div>
-                ))}
+                <div className={styles.value}>
+                  {location.measurements?.height} {tTreemapper('m')}
+                </div>
               </div>
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('width')}</p>
-                {location.history?.map((h, index) => (
-                  <div className={styles.value} key={index}>
-                    {h?.measurements?.width} {tTreemapper('cm')}
-                  </div>
-                ))}
+                <div className={styles.value}>
+                  {location.measurements?.width} {tTreemapper('cm')}
+                </div>
               </div>
             </div>
           </>
