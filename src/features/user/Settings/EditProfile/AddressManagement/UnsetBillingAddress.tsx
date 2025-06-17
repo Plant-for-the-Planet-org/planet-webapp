@@ -1,71 +1,29 @@
-import type { Address, APIError } from '@planet-sdk/common';
-import type { SetState } from '../../../../common/types/common';
-import type { AddressAction } from '../../../../common/types/profile';
+import type { Address } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { CircularProgress } from '@mui/material';
-import { handleError } from '@planet-sdk/common';
 import styles from './AddressManagement.module.scss';
 import WebappButton from '../../../../common/WebappButton';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
-import { useApi } from '../../../../../hooks/useApi';
+import { useAddressOperations } from './useAddressOperations';
 
 interface Props {
   addressType: 'mailing';
-  setIsModalOpen: SetState<boolean>;
-  setAddressAction: SetState<AddressAction | null>;
-  updateUserAddresses: () => Promise<void>;
   selectedAddressForAction: Address;
+  handleCancel: () => void;
 }
-
-type UnsetBillingAddressApiPayload = {
-  type: 'other';
-};
 
 const UnsetBillingAddress = ({
   addressType,
-  setIsModalOpen,
-  setAddressAction,
-  updateUserAddresses,
   selectedAddressForAction,
+  handleCancel,
 }: Props) => {
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tCommon = useTranslations('Common');
-  const { contextLoaded, user, token } = useUserProps();
-  const { putApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const { unsetBillingAddress, isLoading } = useAddressOperations();
 
-  const unsetAddress = async () => {
-    if (!contextLoaded || !user || !token) return;
-    setIsLoading(true);
-    const payload: UnsetBillingAddressApiPayload = {
-      type: ADDRESS_TYPE.OTHER,
-    };
-    try {
-      const res = await putApiAuthenticated<
-        Address,
-        UnsetBillingAddressApiPayload
-      >(`/app/addresses/${selectedAddressForAction.id}`, {
-        payload,
-      });
-      if (res) updateUserAddresses();
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    } finally {
-      setIsLoading(false);
-      setIsModalOpen(false);
-      setAddressAction(null);
-    }
-  };
+  const handleBillingAddress = () =>
+    unsetBillingAddress(selectedAddressForAction.id).finally(handleCancel);
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setAddressAction(null);
-  };
   return (
     <div className={styles.addressActionContainer}>
       <h2 className={styles.header}>
@@ -86,7 +44,7 @@ const UnsetBillingAddress = ({
             text={tAddressManagement('updateAddressType.confirmButton')}
             elementType="button"
             variant="primary"
-            onClick={unsetAddress}
+            onClick={handleBillingAddress}
           />
         </div>
       ) : (
