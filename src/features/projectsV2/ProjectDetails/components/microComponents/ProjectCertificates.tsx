@@ -19,7 +19,7 @@ const ProjectCertificates = ({ certificates }: Props) => {
       {certificates.map((certificate) => {
         const pdfUrl = getPDFFile('projectCertificate', certificate.pdf);
         return (
-          <div key={certificate.pdf} className={styles.certificateItem}>
+          <div key={certificate.id} className={styles.certificateItem}>
             {isMobile ? (
               <DownloadsLabel>
                 <p>{certificate.certifierName}</p>

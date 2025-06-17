@@ -6,10 +6,7 @@ import styles from '../../styles/Slider.module.scss';
 import { useState } from 'react';
 import { Modal } from '@mui/material';
 import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import SlidePrevButtonIcon from '../../../../../../public/assets/images/icons/projectV2/SlidePrevButtonIcon';
-import SlideNextButtonIcon from '../../../../../../public/assets/images/icons/projectV2/SlideNextButtonIcon';
-import themeProperties from '../../../../../theme/themeProperties';
-import { useTranslations } from 'next-intl';
+import SliderButton from './SliderButton';
 
 interface ImageSliderProps {
   images: Image[];
@@ -18,38 +15,6 @@ interface ImageSliderProps {
   imageSize: 'medium' | 'large';
   allowFullView?: boolean;
 }
-
-interface SliderButtonProps {
-  direction: 'prev' | 'next';
-  disabled: boolean;
-  onClick: () => void;
-  className: string;
-}
-
-const SliderButton = ({
-  direction,
-  disabled,
-  onClick,
-  className,
-}: SliderButtonProps) => {
-  const { primaryDarkColor, light } = themeProperties;
-  const tImageSlider = useTranslations('ProjectDetails');
-  const Icon = direction === 'prev' ? SlidePrevButtonIcon : SlideNextButtonIcon;
-  return (
-    <button
-      className={className}
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={`${
-        direction === 'prev'
-          ? tImageSlider('previousImage')
-          : tImageSlider('nextImage')
-      }`}
-    >
-      <Icon color={disabled ? light.dividerColorNew : primaryDarkColor} />
-    </button>
-  );
-};
 
 const ImageSlider = ({
   images,
