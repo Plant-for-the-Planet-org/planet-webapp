@@ -1,11 +1,11 @@
-import type { SliderImage } from '../../../common/types/projectv2';
-import type { SetState } from '../../../common/types/common';
+import type { SliderImage } from '../../../../common/types/projectv2';
+import type { SetState } from '../../../../common/types/common';
 
 import React, { useMemo } from 'react';
 import Stories from 'react-insta-stories';
-import getImageUrl from '../../../../utils/getImageURL';
-import { SingleCarouselImage } from './microComponents/SingleCarouselImage';
-import themeProperties from '../../../../theme/themeProperties';
+import getImageUrl from '../../../../../utils/getImageURL';
+import { SingleCarouselImage } from './SingleCarouselImage';
+import themeProperties from '../../../../../theme/themeProperties';
 
 interface Props {
   images: SliderImage[] | undefined;

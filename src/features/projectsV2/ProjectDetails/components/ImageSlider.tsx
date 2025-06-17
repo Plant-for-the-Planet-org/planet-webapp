@@ -1,12 +1,12 @@
-import type { Image } from '../../../../common/types/projectv2';
+import type { Image } from '../../../common/types/projectv2';
 
-import ExpandIcon from '../../../../../../public/assets/images/icons/ExpandIcon';
-import ImageCarousel from '../ImageCarousel';
-import styles from '../../styles/Slider.module.scss';
+import ExpandIcon from '../../../../../public/assets/images/icons/ExpandIcon';
+import ImageCarousel from './microComponents/ImageCarousel';
+import styles from '../styles/Slider.module.scss';
 import { useState } from 'react';
 import { Modal } from '@mui/material';
-import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import SliderButton from './SliderButton';
+import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
+import SliderButton from './microComponents/SliderButton';
 
 interface ImageSliderProps {
   images: Image[];
@@ -32,7 +32,9 @@ const ImageSlider = ({
   const renderSliderButton = (dir: 'prev' | 'next', className: string) => (
     <SliderButton
       direction={dir}
-      disabled={dir === 'prev' ? isFirstImage : isLastImage}
+      disabled={
+        (dir === 'prev' && isFirstImage) || (dir === 'next' && isLastImage)
+      }
       onClick={() => setCurrentIndex(currentIndex + (dir === 'prev' ? -1 : 1))}
       className={className}
     />
