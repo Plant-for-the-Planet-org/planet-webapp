@@ -12,7 +12,7 @@ interface Props {
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
-  isImageModalOpenOnMobile?: boolean;
+  isMobile?: boolean;
   currentIndex: number;
   setCurrentIndex: SetState<number>;
   isModalOpen: boolean;
@@ -23,7 +23,7 @@ const ImageCarousel = ({
   type,
   imageSize,
   imageHeight,
-  isImageModalOpenOnMobile,
+  isMobile,
   currentIndex,
   setCurrentIndex,
   isModalOpen,
@@ -43,7 +43,7 @@ const ImageCarousel = ({
                 <SingleCarouselImage
                   imageURL={imageURL}
                   imageDescription={carouselImage.description}
-                  isImageModalOpenOnMobile={isImageModalOpenOnMobile}
+                  isMobile={isMobile}
                   isModalOpen={isModalOpen}
                   totalImages={images?.length}
                   currentImage={key + 1}
@@ -59,7 +59,7 @@ const ImageCarousel = ({
         );
     }
     return [];
-  }, [type, imageSize, images, isImageModalOpenOnMobile, isModalOpen]);
+  }, [type, imageSize, images, isMobile, isModalOpen]);
 
   if (projectImages?.length === 0) return <></>;
   return (

@@ -25,7 +25,6 @@ const ImageSlider = ({
 }: ImageSliderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isImageModalOpenOnMobile = isModalOpen && isMobile;
   const isFirstImage = currentIndex === 0;
   const isLastImage = currentIndex === images.length - 1;
 
@@ -92,7 +91,7 @@ const ImageSlider = ({
                 type={type}
                 imageSize={'large'}
                 imageHeight={isMobile ? 220 : 600}
-                isImageModalOpenOnMobile={isImageModalOpenOnMobile}
+                isMobile={isMobile}
                 setCurrentIndex={setCurrentIndex}
                 currentIndex={currentIndex}
                 isModalOpen={isModalOpen}

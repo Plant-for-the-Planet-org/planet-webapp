@@ -3,7 +3,7 @@ import styles from '../../styles/Slider.module.scss';
 interface Props {
   imageURL: string;
   imageDescription: string | null | undefined;
-  isImageModalOpenOnMobile: boolean | undefined;
+  isMobile: boolean | undefined;
   isModalOpen: boolean;
   totalImages: number;
   currentImage: number;
@@ -12,11 +12,12 @@ interface Props {
 export const SingleCarouselImage = ({
   imageURL,
   imageDescription,
-  isImageModalOpenOnMobile,
+  isMobile,
   isModalOpen,
   totalImages,
   currentImage,
 }: Props) => {
+  const isImageModalOpenOnMobile = isModalOpen && isMobile;
   return (
     <div
       className={
