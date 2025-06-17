@@ -173,8 +173,9 @@ export function LocationDetails({
               </div>
             </div>
             <div className={styles.measurements}>
-              {(location.interventionStartDate !== null ||
-                location?.plantDate !== null) && (
+              {Boolean(
+                location.interventionStartDate || location.plantDate
+              ) && (
                 <div className={styles.singleDetail}>
                   <p className={styles.title}>{tTreemapper('date')}</p>
                   <div className={styles.value}>
@@ -184,7 +185,6 @@ export function LocationDetails({
                   </div>
                 </div>
               )}
-
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('height')}</p>
                 <div className={styles.value}>
