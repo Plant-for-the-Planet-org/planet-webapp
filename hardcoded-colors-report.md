@@ -1,7 +1,7 @@
 # HARDCODED COLORS REPORT
 
 Project path: /Users/mohit3/plant-for-the-planet/planet-webapp
-Date: 2025-04-04T05:18:39.289Z
+Date: 2025-06-18T06:52:26.596Z
 
 ## DETAILED FINDINGS
 
@@ -240,6 +240,30 @@ File: public/assets/images/icons/MyContributionsIcon.tsx
 - Line 198: #70BE44 in "fill="#70BE44""
 - Line 210: #9ACC7D in "fill="#9ACC7D""
 - Line 41: white in "fill="white""
+
+File: public/assets/images/icons/NavbarMenuIcons.tsx
+----------------------------------------------------
+- Line 14: #2F80ED in "fill="#2F80ED""
+- Line 50: #27AE60 in "fill="#27AE60""
+- Line 55: #007A49 in "fill="#007A49""
+- Line 74: #EB5757 in "fill="#EB5757""
+- Line 114: #9B51E0 in "fill="#9B51E0""
+- Line 240: #fff in "<path fill="#fff" d="M0 0h5v9H0z" />"
+- Line 260: #68B030 in "fill="#68B030""
+- Line 277: #E9F8EF in "fill="#E9F8EF""
+- Line 312: #E86F56 in "fill="#E86F56""
+- Line 354: #47BB56 in "fill="#47BB56""
+- Line 402: #FFC700 in "fill="#FFC700""
+- Line 438: #6C63FF in "fill="#6C63FF""
+- Line 502: #FFDD55 in "<stop stopColor="#FFDD55" />"
+- Line 504: #FF543E in "<stop offset="0.5" stopColor="#FF543E" />"
+- Line 505: #C837AB in "<stop offset="1" stopColor="#C837AB" />"
+- Line 515: #3771C8 in "<stop stopColor="#3771C8" />"
+- Line 517: #6600FF in "<stop offset="1" stopColor="#6600FF" stopOpacity="0" />"
+- Line 544: #0065CA in "fill="#0065CA""
+- Line 580: #FF0000 in "fill="#FF0000""
+- Line 612: #0766FF in "fill="#0766FF""
+- Line 28: white in "fill="white""
 
 File: public/assets/images/icons/PlusIcon.tsx
 ---------------------------------------------
@@ -685,7 +709,7 @@ File: public/assets/images/icons/projectV2/DropdownDownArrow.tsx
 
 File: public/assets/images/icons/projectV2/DropdownUpArrow.tsx
 --------------------------------------------------------------
-- Line 13: #333333 in "fill="#333333""
+- Line 3: #333 in "const DropdownUpArrow = ({ width, color = '#333' }: IconProps) => {"
 
 File: public/assets/images/icons/projectV2/ExpandIcon.tsx
 ---------------------------------------------------------
@@ -846,7 +870,7 @@ File: public/tenants/xiting/config.ts
 
 File: src/features/common/CarouselSlider/CarouselSlider.module.scss
 -------------------------------------------------------------------
-- Line 27: rgba(0, 0, 0, 0.25) in "filter: drop-shadow(5.25px 5.25px 14px rgba(0, 0, 0, 0.25));"
+- Line 29: rgba(0, 0, 0, 0.25) in "filter: drop-shadow(5.25px 5.25px 14px rgba(0, 0, 0, 0.25));"
 
 File: src/features/common/CarouselSlider/index.tsx
 --------------------------------------------------
@@ -939,13 +963,23 @@ File: src/features/common/Layout/LandingSection/index.tsx
 - Line 14: rgba(0,0,0,0.4) in "background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${"
 - Line 14: rgba(0,0,0,0) in "background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${"
 
-File: src/features/common/Layout/Navbar/Navbar.scss
----------------------------------------------------
+File: src/features/common/Layout/Navbar/Navbar.module.scss
+----------------------------------------------------------
+- Line 410: #c5f2e4 in "border-bottom: 10px solid #c5f2e4;"
+- Line 60: rgba(0, 0, 0, 0.12) in "box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);"
+- Line 79: rgba(211, 211, 211, 0.5) in "border: 1px solid rgba(211, 211, 211, 0.5);"
+- Line 122: rgba(0, 0, 0, 0.5) in "background-color: rgba(0, 0, 0, 0.5);"
+- Line 271: rgba(201, 239, 217, 1) in "rgba(201, 239, 217, 1),"
+- Line 272: rgba(215, 242, 193, 1) in "rgba(215, 242, 193, 1)"
+- Line 275: rgba(0, 0, 0, 0.2) in "box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);"
+
+File: src/features/common/Layout/Navbar/microComponents/Archive/Navbar.scss
+---------------------------------------------------------------------------
 - Line 14: rgba(0, 0, 0, 0.12) in "box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);"
-- Line 32: rgba(211, 211, 211, 0.5) in "border: 1px solid rgba(211, 211, 211, 0.5);"
-- Line 73: rgba(0, 0, 0, 0.5) in "background-color: rgba(0, 0, 0, 0.5);"
-- Line 100: rgba(47, 51, 54, 1) in "color: rgba(47, 51, 54, 1);"
-- Line 137: rgba(0, 0, 0, 0.2) in "box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);"
+- Line 33: rgba(211, 211, 211, 0.5) in "border: 1px solid rgba(211, 211, 211, 0.5);"
+- Line 75: rgba(0, 0, 0, 0.5) in "background-color: rgba(0, 0, 0, 0.5);"
+- Line 103: rgba(47, 51, 54, 1) in "color: rgba(47, 51, 54, 1);"
+- Line 142: rgba(0, 0, 0, 0.2) in "box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);"
 
 File: src/features/common/Layout/ProjectsLayout/ProjectsLayout.module.scss
 --------------------------------------------------------------------------
@@ -962,6 +996,10 @@ File: src/features/common/Layout/UserLayout/UserLayout.module.scss
 ------------------------------------------------------------------
 - Line 277: rgba(104, 176, 48) in "color: rgba(104, 176, 48);"
 
+File: src/features/common/RedeemCode/style/RedeemModal.module.scss
+------------------------------------------------------------------
+- Line 72: #2f3336 in "color: #2f3336;"
+
 File: src/features/common/TreeCounter/TreeCounter.module.scss
 -------------------------------------------------------------
 - Line 73: #6fcf97 in "border: 20px solid #6fcf97;"
@@ -970,7 +1008,7 @@ File: src/features/common/TreeCounter/TreeCounter.module.scss
 
 File: src/features/common/TreeCounter/TreeCounter.tsx
 -----------------------------------------------------
-- Line 156: #4F4F4F in "color={'#4F4F4F'}"
+- Line 157: #4F4F4F in "color={'#4F4F4F'}"
 
 File: src/features/common/WebappButton/WebappButton.module.scss
 ---------------------------------------------------------------
@@ -1070,7 +1108,7 @@ File: src/features/projects/styles/PlantLocation.module.scss
 - Line 84: rgba(0, 0, 0, 0.4) in "background: rgba(0, 0, 0, 0.4) !important;"
 - Line 87: rgba(255, 255, 255, 0.8) in "background: rgba(255, 255, 255, 0.8) !important;"
 - Line 129: rgba(0, 122, 73, 0.5) in "background-color: rgba(0, 122, 73, 0.5);"
-- Line 134: rgba(0, 122, 73, 1) in "background-color:  rgba(0, 122, 73, 1);"
+- Line 134: rgba(0, 122, 73, 1) in "background-color: rgba(0, 122, 73, 1);"
 - Line 121: yellow in "// background-color: yellow;"
 
 File: src/features/projects/styles/ProjectDetails.module.scss
@@ -1171,8 +1209,8 @@ File: src/features/projectsV2/ProjectDetails/styles/Slider.module.scss
 File: src/features/projectsV2/ProjectListControls/styles/ProjectListControls.module.scss
 ----------------------------------------------------------------------------------------
 - Line 12: rgba(0, 0, 0, 0.12) in "box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);"
-- Line 231: rgba(0, 0, 0, 0.2) in "box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);"
-- Line 271: rgba(51, 51, 51, 1) in "color: rgba(51, 51, 51, 1);"
+- Line 232: rgba(0, 0, 0, 0.2) in "box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);"
+- Line 272: rgba(51, 51, 51, 1) in "color: rgba(51, 51, 51, 1);"
 
 File: src/features/projectsV2/ProjectSnippet/microComponents/TopProjectReports.tsx
 ----------------------------------------------------------------------------------
@@ -1229,8 +1267,8 @@ File: src/features/projectsV2/ProjectsMap/MapFeatureExplorer/MapFeatureExplorer.
 
 File: src/features/projectsV2/ProjectsMap/MapFeatureExplorer/MobileMapSettingsLayout.module.scss
 ------------------------------------------------------------------------------------------------
-- Line 19: #fff in "background-color: #fff;"
-- Line 20: rgba(0, 0, 0, 0.05) in "box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);"
+- Line 21: #fff in "background-color: #fff;"
+- Line 22: rgba(0, 0, 0, 0.05) in "box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);"
 
 File: src/features/projectsV2/ProjectsMap/MapFeatureExplorer/YearSlider/CustomSlider.tsx
 ----------------------------------------------------------------------------------------
@@ -1251,9 +1289,9 @@ File: src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/index.tsx
 
 File: src/features/projectsV2/ProjectsMap/ProjectsMap.module.scss
 -----------------------------------------------------------------
-- Line 44: rgb(255, 255, 255) in "background-color: rgb(255, 255, 255);"
-- Line 111: rgba(0, 122, 73, 0.5) in "background-color: rgba(0, 122, 73, 0.5);"
-- Line 116: rgba(0, 122, 73, 1) in "background-color: rgba(0, 122, 73, 1);"
+- Line 42: rgb(255, 255, 255) in "background-color: rgb(255, 255, 255);"
+- Line 109: rgba(0, 122, 73, 0.5) in "background-color: rgba(0, 122, 73, 0.5);"
+- Line 114: rgba(0, 122, 73, 1) in "background-color: rgba(0, 122, 73, 1);"
 
 File: src/features/projectsV2/ProjectsMap/TimeTravel/TimeTravel.module.scss
 ---------------------------------------------------------------------------
@@ -1289,45 +1327,45 @@ File: src/features/projectsV2/TimeTravelDropdown/TimeTravelDropdown.module.scss
 
 File: src/features/user/Account/AccountHistory.module.scss
 ----------------------------------------------------------
-- Line 72: #ffc107 in "color: #ffc107;"
-- Line 76: #28a745 in "color: #28a745;"
-- Line 79: #dc3545 in "color: #dc3545;"
-- Line 127: #e74c3c in "color: #e74c3c;"
-- Line 186: #deffc4 in "// background-color: #deffc4;"
-- Line 194: #ffe8b8 in "background-color: #ffe8b8;"
-- Line 198: #ffccc7 in "background-color: #ffccc7;"
-- Line 217: #dddbda in "background-color: #dddbda;"
-- Line 239: #707070 in "// box-shadow: 1px 2px 8px -6px #707070;"
-- Line 434: #fff in "background-color: #fff;"
-- Line 488: #e1efd6 in "background-color: #e1efd6;"
-- Line 504: #ffffff in "background-color: #ffffff;"
-- Line 506: #68B030 in "color: '#68B030';"
-- Line 814: #f3f3f3 in "border: 2px solid #f3f3f3;"
-- Line 824: #689f38 in "border: 2px solid #689f38;"
-- Line 325: rgba(104, 176, 48, 0.12) in "background-color: rgba(104, 176, 48, 0.12);"
-- Line 585: rgba(0, 0, 0, 0.4) in "background-color: rgba(0, 0, 0, 0.4);"
-- Line 642: rgba(255, 255, 204, 0.3) in "background-color: rgba(255, 255, 204, 0.3);"
-- Line 652: rgba(241, 130, 141, 0.3) in "background-color: rgba(241, 130, 141, 0.3);"
-- Line 289: white in "white-space: nowrap;"
+- Line 60: #ffc107 in "color: #ffc107;"
+- Line 64: #28a745 in "color: #28a745;"
+- Line 67: #dc3545 in "color: #dc3545;"
+- Line 115: #e74c3c in "color: #e74c3c;"
+- Line 174: #deffc4 in "// background-color: #deffc4;"
+- Line 182: #ffe8b8 in "background-color: #ffe8b8;"
+- Line 186: #ffccc7 in "background-color: #ffccc7;"
+- Line 205: #dddbda in "background-color: #dddbda;"
+- Line 227: #707070 in "// box-shadow: 1px 2px 8px -6px #707070;"
+- Line 422: #fff in "background-color: #fff;"
+- Line 476: #e1efd6 in "background-color: #e1efd6;"
+- Line 492: #ffffff in "background-color: #ffffff;"
+- Line 494: #68B030 in "color: '#68B030';"
+- Line 800: #f3f3f3 in "border: 2px solid #f3f3f3;"
+- Line 810: #689f38 in "border: 2px solid #689f38;"
+- Line 313: rgba(104, 176, 48, 0.12) in "background-color: rgba(104, 176, 48, 0.12);"
+- Line 573: rgba(0, 0, 0, 0.4) in "background-color: rgba(0, 0, 0, 0.4);"
+- Line 629: rgba(255, 255, 204, 0.3) in "background-color: rgba(255, 255, 204, 0.3);"
+- Line 639: rgba(241, 130, 141, 0.3) in "background-color: rgba(241, 130, 141, 0.3);"
+- Line 277: white in "white-space: nowrap;"
 
 File: src/features/user/Account/CancelModal.tsx
 -----------------------------------------------
-- Line 32: #fff in "color: '#fff',"
+- Line 30: #fff in "color: '#fff',"
 - Line 131: #4d5153 in "<Close color={'#4d5153'} />"
 
 File: src/features/user/Account/EditModal.tsx
 ---------------------------------------------
-- Line 44: #fff in "color: '#fff',"
-- Line 190: #4d5153 in "<Close color={'#4d5153'} />"
+- Line 32: #fff in "color: '#fff',"
+- Line 175: #4d5153 in "<Close color={'#4d5153'} />"
 
 File: src/features/user/Account/PauseModal.tsx
 ----------------------------------------------
-- Line 32: #fff in "color: '#fff',"
-- Line 139: #4d5153 in "<Close color={'#4d5153'} />"
+- Line 30: #fff in "color: '#fff',"
+- Line 140: #4d5153 in "<Close color={'#4d5153'} />"
 
 File: src/features/user/Account/ReactivateModal.tsx
 ---------------------------------------------------
-- Line 90: #4d5153 in "<Close color={'#4d5153'} />"
+- Line 89: #4d5153 in "<Close color={'#4d5153'} />"
 
 File: src/features/user/BulkCodes/BulkCodes.module.scss
 -------------------------------------------------------
@@ -1372,16 +1410,16 @@ File: src/features/user/ManageProjects/ProjectsContainer.module.scss
 
 File: src/features/user/ManageProjects/StepForm.module.scss
 -----------------------------------------------------------
-- Line 125: #e2eee8 in "background-color: #e2eee8;"
-- Line 168: #fff in "background: #fff;"
-- Line 653: #f3f3f3 in "border: 2px solid #f3f3f3;"
-- Line 368: rgba(0, 0, 0, 0.16) in "box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);"
-- Line 483: rgba(60, 60, 60, 1) in "box-shadow: 0 7px 30px -10px rgba(60, 60, 60, 1);"
-- Line 497: rgb(242, 242, 247) in "background-color: rgb(242, 242, 247);"
-- Line 534: rgba(47, 51, 54, 0) in "rgba(47, 51, 54, 0) 60%,"
-- Line 535: rgba(47, 51, 54, 0.22) in "rgba(47, 51, 54, 0.22) 76%,"
-- Line 536: rgba(47, 51, 54, 0.74) in "rgba(47, 51, 54, 0.74)"
-- Line 685: white in "background-color: white;"
+- Line 126: #e2eee8 in "background-color: #e2eee8;"
+- Line 169: #fff in "background: #fff;"
+- Line 654: #f3f3f3 in "border: 2px solid #f3f3f3;"
+- Line 369: rgba(0, 0, 0, 0.16) in "box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);"
+- Line 484: rgba(60, 60, 60, 1) in "box-shadow: 0 7px 30px -10px rgba(60, 60, 60, 1);"
+- Line 498: rgb(242, 242, 247) in "background-color: rgb(242, 242, 247);"
+- Line 535: rgba(47, 51, 54, 0) in "rgba(47, 51, 54, 0) 60%,"
+- Line 536: rgba(47, 51, 54, 0.22) in "rgba(47, 51, 54, 0.22) 76%,"
+- Line 537: rgba(47, 51, 54, 0.74) in "rgba(47, 51, 54, 0.74)"
+- Line 686: white in "background-color: white;"
 
 File: src/features/user/ManageProjects/components/DetailedAnalysis.tsx
 ----------------------------------------------------------------------
@@ -1411,7 +1449,7 @@ File: src/features/user/ManageProjects/components/ProjectSpending.tsx
 
 File: src/features/user/PlanetCash/components/AccountDetails.tsx
 ----------------------------------------------------------------
-- Line 21: grey in "backgroundColor: theme.palette.grey[200],"
+- Line 22: grey in "backgroundColor: theme.palette.grey[200],"
 
 File: src/features/user/Profile/CommunityContributions/communityContributions.module.scss
 -----------------------------------------------------------------------------------------
@@ -1433,10 +1471,10 @@ File: src/features/user/Profile/ContributionsMap/Common/common.module.scss
 
 File: src/features/user/Profile/ContributionsMap/ContributionsMap.module.scss
 -----------------------------------------------------------------------------
-- Line 28: #000 in "background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.29%, #000 100%);"
-- Line 39: #fff in "border: 1px solid #fff;"
-- Line 21: rgba(0, 0, 0, 0.1) in "box-shadow: 2.889px 5.778px 11.556px 0px rgba(0, 0, 0, 0.1);"
-- Line 28: rgba(0, 0, 0, 0) in "background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.29%, #000 100%);"
+- Line 30: #000 in "background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.29%, #000 100%);"
+- Line 41: #fff in "border: 1px solid #fff;"
+- Line 23: rgba(0, 0, 0, 0.1) in "box-shadow: 2.889px 5.778px 11.556px 0px rgba(0, 0, 0, 0.1);"
+- Line 30: rgba(0, 0, 0, 0) in "background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.29%, #000 100%);"
 
 File: src/features/user/Profile/ForestProgress/ForestProgress.module.scss
 -------------------------------------------------------------------------
@@ -1451,13 +1489,13 @@ File: src/features/user/Profile/ForestProgress/TargetSwitch.tsx
 
 File: src/features/user/Profile/InfoAndCTA/InfoAndCta.module.scss
 -----------------------------------------------------------------
-- Line 21: #FFF in "color: #FFF;"
-- Line 118: #333 in "color: #333;"
+- Line 24: #fff in "color: #fff;"
+- Line 107: #333 in "color: #333;"
 
 File: src/features/user/Profile/MyContributions/GiftInfoTooltip.tsx
 -------------------------------------------------------------------
-- Line 11: #FFFFFF in "backgroundColor: '#FFFFFF',"
-- Line 12: #3E3E3E in "color: '#3E3E3E',"
+- Line 12: #FFFFFF in "backgroundColor: '#FFFFFF',"
+- Line 13: #3E3E3E in "color: '#3E3E3E',"
 
 File: src/features/user/Profile/MyContributions/ItemMobileHeader.tsx
 --------------------------------------------------------------------
@@ -1492,8 +1530,8 @@ File: src/features/user/Profile/ProfileCard/ProfileCard.module.scss
 File: src/features/user/Profile/ProfileCard/ShareModal/ShareModal.module.scss
 -----------------------------------------------------------------------------
 - Line 4: #fff in "background-color: #fff;"
-- Line 20: #008F5C in "background: #008F5C;"
-- Line 43: #4F4F4F in "color: #4F4F4F;"
+- Line 20: #008f5c in "background: #008f5c;"
+- Line 42: #4f4f4f in "color: #4f4f4f;"
 - Line 27: white in "white-space: nowrap;"
 
 File: src/features/user/Profile/ProfileLayout/ProfileLayout.module.scss
@@ -1507,11 +1545,11 @@ File: src/features/user/Profile/PublicProfileLayout/PublicProfileLayout.module.s
 File: src/features/user/RegisterTrees/RegisterModal.module.scss
 ---------------------------------------------------------------
 - Line 89: rgba(0, 0, 0, 0.16) in "box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);"
-- Line 165: rgba(47, 51, 54, 0) in "rgba(47, 51, 54, 0) 60%,"
-- Line 166: rgba(47, 51, 54, 0.22) in "rgba(47, 51, 54, 0.22) 76%,"
-- Line 167: rgba(47, 51, 54, 0.74) in "rgba(47, 51, 54, 0.74)"
-- Line 187: rgba(60, 60, 60, 1) in "box-shadow: 0 7px 12px -6px rgba(60, 60, 60, 1);"
-- Line 225: rgba(0, 0, 0, 0.5) in "background: rgba(0, 0, 0, 0.5);"
+- Line 160: rgba(47, 51, 54, 0) in "rgba(47, 51, 54, 0) 60%,"
+- Line 161: rgba(47, 51, 54, 0.22) in "rgba(47, 51, 54, 0.22) 76%,"
+- Line 162: rgba(47, 51, 54, 0.74) in "rgba(47, 51, 54, 0.74)"
+- Line 182: rgba(60, 60, 60, 1) in "box-shadow: 0 7px 12px -6px rgba(60, 60, 60, 1);"
+- Line 220: rgba(0, 0, 0, 0.5) in "background: rgba(0, 0, 0, 0.5);"
 
 File: src/features/user/RegisterTrees/RegisterTrees/StaticMap.tsx
 -----------------------------------------------------------------
@@ -1544,7 +1582,7 @@ File: src/features/user/Settings/EditProfile/EditProfile.module.scss
 
 File: src/features/user/Settings/EditProfile/EditProfileForm.tsx
 ----------------------------------------------------------------
-- Line 301: #828282 in "<Delete color="#828282" />"
+- Line 303: #828282 in "<Delete color="#828282" />"
 
 File: src/features/user/Settings/ImpersonateUser/ImpersonateUser.module.scss
 ----------------------------------------------------------------------------
@@ -1553,7 +1591,7 @@ File: src/features/user/Settings/ImpersonateUser/ImpersonateUser.module.scss
 
 File: src/features/user/Settings/ImpersonateUser/SupportPin.tsx
 ---------------------------------------------------------------
-- Line 43: #66BB6A in "<RestartAltIcon sx={{ '&:hover': { color: '#66BB6A' } }} />"
+- Line 40: #66BB6A in "<RestartAltIcon sx={{ '&:hover': { color: '#66BB6A' } }} />"
 
 File: src/features/user/TreeMapper/Analytics/components/Container/index.module.scss
 -----------------------------------------------------------------------------------
@@ -1651,7 +1689,7 @@ File: src/features/user/TreeMapper/Import/components/SampleTreeCard.tsx
 
 File: src/features/user/TreeMapper/Import/components/SampleTrees.tsx
 --------------------------------------------------------------------
-- Line 269: #e53935 in "{parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}"
+- Line 277: #e53935 in "{parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}"
 
 File: src/features/user/TreeMapper/MySpecies/MySpecies.module.scss
 ------------------------------------------------------------------
@@ -1844,7 +1882,7 @@ File: src/tenants/salesforce/Mangroves/styles/ProjectGrid.module.scss
 
 File: src/tenants/salesforce/OceanforceCampaign/components/ContentSection.tsx
 -----------------------------------------------------------------------------
-- Line 63: blue in "the blue Donate button below to donate."
+- Line 66: blue in "the blue Donate button below to donate."
 
 File: src/tenants/salesforce/OceanforceCampaign/index.tsx
 ---------------------------------------------------------
@@ -1892,11 +1930,11 @@ File: src/tenants/salesforce/OceanforceCampaign/styles/ParticipationSection.modu
 
 File: src/tenants/salesforce/TreeCounter/TreeCounter.module.scss
 ----------------------------------------------------------------
-- Line 28: #032d60 in "color: #032d60;"
-- Line 78: #4f4f4f in "color: #4f4f4f;"
-- Line 108: #027e46 in "background-color: #027e46;"
-- Line 114: #fff in "color: #fff;"
-- Line 109: rgba(0, 0, 0, 0.1) in "box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);"
+- Line 29: #032d60 in "color: #032d60;"
+- Line 44: #4f4f4f in "color: #4f4f4f;"
+- Line 57: #027e46 in "background-color: #027e46;"
+- Line 63: #fff in "color: #fff;"
+- Line 58: rgba(0, 0, 0, 0.1) in "box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);"
 
 File: src/tenants/salesforce/VTOCampaign2023/index.tsx
 ------------------------------------------------------
@@ -2015,11 +2053,14 @@ File: src/tenants/salesforce/VTOCampaign2025/styles/ProjectGrid.module.scss
 
 File: src/theme/_colors.scss
 ----------------------------
-- Line 3: green in "$primaryLightGreenBgColor: var(--primary-light-green-bg-color);"
-- Line 35: gray in "$grayFontColorNew: var(--gray-font-color-new);"
-- Line 45: blue in "$mediumBlueColor: var(--medium-blue-color);"
-- Line 48: purple in "$electricPurpleColor: var(--electric-purple-color);"
-- Line 54: orange in "$lightOrange: var(--light-orange);"
+- Line 4: green in "$primaryLightGreenBgColor: var(--primary-light-green-bg-color);"
+- Line 36: gray in "$grayFontColorNew: var(--gray-font-color-new);"
+- Line 46: blue in "$mediumBlueColor: var(--medium-blue-color);"
+- Line 50: purple in "$electricPurpleColor: var(--electric-purple-color);"
+- Line 56: orange in "$lightOrange: var(--light-orange);"
+- Line 69: yellow in "// Yellows"
+- Line 87: red in "// Reds"
+- Line 103: grey in "$dsBaseGrey: var(--ds-base-grey);"
 
 File: src/theme/global.scss
 ---------------------------
@@ -2032,61 +2073,91 @@ File: src/theme/global.scss
 
 File: src/theme/theme.ts
 ------------------------
-- Line 13: green in "primaryLightGreenBgColor,"
-- Line 88: blue in "--medium-blue-color: ${theme.mediumBlueColor};"
-- Line 23: gray in "CharcoalGray,"
-- Line 91: purple in "--electric-purple-color: ${theme.electricPurpleColor};"
-- Line 22: orange in "lightOrange,"
+- Line 14: green in "primaryLightGreenBgColor,"
+- Line 90: blue in "--medium-blue-color: ${theme.mediumBlueColor};"
+- Line 17: gray in "mediumGrayColor,"
+- Line 94: purple in "--electric-purple-color: ${theme.electricPurpleColor};"
+- Line 24: orange in "lightOrange,"
+- Line 112: yellow in "--ds-golden-yellow: ${designSystem.colors.goldenYellow};"
+- Line 23: red in "exploreDescriptionBackground,"
+- Line 135: grey in "--ds-base-grey: ${designSystem.colors.baseGrey};"
 
 File: src/theme/themeProperties.ts
 ----------------------------------
-- Line 22: #68B030 in "primaryColor: '#68B030',"
-- Line 23: #007a49 in "primaryDarkColor: '#007a49',"
-- Line 25: #F2F8F6 in "primaryLightGreenBgColor: '#F2F8F6',"
-- Line 27: #48AADD in "lightBlueColor: '#48AADD',"
-- Line 28: #4F4F4F in "darkBlackColor: '#4F4F4F',"
-- Line 29: #688816 in "darkOliveGreen: '#688816',"
-- Line 30: #F3BB44 in "topProjectBackgroundColor: '#F3BB44',"
-- Line 31: #ffd273 in "topProjectTransparentColor: '#ffd273',"
-- Line 34: #6fcf97 in "mintGreenColor: '#6fcf97',"
-- Line 35: #828282 in "mediumGrayColor: '#828282',"
-- Line 36: #242424 in "CharcoalGray: '#242424',"
-- Line 38: #f2f2f2 in "lightGrayColor: '#f2f2f2',"
-- Line 40: #c98eff in "lavenderPurpleColor: '#c98eff',"
-- Line 41: #87ceeb in "skyBlueColor: '#87ceeb',"
-- Line 33: #2d9cdb in "ceruleanBlueColor: '#2d9cdb0d',"
-- Line 39: #9b51e0 in "amethystPurpleColor: '#9b51e00d',"
-- Line 26: #219653 in "greenHazeColor: '#2196530d',"
-- Line 48: #bdbdbd in "horizontalLineColorNew: '#bdbdbd',"
-- Line 49: #2f80ed in "restorationToggleColorNew: '#2f80ed',"
-- Line 52: #27ae60 in "greenTwo: '#27ae60',"
-- Line 54: #2f3336 in "primaryFontColor: '#2f3336',"
-- Line 55: #d5d5d5 in "dividerColor: '#d5d5d5',"
-- Line 56: #ecb641 in "secondaryColor: '#ecb641',"
-- Line 57: #4d5153 in "highlightBackground: '#4d5153',"
-- Line 58: #fff in "backgroundColor: '#fff',"
-- Line 60: #333333 in "richBlack: '#333333',"
-- Line 61: #000 in "dark: '#000',"
-- Line 62: #e74c3c in "dangerColor: '#e74c3c',"
-- Line 63: #2980b9 in "safeColor: '#2980b9',"
-- Line 64: #F2F2F7 in "backgroundColorDark: '#F2F2F7',"
-- Line 65: #1d1d1b in "unDecadeFill: '#1d1d1b',"
-- Line 67: #F0F6F5 in "backgroundBase: '#F0F6F5',"
-- Line 68: #909090 in "disabledFontColor: '#909090',"
-- Line 69: #f4ffec in "tabBackgroundColor: '#f4ffec',"
-- Line 71: #d9d9d9 in "lightGrayBackgroundColorNew: '#d9d9d9',"
-- Line 54: #2F3336 in "primaryFontColor: '#2f3336',"
-- Line 60: #333 in "richBlack: '#333333',"
-- Line 48: #BDBDBD in "horizontalLineColorNew: '#bdbdbd',"
-- Line 77: #E86F56 in "dangerColorNew: '#E86F56',"
-- Line 82: #3AB6BD in "certificationLinkColorNew: '#3AB6BD',"
-- Line 87: #ffffff in "primaryFontColor: '#ffffff',"
-- Line 88: #101113 in "dividerColor: '#101113',"
-- Line 90: #343a40 in "backgroundColor: '#343a40',"
-- Line 95: #00ef00 in "dangerColor: '#00ef00',"
-- Line 100: #202020 in "backgroundBase: '#202020',"
-- Line 101: #686868 in "disabledFontColor: '#686868',"
-- Line 50: rgba(235, 87, 87, 1) in "deforestrationToggleColorNew: 'rgba(235, 87, 87, 1)',"
+- Line 18: #007A49 in "primaryColor: '#007A49',"
+- Line 22: #219653 in "forestGreen: '#219653',"
+- Line 23: #27AE60 in "leafGreen: '#27AE60',"
+- Line 24: #6FCF97 in "brightGreen: '#6FCF97',"
+- Line 25: #C9EFD9 in "mintGradient: '#C9EFD9',"
+- Line 26: #DDF4C4 in "softGreen: '#DDF4C4',"
+- Line 28: #F3B844 in "goldenYellow: '#F3B844',"
+- Line 29: #FFF8E4 in "softYellow: '#FFF8E4',"
+- Line 31: #2F211B in "darkChocolate: '#2F211B',"
+- Line 32: #EFE2DD in "softDarkChocolate: '#EFE2DD',"
+- Line 33: #6D4230 in "milkChocolate: '#6D4230',"
+- Line 34: #FDF3EA in "softMilkChocolate: '#FDF3EA',"
+- Line 36: #6C63FF in "purpleSky: '#6C63FF',"
+- Line 37: #F3F2FF in "softSky: '#F3F2FF',"
+- Line 38: #2F80ED in "oceanBlue: '#2F80ED',"
+- Line 39: #EFFFFF in "softBlue: '#EFFFFF',"
+- Line 40: #9B51E0 in "deepPurple: '#9B51E0',"
+- Line 41: #F9F1FF in "softPurple: '#F9F1FF',"
+- Line 43: #EB5757 in "fireRed: '#EB5757',"
+- Line 44: #FFF3F3 in "softRed: '#FFF3F3',"
+- Line 46: #333333 in "coreText: '#333333',"
+- Line 47: #4F4F4F in "softText: '#4F4F4F',"
+- Line 48: #828282 in "softText2: '#828282',"
+- Line 49: #BDBDBD in "hintText: '#BDBDBD',"
+- Line 51: #68B030 in "warmGreen: '#68B030',"
+- Line 52: #F2994A in "sunriseOrange: '#F2994A',"
+- Line 53: #F2C94C in "brightYellow: '#F2C94C',"
+- Line 54: #2D9CDB in "warmBlue: '#2D9CDB',"
+- Line 55: #56CCF2 in "skyBlue: '#56CCF2',"
+- Line 56: #F9F9F9 in "baseGrey: '#F9F9F9',"
+- Line 58: #082447 in "deepBlue: '#082447',"
+- Line 59: #003333 in "deepGreen: '#003333',"
+- Line 18: #007a49 in "primaryColor: '#007A49',"
+- Line 66: #F2F8F6 in "primaryLightGreenBgColor: '#F2F8F6',"
+- Line 68: #48AADD in "lightBlueColor: '#48AADD',"
+- Line 70: #688816 in "darkOliveGreen: '#688816',"
+- Line 71: #F3BB44 in "topProjectBackgroundColor: '#F3BB44',"
+- Line 72: #ffd273 in "topProjectTransparentColor: '#ffd273',"
+- Line 24: #6fcf97 in "brightGreen: '#6FCF97',"
+- Line 77: #242424 in "CharcoalGray: '#242424',"
+- Line 79: #f2f2f2 in "lightGrayColor: '#f2f2f2',"
+- Line 81: #c98eff in "lavenderPurpleColor: '#c98eff',"
+- Line 82: #87ceeb in "skyBlueColor: '#87ceeb',"
+- Line 54: #2d9cdb in "warmBlue: '#2D9CDB',"
+- Line 40: #9b51e0 in "deepPurple: '#9B51E0',"
+- Line 49: #bdbdbd in "hintText: '#BDBDBD',"
+- Line 38: #2f80ed in "oceanBlue: '#2F80ED',"
+- Line 23: #27ae60 in "leafGreen: '#27AE60',"
+- Line 95: #2f3336 in "primaryFontColor: '#2f3336',"
+- Line 96: #d5d5d5 in "dividerColor: '#d5d5d5',"
+- Line 97: #ecb641 in "secondaryColor: '#ecb641',"
+- Line 98: #4d5153 in "highlightBackground: '#4d5153',"
+- Line 29: #fff in "softYellow: '#FFF8E4',"
+- Line 102: #000 in "dark: '#000',"
+- Line 103: #e74c3c in "dangerColor: '#e74c3c',"
+- Line 104: #2980b9 in "safeColor: '#2980b9',"
+- Line 105: #F2F2F7 in "backgroundColorDark: '#F2F2F7',"
+- Line 106: #1d1d1b in "unDecadeFill: '#1d1d1b',"
+- Line 108: #F0F6F5 in "backgroundBase: '#F0F6F5',"
+- Line 109: #909090 in "disabledFontColor: '#909090',"
+- Line 110: #f4ffec in "tabBackgroundColor: '#f4ffec',"
+- Line 112: #d9d9d9 in "lightGrayBackgroundColorNew: '#d9d9d9',"
+- Line 95: #2F3336 in "primaryFontColor: '#2f3336',"
+- Line 46: #333 in "coreText: '#333333',"
+- Line 118: #E86F56 in "dangerColorNew: '#E86F56',"
+- Line 123: #3AB6BD in "certificationLinkColorNew: '#3AB6BD',"
+- Line 128: #ffffff in "primaryFontColor: '#ffffff',"
+- Line 129: #101113 in "dividerColor: '#101113',"
+- Line 131: #343a40 in "backgroundColor: '#343a40',"
+- Line 136: #00ef00 in "dangerColor: '#00ef00',"
+- Line 141: #202020 in "backgroundBase: '#202020',"
+- Line 142: #686868 in "disabledFontColor: '#686868',"
+- Line 91: rgba(235, 87, 87, 1) in "deforestrationToggleColorNew: 'rgba(235, 87, 87, 1)',"
+- Line 17: Green in "/** Planet Green */"
 
 File: src/theme/themeStyles.ts
 ------------------------------
@@ -2119,16 +2190,18 @@ File: src/utils/mapsV2/mapSettings.config.ts
 
 ## STATISTICS
 
-Total files with hardcoded colors: 350
-Total hardcoded color instances: 1061
-Unique colors (normalized): 237
+Total files with hardcoded colors: 353
+Total hardcoded color instances: 1123
+Unique colors (normalized): 262
 
 ## UNIQUE COLORS WITH EQUIVALENT REPRESENTATIONS
 
 - #000063
+- #003333
+- #0065CA
 - #007A49, #007a49, rgba(0, 122, 73, 0.05), rgba(0, 122, 73, 0.15), rgba(0, 122, 73, 0.5), rgba(0, 122, 73, 1)
 - #007b49
-- #008F5C, #008f5c
+- #008f5c
 - #009fe3
 - #00ef00
 - #0176D3, #0176d3
@@ -2139,7 +2212,9 @@ Unique colors (normalized): 237
 - #027A4A
 - #027e46
 - #032d60
+- #0766FF
 - #080707
+- #082447
 - #0a97d9
 - #0b5cab
 - #0B827C, #0b827c
@@ -2172,6 +2247,7 @@ Unique colors (normalized): 237
 - #2980b9
 - #2d5e30
 - #2D9CDB, #2d9cdb
+- #2F211B
 - #2f2e41
 - #2F3336, #2f3336, rgba(47, 51, 54, 0), rgba(47, 51, 54, 0.22), rgba(47, 51, 54, 0.74), rgba(47, 51, 54, 1)
 - #2F80ED, #2f80ed
@@ -2182,6 +2258,7 @@ Unique colors (normalized): 237
 - #3498db
 - #37364c
 - #375a64
+- #3771C8
 - #396547
 - #3AB6BD
 - #3B00FF, rgba(59, 0, 255, 1)
@@ -2199,6 +2276,7 @@ Unique colors (normalized): 237
 - #4676ED
 - #46a2d4
 - #47a8dc
+- #47BB56
 - #48AADD, #48aadd
 - #4d5153
 - #4F4F4F, #4f4f4f
@@ -2216,6 +2294,7 @@ Unique colors (normalized): 237
 - #5f6368
 - #5f8238
 - #605d82
+- #6600FF
 - #66BB6A
 - #686868
 - #688816
@@ -2265,7 +2344,9 @@ Unique colors (normalized): 237
 - #bf8b2e
 - #c5192d
 - #c5c5c5
+- #c5f2e4
 - #c7daf5
+- #C837AB
 - #c8c8c8
 - #c8def4
 - #c98eff
@@ -2284,6 +2365,7 @@ Unique colors (normalized): 237
 - #dda63a
 - #DDD
 - #dddbda
+- #DDF4C4
 - #dedede
 - #deffc4
 - #DFF4E8
@@ -2296,6 +2378,7 @@ Unique colors (normalized): 237
 - #e6e6e6
 - #e74c3c
 - #E86F56, #e86f56, rgba(232, 111, 86, 0.2)
+- #E9F8EF
 - #EB5757, rgba(235, 87, 87, 1)
 - #EB67CE
 - #ECB641, #ecb641
@@ -2305,6 +2388,8 @@ Unique colors (normalized): 237
 - #eee
 - #eef0f3
 - #efc8c4
+- #EFE2DD
+- #EFFFFF
 - #F0F6F5, #f0f6f5, rgba(240, 246, 245, 1)
 - #f1c0c0
 - #f1c40f
@@ -2312,21 +2397,27 @@ Unique colors (normalized): 237
 - #F2F2F2, #f2f2f2, rgba(242, 242, 242, 0.5)
 - #F2F2F7, #f2f2f7, rgb(242, 242, 247)
 - #F2F8F6
+- #F3B844
 - #F3BB44
+- #F3F2FF
 - #f3f3f3
 - #f44336
 - #f4ffec
 - #f5f2f2
 - #f5f5f5
+- #F9F1FF
+- #F9F9F9
 - #FA7902
 - #fadc2f
 - #fafafa
 - #FBA778
 - #fbbebe
+- #FDF3EA
 - #fed253
 - #FEFEFE
-- #FF0000
+- #FF0000, red
 - #ff5252
+- #FF543E
 - #ff6200
 - #ff845e
 - #FFA14E
@@ -2334,29 +2425,34 @@ Unique colors (normalized): 237
 - #ffb8b8
 - #FFBE31
 - #ffc107
+- #FFC700
 - #ffc800
 - #FFCB00
 - #ffccc7
 - #ffd273
 - #FFD347
 - #ffd991
+- #FFDD55
 - #ffe8b8
-- #FFF, #FFFFFF, #fff, #ffffff, rgb(255, 255, 255), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7125), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1), white
+- #FFFFFF, #fff, #ffffff, rgb(255, 255, 255), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7125), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1), white
+- #FFF8E4
 - #000, #000000, black, rgb(0, 0, 0), rgb(0, 0, 0, 0.2), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.29), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.87), rgba(0, 0, 0, 1), rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,0.35), rgba(0,0,0,0.4), rgba(0,0,0,1)
 - Blue, blue
 - gray, grey
-- green
+- Green, green
 - orange
 - purple
 - rgb(186, 238, 137)
 - rgba(126, 212, 230, 1)
 - rgba(172, 172, 172, 0.15)
+- #C9EFD9, rgba(201, 239, 217, 1)
 - rgba(211, 211, 211, 0.5)
 - rgba(211, 234, 221, 1)
+- rgba(215, 242, 193, 1)
 - rgba(241, 130, 141, 0.3)
 - #F2C94C, rgba(242, 201, 76, 0.15)
 - rgba(249, 220, 214)
-- rgba(255, 243, 243, 0.5)
+- #FFF3F3, rgba(255, 243, 243, 0.5)
 - rgba(255, 255, 204, 0.3)
 - rgba(50, 50, 93, 0.25)
 - rgba(60, 60, 60, 1)
