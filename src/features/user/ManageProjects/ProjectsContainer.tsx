@@ -1,6 +1,11 @@
-import type { APIError } from '@planet-sdk/common';
-import type { Properties } from '../../common/types/project';
-import type { Geometry } from '@turf/turf';
+import type {
+  APIError,
+  CountryCode,
+  ProfileProjectFeature,
+  ProfileProjectPropertiesConservation,
+  ProfileProjectPropertiesFund,
+  ProfileProjectPropertiesTrees,
+} from '@planet-sdk/common';
 
 import Link from 'next/link';
 import React from 'react';
@@ -20,13 +25,12 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 
-interface UserProjectsType {
-  type: string;
-  geometry: Geometry;
-  properties: Properties;
-}
+type ProjectProperties =
+  | ProfileProjectPropertiesFund
+  | ProfileProjectPropertiesTrees
+  | ProfileProjectPropertiesConservation;
 
-function SingleProject({ project }: { project: Properties }) {
+function SingleProject({ project }: { project: ProjectProperties }) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -50,13 +54,15 @@ function SingleProject({ project }: { project: Properties }) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
-            ? project?.metadata?.ecosystems
-            : project?.classification}{' '}
+            ? project?.metadata?.ecosystem
+            : (project as ProfileProjectPropertiesTrees)?.classification}{' '}
           •{' '}
           {project.country === null ? (
             <></>
           ) : (
-            tCountry((project.country || '').toLowerCase())
+            tCountry(
+              (project.country || '').toLowerCase() as Lowercase<CountryCode>
+            )
           )}
         </p>
         {project.purpose === 'trees' ? (
@@ -106,14 +112,14 @@ export default function ProjectsContainer() {
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
-  const [projects, setProjects] = React.useState<UserProjectsType[]>([]);
+  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, token } = useUserProps();
   async function loadProjects() {
     if (user) {
       try {
-        const projects = await getApiAuthenticated<UserProjectsType[]>(
+        const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
           '/app/profile/projects',
           { queryParams: { version: '1.2' } }
         );
