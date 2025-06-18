@@ -74,7 +74,7 @@ export interface MapSettingsConfig {
 
 // Configuration object
 // isAvailable is set to null initially, and will be updated based on the API response (except for projects which are always available)
-/** Note: additional info seen on hover comes from translation file. While updating this, update translation file as well */
+/** Note: additionalInfo seen on hover comes from translation file. While updating this, update translation file (maps.json) as well */
 export const mapSettingsConfig: MapSettingsConfig = {
   projects: {
     key: 'projects',
@@ -201,8 +201,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
       legend: {
         type: 'range',
-        min: 0,
-        max: 1237,
+        min: 60,
+        max: 26313,
         gradient:
           'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #6C8DFF 100%)',
         unit: 'cg/kg',
@@ -226,8 +226,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
       legend: {
         type: 'range',
-        min: 3.5,
-        max: 10,
+        min: 3.9,
+        max: 9.6,
         gradient:
           'linear-gradient(90deg, #FE4242 0%, #F3F7C7 45.5%, #6C8DFF 100%)',
       },
@@ -275,8 +275,8 @@ export const mapSettingsConfig: MapSettingsConfig = {
       },
       legend: {
         type: 'range',
-        min: 0,
-        max: 176,
+        min: 29,
+        max: 188,
         gradient:
           'linear-gradient(90deg, #FEF27B 0%, #F9A817 48%, #E03301 100%)',
         unit: 'cg/cm3',
