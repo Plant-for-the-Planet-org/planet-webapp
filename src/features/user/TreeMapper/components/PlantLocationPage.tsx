@@ -69,7 +69,10 @@ export function LocationDetails({
   const deadPlant = location.history.filter((item) => item.status === 'dead');
   const alivePlant = location.history.filter((item) => item.status !== 'dead');
 
-  const plantDate = location.interventionStartDate || location.plantDate;
+  const plantDate =
+    location.interventionStartDate ||
+    location.plantDate ||
+    location.registrationDate;
   const isPlantDead = location.status === 'dead';
   const hasPlantingHistory = location.history.length > 0;
   const shouldShowPlantStatus = deadPlant.length > 0 || isPlantDead;
@@ -176,18 +179,24 @@ export function LocationDetails({
           </div>
         )}
       <div className={styles.details}>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('captureMode')}</p>
-          <div className={styles.value}>
-            {tTreemapper(location.captureMode)}
+        {location.captureMode && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('captureMode')}</p>
+            <div className={styles.value}>
+              {tTreemapper(location.captureMode)}
+            </div>
           </div>
-        </div>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('captureStatus')}</p>
-          <div className={styles.value}>
-            {tTreemapper(location.captureStatus)}
+        )}
+
+        {location.captureStatus && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('captureStatus')}</p>
+            <div className={styles.value}>
+              {tTreemapper(location.captureStatus)}
+            </div>
           </div>
-        </div>
+        )}
+
         {/* <div className={styles.singleDetail}>
               <p className={styles.title}>{tTreemapper('guid')}</p>
               <div className={styles.value}>{location.id}</div>
@@ -204,20 +213,20 @@ export function LocationDetails({
         ) : (
           []
         )}
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('plantDate')}</p>
-          <div className={styles.value}>{formatDate(plantDate)}</div>
-        </div>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('registrationDate')}</p>
-          {location.registrationDate ? (
+        {plantDate && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('plantDate')}</p>
+            <div className={styles.value}>{formatDate(plantDate)}</div>
+          </div>
+        )}
+        {location.registrationDate && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('registrationDate')}</p>
             <div className={styles.value}>
               {formatDate(location.registrationDate)}
             </div>
-          ) : (
-            '-'
-          )}
-        </div>
+          </div>
+        )}
         {(location as PlantLocationSingle).measurements && (
           <>
             {/* Measurements Section */}
@@ -315,7 +324,7 @@ export function LocationDetails({
         )}
       </div>
       <div className={styles.detailsFull}>
-        {(location as PlantLocationMulti)?.plantedSpecies && (
+        {(location as PlantLocationMulti)?.plantedSpecies.length > 0 && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('species')}</p>
             <div className={styles.value}>
@@ -406,7 +415,7 @@ export default function PlantLocationPage({
     location,
     setSelectedLocation,
   };
-  console.log(plantLocations, 'plantLocations');
+
   return (
     <div className={styles.locationDetails}>
       <div className={styles.pullUpContainer}>
