@@ -69,6 +69,33 @@
     "abandonment": "Verlassen seit",
     "yearAbandonedInfo": "Wann war der letzte signifikante menschliche Eingriff in das Gebiet? Einschließlich Abholzung, Landwirtschaft, Viehweide, vom Menschen verursachte Brände.",
     "treePerHa": "Bäume pro ha",
-    "employees": "Beschäftigte"
+    "employees": "Beschäftigte",
+    "degradationYear": "Degradierungsjahr",
+    "intervention": {
+      "interventionDate": "Interventionsdatum",
+      "all": "Alle Interventionen",
+      "default": "Einzel-/Gruppen-Baumpflanzungen",
+      "single-tree-registration": "Einzel-Baumpflanzungen",
+      "multi-tree-registration": "Gruppen-Baumpflanzungen",
+      "fire-patrol": "Feuerpatrouille",
+      "fire-suppression": "Brandbekämpfungs-Team",
+      "firebreaks": "Feuerschneisen einrichten",
+      "fencing": "Einzäunung",
+      "removal-invasive-species": "Beseitigung invasiver Arten",
+      "direct-seeding": "Direktsaat",
+      "grass-suppression": "Grasunterdrückung",
+      "marking-regenerant": "Markieren von Regenerierungen",
+      "enrichment-planting": "Anreicherungspflanzung",
+      "liberating-regenerant": "Freilegen von Regenerierungen",
+      "soil-improvement": "Bodenverbesserung",
+      "assisting-seed-rain": "Unterstützung von Saatregen",
+      "stop-tree-harvesting": "Stopp von Baumernte",
+      "maintenance": "Pflege",
+      "other-intervention": "Andere Interventionen"
+    },
+    "timeTravel": {
+      "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}",
+      "timeTravelOptionsLabel": "Time Travel Optionen"
+    }
   }
 }
