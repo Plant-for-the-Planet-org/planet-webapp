@@ -6,7 +6,6 @@ const util = require('util');
 const readdir = util.promisify(fs.readdir);
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
-const stat = util.promisify(fs.stat);
 
 // Color regex patterns to capture various color formats
 const colorPatterns = [
@@ -118,15 +117,6 @@ const excludeDirs = ['node_modules', '.next', 'out', 'build', 'dist', '.git'];
 
 // Mapping to store results
 const results = {};
-
-async function isDirectory(filePath) {
-  try {
-    const stats = await stat(filePath);
-    return stats.isDirectory();
-  } catch (error) {
-    return false;
-  }
-}
 
 async function findColorsInFile(filePath) {
   try {
@@ -268,7 +258,7 @@ async function findAllHardcodedColors(rootDir, outputFile, scriptPath) {
     });
   });
 
-  sortedColorGroups.forEach(([key, variants]) => {
+  sortedColorGroups.forEach(([_key, variants]) => {
     const variantList = Array.from(variants).sort().join(', ');
     reportContent += `- ${variantList}\n`;
   });
@@ -327,7 +317,7 @@ console.log(`Scanning project: ${projectPath}`);
 console.log(`Report will be saved to: ${outputFile}`);
 
 findAllHardcodedColors(projectPath, outputFile, scriptPath)
-  .then((stats) => {
+  .then(() => {
     console.log('\nSearch completed!');
   })
   .catch((error) => {
