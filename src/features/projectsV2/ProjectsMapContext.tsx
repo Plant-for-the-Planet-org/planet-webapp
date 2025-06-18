@@ -8,12 +8,6 @@ import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
 
-// Update ViewState type to ensure width and height are included
-interface ExtendedViewState extends ViewState {
-  width?: string | number;
-  height?: string | number;
-}
-
 interface MapState {
   mapStyle: MapStyle;
   dragPan: boolean;
@@ -28,15 +22,13 @@ const EMPTY_STYLE = {
   layers: [] as MapStyle['layers'],
 } as const;
 
-export const DEFAULT_VIEW_STATE: ExtendedViewState = {
+export const DEFAULT_VIEW_STATE: ViewState = {
   longitude: 0,
   latitude: 0,
   zoom: 2,
   bearing: 0,
   pitch: 0,
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
-  width: '100%',
-  height: '100%',
 };
 
 const DEFAULT_MAP_STATE: MapState = {
@@ -87,7 +79,7 @@ type LayerZoomConfig = {
 
 interface ProjectsMapState {
   viewState: ViewState;
-  handleViewStateChange: (newViewState: Partial<ExtendedViewState>) => void;
+  handleViewStateChange: (newViewState: Partial<ViewState>) => void;
   mapState: MapState;
   isSatelliteView: boolean;
   setIsSatelliteView: SetState<boolean>;
@@ -128,12 +120,10 @@ export const ProjectsMapProvider: FC = ({ children }) => {
     setIsExploreMode(enabledLayers.length > 0);
   }, [mapOptions]);
 
-  const handleViewStateChange = (newViewState: Partial<ExtendedViewState>) => {
+  const handleViewStateChange = (newViewState: Partial<ViewState>) => {
     setViewState((prev) => ({
       ...prev,
       ...newViewState,
-      width: '100%', // Always ensure width and height are set
-      height: '100%',
     }));
   };
 
