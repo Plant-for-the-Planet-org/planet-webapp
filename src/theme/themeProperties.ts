@@ -20,6 +20,8 @@ const themeProperties = {
       primaryColorTransparent10: '#007A491A',
       // Greens
       forestGreen: '#219653',
+      forestGreenTransparent20: '#21965333',
+      forestGreenTransparent40: '#21965366',
       leafGreen: '#27AE60',
       brightGreen: '#6FCF97',
       softGreen: '#F0FAF4',

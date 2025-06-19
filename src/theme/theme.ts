@@ -105,6 +105,10 @@ const getGlobalStyles = async () => {
       --ds-primary-color-transparent-10: ${designSystem.colors
         .primaryColorTransparent10};
       --ds-forest-green: ${designSystem.colors.forestGreen};
+      --ds-forest-green-transparent-20: ${designSystem.colors
+        .forestGreenTransparent20};
+      --ds-forest-green-transparent-40: ${designSystem.colors
+        .forestGreenTransparent40};
       --ds-leaf-green: ${designSystem.colors.leafGreen};
       --ds-bright-green: ${designSystem.colors.brightGreen};
       --ds-mint-gradient: ${designSystem.colors.mintGradient};
