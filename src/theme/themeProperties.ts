@@ -12,6 +12,53 @@ const themeProperties = {
     fontXXLarge: '36px',
     fontXXXLarge: '48px',
   },
+  designSystem: {
+    colors: {
+      /** Planet Green */
+      primaryColor: '#007A49',
+      primaryColorTransparent7: '#007A4911',
+      primaryColorTransparent10: '#007A491A',
+      // Greens
+      forestGreen: '#219653',
+      leafGreen: '#27AE60',
+      brightGreen: '#6FCF97',
+      mintGradient: '#C9EFD9',
+      softGreen: '#DDF4C4',
+      // Yellows
+      goldenYellow: '#F3B844',
+      softYellow: '#FFF8E4',
+      // Browns/Chocolates
+      darkChocolate: '#2F211B',
+      softDarkChocolate: '#EFE2DD',
+      milkChocolate: '#6D4230',
+      softMilkChocolate: '#FDF3EA',
+      // Blues/Purples
+      purpleSky: '#6C63FF',
+      softSky: '#F3F2FF',
+      oceanBlue: '#2F80ED',
+      softBlue: '#EFFFFF',
+      deepPurple: '#9B51E0',
+      softPurple: '#F9F1FF',
+      // Reds
+      fireRed: '#EB5757',
+      softRed: '#FFF3F3',
+      // Text Colors
+      coreText: '#333333',
+      softText: '#4F4F4F',
+      softText2: '#828282',
+      hintText: '#BDBDBD',
+      // Extended Palette
+      warmGreen: '#68B030',
+      sunriseOrange: '#F2994A',
+      brightYellow: '#F2C94C',
+      warmBlue: '#2D9CDB',
+      skyBlue: '#56CCF2',
+      baseGrey: '#F9F9F9',
+      // Dark Colors
+      deepBlue: '#082447',
+      deepGreen: '#003333',
+    },
+  },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
   primaryDarkColorTransparent: '#007a491a',
