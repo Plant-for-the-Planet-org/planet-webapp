@@ -50,6 +50,7 @@ const themeProperties = {
       hintText: '#BDBDBD',
       // Background Colors
       white: '#FFFFFF',
+      backgroundBase: '#F0F6F5',
       // Extended Palette
       warmGreen: '#68B030',
       sunriseOrange: '#F2994A',
