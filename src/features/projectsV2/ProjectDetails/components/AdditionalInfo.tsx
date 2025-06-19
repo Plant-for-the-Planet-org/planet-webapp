@@ -130,14 +130,12 @@ const AdditionalInfo = ({
     {
       title: `${tProjectDetails('siteOwnership')}`,
       content: (
-        <>
-          <div className={styles.siteOwnershipLabelContainer}>
-            {siteOwnershipType?.map((type) => (
-              <span key={type}>{renderSiteOwnershipType(type)}</span>
-            ))}
-          </div>
+        <div className={styles.siteOwnershipLabelContainer}>
+          {siteOwnershipType?.map((type) => (
+            <span key={type}>{renderSiteOwnershipType(type)}</span>
+          ))}
           <div>{siteOwnerName}</div>
-        </>
+        </div>
       ),
       shouldDisplay:
         Boolean(siteOwnerName) ||

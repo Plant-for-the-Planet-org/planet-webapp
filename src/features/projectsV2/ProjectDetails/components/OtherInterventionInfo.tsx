@@ -10,7 +10,7 @@ import styles from '../styles/PlantLocationInfo.module.scss';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
-import ImageSlider from './microComponents/ImageSlider';
+import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import InterventionHeader from './microComponents/InterventionHeader';
@@ -110,19 +110,19 @@ const OtherInterventionInfo = ({
   isMobile,
   setSelectedSamplePlantLocation,
   selectedPlantLocation,
-  hoveredPlantLocation
+  hoveredPlantLocation,
 }: Props) => {
   const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
   const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount =
       plantLocationInfo &&
-        plantLocationInfo.plantedSpecies &&
-        plantLocationInfo.plantedSpecies.length > 0
+      plantLocationInfo.plantedSpecies &&
+      plantLocationInfo.plantedSpecies.length > 0
         ? plantLocationInfo.plantedSpecies.reduce(
-          (sum, species: { treeCount: number }) => sum + species.treeCount,
-          0
-        )
+            (sum, species: { treeCount: number }) => sum + species.treeCount,
+            0
+          )
         : 0;
     return { totalTreesCount };
   }, [plantLocationInfo, plantLocationInfo?.type]);
@@ -173,24 +173,25 @@ const OtherInterventionInfo = ({
         metadata={cleanedPublicMetadata}
         plantDate={plantLocationInfo?.interventionStartDate}
         type={plantLocationInfo?.type}
-      />),
+      />
+    ),
     plantLocationInfo?.plantedSpecies &&
-    plantLocationInfo.plantedSpecies.length > 0 && (
-      <SpeciesPlanted
-        key="speciesPlanted"
-        totalTreesCount={totalTreesCount}
-        plantedSpecies={plantLocationInfo.plantedSpecies}
-      />
-    ),
+      plantLocationInfo.plantedSpecies.length > 0 && (
+        <SpeciesPlanted
+          key="speciesPlanted"
+          totalTreesCount={totalTreesCount}
+          plantedSpecies={plantLocationInfo.plantedSpecies}
+        />
+      ),
     plantLocationInfo &&
-    plantLocationInfo.sampleInterventions &&
-    plantLocationInfo.sampleInterventions.length > 0 && (
-      <SampleTrees
-        key="sampleTrees"
-        sampleInterventions={plantLocationInfo.sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-      />
-    ),
+      plantLocationInfo.sampleInterventions &&
+      plantLocationInfo.sampleInterventions.length > 0 && (
+        <SampleTrees
+          key="sampleTrees"
+          sampleInterventions={plantLocationInfo.sampleInterventions}
+          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        />
+      ),
   ].filter(Boolean);
 
   return isMobile ? (

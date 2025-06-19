@@ -99,6 +99,7 @@ const getGlobalStyles = async () => {
       --cerulean-blue-color: ${theme.ceruleanBlueColor};
       --light-orange: ${lightOrange};
       --charcoal-gray: ${CharcoalGray};
+      --light: ${light.light};
       --ds-primary-color: ${designSystem.colors.primaryColor};
       --ds-primary-color-transparent-7: ${designSystem.colors
         .primaryColorTransparent7};

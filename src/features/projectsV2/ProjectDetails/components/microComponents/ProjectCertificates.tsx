@@ -15,28 +15,27 @@ const ProjectCertificates = ({ certificates }: Props) => {
   const isMobile = screenWidth <= 481;
 
   return (
-    <>
+    <div className={styles.certificateDataContainer}>
       {certificates.map((certificate) => {
-        <div className={styles.certificateDataContainer}>
-          {isMobile ? (
-            <DownloadsLabel>
-              <p>{certificate}</p>
-            </DownloadsLabel>
-          ) : (
-            <DownloadsLabel>
-              <a
-                href={getPDFFile('projectCertificate', certificate.pdf)}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {certificate}
-              </a>
-            </DownloadsLabel>
-          )}
-          <DownloadButton pdfUrl={certificate.pdf} />
-        </div>;
+        const pdfUrl = getPDFFile('projectCertificate', certificate.pdf);
+        return (
+          <div key={certificate.id} className={styles.certificateItem}>
+            {isMobile ? (
+              <DownloadsLabel>
+                <p>{certificate.certifierName}</p>
+              </DownloadsLabel>
+            ) : (
+              <DownloadsLabel>
+                <a href={pdfUrl} target="_blank" rel="noreferrer">
+                  {certificate.certifierName}
+                </a>
+              </DownloadsLabel>
+            )}
+            <DownloadButton pdfUrl={pdfUrl} />
+          </div>
+        );
       })}
-    </>
+    </div>
   );
 };
 

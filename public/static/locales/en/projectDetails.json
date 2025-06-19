@@ -96,6 +96,8 @@
     "timeTravel": {
       "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}",
       "timeTravelOptionsLabel": "Time Travel Options"
-    }
+    },
+    "previousImage": "Previous Image",
+    "nextImage": "Next Image"
   }
 }
