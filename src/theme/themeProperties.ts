@@ -22,7 +22,7 @@ const themeProperties = {
       forestGreen: '#219653',
       leafGreen: '#27AE60',
       brightGreen: '#6FCF97',
-      softGreen: '#DDF4C4',
+      softGreen: '#F0FAF4',
       mintGradient: 'linear-gradient(180deg, #C9EFD9 0%, #D7F2C1 267.26%)',
       mintGradientStart: '#C9EFD9',
       // Yellows
@@ -37,7 +37,7 @@ const themeProperties = {
       purpleSky: '#6C63FF',
       softSky: '#F3F2FF',
       oceanBlue: '#2F80ED',
-      softBlue: '#EFFFFF',
+      softBlue: '#EFF6FF',
       deepPurple: '#9B51E0',
       softPurple: '#F9F1FF',
       // Reds
