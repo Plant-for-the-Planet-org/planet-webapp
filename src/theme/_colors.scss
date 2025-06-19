@@ -63,8 +63,9 @@ $dsPrimaryColorTransparent10: var(--ds-primary-color-transparent-10);
 $dsForestGreen: var(--ds-forest-green);
 $dsLeafGreen: var(--ds-leaf-green);
 $dsBrightGreen: var(--ds-bright-green);
-$dsMintGradient: var(--ds-mint-gradient);
 $dsSoftGreen: var(--ds-soft-green);
+$dsMintGradient: var(--ds-mint-gradient);
+$dsMintGradientStart: var(--ds-mint-gradient-start);
 
 // Yellows
 $dsGoldenYellow: var(--ds-golden-yellow);
@@ -88,6 +89,9 @@ $dsSoftPurple: var(--ds-soft-purple);
 $dsFireRed: var(--ds-fire-red);
 $dsSoftRed: var(--ds-soft-red);
 
+// Background Colors
+$dsWhite: var(--ds-white);
+
 // Text Colors
 $dsCoreText: var(--ds-core-text);
 $dsSoftText: var(--ds-soft-text);
@@ -101,5 +105,7 @@ $dsBrightYellow: var(--ds-bright-yellow);
 $dsWarmBlue: var(--ds-warm-blue);
 $dsSkyBlue: var(--ds-sky-blue);
 $dsBaseGrey: var(--ds-base-grey);
+$dsMediumGrey: var(--ds-medium-grey);
+$dsMediumGreyTransparent30: var(--ds-medium-grey-transparent-30);
 $dsDeepBlue: var(--ds-deep-blue);
 $dsDeepGreen: var(--ds-deep-green);

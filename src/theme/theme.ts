@@ -108,6 +108,7 @@ const getGlobalStyles = async () => {
       --ds-leaf-green: ${designSystem.colors.leafGreen};
       --ds-bright-green: ${designSystem.colors.brightGreen};
       --ds-mint-gradient: ${designSystem.colors.mintGradient};
+      --ds-mint-gradient-start: ${designSystem.colors.mintGradientStart};
       --ds-soft-green: ${designSystem.colors.softGreen};
       --ds-golden-yellow: ${designSystem.colors.goldenYellow};
       --ds-soft-yellow: ${designSystem.colors.softYellow};
@@ -123,6 +124,7 @@ const getGlobalStyles = async () => {
       --ds-soft-purple: ${designSystem.colors.softPurple};
       --ds-fire-red: ${designSystem.colors.fireRed};
       --ds-soft-red: ${designSystem.colors.softRed};
+      --ds-white: ${designSystem.colors.white};
       --ds-core-text: ${designSystem.colors.coreText};
       --ds-soft-text: ${designSystem.colors.softText};
       --ds-soft-text-2: ${designSystem.colors.softText2};
@@ -133,6 +135,9 @@ const getGlobalStyles = async () => {
       --ds-warm-blue: ${designSystem.colors.warmBlue};
       --ds-sky-blue: ${designSystem.colors.skyBlue};
       --ds-base-grey: ${designSystem.colors.baseGrey};
+      --ds-medium-grey: ${designSystem.colors.mediumGrey};
+      --ds-medium-grey-transparent-30: ${designSystem.colors
+        .mediumGreyTransparent30};
       --ds-deep-blue: ${designSystem.colors.deepBlue};
       --ds-deep-green: ${designSystem.colors.deepGreen};
     }

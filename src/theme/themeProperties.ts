@@ -22,8 +22,9 @@ const themeProperties = {
       forestGreen: '#219653',
       leafGreen: '#27AE60',
       brightGreen: '#6FCF97',
-      mintGradient: '#C9EFD9',
       softGreen: '#DDF4C4',
+      mintGradient: 'linear-gradient(180deg, #C9EFD9 0%, #D7F2C1 267.26%)',
+      mintGradientStart: '#C9EFD9',
       // Yellows
       goldenYellow: '#F3B844',
       softYellow: '#FFF8E4',
@@ -47,6 +48,8 @@ const themeProperties = {
       softText: '#4F4F4F',
       softText2: '#828282',
       hintText: '#BDBDBD',
+      // Background Colors
+      white: '#FFFFFF',
       // Extended Palette
       warmGreen: '#68B030',
       sunriseOrange: '#F2994A',
@@ -54,6 +57,9 @@ const themeProperties = {
       warmBlue: '#2D9CDB',
       skyBlue: '#56CCF2',
       baseGrey: '#F9F9F9',
+      // Gray colors for borders/separators etc.
+      mediumGrey: '#BDBDBD',
+      mediumGreyTransparent30: '#BDBDBD4D',
       // Dark Colors
       deepBlue: '#082447',
       deepGreen: '#003333',
