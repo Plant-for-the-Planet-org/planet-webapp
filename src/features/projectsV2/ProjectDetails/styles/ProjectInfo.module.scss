@@ -106,13 +106,13 @@
 .siteOwnershipLabelContainer {
   display: flex;
   gap: 5px;
-  flex-direction: column;
   max-width: max-content;
+  flex-wrap: wrap;
 
   span {
     padding: 2px 6px;
     background-color: rgba(var(--more-info-background-color-new), 0.2); //
-    border-radius: 4px;
+    border-radius: 8px;
     font-weight: 400;
     font-size: $fontXXSmall;
     white-space: nowrap;
