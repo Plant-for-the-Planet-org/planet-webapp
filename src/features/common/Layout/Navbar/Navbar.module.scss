@@ -52,7 +52,7 @@ $campaignRightOffsetMobile: 57px;
 }
 
 .mainNavigationHeader {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -76,7 +76,7 @@ $campaignRightOffsetMobile: 57px;
     width: calc(100% - 20px);
     top: 16px;
     padding: 8.5px;
-    border: 1px solid rgba(211, 211, 211, 0.5);
+    border: 1px solid $dsMediumGreyTransparent30;
     height: 60px;
   }
 }
@@ -119,7 +119,7 @@ $campaignRightOffsetMobile: 57px;
   .logoDivider {
     height: 36px;
     width: 1px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: $dsMediumGrey;
     margin: 0rem 0.5rem;
   }
 }
@@ -213,12 +213,12 @@ $campaignRightOffsetMobile: 57px;
   button,
   a {
     font-size: $fontMedium;
-    color: $dark;
+    color: $dsCoreText;
     font-weight: 500;
     font-family: $primaryFontFamily;
 
     &:hover {
-      color: $primaryDarkColor;
+      color: $dsPrimaryColor;
     }
 
     @include xsPhoneView {
@@ -255,7 +255,7 @@ $campaignRightOffsetMobile: 57px;
   }
 
   .activeItem {
-    color: $primaryDarkColor;
+    color: $dsPrimaryColor;
   }
 }
 
@@ -266,11 +266,8 @@ $campaignRightOffsetMobile: 57px;
   min-width: max-content;
   padding: 7px;
   border-radius: 24px;
-  background: linear-gradient(
-    to bottom,
-    rgba(201, 239, 217, 1),
-    rgba(215, 242, 193, 1)
-  );
+  background: $dsMintGradient;
+
   @include xsPhoneView {
     box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);
     min-width: 384px;
@@ -327,12 +324,12 @@ $campaignRightOffsetMobile: 57px;
 }
 
 .navbarMenuSection {
-  background: $backgroundColor;
+  background: $dsWhite;
   max-width: 405px;
   padding: 22px;
   border-radius: 20px;
   position: relative;
-  color: $mediumGrayColor;
+  color: $dsSoftText2;
   display: flex;
   flex-direction: column;
   gap: 19px;
@@ -358,29 +355,29 @@ $campaignRightOffsetMobile: 57px;
   gap: 10px;
   width: 100%;
   max-width: max-content;
-  background: $backgroundColor;
+  background: $dsWhite;
 
   h3 {
     font-weight: 600;
     font-size: $fontMedium;
-    color: $dark;
+    color: $dsCoreText;
 
     &:hover {
-      color: $primaryDarkColor;
+      color: $dsPrimaryColor;
     }
   }
 
   .description {
     font-weight: 400;
     font-size: $fontSmall;
-    color: $mediumGrayColor;
+    color: $dsSoftText2;
   }
 }
 
 .allTools {
   padding: 2px 18px;
   border-radius: 200px;
-  background-color: $primaryDarkColorTransparent;
+  background-color: $dsPrimaryColorTransparent10;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -393,7 +390,7 @@ $campaignRightOffsetMobile: 57px;
   .label {
     font-weight: 700;
     font-size: $fontXSmall;
-    color: $primaryDarkColor;
+    color: $dsPrimaryColor;
   }
 }
 
@@ -407,7 +404,7 @@ $campaignRightOffsetMobile: 57px;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid transparent;
-  border-bottom: 10px solid #c5f2e4;
+  border-bottom: 10px solid $dsMintGradientStart;
   position: absolute;
   top: 21px;
   left: 19px;

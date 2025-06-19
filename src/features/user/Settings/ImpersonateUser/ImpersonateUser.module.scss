@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .impersonationAlertContainer {
-  background-color: #94f0f9;
+  background-color: $dsSoftSky;
   margin-top: 142px;
   height: 50px;
   display: flex;
@@ -23,18 +23,9 @@
   }
 }
 
-.emailErrors {
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  color: $dangerColor;
-  margin-left: -15px;
-  margin-top: 6px;
-  max-width: 208px;
-  text-align: center;
-}
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px;
