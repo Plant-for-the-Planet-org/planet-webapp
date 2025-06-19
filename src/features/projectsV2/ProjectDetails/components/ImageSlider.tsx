@@ -4,9 +4,7 @@ import ExpandIcon from '../../../../../public/assets/images/icons/ExpandIcon';
 import ImageCarousel from './microComponents/ImageCarousel';
 import styles from '../styles/Slider.module.scss';
 import { useState } from 'react';
-import { Modal } from '@mui/material';
-import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
-import SliderButton from './microComponents/SliderButton';
+import ImageSliderModal from './microComponents/ImageSliderModal';
 
 interface ImageSliderProps {
   images: Image[];
@@ -25,19 +23,7 @@ const ImageSlider = ({
 }: ImageSliderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isFirstImage = currentIndex === 0;
-  const isLastImage = currentIndex === images.length - 1;
 
-  const renderSliderButton = (dir: 'prev' | 'next', className: string) => (
-    <SliderButton
-      direction={dir}
-      disabled={
-        (dir === 'prev' && isFirstImage) || (dir === 'next' && isLastImage)
-      }
-      onClick={() => setCurrentIndex(currentIndex + (dir === 'prev' ? -1 : 1))}
-      className={className}
-    />
-  );
   return (
     <>
       {!isModalOpen && (
@@ -61,47 +47,15 @@ const ImageSlider = ({
         </div>
       )}
       {allowFullView && (
-        <Modal
-          open={isModalOpen}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-            gap: '20px',
-          }}
-        >
-          <>
-            {!isMobile && renderSliderButton('prev', styles.sliderButton)}
-            <div className={styles.expandedImageSliderContainer}>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className={styles.closeModalButton}
-              >
-                <CrossIcon width={isMobile ? 10 : 18} />
-              </button>
-
-              {isMobile &&
-                renderSliderButton('prev', styles.prevMobileSliderButton)}
-
-              <ImageCarousel
-                images={images}
-                type={type}
-                imageSize={'large'}
-                imageHeight={isMobile ? 220 : 600}
-                isMobile={isMobile}
-                setCurrentIndex={setCurrentIndex}
-                currentIndex={currentIndex}
-                isModalOpen={isModalOpen}
-              />
-              {isMobile &&
-                renderSliderButton('next', styles.nextMobileSliderButton)}
-            </div>
-            {!isMobile && renderSliderButton('next', styles.sliderButton)}
-          </>
-        </Modal>
+        <ImageSliderModal
+          currentIndex={currentIndex}
+          images={images}
+          setCurrentIndex={setCurrentIndex}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          isMobile={isMobile}
+          type={type}
+        />
       )}
     </>
   );
