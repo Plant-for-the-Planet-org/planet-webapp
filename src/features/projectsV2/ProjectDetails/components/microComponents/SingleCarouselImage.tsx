@@ -18,21 +18,24 @@ export const SingleCarouselImage = ({
   currentImage,
 }: Props) => {
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
+  const carouselImageClass = `${styles.singleCarouselImage}${
+    isImageModalOpenOnMobile ? ` ${styles.isModalMobile}` : ''
+  }`;
+  const carouselBackgroundStyle = {
+    background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(${imageURL})`,
+  };
+  const shouldShowDescription = imageDescription && !isImageModalOpenOnMobile;
+  const shouldShowCounter = isModalOpen;
+
   return (
-    <div
-      className={
-        isImageModalOpenOnMobile
-          ? styles.carouselContentMobile
-          : styles.carouselContent
-      }
-      style={{
-        background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),url(${imageURL})`,
-      }}
-    >
-      {imageDescription && !isImageModalOpenOnMobile && (
-        <p>{imageDescription}</p>
+    <div className={carouselImageClass} style={carouselBackgroundStyle}>
+      {shouldShowDescription && <div>{imageDescription}</div>}
+      {shouldShowCounter && (
+        <div
+          role="status"
+          aria-label={`Image ${currentImage} of ${totalImages}`}
+        >{`${currentImage} / ${totalImages}`}</div>
       )}
-      {isModalOpen && <p>{`${currentImage} / ${totalImages}`}</p>}
     </div>
   );
 };
