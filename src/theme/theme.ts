@@ -129,6 +129,7 @@ const getGlobalStyles = async () => {
       --ds-fire-red: ${designSystem.colors.fireRed};
       --ds-soft-red: ${designSystem.colors.softRed};
       --ds-white: ${designSystem.colors.white};
+      --ds-background-base: ${designSystem.colors.backgroundBase};
       --ds-core-text: ${designSystem.colors.coreText};
       --ds-soft-text: ${designSystem.colors.softText};
       --ds-soft-text-2: ${designSystem.colors.softText2};
