@@ -1,5 +1,4 @@
 import type { CategorizedProjects } from './ProjectMarkers';
-import type { MapRef } from '../../common/types/projectv2';
 
 import { useMemo } from 'react';
 import ProjectMarkers from './ProjectMarkers';
@@ -7,7 +6,6 @@ import { useProjects } from '../ProjectsContext';
 import { getProjectCategory } from '../../../utils/projectV2';
 
 interface MultipleProjectsViewProps {
-  mapRef: MapRef;
   page: 'project-list' | 'project-details';
 }
 
