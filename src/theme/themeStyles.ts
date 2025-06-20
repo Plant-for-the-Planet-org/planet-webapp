@@ -26,6 +26,9 @@ const materialTheme = createTheme({
       primary: themeProperties.designSystem.colors.coreText,
       secondary: themeProperties.designSystem.colors.softText,
     },
+    success: {
+      main: themeProperties.designSystem.colors.primaryColor,
+    },
   },
   typography: {
     fontFamily: [

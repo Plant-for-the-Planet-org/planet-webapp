@@ -34,6 +34,7 @@ import { useApi } from '../../../../hooks/useApi';
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   };
 });
 
@@ -300,7 +301,7 @@ export default function EditProfileForm() {
               type="button"
             >
               <div className={styles.profilePicButtonText}>
-                <Delete color="#828282" />
+                <Delete color={themeProperties.designSystem.colors.softText2} />
                 <span>{t('profilePictureButtonLabels.delete')}</span>
               </div>
             </button>
@@ -536,7 +537,7 @@ export default function EditProfileForm() {
                   triggerElement={
                     <NewInfoIcon
                       width={14}
-                      color={themeProperties.mediumGrayColor}
+                      color={themeProperties.designSystem.colors.softText2}
                     />
                   }
                   showTooltipPopups={true}

@@ -61,8 +61,10 @@ const themeProperties = {
       skyBlue: '#56CCF2',
       baseGrey: '#F9F9F9',
       // Gray colors for borders/separators etc.
+      darkGrey: '#4F4F4F',
       mediumGrey: '#BDBDBD',
       mediumGreyTransparent30: '#BDBDBD4D',
+      mediumGreyTransparent50: '#BDBDBD80',
       // Dark Colors
       deepBlue: '#082447',
       deepGreen: '#003333',

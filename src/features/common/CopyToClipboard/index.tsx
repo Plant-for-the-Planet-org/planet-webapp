@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   };
 });
 
