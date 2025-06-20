@@ -38,7 +38,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  color: rgba(0, 0, 0, 0.87);
+  color: $dsCoreText;
   margin: 0;
   font-size: $fontSmall;
   font-family: var(--primary-font-family) !important;
