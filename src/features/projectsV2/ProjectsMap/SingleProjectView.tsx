@@ -69,7 +69,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         );
       }
     }
-  }, [selectedPlantLocation, router.isReady, requestedPlantLocation]);
+  }, [selectedPlantLocation, router.isReady]);
 
   // Zoom to project site
   useEffect(() => {
@@ -103,15 +103,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         );
       }
     }
-  }, [
-    selectedSite,
-    sitesGeoJson,
-    router.isReady,
-    selectedPlantLocation,
-    requestedPlantLocation,
-    requestedSite,
-  ]);
-
+  }, [selectedSite, requestedSite, router.isReady]);
   // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
     const isSatelliteView =
