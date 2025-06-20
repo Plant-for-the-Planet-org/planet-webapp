@@ -2,7 +2,7 @@ import type { ChangeEvent, InputHTMLAttributes } from 'react';
 
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import theme from '../../../theme/themeProperties';
+import themeProperties from '../../../theme/themeProperties';
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -27,7 +27,7 @@ export default function NewToggleSwitch(props: ToggleSwitchProps) {
         transform: 'translateX(24px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor: theme.primaryColorNew,
+          backgroundColor: themeProperties.designSystem.colors.forestGreen,
           opacity: 1,
           border: 0,
         },
@@ -36,11 +36,11 @@ export default function NewToggleSwitch(props: ToggleSwitchProps) {
         },
       },
       '&.Mui-focusVisible .MuiSwitch-thumb': {
-        color: theme.light,
-        border: `6px solid ${theme.light}`,
+        color: themeProperties.designSystem.colors.white,
+        border: `6px solid ${themeProperties.designSystem.colors.white}`,
       },
       '&.Mui-disabled + .MuiSwitch-track': {
-        background: '#E0E0E0', //TODO: add to theme
+        background: themeProperties.designSystem.colors.mediumGreyTransparent30,
         opacity: 1,
       },
     },
@@ -48,11 +48,11 @@ export default function NewToggleSwitch(props: ToggleSwitchProps) {
       boxSizing: 'border-box',
       width: 22,
       height: 22,
-      backgroundColor: theme.light,
+      backgroundColor: themeProperties.designSystem.colors.white,
     },
     '& .MuiSwitch-track': {
       borderRadius: 26 / 2,
-      backgroundColor: '#BDBDBD', //TODO: add to theme
+      backgroundColor: themeProperties.designSystem.colors.mediumGrey,
       opacity: 1,
     },
   });

@@ -140,9 +140,12 @@ const getGlobalStyles = async () => {
       --ds-warm-blue: ${designSystem.colors.warmBlue};
       --ds-sky-blue: ${designSystem.colors.skyBlue};
       --ds-base-grey: ${designSystem.colors.baseGrey};
+      --ds-dark-grey: ${designSystem.colors.darkGrey};
       --ds-medium-grey: ${designSystem.colors.mediumGrey};
       --ds-medium-grey-transparent-30: ${designSystem.colors
         .mediumGreyTransparent30};
+      --ds-medium-grey-transparent-50: ${designSystem.colors
+        .mediumGreyTransparent50};
       --ds-deep-blue: ${designSystem.colors.deepBlue};
       --ds-deep-green: ${designSystem.colors.deepGreen};
     }

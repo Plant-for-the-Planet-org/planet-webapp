@@ -1,8 +1,11 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
 import React from 'react';
+import themeProperties from '../../../../../src/theme/themeProperties';
 
-function Delete({ color = '#2f3336' }: IconProps) {
+const defaultColor = themeProperties.designSystem.colors.coreText;
+
+function Delete({ color = defaultColor }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
