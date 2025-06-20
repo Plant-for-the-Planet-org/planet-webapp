@@ -1,5 +1,5 @@
 import type { ReactElement, FocusEvent } from 'react';
-import type { SetState } from '../../../common/Layout/BulkCodeContext';
+import type { SetState } from '../../../common/types/common';
 
 import { TextField } from '@mui/material';
 import { useState } from 'react';
