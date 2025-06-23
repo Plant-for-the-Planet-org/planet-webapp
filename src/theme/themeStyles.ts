@@ -145,6 +145,16 @@ const materialTheme = createTheme({
         },
       },
     },
+    MuiAlert: {
+      styleOverrides: {
+        filledSuccess: {
+          backgroundColor: themeProperties.designSystem.colors.brightGreen,
+        },
+        filledInfo: {
+          backgroundColor: themeProperties.designSystem.colors.oceanBlue,
+        },
+      },
+    },
   },
 });
 
