@@ -2,9 +2,9 @@ import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
 import type { User, UserType } from '@planet-sdk/common/build/types/user';
 
-import { styled, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
@@ -30,13 +30,6 @@ import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/h
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
-
-const Alert = styled(MuiAlert)(({ theme }) => {
-  return {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-  };
-});
 
 type ProfileFormData = {
   address: string;
