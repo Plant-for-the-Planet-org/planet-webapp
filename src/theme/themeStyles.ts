@@ -11,20 +11,23 @@ declare module '@mui/material/styles/createPalette' {
 const materialTheme = createTheme({
   palette: {
     primary: {
-      main: themeProperties.primaryColor,
-      contrastText: themeProperties.light.light,
+      main: themeProperties.designSystem.colors.primaryColor,
+      contrastText: themeProperties.designSystem.colors.white,
       light: themeProperties.light.tabBackgroundColor,
     },
     background: {
-      base: themeProperties.light.backgroundBase,
-      default: themeProperties.light.light,
+      base: themeProperties.designSystem.colors.backgroundBase,
+      default: themeProperties.designSystem.colors.white,
     },
     error: {
-      main: themeProperties.light.dangerColor,
+      main: themeProperties.designSystem.colors.fireRed,
     },
     text: {
-      primary: themeProperties.light.primaryFontColor,
-      secondary: 'rgba(0, 0, 0, 0.6)',
+      primary: themeProperties.designSystem.colors.coreText,
+      secondary: themeProperties.designSystem.colors.softText,
+    },
+    success: {
+      main: themeProperties.designSystem.colors.primaryColor,
     },
   },
   typography: {
@@ -80,7 +83,7 @@ const materialTheme = createTheme({
           fontWeight: themeProperties.fontWeight,
         },
         textWarning: {
-          color: themeProperties.light.dangerColor,
+          color: themeProperties.designSystem.colors.fireRed,
         },
       },
     },
@@ -139,6 +142,16 @@ const materialTheme = createTheme({
       styleOverrides: {
         label: {
           fontSize: `${themeProperties.fontSizes.fontSixteen} !important`,
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        filledSuccess: {
+          backgroundColor: themeProperties.designSystem.colors.brightGreen,
+        },
+        filledInfo: {
+          backgroundColor: themeProperties.designSystem.colors.oceanBlue,
         },
       },
     },

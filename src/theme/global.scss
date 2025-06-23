@@ -38,7 +38,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  color: rgba(0, 0, 0, 0.87);
+  color: $dsCoreText;
   margin: 0;
   font-size: $fontSmall;
   font-family: var(--primary-font-family) !important;
@@ -459,7 +459,7 @@ button {
   color: $primaryFontColor !important;
 }
 .MuiInputBase-input {
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 
 .mapboxgl-ctrl-group {
@@ -478,9 +478,6 @@ input:-webkit-autofill {
 .MuiNativeSelect-select:not([multiple]) option,
 .MuiNativeSelect-select:not([multiple]) optgroup {
   background-color: $backgroundColor !important;
-}
-.MuiAlert-message {
-  color: $primaryFontColor !important;
 }
 
 .suggestions-container {

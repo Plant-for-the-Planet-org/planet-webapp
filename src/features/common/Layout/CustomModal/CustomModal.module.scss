@@ -2,7 +2,7 @@
 .modal {
   top: 80px;
   margin-bottom: 60px;
-  background-color: #fff;
+  background-color: $dsWhite;
   border: 0px;
   border-radius: 8px;
   position: absolute;
@@ -16,41 +16,42 @@
 }
 
 .modal__titleContainer {
-    display: flex;
-    float: left;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  float: left;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal__titleText {
-    font-size: $fontLarge;
+  font-size: $fontLarge;
   margin-left: 20px;
 }
 
 .modal__subtitle {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+  text-align: center;
 }
 
 .buttonContainer {
-    margin-top: 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap:20px;
-    min-width: 280px;
-  }
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  min-width: 280px;
+}
 
-.continueButton, .cancelButton{
-    height: 40px;
-    border-radius: 100px;
-    padding: 10px 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-  
+.continueButton,
+.cancelButton {
+  height: 40px;
+  border-radius: 100px;
+  padding: 10px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
@@ -58,23 +59,17 @@
 }
 .continueButton {
   border: 0px;
-  background-image: linear-gradient(
-    103deg,
-    $primaryColor 5%,
-    $primaryDarkColor 116%
-  );
+  background: $dsPrimaryColor;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   width: 160px;
-  color: #fff;
+  color: $dsWhite;
 }
-  .cancelButton {
-    border: 1px solid $primaryColor;
-    transition-duration: 0.5s;
-    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-    width: 160px;
-    color: $primaryColor;
-    cursor: pointer;
-  }
-  
-  
+.cancelButton {
+  border: 1px solid $dsPrimaryColor;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 160px;
+  color: $dsPrimaryColor;
+  cursor: pointer;
+}

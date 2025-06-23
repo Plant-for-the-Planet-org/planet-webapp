@@ -4,15 +4,8 @@ import React, { useState } from 'react';
 import CopyIcon from '../../../../public/assets/images/icons/CopyIcon';
 import styles from './styles.module.scss';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
-import { styled } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
-
-const Alert = styled(MuiAlert)(({ theme }) => {
-  return {
-    backgroundColor: theme.palette.primary.main,
-  };
-});
 
 interface Props {
   text: string;

@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { AlertColor } from '@mui/material';
 import type {
   AddressSuggestionsType,
   AddressType,
@@ -17,13 +16,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import {
-  Snackbar,
-  Alert as MuiAlert,
-  MenuItem,
-  styled,
-  TextField,
-} from '@mui/material';
+import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
@@ -39,12 +32,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-
-const Alert = styled(MuiAlert)(({ theme }) => {
-  return {
-    backgroundColor: theme.palette.primary.main,
-  };
-});
 
 const MuiTextField = styled(TextField)(() => {
   return {
@@ -158,8 +145,6 @@ export default function CompleteSignup(): ReactElement | null {
   };
 
   const [type, setAccountType] = useState<UserType>('individual');
-  const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const [severity, setSeverity] = useState<AlertColor>('info');
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
 
@@ -183,8 +168,6 @@ export default function CompleteSignup(): ReactElement | null {
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
-      setSnackbarMessage(t('profileCreated'));
-      setSeverity('success');
       handleSnackbarOpen();
 
       if (typeof window !== 'undefined') {
@@ -643,9 +626,9 @@ export default function CompleteSignup(): ReactElement | null {
               elevation={6}
               variant="filled"
               onClose={handleSnackbarClose}
-              severity={severity}
+              severity="success"
             >
-              {snackbarMessage}
+              {t('profileCreated')}
             </Alert>
           </div>
         </Snackbar>
