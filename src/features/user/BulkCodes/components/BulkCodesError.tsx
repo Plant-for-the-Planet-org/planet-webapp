@@ -26,7 +26,6 @@ const BulkCodesError = (): ReactElement | null => {
   const { tenantConfig } = useTenant();
 
   const GetDisableBulkCodesReason = () => {
-    // TODO - Translations
     if (user) {
       if (!user.planetCash) {
         return <ErrorMessage>{t('planetCashDisabled')}</ErrorMessage>;

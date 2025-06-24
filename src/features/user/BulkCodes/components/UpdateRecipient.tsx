@@ -54,7 +54,9 @@ const UpdateRecipient = ({
                 color="primary"
                 type="submit"
               >
-                <AcceptIcon color={themeProperties.primaryColor} />
+                <AcceptIcon
+                  color={themeProperties.designSystem.colors.warmGreen}
+                />
               </IconButton>
             </ActionContainer>
           </form>
@@ -66,7 +68,9 @@ const UpdateRecipient = ({
               color="primary"
               onClick={exitEditMode}
             >
-              <RejectIcon color={themeProperties.primaryColor} />
+              <RejectIcon
+                color={themeProperties.designSystem.colors.warmGreen}
+              />
             </IconButton>
           </ActionContainer>
         </TableCell>
