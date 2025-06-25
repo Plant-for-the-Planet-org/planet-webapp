@@ -270,7 +270,7 @@ export function ManageDonation({
       {showEdit ? (
         <button
           className={styles.options}
-          style={{ color: themeProperties.primaryColor }}
+          style={{ color: themeProperties.designSystem.colors.primaryColor }}
           onClick={(e) => openModal(e, seteditDonation)}
         >
           {t('editDonation')}
@@ -281,7 +281,7 @@ export function ManageDonation({
       {showReactivate ? (
         <button
           className={styles.options}
-          style={{ color: themeProperties.light.safeColor }}
+          style={{ color: themeProperties.designSystem.colors.warmBlue }}
           onClick={(e) => openModal(e, setreactivateDonation)}
         >
           {record?.status === 'paused'
@@ -294,7 +294,7 @@ export function ManageDonation({
       {showPause ? (
         <button
           className={styles.options}
-          style={{ color: themeProperties.light.secondaryColor }}
+          style={{ color: themeProperties.designSystem.colors.sunriseOrange }}
           onClick={(e) => openModal(e, setpauseDonation)}
         >
           {t('pauseDonation')}
@@ -305,7 +305,7 @@ export function ManageDonation({
       {showCancel ? (
         <button
           className={styles.options}
-          style={{ color: themeProperties.light.dangerColor }}
+          style={{ color: themeProperties.designSystem.colors.fireRed }}
           onClick={(e) => openModal(e, setcancelDonation)}
         >
           {t('cancelDonation')}

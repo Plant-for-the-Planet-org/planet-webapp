@@ -243,14 +243,9 @@ video {
 
 .primaryButton,
 .secondaryButton {
-  color: $light;
+  color: $dsWhite;
   font-weight: bold;
-  background-color: $primaryColor;
-  background-image: linear-gradient(
-    103deg,
-    $primaryColor 5%,
-    $primaryDarkColor 116%
-  );
+  background-color: $dsPrimaryColor;
   height: 46px;
   padding: 0px;
   text-align: center;
