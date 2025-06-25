@@ -8,14 +8,6 @@ import TransactionsNotFound from '../../../../public/assets/images/icons/Transac
 import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
-// Comments Issue Tax Receipt code
-/* import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { CircularProgress } from '@mui/material';
-import CustomSnackbar from '../../common/CustomSnackbar';
-import MuiButton from '../../common/InputTypes/MuiButton';
-import { APIError, handleError } from '@planet-sdk/common'; */
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import Grid from '@mui/material/Grid';
 import MembershipCta from './components/MembershipCta';
@@ -41,14 +33,8 @@ export default function History({
     null
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  // Comments Issue Tax Receipt code */
-  /* const { token, logoutUser } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext); */
   const { isMobile } = useProjectProps();
   const router = useRouter();
-  // Comments Issue Tax Receipt code
-  /* const [open, setOpen] = React.useState(false);
-  const [isLoading, setLoading] = React.useState(false); */
 
   const handleRecordToggle = (index: number | undefined) => {
     if (selectedRecord === index || index === undefined) {
@@ -78,51 +64,6 @@ export default function History({
     }
   }, [paymentHistory]);
 
-  {
-    /* Comments Issue Tax Receipt code */
-  }
-  /* const handleIssueReceipts = async () => {
-    setLoading(true);
-    try {
-      const res = await postAuthenticatedRequest<
-        { [k: string]: string } | never[]
-      >(
-        '/app/taxReceipts',
-        {
-          year: new Date().getFullYear(),
-        },
-        token,
-        logoutUser
-      );
-      setLoading(false);
-      if (Array.isArray(res) && res.length === 0) {
-        setErrors([
-          {
-            message: t('me:taxReceiptsAlreadyGenerated'),
-          },
-        ]);
-      } else {
-        await fetchPaymentHistory();
-        setSelectedRecord(0);
-        setOpen(true);
-      }
-    } catch (err) {
-      setLoading(false);
-      setErrors(handleError(err as APIError));
-    }
-  };
-
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };*/
-
   return (
     <div className={styles.pageContainer}>
       <Grid item style={{ width: '100%' }}>
@@ -142,34 +83,6 @@ export default function History({
               );
             })}
         </div>
-        {/* Comments Issue Tax Receipt code */}
-        {/* <div className={`${styles.issueButtonMobileContainer}`}>
-          <div>
-            <p>
-              <Trans i18nKey="me:taxReceiptsDescription">
-                Press the button below to issue your tax receipts. The receipts
-                will show in each donation afterwards. Please make sure in
-                advance that your address data is correct at{' '}
-                <a className={styles.link} href="/profile/edit">
-                  profile settings
-                </a>
-              </Trans>
-            </p>
-
-            <p>{t('me:isReceiptStillMissing')}</p>
-          </div>
-          <MuiButton
-            fullWidth
-            variant="contained"
-            onClick={!isLoading ? handleIssueReceipts : undefined}
-          >
-            {isLoading ? (
-              <CircularProgress color="inherit" size={20} />
-            ) : (
-              t('me:issueReceipts')
-            )}
-          </MuiButton>
-        </div> */}
       </Grid>
       <Grid item style={{ width: '100%' }}>
         <MembershipCta placement="top" />
@@ -240,34 +153,6 @@ export default function History({
                   })}
               </div>
             </div>
-            {/* Comments Issue Tax Receipt code */}
-            {/* <div className={styles.issueButtonContainer}>
-              <div>
-                <p>
-                  <Trans i18nKey="me:taxReceiptsDescription">
-                    Press the button below to issue your tax receipts. The
-                    receipts will show in each donation afterwards. Please make
-                    sure in advance that your address data is correct at{' '}
-                    <a className={styles.link} href="/profile/edit">
-                      profile settings
-                    </a>
-                  </Trans>
-                </p>
-                <p>{t('me:isReceiptStillMissing')}</p>
-              </div>
-
-              <MuiButton
-                style={{ width: '100%' }}
-                variant="contained"
-                onClick={!isLoading ? handleIssueReceipts : undefined}
-              >
-                {isLoading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : (
-                  t('me:issueReceipts')
-                )}
-              </MuiButton>
-            </div> */}
             <MembershipCta placement="right" />
           </div>
         </div>
@@ -281,13 +166,6 @@ export default function History({
               record={paymentHistory.items[selectedRecord]}
             />
           )}
-
-        {/* Comments Issue Tax Receipt code */}
-        {/* <CustomSnackbar
-          snackbarText={t('me:taxReceiptsSuccess')}
-          isVisible={open}
-          handleClose={handleClose}
-        /> */}
       </Grid>
     </div>
   );
