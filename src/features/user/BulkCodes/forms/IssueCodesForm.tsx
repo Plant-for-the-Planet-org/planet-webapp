@@ -392,10 +392,12 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   } else {
     return (
-      <div className={styles.successMessage}>
-        {t('donationSuccess')}
-        <span className={styles.spinner}></span>
-      </div>
+      <CenteredContainer className="CenteredContainer--small">
+        <div className={styles.successMessage}>
+          {t('donationSuccess')}
+          <span className={styles.spinner}></span>
+        </div>
+      </CenteredContainer>
     );
   }
 };

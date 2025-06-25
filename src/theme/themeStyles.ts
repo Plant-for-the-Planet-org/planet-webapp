@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material';
-
 import themeProperties from './themeProperties';
 
 declare module '@mui/material/styles/createPalette' {
@@ -13,7 +12,7 @@ const materialTheme = createTheme({
     primary: {
       main: themeProperties.designSystem.colors.primaryColor,
       contrastText: themeProperties.designSystem.colors.white,
-      light: themeProperties.light.tabBackgroundColor,
+      light: themeProperties.designSystem.colors.softGreen,
     },
     background: {
       base: themeProperties.designSystem.colors.backgroundBase,
@@ -71,6 +70,11 @@ const materialTheme = createTheme({
           borderRadius: 28,
           textTransform: 'none',
           padding: '12px 30px',
+          '&.Mui-disabled': {
+            backgroundColor:
+              themeProperties.designSystem.colors.mediumGreyTransparent30,
+            color: themeProperties.designSystem.colors.mediumGrey,
+          },
         },
         containedSizeSmall: {
           padding: '5px 10px',
@@ -128,6 +132,16 @@ const materialTheme = createTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: themeProperties.designSystem.colors.mediumGrey,
+          },
+          '&.Mui-disabled': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: themeProperties.designSystem.colors.mediumGrey,
+            },
+          },
+        },
         inputSizeSmall: {
           padding: '8.5px',
         },
@@ -152,6 +166,27 @@ const materialTheme = createTheme({
         },
         filledInfo: {
           backgroundColor: themeProperties.designSystem.colors.oceanBlue,
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: themeProperties.designSystem.colors.hintText,
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            '& .MuiInputBase-input': {
+              color: themeProperties.designSystem.colors.hintText,
+              WebkitTextFillColor: themeProperties.designSystem.colors.hintText,
+            },
+          },
         },
       },
     },

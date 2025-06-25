@@ -65,6 +65,7 @@ const themeProperties = {
       mediumGrey: '#BDBDBD',
       mediumGreyTransparent30: '#BDBDBD4D',
       mediumGreyTransparent50: '#BDBDBD80',
+      mediumGreyTransparent70: '#BDBDBDB3',
       // Dark Colors
       deepBlue: '#082447',
       deepGreen: '#003333',
