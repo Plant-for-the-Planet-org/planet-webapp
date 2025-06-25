@@ -62,17 +62,18 @@ body {
 }
 
 .planet-links {
-  color: $primaryDarkColor;
+  color: $dsPrimaryColor;
 }
 
 .planet-links:hover {
-  color: $primaryDarkColor;
+  color: $dsForestGreen;
 }
 
 .planet-links:visited {
-  color: $primaryDarkColor;
+  color: $dsPrimaryColor;
 }
 
+// TODO: Remove this if not needed
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
@@ -231,7 +232,7 @@ video {
 }
 
 .iconFillColor {
-  fill: $primaryFontColor;
+  fill: $dsCoreText;
 }
 
 .backTO {
