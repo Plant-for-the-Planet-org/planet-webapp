@@ -70,6 +70,11 @@ const materialTheme = createTheme({
           borderRadius: 28,
           textTransform: 'none',
           padding: '12px 30px',
+          '&.Mui-disabled': {
+            backgroundColor:
+              themeProperties.designSystem.colors.mediumGreyTransparent30,
+            color: themeProperties.designSystem.colors.mediumGrey,
+          },
         },
         containedSizeSmall: {
           padding: '5px 10px',
