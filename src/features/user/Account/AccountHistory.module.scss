@@ -185,6 +185,10 @@
     color: $dsFireRed;
     background-color: $dsSoftRed;
   }
+  .pastDue {
+    color: $dsOceanBlue;
+    background-color: $dsSoftBlue;
+  }
 }
 
 .recordTitle {
@@ -491,7 +495,7 @@
     bottom: 0;
     right: 0;
     border-radius: 10px;
-    // ASK GANGA
+    // TODO: use a tapered background image instead
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 1;
   }

@@ -13,6 +13,20 @@ import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 
+const getStatusStyle = (status: string) => {
+  switch (status) {
+    case 'paused':
+      return styles.paused;
+    case 'canceled':
+    case 'incomplete_expired':
+      return styles.cancelled;
+    case 'past_due':
+      return styles.pastDue;
+    default:
+      return styles.active;
+  }
+};
+
 interface HeaderProps {
   record: Subscription;
   handleRecordToggle?: (index: number | undefined) => void;
@@ -37,6 +51,11 @@ export function RecordHeader({
         return record.destination?.name || '';
     }
   }, [record.destination]);
+
+  const statusStyle = useMemo(
+    () => getStatusStyle(record.status),
+    [record.status]
+  );
 
   return (
     <div
@@ -91,22 +110,10 @@ export function RecordHeader({
         )}
       </div>
       <div className={styles.right}>
-        <p
-          className={styles.top}
-          style={{ color: themeProperties.primaryColor }}
-        >
+        <p className={`${styles.top} ${styles.amount}`}>
           {getFormatedCurrency(locale, record.currency, record.amount)}
         </p>
-        <p
-          className={`${styles.status} ${
-            record?.status === 'paused'
-              ? styles.paused
-              : record?.status === 'canceled' ||
-                record?.status === 'incomplete_expired'
-              ? styles.cancelled
-              : styles.active
-          }`}
-        >
+        <p className={`${styles.status} ${statusStyle}`}>
           {record?.status === 'trialing' ? 'active' : t(record?.status)}
         </p>
       </div>
