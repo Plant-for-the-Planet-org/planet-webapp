@@ -34,7 +34,7 @@ export const DEFAULT_VIEW_STATE: ViewState = {
 const DEFAULT_MAP_STATE: MapState = {
   mapStyle: EMPTY_STYLE,
   dragPan: true,
-  scrollZoom: false,
+  scrollZoom: true,
   minZoom: 1,
   maxZoom: 20,
 };
