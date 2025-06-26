@@ -11,6 +11,7 @@ import UploadImages from './UploadImages';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
+import themeProperties from '../../../../theme/themeProperties';
 
 export interface ContributionProperties {
   contributionImages: Image[];
@@ -47,7 +48,10 @@ export default function SingleContribution({
   return contribution !== null ? (
     <div className="inputContainer">
       <div className={styles.checkMark}>
-        <CheckCircle width="36px" color={`${styles.primaryColor}`} />
+        <CheckCircle
+          width="36px"
+          color={themeProperties.designSystem.colors.primaryColor}
+        />
       </div>
       <h2 className={styles.contribTitle}>
         <b>
