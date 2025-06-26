@@ -6,6 +6,7 @@ import styles from '../DonationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 import DonationInfo from './DonationInfo';
+import themeProperties from '../../../../theme/themeProperties';
 
 type Prop = {
   issuedReceipt: IssuedReceiptDataApi;
@@ -52,7 +53,9 @@ const IssuedReceiptCard = ({
           href={downloadUrl ?? ''}
           target="_blank"
           text={tReceipt('download')}
-          icon={<DownloadIcon color="#fff" />}
+          icon={
+            <DownloadIcon color={themeProperties.designSystem.colors.white} />
+          }
           buttonClasses={styles.receiptCardButton}
         />
       ) : (

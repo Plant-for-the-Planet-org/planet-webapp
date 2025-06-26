@@ -26,14 +26,14 @@ import { useApi } from '../../../hooks/useApi';
 
 const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
+    backgroundColor: themeProperties.designSystem.colors.leafGreen,
+    color: themeProperties.designSystem.colors.white,
   },
 
   '& .MuiPickersDay-dayWithMargin': {
     '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
+      backgroundColor: themeProperties.designSystem.colors.leafGreen,
+      color: themeProperties.designSystem.colors.white,
     },
   },
 });
