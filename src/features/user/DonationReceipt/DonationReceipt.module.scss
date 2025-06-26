@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--background-base);
+  background: $dsBackgroundBase;
 }
 
 .donorContactManagementLayout {
@@ -55,7 +55,6 @@
   h3 {
     font-size: $fontSmall;
     font-weight: 400;
-    color: rgba(51, 51, 51, 1);
   }
 }
 
@@ -64,7 +63,7 @@
   width: 100%;
   border-radius: 16px;
   padding: 16px;
-  background-color: #fff;
+  background-color: $dsWhite;
 }
 
 .donationsTable {
@@ -117,7 +116,7 @@
 }
 
 .record:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $dsMediumGreyTransparent70;
 }
 
 .totalAmount {
@@ -130,7 +129,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: rgba(242, 242, 242, 0.5);
+  background: $dsBaseGrey;
   width: 100%;
   border-radius: 9px;
   padding: 10px 15px;
@@ -141,7 +140,7 @@
 
     .errorMessage {
       font-size: $fontXSmall;
-      color: rgba(235, 87, 87, 1);
+      color: $dsFireRed;
     }
   }
 
@@ -166,7 +165,7 @@
   display: flex;
   flex-direction: column;
   gap: 7px;
-  color: rgba(130, 130, 130, 1);
+  color: $dsSoftText;
 
   .header {
     font-size: $fontXSmall;
@@ -208,7 +207,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(242, 242, 242, 0.5);
+  background: $dsBaseGrey;
   border-radius: 9px;
   padding: 8px;
   .redirectButton {
@@ -223,7 +222,6 @@
   p {
     font-size: $fontXSmall;
     font-weight: 400;
-    color: rgba(51, 51, 51, 1);
     max-width: 500px;
   }
 }
@@ -281,7 +279,7 @@
 
 .donorContactForm {
   width: 100%;
-  background-color: #fff;
+  background-color: $dsWhite;
   border-radius: 16px;
   padding: 26px 19px 22px;
 
@@ -306,7 +304,7 @@
 
   .errorMessage {
     font-size: $fontXSmall;
-    color: #e74c3c;
+    color: $dsFireRed;
     margin-left: 4px;
   }
 
@@ -317,7 +315,7 @@
     gap: 32px;
     border-radius: 9px;
     padding: 24px;
-    background: rgba(242, 242, 242, 0.5);
+    background: $dsBaseGrey;
     position: relative;
     flex-wrap: wrap;
 
@@ -337,8 +335,8 @@
       text-align: center;
       font-size: var(--font-x-extra-small);
       font-weight: 600;
-      background-color: var(--primary-dark-color);
-      color: #fff;
+      background-color: $dsPrimaryColor;
+      color: $dsWhite;
     }
 
     button {
@@ -370,9 +368,9 @@
 }
 
 .baseErrorMessage {
-  background-color: rgba(255, 243, 243, 0.5);
+  background-color: $dsSoftRed;
   border-radius: 9px;
-  color: rgba(235, 87, 87, 1);
+  color: $dsFireRed;
   padding: 16px;
 }
 
@@ -413,7 +411,7 @@
   flex-wrap: wrap;
   padding: 12px;
   border-radius: 16px;
-  background-color: #fff;
+  background-color: $dsWhite;
   position: relative;
 
   .donationInfo {
@@ -435,11 +433,11 @@
   border-radius: 16px;
   padding: 16px;
   margin-top: 34px;
-  background-color: #fff;
+  background-color: $dsWhite;
 }
 
 .pendingReceiptBadge {
-  background-color: rgba(0, 122, 73, 0.15);
+  background-color: $dsPrimaryColorTransparent10;
   font-size: $fontXSmall;
   font-weight: 400;
   padding: 0px 10px;
@@ -452,10 +450,10 @@
 
 .donationCount {
   cursor: pointer;
-  color: rgba(51, 51, 51, 1);
+  color: $dsCoreText;
   span {
     text-decoration: underline;
-    text-decoration-color: rgba(130, 130, 130, 1);
+    text-decoration-color: $dsSoftText;
     text-decoration-style: dotted;
     text-underline-offset: 3px;
     font-size: $fontSmall;
@@ -490,7 +488,7 @@
 
 //
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px;
