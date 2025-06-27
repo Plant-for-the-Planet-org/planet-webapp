@@ -252,11 +252,11 @@ export default function CompleteSignup(): ReactElement | null {
             style={{
               backgroundColor:
                 theme === 'theme-light'
-                  ? themeProperties.light.light
+                  ? themeProperties.designSystem.colors.white
                   : themeProperties.dark.backgroundColor,
               color:
                 theme === 'theme-light'
-                  ? themeProperties.light.primaryFontColor
+                  ? themeProperties.designSystem.colors.coreText
                   : themeProperties.dark.primaryFontColor,
             }}
           >
@@ -266,7 +266,9 @@ export default function CompleteSignup(): ReactElement | null {
                 onClick={() => logoutUser(`${window.location.origin}/`)}
                 className={styles.headerBackIcon}
               >
-                <CancelIcon color={styles.primaryFontColor} />
+                <CancelIcon
+                  color={themeProperties.designSystem.colors.coreText}
+                />
               </div>
               <div className={styles.headerTitle}>{t('signUpText')}</div>
             </div>
