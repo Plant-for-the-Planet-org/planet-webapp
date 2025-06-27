@@ -35,7 +35,7 @@
 
 // when request sent, opacity low
 .signupRequestSent {
-  background-color: $light;
+  background-color: $dsWhite;
   position: absolute;
   border: 0px;
   min-width: 320px;
@@ -72,155 +72,41 @@
 }
 
 .headerTitle {
-  font-family: $primaryFontFamily;
   font-weight: bold;
   font-size: $fontXLarge;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   margin-left: 10px;
 }
 
-// private account div
 .inlineToggleGroup {
   display: flex;
   flex-direction: row;
-  align-items: center;
   width: 100%;
   justify-content: space-between;
 }
 
 .mainText {
-  font-family: $primaryFontFamily;
-  color: $highlightBackground;
+  color: $dsCoreText;
   font-size: $fontSixteen;
   text-align: left;
 }
 
 .isPrivateAccountText {
   margin-top: 6px;
-  font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $highlightBackground;
-}
-
-.termsLink {
-  color: $primaryColor;
-  cursor: pointer;
+  color: $dsSoftText;
 }
 
 .horizontalLine {
-  border-top: 1px solid $primaryColor;
+  border-top: 1px solid $dsMediumGrey;
   width: 100%;
-  // height: 1px;
   opacity: 0.5;
   margin: 0px;
 }
 
-:export {
-  primaryColor: $primaryColor;
-  light: $light;
-  dark: $dark;
-  primaryFontColor: $primaryFontColor;
-  dividerColor: $dividerColor;
-}
-
-.profileTypesContainer {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  :nth-child(odd) {
-    margin-right: 20px;
-  }
-}
-.profileTypes {
-  padding: 14px;
-  border: 1px solid $dividerColor;
-  border-radius: 10px;
-  flex: 1;
-  min-height: 68px;
-  margin-top: 16px;
-  width: 130px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  &:hover {
-    cursor: pointer;
-  }
-}
-.profileTypesSelected {
-  border: solid 1px $primaryColor;
-  color: $primaryColor;
-  font-weight: bold;
-}
-
-// Form Styles
-
-.formField {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 280px;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  button,
-  .custom {
-    margin-left: 350px;
-    @include xsPhoneView {
-      margin-left: 0px !important;
-    }
-  }
-}
-.formFieldHalf {
-  margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  div,
-  input {
-    width: 130px;
-  }
-  button,
-  .backButton {
-    margin-left: 45px;
-    @include xsPhoneView {
-      margin-left: 0px !important;
-    }
-  }
-}
-.formFieldLarge {
-  margin-top: 24px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  width: 280px;
-  position: relative;
-}
-
-@include smTabletView {
-  .profileTypes {
-    width: 180px;
-    min-width: 180px;
-  }
-  .formField {
-    width: 380px;
-  }
-  .formFieldHalf {
-    div,
-    input {
-      width: 180px;
-    }
-  }
-  .formFieldLarge {
-    width: 380px;
-  }
-}
-
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;
@@ -247,8 +133,6 @@
   }
 }
 
-// save button
-
 .saveButton {
   height: 40px;
   border-radius: 100px;
@@ -256,11 +140,7 @@
   padding-right: 24px;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(
-    103deg,
-    $primaryColor 5%,
-    $primaryDarkColor 116%
-  );
+  background-color: $dsPrimaryColor;
   align-items: center;
   font-weight: bold;
   color: $light;
@@ -269,26 +149,15 @@
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   min-width: 280px;
 }
+
 .saveButton:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
 
-.formErrors {
-  font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
-  color: $dangerColor;
-  margin-left: 6px;
-  margin-top: 6px;
-  max-width: 320px;
-  position: absolute;
-  bottom: -18px;
-}
-
 .termsError {
-  font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
 }
 
 // FOR WIDER SCREENS
