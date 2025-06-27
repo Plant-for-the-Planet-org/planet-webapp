@@ -15,7 +15,7 @@ import type {
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
-import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
+import NewToggleSwitch from '../../common/InputTypes/NewToggleSwitch';
 import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -42,7 +42,9 @@ const MuiTextField = styled(TextField)(() => {
 type FormData = Omit<
   CreateUserRequest,
   'type' | 'country' | 'oAuthAccessToken'
->;
+> & {
+  isPublic: boolean;
+};
 
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
@@ -252,11 +254,11 @@ export default function CompleteSignup(): ReactElement | null {
             style={{
               backgroundColor:
                 theme === 'theme-light'
-                  ? themeProperties.light.light
+                  ? themeProperties.designSystem.colors.white
                   : themeProperties.dark.backgroundColor,
               color:
                 theme === 'theme-light'
-                  ? themeProperties.light.primaryFontColor
+                  ? themeProperties.designSystem.colors.coreText
                   : themeProperties.dark.primaryFontColor,
             }}
           >
@@ -266,7 +268,9 @@ export default function CompleteSignup(): ReactElement | null {
                 onClick={() => logoutUser(`${window.location.origin}/`)}
                 className={styles.headerBackIcon}
               >
-                <CancelIcon color={styles.primaryFontColor} />
+                <CancelIcon
+                  color={themeProperties.designSystem.colors.coreText}
+                />
               </div>
               <div className={styles.headerTitle}>{t('signUpText')}</div>
             </div>
@@ -533,7 +537,7 @@ export default function CompleteSignup(): ReactElement | null {
                 control={control}
                 defaultValue={false}
                 render={({ field: { onChange, value } }) => (
-                  <ToggleSwitch
+                  <NewToggleSwitch
                     checked={value}
                     onChange={onChange}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -555,7 +559,7 @@ export default function CompleteSignup(): ReactElement | null {
                 defaultValue={true}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <ToggleSwitch
+                    <NewToggleSwitch
                       checked={value}
                       onChange={(e) => onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -573,7 +577,7 @@ export default function CompleteSignup(): ReactElement | null {
                     {t.rich('termAndCondition', {
                       termsLink: (chunks) => (
                         <a
-                          className={styles.termsLink}
+                          className="planet-links"
                           rel="noopener noreferrer"
                           href={`https://pp.eco/legal/${locale}/terms`}
                           target={'_blank'}
@@ -584,7 +588,7 @@ export default function CompleteSignup(): ReactElement | null {
                     })}
                   </label>
                 </div>
-                <ToggleSwitch
+                <NewToggleSwitch
                   checked={acceptTerms || false}
                   onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
