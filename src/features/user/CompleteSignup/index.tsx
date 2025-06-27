@@ -15,7 +15,7 @@ import type {
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
-import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
+import NewToggleSwitch from '../../common/InputTypes/NewToggleSwitch';
 import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -535,7 +535,7 @@ export default function CompleteSignup(): ReactElement | null {
                 control={control}
                 defaultValue={false}
                 render={({ field: { onChange, value } }) => (
-                  <ToggleSwitch
+                  <NewToggleSwitch
                     checked={value}
                     onChange={onChange}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -557,7 +557,7 @@ export default function CompleteSignup(): ReactElement | null {
                 defaultValue={true}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <ToggleSwitch
+                    <NewToggleSwitch
                       checked={value}
                       onChange={(e) => onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -575,7 +575,7 @@ export default function CompleteSignup(): ReactElement | null {
                     {t.rich('termAndCondition', {
                       termsLink: (chunks) => (
                         <a
-                          className={styles.termsLink}
+                          className="planet-links"
                           rel="noopener noreferrer"
                           href={`https://pp.eco/legal/${locale}/terms`}
                           target={'_blank'}
@@ -586,7 +586,7 @@ export default function CompleteSignup(): ReactElement | null {
                     })}
                   </label>
                 </div>
-                <ToggleSwitch
+                <NewToggleSwitch
                   checked={acceptTerms || false}
                   onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
