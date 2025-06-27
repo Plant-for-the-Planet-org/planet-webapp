@@ -42,7 +42,9 @@ const MuiTextField = styled(TextField)(() => {
 type FormData = Omit<
   CreateUserRequest,
   'type' | 'country' | 'oAuthAccessToken'
->;
+> & {
+  isPublic: boolean;
+};
 
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
