@@ -41,14 +41,14 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
+    backgroundColor: themeProperties.designSystem.colors.leafGreen,
+    color: themeProperties.designSystem.colors.white,
   },
 
   '& .MuiPickersDay-dayWithMargin': {
     '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
+      backgroundColor: themeProperties.designSystem.colors.leafGreen,
+      color: themeProperties.designSystem.colors.white,
     },
   },
   '.MuiDialogActions-root': {
