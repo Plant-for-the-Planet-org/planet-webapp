@@ -12,7 +12,7 @@
   justify-content: center;
   gap: 10px;
   border-radius: 8px;
-  background: #fff;
+  background: $dsWhite;
   white-space: nowrap;
   cursor: pointer;
   min-height: 2rem;
@@ -25,7 +25,7 @@
   }
 
   &:hover {
-    background: rgba(33, 150, 83, 0.2);
+    background: $dsForestGreenTransparent20;
     border: none;
   }
 }
@@ -47,44 +47,44 @@
 .webappButtonLabel {
   font-size: $fontSmall;
   font-weight: 700;
-  color: #2f3336;
+  color: $dsCoreText;
   cursor: pointer;
   line-height: 16px;
   text-wrap: wrap;
 }
 
 .primaryWebappButton {
-  background-color: $primaryDarkColor;
-  border: 1px solid $primaryDarkColor;
+  background-color: $dsPrimaryColor;
+  border: 1px solid $dsPrimaryColor;
   box-sizing: border-box;
   .webappButtonLabel {
-    color: #fff;
+    color: $dsWhite;
   }
   &:hover {
-    border: 1px solid rgba(33, 150, 83, 0.4);
-    background: #27ae60;
+    border: 1px solid $dsForestGreenTransparent40;
+    background: $dsLeafGreen;
   }
 }
 
 .secondaryWebappButton {
-  background-color: #fff;
-  border: 1px solid rgba(33, 150, 83, 0.4);
+  background-color: $dsWhite;
+  border: 1px solid $dsForestGreenTransparent40;
   .webappButtonLabel {
-    color: #2f3336;
+    color: $dsCoreText;
   }
   &:hover {
-    background: rgba(33, 150, 83, 0.2);
+    background: $dsForestGreenTransparent20;
     border: 1px solid transparent;
   }
 }
 
 .tertiaryWebappButton {
-  background-color: $primaryDarkColor;
+  background-color: $dsPrimaryColor;
   .webappButtonLabel {
-    color: #fff;
+    color: $dsWhite;
     font-size: $fontXSmall;
   }
   &:hover {
-    background: #27ae60;
+    background: $dsLeafGreen;
   }
 }

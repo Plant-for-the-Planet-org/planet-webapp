@@ -4,7 +4,7 @@ import type { ExtendedCountryCode } from '../../../common/types/country';
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button, Switch, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -22,6 +22,7 @@ import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -196,7 +197,7 @@ const DonationLinkForm = ({
             </div>
             <InlineFormDisplayGroup type="other">
               <h6>{tDonationLink('treeCounterSubtitle')}</h6>
-              <Switch
+              <NewToggleSwitch
                 id="treeCounter"
                 name="treeCounter"
                 checked={isSupport}
@@ -214,7 +215,7 @@ const DonationLinkForm = ({
             <div className={styles.formHeader}>
               {tDonationLink('testingTitle')}
             </div>
-            <Switch
+            <NewToggleSwitch
               id="testing"
               name="testing"
               checked={isTesting}

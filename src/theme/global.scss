@@ -38,7 +38,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  color: rgba(0, 0, 0, 0.87);
+  color: $dsCoreText;
   margin: 0;
   font-size: $fontSmall;
   font-family: var(--primary-font-family) !important;
@@ -62,17 +62,18 @@ body {
 }
 
 .planet-links {
-  color: $primaryDarkColor;
+  color: $dsPrimaryColor;
 }
 
 .planet-links:hover {
-  color: $primaryDarkColor;
+  color: $dsForestGreen;
 }
 
 .planet-links:visited {
-  color: $primaryDarkColor;
+  color: $dsPrimaryColor;
 }
 
+// TODO: Remove this if not needed
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
@@ -231,7 +232,7 @@ video {
 }
 
 .iconFillColor {
-  fill: $primaryFontColor;
+  fill: $dsCoreText;
 }
 
 .backTO {
@@ -242,14 +243,9 @@ video {
 
 .primaryButton,
 .secondaryButton {
-  color: $light;
+  color: $dsWhite;
   font-weight: bold;
-  background-color: $primaryColor;
-  background-image: linear-gradient(
-    103deg,
-    $primaryColor 5%,
-    $primaryDarkColor 116%
-  );
+  background-color: $dsPrimaryColor;
   height: 46px;
   padding: 0px;
   text-align: center;
@@ -459,7 +455,7 @@ button {
   color: $primaryFontColor !important;
 }
 .MuiInputBase-input {
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 
 .mapboxgl-ctrl-group {
@@ -478,9 +474,6 @@ input:-webkit-autofill {
 .MuiNativeSelect-select:not([multiple]) option,
 .MuiNativeSelect-select:not([multiple]) optgroup {
   background-color: $backgroundColor !important;
-}
-.MuiAlert-message {
-  color: $primaryFontColor !important;
 }
 
 .suggestions-container {

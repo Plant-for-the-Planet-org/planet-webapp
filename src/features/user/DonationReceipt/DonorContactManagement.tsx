@@ -129,8 +129,10 @@ const DonorContactManagement = () => {
     if (!addressAction) return null;
 
     const commonProps = {
-      setIsModalOpen,
-      setAddressAction,
+      handleCancel: () => {
+        setIsModalOpen(false);
+        setAddressAction(null);
+      },
       showPrimaryAddressToggle: true,
     };
 

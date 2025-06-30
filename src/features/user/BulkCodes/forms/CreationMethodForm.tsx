@@ -27,7 +27,6 @@ const CreationMethodForm = (): ReactElement | null => {
   const tBulkCodes = useTranslations('BulkCodes');
   const { user } = useUserProps();
 
-  // TODOO - resolve errors with `details`
   const selectorOptions: SelectorOptionProps[] = [
     {
       method: BulkCodeMethods.IMPORT,

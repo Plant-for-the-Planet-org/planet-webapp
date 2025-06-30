@@ -1,9 +1,8 @@
 import type { APIError, User } from '@planet-sdk/common';
-import type { AlertColor } from '@mui/lab';
 
 import React from 'react';
-import { Modal, Snackbar, styled } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
+import { Modal, Snackbar } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -18,12 +17,6 @@ interface Props {
   setEmbedModalOpen: Function;
 }
 
-const Alert = styled(MuiAlert)(({ theme }) => {
-  return {
-    backgroundColor: theme.palette.primary.main,
-  };
-});
-
 type ProfileStatusApiPayload = {
   isPrivate: boolean;
 };
@@ -34,8 +27,6 @@ export default function EmbedModal({
   const t = useTranslations('EditProfile');
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [severity, setSeverity] = React.useState<AlertColor>('success');
-  const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
   const { putApiAuthenticated } = useApi();
@@ -66,8 +57,6 @@ export default function EmbedModal({
         const res = await putApiAuthenticated<User>('/app/profile', {
           payload,
         });
-        setSeverity('success');
-        setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();
         setEmbedModalOpen(false);
         setIsUploadingData(false);
@@ -148,9 +137,9 @@ export default function EmbedModal({
             elevation={6}
             variant="filled"
             onClose={handleSnackbarClose}
-            severity={severity}
+            severity="success"
           >
-            {snackbarMessage}
+            {t('profileSaved')}
           </Alert>
         </div>
       </Snackbar>
