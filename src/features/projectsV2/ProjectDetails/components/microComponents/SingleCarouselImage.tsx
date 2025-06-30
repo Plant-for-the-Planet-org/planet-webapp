@@ -19,7 +19,7 @@ export const SingleCarouselImage = ({
 }: Props) => {
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
   const carouselImageClass = `${styles.singleCarouselImage}${
-    isImageModalOpenOnMobile ? ` ${styles.isModalMobile}` : ''
+    isImageModalOpenOnMobile ? ` ${styles.mobileModal}` : ''
   }`;
   const carouselBackgroundStyle = {
     background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(${imageURL})`,
