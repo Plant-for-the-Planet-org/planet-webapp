@@ -1,16 +1,13 @@
-import type { Address, APIError } from '@planet-sdk/common';
+import type { Address } from '@planet-sdk/common';
 import type { AddressAction } from '../../../../common/types/profile';
 
-import { useContext, useMemo, useState, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
-import { handleError } from '@planet-sdk/common';
 import AddressList from './microComponents/AddressList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
-import { useTenant } from '../../../../common/Layout/TenantContext';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   ADDRESS_ACTIONS,
   ADDRESS_TYPE,
@@ -24,17 +21,15 @@ import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
 import UnsetBillingAddress from './UnsetBillingAddress';
-import { useApi } from '../../../../../hooks/useApi';
 
 const AddressManagement = () => {
-  const { user, contextLoaded, token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
-  const { getApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  const { user } = useUserProps();
+  // If addresses is null (not an empty array), it indicates a malformed API response
+  // Normal users without addresses will have an empty array, not null
+  if (!user?.addresses) return null;
+  const userAddresses = user.addresses;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-  const [userAddresses, setUserAddresses] = useState<Address[]>(
-    user?.addresses ?? []
-  );
+
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
@@ -50,16 +45,6 @@ const AddressManagement = () => {
     });
   }, [userAddresses]);
 
-  const updateUserAddresses = useCallback(async () => {
-    if (!user || !token || !contextLoaded) return;
-    try {
-      const res = await getApiAuthenticated<Address[]>('/app/addresses');
-      if (res) setUserAddresses(res);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-    }
-  }, [user, token, contextLoaded, tenantConfig.id, logoutUser, setErrors]);
-
   const toggleAddAddressModal = () => {
     setIsModalOpen(true);
     setAddressAction(ADDRESS_ACTIONS.ADD);
@@ -73,26 +58,27 @@ const AddressManagement = () => {
     [userAddresses]
   );
 
+  const handleCancel = useCallback(() => {
+    setIsModalOpen(false);
+    setAddressAction(null);
+  }, [setIsModalOpen, setAddressAction]);
+
   const renderModalContent = useMemo(() => {
     switch (addressAction) {
       case ADDRESS_ACTIONS.ADD:
         return (
           <AddAddress
-            setIsModalOpen={setIsModalOpen}
-            updateUserAddresses={updateUserAddresses}
-            setAddressAction={setAddressAction}
             showPrimaryAddressToggle={false}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.EDIT:
         if (!selectedAddressForAction) return <></>;
         return (
           <EditAddress
-            setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            updateUserAddresses={updateUserAddresses}
-            setAddressAction={setAddressAction}
             showPrimaryAddressToggle={false}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.DELETE:
@@ -100,9 +86,7 @@ const AddressManagement = () => {
         return (
           <DeleteAddress
             addressId={selectedAddressForAction.id}
-            setIsModalOpen={setIsModalOpen}
-            updateUserAddresses={updateUserAddresses}
-            setAddressAction={setAddressAction}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.SET_PRIMARY:
@@ -111,10 +95,8 @@ const AddressManagement = () => {
           <UpdateAddressType
             addressType={ADDRESS_TYPE.PRIMARY}
             userAddress={primaryAddress}
-            setAddressAction={setAddressAction}
-            setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            updateUserAddresses={updateUserAddresses}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.SET_BILLING:
@@ -123,10 +105,8 @@ const AddressManagement = () => {
           <UpdateAddressType
             addressType={ADDRESS_TYPE.MAILING}
             userAddress={billingAddress}
-            setAddressAction={setAddressAction}
-            setIsModalOpen={setIsModalOpen}
             selectedAddressForAction={selectedAddressForAction}
-            updateUserAddresses={updateUserAddresses}
+            handleCancel={handleCancel}
           />
         );
       case ADDRESS_ACTIONS.UNSET_BILLING:
@@ -134,10 +114,8 @@ const AddressManagement = () => {
         return (
           <UnsetBillingAddress
             addressType={ADDRESS_TYPE.MAILING}
-            setIsModalOpen={setIsModalOpen}
-            setAddressAction={setAddressAction}
-            updateUserAddresses={updateUserAddresses}
             selectedAddressForAction={selectedAddressForAction}
+            handleCancel={handleCancel}
           />
         );
       default:
@@ -145,9 +123,7 @@ const AddressManagement = () => {
     }
   }, [
     setIsModalOpen,
-    setUserAddresses,
     selectedAddressForAction,
-    updateUserAddresses,
     primaryAddress,
     billingAddress,
     addressAction,
@@ -155,8 +131,7 @@ const AddressManagement = () => {
   ]);
 
   const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;
-  const shouldRenderAddressList =
-    user?.addresses !== undefined && user.addresses.length > 0;
+  const shouldRenderAddressList = userAddresses.length > 0;
   return (
     <section className={styles.addressManagement}>
       <h2 className={styles.addressManagementTitle}>

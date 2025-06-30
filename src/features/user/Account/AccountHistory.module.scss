@@ -32,11 +32,10 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    color: $primaryFontColor;
+    color: $dsCoreText;
     overflow: hidden;
     padding: 5px; //allow item box shadow to show
     margin: -5px; //correct alignment due to padding
-    // box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -57,14 +56,14 @@
 
 .recordStatus {
   &.pending {
-    color: #ffc107;
+    color: $dsSunriseOrange;
   }
   &.success,
   &.paid {
-    color: #28a745;
+    color: $dsLeafGreen;
   }
   &.failed {
-    color: #dc3545;
+    color: $dsFireRed;
   }
 }
 
@@ -80,11 +79,10 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    color: $primaryFontColor;
+    color: $dsCoreText;
     overflow: hidden;
     padding: 5px;
     margin: -5px;
-    // box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -109,10 +107,10 @@
   justify-content: space-between;
   align-items: center;
   & .incoming {
-    color: $primaryColor;
+    color: $dsPrimaryColor;
   }
   & .outgoing {
-    color: #e74c3c;
+    color: $dsFireRed;
   }
   > .left {
     display: flex;
@@ -162,28 +160,34 @@
       font-weight: 700;
     }
   }
+
+  .amount {
+    color: $dsCoreText;
+  }
+
   .status {
-    // color: $primaryColor;
     font-family: $primaryFontFamily;
     font-size: $fontXSmall;
-    font-weight: 700;
     letter-spacing: 0.5px;
     border-radius: 14px;
     padding: 3px 10px;
     text-transform: capitalize;
-    // background-color: #deffc4;
   }
   .active {
-    color: $primaryColor;
-    background-color: #deffc4;
+    color: $dsPrimaryColor;
+    background-color: $dsSoftGreen;
   }
   .paused {
-    color: $secondaryColor;
-    background-color: #ffe8b8;
+    color: $dsSunriseOrange;
+    background-color: $dsSoftYellow;
   }
   .cancelled {
-    color: $dangerColor;
-    background-color: #ffccc7;
+    color: $dsFireRed;
+    background-color: $dsSoftRed;
+  }
+  .pastDue {
+    color: $dsOceanBlue;
+    background-color: $dsSoftBlue;
   }
 }
 
@@ -202,7 +206,7 @@
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #dddbda;
+  background-color: $dsMediumGreyTransparent50;
   margin-top: 20px;
 }
 
@@ -224,13 +228,12 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  // box-shadow: 1px 2px 8px -6px #707070;
   border-radius: 10px;
   padding: 20px;
   gap: 20px;
   width: 100%;
-  background-color: $backgroundColor;
-  color: $primaryFontColor;
+  background-color: $dsWhite;
+  color: $dsCoreText;
   > .header {
     font-weight: 700;
     font-size: $fontMedium;
@@ -265,7 +268,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   transition-duration: 0.4;
   margin-right: 10px;
   margin-top: 5px;
@@ -273,44 +276,18 @@
   transition-timing-function: ease-in;
   padding: 8px 12px;
   border-radius: 100px;
-  border: 1px solid $primaryColor;
+  border: 1px solid $dsMediumGrey;
   white-space: nowrap;
   font-family: $primaryFontFamily;
   cursor: pointer;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
-
-// Tax receipt code - commented out. Add back while enabling feature.
-/* .issueButtonMobileContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  align-items: center;
-  margin: 0px 0px 15px;
-}
-
-.issueButtonContainer {
-  margin: 25px 0px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.link {
-  display: inline-block;
-  color: $primaryFontColor;
-  margin: 0;
-  padding: 0;
-  &:hover {
-    color: $primaryColor;
-  }
-} */
 
 .filterButton.selected {
   border: none;
   padding: 9px 13px;
-  background-color: rgba(104, 176, 48, 0.12);
+  background-color: $dsLeafGreen;
+  color: $dsWhite;
 }
 
 .detailGrid {
@@ -332,11 +309,11 @@
       font-weight: 700;
     }
     > a {
-      color: $primaryColor;
+      color: $dsPrimaryColor;
       font-weight: 700;
     }
     > .downloadCodesButton {
-      color: $primaryColor;
+      color: $dsPrimaryColor;
       appearance: none;
       font: inherit;
       font-weight: 700;
@@ -347,7 +324,7 @@
       align-items: center;
 
       &:focus-visible {
-        border: 2px solid $primaryColor;
+        border: 2px solid $dsPrimaryColor;
         border-radius: 3px;
       }
     }
@@ -378,7 +355,6 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  // margin-top: 20px;
 }
 .formRowInput {
   margin-top: 20px;
@@ -396,11 +372,11 @@
   justify-content: flex-start;
   align-items: flex-start;
   overflow: auto;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   padding: 20px;
   z-index: 1040;
   flex-direction: column;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 
 .closeRecord {
@@ -419,12 +395,12 @@
   overflow-y: auto;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: $dsWhite;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 .manageDonationModal {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border: 0px;
   border-radius: 8px;
   padding: 30px 35px;
@@ -434,8 +410,7 @@
   outline: none;
   display: flex;
   flex-direction: column;
-  // align-items: flex-start;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   .modalTexts {
     display: flex;
     flex-direction: column;
@@ -443,25 +418,20 @@
     h4 {
       font-size: $fontLarge;
       font-weight: bold;
-      color: $primaryColor;
+      color: $dsPrimaryColor;
     }
   }
 }
 .note {
   padding-top: 10px;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
-.modalButtons {
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-  border-width: 2px;
-}
+
 .radioButtonGrid {
   align-items: 'flex-start';
   grid-gap: 10px;
   padding: 20px 0px;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 .pagination {
   display: flex;
@@ -469,41 +439,12 @@
   justify-content: center;
   align-items: center;
 }
-.donationOptions {
-  margin-bottom: 10px;
-  color: $primaryFontColor;
-  padding: 4px;
-  background-color: #e1efd6;
-  border-radius: 8px;
-  display: inline-flex;
-  .option {
-    font-size: $fontSmall;
-    font-family: $primaryFontFamily;
-    color: $primaryFontColor;
-    font-weight: 600;
-    padding: 8px 12px;
-    // padding: 0px 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  .active {
-    background-color: #ffffff;
-    height: 40px;
-    color: '#68B030';
-    border-radius: 6px;
-  }
-}
+
 .submitButton {
-  background-image: linear-gradient(
-    103deg,
-    $primaryColor 5%,
-    $primaryDarkColor 116%
-  );
+  background: $dsPrimaryColor;
   border-radius: 20px;
   align-self: center;
-  color: #fff;
+  color: $dsWhite;
   font-weight: bold;
   height: 34px;
   width: 100%;
@@ -511,27 +452,11 @@
     cursor: pointer;
   }
 }
-.cancelButton {
-  border: 1px solid $primaryColor;
-  border-radius: 20px;
-  color: $primaryColor;
-  font-weight: bold;
-  height: 34px;
-  width: 130px;
-  &:hover {
-    cursor: pointer;
-  }
-}
-// .submitButton:hover,
-// .cancelButton:hover {
-//   transform: translateY(-7px);
-//   cursor: pointer;
-// }
+
 .formErrors {
-  // position: absolute;
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
   margin-left: 6px;
   margin-top: 6px;
   max-width: 320px;
@@ -570,6 +495,7 @@
     bottom: 0;
     right: 0;
     border-radius: 10px;
+    // TODO: use a tapered background image instead
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 1;
   }
@@ -589,7 +515,7 @@
 }
 
 .membershipCtaCopy {
-  color: $light;
+  color: $dsWhite;
   font-weight: 400;
   font-size: $fontMedium;
   > .highlighted {
@@ -620,27 +546,7 @@
       > .record.selected {
         border-radius: 10px;
         max-height: 1000px;
-        color: $primaryFontColor;
-        > .detailContainer {
-          display: flex;
-        }
-      }
-      .record.selectedPause {
-        background-color: rgba(255, 255, 204, 0.3);
-        // border-radius: 10px;
-        box-shadow: 1px 2px 8px -6px #707070;
-        max-height: 1000px;
-        color: $primaryFontColor;
-        > .detailContainer {
-          display: flex;
-        }
-      }
-      .record.selectedCancel {
-        background-color: rgba(241, 130, 141, 0.3);
-        // border-radius: 10px;
-        box-shadow: 1px 2px 8px -6px #707070;
-        max-height: 1000px;
-        color: $primaryFontColor;
+        color: $dsCoreText;
         > .detailContainer {
           display: flex;
         }
@@ -653,29 +559,8 @@
       width: 100%;
       > .record.selected {
         border-radius: 10px;
-        // box-shadow: 1px 2px 8px -6px #707070;
         max-height: 1000px;
-        color: $primaryFontColor;
-        > .detailContainer {
-          display: flex;
-        }
-      }
-      .record.selectedPause {
-        background-color: rgba(255, 255, 204, 0.3);
-        // border-radius: 10px;
-        box-shadow: 1px 2px 8px -6px #707070;
-        max-height: 1000px;
-        color: $primaryFontColor;
-        > .detailContainer {
-          display: flex;
-        }
-      }
-      .record.selectedCancel {
-        background-color: rgba(241, 130, 141, 0.3);
-        // border-radius: 10px;
-        box-shadow: 1px 2px 8px -6px #707070;
-        max-height: 1000px;
-        color: $primaryFontColor;
+        color: $dsCoreText;
         > .detailContainer {
           display: flex;
         }
@@ -693,11 +578,11 @@
   justify-content: flex-start;
   align-items: center;
   padding: 24px;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
     0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   &:hover {
-    background-color: $backgroundColorDark;
+    background-color: $dsBaseGrey;
   }
   -webkit-transition: max-height 1s;
   -moz-transition: max-height 1s;
@@ -711,10 +596,10 @@
     display: none;
   }
   &.selected {
-    background-color: $backgroundColor;
+    background-color: $dsWhite;
     border-radius: 10px;
     max-height: 1000px;
-    color: $primaryFontColor;
+    color: $dsCoreText;
     > .detailContainer {
       display: flex;
     }
@@ -740,11 +625,6 @@
   .filterRow {
     display: none;
   }
-
-  // Tax receipt code - commented out. Add back while enabling feature.
-  /* .issueButtonMobileContainer {
-    display: none;
-  } */
 
   .modal {
     display: none;
@@ -797,7 +677,7 @@
 }
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;
@@ -807,7 +687,7 @@
 }
 
 .spinner--primary {
-  border: 2px solid #689f38;
+  border: 2px solid $dsWarmGreen;
   border-top: 2px solid transparent;
 }
 
@@ -829,11 +709,9 @@
   }
 }
 .headerCloseIcon {
-  // height: 32px;
-  // width: 32px;
   min-width: 32px;
   display: flex;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;

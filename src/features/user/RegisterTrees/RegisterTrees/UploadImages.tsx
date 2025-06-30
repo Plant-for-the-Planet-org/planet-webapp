@@ -111,7 +111,6 @@ export default function UploadImages({
                   <img
                     src={getImageUrl('contribution', 'medium', image.image)}
                   />
-                  {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
                     <Button
                       id={'uploadImgDelIcon'}

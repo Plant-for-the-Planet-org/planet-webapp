@@ -72,6 +72,9 @@
     "measurements": "Measurements",
     "ignoredColumnsWarning": "The extra columns have been ignored",
     "back": "Back",
-    "submit": "Submit"
+    "submit": "Submit",
+    "plantStatus": "Plant Status",
+    "status": "Status",
+    "reason": "Reason"
   }
 }
