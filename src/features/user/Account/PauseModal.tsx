@@ -15,28 +15,12 @@ import {
   Fade,
   Modal,
   FormControlLabel,
-  styled,
 } from '@mui/material';
-import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-
-const MuiCalendarPicker = styled(CalendarPicker<Date>)({
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.designSystem.colors.leafGreen,
-    color: themeProperties.designSystem.colors.white,
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.leafGreen,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-});
+import MuiCalendarPicker from './MuiCalenderPicker';
 
 interface PauseModalProps {
   pauseModalOpen: boolean;
