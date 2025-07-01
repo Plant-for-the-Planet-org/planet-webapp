@@ -19,14 +19,14 @@ export type Accumulator = {
  */
 
 export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
-  const { primaryColorNew, electricPurpleColor, mediumBlueColor } =
-    themeProperties;
+  const { primaryColor, deepPurple, warmBlue } =
+    themeProperties.designSystem.colors;
   if (unitType === 'm2' && purpose === 'trees') {
-    return electricPurpleColor;
+    return deepPurple;
   } else if (purpose === 'conservation') {
-    return mediumBlueColor;
+    return warmBlue;
   } else {
-    return primaryColorNew;
+    return primaryColor;
   }
 };
 
