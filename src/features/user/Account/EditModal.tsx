@@ -1,4 +1,3 @@
-import type { SxProps } from '@mui/material';
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
@@ -22,26 +21,9 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.designSystem.colors.leafGreen,
-    color: themeProperties.designSystem.colors.white,
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.leafGreen,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
+import { datePickerSx } from '../../../utils/datePickerSx';
 
 interface EditModalProps {
   editModalOpen: boolean;
@@ -293,7 +275,7 @@ export const EditModal = ({
                               : new Date('2100-01-01')
                           }
                           DialogProps={{
-                            sx: dialogSx,
+                            sx: datePickerSx,
                           }}
                         />
                       )}

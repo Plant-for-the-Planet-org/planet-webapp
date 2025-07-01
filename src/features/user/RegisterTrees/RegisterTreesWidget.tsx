@@ -6,7 +6,6 @@ import type {
   RegisteredTreesGeometry,
 } from '../../common/types/map';
 import { handleError } from '@planet-sdk/common';
-import type { SxProps } from '@mui/material';
 
 import { MenuItem, TextField, Button } from '@mui/material';
 import * as d3 from 'd3-ease';
@@ -29,32 +28,15 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
+import { datePickerSx } from '../../../utils/datePickerSx';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.designSystem.colors.leafGreen,
-    color: themeProperties.designSystem.colors.white,
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.leafGreen,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -298,7 +280,7 @@ function RegisterTreesForm({
                     inputFormat="MMMM d, yyyy"
                     maxDate={new Date()}
                     DialogProps={{
-                      sx: dialogSx,
+                      sx: datePickerSx,
                     }}
                   />
                 )}

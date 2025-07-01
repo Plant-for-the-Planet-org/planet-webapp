@@ -4,7 +4,6 @@ import type {
   CertificateScopeProjects,
   ProjectCertificatesProps,
 } from '../../../common/types/project';
-import type { SxProps } from '@mui/material';
 
 import React from 'react';
 import styles from './../StepForm.module.scss';
@@ -20,27 +19,10 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TextField, Button, FormControlLabel, Switch } from '@mui/material';
-import themeProperties from '../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
+import { datePickerSx } from '../../../../utils/datePickerSx';
 
 type CertificateApiPayload = {
   issueDate: number;
@@ -300,7 +282,7 @@ function ProjectCertificates({
                     maxDate={new Date()}
                     minDate={tenYearsAgo}
                     DialogProps={{
-                      sx: dialogSx,
+                      sx: datePickerSx,
                     }}
                     value={value}
                     onChange={onChange}

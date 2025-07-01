@@ -30,25 +30,9 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
+import { datePickerSx } from '../../../../utils/datePickerSx';
 
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
-
-const yearDialogSx: SxProps = {
+const yeardatePickerSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
     '&:hover': {
       backgroundColor: themeProperties.primaryColor,
@@ -594,7 +578,7 @@ export default function DetailedAnalysis({
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
                         DialogProps={{
-                          sx: yearDialogSx,
+                          sx: yeardatePickerSx,
                         }}
                       />
                     )}
@@ -625,7 +609,7 @@ export default function DetailedAnalysis({
                         inputFormat="d MMMM yyyy"
                         maxDate={new Date()}
                         DialogProps={{
-                          sx: dialogSx,
+                          sx: datePickerSx,
                         }}
                       />
                     )}
