@@ -33,14 +33,14 @@ import { useApi } from '../../../../hooks/useApi';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
+    backgroundColor: themeProperties.designSystem.colors.primaryColor,
+    color: themeProperties.designSystem.colors.white,
   },
 
   '& .MuiPickersDay-dayWithMargin': {
     '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
+      backgroundColor: themeProperties.designSystem.colors.primaryColor,
+      color: themeProperties.designSystem.colors.white,
     },
   },
   '.MuiDialogActions-root': {
@@ -51,13 +51,13 @@ const dialogSx: SxProps = {
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
     '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
+      backgroundColor: themeProperties.designSystem.colors.primaryColor,
+      color: themeProperties.designSystem.colors.white,
     },
 
     '&.Mui-selected': {
-      backgroundColor: `${themeProperties.primaryColor} !important`,
-      color: '#fff',
+      backgroundColor: `${themeProperties.designSystem.colors.primaryColor} !important`,
+      color: themeProperties.designSystem.colors.white,
     },
   },
   '.MuiDialogActions-root': {
@@ -846,7 +846,7 @@ export default function DetailedAnalysis({
                         />
                       </svg>
                     </div>
-                    <p style={{ color: 'var(--dark)' }}>
+                    <p>
                       {tManageProjects(`interventionTypes.${intervention}`)}
                     </p>
                   </div>
@@ -894,7 +894,7 @@ export default function DetailedAnalysis({
                       />
                     </svg>
                   </div>
-                  <p style={{ color: 'var(--dark)' }}>{month.title}</p>
+                  <p>{month.title}</p>
                 </div>
               );
             })}
@@ -1241,7 +1241,7 @@ export default function DetailedAnalysis({
                       />
                     </svg>
                   </div>
-                  <p style={{ color: 'var(--dark)' }}>{owner.title}</p>
+                  <p>{owner.title}</p>
                 </div>
               );
             })}
