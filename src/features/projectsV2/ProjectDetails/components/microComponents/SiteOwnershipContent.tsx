@@ -1,6 +1,7 @@
 import type { LandOwnershipTypes } from '@planet-sdk/common';
-import styles from '../../styles/ProjectInfo.module.scss';
+
 import { useTranslations } from 'next-intl';
+import styles from '../../styles/ProjectInfo.module.scss';
 
 interface SiteOwnershipContentProps {
   siteOwnershipType: LandOwnershipTypes[] | null;
@@ -28,15 +29,25 @@ const SiteOwnershipContent = ({
     const ownerType = SITE_OWNERS_TYPE.find((item) => item.value === type);
     return ownerType ? tProjectDetails(ownerType.key) : type;
   };
+  const hasOwner = siteOwnerName !== null && siteOwnerName !== undefined;
+  const hasAcquisitionYear =
+    acquiredSince !== null && acquiredSince !== undefined;
+
+  let ownershipText = '';
+
+  if (hasOwner && hasAcquisitionYear) {
+    ownershipText = `${siteOwnerName} · ${tProjectDetails(
+      'since'
+    )} ${acquiredSince}`;
+  } else if (hasOwner) {
+    ownershipText = siteOwnerName;
+  } else if (hasAcquisitionYear) {
+    ownershipText = `${tProjectDetails('since')} ${acquiredSince}`;
+  }
 
   return (
     <div className={styles.siteOwnershipContent}>
-      <div>
-        {tProjectDetails('siteOwnershipSummary', {
-          owner: siteOwnerName ?? '',
-          acquisitionYear: acquiredSince ?? '',
-        })}
-      </div>
+      {ownershipText && <div>{ownershipText}</div>}
       <div className={styles.ownershipTypeContainer}>
         {siteOwnershipType?.map((type) => (
           <span key={type}>{renderSiteOwnershipType(type)}</span>

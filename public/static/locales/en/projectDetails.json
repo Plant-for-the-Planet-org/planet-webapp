@@ -25,7 +25,7 @@
       "owned-by-owner": "Owned by Owner",
       "other": "Other"
     },
-    "siteOwnershipSummary": "{owner} · Since {acquisitionYear}",
+    "since": "Since",
     "progressReports": "progress reports",
     "readMore": "Read More",
     "readLess": "Read Less",
