@@ -95,7 +95,7 @@
   gap: 12px;
 }
 
-.siteOwnershipTitle {
+.SiteOwnershipContentTitle {
   display: flex;
   flex-direction: column;
   font-weight: 700;
@@ -103,19 +103,26 @@
   gap: 3px;
 }
 
-.siteOwnershipLabelContainer {
+.siteOwnershipContent {
   display: flex;
   gap: 5px;
   max-width: max-content;
-  flex-wrap: wrap;
+  flex-direction: column;
+
+  .ownershipTypeContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
 
   span {
-    padding: 2px 6px;
+    padding: 4px 6px;
     background-color: rgba(var(--more-info-background-color-new), 0.2); //
-    border-radius: 8px;
+    border-radius: 4px;
     font-weight: 400;
     font-size: $fontXXSmall;
     white-space: nowrap;
+    line-height: normal;
   }
 }
 

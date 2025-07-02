@@ -7,6 +7,7 @@ import type {
 import { useTranslations } from 'next-intl';
 import styles from '../styles/ProjectInfo.module.scss';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
+import SiteOwnershipContent from './microComponents/SiteOwnershipContent';
 
 interface Props {
   mainChallenge: string | null;
@@ -43,53 +44,6 @@ const AdditionalInfo = ({
   const tProjectsCommon = useTranslations('Project');
   const tProjectDetails = useTranslations('ProjectDetails');
 
-  const siteOwners = [
-    {
-      id: 1,
-      title: tProjectDetails('siteOwnershipTypes.private'),
-      value: 'private',
-    },
-    {
-      id: 2,
-      title: tProjectDetails('siteOwnershipTypes.public-property'),
-      value: 'public-property',
-    },
-    {
-      id: 3,
-      title: tProjectDetails('siteOwnershipTypes.smallholding'),
-      value: 'smallholding',
-    },
-    {
-      id: 4,
-      title: tProjectDetails('siteOwnershipTypes.communal-land'),
-      value: 'communal-land',
-    },
-    {
-      id: 5,
-      title: tProjectDetails('siteOwnershipTypes.owned-by-owner'),
-      value: 'owned-by-owner',
-    },
-    {
-      id: 6,
-      title: tProjectDetails('siteOwnershipTypes.other'),
-      value: 'other',
-    },
-  ];
-
-  const renderSiteOwnershipType = (siteOwnershipType: string) => {
-    const siteOwner = siteOwners.find(
-      (item) => item.value === siteOwnershipType
-    );
-    const translatedTitle = siteOwner ? siteOwner.title : '';
-    if (acquiredSince) {
-      return tProjectDetails('ownershipTypeDetails', {
-        translatedOwnershipType: translatedTitle,
-        acquisitionYear: acquiredSince,
-      });
-    } else {
-      return translatedTitle;
-    }
-  };
   const moreInfoContent = [
     {
       title: `${tProjectDetails('mainChallenge')}`,
@@ -130,12 +84,11 @@ const AdditionalInfo = ({
     {
       title: `${tProjectDetails('siteOwnership')}`,
       content: (
-        <div className={styles.siteOwnershipLabelContainer}>
-          {siteOwnershipType?.map((type) => (
-            <span key={type}>{renderSiteOwnershipType(type)}</span>
-          ))}
-          <div>{siteOwnerName}</div>
-        </div>
+        <SiteOwnershipContent
+          siteOwnershipType={siteOwnershipType}
+          siteOwnerName={siteOwnerName}
+          acquiredSince={acquiredSince}
+        />
       ),
       shouldDisplay:
         Boolean(siteOwnerName) ||
