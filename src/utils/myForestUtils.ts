@@ -172,15 +172,15 @@ export const calculateGraphSegmentLengths = (
  * @returns color based on the data type
  */
 export const targetColor = (dataType: ProgressDataType) => {
-  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
-    themeProperties;
+  const { primaryColor, deepPurple, warmBlue } =
+    themeProperties.designSystem.colors;
   switch (dataType) {
     case 'treesPlanted':
-      return primaryDarkColor;
+      return primaryColor;
     case 'areaRestored':
-      return electricPurpleColor;
+      return deepPurple;
     case 'areaConserved':
-      return mediumBlueColor;
+      return warmBlue;
   }
 };
 
