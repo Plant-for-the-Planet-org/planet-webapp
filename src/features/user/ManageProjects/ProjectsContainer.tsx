@@ -73,8 +73,11 @@ function SingleProject({ project }: { project: ProjectProperties }) {
             )
           )}
         </p>
-        {count !== undefined &&
-          tCommon(`unitTypes.${project.unitType}`, { formattedCount, count })}
+        <p className={styles.projectUnitsAchieved}>
+          {count !== undefined &&
+            project.unitType !== 'currency' &&
+            tCommon(`unitTypes.${project.unitType}`, { formattedCount, count })}
+        </p>
         <div className={styles.projectLabels}>
           {/* Needed in future */}
           {/* {!project.isFeatured && (
