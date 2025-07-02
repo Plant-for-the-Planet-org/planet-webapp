@@ -87,11 +87,9 @@ const getGlobalStyles = async () => {
       --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
-      --medium-blue-color: ${theme.mediumBlueColor};
       --medium-gray-color: ${mediumGrayColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
-      --electric-purple-color: ${theme.electricPurpleColor};
       --light-orange: ${lightOrange};
       --charcoal-gray: ${CharcoalGray};
       --ds-primary-color: ${designSystem.colors.primaryColor};
@@ -120,6 +118,8 @@ const getGlobalStyles = async () => {
       --ds-ocean-blue: ${designSystem.colors.oceanBlue};
       --ds-soft-blue: ${designSystem.colors.softBlue};
       --ds-deep-purple: ${designSystem.colors.deepPurple};
+      --ds-deep-purple-transparent-10: ${designSystem.colors
+        .deepPurpleTransparent10};
       --ds-soft-purple: ${designSystem.colors.softPurple};
       --ds-fire-red: ${designSystem.colors.fireRed};
       --ds-soft-red: ${designSystem.colors.softRed};
@@ -130,9 +130,13 @@ const getGlobalStyles = async () => {
       --ds-soft-text-2: ${designSystem.colors.softText2};
       --ds-hint-text: ${designSystem.colors.hintText};
       --ds-warm-green: ${designSystem.colors.warmGreen};
+      --ds-warm-green-transparent-10: ${designSystem.colors
+        .warmGreenTransparent10};
       --ds-sunrise-orange: ${designSystem.colors.sunriseOrange};
       --ds-bright-yellow: ${designSystem.colors.brightYellow};
       --ds-warm-blue: ${designSystem.colors.warmBlue};
+      --ds-warm-blue-transparent-10: ${designSystem.colors
+        .warmBlueTransparent10};
       --ds-sky-blue: ${designSystem.colors.skyBlue};
       --ds-base-grey: ${designSystem.colors.baseGrey};
       --ds-dark-grey: ${designSystem.colors.darkGrey};

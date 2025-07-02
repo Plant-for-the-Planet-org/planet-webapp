@@ -41,6 +41,7 @@ const themeProperties = {
       oceanBlue: '#2F80ED',
       softBlue: '#EFF6FF',
       deepPurple: '#9B51E0',
+      deepPurpleTransparent10: '#9B51E01A',
       softPurple: '#F9F1FF',
       // Reds
       fireRed: '#EB5757',
@@ -55,9 +56,11 @@ const themeProperties = {
       backgroundBase: '#F0F6F5',
       // Extended Palette
       warmGreen: '#68B030',
+      warmGreenTransparent10: '#68B0301A',
       sunriseOrange: '#F2994A',
       brightYellow: '#F2C94C',
       warmBlue: '#2D9CDB',
+      warmBlueTransparent10: '#2D9CDB1A',
       skyBlue: '#56CCF2',
       baseGrey: '#F9F9F9',
       // Gray colors for borders/separators etc.
@@ -87,8 +90,6 @@ const themeProperties = {
   mediumGrayColorTransparent: '#82828233',
   lightGrayColor: '#f2f2f2',
   skyBlueColor: '#87ceeb',
-  mediumBlueColor: '#2d9cdb',
-  electricPurpleColor: '#9b51e0',
   nonDonatableProjectBackgroundColor: '#828282',
   deforestrationRangeBackgroundNew: '235, 87, 87',
   primaryColorNew: '#219653',
