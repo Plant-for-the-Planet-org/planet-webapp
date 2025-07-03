@@ -700,8 +700,8 @@ export default function BasicDetails({
               style={{
                 backgroundColor:
                   theme === 'theme-light'
-                    ? themeProperties.light.light
-                    : themeProperties.dark.dark,
+                    ? themeProperties.designSystem.colors.white
+                    : themeProperties.designSystem.colors.coreText,
               }}
             >
               {t('projectLocation')}

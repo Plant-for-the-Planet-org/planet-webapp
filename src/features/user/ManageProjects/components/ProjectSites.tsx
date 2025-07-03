@@ -152,7 +152,6 @@ function EditSite({
       <Fade in={openModal}>
         <form
           style={{
-            backgroundColor: 'white',
             padding: '20px',
             borderRadius: '10px',
           }}

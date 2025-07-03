@@ -32,13 +32,13 @@ import { useApi } from '../../../../hooks/useApi';
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
     '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
+      backgroundColor: themeProperties.designSystem.colors.primaryColor,
+      color: themeProperties.designSystem.colors.white,
     },
 
     '&.Mui-selected': {
-      backgroundColor: `${themeProperties.primaryColor} !important`,
-      color: '#fff',
+      backgroundColor: `${themeProperties.designSystem.colors.primaryColor} !important`,
+      color: themeProperties.designSystem.colors.white,
     },
   },
   '.MuiDialogActions-root': {

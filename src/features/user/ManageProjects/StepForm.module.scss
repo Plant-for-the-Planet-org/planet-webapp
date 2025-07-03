@@ -43,10 +43,6 @@
   }
 }
 
-.publishLabel {
-  margin-left: '100px';
-}
-
 .formFieldRadio {
   width: 100%;
   display: flex;
@@ -166,7 +162,7 @@
 }
 
 .latLongInput {
-  background: #fff;
+  background: $dsWhite;
   border-radius: 0;
 }
 
@@ -196,19 +192,19 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background: $backgroundColor;
+  background: $dsWhite;
   width: 60px;
   height: 30px;
   border-radius: 0 !important;
   cursor: pointer;
   font-family: $primaryFontFamily;
   font-weight: 700;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 
 .active {
-  background-color: $primaryColor;
-  color: $light;
+  background-color: $dsPrimaryColor;
+  color: $dsWhite;
 }
 
 @include mdTabletView {
@@ -229,7 +225,7 @@
 .backButton {
   margin-top: 12px;
   font-weight: bold;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -244,8 +240,8 @@
 .fileUploadContainer {
   height: 128px;
   border-radius: 10px;
-  border: dashed 1px $primaryFontColor;
-  background-color: $backgroundColorDark;
+  border: dashed 1px $dsCoreText;
+  background-color: $dsBaseGrey;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -262,7 +258,7 @@
   font-style: normal;
   line-height: 1.43;
   letter-spacing: normal;
-  color: $primaryColor;
+  color: $dsPrimaryColor;
   display: flex;
   justify-content: center;
   margin-top: 10px;
@@ -280,7 +276,7 @@
 
 .multiSelectField {
   border-radius: 10px;
-  background-color: $backgroundColorDark;
+  background-color: $dsBaseGrey;
   padding: 16px;
   padding-top: 24px;
   display: flex;
@@ -299,7 +295,7 @@
   flex-direction: row;
   padding: 6px;
   padding-right: 12px;
-  background-color: $light;
+  background-color: $dsWhite;
   border-radius: 6px;
   transition-duration: 0.4;
   transition-timing-function: ease-in;
@@ -309,13 +305,13 @@
     height: 20px;
     width: 20px;
     border-radius: 20px;
-    background-color: $dividerColor;
+    background-color: $dsMediumGrey;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .multiSelectInputCheckTrue {
-    background-color: $primaryColor;
+    background-color: $dsPrimaryColor;
   }
   p {
     margin-left: 6px;
@@ -330,7 +326,7 @@
   // position: absolute;
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
   margin-left: 14px;
   margin-top: 3px;
   max-width: 320px;
@@ -343,7 +339,7 @@
   transform: translateX(-50%);
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
   max-width: 320px;
 }
 
@@ -356,7 +352,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50% 50% 50% 10%;
-  background: $primaryColor;
+  background: $dsForestGreen;
   position: absolute;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
@@ -383,7 +379,7 @@
   }
 
   .uploadedMapName {
-    background-color: $backgroundColorDark;
+    background-color: $dsBaseGrey;
     padding: 6px 18px;
     border-radius: 10px;
     position: absolute;
@@ -395,7 +391,7 @@
     font-weight: bold;
   }
   .uploadedMapStatus {
-    background-color: $backgroundColorDark;
+    background-color: $dsBaseGrey;
     padding: 6px 18px;
     border-radius: 10px;
     position: absolute;
@@ -407,10 +403,10 @@
     font-weight: bold;
     font-size: $fontXXSmall;
     min-width: 100px;
-    color: $primaryFontColor;
+    color: $dsCoreText;
   }
   .uploadedMapDeleteButton {
-    background-color: $backgroundColorDark;
+    background-color: $dsBaseGrey;
     padding: 6px;
     border-radius: 18px;
     height: 24px;
@@ -430,7 +426,7 @@
     }
   }
   .uploadedMapEditButton {
-    background-color: $backgroundColorDark;
+    background-color: $dsBaseGrey;
     padding: 6px;
     border-radius: 18px;
     height: 24px;
@@ -444,7 +440,7 @@
     right: 5%;
     > svg {
       path {
-        fill: $primaryFontColor;
+        fill: $dsCoreText;
       }
       height: 12px;
       &:hover {
@@ -462,7 +458,7 @@
   }
   > p {
     position: absolute;
-    background-color: $light;
+    background-color: $dsWhite;
     padding: 6px 18px;
     border-radius: 15px;
     top: -10px;
@@ -472,7 +468,7 @@
   }
 }
 .mapTool {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   height: 30px;
   width: 30px;
   border-radius: 3px;
@@ -495,10 +491,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(242, 242, 247);
+  background-color: $dsBaseGrey;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border: dashed 1px $primaryFontColor;
+  border: dashed 1px $dsCoreText;
 }
 
 .mapNavigation {
@@ -542,20 +538,20 @@
     bottom: 16px;
     left: 12px;
     border: 0px;
-    color: $light;
+    color: $dsWhite;
     background-color: transparent;
     font-size: $fontSixteen;
     &::placeholder {
-      color: $light;
+      color: $dsWhite;
       opacity: 1; /* Firefox */
     }
     &:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
-      color: $light;
+      color: $dsWhite;
     }
     &::-ms-input-placeholder {
       /* Microsoft Edge */
-      color: $light;
+      color: $dsWhite;
     }
   }
   .uploadedImageButtonContainer {
@@ -588,7 +584,7 @@
 .errorMessage {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
@@ -598,7 +594,7 @@
 .geoJsonError {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
@@ -607,7 +603,7 @@
 
 .reportPDFContainer {
   border-radius: 10px;
-  background-color: $backgroundColorDark;
+  background-color: $dsBaseGrey;
   padding: 16px;
   padding-left: 20px;
   display: flex;
@@ -626,7 +622,7 @@
   }
 
   .reportEditButton {
-    background-color: $backgroundColor;
+    background-color: $dsWhite;
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -651,7 +647,7 @@
 
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;
@@ -683,15 +679,15 @@
 .popover {
   position: relative;
   width: fit-content !important;
-  background-color: white;
+  background-color: $dsWhite;
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $backgroundColor;
+    background-color: $dsWhite;
     border-radius: 10px;
     padding: 12px;
     text-align: center;
-    border: 2px solid $primaryColor;
+    border: 2px solid $dsPrimaryColor;
     display: none;
     left: -290px;
   }
@@ -734,7 +730,7 @@
 
 // white modal
 .modal {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border: 0px;
   border-radius: 8px;
   max-height: 80vh;
@@ -745,7 +741,7 @@
 }
 
 :export {
-  primaryFontColor: $primaryFontColor;
+  primaryFontColor: $dsCoreText;
 }
 
 // button for projectCreation
