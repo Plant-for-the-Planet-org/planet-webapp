@@ -1,36 +1,40 @@
-import type { SliderImage } from '../../../../common/types/projectv2';
 import styles from '../../styles/Slider.module.scss';
 
 interface Props {
   imageURL: string;
-  carouselImage: SliderImage;
-  leftAlignment: number;
-  isImageModalOpenOnMobile: boolean | undefined;
+  imageDescription: string | null | undefined;
+  isMobile: boolean | undefined;
+  isModalOpen: boolean;
+  totalImages: number;
+  currentImage: number;
 }
 
 export const SingleCarouselImage = ({
   imageURL,
-  carouselImage,
-  leftAlignment,
-  isImageModalOpenOnMobile,
+  imageDescription,
+  isMobile,
+  isModalOpen,
+  totalImages,
+  currentImage,
 }: Props) => {
-  const contentClassName = `${styles.carouselContent} ${
-    isImageModalOpenOnMobile ? styles.carouselContentExpand : ''
+  const isImageModalOpenOnMobile = isModalOpen && isMobile;
+  const carouselImageClass = `${styles.singleCarouselImage}${
+    isImageModalOpenOnMobile ? ` ${styles.mobileModal}` : ''
   }`;
+  const carouselBackgroundStyle = {
+    background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(${imageURL})`,
+  };
+  const shouldShowDescription = imageDescription && !isImageModalOpenOnMobile;
+  const shouldShowCounter = isModalOpen;
+
   return (
-    <div
-      className={contentClassName}
-      style={{
-        background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),url(${imageURL})`,
-      }}
-    >
-      {carouselImage?.description && (
-        <p
-          className={styles.carouselContentText}
-          style={{ left: `${leftAlignment}px` }}
-        >
-          {carouselImage?.description}
-        </p>
+    <div className={carouselImageClass} style={carouselBackgroundStyle}>
+      {shouldShowDescription && <div>{imageDescription}</div>}
+      {shouldShowCounter && (
+        <div
+          role="status"
+          aria-label={`Image ${currentImage} of ${totalImages}`}
+        >{`${currentImage} / ${totalImages}`}</div>
       )}
     </div>
   );

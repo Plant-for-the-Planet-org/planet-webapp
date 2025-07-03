@@ -61,11 +61,20 @@
 
 .certificateDataContainer {
   display: flex;
-  justify-content: space-between;
+  gap: 7px;
+  flex-wrap: wrap;
+
+  @include xsPhoneView {
+    flex-direction: column;
+  }
   a {
     color: $certificationLinkColorNew;
     font-weight: 700;
     font-size: $fontXXSmall;
+  }
+
+  .certificateItem {
+    display: flex;
   }
 }
 
@@ -86,35 +95,27 @@
   gap: 12px;
 }
 
-.siteOwnershipTitle {
-  display: flex;
-  flex-direction: column;
-  font-weight: 700;
-  text-transform: capitalize;
-  gap: 3px;
-}
-
-.siteOwnershipLabelContainer {
+.siteOwnershipContent {
   display: flex;
   gap: 5px;
-  margin-bottom: 4px;
-  overflow-x: scroll;
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-  width: 100%;
-  max-width: 258px;
+  max-width: max-content;
+  flex-direction: column;
+
+  .ownershipTypeContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
   span {
-    padding: 2px 6px;
+    padding: 4px 6px;
     background-color: rgba(var(--more-info-background-color-new), 0.2); //
     border-radius: 4px;
     font-weight: 400;
     font-size: $fontXXSmall;
     white-space: nowrap;
+    line-height: normal;
   }
-}
-
-.siteOwnershipLabelContainer::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
 }
 
 .downloadLabel {
