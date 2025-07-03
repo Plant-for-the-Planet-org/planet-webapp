@@ -11,7 +11,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
-import { datePickerSx } from '../../../../../../utils/datePickerSx';
 
 const ProjectFilter = () => {
   const t = useTranslations('TreemapperAnalytics');
@@ -65,9 +64,6 @@ const ProjectFilter = () => {
               inputFormat="MMMM d, yyyy"
               // minDate={}
               maxDate={new Date()}
-              DialogProps={{
-                sx: datePickerSx,
-              }}
             />
           </LocalizationProvider>
         </Grid>
@@ -94,9 +90,6 @@ const ProjectFilter = () => {
               inputFormat="MMMM d, yyyy"
               minDate={fromDate}
               maxDate={new Date()}
-              DialogProps={{
-                sx: datePickerSx,
-              }}
             />
           </LocalizationProvider>
         </Grid>

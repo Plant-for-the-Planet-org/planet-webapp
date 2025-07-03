@@ -13,7 +13,6 @@ import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { datePickerSx } from '../../../../../utils/datePickerSx';
 
 interface SampleTreeFormData {
   sampleTrees: SampleTree[];
@@ -97,9 +96,6 @@ export default function SampleTreeCard({
                     renderInput={(props) => <TextField {...props} />}
                     disableFuture
                     inputFormat="MMMM d, yyyy"
-                    DialogProps={{
-                      sx: datePickerSx,
-                    }}
                   />
                 )}
               />

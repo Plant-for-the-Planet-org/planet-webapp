@@ -22,7 +22,6 @@ import { TextField, Button, FormControlLabel, Switch } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-import { datePickerSx } from '../../../../utils/datePickerSx';
 
 type CertificateApiPayload = {
   issueDate: number;
@@ -281,9 +280,6 @@ function ProjectCertificates({
                     disableFuture
                     maxDate={new Date()}
                     minDate={tenYearsAgo}
-                    DialogProps={{
-                      sx: datePickerSx,
-                    }}
                     value={value}
                     onChange={onChange}
                   />

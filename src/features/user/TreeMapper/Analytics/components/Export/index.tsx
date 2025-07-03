@@ -22,7 +22,6 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { datePickerSx } from '../../../../../../utils/datePickerSx';
 
 export const Export = () => {
   const t = useTranslations('TreemapperAnalytics');
@@ -207,9 +206,6 @@ export const Export = () => {
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
-              DialogProps={{
-                sx: datePickerSx,
-              }}
             />
           </LocalizationProvider>
           <LocalizationProvider
@@ -229,9 +225,6 @@ export const Export = () => {
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
-              DialogProps={{
-                sx: datePickerSx,
-              }}
             />
           </LocalizationProvider>
         </div>

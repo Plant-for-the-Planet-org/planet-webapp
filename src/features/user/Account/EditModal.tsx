@@ -23,7 +23,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { datePickerSx } from '../../../utils/datePickerSx';
 
 interface EditModalProps {
   editModalOpen: boolean;
@@ -274,9 +273,6 @@ export const EditModal = ({
                               ? record.endsAt
                               : new Date('2100-01-01')
                           }
-                          DialogProps={{
-                            sx: datePickerSx,
-                          }}
                         />
                       )}
                     />

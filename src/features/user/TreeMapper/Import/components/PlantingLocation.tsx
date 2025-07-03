@@ -37,7 +37,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../../hooks/useApi';
-import { datePickerSx } from '../../../../../utils/datePickerSx';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -417,9 +416,6 @@ export default function PlantingLocation({
                   renderInput={(props) => <TextField {...props} />}
                   disableFuture
                   inputFormat="MMMM d, yyyy"
-                  DialogProps={{
-                    sx: datePickerSx,
-                  }}
                 />
               )}
             />

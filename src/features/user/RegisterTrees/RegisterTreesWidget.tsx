@@ -31,7 +31,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
-import { datePickerSx } from '../../../utils/datePickerSx';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -279,9 +278,6 @@ function RegisterTreesForm({
                     minDate={new Date(new Date().setFullYear(1950))}
                     inputFormat="MMMM d, yyyy"
                     maxDate={new Date()}
-                    DialogProps={{
-                      sx: datePickerSx,
-                    }}
                   />
                 )}
               />

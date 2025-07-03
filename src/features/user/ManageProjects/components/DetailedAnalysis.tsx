@@ -30,7 +30,6 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-import { datePickerSx } from '../../../../utils/datePickerSx';
 
 const yeardatePickerSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -608,9 +607,6 @@ export default function DetailedAnalysis({
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="d MMMM yyyy"
                         maxDate={new Date()}
-                        DialogProps={{
-                          sx: datePickerSx,
-                        }}
                       />
                     )}
                   />
@@ -702,7 +698,7 @@ export default function DetailedAnalysis({
                       views={['year']}
                       maxDate={new Date()}
                       DialogProps={{
-                        sx: yearDialogSx,
+                        sx: yeardatePickerSx,
                       }}
                     />
                   )}
@@ -792,7 +788,7 @@ export default function DetailedAnalysis({
                     views={['year']}
                     maxDate={new Date()}
                     DialogProps={{
-                      sx: yearDialogSx,
+                      sx: yeardatePickerSx,
                     }}
                   />
                 )}
@@ -987,7 +983,7 @@ export default function DetailedAnalysis({
                       minDate={new Date(new Date().setFullYear(1950))}
                       maxDate={new Date()}
                       DialogProps={{
-                        sx: yearDialogSx,
+                        sx: yeardatePickerSx,
                       }}
                     />
                   )}
