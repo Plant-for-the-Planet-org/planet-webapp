@@ -26,7 +26,7 @@ const PopupImageSection = ({
         alt="projectImage"
         src={getImageUrl('project', 'medium', image)}
         width={'fit-content'}
-        className={style.popupProjctImage}
+        className={style.popupProjectImage}
       />
       <div className={style.projectImageInfoContainer}>
         <div className={style.projectName}>

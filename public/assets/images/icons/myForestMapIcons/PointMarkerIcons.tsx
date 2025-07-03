@@ -1,5 +1,6 @@
 // Todo - move to a common location
 import type { IconProps } from '../../../../../src/features/common/types/common';
+import themeProperties from '../../../../../src/theme/themeProperties';
 
 export const Agroforestry = ({ color }: IconProps) => {
   return (
@@ -155,6 +156,7 @@ export const OtherPlanting = ({ color }: IconProps) => {
 };
 
 export const RegisteredTreeIcon = () => {
+  const { primaryColor } = themeProperties.designSystem.colors;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -164,22 +166,21 @@ export const RegisteredTreeIcon = () => {
       y={0}
       viewBox="0 0 42 49"
     >
-      <style>{'.st1{fill:#007a49}'}</style>
       <path
         d="M35.3 6.6c7.9 7.7 7.9 20.3 0 28L21.6 48c-.3.3-.8.3-1.2 0L6.7 34.6c-7.9-7.7-7.9-20.3 0-28 7.9-7.8 20.7-7.8 28.6 0z"
         style={{
-          fill: '#fff',
-          stroke: '#007a49',
+          fill: 'white',
+          stroke: primaryColor,
           strokeWidth: 1.5,
         }}
       />
       <path
         d="M36.6 15.4c-.4-.1-.8-.2-1.3-.3-1-.2-1.9.2-2.8.6-1.1.4-2.1 1.1-3.1 1.8-.9.6-1.8 1.3-2.8 1.9-.5.3-1.1.5-1.7.7-.5.2-1 .1-1.5-.1-.2-.1-.3 0-.3.1-.9 1.4-1.6 2.9-1.9 4.6-.1.5-.4.8-.9 1-.5.1-.9 0-1.3-.3-1.3-1.4-2.6-2.9-3.9-4.3-.2-.2-.2-.4 0-.6l.4-.4c.6-.5 1.4-.5 2 .1.6.7 1.2 1.4 1.8 2 .1.1.1.2.2.3 2.2-4 5.3-7 9-9.4-1.3.4-2.5 1.2-3.6 2.1-.9.8-1.9 1.8-3 2.7 0-.7 0-1.5.2-2.2 1-4.1 5.3-6.3 9.3-4.7.8.3 1.6.8 2.3 1.4 1 .9 2 1.9 2.9 3 0-.1 0-.1 0 0z"
-        className="st1"
+        fill={primaryColor}
       />
       <path
         d="M28.1 19c1.1 3.3 0 7.9-3.8 10.4-3.7 2.4-8.6 1.7-11.5-1.6-3-3.3-3.1-8.3-.4-11.8 2.8-3.6 7.3-4.2 10.3-2.9-.3.5-.5 1-.8 1.4-.7-.1-1.4-.3-2.1-.3-3.9-.1-7.1 2.7-7.6 6.6-.5 3.8 2.3 7.6 6.1 8.1 4.1.6 7.9-2.2 8.4-6.4.1-.7 0-1.5-.1-2.2 0-.3 0-.4.2-.5.5-.2.9-.5 1.3-.8z"
-        className="st1"
+        fill={primaryColor}
       />
     </svg>
   );

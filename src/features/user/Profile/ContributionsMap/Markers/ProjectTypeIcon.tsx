@@ -25,16 +25,16 @@ const ProjectTypeIcon = ({
   classification,
   unitType,
 }: ProjectTypeIconProps) => {
+  const { warmBlue, deepPurple, forestGreen } =
+    themeProperties.designSystem.colors;
   const getMarkerColor = (purpose: ProjectPurpose, unitType: UnitTypes) => {
     switch (purpose) {
       case 'conservation':
-        return themeProperties.mediumBlueColor;
+        return warmBlue;
       case 'trees':
-        return unitType === 'm2'
-          ? themeProperties.electricPurpleColor
-          : themeProperties.primaryColorNew;
+        return unitType === 'm2' ? deepPurple : forestGreen;
       default:
-        return themeProperties.primaryColorNew;
+        return forestGreen;
     }
   };
   const pointMarkerColor = useMemo(

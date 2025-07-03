@@ -59,7 +59,7 @@
   width: 100%;
   border-radius: 5px;
   display: flex;
-  background-color: #fff;
+  background-color: $dsWhite;
   overflow: hidden;
 }
 
@@ -117,7 +117,7 @@
   transform: translate(-50%, -50%);
   width: 398px;
   height: 524px;
-  background: #fff;
+  background: $dsWhite;
   border-radius: 16px;
   padding: 18px;
   display: flex;
@@ -130,24 +130,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(0deg, #008f5c 0%, #008f5c 100%);
+  background-color: $dsPrimaryColor;
   border-radius: 12px;
-  color: #fff;
+  color: $dsWhite;
   font-size: $fontSixteen;
   font-weight: 700;
   cursor: pointer;
 }
 
-.targetModalSubConatiner {
+.targetModalSubContainer {
   display: flex;
   gap: 14px;
   flex-direction: column;
 }
 
 .deActivateTargetModal {
-  background: #f2f2f2;
+  background-color: $dsMediumGreyTransparent30;
   .targetInputIconContainer {
-    background: #828282;
+    background: $dsSoftText2;
   }
 }
 
@@ -227,58 +227,49 @@
   }
 }
 
-.setTargetButton {
-  width: 147px;
-  height: 45px;
-  background: linear-gradient(0deg, #008f5c 0%, #008f5c 100%);
-  font-size: $fontSixteen;
-  font-weight: 700;
-  color: #fff;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
 .treesPlanted {
-  background: $greenHazeColor;
+  background: $dsSoftGreen;
   .targetInputIconContainer,
   .iconContainer,
   .personalPercentageBar {
-    background: $primaryDarkColor;
+    background: $dsPrimaryColor;
   }
   .giftPercentageBar {
-    background: $mintGreenColor;
+    background: $dsBrightGreen;
   }
   .editTargetLabel {
-    color: $primaryDarkColor;
+    color: $dsPrimaryColor;
   }
 }
 
 .areaRestored {
-  background: $amethystPurpleColor;
+  background: $dsSoftPurple;
   .targetInputIconContainer,
   .iconContainer,
-  .personalPercentageBar {
-    background: $electricPurpleColor;
+  .personalPercentageBar,
+  .giftPercentageBar {
+    background: $dsDeepPurple;
   }
   .giftPercentageBar {
-    background: $lavenderPurpleColor;
+    opacity: 0.5;
   }
   .editTargetLabel {
-    color: $electricPurpleColor;
+    color: $dsDeepPurple;
   }
 }
 
 .areaConserved {
-  background: $ceruleanBlueColor;
+  background: $dsSoftBlue;
   .targetInputIconContainer,
   .iconContainer,
-  .personalPercentageBar {
-    background: $mediumBlueColor;
+  .personalPercentageBar,
+  .giftPercentageBar {
+    background: $dsWarmBlue;
   }
   .giftPercentageBar {
-    background: $skyBlueColor;
+    opacity: 0.5;
   }
   .editTargetLabel {
-    color: $mediumBlueColor;
+    color: $dsWarmBlue;
   }
 }

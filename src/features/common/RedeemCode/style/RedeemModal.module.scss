@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .routeRedeemModal {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,13 +45,13 @@
 
 .note {
   padding: 5px;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 
 .formErrors {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
-  color: $dangerColor;
+  color: $dsFireRed;
   margin-left: 6px;
   margin-top: 6px;
   max-width: 208px;
@@ -64,12 +64,12 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: $primaryColor;
+  color: $dsPrimaryColor;
   > p {
     text-align: center;
 
     &.subText {
-      color: #2f3336;
+      color: $dsCoreText;
       font-weight: 400;
       font-size: $fontMedium;
     }

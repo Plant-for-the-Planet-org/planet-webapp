@@ -98,7 +98,10 @@ const CommunityContributions = ({
         <div className={styles.infoIcon}>
           <CustomTooltip
             triggerElement={
-              <NewInfoIcon width={14} color={themeProperties.mediumGrayColor} />
+              <NewInfoIcon
+                width={14}
+                color={themeProperties.designSystem.colors.softText2}
+              />
             }
             showTooltipPopups={true}
           >

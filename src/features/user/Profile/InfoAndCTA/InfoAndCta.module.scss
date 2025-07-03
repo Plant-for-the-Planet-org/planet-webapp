@@ -21,7 +21,7 @@
 .singleSDGCardContainer {
   display: flex;
   flex-direction: column;
-  color: #fff;
+  color: $dsWhite;
   gap: 2.37px;
   padding: 8.2px 15.1px;
   align-items: center;
@@ -104,7 +104,7 @@
 .singleProfileActionCardTitle {
   font-size: $fontMedium;
   font-weight: 700;
-  color: #333;
+  color: $dsCoreText;
 
   @media screen and (max-width: 900px) {
     font-size: $fontSixteen;
@@ -113,7 +113,7 @@
 
 .singleProfileActionCardText {
   font-size: $fontSmall;
-  color: #333;
+  color: $dsCoreText;
 
   @media screen and (max-width: 900px) {
     font-size: $fontXSmall;

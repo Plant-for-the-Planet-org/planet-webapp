@@ -9,6 +9,7 @@ import {
   CarouselNextIcon,
   CarouselPrevIcon,
 } from '../../../../public/assets/images/icons/ProfilePageV2Icons';
+import themeProperties from '../../../theme/themeProperties';
 import styles from './CarouselSlider.module.scss';
 
 interface ExtendedInnerSlider extends InnerSlider {
@@ -23,6 +24,10 @@ const CarouselArrow = (props: {
   direction: string;
 }) => {
   const { onClick, disabled, direction } = props;
+  const disabledColor = themeProperties.designSystem.colors.mediumGrey;
+  const activeColor = themeProperties.designSystem.colors.primaryColor;
+  const iconColor = disabled ? disabledColor : activeColor;
+
   return (
     <button
       onClick={onClick}
@@ -32,9 +37,9 @@ const CarouselArrow = (props: {
       }}
     >
       {direction === 'next' ? (
-        <CarouselNextIcon color={disabled ? '#E0E0E0' : '#007A49'} />
+        <CarouselNextIcon color={iconColor} />
       ) : (
-        <CarouselPrevIcon color={disabled ? '#E0E0E0' : '#007A49'} />
+        <CarouselPrevIcon color={iconColor} />
       )}
     </button>
   );
