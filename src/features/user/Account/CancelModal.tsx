@@ -20,7 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import MuiCalendarPicker from './MuiCalenderPicker';
+import { CalendarPicker } from '@mui/x-date-pickers';
 interface CancelModalProps {
   cancelModalOpen: boolean;
   handleCancelModalClose: () => void;
@@ -161,7 +161,7 @@ export const CancelModal = ({
               {showCalender ? (
                 <>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <MuiCalendarPicker
+                    <CalendarPicker
                       date={date}
                       onChange={(value) => {
                         setdate(value);
