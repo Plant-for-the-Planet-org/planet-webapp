@@ -72,8 +72,6 @@ const NavigationItem = ({
     return false;
   }, [router, navLinkOptions]);
 
-  console.log('navLinkOptions', navLinkOptions);
-
   return navLinkOptions.visible ? (
     <div
       className={`${hasSubMenu ? 'subMenu' : ''}`}
