@@ -31,7 +31,7 @@ const RangeLegend = ({ legend }: RangeLegendProps) => {
         window.removeEventListener('resize', updateBarWidth);
       };
     }
-  }, [legendBarRef.current]);
+  }, []);
 
   // Calculate overlap detection
   const overlapInfo = useMemo(() => {
