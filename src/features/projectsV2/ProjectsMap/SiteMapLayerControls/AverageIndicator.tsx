@@ -18,6 +18,7 @@ const AverageIndicator = ({
 }: AverageIndicatorProps) => {
   const getAveragePosition = () => {
     const range = max - min;
+    if (range === 0) return 0; // Avoid division by zero
     const averageOffset = average - min;
     return (averageOffset / range) * 100;
   };
