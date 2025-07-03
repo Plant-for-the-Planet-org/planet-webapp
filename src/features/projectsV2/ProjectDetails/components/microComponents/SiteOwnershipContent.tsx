@@ -33,21 +33,18 @@ const SiteOwnershipContent = ({
   const hasAcquisitionYear =
     acquiredSince !== null && acquiredSince !== undefined;
 
-  let ownershipText = '';
-
-  if (hasOwner && hasAcquisitionYear) {
-    ownershipText = `${siteOwnerName} · ${tProjectDetails(
-      'since'
-    )} ${acquiredSince}`;
-  } else if (hasOwner) {
-    ownershipText = siteOwnerName;
-  } else if (hasAcquisitionYear) {
-    ownershipText = `${tProjectDetails('since')} ${acquiredSince}`;
-  }
+  const ownershipDetails = [
+    hasOwner ? siteOwnerName : null,
+    hasAcquisitionYear
+      ? tProjectDetails('sinceYear', { acquisitionYear: acquiredSince })
+      : null,
+  ]
+    .filter(Boolean)
+    .join(' • ');
 
   return (
     <div className={styles.siteOwnershipContent}>
-      {ownershipText && <div>{ownershipText}</div>}
+      {ownershipDetails && <div>{ownershipDetails}</div>}
       <div className={styles.ownershipTypeContainer}>
         {siteOwnershipType?.map((type) => (
           <span key={type}>{renderSiteOwnershipType(type)}</span>
