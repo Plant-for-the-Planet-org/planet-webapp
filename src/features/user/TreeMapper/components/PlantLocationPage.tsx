@@ -54,6 +54,7 @@ export function LocationDetails({
   location,
   setSelectedLocation,
 }: Props): ReactElement {
+  if (!location) return <></>;
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
@@ -64,6 +65,57 @@ export function LocationDetails({
   const text = `${location?.deviceLocation?.coordinates.map((coord) => {
     return getFormattedNumber(locale, Number(coord));
   })}`;
+
+  const deadPlant = location.history.filter((item) => item.status === 'dead');
+  const alivePlant = location.history.filter((item) => item.status !== 'dead');
+
+  const plantDate =
+    location.interventionStartDate ||
+    location.plantDate ||
+    location.registrationDate;
+  const isPlantDead = location.status === 'dead';
+  const hasPlantingHistory = location.history.length > 0;
+  const shouldShowPlantStatus = deadPlant.length > 0 || isPlantDead;
+
+  const renderMeasurementValue = (
+    value: number | undefined,
+    unit: 'm' | 'cm'
+  ) => (
+    <div className={styles.value}>
+      {value}
+      {tTreemapper(unit)}
+    </div>
+  );
+
+  const renderHistoryValues = (
+    history: typeof location.history,
+    key: 'height' | 'width',
+    unit: 'm' | 'cm'
+  ) =>
+    history.map((h, index) => (
+      <div className={styles.value} key={`${key}-${index}`}>
+        {h.status === 'dead'
+          ? '-'
+          : `${h.measurements?.[key] ?? '-'}${tTreemapper(unit)}`}
+      </div>
+    ));
+
+  const renderHistoryDates = (history: typeof location.history) =>
+    history.map((h, index) => (
+      <div className={styles.value} key={`date-${index}`}>
+        {formatDate(h.eventDate as Date)}
+      </div>
+    ));
+
+  const renderStatusValues = (
+    history: typeof location.history,
+    key: 'status' | 'statusReason'
+  ) =>
+    history.map((h, index) => (
+      <div className={styles.value} key={`${key}-${index}`}>
+        {h[key]}
+      </div>
+    ));
 
   React.useEffect(() => {
     if (location?.type === 'multi-tree-registration') {
@@ -100,7 +152,7 @@ export function LocationDetails({
       }
     }
   }, [location]);
-  return location ? (
+  return (
     <>
       {location.type === 'multi-tree-registration' &&
         sampleTreeImages.length > 0 && (
@@ -127,18 +179,24 @@ export function LocationDetails({
           </div>
         )}
       <div className={styles.details}>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('captureMode')}</p>
-          <div className={styles.value}>
-            {tTreemapper(location.captureMode)}
+        {location.captureMode && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('captureMode')}</p>
+            <div className={styles.value}>
+              {tTreemapper(location.captureMode)}
+            </div>
           </div>
-        </div>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('captureStatus')}</p>
-          <div className={styles.value}>
-            {tTreemapper(location.captureStatus)}
+        )}
+
+        {location.captureStatus && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('captureStatus')}</p>
+            <div className={styles.value}>
+              {tTreemapper(location.captureStatus)}
+            </div>
           </div>
-        </div>
+        )}
+
         {/* <div className={styles.singleDetail}>
               <p className={styles.title}>{tTreemapper('guid')}</p>
               <div className={styles.value}>{location.id}</div>
@@ -155,51 +213,102 @@ export function LocationDetails({
         ) : (
           []
         )}
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('plantDate')}</p>
-          <div className={styles.value}>{formatDate(location.plantDate)}</div>
-        </div>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{tTreemapper('registrationDate')}</p>
-          <div className={styles.value}>
-            {formatDate(location.registrationDate)}
+        {plantDate && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('plantDate')}</p>
+            <div className={styles.value}>{formatDate(plantDate)}</div>
           </div>
-        </div>
+        )}
+        {location.registrationDate && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{tTreemapper('registrationDate')}</p>
+            <div className={styles.value}>
+              {formatDate(location.registrationDate)}
+            </div>
+          </div>
+        )}
         {(location as PlantLocationSingle).measurements && (
           <>
+            {/* Measurements Section */}
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('measurements')}</p>
               </div>
             </div>
+
             <div className={styles.measurements}>
+              {/* Planting Date */}
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('date')}</p>
-                {location.history?.map((h, index) => (
-                  <div className={styles.value} key={index}>
-                    {formatDate(h?.created)}
-                  </div>
-                ))}
+                {!isPlantDead && (
+                  <div className={styles.value}>{formatDate(plantDate)}</div>
+                )}
+                {hasPlantingHistory && renderHistoryDates(alivePlant)}
               </div>
+
+              {/* Height */}
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('height')}</p>
-                {location.history?.map((h, index) => (
-                  <div className={styles.value} key={index}>
-                    {h?.measurements?.height} {tTreemapper('m')}
-                  </div>
-                ))}
+                {!isPlantDead &&
+                  renderMeasurementValue(location.measurements?.height, 'm')}
+                {hasPlantingHistory &&
+                  renderHistoryValues(alivePlant, 'height', 'm')}
               </div>
+
+              {/* Width */}
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('width')}</p>
-                {location.history?.map((h, index) => (
-                  <div className={styles.value} key={index}>
-                    {h?.measurements?.width} {tTreemapper('cm')}
-                  </div>
-                ))}
+                {!isPlantDead &&
+                  renderMeasurementValue(location.measurements?.width, 'cm')}
+                {hasPlantingHistory &&
+                  renderHistoryValues(alivePlant, 'width', 'cm')}
               </div>
             </div>
+
+            {/* Plant Status Section */}
+            {shouldShowPlantStatus && (
+              <>
+                <div className={styles.singleDetail}>
+                  <p className={styles.title}>{tTreemapper('plantStatus')}</p>
+                </div>
+                <div className={styles.measurements}>
+                  <div className={styles.singleDetail}>
+                    <p className={styles.title}>{tTreemapper('date')}</p>
+                    {isPlantDead && (
+                      <div className={styles.value}>
+                        {formatDate(plantDate)}
+                      </div>
+                    )}
+                    {hasPlantingHistory && renderHistoryDates(deadPlant)}
+                  </div>
+
+                  {/*Plant dead Status */}
+                  <div className={styles.singleDetail}>
+                    <p className={styles.title}>{tTreemapper('status')}</p>
+                    {isPlantDead && (
+                      <div className={styles.value}>{location.status}</div>
+                    )}
+                    {hasPlantingHistory &&
+                      renderStatusValues(deadPlant, 'status')}
+                  </div>
+
+                  {/* Plant dead Reason */}
+                  <div className={styles.singleDetail}>
+                    <p className={styles.title}>{tTreemapper('reason')}</p>
+                    {isPlantDead && (
+                      <div className={styles.value}>
+                        {location.statusReason}
+                      </div>
+                    )}
+                    {hasPlantingHistory &&
+                      renderStatusValues(deadPlant, 'statusReason')}
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
+
         {(location as PlantLocationMulti | PlantLocation).plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('plantProject')}</p>
@@ -215,7 +324,7 @@ export function LocationDetails({
         )}
       </div>
       <div className={styles.detailsFull}>
-        {(location as PlantLocationMulti)?.plantedSpecies && (
+        {(location as PlantLocationMulti)?.plantedSpecies.length > 0 && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('species')}</p>
             <div className={styles.value}>
@@ -275,8 +384,6 @@ export function LocationDetails({
           )}
       </div>
     </>
-  ) : (
-    <></>
   );
 }
 

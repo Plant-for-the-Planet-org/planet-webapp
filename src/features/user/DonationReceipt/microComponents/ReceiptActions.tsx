@@ -3,6 +3,7 @@ import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
 import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
+import themeProperties from '../../../../theme/themeProperties';
 
 type Props = {
   downloadUrl: string | null;
@@ -48,7 +49,9 @@ const ReceiptActions = ({
             variant="primary"
             text={tReceipt('download')}
             elementType="link"
-            icon={<DownloadIcon color="#fff" />}
+            icon={
+              <DownloadIcon color={themeProperties.designSystem.colors.white} />
+            }
             href={downloadUrl}
             target={'_blank'}
           />

@@ -20,7 +20,7 @@
 
     > * {
       &:not(:last-child) {
-        border-right: 1px solid $hintTextColor;
+        border-right: 1px solid $dsMediumGrey;
       }
     }
   }
@@ -48,7 +48,7 @@
 }
 
 .dropdownButton {
-  background-color: $fieldBackgroundColor;
+  background-color: $dsMediumGreyTransparent30;
   box-sizing: border-box;
   width: 100%;
   padding: 8px 10px 8px 6px;
@@ -76,7 +76,7 @@
 
   .dropdownButtonText {
     font-size: $fontXSmall;
-    color: $coreTextColor;
+    color: $dsCoreText;
     font-weight: 700;
     flex: 1;
 
@@ -119,19 +119,19 @@
   border-radius: 4px;
 
   &.selected {
-    background-color: $fieldBackgroundColor;
+    background-color: $dsMediumGreyTransparent30;
     font-weight: 700;
   }
 
   .optionLabel {
     font-size: $fontXSmall;
-    color: $coreTextColor;
+    color: $dsCoreText;
   }
 }
 
 .timePeriodText {
   font-size: $fontXXSmall;
-  color: $softTextColorTwo;
+  color: $dsSoftText2;
   padding: 4px 6px;
 
   @include xsPhoneView {
@@ -174,7 +174,7 @@
   position: absolute;
   bottom: calc(100% + 10px);
   background-color: $backgroundColor;
-  color: $coreTextColor;
+  color: $dsCoreText;
   border-radius: 8px;
   padding: 18px;
 
@@ -238,7 +238,7 @@
     }
 
     &.negative svg path {
-      stroke: $fireRedColor;
+      stroke: $dsFireRed;
     }
 
     // Adjust alignment when near left edge
@@ -269,7 +269,7 @@
 
     .averageValue {
       font-weight: 400;
-      color: $softTextColorTwo;
+      color: $dsSoftText2;
     }
   }
 

@@ -1,23 +1,21 @@
 @import '../../../../theme/theme';
 
-.carouselContent {
+.singleCarouselImage {
   width: 100%;
   height: 100%;
   background-position: center center !important;
   background-size: cover !important;
-}
-.carouselContentExpand {
-  border-radius: 0px;
-  height: 40%;
-}
-.carouselContentText {
-  position: absolute;
-  bottom: 38px;
-  left: 41px;
-  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 20px;
+  color: $dsWhite;
   font-size: $fontXSmall;
-  text-transform: capitalize;
-  max-width: 90%;
+}
+
+.mobileModal {
+  justify-content: center;
+  padding: 10px;
 }
 
 .imageSliderContainer {
@@ -40,7 +38,7 @@
   width: 800px;
   border-radius: 16px;
   overflow: hidden;
-  > button {
+  .closeModalButton {
     position: absolute;
     right: 10px;
     top: 10px;
@@ -50,8 +48,42 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    z-index: 1000;
-    background: #fff;
+    z-index: 9999;
+    background: $dsWhite;
     cursor: pointer;
+
+    @include xsPhoneView {
+      width: 24px;
+      height: 24px;
+      right: 6px;
+      top: 6px;
+    }
   }
+}
+
+.sliderButton {
+  cursor: pointer;
+  > svg {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.nextMobileSliderButton,
+.prevMobileSliderButton,
+.mobileSliderButtonCommon {
+  position: absolute;
+  z-index: 9999;
+  top: 188px;
+
+  > svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+.prevMobileSliderButton {
+  left: 116px;
+}
+.nextMobileSliderButton {
+  right: 116px;
 }

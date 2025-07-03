@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ImagesSlider from '../components/ImageCarousel';
+import ImagesSlider from '../components/microComponents/ImageCarousel';
 
 const meta: Meta<typeof ImagesSlider> = {
   title: 'Projects/Details/ImagesSlider',
