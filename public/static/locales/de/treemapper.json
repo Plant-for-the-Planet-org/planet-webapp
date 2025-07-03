@@ -72,6 +72,9 @@
     "measurements": "Messwerte",
     "ignoredColumnsWarning": "Die zusätzlichen Spalten wurden ignoriert",
     "back": "Zurück",
-    "submit": "Einreichen"
+    "submit": "Einreichen",
+    "plantStatus": "Pflanz-Status",
+    "status": "Status",
+    "reason": "Grund"
   }
 }

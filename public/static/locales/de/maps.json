@@ -47,6 +47,202 @@
     "showProjectDetails": "Projektdetails anzeigen",
     "hideProjectList": "Projektliste ausblenden",
     "hideProjectDetails": "Projektdetails ausblenden",
-    "countries": "Länder"
+    "countries": "Länder",
+    "exploreLayers": {
+      "title": "Entdecken",
+      "subtitle": "Ökol. Informations-Ebenen",
+      "closeButton": "Schließen",
+      "groups": {
+        "forests": "Wald",
+        "soil": "Boden",
+        "biodiversity": "Biodiversität",
+        "risks": "Risiken"
+      },
+      "settingsLabels": {
+        "projects": "Projekte",
+        "forestCover": "Waldbewuchs",
+        "forestBiomass": "Forstbiomasse",
+        "biomassPotential": "Potenziell zusätzliche Forstbiomasse",
+        "deforestation": "Abholzung",
+        "canopyHeight": "Baumkronenhöhe",
+        "soilNitrogen": "Bodenstickstoff",
+        "soilPH": "Boden pH-Wert",
+        "soilOrganicCarbon": "Organischer Bodenkohlenstoff",
+        "soilBulkDensity": "Bodendichte",
+        "treeSpeciesDensity": "Baumartendichte",
+        "birdDensity": "Vogeldichte",
+        "mammalDensity": "Säugetierdichte",
+        "amphibianDensity": "Amphibiendichte",
+        "fireRisk": "Brandrisiko",
+        "deforestationRisk": "Entwaldungsrisiko"
+      },
+      "legends": {
+        "veryLow": "Sehr niedrig",
+        "low": "Niedrig",
+        "medium": "Mittel",
+        "high": "Hoch",
+        "veryHigh": "Sehr hoch",
+        "extreme": "Extrem"
+      },
+      "additionalInfo": {
+        "labels": {
+          "dataYears": "Datenjahre",
+          "resolution": "Auflösung",
+          "description": "Beschreibung",
+          "underlyingData": "Basisdaten",
+          "source": "Quelle"
+        },
+        "forestCover": {
+          "resolution": "~500m (herunterskaliert)",
+          "dataYears": "2023",
+          "description": "Baumbewuchs als binäre Karte",
+          "underlyingData": "Von Google entwickeltes KI-Modell zur Klassifizierung von Sentinel-II-Bildern in 9 verschiedene Bodennutzungs- und Bodenbedeckungsklassen",
+          "source": {
+            "text": "Dynamic World",
+            "url": "https://dynamicworld.app/"
+          }
+        },
+        "forestBiomass": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Aktuelle Biomassekarten in den bewaldeten Regionen",
+          "underlyingData": "Auf Fernerkundung (MODIS, LiDAR) basierende Modelle für maschinelles Lernen",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "biomassPotential": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Eingeschränkte, nicht realisierte potenzielle oberirdische Biomassedichte (Megagramm Kohlenstoff pro Hektar) unter dem Referenzklima. Gebiete, die für die Nahrungsmittelproduktion und menschliche Besiedlung kritisch sind, wurden auf Null gesetzt.",
+          "underlyingData": "Auf Fernerkundung (MODIS, LiDAR) basierende Modelle für maschinelles Lernen",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "deforestation": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Ort der Entwaldung im Vorjahr",
+          "underlyingData": "Landsat-Satellitenprogramme",
+          "source": {
+            "text": "Hansen et al. 2013",
+            "url": "https://www.science.org/doi/10.1126/science.1244693"
+          }
+        },
+        "canopyHeight": {
+          "resolution": "~1m",
+          "dataYears": "2018-2020",
+          "description": "Globale Baumkronenhöhe zwischen den Jahren 2018-2020",
+          "underlyingData": "Globale Baumkronenhöhenkarten, basierend auf KI-Modellen (DinoV2) und Fernerkundungsdaten (MAXAR und GEDI) von Meta",
+          "source": {
+            "text": "Tolan et al. 2024",
+            "url": "https://sustainability.atmeta.com/blog/2024/04/22/using-artificial-intelligence-to-map-the-earths-forests/"
+          }
+        },
+        "soilNitrogen": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Gewichtete durchschnittliche Stickstoffkonzentration (cg/kg) in 0-200 cm Bodentiefe, abgeleitet durch proportionale Mittelung der ISRIC SoilGrids-Stickstoffwerte aus sechs Tiefenintervallen (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm und 100-200 cm), wobei jedes Band entsprechend seiner jeweiligen Tiefenstärke gewichtet wurde.",
+          "underlyingData": "150.000 Bodenprofile und 158 fernerkundungsbasierte Bodenkovariaten (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilPH": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Gewichtete durchschnittliche pH-Konzentration in 0-200 cm Bodentiefe, abgeleitet durch proportionale Mittelung der ISRIC SoilGrids-Stickstoffwerte aus sechs Tiefenintervallen (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm und 100-200 cm), wobei jedes Band entsprechend seiner jeweiligen Tiefenmächtigkeit gewichtet wurde.",
+          "underlyingData": "150.000 Bodenprofile und 158 fernerkundungsbasierte Bodenkovariaten (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilOrganicCarbon": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Gewichtete durchschnittliche Konzentration des organischen Kohlenstoffs im Boden (dg/kg) in 0-200 cm Bodentiefe, abgeleitet durch proportionale Mittelung der ISRIC SoilGrids-Stickstoffwerte aus sechs Tiefenintervallen (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm und 100-200 cm), wobei jedes Band entsprechend seiner jeweiligen Tiefenschicht gewichtet wurde.",
+          "underlyingData": "150.000 Bodenprofile und 158 fernerkundungsbasierte Bodenkovariaten (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilBulkDensity": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Gewichtete durchschnittliche Bodenschüttdichtekonzentration (cg/cm3;) in 0-200 cm Bodentiefe, abgeleitet durch proportionale Mittelung der ISRIC SoilGrids-Stickstoffwerte aus sechs Tiefenintervallen (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm und 100-200 cm), wobei jedes Band entsprechend seiner jeweiligen Tiefenmächtigkeit gewichtet wurde.",
+          "underlyingData": "150.000 Bodenprofile und 158 fernerkundungsbasierte Bodenkovariaten (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "treeSpeciesDensity": {
+          "resolution": "~3km",
+          "dataYears": "2005-2015",
+          "description": "Zeigt die durchschnittliche Anzahl der Baumarten um den Globus",
+          "underlyingData": "die Global Forest Biodiversity Initiative [GFBI] und der TREECHANGE-Datensatz",
+          "source": {
+            "text": "Gatti et al. 2022",
+            "url": "https://www.pnas.org/doi/full/10.1073/pnas.2115329119"
+          }
+        },
+        "birdDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Anzahl der Vogelarten an verschiedenen Standorten (Anzahl der Vögel pro 100 km2)",
+          "underlyingData": "IUCN (Säugetiere, Amphibien und marine Arten), gemeinsam von BirdLife International und NatureServe (Vögel), von NatureServe (Reptilien und Süßwasserfische der USA)",
+          "source": {
+            "text": "Biodiversity Mapping",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "mammalDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Anzahl der Säugetierarten an verschiedenen Standorten",
+          "underlyingData": "IUCN (Säugetiere, Amphibien und marine Arten), gemeinsam von BirdLife International und NatureServe (Vögel), von NatureServe (Reptilien und Süßwasserfische der USA)",
+          "source": {
+            "text": "Biodiversity Mapping",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "amphibianDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Anzahl der Amphibienarten an verschiedenen Standorten",
+          "underlyingData": "IUCN (Säugetiere, Amphibien und marine Arten), gemeinsam von BirdLife International und NatureServe (Vögel), von NatureServe (Reptilien und Süßwasserfische der USA)",
+          "source": {
+            "text": "Biodiversity Mapping",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "fireRisk": {
+          "resolution": "~55km",
+          "dataYears": "1980-2023",
+          "description": "Risiko des Ausbruchs eines Feuers auf der Grundlage von Wetterdaten",
+          "underlyingData": "Feuer-Wetter-Index",
+          "source": {
+            "text": "von Plant-for-the-Planet, Analyse des Feuer-Wetter-Index für die letzten 25 Jahre (90. Perzentil) auf der Grundlage von Daten via der Climate Data Store API",
+            "url": "https://cds.climate.copernicus.eu/home"
+          }
+        },
+        "deforestationRisk": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Risikofaktor der Entwaldung auf Grundlage der früheren Entwaldung, des derzeitigen Waldes und der Entwaldungstendenz",
+          "underlyingData": "Auf Grundlage der LANDSAT-gestützten Waldstandorte und Entwaldungsmuster",
+          "source": {
+            "text": "von Plant-for-the-Planet, LANDSAT-basierte Modellierung des Entwaldungsrisikos auf der Grundlage einer VERRA-Methode",
+            "url": "https://verra.org/wp-content/uploads/2021/04/DRAFT_JNR_Risk_Mapping_Tool_15APR2021.pdf"
+          }
+        }
+      }
+    }
   }
 }
