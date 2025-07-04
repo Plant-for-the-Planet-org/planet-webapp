@@ -23,11 +23,6 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   '& .accountHeaderRight': {
     justifyContent: 'flex-end',
   },
-  '& .balance': {
-    color: theme.palette.primary.main,
-    fontWeight: theme.typography.fontWeightBold,
-    textAlign: 'right',
-  },
   '& .accountTitle': {
     fontWeight: theme.typography.fontWeightBold,
   },
@@ -66,7 +61,7 @@ const BankAccountDetails = ({
   return (
     <Grid
       container
-      className="accountDetails"
+      className="BankAccountDetails"
       component={AccountDetailsGrid}
       direction="column"
     >

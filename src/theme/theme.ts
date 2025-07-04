@@ -22,13 +22,7 @@ const {
   exploreDescriptionBackground,
   lightOrange,
   CharcoalGray,
-  mediumGrayColor,
-  lightGrayColor,
-  coreTextColor,
-  softTextColorTwo,
-  hintTextColor,
-  fieldBackgroundColor,
-  fireRedColor,
+  designSystem,
 } = theme;
 
 const getGlobalStyles = async () => {
@@ -93,13 +87,6 @@ const getGlobalStyles = async () => {
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
       --medium-blue-color: ${theme.mediumBlueColor};
-      --medium-gray-color: ${mediumGrayColor};
-      --light-gray-color: ${lightGrayColor};
-      --core-text-color: ${coreTextColor};
-      --soft-text-color-two: ${softTextColorTwo};
-      --hint-text-color: ${hintTextColor};
-      --field-background-color: ${fieldBackgroundColor};
-      --fire-red-color: ${fireRedColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};
@@ -110,6 +97,57 @@ const getGlobalStyles = async () => {
       --cerulean-blue-color: ${theme.ceruleanBlueColor};
       --light-orange: ${lightOrange};
       --charcoal-gray: ${CharcoalGray};
+      --ds-primary-color: ${designSystem.colors.primaryColor};
+      --ds-primary-color-transparent-7: ${designSystem.colors
+        .primaryColorTransparent7};
+      --ds-primary-color-transparent-10: ${designSystem.colors
+        .primaryColorTransparent10};
+      --ds-forest-green: ${designSystem.colors.forestGreen};
+      --ds-forest-green-transparent-20: ${designSystem.colors
+        .forestGreenTransparent20};
+      --ds-forest-green-transparent-40: ${designSystem.colors
+        .forestGreenTransparent40};
+      --ds-leaf-green: ${designSystem.colors.leafGreen};
+      --ds-bright-green: ${designSystem.colors.brightGreen};
+      --ds-mint-gradient: ${designSystem.colors.mintGradient};
+      --ds-mint-gradient-start: ${designSystem.colors.mintGradientStart};
+      --ds-soft-green: ${designSystem.colors.softGreen};
+      --ds-golden-yellow: ${designSystem.colors.goldenYellow};
+      --ds-soft-yellow: ${designSystem.colors.softYellow};
+      --ds-dark-chocolate: ${designSystem.colors.darkChocolate};
+      --ds-soft-dark-chocolate: ${designSystem.colors.softDarkChocolate};
+      --ds-milk-chocolate: ${designSystem.colors.milkChocolate};
+      --ds-soft-milk-chocolate: ${designSystem.colors.softMilkChocolate};
+      --ds-purple-sky: ${designSystem.colors.purpleSky};
+      --ds-soft-sky: ${designSystem.colors.softSky};
+      --ds-ocean-blue: ${designSystem.colors.oceanBlue};
+      --ds-soft-blue: ${designSystem.colors.softBlue};
+      --ds-deep-purple: ${designSystem.colors.deepPurple};
+      --ds-soft-purple: ${designSystem.colors.softPurple};
+      --ds-fire-red: ${designSystem.colors.fireRed};
+      --ds-soft-red: ${designSystem.colors.softRed};
+      --ds-white: ${designSystem.colors.white};
+      --ds-background-base: ${designSystem.colors.backgroundBase};
+      --ds-core-text: ${designSystem.colors.coreText};
+      --ds-soft-text: ${designSystem.colors.softText};
+      --ds-soft-text-2: ${designSystem.colors.softText2};
+      --ds-hint-text: ${designSystem.colors.hintText};
+      --ds-warm-green: ${designSystem.colors.warmGreen};
+      --ds-sunrise-orange: ${designSystem.colors.sunriseOrange};
+      --ds-bright-yellow: ${designSystem.colors.brightYellow};
+      --ds-warm-blue: ${designSystem.colors.warmBlue};
+      --ds-sky-blue: ${designSystem.colors.skyBlue};
+      --ds-base-grey: ${designSystem.colors.baseGrey};
+      --ds-dark-grey: ${designSystem.colors.darkGrey};
+      --ds-medium-grey: ${designSystem.colors.mediumGrey};
+      --ds-medium-grey-transparent-30: ${designSystem.colors
+        .mediumGreyTransparent30};
+      --ds-medium-grey-transparent-50: ${designSystem.colors
+        .mediumGreyTransparent50};
+      --ds-medium-grey-transparent-70: ${designSystem.colors
+        .mediumGreyTransparent70};
+      --ds-deep-blue: ${designSystem.colors.deepBlue};
+      --ds-deep-green: ${designSystem.colors.deepGreen};
     }
     .theme-light {
       --primary-font-color: ${light.primaryFontColor};

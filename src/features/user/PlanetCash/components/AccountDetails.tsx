@@ -19,7 +19,8 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   fontSize: themeProperties.fontSizes.fontSmall,
   '&.accountDetails--inactive': {
     opacity: '80%',
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor:
+      themeProperties.designSystem.colors.mediumGreyTransparent30,
   },
   '& .accountHeader': {
     rowGap: 16,

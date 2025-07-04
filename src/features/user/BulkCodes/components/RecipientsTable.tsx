@@ -128,7 +128,11 @@ const RecipientsTable = ({
                             color="primary"
                             onClick={() => enterEditMode(index)}
                           >
-                            <EditIcon color={themeProperties.primaryColor} />
+                            <EditIcon
+                              color={
+                                themeProperties.designSystem.colors.warmGreen
+                              }
+                            />
                           </IconButton>
                         )}
                       </ActionContainer>
@@ -141,7 +145,11 @@ const RecipientsTable = ({
                             color="primary"
                             onClick={() => deleteRecipient(index)}
                           >
-                            <DeleteIcon color={themeProperties.primaryColor} />
+                            <DeleteIcon
+                              color={
+                                themeProperties.designSystem.colors.warmGreen
+                              }
+                            />
                           </IconButton>
                         )}
                       </ActionContainer>

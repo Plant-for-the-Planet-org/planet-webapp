@@ -1,4 +1,5 @@
-import type { FC, Dispatch, SetStateAction } from 'react';
+import type { FC } from 'react';
+import type { SetState } from '../types/common';
 import type { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants';
 import type {
   CountryCode,
@@ -36,8 +37,6 @@ export interface BulkGiftImportData {
 }
 
 type BulkGiftData = BulkGiftGenericData | BulkGiftImportData;
-
-export type SetState<T> = Dispatch<SetStateAction<T>>;
 
 interface BulkCodeContextInterface {
   bulkMethod: BulkCodeMethods | null;

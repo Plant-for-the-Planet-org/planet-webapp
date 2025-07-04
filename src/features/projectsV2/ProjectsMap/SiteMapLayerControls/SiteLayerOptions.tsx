@@ -21,6 +21,7 @@ const SingleLayerOption = ({
         isSelected ? styles.selected : ''
       }`}
       onClick={() => handleLayerSelection(option)}
+      role="button"
     >
       <div className={styles.optionIcon}>{option.icon}</div>
       <p className={styles.optionLabel}>

@@ -7,25 +7,15 @@
   height: 100%;
 }
 
-.formErrors {
-  // position: absolute;
-  font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
-  color: $dangerColor;
-  margin-left: 6px;
-  margin-top: 6px;
-  max-width: 320px;
-}
-
 .uploadWidget {
-  background: #f2f2f7;
-  border: 1px solid #689f38;
+  background: $dsBaseGrey;
+  border: 1px solid $dsWarmGreen;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   padding: 15px 12px;
   gap: 0.5rem;
-  color: #2f3336;
+  color: $dsCoreText;
   text-align: center;
 
   svg {
@@ -34,20 +24,20 @@
 
   &__statusText {
     &--error {
-      color: #e53935;
+      color: $dsFireRed;
     }
     &--success {
-      color: #689f38;
+      color: $dsWarmGreen;
     }
   }
 
   &--error {
-    border: 1px solid #e53935;
+    border: 1px solid $dsFireRed;
   }
 }
 
 .uploadInstructions a {
-  color: rgba(0, 0, 0, 0.87);
+  color: $dsCoreText;
   font-weight: 700;
   text-decoration: underline;
 }
@@ -55,11 +45,11 @@
 .issueCodeTermsAndWarnings {
   font-size: $fontSmall;
   font-style: italic;
-  color: $highlightBackground;
+  color: $dsSoftText;
 }
 
 .spinner {
-  border: 2px solid #689f38;
+  border: 2px solid $dsWarmGreen;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;

@@ -13,7 +13,7 @@
   transform: translate(-50%, -50%);
   padding: 20px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 1);
+  background: $dsWhite;
 }
 
 // Base Components
@@ -24,7 +24,7 @@
 
   .maxAddress {
     font-size: $fontXSmall;
-    color: #6c757d;
+    color: $dsSoftText2;
   }
 }
 
@@ -42,7 +42,7 @@
 .singleAddressContainer {
   @include flex-container;
   width: 100%;
-  background: rgba(242, 242, 242, 0.5);
+  background: $dsBaseGrey;
   border-radius: 8px;
   font-size: $fontSmall;
   font-weight: 400;
@@ -64,7 +64,7 @@
     }
 
     &:hover {
-      background-color: rgba(120, 120, 120, 0.1);
+      background-color: $dsMediumGreyTransparent30;
     }
   }
 }
@@ -78,7 +78,7 @@
     max-width: fit-content;
     border-radius: 6px;
     text-align: center;
-    color: #fff;
+    color: $dsWhite;
     font-size: $fontXSmall;
     line-height: 16px;
     font-weight: 600;
@@ -91,11 +91,11 @@
 
 // Address Types
 .primary {
-  background: $primaryDarkColor;
+  background: $dsPrimaryColor;
 }
 
 .mailing {
-  background: $mediumBlueColor;
+  background: $dsWarmBlue;
 }
 
 // Address Actions
@@ -114,7 +114,7 @@
     padding: 8px 0;
 
     &:not(:last-child) {
-      border-bottom: 1px solid rgba(189, 189, 189, 1);
+      border-bottom: 1px solid $dsMediumGreyTransparent50;
     }
   }
 }
@@ -140,7 +140,7 @@
       justify-content: space-between;
       align-items: center;
       font-size: $fontSmall;
-      background-color: rgba(240, 246, 245, 1);
+      background-color: $dsSoftGreen;
       border-radius: 10px;
       padding: 12px 20px;
     }
@@ -165,7 +165,7 @@
 
   .address {
     width: 100%;
-    background: rgba(242, 242, 242, 0.5);
+    background: $dsBaseGrey;
     border-radius: 8px;
     font-size: $fontSmall;
     font-weight: 400;

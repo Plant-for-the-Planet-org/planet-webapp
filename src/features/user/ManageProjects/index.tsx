@@ -2,8 +2,7 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type {
   ManageProjectsProps,
-  ProfileProjectTrees,
-  ProfileProjectConservation,
+  ExtendedProfileProjectProperties,
 } from '../../common/types/project';
 
 import React from 'react';
@@ -56,9 +55,8 @@ export default function ManageProjects({
     GUID ? GUID : ''
   );
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
-  const [projectDetails, setProjectDetails] = React.useState<
-    ProfileProjectTrees | ProfileProjectConservation | null
-  >(null);
+  const [projectDetails, setProjectDetails] =
+    React.useState<ExtendedProfileProjectProperties | null>(null);
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
@@ -109,7 +107,7 @@ export default function ManageProjects({
 
     try {
       const res = await putApiAuthenticated<
-        ProfileProjectTrees | ProfileProjectConservation,
+        ExtendedProfileProjectProperties,
         RequestReviewApiPayload
       >(`/app/projects/${projectGUID}`, {
         payload: requestReviewPayload,
@@ -130,7 +128,7 @@ export default function ManageProjects({
 
     try {
       const res = await putApiAuthenticated<
-        ProfileProjectTrees | ProfileProjectConservation,
+        ExtendedProfileProjectProperties,
         PublishStatusApiPayload
       >(`/app/projects/${projectGUID}`, {
         payload: publishStatusPayload,
@@ -147,9 +145,9 @@ export default function ManageProjects({
     // Fetch details of the project
     const fetchProjectDetails = async () => {
       try {
-        const res = await getApiAuthenticated<
-          ProfileProjectTrees | ProfileProjectConservation
-        >(`/app/profile/projects/${projectGUID}`);
+        const res = await getApiAuthenticated<ExtendedProfileProjectProperties>(
+          `/app/profile/projects/${projectGUID}`
+        );
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));

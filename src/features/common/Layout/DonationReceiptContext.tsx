@@ -110,7 +110,8 @@ interface DonationReceiptContextInterface {
   updateDonorAndAddress: (
     donor: DonorView,
     address: AddressView,
-    addressGuid: string
+    addressGuid: string,
+    user: User | null
   ) => void;
   clearSessionStorage: () => void;
 }
@@ -238,14 +239,35 @@ export const DonationReceiptProvider: React.FC<{
   const updateDonorAndAddress = (
     donor: DonorView,
     address: AddressView,
-    addressGuid: string
+    addressGuid: string,
+    user: User | null
   ): void => {
-    setState((prevState) => ({
-      ...prevState,
-      donor,
-      address,
-      addressGuid,
-    }));
+    setState((prevState) => {
+      let isValid = prevState.isValid;
+      if (prevState.operation === RECEIPT_STATUS.ISSUE) {
+        isValid = validateUnissuedReceipt(
+          donor,
+          address,
+          prevState.tinIsRequired,
+          addressGuid,
+          user
+        );
+      } else {
+        isValid = validateIssuedReceipt(
+          donor,
+          address,
+          prevState.tinIsRequired,
+          user
+        );
+      }
+      return {
+        ...prevState,
+        donor,
+        address,
+        addressGuid,
+        isValid,
+      };
+    });
   };
 
   // Context value

@@ -120,7 +120,7 @@ export interface History {
   created: DateString;
   eventName: HistoryEvent;
   classification: string | null; //TODO - update with possible values
-  eventDate: EventDate;
+  eventDate: string | Date;
   measurements: Measurements;
   status: TreeStatus | null;
 }

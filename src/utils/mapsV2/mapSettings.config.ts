@@ -30,6 +30,29 @@ export interface AdditionalInfo {
   };
 }
 
+export interface RangeLegendData {
+  type: 'range';
+  min: number;
+  max: number;
+  unit?: string;
+  gradient: string;
+}
+
+type LegendCategoryKey =
+  | 'veryLow'
+  | 'low'
+  | 'medium'
+  | 'high'
+  | 'veryHigh'
+  | 'extreme';
+
+export interface CategoryLegendData {
+  type: 'category';
+  categories: { categoryKey: LegendCategoryKey; color: string }[];
+}
+
+export type LegendData = RangeLegendData | CategoryLegendData;
+
 export interface LayerConfig {
   key: MapLayerOptionsType;
   /** Indicates whether the layer should be enabled in the UI */
@@ -38,6 +61,7 @@ export interface LayerConfig {
   isAvailable: boolean | null;
   additionalInfo?: AdditionalInfo;
   color?: string;
+  legend?: LegendData;
 }
 
 export interface MapSettingsConfig {
@@ -50,6 +74,7 @@ export interface MapSettingsConfig {
 
 // Configuration object
 // isAvailable is set to null initially, and will be updated based on the API response (except for projects which are always available)
+/** Note: additionalInfo seen on hover comes from translation file. While updating this, update translation file (maps.json) as well */
 export const mapSettingsConfig: MapSettingsConfig = {
   projects: {
     key: 'projects',
@@ -79,7 +104,7 @@ export const mapSettingsConfig: MapSettingsConfig = {
       isAvailable: null,
       color: '#27AE60',
       additionalInfo: {
-        resolution: '~500km',
+        resolution: '~500m',
         dataYears: '2016',
         description: 'Current biomass maps in the forested regions',
         underlyingData:
@@ -89,16 +114,24 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://www.pnas.org/doi/10.1073/pnas.2111312119',
         },
       },
+      legend: {
+        type: 'range',
+        min: 0,
+        max: 376,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #36670C 100%)',
+        unit: 't/ha',
+      },
     },
     {
       key: 'biomassPotential',
       canShow: true,
       isAvailable: null,
       additionalInfo: {
-        resolution: '~500km',
+        resolution: '~500m',
         dataYears: '2016',
         description:
-          'Global additional potential biomass with and without considering agricultural and human settlements.',
+          'Constrained unrealized potential aboveground biomass density (megagrams carbon per hectare) under baseline climate. Areas critical to food production and human habitation have been set to zero.',
         underlyingData:
           'Remote sensing (MODIS, LiDAR) based Machine Learning models',
         source: {
@@ -106,10 +139,18 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://www.pnas.org/doi/10.1073/pnas.2111312119',
         },
       },
+      legend: {
+        type: 'range',
+        min: 0,
+        max: 376,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #36670C 100%)',
+        unit: 't/ha',
+      },
     },
     {
       key: 'deforestation',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       color: '#EB5757',
       additionalInfo: {
@@ -150,13 +191,21 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'cg/kg; 0-30 cm horizon (A weighted average for all depths)',
+          'Weighted average nitrogen concentration (cg/kg) across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
           text: 'Hengl et al. 2017',
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 60,
+        max: 26313,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #6C8DFF 100%)',
+        unit: 'cg/kg',
       },
     },
     {
@@ -166,13 +215,21 @@ export const mapSettingsConfig: MapSettingsConfig = {
       additionalInfo: {
         resolution: '~250m',
         dataYears: '2016',
-        description: '0-30 cm horizon (A weighted average for all depths)',
+        description:
+          'Weighted average pH concentration across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
           text: 'Hengl et al. 2017',
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 3.9,
+        max: 9.6,
+        gradient:
+          'linear-gradient(90deg, #FE4242 0%, #F3F7C7 45.5%, #6C8DFF 100%)',
       },
     },
     {
@@ -183,13 +240,21 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'dg/kg; 0-30 cm horizon (A weighted average for all depths)',
+          'Weighted average Soil Organic Carbon concentration (dg/kg) across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
           text: 'Hengl et al. 2017',
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 2,
+        max: 4500,
+        gradient:
+          'linear-gradient(90deg, #FFF59A 0%, #FEFB27 48%, #361600 100%)',
+        unit: 'dg/kg',
       },
     },
     {
@@ -200,13 +265,21 @@ export const mapSettingsConfig: MapSettingsConfig = {
         resolution: '~250m',
         dataYears: '2016',
         description:
-          'cg/cm3; cg/kg; 0-30 cm horizon (A weighted average for all depths)',
+          'Weighted average Soil Bulk Density concentration (cg/cm3;) across 0–200 cm soil depth, derived by proportionally averaging ISRIC SoilGrids nitrogen values from six depth intervals (0–5 cm, 5–15 cm, 15–30 cm, 30–60 cm, 60–100 cm, and 100–200 cm), with each band weighted according to its respective depth thickness.',
         underlyingData:
           '150,000 soil profiles and 158 remote sensing-based soil covariates (soilgrids.org)',
         source: {
           text: 'Hengl et al. 2017',
           url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 29,
+        max: 188,
+        gradient:
+          'linear-gradient(90deg, #FEF27B 0%, #F9A817 48%, #E03301 100%)',
+        unit: 'cg/cm3',
       },
     },
   ],
@@ -227,10 +300,18 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://www.pnas.org/doi/full/10.1073/pnas.2115329119',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 273,
+        unit: 'species/ha',
+        gradient:
+          'linear-gradient(90deg, #F3F3F3 0%, #CEDFBC 48%, #1F3000 100%)',
+      },
     },
     {
       key: 'birdDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -244,10 +325,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://biodiversitymapping.org/',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 678,
+        unit: 'birds/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #0A529E 100%)',
+      },
     },
     {
       key: 'mammalDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -260,10 +348,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           url: 'https://biodiversitymapping.org/',
         },
       },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 212,
+        unit: 'mammals/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #A71015 100%)',
+      },
     },
     {
       key: 'amphibianDensity',
-      canShow: false,
+      canShow: true,
       isAvailable: null,
       additionalInfo: {
         resolution: '~10km',
@@ -275,6 +370,13 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'Biodiversity Mapping',
           url: 'https://biodiversitymapping.org/',
         },
+      },
+      legend: {
+        type: 'range',
+        min: 1,
+        max: 136,
+        unit: 'amphibians/ha',
+        gradient: 'linear-gradient(90deg, #FFFFFF 0%, #0E903E 100%)',
       },
     },
   ],
@@ -292,6 +394,17 @@ export const mapSettingsConfig: MapSettingsConfig = {
           text: 'by Plant-for-the-Planet, Fire Weather Index based analysis for last 25 years (90th percentile) based on data from Climate Data Store API',
           url: 'https://cds.climate.copernicus.eu/home',
         },
+      },
+      legend: {
+        type: 'category',
+        categories: [
+          { categoryKey: 'veryLow', color: '#F2C94C' },
+          { categoryKey: 'low', color: '#F2994A' },
+          { categoryKey: 'medium', color: '#FA7902' },
+          { categoryKey: 'high', color: '#E86F56' },
+          { categoryKey: 'veryHigh', color: '#C03418' },
+          { categoryKey: 'extreme', color: '#861E04' },
+        ],
       },
     },
     {

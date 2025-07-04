@@ -63,7 +63,7 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
         </span>
       )}
       renderInput={(params) => (
-        <TextField {...params} label={t('projectName')} color="primary" />
+        <TextField {...params} label={t('projectName')} />
       )}
       disabled={!active}
     />

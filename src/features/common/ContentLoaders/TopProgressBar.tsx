@@ -1,13 +1,13 @@
 import React from 'react';
-import theme from '../../../theme/themeProperties';
+import themeProperties from '../../../theme/themeProperties';
 import { LinearProgress, styled } from '@mui/material';
 
 const ProgressBar = styled(LinearProgress)({
   '&.MuiLinearProgress-root': {
-    backgroundColor: theme.light.backgroundColorDark,
+    backgroundColor: themeProperties.designSystem.colors.baseGrey,
   },
   '& > .MuiLinearProgress-bar': {
-    backgroundColor: theme.primaryColor,
+    backgroundColor: themeProperties.designSystem.colors.warmGreen,
   },
 });
 

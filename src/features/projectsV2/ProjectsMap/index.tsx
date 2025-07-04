@@ -81,6 +81,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     selectedSiteId,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
 
   const sitesGeoJson = useMemo(() => {
@@ -90,6 +91,12 @@ function ProjectsMap(props: ProjectsMapProps) {
         singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
     };
   }, [singleProject?.sites]);
+
+  useEffect(() => {
+    if (!mapLoaded) return;
+    // Ensure the map resizes properly once it's fully loaded.
+    mapRef.current?.resize();
+  }, [mapLoaded]);
 
   useEffect(() => {
     if (props.page === 'project-details') {
@@ -136,12 +143,13 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
 
   const shouldShowSingleProjectsView =
-    singleProject !== null && props.page === 'project-details';
+    singleProject !== null && props.page === 'project-details' && mapLoaded;
   const shouldShowMultipleProjectsView =
     Boolean(mapOptions.projects) &&
     projects &&
     projects.length > 0 &&
-    !shouldShowSingleProjectsView;
+    !shouldShowSingleProjectsView &&
+    mapLoaded;
   const shouldShowMultiPlantLocationInfo =
     props.isMobile &&
     selectedSamplePlantLocation === null &&
@@ -284,6 +292,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           {...viewState}
           {...mapState}
           onMove={onMove}
+          onLoad={() => setMapLoaded(true)}
           onMouseMove={onMouseMove}
           onMouseOut={() => setHoveredPlantLocation(null)}
           onClick={onClick}
@@ -294,6 +303,7 @@ function ProjectsMap(props: ProjectsMapProps) {
               ? ['plant-polygon-layer', 'point-layer']
               : undefined
           }
+          style={{ width: '100%', height: '100%' }}
         >
           {shouldShowExploreLayers && <ExploreLayers />}
           {shouldShowSiteLayers && (
