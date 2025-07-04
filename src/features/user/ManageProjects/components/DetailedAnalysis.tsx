@@ -310,7 +310,7 @@ export default function DetailedAnalysis({
       months.push(j);
     }
   }
-  // for validating maxplanting density value > planting density value
+  // for validating max planting density value > planting density value
   React.useEffect(() => {
     if (
       projectDetails &&

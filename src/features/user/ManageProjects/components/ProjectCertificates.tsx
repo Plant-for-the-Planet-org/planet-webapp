@@ -53,7 +53,7 @@ function ProjectCertificates({
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
     undefined
   );
-  const [isCertified, setisCertified] = React.useState<boolean>(true);
+  const [isCertified, setIsCertified] = React.useState<boolean>(true);
   const [showToggle, setShowToggle] = React.useState<boolean>(true);
 
   const onSubmit = async (pdf: string) => {
@@ -122,7 +122,7 @@ function ProjectCertificates({
         setErrors(handleError(err as APIError));
         redirect('/profile');
         setShowToggle(true);
-        setisCertified(false);
+        setIsCertified(false);
         setShowForm(true);
       }
     };
@@ -164,7 +164,7 @@ function ProjectCertificates({
     if (uploadedFiles && uploadedFiles.length == 0) {
       setShowToggle(true);
       setShowForm(true);
-      setisCertified(false);
+      setIsCertified(false);
     }
   }, [uploadedFiles]);
 
@@ -182,7 +182,7 @@ function ProjectCertificates({
               name="isCertified"
               id="isCertified"
               checked={isCertified}
-              onChange={() => setisCertified(!isCertified)}
+              onChange={() => setIsCertified(!isCertified)}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           }

@@ -42,8 +42,8 @@ export const PauseModal = ({
 }: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
-  const [option, setoption] = React.useState<string>();
-  const [showCalender, setshowCalender] = React.useState(false);
+  const [option, setOption] = React.useState<string>();
+  const [showCalender, setShowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
@@ -134,11 +134,11 @@ export const PauseModal = ({
               name="date"
               value={option}
               onChange={(event) => {
-                setoption(event.target.value);
+                setOption(event.target.value);
                 if (event.target.value === 'pauseUntilDate') {
-                  setshowCalender(true);
+                  setShowCalender(true);
                 } else {
-                  setshowCalender(false);
+                  setShowCalender(false);
                 }
               }}
               className={styles.radioButtonGrid}

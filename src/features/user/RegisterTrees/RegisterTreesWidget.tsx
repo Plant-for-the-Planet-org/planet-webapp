@@ -66,7 +66,7 @@ function RegisterTreesForm({
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState<
+  const [plantLocation, setPlantLocation] = React.useState<
     number[] | undefined
   >(undefined);
   const [geometry, setGeometry] = React.useState<
@@ -345,7 +345,7 @@ function RegisterTreesForm({
                 onViewportChange={_onViewportChange}
                 onViewStateChange={_onStateChange}
                 onClick={(event) => {
-                  setplantLocation(event.lngLat);
+                  setPlantLocation(event.lngLat);
                   setGeometry({
                     type: 'Point',
                     coordinates: event.lngLat,

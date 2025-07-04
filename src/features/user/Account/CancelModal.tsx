@@ -43,8 +43,8 @@ export const CancelModal = ({
 }: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
-  const [option, setoption] = React.useState('cancelImmediately');
-  const [showCalender, setshowCalender] = React.useState(false);
+  const [option, setOption] = React.useState('cancelImmediately');
+  const [showCalender, setShowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(new Date());
   const [disabled, setDisabled] = React.useState(false);
   const t = useTranslations('Me');
@@ -129,11 +129,11 @@ export const CancelModal = ({
                 name="date"
                 value={option}
                 onChange={(event) => {
-                  setoption(event.target.value);
+                  setOption(event.target.value);
                   if (event.target.value === 'cancelOnSelectedDate') {
-                    setshowCalender(true);
+                    setShowCalender(true);
                   } else {
-                    setshowCalender(false);
+                    setShowCalender(false);
                   }
                 }}
                 className={styles.radioButtonGrid}
