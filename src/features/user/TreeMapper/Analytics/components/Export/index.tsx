@@ -1,5 +1,4 @@
 import type { IExportData } from '../../../../../common/types/dataExplorer';
-import type { SxProps } from '@mui/material';
 import type { Project } from '../../../../../common/Layout/AnalyticsContext';
 
 import styles from './index.module.scss';
@@ -13,7 +12,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
-import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslations } from 'next-intl';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
@@ -24,23 +22,6 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 export const Export = () => {
   const t = useTranslations('TreemapperAnalytics');
@@ -225,9 +206,6 @@ export const Export = () => {
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
-              DialogProps={{
-                sx: dialogSx,
-              }}
             />
           </LocalizationProvider>
           <LocalizationProvider
@@ -247,9 +225,6 @@ export const Export = () => {
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
-              DialogProps={{
-                sx: dialogSx,
-              }}
             />
           </LocalizationProvider>
         </div>

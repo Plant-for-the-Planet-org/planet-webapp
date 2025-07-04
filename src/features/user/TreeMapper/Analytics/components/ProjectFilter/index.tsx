@@ -1,35 +1,16 @@
 import type { Project } from '../../../../../common/Layout/AnalyticsContext';
-import type { SxProps } from '@mui/material';
 
 import React, { useState } from 'react';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Grid from '@mui/material/Grid';
-import themeProperties from '../../../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 const ProjectFilter = () => {
   const t = useTranslations('TreemapperAnalytics');
@@ -83,9 +64,6 @@ const ProjectFilter = () => {
               inputFormat="MMMM d, yyyy"
               // minDate={}
               maxDate={new Date()}
-              DialogProps={{
-                sx: dialogSx,
-              }}
             />
           </LocalizationProvider>
         </Grid>
@@ -112,9 +90,6 @@ const ProjectFilter = () => {
               inputFormat="MMMM d, yyyy"
               minDate={fromDate}
               maxDate={new Date()}
-              DialogProps={{
-                sx: dialogSx,
-              }}
             />
           </LocalizationProvider>
         </Grid>

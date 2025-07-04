@@ -1,9 +1,50 @@
+import type { CSSProperties } from 'react';
+
 import { createTheme } from '@mui/material';
 import themeProperties from './themeProperties';
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     base?: string;
+  }
+}
+
+// Extend the theme to include date picker components with proper typing
+declare module '@mui/material/styles' {
+  interface ComponentNameToClassKey {
+    MuiPickersDay: 'root';
+    MuiCalendarPicker: 'root';
+    MuiYearPicker: 'root';
+  }
+  interface Components {
+    MuiPickersDay?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '&.Mui-selected'?: CSSProperties;
+          '&:hover'?: CSSProperties;
+        };
+      };
+    };
+    MuiCalendarPicker?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '& .Mui-selected'?: CSSProperties;
+          '& .MuiPickersDay-dayWithMargin'?: CSSProperties & {
+            '&:hover'?: CSSProperties;
+          };
+        };
+      };
+    };
+    MuiYearPicker?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '& .PrivatePickersYear-yearButton'?: CSSProperties & {
+            '&:hover'?: CSSProperties;
+            '&.Mui-selected'?: CSSProperties;
+          };
+        };
+      };
+    };
   }
 }
 
@@ -187,6 +228,59 @@ const materialTheme = createTheme({
               WebkitTextFillColor: themeProperties.designSystem.colors.hintText,
             },
           },
+        },
+      },
+    },
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: `${themeProperties.designSystem.colors.leafGreen} !important`,
+            color: themeProperties.designSystem.colors.white,
+          },
+          '&:hover': {
+            backgroundColor: themeProperties.designSystem.colors.leafGreen,
+            color: themeProperties.designSystem.colors.white,
+          },
+        },
+      },
+    },
+    MuiCalendarPicker: {
+      styleOverrides: {
+        root: {
+          '& .Mui-selected': {
+            backgroundColor: themeProperties.designSystem.colors.leafGreen,
+            color: themeProperties.designSystem.colors.white,
+          },
+          '& .MuiPickersDay-dayWithMargin': {
+            '&:hover': {
+              backgroundColor: themeProperties.designSystem.colors.leafGreen,
+              color: themeProperties.designSystem.colors.white,
+            },
+          },
+        },
+      },
+    },
+    MuiYearPicker: {
+      styleOverrides: {
+        root: {
+          '& .PrivatePickersYear-yearButton': {
+            '&:hover': {
+              backgroundColor: themeProperties.designSystem.colors.leafGreen,
+              color: themeProperties.designSystem.colors.white,
+            },
+            '&.Mui-selected': {
+              backgroundColor: `${themeProperties.designSystem.colors.leafGreen} !important`,
+              color: themeProperties.designSystem.colors.white,
+            },
+          },
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '12px',
         },
       },
     },

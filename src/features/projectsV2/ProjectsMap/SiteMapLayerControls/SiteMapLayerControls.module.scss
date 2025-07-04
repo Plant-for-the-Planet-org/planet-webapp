@@ -1,0 +1,282 @@
+@import '../../../../theme/theme';
+
+.siteMapLayerControls {
+  width: 100%;
+  max-width: 100%;
+  background-color: $backgroundColor;
+  border-radius: 12px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 20px;
+  z-index: 10;
+  box-sizing: border-box;
+
+  @include smTabletView {
+    max-width: 420px;
+    right: 10px;
+    flex-direction: row;
+
+    > * {
+      &:not(:last-child) {
+        border-right: 1px solid $dsMediumGrey;
+      }
+    }
+  }
+}
+
+.siteLayerSelector {
+  position: relative;
+  width: 100%;
+  padding: 10px 10px 0;
+  box-sizing: border-box;
+
+  @include xsPhoneView {
+    border-radius: 12px 12px 0 0;
+  }
+
+  @include smTabletView {
+    width: auto;
+    padding: 12px 12px 12px 8px;
+  }
+}
+
+.siteLayerDropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdownButton {
+  background-color: $dsMediumGreyTransparent30;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 10px 8px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+
+  .dropdownButtonIcon,
+  .dropdownButtonArrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dropdownButtonArrow {
+    transition: transform 0.3s ease;
+  }
+
+  .arrowRotated {
+    transform: rotate(-180deg);
+  }
+
+  .dropdownButtonText {
+    font-size: $fontXSmall;
+    color: $dsCoreText;
+    font-weight: 700;
+    flex: 1;
+
+    & .timePeriodTextMobile {
+      font-weight: 400;
+      margin-left: 3px;
+
+      @include smTabletView {
+        display: none;
+      }
+    }
+  }
+
+  @include smTabletView {
+    width: 180px;
+    padding: 6px 10px 6px 6px;
+  }
+}
+
+.optionsWrapper {
+  position: absolute;
+  bottom: calc(100% + 22px);
+  left: 0;
+  width: 100%;
+  border-radius: 4px;
+  z-index: 50;
+}
+
+.siteLayerOptions {
+  background-color: $backgroundColor;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.singleLayerOption {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 4px;
+
+  &.selected {
+    background-color: $dsMediumGreyTransparent30;
+    font-weight: 700;
+  }
+
+  .optionLabel {
+    font-size: $fontXSmall;
+    color: $dsCoreText;
+  }
+}
+
+.timePeriodText {
+  font-size: $fontXXSmall;
+  color: $dsSoftText2;
+  padding: 4px 6px;
+
+  @include xsPhoneView {
+    display: none;
+  }
+}
+
+.siteLayerInfo {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0 0 12px 12px;
+  padding: 10px;
+
+  @include smTabletView {
+    border-radius: 0;
+    padding: 20px 20px 0 12px;
+  }
+}
+
+.layerInfoTooltip {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0px;
+  right: 0px;
+  padding: 10px;
+  cursor: pointer;
+
+  @include smTabletView {
+    top: 0px;
+    right: 0px;
+    padding: 6px;
+    bottom: auto;
+  }
+}
+
+.layerInfoPopup {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  background-color: $backgroundColor;
+  color: $dsCoreText;
+  border-radius: 8px;
+  padding: 18px;
+
+  p {
+    font-size: $fontXXSmall;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: $fontXSmall;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: $fontMedium;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px;
+    cursor: pointer;
+  }
+}
+
+.siteLayerLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+
+  .legendBarContainer {
+    position: relative;
+    height: 12px;
+    cursor: help;
+  }
+
+  .legendBar {
+    height: 12px;
+    width: 100%;
+    border-radius: 2px;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .averageIndicator {
+    position: absolute;
+    top: 0px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &.positive svg path {
+      stroke: $primaryDarkColor;
+    }
+
+    &.negative svg path {
+      stroke: $dsFireRed;
+    }
+
+    // Adjust alignment when near left edge
+    &.leftAligned {
+      transform: translateX(
+        0
+      ); // Align to left edge of position instead of center
+      align-items: flex-start;
+    }
+
+    // Adjust alignment when near right edge
+    &.rightAligned {
+      transform: translateX(
+        -100%
+      ); // Align to right edge of position instead of center
+      align-items: flex-end;
+    }
+  }
+
+  .averageLabel {
+    font-size: $fontXXSmall;
+    text-align: center;
+    margin-top: -10px;
+
+    .averageLabelText {
+      font-weight: 700;
+    }
+
+    .averageValue {
+      font-weight: 400;
+      color: $dsSoftText2;
+    }
+  }
+
+  .legendValues {
+    display: flex;
+    justify-content: space-between;
+    font-size: $fontXSmall;
+    font-weight: 600;
+  }
+}

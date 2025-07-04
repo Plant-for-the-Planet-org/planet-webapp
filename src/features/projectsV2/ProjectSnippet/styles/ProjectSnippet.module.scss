@@ -40,6 +40,7 @@
     position: absolute;
     bottom: 12px;
     left: 13px;
+    width: 100%;
   }
 }
 
@@ -303,4 +304,9 @@
   @include mdTabletView {
     width: 328px;
   }
+}
+
+.projectNameTooltip {
+  padding: 12px;
+  max-width: 368px;
 }
