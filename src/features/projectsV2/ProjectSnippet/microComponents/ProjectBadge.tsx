@@ -30,15 +30,15 @@ interface TitleAndIconReturnType {
 interface BadgeLabelprops {
   icon: JSX.Element;
   title: string;
+  isInteractive: boolean;
 }
-const BadgeLabel = ({ icon, title }: BadgeLabelprops) => {
+const BadgeLabel = ({ icon, title, isInteractive }: BadgeLabelprops) => {
   return (
     <div
-      className={styles.projectBadge}
-      onClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
+      className={`${styles.projectBadge} ${
+        !isInteractive ? styles.nonInteractive : ''
+      }`}
+      onClick={(e) => e.preventDefault()}
     >
       <div className={styles.badgeIcon}>{icon}</div>
       <div className={styles.badgeTitle}>{title}</div>
@@ -131,7 +131,13 @@ const ProjectBadge = ({
   const shouldShowPopup =
     showTooltipPopups && displayPopup && page !== 'project-details';
 
-  const badgeContent = <BadgeLabel icon={icon} title={title} />;
+  const badgeContent = (
+    <BadgeLabel
+      icon={icon}
+      title={title}
+      isInteractive={page !== 'project-details'}
+    />
+  );
 
   return displayPopup ? (
     <CustomTooltip
