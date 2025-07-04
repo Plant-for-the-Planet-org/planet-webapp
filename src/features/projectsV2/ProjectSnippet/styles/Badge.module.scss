@@ -18,6 +18,11 @@
   right: -2px;
   top: -2px;
 }
+
+.nonInteractive {
+  cursor: default;
+}
+
 .badgeIcon {
   display: flex;
   align-items: center;
