@@ -14,6 +14,7 @@ declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
     MuiPickersDay: 'root';
     MuiCalendarPicker: 'root';
+    MuiYearPicker: 'root';
   }
   interface Components {
     MuiPickersDay?: {
@@ -30,6 +31,16 @@ declare module '@mui/material/styles' {
           '& .Mui-selected'?: CSSProperties;
           '& .MuiPickersDay-dayWithMargin'?: CSSProperties & {
             '&:hover'?: CSSProperties;
+          };
+        };
+      };
+    };
+    MuiYearPicker?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '& .PrivatePickersYear-yearButton'?: CSSProperties & {
+            '&:hover'?: CSSProperties;
+            '&.Mui-selected'?: CSSProperties;
           };
         };
       };
@@ -244,6 +255,22 @@ const materialTheme = createTheme({
           '& .MuiPickersDay-dayWithMargin': {
             '&:hover': {
               backgroundColor: themeProperties.designSystem.colors.leafGreen,
+              color: themeProperties.designSystem.colors.white,
+            },
+          },
+        },
+      },
+    },
+    MuiYearPicker: {
+      styleOverrides: {
+        root: {
+          '& .PrivatePickersYear-yearButton': {
+            '&:hover': {
+              backgroundColor: themeProperties.designSystem.colors.leafGreen,
+              color: themeProperties.designSystem.colors.white,
+            },
+            '&.Mui-selected': {
+              backgroundColor: `${themeProperties.designSystem.colors.leafGreen} !important`,
               color: themeProperties.designSystem.colors.white,
             },
           },

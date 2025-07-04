@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { SxProps } from '@mui/material';
 import type { APIError, InterventionTypes } from '@planet-sdk/common';
 import type {
   DetailedAnalysisProps,
@@ -20,7 +19,6 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { TextField, Button, Tooltip } from '@mui/material';
-import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -30,23 +28,6 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-
-const yeardatePickerSx: SxProps = {
-  '& .PrivatePickersYear-yearButton': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-
-    '&.Mui-selected': {
-      backgroundColor: `${themeProperties.primaryColor} !important`,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 type BaseFormData = {
   employeesCount: string;
@@ -576,9 +557,6 @@ export default function DetailedAnalysis({
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
-                        DialogProps={{
-                          sx: yeardatePickerSx,
-                        }}
                       />
                     )}
                   />
@@ -697,9 +675,6 @@ export default function DetailedAnalysis({
                       minDate={new Date(new Date().setFullYear(1950))}
                       views={['year']}
                       maxDate={new Date()}
-                      DialogProps={{
-                        sx: yeardatePickerSx,
-                      }}
                     />
                   )}
                 />
@@ -787,9 +762,6 @@ export default function DetailedAnalysis({
                     minDate={new Date(new Date().setFullYear(1950))}
                     views={['year']}
                     maxDate={new Date()}
-                    DialogProps={{
-                      sx: yeardatePickerSx,
-                    }}
                   />
                 )}
               />
@@ -982,9 +954,6 @@ export default function DetailedAnalysis({
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
                       maxDate={new Date()}
-                      DialogProps={{
-                        sx: yeardatePickerSx,
-                      }}
                     />
                   )}
                 />
