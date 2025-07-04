@@ -15,29 +15,12 @@ import {
   FormControl,
   RadioGroup,
   FormControlLabel,
-  styled,
 } from '@mui/material';
-import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-
-const MuiCalendarPicker = styled(CalendarPicker<Date>)({
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.designSystem.colors.leafGreen,
-    color: themeProperties.designSystem.colors.white,
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.leafGreen,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-});
-
+import { CalendarPicker } from '@mui/x-date-pickers';
 interface CancelModalProps {
   cancelModalOpen: boolean;
   handleCancelModalClose: () => void;
@@ -60,8 +43,8 @@ export const CancelModal = ({
 }: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
-  const [option, setoption] = React.useState('cancelImmediately');
-  const [showCalender, setshowCalender] = React.useState(false);
+  const [option, setOption] = React.useState('cancelImmediately');
+  const [showCalender, setShowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(new Date());
   const [disabled, setDisabled] = React.useState(false);
   const t = useTranslations('Me');
@@ -146,11 +129,11 @@ export const CancelModal = ({
                 name="date"
                 value={option}
                 onChange={(event) => {
-                  setoption(event.target.value);
+                  setOption(event.target.value);
                   if (event.target.value === 'cancelOnSelectedDate') {
-                    setshowCalender(true);
+                    setShowCalender(true);
                   } else {
-                    setshowCalender(false);
+                    setShowCalender(false);
                   }
                 }}
                 className={styles.radioButtonGrid}
@@ -178,7 +161,7 @@ export const CancelModal = ({
               {showCalender ? (
                 <>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <MuiCalendarPicker
+                    <CalendarPicker
                       date={date}
                       onChange={(value) => {
                         setdate(value);
