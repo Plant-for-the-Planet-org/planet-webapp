@@ -27,12 +27,12 @@ interface TitleAndIconReturnType {
     | 'fieldReviewed'
     | 'offSiteReviewed';
 }
-interface BadgeLabelprops {
+interface BadgeLabelProps {
   icon: JSX.Element;
   title: string;
   isInteractive: boolean;
 }
-const BadgeLabel = ({ icon, title, isInteractive }: BadgeLabelprops) => {
+const BadgeLabel = ({ icon, title, isInteractive }: BadgeLabelProps) => {
   return (
     <div
       className={`${styles.projectBadge} ${
