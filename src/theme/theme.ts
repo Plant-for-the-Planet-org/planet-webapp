@@ -14,7 +14,6 @@ const {
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
   topProjectTransparentColor,
-  mediumGrayColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
@@ -88,7 +87,6 @@ const getGlobalStyles = async () => {
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
       --medium-blue-color: ${theme.mediumBlueColor};
-      --medium-gray-color: ${mediumGrayColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --electric-purple-color: ${theme.electricPurpleColor};
