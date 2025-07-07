@@ -3,7 +3,7 @@ import type { DonationProperties } from '../../../../common/types/myForest';
 
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
-import style from '../ContributionsMap.module.scss';
+import styles from '../ContributionsMap.module.scss';
 
 const PopupImageSection = ({
   superclusterResponse,
@@ -21,15 +21,15 @@ const PopupImageSection = ({
   };
   const projectName = truncateString(name, 35);
   return (
-    <div className={style.imageContainer}>
+    <div className={styles.imageContainer}>
       <img
         alt="projectImage"
         src={getImageUrl('project', 'medium', image)}
         width={'fit-content'}
-        className={style.popupProjectImage}
+        className={styles.popupProjectImage}
       />
-      <div className={style.projectImageInfoContainer}>
-        <div className={style.projectName}>
+      <div className={styles.projectImageInfoContainer}>
+        <div className={styles.projectName}>
           {t('projectName', {
             name: projectName,
           })}

@@ -4,7 +4,7 @@ import {
   ProjectStatIcon,
   CountryStatIcon,
 } from '../../../../../../public/assets/images/icons/myForestMapIcons';
-import style from './common.module.scss';
+import styles from './common.module.scss';
 import { useTranslations } from 'next-intl';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
@@ -15,10 +15,10 @@ interface StatItemProps {
 
 const StatItem = ({ icon, label }: StatItemProps) => {
   return (
-    <div className={style.contributionStatsSubContainer}>
-      <div className={style.statsIconContainer}>{icon}</div>
+    <div className={styles.contributionStatsSubContainer}>
+      <div className={styles.statsIconContainer}>{icon}</div>
 
-      <div className={style.stats}>{label}</div>
+      <div className={styles.stats}>{label}</div>
     </div>
   );
 };
@@ -30,7 +30,7 @@ const ContributionStats = () => {
   const projects = contributionsResult?.stats.contributedProjects.size;
 
   return (
-    <div className={style.contributionStatsContainer}>
+    <div className={styles.contributionStatsContainer}>
       <StatItem
         icon={<CountryStatIcon />}
         label={tProfile('countryStats', {

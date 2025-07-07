@@ -6,7 +6,7 @@ import type {
 } from '../../../../common/types/myForest';
 
 import { Marker } from 'react-map-gl-v7';
-import style from '../Common/common.module.scss';
+import styles from '../Common/common.module.scss';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import { useState } from 'react';
 import { RegisteredTreeIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
@@ -71,7 +71,7 @@ const PointMarkers = ({
                 setIsCursorOnPopup={setIsCursorOnPopup}
               />
             )}
-            <div className={style.registeredTreeMarkerContainer}>
+            <div className={styles.registeredTreeMarkerContainer}>
               <RegisteredTreeIcon />
             </div>
           </>
@@ -80,7 +80,7 @@ const PointMarkers = ({
             {(isCursorOnMarker || isCursorOnPopup) && (
               <DonationPopup {...donationPopupProps} />
             )}
-            <div className={style.pointMarkerContainer}>
+            <div className={styles.pointMarkerContainer}>
               <ProjectTypeIcon
                 purpose={
                   (superclusterResponse as PointFeature<DonationProperties>)
