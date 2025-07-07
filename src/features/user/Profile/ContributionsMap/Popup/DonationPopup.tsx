@@ -6,7 +6,7 @@ import type {
 } from '../../../../common/types/myForest';
 
 import { Popup } from 'react-map-gl-v7';
-import style from '../ContributionsMap.module.scss';
+import styles from '../ContributionsMap.module.scss';
 import ProjectInfoSection from './ProjectInfoSection';
 import PopupImageSection from './PopupImageSection';
 
@@ -34,11 +34,11 @@ const DonationPopup = ({
     <Popup
       latitude={coordinates[1]}
       longitude={coordinates[0]}
-      className={style.contributionPopup}
+      className={styles.contributionPopup}
       closeButton={false}
     >
       <div
-        className={style.donationPopupContainer}
+        className={styles.donationPopupContainer}
         onMouseEnter={() => setIsCursorOnPopup(true)}
         onMouseLeave={() => setIsCursorOnPopup(false)}
       >

@@ -1,4 +1,4 @@
-import style from '../styles/MapPreview.module.scss';
+import styles from '../styles/MapPreview.module.scss';
 import ShowMapButton from './microComponents/ShowMapButton';
 
 type MapPreviewProps = {
@@ -6,7 +6,7 @@ type MapPreviewProps = {
 };
 const MapPreview = ({ handleMap }: MapPreviewProps) => {
   return (
-    <div className={style.mapPreviewContainer}>
+    <div className={styles.mapPreviewContainer}>
       <ShowMapButton handleMap={handleMap} />
     </div>
   );
