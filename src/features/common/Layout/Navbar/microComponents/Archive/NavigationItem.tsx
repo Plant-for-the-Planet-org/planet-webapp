@@ -82,7 +82,9 @@ const NavigationItem = ({
     >
       <Link
         prefetch={false}
-        href={isMobile && hasSubMenu ? router.asPath : navLinkOptions.onclick}
+        href={
+          isMobile && hasSubMenu ? router.asPath : navLinkOptions.onclick || ''
+        }
       >
         {navLinkOptions.title !== 'signIn' && (
           <div className={`linkContainer`}>

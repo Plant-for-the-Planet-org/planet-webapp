@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { SxProps } from '@mui/material';
 import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
 import type { SampleTree } from '../../../../common/types/plantLocation';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
@@ -14,24 +13,6 @@ import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../../../theme/themeProperties';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 interface SampleTreeFormData {
   sampleTrees: SampleTree[];
@@ -115,9 +96,6 @@ export default function SampleTreeCard({
                     renderInput={(props) => <TextField {...props} />}
                     disableFuture
                     inputFormat="MMMM d, yyyy"
-                    DialogProps={{
-                      sx: dialogSx,
-                    }}
                   />
                 )}
               />

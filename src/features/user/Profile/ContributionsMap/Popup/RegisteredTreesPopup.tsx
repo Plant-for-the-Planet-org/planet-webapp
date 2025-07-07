@@ -9,7 +9,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Popup } from 'react-map-gl-v7';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
-import style from '../ContributionsMap.module.scss';
+import styles from '../ContributionsMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 type RegisteredTreesInfoProps = {
@@ -24,15 +24,15 @@ const RegisteredTreesInfo = ({ registrations }: RegisteredTreesInfoProps) => {
 
         return (
           <>
-            <div className={style.registeredTrees}>
+            <div className={styles.registeredTrees}>
               {tProfile('plantedTree', {
                 count: quantity,
               })}
             </div>
-            <div className={style.registeredTreeLabel}>
+            <div className={styles.registeredTreeLabel}>
               {tProfile('registered')}
             </div>
-            <div className={style.registeredTreeDate}>
+            <div className={styles.registeredTreeDate}>
               {formatDate(plantDate)}
             </div>
           </>
@@ -55,11 +55,11 @@ const RegisteredTreesPopup = ({
     <Popup
       latitude={coordinates[1]}
       longitude={coordinates[0]}
-      className={style.registeredTreePopup}
+      className={styles.registeredTreePopup}
       closeButton={false}
     >
       <div
-        className={style.registeredTreesPopupContainer}
+        className={styles.registeredTreesPopupContainer}
         onMouseEnter={() => setIsCursorOnPopup(true)}
         onMouseLeave={() => setIsCursorOnPopup(false)}
       >
