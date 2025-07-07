@@ -33,8 +33,8 @@
 
 .contributionSummary {
   padding: 6px;
-  background-color: $backgroundColor;
-  color: #4f4f4f;
+  background-color: $dsWhite;
+  color: $dsSoftText;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -63,8 +63,8 @@
 }
 
 .contributionCountOverflow {
-  background-color: rgba(#007a49, 0.1);
-  color: $primaryDarkColor;
+  background-color: $dsPrimaryColorTransparent10;
+  color: $dsPrimaryColor;
   font-weight: 700;
   font-size: $fontXXSmall;
   border-radius: 4px;
@@ -83,7 +83,7 @@
 
 .additionalProjectInfo {
   font-size: $fontXSmall;
-  color: #4f4f4f;
+  color: $dsSoftText;
 }
 
 .projectTotalContributions {
@@ -93,15 +93,15 @@
 
 .donationButton {
   &.conservation {
-    background-color: $mediumBlueColor;
+    background-color: $dsWarmBlue;
     &:hover {
-      background-color: #56ccf2;
+      background-color: $dsSkyBlue;
     }
   }
   &.restoration {
-    background-color: $electricPurpleColor;
+    background-color: $dsDeepPurple;
     &:hover {
-      background-color: #bc86ed;
+      background-color: $dsPurpleSky;
     }
   }
 }
@@ -118,20 +118,20 @@
 
   .registrationInfo {
     font-size: $fontXSmall;
-    color: #4f4f4f;
+    color: $dsSoftText;
   }
 }
 
 .giftLabel {
   font-size: $fontXXSmall;
   font-weight: 700;
-  color: $primaryDarkColor;
+  color: $dsPrimaryColor;
   background: linear-gradient(
       0deg,
-      rgba(33, 150, 83, 0.15),
-      rgba(33, 150, 83, 0.15)
+      $dsWarmGreenTransparent10,
+      $dsWarmGreenTransparent10
     ),
-    linear-gradient(0deg, #ffffff, #ffffff);
+    linear-gradient(0deg, $dsWhite, $dsWhite);
 
   padding: 7px;
   display: flex;
@@ -176,11 +176,7 @@
 }
 
 .listHeader {
-  background: linear-gradient(
-    0deg,
-    rgba(104, 176, 48, 0.1),
-    rgba(104, 176, 48, 0.1)
-  );
+  background: $dsWarmGreenTransparent10;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -189,7 +185,7 @@
 
   .headerTitle {
     font-size: $fontLarge;
-    color: $primaryDarkColor;
+    color: $dsPrimaryColor;
     font-weight: 700;
     text-align: center;
   }
@@ -248,11 +244,11 @@
 
   &.dark {
     .projectType {
-      color: $primaryDarkColor;
+      color: $dsPrimaryColor;
     }
     .projectTypeIcon {
       svg > path {
-        fill: $primaryDarkColor;
+        fill: $dsPrimaryColor;
       }
     }
   }
@@ -260,11 +256,11 @@
   &.light {
     .projectType,
     .projectName {
-      color: #fff;
+      color: $dsWhite;
     }
     .projectTypeIcon {
       svg > path {
-        fill: #fff;
+        fill: $dsWhite;
       }
     }
   }
@@ -318,8 +314,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #ffffff;
-  border: 3px solid rgba(#007a49, 0.1);
+  background-color: $dsWhite;
+  border: 3px solid $dsPrimaryColorTransparent10;
   border-radius: 12px;
   overflow: hidden;
   width: 100%;
@@ -327,26 +323,26 @@
   max-width: 100%; // Ensure it doesn't exceed container width
 
   &.conservation {
-    border-color: rgba(#2d9cdb, 0.1);
+    border-color: $dsWarmBlueTransparent10;
   }
 
   &.restoration {
-    border-color: rgba(#9b51e0, 0.1);
+    border-color: $dsDeepPurpleTransparent10;
   }
 
   @include smTabletView {
     border: none;
     padding: 6px;
     gap: 12px;
-    background: rgba(#007a49, 0.07);
+    background: $dsSoftGreen;
     overflow: visible;
 
     &.conservation {
-      background: rgba(#2d9cdb, 0.07);
+      background: $dsSoftBlue;
     }
 
     &.restoration {
-      background: rgba(#9b51e0, 0.07);
+      background: $dsSoftPurple;
     }
   }
 }
@@ -396,16 +392,16 @@
 
   .sectionTwo {
     padding: 8px;
-    background-color: rgba(33, 150, 83, 0.08);
+    background-color: $dsSoftGreen;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 6px;
     &.conservation {
-      background: rgba(#2d9cdb, 0.08);
+      background: $dsSoftBlue;
     }
 
     &.restoration {
-      background: rgba(#9b51e00d, 0.08);
+      background: $dsSoftPurple;
     }
   }
 

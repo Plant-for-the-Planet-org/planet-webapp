@@ -43,15 +43,8 @@ $reviewFontColorNew: var(--review-font-color-new);
 $aboutProjectBackgroundColorNew: var(--about-project-background-color-new);
 $dangerColorNew: var(--danger-color-new);
 $borderColor: var(--border-color);
-$mediumBlueColor: var(--medium-blue-color);
 $mediumGrayColorTransparent: var(--medium-gray-color-transparent);
 $skyBlueColor: var(--sky-blue-color);
-$electricPurpleColor: var(--electric-purple-color);
-$lavenderPurpleColor: var(--lavender-purple-color);
-$greenHazeColor: var(--green-haze-color);
-$mintGreenColor: var(--mint-green-color);
-$amethystPurpleColor: var(--amethyst-purple-color);
-$ceruleanBlueColor: var(--cerulean-blue-color);
 $lightOrange: var(--light-orange);
 
 // New design system colors from here onward
@@ -85,6 +78,7 @@ $dsSoftSky: var(--ds-soft-sky);
 $dsOceanBlue: var(--ds-ocean-blue);
 $dsSoftBlue: var(--ds-soft-blue);
 $dsDeepPurple: var(--ds-deep-purple);
+$dsDeepPurpleTransparent10: var(--ds-deep-purple-transparent-10);
 $dsSoftPurple: var(--ds-soft-purple);
 
 // Reds
@@ -103,9 +97,11 @@ $dsHintText: var(--ds-hint-text);
 
 // Extended Palette
 $dsWarmGreen: var(--ds-warm-green);
+$dsWarmGreenTransparent10: var(--ds-warm-green-transparent-10);
 $dsSunriseOrange: var(--ds-sunrise-orange);
 $dsBrightYellow: var(--ds-bright-yellow);
 $dsWarmBlue: var(--ds-warm-blue);
+$dsWarmBlueTransparent10: var(--ds-warm-blue-transparent-10);
 $dsSkyBlue: var(--ds-sky-blue);
 $dsBaseGrey: var(--ds-base-grey);
 $dsDarkGrey: var(--ds-dark-grey);

@@ -28,15 +28,15 @@
   display: flex;
   gap: 9px;
   margin-bottom: 4.5rem;
-  background: rgba(211, 234, 221, 1);
+  background: $dsSoftGreen;
   border-radius: 16px;
   padding: 8px 16px;
-  color: $primaryDarkColor;
+  color: $dsPrimaryColor;
   font-size: $fontXSmall;
   line-height: 16.34px;
   font-weight: 700;
   svg path {
-    fill: $primaryDarkColor;
+    fill: $dsPrimaryColor;
   }
 }
 
@@ -44,8 +44,8 @@
   margin-top: -3.5em;
   z-index: 10;
   border-radius: 50%;
-  background-color: #fff;
-  border: 4.677px solid #fff;
+  background-color: $dsWhite;
+  border: 4.677px solid $dsWhite;
   width: 6rem;
   height: 6rem;
 
@@ -90,12 +90,7 @@
 }
 
 .editProfileIcon {
-  background: linear-gradient(
-      0deg,
-      rgba(33, 150, 83, 0.2) 0%,
-      rgba(33, 150, 83, 0.2) 100%
-    ),
-    #fff;
+  background: $dsSoftGreen;
   width: 2.25rem;
   height: 2.25rem;
   padding: 9px;

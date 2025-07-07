@@ -3,7 +3,8 @@ import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { Popover } from '@mui/material';
 import styles from './common.module.scss';
-import { InfoIcon } from '../../../../../../public/assets/images/ProfilePageIcons';
+// import { InfoIcon } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { InfoIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons';
 
 const MapCredits = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
@@ -27,7 +28,7 @@ const MapCredits = () => {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <InfoIcon height={25} />
+        <InfoIcon width={25} />
       </div>
       <Popover
         id="mouse-over-popover"
