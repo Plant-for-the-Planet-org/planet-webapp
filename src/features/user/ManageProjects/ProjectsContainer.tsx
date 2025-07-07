@@ -8,7 +8,7 @@ import type {
 } from '@planet-sdk/common';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useMemo } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -39,6 +39,14 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const tCountry = useTranslations('Country');
   const locale = useLocale();
   const router = useRouter();
+  const count =
+    project.unitType === 'tree'
+      ? project.unitsContributed?.tree
+      : project.unitsContributed?.m2;
+  const formattedCount = useMemo(
+    () => localizedAbbreviatedNumber(locale, Number(count), 1),
+    [count]
+  );
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -65,18 +73,11 @@ function SingleProject({ project }: { project: ProjectProperties }) {
             )
           )}
         </p>
-        {project.purpose === 'trees' ? (
-          <p>
-            {localizedAbbreviatedNumber(
-              locale,
-              Number(project.countPlanted),
-              1
-            )}{' '}
-            {tCommon('tree', { count: Number(project.countPlanted) })}
-          </p>
-        ) : (
-          <></>
-        )}
+        <p className={styles.projectUnitsAchieved}>
+          {count !== undefined &&
+            project.unitType !== 'currency' &&
+            tCommon(`unitTypes.${project.unitType}`, { formattedCount, count })}
+        </p>
         <div className={styles.projectLabels}>
           {/* Needed in future */}
           {/* {!project.isFeatured && (

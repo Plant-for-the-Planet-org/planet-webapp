@@ -14,7 +14,6 @@ const {
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
   topProjectTransparentColor,
-  mediumGrayColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
   primaryColorNewTransparent,
@@ -87,7 +86,6 @@ const getGlobalStyles = async () => {
       --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
-      --medium-gray-color: ${mediumGrayColor};
       --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
       --light-orange: ${lightOrange};

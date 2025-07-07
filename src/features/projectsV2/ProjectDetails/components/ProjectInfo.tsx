@@ -14,7 +14,7 @@ import VideoPlayer from './VideoPlayer';
 import ProjectDownloads from './ProjectDownloads';
 import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
-import ImageSlider from './microComponents/ImageSlider';
+import ImageSlider from './ImageSlider';
 
 interface ProjectInfoProps {
   project: ExtendedProject;
