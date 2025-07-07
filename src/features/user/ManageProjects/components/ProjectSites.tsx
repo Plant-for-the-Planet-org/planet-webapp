@@ -150,12 +150,7 @@ function EditSite({
       }}
     >
       <Fade in={openModal}>
-        <form
-          style={{
-            padding: '20px',
-            borderRadius: '10px',
-          }}
-        >
+        <form className={styles.editSiteForm}>
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>

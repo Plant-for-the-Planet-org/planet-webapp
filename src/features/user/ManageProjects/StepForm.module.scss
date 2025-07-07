@@ -740,10 +740,6 @@
   outline: none;
 }
 
-:export {
-  primaryFontColor: $dsCoreText;
-}
-
 // button for projectCreation
 .buttonsForProjectCreationForm {
   display: flex;
@@ -806,4 +802,10 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.editSiteForm {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: $dsWhite;
 }
