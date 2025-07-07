@@ -113,51 +113,15 @@
 .formFieldFix {
   position: relative;
 }
-/* .latitudeInput {
-  width: fit-content !important;
-  div {
-    border-radius: 28px !important;
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
-    background-color: #e2eee8;
-  }
-  div,
-  input {
-    width: fit-content !important;
-    text-align: center !important;
-  }
-  label {
-    width: 100%;
-    text-align: center !important;
-    transform: translate(0px, 20px);
-  }
-}
-.longitudeInput {
-  width: fit-content !important;
-  div {
-    border-radius: 28px !important;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
-    background-color: #e2eee8;
-  }
-  div,
-  input {
-    width: fit-content !important;
-    text-align: center !important;
-  }
-  label {
-    width: 100%;
-    text-align: center !important;
-    transform: translateX(0px, 20px);
-  }
-} */
-.latlongField {
+
+.latLongField {
   width: fit-content;
   position: relative;
   div,
   input {
     width: 120px !important;
     position: relative;
+    background-color: $dsBaseGrey;
   }
 }
 
@@ -214,7 +178,7 @@
   .formFieldLarge {
     max-width: 660px;
   }
-  .latlongField {
+  .latLongField {
     div,
     input {
       width: 320px !important;

@@ -769,7 +769,7 @@ export default function BasicDetails({
             </MapGL>
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
-                className={`${styles.formFieldHalf} ${styles.latlongField}`}
+                className={`${styles.formFieldHalf} ${styles.latLongField}`}
                 data-test-id="latitude"
               >
                 <Controller
@@ -807,7 +807,7 @@ export default function BasicDetails({
                 />
               </div>
               <div
-                className={`${styles.formFieldHalf} ${styles.latlongField}`}
+                className={`${styles.formFieldHalf} ${styles.latLongField}`}
                 data-test-id="longitude"
               >
                 <Controller
