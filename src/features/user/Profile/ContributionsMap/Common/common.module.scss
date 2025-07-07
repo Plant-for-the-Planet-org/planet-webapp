@@ -40,14 +40,13 @@
 
 //style for contribution statistics
 .contributionStatsContainer {
-  background: #f0f6f5;
+  background: $dsSoftGreen;
   width: 100%;
   padding-top: 12px;
   padding-bottom: 12px;
   display: flex;
   gap: 16px;
   align-items: center;
-  grid-area: 16px;
   justify-content: center;
   @include xsPhoneView {
     margin-bottom: 14px;
@@ -71,7 +70,7 @@
 .statsIconContainer {
   height: 100%;
   width: 24px;
-  background: #6fcf97;
+  background: $dsBrightGreen;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -87,16 +86,7 @@
   cursor: pointer;
   margin-top: 2px;
 }
-.donationStatPopup {
-  display: inline-flex;
-  width: 160px;
-  height: 104px;
-  padding: 12px 16px;
-  font-size: $fontXSmall;
-  font-weight: 400;
-  line-height: normal;
-  color: #2f3336;
-}
+
 .registeredTreeMarkerContainer {
   width: 26px;
   height: 36px;

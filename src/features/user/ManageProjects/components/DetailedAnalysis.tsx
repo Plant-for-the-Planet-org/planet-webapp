@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { SxProps } from '@mui/material';
 import type { APIError, InterventionTypes } from '@planet-sdk/common';
 import type {
   DetailedAnalysisProps,
@@ -20,7 +19,6 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { TextField, Button, Tooltip } from '@mui/material';
-import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -30,40 +28,6 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.designSystem.colors.primaryColor,
-    color: themeProperties.designSystem.colors.white,
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.primaryColor,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
-
-const yearDialogSx: SxProps = {
-  '& .PrivatePickersYear-yearButton': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.primaryColor,
-      color: themeProperties.designSystem.colors.white,
-    },
-
-    '&.Mui-selected': {
-      backgroundColor: `${themeProperties.designSystem.colors.primaryColor} !important`,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 type BaseFormData = {
   employeesCount: string;
@@ -327,7 +291,7 @@ export default function DetailedAnalysis({
       months.push(j);
     }
   }
-  // for validating maxplanting density value > planting density value
+  // for validating max planting density value > planting density value
   React.useEffect(() => {
     if (
       projectDetails &&
@@ -593,9 +557,6 @@ export default function DetailedAnalysis({
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
-                        DialogProps={{
-                          sx: yearDialogSx,
-                        }}
                       />
                     )}
                   />
@@ -624,9 +585,6 @@ export default function DetailedAnalysis({
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="d MMMM yyyy"
                         maxDate={new Date()}
-                        DialogProps={{
-                          sx: dialogSx,
-                        }}
                       />
                     )}
                   />
@@ -717,9 +675,6 @@ export default function DetailedAnalysis({
                       minDate={new Date(new Date().setFullYear(1950))}
                       views={['year']}
                       maxDate={new Date()}
-                      DialogProps={{
-                        sx: yearDialogSx,
-                      }}
                     />
                   )}
                 />
@@ -807,9 +762,6 @@ export default function DetailedAnalysis({
                     minDate={new Date(new Date().setFullYear(1950))}
                     views={['year']}
                     maxDate={new Date()}
-                    DialogProps={{
-                      sx: yearDialogSx,
-                    }}
                   />
                 )}
               />
@@ -1002,9 +954,6 @@ export default function DetailedAnalysis({
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
                       maxDate={new Date()}
-                      DialogProps={{
-                        sx: yearDialogSx,
-                      }}
                     />
                   )}
                 />

@@ -5,7 +5,8 @@ import themeProperties from '../../../../theme/themeProperties';
 interface TargetSwitchProps {
   switchColor: string;
 }
-const { light } = themeProperties;
+const { white, softText2 } = themeProperties.designSystem.colors;
+
 const TargetSwitch = styled(Switch, {
   shouldForwardProp: (props) => props !== 'switchColor',
 })<TargetSwitchProps>((p) => ({
@@ -25,7 +26,7 @@ const TargetSwitch = styled(Switch, {
     padding: 2,
     '&.Mui-checked': {
       transform: 'translateX(15px)',
-      color: `${light.light}`,
+      color: white,
       '& + .MuiSwitch-track': {
         opacity: 1,
         backgroundColor: `${p.switchColor}`,
@@ -41,7 +42,7 @@ const TargetSwitch = styled(Switch, {
   '& .MuiSwitch-track': {
     borderRadius: 16 / 2,
     opacity: 1,
-    backgroundColor: 'rgba(130, 130, 130, 1)',
+    backgroundColor: softText2,
     boxSizing: 'border-box',
   },
 }));

@@ -15,6 +15,7 @@ interface Props {
   isTopProject: boolean;
   allowDonations: boolean;
   showTooltipPopups: boolean;
+  page: 'project-list' | 'project-details' | undefined;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -26,13 +27,19 @@ interface TitleAndIconReturnType {
     | 'fieldReviewed'
     | 'offSiteReviewed';
 }
-interface BadgeLabelprops {
+interface BadgeLabelProps {
   icon: JSX.Element;
   title: string;
+  isInteractive: boolean;
 }
-const BadgeLabel = ({ icon, title }: BadgeLabelprops) => {
+const BadgeLabel = ({ icon, title, isInteractive }: BadgeLabelProps) => {
   return (
-    <div className={styles.projectBadge}>
+    <div
+      className={`${styles.projectBadge} ${
+        !isInteractive ? styles.nonInteractive : ''
+      }`}
+      onClick={(e) => e.preventDefault()}
+    >
       <div className={styles.badgeIcon}>{icon}</div>
       <div className={styles.badgeTitle}>{title}</div>
     </div>
@@ -44,6 +51,7 @@ const ProjectBadge = ({
   isTopProject,
   allowDonations,
   showTooltipPopups,
+  page,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -120,8 +128,16 @@ const ProjectBadge = ({
 
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
 
-  const shouldShowPopup = showTooltipPopups && displayPopup;
-  const badgeContent = <BadgeLabel icon={icon} title={title} />;
+  const shouldShowPopup =
+    showTooltipPopups && displayPopup && page !== 'project-details';
+
+  const badgeContent = (
+    <BadgeLabel
+      icon={icon}
+      title={title}
+      isInteractive={page !== 'project-details'}
+    />
+  );
 
   return displayPopup ? (
     <CustomTooltip

@@ -19,14 +19,14 @@ export type Accumulator = {
  */
 
 export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
-  const { primaryColorNew, electricPurpleColor, mediumBlueColor } =
-    themeProperties;
+  const { forestGreen, deepPurple, warmBlue } =
+    themeProperties.designSystem.colors;
   if (unitType === 'm2' && purpose === 'trees') {
-    return electricPurpleColor;
+    return deepPurple;
   } else if (purpose === 'conservation') {
-    return mediumBlueColor;
+    return warmBlue;
   } else {
-    return primaryColorNew;
+    return forestGreen;
   }
 };
 
@@ -172,15 +172,15 @@ export const calculateGraphSegmentLengths = (
  * @returns color based on the data type
  */
 export const targetColor = (dataType: ProgressDataType) => {
-  const { primaryDarkColor, electricPurpleColor, mediumBlueColor } =
-    themeProperties;
+  const { primaryColor, deepPurple, warmBlue } =
+    themeProperties.designSystem.colors;
   switch (dataType) {
     case 'treesPlanted':
-      return primaryDarkColor;
+      return primaryColor;
     case 'areaRestored':
-      return electricPurpleColor;
+      return deepPurple;
     case 'areaConserved':
-      return mediumBlueColor;
+      return warmBlue;
   }
 };
 
