@@ -773,3 +773,14 @@
   border-radius: 10px;
   background-color: $dsWhite;
 }
+
+.addProjectsButton {
+  background-color: $dsWhite;
+  border: 1px solid $dsBaseGrey;
+  cursor: pointer;
+  width: 300px;
+  height: 140px;
+  padding: 20px;
+  box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
+  border-radius: 10px;
+}
