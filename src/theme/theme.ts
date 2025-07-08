@@ -129,6 +129,7 @@ const getGlobalStyles = async () => {
       --ds-fire-red: ${designSystem.colors.fireRed};
       --ds-soft-red: ${designSystem.colors.softRed};
       --ds-white: ${designSystem.colors.white};
+      --ds-white-transparent-10: ${designSystem.colors.whiteTransparent10};
       --ds-background-base: ${designSystem.colors.backgroundBase};
       --ds-core-text: ${designSystem.colors.coreText};
       --ds-soft-text: ${designSystem.colors.softText};
@@ -136,6 +137,8 @@ const getGlobalStyles = async () => {
       --ds-hint-text: ${designSystem.colors.hintText};
       --ds-warm-green: ${designSystem.colors.warmGreen};
       --ds-sunrise-orange: ${designSystem.colors.sunriseOrange};
+      --ds-sunrise-orange-transparent-10: ${designSystem.colors
+        .sunriseOrangeTransparent10};
       --ds-bright-yellow: ${designSystem.colors.brightYellow};
       --ds-warm-blue: ${designSystem.colors.warmBlue};
       --ds-sky-blue: ${designSystem.colors.skyBlue};

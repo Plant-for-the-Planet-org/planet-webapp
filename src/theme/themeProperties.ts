@@ -52,10 +52,12 @@ const themeProperties = {
       hintText: '#BDBDBD',
       // Background Colors
       white: '#FFFFFF',
+      whiteTransparent10: '#FFFFFF1A',
       backgroundBase: '#F0F6F5',
       // Extended Palette
       warmGreen: '#68B030',
       sunriseOrange: '#F2994A',
+      sunriseOrangeTransparent10: '#F2994A1F',
       brightYellow: '#F2C94C',
       warmBlue: '#2D9CDB',
       skyBlue: '#56CCF2',
