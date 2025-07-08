@@ -476,105 +476,13 @@ input:-webkit-autofill {
   background-color: $backgroundColor !important;
 }
 
-.suggestions-container {
-  position: absolute;
-  z-index: 10;
-  margin-top: 57px;
-  color: $primaryFontColor;
-  background-color: $backgroundColorDark;
-  max-height: 200px;
-  overflow: scroll;
-  box-shadow: 0px 3px 6px -3px rgba($color: #000000, $alpha: 0.26);
-  min-width: 100%;
-  &.scientific-species {
-    width: 100%;
-    min-width: auto;
-    max-width: 280px;
-    .suggestion {
-      font-style: italic;
-    }
-  }
-  &.sampleTrees {
-    width: 100%;
-    max-width: 390px;
-    min-width: auto;
-    margin-top: 48px;
-  }
-  .suggestion {
-    min-width: 100%;
-    &:nth-child(even) {
-      background-color: rgba(var(--background-color-dark), 0.6);
-    }
-    padding: 12px;
-    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
-    &:hover {
-      cursor: pointer;
-      background-color: $backgroundColorDark;
-    }
-  }
-}
-
-.project-form-flow {
-  display: flex;
-  justify-content: center;
-  width: max-content;
-}
-
 @include xsPhoneView {
-  .project-form-flow {
-    flex-direction: column;
-  }
   .tab-flow {
     max-width: 90vw;
     justify-content: center;
   }
   .primaryButton {
     margin-left: 0px;
-  }
-}
-
-@include smTabletView {
-  .project-form-flow {
-    flex-direction: column;
-    margin-top: 10px;
-  }
-}
-
-@include mdTabletView {
-  .project-form-flow {
-    flex-direction: column;
-    margin-top: 0px;
-  }
-}
-
-@include lgLaptopView {
-  .project-form-flow {
-    flex-direction: row;
-    margin-top: 0px;
-  }
-}
-
-.notSubmitReview {
-  width: 180px;
-  margin-left: 10px;
-  margin-top: 20px;
-  @include mdTabletView {
-    margin-top: 12px;
-  }
-  @include lgLaptopView {
-    margin-top: 7px;
-  }
-}
-
-.notSubmitExit {
-  width: 150px;
-  margin-left: 15px;
-  margin-top: 20px;
-  @include mdTabletView {
-    margin-top: 12px;
-  }
-  @include lgLaptopView {
-    margin-top: 7px;
   }
 }
 
