@@ -6,7 +6,7 @@ import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Grid from '@mui/material/Grid';
 import { useTranslations } from 'next-intl';
-import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
+import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -59,7 +59,7 @@ const ProjectFilter = () => {
                 if (value) setFromDate(value);
               }}
               renderInput={(props) => (
-                <MaterialTextField variant="outlined" {...props} />
+                <TextField variant="outlined" {...props} />
               )}
               inputFormat="MMMM d, yyyy"
               // minDate={}
@@ -85,7 +85,7 @@ const ProjectFilter = () => {
                 if (value) setToDate(value);
               }}
               renderInput={(props) => (
-                <MaterialTextField variant="outlined" {...props} />
+                <TextField variant="outlined" {...props} />
               )}
               inputFormat="MMMM d, yyyy"
               minDate={fromDate}
