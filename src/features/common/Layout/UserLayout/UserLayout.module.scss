@@ -289,14 +289,6 @@
     cursor: pointer;
     font-weight: 700;
   }
-  span {
-    background: $dsMintGradient;
-    color: $dsPrimaryColor;
-    font-size: $fontXSmall;
-    padding: 4px 8px;
-    margin-left: 8px;
-    border-radius: 4px;
-  }
 }
 .subMenuArrow {
   svg {
@@ -315,14 +307,15 @@
     cursor: pointer;
     background-color: $dsMediumGreyTransparent30;
   }
-  span {
+}
+
+.itemFlag {
     background: $dsMintGradient;
     color: $dsPrimaryColor;
     font-size: $fontXSmall;
     padding: 4px 8px;
     margin-left: 8px;
     border-radius: 4px;
-  }
 }
 
 .widgetIFrame {

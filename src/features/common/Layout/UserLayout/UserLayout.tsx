@@ -168,7 +168,7 @@ function NavLink({
         {link.icon}
         <button className={styles.navLinkTitle}>
           {link.title}
-          {link.flag && <span>{link.flag}</span>}
+          {link.flag && <span className={styles.itemFlag}>{link.flag}</span>}
         </button>
         {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
           <button
@@ -203,7 +203,7 @@ function NavLink({
                 }}
               >
                 {subLink.title}
-                {subLink.flag && <span>{subLink.flag}</span>}
+                  <span className={styles.itemFlag}>{subLink.flag}</span>
               </div>
             );
           }
