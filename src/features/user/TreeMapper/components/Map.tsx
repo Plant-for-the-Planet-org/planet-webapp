@@ -26,6 +26,7 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   locations: PlantLocation[] | SamplePlantLocation[] | null;
@@ -52,6 +53,7 @@ export default function MyTreesMap({
 }: Props): ReactElement {
   const router = useRouter();
   const { isMobile } = useProjectProps();
+  const { primaryColor, white } = themeProperties.designSystem.colors;
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
@@ -269,7 +271,7 @@ export default function MyTreesMap({
                     type="fill"
                     source={pl.id}
                     paint={{
-                      'fill-color': satellite ? '#ffffff' : '#007A49',
+                      'fill-color': satellite ? `${white}` : `${primaryColor}`,
                       'fill-opacity': getPolygonColor(pl),
                     }}
                   />
@@ -280,7 +282,9 @@ export default function MyTreesMap({
                       type="line"
                       source={pl.id}
                       paint={{
-                        'line-color': satellite ? '#ffffff' : '#007A49',
+                        'line-color': satellite
+                          ? `${white}`
+                          : `${primaryColor}`,
                         'line-width': 4,
                       }}
                     />
