@@ -80,10 +80,10 @@ function LanguageSwitcher() {
 
   return (
     <>
-      <div className={styles.navlink}>
+      <div className={styles.navLink}>
         <GlobeIcon />
         <button
-          className={styles.navlinkTitle}
+          className={styles.navLinkTitle}
           onClick={() => {
             setOpenModal(true); // open language and country change modal
           }}
@@ -145,11 +145,11 @@ function NavLink({
   }
 
   return (
-    <div key={link.title} className={styles.navlinkMenu}>
+    <div key={link.title} className={styles.navLinkMenu}>
       <div
-        className={`${styles.navlink} ${
-          activeLink && activeLink === link.path ? styles.navlinkActive : ''
-        } ${isSubMenuActive ? styles.navlinkActive : ''}`}
+        className={`${styles.navLink} ${
+          activeLink && activeLink === link.path ? styles.navLinkActive : ''
+        } ${isSubMenuActive ? styles.navLinkActive : ''}`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
@@ -166,7 +166,7 @@ function NavLink({
         }}
       >
         {link.icon}
-        <button className={styles.navlinkTitle}>
+        <button className={styles.navLinkTitle}>
           {link.title}
           {link.flag && <span>{link.flag}</span>}
         </button>
@@ -189,9 +189,9 @@ function NavLink({
           if (!subLink.hideItem) {
             return (
               <div
-                className={`${styles.navlinkSubMenu} ${
+                className={`${styles.navLinkSubMenu} ${
                   activeSubMenu === subLink.path
-                    ? styles.navlinkActiveSubMenu
+                    ? styles.navLinkActiveSubMenu
                     : ''
                 }`}
                 key={index}
@@ -480,11 +480,11 @@ const UserLayout: FC = ({ children }) => {
           <>
             <div key={'closeMenu'} className={`${styles.closeMenu}`}>
               <div
-                className={`${styles.navlink}`}
+                className={`${styles.navLink}`}
                 onClick={() => setIsMenuOpen(false)} //for mobile version to close menu
               >
                 <BackArrow />
-                <button className={styles.navlinkTitle}>{t('close')}</button>
+                <button className={styles.navLinkTitle}>{t('close')}</button>
               </div>
             </div>
             {navLinks.map((link: NavLinkType, index: number) => (
@@ -506,12 +506,12 @@ const UserLayout: FC = ({ children }) => {
           <LanguageSwitcher />
 
           {!isImpersonationModeOn && (
-            <div className={styles.navlink}>
+            <div className={styles.navLink}>
               <FiberPinIcon />
               <SupportPin />
             </div>
           )}
-          <div className={styles.navlink}>
+          <div className={styles.navLink}>
             <NotionLinkIcon />
             <button
               onClick={() =>
@@ -520,13 +520,13 @@ const UserLayout: FC = ({ children }) => {
                   '_blank'
                 )
               }
-              className={styles.navlinkTitle}
+              className={styles.navLinkTitle}
             >
               {t('document')}
             </button>
           </div>
           <div
-            className={styles.navlink}
+            className={styles.navLink}
             //logout user
             onClick={() => {
               localStorage.removeItem('impersonationData');
@@ -534,7 +534,7 @@ const UserLayout: FC = ({ children }) => {
             }}
           >
             <LogoutIcon />
-            <button className={styles.navlinkTitle}>{t('logout')}</button>
+            <button className={styles.navLinkTitle}>{t('logout')}</button>
             <button className={styles.subMenuArrow}></button>
           </div>
         </div>
