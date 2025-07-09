@@ -11,7 +11,7 @@ import { NavigationControl } from 'react-map-gl-v7/maplibre';
 import MapCredits from './Common/MapCredits';
 import Markers from './Markers';
 import { useRef } from 'react';
-import style from './Common/common.module.scss';
+import styles from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
 
 interface ContributionsMapProps {
@@ -66,7 +66,7 @@ function ContributionsMap({
   }, []);
 
   return (
-    <div className={style.mapSubContainer}>
+    <div className={styles.mapSubContainer}>
       <Map
         {...viewState}
         {...mapState}

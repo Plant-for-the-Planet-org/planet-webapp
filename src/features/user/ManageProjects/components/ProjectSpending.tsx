@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { SxProps } from '@mui/material';
 import type { APIError, ProjectExpense } from '@planet-sdk/common';
 import type {
   ProjectSpendingProps,
@@ -21,30 +20,12 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Button, TextField, IconButton } from '@mui/material';
-import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
-
-const yearDialogSx: SxProps = {
-  '& .PrivatePickersYear-yearButton': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-
-    '&.Mui-selected': {
-      backgroundColor: `${themeProperties.primaryColor} !important`,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 type ExpenseFormData = {
   year: Date;
@@ -267,9 +248,6 @@ export default function ProjectSpending({
                       disableFuture
                       minDate={fiveYearsAgo}
                       maxDate={new Date()}
-                      DialogProps={{
-                        sx: yearDialogSx,
-                      }}
                     />
                   )}
                 />

@@ -9,8 +9,8 @@ const GiftInfoTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#FFFFFF',
-    color: '#3E3E3E',
+    backgroundColor: themeProperties.designSystem.colors.white,
+    color: themeProperties.designSystem.colors.softText,
     fontSize: themeProperties.fontSizes.fontXXSmall,
     borderRadius: 12,
     padding: 8,

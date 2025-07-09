@@ -1,5 +1,9 @@
 {
   "Common": {
+    "unitTypes": {
+      "tree": "{count, plural, one {{formattedCount} Baum} other {{formattedCount} Bäume}}",
+      "m2": "{formattedCount} m²"
+    },
     "and": "und",
     "tree": "{count, plural, =1 {Baum} other {Bäume}}",
     "m2": "m²",
