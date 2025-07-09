@@ -310,34 +310,15 @@
 }
 
 .itemFlag {
-    background: $dsMintGradient;
-    color: $dsPrimaryColor;
-    font-size: $fontXSmall;
-    padding: 4px 8px;
-    margin-left: 8px;
-    border-radius: 4px;
+  background: $dsMintGradient;
+  color: $dsPrimaryColor;
+  font-size: $fontXSmall;
+  padding: 4px 8px;
+  margin-left: 8px;
+  border-radius: 4px;
 }
 
 .widgetIFrame {
   min-height: 100vh;
   width: 100%;
 }
-
-// @include lgLaptopView {
-//   .sidebar {
-//     width: 300px;
-//   }
-//   .navlink button {
-//     display: block;
-//   }
-//   .navlink {
-//     padding: 16px 20px;
-//     justify-content: space-between;
-//   }
-//   .profilePageContainer {
-//     padding-left: 300px;
-//   }
-//   .navlinkSubMenu {
-//     display: flex;
-//   }
-// }
