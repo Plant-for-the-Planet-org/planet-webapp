@@ -113,6 +113,8 @@ const OtherInterventionInfo = ({
   hoveredPlantLocation,
 }: Props) => {
   const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
+  if (!plantLocationInfo) return null;
+
   const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount =
@@ -125,7 +127,7 @@ const OtherInterventionInfo = ({
           )
         : 0;
     return { totalTreesCount };
-  }, [plantLocationInfo, plantLocationInfo?.type]);
+  }, [plantLocationInfo, plantLocationInfo.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (plantLocationInfo && plantLocationInfo.sampleInterventions.length > 0) {
@@ -151,9 +153,9 @@ const OtherInterventionInfo = ({
   const content = [
     <>
       <InterventionHeader
-        plHid={plantLocationInfo?.hid}
-        interventionType={plantLocationInfo?.type}
-        plantDate={plantLocationInfo?.interventionStartDate}
+        plHid={plantLocationInfo.hid}
+        interventionType={plantLocationInfo.type}
+        plantDate={plantLocationInfo.interventionStartDate}
         key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
@@ -171,11 +173,11 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={cleanedPublicMetadata}
-        plantDate={plantLocationInfo?.interventionStartDate}
-        type={plantLocationInfo?.type}
+        plantDate={plantLocationInfo.interventionStartDate}
+        type={plantLocationInfo.type}
       />
     ),
-    plantLocationInfo?.plantedSpecies &&
+    plantLocationInfo.plantedSpecies &&
       plantLocationInfo.plantedSpecies.length > 0 && (
         <SpeciesPlanted
           key="speciesPlanted"
@@ -198,7 +200,7 @@ const OtherInterventionInfo = ({
     <>
       <MobileInfoSwiper
         slides={content}
-        uniqueKey={plantLocationInfo?.hid || ''}
+        uniqueKey={plantLocationInfo.hid || ''}
       />
     </>
   ) : (
