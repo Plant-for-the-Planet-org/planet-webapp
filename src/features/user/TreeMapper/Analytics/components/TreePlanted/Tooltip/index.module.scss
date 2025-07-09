@@ -6,8 +6,7 @@
 
 .header {
   padding: 6px 5px;
-  background-color: $dsMediumGrey;
-  border-bottom: 1px solid $dsMediumGrey;
+  background-color: $dsMediumGreyTransparent50;
 
   .title {
     font-size: $fontXSmall;
@@ -25,7 +24,7 @@
     border-radius: 40px;
     height: 12px;
     width: 12px;
-    background-color: $dsPrimaryColor;
+    background-color: $dsWarmGreen;
   }
 
   .bodyTitle {
