@@ -77,7 +77,7 @@
   overflow-y: scroll;
   scrollbar-width: none;
   justify-content: space-between;
-  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  box-shadow: rgba(150, 150, 150, 0.2) 0px 0px 4px;
   transition: width 0.3s ease-in-out;
   z-index: 100;
   background-color: $dsWhite;
@@ -181,7 +181,7 @@
   height: calc(100% - 120px);
   overflow-y: scroll;
   justify-content: space-between;
-  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  box-shadow: rgba(150, 150, 150, 0.2) 0px 0px 4px;
   transition: width 0.3s ease-in-out;
   z-index: 100;
   background-color: $dsWhite;
