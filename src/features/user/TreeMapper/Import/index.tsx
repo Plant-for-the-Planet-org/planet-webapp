@@ -16,10 +16,10 @@ import { styled } from '@mui/material/styles';
 import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
-import theme from '../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -30,10 +30,10 @@ const Stepper = styled(MuiStepper)({
 
 const Step = styled(MuiStep)({
   '& > span > span > .Mui-active': {
-    color: theme.primaryColor,
+    color: themeProperties.designSystem.colors.primaryColor,
   },
   '& > span > span > .Mui-completed': {
-    color: theme.primaryColor,
+    color: themeProperties.designSystem.colors.primaryColor,
   },
 });
 
