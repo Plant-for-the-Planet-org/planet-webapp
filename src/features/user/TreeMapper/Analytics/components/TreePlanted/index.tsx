@@ -153,7 +153,7 @@ export const TreePlanted = () => {
     },
 
     fill: {
-      colors: [themeProperties.primaryColor],
+      colors: [themeProperties.designSystem.colors.warmGreen],
     },
 
     xaxis: {

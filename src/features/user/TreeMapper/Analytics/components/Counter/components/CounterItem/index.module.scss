@@ -16,7 +16,7 @@
     position: absolute;
 
     @include mdTabletView {
-      border-right: 1px $dsSoftText solid;
+      border-right: 1px solid $dsDarkGrey;
       height: 50%;
       top: 35%;
       right: 0;
@@ -27,7 +27,7 @@
 
   @media (min-width: 412px) and (min-height: 914px) {
     &:nth-child(odd)::after {
-      border-right: 1px $dsSoftText solid;
+      border-right: 1px solid $dsDarkGrey;
       height: 50%;
       top: 35%;
       right: 0;
