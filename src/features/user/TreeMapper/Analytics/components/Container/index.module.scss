@@ -11,6 +11,8 @@
   padding: 20px 30px;
   border-radius: 10px 10px 0 0;
   background-color: $dsWhiteTransparent10;
+  border: 1px solid $dsWhite;
+  border-bottom: none;
 }
 
 .headerFlexColumn {
