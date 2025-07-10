@@ -393,6 +393,23 @@
   }
 }
 
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: $dsBrightGreen;
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  &.singleSelected {
+    background-color: $dsPrimaryColor;
+  }
+}
+
+.single:hover {
+  background-color: $dsPrimaryColor;
+}
+
 .threeDotMenuButton {
   padding: 5px;
   cursor: pointer;
