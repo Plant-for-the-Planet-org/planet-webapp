@@ -113,31 +113,32 @@ const OtherInterventionInfo = ({
   hoveredPlantLocation,
 }: Props) => {
   const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
+  if (!plantLocationInfo) return null;
+  const sampleInterventions = plantLocationInfo.sampleInterventions || [];
+  const plantedSpecies = plantLocationInfo.plantedSpecies || [];
+  const hasSampleInterventions = sampleInterventions.length > 0;
+  const hasPlantedSpecies = plantedSpecies.length > 0;
+
   const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount } = useMemo(() => {
-    const totalTreesCount =
-      plantLocationInfo &&
-      plantLocationInfo.plantedSpecies &&
-      plantLocationInfo.plantedSpecies.length > 0
-        ? plantLocationInfo.plantedSpecies.reduce(
-            (sum, species: { treeCount: number }) => sum + species.treeCount,
-            0
-          )
-        : 0;
+    const totalTreesCount = hasPlantedSpecies
+      ? plantedSpecies.reduce(
+          (sum, species: { treeCount: number }) => sum + species.treeCount,
+          0
+        )
+      : 0;
     return { totalTreesCount };
-  }, [plantLocationInfo, plantLocationInfo?.type]);
+  }, [plantLocationInfo, plantLocationInfo.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    if (plantLocationInfo && plantLocationInfo.sampleInterventions.length > 0) {
-      const result =
-        plantLocationInfo.sampleInterventions &&
-        plantLocationInfo.sampleInterventions.map((item) => {
-          return {
-            id: item.coordinates[0].id,
-            image: item.coordinates[0].image ?? '',
-            description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
-          };
-        });
+    if (hasSampleInterventions) {
+      const result = sampleInterventions.map((item) => {
+        return {
+          id: item.coordinates[0].id,
+          image: item.coordinates[0].image ?? '',
+          description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+        };
+      });
       return result;
     }
   }, [plantLocationInfo]);
@@ -151,9 +152,9 @@ const OtherInterventionInfo = ({
   const content = [
     <>
       <InterventionHeader
-        plHid={plantLocationInfo?.hid}
-        interventionType={plantLocationInfo?.type}
-        plantDate={plantLocationInfo?.interventionStartDate}
+        plHid={plantLocationInfo.hid}
+        interventionType={plantLocationInfo.type}
+        plantDate={plantLocationInfo.interventionStartDate}
         key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
@@ -171,34 +172,31 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={cleanedPublicMetadata}
-        plantDate={plantLocationInfo?.interventionStartDate}
-        type={plantLocationInfo?.type}
+        plantDate={plantLocationInfo.interventionStartDate}
+        type={plantLocationInfo.type}
       />
     ),
-    plantLocationInfo?.plantedSpecies &&
-      plantLocationInfo.plantedSpecies.length > 0 && (
-        <SpeciesPlanted
-          key="speciesPlanted"
-          totalTreesCount={totalTreesCount}
-          plantedSpecies={plantLocationInfo.plantedSpecies}
-        />
-      ),
-    plantLocationInfo &&
-      plantLocationInfo.sampleInterventions &&
-      plantLocationInfo.sampleInterventions.length > 0 && (
-        <SampleTrees
-          key="sampleTrees"
-          sampleInterventions={plantLocationInfo.sampleInterventions}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-        />
-      ),
+    hasPlantedSpecies && (
+      <SpeciesPlanted
+        key="speciesPlanted"
+        totalTreesCount={totalTreesCount}
+        plantedSpecies={plantedSpecies}
+      />
+    ),
+    hasSampleInterventions && (
+      <SampleTrees
+        key="sampleTrees"
+        sampleInterventions={sampleInterventions}
+        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+      />
+    ),
   ].filter(Boolean);
 
   return isMobile ? (
     <>
       <MobileInfoSwiper
         slides={content}
-        uniqueKey={plantLocationInfo?.hid || ''}
+        uniqueKey={plantLocationInfo.hid || ''}
       />
     </>
   ) : (
