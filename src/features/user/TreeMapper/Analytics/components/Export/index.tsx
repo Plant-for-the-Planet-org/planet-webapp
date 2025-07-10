@@ -30,7 +30,7 @@ export const Export = () => {
   const { setErrors } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
+  const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
   const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
 
@@ -200,7 +200,7 @@ export const Export = () => {
             <MuiDatePicker
               label={t('from')}
               value={localFromDate}
-              onChange={(date) => setLocalToDate(date)}
+              onChange={setLocalFromDate}
               renderInput={(props) => (
                 <TextField variant="outlined" {...props} />
               )}
@@ -219,7 +219,7 @@ export const Export = () => {
             <MuiDatePicker
               label={t('to')}
               value={localToDate}
-              onChange={(date) => setLocalToDate(date)}
+              onChange={setLocalToDate}
               renderInput={(props) => (
                 <TextField variant="outlined" {...props} />
               )}
