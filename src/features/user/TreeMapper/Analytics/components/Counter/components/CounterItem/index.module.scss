@@ -1,7 +1,7 @@
 @import '../../../../../../../../theme/theme';
 
 .container {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   padding: 20px;
   text-align: center;
   flex-grow: 1;
@@ -16,7 +16,7 @@
     position: absolute;
 
     @include mdTabletView {
-      border-right: 1px #4f4f4f solid;
+      border-right: 1px solid $dsDarkGrey;
       height: 50%;
       top: 35%;
       right: 0;
@@ -27,7 +27,7 @@
 
   @media (min-width: 412px) and (min-height: 914px) {
     &:nth-child(odd)::after {
-      border-right: 1px #4f4f4f solid;
+      border-right: 1px solid $dsDarkGrey;
       height: 50%;
       top: 35%;
       right: 0;

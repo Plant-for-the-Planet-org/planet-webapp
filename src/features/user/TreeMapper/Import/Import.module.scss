@@ -3,9 +3,8 @@
 .profilePage {
   margin-top: 255px;
   font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  // margin-bottom: 80px;
-  background-color: $backgroundBase;
+  color: $dsCoreText;
+  background-color: $dsBackgroundBase;
 }
 
 .pageContainer {
@@ -34,7 +33,7 @@
   padding: 40px;
   bottom: 0;
   min-height: 100vh;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +52,7 @@
 }
 
 .stepper {
-  background-color: $backgroundColorDark;
+  background-color: $dsBaseGrey;
 }
 
 .stepContent {
@@ -114,7 +113,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $primaryColor;
+  color: $dsForestGreen;
   font-weight: 700;
   font-size: $fontMedium;
 }
@@ -154,7 +153,7 @@
 .addSpeciesButton {
   width: 100%;
   text-align: left;
-  color: $primaryColor;
+  color: $dsPrimaryColor;
   font-weight: 700;
   font-size: $fontSmall;
   cursor: pointer;
@@ -163,15 +162,15 @@
 .fileUploadContainer {
   height: 220px;
   border-radius: 10px;
-  border: dashed 1px $primaryFontColor;
-  background-color: $backgroundColor;
+  border: dashed 1px $dsCoreText;
+  background-color: $dsWhite;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   > p {
-    color: $primaryFontColor;
+    color: $dsCoreText;
   }
 }
 
@@ -210,7 +209,7 @@
       margin-top: 9px;
     }
     > div {
-      background-color: $backgroundColor;
+      background-color: $dsWhite;
       border-radius: 50%;
       height: 21px;
       width: 21px;
@@ -243,15 +242,6 @@
     width: 100px;
     height: 32px;
     cursor: pointer;
-    &.active {
-      color: $backgroundColor;
-      border-radius: 10px;
-      background: linear-gradient(
-        103deg,
-        $primaryColor 5%,
-        $primaryDarkColor 116%
-      );
-    }
   }
 }
 
@@ -272,7 +262,7 @@
   flex-direction: column;
   width: 100%;
   padding: 10px;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border-radius: 10px;
 }
 
@@ -294,7 +284,7 @@
 
 .downloadLink {
   font-weight: 700;
-  color: $primaryColor;
+  color: $dsPrimaryColor;
   cursor: pointer;
 }
 
@@ -350,15 +340,6 @@
   text-align: left;
 }
 
-// .stepContent {
-//   display: flex;
-//   flex-direction: column;
-//   width: 100%;
-//   padding: 10px;
-//   background-color: $backgroundColor;
-//   border-radius: 10px;
-// }
-
 .successContainer {
   display: flex;
   flex-direction: column;
@@ -383,12 +364,12 @@
 
 .errorMessage {
   margin-top: 5px;
-  color: $dangerColor;
+  color: $dsFireRed;
   font-size: $fontSmall;
 }
 
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;
@@ -426,7 +407,7 @@
 
   .listContainer {
     margin: 0;
-    background-color: $backgroundBase;
+    background-color: $dsBackgroundBase;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
@@ -444,4 +425,8 @@
   .mapContainer {
     left: 756px;
   }
+}
+
+.errorText {
+  color: $dsFireRed;
 }

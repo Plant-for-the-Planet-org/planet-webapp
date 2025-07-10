@@ -14,7 +14,7 @@ import { localeMapForDate } from '../../../../../../utils/language/getLanguageNa
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslations } from 'next-intl';
-import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
+import { TextField } from '@mui/material';
 import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
@@ -30,8 +30,8 @@ export const Export = () => {
   const { setErrors } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
-  const [localToDate, setLocalToDate] = useState<Date>(toDate);
+  const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
+  const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
 
   const { makeRequest } = useNextRequest<{ data: IExportData[] }>({
@@ -202,7 +202,7 @@ export const Export = () => {
               value={localFromDate}
               onChange={setLocalFromDate}
               renderInput={(props) => (
-                <MaterialTextField variant="outlined" {...props} />
+                <TextField variant="outlined" {...props} />
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
@@ -221,7 +221,7 @@ export const Export = () => {
               value={localToDate}
               onChange={setLocalToDate}
               renderInput={(props) => (
-                <MaterialTextField variant="outlined" {...props} />
+                <TextField variant="outlined" {...props} />
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}

@@ -22,7 +22,9 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 });
 
 const getDownloadIcon = () => {
-  return <DownloadSolid color="#6E8091" />;
+  return (
+    <DownloadSolid color={themeProperties.designSystem.colors.softText2} />
+  );
 };
 
 export const SpeciesPlanted = () => {
@@ -88,7 +90,7 @@ export const SpeciesPlanted = () => {
     },
 
     fill: {
-      colors: [themeProperties.primaryColor],
+      colors: [themeProperties.designSystem.colors.warmGreen],
     },
 
     tooltip: {
@@ -128,8 +130,8 @@ export const SpeciesPlanted = () => {
         fill: {
           type: 'gradient',
           gradient: {
-            colorFrom: '#D8E3F0',
-            colorTo: '#BED1E6',
+            colorFrom: `${themeProperties.designSystem.colors.mediumGrey}`,
+            colorTo: `${themeProperties.designSystem.colors.skyBlue}`,
             stops: [0, 100],
             opacityFrom: 0.4,
             opacityTo: 0.5,

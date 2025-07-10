@@ -798,7 +798,7 @@ export default function DetailedAnalysis({
                         />
                       </svg>
                     </div>
-                    <p style={{ color: 'var(--dark)' }}>
+                    <p>
                       {tManageProjects(`interventionTypes.${intervention}`)}
                     </p>
                   </div>
@@ -846,7 +846,7 @@ export default function DetailedAnalysis({
                       />
                     </svg>
                   </div>
-                  <p style={{ color: 'var(--dark)' }}>{month.title}</p>
+                  <p>{month.title}</p>
                 </div>
               );
             })}
@@ -1190,7 +1190,7 @@ export default function DetailedAnalysis({
                       />
                     </svg>
                   </div>
-                  <p style={{ color: 'var(--dark)' }}>{owner.title}</p>
+                  <p>{owner.title}</p>
                 </div>
               );
             })}

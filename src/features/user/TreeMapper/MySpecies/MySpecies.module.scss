@@ -9,7 +9,7 @@
 .speciesContainer {
   padding: 10px;
   border-radius: 5px;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   box-shadow: 0px 3px 6px #00000010;
   cursor: pointer;
   position: relative;
@@ -46,7 +46,7 @@
 }
 
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;

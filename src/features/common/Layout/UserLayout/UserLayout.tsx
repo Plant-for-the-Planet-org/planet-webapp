@@ -19,7 +19,7 @@ import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile'
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
 import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
-import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
+import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
@@ -35,7 +35,7 @@ interface SubMenuItemType {
 interface NavLinkType {
   key: number;
   title: string;
-  path?: string; // The question mark makes the 'path' property optional
+  path?: string;
   icon: ReactNode;
   flag?: string;
   accessLevel?: string[];
@@ -65,7 +65,7 @@ function LanguageSwitcher() {
 
   useEffect(() => {
     if (typeof Storage !== 'undefined') {
-      //fetching currencycode from browser's localstorage
+      //fetching currencyCode from browser's localstorage
       if (localStorage.getItem('currencyCode')) {
         const currencyCode = localStorage.getItem('currencyCode');
         if (currencyCode) setSelectedCurrency(currencyCode);
@@ -80,10 +80,10 @@ function LanguageSwitcher() {
 
   return (
     <>
-      <div className={styles.navlink}>
+      <div className={styles.navLink}>
         <GlobeIcon />
         <button
-          className={styles.navlinkTitle}
+          className={styles.navLinkTitle}
           onClick={() => {
             setOpenModal(true); // open language and country change modal
           }}
@@ -103,7 +103,7 @@ function LanguageSwitcher() {
 }
 interface NavLinkProps {
   link: NavLinkType;
-  setactiveLink: Dispatch<SetStateAction<string>>;
+  setActiveLink: Dispatch<SetStateAction<string>>;
   activeLink: string;
   activeSubMenu: string;
   setActiveSubMenu: Dispatch<SetStateAction<string>>;
@@ -113,13 +113,13 @@ interface NavLinkProps {
 }
 function NavLink({
   link,
-  setactiveLink,
+  setActiveLink,
   activeLink,
   activeSubMenu,
   setActiveSubMenu,
   user,
 }: NavLinkProps) {
-  const [isSubMenuActive, setisSubMenuActive] = useState(false);
+  const [isSubMenuActive, setIsSubMenuActive] = useState(false);
   const locale = useLocale();
   useEffect(() => {
     // Check if array of submenu has activeSubLink
@@ -128,10 +128,10 @@ function NavLink({
         return subMenuItem.path === activeSubMenu;
       });
       if (subMenuItem) {
-        link.path && setactiveLink(link.path);
+        link.path && setActiveLink(link.path);
         setActiveSubMenu(subMenuItem.path);
         if (activeSubMenu && subMenuItem.path === activeSubMenu) {
-          setisSubMenuActive(true);
+          setIsSubMenuActive(true);
         }
       }
     }
@@ -145,30 +145,30 @@ function NavLink({
   }
 
   return (
-    <div key={link.title} className={styles.navlinkMenu}>
+    <div key={link.title} className={styles.navLinkMenu}>
       <div
-        className={`${styles.navlink} ${
-          activeLink && activeLink === link.path ? styles.navlinkActive : ''
-        } ${isSubMenuActive ? styles.navlinkActive : ''}`}
+        className={`${styles.navLink} ${
+          activeLink && activeLink === link.path ? styles.navLinkActive : ''
+        } ${isSubMenuActive ? styles.navLinkActive : ''}`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
             router.push(`/${locale}${link.path}`);
-            setactiveLink(link.path);
+            setActiveLink(link.path);
             setActiveSubMenu('');
           } else {
             if (link.hideSubMenu && link.path) {
               router.push(`/${locale}${link.path}`);
             } else {
-              setisSubMenuActive(!isSubMenuActive);
+              setIsSubMenuActive(!isSubMenuActive);
             }
           }
         }}
       >
         {link.icon}
-        <button className={styles.navlinkTitle}>
+        <button className={styles.navLinkTitle}>
           {link.title}
-          {link.flag && <span>{link.flag}</span>}
+          {link.flag && <span className={styles.itemFlag}>{link.flag}</span>}
         </button>
         {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
           <button
@@ -189,21 +189,23 @@ function NavLink({
           if (!subLink.hideItem) {
             return (
               <div
-                className={`${styles.navlinkSubMenu} ${
+                className={`${styles.navLinkSubMenu} ${
                   activeSubMenu === subLink.path
-                    ? styles.navlinkActiveSubMenu
+                    ? styles.navLinkActiveSubMenu
                     : ''
                 }`}
                 key={index}
                 onClick={() => {
                   //this is to shift to the submenu pages
-                  link.path && setactiveLink(link.path);
+                  link.path && setActiveLink(link.path);
                   setActiveSubMenu(subLink.path);
                   router.push(`/${locale}${subLink.path}`);
                 }}
               >
                 {subLink.title}
-                {subLink.flag && <span>{subLink.flag}</span>}
+                {subLink.flag && (
+                  <span className={styles.itemFlag}>{subLink.flag}</span>
+                )}
               </div>
             );
           }
@@ -227,21 +229,6 @@ const UserLayout: FC = ({ children }) => {
       title: t('profile'),
       path: '/profile',
       icon: <UserIcon />,
-      // Localize with translations if you ever activate this!!
-      // subMenu: [
-      //   // {
-      //   //   title: 'Profile',
-      //   //   path: '/profile',
-      //   // },
-      //   {
-      //     title: 'My Forest',
-      //     path: '/profile/forest',
-      //   },
-      //   {
-      //     title: 'Register Trees',
-      //     path: '/profile/register-trees',
-      //   },
-      // ],
     },
     {
       key: 2,
@@ -252,65 +239,37 @@ const UserLayout: FC = ({ children }) => {
     {
       key: 3,
       title: t('payments'),
-      // path: '/profile/history',
       icon: <DonateIcon />,
       flag: t('new'),
-      // hideSubMenu: true,
       subMenu: [
         {
           title: t('history'),
           path: '/profile/history',
-          // hideItem: true,
         },
         {
           title: t('recurrency'),
           path: '/profile/recurrency',
-          // hideItem: true,
         },
         {
           title: t('donationReceipts'),
           path: '/profile/donation-receipt',
-          // hideItem: true,
         },
         {
           title: t('managePayouts.menuText'),
           path: '/profile/payouts',
           hideItem: !(user?.type === 'tpo'),
         },
-        // Localize with translations if you ever activate this!!
-        // {
-        //   title: 'Payment Methods',
-        //   path: '/profile/payment-methods',
-        // },
       ],
     },
-    // Localize with translations if you ever activate this!!
-    // {
-    //   title: 'TreeCash',
-    //   path: '/profile/treecash',
-    //   icon: TreeCashIcon,
-    //   // subMenu: [
-    //   //   {
-    //   //     title: 'Profile & History',
-    //   //     path: '/profile/history',
-    //   //   },
-    //   //   {
-    //   //     title: 'Create Bulk Gifts',
-    //   //     path: '/profile/recurring-donations',
-    //   //   },
-    //   // ],
-    // },
     {
       key: 4,
       title: t('treemapper'),
-      // path: '/profile/treemapper',
-      icon: <TreeMappperIcon />,
+      icon: <TreeMapperIcon />,
       flag: t('beta'),
       subMenu: [
         {
           title: t('plantLocations'),
           path: '/profile/treemapper',
-          // hideItem: true,
         },
         {
           title: t('mySpecies'),
@@ -362,13 +321,6 @@ const UserLayout: FC = ({ children }) => {
         },
       ],
     },
-    /* {
-      key: 6,
-      title: t('bulkCodes'),
-      path: '/profile/bulk-codes',
-      icon: <GiftIcon />,
-      hasRelatedLinks: true,
-    }, */
     {
       key: 7,
       title: t('widgets'),
@@ -377,13 +329,11 @@ const UserLayout: FC = ({ children }) => {
         {
           title: t('embedWidget'),
           path: '/profile/widgets',
-          // hideItem: true,
         },
         {
           title: t('donationLink'),
           path: '/profile/donation-link',
           flag: t('new'),
-          // hideItem: true,
         },
       ],
     },
@@ -409,17 +359,12 @@ const UserLayout: FC = ({ children }) => {
           title: t('deleteProfile'),
           path: '/profile/delete-account',
         },
-        // Localize with translations if you ever activate this!!
-        // {
-        //   title: 'Setup 2Factor Authentication',
-        //   path: '/profile/2fa', // Only for Tpos
-        // },
       ],
     },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeLink, setactiveLink] = useState('/profile');
+  const [activeLink, setActiveLink] = useState('/profile');
   const [activeSubMenu, setActiveSubMenu] = useState('');
 
   useEffect(() => {
@@ -427,7 +372,7 @@ const UserLayout: FC = ({ children }) => {
       for (const link of navLinks) {
         //checks whether the path belongs to menu or Submenu
         if (link.path && router.asPath === `/${locale}${link.path}`) {
-          setactiveLink(link.path);
+          setActiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find(
             (subMenuItem: SubMenuItemType) => {
@@ -435,7 +380,7 @@ const UserLayout: FC = ({ children }) => {
             }
           );
           if (subMenuItem) {
-            link.path && setactiveLink(link.path);
+            link.path && setActiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
         } else if (
@@ -443,7 +388,7 @@ const UserLayout: FC = ({ children }) => {
           link.path &&
           router.asPath.includes(link.path)
         ) {
-          setactiveLink(link.path);
+          setActiveLink(link.path);
         }
       }
     }
@@ -464,7 +409,7 @@ const UserLayout: FC = ({ children }) => {
       <div
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
-        onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
+        onClick={() => setIsMenuOpen(true)} // for mobile version to open menu
         style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
       >
         <MenuIcon />
@@ -480,17 +425,17 @@ const UserLayout: FC = ({ children }) => {
           <>
             <div key={'closeMenu'} className={`${styles.closeMenu}`}>
               <div
-                className={`${styles.navlink}`}
+                className={`${styles.navLink}`}
                 onClick={() => setIsMenuOpen(false)} //for mobile version to close menu
               >
                 <BackArrow />
-                <button className={styles.navlinkTitle}>{t('close')}</button>
+                <button className={styles.navLinkTitle}>{t('close')}</button>
               </div>
             </div>
             {navLinks.map((link: NavLinkType, index: number) => (
               <NavLink
                 link={link}
-                setactiveLink={setactiveLink}
+                setActiveLink={setActiveLink}
                 activeLink={activeLink}
                 activeSubMenu={activeSubMenu}
                 setActiveSubMenu={setActiveSubMenu}
@@ -506,12 +451,12 @@ const UserLayout: FC = ({ children }) => {
           <LanguageSwitcher />
 
           {!isImpersonationModeOn && (
-            <div className={styles.navlink}>
+            <div className={styles.navLink}>
               <FiberPinIcon />
               <SupportPin />
             </div>
           )}
-          <div className={styles.navlink}>
+          <div className={styles.navLink}>
             <NotionLinkIcon />
             <button
               onClick={() =>
@@ -520,13 +465,13 @@ const UserLayout: FC = ({ children }) => {
                   '_blank'
                 )
               }
-              className={styles.navlinkTitle}
+              className={styles.navLinkTitle}
             >
               {t('document')}
             </button>
           </div>
           <div
-            className={styles.navlink}
+            className={styles.navLink}
             //logout user
             onClick={() => {
               localStorage.removeItem('impersonationData');
@@ -534,7 +479,7 @@ const UserLayout: FC = ({ children }) => {
             }}
           >
             <LogoutIcon />
-            <button className={styles.navlinkTitle}>{t('logout')}</button>
+            <button className={styles.navLinkTitle}>{t('logout')}</button>
             <button className={styles.subMenuArrow}></button>
           </div>
         </div>

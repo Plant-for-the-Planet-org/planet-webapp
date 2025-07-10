@@ -274,9 +274,9 @@ export default function SampleTrees({
           <p style={{ marginTop: '18px' }}>{tTreemapper('fileFormatCSV')}</p>
         </label>
       </div>
-      {parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}
+      {parseError && <p className={styles.errorText}>{parseError.message}</p>}
       {hasIgnoredColumns && (
-        <p style={{ color: '#e53935' }}>
+        <p className={styles.errorText}>
           {tTreemapper('ignoredColumnsWarning')}
         </p>
       )}
