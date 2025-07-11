@@ -80,15 +80,25 @@ const INVALID_TOKEN_STATUS_CODE = 498;
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-type ApiConfig<
-  P extends Record<string, unknown>,
-  M extends HttpMethod = 'GET' | 'DELETE'
-> = {
+type ApiConfigBase = {
   queryParams?: Record<string, string>;
   impersonationData?: ImpersonationData;
   additionalHeaders?: Record<string, string>;
   version?: string;
-} & (M extends 'POST' | 'PUT' ? { payload: P } : Record<string, unknown>);
+};
+
+type ApiConfigWithPayload<P extends Record<string, unknown>> = {
+  payload: P;
+} & ApiConfigBase;
+
+type ApiConfigWithoutPayload = ApiConfigBase;
+
+type ApiConfig<
+  P extends Record<string, unknown>,
+  M extends HttpMethod
+> = M extends 'POST' | 'PUT'
+  ? ApiConfigWithPayload<P>
+  : ApiConfigWithoutPayload;
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
@@ -276,7 +286,7 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'PUT'> = { payload: {} as P }
+    config: ApiConfig<P, 'PUT'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
