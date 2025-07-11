@@ -35,7 +35,6 @@ interface NavLinkProps {
   activeSubMenu: string;
   setActiveSubMenu: Dispatch<SetStateAction<string>>;
   user: User;
-  key: number;
   closeMenu: () => void;
 }
 
@@ -63,7 +62,7 @@ function NavLink({
         }
       }
     }
-  }, [activeLink]);
+  }, [activeLink, activeSubMenu, link]);
 
   if (link.accessLevel) {
     //checks the type of user login
@@ -73,7 +72,7 @@ function NavLink({
   }
 
   return (
-    <div key={link.title} className={styles.navLinkMenu}>
+    <div className={styles.navLinkMenu}>
       <div
         className={`${styles.navLink} ${
           activeLink && activeLink === link.path ? styles.navLinkActive : ''
@@ -113,7 +112,7 @@ function NavLink({
         link.subMenu &&
         link.subMenu.length > 0 &&
         !link.hideSubMenu &&
-        link.subMenu.map((subLink, index) => {
+        link.subMenu.map((subLink) => {
           if (!subLink.hideItem) {
             return (
               <div
@@ -122,7 +121,7 @@ function NavLink({
                     ? styles.navLinkActiveSubMenu
                     : ''
                 }`}
-                key={index}
+                key={subLink.title}
                 onClick={() => {
                   //this is to shift to the submenu pages
                   link.path && setActiveLink(link.path);
