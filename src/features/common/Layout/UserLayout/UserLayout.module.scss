@@ -93,6 +93,15 @@
 
   &:hover {
     .supportPinContainer {
+      flex: 1;
+      margin-left: 12px;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+      cursor: auto;
       .pinValue {
         width: 33px;
         font-weight: bold;
@@ -106,7 +115,7 @@
           font-size: $fontXSmall;
           position: absolute;
           bottom: 30px;
-          right: -21px;
+          right: 30px;
           padding: 4px 8px;
           background: $dsMintGradient;
           color: $dsPrimaryColor;
@@ -115,14 +124,6 @@
           border-radius: 4px;
         }
       }
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin-right: 60px;
-      cursor: auto;
     }
   }
   @include xsPhoneView {
@@ -147,6 +148,22 @@
         display: flex;
         margin-right: 102px;
         gap: 10px;
+        justify-content: flex-start;
+        align-items: center;
+
+        // Match the navLinkTitle margin for consistent alignment
+        margin-left: 12px;
+
+        .resetPin {
+          display: none;
+        }
+
+        &:hover {
+          .resetPin {
+            display: block;
+            position: static;
+          }
+        }
       }
     }
   }
@@ -243,19 +260,39 @@
   display: flex;
   flex-direction: column;
 }
+
+// Icon container for consistent sizing and alignment
+.iconContainer {
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 20px;
+    object-fit: contain;
+
+    // Ensure all paths inherit the correct color
+    path {
+      fill: $dsCoreText;
+    }
+  }
+}
+
 .navLink {
   padding: 16px 8px;
   text-align: left;
   display: flex;
+  align-items: center;
   justify-content: center;
   color: $dsCoreText;
-  > svg > path {
-    fill: $dsCoreText;
-  }
+
   &:hover {
     cursor: pointer;
     font-weight: 700;
   }
+
   button {
     font-size: $fontSmall;
     font-weight: 400;
@@ -269,17 +306,21 @@
   button {
     font-weight: 600;
   }
-  > svg > path {
+
+  .iconContainer svg path {
     fill: $dsPrimaryColor;
   }
+
   .navLinkTitle {
     color: $dsPrimaryColor;
   }
 }
+
 .navLinkActiveSubMenu {
   color: $dsPrimaryColor;
   font-weight: 600;
 }
+
 .navLinkTitle {
   flex-grow: 1;
   text-align: left;
@@ -290,6 +331,7 @@
     font-weight: 700;
   }
 }
+
 .subMenuArrow {
   svg {
     path {
@@ -297,6 +339,7 @@
     }
   }
 }
+
 .navLinkSubMenu {
   padding: 16px 20px;
   text-align: left;
