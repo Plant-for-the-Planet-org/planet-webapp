@@ -18,10 +18,11 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { TextField, Button, FormControlLabel, Switch } from '@mui/material';
+import { TextField, Button, FormControlLabel } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 
 type CertificateApiPayload = {
   issueDate: number;
@@ -175,10 +176,10 @@ function ProjectCertificates({
     <div className={styles.certificateContainer}>
       {showToggle && (
         <FormControlLabel
-          label={t('isCertified')}
+          label={<span className={styles.toggleText}>{t('isCertified')}</span>}
           labelPlacement="end"
           control={
-            <Switch
+            <NewToggleSwitch
               name="isCertified"
               id="isCertified"
               checked={isCertified}
@@ -186,6 +187,7 @@ function ProjectCertificates({
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           }
+          sx={{ marginLeft: '0px' }}
         />
       )}
 

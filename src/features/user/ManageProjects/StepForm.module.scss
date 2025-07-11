@@ -785,3 +785,12 @@
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   border-radius: 10px;
 }
+
+.toggleLabelWithInfo {
+  display: flex;
+}
+
+.toggleText {
+  margin-left: 8px;
+  line-height: 20px;
+}
