@@ -9,9 +9,10 @@ import UnderReview from '../../../../../public/assets/images/icons/manageProject
 import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import router from 'next/router';
-import { Button, FormControlLabel, Switch } from '@mui/material';
+import { Button, FormControlLabel } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 
 function SubmitForReview({
   submitForReview,
@@ -25,13 +26,15 @@ function SubmitForReview({
     return (
       <CenteredContainer>
         <FormControlLabel
-          label={t('publishProject')}
+          label={
+            <span className={styles.toggleText}>{t('publishProject')}</span>
+          }
           labelPlacement="end"
           control={
-            <Switch
+            <NewToggleSwitch
               name="canPublish"
               id="publish"
-              checked={projectDetails?.publish}
+              checked={projectDetails?.publish ?? false}
               onChange={(e) => handlePublishChange(e.target.checked)}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
@@ -80,13 +83,15 @@ function SubmitForReview({
           </ul>
         </div>
         <FormControlLabel
-          label={t('publishProject')}
+          label={
+            <span className={styles.toggleText}>{t('publishProject')}</span>
+          }
           labelPlacement="end"
           control={
-            <Switch
+            <NewToggleSwitch
               name="canPublish"
               id="publish"
-              checked={projectDetails?.publish}
+              checked={projectDetails?.publish ?? false}
               onChange={(e) => handlePublishChange(e.target.checked)}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
