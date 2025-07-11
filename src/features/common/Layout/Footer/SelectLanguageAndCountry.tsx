@@ -198,56 +198,54 @@ export default function TransitionsModal({
   }, [selectedCountry]);
 
   return (
-    <div>
-      <Modal
-        open={openModal}
-        onClose={handleModalClose}
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={'modalContainer ' + theme}
-        closeAfterTransition
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={openModal}>
-          <div className={styles.modal}>
-            <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>{tCommon('selectLanguage')}</p>
-              {/* maps the radio button for languages */}
-              <MapLanguage
-                value={modalLanguage}
-                handleChange={handleLanguageChange}
-              />
-              <p className={styles.sectionHead}>{tCommon('selectCountry')}</p>
-              {/* maps the radio button for countries */}
-              <MapCountry
-                value={selectedModalCountry}
-                handleChange={handleCountryChange}
-              />
-            </div>
-            {/* modal buttons */}
-            <div className={styles.buttonContainer}>
-              <button
-                id={'selLangAndCountryCan'}
-                className={styles.button}
-                onClick={handleModalClose}
-              >
-                <div></div>
-                <p>{tCommon('cancel')}</p>
-              </button>
-              <button
-                id={'selLangAndCountryOk'}
-                className={styles.button}
-                onClick={handleOKClick}
-              >
-                <div></div>
-                <p>{tCommon('ok')}</p>
-              </button>
-            </div>
+    <Modal
+      open={openModal}
+      onClose={handleModalClose}
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      className={'modalContainer ' + theme}
+      closeAfterTransition
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={openModal}>
+        <div className={styles.modal}>
+          <div className={styles.radioButtonsContainer}>
+            <p className={styles.sectionHead}>{tCommon('selectLanguage')}</p>
+            {/* maps the radio button for languages */}
+            <MapLanguage
+              value={modalLanguage}
+              handleChange={handleLanguageChange}
+            />
+            <p className={styles.sectionHead}>{tCommon('selectCountry')}</p>
+            {/* maps the radio button for countries */}
+            <MapCountry
+              value={selectedModalCountry}
+              handleChange={handleCountryChange}
+            />
           </div>
-        </Fade>
-      </Modal>
-    </div>
+          {/* modal buttons */}
+          <div className={styles.buttonContainer}>
+            <button
+              id={'selLangAndCountryCan'}
+              className={styles.button}
+              onClick={handleModalClose}
+            >
+              <div></div>
+              <p>{tCommon('cancel')}</p>
+            </button>
+            <button
+              id={'selLangAndCountryOk'}
+              className={styles.button}
+              onClick={handleOKClick}
+            >
+              <div></div>
+              <p>{tCommon('ok')}</p>
+            </button>
+          </div>
+        </div>
+      </Fade>
+    </Modal>
   );
 }
