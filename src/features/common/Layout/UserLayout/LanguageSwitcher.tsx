@@ -8,20 +8,9 @@ import styles from './UserLayout.module.scss';
 function LanguageSwitcher() {
   const locale = useLocale();
 
-  const [language, setLanguage] = useState(locale);
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
-
-  useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      //fetching language from browser's local storage
-      if (localStorage.getItem('language')) {
-        const langCode = localStorage.getItem('language') || 'en';
-        if (langCode) setLanguage(langCode.toLowerCase());
-      }
-    }
-  }, [language]);
 
   useEffect(() => {
     if (typeof Storage !== 'undefined') {
