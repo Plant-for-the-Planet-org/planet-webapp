@@ -32,6 +32,14 @@ import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventio
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 
+export const otherInterventionsWithPointGeometry = new Set([
+  'other-intervention',
+  'maintenance',
+  'fencing',
+  'fire-patrol',
+  'fire-suppression',
+]);
+
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
   loading: () => <p>Loading comparison...</p>,
@@ -211,7 +219,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       if (props.page !== 'project-details') return;
       const hasNoSites = singleProject?.sites?.length === 0;
       const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
-      const isSamePlantLocation =
+      const isSamePointLocation =
         result?.geometry.type === 'Point' &&
         result.id === selectedPlantLocation?.id;
       const isSingleTree =
@@ -223,7 +231,12 @@ function ProjectsMap(props: ProjectsMapProps) {
       // Clicks on sample plant location will not propagate on the map
       setSelectedSamplePlantLocation(null);
       // Clear plant location info if clicked twice (single or multi tree) // point plant location
-      if (isSamePlantLocation && (isSingleTree || isMultiTree)) {
+      if (
+        isSamePointLocation &&
+        (isSingleTree ||
+          isMultiTree ||
+          otherInterventionsWithPointGeometry.has(result.type))
+      ) {
         setSelectedPlantLocation(null);
         setSelectedSite(hasNoSites ? null : 0);
         return;
