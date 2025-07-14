@@ -34,3 +34,5 @@ export type MapRef = MutableRefObject<ExtendedMapLibreMap | null>;
 export interface ExtendedMapLibreMap extends Map {
   getMap: () => Map;
 }
+
+export type DropdownType = 'site' | 'intervention' | null;
