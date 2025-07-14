@@ -2,6 +2,7 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
+
 import { useContext, useMemo } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
@@ -64,7 +65,7 @@ const MapControls = ({
   const uniquePlantTypes = useMemo(() => {
     if (!plantLocations) return [];
 
-    const types = new Set();
+    const types = new Set<string>();
     for (let i = 0; i < plantLocations.length; i++) {
       types.add(plantLocations[i].type);
     }

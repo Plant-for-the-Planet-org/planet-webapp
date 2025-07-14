@@ -3,7 +3,6 @@ import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention
 
 import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
-
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { findMatchingIntervention } from '../../../../utils/constants/intervention';
