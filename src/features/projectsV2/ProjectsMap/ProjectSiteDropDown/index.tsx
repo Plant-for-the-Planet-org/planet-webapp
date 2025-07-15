@@ -60,7 +60,6 @@ const ProjectSiteDropdown = ({
   canShowInterventionDropdown,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { colors } = themeProperties.designSystem;
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
   const router = useRouter();
@@ -103,7 +102,10 @@ const ProjectSiteDropdown = ({
     <>
       <div className={styles.dropdownButton} onClick={toggleSiteMenu}>
         <div className={styles.siteIconAndTextContainer}>
-          <SiteIcon width={27} color={colors.coreText} />
+          <SiteIcon
+            width={27}
+            color={themeProperties.designSystem.colors.coreText}
+          />
           {selectedPlantLocation && query.ploc ? (
             '-'
           ) : (
