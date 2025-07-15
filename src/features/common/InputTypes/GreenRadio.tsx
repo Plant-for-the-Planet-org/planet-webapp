@@ -3,11 +3,11 @@ import type { ReactElement } from 'react';
 
 import Radio from '@mui/material/Radio';
 import { styled } from '@mui/material';
+import themeProperties from '../../../theme/themeProperties';
 
 const StyledRadio = styled(Radio)({
-  color: '#000000',
   '&.Mui-checked .MuiSvgIcon-root path': {
-    fill: '#68B030',
+    fill: themeProperties.designSystem.colors.leafGreen,
   },
 });
 
