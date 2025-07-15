@@ -754,10 +754,10 @@
 }
 
 .tooltipIcon {
-  display: inline-block;
-  width: 1em;
-  min-width: 1em;
-  vertical-align: middle;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1rem;
   margin-left: 5px;
 }
 
@@ -788,9 +788,10 @@
 
 .toggleLabelWithInfo {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .toggleText {
   margin-left: 8px;
-  line-height: 20px;
 }
