@@ -121,7 +121,7 @@ const ProjectDetails = ({
     }
   }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
-  const shouldShowPlantLocationInfo =
+  const shouldShowMultiPlantLocationInfo =
     (hoveredPlantLocation?.type === 'multi-tree-registration' ||
       selectedPlantLocation?.type === 'multi-tree-registration') &&
     !isMobile;
@@ -158,6 +158,15 @@ const ProjectDetails = ({
       [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
     );
 
+  const multiPlantLocation = useMemo(() => {
+    if (hoveredPlantLocation?.type === 'multi-tree-registration') {
+      return hoveredPlantLocation;
+    } else if (selectedPlantLocation?.type === 'multi-tree-registration') {
+      return selectedPlantLocation;
+    }
+    return undefined;
+  }, [hoveredPlantLocation, selectedPlantLocation]);
+
   return singleProject ? (
     <>
       <ProjectDetailsMeta project={singleProject} />
@@ -176,19 +185,15 @@ const ProjectDetails = ({
             setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
           />
         )}
-        {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
-          <MultiPlantLocationInfo
-            plantLocationInfo={
-              hoveredPlantLocation?.type === 'multi-tree-registration'
-                ? hoveredPlantLocation
-                : selectedPlantLocation?.type === 'multi-tree-registration'
-                ? selectedPlantLocation
-                : undefined
-            }
-            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-            isMobile={isMobile}
-          />
-        )}
+        {shouldShowMultiPlantLocationInfo &&
+          !shouldShowSinglePlantInfo &&
+          multiPlantLocation !== undefined && (
+            <MultiPlantLocationInfo
+              plantLocationInfo={multiPlantLocation}
+              setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+              isMobile={isMobile}
+            />
+          )}
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
