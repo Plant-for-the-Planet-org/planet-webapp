@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
+import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 const SatelliteLayer = () => {
   const tiles = useMemo(
@@ -14,7 +15,7 @@ const SatelliteLayer = () => {
         id="satellite-layer"
         source="satellite"
         type="raster"
-        beforeId="site-polygon-layer"
+        beforeId={MAIN_MAP_LAYERS.SITE_POLYGON_LINE}
       />
     </Source>
   );
