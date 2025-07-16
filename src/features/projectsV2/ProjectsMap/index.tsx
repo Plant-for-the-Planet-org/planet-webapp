@@ -23,6 +23,7 @@ import {
   getSiteIndex,
   getValidFeatures,
   INTERACTIVE_LAYERS,
+  otherInterventionsWithPointGeometry,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
@@ -212,31 +213,31 @@ function ProjectsMap(props: ProjectsMapProps) {
   /**
    * This onClick handler is responsible for:
    * - Selecting: point plant locations(single tree), polygon plant locations(multi tree), or project sites
-   * - Deselecting: point plant locations and sample point plant locations
+   * - Deselecting: point plant locations ,sample point plant locations, other interventions(point geometry)
    */
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
 
-      const hasNoSites = singleProject?.sites?.length === 0;
       const features = getFeaturesAtPoint(mapRef, e.point);
       if (features?.length === 0) return;
 
       const plantLocationInfo = getPlantLocationInfo(plantLocations, features);
+      const siteIndex = getSiteIndex(singleProject?.sites || [], features);
 
-      const isSameSingleTreePoint =
-        plantLocationInfo?.geometry.type === 'Point' &&
-        plantLocationInfo?.id === selectedPlantLocation?.id;
-      const isSingleTreePoint =
-        selectedPlantLocation?.type === 'single-tree-registration';
+      const isSamePlant = plantLocationInfo?.id === selectedPlantLocation?.id;
+      const isPointGeometry =
+        plantLocationInfo &&
+        (plantLocationInfo.geometry.type === 'Point' ||
+          otherInterventionsWithPointGeometry.includes(plantLocationInfo.type));
 
       // Deselect sample point plant location when clicking the parent plant polygon
       if (selectedSamplePlantLocation) setSelectedSamplePlantLocation(null);
 
       // Deselect if clicking the same single tree point plant location again
-      if (isSingleTreePoint && isSameSingleTreePoint) {
+      if (isSamePlant && isPointGeometry) {
         setSelectedPlantLocation(null);
-        setSelectedSite(hasNoSites ? null : 0);
+        setSelectedSite(siteIndex >= 0 ? siteIndex : 0);
         return;
       }
       // If clicking a point/polygon plant location, set it and clear selected site
@@ -246,7 +247,6 @@ function ProjectsMap(props: ProjectsMapProps) {
         return;
       } else {
         // Otherwise, check if a site polygon was clicked
-        const siteIndex = getSiteIndex(singleProject?.sites || [], features);
         if (siteIndex >= 0) {
           setSelectedSite(siteIndex);
           setSelectedPlantLocation(null);

@@ -25,6 +25,14 @@ export type MobileOs = 'android' | 'ios' | undefined;
 
 const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
 
+export const otherInterventionsWithPointGeometry = [
+  'other-intervention',
+  'maintenance',
+  'fencing',
+  'fire-patrol',
+  'fire-suppression',
+];
+
 export const MAIN_MAP_LAYERS = {
   PLANT_POLYGON: 'plant-polygon-layer',
   PLANT_POINT: 'point-layer',
