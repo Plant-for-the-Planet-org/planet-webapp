@@ -158,7 +158,7 @@ export const isValidClassification = (
  *
  * @param mapRef - Ref to the MapLibre map instance
  * @param point - The screen coordinate (e.point) to query
- * @returns An array of features under the point, or undefined if the map is not ready
+ * @returns An array of features under the point, or undefined if the map is not ready. Returns an empty array if no features are found.
  */
 
 export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
