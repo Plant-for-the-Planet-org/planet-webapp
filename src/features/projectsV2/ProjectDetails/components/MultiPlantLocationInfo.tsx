@@ -1,4 +1,5 @@
 import type {
+  OtherInterventions,
   PlantLocationMulti,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
@@ -17,7 +18,7 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  plantLocationInfo: PlantLocationMulti | undefined;
+  plantLocationInfo: PlantLocationMulti | OtherInterventions;
   isMobile: boolean;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
 }
