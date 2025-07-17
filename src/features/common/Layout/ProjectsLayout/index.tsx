@@ -84,13 +84,19 @@ const ProjectsLayout: FC<ProjectsLayoutProps> = ({
   setCurrencyCode,
   page,
 }) => {
+  const { embed, isContextLoaded } = useContext(ParamsContext);
+  const isEmbedded = embed === 'true';
+
   return (
     <ProjectsProvider
       page={page}
       currencyCode={currencyCode}
       setCurrencyCode={setCurrencyCode}
     >
-      <ProjectsMapProvider>
+      <ProjectsMapProvider
+        isEmbedded={isEmbedded}
+        isQueryParamsLoaded={isContextLoaded}
+      >
         <ProjectsLayoutContent setCurrencyCode={setCurrencyCode} page={page}>
           {children}
         </ProjectsLayoutContent>
