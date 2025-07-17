@@ -29,7 +29,7 @@
     "progressReports": "progress reports",
     "readMore": "Read More",
     "readLess": "Read Less",
-    "totalPlantedSpecies": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
+    "totalPlantedTrees": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
     "plantingDate": "Planting Date",
     "plantingDensity": "Planting Density",
     "plantingDensityUnit": "{formattedCount} trees per ha",
