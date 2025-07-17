@@ -22,13 +22,13 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
+  const router = useRouter();
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
+  const { ploc: requestedPlantLocation } = router.query;
   if (singleProject === null) return null;
-
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
-  const router = useRouter();
 
   const sitesGeoJson = useMemo(() => {
     return {
@@ -39,7 +39,6 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   }, [singleProject?.sites]);
   const hasNoSites = sitesGeoJson.features.length === 0;
   // Zoom to plant location
-
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
     const { geometry } = selectedPlantLocation;
@@ -62,11 +61,16 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
       }
     }
-  }, [selectedPlantLocation, router.isReady]);
+  }, [selectedPlantLocation, router.isReady, requestedPlantLocation]);
 
   // Zoom to project site
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation !== null) return;
+    if (
+      !router.isReady ||
+      selectedPlantLocation !== null ||
+      Boolean(requestedPlantLocation)
+    )
+      return;
     if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
@@ -77,6 +81,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
       );
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
+      if (!(singleProject.sites?.length === 0)) return;
 
       if (typeof latitude === 'number' && typeof longitude === 'number') {
         // Zoom into the project location that has no site
@@ -90,9 +95,16 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
+  }, [
+    selectedSite,
+    sitesGeoJson,
+    router.isReady,
+    selectedPlantLocation,
+    requestedPlantLocation,
+  ]);
 
   useEffect(() => {
+    if (plantLocations === null) return;
     const hasNoPlantLocations = !plantLocations?.length;
     const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
     // Satellite view will be:
