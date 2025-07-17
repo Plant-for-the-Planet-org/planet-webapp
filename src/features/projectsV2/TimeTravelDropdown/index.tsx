@@ -2,10 +2,11 @@ import type { SourceName } from '../../../utils/mapsV2/timeTravel';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import styles from './TimeTravelDropdown.module.scss';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
 import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
+import themeProperties from '../../../theme/themeProperties';
+import styles from './TimeTravelDropdown.module.scss';
 
 const SOURCE_LABELS: Record<SourceName, string> = {
   esri: 'Esri',
@@ -79,7 +80,10 @@ const TimeTravelDropdown = ({
         aria-label={tTimeTravel('timeTravelOptionsLabel')}
       >
         <div className={styles.menuButtonTitle}>
-          <CalendarIcon width={14} color={`${'var(--bold-font-color-new)'}`} />
+          <CalendarIcon
+            width={14}
+            color={themeProperties.designSystem.colors.coreText}
+          />
           <p className={styles.menuButtonText}>
             {tTimeTravel.rich('sourceAttributionLabel', {
               year: selectedYear,
