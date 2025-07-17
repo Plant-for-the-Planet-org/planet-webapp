@@ -12,6 +12,7 @@ import PlantLocations from './microComponents/PlantLocations';
 import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
+import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FireLocations from './microComponents/FireLocations';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
@@ -22,13 +23,13 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
+  const router = useRouter();
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
   if (singleProject === null) return null;
-
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
-  const router = useRouter();
 
   const sitesGeoJson = useMemo(() => {
     return {
@@ -39,7 +40,6 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   }, [singleProject?.sites]);
   const hasNoSites = sitesGeoJson.features.length === 0;
   // Zoom to plant location
-
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
     const { geometry } = selectedPlantLocation;
@@ -54,29 +54,42 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         polygonCoordinates,
         mapRef,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else if (isPointLocation) {
       const [lon, lat] = coordinates;
       if (typeof lon === 'number' && typeof lat === 'number') {
-        zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
+        zoomToLocation(
+          handleViewStateChange,
+          lon,
+          lat,
+          20,
+          MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN,
+          mapRef
+        );
       }
     }
   }, [selectedPlantLocation, router.isReady]);
 
   // Zoom to project site
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation !== null) return;
+    if (
+      !router.isReady ||
+      selectedPlantLocation !== null ||
+      Boolean(requestedPlantLocation)
+    )
+      return;
     if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeoJson,
         selectedSite,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
+      if (!(singleProject.sites?.length === 0)) return;
 
       if (typeof latitude === 'number' && typeof longitude === 'number') {
         // Zoom into the project location that has no site
@@ -90,17 +103,15 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
-
+  }, [selectedSite, requestedSite, router.isReady]);
+  // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
-    const hasNoPlantLocations = !plantLocations?.length;
-    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
-    // Satellite view will be:
-    // - false if there are no plant locations and no sites (i.e., a single project location only)
-    // - true if there are no plant locations but there are multiple sites
-    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations, hasNoSites]);
+    const isSatelliteView =
+      singleProject.purpose === 'conservation' ||
+      (singleProject.purpose === 'trees' && plantLocations?.length === 0);
 
+    setIsSatelliteView(isSatelliteView);
+  }, [plantLocations, singleProject.purpose]);
   return (
     <>
       {hasNoSites ? (
@@ -115,7 +126,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeoJson}
           />
-          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+          {isSatelliteView && <SatelliteLayer />}
         </>
       )}
       {selectedTab === 'field' && <PlantLocations />}
