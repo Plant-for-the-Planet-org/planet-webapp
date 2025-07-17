@@ -64,7 +64,6 @@
  * @notes
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
  */
-import type { ImpersonationData } from '../utils/apiRequests/impersonation';
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
 import apiClient from '../utils/apiRequests/apiClient';
@@ -82,7 +81,6 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 type ApiConfigBase = {
   queryParams?: Record<string, string>;
-  impersonationData?: ImpersonationData;
   additionalHeaders?: Record<string, string>;
   version?: string;
 };
@@ -111,11 +109,9 @@ export const useApi = () => {
     data,
     queryParams,
     authRequired = false,
-    impersonationData,
     version,
     additionalHeaders,
   }: RequestOptions & {
-    impersonationData?: ImpersonationData;
     version?: string;
   }): Promise<T> => {
     const headers: Record<string, string> = {
@@ -140,7 +136,7 @@ export const useApi = () => {
       }
       headers.Authorization = `Bearer ${token}`;
     }
-    const finalHeader = setHeaderForImpersonation(headers, impersonationData);
+    const finalHeader = setHeaderForImpersonation(headers);
     const requestOptions =
       method === 'POST' || method === 'PUT'
         ? { method, url, data, queryParams, additionalHeaders: finalHeader }
