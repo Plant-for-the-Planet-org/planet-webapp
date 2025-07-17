@@ -99,9 +99,9 @@ const TimeTravelDropdown = ({
       {isMenuOpen && (
         <div className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>
-            {availableYears?.map((year, index) => (
+            {availableYears?.map((year) => (
               <time
-                key={index}
+                key={year}
                 dateTime={`${year}`}
                 role="button"
                 aria-selected={isOptionSelected(year, selectedYear)}
@@ -117,9 +117,9 @@ const TimeTravelDropdown = ({
             ))}
           </ul>
           <ul className={styles.sourceMenuContainer}>
-            {availableSources?.map((source, index) => (
+            {availableSources?.map((source) => (
               <li
-                key={index}
+                key={source}
                 onClick={() => handleChangeSource(source)}
                 className={`${
                   isOptionSelected(source, selectedSource)
