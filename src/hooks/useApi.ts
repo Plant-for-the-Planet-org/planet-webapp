@@ -170,7 +170,8 @@ export const useApi = () => {
       method: 'GET',
       url,
       authRequired: true,
-      ...config,
+      queryParams: config.queryParams,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
@@ -194,8 +195,9 @@ export const useApi = () => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: config.payload,
       authRequired: true,
+      data: config.payload,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -215,7 +217,8 @@ export const useApi = () => {
     return callApi<T>({
       method: 'GET',
       url,
-      ...config,
+      queryParams: config.queryParams,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
@@ -239,6 +242,7 @@ export const useApi = () => {
       method: 'POST',
       url,
       data: config.payload,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -263,6 +267,7 @@ export const useApi = () => {
       method: 'PUT',
       url,
       data: config.payload,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -287,8 +292,8 @@ export const useApi = () => {
     return callApi<T>({
       method: 'PUT',
       url,
-      data: config.payload,
       authRequired: true,
+      data: config.payload,
       queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
@@ -311,6 +316,7 @@ export const useApi = () => {
       method: 'DELETE',
       url,
       authRequired: true,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
