@@ -1,6 +1,6 @@
 import type { SourceName } from '../../../utils/mapsV2/timeTravel';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './TimeTravelDropdown.module.scss';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
@@ -16,7 +16,6 @@ interface TimeTravelDropdownProps {
   defaultSource: SourceName;
   availableYears: string[];
   availableSources: SourceName[];
-  isOpen: boolean;
   onYearChange: (year: string) => void;
   onSourceChange: (source: SourceName) => void;
   customClassName?: string;
@@ -27,16 +26,33 @@ const TimeTravelDropdown = ({
   defaultSource,
   availableYears,
   availableSources,
-  isOpen,
   onYearChange,
   onSourceChange,
   customClassName,
 }: TimeTravelDropdownProps) => {
   const tTimeTravel = useTranslations('ProjectDetails.timeTravel');
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [selectedYear, setSelectedYear] = useState(defaultYear);
   const [selectedSource, setSelectedSource] = useState(defaultSource);
-  const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const handleChangeYear = (year: string) => {
     setSelectedYear(year);
@@ -52,7 +68,10 @@ const TimeTravelDropdown = ({
     option.toLowerCase() === selectedValue.toLowerCase();
 
   return (
-    <div className={`${styles.menuContainer} ${customClassName || ''}`}>
+    <div
+      ref={dropdownRef}
+      className={`${styles.menuContainer} ${customClassName || ''}`}
+    >
       <button
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
