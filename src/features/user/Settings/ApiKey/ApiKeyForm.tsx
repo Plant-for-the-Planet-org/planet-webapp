@@ -65,7 +65,8 @@ export default function ApiKey() {
     setIsUploadingData(true);
     try {
       const res = await putApiAuthenticated<ApiKeyResponse>(
-        `/app/profile/apiKey`
+        `/app/profile/apiKey`,
+        { payload: {} }
       );
       if (res) {
         setApiKey(res.apiKey || '');

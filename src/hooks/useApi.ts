@@ -64,7 +64,6 @@
  * @notes
  * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
  */
-import type { ImpersonationData } from '../utils/apiRequests/impersonation';
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
 import apiClient from '../utils/apiRequests/apiClient';
@@ -80,15 +79,24 @@ const INVALID_TOKEN_STATUS_CODE = 498;
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-type ApiConfig<
-  P extends Record<string, unknown>,
-  M extends HttpMethod = 'GET' | 'DELETE'
-> = {
+type ApiConfigBase = {
   queryParams?: Record<string, string>;
-  impersonationData?: ImpersonationData;
   additionalHeaders?: Record<string, string>;
   version?: string;
-} & (M extends 'POST' | 'PUT' ? { payload: P } : Record<string, unknown>);
+};
+
+type ApiConfigWithPayload<P extends Record<string, unknown>> = {
+  payload: P;
+} & ApiConfigBase;
+
+type ApiConfigWithoutPayload = ApiConfigBase;
+
+type ApiConfig<
+  P extends Record<string, unknown>,
+  M extends HttpMethod
+> = M extends 'POST' | 'PUT'
+  ? ApiConfigWithPayload<P>
+  : ApiConfigWithoutPayload;
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
@@ -101,11 +109,9 @@ export const useApi = () => {
     data,
     queryParams,
     authRequired = false,
-    impersonationData,
     version,
     additionalHeaders,
   }: RequestOptions & {
-    impersonationData?: ImpersonationData;
     version?: string;
   }): Promise<T> => {
     const headers: Record<string, string> = {
@@ -130,7 +136,7 @@ export const useApi = () => {
       }
       headers.Authorization = `Bearer ${token}`;
     }
-    const finalHeader = setHeaderForImpersonation(headers, impersonationData);
+    const finalHeader = setHeaderForImpersonation(headers);
     const requestOptions =
       method === 'POST' || method === 'PUT'
         ? { method, url, data, queryParams, additionalHeaders: finalHeader }
@@ -164,7 +170,8 @@ export const useApi = () => {
       method: 'GET',
       url,
       authRequired: true,
-      ...config,
+      queryParams: config.queryParams,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
@@ -188,8 +195,9 @@ export const useApi = () => {
     return callApi<T>({
       method: 'POST',
       url,
-      data: config.payload,
       authRequired: true,
+      data: config.payload,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -209,7 +217,8 @@ export const useApi = () => {
     return callApi<T>({
       method: 'GET',
       url,
-      ...config,
+      queryParams: config.queryParams,
+      additionalHeaders: config.additionalHeaders,
     });
   };
 
@@ -233,6 +242,7 @@ export const useApi = () => {
       method: 'POST',
       url,
       data: config.payload,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -257,6 +267,7 @@ export const useApi = () => {
       method: 'PUT',
       url,
       data: config.payload,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };
@@ -276,13 +287,13 @@ export const useApi = () => {
     P extends Record<string, unknown> = Record<string, unknown>
   >(
     url: string,
-    config: ApiConfig<P, 'PUT'> = { payload: {} as P }
+    config: ApiConfig<P, 'PUT'>
   ): Promise<T> => {
     return callApi<T>({
       method: 'PUT',
       url,
-      data: config.payload,
       authRequired: true,
+      data: config.payload,
       queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
@@ -305,6 +316,7 @@ export const useApi = () => {
       method: 'DELETE',
       url,
       authRequired: true,
+      queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
     });
   };

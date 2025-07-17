@@ -2,7 +2,9 @@ import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjects
 import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
-import { useContext, useMemo } from 'react';
+import type { DropdownType } from '../../common/types/projectv2';
+
+import { useContext, useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
@@ -53,18 +55,16 @@ const MapControls = ({
     setSelectedSamplePlantLocation,
     selectedInterventionType,
     setSelectedInterventionType,
-    disableInterventionMenu,
-    setDisableInterventionMenu,
     plantLocations,
     showDonatableProjects,
     setShowDonatableProjects,
   } = useProjects();
   const { embed, showProjectDetails } = useContext(ParamsContext);
-
+  const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   const uniquePlantTypes = useMemo(() => {
     if (!plantLocations) return [];
 
-    const types = new Set();
+    const types = new Set<string>();
     for (let i = 0; i < plantLocations.length; i++) {
       types.add(plantLocations[i].type);
     }
@@ -90,13 +90,6 @@ const MapControls = ({
     page === 'project-details' &&
     showProjectDetails === 'false';
 
-  const enableInterventionFilter = () => {
-    setDisableInterventionMenu(true);
-  };
-  const disableInterventionFilter = () => {
-    setDisableInterventionMenu(false);
-  };
-
   const siteDropdownProps = {
     selectedSite,
     setSelectedSite,
@@ -104,8 +97,8 @@ const MapControls = ({
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
-    disableInterventionFilter,
-    disableInterventionMenu,
+    activeDropdown,
+    setActiveDropdown,
     canShowInterventionDropdown,
   };
 
@@ -116,8 +109,8 @@ const MapControls = ({
     selectedPlantLocation,
     setSelectedPlantLocation,
     setSelectedSamplePlantLocation,
-    enableInterventionFilter,
-    disableInterventionMenu,
+    activeDropdown,
+    setActiveDropdown,
   };
   const projectListControlProps = {
     ...siteDropdownProps,

@@ -66,8 +66,6 @@ interface ProjectsState {
   setSelectedMode?: SetState<ViewMode>;
   selectedInterventionType: INTERVENTION_TYPE;
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
-  disableInterventionMenu: boolean;
-  setDisableInterventionMenu: SetState<boolean>;
 }
 
 const ProjectsContext = createContext<ProjectsState | null>(null);
@@ -104,7 +102,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [selectedInterventionType, setSelectedInterventionType] =
     useState<INTERVENTION_TYPE>('all');
-  const [disableInterventionMenu, setDisableInterventionMenu] = useState(false);
   const [preventShallowPush, setPreventShallowPush] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -292,7 +289,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setHoveredPlantLocation(null);
       setSelectedSite(null);
       setSelectedInterventionType('all');
-      setDisableInterventionMenu(false);
       setPreventShallowPush(false);
       setPlantLocations(null);
     }
@@ -496,9 +492,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedSite,
       setSelectedSite,
       selectedInterventionType,
-      disableInterventionMenu,
       setSelectedInterventionType,
-      setDisableInterventionMenu,
       setPreventShallowPush,
     }),
     [
@@ -519,7 +513,6 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       selectedSite,
       preventShallowPush,
       selectedInterventionType,
-      disableInterventionMenu,
       showDonatableProjects,
     ]
   );

@@ -16,7 +16,8 @@ const SupportPin = () => {
   const handleNewPin = async () => {
     try {
       const response = await putApiAuthenticated<SupportPin>(
-        '/app/profile/supportPin'
+        '/app/profile/supportPin',
+        { payload: {} }
       );
       if (response) {
         const updateUserData = { ...user };

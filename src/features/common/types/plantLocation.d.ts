@@ -55,8 +55,13 @@ export interface PlantLocationMulti extends PlantLocationBase {
   nextMeasurementDate: null;
 }
 
+export type NonPlantingInterventionTypes = Exclude<
+  InterventionTypes,
+  'single-tree-registration' | 'multi-tree-registration'
+>;
+
 export interface OtherInterventions extends PlantLocationBase {
-  type: InterventionTypes;
+  type: NonPlantingInterventionTypes;
   sampleTreeCount: number;
   sampleInterventions: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
