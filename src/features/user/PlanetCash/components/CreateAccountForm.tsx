@@ -12,12 +12,13 @@ import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -33,6 +34,7 @@ const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
+  const locale = useLocale();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
@@ -62,7 +64,7 @@ const CreateAccountForm = ({
       setAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
-        router.push('/profile/planetcash');
+        router.push(getLocalizedPath('/profile/planetcash', locale));
       }, 1000);
     } catch (err) {
       setIsProcessing(false);

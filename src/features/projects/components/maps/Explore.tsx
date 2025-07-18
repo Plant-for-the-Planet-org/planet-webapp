@@ -24,6 +24,7 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 interface LayerType {
   id: string;
@@ -171,15 +172,18 @@ export default function Explore(): ReactElement {
       // setMapState(newMapState);
       setViewPort(newViewport);
       router.push(
-        `${locale}/projects-archive${
-          embed === 'true'
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`,
+        getLocalizedPath(
+          `/projects-archive${
+            embed === 'true'
+              ? `${
+                  callbackUrl != undefined
+                    ? `?embed=true&callback=${callbackUrl}`
+                    : '?embed=true'
+                }`
+              : ''
+          }`,
+          locale
+        ),
         undefined,
         {
           shallow: true, //As Explore is only shown on the index route, we don't want to reload the page

@@ -22,6 +22,8 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import getLocalizedPath from '../../../../../src/utils/localizedPath';
+import { useLocale } from 'next-intl';
 
 interface Props {
   pageProps: PageProps;
@@ -32,6 +34,7 @@ export default function DirectGift({
 }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const locale = useLocale();
   const { getApi } = useApi();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -57,7 +60,7 @@ export default function DirectGift({
           })
         );
       }
-      router.push('/');
+      router.push(getLocalizedPath('/', locale));
     } catch (err) {
       setErrors(handleError(err as APIError));
       redirect('/');

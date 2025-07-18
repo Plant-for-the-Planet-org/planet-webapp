@@ -12,6 +12,8 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import getLocalizedPath from '../../../../utils/localizedPath';
+import { useLocale } from 'next-intl';
 
 export default function SitesDropdown(): ReactElement {
   const {
@@ -26,7 +28,7 @@ export default function SitesDropdown(): ReactElement {
   } = useProjectProps();
   const { embed } = React.useContext(ParamsContext);
   const router = useRouter();
-
+  const locale = useLocale();
   const handleChangeSite = (
     event: React.ChangeEvent<HTMLSelectElement>,
     project: TreeProjectExtended | ConservationProjectExtended,
@@ -35,9 +37,13 @@ export default function SitesDropdown(): ReactElement {
     setSelectedPl(null);
     setSelectedSite(event.target.value as unknown as number);
     router.push(
-      `/projects-archive/${project.slug}?site=${
-        geoJson.features[event.target.value as unknown as number].properties.id
-      }`
+      getLocalizedPath(
+        `/projects-archive/${project.slug}?site=${
+          geoJson.features[event.target.value as unknown as number].properties
+            .id
+        }`,
+        locale
+      )
     );
 
     if (isMobile) setIsPolygonMenuOpen(false);

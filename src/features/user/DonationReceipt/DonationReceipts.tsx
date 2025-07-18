@@ -10,7 +10,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useContext, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
 import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
@@ -25,10 +25,12 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
+  const locale = useLocale();
   const tReceipt = useTranslations('DonationReceipt');
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
@@ -90,7 +92,7 @@ const DonationReceipts = () => {
       initForVerification(clickedReceipt, user);
     }
 
-    router.push('/profile/donation-receipt/verify');
+    router.push(getLocalizedPath('/profile/donation-receipt/verify', locale));
   };
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;

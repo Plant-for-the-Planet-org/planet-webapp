@@ -6,15 +6,17 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import router from 'next/router';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
   };
@@ -52,7 +54,7 @@ export default function DeleteProfileForm() {
   };
   const handleSubscriptions = () => {
     setisModalOpen(false);
-    router.push('/profile/recurrency');
+    router.push(getLocalizedPath('/profile/recurrency', locale));
   };
 
   const closeModal = () => {

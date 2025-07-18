@@ -10,6 +10,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { useLocale } from 'next-intl';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 type PopupClosedData = {
   show: false;
@@ -51,15 +52,18 @@ export default function Markers({
   };
   const goToProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/projects-archive/${projectSlug}${
-        embed === 'true'
-          ? `${
-              callbackUrl != undefined
-                ? `?embed=true&callback=${callbackUrl}`
-                : '?embed=true'
-            }`
-          : ''
-      }`
+      getLocalizedPath(
+        `/projects-archive/${projectSlug}${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`,
+        locale
+      )
     );
   };
 

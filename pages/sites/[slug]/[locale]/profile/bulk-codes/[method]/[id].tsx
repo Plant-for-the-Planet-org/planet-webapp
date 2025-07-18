@@ -20,7 +20,7 @@ import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCo
 import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
@@ -32,6 +32,7 @@ import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
+import getLocalizedPath from '../../../../../../../src/utils/localizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -45,6 +46,7 @@ export default function BulkCodeIssueCodesPage({
   const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated } = useApi();
+  const locale = useLocale();
   const {
     project,
     setProject,
@@ -88,7 +90,7 @@ export default function BulkCodeIssueCodesPage({
             redirect('/');
           }
         } else {
-          router.push(`/profile/bulk-codes`);
+          router.push(getLocalizedPath(`/profile/bulk-codes`, locale));
         }
       }
 
@@ -101,7 +103,7 @@ export default function BulkCodeIssueCodesPage({
           ) {
             setBulkMethod(_bulkMethod);
           } else {
-            router.push(`/profile/bulk-codes`);
+            router.push(getLocalizedPath(`/profile/bulk-codes`, locale));
           }
         }
       }

@@ -20,6 +20,7 @@ import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import TopProjectReports from '../components/projectDetails/TopProjectReports';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -87,22 +88,25 @@ function SingleProjectDetails(): ReactElement {
       setHoveredPl(null);
       setSelectedPl(null);
       router.push(
-        `/projects-archive/${project.slug}/${
-          isEmbed
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`
+        getLocalizedPath(
+          `/projects-archive/${project.slug}/${
+            isEmbed
+              ? `${
+                  callbackUrl != undefined
+                    ? `?embed=true&callback=${callbackUrl}`
+                    : '?embed=true'
+                }`
+              : ''
+          }`,
+          locale
+        )
       );
     } else {
       if (document.referrer) {
         window.history.go(-2);
       } else {
         router.replace({
-          pathname: `/${locale}/projects-archive`,
+          pathname: getLocalizedPath(`/projects-archive`, locale),
           query: {
             ...(isEmbed ? { embed: 'true' } : {}),
             ...(isEmbed && callbackUrl !== undefined

@@ -16,6 +16,7 @@ import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -82,7 +83,7 @@ export default function ManagePayouts({
     if (user?.type === 'tpo') {
       if (contextLoaded && token) fetchAccounts();
     } else {
-      router.push('/profile');
+      router.push(getLocalizedPath('/profile', locale));
     }
   }, [contextLoaded, token, user]);
 

@@ -14,6 +14,7 @@ import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 interface Props {
   location: Object;
@@ -59,7 +60,9 @@ function PlantLocation({
     ) {
       setSelectedLocation(null);
     } else {
-      router.replace(`/profile/treemapper/?l=${location.id}`);
+      router.replace(
+        getLocalizedPath(`/profile/treemapper/?l=${location.id}`, locale)
+      );
     }
   }
 

@@ -30,6 +30,7 @@ import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/h
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 type ProfileFormData = {
   address: string;
@@ -585,7 +586,7 @@ export default function EditProfileForm() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            router.push(`/${locale}/t/${user?.slug}`);
+            router.push(getLocalizedPath(`/t/${user?.slug}`, locale));
           }}
           className={styles.viewPublicProfileButton}
         >

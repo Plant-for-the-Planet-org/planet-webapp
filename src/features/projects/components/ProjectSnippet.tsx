@@ -31,6 +31,7 @@ import {
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { useTenant } from '../../common/Layout/TenantContext';
 import styles from '../styles/ProjectSnippet.module.scss';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 interface Props {
   project:
@@ -122,15 +123,18 @@ export default function ProjectSnippet({
           setSelectedSite(0);
           if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
-            `/${locale}/projects-archive/${project.slug}${
-              embed === 'true'
-                ? `${
-                    callbackUrl != undefined
-                      ? `?embed=true&callback=${callbackUrl}`
-                      : '?embed=true'
-                  }`
-                : ''
-            }`
+            getLocalizedPath(
+              `/projects-archive/${project.slug}${
+                embed === 'true'
+                  ? `${
+                      callbackUrl != undefined
+                        ? `?embed=true&callback=${callbackUrl}`
+                        : '?embed=true'
+                    }`
+                  : ''
+              }`,
+              locale
+            )
           );
         }}
         className={`${styles.projectImage} ${
@@ -269,8 +273,11 @@ export default function ProjectSnippet({
         className={styles.projectTPOName}
         onClick={() => {
           embed === 'true'
-            ? window.open(`/t/${project.tpo.slug}`, '_top')
-            : router.push(`/t/${project.tpo.slug}`);
+            ? window.open(
+                getLocalizedPath(`/t/${project.tpo.slug}`, locale),
+                '_top'
+              )
+            : router.push(getLocalizedPath(`/t/${project.tpo.slug}`, locale));
         }}
         style={{
           background: `${

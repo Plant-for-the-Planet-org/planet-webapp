@@ -3,10 +3,11 @@ import type { PlantLocationMulti } from '../../../../common/types/plantLocation'
 
 import React from 'react';
 import styles from '../Import.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
+import getLocalizedPath from '../../../../../utils/localizedPath';
 
 interface Props {
   plantLocation: PlantLocationMulti;
@@ -18,6 +19,7 @@ export default function ReviewSubmit({
   handleBack,
 }: Props): ReactElement {
   const router = useRouter();
+  const locale = useLocale();
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -37,7 +39,9 @@ export default function ReviewSubmit({
             <h2>{tTreemapper('submittedSuccess')}</h2>
             <p>{tTreemapper('submittedSuccessDescription')}</p>
             <Button
-              onClick={() => router.push('/profile/treemapper')}
+              onClick={() =>
+                router.push(getLocalizedPath('/profile/treemapper', locale))
+              }
               variant="contained"
               color="primary"
             >

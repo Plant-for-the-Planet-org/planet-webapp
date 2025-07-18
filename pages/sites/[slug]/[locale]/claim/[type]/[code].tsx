@@ -12,7 +12,7 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -30,6 +30,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import getLocalizedPath from '../../../../../../src/utils/localizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -43,6 +44,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const locale = useLocale();
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const { postApiAuthenticated } = useApi();
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
@@ -71,13 +73,15 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   }, [router, router.query.type]);
 
   const redeemAnotherCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+    router.push(
+      getLocalizedPath(`/profile/redeem/${code}?inputCode=${true}`, locale)
+    );
     setRedeemedCodeData(undefined);
   };
 
   const closeRedeem = () => {
     if (typeof window !== 'undefined') {
-      router.push(`/`);
+      router.push(getLocalizedPath(`/`, locale));
     }
   };
 

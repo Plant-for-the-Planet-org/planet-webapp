@@ -20,6 +20,7 @@ import TabbedView from '../../common/Layout/TabbedView';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -60,34 +61,33 @@ export default function ManageProjects({
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
+
+    let path = '';
+
     switch (val) {
       case 1:
-        router.push(`/profile/projects/${projectGUID}?type=basic-details`);
-
+        path = `/profile/projects/${projectGUID}?type=basic-details`;
         break;
       case 2:
-        router.push(`/profile/projects/${projectGUID}?type=media`);
-
+        path = `/profile/projects/${projectGUID}?type=media`;
         break;
       case 3:
-        router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
-
+        path = `/profile/projects/${projectGUID}?type=detail-analysis`;
         break;
       case 4:
-        router.push(`/profile/projects/${projectGUID}?type=project-sites`);
-
+        path = `/profile/projects/${projectGUID}?type=project-sites`;
         break;
       case 5:
-        router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
-
+        path = `/profile/projects/${projectGUID}?type=project-spendings`;
         break;
       case 6:
-        router.push(`/profile/projects/${projectGUID}?type=review`);
-
+        path = `/profile/projects/${projectGUID}?type=review`;
         break;
       default:
-        break;
+        return;
     }
+
+    router.push(getLocalizedPath(path, locale));
   };
 
   // for moving next tab

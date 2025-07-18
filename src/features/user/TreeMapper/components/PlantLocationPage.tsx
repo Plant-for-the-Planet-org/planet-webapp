@@ -16,6 +16,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/PlantLocation/ImageSlider'),
@@ -313,10 +314,7 @@ export function LocationDetails({
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('plantProject')}</p>
             <div className={styles.value}>
-              <span
-              // className={styles.link}
-              // onClick={() => router.push(`/[p]`, `/${location.plantProject}`)}
-              >
+              <span>
                 {(location as PlantLocationMulti | PlantLocation).plantProject}
               </span>
             </div>
@@ -393,7 +391,7 @@ export default function PlantLocationPage({
   plantLocations,
 }: Props): ReactElement {
   const router = useRouter();
-
+  const locale = useLocale();
   const handleBackButton = () => {
     if (location?.type === 'sample-tree-registration') {
       for (const iKey in plantLocations) {
@@ -407,7 +405,7 @@ export default function PlantLocationPage({
         }
       }
     } else {
-      router.replace('/profile/treemapper');
+      router.replace(getLocalizedPath('/profile/treemapper', locale));
     }
   };
 

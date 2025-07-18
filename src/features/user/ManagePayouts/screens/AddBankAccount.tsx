@@ -7,18 +7,20 @@ import { useContext, useState } from 'react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import BankDetailsForm from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 const AddBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { postApiAuthenticated } = useApi();
+  const locale = useLocale();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -52,7 +54,7 @@ const AddBankAccount = (): ReactElement | null => {
       setIsProcessing(false);
       // go to accounts tab
       setTimeout(() => {
-        router.push('/profile/payouts');
+        router.push(getLocalizedPath('/profile/payouts', locale));
       }, 3000);
     } catch (err) {
       setIsProcessing(false);

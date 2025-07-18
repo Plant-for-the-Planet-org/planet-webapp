@@ -6,13 +6,14 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import router from 'next/router';
 import { Button, FormControlLabel } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 function SubmitForReview({
   submitForReview,
@@ -22,6 +23,7 @@ function SubmitForReview({
   handlePublishChange,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
+  const locale = useLocale();
   function UnderReviewComponent() {
     return (
       <CenteredContainer>
@@ -56,7 +58,9 @@ function SubmitForReview({
 
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() =>
+              router.push(getLocalizedPath('/profile/projects', locale))
+            }
           >
             <p>{t('exit')}</p>
           </Button>
@@ -123,7 +127,9 @@ function SubmitForReview({
 
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() =>
+              router.push(getLocalizedPath('/profile/projects', locale))
+            }
           >
             <p>{t('exit')}</p>
           </Button>
@@ -151,7 +157,9 @@ function SubmitForReview({
           </Button>
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() =>
+              router.push(getLocalizedPath('/profile/projects', locale))
+            }
           >
             <p>{t('exit')}</p>
           </Button>
@@ -180,7 +188,9 @@ function SubmitForReview({
           </Button>
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() =>
+              router.push(getLocalizedPath('/profile/projects', locale))
+            }
           >
             <p>{t('exit')}</p>
           </Button>

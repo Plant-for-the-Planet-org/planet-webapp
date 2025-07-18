@@ -35,6 +35,7 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import getLocalizedPath from '../../../../../src/utils/localizedPath';
 
 interface Props {
   currencyCode: string | null | undefined;
@@ -168,11 +169,11 @@ export default function Donate({
       searchParams.append('site', geoJson.features[0].properties.id);
 
       const newSearch = searchParams.toString();
-      const newPath = `/${locale}/projects-archive/${project.slug}${
+      const newPath = `/projects-archive/${project.slug}${
         newSearch.length > 0 ? `?${newSearch}` : ''
       }`;
-
-      router.push(newPath);
+      getLocalizedPath;
+      router.push(getLocalizedPath(newPath, locale));
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 
@@ -183,7 +184,9 @@ export default function Donate({
         return router.query.site === singleSite?.properties.id;
       });
       if (siteIndex === -1) {
-        router.push(`/projects-archive/${project.slug}`);
+        router.push(
+          getLocalizedPath(`/projects-archive/${project.slug}`, locale)
+        );
       } else {
         setSelectedSite(siteIndex);
       }
@@ -199,7 +202,9 @@ export default function Donate({
         });
 
       if (singlePlantLocation === undefined) {
-        router.push(`/projects-archive/${project.slug}`);
+        router.push(
+          getLocalizedPath(`/projects-archive/${project.slug}`, locale)
+        );
       } else {
         setSelectedPl(singlePlantLocation);
       }

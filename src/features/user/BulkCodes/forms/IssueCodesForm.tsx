@@ -35,6 +35,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
@@ -161,7 +162,9 @@ const IssueCodesForm = (): ReactElement | null => {
           setIsSubmitted(true);
           setRefetchUserData(true);
           setTimeout(() => {
-            router.push(`/profile/history?ref=${res.uid}`);
+            router.push(
+              getLocalizedPath(`/profile/history?ref=${res.uid}`, locale)
+            );
           }, 5000);
         }
       } catch (err) {

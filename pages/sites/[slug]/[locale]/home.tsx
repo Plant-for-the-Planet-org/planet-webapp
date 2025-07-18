@@ -28,7 +28,8 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-
+import getLocalizedPath from '../../../../src/utils/localizedPath';
+import { useLocale } from 'next-intl';
 interface Props {
   pageProps: PageProps;
 }
@@ -36,6 +37,7 @@ interface Props {
 export default function Home({ pageProps }: Props) {
   const router = useRouter();
   const { getApi } = useApi();
+  const locale = useLocale();
 
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
     null
@@ -85,7 +87,7 @@ export default function Home({ pageProps }: Props) {
     )
   ) {
     if (typeof window !== 'undefined') {
-      router.push('/');
+      router.push(getLocalizedPath('/', locale));
     }
   }
 

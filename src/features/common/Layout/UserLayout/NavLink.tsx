@@ -7,6 +7,7 @@ import router from 'next/router';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import IconContainer from './IconContainer';
 import styles from './UserLayout.module.scss';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 export interface SubMenuItemType {
   title: string;
@@ -80,12 +81,12 @@ function NavLink({
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
-            router.push(`/${locale}${link.path}`);
+            router.push(getLocalizedPath(link.path, locale));
             setActiveLink(link.path);
             setActiveSubMenu('');
           } else {
             if (link.hideSubMenu && link.path) {
-              router.push(`/${locale}${link.path}`);
+              router.push(getLocalizedPath(link.path, locale));
             } else {
               setIsSubMenuActive(!isSubMenuActive);
             }
@@ -126,7 +127,7 @@ function NavLink({
                   //this is to shift to the submenu pages
                   link.path && setActiveLink(link.path);
                   setActiveSubMenu(subLink.path);
-                  router.push(`/${locale}${subLink.path}`);
+                  router.push(getLocalizedPath(subLink.path, locale));
                 }}
               >
                 {subLink.title}

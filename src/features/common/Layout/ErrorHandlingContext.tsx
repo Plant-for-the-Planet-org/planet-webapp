@@ -3,6 +3,8 @@ import type { SerializedError } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
 import React, { createContext, useState } from 'react';
+import getLocalizedPath from '../../../utils/localizedPath';
+import { useLocale } from 'next-intl';
 
 type SetState<T> = Dispatch<SetStateAction<T>>;
 
@@ -22,9 +24,10 @@ export const ErrorHandlingContext =
 const ErrorHandlingProvider: FC = ({ children }) => {
   const [errors, setErrors] = useState<SerializedError[] | null>(null);
   const router = useRouter();
+  const locale = useLocale();
 
   const redirect = (url: string) => {
-    router.push(url);
+    router.push(getLocalizedPath(url, locale));
   };
 
   return (
