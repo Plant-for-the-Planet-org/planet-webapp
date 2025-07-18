@@ -190,21 +190,18 @@ export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
 
 export const getSiteIndex = (
   sites: Nullable<Feature<Polygon | MultiPolygon, ProjectSite>[]> | undefined,
-  features: MapGeoJSONFeature[] | undefined
+  features: MapGeoJSONFeature[]
 ) => {
-  if (!features || !sites) return -1;
+  if (!sites || sites.length === 0) return -1;
 
   const siteFeature = features.find(
     (f) => f.layer.id === MAIN_MAP_LAYERS.SITE_POLYGON
   );
-
   if (!siteFeature) return -1;
 
-  const selectedSiteId = siteFeature.properties.id;
-  if (selectedSiteId && sites.length > 0) {
-    return sites.findIndex((site) => site.properties.id === selectedSiteId);
-  }
-  return -1;
+  return sites.findIndex(
+    (site) => site.properties.id === siteFeature.properties.id
+  );
 };
 
 /**
@@ -223,19 +220,16 @@ export const getSiteIndex = (
 
 export const getPlantLocationInfo = (
   plantLocations: PlantLocation[] | null,
-  features: MapGeoJSONFeature[] | undefined
+  features: MapGeoJSONFeature[]
 ): PlantLocation | undefined => {
-  if (!features?.length) return;
+  if (!plantLocations || plantLocations.length === 0) return;
 
-  const firstFeature = features[0];
-  const layerId = firstFeature.layer.id;
-  const featurePlantLocationId = firstFeature.properties.id;
-
+  const plantFeature = features[0]; // top layer
+  const layerId = plantFeature.layer.id;
   const isPlantLayer = PLANT_LAYERS.includes(layerId);
+  if (!isPlantLayer) return;
 
-  if (!isPlantLayer || !featurePlantLocationId) return;
-
-  return plantLocations?.find((pl) => pl.id === featurePlantLocationId);
+  return plantLocations.find((pl) => pl.id === plantFeature.properties.id);
 };
 
 export const formatHid = (hid: string | undefined) => {

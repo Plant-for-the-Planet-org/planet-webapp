@@ -194,6 +194,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     (e) => {
       if (props.page !== 'project-details') return;
       const features = getFeaturesAtPoint(mapRef, e.point);
+      if (!features || features.length === 0) return;
+
       const hoveredPlantLocation = getPlantLocationInfo(
         plantLocations,
         features
@@ -220,7 +222,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       if (props.page !== 'project-details') return;
 
       const features = getFeaturesAtPoint(mapRef, e.point);
-      if (features?.length === 0) return;
+      if (!features || features.length === 0) return;
 
       const plantLocationInfo = getPlantLocationInfo(plantLocations, features);
       const siteIndex = getSiteIndex(singleProject?.sites || [], features);
