@@ -130,11 +130,6 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     fetchPaymentHistory,
   };
 
-  // // TODO - remove this
-  // if (typeof window !== 'undefined') {
-  //   router.push('/');
-  // }
-
   return tenantConfig ? (
     <>
       {progress > 0 && (

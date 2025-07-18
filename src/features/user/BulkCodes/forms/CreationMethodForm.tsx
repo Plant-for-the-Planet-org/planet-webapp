@@ -9,9 +9,10 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 const CreationMethodForm = (): ReactElement | null => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const CreationMethodForm = (): ReactElement | null => {
   } = useBulkCode();
   const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   const tBulkCodes = useTranslations('BulkCodes');
   const { user } = useUserProps();
 
@@ -74,7 +76,7 @@ const CreationMethodForm = (): ReactElement | null => {
       }
     }
     setBulkMethod(method);
-    router.push(`/profile/bulk-codes/${method}`);
+    router.push(getLocalizedPath(`/profile/bulk-codes/${method}`, locale));
   };
 
   return (

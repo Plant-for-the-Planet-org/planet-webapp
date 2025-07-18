@@ -3,15 +3,17 @@ import type { GiftFund } from '@planet-sdk/common/build/types/user';
 import React, { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 const GiftFunds = () => {
   const t = useTranslations('GiftFunds');
   const router = useRouter();
   const { user } = useUserProps();
+  const locale = useLocale();
 
   useEffect(() => {
     if (
@@ -19,7 +21,7 @@ const GiftFunds = () => {
       user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
         .length === 0
     )
-      router.push('/profile');
+      router.push(getLocalizedPath('/profile', locale));
   }, [user]);
 
   const [validGiftFunds, setValidGiftFunds] = useState<GiftFund[] | null>(null);

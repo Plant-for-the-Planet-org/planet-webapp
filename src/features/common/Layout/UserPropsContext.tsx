@@ -21,6 +21,7 @@ import { useLocale } from 'next-intl';
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -149,7 +150,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         switch (err.statusCode) {
           case 303:
             setUser(null);
-            router.push('/complete-signup');
+            router.push(getLocalizedPath('/complete-signup', locale));
             break;
           case 401:
             setUser(null);

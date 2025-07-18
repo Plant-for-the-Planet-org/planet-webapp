@@ -2,6 +2,7 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../common/types/planetcash';
 import type { ReactElement } from 'react';
+
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
@@ -15,6 +16,7 @@ import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import getLocalizedPath from '../../../utils/localizedPath';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -60,13 +62,13 @@ export default function PlanetCash({
       switch (step) {
         case PlanetCashTabs.CREATE_ACCOUNT:
           if (accounts.length) {
-            router.push('/profile/planetcash');
+            router.push(getLocalizedPath('/profile/planetcash', locale));
           }
           break;
         case PlanetCashTabs.ACCOUNTS:
         case PlanetCashTabs.TRANSACTIONS:
           if (!accounts.length) {
-            router.push('/profile/planetcash/new');
+            router.push(getLocalizedPath('/profile/planetcash/new', locale));
           }
           break;
         default:

@@ -12,7 +12,7 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 import { useRouter } from 'next/router';
 import { useState, useEffect, useContext } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
@@ -30,7 +30,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-
+import getLocalizedPath from '../../../../../../src/utils/localizedPath';
 interface Props {
   pageProps: PageProps;
 }
@@ -41,6 +41,7 @@ type RedeemCodeApiPayload = {
 
 const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Redeem');
+  const locale = useLocale();
   const { user, contextLoaded } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
@@ -64,7 +65,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
     if (contextLoaded) {
       if (!user) {
         localStorage.setItem('redirectLink', router.asPath);
-        router.push(`/login`);
+        router.push(getLocalizedPath(`/login`, locale));
       }
     }
   }, [contextLoaded, user, router]);
@@ -140,13 +141,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const redeemCode = () => {
     if (inputCode) {
       setErrors(null);
-      router.push(`/profile/redeem/${inputCode}`);
+      router.push(getLocalizedPath(`/profile/redeem/${inputCode}`, locale));
       redeemingCode(inputCode);
     }
   };
 
   const redeemAnotherCode = () => {
-    router.push(`/profile/redeem/${code}`);
+    router.push(getLocalizedPath(`/profile/redeem/${code}`, locale));
     setErrors(null);
     setInputCode('');
     setIsLoading(false);
@@ -155,7 +156,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   const closeRedeem = () => {
     if (typeof window !== 'undefined') {
-      router.push('/profile');
+      router.push(getLocalizedPath('/profile', locale));
     }
   };
 

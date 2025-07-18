@@ -5,6 +5,8 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import getLocalizedPath from '../../../../utils/localizedPath';
+import { useLocale } from 'next-intl';
 
 interface TabStepsProps {
   step: number | string | false;
@@ -35,11 +37,11 @@ export default function TabSteps({
   tabItems = [],
 }: TabStepsProps): ReactElement | null {
   const router = useRouter();
-
+  const locale = useLocale();
   const handleTabChange = (event: SyntheticEvent) => {
     if (event.currentTarget instanceof HTMLButtonElement) {
       const targetLink = event.currentTarget.dataset.link as string;
-      router.push(targetLink);
+      router.push(getLocalizedPath(targetLink, locale));
     }
   };
 

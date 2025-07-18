@@ -8,10 +8,11 @@ import React from 'react';
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 export interface ContributionProperties {
   contributionImages: Image[];
@@ -41,6 +42,7 @@ export default function SingleContribution({
   contributionGUID,
 }: SingleContributionProps): ReactElement {
   const router = useRouter();
+  const locale = useLocale();
   const UploadProps = {
     contributionGUID,
   };
@@ -77,7 +79,7 @@ export default function SingleContribution({
       </div>
       <Button
         id={'singleControCont'}
-        onClick={() => router.push('/profile')}
+        onClick={() => router.push(getLocalizedPath('/profile', locale))}
         variant="contained"
         color="primary"
         style={{ maxWidth: '100px', marginTop: '24px' }}

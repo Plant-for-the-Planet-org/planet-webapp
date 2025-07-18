@@ -6,6 +6,7 @@ import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import getLocalizedPath from '../../../../utils/localizedPath';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -37,15 +38,18 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
 
   const visitProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/${projectSlug}${
-        embed === 'true'
-          ? `${
-              callbackUrl != undefined
-                ? `?embed=true&callback=${callbackUrl}`
-                : '?embed=true'
-            }`
-          : ''
-      }`
+      getLocalizedPath(
+        `/${projectSlug}${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`,
+        locale
+      )
     );
   };
 
