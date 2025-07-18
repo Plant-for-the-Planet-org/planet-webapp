@@ -34,6 +34,7 @@ export const otherInterventionsWithPointGeometry = [
 ];
 
 export const MAIN_MAP_LAYERS = {
+  SATELLITE_LAYER: 'satellite-layer',
   PLANT_POLYGON: 'plant-polygon-layer',
   PLANT_POINT: 'point-layer',
   SITE_POLYGON: 'site-polygon-fill-layer',
