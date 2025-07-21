@@ -206,72 +206,31 @@ const UserLayout: FC = ({ children }) => {
   useEffect(() => {
     // Determine which menu/submenu should be highlighted based on current route
     function identifyActiveMenu() {
-      if (router) {
-        let isMatchFound = false;
+      if (!router.asPath) return;
 
-        // Extract the pathname without query parameters for cleaner matching
-        const currentPath = router.asPath.split('?')[0];
+      let isMatchFound = false;
+      // Extract the pathname without query parameters for cleaner matching
+      const currentPath = router.asPath.split('?')[0];
 
-        for (const link of navLinks) {
-          // Checks whether the path belongs to main menu or submenu
-          if (link.path) {
-            const fullMainPath = `/${locale}${link.path}`;
-            let mainMenuMatches = false;
+      for (const link of navLinks) {
+        // Checks whether the path belongs to main menu or submenu
+        if (link.path) {
+          const fullMainPath = `/${locale}${link.path}`;
+          let mainMenuMatches = false;
 
-            // Check for exact match first
-            if (currentPath === fullMainPath) {
-              mainMenuMatches = true;
-            }
-            // Check for prefix match if specified
-            else if (
-              link.matchPattern === 'prefix' &&
-              currentPath.startsWith(fullMainPath)
-            ) {
-              mainMenuMatches = true;
-            }
-
-            if (mainMenuMatches) {
-              setCurrentMenuKey(link.key);
-              setCurrentSubMenuKey('');
-              isMatchFound = true;
-              break;
-            }
+          // Check for exact match first
+          if (currentPath === fullMainPath) {
+            mainMenuMatches = true;
           }
-
-          // Then check submenu items
-          if (link.subMenu && link.subMenu.length > 0) {
-            const subMenuItem = link.subMenu.find(
-              (subMenuItem: SubMenuItemType) => {
-                const fullSubPath = `/${locale}${subMenuItem.path}`;
-
-                // Check for exact match first
-                if (currentPath === fullSubPath) {
-                  return true;
-                }
-
-                // Check for prefix match if specified
-                if (subMenuItem.matchPattern === 'prefix') {
-                  return currentPath.startsWith(fullSubPath);
-                }
-
-                return false;
-              }
-            );
-            if (subMenuItem) {
-              setCurrentMenuKey(link.key);
-              setCurrentSubMenuKey(subMenuItem.key);
-              isMatchFound = true;
-              break;
-            }
-          }
-
-          // Finally check hasRelatedLinks (legacy behavior)
-          if (
-            !isMatchFound &&
-            link.hasRelatedLinks &&
-            link.path &&
-            currentPath.includes(`/${locale}${link.path}`)
+          // Check for prefix match if specified
+          else if (
+            link.matchPattern === 'prefix' &&
+            currentPath.startsWith(fullMainPath)
           ) {
+            mainMenuMatches = true;
+          }
+
+          if (mainMenuMatches) {
             setCurrentMenuKey(link.key);
             setCurrentSubMenuKey('');
             isMatchFound = true;
@@ -279,16 +238,56 @@ const UserLayout: FC = ({ children }) => {
           }
         }
 
-        // Only set default if no match was found
-        if (!isMatchFound) {
-          setCurrentMenuKey('profile');
-          setCurrentSubMenuKey('');
+        // Then check submenu items
+        if (link.subMenu && link.subMenu.length > 0) {
+          const subMenuItem = link.subMenu.find(
+            (subMenuItem: SubMenuItemType) => {
+              const fullSubPath = `/${locale}${subMenuItem.path}`;
+
+              // Check for exact match first
+              if (currentPath === fullSubPath) {
+                return true;
+              }
+
+              // Check for prefix match if specified
+              if (subMenuItem.matchPattern === 'prefix') {
+                return currentPath.startsWith(fullSubPath);
+              }
+
+              return false;
+            }
+          );
+          if (subMenuItem) {
+            setCurrentMenuKey(link.key);
+            setCurrentSubMenuKey(subMenuItem.key);
+            isMatchFound = true;
+            break;
+          }
         }
+
+        // Finally check hasRelatedLinks (legacy behavior)
+        if (
+          !isMatchFound &&
+          link.hasRelatedLinks &&
+          link.path &&
+          currentPath.includes(`/${locale}${link.path}`)
+        ) {
+          setCurrentMenuKey(link.key);
+          setCurrentSubMenuKey('');
+          isMatchFound = true;
+          break;
+        }
+      }
+
+      // Only set default if no match was found
+      if (!isMatchFound) {
+        setCurrentMenuKey('profile');
+        setCurrentSubMenuKey('');
       }
     }
 
     identifyActiveMenu();
-  }, [router, locale, navLinks]);
+  }, [router.asPath, locale, navLinks]);
 
   useEffect(() => {
     if (contextLoaded) {
