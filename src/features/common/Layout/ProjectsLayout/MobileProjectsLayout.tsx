@@ -25,13 +25,14 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
   setCurrencyCode,
   isMobile,
 }) => {
-  const { embed, showProjectList, showProjectDetails } =
+  const { embed, showProjectList, showProjectDetails, isContextLoaded } =
     useContext(ParamsContext);
+  const isEmbedded = embed === 'true';
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
   const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
-    if (embed === 'true') {
+    if (isEmbedded && isContextLoaded) {
       if (page === 'project-details' && showProjectDetails === 'false') {
         setSelectedMode('map');
       }
@@ -39,11 +40,11 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
         setSelectedMode('map');
       }
     }
-  }, [page, embed, showProjectDetails, showProjectList]);
+  }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
 
   const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
     selectedMode === 'map' ? styles.mapMode : ''
-  } ${embed === 'true' ? styles.embedModeMobile : ''} ${
+  } ${isEmbedded ? styles.embedModeMobile : ''} ${
     isImpersonationModeOn ? styles.impersonationMobile : ''
   }`;
   return (
@@ -54,7 +55,10 @@ const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
       selectedMode={selectedMode}
       setSelectedMode={setSelectedMode}
     >
-      <ProjectsMapProvider>
+      <ProjectsMapProvider
+        isEmbedded={isEmbedded}
+        isQueryParamsLoaded={isContextLoaded}
+      >
         <main className={mobileLayoutClass}>
           {selectedMode === 'map' ? (
             <section className={styles.mobileMapContainer}>

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import type { NavLinkType, SubMenuItemType } from './NavLink';
 
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -33,181 +33,266 @@ const UserLayout: FC = ({ children }) => {
   const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
     useUserProps();
 
+  // Navigation structure with keys, paths, and submenu configurations
   // Flags can be added to show labels on the right
-  const navLinks: NavLinkType[] = [
-    {
-      key: 1,
-      title: t('profile'),
-      path: '/profile',
-      icon: <UserIcon />,
-    },
-    {
-      key: 2,
-      title: t('registerTrees'),
-      path: '/profile/register-trees',
-      icon: <RegisterTreeIcon />,
-    },
-    {
-      key: 3,
-      title: t('payments'),
-      icon: <DonateIcon />,
-      flag: t('new'),
-      subMenu: [
-        {
-          title: t('history'),
-          path: '/profile/history',
-        },
-        {
-          title: t('recurrency'),
-          path: '/profile/recurrency',
-        },
-        {
-          title: t('donationReceipts'),
-          path: '/profile/donation-receipt',
-        },
-        {
-          title: t('managePayouts.menuText'),
-          path: '/profile/payouts',
-          hideItem: !(user?.type === 'tpo'),
-        },
-      ],
-    },
-    {
-      key: 4,
-      title: t('treemapper'),
-      icon: <TreeMapperIcon />,
-      flag: t('beta'),
-      subMenu: [
-        {
-          title: t('plantLocations'),
-          path: '/profile/treemapper',
-        },
-        {
-          title: t('mySpecies'),
-          path: '/profile/treemapper/my-species',
-          hideItem: !(user?.type === 'tpo'),
-        },
-        {
-          title: t('import'),
-          path: '/profile/treemapper/import',
-          hideItem: !(user?.type === 'tpo'),
-        },
-        {
-          title: t('dataExplorer'),
-          path: '/profile/treemapper/data-explorer',
-          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
-        },
-      ],
-    },
-    {
-      key: 5,
-      title: t('projects'),
-      path: '/profile/projects',
-      icon: <MapIcon />,
-      accessLevel: ['tpo'],
-    },
-    {
-      key: 6,
-      title: t('planetCash.menuText'),
-      icon: <PlanetCashIcon />,
-      flag: t('new'),
-      subMenu: [
-        {
-          title: t('planetCash.submenuText'),
-          path: '/profile/planetcash',
-        },
-        {
-          title: t('bulkCodes'),
-          path: '/profile/bulk-codes',
-          flag: t('beta'),
-        },
-        {
-          title: t('giftFund'),
-          path: '/profile/giftfund',
-          //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
-          hideItem:
-            !user?.planetCash ||
-            user?.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
-              .length == 0,
-        },
-      ],
-    },
-    {
-      key: 7,
-      title: t('widgets'),
-      icon: <WidgetIcon />,
-      subMenu: [
-        {
-          title: t('embedWidget'),
-          path: '/profile/widgets',
-        },
-        {
-          title: t('donationLink'),
-          path: '/profile/donation-link',
-          flag: t('new'),
-        },
-      ],
-    },
-    {
-      key: 8,
-      title: t('settings'),
-      icon: <SettingsIcon />,
-      subMenu: [
-        {
-          title: t('editProfile'),
-          path: '/profile/edit',
-        },
-        {
-          title: t('switchUser'),
-          path: '/profile/impersonate-user',
-          hideItem: isImpersonationModeOn || !user?.allowedToSwitch,
-        },
-        {
-          title: t('apiKey'),
-          path: '/profile/api-key',
-        },
-        {
-          title: t('deleteProfile'),
-          path: '/profile/delete-account',
-        },
-      ],
-    },
-  ];
+  const navLinks: NavLinkType[] = useMemo(
+    () => [
+      {
+        key: 'profile',
+        title: t('profile'),
+        path: '/profile',
+        icon: <UserIcon />,
+      },
+      {
+        key: 'register-trees',
+        title: t('registerTrees'),
+        path: '/profile/register-trees',
+        icon: <RegisterTreeIcon />,
+      },
+      {
+        key: 'payments',
+        title: t('payments'),
+        icon: <DonateIcon />,
+        flag: t('new'),
+        subMenu: [
+          {
+            key: 'history',
+            title: t('history'),
+            path: '/profile/history',
+          },
+          {
+            key: 'recurrency',
+            title: t('recurrency'),
+            path: '/profile/recurrency',
+          },
+          {
+            key: 'donation-receipts',
+            title: t('donationReceipts'),
+            path: '/profile/donation-receipt',
+            matchPattern: 'prefix', // Matches /profile/donation-receipt and /profile/donation-receipt/*
+          },
+          {
+            key: 'payouts',
+            title: t('managePayouts.menuText'),
+            path: '/profile/payouts',
+            hideItem: !(user?.type === 'tpo'),
+            matchPattern: 'prefix', // Matches /profile/payouts and /profile/payouts/*
+          },
+        ],
+      },
+      {
+        key: 'treemapper',
+        title: t('treemapper'),
+        icon: <TreeMapperIcon />,
+        flag: t('beta'),
+        subMenu: [
+          {
+            key: 'plant-locations',
+            title: t('plantLocations'),
+            path: '/profile/treemapper',
+          },
+          {
+            key: 'my-species',
+            title: t('mySpecies'),
+            path: '/profile/treemapper/my-species',
+            hideItem: !(user?.type === 'tpo'),
+          },
+          {
+            key: 'import',
+            title: t('import'),
+            path: '/profile/treemapper/import',
+            hideItem: !(user?.type === 'tpo'),
+          },
+          {
+            key: 'data-explorer',
+            title: t('dataExplorer'),
+            path: '/profile/treemapper/data-explorer',
+            hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
+          },
+        ],
+      },
+      {
+        key: 'projects',
+        title: t('projects'),
+        path: '/profile/projects',
+        icon: <MapIcon />,
+        accessLevel: ['tpo'],
+        matchPattern: 'prefix', // Now projects will match /profile/projects/new-project
+      },
+      {
+        key: 'planet-cash',
+        title: t('planetCash.menuText'),
+        icon: <PlanetCashIcon />,
+        flag: t('new'),
+        subMenu: [
+          {
+            key: 'planetcash',
+            title: t('planetCash.submenuText'),
+            path: '/profile/planetcash',
+            matchPattern: 'prefix', // Matches /profile/planetcash and /profile/planetcash/*
+          },
+          {
+            key: 'bulk-codes',
+            title: t('bulkCodes'),
+            path: '/profile/bulk-codes',
+            flag: t('beta'),
+            matchPattern: 'prefix', // Matches /profile/bulk-codes and /profile/bulk-codes/*
+          },
+          {
+            key: 'gift-fund',
+            title: t('giftFund'),
+            path: '/profile/giftfund',
+            //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
+            hideItem:
+              !user?.planetCash ||
+              user?.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+                .length == 0,
+          },
+        ],
+      },
+      {
+        key: 'widgets',
+        title: t('widgets'),
+        icon: <WidgetIcon />,
+        subMenu: [
+          {
+            key: 'embed-widget',
+            title: t('embedWidget'),
+            path: '/profile/widgets',
+          },
+          {
+            key: 'donation-link',
+            title: t('donationLink'),
+            path: '/profile/donation-link',
+            flag: t('new'),
+          },
+        ],
+      },
+      {
+        key: 'settings',
+        title: t('settings'),
+        icon: <SettingsIcon />,
+        subMenu: [
+          {
+            key: 'edit-profile',
+            title: t('editProfile'),
+            path: '/profile/edit',
+          },
+          {
+            key: 'switch-user',
+            title: t('switchUser'),
+            path: '/profile/impersonate-user',
+            hideItem: isImpersonationModeOn || !user?.allowedToSwitch,
+          },
+          {
+            key: 'api-key',
+            title: t('apiKey'),
+            path: '/profile/api-key',
+          },
+          {
+            key: 'delete-profile',
+            title: t('deleteProfile'),
+            path: '/profile/delete-account',
+          },
+        ],
+      },
+    ],
+    [t, user, locale, isImpersonationModeOn]
+  );
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState('/profile');
-  const [activeSubMenu, setActiveSubMenu] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentMenuKey, setCurrentMenuKey] = useState<string>('profile');
+  const [currentSubMenuKey, setCurrentSubMenuKey] = useState('');
 
   useEffect(() => {
-    if (router) {
+    // Determine which menu/submenu should be highlighted based on current route
+    function identifyActiveMenu() {
+      if (!router.asPath) return;
+
+      let isMatchFound = false;
+      // Extract the pathname without query parameters for cleaner matching
+      const currentPath = router.asPath.split('?')[0];
+
       for (const link of navLinks) {
-        //checks whether the path belongs to menu or Submenu
-        if (link.path && router.asPath === `/${locale}${link.path}`) {
-          setActiveLink(link.path);
-        } else if (link.subMenu && link.subMenu.length > 0) {
+        // Checks whether the path belongs to main menu or submenu
+        if (link.path) {
+          const fullMainPath = `/${locale}${link.path}`;
+          let mainMenuMatches = false;
+
+          // Check for exact match first
+          if (currentPath === fullMainPath) {
+            mainMenuMatches = true;
+          }
+          // Check for prefix match if specified
+          else if (
+            link.matchPattern === 'prefix' &&
+            currentPath.startsWith(fullMainPath)
+          ) {
+            mainMenuMatches = true;
+          }
+
+          if (mainMenuMatches) {
+            setCurrentMenuKey(link.key);
+            setCurrentSubMenuKey('');
+            isMatchFound = true;
+            break;
+          }
+        }
+
+        // Then check submenu items
+        if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find(
             (subMenuItem: SubMenuItemType) => {
-              return subMenuItem.path === router.asPath;
+              const fullSubPath = `/${locale}${subMenuItem.path}`;
+
+              // Check for exact match first
+              if (currentPath === fullSubPath) {
+                return true;
+              }
+
+              // Check for prefix match if specified
+              if (subMenuItem.matchPattern === 'prefix') {
+                return currentPath.startsWith(fullSubPath);
+              }
+
+              return false;
             }
           );
           if (subMenuItem) {
-            link.path && setActiveLink(link.path);
-            setActiveSubMenu(subMenuItem.path);
+            setCurrentMenuKey(link.key);
+            setCurrentSubMenuKey(subMenuItem.key);
+            isMatchFound = true;
+            break;
           }
-        } else if (
+        }
+
+        // Finally check hasRelatedLinks (legacy behavior)
+        if (
+          !isMatchFound &&
           link.hasRelatedLinks &&
           link.path &&
-          router.asPath.includes(link.path)
+          currentPath.includes(`/${locale}${link.path}`)
         ) {
-          setActiveLink(link.path);
+          setCurrentMenuKey(link.key);
+          setCurrentSubMenuKey('');
+          isMatchFound = true;
+          break;
         }
       }
+
+      // Only set default if no match was found
+      if (!isMatchFound) {
+        setCurrentMenuKey('profile');
+        setCurrentSubMenuKey('');
+      }
     }
-  }, [router]);
+
+    identifyActiveMenu();
+  }, [router.asPath, locale, navLinks]);
 
   useEffect(() => {
     if (contextLoaded) {
-      //Redirects the user to the desired page after login
+      // Redirect user to desired page after login
       if (!user) {
         if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
         router.push(getLocalizedPath('/login', locale));
@@ -220,7 +305,7 @@ const UserLayout: FC = ({ children }) => {
       <div
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
-        onClick={() => setIsMenuOpen(true)} // for mobile version to open menu
+        onClick={() => setIsMobileMenuOpen(true)}
         style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
       >
         <MenuIcon />
@@ -230,14 +315,14 @@ const UserLayout: FC = ({ children }) => {
           isImpersonationModeOn
             ? `${styles.sidebarModified}`
             : `${styles.sidebar}`
-        } ${!isMenuOpen ? styles.menuClosed : ''}`}
+        } ${!isMobileMenuOpen ? styles.menuClosed : ''}`}
       >
         <div className={styles.navLinksContainer}>
           <>
             <div key={'closeMenu'} className={`${styles.closeMenu}`}>
               <div
                 className={`${styles.navLink}`}
-                onClick={() => setIsMenuOpen(false)} //for mobile version to close menu
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 <BackArrow />
                 <button className={styles.navLinkTitle}>{t('close')}</button>
@@ -246,13 +331,13 @@ const UserLayout: FC = ({ children }) => {
             {navLinks.map((link: NavLinkType, index: number) => (
               <NavLink
                 link={link}
-                setActiveLink={setActiveLink}
-                activeLink={activeLink}
-                activeSubMenu={activeSubMenu}
-                setActiveSubMenu={setActiveSubMenu}
+                setCurrentMenuKey={setCurrentMenuKey}
+                currentMenuKey={currentMenuKey}
+                currentSubMenuKey={currentSubMenuKey}
+                setCurrentSubMenuKey={setCurrentSubMenuKey}
                 user={user}
                 key={index}
-                closeMenu={() => setIsMenuOpen(false)}
+                closeMenu={() => setIsMobileMenuOpen(false)}
               />
             ))}
           </>
@@ -287,7 +372,7 @@ const UserLayout: FC = ({ children }) => {
           </div>
           <div
             className={styles.navLink}
-            //logout user
+            //Log out user and clear impersonation data
             onClick={() => {
               localStorage.removeItem('impersonationData');
               logoutUser(`${window.location.origin}/`);

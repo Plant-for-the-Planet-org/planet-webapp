@@ -1,11 +1,12 @@
 import type { SourceName } from '../../../utils/mapsV2/timeTravel';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import styles from './TimeTravelDropdown.module.scss';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
 import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
+import themeProperties from '../../../theme/themeProperties';
+import styles from './TimeTravelDropdown.module.scss';
 
 const SOURCE_LABELS: Record<SourceName, string> = {
   esri: 'Esri',
@@ -16,7 +17,6 @@ interface TimeTravelDropdownProps {
   defaultSource: SourceName;
   availableYears: string[];
   availableSources: SourceName[];
-  isOpen: boolean;
   onYearChange: (year: string) => void;
   onSourceChange: (source: SourceName) => void;
   customClassName?: string;
@@ -27,16 +27,33 @@ const TimeTravelDropdown = ({
   defaultSource,
   availableYears,
   availableSources,
-  isOpen,
   onYearChange,
   onSourceChange,
   customClassName,
 }: TimeTravelDropdownProps) => {
   const tTimeTravel = useTranslations('ProjectDetails.timeTravel');
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [selectedYear, setSelectedYear] = useState(defaultYear);
   const [selectedSource, setSelectedSource] = useState(defaultSource);
-  const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const handleChangeYear = (year: string) => {
     setSelectedYear(year);
@@ -52,7 +69,10 @@ const TimeTravelDropdown = ({
     option.toLowerCase() === selectedValue.toLowerCase();
 
   return (
-    <div className={`${styles.menuContainer} ${customClassName || ''}`}>
+    <div
+      ref={dropdownRef}
+      className={`${styles.menuContainer} ${customClassName || ''}`}
+    >
       <button
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -60,7 +80,10 @@ const TimeTravelDropdown = ({
         aria-label={tTimeTravel('timeTravelOptionsLabel')}
       >
         <div className={styles.menuButtonTitle}>
-          <CalendarIcon width={14} color={`${'var(--bold-font-color-new)'}`} />
+          <CalendarIcon
+            width={14}
+            color={themeProperties.designSystem.colors.coreText}
+          />
           <p className={styles.menuButtonText}>
             {tTimeTravel.rich('sourceAttributionLabel', {
               year: selectedYear,
@@ -80,9 +103,9 @@ const TimeTravelDropdown = ({
       {isMenuOpen && (
         <div className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>
-            {availableYears?.map((year, index) => (
+            {availableYears?.map((year) => (
               <time
-                key={index}
+                key={year}
                 dateTime={`${year}`}
                 role="button"
                 aria-selected={isOptionSelected(year, selectedYear)}
@@ -98,9 +121,9 @@ const TimeTravelDropdown = ({
             ))}
           </ul>
           <ul className={styles.sourceMenuContainer}>
-            {availableSources?.map((source, index) => (
+            {availableSources?.map((source) => (
               <li
-                key={index}
+                key={source}
                 onClick={() => handleChangeSource(source)}
                 className={`${
                   isOptionSelected(source, selectedSource)
