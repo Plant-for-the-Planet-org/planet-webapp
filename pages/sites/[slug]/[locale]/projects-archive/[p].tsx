@@ -172,7 +172,6 @@ export default function Donate({
       const newPath = `/projects-archive/${project.slug}${
         newSearch.length > 0 ? `?${newSearch}` : ''
       }`;
-      getLocalizedPath;
       router.push(getLocalizedPath(newPath, locale));
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);

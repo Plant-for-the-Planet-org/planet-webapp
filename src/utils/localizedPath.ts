@@ -1,4 +1,7 @@
 /**
+ *
+ * Note: This function assumes the path does not include locale prefix.
+ *
  * Returns a localized path by prepending the specified locale to the given path.
  *
  * Ensures the path starts with a slash and then prefixes it with `/${locale}`.

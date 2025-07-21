@@ -247,13 +247,27 @@ export const areMapCoordsEqual = (
 };
 
 /**
- * Takes a relative path and returns a localized version with the correct locale prefix.
- * Query parameters are stripped from the input path.
- * @param path - The relative path to localize
- * @param locale - The current locale (e.g., 'en')
- * @returns The localized path without query parameters
+ * Returns a cleaned and localized path by prepending the specified locale,
+ * and sanitizing the input path to ensure consistency.
+ *
+ * - Strips query parameters (e.g., `?foo=bar`)
+ * - Trims trailing slashes
+ * - Handles root paths (e.g., '/' becomes '/en')
+ * - Avoids duplicating locale if it's already present as the first segment
+ *
+ * @param {string} path - The relative or absolute URL path (e.g., "/about", "/en/contact?ref=home")
+ * @param {string} locale - The locale to prepend (e.g., "en", "de")
+ * @returns {string} The sanitized and localized path (e.g., "/en/about")
+ *
+ * @example
+ * getSanitizedLocalizedPath('/about?ref=home', 'en'); // returns '/en/about'
+ * getSanitizedLocalizedPath('/en/about', 'en');       // returns '/en/about' (unchanged)
+ * getSanitizedLocalizedPath('/', 'de');               // returns '/de'
  */
-export const getLocalizedPath = (path: string, locale: string): string => {
+export const getSanitizedLocalizedPath = (
+  path: string,
+  locale: string
+): string => {
   // Strip query parameters if present
   const pathWithoutQuery = path.split('?')[0];
 
