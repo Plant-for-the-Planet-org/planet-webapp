@@ -4,7 +4,7 @@ import type { SetState } from '../../../common/types/common';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Styles from '../../../../../src/features/user/ManageProjects/StepForm.module.scss';
+import styles from '../StepForm.module.scss';
 
 interface ProjectSelectionProps {
   setTabSelected: SetState<number>;
@@ -17,11 +17,11 @@ export default function ProjectSelection({
   const t = useTranslations('ManageProjects');
 
   return (
-    <div className={Styles.projectTypes}>
+    <div className={styles.projectTypes}>
       <div>
         <button
           id={'addProjectBut'}
-          className={'add-projects-button'}
+          className={styles.addProjectsButton}
           onClick={() => {
             setTabSelected(1);
             router.push('/profile/projects/new-project/?purpose=trees');
@@ -33,7 +33,7 @@ export default function ProjectSelection({
       <div>
         <button
           id={'conservationProj'}
-          className={'add-projects-button'}
+          className={styles.addProjectsButton}
           onClick={() => {
             setTabSelected(1);
             router.push('/profile/projects/new-project/?purpose=conservation');

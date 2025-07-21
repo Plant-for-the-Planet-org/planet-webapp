@@ -42,6 +42,7 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import PlantLocationDetails from './components/PlantLocationDetails';
 import MapCredit from './components/MapCredit';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
+import themeProperties from '../../../../../../theme/themeProperties';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -88,6 +89,7 @@ function isDateBetween(
 
 export const MapContainer = () => {
   const { project, fromDate, toDate } = useAnalytics();
+  const { primaryColor } = themeProperties.designSystem.colors;
   const { setErrors } = useContext(ErrorHandlingContext);
   const t = useTranslations('TreemapperAnalytics');
 
@@ -457,7 +459,7 @@ export const MapContainer = () => {
                   id={`point-layer`}
                   type="circle"
                   paint={{
-                    'circle-color': '#007A49',
+                    'circle-color': `${primaryColor}`,
                     'circle-opacity': 0.5,
                   }}
                   filter={['==', ['geometry-type'], 'Point']}
@@ -466,7 +468,7 @@ export const MapContainer = () => {
                   id="plant-locations-fill"
                   type="fill"
                   paint={{
-                    'fill-color': '#007A49',
+                    'fill-color': `${primaryColor}`,
                     'fill-opacity': ['get', 'opacity'],
                   }}
                 />
@@ -477,7 +479,7 @@ export const MapContainer = () => {
                     'line-color': [
                       'case',
                       ['==', ['get', 'guid'], selectedLayer?.guid],
-                      '#007A49',
+                      `${primaryColor}`,
                       'transparent',
                     ],
                     'line-width': 4,
@@ -489,7 +491,7 @@ export const MapContainer = () => {
                 <Layer
                   type="line"
                   paint={{
-                    'line-color': '#007A49',
+                    'line-color': `${primaryColor}`,
                     'line-width': 4,
                   }}
                 />

@@ -1,5 +1,4 @@
 import type { IExportData } from '../../../../../common/types/dataExplorer';
-import type { SxProps } from '@mui/material';
 import type { Project } from '../../../../../common/Layout/AnalyticsContext';
 
 import styles from './index.module.scss';
@@ -13,10 +12,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
-import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslations } from 'next-intl';
-import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
+import { TextField } from '@mui/material';
 import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
@@ -25,23 +23,6 @@ import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
 
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
-
 export const Export = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
@@ -49,8 +30,8 @@ export const Export = () => {
   const { setErrors } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
-  const [localToDate, setLocalToDate] = useState<Date>(toDate);
+  const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
+  const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
 
   const { makeRequest } = useNextRequest<{ data: IExportData[] }>({
@@ -221,13 +202,10 @@ export const Export = () => {
               value={localFromDate}
               onChange={setLocalFromDate}
               renderInput={(props) => (
-                <MaterialTextField variant="outlined" {...props} />
+                <TextField variant="outlined" {...props} />
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
-              DialogProps={{
-                sx: dialogSx,
-              }}
             />
           </LocalizationProvider>
           <LocalizationProvider
@@ -243,13 +221,10 @@ export const Export = () => {
               value={localToDate}
               onChange={setLocalToDate}
               renderInput={(props) => (
-                <MaterialTextField variant="outlined" {...props} />
+                <TextField variant="outlined" {...props} />
               )}
               inputFormat="MMMM d, yyyy"
               maxDate={new Date()}
-              DialogProps={{
-                sx: dialogSx,
-              }}
             />
           </LocalizationProvider>
         </div>

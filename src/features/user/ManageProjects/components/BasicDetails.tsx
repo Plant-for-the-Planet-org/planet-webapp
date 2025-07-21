@@ -2,15 +2,14 @@ import type { ChangeEvent, ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
 import type {
   BasicDetailsProps,
-  ProfileProjectConservation,
-  ProfileProjectTrees,
+  ExtendedProfileProjectProperties,
   ViewPort,
 } from '../../../common/types/project';
 import type { ReverseAddress } from '../../../common/types/geocoder';
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
+import { Button, FormControlLabel, Tooltip } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
 import MapGL, {
@@ -37,6 +36,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 
 type BaseFormData = {
   name: string;
@@ -364,7 +364,7 @@ export default function BasicDetails({
     if (projectGUID) {
       try {
         const res = await putApiAuthenticated<
-          ProfileProjectTrees | ProfileProjectConservation,
+          ExtendedProfileProjectProperties,
           ProjectApiPayload
         >(`/app/projects/${projectGUID}`, {
           payload: projectPayload,
@@ -379,7 +379,7 @@ export default function BasicDetails({
     } else {
       try {
         const res = await postApiAuthenticated<
-          ProfileProjectTrees | ProfileProjectConservation,
+          ExtendedProfileProjectProperties,
           ProjectApiPayload
         >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);
@@ -580,9 +580,8 @@ export default function BasicDetails({
               rules={{
                 required: t('websiteValidationRequired'),
                 pattern: {
-                  //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
                   value:
-                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                    /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
                   message: t('websiteValidationInvalid'),
                 },
               }}
@@ -631,8 +630,10 @@ export default function BasicDetails({
               render={({ field: { onChange, value } }) => (
                 <FormControlLabel
                   label={
-                    <div>
-                      {t('receiveDonations')}
+                    <div className={styles.toggleLabelWithInfo}>
+                      <span className={styles.toggleText}>
+                        {t('receiveDonations')}
+                      </span>
                       <Tooltip title={t('receiveDonationsInfo')} arrow>
                         <span className={styles.tooltipIcon}>
                           <InfoIcon />
@@ -642,7 +643,7 @@ export default function BasicDetails({
                   }
                   labelPlacement="end"
                   control={
-                    <Switch
+                    <NewToggleSwitch
                       checked={value}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         onChange(e.target.checked);
@@ -651,6 +652,7 @@ export default function BasicDetails({
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   }
+                  sx={{ marginLeft: '0px' }}
                 />
               )}
             />
@@ -702,7 +704,7 @@ export default function BasicDetails({
               style={{
                 backgroundColor:
                   theme === 'theme-light'
-                    ? themeProperties.light.light
+                    ? themeProperties.designSystem.colors.white
                     : themeProperties.dark.dark,
               }}
             >
@@ -771,7 +773,7 @@ export default function BasicDetails({
             </MapGL>
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
-                className={`${styles.formFieldHalf} ${styles.latlongField}`}
+                className={`${styles.formFieldHalf} ${styles.latLongField}`}
                 data-test-id="latitude"
               >
                 <Controller
@@ -809,7 +811,7 @@ export default function BasicDetails({
                 />
               </div>
               <div
-                className={`${styles.formFieldHalf} ${styles.latlongField}`}
+                className={`${styles.formFieldHalf} ${styles.latLongField}`}
                 data-test-id="longitude"
               >
                 <Controller
@@ -854,10 +856,14 @@ export default function BasicDetails({
             control={control}
             render={({ field: { onChange, value } }) => (
               <FormControlLabel
-                label={t('visitorAssistanceLabel')}
+                label={
+                  <p className={styles.toggleText}>
+                    {t('visitorAssistanceLabel')}
+                  </p>
+                }
                 labelPlacement="end"
                 control={
-                  <Switch
+                  <NewToggleSwitch
                     checked={value}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       onChange(e.target.checked);
@@ -865,6 +871,7 @@ export default function BasicDetails({
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 }
+                sx={{ marginLeft: '0px' }}
               />
             )}
           />

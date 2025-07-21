@@ -1,13 +1,11 @@
 import type { ContributionProperties } from './RegisterTrees/SingleContribution';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 import type { ViewportProps } from '../../common/types/map';
 import type {
   RegisterTreesFormProps,
   RegisteredTreesGeometry,
-  ProjectGeoJsonProps,
 } from '../../common/types/map';
 import { handleError } from '@planet-sdk/common';
-import type { SxProps } from '@mui/material';
 
 import { MenuItem, TextField, Button } from '@mui/material';
 import * as d3 from 'd3-ease';
@@ -30,7 +28,6 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
@@ -39,23 +36,6 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -86,7 +66,7 @@ function RegisterTreesForm({
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState<
+  const [plantLocation, setPlantLocation] = React.useState<
     number[] | undefined
   >(undefined);
   const [geometry, setGeometry] = React.useState<
@@ -101,7 +81,7 @@ function RegisterTreesForm({
   });
   const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
-  const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
+  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [isStyleReady, setIsStyleReady] = React.useState(false);
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
@@ -220,7 +200,7 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getApiAuthenticated<ProjectGeoJsonProps[]>(
+      const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
         '/app/profile/projects'
       );
       setProjects(projects);
@@ -298,9 +278,6 @@ function RegisterTreesForm({
                     minDate={new Date(new Date().setFullYear(1950))}
                     inputFormat="MMMM d, yyyy"
                     maxDate={new Date()}
-                    DialogProps={{
-                      sx: dialogSx,
-                    }}
                   />
                 )}
               />
@@ -368,7 +345,7 @@ function RegisterTreesForm({
                 onViewportChange={_onViewportChange}
                 onViewStateChange={_onStateChange}
                 onClick={(event) => {
-                  setplantLocation(event.lngLat);
+                  setPlantLocation(event.lngLat);
                   setGeometry({
                     type: 'Point',
                     coordinates: event.lngLat,

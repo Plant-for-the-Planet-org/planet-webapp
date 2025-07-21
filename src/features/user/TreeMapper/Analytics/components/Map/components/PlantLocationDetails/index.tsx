@@ -7,8 +7,8 @@ import type {
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './index.module.scss';
 import PlantLocationDetailsZeroState from '../PlantLocationDetailsZeroState';
-import TreeMapperIcon from '../TreeMapperIcon';
 import { getFormattedNumber } from '../../../../../../../../utils/getFormattedNumber';
+import TreeMapperIcon from '../../../../../../../../../public/assets/images/icons/projectV2/TreeMapperIcon';
 
 interface Props {
   plantLocationDetails: PlantLocationDetailsApiResponse['res'] | null;

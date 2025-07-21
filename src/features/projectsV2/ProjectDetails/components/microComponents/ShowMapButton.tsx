@@ -1,5 +1,5 @@
 import ExpandIcon from '../../../../../../public/assets/images/icons/projectV2/ExpandIcon';
-import style from '../../styles/MapPreview.module.scss';
+import styles from '../../styles/MapPreview.module.scss';
 import { useTranslations } from 'next-intl';
 
 type ShowMapButtonProp = {
@@ -11,11 +11,11 @@ const ShowMapButton = ({ handleMap }: ShowMapButtonProp) => {
 
   return (
     <>
-      <button className={style.diveToMap} onClick={handleMap}>
-        <div className={style.buttonIconContainer}>
+      <button className={styles.diveToMap} onClick={handleMap}>
+        <div className={styles.buttonIconContainer}>
           <ExpandIcon />
         </div>
-        <div className={style.label}>
+        <div className={styles.label}>
           {tProjectDetails('diveIntoTheProject')}
         </div>
       </button>

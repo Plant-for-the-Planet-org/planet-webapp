@@ -4,6 +4,7 @@ import type {
   PlantLocation,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
+import type { DropdownType } from '../../../common/types/projectv2';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -16,6 +17,7 @@ import DropdownDownArrow from '../../../../../public/assets/images/icons/project
 import ProjectSiteList from './ProjectSiteList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
+import themeProperties from '../../../../theme/themeProperties';
 
 export interface SiteProperties {
   lastUpdated: {
@@ -41,8 +43,8 @@ interface Props {
   selectedPlantLocation: PlantLocation | null;
   setSelectedPlantLocation: SetState<PlantLocation | null>;
   setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
-  disableInterventionFilter: () => void;
-  disableInterventionMenu: boolean;
+  activeDropdown: DropdownType;
+  setActiveDropdown: SetState<DropdownType>;
   canShowInterventionDropdown: boolean;
 }
 
@@ -53,8 +55,8 @@ const ProjectSiteDropdown = ({
   selectedPlantLocation,
   setSelectedPlantLocation,
   setSelectedSamplePlantLocation,
-  disableInterventionFilter,
-  disableInterventionMenu,
+  activeDropdown,
+  setActiveDropdown,
   canShowInterventionDropdown,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,24 +81,31 @@ const ProjectSiteDropdown = ({
     [siteList]
   );
 
-  useEffect(() => {
-    if (disableInterventionMenu) {
-      setIsMenuOpen(false);
-    }
-  }, [disableInterventionMenu]);
-
   const selectedSiteData =
     selectedSite !== null ? siteList[selectedSite] : undefined;
 
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-    disableInterventionFilter();
+  useEffect(() => {
+    if (activeDropdown === 'intervention') {
+      setIsMenuOpen(false);
+    }
+  }, [activeDropdown]);
+
+  const toggleSiteMenu = () => {
+    if (activeDropdown !== 'site') {
+      setActiveDropdown('site');
+      setIsMenuOpen(true);
+    } else {
+      setIsMenuOpen((prev) => !prev);
+    }
   };
   return (
     <>
-      <div className={styles.dropdownButton} onClick={toggleMenu}>
+      <div className={styles.dropdownButton} onClick={toggleSiteMenu}>
         <div className={styles.siteIconAndTextContainer}>
-          <SiteIcon width={27} color={'#333'} />
+          <SiteIcon
+            width={27}
+            color={themeProperties.designSystem.colors.coreText}
+          />
           {selectedPlantLocation && query.ploc ? (
             '-'
           ) : (

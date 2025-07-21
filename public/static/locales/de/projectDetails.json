@@ -25,11 +25,12 @@
       "owned-by-owner": "Im Besitz des Eigentümers",
       "other": "Anderer"
     },
+    "sinceYear": "Seit {acquisitionYear}",
     "ownershipTypeDetails": "{translatedOwnershipType} - seit {acquisitionYear}",
     "progressReports": "Fortschrittsberichte",
     "readMore": "Mehr",
     "readLess": "Weniger",
-    "totalPlantedSpecies": "{count, plural, =1 {# Baum} other {{formattedCount} Bäume}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
+    "totalPlantedTrees": "{count, plural, =1 {# Baum} other {{formattedCount} Bäume}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
     "plantingDate": "Pflanzdatum",
     "plantingDensity": "Pflanzdichte",
     "plantingDensityUnit": "{formattedCount} Bäume pro ha",
@@ -69,6 +70,8 @@
     "abandonment": "Verlassen seit",
     "yearAbandonedInfo": "Wann war der letzte signifikante menschliche Eingriff in das Gebiet? Einschließlich Abholzung, Landwirtschaft, Viehweide, vom Menschen verursachte Brände.",
     "treePerHa": "Bäume pro ha",
-    "employees": "Beschäftigte"
+    "employees": "Beschäftigte",
+    "previousImage": "Vorheriges Bild",
+    "nextImage": "Nächstes Bild"
   }
 }

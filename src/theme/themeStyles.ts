@@ -1,5 +1,6 @@
-import { createTheme } from '@mui/material';
+import type { CSSProperties } from 'react';
 
+import { createTheme } from '@mui/material';
 import themeProperties from './themeProperties';
 
 declare module '@mui/material/styles/createPalette' {
@@ -8,23 +9,65 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
+// Extend the theme to include date picker components with proper typing
+declare module '@mui/material/styles' {
+  interface ComponentNameToClassKey {
+    MuiPickersDay: 'root';
+    MuiCalendarPicker: 'root';
+    MuiYearPicker: 'root';
+  }
+  interface Components {
+    MuiPickersDay?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '&.Mui-selected'?: CSSProperties;
+          '&:hover'?: CSSProperties;
+        };
+      };
+    };
+    MuiCalendarPicker?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '& .Mui-selected'?: CSSProperties;
+          '& .MuiPickersDay-dayWithMargin'?: CSSProperties & {
+            '&:hover'?: CSSProperties;
+          };
+        };
+      };
+    };
+    MuiYearPicker?: {
+      styleOverrides?: {
+        root?: CSSProperties & {
+          '& .PrivatePickersYear-yearButton'?: CSSProperties & {
+            '&:hover'?: CSSProperties;
+            '&.Mui-selected'?: CSSProperties;
+          };
+        };
+      };
+    };
+  }
+}
+
 const materialTheme = createTheme({
   palette: {
     primary: {
-      main: themeProperties.primaryColor,
-      contrastText: themeProperties.light.light,
-      light: themeProperties.light.tabBackgroundColor,
+      main: themeProperties.designSystem.colors.primaryColor,
+      contrastText: themeProperties.designSystem.colors.white,
+      light: themeProperties.designSystem.colors.softGreen,
     },
     background: {
-      base: themeProperties.light.backgroundBase,
-      default: themeProperties.light.light,
+      base: themeProperties.designSystem.colors.backgroundBase,
+      default: themeProperties.designSystem.colors.white,
     },
     error: {
-      main: themeProperties.light.dangerColor,
+      main: themeProperties.designSystem.colors.fireRed,
     },
     text: {
-      primary: themeProperties.light.primaryFontColor,
-      secondary: 'rgba(0, 0, 0, 0.6)',
+      primary: themeProperties.designSystem.colors.coreText,
+      secondary: themeProperties.designSystem.colors.softText,
+    },
+    success: {
+      main: themeProperties.designSystem.colors.primaryColor,
     },
   },
   typography: {
@@ -68,6 +111,11 @@ const materialTheme = createTheme({
           borderRadius: 28,
           textTransform: 'none',
           padding: '12px 30px',
+          '&.Mui-disabled': {
+            backgroundColor:
+              themeProperties.designSystem.colors.mediumGreyTransparent30,
+            color: themeProperties.designSystem.colors.mediumGrey,
+          },
         },
         containedSizeSmall: {
           padding: '5px 10px',
@@ -80,7 +128,7 @@ const materialTheme = createTheme({
           fontWeight: themeProperties.fontWeight,
         },
         textWarning: {
-          color: themeProperties.light.dangerColor,
+          color: themeProperties.designSystem.colors.fireRed,
         },
       },
     },
@@ -125,6 +173,16 @@ const materialTheme = createTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: themeProperties.designSystem.colors.mediumGrey,
+          },
+          '&.Mui-disabled': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: themeProperties.designSystem.colors.mediumGrey,
+            },
+          },
+        },
         inputSizeSmall: {
           padding: '8.5px',
         },
@@ -139,6 +197,90 @@ const materialTheme = createTheme({
       styleOverrides: {
         label: {
           fontSize: `${themeProperties.fontSizes.fontSixteen} !important`,
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        filledSuccess: {
+          backgroundColor: themeProperties.designSystem.colors.brightGreen,
+        },
+        filledInfo: {
+          backgroundColor: themeProperties.designSystem.colors.oceanBlue,
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: themeProperties.designSystem.colors.hintText,
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            '& .MuiInputBase-input': {
+              color: themeProperties.designSystem.colors.hintText,
+              WebkitTextFillColor: themeProperties.designSystem.colors.hintText,
+            },
+          },
+        },
+      },
+    },
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: `${themeProperties.designSystem.colors.leafGreen} !important`,
+            color: themeProperties.designSystem.colors.white,
+          },
+          '&:hover': {
+            backgroundColor: themeProperties.designSystem.colors.leafGreen,
+            color: themeProperties.designSystem.colors.white,
+          },
+        },
+      },
+    },
+    MuiCalendarPicker: {
+      styleOverrides: {
+        root: {
+          '& .Mui-selected': {
+            backgroundColor: themeProperties.designSystem.colors.leafGreen,
+            color: themeProperties.designSystem.colors.white,
+          },
+          '& .MuiPickersDay-dayWithMargin': {
+            '&:hover': {
+              backgroundColor: themeProperties.designSystem.colors.leafGreen,
+              color: themeProperties.designSystem.colors.white,
+            },
+          },
+        },
+      },
+    },
+    MuiYearPicker: {
+      styleOverrides: {
+        root: {
+          '& .PrivatePickersYear-yearButton': {
+            '&:hover': {
+              backgroundColor: themeProperties.designSystem.colors.leafGreen,
+              color: themeProperties.designSystem.colors.white,
+            },
+            '&.Mui-selected': {
+              backgroundColor: `${themeProperties.designSystem.colors.leafGreen} !important`,
+              color: themeProperties.designSystem.colors.white,
+            },
+          },
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '12px',
         },
       },
     },

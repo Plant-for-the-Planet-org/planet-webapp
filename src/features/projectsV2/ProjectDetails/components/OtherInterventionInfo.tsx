@@ -10,7 +10,7 @@ import styles from '../styles/PlantLocationInfo.module.scss';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
-import ImageSlider from './microComponents/ImageSlider';
+import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import InterventionHeader from './microComponents/InterventionHeader';
@@ -110,34 +110,35 @@ const OtherInterventionInfo = ({
   isMobile,
   setSelectedSamplePlantLocation,
   selectedPlantLocation,
-  hoveredPlantLocation
+  hoveredPlantLocation,
 }: Props) => {
   const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
+  if (!plantLocationInfo) return null;
+  const sampleInterventions = plantLocationInfo.sampleInterventions || [];
+  const plantedSpecies = plantLocationInfo.plantedSpecies || [];
+  const hasSampleInterventions = sampleInterventions.length > 0;
+  const hasPlantedSpecies = plantedSpecies.length > 0;
+
   const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount } = useMemo(() => {
-    const totalTreesCount =
-      plantLocationInfo &&
-        plantLocationInfo.plantedSpecies &&
-        plantLocationInfo.plantedSpecies.length > 0
-        ? plantLocationInfo.plantedSpecies.reduce(
+    const totalTreesCount = hasPlantedSpecies
+      ? plantedSpecies.reduce(
           (sum, species: { treeCount: number }) => sum + species.treeCount,
           0
         )
-        : 0;
+      : 0;
     return { totalTreesCount };
-  }, [plantLocationInfo, plantLocationInfo?.type]);
+  }, [plantLocationInfo, plantLocationInfo.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    if (plantLocationInfo && plantLocationInfo.sampleInterventions.length > 0) {
-      const result =
-        plantLocationInfo.sampleInterventions &&
-        plantLocationInfo.sampleInterventions.map((item) => {
-          return {
-            id: item.coordinates[0].id,
-            image: item.coordinates[0].image ?? '',
-            description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
-          };
-        });
+    if (hasSampleInterventions) {
+      const result = sampleInterventions.map((item) => {
+        return {
+          id: item.coordinates[0].id,
+          image: item.coordinates[0].image ?? '',
+          description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+        };
+      });
       return result;
     }
   }, [plantLocationInfo]);
@@ -151,9 +152,9 @@ const OtherInterventionInfo = ({
   const content = [
     <>
       <InterventionHeader
-        plHid={plantLocationInfo?.hid}
-        interventionType={plantLocationInfo?.type}
-        plantDate={plantLocationInfo?.interventionStartDate}
+        plHid={plantLocationInfo.hid}
+        interventionType={plantLocationInfo.type}
+        plantDate={plantLocationInfo.interventionStartDate}
         key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
@@ -171,23 +172,21 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={cleanedPublicMetadata}
-        plantDate={plantLocationInfo?.interventionStartDate}
-        type={plantLocationInfo?.type}
-      />),
-    plantLocationInfo?.plantedSpecies &&
-    plantLocationInfo.plantedSpecies.length > 0 && (
+        plantDate={plantLocationInfo.interventionStartDate}
+        type={plantLocationInfo.type}
+      />
+    ),
+    hasPlantedSpecies && (
       <SpeciesPlanted
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
-        plantedSpecies={plantLocationInfo.plantedSpecies}
+        plantedSpecies={plantedSpecies}
       />
     ),
-    plantLocationInfo &&
-    plantLocationInfo.sampleInterventions &&
-    plantLocationInfo.sampleInterventions.length > 0 && (
+    hasSampleInterventions && (
       <SampleTrees
         key="sampleTrees"
-        sampleInterventions={plantLocationInfo.sampleInterventions}
+        sampleInterventions={sampleInterventions}
         setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
       />
     ),
@@ -197,7 +196,7 @@ const OtherInterventionInfo = ({
     <>
       <MobileInfoSwiper
         slides={content}
-        uniqueKey={plantLocationInfo?.hid || ''}
+        uniqueKey={plantLocationInfo.hid || ''}
       />
     </>
   ) : (

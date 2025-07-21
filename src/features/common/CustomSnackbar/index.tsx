@@ -1,8 +1,7 @@
 import type { ReactElement } from 'react';
 
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
-import { styled } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
 
 interface SnackbarProps {
   snackbarText: string;
@@ -10,12 +9,6 @@ interface SnackbarProps {
   /** Include operations that need to take place when the snackbar is closed */
   handleClose: () => void;
 }
-
-const Alert = styled(MuiAlert)(({ theme }) => {
-  return {
-    backgroundColor: theme.palette.primary.main,
-  };
-});
 
 /**
  * Component that renders a temporary snackbar to indicate a success message

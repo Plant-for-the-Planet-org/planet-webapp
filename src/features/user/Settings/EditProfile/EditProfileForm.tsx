@@ -2,9 +2,9 @@ import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
 import type { User, UserType } from '@planet-sdk/common/build/types/user';
 
-import { styled, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
@@ -30,12 +30,6 @@ import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/h
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
-
-const Alert = styled(MuiAlert)(({ theme }) => {
-  return {
-    backgroundColor: theme.palette.primary.main,
-  };
-});
 
 type ProfileFormData = {
   address: string;
@@ -300,7 +294,7 @@ export default function EditProfileForm() {
               type="button"
             >
               <div className={styles.profilePicButtonText}>
-                <Delete color="#828282" />
+                <Delete color={themeProperties.designSystem.colors.softText2} />
                 <span>{t('profilePictureButtonLabels.delete')}</span>
               </div>
             </button>
@@ -405,9 +399,8 @@ export default function EditProfileForm() {
             control={control}
             rules={{
               pattern: {
-                //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
                 value:
-                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                  /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
                 message: t('validationErrors.websiteInvalid'),
               },
             }}
@@ -537,7 +530,7 @@ export default function EditProfileForm() {
                   triggerElement={
                     <NewInfoIcon
                       width={14}
-                      color={themeProperties.mediumGrayColor}
+                      color={themeProperties.designSystem.colors.softText2}
                     />
                   }
                   showTooltipPopups={true}

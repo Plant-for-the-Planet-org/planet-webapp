@@ -117,7 +117,12 @@ const DonorContactManagement = () => {
         country: selectedAddress?.country ?? '',
       };
 
-      updateDonorAndAddress(donorView, addressView, checkedAddressGuid);
+      updateDonorAndAddress(
+        donorView,
+        addressView,
+        checkedAddressGuid,
+        updatedUser
+      );
       navigateToVerificationPage();
     } catch (error) {
       setErrors(handleError(error as APIError));
@@ -129,8 +134,10 @@ const DonorContactManagement = () => {
     if (!addressAction) return null;
 
     const commonProps = {
-      setIsModalOpen,
-      setAddressAction,
+      handleCancel: () => {
+        setIsModalOpen(false);
+        setAddressAction(null);
+      },
       showPrimaryAddressToggle: true,
     };
 

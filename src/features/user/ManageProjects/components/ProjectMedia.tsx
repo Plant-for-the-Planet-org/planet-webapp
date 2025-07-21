@@ -2,9 +2,8 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   ProjectMediaProps,
   UploadImage,
-  ProfileProjectTrees,
-  ProfileProjectConservation,
   ImagesScopeProjects,
+  ExtendedProfileProjectProperties,
 } from '../../../common/types/project';
 import type { ReactElement, FocusEvent } from 'react';
 
@@ -183,7 +182,7 @@ export default function ProjectMedia({
 
     try {
       const res = await putApiAuthenticated<
-        ProfileProjectTrees | ProfileProjectConservation,
+        ExtendedProfileProjectProperties,
         ProjectVideoApiPayload
       >(`/app/projects/${projectGUID}`, { payload: videoPayload });
       setProjectDetails(res);

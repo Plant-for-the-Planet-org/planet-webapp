@@ -6,13 +6,13 @@ import { formatHid } from '../../../../../utils/projectV2';
 interface Props {
   plHid: string | undefined;
   totalTreesCount: number;
-  plantedLocationArea: number | null;
+  plantLocationAreaHectares: number;
 }
 
 const PlantLocationHeader = ({
   plHid,
   totalTreesCount,
-  plantedLocationArea,
+  plantLocationAreaHectares,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
@@ -21,14 +21,17 @@ const PlantLocationHeader = ({
       className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
     >
       <div className={`tree-count ${styles.treeCount}`}>
-        {tProjectDetails.rich('totalPlantedSpecies', {
+        {tProjectDetails.rich('totalPlantedTrees', {
           count: totalTreesCount,
           formattedCount: localizedAbbreviatedNumber(
             locale,
             Number(totalTreesCount),
             1
           ),
-          area: plantedLocationArea?.toFixed(3),
+          area:
+            plantLocationAreaHectares > 0
+              ? plantLocationAreaHectares.toFixed(3)
+              : undefined,
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>

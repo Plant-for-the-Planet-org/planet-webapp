@@ -14,10 +14,8 @@ import type {
   PlantingLocationFormData,
   SpeciesFormData,
 } from '../../Treemapper';
-import type { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../../common/types/common';
-import type { SxProps } from '@mui/material';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 
 import React from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
@@ -36,30 +34,11 @@ import flatten from 'geojson-flatten';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useApi } from '../../../../../hooks/useApi';
 
 // import { DevTool } from '@hookform/devtools';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 interface SpeciesProps {
   index: number;
@@ -187,7 +166,7 @@ export default function PlantingLocation({
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [projects, setProjects] = React.useState<MapProject[]>([]);
+  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
@@ -223,7 +202,7 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getApiAuthenticated<MapProject[]>(
+      const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
         '/app/profile/projects'
       );
       setProjects(projects);
@@ -437,9 +416,6 @@ export default function PlantingLocation({
                   renderInput={(props) => <TextField {...props} />}
                   disableFuture
                   inputFormat="MMMM d, yyyy"
-                  DialogProps={{
-                    sx: dialogSx,
-                  }}
                 />
               )}
             />

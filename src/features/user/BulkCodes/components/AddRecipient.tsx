@@ -73,7 +73,9 @@ const AddRecipient = ({
                 title={t('titleAddRecipientButton')}
                 color="primary"
               >
-                <AddIcon color={themeProperties.primaryColor} />
+                <AddIcon
+                  color={themeProperties.designSystem.colors.warmGreen}
+                />
               </IconButton>
             </ActionContainer>
           </form>

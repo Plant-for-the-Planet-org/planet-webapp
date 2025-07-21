@@ -4,7 +4,6 @@ import type {
   CertificateScopeProjects,
   ProjectCertificatesProps,
 } from '../../../common/types/project';
-import type { SxProps } from '@mui/material';
 
 import React from 'react';
 import styles from './../StepForm.module.scss';
@@ -19,28 +18,11 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { TextField, Button, FormControlLabel, Switch } from '@mui/material';
-import themeProperties from '../../../../theme/themeProperties';
+import { TextField, Button, FormControlLabel } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
+import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 
 type CertificateApiPayload = {
   issueDate: number;
@@ -72,7 +54,7 @@ function ProjectCertificates({
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
     undefined
   );
-  const [isCertified, setisCertified] = React.useState<boolean>(true);
+  const [isCertified, setIsCertified] = React.useState<boolean>(true);
   const [showToggle, setShowToggle] = React.useState<boolean>(true);
 
   const onSubmit = async (pdf: string) => {
@@ -141,7 +123,7 @@ function ProjectCertificates({
         setErrors(handleError(err as APIError));
         redirect('/profile');
         setShowToggle(true);
-        setisCertified(false);
+        setIsCertified(false);
         setShowForm(true);
       }
     };
@@ -183,7 +165,7 @@ function ProjectCertificates({
     if (uploadedFiles && uploadedFiles.length == 0) {
       setShowToggle(true);
       setShowForm(true);
-      setisCertified(false);
+      setIsCertified(false);
     }
   }, [uploadedFiles]);
 
@@ -194,17 +176,18 @@ function ProjectCertificates({
     <div className={styles.certificateContainer}>
       {showToggle && (
         <FormControlLabel
-          label={t('isCertified')}
+          label={<span className={styles.toggleText}>{t('isCertified')}</span>}
           labelPlacement="end"
           control={
-            <Switch
+            <NewToggleSwitch
               name="isCertified"
               id="isCertified"
               checked={isCertified}
-              onChange={() => setisCertified(!isCertified)}
+              onChange={() => setIsCertified(!isCertified)}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           }
+          sx={{ marginLeft: '0px' }}
         />
       )}
 
@@ -299,9 +282,6 @@ function ProjectCertificates({
                     disableFuture
                     maxDate={new Date()}
                     minDate={tenYearsAgo}
-                    DialogProps={{
-                      sx: dialogSx,
-                    }}
                     value={value}
                     onChange={onChange}
                   />

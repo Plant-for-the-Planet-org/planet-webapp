@@ -15,28 +15,12 @@ import {
   Fade,
   Modal,
   FormControlLabel,
-  styled,
 } from '@mui/material';
-import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-
-const MuiCalendarPicker = styled(CalendarPicker<Date>)({
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-});
+import { CalendarPicker } from '@mui/x-date-pickers';
 
 interface PauseModalProps {
   pauseModalOpen: boolean;
@@ -58,8 +42,8 @@ export const PauseModal = ({
 }: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
-  const [option, setoption] = React.useState<string>();
-  const [showCalender, setshowCalender] = React.useState(false);
+  const [option, setOption] = React.useState<string>();
+  const [showCalender, setShowCalender] = React.useState(false);
   const [date, setdate] = React.useState<Date | null>(
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
@@ -150,11 +134,11 @@ export const PauseModal = ({
               name="date"
               value={option}
               onChange={(event) => {
-                setoption(event.target.value);
+                setOption(event.target.value);
                 if (event.target.value === 'pauseUntilDate') {
-                  setshowCalender(true);
+                  setShowCalender(true);
                 } else {
-                  setshowCalender(false);
+                  setShowCalender(false);
                 }
               }}
               className={styles.radioButtonGrid}
@@ -181,7 +165,7 @@ export const PauseModal = ({
             {showCalender ? (
               <>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <MuiCalendarPicker
+                  <CalendarPicker
                     date={date}
                     onChange={(value) => {
                       setdate(value);

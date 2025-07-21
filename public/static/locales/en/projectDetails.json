@@ -25,11 +25,11 @@
       "owned-by-owner": "Owned by Owner",
       "other": "Other"
     },
-    "ownershipTypeDetails": "{translatedOwnershipType} · since {acquisitionYear}",
+    "sinceYear": "Since {acquisitionYear}",
     "progressReports": "progress reports",
     "readMore": "Read More",
     "readLess": "Read Less",
-    "totalPlantedSpecies": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
+    "totalPlantedTrees": "{count, plural, =1 {# Tree} other {{formattedCount} Trees}} {area, select, undefined {} other {<areaContainer>({area} ha)</areaContainer>}}",
     "plantingDate": "Planting Date",
     "plantingDensity": "Planting Density",
     "plantingDensityUnit": "{formattedCount} trees per ha",
@@ -96,6 +96,8 @@
     "timeTravel": {
       "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}",
       "timeTravelOptionsLabel": "Time Travel Options"
-    }
+    },
+    "previousImage": "Previous Image",
+    "nextImage": "Next Image"
   }
 }

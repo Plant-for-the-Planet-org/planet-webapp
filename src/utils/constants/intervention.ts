@@ -1,5 +1,6 @@
 import type { DataDrivenPropertyValueSpecification } from 'maplibre-gl';
 import type { PlantLocation } from '../../features/common/types/plantLocation';
+import type { InterventionTypes } from '@planet-sdk/common';
 
 const SINGLE_TREE = '#007A49';
 const MULTI_TREE = '#007A49';
@@ -51,26 +52,7 @@ export const FillColor: DataDrivenPropertyValueSpecification<string> = [
 	SINGLE_TREE
 ];
 
-export type INTERVENTION_TYPE =
-  | 'single-tree-registration'
-  | 'multi-tree-registration'
-  | 'removal-invasive-species'
-  | 'fire-suppression'
-  | 'fire-patrol'
-  | 'fencing'
-  | 'marking-regenerant'
-  | 'liberating-regenerant'
-  | 'grass-suppression'
-  | 'firebreaks'
-  | 'assisting-seed-rain'
-  | 'soil-improvement'
-  | 'stop-tree-harvesting'
-  | 'direct-seeding'
-  | 'enrichment-planting'
-  | 'other-intervention'
-  | 'maintenance'
-  | 'default'
-  | 'all';
+export type INTERVENTION_TYPE = InterventionTypes | 'default' | 'all';
 
 export const AllInterventions: Array<{
   label: string;
