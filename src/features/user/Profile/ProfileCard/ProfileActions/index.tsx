@@ -10,10 +10,12 @@ import {
 import styles from './ProfileActions.module.scss';
 import RedeemModal from '../RedeemModal';
 import SocialMediaShareButton from './SocialMediaShareButton';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import WebappButton from '../../../../common/WebappButton';
+import getLocalizedPath from '../../../../../utils/getLocalizedPath';
 
 const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
+  const locale = useLocale();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const t = useTranslations('Profile');
   const handleRedeemModalOpen = () => {
@@ -39,7 +41,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
         icon={<AllDonations />}
         text={t('feature.allDonations')}
         elementType={'link'}
-        href={'/profile/history'}
+        href={getLocalizedPath('/profile/history', locale)}
       />
       <WebappButton
         icon={<RedeemIcon />}
@@ -66,7 +68,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
         }
         variant="primary"
         elementType={'link'}
-        href={`/s/${userProfile?.slug}`}
+        href={getLocalizedPath(`/s/${userProfile?.slug}`, locale)}
       />
       <div className={styles.websiteShareActions}>
         {userProfile?.url !== null && (
