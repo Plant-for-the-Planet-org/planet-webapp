@@ -10,7 +10,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { useLocale } from 'next-intl';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 type PopupClosedData = {
   show: false;

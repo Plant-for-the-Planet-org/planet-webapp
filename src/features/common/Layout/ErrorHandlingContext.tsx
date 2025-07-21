@@ -3,7 +3,7 @@ import type { SerializedError } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
 import React, { createContext, useState } from 'react';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 
 type SetState<T> = Dispatch<SetStateAction<T>>;

@@ -31,7 +31,7 @@ import {
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../../src/utils/localizedPath';
+import getLocalizedPath from '../../../../../src/utils/getLocalizedPath';
 
 interface Props {
   currencyCode: string;

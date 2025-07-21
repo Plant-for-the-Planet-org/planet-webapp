@@ -16,7 +16,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/PlantLocation/ImageSlider'),

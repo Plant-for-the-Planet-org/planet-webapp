@@ -20,7 +20,7 @@ import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import TopProjectReports from '../components/projectDetails/TopProjectReports';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,

@@ -7,7 +7,7 @@ import SignInButton from './SignInButton';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from '../Navbar.module.scss';
-import getLocalizedPath from '../../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../../utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 
 const ProfileIconSkeleton = () => {

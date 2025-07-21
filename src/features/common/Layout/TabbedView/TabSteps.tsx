@@ -5,7 +5,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 
 interface TabStepsProps {

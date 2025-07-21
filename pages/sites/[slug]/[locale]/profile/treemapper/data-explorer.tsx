@@ -22,7 +22,7 @@ import {
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../../../src/utils/localizedPath';
+import getLocalizedPath from '../../../../../../src/utils/getLocalizedPath';
 
 interface Props {
   pageProps: PageProps;

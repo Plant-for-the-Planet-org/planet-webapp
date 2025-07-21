@@ -18,7 +18,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 interface Props {
   isPlanetCashActive: boolean;

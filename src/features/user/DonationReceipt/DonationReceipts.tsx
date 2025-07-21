@@ -25,7 +25,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();

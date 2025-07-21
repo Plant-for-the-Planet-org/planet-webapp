@@ -24,7 +24,7 @@ import FiberPinIcon from '@mui/icons-material/FiberPin';
 import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const UserLayout: FC = ({ children }) => {
   const t = useTranslations('Me');

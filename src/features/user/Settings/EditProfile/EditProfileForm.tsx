@@ -30,7 +30,7 @@ import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/h
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 type ProfileFormData = {
   address: string;

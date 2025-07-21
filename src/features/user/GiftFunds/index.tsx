@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 const GiftFunds = () => {
   const t = useTranslations('GiftFunds');

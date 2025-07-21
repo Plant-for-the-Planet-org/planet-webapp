@@ -7,7 +7,7 @@ import router from 'next/router';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import IconContainer from './IconContainer';
 import styles from './UserLayout.module.scss';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 export interface SubMenuItemType {
   title: string;

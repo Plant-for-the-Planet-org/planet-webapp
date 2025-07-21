@@ -10,7 +10,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { APIError } from '@planet-sdk/common';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 export type ImpersonationData = {
   targetEmail: string;

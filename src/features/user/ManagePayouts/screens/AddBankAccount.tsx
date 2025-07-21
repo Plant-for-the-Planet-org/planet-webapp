@@ -14,7 +14,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const AddBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');

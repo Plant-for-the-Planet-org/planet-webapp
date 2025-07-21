@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
-import getLocalizedPath from '../../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../../utils/getLocalizedPath';
 
 export const SignInButton = () => {
   const { user, loginWithRedirect } = useUserProps();

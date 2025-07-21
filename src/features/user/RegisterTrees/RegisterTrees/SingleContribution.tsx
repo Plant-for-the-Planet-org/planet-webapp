@@ -12,7 +12,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 export interface ContributionProperties {
   contributionImages: Image[];

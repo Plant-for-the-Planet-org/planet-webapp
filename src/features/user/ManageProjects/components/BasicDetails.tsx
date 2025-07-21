@@ -37,7 +37,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 type BaseFormData = {
   name: string;

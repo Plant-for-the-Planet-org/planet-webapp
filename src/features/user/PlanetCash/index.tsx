@@ -16,7 +16,7 @@ import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',

@@ -21,7 +21,7 @@ import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
 import { zoomToPolygonPlantLocation } from '../../../../../src/utils/maps/plantLocations';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 
 interface Props {

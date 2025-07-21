@@ -28,7 +28,7 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../src/utils/localizedPath';
+import getLocalizedPath from '../../../../src/utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 interface Props {
   pageProps: PageProps;

@@ -12,7 +12,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 
 export default function SitesDropdown(): ReactElement {

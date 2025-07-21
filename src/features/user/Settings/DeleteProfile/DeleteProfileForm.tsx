@@ -11,7 +11,7 @@ import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();

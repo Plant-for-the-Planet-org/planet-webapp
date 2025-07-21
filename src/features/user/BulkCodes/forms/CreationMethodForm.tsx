@@ -12,7 +12,7 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import { useLocale, useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const CreationMethodForm = (): ReactElement | null => {
   const router = useRouter();

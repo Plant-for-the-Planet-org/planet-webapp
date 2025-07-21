@@ -4,7 +4,7 @@ import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/Logout
 import styles from './ImpersonateUser.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const ImpersonationActivated = () => {
   const { user, isImpersonationModeOn, setIsImpersonationModeOn, loadUser } =

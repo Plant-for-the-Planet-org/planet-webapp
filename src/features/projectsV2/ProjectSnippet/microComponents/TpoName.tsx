@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import styles from '../styles/ProjectSnippet.module.scss';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 interface TpoNameProps {
   projectTpoName: string;

@@ -32,7 +32,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 const MuiTextField = styled(TextField)(() => {
   return {

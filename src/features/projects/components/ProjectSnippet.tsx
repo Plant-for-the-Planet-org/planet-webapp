@@ -31,7 +31,7 @@ import {
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { useTenant } from '../../common/Layout/TenantContext';
 import styles from '../styles/ProjectSnippet.module.scss';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 interface Props {
   project:

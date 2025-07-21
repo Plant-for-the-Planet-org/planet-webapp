@@ -32,7 +32,7 @@ import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
-import getLocalizedPath from '../../../../../../../src/utils/localizedPath';
+import getLocalizedPath from '../../../../../../../src/utils/getLocalizedPath';
 
 interface Props {
   pageProps: PageProps;

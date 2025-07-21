@@ -13,7 +13,7 @@ import { Button, FormControlLabel } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 function SubmitForReview({
   submitForReview,

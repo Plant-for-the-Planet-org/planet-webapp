@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../StepForm.module.scss';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 interface ProjectSelectionProps {
   setTabSelected: SetState<number>;

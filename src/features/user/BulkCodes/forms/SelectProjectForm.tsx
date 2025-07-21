@@ -11,7 +11,7 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();

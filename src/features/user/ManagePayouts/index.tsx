@@ -16,7 +16,7 @@ import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',

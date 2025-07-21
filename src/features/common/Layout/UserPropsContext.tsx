@@ -21,7 +21,7 @@ import { useLocale } from 'next-intl';
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;

@@ -20,7 +20,7 @@ import TabbedView from '../../common/Layout/TabbedView';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
-import getLocalizedPath from '../../../utils/localizedPath';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,

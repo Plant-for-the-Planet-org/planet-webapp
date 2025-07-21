@@ -27,7 +27,7 @@ import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 import { useLocale } from 'next-intl';
 
 interface Props {

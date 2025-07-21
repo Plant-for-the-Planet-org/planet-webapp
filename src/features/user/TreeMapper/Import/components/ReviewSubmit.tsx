@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import getLocalizedPath from '../../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../../utils/getLocalizedPath';
 
 interface Props {
   plantLocation: PlantLocationMulti;

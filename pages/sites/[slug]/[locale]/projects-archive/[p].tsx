@@ -35,7 +35,7 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../../src/utils/localizedPath';
+import getLocalizedPath from '../../../../../src/utils/getLocalizedPath';
 
 interface Props {
   currencyCode: string | null | undefined;

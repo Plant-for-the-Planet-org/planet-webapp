@@ -24,7 +24,7 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 interface LayerType {
   id: string;

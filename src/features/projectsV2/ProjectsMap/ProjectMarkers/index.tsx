@@ -6,7 +6,7 @@ import SingleMarker from './SingleMarker';
 import router from 'next/router';
 import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import getLocalizedPath from '../../../../utils/localizedPath';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
