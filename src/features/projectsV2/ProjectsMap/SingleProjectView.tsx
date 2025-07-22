@@ -110,7 +110,8 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   useEffect(() => {
     const isSatelliteView =
       singleProject.purpose === 'conservation' ||
-      (singleProject.purpose === 'trees' && plantLocations?.length === 0);
+      (singleProject.purpose === 'trees' &&
+        (!plantLocations || plantLocations.length === 0));
 
     setIsSatelliteView(isSatelliteView);
   }, [plantLocations, singleProject.purpose]);
