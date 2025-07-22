@@ -105,11 +105,10 @@ function NavLink({
 
     // Check if this menu item should navigate directly (no submenu interaction)
     const shouldNavigateDirectly =
-      link.path !== undefined &&
-      (!link.subMenu || link.subMenu.length <= 0 || link.hideSubMenu);
+      !link.subMenu || link.subMenu.length <= 0 || link.hideSubMenu;
 
-    if (shouldNavigateDirectly) {
-      router.push(`/${locale}${link.path}`);
+    if (shouldNavigateDirectly && link.path) {
+      router.push(getLocalizedPath(link.path, locale));
       setCurrentMenuKey(link.key);
       setCurrentSubMenuKey('');
       closeMenu();
@@ -123,7 +122,7 @@ function NavLink({
   const handleSubMenuClick = (subMenuItem: SubMenuItemType) => {
     setCurrentMenuKey(link.key);
     setCurrentSubMenuKey(subMenuItem.key);
-    router.push(`/${locale}${subMenuItem.path}`);
+    router.push(getLocalizedPath(subMenuItem.path, locale));
     closeMenu();
   };
 
