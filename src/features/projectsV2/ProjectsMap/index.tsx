@@ -31,6 +31,7 @@ import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocat
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
@@ -181,6 +182,27 @@ function ProjectsMap(props: ProjectsMapProps) {
     page: props.page,
     mobileOS,
   };
+
+  useEffect(() => {
+    if (props.page === 'project-details' || !mapLoaded) return;
+
+    if (mapRef.current) {
+      const map = mapRef.current.getMap
+        ? mapRef.current.getMap()
+        : mapRef.current;
+
+      try {
+        zoomOutMap(map, () => {
+          handleViewStateChange({
+            ...map.getCenter(),
+            zoom: map.getZoom(),
+          });
+        });
+      } catch (err) {
+        console.error('Failed to zoom out map:', err);
+      }
+    }
+  }, [props.page, mapLoaded]);
 
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {

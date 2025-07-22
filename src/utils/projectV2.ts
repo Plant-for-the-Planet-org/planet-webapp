@@ -33,15 +33,22 @@ export const MAIN_MAP_LAYERS = {
   SELECTED_LINE: 'line-selected',
   DATE_DIFF_LABEL: 'datediff-label',
 };
+
 export const PLANT_LAYERS = [
   MAIN_MAP_LAYERS.PLANT_POLYGON,
   MAIN_MAP_LAYERS.PLANT_POINT,
 ];
+
 export const INTERACTIVE_LAYERS = [
   MAIN_MAP_LAYERS.PLANT_POLYGON,
   MAIN_MAP_LAYERS.PLANT_POINT,
   MAIN_MAP_LAYERS.SITE_POLYGON,
 ];
+
+export const MAIN_MAP_ANIMATION_DURATIONS = {
+  ZOOM_OUT: 1600,
+  ZOOM_IN: 4000,
+} as const;
 
 type RouteParams = {
   siteId?: string | null;
@@ -333,14 +340,12 @@ export const areMapCoordsEqual = (
 export const getLocalizedPath = (path: string, locale: string): string => {
   // Strip query parameters if present
   const pathWithoutQuery = path.split('?')[0];
-
   // Remove trailing slash if present
   const cleanPath = pathWithoutQuery.endsWith('/')
     ? pathWithoutQuery.slice(0, -1)
     : pathWithoutQuery;
-
   // Handle root path special case
-  if (cleanPath === '' || cleanPath === '/') {
+  if (cleanPath === '' || cleanPath === '/' || cleanPath === `/${locale}`) {
     return `/${locale}`;
   }
 

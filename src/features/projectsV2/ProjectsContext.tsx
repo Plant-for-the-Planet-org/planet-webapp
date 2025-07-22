@@ -361,9 +361,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     if (
       !router.isReady ||
-      (plantLocations && plantLocations?.length === 0) ||
       page !== 'project-details' ||
       singleProject === null ||
+      plantLocations === null ||
+      plantLocations.length === 0 ||
       selectedSite !== null ||
       (requestedPlantLocation && requestedSite)
     )
@@ -402,9 +403,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedPlantLocation,
     selectedSite,
     hasNoSites,
+    plantLocations,
   ]);
 
   useEffect(() => {
+    if (requestedPlantLocation && plantLocations === null) return;
     if (
       !router.isReady ||
       page !== 'project-details' ||
@@ -448,6 +451,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     requestedSite,
     router.isReady,
     selectedPlantLocation,
+    plantLocations,
     preventShallowPush,
     hasNoSites,
   ]);
