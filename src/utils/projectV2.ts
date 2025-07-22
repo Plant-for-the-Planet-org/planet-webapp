@@ -219,7 +219,8 @@ export const getPlantLocationInfo = (
   plantLocations: PlantLocation[] | null,
   features: MapGeoJSONFeature[]
 ): PlantLocation | undefined => {
-  if (!plantLocations || plantLocations.length === 0) return;
+  if (!plantLocations || plantLocations.length === 0 || features.length === 0)
+    return;
 
   const topmostFeature = features[0]; // top layer
   const layerId = topmostFeature.layer.id;
