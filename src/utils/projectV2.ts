@@ -213,12 +213,13 @@ export const getPlantLocationInfo = (
   features: MapGeoJSONFeature[]
 ): PlantLocation | undefined => {
   if (!plantLocations || plantLocations.length === 0) return;
-  const plantFeature = features[0]; // top layer
-  const layerId = plantFeature.layer.id;
-  const topmostFeature = PLANT_LAYERS.includes(layerId);
-  if (!topmostFeature) return;
 
-  return plantLocations.find((pl) => pl.id === plantFeature.properties.id);
+  const topmostFeature = features[0]; // top layer
+  const layerId = topmostFeature.layer.id;
+  const isPlantLayer = PLANT_LAYERS.includes(layerId);
+  if (!isPlantLayer) return;
+
+  return plantLocations.find((pl) => pl.id === topmostFeature.properties.id);
 };
 
 export const formatHid = (hid: string | undefined) => {
