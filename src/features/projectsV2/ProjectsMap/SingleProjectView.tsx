@@ -23,11 +23,13 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
-  const router = useRouter();
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
-  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
   if (singleProject === null) return null;
+
+  const router = useRouter();
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
 
