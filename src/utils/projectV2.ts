@@ -17,7 +17,6 @@ import type {
   SamplePlantLocation,
 } from '../features/common/types/plantLocation';
 import type { MapGeoJSONFeature } from 'react-map-gl-v7/maplibre';
-import type { Nullable } from '@planet-sdk/common/build/types/util';
 
 import * as turf from '@turf/turf';
 
