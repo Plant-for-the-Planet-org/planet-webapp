@@ -23,7 +23,6 @@ import {
   getSiteIndex,
   getValidFeatures,
   INTERACTIVE_LAYERS,
-  otherInterventionsWithPointGeometry,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
@@ -213,6 +212,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     [plantLocations, props.page, selectedPlantLocation]
   );
   /**
+   * Map click handler invoked when user clicks on the map in 'project-details' page.
    * This onClick handler is responsible for:
    * - Selecting: point plant locations(single tree), polygon plant locations(multi tree), or project sites
    * - Deselecting: point plant locations ,sample point plant locations, other interventions(point geometry)
@@ -229,9 +229,8 @@ function ProjectsMap(props: ProjectsMapProps) {
 
       const isSamePlant = plantLocationInfo?.id === selectedPlantLocation?.id;
       const isPointGeometry =
-        plantLocationInfo &&
-        (plantLocationInfo.geometry.type === 'Point' ||
-          otherInterventionsWithPointGeometry.includes(plantLocationInfo.type));
+        plantLocationInfo !== undefined &&
+        plantLocationInfo.geometry.type === 'Point';
 
       // Deselect sample point plant location when clicking the parent plant polygon
       if (selectedSamplePlantLocation) setSelectedSamplePlantLocation(null);

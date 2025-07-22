@@ -25,14 +25,6 @@ export type MobileOs = 'android' | 'ios' | undefined;
 
 const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
 
-export const otherInterventionsWithPointGeometry = [
-  'other-intervention',
-  'maintenance',
-  'fencing',
-  'fire-patrol',
-  'fire-suppression',
-];
-
 export const MAIN_MAP_LAYERS = {
   SATELLITE_LAYER: 'satellite-layer',
   PLANT_POLYGON: 'plant-polygon-layer',
@@ -227,8 +219,8 @@ export const getPlantLocationInfo = (
 
   const plantFeature = features[0]; // top layer
   const layerId = plantFeature.layer.id;
-  const isPlantLayer = PLANT_LAYERS.includes(layerId);
-  if (!isPlantLayer) return;
+  const topmostFeature = PLANT_LAYERS.includes(layerId);
+  if (!topmostFeature) return;
 
   return plantLocations.find((pl) => pl.id === plantFeature.properties.id);
 };
