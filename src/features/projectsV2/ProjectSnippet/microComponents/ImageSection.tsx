@@ -13,7 +13,7 @@ import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { getLocalizedPath } from '../../../../utils/projectV2';
+import { getSanitizedLocalizedPath } from '../../../../utils/projectV2';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -57,7 +57,7 @@ const ImageSection = (props: ImageSectionProps) => {
     // Get the final route, localizing relative path
     const finalRoute = isAbsoluteUrl
       ? baseRoute.split('?')[0] // For absolute URLs, just strip query params
-      : getLocalizedPath(baseRoute, locale);
+      : getSanitizedLocalizedPath(baseRoute, locale);
 
     // Handle query parameters for the new navigation
     const queryParams = isEmbed

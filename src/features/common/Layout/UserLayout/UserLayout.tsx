@@ -24,6 +24,7 @@ import FiberPinIcon from '@mui/icons-material/FiberPin';
 import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const UserLayout: FC = ({ children }) => {
   const t = useTranslations('Me');
@@ -294,7 +295,7 @@ const UserLayout: FC = ({ children }) => {
       // Redirect user to desired page after login
       if (!user) {
         if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
-        router.push('/login');
+        router.push(getLocalizedPath('/login', locale));
       }
     }
   }, [contextLoaded, user, router]);
