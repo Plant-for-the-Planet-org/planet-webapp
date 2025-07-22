@@ -23,7 +23,7 @@ const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
 export const MAIN_MAP_ANIMATION_DURATIONS = {
   ZOOM_OUT: 1600,
   ZOOM_IN: 4000,
-};
+} as const;
 
 type RouteParams = {
   siteId?: string | null;

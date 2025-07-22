@@ -361,12 +361,12 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     if (
       !router.isReady ||
-      (plantLocations && plantLocations?.length === 0) ||
       page !== 'project-details' ||
       singleProject === null ||
+      plantLocations === null ||
+      plantLocations.length === 0 ||
       selectedSite !== null ||
-      (requestedPlantLocation && requestedSite) ||
-      plantLocations === null
+      (requestedPlantLocation && requestedSite)
     )
       return;
 
