@@ -225,12 +225,14 @@ function ProjectsMap(props: ProjectsMapProps) {
       if (!features || features.length === 0) return;
 
       const plantLocationInfo = getPlantLocationInfo(plantLocations, features);
-      const siteIndex = getSiteIndex(singleProject?.sites || [], features);
-
       const isSamePlant = plantLocationInfo?.id === selectedPlantLocation?.id;
       const isPointGeometry =
         plantLocationInfo !== undefined &&
         plantLocationInfo.geometry.type === 'Point';
+
+      const sites = singleProject?.sites || [];
+      const hasSites = sites.length > 0;
+      const siteIndex = hasSites ? getSiteIndex(sites, features) : null;
 
       // Deselect sample point plant location when clicking the parent plant polygon
       if (selectedSamplePlantLocation) setSelectedSamplePlantLocation(null);
@@ -238,7 +240,11 @@ function ProjectsMap(props: ProjectsMapProps) {
       // Deselect if clicking the same single tree point plant location again
       if (isSamePlant && isPointGeometry) {
         setSelectedPlantLocation(null);
-        setSelectedSite(siteIndex >= 0 ? siteIndex : 0);
+        if (siteIndex !== null && siteIndex >= 0) {
+          setSelectedSite(siteIndex);
+        } else {
+          setSelectedSite(null);
+        }
         return;
       }
       // If clicking a point/polygon plant location, set it and clear selected site
@@ -248,7 +254,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         return;
       } else {
         // Otherwise, check if a site polygon was clicked
-        if (siteIndex >= 0) {
+        if (siteIndex !== null && siteIndex >= 0) {
           setSelectedSite(siteIndex);
           setSelectedPlantLocation(null);
           setHoveredPlantLocation(null);
@@ -260,7 +266,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       plantLocations,
       props.page,
       selectedPlantLocation,
-      singleProject?.sites,
+      singleProject,
       selectedSamplePlantLocation,
     ]
   );

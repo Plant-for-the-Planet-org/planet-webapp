@@ -182,11 +182,9 @@ export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
  */
 
 export const getSiteIndex = (
-  sites: Nullable<Feature<Polygon | MultiPolygon, ProjectSite>[]> | undefined,
+  sites: Feature<Polygon | MultiPolygon, ProjectSite>[],
   features: MapGeoJSONFeature[]
 ) => {
-  if (!sites || sites.length === 0) return -1;
-
   const siteFeature = features.find(
     (f) => f.layer.id === MAIN_MAP_LAYERS.SITE_POLYGON
   );
@@ -216,7 +214,6 @@ export const getPlantLocationInfo = (
   features: MapGeoJSONFeature[]
 ): PlantLocation | undefined => {
   if (!plantLocations || plantLocations.length === 0) return;
-
   const plantFeature = features[0]; // top layer
   const layerId = plantFeature.layer.id;
   const topmostFeature = PLANT_LAYERS.includes(layerId);
