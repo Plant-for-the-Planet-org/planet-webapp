@@ -182,21 +182,23 @@ function ProjectsMap(props: ProjectsMapProps) {
 
   useEffect(() => {
     if (props.page === 'project-details') return;
-    //Wrapping the logic in Promise.resolve().then() defers the map-related code until after synchronous tasks finish,
-    //Giving the map time to initialize fully. This ensures mapRef.current is ready for interaction.
-    Promise.resolve().then(() => {
-      if (mapRef.current) {
-        const map = mapRef.current.getMap
-          ? mapRef.current.getMap()
-          : mapRef.current;
+
+    if (mapRef.current) {
+      const map = mapRef.current.getMap
+        ? mapRef.current.getMap()
+        : mapRef.current;
+
+      try {
         zoomOutMap(map, () => {
           handleViewStateChange({
             ...map.getCenter(),
             zoom: map.getZoom(),
           });
         });
+      } catch (err) {
+        console.error('Failed to zoom out map:', err);
       }
-    });
+    }
   }, [props.page]);
 
   const onMove = useCallback(
