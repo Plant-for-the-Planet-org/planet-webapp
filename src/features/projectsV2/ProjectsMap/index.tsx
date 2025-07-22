@@ -181,7 +181,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   };
 
   useEffect(() => {
-    if (props.page === 'project-details') return;
+    if (props.page === 'project-details' || !mapLoaded) return;
 
     if (mapRef.current) {
       const map = mapRef.current.getMap
@@ -199,7 +199,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         console.error('Failed to zoom out map:', err);
       }
     }
-  }, [props.page]);
+  }, [props.page, mapLoaded]);
 
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
