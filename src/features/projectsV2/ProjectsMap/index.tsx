@@ -212,7 +212,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     [plantLocations, props.page, selectedPlantLocation]
   );
   /**
-   * Map click handler invoked when user clicks on the map in 'project-details' page.
+   * Map click handler invoked when user clicks on the map in 'project-details' or 'project-list' page (which results in an early return).
+   * Is not invoked while clicking on SampleTreeMarkers as propagation is stopped there.
    * This onClick handler is responsible for:
    * - Selecting: point plant locations(single tree), polygon plant locations(multi tree), or project sites
    * - Deselecting: point plant locations ,sample point plant locations, other interventions(point geometry)
