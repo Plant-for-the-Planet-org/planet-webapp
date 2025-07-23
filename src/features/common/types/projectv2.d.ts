@@ -45,7 +45,3 @@ export interface ExtendedMapLibreMap extends Map {
 export type DropdownType = 'site' | 'intervention' | null;
 
 export type ProjectSiteFeature = Feature<Polygon | MultiPolygon, ProjectSite>;
-export type SiteFeatureCollection = FeatureCollection<
-  Polygon | MultiPolygon,
-  ProjectSite
->;

@@ -1,4 +1,4 @@
-import type { FeatureCollection } from 'geojson';
+import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
 import React from 'react';
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
@@ -6,7 +6,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface Props {
-  geoJson: FeatureCollection;
+  geoJson: SitesGeoJSON;
   isSatelliteView: boolean;
 }
 

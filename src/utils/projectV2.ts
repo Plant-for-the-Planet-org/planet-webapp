@@ -10,7 +10,6 @@ import type {
   MapProjectProperties,
   ExtendedProject,
   MapProject,
-  SiteFeatureCollection,
   ProjectSiteFeature,
 } from '../features/common/types/projectv2';
 import type {
@@ -19,6 +18,7 @@ import type {
   SamplePlantLocation,
 } from '../features/common/types/plantLocation';
 import type { MapGeoJSONFeature } from 'react-map-gl-v7/maplibre';
+import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
 import * as turf from '@turf/turf';
 
@@ -397,9 +397,7 @@ export function isFirealertFiresEnabled() {
  * @param sites - Array of project site features with geometry.
  * @returns GeoJSON FeatureCollection with valid features only.
  */
-export function getSitesGeoJson(
-  sites: ProjectSiteFeature[]
-): SiteFeatureCollection {
+export function getSitesGeoJson(sites: ProjectSiteFeature[]): SitesGeoJSON {
   return {
     type: 'FeatureCollection',
     features: sites.filter((site) => !!site.geometry),
