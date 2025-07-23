@@ -19,6 +19,7 @@ import {
   centerMapOnCoordinates,
   getDeviceType,
   getPlantLocationInfo,
+  getSitesGeoJson,
   getValidFeatures,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
@@ -79,13 +80,10 @@ function ProjectsMap(props: ProjectsMapProps) {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
 
-  const sitesGeoJson = useMemo(() => {
-    return {
-      type: 'FeatureCollection' as const,
-      features:
-        singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
-    };
-  }, [singleProject?.sites]);
+  const sitesGeoJson = useMemo(
+    () => getSitesGeoJson(singleProject?.sites ?? []),
+    [singleProject?.sites]
+  );
 
   useEffect(() => {
     if (!mapLoaded) return;
@@ -241,6 +239,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const singleProjectViewProps = {
     mapRef,
     selectedTab,
+    sitesGeoJson,
   };
 
   const multipleProjectsViewProps = {

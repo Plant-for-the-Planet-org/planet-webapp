@@ -13,7 +13,7 @@ import { useApi } from '../../../../hooks/useApi';
 
 const ALERT_DURATION = '30d';
 
-export default function FireLocations(): ReactElement {
+export default function FireLocationsMarker(): ReactElement {
   const { query } = useRouter();
 
   const { site } = query;

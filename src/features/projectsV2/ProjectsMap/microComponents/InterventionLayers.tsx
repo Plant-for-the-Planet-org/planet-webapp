@@ -50,7 +50,7 @@ const SampleTreeMarker = ({
   </Marker>
 );
 
-export default function PlantLocations(): React.ReactElement {
+export default function InterventionLayers(): React.ReactElement {
   const {
     plantLocations,
     hoveredPlantLocation,

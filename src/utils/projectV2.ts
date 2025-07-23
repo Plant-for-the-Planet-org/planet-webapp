@@ -7,6 +7,8 @@ import type {
   MapProjectProperties,
   ExtendedProject,
   MapProject,
+  SiteFeatureCollection,
+  ProjectSiteFeature,
 } from '../features/common/types/projectv2';
 import type {
   PlantLocation,
@@ -17,13 +19,12 @@ import type {
 import * as turf from '@turf/turf';
 
 export type MobileOs = 'android' | 'ios' | undefined;
-
-const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
-
 type RouteParams = {
   siteId?: string | null;
   plocId?: string | null;
 };
+
+const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
 
 /** Type predicate to check that the property contains a string value*/
 const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
@@ -303,4 +304,20 @@ export function isFirealertFiresEnabled() {
       ?.toLowerCase() === 'true';
 
   return isEnvVariableEnabled || isQueryStringEnabled;
+}
+
+/**
+ * Returns a GeoJSON FeatureCollection from a list of site features.
+ * Filters out features without valid geometry.
+ *
+ * @param sites - Array of project site features with geometry.
+ * @returns GeoJSON FeatureCollection with valid features only.
+ */
+export function getSitesGeoJson(
+  sites: ProjectSiteFeature[]
+): SiteFeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: sites.filter((site) => !!site.geometry),
+  };
 }

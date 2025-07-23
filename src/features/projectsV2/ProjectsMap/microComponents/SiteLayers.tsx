@@ -8,7 +8,7 @@ interface Props {
   isSatelliteView: boolean;
 }
 
-export default function SitePolygon({
+export default function SiteLayers({
   geoJson,
   isSatelliteView,
 }: Props): React.ReactElement {
