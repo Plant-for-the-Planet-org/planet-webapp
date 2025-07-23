@@ -52,8 +52,7 @@ const SampleTreeMarker = ({
   </Marker>
 );
 
-export default function PlantLocations(): React.ReactElement {
-  const { colors } = themeProperties.designSystem;
+export default function InterventionLayers(): React.ReactElement {
   const {
     plantLocations,
     hoveredPlantLocation,
@@ -64,6 +63,7 @@ export default function PlantLocations(): React.ReactElement {
     selectedInterventionType,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
+  const { colors } = themeProperties.designSystem;
 
   const t = useTranslations('Maps');
   const locale = useLocale();
