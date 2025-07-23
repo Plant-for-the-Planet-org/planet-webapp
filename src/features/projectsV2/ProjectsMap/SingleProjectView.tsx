@@ -31,7 +31,9 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
   const router = useRouter();
+
   const hasSitesFeature = sitesGeoJson.features.length > 0;
+  const displayIntervention = selectedTab === 'field' && !isSatelliteView;
 
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
@@ -126,7 +128,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
           purpose={singleProject.purpose}
         />
       )}
-      {selectedTab === 'field' && <InterventionLayers />}
+      {displayIntervention && <InterventionLayers />}
       <FeatureFlag condition={isFirealertFiresEnabled()}>
         <FireLocationsMarker />
       </FeatureFlag>
