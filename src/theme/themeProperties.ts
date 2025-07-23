@@ -108,7 +108,6 @@ const themeProperties = {
     highlightBackground: '#4d5153',
     backgroundColor: '#fff',
     light: '#fff',
-    richBlack: '#333333',
     dark: '#000',
     dangerColor: '#e74c3c',
     safeColor: '#2980b9',
@@ -121,7 +120,6 @@ const themeProperties = {
     grayFontColorNew: '#4F4F4F',
     lightGrayBackgroundColorNew: '#d9d9d9',
     boldFontColorNew: '#2F3336',
-    selectedMenuItemColorNew: '#333',
     dividerColorNew: '#BDBDBD',
     reviewFontColorNew: '45, 156, 219', //used across elements with different opacities, this enables consistency throughout
     aboutProjectBackgroundColorNew: '#27ae601a',
