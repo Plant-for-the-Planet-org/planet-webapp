@@ -18,9 +18,12 @@ import {
   calculateCentroid,
   centerMapOnCoordinates,
   getDeviceType,
+  getFeaturesAtPoint,
   getPlantLocationInfo,
   getSitesGeoJson,
+  getSiteIndex,
   getValidFeatures,
+  INTERACTIVE_LAYERS,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
@@ -29,6 +32,7 @@ import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocat
 import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
@@ -177,6 +181,27 @@ function ProjectsMap(props: ProjectsMapProps) {
     mobileOS,
   };
 
+  useEffect(() => {
+    if (props.page === 'project-details' || !mapLoaded) return;
+
+    if (mapRef.current) {
+      const map = mapRef.current.getMap
+        ? mapRef.current.getMap()
+        : mapRef.current;
+
+      try {
+        zoomOutMap(map, () => {
+          handleViewStateChange({
+            ...map.getCenter(),
+            zoom: map.getZoom(),
+          });
+        });
+      } catch (err) {
+        console.error('Failed to zoom out map:', err);
+      }
+    }
+  }, [props.page, mapLoaded]);
+
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
       handleViewStateChange(evt.viewState);
@@ -187,11 +212,14 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onMouseMove = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
+      const features = getFeaturesAtPoint(mapRef, e.point);
+      if (!features || features.length === 0) return;
+
       const hoveredPlantLocation = getPlantLocationInfo(
         plantLocations,
-        mapRef,
-        e.point
+        features
       );
+
       if (
         !hoveredPlantLocation ||
         hoveredPlantLocation.hid === selectedPlantLocation?.hid
@@ -203,37 +231,65 @@ function ProjectsMap(props: ProjectsMapProps) {
     },
     [plantLocations, props.page, selectedPlantLocation]
   );
-
+  /**
+   * Map click handler invoked when user clicks on the map in 'project-details' or 'project-list' page (which results in an early return).
+   * Is not invoked while clicking on SampleTreeMarkers as propagation is stopped there.
+   * This onClick handler is responsible for:
+   * - Selecting: point plant locations(single tree), polygon plant locations(multi tree), or project sites
+   * - Deselecting: point plant locations ,sample point plant locations, other interventions(point geometry)
+   */
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
-      const hasNoSites = singleProject?.sites?.length === 0;
-      const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
-      const isSamePlantLocation =
-        result?.geometry.type === 'Point' &&
-        result.id === selectedPlantLocation?.id;
-      const isSingleTree =
-        selectedPlantLocation?.type === 'single-tree-registration';
-      const isMultiTree =
-        selectedPlantLocation?.type === 'multi-tree-registration';
-      // const isOther = selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration';
-      // Clear sample plant location on clicking outside.
-      // Clicks on sample plant location will not propagate on the map
-      setSelectedSamplePlantLocation(null);
-      // Clear plant location info if clicked twice (single or multi tree) // point plant location
-      if (isSamePlantLocation && (isSingleTree || isMultiTree)) {
+
+      const features = getFeaturesAtPoint(mapRef, e.point);
+      if (!features || features.length === 0) return;
+
+      const plantLocationInfo = getPlantLocationInfo(plantLocations, features);
+      const isSamePlant = plantLocationInfo?.id === selectedPlantLocation?.id;
+      const isPointGeometry =
+        plantLocationInfo !== undefined &&
+        plantLocationInfo.geometry.type === 'Point';
+
+      const sites = singleProject?.sites || [];
+      const hasSites = sites.length > 0;
+      const siteIndex = hasSites ? getSiteIndex(sites, features) : null;
+
+      // Deselect sample point plant location when clicking the parent plant polygon
+      if (selectedSamplePlantLocation) setSelectedSamplePlantLocation(null);
+
+      // Deselect if clicking the same single tree point plant location again
+      if (isSamePlant && isPointGeometry) {
         setSelectedPlantLocation(null);
-        setSelectedSite(hasNoSites ? null : 0);
+        if (siteIndex !== null && siteIndex >= 0) {
+          setSelectedSite(siteIndex);
+        } else {
+          setSelectedSite(null);
+        }
         return;
       }
-
-      // Set selected plant location if a result is found
-      if (result) {
+      // If clicking a point/polygon plant location, set it and clear selected site
+      if (plantLocationInfo) {
+        setSelectedPlantLocation(plantLocationInfo);
         setSelectedSite(null);
-        setSelectedPlantLocation(result);
+        return;
+      } else {
+        // Otherwise, check if a site polygon was clicked
+        if (siteIndex !== null && siteIndex >= 0) {
+          setSelectedSite(siteIndex);
+          setSelectedPlantLocation(null);
+          setHoveredPlantLocation(null);
+          return;
+        }
       }
     },
-    [plantLocations, props.page, selectedPlantLocation]
+    [
+      plantLocations,
+      props.page,
+      selectedPlantLocation,
+      singleProject,
+      selectedSamplePlantLocation,
+    ]
   );
 
   const singleProjectViewProps = {
@@ -287,9 +343,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           attributionControl={false}
           ref={mapRef}
           interactiveLayerIds={
-            singleProject !== null
-              ? ['plant-polygon-layer', 'point-layer']
-              : undefined
+            singleProject !== null ? INTERACTIVE_LAYERS : undefined
           }
           style={{ width: '100%', height: '100%' }}
         >

@@ -14,6 +14,7 @@ import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonP
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocationMarker from './microComponents/ProjectLocationMarker';
 import FireLocationsMarker from './microComponents/FireLocationsMarker';
+import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
@@ -32,6 +33,8 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const router = useRouter();
   const hasSitesFeature = sitesGeoJson.features.length > 0;
 
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+
   // Zoom to plant location
   useEffect(() => {
     if (!router.isReady || selectedPlantLocation === null) return;
@@ -47,29 +50,42 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
         polygonCoordinates,
         mapRef,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else if (isPointLocation) {
       const [lon, lat] = coordinates;
       if (typeof lon === 'number' && typeof lat === 'number') {
-        zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
+        zoomToLocation(
+          handleViewStateChange,
+          lon,
+          lat,
+          20,
+          MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN,
+          mapRef
+        );
       }
     }
   }, [selectedPlantLocation, router.isReady]);
 
   // Zoom to project site
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation !== null) return;
+    if (
+      !router.isReady ||
+      selectedPlantLocation !== null ||
+      Boolean(requestedPlantLocation)
+    )
+      return;
     if (hasSitesFeature && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeoJson,
         selectedSite,
         handleViewStateChange,
-        4000
+        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
+      if (!(singleProject.sites?.length === 0)) return;
 
       if (typeof latitude === 'number' && typeof longitude === 'number') {
         // Zoom into the project location that has no site and plant location
@@ -83,19 +99,16 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
-
+  }, [selectedSite, requestedSite, router.isReady]);
+  // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
-    const hasPlantLocations =
-      plantLocations?.length !== undefined && plantLocations?.length > 0;
-    // Show satellite view only when:
-    // - There are site features (hasSitesFeature)
-    // - And there are no plant locations
-    const shouldShowSatelliteView = hasSitesFeature && !hasPlantLocations;
+    const isSatelliteView =
+      singleProject.purpose === 'conservation' ||
+      (singleProject.purpose === 'trees' &&
+        (!plantLocations || plantLocations.length === 0));
 
-    setIsSatelliteView(shouldShowSatelliteView);
-  }, [plantLocations, hasSitesFeature]);
-
+    setIsSatelliteView(isSatelliteView);
+  }, [plantLocations, singleProject.purpose]);
   return (
     <>
       {hasSitesFeature ? (
