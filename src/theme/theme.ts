@@ -13,15 +13,11 @@ const {
   primaryLightColor,
   primaryLightGreenBgColor,
   topProjectBackgroundColor,
-  topProjectTransparentColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
-  primaryColorNewTransparent,
   deforestrationRangeBackgroundNew,
   horizontalLineColorNew,
   exploreDescriptionBackground,
-  lightOrange,
-  CharcoalGray,
   designSystem,
 } = theme;
 
@@ -79,17 +75,12 @@ const getGlobalStyles = async () => {
       --primary-light-green-bg-color: ${primaryLightGreenBgColor};
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
-      --top-project-transparent: ${topProjectTransparentColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
       --primary-color-new: ${primaryColorNew};
-      --primary-color-new-transparent: ${primaryColorNewTransparent};
       --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
-      --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
-      --light-orange: ${lightOrange};
-      --charcoal-gray: ${CharcoalGray};
       --ds-primary-color: ${designSystem.colors.primaryColor};
       --ds-primary-color-transparent-7: ${designSystem.colors
         .primaryColorTransparent7};
