@@ -1,6 +1,6 @@
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { SetState } from '../../features/common/types/common';
-import type { PlantLocation } from '../../features/common/types/plantLocation';
+import type { Intervention } from '../../features/common/types/intervention';
 import type { Position } from 'geojson';
 import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
@@ -68,9 +68,9 @@ export async function getAllPlantLocations(
   project: string,
   setErrors: SetState<SerializedError[] | null>,
   redirect: (url: string) => void
-): Promise<PlantLocation[] | null | void> {
+): Promise<Intervention[] | null | void> {
   try {
-    const result = await getRequest<PlantLocation[]>({
+    const result = await getRequest<Intervention[]>({
       tenant,
       url: `/app/plantLocations/${project}`,
       queryParams: {

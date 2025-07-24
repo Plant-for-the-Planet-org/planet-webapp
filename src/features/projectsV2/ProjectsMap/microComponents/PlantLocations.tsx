@@ -1,9 +1,9 @@
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  InterventionMulti,
+  InterventionSingle,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
 import React from 'react';
@@ -17,12 +17,9 @@ import { useProjectsMap } from '../../ProjectsMapContext';
 import { FillColor } from '../../../../utils/constants/intervention';
 
 interface SampleTreeMarkerProps {
-  sample: SamplePlantLocation;
-  selectedSamplePlantLocation: SamplePlantLocation | null;
-  openPl: (
-    e: React.MouseEvent<HTMLDivElement>,
-    pl: SamplePlantLocation
-  ) => void;
+  sample: SampleIntervention;
+  selectedSamplePlantLocation: SampleIntervention | null;
+  openPl: (e: React.MouseEvent<HTMLDivElement>, pl: SampleIntervention) => void;
 }
 
 const SampleTreeMarker = ({
@@ -67,7 +64,7 @@ export default function PlantLocations(): React.ReactElement {
 
   const openPl = (
     e: React.MouseEvent<HTMLDivElement>,
-    pl: PlantLocationSingle | SamplePlantLocation
+    pl: InterventionSingle | SampleIntervention
   ) => {
     e.stopPropagation();
     e.preventDefault();
@@ -88,7 +85,7 @@ export default function PlantLocations(): React.ReactElement {
     }
   };
 
-  const getPlTreeCount = (pl: PlantLocationMulti) => {
+  const getPlTreeCount = (pl: InterventionMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -102,7 +99,7 @@ export default function PlantLocations(): React.ReactElement {
       return 0;
     }
   };
-  const getPlArea = (pl: PlantLocationMulti) => {
+  const getPlArea = (pl: InterventionMulti) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -111,7 +108,7 @@ export default function PlantLocations(): React.ReactElement {
     }
   };
 
-  const getPolygonColor = (pl: PlantLocationMulti) => {
+  const getPolygonColor = (pl: InterventionMulti) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
@@ -128,7 +125,7 @@ export default function PlantLocations(): React.ReactElement {
     }
   };
 
-  const getDateDiff = (pl: PlantLocation) => {
+  const getDateDiff = (pl: Intervention) => {
     if (!pl.interventionStartDate) {
       return null;
     }

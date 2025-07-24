@@ -1,5 +1,5 @@
 import type { DataDrivenPropertyValueSpecification } from 'maplibre-gl';
-import type { PlantLocation } from '../../features/common/types/plantLocation';
+import type { Intervention } from '../../features/common/types/intervention';
 import type { InterventionTypes } from '@planet-sdk/common';
 
 const SINGLE_TREE = '#007A49';
@@ -107,7 +107,7 @@ export const PLANTATION_TYPES = [
 
 // Helper function with proper type checking
 export const isNonPlantationType = (
-  plantLocation: PlantLocation | null
+  plantLocation: Intervention | null
 ): boolean => {
   return (
     plantLocation !== null && !PLANTATION_TYPES.includes(plantLocation.type)

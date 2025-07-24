@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
-import { type PlantLocation as PlantLocationType } from '../../../common/types/plantLocation';
+import type { Intervention } from '../../../common/types/intervention';
 
 import React from 'react';
 import PlantingLocation from './components/PlantingLocation';
@@ -57,14 +57,15 @@ export default function ImportData(): ReactElement {
   }
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
-  const [plantLocation, setPlantLocation] =
-    React.useState<PlantLocationType | null>(null);
+  const [plantLocation, setPlantLocation] = React.useState<Intervention | null>(
+    null
+  );
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
   const fetchPlantLocation = async (id: string) => {
     try {
-      const result = await getApiAuthenticated<PlantLocationType>(
+      const result = await getApiAuthenticated<Intervention>(
         `/treemapper/interventions/${id}`,
         {
           queryParams: { _scope: 'extended' },

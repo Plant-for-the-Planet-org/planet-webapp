@@ -1,8 +1,8 @@
 import type { SetState } from '../../../common/types/common';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 
 import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
@@ -18,8 +18,8 @@ interface ProjectSiteListProps {
   setSelectedSite: SetState<number | null>;
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
-  setSelectedPlantLocation: SetState<PlantLocation | null>;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedPlantLocation: SetState<Intervention | null>;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
   canShowInterventionDropdown: boolean;
 }
 

@@ -4,9 +4,9 @@ import type { Geometry } from '@turf/turf';
 import type { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 import type {
   Measurements,
-  PlantLocationMulti,
+  InterventionMulti,
   SampleTree,
-} from '../../../../common/types/plantLocation';
+} from '../../../../common/types/intervention';
 
 import React, { useState } from 'react';
 import styles from '../Import.module.scss';
@@ -22,7 +22,7 @@ import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   handleNext: Function;
-  plantLocation: PlantLocationMulti;
+  plantLocation: InterventionMulti;
   userLang: string;
 }
 

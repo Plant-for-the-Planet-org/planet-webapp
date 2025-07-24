@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  InterventionMulti,
+  InterventionSingle,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
 import React from 'react';
@@ -32,7 +32,7 @@ export default function PlantLocations(): ReactElement {
   const t = useTranslations('Maps');
   const locale = useLocale();
 
-  const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
+  const openPl = (pl: InterventionSingle | SampleIntervention) => {
     switch (pl.type) {
       case 'sample-tree-registration':
         setSamplePlantLocation(pl);
@@ -45,7 +45,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
+  const onHover = (pl: InterventionSingle | SampleIntervention) => {
     setHoveredPl(pl);
   };
 
@@ -58,7 +58,7 @@ export default function PlantLocations(): ReactElement {
       setHoveredPl(null);
   };
 
-  const getPlTreeCount = (pl: PlantLocationMulti) => {
+  const getPlTreeCount = (pl: InterventionMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -73,7 +73,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const getPlArea = (pl: PlantLocationMulti) => {
+  const getPlArea = (pl: InterventionMulti) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -82,7 +82,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const getPolygonColor = (pl: PlantLocationMulti) => {
+  const getPolygonColor = (pl: InterventionMulti) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
@@ -99,7 +99,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const getDateDiff = (pl: PlantLocation) => {
+  const getDateDiff = (pl: Intervention) => {
     const today = new Date();
     const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();

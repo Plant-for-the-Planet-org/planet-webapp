@@ -1,11 +1,11 @@
 import type { APIError } from '@planet-sdk/common';
 import type {
-  ExtendedScopePlantLocations,
-  PlantLocation as PlantLocationType,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
+  ExtendedScopeInterventions,
+  Intervention,
+  InterventionMulti,
+  InterventionSingle,
+  SampleIntervention,
+} from '../../common/types/intervention';
 import type { Links } from '../../common/types/payments';
 import type { ReactElement } from 'react';
 
@@ -33,11 +33,11 @@ function TreeMapper(): ReactElement {
   const { getApiAuthenticated } = useApi();
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [plantLocations, setPlantLocations] = React.useState<
-    PlantLocationType[]
-  >([]);
+  const [plantLocations, setPlantLocations] = React.useState<Intervention[]>(
+    []
+  );
   const [selectedLocation, setSelectedLocation] = React.useState<
-    PlantLocationSingle | PlantLocationMulti | null
+    InterventionSingle | InterventionMulti | null
   >(null);
   const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -47,7 +47,7 @@ function TreeMapper(): ReactElement {
 
     if (next && links?.next) {
       try {
-        const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
+        const response = await getApiAuthenticated<ExtendedScopeInterventions>(
           links.next // The 'links.next' URL contains query parameters and is passed as-is since no additional parameters are being added.
         );
         if (response?.items) {
@@ -62,8 +62,8 @@ function TreeMapper(): ReactElement {
                   if (
                     Object.prototype.hasOwnProperty.call(newPlantLocations, key)
                   ) {
-                    const item = newPlantLocations[key] as PlantLocationMulti &
-                      SamplePlantLocation;
+                    const item = newPlantLocations[key] as InterventionMulti &
+                      SampleIntervention;
                     if (item.type === 'sample-tree-registration') {
                       if (item.parent === location.id) {
                         location.sampleTrees.push(item);
@@ -86,7 +86,7 @@ function TreeMapper(): ReactElement {
       }
     } else {
       try {
-        const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
+        const response = await getApiAuthenticated<ExtendedScopeInterventions>(
           '/treemapper/interventions',
           {
             queryParams: { _scope: 'extended', limit: '15' },
@@ -106,8 +106,8 @@ function TreeMapper(): ReactElement {
                     if (
                       Object.prototype.hasOwnProperty.call(plantLocations, key)
                     ) {
-                      const item = plantLocations[key] as PlantLocationMulti &
-                        SamplePlantLocation;
+                      const item = plantLocations[key] as InterventionMulti &
+                        SampleIntervention;
                       if (item.type === 'sample-tree-registration') {
                         if (item.parent === location.id) {
                           location.sampleTrees.push(item);
@@ -118,7 +118,7 @@ function TreeMapper(): ReactElement {
                 }
               }
             }
-            setPlantLocations(plantLocations as PlantLocationType[]);
+            setPlantLocations(plantLocations as Intervention[]);
             setLinks(response._links);
           }
         }

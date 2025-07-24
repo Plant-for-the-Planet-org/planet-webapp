@@ -16,7 +16,7 @@ import type { SetState } from './common';
 import type { RefObject } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type { FlyToInterpolator } from 'react-map-gl';
-import type { PlantLocation, SamplePlantLocation } from './plantLocation';
+import type { Intervention, SampleIntervention } from './intervention';
 
 export type ExploreOption =
   | 'Deforestation'
@@ -144,20 +144,20 @@ interface ProjectPropsContextInterface {
   setSelectedMode: SetState<MapMode>;
   rasterData: RasterData;
   setRasterData: SetState<RasterData>;
-  plantLocations: PlantLocation[] | null;
-  setPlantLocations: SetState<PlantLocation[] | null>;
-  selectedPl: PlantLocation | null; //HERE
-  setSelectedPl: SetState<PlantLocation | null>;
-  samplePlantLocation: SamplePlantLocation | null;
-  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  plantLocations: Intervention[] | null;
+  setPlantLocations: SetState<Intervention[] | null>;
+  selectedPl: Intervention | null; //HERE
+  setSelectedPl: SetState<Intervention | null>;
+  samplePlantLocation: SampleIntervention | null;
+  setSamplePlantLocation: SetState<SampleIntervention | null>;
   zoomLevel: number;
   setZoomLevel: SetState<number>;
   satellite: boolean;
   setSatellite: SetState<boolean>;
   plIds: string[] | null;
   setPlIds: SetState<string[] | null>;
-  hoveredPl: PlantLocation | SamplePlantLocation | null;
-  setHoveredPl: SetState<PlantLocation | SamplePlantLocation | null>;
+  hoveredPl: Intervention | SampleIntervention | null;
+  setHoveredPl: SetState<Intervention | SampleIntervention | null>;
   isPolygonMenuOpen: boolean;
   setIsPolygonMenuOpen: SetState<boolean>;
   siteViewPort: SiteViewPort | null;

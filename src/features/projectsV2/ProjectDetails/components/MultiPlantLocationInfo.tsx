@@ -1,7 +1,7 @@
 import type {
-  PlantLocationMulti,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  InterventionMulti,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
@@ -17,9 +17,9 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  plantLocationInfo: PlantLocationMulti;
+  plantLocationInfo: InterventionMulti;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
 }
 
 const MultiPlantLocationInfo = ({

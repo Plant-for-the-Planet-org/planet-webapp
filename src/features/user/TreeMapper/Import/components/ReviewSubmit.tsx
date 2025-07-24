@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
+import type { InterventionMulti } from '../../../../common/types/intervention';
 
 import React from 'react';
 import styles from '../Import.module.scss';
@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 
 interface Props {
-  plantLocation: PlantLocationMulti;
+  plantLocation: InterventionMulti;
   handleBack: () => void;
 }
 

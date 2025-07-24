@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { SliderImage } from '../../components/PlantLocation/ImageSlider';
 
 import React from 'react';
@@ -32,7 +32,7 @@ const ImageSliderSingle = dynamic(
 );
 
 interface Props {
-  plantLocation: PlantLocation | SamplePlantLocation | null;
+  plantLocation: Intervention | SampleIntervention | null;
 }
 
 export default function PlantLocationDetails({

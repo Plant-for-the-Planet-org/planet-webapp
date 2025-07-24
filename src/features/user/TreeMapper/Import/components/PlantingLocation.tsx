@@ -8,8 +8,8 @@ import type {
 } from 'geojson';
 import type {
   Species,
-  PlantLocation as PlantLocationType,
-} from '../../../../common/types/plantLocation';
+  Intervention,
+} from '../../../../common/types/intervention';
 import type {
   PlantingLocationFormData,
   SpeciesFormData,
@@ -137,7 +137,7 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  setPlantLocation: SetState<PlantLocationType | null>;
+  setPlantLocation: SetState<Intervention | null>;
   geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
@@ -325,7 +325,7 @@ export default function PlantingLocation({
 
       try {
         const res = await postApiAuthenticated<
-          PlantLocationType,
+          Intervention,
           PlantingLocationApiPayload
         >(`/treemapper/interventions`, {
           payload,

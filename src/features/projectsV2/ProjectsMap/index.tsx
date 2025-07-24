@@ -1,7 +1,7 @@
 import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
-import type { PlantLocationSingle } from '../../common/types/plantLocation';
+import type { InterventionSingle } from '../../common/types/intervention';
 import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 import type { SelectedTab } from './ProjectMapTabs';
 
@@ -317,7 +317,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         <SinglePlantLocationInfo
           plantData={
             selectedSamplePlantLocation ||
-            (selectedPlantLocation as PlantLocationSingle)
+            (selectedPlantLocation as InterventionSingle)
           }
           isMobile={props.isMobile}
           setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}

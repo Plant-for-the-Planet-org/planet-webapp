@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type {
-  PlantLocationDetails,
-  PlantLocationDetailsQueryRes,
+  InterventionDetails,
+  InterventionDetailsQueryRes,
 } from '../../../../../src/features/common/types/dataExplorer';
 
 import nc from 'next-connect';
@@ -82,11 +82,11 @@ handler.get(async (req, response) => {
 			) as result
   `;
 
-  const res = await query<PlantLocationDetailsQueryRes>(queryText, [
+  const res = await query<InterventionDetailsQueryRes>(queryText, [
     plantLocationId,
   ]);
 
-  const plantLocationDetails: PlantLocationDetails = res[0]?.result || null;
+  const plantLocationDetails: InterventionDetails = res[0]?.result || null;
 
   response.status(200).json({
     res: plantLocationDetails,

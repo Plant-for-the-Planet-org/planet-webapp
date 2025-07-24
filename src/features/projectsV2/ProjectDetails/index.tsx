@@ -1,9 +1,9 @@
 import type { APIError } from '@planet-sdk/common';
 import type {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
+  Intervention,
+  InterventionSingle,
+  SampleIntervention,
+} from '../../common/types/intervention';
 import type { ExtendedProject } from '../../common/types/projectv2';
 
 import { useContext, useEffect, useMemo } from 'react';
@@ -59,7 +59,7 @@ const ProjectDetails = ({
   const fetchPlantLocations = async (projectId: string) => {
     setIsLoading(true);
     try {
-      const result = await getApi<PlantLocation[]>(
+      const result = await getApi<Intervention[]>(
         `/app/plantLocations/${projectId}`,
         { queryParams: { _scope: 'extended' } }
       );
@@ -147,7 +147,7 @@ const ProjectDetails = ({
       setSelectedSamplePlantLocation(null);
   }, [selectedPlantLocation?.hid]);
 
-  const plantData: PlantLocationSingle | SamplePlantLocation | undefined =
+  const plantData: InterventionSingle | SampleIntervention | undefined =
     useMemo(
       () =>
         getPlantData(

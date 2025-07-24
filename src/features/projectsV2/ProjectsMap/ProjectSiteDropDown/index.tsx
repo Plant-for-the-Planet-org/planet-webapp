@@ -1,9 +1,9 @@
 import type { SetState } from '../../../common/types/common';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { DropdownType } from '../../../common/types/projectv2';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
@@ -40,9 +40,9 @@ interface Props {
   projectSites: ProjectSite;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
-  selectedPlantLocation: PlantLocation | null;
-  setSelectedPlantLocation: SetState<PlantLocation | null>;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  selectedPlantLocation: Intervention | null;
+  setSelectedPlantLocation: SetState<Intervention | null>;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   canShowInterventionDropdown: boolean;

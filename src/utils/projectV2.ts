@@ -9,10 +9,10 @@ import type {
   MapProject,
 } from '../features/common/types/projectv2';
 import type {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../features/common/types/plantLocation';
+  Intervention,
+  InterventionSingle,
+  SampleIntervention,
+} from '../features/common/types/intervention';
 
 import * as turf from '@turf/turf';
 
@@ -104,7 +104,7 @@ export const isValidClassification = (
 /**
  * Retrieves the information of a plant location based on a user's interaction with the map.
  *
- * @param {PlantLocation[]} plantLocations - Array of plant location data or null.
+ * @param {Intervention[]} plantLocations - Array of plant location data or null.
  * @param {MutableRefObject<MapRef>} mapRef - A reference to the map instance.
  * @param {PointLike} point - The screen coordinates (PointLike) where the user interacted with the map.
  *
@@ -118,7 +118,7 @@ export const isValidClassification = (
  */
 
 export const getPlantLocationInfo = (
-  plantLocations: PlantLocation[] | null,
+  plantLocations: Intervention[] | null,
   mapRef: MapRef,
   point: PointLike
 ) => {
@@ -150,10 +150,10 @@ export const formatHid = (hid: string | undefined) => {
 };
 
 export const getPlantData = (
-  selected: PlantLocation | null,
-  hovered: PlantLocation | null,
-  selectedSample: SamplePlantLocation | null
-): PlantLocationSingle | SamplePlantLocation | undefined => {
+  selected: Intervention | null,
+  hovered: Intervention | null,
+  selectedSample: SampleIntervention | null
+): InterventionSingle | SampleIntervention | undefined => {
   if (selected?.type === 'single-tree-registration') return selected;
   if (hovered?.type === 'single-tree-registration') return hovered;
   if (selectedSample?.type === 'sample-tree-registration')

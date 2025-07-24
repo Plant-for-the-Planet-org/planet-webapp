@@ -1,7 +1,7 @@
 import type {
   OtherInterventions,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
@@ -103,7 +103,7 @@ interface Props {
   hoveredPlantLocation?: OtherInterventions | null;
   selectedPlantLocation: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
 }
 
 const OtherInterventionInfo = ({

@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  InterventionMulti,
+  InterventionSingle,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
 import React from 'react';
@@ -35,14 +35,10 @@ const ImageSliderSingle = dynamic(
 
 interface Props {
   setSelectedLocation: SetState<
-    SamplePlantLocation | PlantLocationMulti | PlantLocationSingle | null
+    SampleIntervention | InterventionMulti | InterventionSingle | null
   >;
-  location:
-    | PlantLocationMulti
-    | PlantLocationSingle
-    | SamplePlantLocation
-    | null;
-  plantLocations?: PlantLocation[];
+  location: InterventionMulti | InterventionSingle | SampleIntervention | null;
+  plantLocations?: Intervention[];
 }
 
 interface SampleTreeImageProps {
@@ -121,20 +117,20 @@ export function LocationDetails({
     if (location?.type === 'multi-tree-registration') {
       if (
         location &&
-        (location as PlantLocationMulti).sampleInterventions &&
-        (location as PlantLocationMulti).sampleInterventions.length > 0
+        (location as InterventionMulti).sampleInterventions &&
+        (location as InterventionMulti).sampleInterventions.length > 0
       ) {
         const images = [];
-        for (const key in (location as PlantLocationMulti)
-          .sampleInterventions) {
+        for (const key in (location as InterventionMulti).sampleInterventions) {
           if (
             Object.prototype.hasOwnProperty.call(
-              (location as PlantLocationMulti).sampleInterventions,
+              (location as InterventionMulti).sampleInterventions,
               key
             )
           ) {
-            const element = (location as PlantLocationMulti)
-              .sampleInterventions[key];
+            const element = (location as InterventionMulti).sampleInterventions[
+              key
+            ];
 
             if (element.coordinates?.[0]) {
               images.push({
@@ -227,7 +223,7 @@ export function LocationDetails({
             </div>
           </div>
         )}
-        {(location as PlantLocationSingle).measurements && (
+        {(location as InterventionSingle).measurements && (
           <>
             {/* Measurements Section */}
             <div className={styles.measurements}>
@@ -309,7 +305,7 @@ export function LocationDetails({
           </>
         )}
 
-        {(location as PlantLocationMulti | PlantLocation).plantProject && (
+        {(location as InterventionMulti | Intervention).plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('plantProject')}</p>
             <div className={styles.value}>
@@ -317,19 +313,19 @@ export function LocationDetails({
               // className={styles.link}
               // onClick={() => router.push(`/[p]`, `/${location.plantProject}`)}
               >
-                {(location as PlantLocationMulti | PlantLocation).plantProject}
+                {(location as InterventionMulti | Intervention).plantProject}
               </span>
             </div>
           </div>
         )}
       </div>
       <div className={styles.detailsFull}>
-        {(location as PlantLocationMulti)?.plantedSpecies.length > 0 && (
+        {(location as InterventionMulti)?.plantedSpecies.length > 0 && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('species')}</p>
             <div className={styles.value}>
               <span>
-                {(location as PlantLocationMulti)?.plantedSpecies?.map(
+                {(location as InterventionMulti)?.plantedSpecies?.map(
                   (species) => {
                     return (
                       <p key={species.id}>
@@ -353,8 +349,8 @@ export function LocationDetails({
             <div className={styles.singleDetail}>
               <p className={styles.title}>{tMaps('sampleTree')}</p>
               {/* <div className={styles.value}> */}
-              {(location as PlantLocationMulti).sampleInterventions &&
-                (location as PlantLocationMulti).sampleInterventions.map(
+              {(location as InterventionMulti).sampleInterventions &&
+                (location as InterventionMulti).sampleInterventions.map(
                   (spl, index: number) => {
                     return (
                       <div key={index} className={styles.value}>
@@ -399,8 +395,8 @@ export default function PlantLocationPage({
       for (const iKey in plantLocations) {
         const i = iKey as keyof typeof plantLocations;
         if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
-          const pl = plantLocations[i] as PlantLocation;
-          if (pl.id === (location as SamplePlantLocation)?.parent) {
+          const pl = plantLocations[i] as Intervention;
+          if (pl.id === (location as SampleIntervention)?.parent) {
             setSelectedLocation(pl);
             break;
           }

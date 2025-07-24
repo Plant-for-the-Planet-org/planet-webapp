@@ -1,8 +1,8 @@
 import type { SetState } from '../../../common/types/common';
 import type {
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  InterventionSingle,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 
 import PlantInfoCard from './microComponents/PlantInfoCard';
 import styles from '../styles/PlantLocationInfo.module.scss';
@@ -11,9 +11,9 @@ import SinglePlantLocationHeader from './microComponents/SinglePlantLocationHead
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  plantData: PlantLocationSingle | SamplePlantLocation | undefined;
+  plantData: InterventionSingle | SampleIntervention | undefined;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
 }
 
 const SinglePlantLocationInfo = ({

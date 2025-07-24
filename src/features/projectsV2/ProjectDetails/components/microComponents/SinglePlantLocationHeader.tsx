@@ -1,7 +1,7 @@
 import type {
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../../common/types/plantLocation';
+  InterventionSingle,
+  SampleIntervention,
+} from '../../../../common/types/intervention';
 
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
@@ -9,7 +9,7 @@ import { formatHid } from '../../../../../utils/projectV2';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 
 type Props = {
-  plantData: PlantLocationSingle | SamplePlantLocation;
+  plantData: InterventionSingle | SampleIntervention;
 };
 
 function SinglePlantLocationHeader({ plantData }: Props) {

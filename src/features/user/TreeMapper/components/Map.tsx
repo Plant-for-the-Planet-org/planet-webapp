@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react';
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  InterventionMulti,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 import type { RequiredMapStyle } from '../../../common/types/map';
 import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 import type { MapEvent } from 'react-map-gl';
@@ -29,8 +29,8 @@ import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
-  locations: PlantLocation[] | SamplePlantLocation[] | null;
-  selectedLocation: PlantLocation | SamplePlantLocation | null;
+  locations: Intervention[] | SampleIntervention[] | null;
+  selectedLocation: Intervention | SampleIntervention | null;
   setSelectedLocation: Function;
 }
 
@@ -71,7 +71,7 @@ export default function MyTreesMap({
     sources: {},
     layers: [],
   });
-  const getPlTreeCount = (pl: PlantLocationMulti) => {
+  const getPlTreeCount = (pl: InterventionMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -86,7 +86,7 @@ export default function MyTreesMap({
     }
   };
 
-  const getPlArea = (pl: PlantLocationMulti) => {
+  const getPlArea = (pl: InterventionMulti) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -95,7 +95,7 @@ export default function MyTreesMap({
     }
   };
 
-  const getPolygonColor = (pl: PlantLocationMulti) => {
+  const getPolygonColor = (pl: InterventionMulti) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
@@ -252,7 +252,7 @@ export default function MyTreesMap({
     >
       {satellite && plIds && <SatelliteLayer beforeId={plIds[0]} />}
       {locations &&
-        locations.map((pl: PlantLocation) => {
+        locations.map((pl: Intervention) => {
           const newPl = pl.geometry;
           newPl.properties = { id: '' };
           newPl.properties.id = pl.id;

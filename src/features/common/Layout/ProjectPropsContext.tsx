@@ -18,10 +18,7 @@ import type {
   SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
-import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../types/plantLocation';
+import type { Intervention, SampleIntervention } from '../types/intervention';
 
 import React, {
   useState,
@@ -59,12 +56,12 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
 
-  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
+  const [plantLocations, setPlantLocations] = useState<Intervention[] | null>(
     null
   );
-  const [selectedPl, setSelectedPl] = useState<PlantLocation | null>(null);
+  const [selectedPl, setSelectedPl] = useState<Intervention | null>(null);
   const [samplePlantLocation, setSamplePlantLocation] =
-    useState<SamplePlantLocation | null>(null);
+    useState<SampleIntervention | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   const infoRef = useRef<HTMLDivElement>(null);

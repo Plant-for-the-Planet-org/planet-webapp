@@ -8,9 +8,9 @@ import type {
 import type { SetState } from '../common/types/common';
 import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../common/types/plantLocation';
+  Intervention,
+  SampleIntervention,
+} from '../common/types/intervention';
 import type { INTERVENTION_TYPE } from '../../utils/constants/intervention';
 
 import {
@@ -37,14 +37,14 @@ interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ExtendedProject | null;
   setSingleProject: SetState<ExtendedProject | null>;
-  plantLocations: PlantLocation[] | null;
-  setPlantLocations: SetState<PlantLocation[] | null>;
-  selectedPlantLocation: PlantLocation | null;
-  setSelectedPlantLocation: SetState<PlantLocation | null>;
-  selectedSamplePlantLocation: SamplePlantLocation | null;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
-  hoveredPlantLocation: PlantLocation | null;
-  setHoveredPlantLocation: SetState<PlantLocation | null>;
+  plantLocations: Intervention[] | null;
+  setPlantLocations: SetState<Intervention[] | null>;
+  selectedPlantLocation: Intervention | null;
+  setSelectedPlantLocation: SetState<Intervention | null>;
+  selectedSamplePlantLocation: SampleIntervention | null;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  hoveredPlantLocation: Intervention | null;
+  setHoveredPlantLocation: SetState<Intervention | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   setPreventShallowPush: SetState<boolean>;
@@ -90,15 +90,15 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
-  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
+  const [plantLocations, setPlantLocations] = useState<Intervention[] | null>(
     null
   );
   const [selectedPlantLocation, setSelectedPlantLocation] =
-    useState<PlantLocation | null>(null);
+    useState<Intervention | null>(null);
   const [selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
-    useState<SamplePlantLocation | null>(null);
+    useState<SampleIntervention | null>(null);
   const [hoveredPlantLocation, setHoveredPlantLocation] =
-    useState<PlantLocation | null>(null);
+    useState<Intervention | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [selectedInterventionType, setSelectedInterventionType] =
     useState<INTERVENTION_TYPE>('all');

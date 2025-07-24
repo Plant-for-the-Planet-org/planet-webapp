@@ -81,11 +81,6 @@ export interface UncleanDistinctSpecies {
 
 export type DistinctSpecies = string[];
 
-export interface UncleanPlantLocations {
-  geometry: string;
-  guid: string;
-}
-
 export interface PlantLocation {
   geometry: Point | Polygon;
   properties: {
@@ -120,8 +115,8 @@ export interface PlantedSpecies {
   scientificName: string;
 }
 
-export interface PlantLocationDetailsQueryRes {
-  result: PlantLocationDetails;
+export interface InterventionDetailsQueryRes {
+  result: InterventionDetails;
 }
 
 export interface PlantLocationProperties {
@@ -129,7 +124,7 @@ export interface PlantLocationProperties {
   type: 'single-tree-registration' | 'multi-tree-registration';
 }
 
-export interface PlantLocationDetails {
+export interface InterventionDetails {
   properties: PlantLocationProperties;
   plantedSpecies: PlantedSpecies[];
   totalPlantedTrees: number;
@@ -137,9 +132,9 @@ export interface PlantLocationDetails {
   totalSamplePlantLocations: null | number;
 }
 
-// --- types for plantLocationDetailsApi ------
+// --- types for InterventionDetailsApi ------
 
-export interface PlantLocationDetailsApiResponse {
+export interface InterventionDetailsApiResponse {
   res: {
     properties: PlantLocationProperties;
     plantedSpecies: {
@@ -166,7 +161,7 @@ export interface PlantLocationDetailsApiResponse {
   };
 }
 
-export interface SinglePlantLocationApiResponse {
+export interface SingleInterventionApiResponse {
   geometry: Point | Polygon;
   properties: {
     guid: string;

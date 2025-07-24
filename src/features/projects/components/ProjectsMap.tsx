@@ -1,6 +1,6 @@
 import type { MapEvent } from 'react-map-gl';
 import type { PopupData } from './maps/Markers';
-import type { PlantLocation } from '../../common/types/plantLocation';
+import type { Intervention } from '../../common/types/intervention';
 import type { ReactElement } from 'react';
 
 import React, { useEffect, useState } from 'react';
@@ -89,7 +89,7 @@ export default function ProjectsMap(): ReactElement {
   };
 
   const handlePlantLocationSelection = (
-    plantLocations: PlantLocation[] | null,
+    plantLocations: Intervention[] | null,
     e: MapEvent
   ) => {
     if (!plantLocations || !e || !e.features || !e.features[0]) {

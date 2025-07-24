@@ -1,9 +1,9 @@
 import type {
-  PlantLocation as PlantLocationType,
-  PlantLocationBase,
-  PlantLocationMulti,
-  PlantLocationSingle,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  InterventionBase,
+  InterventionMulti,
+  InterventionSingle,
+} from '../../../common/types/intervention';
 import type { SamplePlantLocation } from '../Treemapper';
 
 import React from 'react';
@@ -20,8 +20,8 @@ interface Props {
   index: number;
   locations: Object;
   selectedLocation:
-    | PlantLocationSingle
-    | PlantLocationMulti
+    | InterventionSingle
+    | InterventionMulti
     | SamplePlantLocation
     | null;
   setSelectedLocation: Function;
@@ -38,15 +38,15 @@ function PlantLocation({
   const locale = useLocale();
   const router = useRouter();
   let treeCount = 0;
-  if ((location as PlantLocationMulti)?.plantedSpecies?.length !== 0) {
-    for (const key in (location as PlantLocationMulti).plantedSpecies) {
+  if ((location as InterventionMulti)?.plantedSpecies?.length !== 0) {
+    for (const key in (location as InterventionMulti).plantedSpecies) {
       if (
         Object.prototype.hasOwnProperty.call(
-          (location as PlantLocationMulti).plantedSpecies,
+          (location as InterventionMulti).plantedSpecies,
           key
         )
       ) {
-        const species = (location as PlantLocationMulti).plantedSpecies[key];
+        const species = (location as InterventionMulti).plantedSpecies[key];
         treeCount += species.treeCount;
       }
     }
@@ -55,7 +55,7 @@ function PlantLocation({
   function selectLocation(location: any) {
     if (
       selectedLocation &&
-      (selectedLocation as PlantLocationBase).id === location.id
+      (selectedLocation as InterventionBase).id === location.id
     ) {
       setSelectedLocation(null);
     } else {
@@ -68,9 +68,9 @@ function PlantLocation({
   React.useEffect(() => {
     if (
       location &&
-      (location as PlantLocationMulti).type === 'multi-tree-registration'
+      (location as InterventionMulti).type === 'multi-tree-registration'
     ) {
-      const area = turf.area((location as PlantLocationMulti).geometry);
+      const area = turf.area((location as InterventionMulti).geometry);
       setPlantationArea(area / 10000);
     }
   }, [location]);
@@ -85,14 +85,13 @@ function PlantLocation({
         <div className={styles.left}>
           <p className={styles.treeCount}>
             {`${
-              (location as PlantLocationBase).hid
-                ? (location as PlantLocationBase).hid.substring(0, 3) +
+              (location as InterventionBase).hid
+                ? (location as InterventionBase).hid.substring(0, 3) +
                   '-' +
-                  (location as PlantLocationBase).hid.substring(3)
+                  (location as InterventionBase).hid.substring(3)
                 : null
             } ${
-              (location as PlantLocationMulti).type ===
-              'multi-tree-registration'
+              (location as InterventionMulti).type === 'multi-tree-registration'
                 ? '• ' +
                   localizedAbbreviatedNumber(
                     locale,
@@ -106,24 +105,24 @@ function PlantLocation({
             }`}
           </p>
           <p className={styles.date}>
-            {formatDate((location as PlantLocationBase).registrationDate)}
+            {formatDate((location as InterventionBase).registrationDate)}
           </p>
         </div>
         <div className={styles.right}>
           <div className={styles.status}>
-            {(location as PlantLocationMulti).type ===
+            {(location as InterventionMulti).type ===
               'multi-tree-registration' && treeCount
               ? `${treeCount}`
               : `1`}
             <TreeIcon width={'19px'} height={'19.25px'} />
           </div>
           <div className={styles.mode}>
-            {t((location as PlantLocationBase).captureStatus)}
+            {t((location as InterventionBase).captureStatus)}
           </div>
         </div>
       </div>
 
-      {index !== (locations as PlantLocationType[])?.length - 1 && (
+      {index !== (locations as Intervention[])?.length - 1 && (
         <div className={styles.divider} />
       )}
     </div>

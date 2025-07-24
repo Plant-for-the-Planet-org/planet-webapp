@@ -1,4 +1,4 @@
-import type { PlantedSpecies } from '../../../../common/types/plantLocation';
+import type { PlantedSpecies } from '../../../../common/types/intervention';
 
 import { useCallback } from 'react';
 import styles from '../../styles/PlantLocationInfo.module.scss';

@@ -1,12 +1,12 @@
 import type { SetState } from '../../../../common/types/common';
-import type { SamplePlantLocation } from '../../../../common/types/plantLocation';
+import type { SampleIntervention } from '../../../../common/types/intervention';
 
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/PlantLocationInfo.module.scss';
 
 interface Props {
-  sampleInterventions: SamplePlantLocation[];
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  sampleInterventions: SampleIntervention[];
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
 }
 const SampleTreeList = ({
   sampleInterventions,

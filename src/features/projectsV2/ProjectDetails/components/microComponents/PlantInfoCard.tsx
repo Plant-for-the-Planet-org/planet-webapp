@@ -1,7 +1,7 @@
 import type {
   Measurements,
-  SamplePlantLocation,
-} from '../../../../common/types/plantLocation';
+  SampleIntervention,
+} from '../../../../common/types/intervention';
 import type { SetState } from '../../../../common/types/common';
 
 import styles from '../../styles/PlantLocationInfo.module.scss';
@@ -14,7 +14,7 @@ interface Props {
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
   type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
 }
 
 const PlantInfoCard = ({

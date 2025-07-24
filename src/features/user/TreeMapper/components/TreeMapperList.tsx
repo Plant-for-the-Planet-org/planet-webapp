@@ -2,10 +2,10 @@ import type { ReactElement } from 'react';
 import type { Links } from '../../../common/types/payments';
 import type { SetState } from '../../../common/types/common';
 import type {
-  PlantLocation as PlantLocationType,
-  PlantLocationSingle,
-  PlantLocationMulti,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  InterventionSingle,
+  InterventionMulti,
+} from '../../../common/types/intervention';
 
 import React from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
@@ -15,13 +15,11 @@ import { useTranslations } from 'next-intl';
 import PlantLocation from './PlantLocation';
 
 interface Props {
-  selectedLocation: PlantLocationSingle | PlantLocationMulti | null;
-  setSelectedLocation: SetState<
-    PlantLocationSingle | PlantLocationMulti | null
-  >;
-  plantLocations: PlantLocationType[];
+  selectedLocation: InterventionSingle | InterventionMulti | null;
+  setSelectedLocation: SetState<InterventionSingle | InterventionMulti | null>;
+  plantLocations: Intervention[];
   isDataLoading: boolean;
-  location: PlantLocationSingle | PlantLocationMulti | null;
+  location: InterventionSingle | InterventionMulti | null;
   fetchTreemapperData: Function;
   links: Links | undefined;
 }

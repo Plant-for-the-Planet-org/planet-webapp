@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
-import type { SampleTree } from '../../../../common/types/plantLocation';
+import type { InterventionMulti } from '../../../../common/types/intervention';
+import type { SampleTree } from '../../../../common/types/intervention';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
 
 import React from 'react';
@@ -25,7 +25,7 @@ interface Props {
   control: Control<SampleTreeFormData>;
   userLang: string;
   item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
-  plantLocation: PlantLocationMulti;
+  plantLocation: InterventionMulti;
   errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }

@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { Feature, Polygon } from 'geojson';
 import type { SiteProperties } from '../ProjectSiteDropDown';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleIntervention,
+} from '../../../common/types/intervention';
 
 import { useState } from 'react';
 import ProjectSiteDropdown from '../ProjectSiteDropDown';
@@ -133,9 +133,9 @@ export const Preview: Story = {
   render: () => {
     const [selectedSite, setSelectedSite] = useState<null | number>(0);
     const [selectedPlantLocation, setSelectedPlantLocation] =
-      useState<PlantLocation | null>(null);
+      useState<Intervention | null>(null);
     const [_selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
-      useState<SamplePlantLocation | null>(null);
+      useState<SampleIntervention | null>(null);
 
     return (
       <ProjectSiteDropdown

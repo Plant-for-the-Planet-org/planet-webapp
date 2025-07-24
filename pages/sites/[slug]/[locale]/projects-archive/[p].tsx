@@ -1,6 +1,6 @@
 import type { AbstractIntlMessages } from 'next-intl';
 import type { SetState } from '../../../../../src/features/common/types/common';
-import type { PlantLocation } from '../../../../../src/features/common/types/plantLocation';
+import type { Intervention } from '../../../../../src/features/common/types/intervention';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
@@ -193,7 +193,7 @@ export default function Donate({
   React.useEffect(() => {
     //for selecting one of the plant location. if user use link  to directly visit to plantLocation from home page
     if (geoJson && router.query.ploc && plantLocations && project) {
-      const singlePlantLocation: PlantLocation | undefined =
+      const singlePlantLocation: Intervention | undefined =
         plantLocations?.find((singlePlantLocation) => {
           return router.query.ploc === singlePlantLocation?.hid;
         });
