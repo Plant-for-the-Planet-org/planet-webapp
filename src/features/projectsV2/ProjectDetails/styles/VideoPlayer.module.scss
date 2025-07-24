@@ -1,3 +1,5 @@
+@import '../../../../theme/theme';
+
 .videoContainer {
   width: 100%;
   position: relative;
@@ -9,7 +11,7 @@
 }
 
 .playButtonBackdrop {
-  background-color: #ffffff33;
+  background-color: $dsMediumGreyTransparent50;
   border-radius: 50%;
   backdrop-filter: blur(4.902973175048828px);
   height: 41px;

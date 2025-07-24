@@ -7,17 +7,19 @@ import getImageUrl from '../../../../../utils/getImageURL';
 import { SingleCarouselImage } from './SingleCarouselImage';
 import themeProperties from '../../../../../theme/themeProperties';
 
+const { colors } = themeProperties.designSystem;
+
 const HTTPS_PATTERN = /^https:\/\//i;
 
 const PROGRESS_STYLES = {
   HEIGHT: 3.35,
   BOTTOM_POSITION: '6px',
   WIDTH: '93%',
-  BACKGROUND_OPACITY: 'rgba(255, 255, 255, 0.50)',
+  BACKGROUND_OPACITY: colors.mediumGreyTransparent70,
 } as const;
 
 const progressStyles = {
-  background: themeProperties.greenTwo,
+  background: colors.leafGreen,
   height: PROGRESS_STYLES.HEIGHT,
 };
 

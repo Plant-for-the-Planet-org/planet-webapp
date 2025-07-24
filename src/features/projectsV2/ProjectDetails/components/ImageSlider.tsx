@@ -5,6 +5,7 @@ import ImageCarousel from './microComponents/ImageCarousel';
 import styles from '../styles/Slider.module.scss';
 import { useState } from 'react';
 import ImageSliderModal from './microComponents/ImageSliderModal';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface ImageSliderProps {
   images: Image[];
@@ -32,7 +33,7 @@ const ImageSlider = ({
         >
           {allowFullView && (
             <button onClick={() => setIsModalOpen(true)}>
-              <ExpandIcon color="#fff" />
+              <ExpandIcon color={themeProperties.designSystem.colors.white} />
             </button>
           )}
           <ImageCarousel

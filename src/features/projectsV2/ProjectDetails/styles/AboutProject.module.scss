@@ -2,8 +2,7 @@
 
 .projectDescription {
   width: 100%;
-  background-color: $aboutProjectBackgroundColorNew;
-  color: #2f3336; //to be removed
+  background-color: $dsSoftGreen;
   border-radius: 14px;
   font-size: $fontXSmall;
   button {
@@ -11,7 +10,7 @@
     gap: 6px;
     font-weight: 700;
     font-size: $fontXXSmall;
-    color: rgba(0, 122, 73, 1);
+    color: $dsPrimaryColor;
     padding-left: 15px;
     padding-bottom: 15px;
     cursor: pointer;

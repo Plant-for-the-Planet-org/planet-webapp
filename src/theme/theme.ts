@@ -103,6 +103,10 @@ const getGlobalStyles = async () => {
       --ds-milk-chocolate: ${designSystem.colors.milkChocolate};
       --ds-soft-milk-chocolate: ${designSystem.colors.softMilkChocolate};
       --ds-purple-sky: ${designSystem.colors.purpleSky};
+      --ds-purple-sky-transparent-10: ${designSystem.colors
+        .purpleSkyTransparent10};
+      --ds-purple-sky-transparent-20: ${designSystem.colors
+        .purpleSkyTransparent20};
       --ds-soft-sky: ${designSystem.colors.softSky};
       --ds-ocean-blue: ${designSystem.colors.oceanBlue};
       --ds-soft-blue: ${designSystem.colors.softBlue};
@@ -129,6 +133,8 @@ const getGlobalStyles = async () => {
       --ds-warm-blue: ${designSystem.colors.warmBlue};
       --ds-warm-blue-transparent-10: ${designSystem.colors
         .warmBlueTransparent10};
+      --ds-warm-blue-transparent-20: ${designSystem.colors
+        .warmBlueTransparent20};
       --ds-sky-blue: ${designSystem.colors.skyBlue};
       --ds-base-grey: ${designSystem.colors.baseGrey};
       --ds-dark-grey: ${designSystem.colors.darkGrey};
@@ -161,15 +167,7 @@ const getGlobalStyles = async () => {
       --light-gray-background-color-new: ${light.lightGrayBackgroundColorNew};
       --bold-font-color-new: ${light.boldFontColorNew};
       --divider-color-new: ${light.dividerColorNew};
-      --review-font-color-new: ${light.reviewFontColorNew};
-      --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
       --danger-color-new: ${light.dangerColorNew};
-      --abandonment-background-color-new: ${light.abandonmentBackgroundColorNew};
-      --more-info-background-color-new: ${light.moreInfoBackgroundColorNew};
-      --certification-background-color-new: ${light.certificationBackgroundColorNew};
-      --contactDetail-background-color-new: ${light.contactDetailBackgroundColorNew};
-      --certification-link-color-new: ${light.certificationLinkColorNew};
-      --secondary-divider-color-new: ${light.secondaryDividerColor};
       --border-color: ${light.borderColor};
       --top-project-color: ${topProjectBackgroundColor};
     }

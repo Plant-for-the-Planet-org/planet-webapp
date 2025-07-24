@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .reviewReportsContainer {
-  background-color: rgba(var(--review-font-color-new), 0.1);
+  background-color: $dsSoftBlue;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,6 @@
   h6 {
     text-align: left;
     width: 100%;
-    color: #2f3336;
     font-size: $fontXSmall;
     font-weight: 700;
   }
@@ -29,7 +28,7 @@
 
   p {
     font-size: $fontXSmall;
-    color: rgb(var(--review-font-color-new));
+    color: $dsWarmBlue;
     font-weight: 700;
   }
   a {
@@ -43,12 +42,11 @@
 .reviewInfoContainer {
   display: flex;
   gap: 7px;
-  color: #2f3336; //to be replaced
   font-size: $fontXSmall;
   align-items: center;
 
   a {
-    color: rgb(var(--review-font-color-new));
+    color: $dsWarmBlue;
     text-decoration: underline;
     font-weight: 700;
   }

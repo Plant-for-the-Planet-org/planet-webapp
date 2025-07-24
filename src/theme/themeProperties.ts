@@ -37,6 +37,8 @@ const themeProperties = {
       softMilkChocolate: '#FDF3EA',
       // Blues/Purples
       purpleSky: '#6C63FF',
+      purpleSkyTransparent10: '#6C63FF1A',
+      purpleSkyTransparent20: '#6C63FF33',
       softSky: '#F3F2FF',
       oceanBlue: '#2F80ED',
       softBlue: '#EFF6FF',
@@ -63,6 +65,7 @@ const themeProperties = {
       brightYellow: '#F2C94C',
       warmBlue: '#2D9CDB',
       warmBlueTransparent10: '#2D9CDB1A',
+      warmBlueTransparent20: '#2D9CDB33',
       skyBlue: '#56CCF2',
       baseGrey: '#F9F9F9',
       // Gray colors for borders/separators etc.
@@ -116,15 +119,7 @@ const themeProperties = {
     lightGrayBackgroundColorNew: '#d9d9d9',
     boldFontColorNew: '#2F3336',
     dividerColorNew: '#BDBDBD',
-    reviewFontColorNew: '45, 156, 219', //used across elements with different opacities, this enables consistency throughout
-    aboutProjectBackgroundColorNew: '#27ae601a',
     dangerColorNew: '#E86F56',
-    abandonmentBackgroundColorNew: '242, 201, 76',
-    moreInfoBackgroundColorNew: '81, 198, 205',
-    certificationBackgroundColorNew: '108, 99, 255',
-    contactDetailBackgroundColorNew: '232, 111, 86',
-    certificationLinkColorNew: '#3AB6BD',
-    secondaryDividerColor: '242, 153, 74',
     borderColor: '211, 211, 211',
   },
   dark: {
