@@ -92,6 +92,8 @@ const getGlobalStyles = async () => {
       --ds-forest-green-transparent-40: ${designSystem.colors
         .forestGreenTransparent40};
       --ds-leaf-green: ${designSystem.colors.leafGreen};
+      --ds-leaf-green-transparent-10: ${designSystem.colors
+        .leafGreenTransparent10};
       --ds-bright-green: ${designSystem.colors.brightGreen};
       --ds-mint-gradient: ${designSystem.colors.mintGradient};
       --ds-mint-gradient-start: ${designSystem.colors.mintGradientStart};
@@ -163,8 +165,6 @@ const getGlobalStyles = async () => {
       --mapbox-icon: ${light.mapboxIcon};
       --background-base: ${light.backgroundBase};
       --disabled-font-color: ${light.disabledFontColor};
-      --gray-font-color-new: ${light.grayFontColorNew};
-      --light-gray-background-color-new: ${light.lightGrayBackgroundColorNew};
       --bold-font-color-new: ${light.boldFontColorNew};
       --divider-color-new: ${light.dividerColorNew};
       --danger-color-new: ${light.dangerColorNew};
