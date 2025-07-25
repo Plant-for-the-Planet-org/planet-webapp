@@ -17,6 +17,8 @@ type Props = {
   projectProperties: MapProjectProperties;
 };
 
+const { colors } = themeProperties.designSystem;
+
 const ProjectMarkerIcon = ({ projectProperties }: Props) => {
   const projectCategory = getProjectCategory(projectProperties);
 
@@ -25,11 +27,11 @@ const ProjectMarkerIcon = ({ projectProperties }: Props) => {
   ) => {
     switch (projectCategory) {
       case 'topProject':
-        return themeProperties.topProjectBackgroundColor;
+        return colors.goldenYellow;
       case 'regularProject':
-        return themeProperties.greenTwo;
+        return colors.leafGreen;
       case 'nonDonatableProject':
-        return themeProperties.nonDonatableProjectBackgroundColor;
+        return colors.mediumGrey;
     }
   };
 
