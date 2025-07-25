@@ -48,6 +48,7 @@ const themeProperties = {
       softPurple: '#F9F1FF',
       // Reds
       fireRed: '#EB5757',
+      fireRedTransparent10: '#EB57571A',
       softRed: '#FFF3F3',
       // Text Colors
       coreText: '#333333',
@@ -92,11 +93,9 @@ const themeProperties = {
   lightGrayColor: '#f2f2f2',
   skyBlueColor: '#87ceeb',
   nonDonatableProjectBackgroundColor: '#828282',
-  deforestrationRangeBackgroundNew: '235, 87, 87',
   primaryColorNew: '#219653',
   horizontalLineColorNew: '#bdbdbd',
   restorationToggleColorNew: '#2f80ed',
-  deforestrationToggleColorNew: 'rgba(235, 87, 87, 1)',
   exploreDescriptionBackground: '242, 242, 242',
   greenTwo: '#27ae60',
   light: {

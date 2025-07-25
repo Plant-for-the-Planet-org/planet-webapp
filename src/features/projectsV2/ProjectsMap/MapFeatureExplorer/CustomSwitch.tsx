@@ -27,6 +27,8 @@ const baseSwitchStyle = {
   },
 };
 
+const { primaryColor } = themeProperties.designSystem.colors;
+
 const SmallSwitch = styled(Switch)(() => ({
   ...baseSwitchStyle,
 }));
@@ -35,9 +37,9 @@ export const StyledSwitch = styled(SmallSwitch, {
   shouldForwardProp: (prop) => prop !== 'customColor',
 })<SwitchProps>(({ customColor }) => ({
   '.MuiSwitch-switchBase.Mui-checked': {
-    color: customColor || themeProperties.primaryDarkColor,
+    color: customColor || primaryColor,
   },
   '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-    backgroundColor: customColor || themeProperties.primaryDarkColor,
+    backgroundColor: customColor || primaryColor,
   },
 }));

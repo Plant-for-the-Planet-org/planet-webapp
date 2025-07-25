@@ -14,7 +14,6 @@ const {
   topProjectBackgroundColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
-  deforestrationRangeBackgroundNew,
   horizontalLineColorNew,
   exploreDescriptionBackground,
   designSystem,
@@ -75,7 +74,6 @@ const getGlobalStyles = async () => {
       --top-project-background-color: ${topProjectBackgroundColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
       --primary-color-new: ${primaryColorNew};
-      --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
       --sky-blue-color: ${theme.skyBlueColor};
@@ -115,6 +113,7 @@ const getGlobalStyles = async () => {
         .deepPurpleTransparent10};
       --ds-soft-purple: ${designSystem.colors.softPurple};
       --ds-fire-red: ${designSystem.colors.fireRed};
+      --ds-fire-red-transparent-10: ${designSystem.colors.fireRedTransparent10};
       --ds-soft-red: ${designSystem.colors.softRed};
       --ds-white: ${designSystem.colors.white};
       --ds-white-transparent-10: ${designSystem.colors.whiteTransparent10};
