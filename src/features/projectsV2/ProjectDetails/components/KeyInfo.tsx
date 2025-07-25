@@ -7,6 +7,7 @@ import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 import InfoIconPopup from './microComponents/InfoIconPopup';
 import InterventionSeason from './microComponents/InterventionSeason';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   abandonment: number | null;
@@ -61,7 +62,7 @@ const KeyInfo = ({
                   <InfoIconPopup
                     height={10}
                     width={10}
-                    color={`${'rgba(var(--secondary-divider-color-new))'}`}
+                    color={themeProperties.designSystem.colors.sunriseOrange}
                   >
                     <div className={styles.infoIconPopupContainer}>
                       {tProjectDetails('yearAbandonedInfo')}

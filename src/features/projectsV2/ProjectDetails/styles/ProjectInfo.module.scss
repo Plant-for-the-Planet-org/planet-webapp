@@ -2,7 +2,7 @@
 
 .projectInfoSection {
   padding: 15px;
-  background: rgba(255, 255, 255, 1);
+  background: $dsWhite;
   border-radius: 16px;
   margin-top: 20px;
   display: flex;
@@ -27,26 +27,25 @@
   flex-wrap: wrap;
   padding: 16px;
   border-radius: 14px;
-  color: #2f3336; //to be replaced
   font-size: $fontXSmall;
 }
 
 .keyInfoContainer {
-  background: rgba(var(--abandonment-background-color-new), 0.1);
+  background: $dsSoftYellow;
 }
 
 .additionalInfoContainer {
-  background: rgba(var(--more-info-background-color-new), 0.1);
+  background: $dsWarmBlueTransparent10;
 }
 
 .projectSummary {
-  background-color: rgba(var(--certification-background-color-new), 0.1);
+  background-color: $dsSoftPurple;
   gap: 12px;
   height: auto;
 }
 
 .contactDetailsContainer {
-  background-color: rgba(var(--contactDetail-background-color-new), 0.1);
+  background-color: $dsSoftRed;
 }
 
 .singleRowInfoContent {
@@ -68,7 +67,7 @@
     flex-direction: column;
   }
   a {
-    color: $certificationLinkColorNew;
+    color: $dsPurpleSky;
     font-weight: 700;
     font-size: $fontXXSmall;
   }
@@ -109,7 +108,7 @@
 
   span {
     padding: 4px 6px;
-    background-color: rgba(var(--more-info-background-color-new), 0.2); //
+    background-color: $dsWarmBlueTransparent20;
     border-radius: 4px;
     font-weight: 400;
     font-size: $fontXXSmall;
@@ -121,13 +120,13 @@
 .downloadLabel {
   padding: 2px 9px;
   border-radius: 24px;
-  border: 0.4px solid rgba(var(--certification-background-color-new), 0.2);
-  background: rgba(var(--certification-background-color-new), 0.15);
+  border: 0.4px solid $dsPurpleSkyTransparent20;
+  background: $dsPurpleSkyTransparent10;
   font-weight: 700;
   width: fit-content;
   cursor: pointer;
   a {
-    color: rgb(var(--certification-background-color-new));
+    color: $dsPurpleSky;
   }
 }
 .expenseContainer {
@@ -162,7 +161,7 @@
 
 .singleContact {
   display: flex;
-  background-color: rgba(var(--secondary-divider-color-new), 0.12);
+  background-color: $dsSunriseOrangeTransparent10;
   border-radius: 8px;
   padding: 0 10.5px;
   min-height: 41px;
@@ -176,13 +175,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $backgroundColor;
+    background-color: $dsWhite;
     flex-shrink: 0;
   }
   .title {
     font-size: $fontXSmall;
     font-weight: 500;
-    color: #2f3336; //to be replaced
+    color: $dsCoreText;
   }
   .rightArrow {
     margin-left: auto;

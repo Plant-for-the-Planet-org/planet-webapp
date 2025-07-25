@@ -6,7 +6,7 @@ $layoutPaddingSide: 20px;
 .dropdownButton {
   display: flex;
   border-radius: 12px;
-  background: $backgroundColor;
+  background: $dsWhite;
   align-items: center;
   padding: 12px 0px 9px 12px;
   min-width: 350px;
@@ -28,7 +28,7 @@ $layoutPaddingSide: 20px;
 }
 .sitesLabel {
   font-size: $fontXXSmall;
-  color: $nonDonatableProjectBackgroundColor;
+  color: $dsSoftText2;
   font-weight: 600;
   span {
     display: inline;
@@ -42,7 +42,6 @@ $layoutPaddingSide: 20px;
   text-transform: capitalize;
   font-size: $fontXSmall;
   font-weight: 700;
-  color: #333; //to be replaced
 }
 .menuArrow {
   display: flex;
@@ -54,7 +53,7 @@ $layoutPaddingSide: 20px;
   }
 }
 .siteListOptions {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   padding: 6px 17px;
   border-radius: 12px;
   margin-top: 12px;
@@ -80,25 +79,15 @@ $layoutPaddingSide: 20px;
   justify-content: space-between;
   gap: 30px;
   padding: 9px 0px;
-  color: rgba(51, 51, 51, 1);
   cursor: pointer;
-  border-bottom: 1px solid $dividerColorNew;
+  border-bottom: 1px solid $dsMediumGrey;
   font-weight: 400;
   &:last-of-type {
     border-bottom: none;
   }
 }
-.hideDivider {
-  display: none;
-}
-.showDivider {
-  height: 0px;
-  border: 0px;
-  border-top: 1px solid $dividerColorNew;
-  margin: 0px;
-}
+
 .selectedItem {
-  color: #333; //to be replaced
   text-shadow: 0 0 0.01px;
   font-weight: 700;
 }
@@ -152,7 +141,6 @@ $layoutPaddingSide: 20px;
       gap: 0;
       font-size: $fontXXSmall;
       padding: 4px 0;
-      color: #333; //to be replaced
       .siteArea {
         font-size: $fontXXSmall;
       }

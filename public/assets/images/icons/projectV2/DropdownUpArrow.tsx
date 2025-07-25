@@ -1,6 +1,11 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
-const DropdownUpArrow = ({ width, color = '#333' }: IconProps) => {
+import themeProperties from '../../../../../src/theme/themeProperties';
+
+const DropdownUpArrow = ({
+  width,
+  color = themeProperties.designSystem.colors.coreText,
+}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

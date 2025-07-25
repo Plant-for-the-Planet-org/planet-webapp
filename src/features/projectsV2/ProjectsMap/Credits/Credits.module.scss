@@ -5,9 +5,9 @@
   bottom: 0px;
   right: 20px;
   font-size: $fontXSmall;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   cursor: pointer;
-  background-color: #f2f2f2;
+  background-color: $dsBaseGrey;
   padding: 6px 18px 4px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -26,7 +26,7 @@
   > span > a,
   .mapCreditsTrigger {
     text-decoration: none;
-    color: $primaryFontColor;
+    color: $dsCoreText;
     transition: opacity 0.15s ease;
 
     &:hover,
@@ -48,7 +48,7 @@
     margin-left: 10px;
     a {
       text-decoration: none;
-      color: $primaryFontColor;
+      color: $dsCoreText;
     }
   }
 
@@ -74,7 +74,7 @@
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $backgroundColor;
+    background-color: $dsWhite;
     border-radius: 10px;
     padding: 12px;
     text-align: center;

@@ -8,6 +8,7 @@ import { getPDFFile } from '../../../../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
+import themeProperties from '../../../../../theme/themeProperties';
 
 interface Props {
   singleReview: Review;
@@ -16,6 +17,8 @@ interface Props {
 const SingleReview = ({ singleReview }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
+
+  const { colors } = themeProperties.designSystem;
 
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
@@ -28,7 +31,7 @@ const SingleReview = ({ singleReview }: Props) => {
       <div className={styles.reviewInfoContainer}>
         <VerifiedIcon
           sx={{
-            color: `${'rgba(var(--review-font-color-new))'}`,
+            color: colors.warmBlue,
             width: 16,
             height: 16,
           }}
@@ -56,10 +59,7 @@ const SingleReview = ({ singleReview }: Props) => {
           href={getPDFFile('projectReview', singleReview.pdf)}
         >
           <p>{tProjectDetails('report')}</p>
-          <DownloadReportIcon
-            width={12}
-            color={`${'rgb(var(--review-font-color-new))'}`}
-          />
+          <DownloadReportIcon width={12} color={colors.warmBlue} />
         </a>
       </div>
     </div>

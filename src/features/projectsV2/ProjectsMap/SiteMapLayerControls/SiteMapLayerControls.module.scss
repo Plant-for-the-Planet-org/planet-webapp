@@ -3,7 +3,7 @@
 .siteMapLayerControls {
   width: 100%;
   max-width: 100%;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border-radius: 12px;
   overflow: visible;
   display: flex;
@@ -106,7 +106,7 @@
 }
 
 .siteLayerOptions {
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   padding: 12px;
   cursor: pointer;
   border-radius: 4px;
@@ -173,7 +173,7 @@
 .layerInfoPopup {
   position: absolute;
   bottom: calc(100% + 10px);
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   color: $dsCoreText;
   border-radius: 8px;
   padding: 18px;
@@ -234,7 +234,7 @@
     align-items: center;
 
     &.positive svg path {
-      stroke: $primaryDarkColor;
+      stroke: $dsPrimaryColor;
     }
 
     &.negative svg path {

@@ -1,6 +1,7 @@
 import React from 'react';
 import DownloadIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 import styles from '../../styles/ProjectInfo.module.scss';
+import themeProperties from '../../../../../theme/themeProperties';
 
 const DownloadsButton = ({ pdfUrl }: { pdfUrl: string }) => {
   return (
@@ -12,7 +13,7 @@ const DownloadsButton = ({ pdfUrl }: { pdfUrl: string }) => {
     >
       <DownloadIcon
         width={10}
-        color={`${'rgba(var(--certification-background-color-new))'}`}
+        color={themeProperties.designSystem.colors.purpleSky}
       />
     </a>
   );

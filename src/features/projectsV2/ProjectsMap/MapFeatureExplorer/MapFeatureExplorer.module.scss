@@ -41,7 +41,7 @@
   z-index: 50;
   pointer-events: auto;
   max-width: 240px;
-  background-color: #fff;
+  background-color: $dsWhite;
   border-radius: 12px;
   padding: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
@@ -76,20 +76,6 @@
   overflow-y: auto;
   scrollbar-width: thin;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #fff;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $primaryColorNew;
-    border-radius: 10px;
-    border: 2px solid #fff;
-  }
-
   @include smTabletView {
     flex: 1 1 auto;
   }
@@ -100,7 +86,7 @@
 }
 
 .exploreItemSection {
-  background: rgba(0, 122, 73, 0.05);
+  background: $dsPrimaryColorTransparent7;
   border-radius: 8px;
   padding: 8px 9px;
   font-size: $fontXSmall;
@@ -193,17 +179,17 @@
   flex-direction: column;
   gap: 8px;
   max-width: 189px;
-  background: #fff;
+  background: $dsWhite;
   padding: 12px;
   font-size: $fontXXSmall;
 
   .label {
     font-weight: 600;
-    color: rgba(130, 130, 130, 1);
+    color: $dsSoftText2;
     text-transform: uppercase;
   }
   .source {
-    color: $primaryDarkColor;
+    color: $dsPrimaryColor;
   }
 }
 

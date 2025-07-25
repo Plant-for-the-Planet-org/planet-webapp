@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import InfoIconPopup from '../components/microComponents/InfoIconPopup';
+import themeProperties from '../../../../theme/themeProperties';
 
 const meta: Meta<typeof InfoIconPopup> = {
   title: 'Projects/Common/InfoIconPopup',
@@ -13,7 +14,7 @@ export const TabsView: Story = {
   args: {
     height: 15,
     width: 15,
-    color: '#BDBDBD',
+    color: themeProperties.designSystem.colors.mediumGrey,
     children: (
       <>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio,
