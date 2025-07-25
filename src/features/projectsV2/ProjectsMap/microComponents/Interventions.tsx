@@ -18,13 +18,13 @@ import { FillColor } from '../../../../utils/constants/intervention';
 
 interface SampleTreeMarkerProps {
   sample: SampleIntervention;
-  selectedSamplePlantLocation: SampleIntervention | null;
+  selectedSampleIntervention: SampleIntervention | null;
   openPl: (e: React.MouseEvent<HTMLDivElement>, pl: SampleIntervention) => void;
 }
 
 const SampleTreeMarker = ({
   sample,
-  selectedSamplePlantLocation,
+  selectedSampleIntervention,
   openPl,
 }: SampleTreeMarkerProps) => (
   <Marker
@@ -36,7 +36,7 @@ const SampleTreeMarker = ({
     <div
       key={`${sample.id}-marker`}
       className={`${styles.single} ${
-        sample.hid === selectedSamplePlantLocation?.hid
+        sample.hid === selectedSampleIntervention?.hid
           ? styles.singleSelected
           : ''
       }`}
@@ -47,14 +47,14 @@ const SampleTreeMarker = ({
   </Marker>
 );
 
-export default function PlantLocations(): React.ReactElement {
+export default function Interventions(): React.ReactElement {
   const {
-    plantLocations,
-    hoveredPlantLocation,
-    selectedPlantLocation,
-    setSelectedPlantLocation,
-    setSelectedSamplePlantLocation,
-    selectedSamplePlantLocation,
+    interventions,
+    hoveredIntervention,
+    selectedIntervention,
+    setSelectedIntervention,
+    setSelectedSampleIntervention,
+    selectedSampleIntervention,
     selectedInterventionType,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
@@ -69,15 +69,15 @@ export default function PlantLocations(): React.ReactElement {
     e.stopPropagation();
     e.preventDefault();
 
-    if (selectedSamplePlantLocation?.hid === pl.hid) {
-      setSelectedSamplePlantLocation(null);
+    if (selectedSampleIntervention?.hid === pl.hid) {
+      setSelectedSampleIntervention(null);
     } else {
       switch (pl.type) {
         case 'sample-tree-registration':
-          setSelectedSamplePlantLocation(pl);
+          setSelectedSampleIntervention(pl);
           break;
         case 'single-tree-registration':
-          setSelectedPlantLocation(pl);
+          setSelectedIntervention(pl);
           break;
         default:
           break;
@@ -162,10 +162,10 @@ export default function PlantLocations(): React.ReactElement {
       geometry,
     };
   };
-  if (!plantLocations || plantLocations.length === 0) {
+  if (!interventions || interventions.length === 0) {
     return <></>;
   }
-  const features = plantLocations
+  const features = interventions
     .filter(
       (d) =>
         selectedInterventionType === 'all' ||
@@ -177,9 +177,8 @@ export default function PlantLocations(): React.ReactElement {
     )
     .map((el) => {
       const isSelected =
-        selectedPlantLocation && selectedPlantLocation.id === el.id;
-      const isHovered =
-        hoveredPlantLocation && hoveredPlantLocation.id === el.id;
+        selectedIntervention && selectedIntervention.id === el.id;
+      const isHovered = hoveredIntervention && hoveredIntervention.id === el.id;
       const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
         highlightLine: isSelected || isHovered,
         opacity:
@@ -198,11 +197,11 @@ export default function PlantLocations(): React.ReactElement {
   ].includes(selectedInterventionType);
 
   const shouldRenderMarkers =
-    selectedPlantLocation &&
-    selectedPlantLocation.type !== 'single-tree-registration' &&
+    selectedIntervention &&
+    selectedIntervention.type !== 'single-tree-registration' &&
     isValidInterventionType &&
     viewState.zoom > 14 &&
-    selectedPlantLocation.sampleInterventions;
+    selectedIntervention.sampleInterventions;
 
   return (
     <>
@@ -233,7 +232,7 @@ export default function PlantLocations(): React.ReactElement {
               [
                 '==',
                 ['get', 'id'],
-                (selectedPlantLocation?.id || hoveredPlantLocation?.id) ?? 0,
+                (selectedIntervention?.id || hoveredIntervention?.id) ?? 0,
               ],
               1,
               0.5,
@@ -264,11 +263,11 @@ export default function PlantLocations(): React.ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {shouldRenderMarkers
-          ? selectedPlantLocation.sampleInterventions.map((sample) => (
+          ? selectedIntervention.sampleInterventions.map((sample) => (
               <SampleTreeMarker
                 key={sample.id}
                 sample={sample}
-                selectedSamplePlantLocation={selectedSamplePlantLocation}
+                selectedSampleIntervention={selectedSampleIntervention}
                 openPl={openPl}
               />
             ))

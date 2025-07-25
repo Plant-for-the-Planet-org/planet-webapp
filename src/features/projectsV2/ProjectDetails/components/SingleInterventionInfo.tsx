@@ -7,19 +7,19 @@ import type {
 import PlantInfoCard from './microComponents/PlantInfoCard';
 import styles from '../styles/PlantLocationInfo.module.scss';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
-import SinglePlantLocationHeader from './microComponents/SinglePlantLocationHeader';
+import SingleInterventionHeader from './microComponents/SingleInterventionHeader';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
   plantData: InterventionSingle | SampleIntervention | undefined;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
 }
 
-const SinglePlantLocationInfo = ({
+const SingleInterventionInfo = ({
   plantData,
   isMobile,
-  setSelectedSamplePlantLocation,
+  setSelectedSampleIntervention,
 }: Props) => {
   if (!plantData) return null;
 
@@ -29,12 +29,12 @@ const SinglePlantLocationInfo = ({
     scientificName: plantData.scientificName,
     measurements: plantData.measurements,
     type: plantData.type,
-    setSelectedSamplePlantLocation,
+    setSelectedSampleIntervention,
   };
 
   const content = [
-    <SinglePlantLocationHeader
-      key="singlePlantLocationHeader"
+    <SingleInterventionHeader
+      key="singleInterventionHeader"
       plantData={plantData}
     />,
     <PlantInfoCard key="plantInfoCard" {...plantInfoProps} />,
@@ -44,11 +44,11 @@ const SinglePlantLocationInfo = ({
     <MobileInfoSwiper slides={content} uniqueKey={plantData.hid} />
   ) : (
     <div className={styles.plantLocationInfoSection}>
-      <SinglePlantLocationHeader plantData={plantData} />
+      <SingleInterventionHeader plantData={plantData} />
       <PlantInfoCard {...plantInfoProps} />
       <TreeMapperBrand />
     </div>
   );
 };
 
-export default SinglePlantLocationInfo;
+export default SingleInterventionInfo;

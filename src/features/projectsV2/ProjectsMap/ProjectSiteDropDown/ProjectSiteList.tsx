@@ -18,8 +18,8 @@ interface ProjectSiteListProps {
   setSelectedSite: SetState<number | null>;
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
-  setSelectedPlantLocation: SetState<Intervention | null>;
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  setSelectedIntervention: SetState<Intervention | null>;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
   canShowInterventionDropdown: boolean;
 }
 
@@ -28,14 +28,14 @@ const ProjectSiteList = ({
   setSelectedSite,
   setIsMenuOpen,
   selectedSiteData,
-  setSelectedPlantLocation,
-  setSelectedSamplePlantLocation,
+  setSelectedIntervention,
+  setSelectedSampleIntervention,
   canShowInterventionDropdown,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
   const handleSiteSelection = (index: number) => {
-    setSelectedPlantLocation(null);
-    setSelectedSamplePlantLocation(null);
+    setSelectedIntervention(null);
+    setSelectedSampleIntervention(null);
     setIsMenuOpen(false);
     setSelectedSite(index);
   };

@@ -104,7 +104,7 @@ export const isValidClassification = (
 /**
  * Retrieves the information of a plant location based on a user's interaction with the map.
  *
- * @param {Intervention[]} plantLocations - Array of plant location data or null.
+ * @param {Intervention[]} intervention - Array of plant location data or null.
  * @param {MutableRefObject<MapRef>} mapRef - A reference to the map instance.
  * @param {PointLike} point - The screen coordinates (PointLike) where the user interacted with the map.
  *
@@ -117,12 +117,12 @@ export const isValidClassification = (
  * - If no features are returned, the cursor is reset to the default, and no plant location is returned.
  */
 
-export const getPlantLocationInfo = (
-  plantLocations: Intervention[] | null,
+export const getInterventionInfo = (
+  intervention: Intervention[] | null,
   mapRef: MapRef,
   point: PointLike
 ) => {
-  if (!mapRef.current || plantLocations?.length === 0) {
+  if (!mapRef.current || intervention?.length === 0) {
     return;
   }
   const map = mapRef.current.getMap();
@@ -136,10 +136,10 @@ export const getPlantLocationInfo = (
 
   if (features.length === 1) {
     map.getCanvas().style.cursor = 'pointer';
-    const activePlantLocation = plantLocations?.find(
+    const activeIntervention = intervention?.find(
       (pl) => pl.id === features[0].properties.id
     );
-    return activePlantLocation;
+    return activeIntervention;
   } else {
     map.getCanvas().style.cursor = '';
   }

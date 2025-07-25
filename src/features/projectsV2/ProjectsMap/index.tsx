@@ -18,14 +18,14 @@ import {
   calculateCentroid,
   centerMapOnCoordinates,
   getDeviceType,
-  getPlantLocationInfo,
+  getInterventionInfo,
   getValidFeatures,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
 import { useProjects } from '../ProjectsContext';
-import MultiPlantLocationInfo from '../ProjectDetails/components/MultiPlantLocationInfo';
-import SinglePlantLocationInfo from '../ProjectDetails/components/SinglePlantLocationInfo';
+import MultiInterventionInfo from '../ProjectDetails/components/MultiInterventionInfo';
+import SingleInterventionInfo from '../ProjectDetails/components/SingleInterventionInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
@@ -64,16 +64,16 @@ function ProjectsMap(props: ProjectsMapProps) {
     isExploreMode,
   } = useProjectsMap();
   const {
-    plantLocations,
-    setHoveredPlantLocation,
-    setSelectedPlantLocation,
+    interventions,
+    setHoveredIntervention,
+    setSelectedIntervention,
     setSelectedSite,
-    setSelectedSamplePlantLocation,
+    setSelectedSampleIntervention,
     filteredProjects,
     projects,
     singleProject,
-    selectedPlantLocation,
-    selectedSamplePlantLocation,
+    selectedIntervention,
+    selectedSampleIntervention,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -145,16 +145,16 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects.length > 0 &&
     !shouldShowSingleProjectsView &&
     mapLoaded;
-  const shouldShowMultiPlantLocationInfo =
+  const shouldShowMultiInterventionInfo =
     props.isMobile &&
-    selectedSamplePlantLocation === null &&
-    selectedPlantLocation?.type === 'multi-tree-registration';
-  const shouldShowSinglePlantLocationInfo =
+    selectedSampleIntervention === null &&
+    selectedIntervention?.type === 'multi-tree-registration';
+  const shouldShowSingleInterventionInfo =
     props.isMobile &&
-    (selectedSamplePlantLocation !== null ||
-      selectedPlantLocation?.type === 'single-tree-registration');
+    (selectedSampleIntervention !== null ||
+      selectedIntervention?.type === 'single-tree-registration');
   const shouldShowNavigationControls = !(
-    shouldShowMultiPlantLocationInfo || shouldShowSinglePlantLocationInfo
+    shouldShowMultiInterventionInfo || shouldShowSingleInterventionInfo
   );
   const isTimeTravelEnabled =
     shouldShowSingleProjectsView &&
@@ -189,42 +189,42 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onMouseMove = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
-      const hoveredPlantLocation = getPlantLocationInfo(
-        plantLocations,
+      const hoveredIntervention = getInterventionInfo(
+        interventions,
         mapRef,
         e.point
       );
       if (
-        !hoveredPlantLocation ||
-        hoveredPlantLocation.hid === selectedPlantLocation?.hid
+        !hoveredIntervention ||
+        hoveredIntervention.hid === selectedIntervention?.hid
       ) {
-        setHoveredPlantLocation(null);
+        setHoveredIntervention(null);
         return;
       }
-      setHoveredPlantLocation(hoveredPlantLocation);
+      setHoveredIntervention(hoveredIntervention);
     },
-    [plantLocations, props.page, selectedPlantLocation]
+    [interventions, props.page, selectedIntervention]
   );
 
   const onClick = useCallback(
     (e) => {
       if (props.page !== 'project-details') return;
       const hasNoSites = singleProject?.sites?.length === 0;
-      const result = getPlantLocationInfo(plantLocations, mapRef, e.point);
-      const isSamePlantLocation =
+      const result = getInterventionInfo(interventions, mapRef, e.point);
+      const isSameIntervention =
         result?.geometry.type === 'Point' &&
-        result.id === selectedPlantLocation?.id;
+        result.id === selectedIntervention?.id;
       const isSingleTree =
-        selectedPlantLocation?.type === 'single-tree-registration';
+        selectedIntervention?.type === 'single-tree-registration';
       const isMultiTree =
-        selectedPlantLocation?.type === 'multi-tree-registration';
-      // const isOther = selectedPlantLocation?.type !== 'single-tree-registration' && selectedPlantLocation?.type !== 'multi-tree-registration';
+        selectedIntervention?.type === 'multi-tree-registration';
+      // const isOther = selectedIntervention?.type !== 'single-tree-registration' && selectedIntervention?.type !== 'multi-tree-registration';
       // Clear sample plant location on clicking outside.
       // Clicks on sample plant location will not propagate on the map
-      setSelectedSamplePlantLocation(null);
+      setSelectedSampleIntervention(null);
       // Clear plant location info if clicked twice (single or multi tree) // point plant location
-      if (isSamePlantLocation && (isSingleTree || isMultiTree)) {
-        setSelectedPlantLocation(null);
+      if (isSameIntervention && (isSingleTree || isMultiTree)) {
+        setSelectedIntervention(null);
         setSelectedSite(hasNoSites ? null : 0);
         return;
       }
@@ -232,10 +232,10 @@ function ProjectsMap(props: ProjectsMapProps) {
       // Set selected plant location if a result is found
       if (result) {
         setSelectedSite(null);
-        setSelectedPlantLocation(result);
+        setSelectedIntervention(result);
       }
     },
-    [plantLocations, props.page, selectedPlantLocation]
+    [interventions, props.page, selectedIntervention]
   );
 
   const singleProjectViewProps = {
@@ -254,8 +254,8 @@ function ProjectsMap(props: ProjectsMapProps) {
 
   const shouldShowOtherIntervention =
     props.isMobile &&
-    selectedPlantLocation !== null &&
-    !PLANTATION_TYPES.includes(selectedPlantLocation.type);
+    selectedIntervention !== null &&
+    !PLANTATION_TYPES.includes(selectedIntervention.type);
 
   return (
     <>
@@ -283,7 +283,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           onMove={onMove}
           onLoad={() => setMapLoaded(true)}
           onMouseMove={onMouseMove}
-          onMouseOut={() => setHoveredPlantLocation(null)}
+          onMouseOut={() => setHoveredIntervention(null)}
           onClick={onClick}
           attributionControl={false}
           ref={mapRef}
@@ -306,33 +306,33 @@ function ProjectsMap(props: ProjectsMapProps) {
           )}
         </Map>
       </div>
-      {shouldShowMultiPlantLocationInfo && (
-        <MultiPlantLocationInfo
-          plantLocationInfo={selectedPlantLocation}
+      {shouldShowMultiInterventionInfo && (
+        <MultiInterventionInfo
+          interventionInfo={selectedIntervention}
           isMobile={props.isMobile}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          setSelectedSampleIntervention={setSelectedSampleIntervention}
         />
       )}
-      {shouldShowSinglePlantLocationInfo && (
-        <SinglePlantLocationInfo
+      {shouldShowSingleInterventionInfo && (
+        <SingleInterventionInfo
           plantData={
-            selectedSamplePlantLocation ||
-            (selectedPlantLocation as InterventionSingle)
+            selectedSampleIntervention ||
+            (selectedIntervention as InterventionSingle)
           }
           isMobile={props.isMobile}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          setSelectedSampleIntervention={setSelectedSampleIntervention}
         />
       )}
       {shouldShowOtherIntervention ? (
         <OtherInterventionInfo
-          selectedPlantLocation={
-            selectedPlantLocation &&
-            selectedPlantLocation?.type !== 'single-tree-registration' &&
-            selectedPlantLocation?.type !== 'multi-tree-registration'
-              ? selectedPlantLocation
+          selectedIntervention={
+            selectedIntervention &&
+            selectedIntervention?.type !== 'single-tree-registration' &&
+            selectedIntervention?.type !== 'multi-tree-registration'
+              ? selectedIntervention
               : null
           }
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          setSelectedSampleIntervention={setSelectedSampleIntervention}
           isMobile={props.isMobile}
         />
       ) : null}

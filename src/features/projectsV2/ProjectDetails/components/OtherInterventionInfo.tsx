@@ -13,7 +13,7 @@ import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
-import InterventionHeader from './microComponents/InterventionHeader';
+import OtherInterventionHeader from './microComponents/OtherInterventionHeader';
 
 interface MetaDataValue {
   value: string;
@@ -33,12 +33,12 @@ function isJsonString(str: string) {
   }
 }
 
-const createCardData = (plantLocationInfo: OtherInterventions | null) => {
+const createCardData = (interventionInfo: OtherInterventions | null) => {
   // Initialize an array to store the cleaned key-value pairs
   const cleanedData: { key: string; value: string }[] = [];
 
-  // Extract metadata from the plantLocationInfo object, if it exists
-  const parsedData = plantLocationInfo?.metadata;
+  // Extract metadata from the interventionInfo object, if it exists
+  const parsedData = interventionInfo?.metadata;
 
   // Check if `parsedData.public` exists, is an object, and is not an array
   if (
@@ -100,22 +100,22 @@ const createCardData = (plantLocationInfo: OtherInterventions | null) => {
 };
 
 interface Props {
-  hoveredPlantLocation?: OtherInterventions | null;
-  selectedPlantLocation: OtherInterventions | null;
+  hoveredIntervention?: OtherInterventions | null;
+  selectedIntervention: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
 }
 
 const OtherInterventionInfo = ({
   isMobile,
-  setSelectedSamplePlantLocation,
-  selectedPlantLocation,
-  hoveredPlantLocation,
+  setSelectedSampleIntervention,
+  selectedIntervention,
+  hoveredIntervention,
 }: Props) => {
-  const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
-  if (!plantLocationInfo) return null;
-  const sampleInterventions = plantLocationInfo.sampleInterventions || [];
-  const plantedSpecies = plantLocationInfo.plantedSpecies || [];
+  const interventionInfo = hoveredIntervention || selectedIntervention;
+  if (!interventionInfo) return null;
+  const sampleInterventions = interventionInfo.sampleInterventions || [];
+  const plantedSpecies = interventionInfo.plantedSpecies || [];
   const hasSampleInterventions = sampleInterventions.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
 
@@ -128,7 +128,7 @@ const OtherInterventionInfo = ({
         )
       : 0;
     return { totalTreesCount };
-  }, [plantLocationInfo, plantLocationInfo.type]);
+  }, [interventionInfo, interventionInfo.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (hasSampleInterventions) {
@@ -141,20 +141,20 @@ const OtherInterventionInfo = ({
       });
       return result;
     }
-  }, [plantLocationInfo]);
+  }, [interventionInfo]);
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
-  const cleanedPublicMetadata = createCardData(plantLocationInfo);
+  const cleanedPublicMetadata = createCardData(interventionInfo);
 
   const content = [
     <>
-      <InterventionHeader
-        plHid={plantLocationInfo.hid}
-        interventionType={plantLocationInfo.type}
-        plantDate={plantLocationInfo.interventionStartDate}
+      <OtherInterventionHeader
+        plHid={interventionInfo.hid}
+        interventionType={interventionInfo.type}
+        plantDate={interventionInfo.interventionStartDate}
         key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
@@ -172,8 +172,8 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={cleanedPublicMetadata}
-        plantDate={plantLocationInfo.interventionStartDate}
-        type={plantLocationInfo.type}
+        plantDate={interventionInfo.interventionStartDate}
+        type={interventionInfo.type}
       />
     ),
     hasPlantedSpecies && (
@@ -187,7 +187,7 @@ const OtherInterventionInfo = ({
       <SampleTrees
         key="sampleTrees"
         sampleInterventions={sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        setSelectedSampleIntervention={setSelectedSampleIntervention}
       />
     ),
   ].filter(Boolean);
@@ -196,7 +196,7 @@ const OtherInterventionInfo = ({
     <>
       <MobileInfoSwiper
         slides={content}
-        uniqueKey={plantLocationInfo.hid || ''}
+        uniqueKey={interventionInfo.hid || ''}
       />
     </>
   ) : (

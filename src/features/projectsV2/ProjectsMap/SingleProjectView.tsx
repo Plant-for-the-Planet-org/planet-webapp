@@ -8,8 +8,8 @@ import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
 import SitePolygon from './microComponents/SitePolygon';
-import PlantLocations from './microComponents/PlantLocations';
-import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
+import Interventions from './microComponents/Interventions';
+import { zoomToPolygonIntervention } from '../../../utils/mapsV2/zoomToPolygonIntervention';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocation from './microComponents/ProjectLocation';
 import FireLocations from './microComponents/FireLocations';
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
+  const { singleProject, selectedSite, selectedIntervention, interventions } =
     useProjects();
   if (singleProject === null) return null;
 
@@ -38,11 +38,11 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
     };
   }, [singleProject?.sites]);
   const hasNoSites = sitesGeoJson.features.length === 0;
-  // Zoom to plant location
+  // Zoom to intervention
 
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation === null) return;
-    const { geometry } = selectedPlantLocation;
+    if (!router.isReady || selectedIntervention === null) return;
+    const { geometry } = selectedIntervention;
     const { type, coordinates } = geometry;
 
     const isPolygonLocation = type === 'Polygon';
@@ -50,7 +50,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
 
     if (isPolygonLocation) {
       const polygonCoordinates = coordinates[0];
-      zoomToPolygonPlantLocation(
+      zoomToPolygonIntervention(
         polygonCoordinates,
         mapRef,
         handleViewStateChange,
@@ -62,11 +62,11 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         zoomToLocation(handleViewStateChange, lon, lat, 20, 4000, mapRef);
       }
     }
-  }, [selectedPlantLocation, router.isReady]);
+  }, [selectedIntervention, router.isReady]);
 
   // Zoom to project site
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation !== null) return;
+    if (!router.isReady || selectedIntervention !== null) return;
     if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
@@ -90,16 +90,16 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
         );
       }
     }
-  }, [selectedSite, sitesGeoJson, router.isReady, selectedPlantLocation]);
+  }, [selectedSite, sitesGeoJson, router.isReady, selectedIntervention]);
 
   useEffect(() => {
-    const hasNoPlantLocations = !plantLocations?.length;
-    const isSingleProjectLocation = hasNoPlantLocations && hasNoSites;
+    const hasNoInterventions = !interventions?.length;
+    const isSingleProjectLocation = hasNoInterventions && hasNoSites;
     // Satellite view will be:
     // - false if there are no plant locations and no sites (i.e., a single project location only)
     // - true if there are no plant locations but there are multiple sites
-    setIsSatelliteView(!isSingleProjectLocation && hasNoPlantLocations);
-  }, [plantLocations, hasNoSites]);
+    setIsSatelliteView(!isSingleProjectLocation && hasNoInterventions);
+  }, [interventions, hasNoSites]);
 
   return (
     <>
@@ -115,10 +115,10 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeoJson}
           />
-          {isSatelliteView && plantLocations !== null && <SatelliteLayer />}
+          {isSatelliteView && interventions !== null && <SatelliteLayer />}
         </>
       )}
-      {selectedTab === 'field' && <PlantLocations />}
+      {selectedTab === 'field' && <Interventions />}
       <FeatureFlag condition={isFirealertFiresEnabled()}>
         <FireLocations />
       </FeatureFlag>

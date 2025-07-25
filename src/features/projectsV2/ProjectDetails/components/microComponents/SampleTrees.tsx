@@ -6,11 +6,11 @@ import styles from '../../styles/PlantLocationInfo.module.scss';
 
 interface Props {
   sampleInterventions: SampleIntervention[];
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
 }
 const SampleTreeList = ({
   sampleInterventions,
-  setSelectedSamplePlantLocation,
+  setSelectedSampleIntervention,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
@@ -26,7 +26,7 @@ const SampleTreeList = ({
           >
             <button
               className={styles.scientificNameContainer}
-              onClick={() => setSelectedSamplePlantLocation(sampleTree)}
+              onClick={() => setSelectedSampleIntervention(sampleTree)}
             >
               <span>{index + 1}</span>.
               <p className={styles.scientificName}>
@@ -48,7 +48,7 @@ const SampleTreeList = ({
 };
 const SampleTrees = ({
   sampleInterventions,
-  setSelectedSamplePlantLocation,
+  setSelectedSampleIntervention,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
@@ -60,7 +60,7 @@ const SampleTrees = ({
       </h2>
       <SampleTreeList
         sampleInterventions={sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        setSelectedSampleIntervention={setSelectedSampleIntervention}
       />
     </div>
   );

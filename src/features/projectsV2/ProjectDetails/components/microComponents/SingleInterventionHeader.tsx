@@ -12,7 +12,7 @@ type Props = {
   plantData: InterventionSingle | SampleIntervention;
 };
 
-function SinglePlantLocationHeader({ plantData }: Props) {
+function SingleInterventionHeader({ plantData }: Props) {
   const tProjectDetails = useTranslations('ProjectDetails');
   const isSamplePlant = plantData.type === 'sample-tree-registration';
   const image = plantData?.coordinates?.[0]?.image ?? '';
@@ -41,4 +41,4 @@ function SinglePlantLocationHeader({ plantData }: Props) {
     </>
   );
 }
-export default SinglePlantLocationHeader;
+export default SingleInterventionHeader;

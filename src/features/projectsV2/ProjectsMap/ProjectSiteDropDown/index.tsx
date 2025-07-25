@@ -40,9 +40,9 @@ interface Props {
   projectSites: ProjectSite;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
-  selectedPlantLocation: Intervention | null;
-  setSelectedPlantLocation: SetState<Intervention | null>;
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  selectedIntervention: Intervention | null;
+  setSelectedIntervention: SetState<Intervention | null>;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   canShowInterventionDropdown: boolean;
@@ -52,9 +52,9 @@ const ProjectSiteDropdown = ({
   projectSites,
   selectedSite,
   setSelectedSite,
-  selectedPlantLocation,
-  setSelectedPlantLocation,
-  setSelectedSamplePlantLocation,
+  selectedIntervention,
+  setSelectedIntervention,
+  setSelectedSampleIntervention,
   activeDropdown,
   setActiveDropdown,
   canShowInterventionDropdown,
@@ -106,7 +106,7 @@ const ProjectSiteDropdown = ({
             width={27}
             color={themeProperties.designSystem.colors.coreText}
           />
-          {selectedPlantLocation && query.ploc ? (
+          {selectedIntervention && query.ploc ? (
             '-'
           ) : (
             <>
@@ -151,8 +151,8 @@ const ProjectSiteDropdown = ({
           setSelectedSite={setSelectedSite}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
-          setSelectedPlantLocation={setSelectedPlantLocation}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          setSelectedIntervention={setSelectedIntervention}
+          setSelectedSampleIntervention={setSelectedSampleIntervention}
           canShowInterventionDropdown={canShowInterventionDropdown}
         />
       )}

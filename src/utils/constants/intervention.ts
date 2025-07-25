@@ -107,11 +107,9 @@ export const PLANTATION_TYPES = [
 
 // Helper function with proper type checking
 export const isNonPlantationType = (
-  plantLocation: Intervention | null
+  intervention: Intervention | null
 ): boolean => {
-  return (
-    plantLocation !== null && !PLANTATION_TYPES.includes(plantLocation.type)
-  );
+  return intervention !== null && !PLANTATION_TYPES.includes(intervention.type);
 };
 
 export const findMatchingIntervention = (value: string) => {

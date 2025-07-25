@@ -17,8 +17,8 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
-import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
+import MultiInterventionInfo from './components/MultiInterventionInfo';
+import SingleInterventionInfo from './components/SingleInterventionInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
@@ -38,14 +38,14 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
-    setPlantLocations,
+    setInterventions,
     setIsLoading,
     setIsError,
     setSelectedMode,
-    selectedPlantLocation,
-    hoveredPlantLocation,
-    selectedSamplePlantLocation,
-    setSelectedSamplePlantLocation,
+    selectedIntervention,
+    hoveredIntervention,
+    selectedSampleIntervention,
+    setSelectedSampleIntervention,
     setPreventShallowPush,
   } = useProjects();
   const { setTimeTravelConfig } = useProjectsMap();
@@ -56,14 +56,14 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
 
-  const fetchPlantLocations = async (projectId: string) => {
+  const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);
     try {
       const result = await getApi<Intervention[]>(
         `/app/plantLocations/${projectId}`,
         { queryParams: { _scope: 'extended' } }
       );
-      setPlantLocations(result);
+      setInterventions(result);
     } catch (err) {
       setErrors(handleError(err as APIError | ClientError));
       setIsError(true);
@@ -92,7 +92,7 @@ const ProjectDetails = ({
         );
         const { purpose, id: projectId } = fetchedProject;
         if (projectId && purpose === 'trees') {
-          fetchPlantLocations(projectId);
+          fetchInterventions(projectId);
         }
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
@@ -121,51 +121,51 @@ const ProjectDetails = ({
     }
   }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
-  const shouldShowMultiPlantLocationInfo =
-    (hoveredPlantLocation?.type === 'multi-tree-registration' ||
-      selectedPlantLocation?.type === 'multi-tree-registration') &&
+  const shouldShowMultiInterventionInfo =
+    (hoveredIntervention?.type === 'multi-tree-registration' ||
+      selectedIntervention?.type === 'multi-tree-registration') &&
     !isMobile;
 
   const shouldShowOtherIntervention =
-    isNonPlantationType(hoveredPlantLocation) ||
-    isNonPlantationType(selectedPlantLocation);
+    isNonPlantationType(hoveredIntervention) ||
+    isNonPlantationType(selectedIntervention);
 
-  const shouldShowSinglePlantInfo =
-    (hoveredPlantLocation?.type === 'single-tree-registration' ||
-      selectedPlantLocation?.type === 'single-tree-registration' ||
-      selectedSamplePlantLocation !== null) &&
+  const shouldShowSingleInterventionInfo =
+    (hoveredIntervention?.type === 'single-tree-registration' ||
+      selectedIntervention?.type === 'single-tree-registration' ||
+      selectedSampleIntervention !== null) &&
     !isMobile;
 
   const shouldShowProjectInfo =
-    hoveredPlantLocation === null &&
-    selectedPlantLocation === null &&
-    selectedSamplePlantLocation === null;
+    hoveredIntervention === null &&
+    selectedIntervention === null &&
+    selectedSampleIntervention === null;
 
   // clean up sample plant location when plant location change
   useEffect(() => {
-    if (selectedSamplePlantLocation !== null)
-      setSelectedSamplePlantLocation(null);
-  }, [selectedPlantLocation?.hid]);
+    if (selectedSampleIntervention !== null)
+      setSelectedSampleIntervention(null);
+  }, [selectedIntervention?.hid]);
 
   const plantData: InterventionSingle | SampleIntervention | undefined =
     useMemo(
       () =>
         getPlantData(
-          selectedPlantLocation,
-          hoveredPlantLocation,
-          selectedSamplePlantLocation
+          selectedIntervention,
+          hoveredIntervention,
+          selectedSampleIntervention
         ),
-      [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
+      [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
     );
 
-  const multiPlantLocation = useMemo(() => {
-    if (hoveredPlantLocation?.type === 'multi-tree-registration') {
-      return hoveredPlantLocation;
-    } else if (selectedPlantLocation?.type === 'multi-tree-registration') {
-      return selectedPlantLocation;
+  const multiIntervention = useMemo(() => {
+    if (hoveredIntervention?.type === 'multi-tree-registration') {
+      return hoveredIntervention;
+    } else if (selectedIntervention?.type === 'multi-tree-registration') {
+      return selectedIntervention;
     }
     return undefined;
-  }, [hoveredPlantLocation, selectedPlantLocation]);
+  }, [hoveredIntervention, selectedIntervention]);
 
   return singleProject ? (
     <>
@@ -178,40 +178,40 @@ const ProjectDetails = ({
           page="project-details"
           setPreventShallowPush={setPreventShallowPush}
         />
-        {shouldShowSinglePlantInfo && (
-          <SinglePlantLocationInfo
+        {shouldShowSingleInterventionInfo && (
+          <SingleInterventionInfo
             plantData={plantData}
             isMobile={isMobile}
-            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+            setSelectedSampleIntervention={setSelectedSampleIntervention}
           />
         )}
-        {shouldShowMultiPlantLocationInfo &&
-          !shouldShowSinglePlantInfo &&
-          multiPlantLocation !== undefined && (
-            <MultiPlantLocationInfo
-              plantLocationInfo={multiPlantLocation}
-              setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        {shouldShowMultiInterventionInfo &&
+          !shouldShowSingleInterventionInfo &&
+          multiIntervention !== undefined && (
+            <MultiInterventionInfo
+              interventionInfo={multiIntervention}
+              setSelectedSampleIntervention={setSelectedSampleIntervention}
               isMobile={isMobile}
             />
           )}
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
-            selectedPlantLocation={
-              selectedPlantLocation &&
-              selectedPlantLocation?.type !== 'single-tree-registration' &&
-              selectedPlantLocation?.type !== 'multi-tree-registration'
-                ? selectedPlantLocation
+            selectedIntervention={
+              selectedIntervention &&
+              selectedIntervention?.type !== 'single-tree-registration' &&
+              selectedIntervention?.type !== 'multi-tree-registration'
+                ? selectedIntervention
                 : null
             }
-            hoveredPlantLocation={
-              hoveredPlantLocation &&
-              hoveredPlantLocation?.type !== 'single-tree-registration' &&
-              hoveredPlantLocation?.type !== 'multi-tree-registration'
-                ? hoveredPlantLocation
+            hoveredIntervention={
+              hoveredIntervention &&
+              hoveredIntervention?.type !== 'single-tree-registration' &&
+              hoveredIntervention?.type !== 'multi-tree-registration'
+                ? hoveredIntervention
                 : null
             }
-            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+            setSelectedSampleIntervention={setSelectedSampleIntervention}
             isMobile={isMobile}
           />
         ) : null}

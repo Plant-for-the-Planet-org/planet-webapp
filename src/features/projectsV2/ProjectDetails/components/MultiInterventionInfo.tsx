@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import * as turf from '@turf/turf';
 import styles from '../styles/PlantLocationInfo.module.scss';
-import PlantLocationHeader from './microComponents/PlantLocationHeader';
+import InterventionHeader from './microComponents/InterventionHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
@@ -17,32 +17,32 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  plantLocationInfo: InterventionMulti;
+  interventionInfo: InterventionMulti;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
 }
 
-const MultiPlantLocationInfo = ({
-  plantLocationInfo,
+const MultiInterventionInfo = ({
+  interventionInfo,
   isMobile,
-  setSelectedSamplePlantLocation,
+  setSelectedSampleIntervention,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
   const { totalTreesCount, plantLocationAreaHectares } = useMemo(() => {
-    const totalTreesCount = plantLocationInfo.plantedSpecies.reduce(
+    const totalTreesCount = interventionInfo.plantedSpecies.reduce(
       (sum, species) => sum + species.treeCount,
       0
     );
-    const area = turf.area(plantLocationInfo.geometry);
+    const area = turf.area(interventionInfo.geometry);
     const plantLocationAreaHectares = area / 10000;
     return { totalTreesCount, plantLocationAreaHectares };
-  }, [plantLocationInfo.geometry, plantLocationInfo.type]);
+  }, [interventionInfo.geometry, interventionInfo.type]);
 
   const plantingDensity = totalTreesCount / plantLocationAreaHectares;
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    const result = plantLocationInfo.sampleInterventions.map((item) => {
+    const result = interventionInfo.sampleInterventions.map((item) => {
       return {
         id: item.coordinates[0].id,
         image: item.coordinates[0].image ?? '',
@@ -50,7 +50,7 @@ const MultiPlantLocationInfo = ({
       };
     });
     return result;
-  }, [plantLocationInfo.sampleInterventions]);
+  }, [interventionInfo.sampleInterventions]);
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
@@ -58,9 +58,9 @@ const MultiPlantLocationInfo = ({
 
   const content = [
     <>
-      <PlantLocationHeader
-        key="plantLocationHeader"
-        plHid={plantLocationInfo.hid}
+      <InterventionHeader
+        key="interventionHeader"
+        plHid={interventionInfo.hid}
         totalTreesCount={totalTreesCount}
         plantLocationAreaHectares={plantLocationAreaHectares}
       />
@@ -78,29 +78,26 @@ const MultiPlantLocationInfo = ({
     <PlantingDetails
       key="plantingDetails"
       plantingDensity={plantingDensity}
-      plantDate={plantLocationInfo.interventionStartDate}
+      plantDate={interventionInfo.interventionStartDate}
     />,
-    plantLocationInfo.plantedSpecies.length > 0 && (
+    interventionInfo.plantedSpecies.length > 0 && (
       <SpeciesPlanted
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
-        plantedSpecies={plantLocationInfo.plantedSpecies}
+        plantedSpecies={interventionInfo.plantedSpecies}
       />
     ),
-    plantLocationInfo.sampleInterventions.length > 0 && (
+    interventionInfo.sampleInterventions.length > 0 && (
       <SampleTrees
         key="sampleTrees"
-        sampleInterventions={plantLocationInfo.sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        sampleInterventions={interventionInfo.sampleInterventions}
+        setSelectedSampleIntervention={setSelectedSampleIntervention}
       />
     ),
   ].filter(Boolean);
 
   return isMobile ? (
-    <MobileInfoSwiper
-      slides={content}
-      uniqueKey={plantLocationInfo.hid || ''}
-    />
+    <MobileInfoSwiper slides={content} uniqueKey={interventionInfo.hid || ''} />
   ) : (
     <section className={styles.plantLocationInfoSection}>
       {content}
@@ -109,4 +106,4 @@ const MultiPlantLocationInfo = ({
   );
 };
 
-export default MultiPlantLocationInfo;
+export default MultiInterventionInfo;

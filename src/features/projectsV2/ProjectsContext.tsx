@@ -37,14 +37,14 @@ interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ExtendedProject | null;
   setSingleProject: SetState<ExtendedProject | null>;
-  plantLocations: Intervention[] | null;
-  setPlantLocations: SetState<Intervention[] | null>;
-  selectedPlantLocation: Intervention | null;
-  setSelectedPlantLocation: SetState<Intervention | null>;
-  selectedSamplePlantLocation: SampleIntervention | null;
-  setSelectedSamplePlantLocation: SetState<SampleIntervention | null>;
-  hoveredPlantLocation: Intervention | null;
-  setHoveredPlantLocation: SetState<Intervention | null>;
+  interventions: Intervention[] | null;
+  setInterventions: SetState<Intervention[] | null>;
+  selectedIntervention: Intervention | null;
+  setSelectedIntervention: SetState<Intervention | null>;
+  selectedSampleIntervention: SampleIntervention | null;
+  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  hoveredIntervention: Intervention | null;
+  setHoveredIntervention: SetState<Intervention | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   setPreventShallowPush: SetState<boolean>;
@@ -90,14 +90,14 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
   );
-  const [plantLocations, setPlantLocations] = useState<Intervention[] | null>(
+  const [interventions, setInterventions] = useState<Intervention[] | null>(
     null
   );
-  const [selectedPlantLocation, setSelectedPlantLocation] =
+  const [selectedIntervention, setSelectedIntervention] =
     useState<Intervention | null>(null);
-  const [selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
+  const [selectedSampleIntervention, setSelectedSampleIntervention] =
     useState<SampleIntervention | null>(null);
-  const [hoveredPlantLocation, setHoveredPlantLocation] =
+  const [hoveredIntervention, setHoveredIntervention] =
     useState<Intervention | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);
   const [selectedInterventionType, setSelectedInterventionType] =
@@ -119,7 +119,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const router = useRouter();
   const { tenantConfig } = useTenant();
   const { getApi } = useApi();
-  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+  const { ploc: requestedIntervention, site: requestedSite } = router.query;
 
   // Read filter from URL only on initial load
   useEffect(() => {
@@ -284,16 +284,16 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setIsSearching(false);
       setSelectedClassification([]);
     } else {
-      setSelectedPlantLocation(null);
+      setSelectedIntervention(null);
       setSingleProject(null);
-      setHoveredPlantLocation(null);
+      setHoveredIntervention(null);
       setSelectedSite(null);
       setSelectedInterventionType('all');
       setPreventShallowPush(false);
-      setPlantLocations(null);
+      setInterventions(null);
     }
     if (selectedMode === 'list' && page === 'project-list')
-      setPlantLocations(null);
+      setInterventions(null);
   }, [page]);
 
   const updateProjectDetailsPath = (
@@ -361,35 +361,35 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     if (
       !router.isReady ||
-      (plantLocations && plantLocations?.length === 0) ||
+      (interventions && interventions?.length === 0) ||
       page !== 'project-details' ||
       singleProject === null ||
       selectedSite !== null ||
-      (requestedPlantLocation && requestedSite)
+      (requestedIntervention && requestedSite)
     )
       return;
 
-    if (requestedPlantLocation && selectedPlantLocation === null) {
+    if (requestedIntervention && selectedIntervention === null) {
       if (hasNoSites) {
         //Case when a direct link requests a specific plant location but no sites exist for a project(e.g projectSlug: mothersforest).
         updateSiteAndUrl(locale, singleProject.slug, undefined);
       } else {
         // Handle the case where a direct link requests a specific plant location (via URL query).
-        // This will update the ploc param based on the requestedPlantLocation. If the requested hid is invalid,
+        // This will update the ploc param based on the requestedIntervention. If the requested hid is invalid,
         // it falls back to the default (first) site.
-        const result = plantLocations?.find(
-          (plantLocation) => plantLocation.hid === requestedPlantLocation
+        const result = interventions?.find(
+          (intervention) => intervention.hid === requestedIntervention
         );
         result
-          ? setSelectedPlantLocation(result)
+          ? setSelectedIntervention(result)
           : updateSiteAndUrl(locale, singleProject.slug, 0);
       }
     }
 
     // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
-    if (selectedPlantLocation) {
+    if (selectedIntervention) {
       const updatedQueryParams = buildProjectDetailsQuery(router.query, {
-        plocId: selectedPlantLocation.hid,
+        plocId: selectedIntervention.hid,
       });
       updateProjectDetailsPath(locale, singleProject.slug, updatedQueryParams);
     }
@@ -397,9 +397,9 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     page,
     singleProject?.slug,
     locale,
-    requestedPlantLocation,
+    requestedIntervention,
     router.isReady,
-    selectedPlantLocation,
+    selectedIntervention,
     selectedSite,
     hasNoSites,
   ]);
@@ -409,7 +409,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       !router.isReady ||
       page !== 'project-details' ||
       singleProject === null ||
-      selectedPlantLocation !== null ||
+      selectedIntervention !== null ||
       preventShallowPush
     )
       return;
@@ -435,7 +435,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     // If the user navigates to the project detail page from the project list (no specific site selected)
     // This defaults to the first site and updates the URL accordingly.
-    if (!requestedPlantLocation) {
+    if (!requestedIntervention) {
       const siteIndex = hasNoSites ? undefined : 0;
       updateSiteAndUrl(locale, singleProject.slug, siteIndex);
     }
@@ -447,16 +447,16 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     singleProject?.sites,
     requestedSite,
     router.isReady,
-    selectedPlantLocation,
+    selectedIntervention,
     preventShallowPush,
     hasNoSites,
   ]);
 
   useEffect(() => {
     if (selectedMode === 'list' && singleProject !== null) {
-      setSelectedSamplePlantLocation(null);
-      setSelectedPlantLocation(null);
-      setHoveredPlantLocation(null);
+      setSelectedSampleIntervention(null);
+      setSelectedIntervention(null);
+      setHoveredIntervention(null);
     }
   }, [selectedMode, singleProject, locale, hasNoSites]);
 
@@ -481,14 +481,14 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedMode,
       singleProject,
       setSingleProject,
-      plantLocations,
-      setPlantLocations,
-      selectedPlantLocation,
-      setSelectedPlantLocation,
-      hoveredPlantLocation,
-      setHoveredPlantLocation,
-      selectedSamplePlantLocation,
-      setSelectedSamplePlantLocation,
+      interventions,
+      setInterventions,
+      selectedIntervention,
+      setSelectedIntervention,
+      hoveredIntervention,
+      setHoveredIntervention,
+      selectedSampleIntervention,
+      setSelectedSampleIntervention,
       selectedSite,
       setSelectedSite,
       selectedInterventionType,
@@ -506,10 +506,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       debouncedSearchValue,
       selectedMode,
       singleProject,
-      plantLocations,
-      selectedPlantLocation,
-      selectedSamplePlantLocation,
-      hoveredPlantLocation,
+      interventions,
+      selectedIntervention,
+      selectedSampleIntervention,
+      hoveredIntervention,
       selectedSite,
       preventShallowPush,
       selectedInterventionType,

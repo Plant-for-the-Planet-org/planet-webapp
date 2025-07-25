@@ -132,9 +132,9 @@ const options: Feature<Polygon, SiteProperties>[] = [
 export const Preview: Story = {
   render: () => {
     const [selectedSite, setSelectedSite] = useState<null | number>(0);
-    const [selectedPlantLocation, setSelectedPlantLocation] =
+    const [selectedIntervention, setSelectedIntervention] =
       useState<Intervention | null>(null);
-    const [_selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
+    const [_selectedSampleIntervention, setSelectedSampleIntervention] =
       useState<SampleIntervention | null>(null);
 
     return (
@@ -144,9 +144,9 @@ export const Preview: Story = {
         setSelectedSite={(index) => {
           setSelectedSite(index);
         }}
-        selectedPlantLocation={selectedPlantLocation}
-        setSelectedPlantLocation={setSelectedPlantLocation}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        selectedIntervention={selectedIntervention}
+        setSelectedIntervention={setSelectedIntervention}
+        setSelectedSampleIntervention={setSelectedSampleIntervention}
       />
     );
   },

@@ -49,27 +49,27 @@ const MapControls = ({
     singleProject,
     selectedSite,
     setSelectedSite,
-    selectedPlantLocation,
-    selectedSamplePlantLocation,
-    setSelectedPlantLocation,
-    setSelectedSamplePlantLocation,
+    selectedIntervention,
+    selectedSampleIntervention,
+    setSelectedIntervention,
+    setSelectedSampleIntervention,
     selectedInterventionType,
     setSelectedInterventionType,
-    plantLocations,
+    interventions,
     showDonatableProjects,
     setShowDonatableProjects,
   } = useProjects();
   const { embed, showProjectDetails } = useContext(ParamsContext);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   const uniquePlantTypes = useMemo(() => {
-    if (!plantLocations) return [];
+    if (!interventions) return [];
 
     const types = new Set<string>();
-    for (let i = 0; i < plantLocations.length; i++) {
-      types.add(plantLocations[i].type);
+    for (let i = 0; i < interventions.length; i++) {
+      types.add(interventions[i].type);
     }
     return [...types];
-  }, [plantLocations]);
+  }, [interventions]);
 
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
@@ -77,7 +77,7 @@ const MapControls = ({
   const canShowSatelliteToggle =
     !(
       isMobile &&
-      (selectedPlantLocation !== null || selectedSamplePlantLocation !== null)
+      (selectedIntervention !== null || selectedSampleIntervention !== null)
     ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
   const canShowInterventionDropdown =
@@ -94,9 +94,9 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     projectSites: singleProject?.sites,
-    selectedPlantLocation,
-    setSelectedPlantLocation,
-    setSelectedSamplePlantLocation,
+    selectedIntervention,
+    setSelectedIntervention,
+    setSelectedSampleIntervention,
     activeDropdown,
     setActiveDropdown,
     canShowInterventionDropdown,
@@ -106,9 +106,9 @@ const MapControls = ({
     selectedInterventionType,
     setSelectedInterventionType,
     allInterventions: AllInterventions,
-    selectedPlantLocation,
-    setSelectedPlantLocation,
-    setSelectedSamplePlantLocation,
+    selectedIntervention,
+    setSelectedIntervention,
+    setSelectedSampleIntervention,
     activeDropdown,
     setActiveDropdown,
   };
