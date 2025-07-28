@@ -1,9 +1,11 @@
 @import '../../../theme/theme';
 
+$footerHeight: 49px;
+
 .mobileInfoSwiper {
   width: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: $footerHeight;
   z-index: 9999;
   padding: 6px;
 }
