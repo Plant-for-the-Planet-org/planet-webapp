@@ -69,6 +69,9 @@ const themeProperties = {
       warmBlueTransparent10: '#2D9CDB1A',
       warmBlueTransparent20: '#2D9CDB33',
       skyBlue: '#56CCF2',
+      brightBlue: '#48AADD',
+      warmRed: '#E86F56',
+      hotPink: '#EB67CE',
       baseGrey: '#F9F9F9',
       // Gray colors for borders/separators etc.
       darkGrey: '#4F4F4F',

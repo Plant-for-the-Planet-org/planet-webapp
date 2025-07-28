@@ -135,6 +135,9 @@ const getGlobalStyles = async () => {
       --ds-warm-blue-transparent-20: ${designSystem.colors
         .warmBlueTransparent20};
       --ds-sky-blue: ${designSystem.colors.skyBlue};
+      --ds-bright-blue: ${designSystem.colors.brightBlue};
+      --ds-warm-red: ${designSystem.colors.warmRed};
+      --ds-hot-pink: ${designSystem.colors.hotPink};
       --ds-base-grey: ${designSystem.colors.baseGrey};
       --ds-dark-grey: ${designSystem.colors.darkGrey};
       --ds-medium-grey: ${designSystem.colors.mediumGrey};
