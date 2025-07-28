@@ -7,7 +7,7 @@ import type { SliderImage } from './ImageSlider';
 
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import styles from '../../styles/PlantLocation.module.scss';
+import styles from '../../styles/Intervention.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
