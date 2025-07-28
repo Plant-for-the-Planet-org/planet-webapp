@@ -6,13 +6,13 @@ import { formatHid } from '../../../../../utils/projectV2';
 interface Props {
   plHid: string | undefined;
   totalTreesCount: number;
-  plantLocationAreaHectares: number;
+  interventionAreaHectares: number;
 }
 
 const InterventionHeader = ({
   plHid,
   totalTreesCount,
-  plantLocationAreaHectares,
+  interventionAreaHectares,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
@@ -29,8 +29,8 @@ const InterventionHeader = ({
             1
           ),
           area:
-            plantLocationAreaHectares > 0
-              ? plantLocationAreaHectares.toFixed(3)
+            interventionAreaHectares > 0
+              ? interventionAreaHectares.toFixed(3)
               : undefined,
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}

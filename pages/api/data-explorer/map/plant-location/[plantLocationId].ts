@@ -86,10 +86,10 @@ handler.get(async (req, response) => {
     plantLocationId,
   ]);
 
-  const plantLocationDetails: InterventionDetails = res[0]?.result || null;
+  const interventionDetails: InterventionDetails = res[0]?.result || null;
 
   response.status(200).json({
-    res: plantLocationDetails,
+    res: interventionDetails,
   });
 });
 

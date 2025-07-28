@@ -72,14 +72,14 @@ handler.post(async (req, response) => {
 
     const qRes = await query<UncleanInterventions>(queryText, values);
 
-    const plantLocations: SingleInterventionApiResponse[] = qRes.map(
-      (plantLocation) => ({
+    const interventions: SingleInterventionApiResponse[] = qRes.map(
+      (intervention) => ({
         type: 'Feature',
         properties: {
-          guid: plantLocation.guid,
-          treeCount: plantLocation.treeCount,
+          guid: intervention.guid,
+          treeCount: intervention.treeCount,
         },
-        geometry: plantLocation.geometry,
+        geometry: intervention.geometry,
       })
     );
 
@@ -88,7 +88,7 @@ handler.post(async (req, response) => {
       's-maxage=7200, stale-while-revalidate'
     );
 
-    response.status(200).json({ data: plantLocations });
+    response.status(200).json({ data: interventions });
   } catch (err) {
     console.error('Error fetching plant location data:', err);
     response.status(500).json({ error: 'Internal Server Error' });

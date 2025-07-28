@@ -29,17 +29,17 @@ const MultiInterventionInfo = ({
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
-  const { totalTreesCount, plantLocationAreaHectares } = useMemo(() => {
+  const { totalTreesCount, interventionAreaHectares } = useMemo(() => {
     const totalTreesCount = interventionInfo.plantedSpecies.reduce(
       (sum, species) => sum + species.treeCount,
       0
     );
     const area = turf.area(interventionInfo.geometry);
-    const plantLocationAreaHectares = area / 10000;
-    return { totalTreesCount, plantLocationAreaHectares };
+    const interventionAreaHectares = area / 10000;
+    return { totalTreesCount, interventionAreaHectares };
   }, [interventionInfo.geometry, interventionInfo.type]);
 
-  const plantingDensity = totalTreesCount / plantLocationAreaHectares;
+  const plantingDensity = totalTreesCount / interventionAreaHectares;
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     const result = interventionInfo.sampleInterventions.map((item) => {
@@ -62,7 +62,7 @@ const MultiInterventionInfo = ({
         key="interventionHeader"
         plHid={interventionInfo.hid}
         totalTreesCount={totalTreesCount}
-        plantLocationAreaHectares={plantLocationAreaHectares}
+        interventionAreaHectares={interventionAreaHectares}
       />
       {shouldDisplayImageCarousel && (
         <ImageSlider

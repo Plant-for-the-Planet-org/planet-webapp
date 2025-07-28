@@ -66,9 +66,9 @@ function RegisterTreesForm({
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setPlantLocation] = React.useState<
-    number[] | undefined
-  >(undefined);
+  const [intervention, setIntervention] = React.useState<number[] | undefined>(
+    undefined
+  );
   const [geometry, setGeometry] = React.useState<
     RegisteredTreesGeometry | undefined
   >(undefined);
@@ -345,7 +345,7 @@ function RegisterTreesForm({
                 onViewportChange={_onViewportChange}
                 onViewStateChange={_onStateChange}
                 onClick={(event) => {
-                  setPlantLocation(event.lngLat);
+                  setIntervention(event.lngLat);
                   setGeometry({
                     type: 'Point',
                     coordinates: event.lngLat,
@@ -364,10 +364,10 @@ function RegisterTreesForm({
                     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
                 }}
               >
-                {plantLocation ? (
+                {intervention ? (
                   <Marker
-                    latitude={plantLocation[1]}
-                    longitude={plantLocation[0]}
+                    latitude={intervention[1]}
+                    longitude={intervention[0]}
                     offsetLeft={5}
                     offsetTop={-16}
                     style={{ left: '28px' }}
