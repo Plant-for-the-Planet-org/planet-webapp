@@ -6,7 +6,7 @@ import type {
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { formatHid } from '../../../../../utils/projectV2';
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 
 type Props = {
   plantData: InterventionSingle | SampleIntervention;

@@ -1,6 +1,6 @@
 import type { INTERVENTION_TYPE } from '../../../../../utils/constants/intervention';
 
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { formatHid } from '../../../../../utils/projectV2';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslations } from 'next-intl';

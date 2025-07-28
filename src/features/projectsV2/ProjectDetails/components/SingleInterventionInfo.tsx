@@ -5,7 +5,7 @@ import type {
 } from '../../../common/types/intervention';
 
 import PlantInfoCard from './microComponents/PlantInfoCard';
-import styles from '../styles/PlantLocationInfo.module.scss';
+import styles from '../styles/InterventionInfo.module.scss';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import SingleInterventionHeader from './microComponents/SingleInterventionHeader';
 import MobileInfoSwiper from '../../MobileInfoSwiper';

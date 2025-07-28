@@ -4,7 +4,7 @@ import type {
 } from '../../../../common/types/intervention';
 import type { SetState } from '../../../../common/types/common';
 
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 

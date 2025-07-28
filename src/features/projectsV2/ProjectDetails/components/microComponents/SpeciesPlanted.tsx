@@ -1,7 +1,7 @@
 import type { PlantedSpecies } from '../../../../common/types/intervention';
 
 import { useCallback } from 'react';
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 

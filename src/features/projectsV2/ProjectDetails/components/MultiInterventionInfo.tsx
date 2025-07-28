@@ -7,7 +7,7 @@ import type { SetState } from '../../../common/types/common';
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import * as turf from '@turf/turf';
-import styles from '../styles/PlantLocationInfo.module.scss';
+import styles from '../styles/InterventionInfo.module.scss';
 import InterventionHeader from './microComponents/InterventionHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
