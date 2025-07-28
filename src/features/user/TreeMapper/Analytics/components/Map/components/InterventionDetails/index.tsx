@@ -141,7 +141,7 @@ const InterventionHeader = ({ type, hid }: InterventionProperties) => {
 
   return (
     <header className={styles.header}>
-      <div>{t(`plantLocationType.${type}`)}</div>
+      <div>{t(`interventionType.${type}`)}</div>
       <div className={styles.hid}>#{formattedHid}</div>
     </header>
   );
