@@ -24,7 +24,7 @@ import SingleProjectDetails from '../../../../../src/features/projects/screens/S
 import { useApi } from '../../../../../src/hooks/useApi';
 import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
 import ProjectDetailsMeta from '../../../../../src/utils/getMetaTags/ProjectDetailsMeta';
-import { getAllPlantLocations } from '../../../../../src/utils/maps/plantLocations';
+import { getInterventions } from '../../../../../src/utils/maps/zoomToPolygonIntervention';
 import { useLocale } from 'next-intl';
 import { handleError, ClientError } from '@planet-sdk/common';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
@@ -60,11 +60,11 @@ export default function Donate({
     setSelectedSite,
     setProject,
     setSelectedPl,
-    plantLocations,
+    intervention,
     setShowSingleProject,
     setZoomLevel,
-    setPlantLocations,
-    setPlantLocationsLoaded,
+    setInterventions,
+    setInterventionsLoaded,
   } = useProjectProps();
 
   const { setTenantConfig } = useTenant();
@@ -133,17 +133,17 @@ export default function Donate({
     async function loadPl(
       project: ConservationProjectExtended | TreeProjectExtended
     ) {
-      setPlantLocationsLoaded(false);
-      const newPlantLocations = await getAllPlantLocations(
+      setInterventionsLoaded(false);
+      const newInterventions = await getInterventions(
         pageProps.tenantConfig.id,
         project.id,
         setErrors,
         redirect
       );
 
-      if (newPlantLocations !== undefined) {
-        setPlantLocations(newPlantLocations);
-        setPlantLocationsLoaded(true);
+      if (newInterventions !== undefined) {
+        setInterventions(newInterventions);
+        setInterventionsLoaded(true);
       }
     }
     if (project && project.purpose === 'trees') {
@@ -191,20 +191,21 @@ export default function Donate({
   }, [setSelectedSite, geoJson, project]);
 
   React.useEffect(() => {
-    //for selecting one of the plant location. if user use link  to directly visit to plantLocation from home page
-    if (geoJson && router.query.ploc && plantLocations && project) {
-      const singlePlantLocation: Intervention | undefined =
-        plantLocations?.find((singlePlantLocation) => {
-          return router.query.ploc === singlePlantLocation?.hid;
-        });
+    //for selecting one of the intervention . if user use link  to directly visit to intervention from home page
+    if (geoJson && router.query.ploc && intervention && project) {
+      const singleIntervention: Intervention | undefined = intervention?.find(
+        (singleIntervention) => {
+          return router.query.ploc === singleIntervention?.hid;
+        }
+      );
 
-      if (singlePlantLocation === undefined) {
+      if (singleIntervention === undefined) {
         router.push(`/projects-archive/${project.slug}`);
       } else {
-        setSelectedPl(singlePlantLocation);
+        setSelectedPl(singleIntervention);
       }
     }
-  }, [router, router.query.ploc, plantLocations, setSelectedPl, project]);
+  }, [router, router.query.ploc, intervention, setSelectedPl, project]);
 
   return pageProps.tenantConfig ? (
     <>

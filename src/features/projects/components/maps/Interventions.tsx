@@ -16,17 +16,17 @@ import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
 
-export default function PlantLocations(): ReactElement {
+export default function Interventions(): ReactElement {
   const {
-    plantLocations,
+    intervention,
     hoveredPl,
     selectedPl,
     setSelectedPl,
     setHoveredPl,
     viewport,
     satellite,
-    setSamplePlantLocation,
-    samplePlantLocation,
+    setSampleIntervention,
+    sampleIntervention,
   } = useProjectProps();
 
   const t = useTranslations('Maps');
@@ -35,7 +35,7 @@ export default function PlantLocations(): ReactElement {
   const openPl = (pl: InterventionSingle | SampleIntervention) => {
     switch (pl.type) {
       case 'sample-tree-registration':
-        setSamplePlantLocation(pl);
+        setSampleIntervention(pl);
         break;
       case 'single-tree-registration':
         setSelectedPl(pl);
@@ -134,11 +134,11 @@ export default function PlantLocations(): ReactElement {
     };
   };
 
-  if (!plantLocations) {
+  if (!intervention) {
     return <></>;
   }
 
-  const features = plantLocations.map((el) => {
+  const features = intervention.map((el) => {
     const isSelected = selectedPl && selectedPl.id === el.id;
     const isHovered = hoveredPl && hoveredPl.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
@@ -214,7 +214,7 @@ export default function PlantLocations(): ReactElement {
                     <div
                       key={`${spl.id}-marker`}
                       className={`${styles.single} ${
-                        spl.hid === samplePlantLocation?.hid
+                        spl.hid === sampleIntervention?.hid
                           ? styles.singleSelected
                           : ''
                       }`}

@@ -144,12 +144,12 @@ interface ProjectPropsContextInterface {
   setSelectedMode: SetState<MapMode>;
   rasterData: RasterData;
   setRasterData: SetState<RasterData>;
-  plantLocations: Intervention[] | null;
-  setPlantLocations: SetState<Intervention[] | null>;
+  intervention: Intervention[] | null;
+  setInterventions: SetState<Intervention[] | null>;
   selectedPl: Intervention | null; //HERE
   setSelectedPl: SetState<Intervention | null>;
-  samplePlantLocation: SampleIntervention | null;
-  setSamplePlantLocation: SetState<SampleIntervention | null>;
+  sampleIntervention: SampleIntervention | null;
+  setSampleIntervention: SetState<SampleIntervention | null>;
   zoomLevel: number;
   setZoomLevel: SetState<number>;
   satellite: boolean;
@@ -168,8 +168,8 @@ interface ProjectPropsContextInterface {
   setFilterOpen: SetState<boolean>;
   purpose: ProjectPurposeTypes;
   setPurpose: SetState<ProjectPurposeTypes>;
-  plantLocationsLoaded: boolean;
-  setPlantLocationsLoaded: SetState<boolean>;
+  interventionsLoaded: boolean;
+  setInterventionsLoaded: SetState<boolean>;
 }
 
 export default ProjectPropsContextInterface;

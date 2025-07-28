@@ -17,7 +17,7 @@ import { handleError } from '@planet-sdk/common';
  * @param setViewPort - function to set the viewport
  * @param {number} duration - in ms
  */
-export function zoomToPolygonPlantLocation(
+export function zoomToPolygonIntervention(
   coordinates: Position[],
   viewport: ViewPort,
   isMobile: boolean,
@@ -63,7 +63,7 @@ export function zoomToPolygonPlantLocation(
   }
 }
 
-export async function getAllPlantLocations(
+export async function getInterventions(
   tenant: string | undefined,
   project: string,
   setErrors: SetState<SerializedError[] | null>,
