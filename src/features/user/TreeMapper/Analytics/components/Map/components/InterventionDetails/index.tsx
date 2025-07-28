@@ -164,7 +164,7 @@ const InterventionDetails = ({
     );
 
   return (
-    <div className={styles.plantLocationDetailsContainer}>
+    <div className={styles.interventionDetailsContainer}>
       <div className={styles.content}>
         {loading ? (
           <>

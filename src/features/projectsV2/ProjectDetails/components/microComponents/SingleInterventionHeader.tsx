@@ -20,7 +20,7 @@ function SingleInterventionHeader({ plantData }: Props) {
   return (
     <>
       <div
-        className={`single-plant-location-heading ${styles.singlePlantLocationHeading}`}
+        className={`single-intervention-heading ${styles.singleInterventionHeading}`}
       >
         <h1 className="tree-count">
           {isSamplePlant
@@ -33,7 +33,7 @@ function SingleInterventionHeader({ plantData }: Props) {
         <>
           <img
             src={getImageUrl('coordinate', 'large', image)}
-            className={`single-plant-location-image ${styles.singlePlantLocationImage}`}
+            className={`single-intervention-image ${styles.singleInterventionImage}`}
             loading="lazy"
           />
         </>

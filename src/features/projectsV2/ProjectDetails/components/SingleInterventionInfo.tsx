@@ -43,7 +43,7 @@ const SingleInterventionInfo = ({
   return isMobile ? (
     <MobileInfoSwiper slides={content} uniqueKey={plantData.hid} />
   ) : (
-    <div className={styles.plantLocationInfoSection}>
+    <div className={styles.interventionInfoSection}>
       <SingleInterventionHeader plantData={plantData} />
       <PlantInfoCard {...plantInfoProps} />
       <TreeMapperBrand />

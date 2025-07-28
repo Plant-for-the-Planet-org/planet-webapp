@@ -28,7 +28,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
   if (singleProject === null) return null;
 
   const router = useRouter();
-  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+  const { ploc: requestedIntervention, site: requestedSite } = router.query;
 
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
@@ -78,7 +78,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
     if (
       !router.isReady ||
       selectedIntervention !== null ||
-      Boolean(requestedPlantLocation)
+      Boolean(requestedIntervention)
     )
       return;
     if (sitesGeoJson.features.length > 0 && selectedSite !== null) {

@@ -99,7 +99,7 @@ const MultiInterventionInfo = ({
   return isMobile ? (
     <MobileInfoSwiper slides={content} uniqueKey={interventionInfo.hid || ''} />
   ) : (
-    <section className={styles.plantLocationInfoSection}>
+    <section className={styles.interventionInfoSection}>
       {content}
       <TreeMapperBrand />
     </section>

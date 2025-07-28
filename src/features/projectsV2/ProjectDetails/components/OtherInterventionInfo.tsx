@@ -200,7 +200,7 @@ const OtherInterventionInfo = ({
       />
     </>
   ) : (
-    <section className={styles.plantLocationInfoSection}>
+    <section className={styles.interventionInfoSection}>
       {content}
       <TreeMapperBrand />
     </section>

@@ -18,7 +18,7 @@ const InterventionHeader = ({ plHid, interventionType, plantDate }: Props) => {
   return (
     <>
       <div
-        className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
+        className={`intervention-header-container ${styles.interventionHeaderContainer}`}
       >
         <div className={`${styles.interventionTitle}`}>
           {tIntervention(interventionType)}

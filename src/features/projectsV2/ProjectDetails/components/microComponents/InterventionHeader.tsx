@@ -18,7 +18,7 @@ const InterventionHeader = ({
   const locale = useLocale();
   return (
     <div
-      className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
+      className={`intervention-header-container ${styles.interventionHeaderContainer}`}
     >
       <div className={`tree-count ${styles.treeCount}`}>
         {tProjectDetails.rich('totalPlantedTrees', {
