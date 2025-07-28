@@ -81,7 +81,7 @@ export interface UncleanDistinctSpecies {
 
 export type DistinctSpecies = string[];
 
-export interface PlantLocation {
+export interface InterventionFeature {
   geometry: Point | Polygon;
   properties: {
     guid: string;
@@ -92,9 +92,9 @@ export interface PlantLocation {
   type: 'Feature';
 }
 
-export interface PlantLocations {
+export interface InterventionFeatureCollection {
   type: 'FeatureCollection';
-  features: PlantLocation[];
+  features: InterventionFeature[];
 }
 
 // --- /api/data-explorer/map/plant-location/[plantLocationId]
@@ -103,7 +103,7 @@ export interface Measurements {
   height: string;
 }
 
-export interface SamplePlantLocation {
+export interface SampleIntervention {
   tag: string | null;
   guid: string;
   geometry: Point;
@@ -119,16 +119,16 @@ export interface InterventionDetailsQueryRes {
   result: InterventionDetails;
 }
 
-export interface PlantLocationProperties {
+export interface InterventionProperties {
   hid: string;
   type: 'single-tree-registration' | 'multi-tree-registration';
 }
 
 export interface InterventionDetails {
-  properties: PlantLocationProperties;
+  properties: InterventionProperties;
   plantedSpecies: PlantedSpecies[];
   totalPlantedTrees: number;
-  samplePlantLocations: null | SamplePlantLocation[];
+  samplePlantLocations: null | SampleIntervention[];
   totalSamplePlantLocations: null | number;
 }
 
@@ -136,7 +136,7 @@ export interface InterventionDetails {
 
 export interface InterventionDetailsApiResponse {
   res: {
-    properties: PlantLocationProperties;
+    properties: InterventionProperties;
     plantedSpecies: {
       treeCount: number;
       scientificName: string;

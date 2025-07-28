@@ -4,7 +4,7 @@ import type {
   InterventionMulti,
   InterventionSingle,
 } from '../../../common/types/intervention';
-import type { SamplePlantLocation } from '../Treemapper';
+import type { SampleIntervention } from '../Treemapper';
 
 import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -22,12 +22,12 @@ interface Props {
   selectedLocation:
     | InterventionSingle
     | InterventionMulti
-    | SamplePlantLocation
+    | SampleIntervention
     | null;
   setSelectedLocation: Function;
 }
 
-function PlantLocation({
+function TreemapperIntervention({
   location,
   index,
   locations,
@@ -99,8 +99,8 @@ function PlantLocation({
                     2
                   ) +
                   'ha'
-                : (location as SamplePlantLocation).tag
-                ? '• ' + (location as SamplePlantLocation).tag
+                : (location as SampleIntervention).tag
+                ? '• ' + (location as SampleIntervention).tag
                 : ''
             }`}
           </p>
@@ -129,4 +129,4 @@ function PlantLocation({
   );
 }
 
-export default PlantLocation;
+export default TreemapperIntervention;

@@ -12,12 +12,12 @@ import TransactionListLoader from '../../../../../public/assets/images/icons/Tra
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from '../TreeMapper.module.scss';
 import { useTranslations } from 'next-intl';
-import PlantLocation from './PlantLocation';
+import TreemapperIntervention from './TreemapperIntervention';
 
 interface Props {
   selectedLocation: InterventionSingle | InterventionMulti | null;
   setSelectedLocation: SetState<InterventionSingle | InterventionMulti | null>;
-  plantLocations: Intervention[];
+  intervention: Intervention[];
   isDataLoading: boolean;
   location: InterventionSingle | InterventionMulti | null;
   fetchTreemapperData: Function;
@@ -27,7 +27,7 @@ interface Props {
 export default function TreeMapperList({
   selectedLocation,
   setSelectedLocation,
-  plantLocations,
+  intervention,
   isDataLoading,
   location,
   fetchTreemapperData,
@@ -43,7 +43,7 @@ export default function TreeMapperList({
       <div className={styles.pullUpContainer}>
         <div className={styles.pullUpBar}></div>
       </div>
-      {!plantLocations && isDataLoading ? (
+      {!intervention && isDataLoading ? (
         <>
           <TransactionListLoader />
           <TransactionListLoader />
@@ -60,14 +60,14 @@ export default function TreeMapperList({
         </>
       ) : (
         <>
-          {plantLocations ? (
-            plantLocations.map((location, index: number) => {
+          {intervention ? (
+            intervention.map((location, index: number) => {
               if (location.type !== 'sample-tree-registration')
                 return (
-                  <PlantLocation
+                  <TreemapperIntervention
                     key={index}
                     location={location}
-                    locations={plantLocations}
+                    locations={intervention}
                     index={index}
                     selectedLocation={selectedLocation}
                     setSelectedLocation={setSelectedLocation}
@@ -79,7 +79,7 @@ export default function TreeMapperList({
               <TransactionsNotFound />
             </div>
           )}
-          {plantLocations && links?.next && (
+          {intervention && links?.next && (
             <div className={styles.pagination}>
               <button
                 onClick={() => fetchTreemapperData(true)}

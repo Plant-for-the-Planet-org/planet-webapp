@@ -22,7 +22,7 @@ import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   handleNext: Function;
-  plantLocation: InterventionMulti;
+  intervention: InterventionMulti;
   userLang: string;
 }
 
@@ -45,7 +45,7 @@ interface SampleTreeRequestData {
 
 export default function SampleTrees({
   handleNext,
-  plantLocation,
+  intervention,
   userLang,
 }: Props): ReactElement {
   const tTreemapper = useTranslations('Treemapper');
@@ -194,8 +194,8 @@ export default function SampleTrees({
           },
           tag: sampleTree.treeTag,
           otherSpecies: sampleTree.otherSpecies,
-          parent: plantLocation?.id,
-          plantProject: plantLocation?.plantProject,
+          parent: intervention?.id,
+          plantProject: intervention?.plantProject,
         };
         await uploadSampleTree(samplePl, index);
       }
@@ -292,7 +292,7 @@ export default function SampleTrees({
                 control={control}
                 userLang={userLang}
                 item={item}
-                plantLocation={plantLocation}
+                intervention={intervention}
                 errors={errors}
               />
             );

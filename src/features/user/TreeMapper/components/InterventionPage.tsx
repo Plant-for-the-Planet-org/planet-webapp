@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 
 const ImageSlider = dynamic(
-  () => import('../../../projects/components/PlantLocation/ImageSlider'),
+  () => import('../../../projects/components/Intervention/ImageSlider'),
   {
     ssr: false,
     loading: () => <p>Images</p>,
@@ -38,7 +38,7 @@ interface Props {
     SampleIntervention | InterventionMulti | InterventionSingle | null
   >;
   location: InterventionMulti | InterventionSingle | SampleIntervention | null;
-  plantLocations?: Intervention[];
+  intervention?: Intervention[];
 }
 
 interface SampleTreeImageProps {
@@ -383,19 +383,19 @@ export function LocationDetails({
   );
 }
 
-export default function PlantLocationPage({
+export default function InterventionPage({
   location,
   setSelectedLocation,
-  plantLocations,
+  intervention,
 }: Props): ReactElement {
   const router = useRouter();
 
   const handleBackButton = () => {
     if (location?.type === 'sample-tree-registration') {
-      for (const iKey in plantLocations) {
-        const i = iKey as keyof typeof plantLocations;
-        if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
-          const pl = plantLocations[i] as Intervention;
+      for (const iKey in intervention) {
+        const i = iKey as keyof typeof intervention;
+        if (Object.prototype.hasOwnProperty.call(intervention, i)) {
+          const pl = intervention[i] as Intervention;
           if (pl.id === (location as SampleIntervention)?.parent) {
             setSelectedLocation(pl);
             break;

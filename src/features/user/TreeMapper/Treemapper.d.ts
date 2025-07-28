@@ -1,5 +1,3 @@
-import type { DateString } from '../../common/types/common';
-
 export interface DeviceLocation {
   coordinates: number[];
   type: string;
@@ -42,7 +40,7 @@ export interface Measurements {
   height: number;
 }
 
-export interface SamplePlantLocation {
+export interface SampleIntervention {
   parent: string;
   metadata: Metadata;
   hid: string;
@@ -76,31 +74,7 @@ export interface PlantedSpecies {
   updated: string;
 }
 
-export interface PlantLocation {
-  metadata: Metadata;
-  hid: string;
-  idempotencyKey: string;
-  coordinates: Coordinate[];
-  geometryUpdatesCount: number;
-  type: string;
-  plantProjectSite?: string | null;
-  samplePlantLocations: SamplePlantLocation[];
-  plantProject: string;
-  plantedSpecies: PlantedSpecies[];
-  plantDateEnd?: DateString | null;
-  plantDateStart?: DateString | null;
-  registrationDate: string;
-  originalGeometry: OriginalGeometry;
-  sampleTreeCount: number;
-  captureMode: string;
-  geometry: Geometry;
-  id: string;
-  captureStatus: string;
-  plantDate: string;
-  deviceLocation: DeviceLocation;
-}
-
-export interface PlantingLocationFormData {
+export interface InterventionFormData {
   plantDate: string;
   plantProject: string;
   geometry: {};
