@@ -361,9 +361,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   useEffect(() => {
     if (
       !router.isReady ||
-      (interventions && interventions?.length === 0) ||
       page !== 'project-details' ||
       singleProject === null ||
+      interventions === null ||
+      interventions.length === 0 ||
       selectedSite !== null ||
       (requestedIntervention && requestedSite)
     )
@@ -371,10 +372,10 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
     if (requestedIntervention && selectedIntervention === null) {
       if (hasNoSites) {
-        //Case when a direct link requests a specific plant location but no sites exist for a project(e.g projectSlug: mothersforest).
+        //Case when a direct link requests a specific intervention but no sites exist for a project(e.g projectSlug: mothersforest).
         updateSiteAndUrl(locale, singleProject.slug, undefined);
       } else {
-        // Handle the case where a direct link requests a specific plant location (via URL query).
+        // Handle the case where a direct link requests a specific intervention (via URL query).
         // This will update the ploc param based on the requestedIntervention. If the requested hid is invalid,
         // it falls back to the default (first) site.
         const result = interventions?.find(
@@ -386,7 +387,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       }
     }
 
-    // Handles updating the URL with the 'ploc' parameter when a user selects a different plant location.
+    // Handles updating the URL with the 'ploc' parameter when a user selects a different intervention.
     if (selectedIntervention) {
       const updatedQueryParams = buildProjectDetailsQuery(router.query, {
         plocId: selectedIntervention.hid,
@@ -402,9 +403,11 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     selectedIntervention,
     selectedSite,
     hasNoSites,
+    interventions,
   ]);
 
   useEffect(() => {
+    if (requestedIntervention && interventions === null) return;
     if (
       !router.isReady ||
       page !== 'project-details' ||
@@ -448,6 +451,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
     requestedSite,
     router.isReady,
     selectedIntervention,
+    interventions,
     preventShallowPush,
     hasNoSites,
   ]);

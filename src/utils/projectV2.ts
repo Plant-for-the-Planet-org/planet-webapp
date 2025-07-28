@@ -1,6 +1,9 @@
-import type { TreeProjectClassification } from '@planet-sdk/common';
-import type { PointLike } from 'react-map-gl-v7/maplibre';
-import type { Position } from 'geojson';
+import type {
+  ProjectSite,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
+import type { Feature, MultiPolygon, Polygon, Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
   MapRef,
@@ -19,6 +22,32 @@ import * as turf from '@turf/turf';
 export type MobileOs = 'android' | 'ios' | undefined;
 
 const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
+
+export const MAIN_MAP_LAYERS = {
+  SATELLITE_LAYER: 'satellite-layer',
+  PLANT_POLYGON: 'plant-polygon-layer',
+  PLANT_POINT: 'point-layer',
+  SITE_POLYGON: 'site-polygon-fill-layer',
+  SITE_POLYGON_LINE: 'site-polygon-line-layer',
+  SELECTED_LINE: 'line-selected',
+  DATE_DIFF_LABEL: 'datediff-label',
+};
+
+export const PLANT_LAYERS = [
+  MAIN_MAP_LAYERS.PLANT_POLYGON,
+  MAIN_MAP_LAYERS.PLANT_POINT,
+];
+
+export const INTERACTIVE_LAYERS = [
+  MAIN_MAP_LAYERS.PLANT_POLYGON,
+  MAIN_MAP_LAYERS.PLANT_POINT,
+  MAIN_MAP_LAYERS.SITE_POLYGON,
+];
+
+export const MAIN_MAP_ANIMATION_DURATIONS = {
+  ZOOM_OUT: 1600,
+  ZOOM_IN: 4000,
+} as const;
 
 type RouteParams = {
   siteId?: string | null;
@@ -102,47 +131,100 @@ export const isValidClassification = (
 };
 
 /**
- * Retrieves the information of a plant location based on a user's interaction with the map.
+ * Returns all rendered features at the given point on the map, limited to specific layers.
  *
- * @param {Intervention[]} intervention - Array of plant location data or null.
- * @param {MutableRefObject<MapRef>} mapRef - A reference to the map instance.
- * @param {PointLike} point - The screen coordinates (PointLike) where the user interacted with the map.
+ * Important:
+ * - The order of features in the returned array reflects the visual stacking order of layers.
+ * - The topmost (last drawn) layer in the style stack will appear first in the array.
  *
- * The function works as follows:
- * - It first checks if the map instance and plant locations are available.
- * - Using `queryRenderedFeatures`, it retrieves all map features (polygon and point layers) at the given point.
- * - If more than one feature is returned (indicating overlap of Polygon), the hover effect is disabled by resetting the cursor.
- * - If exactly one feature is returned, the hover effect is enabled (cursor changes to a pointer),
- *   and the corresponding plant location information is returned.
- * - If no features are returned, the cursor is reset to the default, and no plant location is returned.
+ * Example:
+ * If the layers are added in this order:
+ *   1. "site-polygon-fill-layer" (bottom)
+ *   2. "plant-polygon-layer" (middle)
+ *   3. "point-layer" (top)
+ *
+ * Then:
+ *   - If all 3 features overlap at the click point:
+ *       features[0] => point-layer feature (topmost)
+ *       features[1] => plant-polygon-layer feature
+ *       features[2] => site-polygon-fill-layer feature (bottommost)
+ *   - If only site and plant polygons are under the point:
+ *       features[0] => plant-polygon-layer feature
+ *       features[1] => site-polygon-fill-layer feature
+ *
+ * Use this order to determine which feature the user is most likely interacting with visually.
+ *
+ * @param mapRef - Ref to the MapLibre map instance
+ * @param point - The screen coordinate (e.point) to query
+ * @returns An array of features under the point, or undefined if the map is not ready. Returns an empty array if no features are found.
+ */
+
+export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
+  if (!mapRef.current) return;
+  const map = mapRef.current.getMap();
+
+  const features = map.queryRenderedFeatures(point, {
+    layers: INTERACTIVE_LAYERS,
+  });
+
+  if (features.length === 0) {
+    map.getCanvas().style.cursor = '';
+    return [];
+  }
+
+  map.getCanvas().style.cursor = 'pointer';
+  return features;
+}
+
+/**
+ * Finds the index of the site in the sites array that matches the feature under the cursor.
+ *
+ * This is used to detect which site polygon the user interacted with.
+ *
+ * @param sites - The array of site GeoJSON features (polygons or multipolygons)
+ * @param features - The array of rendered features returned by queryRenderedFeatures
+ * @returns The index of the matching site in the `sites` array, or -1 if not found
+ */
+
+export const getSiteIndex = (
+  sites: Feature<Polygon | MultiPolygon, ProjectSite>[],
+  features: MapGeoJSONFeature[]
+) => {
+  const siteFeature = features.find(
+    (f) => f.layer.id === MAIN_MAP_LAYERS.SITE_POLYGON
+  );
+  if (!siteFeature) return -1;
+
+  return sites.findIndex(
+    (site) => site.properties.id === siteFeature.properties.id
+  );
+};
+
+/**
+ * Retrieves the matching intervention based on the topmost hovered map feature.
+ *
+ * This function checks whether the topmost feature in the provided feature list
+ * corresponds to a valid intervention layer (as defined by `PLANT_LAYERS`) and,
+ * if so, finds and returns the intervention with a matching `id`.
+ *
+ * @param {Intervention[] | null} interventions - The list of intervention objects to match against.
+ * @param {MapGeoJSONFeature[]} features - An array of GeoJSON features returned from a map hover or click event.
+ * @returns {Intervention | undefined} The matched intervention if found, or `undefined` if no match exists or input is invalid.
  */
 
 export const getInterventionInfo = (
-  intervention: Intervention[] | null,
-  mapRef: MapRef,
-  point: PointLike
-) => {
-  if (!mapRef.current || intervention?.length === 0) {
+  interventions: Intervention[] | null,
+  features: MapGeoJSONFeature[]
+): Intervention | undefined => {
+  if (!interventions || interventions.length === 0 || features.length === 0)
     return;
-  }
-  const map = mapRef.current.getMap();
-  const features = map.queryRenderedFeatures(point, {
-    layers: ['plant-polygon-layer', 'point-layer'],
-  });
-  if (features.length > 1) {
-    map.getCanvas().style.cursor = '';
-    return;
-  }
 
-  if (features.length === 1) {
-    map.getCanvas().style.cursor = 'pointer';
-    const activeIntervention = intervention?.find(
-      (pl) => pl.id === features[0].properties.id
-    );
-    return activeIntervention;
-  } else {
-    map.getCanvas().style.cursor = '';
-  }
+  const topmostFeature = features[0]; // top layer
+  const layerId = topmostFeature.layer.id;
+  const isPlantLayer = PLANT_LAYERS.includes(layerId);
+  if (!isPlantLayer) return;
+
+  return interventions.find((pl) => pl.id === topmostFeature.properties.id);
 };
 
 export const formatHid = (hid: string | undefined) => {
@@ -256,14 +338,12 @@ export const areMapCoordsEqual = (
 export const getLocalizedPath = (path: string, locale: string): string => {
   // Strip query parameters if present
   const pathWithoutQuery = path.split('?')[0];
-
   // Remove trailing slash if present
   const cleanPath = pathWithoutQuery.endsWith('/')
     ? pathWithoutQuery.slice(0, -1)
     : pathWithoutQuery;
-
   // Handle root path special case
-  if (cleanPath === '' || cleanPath === '/') {
+  if (cleanPath === '' || cleanPath === '/' || cleanPath === `/${locale}`) {
     return `/${locale}`;
   }
 
