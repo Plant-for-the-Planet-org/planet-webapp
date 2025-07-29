@@ -60,7 +60,7 @@ export default function Donate({
     setSelectedSite,
     setProject,
     setSelectedPl,
-    intervention,
+    interventions,
     setShowSingleProject,
     setZoomLevel,
     setInterventions,
@@ -192,8 +192,8 @@ export default function Donate({
 
   React.useEffect(() => {
     //for selecting one of the intervention . if user use link  to directly visit to intervention from home page
-    if (geoJson && router.query.ploc && intervention && project) {
-      const singleIntervention: Intervention | undefined = intervention?.find(
+    if (geoJson && router.query.ploc && interventions && project) {
+      const singleIntervention: Intervention | undefined = interventions?.find(
         (singleIntervention) => {
           return router.query.ploc === singleIntervention?.hid;
         }
@@ -205,7 +205,7 @@ export default function Donate({
         setSelectedPl(singleIntervention);
       }
     }
-  }, [router, router.query.ploc, intervention, setSelectedPl, project]);
+  }, [router, router.query.ploc, interventions, setSelectedPl, project]);
 
   return pageProps.tenantConfig ? (
     <>

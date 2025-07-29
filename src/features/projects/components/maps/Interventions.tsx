@@ -18,7 +18,7 @@ import { useLocale, useTranslations } from 'next-intl';
 
 export default function Interventions(): ReactElement {
   const {
-    intervention,
+    interventions,
     hoveredPl,
     selectedPl,
     setSelectedPl,
@@ -134,11 +134,11 @@ export default function Interventions(): ReactElement {
     };
   };
 
-  if (!intervention) {
+  if (!interventions) {
     return <></>;
   }
 
-  const features = intervention.map((el) => {
+  const features = interventions.map((el) => {
     const isSelected = selectedPl && selectedPl.id === el.id;
     const isHovered = hoveredPl && hoveredPl.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {

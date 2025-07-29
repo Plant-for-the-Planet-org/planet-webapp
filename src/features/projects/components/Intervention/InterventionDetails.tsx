@@ -35,7 +35,7 @@ interface Props {
 export default function InterventionDetails({
   activeIntervention,
 }: Props): ReactElement {
-  const { setSelectedPl, intervention, setSampleIntervention, setHoveredPl } =
+  const { setSelectedPl, interventions, setSampleIntervention, setHoveredPl } =
     useProjectProps();
   const t = useTranslations('Maps');
   const locale = useLocale();
@@ -130,10 +130,10 @@ export default function InterventionDetails({
   };
 
   const openParent = (id: string) => {
-    if (intervention) {
-      for (const key in intervention) {
-        if (Object.prototype.hasOwnProperty.call(intervention, key)) {
-          const element = intervention[key];
+    if (interventions) {
+      for (const key in interventions) {
+        if (Object.prototype.hasOwnProperty.call(interventions, key)) {
+          const element = interventions[key];
           if (element.id === id) setSelectedPl(element);
         }
       }

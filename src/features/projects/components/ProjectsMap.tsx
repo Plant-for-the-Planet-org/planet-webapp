@@ -38,7 +38,7 @@ export default function ProjectsMap(): ReactElement {
     defaultZoom,
     zoomLevel,
     setHoveredPl,
-    intervention,
+    interventions,
     setSelectedPl,
     selectedPl,
     satellite,
@@ -109,18 +109,18 @@ export default function ProjectsMap(): ReactElement {
     setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
-    handleInterventionSelection(intervention, e);
+    handleInterventionSelection(interventions, e);
   };
 
   const onMapHover = (e: MapEvent) => {
-    if (intervention && e && e.features && e.features[0]) {
+    if (interventions && e && e.features && e.features[0]) {
       const activeElement = e.features[0];
       if (selectedPl && selectedPl.id === activeElement.properties.id) {
         setHoveredPl(null);
         setShowDetails({ coordinates: e.lngLat, show: true });
         return;
       }
-      const activeIntervention = intervention.find(
+      const activeIntervention = interventions.find(
         (obj) => obj.id === activeElement.properties.id
       );
       if (activeIntervention) {

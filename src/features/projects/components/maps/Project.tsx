@@ -35,7 +35,7 @@ export default function Project({
 }: Props): ReactElement {
   const {
     selectedPl,
-    intervention,
+    interventions,
     geoJson,
     selectedSite,
     siteExists,
@@ -96,7 +96,7 @@ export default function Project({
 
   React.useEffect(() => {
     if (
-      intervention &&
+      interventions &&
       selectedPl &&
       selectedPl.type === 'multi-tree-registration' &&
       selectedPl.geometry.type === 'Polygon'
@@ -158,7 +158,7 @@ export default function Project({
         3000
       );
     }
-  }, [project, siteExists, intervention, selectedPl, plantPolygonCoordinates]);
+  }, [project, siteExists, interventions, selectedPl, plantPolygonCoordinates]);
 
   //Props
   const locationProps = {

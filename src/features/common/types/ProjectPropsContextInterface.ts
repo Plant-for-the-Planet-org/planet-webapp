@@ -144,7 +144,7 @@ interface ProjectPropsContextInterface {
   setSelectedMode: SetState<MapMode>;
   rasterData: RasterData;
   setRasterData: SetState<RasterData>;
-  intervention: Intervention[] | null;
+  interventions: Intervention[] | null;
   setInterventions: SetState<Intervention[] | null>;
   selectedPl: Intervention | null; //HERE
   setSelectedPl: SetState<Intervention | null>;

@@ -56,7 +56,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
 
-  const [intervention, setInterventions] = useState<Intervention[] | null>(
+  const [interventions, setInterventions] = useState<Intervention[] | null>(
     null
   );
   const [selectedPl, setSelectedPl] = useState<Intervention | null>(null);
@@ -168,19 +168,19 @@ const ProjectPropsProvider: FC = ({ children }) => {
   }, [project]);
 
   useEffect(() => {
-    if (intervention && intervention.length > 0) {
+    if (interventions && interventions.length > 0) {
       setSatellite(false);
     } else {
       setSatellite(true);
     }
-  }, [intervention]);
+  }, [interventions]);
 
   useEffect(() => {
     const ids: string[] = [];
-    if (intervention && (zoomLevel === 2 || zoomLevel === 3)) {
-      for (const key in intervention) {
-        if (Object.prototype.hasOwnProperty.call(intervention, key)) {
-          const element = intervention[key];
+    if (interventions && (zoomLevel === 2 || zoomLevel === 3)) {
+      for (const key in interventions) {
+        if (Object.prototype.hasOwnProperty.call(interventions, key)) {
+          const element = interventions[key];
           if (
             element.type === 'multi-tree-registration' &&
             element.captureStatus === 'complete'
@@ -192,7 +192,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
     } else {
       setPlIds(null);
     }
-  }, [intervention, zoomLevel]);
+  }, [interventions, zoomLevel]);
 
   return (
     <ProjectPropsContext.Provider
@@ -247,7 +247,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
         setSelectedMode,
         rasterData,
         setRasterData,
-        intervention,
+        interventions,
         setInterventions,
         selectedPl,
         setSelectedPl,
