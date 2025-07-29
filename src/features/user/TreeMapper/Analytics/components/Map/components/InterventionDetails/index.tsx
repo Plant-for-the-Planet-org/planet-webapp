@@ -99,15 +99,15 @@ const ListOfSpeciesPlanted = ({
 
 const SampleTreesInfo = ({ interventionDetails }: ListOfSpeciesPlantedProp) => {
   const t = useTranslations('TreemapperAnalytics');
-  return interventionDetails?.samplePlantLocations ? (
+  return interventionDetails?.sampleInterventions ? (
     <>
       {' '}
       <div className={styles.bottomContainer}>
         <div className={styles.title}>
           {t('sampleTrees')}&nbsp;(
-          {interventionDetails?.totalSamplePlantLocations})
+          {interventionDetails?.totalSampleInterventions})
         </div>
-        {interventionDetails?.samplePlantLocations?.map(
+        {interventionDetails?.sampleInterventions?.map(
           (sampleIntervention, index) => {
             return (
               <div
@@ -160,7 +160,7 @@ const InterventionDetails = ({
       (interventionType === 'multi-tree-registration' &&
         (selectedLayer.treeCount || selectedLayer.density)) ||
         (interventionDetails?.plantedSpecies?.length || 0) > 0 ||
-        (interventionDetails?.samplePlantLocations?.length || 0) > 0
+        (interventionDetails?.sampleInterventions?.length || 0) > 0
     );
 
   return (
@@ -182,7 +182,7 @@ const InterventionDetails = ({
             )}
             <ListOfSpeciesPlanted interventionDetails={interventionDetails} />
             {interventionType === 'multi-tree-registration' &&
-              interventionDetails.totalSamplePlantLocations !== null && (
+              interventionDetails.totalSampleInterventions !== null && (
                 <SampleTreesInfo interventionDetails={interventionDetails} />
               )}
           </div>

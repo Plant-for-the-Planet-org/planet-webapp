@@ -97,7 +97,7 @@ export interface InterventionFeatureCollection {
   features: InterventionFeature[];
 }
 
-// --- /api/data-explorer/map/plant-location/[plantLocationId]
+// --- /api/data-explorer/map/intervention/[interventionGuid]
 export interface Measurements {
   width: string;
   height: string;
@@ -128,8 +128,8 @@ export interface InterventionDetails {
   properties: InterventionProperties;
   plantedSpecies: PlantedSpecies[];
   totalPlantedTrees: number;
-  samplePlantLocations: null | SampleIntervention[];
-  totalSamplePlantLocations: null | number;
+  sampleInterventions: null | SampleIntervention[];
+  totalSampleInterventions: null | number;
 }
 
 // --- types for InterventionDetailsApi ------
@@ -142,7 +142,7 @@ export interface InterventionDetailsApiResponse {
       scientificName: string;
     }[];
     totalPlantedTrees: number;
-    samplePlantLocations:
+    sampleInterventions:
       | null
       | {
           tag: string;
@@ -157,7 +157,7 @@ export interface InterventionDetailsApiResponse {
             height: string;
           };
         }[];
-    totalSamplePlantLocations: null | number;
+    totalSampleInterventions: null | number;
   };
 }
 

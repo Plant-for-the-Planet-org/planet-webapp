@@ -10,8 +10,7 @@ import { query } from '../../../../../src/utils/connectDB';
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.get(async (req, response) => {
-  const { plantLocationId } = req.query;
-
+  const { interventionGuid } = req.query;
   const queryText = `
     SELECT 
 			JSON_BUILD_OBJECT(
@@ -44,7 +43,7 @@ handler.get(async (req, response) => {
 					WHERE iv.guid = $1
 					GROUP BY iv.id
 				),
-				'samplePlantLocations', (
+				'sampleInterventions', (
 					SELECT COALESCE(JSON_AGG(
 						JSON_BUILD_OBJECT(
 							'measurements', JSON_BUILD_OBJECT(
@@ -72,7 +71,7 @@ handler.get(async (req, response) => {
 					WHERE iv.guid = $1
 					GROUP BY iv.parent_id
 				),
-				'totalSamplePlantLocations', (
+				'totalSampleInterventions', (
 					SELECT COUNT(*) 
 					FROM intervention iv
 					INNER JOIN intervention siv ON iv.id = siv.parent_id
@@ -83,7 +82,7 @@ handler.get(async (req, response) => {
   `;
 
   const res = await query<InterventionDetailsQueryRes>(queryText, [
-    plantLocationId,
+    interventionGuid,
   ]);
 
   const interventionDetails: InterventionDetails = res[0]?.result || null;

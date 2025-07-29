@@ -160,7 +160,7 @@ export const MapContainer = () => {
   const { makeRequest: makeReqToFetchInterventions } = useNextRequest<{
     data: SingleInterventionApiResponse[];
   }>({
-    url: `/api/data-explorer/map/plant-location`,
+    url: `/api/data-explorer/map/intervention`,
     method: HTTP_METHOD.POST,
     body: {
       projectId: project?.id,
@@ -175,7 +175,7 @@ export const MapContainer = () => {
   // Custom hook for making requests to fetch intervention details
   const { makeRequest: makeReqToFetchInterventionDetails } =
     useNextRequest<InterventionDetailsApiResponse>({
-      url: `/api/data-explorer/map/plant-location/${selectedLayer?.guid}`,
+      url: `/api/data-explorer/map/intervention/${selectedLayer?.guid}`,
       method: HTTP_METHOD.GET,
     });
 
