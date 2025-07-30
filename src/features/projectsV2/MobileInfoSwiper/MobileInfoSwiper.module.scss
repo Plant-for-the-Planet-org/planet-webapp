@@ -56,6 +56,16 @@ $footerHeight: 49px;
     border-top-right-radius: 0;
   }
 
+  :global(.image-slider-container) {
+    :global(.single-carousel-image) {
+      padding: 15px;
+    }
+
+    :global(.image-description) {
+      padding-bottom: 20px;
+    }
+  }
+
   :global(.plant-location-header-container),
   :global(.single-plant-location-heading) {
     padding: 12px 20px;

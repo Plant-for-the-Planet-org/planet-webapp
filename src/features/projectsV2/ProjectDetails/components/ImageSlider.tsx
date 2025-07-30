@@ -1,14 +1,14 @@
-import type { Image } from '../../../common/types/projectv2';
+import type { SliderImage } from './microComponents/ImageCarousel';
 
 import ExpandIcon from '../../../../../public/assets/images/icons/ExpandIcon';
 import ImageCarousel from './microComponents/ImageCarousel';
 import styles from '../styles/Slider.module.scss';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import ImageSliderModal from './microComponents/ImageSliderModal';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface ImageSliderProps {
-  images: Image[];
+  images: SliderImage[];
   type: 'coordinate' | 'project';
   isMobile: boolean;
   imageSize: 'medium' | 'large';
@@ -25,6 +25,16 @@ const ImageSlider = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Filter out images with empty or missing image property
+  const validImages = useMemo(() => {
+    return images.filter((image) => image?.image && image.image.trim() !== '');
+  }, [images]);
+
+  // Don't render if no valid images
+  if (validImages.length === 0) {
+    return null;
+  }
+
   return (
     <>
       {!isModalOpen && (
@@ -37,20 +47,20 @@ const ImageSlider = ({
             </button>
           )}
           <ImageCarousel
-            images={images}
+            images={validImages}
             type={type}
             imageSize={imageSize}
             imageHeight={192}
-            setCurrentIndex={setCurrentIndex}
-            currentIndex={currentIndex}
-            isModalOpen={isModalOpen}
+            isMobile={isMobile}
+            isModalOpen={false}
+            mode="auto"
           />
         </div>
       )}
       {allowFullView && (
         <ImageSliderModal
           currentIndex={currentIndex}
-          images={images}
+          images={validImages}
           setCurrentIndex={setCurrentIndex}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
