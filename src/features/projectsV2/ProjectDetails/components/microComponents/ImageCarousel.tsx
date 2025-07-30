@@ -1,4 +1,3 @@
-import type { SliderImage } from '../../../../common/types/projectv2';
 import type { SetState } from '../../../../common/types/common';
 
 import React, { useMemo } from 'react';
@@ -28,8 +27,14 @@ const progressWrapperStyles = {
   background: PROGRESS_STYLES.BACKGROUND_OPACITY,
 };
 
+export interface SliderImage {
+  image: string;
+  description: string | null;
+  id: string;
+}
+
 interface BaseProps {
-  images: SliderImage[] | undefined;
+  images: SliderImage[];
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
@@ -68,7 +73,7 @@ const ImageCarousel = (props: CarouselProps) => {
   }, [isModalOpen]);
 
   const processedImages = useMemo(() => {
-    if (!images || images.length === 0) {
+    if (images.length === 0) {
       return [];
     }
 
