@@ -1023,7 +1023,7 @@ File: src/features/donations/styles/DirectGift.module.scss
 ----------------------------------------------------------
 - Line 21: #d1d1d1 in "//   border: 2px solid #d1d1d1;"
 
-File: src/features/projects/components/PlantLocation/ImageSlider.tsx
+File: src/features/projects/components/Intervention/ImageSlider.tsx
 --------------------------------------------------------------------
 - Line 43: rgba(0,0,0,1) in "background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,"
 - Line 43: rgba(0,0,0,0.2) in "background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,"
@@ -1060,7 +1060,7 @@ File: src/features/projects/components/maps/ExploreInfoModal.tsx
 ----------------------------------------------------------------
 - Line 112: #d5d5d5 in "<CancelIcon color="#d5d5d5" />"
 
-File: src/features/projects/components/maps/PlantLocations.tsx
+File: src/features/projects/components/maps/Interventions.tsx
 --------------------------------------------------------------
 - Line 167: #ffffff in "'fill-color': satellite ? '#ffffff' : '#007A49',"
 - Line 167: #007A49 in "'fill-color': satellite ? '#ffffff' : '#007A49',"
@@ -1101,7 +1101,7 @@ File: src/features/projects/styles/MapPopup.scss
 ------------------------------------------------
 - Line 4: rgba(0, 0, 0, 0.16) in "box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);"
 
-File: src/features/projects/styles/PlantLocation.module.scss
+File: src/features/projects/styles/Intervention.module.scss
 ------------------------------------------------------------
 - Line 116: #fff in "color: #fff;"
 - Line 72: rgb(186, 238, 137) in "background-color: rgb(186, 238, 137);"
@@ -1183,7 +1183,7 @@ File: src/features/projectsV2/ProjectDetails/styles/AboutProject.module.scss
 - Line 6: #2f3336 in "color: #2f3336; //to be removed"
 - Line 14: rgba(0, 122, 73, 1) in "color: rgba(0, 122, 73, 1);"
 
-File: src/features/projectsV2/ProjectDetails/styles/PlantLocationInfo.module.scss
+File: src/features/projectsV2/ProjectDetails/styles/InterventionInfo.module.scss
 ---------------------------------------------------------------------------------
 - Line 4: #fff in "background: #fff;"
 - Line 12: rgba(0, 0, 0, 0.1) in "box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);"
@@ -1302,7 +1302,7 @@ File: src/features/projectsV2/ProjectsMap/TimeTravel/index.tsx
 --------------------------------------------------------------
 - Line 344: #fff in "'line-color': '#fff',"
 
-File: src/features/projectsV2/ProjectsMap/microComponents/PlantLocations.tsx
+File: src/features/projectsV2/ProjectsMap/microComponents/Interventions.tsx
 ----------------------------------------------------------------------------
 - Line 251: #ffffff in "'line-color': isSatelliteView ? '#ffffff' : FillColor,"
 - Line 265: #2f3336 in "'text-color': isSatelliteView ? '#ffffff' : '#2f3336',"
@@ -1609,12 +1609,12 @@ File: src/features/user/TreeMapper/Analytics/components/Export/index.tsx
 ------------------------------------------------------------------------
 - Line 31: #fff in "color: '#fff',"
 
-File: src/features/user/TreeMapper/Analytics/components/Map/components/PlantLocationDetails/index.module.scss
+File: src/features/user/TreeMapper/Analytics/components/Map/components/InterventionDetails/index.module.scss
 -------------------------------------------------------------------------------------------------------------
 - Line 39: #fff in "background-color: #fff;"
 - Line 145: white in "white-space: nowrap;"
 
-File: src/features/user/TreeMapper/Analytics/components/Map/components/PlantLocationDetailsZeroState.tsx
+File: src/features/user/TreeMapper/Analytics/components/Map/components/InterventionDetailsZeroState.tsx
 --------------------------------------------------------------------------------------------------------
 - Line 11: #BDBDBD in "<path d="M307 206.518H-9V206.676H307V206.518Z" fill="#BDBDBD" />"
 - Line 38: #828282 in "fill="#828282""
