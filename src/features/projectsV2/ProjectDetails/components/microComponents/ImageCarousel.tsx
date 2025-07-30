@@ -27,37 +27,45 @@ const progressWrapperStyles = {
   height: PROGRESS_STYLES.HEIGHT,
   background: PROGRESS_STYLES.BACKGROUND_OPACITY,
 };
-interface Props {
+
+interface BaseProps {
   images: SliderImage[] | undefined;
   type: 'coordinate' | 'project';
   imageSize: 'large' | 'medium';
   imageHeight: number;
   isMobile?: boolean;
-  currentIndex: number;
-  setCurrentIndex: SetState<number>;
   isModalOpen: boolean;
 }
 
-const ImageCarousel = ({
-  images,
-  type,
-  imageSize,
-  imageHeight,
-  isMobile,
-  currentIndex,
-  setCurrentIndex,
-  isModalOpen,
-}: Props) => {
-  const progressContainerStyles = useMemo(
-    () =>
-      isModalOpen
-        ? { display: 'none' }
-        : {
-            bottom: PROGRESS_STYLES.BOTTOM_POSITION,
-            width: PROGRESS_STYLES.WIDTH,
-          },
-    [isModalOpen]
-  );
+interface AutoModeProps extends BaseProps {
+  mode: 'auto';
+}
+
+interface ManualModeProps extends BaseProps {
+  mode: 'manual';
+  currentIndex: number;
+  setCurrentIndex: SetState<number>;
+}
+
+type CarouselProps = AutoModeProps | ManualModeProps;
+
+const ImageCarousel = (props: CarouselProps) => {
+  const { images, type, imageSize, imageHeight, isMobile, isModalOpen, mode } =
+    props;
+
+  const isManual = mode === 'manual';
+  const currentIndex = isManual ? props.currentIndex : 0;
+  const setCurrentIndex = isManual ? props.setCurrentIndex : undefined;
+
+  const progressContainerStyles = useMemo(() => {
+    if (isModalOpen) {
+      return { display: 'none' };
+    }
+    return {
+      bottom: PROGRESS_STYLES.BOTTOM_POSITION,
+      width: PROGRESS_STYLES.WIDTH,
+    };
+  }, [isModalOpen]);
 
   const processedImages = useMemo(() => {
     if (!images || images.length === 0) {
@@ -97,20 +105,28 @@ const ImageCarousel = ({
     }));
   }, [processedImages, isMobile, isModalOpen]);
 
-  return (
-    <Stories
-      stories={storiesData}
-      defaultInterval={7000}
-      width={'100%'}
-      height={imageHeight}
-      loop={true}
-      progressContainerStyles={progressContainerStyles}
-      progressStyles={progressStyles}
-      progressWrapperStyles={progressWrapperStyles}
-      currentIndex={currentIndex}
-      onStoryStart={(index: number) => setCurrentIndex(index)}
-    />
-  );
+  const storiesProps = {
+    stories: storiesData,
+    width: '100%' as const,
+    height: imageHeight,
+    progressContainerStyles,
+    progressStyles,
+    progressWrapperStyles,
+  };
+
+  if (isManual) {
+    return (
+      <Stories
+        {...storiesProps}
+        defaultInterval={999999999}
+        loop={false}
+        currentIndex={currentIndex}
+        onStoryStart={(index: number) => setCurrentIndex?.(index)}
+      />
+    );
+  }
+
+  return <Stories {...storiesProps} defaultInterval={7000} loop={true} />;
 };
 
 export default ImageCarousel;

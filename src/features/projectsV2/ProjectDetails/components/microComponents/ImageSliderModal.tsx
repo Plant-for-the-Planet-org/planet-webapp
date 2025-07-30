@@ -74,9 +74,10 @@ const ImageSliderModal = ({
             imageSize={'large'}
             imageHeight={isMobile ? 220 : 600}
             isMobile={isMobile}
-            setCurrentIndex={setCurrentIndex}
+            isModalOpen={true}
+            mode="manual"
             currentIndex={currentIndex}
-            isModalOpen={isModalOpen}
+            setCurrentIndex={setCurrentIndex}
           />
           {isMobile &&
             renderSliderButton('next', styles.nextMobileSliderButton)}

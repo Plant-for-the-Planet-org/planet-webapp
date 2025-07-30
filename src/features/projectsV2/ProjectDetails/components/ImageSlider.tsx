@@ -41,9 +41,9 @@ const ImageSlider = ({
             type={type}
             imageSize={imageSize}
             imageHeight={192}
-            setCurrentIndex={setCurrentIndex}
-            currentIndex={currentIndex}
-            isModalOpen={isModalOpen}
+            isMobile={isMobile}
+            isModalOpen={false}
+            mode="auto"
           />
         </div>
       )}
