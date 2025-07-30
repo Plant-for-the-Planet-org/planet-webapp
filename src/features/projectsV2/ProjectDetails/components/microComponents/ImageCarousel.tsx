@@ -25,6 +25,7 @@ const progressStyles = {
 const progressWrapperStyles = {
   height: PROGRESS_STYLES.HEIGHT,
   background: PROGRESS_STYLES.BACKGROUND_OPACITY,
+  overflow: 'hidden',
 };
 
 export interface SliderImage {
