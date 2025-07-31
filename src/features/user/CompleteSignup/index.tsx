@@ -122,6 +122,10 @@ export default function CompleteSignup(): ReactElement | null {
     }
   }, [contextLoaded, user, token]);
 
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+
   const sendRequest = async (bodyToSend: CreateUserRequest) => {
     setRequestSent(true);
     setIsProcessing(true);
@@ -144,9 +148,6 @@ export default function CompleteSignup(): ReactElement | null {
     }
   };
 
-  const handleSnackbarOpen = () => {
-    setSnackbarOpen(true);
-  };
   const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
