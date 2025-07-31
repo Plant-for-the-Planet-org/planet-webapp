@@ -8,7 +8,7 @@ import type { ExtendedCountryCode } from '../features/common/types/country';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import COUNTRY_ADDRESS_POSTALS from './countryZipCode';
 
-export const geocoder = new GeocoderArcGIS(
+const geocoder = new GeocoderArcGIS(
   process.env.ESRI_CLIENT_SECRET
     ? {
         client_id: process.env.ESRI_CLIENT_ID,
@@ -34,7 +34,7 @@ export const getAddressSuggestions = async (
       (s: AddressSuggestionsType) => !s.isCollection
     );
   } catch (error) {
-    console.log(error);
+    console.error('Failed to fetch address suggestions:', error);
     return [];
   }
 };
@@ -61,7 +61,7 @@ export const getAddressDetailsFromText = async (
       zipCode: candidate.Postal,
     };
   } catch (error) {
-    console.log(error);
+    console.error('Failed to fetch address :', error);
     return null;
   }
 };
@@ -73,6 +73,11 @@ export const getAddressFromCoordinates = async (
   lat: number,
   long: number
 ): Promise<ReverseAddress | null> => {
+  if (lat < -90 || lat > 90 || long < -180 || long > 180) {
+    console.error('Invalid coordinates provided:', { lat, long });
+    return null;
+  }
+
   try {
     const result = await geocoder.reverse(`${long}, ${lat}`, {
       maxLocations: 10,
@@ -80,7 +85,7 @@ export const getAddressFromCoordinates = async (
     });
     return result;
   } catch (error) {
-    console.log(error);
+    console.error('Failed to fetch address:', error);
     return null;
   }
 };
