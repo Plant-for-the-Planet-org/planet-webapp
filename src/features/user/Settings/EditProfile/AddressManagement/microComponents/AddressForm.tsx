@@ -10,10 +10,6 @@ import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ADDRESS_TYPE,
-  fetchAddressDetails,
-  geocoder,
-  getPostalRegex,
-  suggestAddress,
   validationPattern,
 } from '../../../../../../utils/addressManagement';
 import InlineFormDisplayGroup from '../../../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -24,6 +20,11 @@ import { allCountries } from '../../../../../../utils/constants/countries';
 import AddressFormButtons from './AddressFormButtons';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import PrimaryAddressToggle from './PrimaryAddressToggle';
+import {
+  getAddressDetailsFromText,
+  getAddressSuggestions,
+  getPostalRegex,
+} from '../../../../../../utils/geocoder';
 
 export type AddressFormData = {
   address: string;
@@ -81,14 +82,14 @@ const AddressForm = ({
   const handleSuggestAddress = useCallback(
     async (value: string) => {
       try {
-        const suggestions = await suggestAddress(value, country);
+        const suggestions = await getAddressSuggestions(value, country);
         setAddressSuggestions(suggestions);
       } catch (error) {
         console.error('Failed to fetch address suggestions:', error);
         setAddressSuggestions([]);
       }
     },
-    [geocoder, country]
+    [country]
   );
 
   useDebouncedEffect(
@@ -104,7 +105,7 @@ const AddressForm = ({
   const handleGetAddress = useCallback(
     async (value: string) => {
       try {
-        const details = await fetchAddressDetails(value);
+        const details = await getAddressDetailsFromText(value);
         if (details) {
           setValue('address', details.address, { shouldValidate: true });
           setValue('city', details.city, { shouldValidate: true });
@@ -115,7 +116,7 @@ const AddressForm = ({
         console.error('Failed to fetch address details:', error);
       }
     },
-    [geocoder, setValue]
+    [setValue]
   );
   const handleAddressSelect = (address: string) => {
     handleGetAddress(address);

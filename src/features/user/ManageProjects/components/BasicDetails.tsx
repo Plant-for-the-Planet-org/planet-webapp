@@ -5,9 +5,15 @@ import type {
   ExtendedProfileProjectProperties,
   ViewPort,
 } from '../../../common/types/project';
-import type { ReverseAddress } from '../../../common/types/geocoder';
+import type { MapEvent } from 'react-map-gl';
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Tooltip } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
@@ -29,7 +35,6 @@ import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import GeocoderArcGIS from 'geocoder-arcgis';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -37,6 +42,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import { getAddressFromCoordinates } from '../../../../utils/geocoder';
 
 type BaseFormData = {
   name: string;
@@ -393,14 +399,37 @@ export default function BasicDetails({
     }
   };
 
-  const geocoder = new GeocoderArcGIS(
-    process.env.ESRI_CLIENT_SECRET
-      ? {
-          client_id: process.env.ESRI_CLIENT_ID,
-          client_secret: process.env.ESRI_CLIENT_SECRET,
-        }
-      : {}
-  );
+  const handleMapClick = useCallback(async (event: MapEvent) => {
+    const [longitude, latitude] = event.lngLat;
+    setProjectCoords(event.lngLat);
+
+    try {
+      const result = await getAddressFromCoordinates(latitude, longitude);
+
+      if (result?.address?.Type === 'Ocean') {
+        setWrongCoordinatesMessage(true);
+        setError('latitude', { message: '' });
+        setError('longitude', { message: '' });
+      } else {
+        setWrongCoordinatesMessage(false);
+        clearErrors(['latitude', 'longitude']);
+      }
+    } catch (error) {
+      console.log('Reverse geocoding error:', error);
+    }
+
+    setViewPort((prev) => ({
+      ...prev,
+      latitude,
+      longitude,
+      transitionDuration: 400,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionEasing: d3.easeCubic,
+    }));
+
+    setValue('latitude', latitude.toString());
+    setValue('longitude', longitude.toString());
+  }, []);
 
   return (
     <CenteredContainer>
@@ -715,46 +744,7 @@ export default function BasicDetails({
               ref={mapRef}
               mapStyle={style}
               onViewportChange={_onViewportChange}
-              onClick={(event) => {
-                setProjectCoords(event.lngLat);
-                const latLong = {
-                  latitude: event.lngLat[1],
-                  longitude: event.lngLat[0],
-                };
-                geocoder
-                  .reverse(`${latLong.longitude}, ${latLong.latitude}`, {
-                    // longitude,latitude
-                    maxLocations: 10,
-                    distance: 100,
-                  })
-                  .then((result: ReverseAddress) => {
-                    if (result?.address?.Type === 'Ocean') {
-                      setWrongCoordinatesMessage(true);
-                      setError('latitude', {
-                        message: '',
-                      });
-                      setError('longitude', {
-                        message: '',
-                      });
-                    } else {
-                      setWrongCoordinatesMessage(false);
-                      clearErrors(['latitude', 'longitude']);
-                    }
-                  })
-                  .catch((error: string) => {
-                    console.log(`error`, error);
-                  });
-                setViewPort({
-                  ...viewport,
-                  latitude: event.lngLat[1],
-                  longitude: event.lngLat[0],
-                  transitionDuration: 400,
-                  transitionInterpolator: new FlyToInterpolator(),
-                  transitionEasing: d3.easeCubic,
-                });
-                setValue('latitude', latLong.latitude.toString());
-                setValue('longitude', latLong.longitude.toString());
-              }}
+              onClick={handleMapClick}
             >
               {projectCoords ? (
                 <Marker
