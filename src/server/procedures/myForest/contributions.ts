@@ -125,7 +125,9 @@ async function fetchGifts(profileIds: number[]): Promise<GiftsQueryResult[]> {
              g.metadata -> 'project' ->> 'id'            as "projectGuid",
              g.metadata -> 'project' ->> 'name'          as "projectName",
              g.metadata -> 'project' ->> 'country'       as "country",
-             COALESCE(g.payment_date, g.redemption_date) as "plantDate"
+             COALESCE(g.payment_date, g.redemption_date) as "plantDate",
+             g.purpose,
+             g.unit_type                                 as "unitType"
       FROM gift g
       WHERE g.recipient_id IN (${Prisma.join(profileIds)})
         AND g.deleted_at is null
@@ -275,12 +277,17 @@ function handleGiftContribution(
   myContributionsMap: Map<string, MyContributionsMapItem>,
   projectLocationsMap: Map<string, MapLocation>
 ): void {
+  // Default unit_type based on purpose for backward compatibility
+  const unitType =
+    gift.unitType || (gift.purpose === 'conservation' ? 'm2' : 'tree');
+  const roundedQuantity = Math.round(gift.quantity * 100) / 100;
+
   // Initialize data
   const giftData: SingleGiftReceived = {
     dataType: 'receivedGift',
     plantDate: gift.plantDate,
-    quantity: Math.round(gift.quantity * 100) / 100,
-    unitType: 'tree',
+    quantity: roundedQuantity,
+    unitType: unitType,
     isGift: true,
     giftDetails: {
       giverName: gift.giftGiver,
@@ -294,7 +301,7 @@ function handleGiftContribution(
     ) as MyContributionsSingleProject; //Only donations are mapped with a project guid
 
     item.contributionCount++;
-    item.totalContributionUnits += Math.round(gift.quantity * 100) / 100;
+    item.totalContributionUnits += roundedQuantity;
     if (!item.latestGifts) {
       item.latestGifts = [giftData];
     } else {
@@ -308,8 +315,8 @@ function handleGiftContribution(
     myContributionsMap.set(gift.projectGuid, {
       type: 'project',
       contributionCount: 1,
-      contributionUnitType: 'tree',
-      totalContributionUnits: Math.round(gift.quantity * 100) / 100,
+      contributionUnitType: unitType,
+      totalContributionUnits: roundedQuantity,
       latestContributions: [],
       latestGifts: [giftData],
     });
@@ -320,6 +327,18 @@ function handleGiftContribution(
     projectLocationsMap.set(project.guid, {
       geometry: project.geometry,
     });
+  }
+
+  // Update stats based on gift purpose and unit type
+  if (gift.purpose === 'trees') {
+    if (unitType === 'tree') {
+      stats.treesDonated.received += roundedQuantity;
+    } else if (unitType === 'm2') {
+      stats.areaRestoredInM2.received += roundedQuantity;
+    }
+  } else if (gift.purpose === 'conservation') {
+    // Conservation projects only have unit_type = 'm2'
+    stats.areaConservedInM2.received += roundedQuantity;
   }
 }
 
@@ -486,15 +505,14 @@ export const contributionsProcedure = procedure
       gifts.forEach((gift) => {
         gift.quantity = Number(gift.quantity);
         stats.giftsReceivedCount++;
-        stats.treesDonated.received += Math.round(gift.quantity * 100) / 100;
+
         // TODO: why would gift.country be any different from projectGuidMap.get(gift.projectGuid)?.country?
         populateContributedCountries(
           gift.country,
           projectGuidMap.get(gift.projectGuid)?.country,
           stats.contributedCountries
         );
-        // Handle individual gift contributions if the project is in the eligible project set
-        // TODO: what is the eligible project set?
+        // Handle individual gift contributions if the project is in the eligible project set (conservation or tree projects, verified, and not deleted)
         const project = projectGuidMap.get(gift.projectGuid);
         if (project) {
           handleGiftContribution(
