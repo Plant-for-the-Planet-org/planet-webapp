@@ -78,7 +78,6 @@ const AddressForm = ({
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
-
   const handleSuggestAddress = useCallback(
     async (value: string) => {
       try {
@@ -94,9 +93,16 @@ const AddressForm = ({
 
   useDebouncedEffect(
     () => {
-      if (inputValue) {
-        handleSuggestAddress(inputValue);
+      const trimmedInput = inputValue.trim();
+
+      // Clear suggestions if input is empty or just whitespace
+      if (trimmedInput === '') {
+        setAddressSuggestions([]);
+        return;
       }
+
+      // Fetch suggestions only if input is meaningful (e.g., length > 3)
+      handleSuggestAddress(trimmedInput);
     },
     700,
     [inputValue]

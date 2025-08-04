@@ -77,7 +77,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [submit, setSubmit] = useState(false);
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [addressInput, setAddressInput] = useState<string | null>(null);
+  const [addressInput, setAddressInput] = useState('');
 
   const postalRegex = useMemo(() => getPostalRegex(country), [country]);
   const profileTypes = [
@@ -214,13 +214,21 @@ export default function CompleteSignup(): ReactElement | null {
 
   useDebouncedEffect(
     () => {
-      if (addressInput) {
-        handleSuggestAddress(addressInput);
+      const trimmedInput = addressInput.trim();
+
+      // Clear suggestions if input is empty or just whitespace
+      if (trimmedInput === '') {
+        setAddressSuggestions([]);
+        return;
       }
+
+      // Fetch suggestions only if input is meaningful (e.g., length > 3)
+      handleSuggestAddress(trimmedInput);
     },
     700,
     [addressInput]
   );
+
   if (
     !contextLoaded ||
     (contextLoaded && token && user) ||
