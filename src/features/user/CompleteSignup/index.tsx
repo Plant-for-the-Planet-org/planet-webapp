@@ -32,7 +32,7 @@ import {
   getAddressSuggestions,
 } from '../../../utils/geocoder';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
-import { getPostalRegex } from '../../../utils/geocoder';
+import { getPostalRegex } from '../../../utils/addressManagement';
 
 const MuiTextField = styled(TextField)(() => {
   return {

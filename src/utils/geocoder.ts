@@ -3,13 +3,11 @@ import type {
   AddressType,
   ReverseAddress,
 } from '../features/common/types/geocoder';
-import type { ExtendedCountryCode } from '../features/common/types/country';
 
 import GeocoderArcGIS from 'geocoder-arcgis';
-import COUNTRY_ADDRESS_POSTALS from './countryZipCode';
 
 const geocoder = new GeocoderArcGIS(
-  process.env.ESRI_CLIENT_SECRET
+  process.env.ESRI_CLIENT_ID && process.env.ESRI_CLIENT_SECRET
     ? {
         client_id: process.env.ESRI_CLIENT_ID,
         client_secret: process.env.ESRI_CLIENT_SECRET,
@@ -88,20 +86,4 @@ export const getAddressFromCoordinates = async (
     console.error('Failed to fetch address:', error);
     return null;
   }
-};
-
-/**
- * Retrieves the postal regex for a given country code.
- *
- * This function searches the `COUNTRY_ADDRESS_POSTALS` array for the country matching the provided
- * `country` code and returns the associated postal regex pattern. If no match is found, it returns `undefined`.
- *
- * @param country - The country code for which to retrieve the postal regex.
- * @returns The postal regex pattern for the given country, or `undefined` if no match is found.
- */
-export const getPostalRegex = (country: ExtendedCountryCode | '') => {
-  const filteredCountry = COUNTRY_ADDRESS_POSTALS.find(
-    (item) => item.abbrev === country
-  );
-  return filteredCountry?.postal;
 };

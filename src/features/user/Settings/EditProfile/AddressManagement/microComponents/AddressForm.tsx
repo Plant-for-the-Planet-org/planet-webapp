@@ -23,8 +23,8 @@ import PrimaryAddressToggle from './PrimaryAddressToggle';
 import {
   getAddressDetailsFromText,
   getAddressSuggestions,
-  getPostalRegex,
 } from '../../../../../../utils/geocoder';
+import { getPostalRegex } from '../../../../../../utils/addressManagement';
 
 export type AddressFormData = {
   address: string;
