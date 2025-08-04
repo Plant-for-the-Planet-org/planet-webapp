@@ -48,15 +48,7 @@ $footerHeight: 49px;
 
   :global(.image-slider-container) {
     height: 192px;
-  }
 
-  :global(.image-slider-container),
-  :global(.single-plant-location-image) {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  :global(.image-slider-container) {
     :global(.single-carousel-image) {
       padding: 15px;
     }
@@ -64,6 +56,12 @@ $footerHeight: 49px;
     :global(.image-description) {
       padding-bottom: 20px;
     }
+  }
+
+  :global(.image-slider-container),
+  :global(.single-plant-location-image) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 
   :global(.plant-location-header-container),
