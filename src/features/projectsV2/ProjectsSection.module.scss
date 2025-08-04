@@ -17,7 +17,7 @@ $bottomFooterSpace: 49px;
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 100px;
-    background: rgba(224, 224, 224, 1);
+    background: $dsMediumGreyTransparent30;
     height: 220px;
   }
   @include xsPhoneView {
@@ -42,7 +42,7 @@ $bottomFooterSpace: 49px;
   border-radius: 16px;
 
   @include smTabletView {
-    background-color: $light;
+    background-color: $dsWhite;
     margin-left: 2px;
     margin-right: 10px;
   }

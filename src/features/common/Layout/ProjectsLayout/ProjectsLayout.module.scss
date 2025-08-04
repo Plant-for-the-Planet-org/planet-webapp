@@ -12,12 +12,7 @@ $bottomMobileFooterSpace: 49px;
 .projectsLayout {
   margin-top: 80px;
   height: calc(100vh - 80px);
-  background: linear-gradient(
-      0deg,
-      rgba(172, 172, 172, 0.15) 0%,
-      rgba(172, 172, 172, 0.15) 100%
-    ),
-    #fff;
+  background-color: $dsBaseGrey;
   padding: $layoutPaddingTop $layoutPaddingSide $layoutPaddingBottom;
   position: relative;
   overflow: hidden;
@@ -69,7 +64,7 @@ $bottomMobileFooterSpace: 49px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: white;
+  background: $dsWhite;
   padding-top: 24px;
 
   &.mapMode {

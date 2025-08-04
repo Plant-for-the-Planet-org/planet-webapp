@@ -8,6 +8,7 @@ import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useTranslations } from 'next-intl';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   projectReviews: Review[] | undefined;
@@ -23,7 +24,9 @@ export default function TopProjectReports({ projectReviews }: Props) {
   return (
     <>
       <div className={styles.reports_container}>
-        <VerifiedIcon sx={{ color: '#42A5F5' }} />
+        <VerifiedIcon
+          sx={{ color: themeProperties.designSystem.colors.warmBlue }}
+        />
         <div className={styles.reports_description}>
           {projectReviews?.map((review) => (
             <div key={review.id}>

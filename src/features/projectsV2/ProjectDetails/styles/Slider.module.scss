@@ -18,6 +18,14 @@
   padding: 10px;
 }
 
+.imageDescription {
+  padding-bottom: 5px;
+
+  &.modalOpen {
+    padding-bottom: 0;
+  }
+}
+
 .imageSliderContainer {
   position: relative;
   border-radius: 13px;

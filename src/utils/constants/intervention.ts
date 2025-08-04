@@ -1,24 +1,27 @@
 import type { DataDrivenPropertyValueSpecification } from 'maplibre-gl';
 import type { PlantLocation } from '../../features/common/types/plantLocation';
 import type { InterventionTypes } from '@planet-sdk/common';
+import themeProperties from '../../theme/themeProperties';
 
-const SINGLE_TREE = '#007A49';
-const MULTI_TREE = '#007A49';
-const INVASIVE_SPECIES = '#EB5757';
-const FIRE_SUPPRESSION = '#F2C94C';
-const FIRE_PATROL = '#F2994A';
-const FENCING = '#48AADD';
-const MARKING_REGENERANT = '#27AE60';
-const LIBERATING_REGENERANT = '#56CCF2';
-const GRASS_SUPPRESSION = '#219653';
-const FIREBREAKS = '#E86F56';
-const SEED_RAIN = '#2F80ED';
-const SOIL_IMPROVEMENT = '#6D4230';
-const STOP_HARVESTING = '#4F4F4F';
-const DIRECT_SEEDING = '#6FCF97';
-const ENRICHMENT_PLANTING = '#EB67CE';
-const MAINTENANCE = '#6C63FF';
-const OTHER_INTERVENTION = '#9B51E0';
+const { colors } = themeProperties.designSystem;
+
+const SINGLE_TREE = colors.primaryColor;
+const MULTI_TREE = colors.warmGreen;
+const INVASIVE_SPECIES = colors.fireRed;
+const FIRE_SUPPRESSION = colors.brightYellow;
+const FIRE_PATROL = colors.sunriseOrange;
+const FENCING = colors.brightBlue;
+const MARKING_REGENERANT = colors.leafGreen;
+const LIBERATING_REGENERANT = colors.skyBlue;
+const GRASS_SUPPRESSION = colors.forestGreen;
+const FIREBREAKS = colors.warmRed;
+const SEED_RAIN = colors.oceanBlue;
+const SOIL_IMPROVEMENT = colors.milkChocolate;
+const STOP_HARVESTING = colors.darkGrey;
+const DIRECT_SEEDING = colors.brightGreen;
+const ENRICHMENT_PLANTING = colors.hotPink;
+const MAINTENANCE = colors.purpleSky;
+const OTHER_INTERVENTION = colors.deepPurple;
 
 /**
  * MapLibre GL color configuration for visualizing forest interventions.

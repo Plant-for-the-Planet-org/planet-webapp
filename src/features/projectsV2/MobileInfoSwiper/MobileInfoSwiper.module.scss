@@ -1,20 +1,27 @@
 @import '../../../theme/theme';
 
+$footerHeight: 49px;
+
 .mobileInfoSwiper {
   width: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: $footerHeight;
   z-index: 9999;
   padding: 6px;
 }
 
 .swiperContentContainer {
   border-radius: 12px;
-  background-color: $primaryLightGreenBgColor;
+  background: linear-gradient(
+      0deg,
+      $dsPrimaryColorTransparent7 0%,
+      $dsPrimaryColorTransparent7 100%
+    ),
+    $dsWhite;
 
   :global(.swiper) {
     :global(.swiper-pagination-bullet-active) {
-      background-color: $primaryDarkColor;
+      background-color: $dsPrimaryColor;
     }
 
     :global(.swiper-pagination-bullets.swiper-pagination-horizontal) {
@@ -37,10 +44,18 @@
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  background: $light;
+  background: $dsWhite;
 
   :global(.image-slider-container) {
     height: 192px;
+
+    :global(.single-carousel-image) {
+      padding: 15px;
+    }
+
+    :global(.image-description) {
+      padding-bottom: 20px;
+    }
   }
 
   :global(.image-slider-container),
@@ -54,7 +69,7 @@
     padding: 12px 20px;
 
     :global(.tree-count) {
-      color: $primaryDarkColor;
+      color: $dsPrimaryColor;
       font-size: $fontXSmall;
       font-weight: 700;
 
@@ -70,27 +85,42 @@
 
   :global(.planting-details-group) {
     flex-direction: column;
-    background-color: $primaryLightGreenBgColor;
+    background: linear-gradient(
+        0deg,
+        $dsPrimaryColorTransparent7 0%,
+        $dsPrimaryColorTransparent7 100%
+      ),
+      $dsWhite;
     gap: 12px;
   }
 
   :global(.planting-details-item) {
-    background-color: $light;
+    background-color: $dsWhite;
   }
 
   :global(.species-container) {
-    background-color: $light;
+    background-color: $dsWhite;
   }
 
   :global(.sample-trees-container) {
-    background-color: $light;
+    background-color: $dsWhite;
+  }
 
-    :global(.sample-tree-container) {
-      background-color: $primaryLightGreenBgColor;
-    }
+  :global(.sample-tree-container) {
+    background: linear-gradient(
+        0deg,
+        $dsPrimaryColorTransparent7 0%,
+        $dsPrimaryColorTransparent7 100%
+      ),
+      $dsWhite;
   }
 
   :global(.plant-info-card) {
-    background-color: $primaryLightGreenBgColor;
+    background: linear-gradient(
+        0deg,
+        $dsPrimaryColorTransparent7 0%,
+        $dsPrimaryColorTransparent7 100%
+      ),
+      $dsWhite;
   }
 }
