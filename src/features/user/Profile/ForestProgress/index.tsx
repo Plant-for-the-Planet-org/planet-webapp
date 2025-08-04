@@ -35,7 +35,7 @@ const ProgressBars = ({
   conservTarget,
   profilePageType,
 }: ProgressBarsProps) => {
-  const { contributionStats } = useMyForest();
+  const { userInfo } = useMyForest();
 
   const shouldShowBar = (target: number, contributedUnits: number): boolean =>
     contributedUnits > 0 || target > 0;
@@ -47,10 +47,10 @@ const ProgressBars = ({
           handleEditTargets={handleEditTargets}
           dataType={'treesPlanted'}
           target={treeTarget}
-          gift={contributionStats?.treesDonated.received ?? 0}
+          gift={userInfo?.scores.treesDonated.received ?? 0}
           personal={
-            (contributionStats?.treesDonated.personal ?? 0) +
-            (contributionStats?.treesRegistered ?? 0)
+            (userInfo?.scores.treesDonated.personal ?? 0) +
+            (userInfo?.scores.treesPlanted ?? 0)
           }
           profilePageType={profilePageType}
         />
@@ -60,8 +60,8 @@ const ProgressBars = ({
           handleEditTargets={handleEditTargets}
           dataType={'areaRestored'}
           target={restoreTarget}
-          gift={contributionStats?.areaRestoredInM2.received ?? 0}
-          personal={contributionStats?.areaRestoredInM2.personal ?? 0}
+          gift={userInfo?.scores.areaRestored.received ?? 0}
+          personal={userInfo?.scores.areaRestored.personal ?? 0}
           profilePageType={profilePageType}
         />
       )}
@@ -70,8 +70,8 @@ const ProgressBars = ({
           handleEditTargets={handleEditTargets}
           dataType={'areaConserved'}
           target={conservTarget}
-          gift={contributionStats?.areaConservedInM2.received ?? 0}
-          personal={contributionStats?.areaConservedInM2.personal ?? 0}
+          gift={userInfo?.scores.areaConserved.received ?? 0}
+          personal={userInfo?.scores.areaConserved.personal ?? 0}
           profilePageType={profilePageType}
         />
       )}
@@ -83,13 +83,14 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const [isEditingTargets, setIsEditingTargets] = useState(false);
   const handleEditTargets = () => setIsEditingTargets(true);
 
-  const { userInfo, contributionStats } = useMyForest();
+  const { userInfo } = useMyForest();
 
-  const { treesDonated, areaRestored, areaConserved } =
-    aggregateProgressData(contributionStats);
-  const treeTarget = userInfo?.targets.treesDonated ?? 0;
-  const restoreTarget = userInfo?.targets.areaRestored ?? 0;
-  const conservTarget = userInfo?.targets.areaConserved ?? 0;
+  const { treesDonated, areaRestored, areaConserved } = aggregateProgressData(
+    userInfo?.scores
+  );
+  const treeTarget = userInfo?.scores.treesDonated.target ?? 0;
+  const restoreTarget = userInfo?.scores.areaRestored.target ?? 0;
+  const conservTarget = userInfo?.scores.areaConserved.target ?? 0;
 
   const [isProgressEnabled, setIsProgressEnabled] = useState(
     checkProgressEnabled(

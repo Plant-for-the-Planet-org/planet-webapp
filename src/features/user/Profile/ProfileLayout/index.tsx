@@ -32,11 +32,7 @@ const ProfileLayout = () => {
         const _userInfo = {
           profileId: user.id,
           slug: user.slug,
-          targets: {
-            treesDonated: user.scores.treesDonated.target ?? 0,
-            areaRestored: user.scores.areaRestored.target ?? 0,
-            areaConserved: user.scores.areaConserved.target ?? 0,
-          },
+          scores: user.scores,
         };
         setUserInfo(_userInfo);
       }

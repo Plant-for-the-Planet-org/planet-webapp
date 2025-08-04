@@ -95,18 +95,20 @@ const TargetsModal = ({
         const newUserInfo = {
           profileId: res.id,
           slug: res.slug,
-          targets: {
-            treesDonated: res.scores.treesDonated.target ?? 0,
-            areaConserved: res.scores.areaConserved.target ?? 0,
-            areaRestored: res.scores.areaRestored.target ?? 0,
-          },
+          scores: res.scores,
         };
         setRefetchUserData(true);
         if (newUserInfo !== undefined) {
           setUserInfo(newUserInfo);
-          setTreesPlantedTargetLocal(newUserInfo.targets.treesDonated ?? 0);
-          setAreaRestoredTargetLocal(newUserInfo.targets.areaRestored ?? 0);
-          setAreaConservedTargetLocal(newUserInfo.targets.areaConserved ?? 0);
+          setTreesPlantedTargetLocal(
+            newUserInfo.scores.treesDonated.target ?? 0
+          );
+          setAreaRestoredTargetLocal(
+            newUserInfo.scores.areaRestored.target ?? 0
+          );
+          setAreaConservedTargetLocal(
+            newUserInfo.scores.areaConserved.target ?? 0
+          );
           setIsTargetModalLoading(false);
           handleClose();
         }

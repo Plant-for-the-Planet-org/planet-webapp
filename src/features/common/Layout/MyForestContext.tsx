@@ -13,6 +13,7 @@ import type {
 } from '../types/myForest';
 import type { SetState } from '../types/common';
 import type { PointFeature } from 'supercluster';
+import type { Scores } from '@planet-sdk/common';
 
 import { createContext, useContext, useMemo, useState, useEffect } from 'react';
 import { trpc } from '../../../utils/trpc';
@@ -22,11 +23,7 @@ import { updateStateWithTrpcData } from '../../../utils/trpcHelpers';
 interface UserInfo {
   profileId: string;
   slug: string;
-  targets: {
-    treesDonated: number;
-    areaRestored: number;
-    areaConserved: number;
-  };
+  scores: Scores;
 }
 type ContributionsQueryRefetchType = ReturnType<
   typeof trpc.myForest.contributions.useQuery

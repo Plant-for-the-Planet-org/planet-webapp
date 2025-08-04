@@ -1,9 +1,12 @@
-import type { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
+import type {
+  ProjectPurposeTypes,
+  Scores,
+  UnitTypes,
+} from '@planet-sdk/common';
 import type { ExtractedProjectData } from '../features/user/Profile/ContributionsMap/Markers/DonationClusterMarker';
 import type { PointFeature } from 'supercluster';
 import type { DonationProperties } from '../features/common/types/myForest';
 import type { ProgressDataType } from '../features/user/Profile/ForestProgress/ForestProgressItem';
-import type { ContributionStats } from '../features/common/types/myForest';
 
 import themeProperties from '../theme/themeProperties';
 export type Accumulator = {
@@ -186,22 +189,19 @@ export const targetColor = (dataType: ProgressDataType) => {
 
 /**
  * helper function to process / aggregate all personal and gift contributions for progress bars
- * @param contributionStats - object containing all the contribution stats as returned by the API
+ * @param scores - object containing scores from the profile API
  * @returns object containing total trees donated, total area restored, and total area conserved
  */
-export const aggregateProgressData = (
-  contributionStats: ContributionStats | undefined
-) => {
+export const aggregateProgressData = (scores: Scores | undefined) => {
   const treesDonated =
-    (contributionStats?.treesDonated.personal ?? 0) +
-    (contributionStats?.treesDonated.received ?? 0) +
-    (contributionStats?.treesRegistered ?? 0);
+    (scores?.treesDonated.personal ?? 0) +
+    (scores?.treesDonated.received ?? 0) +
+    (scores?.treesPlanted ?? 0);
   const areaRestored =
-    (contributionStats?.areaRestoredInM2.personal ?? 0) +
-    (contributionStats?.areaRestoredInM2.received ?? 0);
+    (scores?.areaRestored.personal ?? 0) + (scores?.areaRestored.received ?? 0);
   const areaConserved =
-    (contributionStats?.areaConservedInM2.personal ?? 0) +
-    (contributionStats?.areaConservedInM2.received ?? 0);
+    (scores?.areaConserved.personal ?? 0) +
+    (scores?.areaConserved.received ?? 0);
   return { treesDonated, areaRestored, areaConserved };
 };
 
