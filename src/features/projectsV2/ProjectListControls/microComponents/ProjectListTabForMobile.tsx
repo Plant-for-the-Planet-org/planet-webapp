@@ -25,7 +25,7 @@ const ProjectListTabForMobile = ({
   setTabSelected,
   setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
-  const { light } = themeProperties;
+  const { colors } = themeProperties.designSystem;
   const t = useTranslations('AllProjects');
 
   const selectTab = (tab: ProjectTabs) => {
@@ -48,7 +48,7 @@ const ProjectListTabForMobile = ({
     );
   };
   const starIconColor =
-    tabSelected === 'topProjects' ? `${light.light}` : `${light.richBlack}`;
+    tabSelected === 'topProjects' ? colors.white : colors.coreText;
   return (
     <div className={styles.tabContainer}>
       <TabItem

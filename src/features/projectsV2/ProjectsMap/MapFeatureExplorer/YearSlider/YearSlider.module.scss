@@ -3,7 +3,7 @@
 .rangeMainContainer {
   width: 150px;
   height: 30px;
-  background-color: rgba(var(--deforestration-range-background-new), 0.1);
+  background-color: $dsFireRedTransparent10;
   margin-top: 6px;
   border-radius: 6px;
 }

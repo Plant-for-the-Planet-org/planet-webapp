@@ -26,7 +26,7 @@
 
   > .exitMapModeButton {
     z-index: 2;
-    background: $light;
+    background: $dsWhite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +39,7 @@
   position: absolute;
   z-index: 2;
   cursor: pointer;
-  background-color: rgb(255, 255, 255);
+  background-color: $dsWhite;
   border-radius: 50%;
   display: flex;
   width: 30px;
@@ -106,15 +106,16 @@
   height: 10px;
   width: 10px;
   border-radius: 100px;
-  background-color: rgba(0, 122, 73, 0.5);
+  background-color: $dsPrimaryColor;
+  opacity: 0.5;
   cursor: pointer;
   position: absolute;
   z-index: 1;
   &.singleSelected {
-    background-color: rgba(0, 122, 73, 1);
+    opacity: 1;
   }
 }
 
 .single:hover {
-  background-color: rgba(0, 122, 73, 1);
+  opacity: 1;
 }
