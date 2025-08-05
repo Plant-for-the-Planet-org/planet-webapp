@@ -72,7 +72,7 @@ export async function getInterventions(
   try {
     const result = await getRequest<Intervention[]>({
       tenant,
-      url: `/app/plantLocations/${project}`,
+      url: `/app/interventions/${project}`,
       queryParams: {
         _scope: 'extended',
       },
