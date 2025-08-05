@@ -137,6 +137,7 @@ export type ContributionsQueryResult = {
   geometry: Point | Polygon | null;
   country: CountryCode | '';
   giftMethod: string | null;
+  isSelfGift: boolean | null;
   giftRecipient: string | null;
   giftType: string | null;
 };

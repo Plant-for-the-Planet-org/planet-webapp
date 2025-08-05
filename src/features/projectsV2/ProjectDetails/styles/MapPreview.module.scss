@@ -17,7 +17,7 @@
   align-items: center;
   gap: 6px;
   height: 40px;
-  background: $primaryColorNew;
+  background: $dsPrimaryColor;
   border-radius: 8px;
   margin-bottom: 15px;
   max-width: 274px;
@@ -26,7 +26,7 @@
   .label {
     font-size: $fontXSmall;
     font-weight: 700;
-    color: $light;
+    color: $dsWhite;
   }
 }
 

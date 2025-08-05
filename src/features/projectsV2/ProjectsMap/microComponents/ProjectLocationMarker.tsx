@@ -7,13 +7,13 @@ interface Props {
   longitude: number;
   purpose: 'trees' | 'conservation';
 }
-const { skyBlueColor, primaryDarkColor } = themeProperties;
+const { colors } = themeProperties.designSystem;
 const ProjectLocationMarker = ({ latitude, longitude, purpose }: Props) => {
   return (
     <Marker latitude={latitude} longitude={longitude} anchor="center">
       <ProjectLocationIcon
         color={
-          purpose === 'conservation' ? `${skyBlueColor}` : `${primaryDarkColor}`
+          purpose === 'conservation' ? colors.skyBlue : colors.primaryColor
         }
       />
     </Marker>
