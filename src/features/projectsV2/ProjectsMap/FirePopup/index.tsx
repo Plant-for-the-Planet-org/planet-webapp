@@ -139,7 +139,10 @@ export default function FirePopup({ isOpen, feature }: Props) {
         {popperPlacement === 'top' ? (
           <div className={`${styles.arrowTop}`} ref={setArrowRef} />
         ) : (
-          <div className={`${styles.arrowBottom}`} ref={setArrowRef} />
+          <div className={styles.arrowBottomContainer} ref={setArrowRef}>
+            <div className={styles.arrowBottomWhite} />
+            <div className={styles.arrowBottomColored} />
+          </div>
         )}
         <aside className={styles.popupContainer}>
           <header className={styles.popupTitle}>

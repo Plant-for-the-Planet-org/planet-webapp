@@ -15,6 +15,8 @@ import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
 import { FillColor } from '../../../../utils/constants/intervention';
+import themeProperties from '../../../../theme/themeProperties';
+import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface SampleTreeMarkerProps {
   sample: SamplePlantLocation;
@@ -51,6 +53,7 @@ const SampleTreeMarker = ({
 );
 
 export default function PlantLocations(): React.ReactElement {
+  const { colors } = themeProperties.designSystem;
   const {
     plantLocations,
     hoveredPlantLocation,
@@ -218,7 +221,7 @@ export default function PlantLocations(): React.ReactElement {
         }}
       >
         <Layer
-          id={`plant-polygon-layer`}
+          id={MAIN_MAP_LAYERS.PLANT_POLYGON}
           type="fill"
           paint={{
             'fill-color': FillColor,
@@ -227,7 +230,7 @@ export default function PlantLocations(): React.ReactElement {
           filter={['==', ['geometry-type'], 'Polygon']}
         />
         <Layer
-          id={`point-layer`}
+          id={MAIN_MAP_LAYERS.PLANT_POINT}
           type="circle"
           paint={{
             'circle-color': FillColor,
@@ -245,16 +248,16 @@ export default function PlantLocations(): React.ReactElement {
           filter={['==', ['geometry-type'], 'Point']}
         />
         <Layer
-          id={`line-selected`}
+          id={MAIN_MAP_LAYERS.SELECTED_LINE}
           type="line"
           paint={{
-            'line-color': isSatelliteView ? '#ffffff' : FillColor,
+            'line-color': isSatelliteView ? colors.white : FillColor,
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
         />
         <Layer
-          id={`datediff-label`}
+          id={MAIN_MAP_LAYERS.DATE_DIFF_LABEL}
           type="symbol"
           layout={{
             'text-field': ['get', 'dateDiff'],
@@ -262,7 +265,7 @@ export default function PlantLocations(): React.ReactElement {
             'text-font': ['Ubuntu Regular'],
           }}
           paint={{
-            'text-color': isSatelliteView ? '#ffffff' : '#2f3336',
+            'text-color': isSatelliteView ? colors.white : colors.coreText,
           }}
           filter={['!=', ['get', 'dateDiff'], '']}
         />

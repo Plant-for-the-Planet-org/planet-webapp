@@ -44,7 +44,7 @@ const NavbarItemGroup = ({
 }: NavbarItemProps) => {
   if (!navbarItem.visible) return null;
 
-  const { primaryDarkColor } = themeProperties;
+  const { primaryColor } = themeProperties.designSystem.colors;
   const tNavbarItem = useTranslations('Common');
   const router = useRouter();
   const locale = useLocale();
@@ -104,7 +104,7 @@ const NavbarItemGroup = ({
             </span>
             <span className={styles.chevron}>
               {isNavMenuOpen ? (
-                <DropdownUpArrow width={12} color={primaryDarkColor} />
+                <DropdownUpArrow width={12} color={primaryColor} />
               ) : (
                 <DropdownDownArrow width={15} />
               )}

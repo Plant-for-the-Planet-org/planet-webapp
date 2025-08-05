@@ -2,7 +2,7 @@
 
 .activeSearchFieldContainer,
 .projectListControls {
-  background-color: $light;
+  background-color: $dsWhite;
   height: 47px;
   border-radius: 12px;
   display: flex;
@@ -11,26 +11,24 @@
   justify-content: space-between;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   margin-left: 2px;
-  @include xsPhoneView {
-    height: 36px;
-    min-width: 200px;
-    border-radius: 8px;
-    border: 1px solid rgba($borderColor, 0.5);
-
-    &.onlyMapMode {
-      max-width: none;
-      width: 100%;
-    }
-  }
 }
 
 .activeSearchFieldContainer {
   @include xsPhoneView {
+    height: 36px;
+    min-width: 200px;
+    border-radius: 8px;
+    border: 1px solid $dsMediumGreyTransparent50;
+    &.onlyMapMode {
+      max-width: none;
+      width: 100%;
+    }
     input {
       font-size: $fontXSmall;
     }
   }
 }
+
 .projectListHeaderText {
   font-weight: 600;
   margin-left: 20px;
@@ -98,7 +96,7 @@
 .tabContainerSecondary,
 .tabContainer {
   border-radius: 5px;
-  border: 2px solid $primaryColorNew;
+  border: 2px solid $dsPrimaryColor;
   display: flex;
   overflow: hidden;
 
@@ -140,13 +138,13 @@
   }
 }
 .selectedTabButton {
-  background: $primaryColorNew;
-  color: $light;
+  background: $dsPrimaryColor;
+  color: $dsWhite;
 }
 
 .unselectedTabButton {
-  background: $light;
-  color: rgba($dark, 1);
+  background: $dsWhite;
+  color: $dsCoreText;
 }
 
 .projectCount {
@@ -163,7 +161,7 @@
     width: 28px;
     height: 28px;
     border-radius: 7.78px;
-    background: $backgroundColor;
+    background-color: $dsWhite;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,7 +200,7 @@
     left: 10px;
     top: -4px;
     z-index: 1;
-    background-color: $primaryColorNew;
+    background-color: $dsPrimaryColor;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -223,7 +221,7 @@
 
 .classificationListContainer {
   min-width: 182px;
-  background: $backgroundColor;
+  background: $dsWhite;
   padding: 16px;
   margin-top: 10px;
   border-radius: 12px;
@@ -245,7 +243,7 @@
 
 .classificationItem {
   display: flex;
-  color: rgba($dark, 1);
+  color: $dsCoreText;
   width: 100%;
   align-items: center;
   gap: 4px;
@@ -269,7 +267,7 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   align-items: flex-start;
-  color: rgba(51, 51, 51, 1);
+  color: $dsCoreText;
 }
 
 .hrLine {
@@ -294,7 +292,7 @@
 
 .donationFilterButton {
   width: 100%;
-  color: rgba($dark, 1);
+  color: $dsCoreText;
 
   .donationFilterLabel {
     display: flex;

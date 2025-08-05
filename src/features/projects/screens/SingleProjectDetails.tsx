@@ -21,6 +21,7 @@ import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetai
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import TopProjectReports from '../components/projectDetails/TopProjectReports';
 import getLocalizedPath from '../../../utils/getLocalizedPath';
+import themeProperties from '../../../theme/themeProperties';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -260,7 +261,9 @@ function SingleProjectDetails(): ReactElement {
                         onClick={handleModalOpen}
                         className={'modalOpen'}
                       >
-                        <ExpandIcon color="#fff" />
+                        <ExpandIcon
+                          color={themeProperties.designSystem.colors.white}
+                        />
                       </button>
                       {project?.images?.length > 0 && !openModal ? (
                         <ImageSlider
