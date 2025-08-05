@@ -28,11 +28,11 @@ export function zoomToPolygonIntervention(
   );
   map.once('moveend', () => {
     const center = map.getCenter();
-    const defaultZoom = 17;
+    const currentZoom = map.getZoom();
     const newViewState: ViewState = {
       longitude: center.lng,
       latitude: center.lat,
-      zoom: defaultZoom,
+      zoom: currentZoom,
       bearing: 0,
       pitch: 0,
       padding: {

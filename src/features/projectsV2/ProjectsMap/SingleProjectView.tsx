@@ -1,47 +1,44 @@
 import type { MapRef } from '../../common/types/projectv2';
 import type { SelectedTab } from './ProjectMapTabs';
+import type { SitesGeoJSON } from '../../common/types/ProjectPropsContextInterface';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
-import SitePolygon from './microComponents/SitePolygon';
-import Interventions from './microComponents/Interventions';
+import SiteLayers from './microComponents/SiteLayers';
+import InterventionLayers from './microComponents/InterventionLayers';
 import { zoomToPolygonIntervention } from '../../../utils/mapsV2/zoomToPolygonIntervention';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
-import ProjectLocation from './microComponents/ProjectLocation';
+import ProjectLocationMarker from './microComponents/ProjectLocationMarker';
+import FireLocationsMarker from './microComponents/FireLocationsMarker';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
-import FireLocations from './microComponents/FireLocations';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
 interface Props {
   mapRef: MapRef;
   selectedTab: SelectedTab | null;
+  sitesGeoJson: SitesGeoJSON;
 }
 
-const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
+const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const { singleProject, selectedSite, selectedIntervention, interventions } =
     useProjects();
   if (singleProject === null) return null;
 
-  const router = useRouter();
-  const { ploc: requestedIntervention, site: requestedSite } = router.query;
-
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
 
-  const sitesGeoJson = useMemo(() => {
-    return {
-      type: 'FeatureCollection' as const,
-      features:
-        singleProject?.sites?.filter((site) => site.geometry !== null) ?? [],
-    };
-  }, [singleProject?.sites]);
-  const hasNoSites = sitesGeoJson.features.length === 0;
-  // Zoom to intervention
+  const router = useRouter();
+  const { ploc: requestedIntervention, site: requestedSite } = router.query;
+
+  const canShowSites = sitesGeoJson.features.length > 0;
+  const displayIntervention = selectedTab === 'field' && !isSatelliteView;
+
+  // Zoom to plant location
   useEffect(() => {
     if (!router.isReady || selectedIntervention === null) return;
     const { geometry } = selectedIntervention;
@@ -81,7 +78,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
       Boolean(requestedIntervention)
     )
       return;
-    if (sitesGeoJson.features.length > 0 && selectedSite !== null) {
+    if (canShowSites && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeoJson,
@@ -94,7 +91,7 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
       if (!(singleProject.sites?.length === 0)) return;
 
       if (typeof latitude === 'number' && typeof longitude === 'number') {
-        // Zoom into the project location that has no site
+        // Zoom into the project location that has no site and plant location
         zoomToLocation(
           handleViewStateChange,
           longitude,
@@ -111,30 +108,31 @@ const SingleProjectView = ({ mapRef, selectedTab }: Props) => {
     const isSatelliteView =
       singleProject.purpose === 'conservation' ||
       (singleProject.purpose === 'trees' &&
-        (!interventions || interventions.length === 0));
+        Array.isArray(interventions) &&
+        interventions.length === 0);
 
     setIsSatelliteView(isSatelliteView);
   }, [interventions, singleProject.purpose]);
   return (
     <>
-      {hasNoSites ? (
-        <ProjectLocation
-          latitude={singleProject.coordinates.lat}
-          longitude={singleProject.coordinates.lon}
-          purpose={singleProject.purpose}
-        />
-      ) : (
+      {canShowSites ? (
         <>
-          <SitePolygon
+          <SiteLayers
             isSatelliteView={isSatelliteView}
             geoJson={sitesGeoJson}
           />
           {isSatelliteView && <SatelliteLayer />}
         </>
+      ) : (
+        <ProjectLocationMarker
+          latitude={singleProject.coordinates.lat}
+          longitude={singleProject.coordinates.lon}
+          purpose={singleProject.purpose}
+        />
       )}
-      {selectedTab === 'field' && <Interventions />}
+      {displayIntervention && <InterventionLayers />}
       <FeatureFlag condition={isFirealertFiresEnabled()}>
-        <FireLocations />
+        <FireLocationsMarker />
       </FeatureFlag>
     </>
   );
