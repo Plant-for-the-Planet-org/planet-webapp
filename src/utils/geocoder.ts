@@ -39,6 +39,15 @@ export const getAddressSuggestions = async (
 
 /**
  * Fetches full address details (short label, city, zip code) for a given input string.
++ * 
++ * @dependency ArcGIS API Fields - This function uses 3 specific fields from Attributes:
++ * - ShortLabel: The formatted address string  
++ * - City: The city name
++ * - Postal: The postal/zip code
++ * See geocoder.d.ts Attributes interface for all 50+ available fields.
++ *
+ * @param value - The input string to search for address details
+ * @returns Object with address, city, zipCode or null if no results
  */
 export const getAddressDetailsFromText = async (
   value: string
@@ -49,7 +58,7 @@ export const getAddressDetailsFromText = async (
 } | null> => {
   try {
     const result: AddressType = await geocoder.findAddressCandidates(value, {
-      outfields: '*',
+      outfields: 'ShortLabel,City,Postal',
     });
     const candidate = result.candidates[0]?.attributes;
     if (!candidate) return null;
