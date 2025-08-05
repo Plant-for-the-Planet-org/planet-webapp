@@ -1,5 +1,6 @@
 import type {
   ConservationProjectExtended,
+  ProjectSite,
   TreeProjectExtended,
 } from '@planet-sdk/common';
 import type {
@@ -9,6 +10,7 @@ import type {
 } from '@planet-sdk/common/build/types/project/map';
 import type { MutableRefObject } from 'react';
 import type { Map } from 'maplibre-gl';
+import type { Feature, MultiPolygon, Polygon } from 'geojson';
 
 export type MapProjectProperties =
   | TreeProjectConcise
@@ -24,3 +26,5 @@ export interface ExtendedMapLibreMap extends Map {
 }
 
 export type DropdownType = 'site' | 'intervention' | null;
+
+export type ProjectSiteFeature = Feature<Polygon | MultiPolygon, ProjectSite>;
