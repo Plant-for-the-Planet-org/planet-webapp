@@ -18,9 +18,9 @@ export const SingleCarouselImage = ({
   currentImage,
 }: Props) => {
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
-  const carouselImageClass = `${styles.singleCarouselImage}${
-    isImageModalOpenOnMobile ? ` ${styles.mobileModal}` : ''
-  }`;
+  const carouselImageClass = `single-carousel-image ${
+    styles.singleCarouselImage
+  }${isImageModalOpenOnMobile ? ` ${styles.mobileModal}` : ''}`;
   const carouselBackgroundStyle = {
     background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(${imageURL})`,
   };
@@ -29,7 +29,15 @@ export const SingleCarouselImage = ({
 
   return (
     <div className={carouselImageClass} style={carouselBackgroundStyle}>
-      {shouldShowDescription && <div>{imageDescription}</div>}
+      {shouldShowDescription && (
+        <div
+          className={`image-description ${styles.imageDescription} ${
+            isModalOpen ? styles.modalOpen : ''
+          }`}
+        >
+          {imageDescription}
+        </div>
+      )}
       {shouldShowCounter && (
         <div
           role="status"

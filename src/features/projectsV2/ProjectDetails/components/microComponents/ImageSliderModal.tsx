@@ -1,5 +1,5 @@
 import type { SetState } from '../../../../common/types/common';
-import type { Image } from '@planet-sdk/common';
+import type { SliderImage } from './ImageCarousel';
 
 import { Modal } from '@mui/material';
 import SliderButton from './SliderButton';
@@ -12,7 +12,7 @@ interface ImageSliderModalProps {
   setCurrentIndex: SetState<number>;
   isModalOpen: boolean;
   setIsModalOpen: SetState<boolean>;
-  images: Image[];
+  images: SliderImage[];
   isMobile: boolean;
   type: 'coordinate' | 'project';
 }
@@ -74,9 +74,10 @@ const ImageSliderModal = ({
             imageSize={'large'}
             imageHeight={isMobile ? 220 : 600}
             isMobile={isMobile}
-            setCurrentIndex={setCurrentIndex}
+            isModalOpen={true}
+            mode="manual"
             currentIndex={currentIndex}
-            isModalOpen={isModalOpen}
+            setCurrentIndex={setCurrentIndex}
           />
           {isMobile &&
             renderSliderButton('next', styles.nextMobileSliderButton)}

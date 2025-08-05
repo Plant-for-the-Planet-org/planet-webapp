@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .interventionInfoSection {
-  background: #fff;
+  background: $dsWhite;
   max-width: 356px;
   border-radius: 12px;
   margin-top: 23px;
@@ -20,7 +20,6 @@
 .treeCount {
   font-weight: 700;
   font-size: $fontSmall;
-  color: rgba(47, 51, 54, 1);
   span {
     font-weight: 400;
   }
@@ -29,7 +28,6 @@
 .interventionTitle {
   font-weight: 700;
   font-size: $fontSmall;
-  color: rgba(47, 51, 54, 1);
   span {
     font-weight: 400;
   }
@@ -37,7 +35,6 @@
 
 .hid {
   font-size: $fontSmall;
-  color: rgba(47, 51, 54, 1);
 }
 
 .plantingDetailsGroup {
@@ -54,7 +51,7 @@
 
 .otherInterventionDetailsItem {
   padding: 20px;
-  background: rgba(0, 122, 73, 0.05);
+  background: $dsPrimaryColorTransparent7;
   border-radius: 12px;
   flex: 1;
 }
@@ -62,11 +59,11 @@
 .plantingDetailsItem {
   min-width: 160px;
   padding: 20px;
-  background: rgba(0, 122, 73, 0.05);
+  background: $dsPrimaryColorTransparent7;
   border-radius: 12px;
 }
 .label {
-  color: rgba(0, 122, 73, 1);
+  color: $dsPrimaryColor;
   font-weight: 700;
   font-size: $fontXSmall;
 }
@@ -81,13 +78,13 @@
   text-decoration: underline;
   font-style: italic;
   cursor: pointer;
-  color: $primaryFontColor;
+  color: $dsCoreText;
 }
 
 .speciesContainer {
-  background: rgba(0, 122, 73, 0.05);
+  background: $dsPrimaryColorTransparent7;
   border-radius: 12px;
-  color: rgba(0, 122, 73, 1);
+  color: $dsPrimaryColor;
   font-weight: 700;
   font-size: $fontXSmall;
   padding: 20px;
@@ -99,7 +96,7 @@
 
 .speciesList {
   display: flex;
-  color: rgba(47, 51, 54, 1);
+  color: $dsCoreText;
   line-height: 16.34px;
   .speciesName {
     font-style: italic;
@@ -118,13 +115,13 @@
 }
 
 .sampleTreesContainer {
-  background: rgba(0, 122, 73, 0.05);
+  background: $dsPrimaryColorTransparent7;
   border-radius: 12px;
   padding: 20px;
   font-size: $fontXSmall;
   font-weight: 700;
   .mainLabel {
-    color: rgba(0, 122, 73, 1);
+    color: $dsPrimaryColor;
   }
 }
 
@@ -136,7 +133,7 @@
 }
 
 .sampleTreeContainer {
-  background: #fff;
+  background: $dsWhite;
   border-radius: 12px;
   list-style-position: inside;
   padding: 10px 15px;
@@ -146,7 +143,7 @@
   font-weight: 600;
   font-size: $fontXSmall;
   display: flex;
-  color: rgba(47, 51, 54, 1);
+  color: $dsCoreText;
   .scientificName {
     font-style: italic;
     margin-left: 2px;
@@ -170,7 +167,7 @@
   display: flex;
   gap: 2px;
   .treeMapperLabel {
-    color: rgba(0, 122, 73, 1);
+    color: $dsPrimaryColor;
     font-weight: 700;
     display: flex;
   }
@@ -214,7 +211,7 @@
 
 .interventionMetaItem {
   padding: 20px;
-  background: rgba(0, 122, 73, 0.05);
+  background: $dsPrimaryColorTransparent7;
   border-radius: 12px;
   margin-bottom: 10px;
 }

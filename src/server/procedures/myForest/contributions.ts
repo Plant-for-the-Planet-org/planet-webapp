@@ -84,7 +84,8 @@ async function fetchRegistrations(
 }
 
 async function fetchContributions(
-  profileIds: number[]
+  profileIds: number[],
+  profileGuid: string
 ): Promise<ContributionsQueryResult[]> {
   const contributions = await prisma.$queryRaw<ContributionsQueryResult[]>`
       SELECT c.guid,
@@ -98,6 +99,11 @@ async function fetchContributions(
              c.country,
              c.geometry,
              c.gift_method                      as "giftMethod",
+						 CASE 
+               WHEN c.gift_method IS NULL THEN NULL
+               WHEN c.gift_data ->> 'recipient' = ${profileGuid} THEN true
+               ELSE false
+             END as "isSelfGift",
              c.gift_data ->> 'recipientName'    as "giftRecipient",
              c.gift_data ->> 'type'             as "giftType"
       FROM contribution c
@@ -188,20 +194,21 @@ function handleDonationContribution(
   myContributionsMap: Map<string, MyContributionsMapItem>,
   projectLocationsMap: Map<string, MapLocation>
 ): void {
+  const isGifted = contribution.giftMethod !== null && !contribution.isSelfGift;
+
   // Initialize data
   const donationData: SingleDonation = {
     dataType: 'donation',
     plantDate: contribution.plantDate,
     quantity: contribution.units,
     unitType: contribution.unitType,
-    isGifted: contribution.giftMethod !== null,
-    giftDetails:
-      contribution.giftMethod !== null
-        ? {
-            recipient: contribution.giftRecipient,
-            type: contribution.giftType,
-          }
-        : null,
+    isGifted,
+    giftDetails: isGifted
+      ? {
+          recipient: contribution.giftRecipient,
+          type: contribution.giftType,
+        }
+      : null,
   };
 
   const project = projectMap.get(contribution.projectId);
@@ -436,7 +443,7 @@ export const contributionsProcedure = procedure
         projects.map((project) => [project.guid, project])
       );
 
-      const contributions = await fetchContributions(profileIds);
+      const contributions = await fetchContributions(profileIds, profileId);
       const registrations = await fetchRegistrations(profileIds);
       const gifts = await fetchGifts(profileIds);
 

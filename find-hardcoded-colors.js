@@ -22,6 +22,89 @@ const colorPatterns = [
   /\b(red|green|blue|yellow|purple|black|white|orange|pink|brown|gray|grey|cyan|magenta|lime|navy|teal|olive|maroon|silver|gold)\b/gi,
 ];
 
+// Function to check if a color match is a false positive
+function isFalsePositive(match, context) {
+  const line = context.toLowerCase();
+  const colorLower = match.toLowerCase();
+
+  // Check for theme destructuring patterns
+  const themeDestructurePatterns = [
+    /const\s*\{\s*[^}]*\b${colorLower}\b[^}]*\}\s*=\s*.*theme.*colors/,
+    /const\s*\{\s*[^}]*\b${colorLower}\b[^}]*\}\s*=\s*.*designSystem\.colors/,
+    /const\s*\{\s*[^}]*\b${colorLower}\b[^}]*\}\s*=\s*.*\.colors/,
+  ];
+
+  // Check for variable assignments from theme
+  const themeVariablePatterns = [
+    /\b${colorLower}\b\s*=\s*.*theme.*colors/,
+    /\b${colorLower}\b\s*=\s*.*designSystem\.colors/,
+    /\b${colorLower}\b\s*=\s*.*\.colors\./,
+  ];
+
+  // Check for accessing theme colors
+  const themeAccessPatterns = [
+    /themeProperties\.designSystem\.colors\.\b${colorLower}\b/,
+    /theme\..*\.colors\.\b${colorLower}\b/,
+    /colors\.\b${colorLower}\b/,
+    /\$ds.*\b${colorLower}\b/i, // SCSS variables like $dsWhite
+    /\$.*\b${colorLower}\b/i, // Any SCSS variable containing the color name
+  ];
+
+  // Check for comments
+  if (line.includes('//') || line.includes('/*') || line.includes('*/')) {
+    return true;
+  }
+
+  // Check for SCSS variable usage (e.g., background: $dsWhite;)
+  if (line.includes(`$`) && line.includes(colorLower)) {
+    return true;
+  }
+
+  // Check all patterns
+  const allPatterns = [
+    ...themeDestructurePatterns,
+    ...themeVariablePatterns,
+    ...themeAccessPatterns,
+  ];
+
+  for (const pattern of allPatterns) {
+    const regex = new RegExp(
+      pattern.source.replace('${colorLower}', colorLower),
+      'i'
+    );
+    if (regex.test(line)) {
+      return true;
+    }
+  }
+
+  // Additional specific checks for common false positives
+
+  // CSS property names that happen to be color names
+  if (
+    line.includes(`${colorLower}-space`) ||
+    line.includes(`white-space`) ||
+    line.includes(`overflow-x`) ||
+    line.includes(`overflow-y`)
+  ) {
+    return true;
+  }
+
+  // Import statements or file names
+  if (line.includes('import') && line.includes(colorLower)) {
+    return true;
+  }
+
+  // Class names or IDs that contain color names
+  if (
+    (line.includes(`class`) && line.includes(colorLower)) ||
+    (line.includes(`className`) && line.includes(colorLower))
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 // Color normalization functions
 function normalizeHex(hex) {
   // Remove # if present
@@ -143,6 +226,11 @@ async function findColorsInFile(filePath) {
             lineNumber++;
           }
 
+          // Check if this is a false positive
+          if (isFalsePositive(match, foundLine)) {
+            continue;
+          }
+
           // Add to results if not already added
           const existingColor = fileResults.colors.find(
             (c) => c.color === match && c.line === lineNumber
@@ -174,21 +262,45 @@ async function findColorsInFile(filePath) {
   }
 }
 
-async function searchDirectory(dirPath, scriptFilePath) {
+async function searchDirectory(dirPath, scriptFilePath, outputFilePath) {
   try {
     const entries = await readdir(dirPath, { withFileTypes: true });
 
     for (const entry of entries) {
       const fullPath = path.join(dirPath, entry.name);
+      const resolvedFullPath = path.resolve(fullPath);
+      const resolvedScriptPath = path.resolve(scriptFilePath);
+      const resolvedOutputPath = path.resolve(outputFilePath);
 
-      // Skip the script file itself
-      if (path.resolve(fullPath) === path.resolve(scriptFilePath)) {
+      // Skip the script file itself and the output file
+      if (
+        resolvedFullPath === resolvedScriptPath ||
+        resolvedFullPath === resolvedOutputPath
+      ) {
+        continue;
+      }
+
+      // Skip theme files that should be excluded
+      const relativePath = path.relative(process.cwd(), resolvedFullPath);
+      const excludeThemeFiles = [
+        'src/theme/themeProperties.ts',
+        'src/theme/theme.ts',
+        'src/theme/_colors.scss',
+      ];
+
+      if (
+        excludeThemeFiles.some(
+          (excludePath) =>
+            relativePath === excludePath ||
+            relativePath.endsWith(excludePath.replace(/^src\//, ''))
+        )
+      ) {
         continue;
       }
 
       if (entry.isDirectory()) {
         if (!excludeDirs.includes(entry.name)) {
-          await searchDirectory(fullPath, scriptFilePath);
+          await searchDirectory(fullPath, scriptFilePath, outputFilePath);
         }
       } else {
         const ext = path.extname(entry.name).toLowerCase();
@@ -205,7 +317,11 @@ async function searchDirectory(dirPath, scriptFilePath) {
 async function findAllHardcodedColors(rootDir, outputFile, scriptPath) {
   console.log(`Starting search for hardcoded colors in: ${rootDir}\n`);
   console.log(`Excluding script file: ${scriptPath}`);
-  await searchDirectory(rootDir, scriptPath);
+  console.log(`Excluding output file: ${outputFile}`);
+  console.log(
+    `Excluding theme files: src/theme/themeProperties.ts, src/theme/theme.ts, src/theme/_colors.scss`
+  );
+  await searchDirectory(rootDir, scriptPath, outputFile);
 
   // Generate report content
   let reportContent = `# HARDCODED COLORS REPORT\n\n`;
@@ -294,7 +410,7 @@ function parseArgs() {
   const options = {
     projectPath: '.',
     outputFile: 'hardcoded-colors-report.md',
-    scriptPath: process.argv[1], // Store the script path to exclude it
+    scriptPath: __filename, // Use __filename instead of process.argv[1] for more reliability
   };
 
   for (let i = 0; i < args.length; i++) {

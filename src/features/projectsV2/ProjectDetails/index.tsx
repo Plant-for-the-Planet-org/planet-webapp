@@ -60,8 +60,13 @@ const ProjectDetails = ({
     setIsLoading(true);
     try {
       const result = await getApi<Intervention[]>(
-        `/app/plantLocations/${projectId}`,
-        { queryParams: { _scope: 'extended' } }
+        `/app/interventions/${projectId}`,
+        {
+          queryParams: {
+            // Fetches sampleInterventions within each intervention
+            _scope: 'extended',
+          },
+        }
       );
       setInterventions(result);
     } catch (err) {

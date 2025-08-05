@@ -12,7 +12,7 @@
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 100px;
-    background: rgba(224, 224, 224, 1);
+    background: $dsMediumGreyTransparent30;
     height: 220px;
   }
   @include xsPhoneView {

@@ -21,8 +21,8 @@ interface TabItemProps {
   label: string | undefined;
 }
 const getIconColor = (mode: ViewMode, selectMode: ViewMode) => {
-  const { light } = themeProperties;
-  return mode === selectMode ? light.light : light.richBlack;
+  const { colors } = themeProperties.designSystem;
+  return mode === selectMode ? colors.white : colors.coreText;
 };
 
 const ViewModeTabs = ({
