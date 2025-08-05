@@ -123,8 +123,6 @@ export default function BasicDetails({
   const defaultZoom = 1.4;
   const mapRef = useRef(null);
   const [style, setStyle] = useState(EMPTY_STYLE);
-  const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
-    useState<boolean>(false);
   const [viewport, setViewPort] = useState<ViewPort>({
     width: 760,
     height: 400,
@@ -262,7 +260,6 @@ export default function BasicDetails({
     mode: 'onBlur',
     defaultValues: defaultBasicDetails,
   });
-
   const [acceptDonations, setAcceptDonations] = useState(false);
   //if project is already had created then user can visit to  other forms using skip button
   useEffect(() => {
@@ -406,16 +403,18 @@ export default function BasicDetails({
     try {
       const result = await getAddressFromCoordinates(latitude, longitude);
 
-      if (result?.address?.Type === 'Ocean') {
-        setWrongCoordinatesMessage(true);
-        setError('latitude', { message: '' });
-        setError('longitude', { message: '' });
-      } else {
-        setWrongCoordinatesMessage(false);
+      if (result?.address.CountryCode) {
         clearErrors(['latitude', 'longitude']);
+      } else {
+        setError('latitude', {
+          message: t('coordinateError.seaCoordinates'),
+        });
+        setError('longitude', {
+          message: t('coordinateError.seaCoordinates'),
+        });
       }
     } catch (error) {
-      console.log('Reverse geocoding error:', error);
+      console.error('Reverse geocoding error:', error);
     }
 
     setViewPort((prev) => ({
@@ -770,9 +769,13 @@ export default function BasicDetails({
                   name="latitude"
                   control={control}
                   rules={{
-                    required: true,
-                    validate: (value) =>
-                      parseFloat(value) > -90 && parseFloat(value) < 90,
+                    required: t('latitudeRequired'),
+                    validate: (value) => {
+                      const num = parseFloat(value);
+                      if (num < -90 || num > 90)
+                        return t('coordinateError.latitudeRange');
+                      return true;
+                    },
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
@@ -789,13 +792,6 @@ export default function BasicDetails({
                       }}
                       value={value}
                       onBlur={onBlur}
-                      error={errors.latitude !== undefined}
-                      helperText={
-                        errors.latitude !== undefined &&
-                        (wrongCoordinatesMessage
-                          ? t('wrongCoordinates')
-                          : t('latitudeRequired'))
-                      }
                     />
                   )}
                 />
@@ -808,9 +804,13 @@ export default function BasicDetails({
                   name="longitude"
                   control={control}
                   rules={{
-                    required: true,
-                    validate: (value) =>
-                      parseFloat(value) > -180 && parseFloat(value) < 180,
+                    required: t('longitudeRequired'),
+                    validate: (value) => {
+                      const num = parseFloat(value);
+                      if (num < -180 || num > 180)
+                        return t('coordinateError.longitudeRange');
+                      return true;
+                    },
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
@@ -827,20 +827,17 @@ export default function BasicDetails({
                       }}
                       value={value}
                       onBlur={onBlur}
-                      error={errors.longitude !== undefined}
-                      helperText={
-                        errors.longitude !== undefined &&
-                        (wrongCoordinatesMessage
-                          ? t('wrongCoordinates')
-                          : t('longitudeRequired'))
-                      }
                     />
                   )}
                 />
               </div>
             </div>
           </div>
-
+          {(errors.latitude || errors.longitude) && (
+            <p className={styles.formErrors} role="alert">
+              {errors.latitude?.message || errors.longitude?.message}
+            </p>
+          )}
           <Controller
             name="metadata.visitorAssistance"
             control={control}
@@ -871,6 +868,7 @@ export default function BasicDetails({
             variant="contained"
             onClick={handleSubmit(onSubmit)}
             className="formButton"
+            disabled={Object.keys(errors).length > 0}
           >
             {isUploadingData ? (
               <div className={styles.spinner}></div>

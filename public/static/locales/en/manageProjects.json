@@ -224,7 +224,6 @@
     "addProjectDescription": "You're few steps away from showcasing your work on the Plant-for-the-Planet platform.",
     "createProjectsEnglishOnly": "<noteLabel>Important: </noteLabel>Please create projects with English language setting only.",
     "contactSupportEmail": "If you need any help contact us at <supportLink>support@plant-for-the-planet.org</supportLink> ",
-    "wrongCoordinates": "Wrong Coordinates",
     "actionInfo": "The actions your organization is taking to conserve the ecosystem.",
     "mainChallengeInfo": "The biggest challenge this project is facing.",
     "motivationInfo": "The motivation behind protecting this specific ecosystem.",
@@ -245,6 +244,11 @@
     "annualReport": "Latest annual report",
     "financialReport": "Latest audited financial report",
     "PlantingReport": "Project Progress Report",
-    "siteCount": "Site {siteId} of {totalCount}"
+    "siteCount": "Site {siteId} of {totalCount}",
+    "coordinateError": {
+      "seaCoordinates": "The selected location appears to be in the sea. Please choose a nearby point on land.",
+      "latitudeRange": "Latitude must be between -90 and 90.",
+      "longitudeRange": "Longitude must be between -180 and 180."
+    }
   }
 }

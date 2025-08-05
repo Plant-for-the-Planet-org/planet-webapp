@@ -293,18 +293,7 @@
   color: $dsFireRed;
   margin-left: 14px;
   margin-top: 3px;
-  max-width: 320px;
-}
-
-.formErrorsAbsolute {
-  position: absolute;
-  bottom: -16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
-  color: $dsFireRed;
-  max-width: 320px;
+  // max-width: 320px;
 }
 
 .inputStartAdornment {
