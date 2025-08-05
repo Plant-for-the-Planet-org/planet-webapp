@@ -35,7 +35,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const router = useRouter();
   const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
-  const hasSitesFeature = sitesGeoJson.features.length > 0;
+  const canShowSites = sitesGeoJson.features.length > 0;
   const displayIntervention = selectedTab === 'field' && !isSatelliteView;
 
   // Zoom to plant location
@@ -78,7 +78,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
       Boolean(requestedPlantLocation)
     )
       return;
-    if (hasSitesFeature && selectedSite !== null) {
+    if (canShowSites && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
         sitesGeoJson,
@@ -115,7 +115,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   }, [plantLocations, singleProject.purpose]);
   return (
     <>
-      {hasSitesFeature ? (
+      {canShowSites ? (
         <>
           <SiteLayers
             isSatelliteView={isSatelliteView}
