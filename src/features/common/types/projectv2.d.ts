@@ -10,12 +10,7 @@ import type {
 } from '@planet-sdk/common/build/types/project/map';
 import type { MutableRefObject } from 'react';
 import type { Map } from 'maplibre-gl';
-import type {
-  Feature,
-  FeatureCollection,
-  MultiPolygon,
-  Polygon,
-} from 'geojson';
+import type { Feature, MultiPolygon, Polygon } from 'geojson';
 
 export type MapProjectProperties =
   | TreeProjectConcise
