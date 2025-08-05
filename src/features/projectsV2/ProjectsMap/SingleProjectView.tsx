@@ -28,14 +28,15 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
     useProjects();
   if (singleProject === null) return null;
+
   const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
     useProjectsMap();
+
   const router = useRouter();
+  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
   const hasSitesFeature = sitesGeoJson.features.length > 0;
   const displayIntervention = selectedTab === 'field' && !isSatelliteView;
-
-  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
 
   // Zoom to plant location
   useEffect(() => {
