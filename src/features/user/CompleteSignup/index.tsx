@@ -9,7 +9,14 @@ import type {
   CountryCode,
 } from '@planet-sdk/common';
 
-import { useCallback, useState, useContext, useMemo, useEffect } from 'react';
+import {
+  useCallback,
+  useState,
+  useContext,
+  useMemo,
+  useEffect,
+  useRef,
+} from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import NewToggleSwitch from '../../common/InputTypes/NewToggleSwitch';
@@ -78,6 +85,7 @@ export default function CompleteSignup(): ReactElement | null {
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [addressInput, setAddressInput] = useState('');
+  const latestRequestIdRef = useRef(0);
 
   const postalRegex = useMemo(() => getPostalRegex(country), [country]);
   const profileTypes = [
@@ -184,12 +192,21 @@ export default function CompleteSignup(): ReactElement | null {
   };
   const handleSuggestAddress = useCallback(
     async (value: string) => {
+      // Bump request ID to track the latest API call
+      latestRequestIdRef.current++;
+      const currentRequestId = latestRequestIdRef.current;
       try {
         const suggestions = await getAddressSuggestions(value, country);
-        setAddressSuggestions(suggestions);
+        // Only update if this is still the latest request
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions(suggestions);
+        }
       } catch (error) {
         console.error('Failed to fetch address suggestions:', error);
-        setAddressSuggestions([]);
+        // Prevent outdated error responses from affecting UI
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions([]);
+        }
       }
     },
     [country]

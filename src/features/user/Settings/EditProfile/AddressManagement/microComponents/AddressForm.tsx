@@ -4,7 +4,7 @@ import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { AddressType } from '@planet-sdk/common';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -74,18 +74,29 @@ const AddressForm = ({
     defaultValues: defaultAddressDetail,
   });
   const [inputValue, setInputValue] = useState('');
+  const latestRequestIdRef = useRef(0);
   const postalRegex = useMemo(() => getPostalRegex(country), [country]);
+
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
   const handleSuggestAddress = useCallback(
     async (value: string) => {
+      // Bump request ID to track the latest API call
+      latestRequestIdRef.current++;
+      const currentRequestId = latestRequestIdRef.current;
       try {
         const suggestions = await getAddressSuggestions(value, country);
-        setAddressSuggestions(suggestions);
+        // Only update if this is still the latest request
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions(suggestions);
+        }
       } catch (error) {
         console.error('Failed to fetch address suggestions:', error);
-        setAddressSuggestions([]);
+        // Prevent outdated error responses from affecting UI
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions([]);
+        }
       }
     },
     [country]
