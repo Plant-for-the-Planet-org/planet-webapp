@@ -176,7 +176,7 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getApi<Tenant>(`app/tenants/${tenantConfig.id}`);
+        const res = await getApi<Tenant>(`/app/tenants/${tenantConfig.id}`);
         setShouldSortProjectList(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));
