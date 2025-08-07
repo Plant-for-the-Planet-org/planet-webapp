@@ -1,8 +1,5 @@
-import type { ReactElement } from 'react';
-import type {
-  AddressSuggestionsType,
-  AddressType,
-} from '../../common/types/geocoder';
+import type { ReactElement, SyntheticEvent } from 'react';
+import type { AddressSuggestionsType } from '../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../common/types/country';
 import type {
   APIError,
@@ -12,13 +9,19 @@ import type {
   CountryCode,
 } from '@planet-sdk/common';
 
-import React, { useState } from 'react';
+import {
+  useCallback,
+  useState,
+  useContext,
+  useMemo,
+  useEffect,
+  useRef,
+} from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import NewToggleSwitch from '../../common/InputTypes/NewToggleSwitch';
 import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
@@ -26,12 +29,17 @@ import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import {
+  getAddressDetailsFromText,
+  getAddressSuggestions,
+} from '../../../utils/geocoder';
+import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import { getPostalRegex } from '../../../utils/addressManagement';
 
 const MuiTextField = styled(TextField)(() => {
   return {
@@ -47,26 +55,6 @@ type FormData = Omit<
 };
 
 export default function CompleteSignup(): ReactElement | null {
-  const router = useRouter();
-  const t = useTranslations('EditProfile');
-  const locale = useLocale();
-  const { postApi } = useApi();
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [addressSugggestions, setaddressSugggestions] = React.useState<
-    AddressSuggestionsType[]
-  >([]);
-  const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
-  const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
-
-  const geocoder = new GeocoderArcGIS(
-    process.env.ESRI_CLIENT_SECRET
-      ? {
-          client_id: process.env.ESRI_CLIENT_ID,
-          client_secret: process.env.ESRI_CLIENT_SECRET,
-        }
-      : {}
-  );
-
   const {
     handleSubmit,
     control,
@@ -75,46 +63,57 @@ export default function CompleteSignup(): ReactElement | null {
     watch,
     formState: { errors },
   } = useForm<FormData>({ mode: 'onBlur' });
-
-  const suggestAddress = (value: string) => {
-    if (value.length > 3) {
-      geocoder
-        .suggest(value, { category: 'Address', countryCode: country })
-        .then((result: { suggestions: AddressSuggestionsType[] }) => {
-          const filterdSuggestions = result.suggestions.filter((suggestion) => {
-            return !suggestion.isCollection;
-          });
-          setaddressSugggestions(filterdSuggestions);
-        })
-        .catch(console.log);
-    }
-  };
-  const getAddress = (value: string) => {
-    geocoder
-      .findAddressCandidates(value, { outfields: '*' })
-      .then((result: AddressType) => {
-        setValue('address', result.candidates[0].attributes.ShortLabel, {
-          shouldValidate: true,
-        });
-        setValue('city', result.candidates[0].attributes.City, {
-          shouldValidate: true,
-        });
-        setValue('zipCode', result.candidates[0].attributes.Postal, {
-          shouldValidate: true,
-        });
-        setaddressSugggestions([]);
-      })
-      .catch(console.log);
-  };
-  let suggestion_counter = 0;
-  const { theme } = React.useContext(ThemeContext);
-
+  const router = useRouter();
+  const t = useTranslations('EditProfile');
+  const locale = useLocale();
+  const { postApi } = useApi();
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  const { theme } = useContext(ThemeContext);
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
     useUserProps();
 
+  // states
+  const [addressSuggestions, setAddressSuggestions] = useState<
+    AddressSuggestionsType[]
+  >([]);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
+  const [type, setAccountType] = useState<UserType>('individual');
+  const [requestSent, setRequestSent] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
+  const [submit, setSubmit] = useState(false);
+  //  snackbars (for warnings, success messages, errors)
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [addressInput, setAddressInput] = useState('');
+  const latestRequestIdRef = useRef(0);
+
+  const postalRegex = useMemo(() => getPostalRegex(country), [country]);
+  const profileTypes = [
+    {
+      id: 1,
+      title: t('individual'),
+      value: 'individual',
+    },
+    {
+      id: 2,
+      title: t('organization'),
+      value: 'organization',
+    },
+    { id: 3, title: t('tpo'), value: 'tpo' },
+    {
+      id: 4,
+      title: t('education'),
+      value: 'education',
+    },
+  ] as const;
   const isPublic = watch('isPublic');
-  const [submit, setSubmit] = React.useState(false);
-  React.useEffect(() => {
+
+  useEffect(() => {
+    // This will remove field values which do not exist for the new type
+    reset();
+  }, [type, reset]);
+
+  useEffect(() => {
     async function loadFunction() {
       if (token) {
         if (user && user.slug) {
@@ -131,34 +130,9 @@ export default function CompleteSignup(): ReactElement | null {
     }
   }, [contextLoaded, user, token]);
 
-  //  snackbars (for warnings, success messages, errors)
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
-  const handleSnackbarClose = (
-    event?: React.SyntheticEvent,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
-
-  const [type, setAccountType] = useState<UserType>('individual');
-  const [requestSent, setRequestSent] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-
-  const [postalRegex, setPostalRegex] = React.useState(
-    COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
-  );
-  React.useEffect(() => {
-    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter(
-      (item) => item.abbrev === country
-    );
-    setPostalRegex(fiteredCountry[0]?.postal);
-  }, [country]);
 
   const sendRequest = async (bodyToSend: CreateUserRequest) => {
     setRequestSent(true);
@@ -182,35 +156,19 @@ export default function CompleteSignup(): ReactElement | null {
     }
   };
 
+  const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const handleTermsAndCondition = (value: boolean) => {
     setAcceptTerms(value);
     if (!value) {
       setSubmit(false);
     }
   };
-  const profileTypes = [
-    {
-      id: 1,
-      title: t('individual'),
-      value: 'individual',
-    },
-    {
-      id: 2,
-      title: t('organization'),
-      value: 'organization',
-    },
-    { id: 3, title: t('tpo'), value: 'tpo' },
-    {
-      id: 4,
-      title: t('education'),
-      value: 'education',
-    },
-  ] as const;
-
-  React.useEffect(() => {
-    // This will remove field values which do not exist for the new type
-    reset();
-  }, [type]);
 
   const createButtonClicked = async (data: FormData) => {
     if (!acceptTerms) {
@@ -232,6 +190,61 @@ export default function CompleteSignup(): ReactElement | null {
       }
     }
   };
+  const handleSuggestAddress = useCallback(
+    async (value: string) => {
+      // Bump request ID to track the latest API call
+      latestRequestIdRef.current++;
+      const currentRequestId = latestRequestIdRef.current;
+      try {
+        const suggestions = await getAddressSuggestions(value, country);
+        // Only update if this is still the latest request
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions(suggestions);
+        }
+      } catch (error) {
+        console.error('Failed to fetch address suggestions:', error);
+        // Prevent outdated error responses from affecting UI
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions([]);
+        }
+      }
+    },
+    [country]
+  );
+
+  const handleAddressSelection = useCallback(
+    async (value: string) => {
+      try {
+        const details = await getAddressDetailsFromText(value);
+        if (details) {
+          setValue('address', details.address, { shouldValidate: true });
+          setValue('city', details.city, { shouldValidate: true });
+          setValue('zipCode', details.zipCode, { shouldValidate: true });
+        }
+        setAddressSuggestions([]);
+      } catch (error) {
+        console.error('Failed to fetch address details:', error);
+      }
+    },
+    [setValue]
+  );
+
+  useDebouncedEffect(
+    () => {
+      const trimmedInput = addressInput.trim();
+
+      // Clear suggestions if input is empty or just whitespace
+      if (trimmedInput === '') {
+        setAddressSuggestions([]);
+        return;
+      }
+
+      // Fetch suggestions only if input is meaningful (e.g., length > 3)
+      handleSuggestAddress(trimmedInput);
+    },
+    700,
+    [addressInput]
+  );
 
   if (
     !contextLoaded ||
@@ -240,6 +253,7 @@ export default function CompleteSignup(): ReactElement | null {
   ) {
     return null;
   }
+
   if (contextLoaded && token && user === null) {
     return (
       <div
@@ -405,27 +419,26 @@ export default function CompleteSignup(): ReactElement | null {
                         errors.address !== undefined && errors.address.message
                       }
                       onChange={(event) => {
-                        suggestAddress(event.target.value);
+                        setAddressInput(event.target.value);
                         onChange(event.target.value);
                       }}
                       onBlur={() => {
-                        setaddressSugggestions([]);
+                        setAddressSuggestions([]);
                         onBlur();
                       }}
                       value={value}
                     />
                   )}
                 />
-
-                {addressSugggestions
-                  ? addressSugggestions.length > 0 && (
+                {addressSuggestions
+                  ? addressSuggestions.length > 0 && (
                       <div className="suggestions-container">
-                        {addressSugggestions.map((suggestion) => {
+                        {addressSuggestions.map((suggestion, index) => {
                           return (
                             <div
-                              key={'suggestion' + suggestion_counter++}
+                              key={index}
                               onMouseDown={() => {
-                                getAddress(suggestion.text);
+                                handleAddressSelection(suggestion.text);
                               }}
                               className="suggestion"
                             >
