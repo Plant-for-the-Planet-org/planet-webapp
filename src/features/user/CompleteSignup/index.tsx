@@ -212,7 +212,7 @@ export default function CompleteSignup(): ReactElement | null {
     [country]
   );
 
-  const handleGetAddress = useCallback(
+  const handleAddressSelection = useCallback(
     async (value: string) => {
       try {
         const details = await getAddressDetailsFromText(value);
@@ -438,7 +438,7 @@ export default function CompleteSignup(): ReactElement | null {
                             <div
                               key={index}
                               onMouseDown={() => {
-                                handleGetAddress(suggestion.text);
+                                handleAddressSelection(suggestion.text);
                               }}
                               className="suggestion"
                             >

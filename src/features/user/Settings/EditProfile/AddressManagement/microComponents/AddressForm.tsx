@@ -119,7 +119,7 @@ const AddressForm = ({
     [inputValue]
   );
 
-  const handleGetAddress = useCallback(
+  const selectAndParseAddress = useCallback(
     async (value: string) => {
       try {
         const details = await getAddressDetailsFromText(value);
@@ -136,7 +136,7 @@ const AddressForm = ({
     [setValue]
   );
   const handleAddressSelect = (address: string) => {
-    handleGetAddress(address);
+    selectAndParseAddress(address);
   };
 
   const resetForm = () => {
