@@ -396,39 +396,42 @@ export default function BasicDetails({
     }
   };
 
-  const handleMapClick = useCallback(async (event: MapEvent) => {
-    const [longitude, latitude] = event.lngLat;
-    setProjectCoords(event.lngLat);
+  const handleMapClick = useCallback(
+    async (event: MapEvent) => {
+      const [longitude, latitude] = event.lngLat;
+      setProjectCoords(event.lngLat);
 
-    try {
-      const result = await getAddressFromCoordinates(latitude, longitude);
+      try {
+        const result = await getAddressFromCoordinates(latitude, longitude);
 
-      if (result?.address.CountryCode) {
-        clearErrors(['latitude', 'longitude']);
-      } else {
-        setError('latitude', {
-          message: t('coordinateError.seaCoordinates'),
-        });
-        setError('longitude', {
-          message: t('coordinateError.seaCoordinates'),
-        });
+        if (result?.address.CountryCode) {
+          clearErrors(['latitude', 'longitude']);
+        } else {
+          setError('latitude', {
+            message: t('coordinateError.seaCoordinates'),
+          });
+          setError('longitude', {
+            message: t('coordinateError.seaCoordinates'),
+          });
+        }
+      } catch (error) {
+        console.error('Reverse geocoding error:', error);
       }
-    } catch (error) {
-      console.error('Reverse geocoding error:', error);
-    }
 
-    setViewPort((prev) => ({
-      ...prev,
-      latitude,
-      longitude,
-      transitionDuration: 400,
-      transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: d3.easeCubic,
-    }));
+      setViewPort((prev) => ({
+        ...prev,
+        latitude,
+        longitude,
+        transitionDuration: 400,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      }));
 
-    setValue('latitude', latitude.toString());
-    setValue('longitude', longitude.toString());
-  }, []);
+      setValue('latitude', latitude.toString());
+      setValue('longitude', longitude.toString());
+    },
+    [setError, clearErrors, setValue, t]
+  );
 
   return (
     <CenteredContainer>

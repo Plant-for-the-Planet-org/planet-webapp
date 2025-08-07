@@ -111,7 +111,7 @@ export default function CompleteSignup(): ReactElement | null {
   useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset();
-  }, [type]);
+  }, [type, reset]);
 
   useEffect(() => {
     async function loadFunction() {
