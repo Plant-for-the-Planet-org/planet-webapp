@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import * as turf from '@turf/turf';
 import styles from '../styles/InterventionInfo.module.scss';
-import InterventionHeader from './microComponents/InterventionHeader';
+import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
 import SampleTrees from './microComponents/SampleTrees';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
@@ -17,32 +17,32 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  interventionInfo: InterventionMulti;
+  activeMultiTree: InterventionMulti;
   isMobile: boolean;
   setSelectedSampleIntervention: SetState<SampleIntervention | null>;
 }
 
-const MultiInterventionInfo = ({
-  interventionInfo,
+const MultiTreeInfo = ({
+  activeMultiTree,
   isMobile,
   setSelectedSampleIntervention,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
-  const { totalTreesCount, interventionAreaHectares } = useMemo(() => {
-    const totalTreesCount = interventionInfo.plantedSpecies.reduce(
+  const { totalTreesCount, hectaresCovered } = useMemo(() => {
+    const totalTreesCount = activeMultiTree.plantedSpecies.reduce(
       (sum, species) => sum + species.treeCount,
       0
     );
-    const area = turf.area(interventionInfo.geometry);
-    const interventionAreaHectares = area / 10000;
-    return { totalTreesCount, interventionAreaHectares };
-  }, [interventionInfo.geometry, interventionInfo.type]);
+    const area = turf.area(activeMultiTree.geometry);
+    const hectaresCovered = area / 10000;
+    return { totalTreesCount, hectaresCovered };
+  }, [activeMultiTree.geometry, activeMultiTree.type]);
 
-  const plantingDensity = totalTreesCount / interventionAreaHectares;
+  const plantingDensity = totalTreesCount / hectaresCovered;
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    const result = interventionInfo.sampleInterventions.map((item) => {
+    const result = activeMultiTree.sampleInterventions.map((item) => {
       return {
         id: item.coordinates[0].id,
         image: item.coordinates[0].image ?? '',
@@ -50,7 +50,7 @@ const MultiInterventionInfo = ({
       };
     });
     return result;
-  }, [interventionInfo.sampleInterventions]);
+  }, [activeMultiTree.sampleInterventions]);
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
@@ -58,11 +58,11 @@ const MultiInterventionInfo = ({
 
   const content = [
     <>
-      <InterventionHeader
-        key="interventionHeader"
-        plHid={interventionInfo.hid}
+      <MultiTreeInfoHeader
+        key="multiTreeInfoHeader"
+        hid={activeMultiTree.hid}
         totalTreesCount={totalTreesCount}
-        interventionAreaHectares={interventionAreaHectares}
+        hectaresCovered={hectaresCovered}
       />
       {shouldDisplayImageCarousel && (
         <ImageSlider
@@ -78,26 +78,26 @@ const MultiInterventionInfo = ({
     <PlantingDetails
       key="plantingDetails"
       plantingDensity={plantingDensity}
-      plantDate={interventionInfo.interventionStartDate}
+      plantDate={activeMultiTree.interventionStartDate}
     />,
-    interventionInfo.plantedSpecies.length > 0 && (
+    activeMultiTree.plantedSpecies.length > 0 && (
       <SpeciesPlanted
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
-        plantedSpecies={interventionInfo.plantedSpecies}
+        plantedSpecies={activeMultiTree.plantedSpecies}
       />
     ),
-    interventionInfo.sampleInterventions.length > 0 && (
+    activeMultiTree.sampleInterventions.length > 0 && (
       <SampleTrees
         key="sampleTrees"
-        sampleInterventions={interventionInfo.sampleInterventions}
+        sampleInterventions={activeMultiTree.sampleInterventions}
         setSelectedSampleIntervention={setSelectedSampleIntervention}
       />
     ),
   ].filter(Boolean);
 
   return isMobile ? (
-    <MobileInfoSwiper slides={content} uniqueKey={interventionInfo.hid || ''} />
+    <MobileInfoSwiper slides={content} uniqueKey={activeMultiTree.hid || ''} />
   ) : (
     <section className={styles.interventionInfoSection}>
       {content}
@@ -106,4 +106,4 @@ const MultiInterventionInfo = ({
   );
 };
 
-export default MultiInterventionInfo;
+export default MultiTreeInfo;

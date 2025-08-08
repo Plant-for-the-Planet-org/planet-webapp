@@ -17,7 +17,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import MultiInterventionInfo from './components/MultiInterventionInfo';
+import MultiTreeInfo from './components/MultiTreeInfo';
 import SingleInterventionInfo from './components/SingleInterventionInfo';
 import { getPlantData } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
@@ -126,10 +126,14 @@ const ProjectDetails = ({
     }
   }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
-  const shouldShowMultiInterventionInfo =
-    (hoveredIntervention?.type === 'multi-tree-registration' ||
-      selectedIntervention?.type === 'multi-tree-registration') &&
-    !isMobile;
+  const activeMultiTree = useMemo(() => {
+    if (hoveredIntervention?.type === 'multi-tree-registration') {
+      return hoveredIntervention;
+    } else if (selectedIntervention?.type === 'multi-tree-registration') {
+      return selectedIntervention;
+    }
+    return undefined;
+  }, [hoveredIntervention, selectedIntervention]);
 
   const shouldShowOtherIntervention =
     isNonPlantationType(hoveredIntervention) ||
@@ -140,6 +144,13 @@ const ProjectDetails = ({
       selectedIntervention?.type === 'single-tree-registration' ||
       selectedSampleIntervention !== null) &&
     !isMobile;
+
+  const shouldShowMultiTreeInfo =
+    (hoveredIntervention?.type === 'multi-tree-registration' ||
+      selectedIntervention?.type === 'multi-tree-registration') &&
+    !isMobile &&
+    !shouldShowSingleInterventionInfo &&
+    activeMultiTree !== undefined;
 
   const shouldShowProjectInfo =
     hoveredIntervention === null &&
@@ -163,15 +174,6 @@ const ProjectDetails = ({
       [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
     );
 
-  const multiIntervention = useMemo(() => {
-    if (hoveredIntervention?.type === 'multi-tree-registration') {
-      return hoveredIntervention;
-    } else if (selectedIntervention?.type === 'multi-tree-registration') {
-      return selectedIntervention;
-    }
-    return undefined;
-  }, [hoveredIntervention, selectedIntervention]);
-
   return singleProject ? (
     <>
       <ProjectDetailsMeta project={singleProject} />
@@ -190,15 +192,13 @@ const ProjectDetails = ({
             setSelectedSampleIntervention={setSelectedSampleIntervention}
           />
         )}
-        {shouldShowMultiInterventionInfo &&
-          !shouldShowSingleInterventionInfo &&
-          multiIntervention !== undefined && (
-            <MultiInterventionInfo
-              interventionInfo={multiIntervention}
-              setSelectedSampleIntervention={setSelectedSampleIntervention}
-              isMobile={isMobile}
-            />
-          )}
+        {shouldShowMultiTreeInfo && (
+          <MultiTreeInfo
+            activeMultiTree={activeMultiTree}
+            setSelectedSampleIntervention={setSelectedSampleIntervention}
+            isMobile={isMobile}
+          />
+        )}
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo

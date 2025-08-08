@@ -28,7 +28,7 @@ import {
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
 import { useProjects } from '../ProjectsContext';
-import MultiInterventionInfo from '../ProjectDetails/components/MultiInterventionInfo';
+import MultiTreeInfo from '../ProjectDetails/components/MultiTreeInfo';
 import SingleInterventionInfo from '../ProjectDetails/components/SingleInterventionInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
@@ -147,7 +147,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     projects.length > 0 &&
     !shouldShowSingleProjectsView &&
     mapLoaded;
-  const shouldShowMultiInterventionInfo =
+  const shouldShowMultiTreeInfo =
     props.isMobile &&
     selectedSampleIntervention === null &&
     selectedIntervention?.type === 'multi-tree-registration';
@@ -156,7 +156,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     (selectedSampleIntervention !== null ||
       selectedIntervention?.type === 'single-tree-registration');
   const shouldShowNavigationControls = !(
-    shouldShowMultiInterventionInfo || shouldShowSingleInterventionInfo
+    shouldShowMultiTreeInfo || shouldShowSingleInterventionInfo
   );
   const isTimeTravelEnabled =
     shouldShowSingleProjectsView &&
@@ -356,9 +356,9 @@ function ProjectsMap(props: ProjectsMapProps) {
           )}
         </Map>
       </div>
-      {shouldShowMultiInterventionInfo && (
-        <MultiInterventionInfo
-          interventionInfo={selectedIntervention}
+      {shouldShowMultiTreeInfo && (
+        <MultiTreeInfo
+          activeMultiTree={selectedIntervention}
           isMobile={props.isMobile}
           setSelectedSampleIntervention={setSelectedSampleIntervention}
         />

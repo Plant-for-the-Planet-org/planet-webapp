@@ -4,15 +4,15 @@ import { useLocale, useTranslations } from 'next-intl';
 import { formatHid } from '../../../../../utils/projectV2';
 
 interface Props {
-  plHid: string | undefined;
+  hid: string | undefined;
   totalTreesCount: number;
-  interventionAreaHectares: number;
+  hectaresCovered: number;
 }
 
-const InterventionHeader = ({
-  plHid,
+const MultiTreeInfoHeader = ({
+  hid,
   totalTreesCount,
-  interventionAreaHectares,
+  hectaresCovered,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
@@ -28,16 +28,13 @@ const InterventionHeader = ({
             Number(totalTreesCount),
             1
           ),
-          area:
-            interventionAreaHectares > 0
-              ? interventionAreaHectares.toFixed(3)
-              : undefined,
+          area: hectaresCovered > 0 ? hectaresCovered.toFixed(3) : undefined,
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>
-      <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
+      <div className={`hid ${styles.hid}`}>{formatHid(hid)}</div>
     </div>
   );
 };
 
-export default InterventionHeader;
+export default MultiTreeInfoHeader;
