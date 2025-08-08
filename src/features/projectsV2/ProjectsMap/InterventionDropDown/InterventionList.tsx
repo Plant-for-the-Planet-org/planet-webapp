@@ -15,7 +15,7 @@ interface InterventionListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
   hasProjectSites?: boolean;
-  existingIntervention: string[];
+  availableInterventionTypes: string[];
 }
 const InterventionList = ({
   interventionList,
@@ -23,7 +23,7 @@ const InterventionList = ({
   setIsMenuOpen,
   selectedInterventionData,
   hasProjectSites,
-  existingIntervention,
+  availableInterventionTypes,
 }: InterventionListProps) => {
   const tProjectDetails = useTranslations('ProjectDetails.intervention');
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
@@ -33,12 +33,12 @@ const InterventionList = ({
 
   const shouldRenderIntervention = (interventionValue: string) => {
     const showAllIntervention = interventionValue === 'all';
-    const showExistingIntervention =
-      existingIntervention.includes(interventionValue);
-    if (showAllIntervention && existingIntervention.length === 1) {
+    const isValidIntervention =
+      availableInterventionTypes.includes(interventionValue);
+    if (showAllIntervention && availableInterventionTypes.length === 1) {
       return false;
     }
-    return showExistingIntervention || showAllIntervention;
+    return isValidIntervention || showAllIntervention;
   };
 
   return (

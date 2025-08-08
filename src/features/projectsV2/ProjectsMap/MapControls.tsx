@@ -61,7 +61,7 @@ const MapControls = ({
   } = useProjects();
   const { embed, showProjectDetails } = useContext(ParamsContext);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
-  const uniquePlantTypes = useMemo(() => {
+  const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
 
     const types = new Set<string>();
@@ -83,7 +83,7 @@ const MapControls = ({
   const canShowInterventionDropdown =
     isProjectDetailsPage &&
     selectedTab === 'field' &&
-    uniquePlantTypes.length > 1;
+    availableInterventionTypes.length > 1;
   const onlyMapModeAllowed =
     embed === 'true' &&
     isMobile &&
@@ -111,6 +111,8 @@ const MapControls = ({
     setSelectedSampleIntervention,
     activeDropdown,
     setActiveDropdown,
+    hasProjectSites,
+    availableInterventionTypes,
   };
   const projectListControlProps = {
     ...siteDropdownProps,
@@ -170,8 +172,6 @@ const MapControls = ({
                 <InterventionDropDown
                   {...interventionDropDownProps}
                   isMobile={isMobile}
-                  hasProjectSites={hasProjectSites}
-                  existingIntervention={uniquePlantTypes}
                 />
               )}
               {!onlyMapModeAllowed && (
@@ -189,11 +189,7 @@ const MapControls = ({
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
               {canShowInterventionDropdown && (
-                <InterventionDropDown
-                  {...interventionDropDownProps}
-                  hasProjectSites={hasProjectSites}
-                  existingIntervention={uniquePlantTypes}
-                />
+                <InterventionDropDown {...interventionDropDownProps} />
               )}
             </>
           )}

@@ -26,7 +26,7 @@ interface Props {
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   hasProjectSites?: boolean;
-  existingIntervention: string[];
+  availableInterventionTypes: string[];
 }
 
 const InterventionDropdown = ({
@@ -37,7 +37,7 @@ const InterventionDropdown = ({
   setActiveDropdown,
   isMobile,
   hasProjectSites,
-  existingIntervention,
+  availableInterventionTypes,
 }: Props) => {
   const tIntervention = useTranslations('ProjectDetails.intervention');
 
@@ -68,8 +68,8 @@ const InterventionDropdown = ({
 
   const showVisibleOption = () => {
     const interventionToCheck =
-      existingIntervention.length === 1
-        ? existingIntervention[0]
+      availableInterventionTypes.length === 1
+        ? availableInterventionTypes[0]
         : selectedInterventionType;
 
     return findMatchingIntervention(interventionToCheck);
@@ -123,7 +123,7 @@ const InterventionDropdown = ({
           setIsMenuOpen={setIsMenuOpen}
           selectedInterventionData={interventionData}
           hasProjectSites={hasProjectSites}
-          existingIntervention={existingIntervention}
+          availableInterventionTypes={availableInterventionTypes}
         />
       )}
     </>
