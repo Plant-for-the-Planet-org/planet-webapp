@@ -9,13 +9,13 @@ import { formatHid } from '../../../../../utils/projectV2';
 import styles from '../../styles/InterventionInfo.module.scss';
 
 type Props = {
-  plantData: InterventionSingle | SampleIntervention;
+  activeSingleTree: InterventionSingle | SampleIntervention;
 };
 
-function SingleInterventionHeader({ plantData }: Props) {
+function SingleTreeInfoHeader({ activeSingleTree }: Props) {
   const tProjectDetails = useTranslations('ProjectDetails');
-  const isSamplePlant = plantData.type === 'sample-tree-registration';
-  const image = plantData?.coordinates?.[0]?.image ?? '';
+  const isSamplePlant = activeSingleTree.type === 'sample-tree-registration';
+  const image = activeSingleTree?.coordinates?.[0]?.image ?? '';
 
   return (
     <>
@@ -27,7 +27,7 @@ function SingleInterventionHeader({ plantData }: Props) {
             ? tProjectDetails('sampleTree')
             : tProjectDetails('1Tree')}
         </h1>
-        <div className="hid">{formatHid(plantData?.hid)}</div>
+        <div className="hid">{formatHid(activeSingleTree?.hid)}</div>
       </div>
       {image && (
         <>
@@ -41,4 +41,4 @@ function SingleInterventionHeader({ plantData }: Props) {
     </>
   );
 }
-export default SingleInterventionHeader;
+export default SingleTreeInfoHeader;

@@ -18,8 +18,8 @@ import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import MultiTreeInfo from './components/MultiTreeInfo';
-import SingleInterventionInfo from './components/SingleInterventionInfo';
-import { getPlantData } from '../../../utils/projectV2';
+import SingleTreeInfo from './components/SingleTreeInfo';
+import { getActiveSingleTree } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
@@ -139,7 +139,7 @@ const ProjectDetails = ({
     isNonPlantationType(hoveredIntervention) ||
     isNonPlantationType(selectedIntervention);
 
-  const shouldShowSingleInterventionInfo =
+  const shouldShowSingleTreeInfo =
     (hoveredIntervention?.type === 'single-tree-registration' ||
       selectedIntervention?.type === 'single-tree-registration' ||
       selectedSampleIntervention !== null) &&
@@ -149,7 +149,7 @@ const ProjectDetails = ({
     (hoveredIntervention?.type === 'multi-tree-registration' ||
       selectedIntervention?.type === 'multi-tree-registration') &&
     !isMobile &&
-    !shouldShowSingleInterventionInfo &&
+    !shouldShowSingleTreeInfo &&
     activeMultiTree !== undefined;
 
   const shouldShowProjectInfo =
@@ -163,16 +163,21 @@ const ProjectDetails = ({
       setSelectedSampleIntervention(null);
   }, [selectedIntervention?.hid]);
 
-  const plantData: InterventionSingle | SampleIntervention | undefined =
+  const activeSingleTree: InterventionSingle | SampleIntervention | undefined =
     useMemo(
       () =>
-        getPlantData(
+        getActiveSingleTree(
           selectedIntervention,
           hoveredIntervention,
           selectedSampleIntervention
         ),
       [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
     );
+
+  const commonInfoProps = {
+    isMobile,
+    setSelectedSampleIntervention,
+  };
 
   return singleProject ? (
     <>
@@ -185,18 +190,16 @@ const ProjectDetails = ({
           page="project-details"
           setPreventShallowPush={setPreventShallowPush}
         />
-        {shouldShowSingleInterventionInfo && (
-          <SingleInterventionInfo
-            plantData={plantData}
-            isMobile={isMobile}
-            setSelectedSampleIntervention={setSelectedSampleIntervention}
+        {shouldShowSingleTreeInfo && (
+          <SingleTreeInfo
+            activeSingleTree={activeSingleTree}
+            {...commonInfoProps}
           />
         )}
         {shouldShowMultiTreeInfo && (
           <MultiTreeInfo
             activeMultiTree={activeMultiTree}
-            setSelectedSampleIntervention={setSelectedSampleIntervention}
-            isMobile={isMobile}
+            {...commonInfoProps}
           />
         )}
 

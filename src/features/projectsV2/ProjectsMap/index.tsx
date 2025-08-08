@@ -29,7 +29,7 @@ import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
 import { useProjects } from '../ProjectsContext';
 import MultiTreeInfo from '../ProjectDetails/components/MultiTreeInfo';
-import SingleInterventionInfo from '../ProjectDetails/components/SingleInterventionInfo';
+import SingleTreeInfo from '../ProjectDetails/components/SingleTreeInfo';
 import styles from './ProjectsMap.module.scss';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
@@ -151,12 +151,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     props.isMobile &&
     selectedSampleIntervention === null &&
     selectedIntervention?.type === 'multi-tree-registration';
-  const shouldShowSingleInterventionInfo =
+  const shouldShowSingleTreeInfo =
     props.isMobile &&
     (selectedSampleIntervention !== null ||
       selectedIntervention?.type === 'single-tree-registration');
   const shouldShowNavigationControls = !(
-    shouldShowMultiTreeInfo || shouldShowSingleInterventionInfo
+    shouldShowMultiTreeInfo || shouldShowSingleTreeInfo
   );
   const isTimeTravelEnabled =
     shouldShowSingleProjectsView &&
@@ -300,6 +300,11 @@ function ProjectsMap(props: ProjectsMapProps) {
     page: props.page,
   };
 
+  const commonInfoProps = {
+    isMobile: props.isMobile,
+    setSelectedSampleIntervention,
+  };
+
   const mapContainerClass = `${styles.mapContainer} ${
     styles[mobileOS !== undefined ? mobileOS : '']
   }`;
@@ -359,18 +364,16 @@ function ProjectsMap(props: ProjectsMapProps) {
       {shouldShowMultiTreeInfo && (
         <MultiTreeInfo
           activeMultiTree={selectedIntervention}
-          isMobile={props.isMobile}
-          setSelectedSampleIntervention={setSelectedSampleIntervention}
+          {...commonInfoProps}
         />
       )}
-      {shouldShowSingleInterventionInfo && (
-        <SingleInterventionInfo
-          plantData={
+      {shouldShowSingleTreeInfo && (
+        <SingleTreeInfo
+          activeSingleTree={
             selectedSampleIntervention ||
             (selectedIntervention as InterventionSingle)
           }
-          isMobile={props.isMobile}
-          setSelectedSampleIntervention={setSelectedSampleIntervention}
+          {...commonInfoProps}
         />
       )}
       {shouldShowOtherIntervention ? (

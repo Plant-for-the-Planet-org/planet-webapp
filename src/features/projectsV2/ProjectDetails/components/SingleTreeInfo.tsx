@@ -7,48 +7,48 @@ import type {
 import PlantInfoCard from './microComponents/PlantInfoCard';
 import styles from '../styles/InterventionInfo.module.scss';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
-import SingleInterventionHeader from './microComponents/SingleInterventionHeader';
+import SingleTreeInfoHeader from './microComponents/SingleTreeInfoHeader';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  plantData: InterventionSingle | SampleIntervention | undefined;
+  activeSingleTree: InterventionSingle | SampleIntervention | undefined;
   isMobile: boolean;
   setSelectedSampleIntervention: SetState<SampleIntervention | null>;
 }
 
-const SingleInterventionInfo = ({
-  plantData,
+const SingleTreeInfo = ({
+  activeSingleTree,
   isMobile,
   setSelectedSampleIntervention,
 }: Props) => {
-  if (!plantData) return null;
+  if (!activeSingleTree) return null;
 
   const plantInfoProps = {
-    interventionStartDate: plantData.interventionStartDate,
-    tag: plantData.tag,
-    scientificName: plantData.scientificName,
-    measurements: plantData.measurements,
-    type: plantData.type,
+    interventionStartDate: activeSingleTree.interventionStartDate,
+    tag: activeSingleTree.tag,
+    scientificName: activeSingleTree.scientificName,
+    measurements: activeSingleTree.measurements,
+    type: activeSingleTree.type,
     setSelectedSampleIntervention,
   };
 
   const content = [
-    <SingleInterventionHeader
-      key="singleInterventionHeader"
-      plantData={plantData}
+    <SingleTreeInfoHeader
+      key="singleTreeInfoHeader"
+      activeSingleTree={activeSingleTree}
     />,
     <PlantInfoCard key="plantInfoCard" {...plantInfoProps} />,
   ].filter(Boolean);
 
   return isMobile ? (
-    <MobileInfoSwiper slides={content} uniqueKey={plantData.hid} />
+    <MobileInfoSwiper slides={content} uniqueKey={activeSingleTree.hid} />
   ) : (
     <div className={styles.interventionInfoSection}>
-      <SingleInterventionHeader plantData={plantData} />
+      <SingleTreeInfoHeader activeSingleTree={activeSingleTree} />
       <PlantInfoCard {...plantInfoProps} />
       <TreeMapperBrand />
     </div>
   );
 };
 
-export default SingleInterventionInfo;
+export default SingleTreeInfo;
