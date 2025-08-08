@@ -11,7 +11,11 @@ interface Props {
   plantDate: string | null | undefined;
 }
 
-const InterventionHeader = ({ plHid, interventionType, plantDate }: Props) => {
+const OtherInterventionInfoHeader = ({
+  plHid,
+  interventionType,
+  plantDate,
+}: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const tIntervention = useTranslations('ProjectDetails.intervention');
 
@@ -37,4 +41,4 @@ const InterventionHeader = ({ plHid, interventionType, plantDate }: Props) => {
   );
 };
 
-export default InterventionHeader;
+export default OtherInterventionInfoHeader;
