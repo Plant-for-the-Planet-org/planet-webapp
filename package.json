@@ -105,7 +105,6 @@
     "next-connect": "^0.13.0",
     "next-intl": "^3.26.5",
     "next-useragent": "^2.7.0",
-    "node-cache": "^5.1.2",
     "papaparse": "^5.5.2",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.7.2",
