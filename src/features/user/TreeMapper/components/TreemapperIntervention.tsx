@@ -1,10 +1,10 @@
 import type {
   Intervention,
-  InterventionBase,
   InterventionMulti,
   InterventionSingle,
+  SampleIntervention,
 } from '../../../common/types/intervention';
-import type { SampleIntervention } from '../Treemapper';
+import type { SetState } from '../../../common/types/common';
 
 import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -16,82 +16,69 @@ import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
 
 interface Props {
-  location: Object;
-  index: number;
-  locations: Object;
-  selectedLocation:
-    | InterventionSingle
-    | InterventionMulti
-    | SampleIntervention
-    | null;
-  setSelectedLocation: Function;
+  intervention: Intervention;
+  showDivider: boolean;
+  selectedIntervention: Intervention | SampleIntervention | null;
+  setSelectedIntervention: SetState<Intervention | SampleIntervention | null>;
 }
 
 function TreemapperIntervention({
-  location,
-  index,
-  locations,
-  selectedLocation,
-  setSelectedLocation,
+  intervention,
+  showDivider,
+  selectedIntervention,
+  setSelectedIntervention,
 }: Props) {
   const t = useTranslations('Treemapper');
   const locale = useLocale();
   const router = useRouter();
   let treeCount = 0;
-  if ((location as InterventionMulti)?.plantedSpecies?.length !== 0) {
-    for (const key in (location as InterventionMulti).plantedSpecies) {
+  const [plantationArea, setPlantationArea] = React.useState(0);
+
+  if ((intervention as InterventionMulti)?.plantedSpecies?.length !== 0) {
+    for (const key in (intervention as InterventionMulti).plantedSpecies) {
       if (
         Object.prototype.hasOwnProperty.call(
-          (location as InterventionMulti).plantedSpecies,
+          (intervention as InterventionMulti).plantedSpecies,
           key
         )
       ) {
-        const species = (location as InterventionMulti).plantedSpecies[key];
+        const species = (intervention as InterventionMulti).plantedSpecies[key];
         treeCount += species.treeCount;
       }
     }
   }
 
-  function selectLocation(location: any) {
-    if (
-      selectedLocation &&
-      (selectedLocation as InterventionBase).id === location.id
-    ) {
-      setSelectedLocation(null);
+  function handleClick(intervention: Intervention) {
+    if (selectedIntervention?.id === intervention.id) {
+      setSelectedIntervention(null);
     } else {
-      router.replace(`/profile/treemapper/?l=${location.id}`);
+      router.replace(`/profile/treemapper/?l=${intervention.id}`);
     }
   }
 
-  const [plantationArea, setPlantationArea] = React.useState(0);
-
   React.useEffect(() => {
-    if (
-      location &&
-      (location as InterventionMulti).type === 'multi-tree-registration'
-    ) {
-      const area = turf.area((location as InterventionMulti).geometry);
+    if (intervention.type === 'multi-tree-registration') {
+      const area = turf.area(intervention.geometry);
       setPlantationArea(area / 10000);
     }
-  }, [location]);
+  }, [intervention]);
 
   return (
     <div
-      key={index}
-      onClick={() => selectLocation(location)}
+      onClick={() => handleClick(intervention)}
       className={`${styles.singleLocation}`}
     >
       <div className={styles.locationHeader}>
         <div className={styles.left}>
           <p className={styles.treeCount}>
             {`${
-              (location as InterventionBase).hid
-                ? (location as InterventionBase).hid.substring(0, 3) +
+              intervention.hid
+                ? intervention.hid.substring(0, 3) +
                   '-' +
-                  (location as InterventionBase).hid.substring(3)
+                  intervention.hid.substring(3)
                 : null
             } ${
-              (location as InterventionMulti).type === 'multi-tree-registration'
+              intervention.type === 'multi-tree-registration'
                 ? '• ' +
                   localizedAbbreviatedNumber(
                     locale,
@@ -99,32 +86,27 @@ function TreemapperIntervention({
                     2
                   ) +
                   'ha'
-                : (location as SampleIntervention).tag
-                ? '• ' + (location as SampleIntervention).tag
+                : (intervention as InterventionSingle).tag
+                ? '• ' + (intervention as InterventionSingle).tag
                 : ''
             }`}
           </p>
           <p className={styles.date}>
-            {formatDate((location as InterventionBase).registrationDate)}
+            {formatDate(intervention.registrationDate)}
           </p>
         </div>
         <div className={styles.right}>
           <div className={styles.status}>
-            {(location as InterventionMulti).type ===
-              'multi-tree-registration' && treeCount
+            {intervention.type === 'multi-tree-registration' && treeCount
               ? `${treeCount}`
               : `1`}
             <TreeIcon width={'19px'} height={'19.25px'} />
           </div>
-          <div className={styles.mode}>
-            {t((location as InterventionBase).captureStatus)}
-          </div>
+          <div className={styles.mode}>{t(intervention.captureStatus)}</div>
         </div>
       </div>
 
-      {index !== (locations as Intervention[])?.length - 1 && (
-        <div className={styles.divider} />
-      )}
+      {showDivider && <div className={styles.divider} />}
     </div>
   );
 }

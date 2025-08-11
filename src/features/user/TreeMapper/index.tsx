@@ -2,8 +2,6 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   ExtendedScopeInterventions,
   Intervention,
-  InterventionMulti,
-  InterventionSingle,
   SampleIntervention,
 } from '../../common/types/intervention';
 import type { Links } from '../../common/types/payments';
@@ -33,12 +31,13 @@ function TreeMapper(): ReactElement {
   const { getApiAuthenticated } = useApi();
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [intervention, setInterventions] = React.useState<Intervention[]>([]);
-  const [selectedLocation, setSelectedLocation] = React.useState<
-    InterventionSingle | InterventionMulti | null
+  const [interventions, setInterventions] = React.useState<Intervention[]>([]);
+  const [selectedIntervention, setSelectedIntervention] = React.useState<
+    Intervention | SampleIntervention | null
   >(null);
-  const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const [links, setLinks] = React.useState<Links>();
+
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
@@ -52,19 +51,16 @@ function TreeMapper(): ReactElement {
           const newInterventions = response.items;
           for (const itr in newInterventions) {
             if (Object.prototype.hasOwnProperty.call(newInterventions, itr)) {
-              const ind = Number(itr);
-              const location = newInterventions[ind];
-              if (location.type === 'multi-tree-registration') {
-                location.sampleTrees = [];
+              const intervention = newInterventions[Number(itr)];
+              if (intervention.type === 'multi-tree-registration') {
                 for (const key in newInterventions) {
                   if (
                     Object.prototype.hasOwnProperty.call(newInterventions, key)
                   ) {
-                    const item = newInterventions[key] as InterventionMulti &
-                      SampleIntervention;
+                    const item = newInterventions[key];
                     if (item.type === 'sample-tree-registration') {
-                      if (item.parent === location.id) {
-                        location.sampleTrees.push(item);
+                      if (item.parent === intervention.id) {
+                        intervention.sampleInterventions.push(item);
                       }
                     }
                   }
@@ -73,7 +69,7 @@ function TreeMapper(): ReactElement {
             }
           }
           setInterventions([
-            ...intervention,
+            ...interventions,
             ...newInterventions,
           ] as Intervention[]);
           setLinks(response._links);
@@ -90,6 +86,7 @@ function TreeMapper(): ReactElement {
             queryParams: { _scope: 'extended', limit: '15' },
           }
         );
+
         if (response?.items) {
           const interventions = response.items;
           if (interventions?.length === 0) {
@@ -97,18 +94,16 @@ function TreeMapper(): ReactElement {
           } else {
             for (const itr in interventions) {
               if (Object.prototype.hasOwnProperty.call(interventions, itr)) {
-                const location = interventions[itr];
-                if (location && location.type === 'multi-tree-registration') {
-                  location.sampleTrees = [];
+                const intervention = interventions[itr];
+                if (intervention?.type === 'multi-tree-registration') {
                   for (const key in interventions) {
                     if (
                       Object.prototype.hasOwnProperty.call(interventions, key)
                     ) {
-                      const item = interventions[key] as InterventionMulti &
-                        SampleIntervention;
+                      const item = interventions[key];
                       if (item.type === 'sample-tree-registration') {
-                        if (item.parent === location.id) {
-                          location.sampleTrees.push(item);
+                        if (item.parent === intervention.id) {
+                          intervention.sampleInterventions.push(item);
                         }
                       }
                     }
@@ -136,31 +131,28 @@ function TreeMapper(): ReactElement {
 
   React.useEffect(() => {
     if (router.query.l) {
-      if (intervention) {
-        for (const key in intervention) {
-          if (Object.prototype.hasOwnProperty.call(intervention, key)) {
-            const singleIntervention = intervention[key];
+      if (interventions) {
+        for (const key in interventions) {
+          if (Object.prototype.hasOwnProperty.call(interventions, key)) {
+            const singleIntervention = interventions[key];
             if (singleIntervention.id === router.query.l) {
-              setSelectedLocation(intervention);
+              setSelectedIntervention(singleIntervention);
               break;
             }
           }
         }
       }
     } else {
-      setSelectedLocation(null);
+      setSelectedIntervention(null);
     }
-  }, [router.query.l, intervention]);
+  }, [router.query.l, interventions]);
 
-  const TreeMapperProps = {
-    location: selectedLocation,
-    selectedLocation,
-    setSelectedLocation,
-    intervention,
-    isDataLoading,
-    fetchTreemapperData,
-    links,
+  const commonProps = {
+    selectedIntervention,
+    setSelectedIntervention,
+    interventions,
   };
+
   return (
     <div className={styles.profilePage}>
       {progress > 0 && (
@@ -170,21 +162,26 @@ function TreeMapper(): ReactElement {
       )}
 
       <div id="pageContainer" className={styles.pageContainer}>
-        {selectedLocation ? (
-          <InterventionPage {...TreeMapperProps} />
+        {selectedIntervention ? (
+          <InterventionPage {...commonProps} />
         ) : (
           <div className={styles.listContainer}>
             <div className={styles.titleContainer}>
               <div className={styles.treeMapperTitle}>{t('treeMapper')}</div>
             </div>
-            <TreeMapperList {...TreeMapperProps} />
+            <TreeMapperList
+              {...commonProps}
+              isDataLoading={isDataLoading}
+              fetchTreemapperData={fetchTreemapperData}
+              links={links}
+            />
           </div>
         )}
         <div className={styles.mapContainer}>
           <InterventionMap
-            locations={intervention}
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
+            interventions={interventions}
+            selectedIntervention={selectedIntervention}
+            setSelectedIntervention={setSelectedIntervention}
           />
         </div>
       </div>

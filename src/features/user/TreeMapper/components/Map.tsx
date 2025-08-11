@@ -7,6 +7,8 @@ import type {
 import type { RequiredMapStyle } from '../../../common/types/map';
 import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 import type { MapEvent } from 'react-map-gl';
+import type { SetState } from '../../../common/types/common';
+import type { Feature, Point, Polygon } from 'geojson';
 
 import React from 'react';
 import styles from '../TreeMapper.module.scss';
@@ -29,9 +31,9 @@ import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
-  locations: Intervention[] | SampleIntervention[] | null;
-  selectedLocation: Intervention | SampleIntervention | null;
-  setSelectedLocation: Function;
+  interventions: Intervention[] | null;
+  selectedIntervention: Intervention | SampleIntervention | null;
+  setSelectedIntervention: SetState<Intervention | SampleIntervention | null>;
 }
 
 interface GeoJson {
@@ -47,9 +49,9 @@ interface GeoJson {
 }
 
 export default function MyTreesMap({
-  locations,
-  selectedLocation,
-  setSelectedLocation,
+  interventions,
+  selectedIntervention,
+  setSelectedIntervention,
 }: Props): ReactElement {
   const router = useRouter();
   const { isMobile } = useProjectProps();
@@ -161,12 +163,12 @@ export default function MyTreesMap({
   }, []);
 
   React.useEffect(() => {
-    if (locations) {
+    if (interventions) {
       const features = [];
       const ids = [];
-      for (const i in locations) {
-        if (Object.prototype.hasOwnProperty.call(locations, i)) {
-          const pl = locations[i];
+      for (const i in interventions) {
+        if (Object.prototype.hasOwnProperty.call(interventions, i)) {
+          const pl = interventions[i];
           const newPl = pl.geometry;
           const newFeature = {
             type: 'Feature',
@@ -185,29 +187,29 @@ export default function MyTreesMap({
         features,
       });
       setPlIds(ids);
-      zoomToLocation(locations[0]?.geometry);
+      zoomToLocation(interventions[0]?.geometry);
     } else {
       setPlIds(null);
       setGeoJson(null);
     }
-  }, [locations]);
+  }, [interventions]);
 
   React.useEffect(() => {
-    if (selectedLocation) {
-      zoomToLocation(selectedLocation.geometry);
+    if (selectedIntervention) {
+      zoomToLocation(selectedIntervention.geometry);
     }
-  }, [geoJson, selectedLocation]);
+  }, [geoJson, selectedIntervention]);
 
   const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
 
   const onMapClick = (e: MapEvent) => {
-    setSelectedLocation(null);
+    setSelectedIntervention(null);
     if (e.features !== undefined && e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         const source = e.features[0].layer.source;
-        for (const key in locations) {
-          if (Object.prototype.hasOwnProperty.call(locations, key)) {
-            const element = locations[key];
+        for (const key in interventions) {
+          if (Object.prototype.hasOwnProperty.call(interventions, key)) {
+            const element = interventions[Number(key)];
             if (element.id === source) {
               router.replace(`/profile/treemapper/?l=${source}`);
               break;
@@ -233,36 +235,38 @@ export default function MyTreesMap({
       }}
     >
       {satellite && plIds && <SatelliteLayer beforeId={plIds[0]} />}
-      {locations &&
-        locations.map((pl: Intervention) => {
-          const newPl = pl.geometry;
-          newPl.properties = { id: '' };
-          newPl.properties.id = pl.id;
-          if (pl.type === 'multi-tree-registration') {
+      {interventions &&
+        interventions.map((intervention: Intervention) => {
+          const newPl: Feature<Point | Polygon> = {
+            type: 'Feature',
+            geometry: intervention.geometry,
+            properties: { id: intervention.id },
+          };
+          if (intervention.type === 'multi-tree-registration') {
             return (
               <>
                 <Source
-                  key={`${pl.id}-source`}
-                  id={pl.id}
+                  key={`${intervention.id}-source`}
+                  id={intervention.id}
                   type="geojson"
                   data={newPl}
                 >
                   <Layer
-                    key={`${pl.id}-layer`}
-                    id={`${pl.id}-layer`}
+                    key={`${intervention.id}-layer`}
+                    id={`${intervention.id}-layer`}
                     type="fill"
-                    source={pl.id}
+                    source={intervention.id}
                     paint={{
                       'fill-color': satellite ? `${white}` : `${primaryColor}`,
-                      'fill-opacity': getPolygonColor(pl),
+                      'fill-opacity': getPolygonColor(intervention),
                     }}
                   />
-                  {selectedLocation && selectedLocation?.id === pl.id && (
+                  {selectedIntervention?.id === intervention.id && (
                     <Layer
-                      key={`${pl.id}-selected`}
-                      id={`${pl.id}-selected-layer`}
+                      key={`${intervention.id}-selected`}
+                      id={`${intervention.id}-selected-layer`}
                       type="line"
-                      source={pl.id}
+                      source={intervention.id}
                       paint={{
                         'line-color': satellite
                           ? `${white}`
@@ -272,63 +276,55 @@ export default function MyTreesMap({
                     />
                   )}
                 </Source>
-                {pl &&
-                  pl.sampleInterventions &&
-                  pl.sampleInterventions
-                    .filter((item) => {
-                      if (item.captureStatus === 'complete') {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    })
-                    .map((spl) => {
-                      return (
-                        <Marker
-                          key={`${spl.id}-sample`}
-                          latitude={spl.geometry.coordinates[1]}
-                          longitude={spl.geometry.coordinates[0]}
-                        >
-                          {viewport.zoom > 14 && (
-                            <div
-                              key={`${spl.id}-marker`}
-                              className={`${styles.single} ${
-                                spl.id === selectedLocation?.id
-                                  ? styles.singleSelected
-                                  : ''
-                              }`}
-                              role="button"
-                              tabIndex={0}
-                              onClick={() => setSelectedLocation(spl)}
-                              // onMouseEnter={() => onHover(spl)}
-                              // onMouseLeave={() => onHoverEnd(spl)}
-                            />
-                          )}
-                        </Marker>
-                      );
-                    })}
+                {intervention.sampleInterventions
+                  .filter((item) => {
+                    if (item.captureStatus === 'complete') {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  })
+                  .map((str) => {
+                    // str -> sample tree registration
+                    return (
+                      <Marker
+                        key={`${str.id}-sample`}
+                        latitude={str.geometry.coordinates[1]}
+                        longitude={str.geometry.coordinates[0]}
+                      >
+                        {viewport.zoom > 14 && (
+                          <div
+                            key={`${str.id}-marker`}
+                            className={`${styles.single} ${
+                              str.id === selectedIntervention?.id
+                                ? styles.singleSelected
+                                : ''
+                            }`}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => setSelectedIntervention(str)}
+                          />
+                        )}
+                      </Marker>
+                    );
+                  })}
               </>
             );
-          } else if (pl.type === 'single-tree-registration') {
+          } else if (intervention.type === 'single-tree-registration') {
             return (
               <Marker
-                key={`${pl.id}-single`}
-                latitude={Number(newPl.coordinates[1])}
-                longitude={Number(newPl.coordinates[0])}
-                // offsetLeft={5}
-                // offsetTop={-16}
-                // style={{ left: '28px' }}
+                key={`${intervention.id}-single`}
+                latitude={Number(newPl.geometry.coordinates[1])}
+                longitude={Number(newPl.geometry.coordinates[0])}
               >
                 {viewport.zoom > 14 && (
                   <div
-                    key={`${pl.id}-marker`}
+                    key={`${intervention.id}-marker`}
                     onClick={() => {
-                      setSelectedLocation(pl);
+                      setSelectedIntervention(intervention);
                     }}
-                    // onMouseEnter={() => onHover(pl)}
-                    // onMouseLeave={() => onHoverEnd(pl)}
                     className={`${styles.single} ${
-                      pl.id === selectedLocation?.id
+                      intervention.id === selectedIntervention?.id
                         ? styles.singleSelected
                         : ''
                     }`}
