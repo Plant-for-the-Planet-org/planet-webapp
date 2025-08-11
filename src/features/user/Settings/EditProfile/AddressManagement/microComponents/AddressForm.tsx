@@ -4,16 +4,12 @@ import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { AddressType } from '@planet-sdk/common';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ADDRESS_TYPE,
-  fetchAddressDetails,
-  geocoder,
-  getPostalRegex,
-  suggestAddress,
   validationPattern,
 } from '../../../../../../utils/addressManagement';
 import InlineFormDisplayGroup from '../../../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -24,6 +20,11 @@ import { allCountries } from '../../../../../../utils/constants/countries';
 import AddressFormButtons from './AddressFormButtons';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import PrimaryAddressToggle from './PrimaryAddressToggle';
+import {
+  getAddressDetailsFromText,
+  getAddressSuggestions,
+} from '../../../../../../utils/geocoder';
+import { getPostalRegex } from '../../../../../../utils/addressManagement';
 
 export type AddressFormData = {
   address: string;
@@ -73,38 +74,55 @@ const AddressForm = ({
     defaultValues: defaultAddressDetail,
   });
   const [inputValue, setInputValue] = useState('');
+  const latestRequestIdRef = useRef(0);
   const postalRegex = useMemo(() => getPostalRegex(country), [country]);
+
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
-
   const handleSuggestAddress = useCallback(
     async (value: string) => {
+      // Bump request ID to track the latest API call
+      latestRequestIdRef.current++;
+      const currentRequestId = latestRequestIdRef.current;
       try {
-        const suggestions = await suggestAddress(value, country);
-        setAddressSuggestions(suggestions);
+        const suggestions = await getAddressSuggestions(value, country);
+        // Only update if this is still the latest request
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions(suggestions);
+        }
       } catch (error) {
         console.error('Failed to fetch address suggestions:', error);
-        setAddressSuggestions([]);
+        // Prevent outdated error responses from affecting UI
+        if (currentRequestId === latestRequestIdRef.current) {
+          setAddressSuggestions([]);
+        }
       }
     },
-    [geocoder, country]
+    [country]
   );
 
   useDebouncedEffect(
     () => {
-      if (inputValue) {
-        handleSuggestAddress(inputValue);
+      const trimmedInput = inputValue.trim();
+
+      // Clear suggestions if input is empty or just whitespace
+      if (trimmedInput === '') {
+        setAddressSuggestions([]);
+        return;
       }
+
+      // Fetch suggestions only if input is meaningful (e.g., length > 3)
+      handleSuggestAddress(trimmedInput);
     },
     700,
     [inputValue]
   );
 
-  const handleGetAddress = useCallback(
+  const selectAndParseAddress = useCallback(
     async (value: string) => {
       try {
-        const details = await fetchAddressDetails(value);
+        const details = await getAddressDetailsFromText(value);
         if (details) {
           setValue('address', details.address, { shouldValidate: true });
           setValue('city', details.city, { shouldValidate: true });
@@ -115,10 +133,10 @@ const AddressForm = ({
         console.error('Failed to fetch address details:', error);
       }
     },
-    [geocoder, setValue]
+    [setValue]
   );
   const handleAddressSelect = (address: string) => {
-    handleGetAddress(address);
+    selectAndParseAddress(address);
   };
 
   const resetForm = () => {
