@@ -43,7 +43,7 @@ interface SampleTreeImageProps {
   description: string | undefined;
 }
 
-export function LocationDetails({
+export function InterventionInfo({
   selectedIntervention,
   setSelectedIntervention,
 }: Props): ReactElement {
@@ -423,7 +423,7 @@ export default function InterventionPage({
         <div className={styles.locationMenu} />
       </div>
 
-      <LocationDetails {...DetailProps} />
+      <InterventionInfo {...DetailProps} />
     </div>
   );
 }
