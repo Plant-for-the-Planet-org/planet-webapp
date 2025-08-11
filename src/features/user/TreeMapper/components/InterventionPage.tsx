@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import type {
   Intervention,
-  InterventionMulti,
-  SampleIntervention,
+  MultiTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
@@ -33,8 +33,10 @@ const ImageSliderSingle = dynamic(
 );
 
 interface Props {
-  setSelectedIntervention: SetState<Intervention | SampleIntervention | null>;
-  selectedIntervention: Intervention | SampleIntervention | null;
+  setSelectedIntervention: SetState<
+    Intervention | SampleTreeRegistration | null
+  >;
+  selectedIntervention: Intervention | SampleTreeRegistration | null;
   interventions?: Intervention[];
 }
 
@@ -320,14 +322,14 @@ export function InterventionInfo({
         )}
       </div>
       <div className={styles.detailsFull}>
-        {(selectedIntervention as InterventionMulti)?.plantedSpecies.length >
-          0 && (
+        {(selectedIntervention as MultiTreeRegistration)?.plantedSpecies
+          .length > 0 && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('species')}</p>
             <div className={styles.value}>
               <span>
                 {(
-                  selectedIntervention as InterventionMulti
+                  selectedIntervention as MultiTreeRegistration
                 )?.plantedSpecies?.map((species) => {
                   return (
                     <p key={species.id}>

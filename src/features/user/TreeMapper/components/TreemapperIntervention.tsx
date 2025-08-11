@@ -1,8 +1,7 @@
 import type {
   Intervention,
-  InterventionMulti,
-  InterventionSingle,
-  SampleIntervention,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
@@ -18,8 +17,10 @@ import { useRouter } from 'next/router';
 interface Props {
   intervention: Intervention;
   showDivider: boolean;
-  selectedIntervention: Intervention | SampleIntervention | null;
-  setSelectedIntervention: SetState<Intervention | SampleIntervention | null>;
+  selectedIntervention: Intervention | SampleTreeRegistration | null;
+  setSelectedIntervention: SetState<
+    Intervention | SampleTreeRegistration | null
+  >;
 }
 
 function TreemapperIntervention({
@@ -34,15 +35,15 @@ function TreemapperIntervention({
   let treeCount = 0;
   const [plantationArea, setPlantationArea] = React.useState(0);
 
-  if ((intervention as InterventionMulti)?.plantedSpecies?.length !== 0) {
-    for (const key in (intervention as InterventionMulti).plantedSpecies) {
+  if (
+    intervention.type === 'multi-tree-registration' &&
+    intervention?.plantedSpecies?.length !== 0
+  ) {
+    for (const key in intervention.plantedSpecies) {
       if (
-        Object.prototype.hasOwnProperty.call(
-          (intervention as InterventionMulti).plantedSpecies,
-          key
-        )
+        Object.prototype.hasOwnProperty.call(intervention.plantedSpecies, key)
       ) {
-        const species = (intervention as InterventionMulti).plantedSpecies[key];
+        const species = intervention.plantedSpecies[key];
         treeCount += species.treeCount;
       }
     }
@@ -86,8 +87,8 @@ function TreemapperIntervention({
                     2
                   ) +
                   'ha'
-                : (intervention as InterventionSingle).tag
-                ? '• ' + (intervention as InterventionSingle).tag
+                : (intervention as SingleTreeRegistration).tag
+                ? '• ' + (intervention as SingleTreeRegistration).tag
                 : ''
             }`}
           </p>

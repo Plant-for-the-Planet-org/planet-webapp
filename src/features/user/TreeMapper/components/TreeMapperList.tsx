@@ -3,7 +3,7 @@ import type { Links } from '../../../common/types/payments';
 import type { SetState } from '../../../common/types/common';
 import type {
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 
 import React from 'react';
@@ -14,8 +14,10 @@ import { useTranslations } from 'next-intl';
 import TreemapperIntervention from './TreemapperIntervention';
 
 interface Props {
-  selectedIntervention: Intervention | SampleIntervention | null;
-  setSelectedIntervention: SetState<Intervention | SampleIntervention | null>;
+  selectedIntervention: Intervention | SampleTreeRegistration | null;
+  setSelectedIntervention: SetState<
+    Intervention | SampleTreeRegistration | null
+  >;
   interventions: Intervention[];
   isDataLoading: boolean;
   fetchTreemapperData: Function;

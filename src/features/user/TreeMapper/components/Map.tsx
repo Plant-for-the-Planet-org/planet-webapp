@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import type {
   Intervention,
-  InterventionMulti,
-  SampleIntervention,
+  MultiTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { RequiredMapStyle } from '../../../common/types/map';
 import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
@@ -32,8 +32,10 @@ import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   interventions: Intervention[] | null;
-  selectedIntervention: Intervention | SampleIntervention | null;
-  setSelectedIntervention: SetState<Intervention | SampleIntervention | null>;
+  selectedIntervention: Intervention | SampleTreeRegistration | null;
+  setSelectedIntervention: SetState<
+    Intervention | SampleTreeRegistration | null
+  >;
 }
 
 interface GeoJson {
@@ -73,7 +75,7 @@ export default function MyTreesMap({
     sources: {},
     layers: [],
   });
-  const getPlTreeCount = (pl: InterventionMulti) => {
+  const getPlTreeCount = (pl: MultiTreeRegistration) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -88,7 +90,7 @@ export default function MyTreesMap({
     }
   };
 
-  const getPlArea = (pl: InterventionMulti) => {
+  const getPlArea = (pl: MultiTreeRegistration) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -97,7 +99,7 @@ export default function MyTreesMap({
     }
   };
 
-  const getPolygonColor = (pl: InterventionMulti) => {
+  const getPolygonColor = (pl: MultiTreeRegistration) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;

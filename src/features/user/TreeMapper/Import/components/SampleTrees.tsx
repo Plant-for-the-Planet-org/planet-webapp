@@ -4,7 +4,7 @@ import type { Geometry } from '@turf/turf';
 import type { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 import type {
   Measurements,
-  InterventionMulti,
+  MultiTreeRegistration,
   SampleTree,
 } from '../../../../common/types/intervention';
 
@@ -22,7 +22,7 @@ import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   handleNext: Function;
-  intervention: InterventionMulti;
+  intervention: MultiTreeRegistration;
   userLang: string;
 }
 

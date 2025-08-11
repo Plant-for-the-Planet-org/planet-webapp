@@ -2,7 +2,7 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   ExtendedScopeInterventions,
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../common/types/intervention';
 import type { Links } from '../../common/types/payments';
 import type { ReactElement } from 'react';
@@ -33,7 +33,7 @@ function TreeMapper(): ReactElement {
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [interventions, setInterventions] = React.useState<Intervention[]>([]);
   const [selectedIntervention, setSelectedIntervention] = React.useState<
-    Intervention | SampleIntervention | null
+    Intervention | SampleTreeRegistration | null
   >(null);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const [links, setLinks] = React.useState<Links>();

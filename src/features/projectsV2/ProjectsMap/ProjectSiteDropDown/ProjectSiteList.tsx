@@ -1,7 +1,7 @@
 import type { SetState } from '../../../common/types/common';
 import type {
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 
 import { useLocale } from 'next-intl';
@@ -19,7 +19,7 @@ interface ProjectSiteListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
   setSelectedIntervention: SetState<Intervention | null>;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
   canShowInterventionDropdown: boolean;
 }
 

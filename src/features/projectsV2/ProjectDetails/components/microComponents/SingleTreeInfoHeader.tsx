@@ -1,6 +1,6 @@
 import type {
-  InterventionSingle,
-  SampleIntervention,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../../common/types/intervention';
 
 import { useTranslations } from 'next-intl';
@@ -9,7 +9,7 @@ import { formatHid } from '../../../../../utils/projectV2';
 import styles from '../../styles/InterventionInfo.module.scss';
 
 type Props = {
-  activeSingleTree: InterventionSingle | SampleIntervention;
+  activeSingleTree: SingleTreeRegistration | SampleTreeRegistration;
 };
 
 function SingleTreeInfoHeader({ activeSingleTree }: Props) {

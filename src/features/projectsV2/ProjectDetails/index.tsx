@@ -1,8 +1,8 @@
 import type { APIError } from '@planet-sdk/common';
 import type {
   Intervention,
-  InterventionSingle,
-  SampleIntervention,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
 } from '../../common/types/intervention';
 import type { ExtendedProject } from '../../common/types/projectv2';
 
@@ -163,16 +163,18 @@ const ProjectDetails = ({
       setSelectedSampleIntervention(null);
   }, [selectedIntervention?.hid]);
 
-  const activeSingleTree: InterventionSingle | SampleIntervention | undefined =
-    useMemo(
-      () =>
-        getActiveSingleTree(
-          selectedIntervention,
-          hoveredIntervention,
-          selectedSampleIntervention
-        ),
-      [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
-    );
+  const activeSingleTree:
+    | SingleTreeRegistration
+    | SampleTreeRegistration
+    | undefined = useMemo(
+    () =>
+      getActiveSingleTree(
+        selectedIntervention,
+        hoveredIntervention,
+        selectedSampleIntervention
+      ),
+    [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
+  );
 
   const commonInfoProps = {
     isMobile,

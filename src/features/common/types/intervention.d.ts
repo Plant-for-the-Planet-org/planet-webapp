@@ -33,7 +33,7 @@ export interface InterventionBase {
   statusReason: InterventionStatusReasons | null;
 }
 
-export interface InterventionSingle extends InterventionBase {
+export interface SingleTreeRegistration extends InterventionBase {
   type: 'single-tree-registration';
   scientificName: string | null;
   scientificSpecies: string | null;
@@ -43,11 +43,11 @@ export interface InterventionSingle extends InterventionBase {
   geometry: Point;
 }
 
-export interface InterventionMulti extends InterventionBase {
+export interface MultiTreeRegistration extends InterventionBase {
   type: 'multi-tree-registration';
   nextMeasurementDate: DateString | null;
   sampleTreeCount: number;
-  sampleInterventions: SampleIntervention[];
+  sampleInterventions: SampleTreeRegistration[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
   geometry: Point | Polygon;
@@ -63,17 +63,17 @@ export type NonPlantingInterventionTypes = Exclude<
 export interface OtherInterventions extends InterventionBase {
   type: NonPlantingInterventionTypes;
   sampleTreeCount: number;
-  sampleInterventions: SampleIntervention[];
+  sampleInterventions: SampleTreeRegistration[];
   plantedSpecies: PlantedSpecies[];
   geometry: Point | Polygon;
 }
 
 export type Intervention =
-  | InterventionSingle
-  | InterventionMulti
+  | SingleTreeRegistration
+  | MultiTreeRegistration
   | OtherInterventions;
 
-export interface SampleIntervention extends InterventionBase {
+export interface SampleTreeRegistration extends InterventionBase {
   type: 'sample-tree-registration';
   // /** parent plant location */
   parent: string;
@@ -184,7 +184,7 @@ interface Filters {
 }
 
 export interface ExtendedScopeInterventions {
-  items: Intervention[] | SampleIntervention[];
+  items: Intervention[] | SampleTreeRegistration[];
   total: number;
   count: number;
   _links: Links;

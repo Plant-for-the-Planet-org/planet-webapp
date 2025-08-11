@@ -1,6 +1,6 @@
 import type {
   Measurements,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../../common/types/intervention';
 import type { SetState } from '../../../../common/types/common';
 
@@ -14,7 +14,7 @@ interface Props {
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
   type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
 }
 
 const PlantInfoCard = ({

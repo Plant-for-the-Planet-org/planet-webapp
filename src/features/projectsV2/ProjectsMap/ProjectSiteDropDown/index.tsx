@@ -2,7 +2,7 @@ import type { SetState } from '../../../common/types/common';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
 import type {
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { DropdownType } from '../../../common/types/projectv2';
 
@@ -42,7 +42,7 @@ interface Props {
   setSelectedSite: SetState<number | null>;
   selectedIntervention: Intervention | null;
   setSelectedIntervention: SetState<Intervention | null>;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   canShowInterventionDropdown: boolean;

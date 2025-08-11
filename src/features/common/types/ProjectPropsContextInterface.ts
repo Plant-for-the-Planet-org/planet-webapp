@@ -16,7 +16,7 @@ import type { SetState } from './common';
 import type { RefObject } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type { FlyToInterpolator } from 'react-map-gl';
-import type { Intervention, SampleIntervention } from './intervention';
+import type { Intervention, SampleTreeRegistration } from './intervention';
 
 export type ExploreOption =
   | 'Deforestation'
@@ -148,16 +148,16 @@ interface ProjectPropsContextInterface {
   setInterventions: SetState<Intervention[] | null>;
   selectedPl: Intervention | null; //HERE
   setSelectedPl: SetState<Intervention | null>;
-  sampleIntervention: SampleIntervention | null;
-  setSampleIntervention: SetState<SampleIntervention | null>;
+  sampleIntervention: SampleTreeRegistration | null;
+  setSampleIntervention: SetState<SampleTreeRegistration | null>;
   zoomLevel: number;
   setZoomLevel: SetState<number>;
   satellite: boolean;
   setSatellite: SetState<boolean>;
   plIds: string[] | null;
   setPlIds: SetState<string[] | null>;
-  hoveredPl: Intervention | SampleIntervention | null;
-  setHoveredPl: SetState<Intervention | SampleIntervention | null>;
+  hoveredPl: Intervention | SampleTreeRegistration | null;
+  setHoveredPl: SetState<Intervention | SampleTreeRegistration | null>;
   isPolygonMenuOpen: boolean;
   setIsPolygonMenuOpen: SetState<boolean>;
   siteViewPort: SiteViewPort | null;

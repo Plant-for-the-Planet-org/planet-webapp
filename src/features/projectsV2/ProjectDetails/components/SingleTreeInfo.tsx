@@ -1,7 +1,7 @@
 import type { SetState } from '../../../common/types/common';
 import type {
-  InterventionSingle,
-  SampleIntervention,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 
 import PlantInfoCard from './microComponents/PlantInfoCard';
@@ -11,9 +11,9 @@ import SingleTreeInfoHeader from './microComponents/SingleTreeInfoHeader';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  activeSingleTree: InterventionSingle | SampleIntervention | undefined;
+  activeSingleTree: SingleTreeRegistration | SampleTreeRegistration | undefined;
   isMobile: boolean;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
 }
 
 const SingleTreeInfo = ({

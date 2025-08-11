@@ -9,7 +9,7 @@ import type { SetState } from '../common/types/common';
 import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type {
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../common/types/intervention';
 import type { INTERVENTION_TYPE } from '../../utils/constants/intervention';
 
@@ -41,8 +41,8 @@ interface ProjectsState {
   setInterventions: SetState<Intervention[] | null>;
   selectedIntervention: Intervention | null;
   setSelectedIntervention: SetState<Intervention | null>;
-  selectedSampleIntervention: SampleIntervention | null;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  selectedSampleIntervention: SampleTreeRegistration | null;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
   hoveredIntervention: Intervention | null;
   setHoveredIntervention: SetState<Intervention | null>;
   selectedSite: number | null;
@@ -96,7 +96,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   const [selectedIntervention, setSelectedIntervention] =
     useState<Intervention | null>(null);
   const [selectedSampleIntervention, setSelectedSampleIntervention] =
-    useState<SampleIntervention | null>(null);
+    useState<SampleTreeRegistration | null>(null);
   const [hoveredIntervention, setHoveredIntervention] =
     useState<Intervention | null>(null);
   const [selectedSite, setSelectedSite] = useState<number | null>(null);

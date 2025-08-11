@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react';
 import type {
   Intervention,
-  InterventionMulti,
-  InterventionSingle,
-  SampleIntervention,
+  MultiTreeRegistration,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
@@ -32,7 +32,7 @@ export default function Interventions(): ReactElement {
   const t = useTranslations('Maps');
   const locale = useLocale();
 
-  const openPl = (pl: InterventionSingle | SampleIntervention) => {
+  const openPl = (pl: SingleTreeRegistration | SampleTreeRegistration) => {
     switch (pl.type) {
       case 'sample-tree-registration':
         setSampleIntervention(pl);
@@ -45,7 +45,7 @@ export default function Interventions(): ReactElement {
     }
   };
 
-  const onHover = (pl: InterventionSingle | SampleIntervention) => {
+  const onHover = (pl: SingleTreeRegistration | SampleTreeRegistration) => {
     setHoveredPl(pl);
   };
 
@@ -58,7 +58,7 @@ export default function Interventions(): ReactElement {
       setHoveredPl(null);
   };
 
-  const getPlTreeCount = (pl: InterventionMulti) => {
+  const getPlTreeCount = (pl: MultiTreeRegistration) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -73,7 +73,7 @@ export default function Interventions(): ReactElement {
     }
   };
 
-  const getPlArea = (pl: InterventionMulti) => {
+  const getPlArea = (pl: MultiTreeRegistration) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -82,7 +82,7 @@ export default function Interventions(): ReactElement {
     }
   };
 
-  const getPolygonColor = (pl: InterventionMulti) => {
+  const getPolygonColor = (pl: MultiTreeRegistration) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;

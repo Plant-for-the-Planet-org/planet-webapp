@@ -14,9 +14,9 @@ import type {
 } from '../features/common/types/projectv2';
 import type {
   Intervention,
-  InterventionSingle,
+  SingleTreeRegistration,
   OtherInterventions,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../features/common/types/intervention';
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
@@ -246,8 +246,8 @@ export const formatHid = (hid: string | undefined) => {
 export const getActiveSingleTree = (
   selected: Intervention | null,
   hovered: Intervention | null,
-  selectedSample: SampleIntervention | null
-): InterventionSingle | SampleIntervention | undefined => {
+  selectedSample: SampleTreeRegistration | null
+): SingleTreeRegistration | SampleTreeRegistration | undefined => {
   if (selected?.type === 'single-tree-registration') return selected;
   if (hovered?.type === 'single-tree-registration') return hovered;
   if (selectedSample?.type === 'sample-tree-registration')

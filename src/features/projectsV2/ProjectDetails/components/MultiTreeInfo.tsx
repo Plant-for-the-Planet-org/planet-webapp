@@ -1,6 +1,6 @@
 import type {
-  InterventionMulti,
-  SampleIntervention,
+  MultiTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
@@ -17,9 +17,9 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  activeMultiTree: InterventionMulti;
+  activeMultiTree: MultiTreeRegistration;
   isMobile: boolean;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
 }
 
 const MultiTreeInfo = ({

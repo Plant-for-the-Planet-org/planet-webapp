@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { InterventionMulti } from '../../../../common/types/intervention';
+import type { MultiTreeRegistration } from '../../../../common/types/intervention';
 import type { SampleTree } from '../../../../common/types/intervention';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
 
@@ -25,7 +25,7 @@ interface Props {
   control: Control<SampleTreeFormData>;
   userLang: string;
   item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
-  intervention: InterventionMulti;
+  intervention: MultiTreeRegistration;
   errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }

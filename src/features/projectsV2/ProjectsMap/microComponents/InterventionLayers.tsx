@@ -1,8 +1,8 @@
 import type {
   Intervention,
-  InterventionMulti,
-  InterventionSingle,
-  SampleIntervention,
+  MultiTreeRegistration,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
@@ -19,11 +19,11 @@ import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface SampleTreeMarkerProps {
-  sampleTree: SampleIntervention;
-  selectedSampleIntervention: SampleIntervention | null;
+  sampleTree: SampleTreeRegistration;
+  selectedSampleIntervention: SampleTreeRegistration | null;
   toggleSampleTree: (
     e: React.MouseEvent<HTMLDivElement>,
-    st: SampleIntervention //st sands for sample tree
+    st: SampleTreeRegistration //st sands for sample tree
   ) => void;
 }
 
@@ -71,7 +71,7 @@ export default function InterventionLayers(): React.ReactElement {
 
   const toggleSampleTree = (
     e: React.MouseEvent<HTMLDivElement>,
-    tree: InterventionSingle | SampleIntervention
+    tree: SingleTreeRegistration | SampleTreeRegistration
   ) => {
     e.stopPropagation();
     e.preventDefault();
@@ -92,7 +92,7 @@ export default function InterventionLayers(): React.ReactElement {
     }
   };
   // mt stands for multi-tree registration
-  const getTreeCount = (mt: InterventionMulti) => {
+  const getTreeCount = (mt: MultiTreeRegistration) => {
     let count = 0;
     if (mt && mt.plantedSpecies) {
       for (const key in mt.plantedSpecies) {
@@ -106,7 +106,7 @@ export default function InterventionLayers(): React.ReactElement {
       return 0;
     }
   };
-  const getPlArea = (mt: InterventionMulti) => {
+  const getPlArea = (mt: MultiTreeRegistration) => {
     if (mt && mt.type === 'multi-tree-registration') {
       const area = turf.area(mt.geometry);
       return area / 10000;
@@ -115,7 +115,7 @@ export default function InterventionLayers(): React.ReactElement {
     }
   };
 
-  const getPolygonColor = (mt: InterventionMulti) => {
+  const getPolygonColor = (mt: MultiTreeRegistration) => {
     const treeCount = getTreeCount(mt);
     const plantationArea = getPlArea(mt);
     const density = treeCount / plantationArea;

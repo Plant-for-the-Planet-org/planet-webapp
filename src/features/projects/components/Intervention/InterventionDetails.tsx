@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type {
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { SliderImage } from './ImageSlider';
 
@@ -29,7 +29,7 @@ const ImageSliderSingle = dynamic(
 );
 
 interface Props {
-  activeIntervention: Intervention | SampleIntervention | null;
+  activeIntervention: Intervention | SampleTreeRegistration | null;
 }
 
 export default function InterventionDetails({

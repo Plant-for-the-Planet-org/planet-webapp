@@ -1,6 +1,6 @@
 import type {
   OtherInterventions,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
@@ -20,7 +20,7 @@ interface Props {
   hoveredIntervention?: OtherInterventions | null;
   selectedIntervention: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
 }
 
 const OtherInterventionInfo = ({

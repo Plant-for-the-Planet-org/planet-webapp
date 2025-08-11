@@ -3,7 +3,7 @@ import type { Feature, Polygon } from 'geojson';
 import type { SiteProperties } from '../ProjectSiteDropDown';
 import type {
   Intervention,
-  SampleIntervention,
+  SampleTreeRegistration,
 } from '../../../common/types/intervention';
 
 import { useState } from 'react';
@@ -135,7 +135,7 @@ export const Preview: Story = {
     const [selectedIntervention, setSelectedIntervention] =
       useState<Intervention | null>(null);
     const [_selectedSampleIntervention, setSelectedSampleIntervention] =
-      useState<SampleIntervention | null>(null);
+      useState<SampleTreeRegistration | null>(null);
 
     return (
       <ProjectSiteDropdown

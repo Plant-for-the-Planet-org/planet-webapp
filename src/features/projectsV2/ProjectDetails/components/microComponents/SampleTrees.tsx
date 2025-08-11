@@ -1,12 +1,12 @@
 import type { SetState } from '../../../../common/types/common';
-import type { SampleIntervention } from '../../../../common/types/intervention';
+import type { SampleTreeRegistration } from '../../../../common/types/intervention';
 
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/InterventionInfo.module.scss';
 
 interface Props {
-  sampleInterventions: SampleIntervention[];
-  setSelectedSampleIntervention: SetState<SampleIntervention | null>;
+  sampleInterventions: SampleTreeRegistration[];
+  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
 }
 const SampleTreeList = ({
   sampleInterventions,

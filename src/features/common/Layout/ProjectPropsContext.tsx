@@ -18,7 +18,10 @@ import type {
   SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
-import type { Intervention, SampleIntervention } from '../types/intervention';
+import type {
+  Intervention,
+  SampleTreeRegistration,
+} from '../types/intervention';
 
 import React, {
   useState,
@@ -61,7 +64,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   );
   const [selectedPl, setSelectedPl] = useState<Intervention | null>(null);
   const [sampleIntervention, setSampleIntervention] =
-    useState<SampleIntervention | null>(null);
+    useState<SampleTreeRegistration | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   const infoRef = useRef<HTMLDivElement>(null);
@@ -125,7 +128,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [plIds, setPlIds] = useState<string[] | null>(null);
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = useState(false);
   const [hoveredPl, setHoveredPl] = useState<
-    Intervention | SampleIntervention | null
+    Intervention | SampleTreeRegistration | null
   >(null);
   const [siteViewPort, setSiteViewPort] = useState<SiteViewPort | null>(null);
 
