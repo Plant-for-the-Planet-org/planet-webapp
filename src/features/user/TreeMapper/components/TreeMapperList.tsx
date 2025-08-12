@@ -38,7 +38,7 @@ export default function TreeMapperList({
     <div
       className={`${selectedIntervention ? styles.hideOnMobile : ''} ${
         styles.locationList
-      } ${selectedIntervention ? styles.hideOnMobile : ''}`}
+      }`}
     >
       <div className={styles.pullUpContainer}>
         <div className={styles.pullUpBar}></div>
