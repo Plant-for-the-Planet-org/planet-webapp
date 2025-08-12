@@ -3,6 +3,7 @@ import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
+import type { InterventionTypes } from '@planet-sdk/common';
 
 import { useContext, useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
@@ -64,7 +65,7 @@ const MapControls = ({
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
 
-    const types = new Set<string>();
+    const types = new Set<InterventionTypes>();
     for (let i = 0; i < interventions.length; i++) {
       types.add(interventions[i].type);
     }

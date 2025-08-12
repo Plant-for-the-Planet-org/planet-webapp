@@ -1,6 +1,7 @@
 import type { SetState } from '../../../common/types/common';
 import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
 import type { DropdownType } from '../../../common/types/projectv2';
+import type { InterventionTypes } from '@planet-sdk/common';
 
 import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
@@ -26,7 +27,7 @@ interface Props {
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   hasProjectSites?: boolean;
-  availableInterventionTypes: string[];
+  availableInterventionTypes: InterventionTypes[];
 }
 
 const InterventionDropdown = ({
