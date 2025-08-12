@@ -259,29 +259,31 @@ export const MapContainer = () => {
         setInterventionDetails(null);
       }
 
-      const interventionFeature: InterventionFeature[] = res.data.map((pl) => {
-        // Calculate the area based on the feature's coordinates using Turf.js
-        const area = turf.area(pl.geometry);
-        const treeCount = pl.properties.treeCount;
-        const density = treeCount / area;
+      const interventionFeature: InterventionFeature[] = res.data.map(
+        (intervention) => {
+          // Calculate the area based on the feature's coordinates using Turf.js
+          const area = turf.area(intervention.geometry);
+          const treeCount = intervention.properties.treeCount;
+          const density = treeCount / area;
 
-        // Add the calculated density to the feature properties
-        return {
-          geometry: pl.geometry,
-          type: pl.type,
-          properties: {
-            ...pl.properties,
-            density: density,
-            opacity: getPolygonOpacity(density),
-          },
-        };
-      });
+          // Add the calculated density to the feature properties
+          return {
+            geometry: intervention.geometry,
+            type: intervention.type,
+            properties: {
+              ...intervention.properties,
+              density: density,
+              opacity: getPolygonOpacity(density),
+            },
+          };
+        }
+      );
 
       const _featureCollection = {
         type: 'FeatureCollection',
         features: interventionFeature,
       };
-      setInterventions(_featureCollection as InterventionFeature);
+      setInterventions(_featureCollection as InterventionFeatureCollection);
       if (interventionFeature.length > 0) {
         const defaultFeature = interventionFeature[0];
         _setViewport(defaultFeature);

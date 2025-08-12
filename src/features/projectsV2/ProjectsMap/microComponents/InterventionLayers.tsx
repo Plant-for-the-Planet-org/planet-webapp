@@ -106,7 +106,7 @@ export default function InterventionLayers(): React.ReactElement {
       return 0;
     }
   };
-  const getPlArea = (mt: MultiTreeRegistration) => {
+  const getPlantationArea = (mt: MultiTreeRegistration) => {
     if (mt && mt.type === 'multi-tree-registration') {
       const area = turf.area(mt.geometry);
       return area / 10000;
@@ -117,7 +117,7 @@ export default function InterventionLayers(): React.ReactElement {
 
   const getPolygonColor = (mt: MultiTreeRegistration) => {
     const treeCount = getTreeCount(mt);
-    const plantationArea = getPlArea(mt);
+    const plantationArea = getPlantationArea(mt);
     const density = treeCount / plantationArea;
     if (density > 2500) {
       return 0.5;

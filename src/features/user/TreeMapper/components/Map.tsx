@@ -75,12 +75,13 @@ export default function MyTreesMap({
     sources: {},
     layers: [],
   });
-  const getPlTreeCount = (pl: MultiTreeRegistration) => {
+  // mt -> multi tree registration
+  const getTreeCount = (mt: MultiTreeRegistration) => {
     let count = 0;
-    if (pl && pl.plantedSpecies) {
-      for (const key in pl.plantedSpecies) {
-        if (Object.prototype.hasOwnProperty.call(pl.plantedSpecies, key)) {
-          const element = pl.plantedSpecies[key];
+    if (mt && mt.plantedSpecies) {
+      for (const key in mt.plantedSpecies) {
+        if (Object.prototype.hasOwnProperty.call(mt.plantedSpecies, key)) {
+          const element = mt.plantedSpecies[key];
           count += element.treeCount;
         }
       }
@@ -90,18 +91,18 @@ export default function MyTreesMap({
     }
   };
 
-  const getPlArea = (pl: MultiTreeRegistration) => {
-    if (pl && pl.type === 'multi-tree-registration') {
-      const area = turf.area(pl.geometry);
+  const getPlantationArea = (mt: MultiTreeRegistration) => {
+    if (mt && mt.type === 'multi-tree-registration') {
+      const area = turf.area(mt.geometry);
       return area / 10000;
     } else {
       return 0;
     }
   };
 
-  const getPolygonColor = (pl: MultiTreeRegistration) => {
-    const treeCount = getPlTreeCount(pl);
-    const plantationArea = getPlArea(pl);
+  const getPolygonColor = (mt: MultiTreeRegistration) => {
+    const treeCount = getTreeCount(mt);
+    const plantationArea = getPlantationArea(mt);
     const density = treeCount / plantationArea;
     if (density > 2500) {
       return 0.5;
@@ -170,17 +171,17 @@ export default function MyTreesMap({
       const ids = [];
       for (const i in interventions) {
         if (Object.prototype.hasOwnProperty.call(interventions, i)) {
-          const pl = interventions[i];
-          const newPl = pl.geometry;
+          const intervention = interventions[i];
           const newFeature = {
             type: 'Feature',
-            geometry: newPl,
+            geometry: intervention.geometry,
             properties: {
-              id: pl.id,
+              id: intervention.id,
             },
           };
           features.push(newFeature);
-          if (pl.type === 'multi-tree-registration') ids.push(`${pl.id}-layer`);
+          if (intervention.type === 'multi-tree-registration')
+            ids.push(`${intervention.id}-layer`);
         }
       }
       setGeoJson({

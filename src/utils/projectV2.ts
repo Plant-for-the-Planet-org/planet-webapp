@@ -236,7 +236,9 @@ export const getInterventionInfo = (
   const isPlantLayer = PLANT_LAYERS.includes(layerId);
   if (!isPlantLayer) return;
 
-  return interventions.find((pl) => pl.id === topmostFeature.properties.id);
+  return interventions.find(
+    (intervention) => intervention.id === topmostFeature.properties.id
+  );
 };
 
 export const formatHid = (hid: string | undefined) => {

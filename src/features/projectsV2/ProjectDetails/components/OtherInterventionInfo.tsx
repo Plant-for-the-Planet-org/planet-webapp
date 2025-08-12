@@ -69,7 +69,7 @@ const OtherInterventionInfo = ({
   const content = [
     <>
       <OtherInterventionInfoHeader
-        plHid={interventionInfo.hid}
+        interventionUniqueId={interventionInfo.hid}
         interventionType={interventionInfo.type}
         plantDate={interventionInfo.interventionStartDate}
         key="interventionHeader"
