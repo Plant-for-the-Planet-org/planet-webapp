@@ -173,9 +173,9 @@
   }
 }
 
-//sample intervention styles
+//sample tree styles
 
-.singleInterventionHeading {
+.singleTreeInfoHeader {
   display: flex;
   justify-content: space-between;
   font-size: $fontSmall;
@@ -187,7 +187,7 @@
   }
 }
 
-.singleInterventionImage {
+.singleTreeImage {
   border-radius: 13px;
   height: 192px;
   object-fit: cover;

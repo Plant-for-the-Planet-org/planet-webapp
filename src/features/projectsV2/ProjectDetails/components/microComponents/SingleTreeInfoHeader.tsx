@@ -20,7 +20,7 @@ function SingleTreeInfoHeader({ activeSingleTree }: Props) {
   return (
     <>
       <div
-        className={`single-intervention-heading ${styles.singleInterventionHeading}`}
+        className={`single-tree-info-heading ${styles.singleTreeInfoHeader}`}
       >
         <h1 className="tree-count">
           {isSamplePlant
@@ -30,13 +30,11 @@ function SingleTreeInfoHeader({ activeSingleTree }: Props) {
         <div className="hid">{formatHid(activeSingleTree?.hid)}</div>
       </div>
       {image && (
-        <>
-          <img
-            src={getImageUrl('coordinate', 'large', image)}
-            className={`single-intervention-image ${styles.singleInterventionImage}`}
-            loading="lazy"
-          />
-        </>
+        <img
+          src={getImageUrl('coordinate', 'large', image)}
+          className={`single-tree-image ${styles.singleTreeImage}`}
+          loading="lazy"
+        />
       )}
     </>
   );
