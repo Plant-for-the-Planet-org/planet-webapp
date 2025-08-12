@@ -134,7 +134,7 @@ export const Preview: Story = {
     const [selectedSite, setSelectedSite] = useState<null | number>(0);
     const [selectedIntervention, setSelectedIntervention] =
       useState<Intervention | null>(null);
-    const [_selectedSampleIntervention, setSelectedSampleIntervention] =
+    const [_selectedSampleTree, setSelectedSampleTree] =
       useState<SampleTreeRegistration | null>(null);
 
     return (
@@ -146,7 +146,7 @@ export const Preview: Story = {
         }}
         selectedIntervention={selectedIntervention}
         setSelectedIntervention={setSelectedIntervention}
-        setSelectedSampleIntervention={setSelectedSampleIntervention}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     );
   },

@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../styles/InterventionInfo.module.scss';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
-import SampleTrees from './microComponents/SampleTrees';
+import SampleTreesInfo from './microComponents/SampleTreesInfo';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
@@ -20,20 +20,20 @@ interface Props {
   hoveredIntervention?: OtherInterventions | null;
   selectedIntervention: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const OtherInterventionInfo = ({
   isMobile,
-  setSelectedSampleIntervention,
+  setSelectedSampleTree,
   selectedIntervention,
   hoveredIntervention,
 }: Props) => {
   const interventionInfo = hoveredIntervention || selectedIntervention;
   if (!interventionInfo) return null;
-  const sampleInterventions = interventionInfo.sampleInterventions || [];
+  const sampleTrees = interventionInfo.sampleInterventions || [];
   const plantedSpecies = interventionInfo.plantedSpecies || [];
-  const hasSampleInterventions = sampleInterventions.length > 0;
+  const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
 
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -48,8 +48,8 @@ const OtherInterventionInfo = ({
   }, [interventionInfo, interventionInfo.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    if (hasSampleInterventions) {
-      const result = sampleInterventions.map((item) => {
+    if (hasSampleTrees) {
+      const result = sampleTrees.map((item) => {
         return {
           id: item.coordinates[0].id,
           image: item.coordinates[0].image ?? '',
@@ -100,11 +100,11 @@ const OtherInterventionInfo = ({
         plantedSpecies={plantedSpecies}
       />
     ),
-    hasSampleInterventions && (
-      <SampleTrees
+    hasSampleTrees && (
+      <SampleTreesInfo
         key="sampleTrees"
-        sampleInterventions={sampleInterventions}
-        setSelectedSampleIntervention={setSelectedSampleIntervention}
+        sampleTrees={sampleTrees}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     ),
   ].filter(Boolean);

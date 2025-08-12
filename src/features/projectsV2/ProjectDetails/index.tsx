@@ -44,8 +44,8 @@ const ProjectDetails = ({
     setSelectedMode,
     selectedIntervention,
     hoveredIntervention,
-    selectedSampleIntervention,
-    setSelectedSampleIntervention,
+    selectedSampleTree,
+    setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
   const { setTimeTravelConfig } = useProjectsMap();
@@ -142,7 +142,7 @@ const ProjectDetails = ({
   const shouldShowSingleTreeInfo =
     (hoveredIntervention?.type === 'single-tree-registration' ||
       selectedIntervention?.type === 'single-tree-registration' ||
-      selectedSampleIntervention !== null) &&
+      selectedSampleTree !== null) &&
     !isMobile;
 
   const shouldShowMultiTreeInfo =
@@ -155,12 +155,11 @@ const ProjectDetails = ({
   const shouldShowProjectInfo =
     hoveredIntervention === null &&
     selectedIntervention === null &&
-    selectedSampleIntervention === null;
+    selectedSampleTree === null;
 
-  // clean up sample plant location when plant location change
+  // clean up sample tree when intervention change
   useEffect(() => {
-    if (selectedSampleIntervention !== null)
-      setSelectedSampleIntervention(null);
+    if (selectedSampleTree !== null) setSelectedSampleTree(null);
   }, [selectedIntervention?.hid]);
 
   const activeSingleTree:
@@ -171,14 +170,14 @@ const ProjectDetails = ({
       getActiveSingleTree(
         selectedIntervention,
         hoveredIntervention,
-        selectedSampleIntervention
+        selectedSampleTree
       ),
-    [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
+    [selectedIntervention, hoveredIntervention, selectedSampleTree]
   );
 
   const commonInfoProps = {
     isMobile,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
   };
 
   return singleProject ? (
@@ -221,7 +220,7 @@ const ProjectDetails = ({
                 ? hoveredIntervention
                 : null
             }
-            setSelectedSampleIntervention={setSelectedSampleIntervention}
+            setSelectedSampleTree={setSelectedSampleTree}
             isMobile={isMobile}
           />
         ) : null}

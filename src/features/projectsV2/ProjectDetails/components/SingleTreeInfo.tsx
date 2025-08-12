@@ -13,13 +13,13 @@ import MobileInfoSwiper from '../../MobileInfoSwiper';
 interface Props {
   activeSingleTree: SingleTreeRegistration | SampleTreeRegistration | undefined;
   isMobile: boolean;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const SingleTreeInfo = ({
   activeSingleTree,
   isMobile,
-  setSelectedSampleIntervention,
+  setSelectedSampleTree,
 }: Props) => {
   if (!activeSingleTree) return null;
 
@@ -29,7 +29,7 @@ const SingleTreeInfo = ({
     scientificName: activeSingleTree.scientificName,
     measurements: activeSingleTree.measurements,
     type: activeSingleTree.type,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
   };
 
   const content = [

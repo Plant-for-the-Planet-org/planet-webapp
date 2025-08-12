@@ -73,12 +73,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     setHoveredIntervention,
     setSelectedIntervention,
     setSelectedSite,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
     filteredProjects,
     projects,
     singleProject,
     selectedIntervention,
-    selectedSampleIntervention,
+    selectedSampleTree,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -149,11 +149,11 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapLoaded;
   const shouldShowMultiTreeInfo =
     props.isMobile &&
-    selectedSampleIntervention === null &&
+    selectedSampleTree === null &&
     selectedIntervention?.type === 'multi-tree-registration';
   const shouldShowSingleTreeInfo =
     props.isMobile &&
-    (selectedSampleIntervention !== null ||
+    (selectedSampleTree !== null ||
       selectedIntervention?.type === 'single-tree-registration');
   const shouldShowNavigationControls = !(
     shouldShowMultiTreeInfo || shouldShowSingleTreeInfo
@@ -252,8 +252,8 @@ function ProjectsMap(props: ProjectsMapProps) {
       const hasSites = sites.length > 0;
       const siteIndex = hasSites ? getSiteIndex(sites, features) : null;
 
-      // Deselect sample point intervention when clicking the parent polygon intervention
-      if (selectedSampleIntervention) setSelectedSampleIntervention(null);
+      // Deselect sample tree when clicking the parent multi tree polygon
+      if (selectedSampleTree) setSelectedSampleTree(null);
 
       // Deselect if clicking the same point intervention again
       if (isSamePlant && isPointGeometry) {
@@ -285,7 +285,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       props.page,
       selectedIntervention,
       singleProject,
-      selectedSampleIntervention,
+      selectedSampleTree,
     ]
   );
 
@@ -302,7 +302,7 @@ function ProjectsMap(props: ProjectsMapProps) {
 
   const commonInfoProps = {
     isMobile: props.isMobile,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
   };
 
   const mapContainerClass = `${styles.mapContainer} ${
@@ -370,7 +370,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       {shouldShowSingleTreeInfo && (
         <SingleTreeInfo
           activeSingleTree={
-            selectedSampleIntervention ||
+            selectedSampleTree ||
             (selectedIntervention as SingleTreeRegistration)
           }
           {...commonInfoProps}
@@ -385,7 +385,7 @@ function ProjectsMap(props: ProjectsMapProps) {
               ? selectedIntervention
               : null
           }
-          setSelectedSampleIntervention={setSelectedSampleIntervention}
+          setSelectedSampleTree={setSelectedSampleTree}
           isMobile={props.isMobile}
         />
       ) : null}

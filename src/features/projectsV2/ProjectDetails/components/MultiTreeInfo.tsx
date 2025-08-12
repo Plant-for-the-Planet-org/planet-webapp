@@ -10,7 +10,7 @@ import * as turf from '@turf/turf';
 import styles from '../styles/InterventionInfo.module.scss';
 import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
-import SampleTrees from './microComponents/SampleTrees';
+import SampleTreesInfo from './microComponents/SampleTreesInfo';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import ImageSlider from './ImageSlider';
@@ -19,13 +19,13 @@ import MobileInfoSwiper from '../../MobileInfoSwiper';
 interface Props {
   activeMultiTree: MultiTreeRegistration;
   isMobile: boolean;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const MultiTreeInfo = ({
   activeMultiTree,
   isMobile,
-  setSelectedSampleIntervention,
+  setSelectedSampleTree,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
@@ -93,10 +93,10 @@ const MultiTreeInfo = ({
       />
     ),
     activeMultiTree.sampleInterventions.length > 0 && (
-      <SampleTrees
+      <SampleTreesInfo
         key="sampleTrees"
-        sampleInterventions={activeMultiTree.sampleInterventions}
-        setSelectedSampleIntervention={setSelectedSampleIntervention}
+        sampleTrees={activeMultiTree.sampleInterventions}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     ),
   ].filter(Boolean);

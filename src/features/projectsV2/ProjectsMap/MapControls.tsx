@@ -51,9 +51,9 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     selectedIntervention,
-    selectedSampleIntervention,
+    selectedSampleTree,
     setSelectedIntervention,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
     selectedInterventionType,
     setSelectedInterventionType,
     interventions,
@@ -78,7 +78,7 @@ const MapControls = ({
   const canShowSatelliteToggle =
     !(
       isMobile &&
-      (selectedIntervention !== null || selectedSampleIntervention !== null)
+      (selectedIntervention !== null || selectedSampleTree !== null)
     ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
   const canShowInterventionDropdown =
@@ -97,7 +97,7 @@ const MapControls = ({
     projectSites: singleProject?.sites,
     selectedIntervention,
     setSelectedIntervention,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
     canShowInterventionDropdown,
@@ -109,7 +109,7 @@ const MapControls = ({
     allInterventions: AllInterventions,
     selectedIntervention,
     setSelectedIntervention,
-    setSelectedSampleIntervention,
+    setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
     hasProjectSites,

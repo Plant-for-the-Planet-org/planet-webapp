@@ -19,7 +19,7 @@ interface ProjectSiteListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
   setSelectedIntervention: SetState<Intervention | null>;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   canShowInterventionDropdown: boolean;
 }
 
@@ -29,13 +29,13 @@ const ProjectSiteList = ({
   setIsMenuOpen,
   selectedSiteData,
   setSelectedIntervention,
-  setSelectedSampleIntervention,
+  setSelectedSampleTree,
   canShowInterventionDropdown,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
   const handleSiteSelection = (index: number) => {
     setSelectedIntervention(null);
-    setSelectedSampleIntervention(null);
+    setSelectedSampleTree(null);
     setIsMenuOpen(false);
     setSelectedSite(index);
   };

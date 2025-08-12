@@ -42,7 +42,7 @@ interface Props {
   setSelectedSite: SetState<number | null>;
   selectedIntervention: Intervention | null;
   setSelectedIntervention: SetState<Intervention | null>;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   canShowInterventionDropdown: boolean;
@@ -54,7 +54,7 @@ const ProjectSiteDropdown = ({
   setSelectedSite,
   selectedIntervention,
   setSelectedIntervention,
-  setSelectedSampleIntervention,
+  setSelectedSampleTree,
   activeDropdown,
   setActiveDropdown,
   canShowInterventionDropdown,
@@ -152,7 +152,7 @@ const ProjectSiteDropdown = ({
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
           setSelectedIntervention={setSelectedIntervention}
-          setSelectedSampleIntervention={setSelectedSampleIntervention}
+          setSelectedSampleTree={setSelectedSampleTree}
           canShowInterventionDropdown={canShowInterventionDropdown}
         />
       )}

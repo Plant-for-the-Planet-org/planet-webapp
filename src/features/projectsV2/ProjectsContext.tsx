@@ -41,8 +41,8 @@ interface ProjectsState {
   setInterventions: SetState<Intervention[] | null>;
   selectedIntervention: Intervention | null;
   setSelectedIntervention: SetState<Intervention | null>;
-  selectedSampleIntervention: SampleTreeRegistration | null;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  selectedSampleTree: SampleTreeRegistration | null;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   hoveredIntervention: Intervention | null;
   setHoveredIntervention: SetState<Intervention | null>;
   selectedSite: number | null;
@@ -95,7 +95,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
   );
   const [selectedIntervention, setSelectedIntervention] =
     useState<Intervention | null>(null);
-  const [selectedSampleIntervention, setSelectedSampleIntervention] =
+  const [selectedSampleTree, setSelectedSampleTree] =
     useState<SampleTreeRegistration | null>(null);
   const [hoveredIntervention, setHoveredIntervention] =
     useState<Intervention | null>(null);
@@ -458,7 +458,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
 
   useEffect(() => {
     if (selectedMode === 'list' && singleProject !== null) {
-      setSelectedSampleIntervention(null);
+      setSelectedSampleTree(null);
       setSelectedIntervention(null);
       setHoveredIntervention(null);
     }
@@ -491,8 +491,8 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       setSelectedIntervention,
       hoveredIntervention,
       setHoveredIntervention,
-      selectedSampleIntervention,
-      setSelectedSampleIntervention,
+      selectedSampleTree,
+      setSelectedSampleTree,
       selectedSite,
       setSelectedSite,
       selectedInterventionType,
@@ -512,7 +512,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({
       singleProject,
       interventions,
       selectedIntervention,
-      selectedSampleIntervention,
+      selectedSampleTree,
       hoveredIntervention,
       selectedSite,
       preventShallowPush,

@@ -20,7 +20,7 @@ import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
-  selectedSampleIntervention: SampleTreeRegistration | null;
+  selectedSampleTree: SampleTreeRegistration | null;
   toggleSampleTree: (
     e: React.MouseEvent<HTMLDivElement>,
     st: SampleTreeRegistration //st sands for sample tree
@@ -31,7 +31,7 @@ const { colors } = themeProperties.designSystem;
 
 const SampleTreeMarker = ({
   sampleTree,
-  selectedSampleIntervention,
+  selectedSampleTree,
   toggleSampleTree,
 }: SampleTreeMarkerProps) => (
   <Marker
@@ -43,9 +43,7 @@ const SampleTreeMarker = ({
     <div
       key={`${sampleTree.id}-marker`}
       className={`${styles.single} ${
-        sampleTree.hid === selectedSampleIntervention?.hid
-          ? styles.singleSelected
-          : ''
+        sampleTree.hid === selectedSampleTree?.hid ? styles.singleSelected : ''
       }`}
       role="button"
       tabIndex={0}
@@ -60,8 +58,8 @@ export default function InterventionLayers(): React.ReactElement {
     hoveredIntervention,
     selectedIntervention,
     setSelectedIntervention,
-    setSelectedSampleIntervention,
-    selectedSampleIntervention,
+    setSelectedSampleTree,
+    selectedSampleTree,
     selectedInterventionType,
   } = useProjects();
   const { isSatelliteView, viewState } = useProjectsMap();
@@ -76,12 +74,12 @@ export default function InterventionLayers(): React.ReactElement {
     e.stopPropagation();
     e.preventDefault();
 
-    if (selectedSampleIntervention?.hid === tree.hid) {
-      setSelectedSampleIntervention(null);
+    if (selectedSampleTree?.hid === tree.hid) {
+      setSelectedSampleTree(null);
     } else {
       switch (tree.type) {
         case 'sample-tree-registration':
-          setSelectedSampleIntervention(tree);
+          setSelectedSampleTree(tree);
           break;
         case 'single-tree-registration':
           setSelectedIntervention(tree);
@@ -283,7 +281,7 @@ export default function InterventionLayers(): React.ReactElement {
               <SampleTreeMarker
                 key={sampleTree.id}
                 sampleTree={sampleTree}
-                selectedSampleIntervention={selectedSampleIntervention}
+                selectedSampleTree={selectedSampleTree}
                 toggleSampleTree={toggleSampleTree}
               />
             ))

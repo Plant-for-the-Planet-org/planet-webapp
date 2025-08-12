@@ -14,7 +14,7 @@ interface Props {
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
   type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
-  setSelectedSampleIntervention: SetState<SampleTreeRegistration | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const PlantInfoCard = ({
@@ -23,7 +23,7 @@ const PlantInfoCard = ({
   scientificName,
   measurements,
   type,
-  setSelectedSampleIntervention,
+  setSelectedSampleTree,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const sampleTreeConfig = [
@@ -80,7 +80,7 @@ const PlantInfoCard = ({
           <h2 className={styles.label}>{tProjectDetails('plot')}</h2>
           <button
             className={styles.showWholeArea}
-            onClick={() => setSelectedSampleIntervention(null)}
+            onClick={() => setSelectedSampleTree(null)}
           >
             {tProjectDetails('showWholeArea')}
           </button>
