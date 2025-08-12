@@ -37,9 +37,14 @@ const MultiTreeInfo = ({
     const area = turf.area(activeMultiTree.geometry);
     const hectaresCovered = area / 10000;
     return { totalTreesCount, hectaresCovered };
-  }, [activeMultiTree.geometry, activeMultiTree.type]);
+  }, [
+    activeMultiTree.geometry,
+    activeMultiTree.type,
+    activeMultiTree.plantedSpecies,
+  ]);
 
-  const plantingDensity = totalTreesCount / hectaresCovered;
+  const plantingDensity =
+    hectaresCovered > 0 ? totalTreesCount / hectaresCovered : 0;
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     const result = activeMultiTree.sampleInterventions.map((item) => {
