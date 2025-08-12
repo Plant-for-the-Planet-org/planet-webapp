@@ -3,7 +3,6 @@ import type { DateString } from './common';
 import type { Links } from './payments';
 import type { Polygon, Point } from 'geojson';
 
-// TODO - update Intervention types based on the latest API response.
 // TODO - consider moving this to planet-sdk
 export interface InterventionBase {
   hid: string;
@@ -45,14 +44,12 @@ export interface SingleTreeRegistration extends InterventionBase {
 
 export interface MultiTreeRegistration extends InterventionBase {
   type: 'multi-tree-registration';
-  nextMeasurementDate: DateString | null;
   sampleTreeCount: number;
   sampleInterventions: SampleTreeRegistration[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
   geometry: Point | Polygon;
   measurements: null;
-  nextMeasurementDate: null;
 }
 
 export type NonPlantingInterventionTypes = Exclude<
