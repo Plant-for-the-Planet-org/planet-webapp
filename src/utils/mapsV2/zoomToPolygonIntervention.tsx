@@ -2,9 +2,10 @@ import type { Position } from 'geojson';
 import type { ViewState } from 'react-map-gl-v7/maplibre';
 import type { MapRef } from '../../features/common/types/projectv2';
 
-import * as turf from '@turf/turf';
+import { polygon } from '@turf/helpers';
+import bbox from '@turf/bbox';
 
-export function zoomToPolygonPlantLocation(
+export function zoomToPolygonIntervention(
   coordinates: Position[],
   mapRef: MapRef,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
@@ -13,13 +14,13 @@ export function zoomToPolygonPlantLocation(
   if (!mapRef.current) {
     return;
   }
-  const polygon = turf.polygon([coordinates]);
-  const bbox = turf.bbox(polygon);
+  const polygonFeature = polygon([coordinates]);
+  const bounds = bbox(polygonFeature);
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
   map.fitBounds(
     [
-      [bbox[0], bbox[1]],
-      [bbox[2], bbox[3]],
+      [bounds[0], bounds[1]],
+      [bounds[2], bounds[3]],
     ],
     {
       duration: duration,

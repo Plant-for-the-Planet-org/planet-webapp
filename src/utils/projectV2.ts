@@ -2,7 +2,7 @@ import type {
   ProjectSite,
   TreeProjectClassification,
 } from '@planet-sdk/common';
-import type { PointLike } from 'react-map-gl-v7/maplibre';
+import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
 import type { Feature, MultiPolygon, Polygon, Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
@@ -13,14 +13,23 @@ import type {
   ProjectSiteFeature,
 } from '../features/common/types/projectv2';
 import type {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../features/common/types/plantLocation';
-import type { MapGeoJSONFeature } from 'react-map-gl-v7/maplibre';
+  Intervention,
+  SingleTreeRegistration,
+  OtherInterventions,
+  SampleTreeRegistration,
+} from '../features/common/types/intervention';
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
-import * as turf from '@turf/turf';
+import centroid from '@turf/centroid';
+
+interface MetaDataValue {
+  value: string;
+  label: string;
+}
+
+interface PublicMetaData {
+  [key: string]: string | MetaDataValue;
+}
 
 export type MobileOs = 'android' | 'ios' | undefined;
 
@@ -204,24 +213,22 @@ export const getSiteIndex = (
 };
 
 /**
- * Returns the plant location corresponding to the feature under the cursor.
+ * Retrieves the matching intervention based on the topmost hovered map feature.
  *
- * This is used to determine which plant location (polygon or point) the user is interacting with.
+ * This function checks whether the topmost feature in the provided feature list
+ * corresponds to a valid intervention layer (as defined by `PLANT_LAYERS`) and,
+ * if so, finds and returns the intervention with a matching `id`.
  *
- * Note:
- * - If multiple features are present, it uses the first feature in the array.
- * - The function assumes that the feature's `properties.id` corresponds to the `PlantLocation.id`.
- *
- * @param plantLocations - The array of all available plant locations
- * @param features - The array of rendered features returned by queryRenderedFeatures
- * @returns The matching PlantLocation object, or undefined if not found or if no features
+ * @param {Intervention[] | null} interventions - The list of intervention objects to match against.
+ * @param {MapGeoJSONFeature[]} features - An array of GeoJSON features returned from a map hover or click event.
+ * @returns {Intervention | undefined} The matched intervention if found, or `undefined` if no match exists or input is invalid.
  */
 
-export const getPlantLocationInfo = (
-  plantLocations: PlantLocation[] | null,
+export const getInterventionInfo = (
+  interventions: Intervention[] | null,
   features: MapGeoJSONFeature[]
-): PlantLocation | undefined => {
-  if (!plantLocations || plantLocations.length === 0 || features.length === 0)
+): Intervention | undefined => {
+  if (!interventions || interventions.length === 0 || features.length === 0)
     return;
 
   const topmostFeature = features[0]; // top layer
@@ -229,18 +236,20 @@ export const getPlantLocationInfo = (
   const isPlantLayer = PLANT_LAYERS.includes(layerId);
   if (!isPlantLayer) return;
 
-  return plantLocations.find((pl) => pl.id === topmostFeature.properties.id);
+  return interventions.find(
+    (intervention) => intervention.id === topmostFeature.properties.id
+  );
 };
 
 export const formatHid = (hid: string | undefined) => {
   return hid ? hid.slice(0, 3) + '-' + hid.slice(3) : null;
 };
 
-export const getPlantData = (
-  selected: PlantLocation | null,
-  hovered: PlantLocation | null,
-  selectedSample: SamplePlantLocation | null
-): PlantLocationSingle | SamplePlantLocation | undefined => {
+export const getActiveSingleTree = (
+  selected: Intervention | null,
+  hovered: Intervention | null,
+  selectedSample: SampleTreeRegistration | null
+): SingleTreeRegistration | SampleTreeRegistration | undefined => {
   if (selected?.type === 'single-tree-registration') return selected;
   if (hovered?.type === 'single-tree-registration') return hovered;
   if (selectedSample?.type === 'sample-tree-registration')
@@ -277,7 +286,7 @@ export const calculateCentroid = (features: MapProject[]) => {
     type: 'FeatureCollection',
     features,
   };
-  return turf.centroid(featureCollection);
+  return centroid(featureCollection);
 };
 
 /**
@@ -403,3 +412,78 @@ export function getSitesGeoJson(sites: ProjectSiteFeature[]): SitesGeoJSON {
     features: sites.filter((site) => !!site.geometry),
   };
 }
+
+function isJsonString(str: string) {
+  try {
+    const parsed = JSON.parse(str);
+    return typeof parsed === 'object' && parsed !== null;
+  } catch (e) {
+    return false;
+  }
+}
+
+export const createCardData = (interventionInfo: OtherInterventions | null) => {
+  // Initialize an array to store the cleaned key-value pairs
+  const cleanedData: { key: string; value: string }[] = [];
+
+  // Extract metadata from the interventionInfo object, if it exists
+  const parsedData = interventionInfo?.metadata;
+
+  // Check if `parsedData.public` exists, is an object, and is not an array
+  if (
+    parsedData?.public &&
+    typeof parsedData.public === 'object' &&
+    !Array.isArray(parsedData.public)
+  ) {
+    // Iterate over the entries of `parsedData.public` as key-value pairs
+    Object.entries(parsedData.public as PublicMetaData).forEach(
+      ([key, value]) => {
+        // Skip the entry if the key is 'isEntireSite' as it's used to show point location and no use to user
+        if (key !== 'isEntireSite') {
+          // If the value is a string, directly add it to cleanedData
+          if (typeof value === 'string') {
+            cleanedData.push({ value, key });
+          }
+          // If the value is an object with `value` and `label` properties
+          else if (
+            typeof value === 'object' &&
+            value !== null &&
+            'value' in value &&
+            'label' in value
+          ) {
+            // Check if the `value` property contains a valid JSON string
+            if (isJsonString(value.value)) {
+              try {
+                // Parse the JSON string
+                const parsedValue = JSON.parse(value.value);
+                // If the parsed value is an object with a `value` property, add it to cleanedData
+                if (
+                  parsedValue &&
+                  typeof parsedValue === 'object' &&
+                  'value' in parsedValue
+                ) {
+                  cleanedData.push({
+                    key: value.label, // Use the `label` property as the key
+                    value: parsedValue.value, // Use the parsed `value` property
+                  });
+                }
+              } catch (error) {
+                // Log an error if JSON parsing fails
+                console.error('Error parsing JSON:', error);
+              }
+            } else {
+              // If not a JSON string, add the `label` and `value` directly
+              cleanedData.push({
+                key: value.label,
+                value: value.value,
+              });
+            }
+          }
+        }
+      }
+    );
+  }
+
+  // Return the array of cleaned key-value pairs
+  return cleanedData;
+};

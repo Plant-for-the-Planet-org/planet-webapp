@@ -17,7 +17,7 @@ import { FlyToInterpolator } from 'react-map-gl';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import ExploreInfoModal from './ExploreInfoModal';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
@@ -151,7 +151,7 @@ export default function Explore(): ReactElement {
         zoom: 1.4,
         transitionDuration: 1200,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       };
       setViewPort(newViewport);
     } else {
@@ -166,7 +166,7 @@ export default function Explore(): ReactElement {
         zoom: 1.4,
         transitionDuration: 1200,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       };
       // setMapState(newMapState);
       setViewPort(newViewport);

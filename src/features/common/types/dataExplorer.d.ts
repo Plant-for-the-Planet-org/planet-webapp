@@ -81,12 +81,7 @@ export interface UncleanDistinctSpecies {
 
 export type DistinctSpecies = string[];
 
-export interface UncleanPlantLocations {
-  geometry: string;
-  guid: string;
-}
-
-export interface PlantLocation {
+export interface InterventionFeature {
   geometry: Point | Polygon;
   properties: {
     guid: string;
@@ -97,18 +92,18 @@ export interface PlantLocation {
   type: 'Feature';
 }
 
-export interface PlantLocations {
+export interface InterventionFeatureCollection {
   type: 'FeatureCollection';
-  features: PlantLocation[];
+  features: InterventionFeature[];
 }
 
-// --- /api/data-explorer/map/plant-location/[plantLocationId]
+// --- /api/data-explorer/map/intervention/[interventionGuid]
 export interface Measurements {
   width: string;
   height: string;
 }
 
-export interface SamplePlantLocation {
+export interface SampleIntervention {
   tag: string | null;
   guid: string;
   geometry: Point;
@@ -120,34 +115,34 @@ export interface PlantedSpecies {
   scientificName: string;
 }
 
-export interface PlantLocationDetailsQueryRes {
-  result: PlantLocationDetails;
+export interface InterventionDetailsQueryRes {
+  result: InterventionDetails;
 }
 
-export interface PlantLocationProperties {
+export interface InterventionProperties {
   hid: string;
   type: 'single-tree-registration' | 'multi-tree-registration';
 }
 
-export interface PlantLocationDetails {
-  properties: PlantLocationProperties;
+export interface InterventionDetails {
+  properties: InterventionProperties;
   plantedSpecies: PlantedSpecies[];
   totalPlantedTrees: number;
-  samplePlantLocations: null | SamplePlantLocation[];
-  totalSamplePlantLocations: null | number;
+  sampleInterventions: null | SampleIntervention[];
+  totalSampleInterventions: null | number;
 }
 
-// --- types for plantLocationDetailsApi ------
+// --- types for InterventionDetailsApi ------
 
-export interface PlantLocationDetailsApiResponse {
+export interface InterventionDetailsApiResponse {
   res: {
-    properties: PlantLocationProperties;
+    properties: InterventionProperties;
     plantedSpecies: {
       treeCount: number;
       scientificName: string;
     }[];
     totalPlantedTrees: number;
-    samplePlantLocations:
+    sampleInterventions:
       | null
       | {
           tag: string;
@@ -162,11 +157,11 @@ export interface PlantLocationDetailsApiResponse {
             height: string;
           };
         }[];
-    totalSamplePlantLocations: null | number;
+    totalSampleInterventions: null | number;
   };
 }
 
-export interface SinglePlantLocationApiResponse {
+export interface SingleInterventionApiResponse {
   geometry: Point | Polygon;
   properties: {
     guid: string;

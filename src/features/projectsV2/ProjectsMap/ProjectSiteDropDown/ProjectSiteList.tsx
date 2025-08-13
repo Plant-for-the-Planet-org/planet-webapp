@@ -1,8 +1,8 @@
 import type { SetState } from '../../../common/types/common';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 
 import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
@@ -18,8 +18,8 @@ interface ProjectSiteListProps {
   setSelectedSite: SetState<number | null>;
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
-  setSelectedPlantLocation: SetState<PlantLocation | null>;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedIntervention: SetState<Intervention | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   canShowInterventionDropdown: boolean;
 }
 
@@ -28,14 +28,14 @@ const ProjectSiteList = ({
   setSelectedSite,
   setIsMenuOpen,
   selectedSiteData,
-  setSelectedPlantLocation,
-  setSelectedSamplePlantLocation,
+  setSelectedIntervention,
+  setSelectedSampleTree,
   canShowInterventionDropdown,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
   const handleSiteSelection = (index: number) => {
-    setSelectedPlantLocation(null);
-    setSelectedSamplePlantLocation(null);
+    setSelectedIntervention(null);
+    setSelectedSampleTree(null);
     setIsMenuOpen(false);
     setSelectedSite(index);
   };
