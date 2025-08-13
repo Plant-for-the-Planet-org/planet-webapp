@@ -175,7 +175,7 @@ const ProjectDetails = ({
     [selectedIntervention, hoveredIntervention, selectedSampleTree]
   );
 
-  const commonInfoProps = {
+  const baseInterventionInfoProps = {
     isMobile,
     setSelectedSampleTree,
   };
@@ -194,34 +194,31 @@ const ProjectDetails = ({
         {shouldShowSingleTreeInfo && (
           <SingleTreeInfo
             activeSingleTree={activeSingleTree}
-            {...commonInfoProps}
+            {...baseInterventionInfoProps}
           />
         )}
         {shouldShowMultiTreeInfo && (
           <MultiTreeInfo
             activeMultiTree={activeMultiTree}
-            {...commonInfoProps}
+            {...baseInterventionInfoProps}
           />
         )}
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
-            selectedIntervention={
-              selectedIntervention &&
+            activeIntervention={
               selectedIntervention?.type !== 'single-tree-registration' &&
               selectedIntervention?.type !== 'multi-tree-registration'
                 ? selectedIntervention
                 : null
             }
             hoveredIntervention={
-              hoveredIntervention &&
               hoveredIntervention?.type !== 'single-tree-registration' &&
               hoveredIntervention?.type !== 'multi-tree-registration'
                 ? hoveredIntervention
                 : null
             }
-            setSelectedSampleTree={setSelectedSampleTree}
-            isMobile={isMobile}
+            {...baseInterventionInfoProps}
           />
         ) : null}
 

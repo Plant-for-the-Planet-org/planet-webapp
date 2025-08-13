@@ -18,7 +18,7 @@ import { createCardData } from '../../../../utils/projectV2';
 
 interface Props {
   hoveredIntervention?: OtherInterventions | null;
-  selectedIntervention: OtherInterventions | null;
+  activeIntervention: OtherInterventions | null;
   isMobile: boolean;
   setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
@@ -26,10 +26,10 @@ interface Props {
 const OtherInterventionInfo = ({
   isMobile,
   setSelectedSampleTree,
-  selectedIntervention,
+  activeIntervention,
   hoveredIntervention,
 }: Props) => {
-  const interventionInfo = hoveredIntervention || selectedIntervention;
+  const interventionInfo = hoveredIntervention || activeIntervention;
   if (!interventionInfo) return null;
   const sampleTrees = interventionInfo.sampleInterventions || [];
   const plantedSpecies = interventionInfo.plantedSpecies || [];

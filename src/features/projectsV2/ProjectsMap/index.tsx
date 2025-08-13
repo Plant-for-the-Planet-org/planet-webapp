@@ -300,7 +300,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     page: props.page,
   };
 
-  const commonInfoProps = {
+  const baseInterventionInfoProps = {
     isMobile: props.isMobile,
     setSelectedSampleTree,
   };
@@ -364,7 +364,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       {shouldShowMultiTreeInfo && (
         <MultiTreeInfo
           activeMultiTree={selectedIntervention}
-          {...commonInfoProps}
+          {...baseInterventionInfoProps}
         />
       )}
       {shouldShowSingleTreeInfo && (
@@ -373,20 +373,18 @@ function ProjectsMap(props: ProjectsMapProps) {
             selectedSampleTree ||
             (selectedIntervention as SingleTreeRegistration)
           }
-          {...commonInfoProps}
+          {...baseInterventionInfoProps}
         />
       )}
       {shouldShowOtherIntervention ? (
         <OtherInterventionInfo
-          selectedIntervention={
-            selectedIntervention &&
+          activeIntervention={
             selectedIntervention?.type !== 'single-tree-registration' &&
             selectedIntervention?.type !== 'multi-tree-registration'
               ? selectedIntervention
               : null
           }
-          setSelectedSampleTree={setSelectedSampleTree}
-          isMobile={props.isMobile}
+          {...baseInterventionInfoProps}
         />
       ) : null}
     </>
