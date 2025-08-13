@@ -1,48 +1,53 @@
 import type {
-  PlantLocationMulti,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  MultiTreeRegistration,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import * as turf from '@turf/turf';
-import styles from '../styles/PlantLocationInfo.module.scss';
-import PlantLocationHeader from './microComponents/PlantLocationHeader';
+import styles from '../styles/InterventionInfo.module.scss';
+import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
-import SampleTrees from './microComponents/SampleTrees';
+import SampleTreesInfo from './microComponents/SampleTreesInfo';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import PlantingDetails from './microComponents/PlantingDetails';
 import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 
 interface Props {
-  plantLocationInfo: PlantLocationMulti;
+  activeMultiTree: MultiTreeRegistration;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
-const MultiPlantLocationInfo = ({
-  plantLocationInfo,
+const MultiTreeInfo = ({
+  activeMultiTree,
   isMobile,
-  setSelectedSamplePlantLocation,
+  setSelectedSampleTree,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
-  const { totalTreesCount, plantLocationAreaHectares } = useMemo(() => {
-    const totalTreesCount = plantLocationInfo.plantedSpecies.reduce(
+  const { totalTreesCount, hectaresCovered } = useMemo(() => {
+    const totalTreesCount = activeMultiTree.plantedSpecies.reduce(
       (sum, species) => sum + species.treeCount,
       0
     );
-    const area = turf.area(plantLocationInfo.geometry);
-    const plantLocationAreaHectares = area / 10000;
-    return { totalTreesCount, plantLocationAreaHectares };
-  }, [plantLocationInfo.geometry, plantLocationInfo.type]);
+    const area = turf.area(activeMultiTree.geometry);
+    const hectaresCovered = area / 10000;
+    return { totalTreesCount, hectaresCovered };
+  }, [
+    activeMultiTree.geometry,
+    activeMultiTree.type,
+    activeMultiTree.plantedSpecies,
+  ]);
 
-  const plantingDensity = totalTreesCount / plantLocationAreaHectares;
+  const plantingDensity =
+    hectaresCovered > 0 ? totalTreesCount / hectaresCovered : 0;
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    const result = plantLocationInfo.sampleInterventions.map((item) => {
+    const result = activeMultiTree.sampleInterventions.map((item) => {
       return {
         id: item.coordinates[0].id,
         image: item.coordinates[0].image ?? '',
@@ -50,7 +55,7 @@ const MultiPlantLocationInfo = ({
       };
     });
     return result;
-  }, [plantLocationInfo.sampleInterventions]);
+  }, [activeMultiTree.sampleInterventions]);
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
@@ -58,11 +63,11 @@ const MultiPlantLocationInfo = ({
 
   const content = [
     <>
-      <PlantLocationHeader
-        key="plantLocationHeader"
-        plHid={plantLocationInfo.hid}
+      <MultiTreeInfoHeader
+        key="multiTreeInfoHeader"
+        hid={activeMultiTree.hid}
         totalTreesCount={totalTreesCount}
-        plantLocationAreaHectares={plantLocationAreaHectares}
+        hectaresCovered={hectaresCovered}
       />
       {shouldDisplayImageCarousel && (
         <ImageSlider
@@ -78,35 +83,32 @@ const MultiPlantLocationInfo = ({
     <PlantingDetails
       key="plantingDetails"
       plantingDensity={plantingDensity}
-      plantDate={plantLocationInfo.interventionStartDate}
+      plantDate={activeMultiTree.interventionStartDate}
     />,
-    plantLocationInfo.plantedSpecies.length > 0 && (
+    activeMultiTree.plantedSpecies.length > 0 && (
       <SpeciesPlanted
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
-        plantedSpecies={plantLocationInfo.plantedSpecies}
+        plantedSpecies={activeMultiTree.plantedSpecies}
       />
     ),
-    plantLocationInfo.sampleInterventions.length > 0 && (
-      <SampleTrees
+    activeMultiTree.sampleInterventions.length > 0 && (
+      <SampleTreesInfo
         key="sampleTrees"
-        sampleInterventions={plantLocationInfo.sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        sampleTrees={activeMultiTree.sampleInterventions}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     ),
   ].filter(Boolean);
 
   return isMobile ? (
-    <MobileInfoSwiper
-      slides={content}
-      uniqueKey={plantLocationInfo.hid || ''}
-    />
+    <MobileInfoSwiper slides={content} uniqueKey={activeMultiTree.hid || ''} />
   ) : (
-    <section className={styles.plantLocationInfoSection}>
+    <section className={styles.interventionInfoSection}>
       {content}
       <TreeMapperBrand />
     </section>
   );
 };
 
-export default MultiPlantLocationInfo;
+export default MultiTreeInfo;

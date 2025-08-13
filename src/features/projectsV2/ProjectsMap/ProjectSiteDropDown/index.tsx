@@ -1,9 +1,9 @@
 import type { SetState } from '../../../common/types/common';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 import type { DropdownType } from '../../../common/types/projectv2';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
@@ -40,9 +40,9 @@ interface Props {
   projectSites: ProjectSite;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
-  selectedPlantLocation: PlantLocation | null;
-  setSelectedPlantLocation: SetState<PlantLocation | null>;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  selectedIntervention: Intervention | null;
+  setSelectedIntervention: SetState<Intervention | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
   canShowInterventionDropdown: boolean;
@@ -52,9 +52,9 @@ const ProjectSiteDropdown = ({
   projectSites,
   selectedSite,
   setSelectedSite,
-  selectedPlantLocation,
-  setSelectedPlantLocation,
-  setSelectedSamplePlantLocation,
+  selectedIntervention,
+  setSelectedIntervention,
+  setSelectedSampleTree,
   activeDropdown,
   setActiveDropdown,
   canShowInterventionDropdown,
@@ -106,7 +106,7 @@ const ProjectSiteDropdown = ({
             width={27}
             color={themeProperties.designSystem.colors.coreText}
           />
-          {selectedPlantLocation && query.ploc ? (
+          {selectedIntervention && query.ploc ? (
             '-'
           ) : (
             <>
@@ -151,8 +151,8 @@ const ProjectSiteDropdown = ({
           setSelectedSite={setSelectedSite}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
-          setSelectedPlantLocation={setSelectedPlantLocation}
-          setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+          setSelectedIntervention={setSelectedIntervention}
+          setSelectedSampleTree={setSelectedSampleTree}
           canShowInterventionDropdown={canShowInterventionDropdown}
         />
       )}

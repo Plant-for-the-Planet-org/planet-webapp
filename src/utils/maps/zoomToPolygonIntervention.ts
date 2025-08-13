@@ -1,6 +1,6 @@
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { SetState } from '../../features/common/types/common';
-import type { PlantLocation } from '../../features/common/types/plantLocation';
+import type { Intervention } from '../../features/common/types/intervention';
 import type { Position } from 'geojson';
 import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
@@ -17,7 +17,7 @@ import { handleError } from '@planet-sdk/common';
  * @param setViewPort - function to set the viewport
  * @param {number} duration - in ms
  */
-export function zoomToPolygonPlantLocation(
+export function zoomToPolygonIntervention(
   coordinates: Position[],
   viewport: ViewPort,
   isMobile: boolean,
@@ -63,16 +63,16 @@ export function zoomToPolygonPlantLocation(
   }
 }
 
-export async function getAllPlantLocations(
+export async function getInterventions(
   tenant: string | undefined,
   project: string,
   setErrors: SetState<SerializedError[] | null>,
   redirect: (url: string) => void
-): Promise<PlantLocation[] | null | void> {
+): Promise<Intervention[] | null | void> {
   try {
-    const result = await getRequest<PlantLocation[]>({
+    const result = await getRequest<Intervention[]>({
       tenant,
-      url: `/app/plantLocations/${project}`,
+      url: `/app/interventions/${project}`,
       queryParams: {
         _scope: 'extended',
       },

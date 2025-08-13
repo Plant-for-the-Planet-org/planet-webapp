@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type {
-  PlantLocationDetails,
-  PlantLocationDetailsQueryRes,
+  InterventionDetails,
+  InterventionDetailsQueryRes,
 } from '../../../../../src/features/common/types/dataExplorer';
 
 import nc from 'next-connect';
@@ -10,8 +10,7 @@ import { query } from '../../../../../src/utils/connectDB';
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.get(async (req, response) => {
-  const { plantLocationId } = req.query;
-
+  const { interventionGuid } = req.query;
   const queryText = `
     SELECT 
 			JSON_BUILD_OBJECT(
@@ -44,7 +43,7 @@ handler.get(async (req, response) => {
 					WHERE iv.guid = $1
 					GROUP BY iv.id
 				),
-				'samplePlantLocations', (
+				'sampleInterventions', (
 					SELECT COALESCE(JSON_AGG(
 						JSON_BUILD_OBJECT(
 							'measurements', JSON_BUILD_OBJECT(
@@ -72,7 +71,7 @@ handler.get(async (req, response) => {
 					WHERE iv.guid = $1
 					GROUP BY iv.parent_id
 				),
-				'totalSamplePlantLocations', (
+				'totalSampleInterventions', (
 					SELECT COUNT(*) 
 					FROM intervention iv
 					INNER JOIN intervention siv ON iv.id = siv.parent_id
@@ -82,14 +81,14 @@ handler.get(async (req, response) => {
 			) as result
   `;
 
-  const res = await query<PlantLocationDetailsQueryRes>(queryText, [
-    plantLocationId,
+  const res = await query<InterventionDetailsQueryRes>(queryText, [
+    interventionGuid,
   ]);
 
-  const plantLocationDetails: PlantLocationDetails = res[0]?.result || null;
+  const interventionDetails: InterventionDetails = res[0]?.result || null;
 
   response.status(200).json({
-    res: plantLocationDetails,
+    res: interventionDetails,
   });
 });
 

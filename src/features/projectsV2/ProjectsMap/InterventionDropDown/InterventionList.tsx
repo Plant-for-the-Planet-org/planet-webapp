@@ -1,5 +1,6 @@
 import type { SetState } from '../../../common/types/common';
 import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+import type { InterventionTypes } from '@planet-sdk/common';
 
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
 import { useTranslations } from 'next-intl';
@@ -15,15 +16,16 @@ interface InterventionListProps {
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
   hasProjectSites?: boolean;
-  existingIntervention: string[];
+  availableInterventionTypes: InterventionTypes[];
 }
+
 const InterventionList = ({
   interventionList,
   setSelectedInterventionType,
   setIsMenuOpen,
   selectedInterventionData,
   hasProjectSites,
-  existingIntervention,
+  availableInterventionTypes,
 }: InterventionListProps) => {
   const tProjectDetails = useTranslations('ProjectDetails.intervention');
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
@@ -31,14 +33,16 @@ const InterventionList = ({
     setSelectedInterventionType(key);
   };
 
-  const shouldRenderIntervention = (interventionValue: string) => {
+  const shouldRenderIntervention = (interventionValue: INTERVENTION_TYPE) => {
     const showAllIntervention = interventionValue === 'all';
-    const showExistingIntervention =
-      existingIntervention.includes(interventionValue);
-    if (showAllIntervention && existingIntervention.length === 1) {
+
+    const isValidIntervention = availableInterventionTypes.includes(
+      interventionValue as InterventionTypes
+    );
+    if (showAllIntervention && availableInterventionTypes.length === 1) {
       return false;
     }
-    return showExistingIntervention || showAllIntervention;
+    return isValidIntervention || showAllIntervention;
   };
 
   return (

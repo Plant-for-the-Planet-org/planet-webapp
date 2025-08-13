@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Point, Polygon } from 'geojson';
-import type { SinglePlantLocationApiResponse } from '../../../../../src/features/common/types/dataExplorer';
+import type { SingleInterventionApiResponse } from '../../../../../src/features/common/types/dataExplorer';
 
 import { query } from '../../../../../src/utils/connectDB';
 import nc from 'next-connect';
@@ -8,7 +8,7 @@ import { QueryType } from '../../../../../src/features/user/TreeMapper/Analytics
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
-interface UncleanPlantLocations {
+interface UncleanInterventions {
   geometry: Point | Polygon;
   guid: string;
   treeCount: number;
@@ -70,16 +70,16 @@ handler.post(async (req, response) => {
       paramIndex += 3;
     }
 
-    const qRes = await query<UncleanPlantLocations>(queryText, values);
+    const qRes = await query<UncleanInterventions>(queryText, values);
 
-    const plantLocations: SinglePlantLocationApiResponse[] = qRes.map(
-      (plantLocation) => ({
+    const interventions: SingleInterventionApiResponse[] = qRes.map(
+      (intervention) => ({
         type: 'Feature',
         properties: {
-          guid: plantLocation.guid,
-          treeCount: plantLocation.treeCount,
+          guid: intervention.guid,
+          treeCount: intervention.treeCount,
         },
-        geometry: plantLocation.geometry,
+        geometry: intervention.geometry,
       })
     );
 
@@ -88,7 +88,7 @@ handler.post(async (req, response) => {
       's-maxage=7200, stale-while-revalidate'
     );
 
-    response.status(200).json({ data: plantLocations });
+    response.status(200).json({ data: interventions });
   } catch (err) {
     console.error('Error fetching plant location data:', err);
     response.status(500).json({ error: 'Internal Server Error' });

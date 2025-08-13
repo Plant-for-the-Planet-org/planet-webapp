@@ -1,4 +1,4 @@
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 
 interface Props {
   metadata: { key: string; value: string }[];

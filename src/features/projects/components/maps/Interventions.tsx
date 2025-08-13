@@ -1,41 +1,41 @@
 import type { ReactElement } from 'react';
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  MultiTreeRegistration,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
 import React from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
-import styles from '../../styles/PlantLocation.module.scss';
+import styles from '../../styles/Intervention.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
 
-export default function PlantLocations(): ReactElement {
+export default function Interventions(): ReactElement {
   const {
-    plantLocations,
+    interventions,
     hoveredPl,
     selectedPl,
     setSelectedPl,
     setHoveredPl,
     viewport,
     satellite,
-    setSamplePlantLocation,
-    samplePlantLocation,
+    setSampleIntervention,
+    sampleIntervention,
   } = useProjectProps();
 
   const t = useTranslations('Maps');
   const locale = useLocale();
 
-  const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
+  const openPl = (pl: SingleTreeRegistration | SampleTreeRegistration) => {
     switch (pl.type) {
       case 'sample-tree-registration':
-        setSamplePlantLocation(pl);
+        setSampleIntervention(pl);
         break;
       case 'single-tree-registration':
         setSelectedPl(pl);
@@ -45,7 +45,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
+  const onHover = (pl: SingleTreeRegistration | SampleTreeRegistration) => {
     setHoveredPl(pl);
   };
 
@@ -58,7 +58,7 @@ export default function PlantLocations(): ReactElement {
       setHoveredPl(null);
   };
 
-  const getPlTreeCount = (pl: PlantLocationMulti) => {
+  const getPlTreeCount = (pl: MultiTreeRegistration) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -73,7 +73,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const getPlArea = (pl: PlantLocationMulti) => {
+  const getPlArea = (pl: MultiTreeRegistration) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -82,7 +82,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const getPolygonColor = (pl: PlantLocationMulti) => {
+  const getPolygonColor = (pl: MultiTreeRegistration) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
@@ -99,7 +99,7 @@ export default function PlantLocations(): ReactElement {
     }
   };
 
-  const getDateDiff = (pl: PlantLocation) => {
+  const getDateDiff = (pl: Intervention) => {
     const today = new Date();
     const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
@@ -134,11 +134,11 @@ export default function PlantLocations(): ReactElement {
     };
   };
 
-  if (!plantLocations) {
+  if (!interventions) {
     return <></>;
   }
 
-  const features = plantLocations.map((el) => {
+  const features = interventions.map((el) => {
     const isSelected = selectedPl && selectedPl.id === el.id;
     const isHovered = hoveredPl && hoveredPl.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
@@ -214,7 +214,7 @@ export default function PlantLocations(): ReactElement {
                     <div
                       key={`${spl.id}-marker`}
                       className={`${styles.single} ${
-                        spl.hid === samplePlantLocation?.hid
+                        spl.hid === sampleIntervention?.hid
                           ? styles.singleSelected
                           : ''
                       }`}

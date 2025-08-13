@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
-import type { SampleTree } from '../../../../common/types/plantLocation';
+import type { MultiTreeRegistration } from '../../../../common/types/intervention';
+import type { SampleTree } from '../../../../common/types/intervention';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
 
 import React from 'react';
@@ -25,7 +25,7 @@ interface Props {
   control: Control<SampleTreeFormData>;
   userLang: string;
   item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
-  plantLocation: PlantLocationMulti;
+  intervention: MultiTreeRegistration;
   errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }
@@ -37,7 +37,7 @@ export default function SampleTreeCard({
   control,
   userLang,
   item,
-  plantLocation,
+  intervention,
   errors,
 }: Props): ReactElement {
   const sampleTrees = getValues();
@@ -237,9 +237,9 @@ export default function SampleTreeCard({
                 value={value}
                 select
               >
-                {plantLocation?.plantedSpecies.map((species, index) => {
+                {intervention?.plantedSpecies.map((species, index) => {
                   if (!species.otherSpecies) return;
-                  if (plantLocation?.plantedSpecies.length === 1) {
+                  if (intervention?.plantedSpecies.length === 1) {
                     return (
                       <MenuItem
                         key={index}

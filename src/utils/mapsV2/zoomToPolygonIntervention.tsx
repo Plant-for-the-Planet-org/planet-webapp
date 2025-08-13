@@ -4,7 +4,7 @@ import type { MapRef } from '../../features/common/types/projectv2';
 
 import * as turf from '@turf/turf';
 
-export function zoomToPolygonPlantLocation(
+export function zoomToPolygonIntervention(
   coordinates: Position[],
   mapRef: MapRef,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,

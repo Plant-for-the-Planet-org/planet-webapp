@@ -1,122 +1,39 @@
 import type {
   OtherInterventions,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import styles from '../styles/PlantLocationInfo.module.scss';
+import styles from '../styles/InterventionInfo.module.scss';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
-import SampleTrees from './microComponents/SampleTrees';
+import SampleTreesInfo from './microComponents/SampleTreesInfo';
 import TreeMapperBrand from './microComponents/TreeMapperBrand';
 import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
-import InterventionHeader from './microComponents/InterventionHeader';
-
-interface MetaDataValue {
-  value: string;
-  label: string;
-}
-
-interface PublicMetaData {
-  [key: string]: string | MetaDataValue;
-}
-
-function isJsonString(str: string) {
-  try {
-    const parsed = JSON.parse(str);
-    return typeof parsed === 'object' && parsed !== null;
-  } catch (e) {
-    return false;
-  }
-}
-
-const createCardData = (plantLocationInfo: OtherInterventions | null) => {
-  // Initialize an array to store the cleaned key-value pairs
-  const cleanedData: { key: string; value: string }[] = [];
-
-  // Extract metadata from the plantLocationInfo object, if it exists
-  const parsedData = plantLocationInfo?.metadata;
-
-  // Check if `parsedData.public` exists, is an object, and is not an array
-  if (
-    parsedData?.public &&
-    typeof parsedData.public === 'object' &&
-    !Array.isArray(parsedData.public)
-  ) {
-    // Iterate over the entries of `parsedData.public` as key-value pairs
-    Object.entries(parsedData.public as PublicMetaData).forEach(
-      ([key, value]) => {
-        // Skip the entry if the key is 'isEntireSite' as it's used to show point location and no use to user
-        if (key !== 'isEntireSite') {
-          // If the value is a string, directly add it to cleanedData
-          if (typeof value === 'string') {
-            cleanedData.push({ value, key });
-          }
-          // If the value is an object with `value` and `label` properties
-          else if (
-            typeof value === 'object' &&
-            value !== null &&
-            'value' in value &&
-            'label' in value
-          ) {
-            // Check if the `value` property contains a valid JSON string
-            if (isJsonString(value.value)) {
-              try {
-                // Parse the JSON string
-                const parsedValue = JSON.parse(value.value);
-                // If the parsed value is an object with a `value` property, add it to cleanedData
-                if (
-                  parsedValue &&
-                  typeof parsedValue === 'object' &&
-                  'value' in parsedValue
-                ) {
-                  cleanedData.push({
-                    key: value.label, // Use the `label` property as the key
-                    value: parsedValue.value, // Use the parsed `value` property
-                  });
-                }
-              } catch (error) {
-                // Log an error if JSON parsing fails
-                console.error('Error parsing JSON:', error);
-              }
-            } else {
-              // If not a JSON string, add the `label` and `value` directly
-              cleanedData.push({
-                key: value.label,
-                value: value.value,
-              });
-            }
-          }
-        }
-      }
-    );
-  }
-
-  // Return the array of cleaned key-value pairs
-  return cleanedData;
-};
+import OtherInterventionInfoHeader from './microComponents/OtherInterventionInfoHeader';
+import { createCardData } from '../../../../utils/projectV2';
 
 interface Props {
-  hoveredPlantLocation?: OtherInterventions | null;
-  selectedPlantLocation: OtherInterventions | null;
+  hoveredIntervention?: OtherInterventions | null;
+  activeIntervention: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const OtherInterventionInfo = ({
   isMobile,
-  setSelectedSamplePlantLocation,
-  selectedPlantLocation,
-  hoveredPlantLocation,
+  setSelectedSampleTree,
+  activeIntervention,
+  hoveredIntervention,
 }: Props) => {
-  const plantLocationInfo = hoveredPlantLocation || selectedPlantLocation;
-  if (!plantLocationInfo) return null;
-  const sampleInterventions = plantLocationInfo.sampleInterventions || [];
-  const plantedSpecies = plantLocationInfo.plantedSpecies || [];
-  const hasSampleInterventions = sampleInterventions.length > 0;
+  const interventionInfo = hoveredIntervention || activeIntervention;
+  if (!interventionInfo) return null;
+  const sampleTrees = interventionInfo.sampleInterventions || [];
+  const plantedSpecies = interventionInfo.plantedSpecies || [];
+  const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
 
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -128,11 +45,11 @@ const OtherInterventionInfo = ({
         )
       : 0;
     return { totalTreesCount };
-  }, [plantLocationInfo, plantLocationInfo.type]);
+  }, [interventionInfo, interventionInfo.type]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
-    if (hasSampleInterventions) {
-      const result = sampleInterventions.map((item) => {
+    if (hasSampleTrees) {
+      const result = sampleTrees.map((item) => {
         return {
           id: item.coordinates[0].id,
           image: item.coordinates[0].image ?? '',
@@ -141,20 +58,20 @@ const OtherInterventionInfo = ({
       });
       return result;
     }
-  }, [plantLocationInfo]);
+  }, [interventionInfo]);
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
-  const cleanedPublicMetadata = createCardData(plantLocationInfo);
+  const cleanedPublicMetadata = createCardData(interventionInfo);
 
   const content = [
     <>
-      <InterventionHeader
-        plHid={plantLocationInfo.hid}
-        interventionType={plantLocationInfo.type}
-        plantDate={plantLocationInfo.interventionStartDate}
+      <OtherInterventionInfoHeader
+        hid={interventionInfo.hid}
+        interventionType={interventionInfo.type}
+        plantDate={interventionInfo.interventionStartDate}
         key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
@@ -172,8 +89,8 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={cleanedPublicMetadata}
-        plantDate={plantLocationInfo.interventionStartDate}
-        type={plantLocationInfo.type}
+        plantDate={interventionInfo.interventionStartDate}
+        type={interventionInfo.type}
       />
     ),
     hasPlantedSpecies && (
@@ -183,11 +100,11 @@ const OtherInterventionInfo = ({
         plantedSpecies={plantedSpecies}
       />
     ),
-    hasSampleInterventions && (
-      <SampleTrees
+    hasSampleTrees && (
+      <SampleTreesInfo
         key="sampleTrees"
-        sampleInterventions={sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        sampleTrees={sampleTrees}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     ),
   ].filter(Boolean);
@@ -196,11 +113,11 @@ const OtherInterventionInfo = ({
     <>
       <MobileInfoSwiper
         slides={content}
-        uniqueKey={plantLocationInfo.hid || ''}
+        uniqueKey={interventionInfo.hid || ''}
       />
     </>
   ) : (
-    <section className={styles.plantLocationInfoSection}>
+    <section className={styles.interventionInfoSection}>
       {content}
       <TreeMapperBrand />
     </section>
