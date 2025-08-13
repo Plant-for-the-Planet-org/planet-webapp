@@ -1,11 +1,11 @@
 import type {
   DistinctSpecies,
-  PlantLocation,
-  PlantLocationDetailsApiResponse,
-  PlantLocations,
+  InterventionFeature,
+  InterventionDetailsApiResponse,
+  InterventionFeatureCollection,
   Feature,
   FeatureCollection,
-  SinglePlantLocationApiResponse,
+  SingleInterventionApiResponse,
 } from '../../../../../common/types/dataExplorer';
 import type { ProjectType } from '../ProjectTypeSelector';
 import type { ChangeEvent, MutableRefObject } from 'react';
@@ -17,7 +17,8 @@ import { useTranslations } from 'next-intl';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import * as turf from '@turf/turf';
+import center from '@turf/center';
+import area from '@turf/area';
 import MapGL, { Layer, NavigationControl, Source } from 'react-map-gl';
 
 import { Container } from '../Container';
@@ -39,7 +40,7 @@ import {
   parseISO,
 } from 'date-fns';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
-import PlantLocationDetails from './components/PlantLocationDetails';
+import InterventionDetails from './components/InterventionDetails';
 import MapCredit from './components/MapCredit';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import themeProperties from '../../../../../../theme/themeProperties';
@@ -129,14 +130,13 @@ export const MapContainer = () => {
     null
   );
   const [projectSite, setProjectSite] = useState<Feature | null>(null);
-  const [plantLocations, setPlantLocations] = useState<PlantLocations | null>(
-    null
-  );
-  const [plantLocationDetails, setPlantLocationDetails] = useState<
-    PlantLocationDetailsApiResponse['res'] | null
+  const [interventions, setInterventions] =
+    useState<InterventionFeatureCollection | null>(null);
+  const [interventionDetails, setInterventionDetails] = useState<
+    InterventionDetailsApiResponse['res'] | null
   >(null);
   const [selectedLayer, setSelectedLayer] = useState<
-    PlantLocation['properties'] | null
+    InterventionFeature['properties'] | null
   >(null);
   const [search, setSearch] = useState<string>('');
   const [queryType, setQueryType] = useState<QueryType | null>(null);
@@ -157,11 +157,11 @@ export const MapContainer = () => {
     method: HTTP_METHOD.GET,
   });
 
-  // Custom hook for making requests to fetch plant locations
-  const { makeRequest: makeReqToFetchPlantLocation } = useNextRequest<{
-    data: SinglePlantLocationApiResponse[];
+  // Custom hook for making requests to fetch interventions
+  const { makeRequest: makeReqToFetchInterventions } = useNextRequest<{
+    data: SingleInterventionApiResponse[];
   }>({
-    url: `/api/data-explorer/map/plant-location`,
+    url: `/api/data-explorer/map/intervention`,
     method: HTTP_METHOD.POST,
     body: {
       projectId: project?.id,
@@ -173,10 +173,10 @@ export const MapContainer = () => {
     },
   });
 
-  // Custom hook for making requests to fetch plant location details
-  const { makeRequest: makeReqToFetchPlantLocationDetails } =
-    useNextRequest<PlantLocationDetailsApiResponse>({
-      url: `/api/data-explorer/map/plant-location/${selectedLayer?.guid}`,
+  // Custom hook for making requests to fetch intervention details
+  const { makeRequest: makeReqToFetchInterventionDetails } =
+    useNextRequest<InterventionDetailsApiResponse>({
+      url: `/api/data-explorer/map/intervention/${selectedLayer?.guid}`,
       method: HTTP_METHOD.GET,
     });
 
@@ -184,8 +184,8 @@ export const MapContainer = () => {
     if (selectedLayer) {
       setLoading(true);
       const { res } =
-        (await makeReqToFetchPlantLocationDetails()) as PlantLocationDetailsApiResponse;
-      setPlantLocationDetails(res);
+        (await makeReqToFetchInterventionDetails()) as InterventionDetailsApiResponse;
+      setInterventionDetails(res);
       setLoading(false);
     }
   };
@@ -221,7 +221,7 @@ export const MapContainer = () => {
   }, [project]);
 
   // Progamatically navigate to another location on the map
-  const _setViewport = (feature: Feature | PlantLocation, zoom = 16) => {
+  const _setViewport = (feature: Feature | InterventionFeature, zoom = 16) => {
     let centeroid;
 
     if (feature.geometry === null) {
@@ -235,7 +235,7 @@ export const MapContainer = () => {
       };
       zoom = 0;
     } else {
-      centeroid = turf.center(feature);
+      centeroid = center(feature);
     }
 
     if (centeroid?.geometry) {
@@ -254,40 +254,42 @@ export const MapContainer = () => {
   // This data will be used to render the plant locations on the map
   const fetchProjectLocations = async () => {
     setLoading(true);
-    const res = await makeReqToFetchPlantLocation();
+    const res = await makeReqToFetchInterventions();
     if (res) {
       if (res.data.length === 0) {
-        setPlantLocationDetails(null);
+        setInterventionDetails(null);
       }
 
-      const _plantLocations: PlantLocation[] = res.data.map((pl) => {
-        // Calculate the area based on the feature's coordinates using Turf.js
-        const area = turf.area(pl.geometry);
-        const treeCount = pl.properties.treeCount;
-        const density = treeCount / area;
+      const interventionFeatures: InterventionFeature[] = res.data.map(
+        (intervention) => {
+          // Calculate the area based on the feature's coordinates using Turf.js
+          const polygonAreaSqMeters = area(intervention.geometry);
+          const treeCount = intervention.properties.treeCount;
+          const density = treeCount / polygonAreaSqMeters;
 
-        // Add the calculated density to the feature properties
-        return {
-          geometry: pl.geometry,
-          type: pl.type,
-          properties: {
-            ...pl.properties,
-            density: density,
-            opacity: getPolygonOpacity(density),
-          },
-        };
-      });
+          // Add the calculated density to the feature properties
+          return {
+            geometry: intervention.geometry,
+            type: intervention.type,
+            properties: {
+              ...intervention.properties,
+              density: density,
+              opacity: getPolygonOpacity(density),
+            },
+          };
+        }
+      );
 
       const _featureCollection = {
         type: 'FeatureCollection',
-        features: _plantLocations,
+        features: interventionFeatures,
       };
-      setPlantLocations(_featureCollection as PlantLocations);
-      if (_plantLocations.length > 0) {
-        const defaultFeature = _plantLocations[0];
+      setInterventions(_featureCollection as InterventionFeatureCollection);
+      if (interventionFeatures.length > 0) {
+        const defaultFeature = interventionFeatures[0];
         _setViewport(defaultFeature);
         setSelectedLayer(
-          _plantLocations[0] ? _plantLocations[0].properties : null
+          interventionFeatures[0] ? interventionFeatures[0].properties : null
         );
       }
     }
@@ -441,7 +443,7 @@ export const MapContainer = () => {
       overrideBodyStyles={styles.body}
     >
       <div className={styles.mapContainer}>
-        {plantLocations && projectSites ? (
+        {interventions && projectSites ? (
           <>
             <MapGL
               ref={mapRef}
@@ -454,7 +456,7 @@ export const MapContainer = () => {
               onMouseLeave={onMouseLeave}
               interactiveLayerIds={['point-layer', 'plant-locations-fill']}
             >
-              <Source type="geojson" data={plantLocations}>
+              <Source type="geojson" data={interventions}>
                 <Layer
                   id={`point-layer`}
                   type="circle"
@@ -500,9 +502,9 @@ export const MapContainer = () => {
                 <NavigationControl showCompass={false} />
               </div>
               {selectedLayer && (
-                <PlantLocationDetails
+                <InterventionDetails
                   selectedLayer={selectedLayer}
-                  plantLocationDetails={plantLocationDetails}
+                  interventionDetails={interventionDetails}
                   loading={loading}
                 />
               )}

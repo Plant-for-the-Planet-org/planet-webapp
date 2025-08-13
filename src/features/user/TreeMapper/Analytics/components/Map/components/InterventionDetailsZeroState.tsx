@@ -1,4 +1,4 @@
-const PlantLocationDetailsZeroState = () => {
+const InterventionDetailsZeroState = () => {
   return (
     <svg
       width="298"
@@ -212,4 +212,4 @@ const PlantLocationDetailsZeroState = () => {
   );
 };
 
-export default PlantLocationDetailsZeroState;
+export default InterventionDetailsZeroState;

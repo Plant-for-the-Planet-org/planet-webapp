@@ -8,7 +8,7 @@ import type {
 import { handleError } from '@planet-sdk/common';
 
 import { MenuItem, TextField, Button } from '@mui/material';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -66,7 +66,7 @@ function RegisterTreesForm({
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setPlantLocation] = React.useState<
+  const [interventionCoordinates, setInterventionCoordinates] = React.useState<
     number[] | undefined
   >(undefined);
   const [geometry, setGeometry] = React.useState<
@@ -123,7 +123,7 @@ function RegisterTreesForm({
         zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       };
       setViewPort(newViewport);
     }
@@ -345,7 +345,7 @@ function RegisterTreesForm({
                 onViewportChange={_onViewportChange}
                 onViewStateChange={_onStateChange}
                 onClick={(event) => {
-                  setPlantLocation(event.lngLat);
+                  setInterventionCoordinates(event.lngLat);
                   setGeometry({
                     type: 'Point',
                     coordinates: event.lngLat,
@@ -356,7 +356,7 @@ function RegisterTreesForm({
                     longitude: event.lngLat[0],
                     transitionDuration: 400,
                     transitionInterpolator: new FlyToInterpolator(),
-                    transitionEasing: d3.easeCubic,
+                    transitionEasing: easeCubic,
                   });
                 }}
                 mapOptions={{
@@ -364,10 +364,10 @@ function RegisterTreesForm({
                     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
                 }}
               >
-                {plantLocation ? (
+                {interventionCoordinates ? (
                   <Marker
-                    latitude={plantLocation[1]}
-                    longitude={plantLocation[0]}
+                    latitude={interventionCoordinates[1]}
+                    longitude={interventionCoordinates[0]}
                     offsetLeft={5}
                     offsetTop={-16}
                     style={{ left: '28px' }}

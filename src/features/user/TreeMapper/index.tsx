@@ -1,11 +1,9 @@
 import type { APIError } from '@planet-sdk/common';
 import type {
-  ExtendedScopePlantLocations,
-  PlantLocation as PlantLocationType,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
+  ExtendedScopeInterventions,
+  Intervention,
+  SampleTreeRegistration,
+} from '../../common/types/intervention';
 import type { Links } from '../../common/types/payments';
 import type { ReactElement } from 'react';
 
@@ -14,7 +12,7 @@ import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import PlantLocationPage from './components/PlantLocationPage';
+import InterventionPage from './components/InterventionPage';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -22,7 +20,7 @@ import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 
-const PlantLocationMap = dynamic(() => import('./components/Map'), {
+const InterventionMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
 
@@ -33,40 +31,36 @@ function TreeMapper(): ReactElement {
   const { getApiAuthenticated } = useApi();
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [plantLocations, setPlantLocations] = React.useState<
-    PlantLocationType[]
-  >([]);
-  const [selectedLocation, setSelectedLocation] = React.useState<
-    PlantLocationSingle | PlantLocationMulti | null
+  const [interventions, setInterventions] = React.useState<Intervention[]>([]);
+  const [selectedIntervention, setSelectedIntervention] = React.useState<
+    Intervention | SampleTreeRegistration | null
   >(null);
-  const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const [links, setLinks] = React.useState<Links>();
+
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
 
     if (next && links?.next) {
       try {
-        const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
+        const response = await getApiAuthenticated<ExtendedScopeInterventions>(
           links.next // The 'links.next' URL contains query parameters and is passed as-is since no additional parameters are being added.
         );
         if (response?.items) {
-          const newPlantLocations = response.items;
-          for (const itr in newPlantLocations) {
-            if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
-              const ind = Number(itr);
-              const location = newPlantLocations[ind];
-              if (location.type === 'multi-tree-registration') {
-                location.sampleTrees = [];
-                for (const key in newPlantLocations) {
+          const newInterventions = response.items;
+          for (const itr in newInterventions) {
+            if (Object.prototype.hasOwnProperty.call(newInterventions, itr)) {
+              const intervention = newInterventions[Number(itr)];
+              if (intervention.type === 'multi-tree-registration') {
+                for (const key in newInterventions) {
                   if (
-                    Object.prototype.hasOwnProperty.call(newPlantLocations, key)
+                    Object.prototype.hasOwnProperty.call(newInterventions, key)
                   ) {
-                    const item = newPlantLocations[key] as PlantLocationMulti &
-                      SamplePlantLocation;
+                    const item = newInterventions[key];
                     if (item.type === 'sample-tree-registration') {
-                      if (item.parent === location.id) {
-                        location.sampleTrees.push(item);
+                      if (item.parent === intervention.id) {
+                        intervention.sampleInterventions.push(item);
                       }
                     }
                   }
@@ -74,10 +68,10 @@ function TreeMapper(): ReactElement {
               }
             }
           }
-          setPlantLocations([
-            ...plantLocations,
-            ...newPlantLocations,
-          ] as PlantLocationType[]);
+          setInterventions([
+            ...interventions,
+            ...newInterventions,
+          ] as Intervention[]);
           setLinks(response._links);
         }
       } catch (err) {
@@ -86,31 +80,30 @@ function TreeMapper(): ReactElement {
       }
     } else {
       try {
-        const response = await getApiAuthenticated<ExtendedScopePlantLocations>(
+        const response = await getApiAuthenticated<ExtendedScopeInterventions>(
           '/treemapper/interventions',
           {
             queryParams: { _scope: 'extended', limit: '15' },
           }
         );
+
         if (response?.items) {
-          const plantLocations = response.items;
-          if (plantLocations?.length === 0) {
-            setPlantLocations([]);
+          const interventions = response.items;
+          if (interventions?.length === 0) {
+            setInterventions([]);
           } else {
-            for (const itr in plantLocations) {
-              if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
-                const location = plantLocations[itr];
-                if (location && location.type === 'multi-tree-registration') {
-                  location.sampleTrees = [];
-                  for (const key in plantLocations) {
+            for (const itr in interventions) {
+              if (Object.prototype.hasOwnProperty.call(interventions, itr)) {
+                const intervention = interventions[itr];
+                if (intervention?.type === 'multi-tree-registration') {
+                  for (const key in interventions) {
                     if (
-                      Object.prototype.hasOwnProperty.call(plantLocations, key)
+                      Object.prototype.hasOwnProperty.call(interventions, key)
                     ) {
-                      const item = plantLocations[key] as PlantLocationMulti &
-                        SamplePlantLocation;
+                      const item = interventions[key];
                       if (item.type === 'sample-tree-registration') {
-                        if (item.parent === location.id) {
-                          location.sampleTrees.push(item);
+                        if (item.parent === intervention.id) {
+                          intervention.sampleInterventions.push(item);
                         }
                       }
                     }
@@ -118,7 +111,7 @@ function TreeMapper(): ReactElement {
                 }
               }
             }
-            setPlantLocations(plantLocations as PlantLocationType[]);
+            setInterventions(interventions as Intervention[]);
             setLinks(response._links);
           }
         }
@@ -138,31 +131,28 @@ function TreeMapper(): ReactElement {
 
   React.useEffect(() => {
     if (router.query.l) {
-      if (plantLocations) {
-        for (const key in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-            const plantLocation = plantLocations[key];
-            if (plantLocation.id === router.query.l) {
-              setSelectedLocation(plantLocation);
+      if (interventions) {
+        for (const key in interventions) {
+          if (Object.prototype.hasOwnProperty.call(interventions, key)) {
+            const singleIntervention = interventions[key];
+            if (singleIntervention.id === router.query.l) {
+              setSelectedIntervention(singleIntervention);
               break;
             }
           }
         }
       }
     } else {
-      setSelectedLocation(null);
+      setSelectedIntervention(null);
     }
-  }, [router.query.l, plantLocations]);
+  }, [router.query.l, interventions]);
 
-  const TreeMapperProps = {
-    location: selectedLocation,
-    selectedLocation,
-    setSelectedLocation,
-    plantLocations,
-    isDataLoading,
-    fetchTreemapperData,
-    links,
+  const commonProps = {
+    selectedIntervention,
+    setSelectedIntervention,
+    interventions,
   };
+
   return (
     <div className={styles.profilePage}>
       {progress > 0 && (
@@ -172,21 +162,26 @@ function TreeMapper(): ReactElement {
       )}
 
       <div id="pageContainer" className={styles.pageContainer}>
-        {selectedLocation ? (
-          <PlantLocationPage {...TreeMapperProps} />
+        {selectedIntervention ? (
+          <InterventionPage {...commonProps} />
         ) : (
           <div className={styles.listContainer}>
             <div className={styles.titleContainer}>
               <div className={styles.treeMapperTitle}>{t('treeMapper')}</div>
             </div>
-            <TreeMapperList {...TreeMapperProps} />
+            <TreeMapperList
+              {...commonProps}
+              isDataLoading={isDataLoading}
+              fetchTreemapperData={fetchTreemapperData}
+              links={links}
+            />
           </div>
         )}
         <div className={styles.mapContainer}>
-          <PlantLocationMap
-            locations={plantLocations}
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
+          <InterventionMap
+            interventions={interventions}
+            selectedIntervention={selectedIntervention}
+            setSelectedIntervention={setSelectedIntervention}
           />
         </div>
       </div>

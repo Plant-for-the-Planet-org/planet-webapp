@@ -59,13 +59,13 @@ $footerHeight: 49px;
   }
 
   :global(.image-slider-container),
-  :global(.single-plant-location-image) {
+  :global(.single-tree-image) {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
 
-  :global(.plant-location-header-container),
-  :global(.single-plant-location-heading) {
+  :global(.intervention-header-container),
+  :global(.single-tree-info-heading) {
     padding: 12px 20px;
 
     :global(.tree-count) {

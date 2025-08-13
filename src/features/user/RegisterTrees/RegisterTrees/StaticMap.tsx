@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 
 import React from 'react';
-import * as turf from '@turf/turf';
+import bbox from '@turf/bbox';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
@@ -69,12 +69,12 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
       });
     } else {
       if (geoJson) {
-        const bbox = turf.bbox(geoJson);
+        const bounds = bbox(geoJson);
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport2
         ).fitBounds([
-          [bbox[0], bbox[1]],
-          [bbox[2], bbox[3]],
+          [bounds[0], bounds[1]],
+          [bounds[2], bounds[3]],
         ]);
         const newViewport = {
           ...viewport,

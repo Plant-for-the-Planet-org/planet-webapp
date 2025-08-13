@@ -3,9 +3,8 @@ import type { DateString } from './common';
 import type { Links } from './payments';
 import type { Polygon, Point } from 'geojson';
 
-// TODO - update PlantLocation types based on the latest API response.
 // TODO - consider moving this to planet-sdk
-export interface PlantLocationBase {
+export interface InterventionBase {
   hid: string;
   id: string;
   idempotencyKey: string;
@@ -19,7 +18,7 @@ export interface PlantLocationBase {
   interventionEndDate: DateString | null;
   lastMeasurementDate: DateString | null;
   nextMeasurementDate: DateString | null; //only relevant for single and sample plant locations for now
-  coordinates: PlantLocationCoordinate[];
+  coordinates: InterventionCoordinate[];
   history: History[];
   captureMode: CaptureMode;
   captureStatus: CaptureStatus;
@@ -33,7 +32,7 @@ export interface PlantLocationBase {
   statusReason: InterventionStatusReasons | null;
 }
 
-export interface PlantLocationSingle extends PlantLocationBase {
+export interface SingleTreeRegistration extends InterventionBase {
   type: 'single-tree-registration';
   scientificName: string | null;
   scientificSpecies: string | null;
@@ -43,16 +42,14 @@ export interface PlantLocationSingle extends PlantLocationBase {
   geometry: Point;
 }
 
-export interface PlantLocationMulti extends PlantLocationBase {
+export interface MultiTreeRegistration extends InterventionBase {
   type: 'multi-tree-registration';
-  nextMeasurementDate: DateString | null;
   sampleTreeCount: number;
-  sampleInterventions: SamplePlantLocation[];
+  sampleInterventions: SampleTreeRegistration[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
   geometry: Point | Polygon;
   measurements: null;
-  nextMeasurementDate: null;
 }
 
 export type NonPlantingInterventionTypes = Exclude<
@@ -60,20 +57,20 @@ export type NonPlantingInterventionTypes = Exclude<
   'single-tree-registration' | 'multi-tree-registration'
 >;
 
-export interface OtherInterventions extends PlantLocationBase {
+export interface OtherInterventions extends InterventionBase {
   type: NonPlantingInterventionTypes;
   sampleTreeCount: number;
-  sampleInterventions: SamplePlantLocation[];
+  sampleInterventions: SampleTreeRegistration[];
   plantedSpecies: PlantedSpecies[];
   geometry: Point | Polygon;
 }
 
-export type PlantLocation =
-  | PlantLocationSingle
-  | PlantLocationMulti
+export type Intervention =
+  | SingleTreeRegistration
+  | MultiTreeRegistration
   | OtherInterventions;
 
-export interface SamplePlantLocation extends PlantLocationBase {
+export interface SampleTreeRegistration extends InterventionBase {
   type: 'sample-tree-registration';
   // /** parent plant location */
   parent: string;
@@ -105,7 +102,7 @@ export interface DeviceLocation {
   type: string;
 }
 
-export interface PlantLocationCoordinate {
+export interface InterventionCoordinate {
   image?: string;
   coordinateIndex: number;
   id: string;
@@ -183,8 +180,8 @@ interface Filters {
   'revision-pending': string;
 }
 
-export interface ExtendedScopePlantLocations {
-  items: PlantLocation[] | SamplePlantLocation[];
+export interface ExtendedScopeInterventions {
+  items: Intervention[] | SampleTreeRegistration[];
   total: number;
   count: number;
   _links: Links;

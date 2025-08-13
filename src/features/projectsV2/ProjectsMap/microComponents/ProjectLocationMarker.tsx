@@ -8,7 +8,7 @@ interface Props {
   purpose: 'trees' | 'conservation';
 }
 const { colors } = themeProperties.designSystem;
-const ProjectLocation = ({ latitude, longitude, purpose }: Props) => {
+const ProjectLocationMarker = ({ latitude, longitude, purpose }: Props) => {
   return (
     <Marker latitude={latitude} longitude={longitude} anchor="center">
       <ProjectLocationIcon
@@ -20,4 +20,4 @@ const ProjectLocation = ({ latitude, longitude, purpose }: Props) => {
   );
 };
 
-export default ProjectLocation;
+export default ProjectLocationMarker;

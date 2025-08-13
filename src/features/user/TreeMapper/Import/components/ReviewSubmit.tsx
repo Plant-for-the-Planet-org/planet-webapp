@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
+import type { MultiTreeRegistration } from '../../../../common/types/intervention';
 
 import React from 'react';
 import styles from '../Import.module.scss';
@@ -10,12 +10,12 @@ import { Button } from '@mui/material';
 import getLocalizedPath from '../../../../../utils/getLocalizedPath';
 
 interface Props {
-  plantLocation: PlantLocationMulti;
+  intervention: MultiTreeRegistration;
   handleBack: () => void;
 }
 
 export default function ReviewSubmit({
-  plantLocation,
+  intervention,
   handleBack,
 }: Props): ReactElement {
   const router = useRouter();
@@ -55,7 +55,7 @@ export default function ReviewSubmit({
           <div className={styles.stepDescription}>
             {tTreemapper('reviewSubmitDescription')}
           </div>
-          {plantLocation ? (
+          {intervention ? (
             <div className={styles.stepContent}>
               <div className={styles.grid}>
                 <div className={styles.gridItem}>
@@ -63,7 +63,7 @@ export default function ReviewSubmit({
                     {tTreemapper('captureMode')}
                   </div>
                   <div className={styles.gridItemValue}>
-                    {plantLocation.captureMode}
+                    {intervention.captureMode}
                   </div>
                 </div>
                 <div className={styles.gridItem}>
@@ -71,7 +71,7 @@ export default function ReviewSubmit({
                     {tTreemapper('plantDate')}
                   </div>
                   <div className={styles.gridItemValue}>
-                    {formatDate(plantLocation.plantDate)}
+                    {formatDate(intervention.plantDate)}
                   </div>
                 </div>
                 <div className={styles.gridItem}>
@@ -79,15 +79,15 @@ export default function ReviewSubmit({
                     {tTreemapper('registrationDate')}
                   </div>
                   <div className={styles.gridItemValue}>
-                    {formatDate(plantLocation.registrationDate)}
+                    {formatDate(intervention.registrationDate)}
                   </div>
                 </div>
               </div>
               <p className={styles.gridItemTitle}>{tTreemapper('species')}</p>
               <div className={styles.gridItemValue}>
                 <span>
-                  {plantLocation.plantedSpecies
-                    ? plantLocation.plantedSpecies.map((species) => {
+                  {intervention.plantedSpecies
+                    ? intervention.plantedSpecies.map((species) => {
                         return (
                           <p key={species.id}>
                             {species.treeCount}{' '}
@@ -103,15 +103,15 @@ export default function ReviewSubmit({
                     : []}
                 </span>
               </div>
-              {plantLocation.type === 'multi-tree-registration' &&
-              plantLocation.captureMode === 'external' ? (
+              {intervention.type === 'multi-tree-registration' &&
+              intervention.captureMode === 'external' ? (
                 <>
                   <p className={styles.gridItemTitle}>
                     {tTreemapper('sampleTrees')}
                   </p>
                   <div className={styles.gridItemValue}>
-                    {plantLocation.sampleInterventions &&
-                      plantLocation.sampleInterventions.map((spl, index) => {
+                    {intervention.sampleInterventions &&
+                      intervention.sampleInterventions.map((spl, index) => {
                         return (
                           <div key={index} className={styles.value}>
                             {index + 1}.{' '}

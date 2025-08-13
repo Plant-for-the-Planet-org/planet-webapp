@@ -1,6 +1,6 @@
 import type { MapEvent } from 'react-map-gl';
 import type { PopupData } from './maps/Markers';
-import type { PlantLocation } from '../../common/types/plantLocation';
+import type { Intervention } from '../../common/types/intervention';
 import type { ReactElement } from 'react';
 
 import React, { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import Project from '../components/maps/Project';
 import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
-import PlantLocations from './maps/PlantLocations';
+import Interventions from './maps/Interventions';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import { useTranslations } from 'next-intl';
@@ -38,7 +38,7 @@ export default function ProjectsMap(): ReactElement {
     defaultZoom,
     zoomLevel,
     setHoveredPl,
-    plantLocations,
+    interventions,
     setSelectedPl,
     selectedPl,
     satellite,
@@ -47,7 +47,7 @@ export default function ProjectsMap(): ReactElement {
     hoveredPl,
     setIsPolygonMenuOpen,
     setFilterOpen,
-    setSamplePlantLocation,
+    setSampleIntervention,
   } = useProjectProps();
 
   const t = useTranslations('Maps');
@@ -88,18 +88,16 @@ export default function ProjectsMap(): ReactElement {
     setViewPort,
   };
 
-  const handlePlantLocationSelection = (
-    plantLocations: PlantLocation[] | null,
+  const handleInterventionSelection = (
+    intervention: Intervention[] | null,
     e: MapEvent
   ) => {
-    if (!plantLocations || !e || !e.features || !e.features[0]) {
+    if (!intervention || !e || !e.features || !e.features[0]) {
       return;
     }
 
     const { id } = e.features[0].properties;
-    const selectedElement = plantLocations.find(
-      (location) => location.id === id
-    );
+    const selectedElement = intervention.find((i) => i.id === id);
 
     if (selectedElement) {
       setSelectedPl(selectedElement);
@@ -107,27 +105,27 @@ export default function ProjectsMap(): ReactElement {
   };
 
   const onMapClick = (e: MapEvent) => {
-    setSamplePlantLocation(null);
+    setSampleIntervention(null);
     setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
-    handlePlantLocationSelection(plantLocations, e);
+    handleInterventionSelection(interventions, e);
   };
 
   const onMapHover = (e: MapEvent) => {
-    if (plantLocations && e && e.features && e.features[0]) {
+    if (interventions && e && e.features && e.features[0]) {
       const activeElement = e.features[0];
       if (selectedPl && selectedPl.id === activeElement.properties.id) {
         setHoveredPl(null);
         setShowDetails({ coordinates: e.lngLat, show: true });
         return;
       }
-      const activePlantLocation = plantLocations.find(
+      const activeIntervention = interventions.find(
         (obj) => obj.id === activeElement.properties.id
       );
-      if (activePlantLocation) {
-        setHoveredPl(activePlantLocation);
-        setSamplePlantLocation(null);
+      if (activeIntervention) {
+        setHoveredPl(activeIntervention);
+        setSampleIntervention(null);
         setShowDetails({ coordinates: e.lngLat, show: true });
         return;
       }
@@ -188,7 +186,7 @@ export default function ProjectsMap(): ReactElement {
               viewport={viewport}
               setViewPort={setViewPort}
             />
-            {selectedMode === 'location' && <PlantLocations />}
+            {selectedMode === 'location' && <Interventions />}
           </>
         )}
         <ExploreLayers />

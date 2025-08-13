@@ -1,10 +1,9 @@
 import type { ReactElement } from 'react';
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  MultiTreeRegistration,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
 import React from 'react';
@@ -19,7 +18,7 @@ import CopyToClipboard from '../../../common/CopyToClipboard';
 import getLocalizedPath from '../../../../utils/getLocalizedPath';
 
 const ImageSlider = dynamic(
-  () => import('../../../projects/components/PlantLocation/ImageSlider'),
+  () => import('../../../projects/components/Intervention/ImageSlider'),
   {
     ssr: false,
     loading: () => <p>Images</p>,
@@ -35,15 +34,11 @@ const ImageSliderSingle = dynamic(
 );
 
 interface Props {
-  setSelectedLocation: SetState<
-    SamplePlantLocation | PlantLocationMulti | PlantLocationSingle | null
+  setSelectedIntervention: SetState<
+    Intervention | SampleTreeRegistration | null
   >;
-  location:
-    | PlantLocationMulti
-    | PlantLocationSingle
-    | SamplePlantLocation
-    | null;
-  plantLocations?: PlantLocation[];
+  selectedIntervention: Intervention | SampleTreeRegistration | null;
+  interventions?: Intervention[];
 }
 
 interface SampleTreeImageProps {
@@ -51,11 +46,11 @@ interface SampleTreeImageProps {
   description: string | undefined;
 }
 
-export function LocationDetails({
-  location,
-  setSelectedLocation,
+export function InterventionInfo({
+  selectedIntervention,
+  setSelectedIntervention,
 }: Props): ReactElement {
-  if (!location) return <></>;
+  if (!selectedIntervention) return <></>;
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
@@ -63,19 +58,25 @@ export function LocationDetails({
     SampleTreeImageProps[]
   >([]);
 
-  const text = `${location?.deviceLocation?.coordinates.map((coord) => {
-    return getFormattedNumber(locale, Number(coord));
-  })}`;
+  const text = `${selectedIntervention?.deviceLocation?.coordinates.map(
+    (coord) => {
+      return getFormattedNumber(locale, Number(coord));
+    }
+  )}`;
 
-  const deadPlant = location.history.filter((item) => item.status === 'dead');
-  const alivePlant = location.history.filter((item) => item.status !== 'dead');
+  const deadPlant = selectedIntervention.history.filter(
+    (item) => item.status === 'dead'
+  );
+  const alivePlant = selectedIntervention.history.filter(
+    (item) => item.status !== 'dead'
+  );
 
   const plantDate =
-    location.interventionStartDate ||
-    location.plantDate ||
-    location.registrationDate;
-  const isPlantDead = location.status === 'dead';
-  const hasPlantingHistory = location.history.length > 0;
+    selectedIntervention.interventionStartDate ||
+    selectedIntervention.plantDate ||
+    selectedIntervention.registrationDate;
+  const isPlantDead = selectedIntervention.status === 'dead';
+  const hasPlantingHistory = selectedIntervention.history.length > 0;
   const shouldShowPlantStatus = deadPlant.length > 0 || isPlantDead;
 
   const renderMeasurementValue = (
@@ -89,7 +90,7 @@ export function LocationDetails({
   );
 
   const renderHistoryValues = (
-    history: typeof location.history,
+    history: typeof selectedIntervention.history,
     key: 'height' | 'width',
     unit: 'm' | 'cm'
   ) =>
@@ -101,7 +102,7 @@ export function LocationDetails({
       </div>
     ));
 
-  const renderHistoryDates = (history: typeof location.history) =>
+  const renderHistoryDates = (history: typeof selectedIntervention.history) =>
     history.map((h, index) => (
       <div className={styles.value} key={`date-${index}`}>
         {formatDate(h.eventDate as Date)}
@@ -109,7 +110,7 @@ export function LocationDetails({
     ));
 
   const renderStatusValues = (
-    history: typeof location.history,
+    history: typeof selectedIntervention.history,
     key: 'status' | 'statusReason'
   ) =>
     history.map((h, index) => (
@@ -119,23 +120,21 @@ export function LocationDetails({
     ));
 
   React.useEffect(() => {
-    if (location?.type === 'multi-tree-registration') {
+    if (selectedIntervention?.type === 'multi-tree-registration') {
       if (
-        location &&
-        (location as PlantLocationMulti).sampleInterventions &&
-        (location as PlantLocationMulti).sampleInterventions.length > 0
+        selectedIntervention &&
+        selectedIntervention.sampleInterventions &&
+        selectedIntervention.sampleInterventions.length > 0
       ) {
         const images = [];
-        for (const key in (location as PlantLocationMulti)
-          .sampleInterventions) {
+        for (const key in selectedIntervention.sampleInterventions) {
           if (
             Object.prototype.hasOwnProperty.call(
-              (location as PlantLocationMulti).sampleInterventions,
+              selectedIntervention.sampleInterventions,
               key
             )
           ) {
-            const element = (location as PlantLocationMulti)
-              .sampleInterventions[key];
+            const element = selectedIntervention.sampleInterventions[key];
 
             if (element.coordinates?.[0]) {
               images.push({
@@ -152,10 +151,10 @@ export function LocationDetails({
         setSampleTreeImages([]);
       }
     }
-  }, [location]);
+  }, [selectedIntervention]);
   return (
     <>
-      {location.type === 'multi-tree-registration' &&
+      {selectedIntervention.type === 'multi-tree-registration' &&
         sampleTreeImages.length > 0 && (
           <div className={styles.projectImageSliderContainer}>
             <ImageSlider
@@ -166,13 +165,13 @@ export function LocationDetails({
             />
           </div>
         )}
-      {location.type !== 'multi-tree-registration' &&
-        location.coordinates?.length > 0 && (
+      {selectedIntervention.type !== 'multi-tree-registration' &&
+        selectedIntervention.coordinates?.length > 0 && (
           <div
             className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
           >
             <ImageSliderSingle
-              images={location.coordinates}
+              images={selectedIntervention.coordinates}
               height={233}
               imageSize="large"
               type="coordinate"
@@ -180,29 +179,25 @@ export function LocationDetails({
           </div>
         )}
       <div className={styles.details}>
-        {location.captureMode && (
+        {selectedIntervention.captureMode && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('captureMode')}</p>
             <div className={styles.value}>
-              {tTreemapper(location.captureMode)}
+              {tTreemapper(selectedIntervention.captureMode)}
             </div>
           </div>
         )}
 
-        {location.captureStatus && (
+        {selectedIntervention.captureStatus && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('captureStatus')}</p>
             <div className={styles.value}>
-              {tTreemapper(location.captureStatus)}
+              {tTreemapper(selectedIntervention.captureStatus)}
             </div>
           </div>
         )}
 
-        {/* <div className={styles.singleDetail}>
-              <p className={styles.title}>{tTreemapper('guid')}</p>
-              <div className={styles.value}>{location.id}</div>
-            </div> */}
-        {location?.deviceLocation ? (
+        {selectedIntervention?.deviceLocation ? (
           <div className={styles.rowDetail}>
             <div className={styles.singleDetail}>
               <p className={styles.title}>
@@ -220,15 +215,15 @@ export function LocationDetails({
             <div className={styles.value}>{formatDate(plantDate)}</div>
           </div>
         )}
-        {location.registrationDate && (
+        {selectedIntervention.registrationDate && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('registrationDate')}</p>
             <div className={styles.value}>
-              {formatDate(location.registrationDate)}
+              {formatDate(selectedIntervention.registrationDate)}
             </div>
           </div>
         )}
-        {(location as PlantLocationSingle).measurements && (
+        {selectedIntervention.type === 'single-tree-registration' && (
           <>
             {/* Measurements Section */}
             <div className={styles.measurements}>
@@ -251,7 +246,10 @@ export function LocationDetails({
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('height')}</p>
                 {!isPlantDead &&
-                  renderMeasurementValue(location.measurements?.height, 'm')}
+                  renderMeasurementValue(
+                    selectedIntervention.measurements?.height,
+                    'm'
+                  )}
                 {hasPlantingHistory &&
                   renderHistoryValues(alivePlant, 'height', 'm')}
               </div>
@@ -260,7 +258,10 @@ export function LocationDetails({
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{tTreemapper('width')}</p>
                 {!isPlantDead &&
-                  renderMeasurementValue(location.measurements?.width, 'cm')}
+                  renderMeasurementValue(
+                    selectedIntervention.measurements?.width,
+                    'cm'
+                  )}
                 {hasPlantingHistory &&
                   renderHistoryValues(alivePlant, 'width', 'cm')}
               </div>
@@ -287,7 +288,9 @@ export function LocationDetails({
                   <div className={styles.singleDetail}>
                     <p className={styles.title}>{tTreemapper('status')}</p>
                     {isPlantDead && (
-                      <div className={styles.value}>{location.status}</div>
+                      <div className={styles.value}>
+                        {selectedIntervention.status}
+                      </div>
                     )}
                     {hasPlantingHistory &&
                       renderStatusValues(deadPlant, 'status')}
@@ -298,7 +301,7 @@ export function LocationDetails({
                     <p className={styles.title}>{tTreemapper('reason')}</p>
                     {isPlantDead && (
                       <div className={styles.value}>
-                        {location.statusReason}
+                        {selectedIntervention.statusReason}
                       </div>
                     )}
                     {hasPlantingHistory &&
@@ -310,74 +313,71 @@ export function LocationDetails({
           </>
         )}
 
-        {(location as PlantLocationMulti | PlantLocation).plantProject && (
+        {selectedIntervention.plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('plantProject')}</p>
             <div className={styles.value}>
-              <span>
-                {(location as PlantLocationMulti | PlantLocation).plantProject}
-              </span>
+              <span>{selectedIntervention.plantProject}</span>
             </div>
           </div>
         )}
       </div>
       <div className={styles.detailsFull}>
-        {(location as PlantLocationMulti)?.plantedSpecies.length > 0 && (
+        {(selectedIntervention as MultiTreeRegistration)?.plantedSpecies
+          .length > 0 && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{tTreemapper('species')}</p>
             <div className={styles.value}>
               <span>
-                {(location as PlantLocationMulti)?.plantedSpecies?.map(
-                  (species) => {
-                    return (
-                      <p key={species.id}>
-                        {species.treeCount}{' '}
-                        {species.scientificName
-                          ? species.scientificName
-                          : species.otherSpecies &&
-                            species.otherSpecies !== 'Unknown'
-                          ? species.otherSpecies
-                          : tMaps('unknown')}
-                      </p>
-                    );
-                  }
-                )}
+                {(
+                  selectedIntervention as MultiTreeRegistration
+                )?.plantedSpecies?.map((species) => {
+                  return (
+                    <p key={species.id}>
+                      {species.treeCount}{' '}
+                      {species.scientificName
+                        ? species.scientificName
+                        : species.otherSpecies &&
+                          species.otherSpecies !== 'Unknown'
+                        ? species.otherSpecies
+                        : tMaps('unknown')}
+                    </p>
+                  );
+                })}
               </span>
             </div>
           </div>
         )}
-        {location.type === 'multi-tree-registration' &&
-          location.captureMode === 'on-site' && (
+        {selectedIntervention.type === 'multi-tree-registration' &&
+          selectedIntervention.captureMode === 'on-site' && (
             <div className={styles.singleDetail}>
               <p className={styles.title}>{tMaps('sampleTree')}</p>
-              {/* <div className={styles.value}> */}
-              {(location as PlantLocationMulti).sampleInterventions &&
-                (location as PlantLocationMulti).sampleInterventions.map(
-                  (spl, index: number) => {
-                    return (
-                      <div key={index} className={styles.value}>
-                        {index + 1}.{' '}
-                        <span
-                          onClick={() => setSelectedLocation(spl)}
-                          className={styles.link}
-                        >
-                          {spl.scientificName
-                            ? spl.scientificName
-                            : spl.scientificSpecies &&
-                              spl.scientificSpecies !== 'Unknown'
-                            ? spl.scientificSpecies
-                            : tMaps('unknown')}
-                        </span>
-                        <br />
-                        {spl.tag ? `${tMaps('tag')} #${spl.tag} • ` : null}
-                        {spl?.measurements?.height}
-                        {tMaps('meterHigh')} • {spl?.measurements?.width}
-                        {tMaps('cmWide')}
-                      </div>
-                    );
-                  }
-                )}
-              {/* </div> */}
+              {selectedIntervention.sampleInterventions.map(
+                (str, index: number) => {
+                  //str -> sample tree registration
+                  return (
+                    <div key={index} className={styles.value}>
+                      {index + 1}.{' '}
+                      <span
+                        onClick={() => setSelectedIntervention(str)}
+                        className={styles.link}
+                      >
+                        {str.scientificName
+                          ? str.scientificName
+                          : str.scientificSpecies &&
+                            str.scientificSpecies !== 'Unknown'
+                          ? str.scientificSpecies
+                          : tMaps('unknown')}
+                      </span>
+                      <br />
+                      {str.tag ? `${tMaps('tag')} #${str.tag} • ` : null}
+                      {str?.measurements?.height}
+                      {tMaps('meterHigh')} • {str?.measurements?.width}
+                      {tMaps('cmWide')}
+                    </div>
+                  );
+                }
+              )}
             </div>
           )}
       </div>
@@ -385,21 +385,21 @@ export function LocationDetails({
   );
 }
 
-export default function PlantLocationPage({
-  location,
-  setSelectedLocation,
-  plantLocations,
+export default function InterventionPage({
+  selectedIntervention,
+  setSelectedIntervention,
+  interventions,
 }: Props): ReactElement {
   const router = useRouter();
   const locale = useLocale();
   const handleBackButton = () => {
-    if (location?.type === 'sample-tree-registration') {
-      for (const iKey in plantLocations) {
-        const i = iKey as keyof typeof plantLocations;
-        if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
-          const pl = plantLocations[i] as PlantLocation;
-          if (pl.id === (location as SamplePlantLocation)?.parent) {
-            setSelectedLocation(pl);
+    if (selectedIntervention?.type === 'sample-tree-registration') {
+      for (const iKey in interventions) {
+        const i = iKey as keyof typeof interventions;
+        if (Object.prototype.hasOwnProperty.call(interventions, i)) {
+          const multiTreeRegistration = interventions[i] as Intervention;
+          if (multiTreeRegistration.id === selectedIntervention?.parent) {
+            setSelectedIntervention(multiTreeRegistration);
             break;
           }
         }
@@ -410,8 +410,8 @@ export default function PlantLocationPage({
   };
 
   const DetailProps = {
-    location,
-    setSelectedLocation,
+    selectedIntervention,
+    setSelectedIntervention,
   };
 
   return (
@@ -423,17 +423,10 @@ export default function PlantLocationPage({
         <div onClick={handleBackButton} className={styles.backButton}>
           <BackButton />
         </div>
-        <div className={styles.locationMenu}>
-          {/* <div onClick={handleEditButton} className={styles.editButton}>
-        <EditIcon/>
-      </div>
-      <div onClick={handleDeleteButton} className={styles.deleteButton}>
-        <TrashIcon />
-      </div> */}
-        </div>
+        <div className={styles.locationMenu} />
       </div>
 
-      <LocationDetails {...DetailProps} />
+      <InterventionInfo {...DetailProps} />
     </div>
   );
 }
