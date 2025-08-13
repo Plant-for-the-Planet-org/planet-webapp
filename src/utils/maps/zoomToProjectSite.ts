@@ -7,7 +7,7 @@ import type { SetState } from '../../features/common/types/common';
 
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
-import { bbox } from '@turf/turf';
+import bbox from '@turf/bbox';
 
 export default function zoomToProjectSite(
   geoJson: SitesGeoJSON | null,

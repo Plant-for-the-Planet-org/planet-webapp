@@ -14,7 +14,8 @@ import type { AllGeoJSON } from '@turf/turf';
 import React from 'react';
 import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import { area, bbox } from '@turf/turf';
+import area from '@turf/area';
+import bbox from '@turf/bbox';
 import MapGL, {
   FlyToInterpolator,
   Layer,

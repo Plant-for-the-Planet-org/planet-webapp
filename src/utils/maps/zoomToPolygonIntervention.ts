@@ -6,7 +6,8 @@ import type { ViewPort } from '../../features/common/types/ProjectPropsContextIn
 
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
-import { polygon, bbox } from '@turf/turf';
+import { polygon } from '@turf/helpers';
+import bbox from '@turf/bbox';
 import { getRequest } from '../apiRequests/api';
 import { handleError } from '@planet-sdk/common';
 /**

@@ -16,7 +16,7 @@ import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import { center } from '@turf/turf';
+import center from '@turf/center';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;

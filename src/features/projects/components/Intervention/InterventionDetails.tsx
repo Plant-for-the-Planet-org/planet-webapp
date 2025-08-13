@@ -9,7 +9,7 @@ import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../styles/Intervention.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { area } from '@turf/turf';
+import area from '@turf/area';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';

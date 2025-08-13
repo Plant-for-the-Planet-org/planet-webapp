@@ -17,7 +17,8 @@ import { useTranslations } from 'next-intl';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { center, area } from '@turf/turf';
+import center from '@turf/center';
+import area from '@turf/area';
 import MapGL, { Layer, NavigationControl, Source } from 'react-map-gl';
 
 import { Container } from '../Container';

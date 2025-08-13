@@ -9,7 +9,7 @@ import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
-import { area } from '@turf/turf';
+import area from '@turf/area';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';

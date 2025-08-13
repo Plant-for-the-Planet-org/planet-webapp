@@ -20,7 +20,7 @@ import type {
 } from '../features/common/types/intervention';
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
-import { centroid } from '@turf/turf';
+import centroid from '@turf/centroid';
 
 interface MetaDataValue {
   value: string;

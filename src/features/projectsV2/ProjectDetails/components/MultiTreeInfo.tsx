@@ -6,7 +6,7 @@ import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { area } from '@turf/turf';
+import area from '@turf/area';
 import styles from '../styles/InterventionInfo.module.scss';
 import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';

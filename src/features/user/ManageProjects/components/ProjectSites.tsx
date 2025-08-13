@@ -22,7 +22,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
-import { bbox } from '@turf/turf';
+import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import {

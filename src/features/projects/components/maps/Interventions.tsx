@@ -12,7 +12,7 @@ import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/Intervention.module.scss';
-import { area } from '@turf/turf';
+import area from '@turf/area';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
 

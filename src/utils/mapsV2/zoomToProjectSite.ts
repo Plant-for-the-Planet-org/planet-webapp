@@ -3,7 +3,7 @@ import type { ViewState } from 'react-map-gl-v7';
 import type { Map } from 'maplibre-gl';
 import type { MapRef } from '../../features/common/types/projectv2';
 
-import { bbox } from '@turf/turf';
+import bbox from '@turf/bbox';
 import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../projectV2';
 

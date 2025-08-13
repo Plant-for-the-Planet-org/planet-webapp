@@ -3,7 +3,8 @@ import type { GeoJSON } from 'geojson';
 import type { RequiredMapStyle } from '../../../../common/types/map';
 
 import React from 'react';
-import { featureCollection, bbox } from '@turf/turf';
+import { featureCollection } from '@turf/helpers';
+import bbox from '@turf/bbox';
 import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';

@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 
 import React from 'react';
-import { bbox } from '@turf/turf';
+import bbox from '@turf/bbox';
 import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
