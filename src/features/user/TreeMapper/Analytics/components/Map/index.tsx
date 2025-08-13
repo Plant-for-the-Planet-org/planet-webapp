@@ -129,7 +129,7 @@ export const MapContainer = () => {
     null
   );
   const [projectSite, setProjectSite] = useState<Feature | null>(null);
-  const [intervention, setInterventions] =
+  const [interventions, setInterventions] =
     useState<InterventionFeatureCollection | null>(null);
   const [interventionDetails, setInterventionDetails] = useState<
     InterventionDetailsApiResponse['res'] | null
@@ -259,7 +259,7 @@ export const MapContainer = () => {
         setInterventionDetails(null);
       }
 
-      const interventionFeature: InterventionFeature[] = res.data.map(
+      const interventionFeatures: InterventionFeature[] = res.data.map(
         (intervention) => {
           // Calculate the area based on the feature's coordinates using Turf.js
           const area = turf.area(intervention.geometry);
@@ -281,14 +281,14 @@ export const MapContainer = () => {
 
       const _featureCollection = {
         type: 'FeatureCollection',
-        features: interventionFeature,
+        features: interventionFeatures,
       };
       setInterventions(_featureCollection as InterventionFeatureCollection);
-      if (interventionFeature.length > 0) {
-        const defaultFeature = interventionFeature[0];
+      if (interventionFeatures.length > 0) {
+        const defaultFeature = interventionFeatures[0];
         _setViewport(defaultFeature);
         setSelectedLayer(
-          interventionFeature[0] ? interventionFeature[0].properties : null
+          interventionFeatures[0] ? interventionFeatures[0].properties : null
         );
       }
     }
@@ -442,7 +442,7 @@ export const MapContainer = () => {
       overrideBodyStyles={styles.body}
     >
       <div className={styles.mapContainer}>
-        {intervention && projectSites ? (
+        {interventions && projectSites ? (
           <>
             <MapGL
               ref={mapRef}
@@ -455,7 +455,7 @@ export const MapContainer = () => {
               onMouseLeave={onMouseLeave}
               interactiveLayerIds={['point-layer', 'plant-locations-fill']}
             >
-              <Source type="geojson" data={intervention}>
+              <Source type="geojson" data={interventions}>
                 <Layer
                   id={`point-layer`}
                   type="circle"
