@@ -1,7 +1,6 @@
 import type { Point, Polygon, Position } from 'geojson';
 
-import centerOfMass from '@turf/center-of-mass';
-import { multiPoint } from '@turf/helpers';
+import { centerOfMass, multiPoint } from '@turf/turf';
 
 /**
  * Converts a GeoJSON Polygon or Point geometry to a Point geometry
