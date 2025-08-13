@@ -17,7 +17,7 @@ import MapGL, {
   NavigationControl,
   FlyToInterpolator,
 } from 'react-map-gl';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
@@ -750,7 +750,7 @@ export default function BasicDetails({
                   longitude: event.lngLat[0],
                   transitionDuration: 400,
                   transitionInterpolator: new FlyToInterpolator(),
-                  transitionEasing: d3.easeCubic,
+                  transitionEasing: easeCubic,
                 });
                 setValue('latitude', latLong.latitude.toString());
                 setValue('longitude', latLong.longitude.toString());

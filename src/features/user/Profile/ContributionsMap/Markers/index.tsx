@@ -16,7 +16,7 @@ import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import * as turf from '@turf/turf';
+import { center } from '@turf/turf';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
@@ -107,7 +107,7 @@ const Markers = ({
 
         // Find the center
         try {
-          const centerPoint = turf.center(markersGeojson);
+          const centerPoint = center(markersGeojson);
           setViewState((prevState) => ({
             ...prevState,
             latitude: centerPoint.geometry?.coordinates[1] || 0,

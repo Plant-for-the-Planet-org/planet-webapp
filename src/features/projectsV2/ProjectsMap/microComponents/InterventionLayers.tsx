@@ -9,7 +9,7 @@ import type { Feature, Point, Polygon } from 'geojson';
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
-import * as turf from '@turf/turf';
+import { area } from '@turf/turf';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
@@ -106,8 +106,10 @@ export default function InterventionLayers(): React.ReactElement {
   };
   const getPlantationArea = (mt: MultiTreeRegistration) => {
     if (mt && mt.type === 'multi-tree-registration') {
-      const area = turf.area(mt.geometry);
-      return area / 10000;
+      const polygonAreaSqMeters = area(mt.geometry);
+      return typeof polygonAreaSqMeters === 'number'
+        ? polygonAreaSqMeters / 10000
+        : 0;
     } else {
       return 0;
     }

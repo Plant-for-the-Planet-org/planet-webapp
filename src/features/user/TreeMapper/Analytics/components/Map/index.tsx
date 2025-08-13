@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import * as turf from '@turf/turf';
+import { center, area } from '@turf/turf';
 import MapGL, { Layer, NavigationControl, Source } from 'react-map-gl';
 
 import { Container } from '../Container';
@@ -234,7 +234,7 @@ export const MapContainer = () => {
       };
       zoom = 0;
     } else {
-      centeroid = turf.center(feature);
+      centeroid = center(feature);
     }
 
     if (centeroid?.geometry) {
@@ -262,9 +262,9 @@ export const MapContainer = () => {
       const interventionFeature: InterventionFeature[] = res.data.map(
         (intervention) => {
           // Calculate the area based on the feature's coordinates using Turf.js
-          const area = turf.area(intervention.geometry);
+          const polygonAreaSqMeters = area(intervention.geometry);
           const treeCount = intervention.properties.treeCount;
-          const density = treeCount / area;
+          const density = treeCount / polygonAreaSqMeters;
 
           // Add the calculated density to the feature properties
           return {

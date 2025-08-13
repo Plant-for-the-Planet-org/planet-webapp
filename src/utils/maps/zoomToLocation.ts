@@ -2,7 +2,7 @@ import type { ViewPort } from '../../features/common/types/ProjectPropsContextIn
 import type { SetState } from '../../features/common/types/common';
 
 import { FlyToInterpolator } from 'react-map-gl';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 
 export default function zoomToLocation(
   viewport: ViewPort,
@@ -19,7 +19,7 @@ export default function zoomToLocation(
     zoom,
     transitionDuration: duration,
     transitionInterpolator: new FlyToInterpolator(),
-    transitionEasing: d3.easeCubic,
+    transitionEasing: easeCubic,
   };
   setViewPort(newViewport);
 }
