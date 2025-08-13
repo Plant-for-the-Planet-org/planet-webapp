@@ -6,7 +6,7 @@ import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import * as turf from '@turf/turf';
+import { area } from '@turf/turf';
 import styles from '../styles/InterventionInfo.module.scss';
 import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
@@ -34,8 +34,8 @@ const MultiTreeInfo = ({
       (sum, species) => sum + species.treeCount,
       0
     );
-    const area = turf.area(activeMultiTree.geometry);
-    const hectaresCovered = area / 10000;
+    const calculatedArea = area(activeMultiTree.geometry);
+    const hectaresCovered = calculatedArea / 10000;
     return { totalTreesCount, hectaresCovered };
   }, [
     activeMultiTree.geometry,

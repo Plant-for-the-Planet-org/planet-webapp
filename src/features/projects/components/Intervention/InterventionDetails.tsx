@@ -9,7 +9,7 @@ import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../styles/Intervention.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import * as turf from '@turf/turf';
+import { area } from '@turf/turf';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
@@ -69,8 +69,8 @@ export default function InterventionDetails({
       activeIntervention &&
       activeIntervention.type === 'multi-tree-registration'
     ) {
-      const area = turf.area(activeIntervention.geometry);
-      setPlantationArea(area / 10000);
+      const calculatedArea = area(activeIntervention.geometry);
+      setPlantationArea(calculatedArea / 10000);
     }
   }, [activeIntervention]);
 

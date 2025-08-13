@@ -9,7 +9,7 @@ import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
-import * as turf from '@turf/turf';
+import { area } from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
@@ -59,8 +59,8 @@ function TreemapperIntervention({
 
   React.useEffect(() => {
     if (intervention.type === 'multi-tree-registration') {
-      const area = turf.area(intervention.geometry);
-      setPlantationArea(area / 10000);
+      const calculatedArea = area(intervention.geometry);
+      setPlantationArea(calculatedArea / 10000);
     }
   }, [intervention]);
 
