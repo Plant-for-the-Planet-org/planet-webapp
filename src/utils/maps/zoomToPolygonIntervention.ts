@@ -5,8 +5,9 @@ import type { Position } from 'geojson';
 import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
-import * as d3 from 'd3-ease';
-import * as turf from '@turf/turf';
+import { easeCubic } from 'd3-ease';
+import { polygon } from '@turf/helpers';
+import bbox from '@turf/bbox';
 import { getRequest } from '../apiRequests/api';
 import { handleError } from '@planet-sdk/common';
 /**
@@ -25,14 +26,14 @@ export function zoomToPolygonIntervention(
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {
-    const polygon = turf.polygon([coordinates]);
-    const bbox = turf.bbox(polygon);
+    const polygonFeature = polygon([coordinates]);
+    const bounds = bbox(polygonFeature);
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
     ).fitBounds(
       [
-        [bbox[0], bbox[1]],
-        [bbox[2], bbox[3]],
+        [bounds[0], bounds[1]],
+        [bounds[2], bounds[3]],
       ],
       {
         padding: {
@@ -50,7 +51,7 @@ export function zoomToPolygonIntervention(
       zoom,
       transitionDuration: duration,
       transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: d3.easeCubic,
+      transitionEasing: easeCubic,
     };
     setViewPort(newViewport);
   } else {

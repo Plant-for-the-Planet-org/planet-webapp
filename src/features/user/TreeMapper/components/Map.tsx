@@ -9,11 +9,13 @@ import type { ViewPort } from '../../../common/types/ProjectPropsContextInterfac
 import type { MapEvent } from 'react-map-gl';
 import type { SetState } from '../../../common/types/common';
 import type { Feature, Point, Polygon } from 'geojson';
+import type { AllGeoJSON } from '@turf/turf';
 
 import React from 'react';
 import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import * as turf from '@turf/turf';
+import area from '@turf/area';
+import bbox from '@turf/bbox';
 import MapGL, {
   FlyToInterpolator,
   Layer,
@@ -25,7 +27,7 @@ import MapGL, {
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
@@ -93,8 +95,8 @@ export default function MyTreesMap({
 
   const getPlantationArea = (mt: MultiTreeRegistration) => {
     if (mt && mt.type === 'multi-tree-registration') {
-      const area = turf.area(mt.geometry);
-      return area / 10000;
+      const polygonAreaSqMeters = area(mt.geometry);
+      return polygonAreaSqMeters / 10000;
     } else {
       return 0;
     }
@@ -117,15 +119,15 @@ export default function MyTreesMap({
     }
   };
 
-  const zoomToLocation = (geometry: turf.AllGeoJSON) => {
+  const zoomToLocation = (geometry: AllGeoJSON) => {
     if (viewport.width && viewport.height && geometry) {
-      const bbox = turf.bbox(geometry);
+      const bounds = bbox(geometry);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
       ).fitBounds(
         [
-          [bbox[0], bbox[1]],
-          [bbox[2], bbox[3]],
+          [bounds[0], bounds[1]],
+          [bounds[2], bounds[3]],
         ],
         {
           padding: {
@@ -143,7 +145,7 @@ export default function MyTreesMap({
         zoom,
         transitionDuration: 1000,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       };
       setViewPort(newViewport);
     } else {

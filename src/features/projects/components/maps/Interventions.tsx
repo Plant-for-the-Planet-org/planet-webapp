@@ -12,7 +12,7 @@ import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/Intervention.module.scss';
-import * as turf from '@turf/turf';
+import area from '@turf/area';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -75,8 +75,8 @@ export default function Interventions(): ReactElement {
 
   const getPlArea = (pl: MultiTreeRegistration) => {
     if (pl && pl.type === 'multi-tree-registration') {
-      const area = turf.area(pl.geometry);
-      return area / 10000;
+      const calculatedArea = area(pl.geometry);
+      return calculatedArea / 10000;
     } else {
       return 0;
     }

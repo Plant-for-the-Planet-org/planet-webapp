@@ -20,7 +20,7 @@ import type {
 } from '../features/common/types/intervention';
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
-import * as turf from '@turf/turf';
+import centroid from '@turf/centroid';
 
 interface MetaDataValue {
   value: string;
@@ -286,7 +286,7 @@ export const calculateCentroid = (features: MapProject[]) => {
     type: 'FeatureCollection',
     features,
   };
-  return turf.centroid(featureCollection);
+  return centroid(featureCollection);
 };
 
 /**

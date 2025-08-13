@@ -8,7 +8,7 @@ import type {
 import { handleError } from '@planet-sdk/common';
 
 import { MenuItem, TextField, Button } from '@mui/material';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -123,7 +123,7 @@ function RegisterTreesForm({
         zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       };
       setViewPort(newViewport);
     }
@@ -356,7 +356,7 @@ function RegisterTreesForm({
                     longitude: event.lngLat[0],
                     transitionDuration: 400,
                     transitionInterpolator: new FlyToInterpolator(),
-                    transitionEasing: d3.easeCubic,
+                    transitionEasing: easeCubic,
                   });
                 }}
                 mapOptions={{

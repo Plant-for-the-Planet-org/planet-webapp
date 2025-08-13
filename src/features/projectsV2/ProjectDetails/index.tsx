@@ -206,7 +206,7 @@ const ProjectDetails = ({
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
-            activeIntervention={
+            selectedIntervention={
               selectedIntervention?.type !== 'single-tree-registration' &&
               selectedIntervention?.type !== 'multi-tree-registration'
                 ? selectedIntervention
