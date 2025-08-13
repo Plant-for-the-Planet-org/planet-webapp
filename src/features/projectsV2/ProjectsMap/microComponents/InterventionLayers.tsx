@@ -23,7 +23,7 @@ interface SampleTreeMarkerProps {
   selectedSampleTree: SampleTreeRegistration | null;
   toggleSampleTree: (
     e: React.MouseEvent<HTMLDivElement>,
-    st: SampleTreeRegistration //st sands for sample tree
+    sampleTree: SampleTreeRegistration
   ) => void;
 }
 
@@ -89,13 +89,15 @@ export default function InterventionLayers(): React.ReactElement {
       }
     }
   };
-  // mt stands for multi-tree registration
-  const getTreeCount = (mt: MultiTreeRegistration) => {
+
+  const getTreeCount = (multiTree: MultiTreeRegistration) => {
     let count = 0;
-    if (mt && mt.plantedSpecies) {
-      for (const key in mt.plantedSpecies) {
-        if (Object.prototype.hasOwnProperty.call(mt.plantedSpecies, key)) {
-          const element = mt.plantedSpecies[key];
+    if (multiTree && multiTree.plantedSpecies) {
+      for (const key in multiTree.plantedSpecies) {
+        if (
+          Object.prototype.hasOwnProperty.call(multiTree.plantedSpecies, key)
+        ) {
+          const element = multiTree.plantedSpecies[key];
           count += element.treeCount;
         }
       }
@@ -104,9 +106,9 @@ export default function InterventionLayers(): React.ReactElement {
       return 0;
     }
   };
-  const getPlantationArea = (mt: MultiTreeRegistration) => {
-    if (mt && mt.type === 'multi-tree-registration') {
-      const polygonAreaSqMeters = area(mt.geometry);
+  const getPlantationArea = (multiTree: MultiTreeRegistration) => {
+    if (multiTree && multiTree.type === 'multi-tree-registration') {
+      const polygonAreaSqMeters = area(multiTree.geometry);
       return typeof polygonAreaSqMeters === 'number'
         ? polygonAreaSqMeters / 10000
         : 0;
@@ -115,9 +117,9 @@ export default function InterventionLayers(): React.ReactElement {
     }
   };
 
-  const getPolygonColor = (mt: MultiTreeRegistration) => {
-    const treeCount = getTreeCount(mt);
-    const plantationArea = getPlantationArea(mt);
+  const getPolygonColor = (multiTree: MultiTreeRegistration) => {
+    const treeCount = getTreeCount(multiTree);
+    const plantationArea = getPlantationArea(multiTree);
     const density = treeCount / plantationArea;
     if (density > 2500) {
       return 0.5;

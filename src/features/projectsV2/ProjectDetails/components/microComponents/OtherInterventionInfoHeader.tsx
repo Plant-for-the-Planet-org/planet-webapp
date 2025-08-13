@@ -6,13 +6,13 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  interventionUniqueId: string | undefined;
+  hid: string | undefined;
   interventionType: INTERVENTION_TYPE;
   plantDate: string | null | undefined;
 }
 
 const OtherInterventionInfoHeader = ({
-  interventionUniqueId,
+  hid,
   interventionType,
   plantDate,
 }: Props) => {
@@ -27,9 +27,7 @@ const OtherInterventionInfoHeader = ({
         <div className={`${styles.interventionTitle}`}>
           {tIntervention(interventionType)}
         </div>
-        <div className={`hid ${styles.hid}`}>
-          {formatHid(interventionUniqueId)}
-        </div>
+        <div className={`hid ${styles.hid}`}>{formatHid(hid)}</div>
       </div>
       <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
         <h2 className={styles.label}>
