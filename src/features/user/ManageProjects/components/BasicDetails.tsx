@@ -424,7 +424,7 @@ export default function BasicDetails({
         longitude,
         transitionDuration: 400,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       }));
 
       setValue('latitude', latitude.toString());
