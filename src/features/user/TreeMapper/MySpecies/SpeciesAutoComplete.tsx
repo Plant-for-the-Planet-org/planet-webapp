@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import type { Control, FieldValues, FieldPath } from 'react-hook-form';
 import type { APIError } from '@planet-sdk/common';
-import type { SpeciesSuggestionType } from '../../../common/types/plantLocation';
+import type { SpeciesSuggestionType } from '../../../common/types/intervention';
 
 import React from 'react';
 import { Controller } from 'react-hook-form';

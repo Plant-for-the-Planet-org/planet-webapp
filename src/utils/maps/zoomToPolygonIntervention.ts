@@ -1,12 +1,13 @@
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { SetState } from '../../features/common/types/common';
-import type { PlantLocation } from '../../features/common/types/plantLocation';
+import type { Intervention } from '../../features/common/types/intervention';
 import type { Position } from 'geojson';
 import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
-import * as d3 from 'd3-ease';
-import * as turf from '@turf/turf';
+import { easeCubic } from 'd3-ease';
+import { polygon } from '@turf/helpers';
+import bbox from '@turf/bbox';
 import { getRequest } from '../apiRequests/api';
 import { handleError } from '@planet-sdk/common';
 /**
@@ -17,7 +18,7 @@ import { handleError } from '@planet-sdk/common';
  * @param setViewPort - function to set the viewport
  * @param {number} duration - in ms
  */
-export function zoomToPolygonPlantLocation(
+export function zoomToPolygonIntervention(
   coordinates: Position[],
   viewport: ViewPort,
   isMobile: boolean,
@@ -25,14 +26,14 @@ export function zoomToPolygonPlantLocation(
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {
-    const polygon = turf.polygon([coordinates]);
-    const bbox = turf.bbox(polygon);
+    const polygonFeature = polygon([coordinates]);
+    const bounds = bbox(polygonFeature);
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
     ).fitBounds(
       [
-        [bbox[0], bbox[1]],
-        [bbox[2], bbox[3]],
+        [bounds[0], bounds[1]],
+        [bounds[2], bounds[3]],
       ],
       {
         padding: {
@@ -50,7 +51,7 @@ export function zoomToPolygonPlantLocation(
       zoom,
       transitionDuration: duration,
       transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: d3.easeCubic,
+      transitionEasing: easeCubic,
     };
     setViewPort(newViewport);
   } else {
@@ -63,16 +64,16 @@ export function zoomToPolygonPlantLocation(
   }
 }
 
-export async function getAllPlantLocations(
+export async function getInterventions(
   tenant: string | undefined,
   project: string,
   setErrors: SetState<SerializedError[] | null>,
   redirect: (url: string) => void
-): Promise<PlantLocation[] | null | void> {
+): Promise<Intervention[] | null | void> {
   try {
-    const result = await getRequest<PlantLocation[]>({
+    const result = await getRequest<Intervention[]>({
       tenant,
-      url: `/app/plantLocations/${project}`,
+      url: `/app/interventions/${project}`,
       queryParams: {
         _scope: 'extended',
       },

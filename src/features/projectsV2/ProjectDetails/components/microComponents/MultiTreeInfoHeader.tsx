@@ -1,24 +1,24 @@
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatHid } from '../../../../../utils/projectV2';
 
 interface Props {
-  plHid: string | undefined;
+  hid: string | undefined;
   totalTreesCount: number;
-  plantLocationAreaHectares: number;
+  hectaresCovered: number;
 }
 
-const PlantLocationHeader = ({
-  plHid,
+const MultiTreeInfoHeader = ({
+  hid,
   totalTreesCount,
-  plantLocationAreaHectares,
+  hectaresCovered,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
   return (
     <div
-      className={`plant-location-header-container ${styles.plantLocationHeaderContainer}`}
+      className={`intervention-header-container ${styles.interventionHeaderContainer}`}
     >
       <div className={`tree-count ${styles.treeCount}`}>
         {tProjectDetails.rich('totalPlantedTrees', {
@@ -28,16 +28,13 @@ const PlantLocationHeader = ({
             Number(totalTreesCount),
             1
           ),
-          area:
-            plantLocationAreaHectares > 0
-              ? plantLocationAreaHectares.toFixed(3)
-              : undefined,
+          area: hectaresCovered > 0 ? hectaresCovered.toFixed(3) : undefined,
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>
-      <div className={`hid ${styles.hid}`}>{formatHid(plHid)}</div>
+      <div className={`hid ${styles.hid}`}>{formatHid(hid)}</div>
     </div>
   );
 };
 
-export default PlantLocationHeader;
+export default MultiTreeInfoHeader;

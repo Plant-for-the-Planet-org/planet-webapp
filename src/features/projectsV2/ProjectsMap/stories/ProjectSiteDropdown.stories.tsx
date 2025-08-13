@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { Feature, Polygon } from 'geojson';
 import type { SiteProperties } from '../ProjectSiteDropDown';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 
 import { useState } from 'react';
 import ProjectSiteDropdown from '../ProjectSiteDropDown';
@@ -132,10 +132,10 @@ const options: Feature<Polygon, SiteProperties>[] = [
 export const Preview: Story = {
   render: () => {
     const [selectedSite, setSelectedSite] = useState<null | number>(0);
-    const [selectedPlantLocation, setSelectedPlantLocation] =
-      useState<PlantLocation | null>(null);
-    const [_selectedSamplePlantLocation, setSelectedSamplePlantLocation] =
-      useState<SamplePlantLocation | null>(null);
+    const [selectedIntervention, setSelectedIntervention] =
+      useState<Intervention | null>(null);
+    const [_selectedSampleTree, setSelectedSampleTree] =
+      useState<SampleTreeRegistration | null>(null);
 
     return (
       <ProjectSiteDropdown
@@ -144,9 +144,9 @@ export const Preview: Story = {
         setSelectedSite={(index) => {
           setSelectedSite(index);
         }}
-        selectedPlantLocation={selectedPlantLocation}
-        setSelectedPlantLocation={setSelectedPlantLocation}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        selectedIntervention={selectedIntervention}
+        setSelectedIntervention={setSelectedIntervention}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     );
   },

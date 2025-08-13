@@ -8,12 +8,9 @@ import type {
 } from 'geojson';
 import type {
   Species,
-  PlantLocation as PlantLocationType,
-} from '../../../../common/types/plantLocation';
-import type {
-  PlantingLocationFormData,
-  SpeciesFormData,
-} from '../../Treemapper';
+  Intervention,
+} from '../../../../common/types/intervention';
+import type { InterventionFormData, SpeciesFormData } from '../../Treemapper';
 import type { SetState } from '../../../../common/types/common';
 import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 
@@ -43,9 +40,9 @@ import { useApi } from '../../../../../hooks/useApi';
 interface SpeciesProps {
   index: number;
   remove: Function;
-  errors: FieldErrors<PlantingLocationFormData>;
-  item: FieldArrayWithId<PlantingLocationFormData, 'plantedSpecies', 'id'>;
-  control: Control<PlantingLocationFormData>;
+  errors: FieldErrors<InterventionFormData>;
+  item: FieldArrayWithId<InterventionFormData, 'plantedSpecies', 'id'>;
+  control: Control<InterventionFormData>;
 }
 
 function PlantedSpecies({
@@ -137,7 +134,7 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  setPlantLocation: SetState<PlantLocationType | null>;
+  setIntervention: SetState<Intervention | null>;
   geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
@@ -157,7 +154,7 @@ type PlantingLocationApiPayload = {
 export default function PlantingLocation({
   handleNext,
   userLang,
-  setPlantLocation,
+  setIntervention,
   geoJson,
   setGeoJson,
   activeMethod,
@@ -190,7 +187,7 @@ export default function PlantingLocation({
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<PlantingLocationFormData>({
+  } = useForm<InterventionFormData>({
     mode: 'onBlur',
     defaultValues: defaultValues,
   });
@@ -310,7 +307,7 @@ export default function PlantingLocation({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const onSubmit = async (data: PlantingLocationFormData) => {
+  const onSubmit = async (data: InterventionFormData) => {
     if (geoJson) {
       setIsUploadingData(true);
       const payload: PlantingLocationApiPayload = {
@@ -325,12 +322,12 @@ export default function PlantingLocation({
 
       try {
         const res = await postApiAuthenticated<
-          PlantLocationType,
+          Intervention,
           PlantingLocationApiPayload
         >(`/treemapper/interventions`, {
           payload,
         });
-        setPlantLocation(res);
+        setIntervention(res);
         setIsUploadingData(false);
         handleNext();
       } catch (err) {

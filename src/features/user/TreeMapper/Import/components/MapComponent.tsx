@@ -3,7 +3,8 @@ import type { GeoJSON } from 'geojson';
 import type { RequiredMapStyle } from '../../../../common/types/map';
 
 import React from 'react';
-import * as turf from '@turf/turf';
+import { featureCollection } from '@turf/helpers';
+import bbox from '@turf/bbox';
 import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
@@ -58,15 +59,15 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
 
   React.useEffect(() => {
     if (geoJson) {
-      const geo = turf.featureCollection([
+      const geo = featureCollection([
         { type: 'Feature', geometry: geoJson, properties: {} },
       ]);
-      const bbox = turf.bbox(geo);
+      const bounds = bbox(geo);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         _viewport2
       ).fitBounds([
-        [bbox[0], bbox[1]],
-        [bbox[2], bbox[3]],
+        [bounds[0], bounds[1]],
+        [bounds[2], bounds[3]],
       ]);
       const newViewport: viewportProps = {
         ...viewport,

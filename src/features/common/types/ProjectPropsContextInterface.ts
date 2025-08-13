@@ -16,7 +16,7 @@ import type { SetState } from './common';
 import type { RefObject } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type { FlyToInterpolator } from 'react-map-gl';
-import type { PlantLocation, SamplePlantLocation } from './plantLocation';
+import type { Intervention, SampleTreeRegistration } from './intervention';
 
 export type ExploreOption =
   | 'Deforestation'
@@ -144,20 +144,20 @@ interface ProjectPropsContextInterface {
   setSelectedMode: SetState<MapMode>;
   rasterData: RasterData;
   setRasterData: SetState<RasterData>;
-  plantLocations: PlantLocation[] | null;
-  setPlantLocations: SetState<PlantLocation[] | null>;
-  selectedPl: PlantLocation | null; //HERE
-  setSelectedPl: SetState<PlantLocation | null>;
-  samplePlantLocation: SamplePlantLocation | null;
-  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  interventions: Intervention[] | null;
+  setInterventions: SetState<Intervention[] | null>;
+  selectedPl: Intervention | null; //HERE
+  setSelectedPl: SetState<Intervention | null>;
+  sampleIntervention: SampleTreeRegistration | null;
+  setSampleIntervention: SetState<SampleTreeRegistration | null>;
   zoomLevel: number;
   setZoomLevel: SetState<number>;
   satellite: boolean;
   setSatellite: SetState<boolean>;
   plIds: string[] | null;
   setPlIds: SetState<string[] | null>;
-  hoveredPl: PlantLocation | SamplePlantLocation | null;
-  setHoveredPl: SetState<PlantLocation | SamplePlantLocation | null>;
+  hoveredPl: Intervention | SampleTreeRegistration | null;
+  setHoveredPl: SetState<Intervention | SampleTreeRegistration | null>;
   isPolygonMenuOpen: boolean;
   setIsPolygonMenuOpen: SetState<boolean>;
   siteViewPort: SiteViewPort | null;
@@ -168,8 +168,8 @@ interface ProjectPropsContextInterface {
   setFilterOpen: SetState<boolean>;
   purpose: ProjectPurposeTypes;
   setPurpose: SetState<ProjectPurposeTypes>;
-  plantLocationsLoaded: boolean;
-  setPlantLocationsLoaded: SetState<boolean>;
+  interventionsLoaded: boolean;
+  setInterventionsLoaded: SetState<boolean>;
 }
 
 export default ProjectPropsContextInterface;

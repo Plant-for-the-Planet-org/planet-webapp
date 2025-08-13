@@ -2,50 +2,48 @@ import type { ReactElement } from 'react';
 import type { Links } from '../../../common/types/payments';
 import type { SetState } from '../../../common/types/common';
 import type {
-  PlantLocation as PlantLocationType,
-  PlantLocationSingle,
-  PlantLocationMulti,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 
 import React from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from '../TreeMapper.module.scss';
 import { useTranslations } from 'next-intl';
-import PlantLocation from './PlantLocation';
+import TreemapperIntervention from './TreemapperIntervention';
 
 interface Props {
-  selectedLocation: PlantLocationSingle | PlantLocationMulti | null;
-  setSelectedLocation: SetState<
-    PlantLocationSingle | PlantLocationMulti | null
+  selectedIntervention: Intervention | SampleTreeRegistration | null;
+  setSelectedIntervention: SetState<
+    Intervention | SampleTreeRegistration | null
   >;
-  plantLocations: PlantLocationType[];
+  interventions: Intervention[];
   isDataLoading: boolean;
-  location: PlantLocationSingle | PlantLocationMulti | null;
   fetchTreemapperData: Function;
   links: Links | undefined;
 }
 
 export default function TreeMapperList({
-  selectedLocation,
-  setSelectedLocation,
-  plantLocations,
+  selectedIntervention,
+  setSelectedIntervention,
+  interventions,
   isDataLoading,
-  location,
   fetchTreemapperData,
   links,
 }: Props): ReactElement {
   const t = useTranslations('Treemapper');
+
   return (
     <div
-      className={`${location ? styles.hideOnMobile : ''} ${
+      className={`${selectedIntervention ? styles.hideOnMobile : ''} ${
         styles.locationList
-      } ${location ? styles.hideOnMobile : ''}`}
+      }`}
     >
       <div className={styles.pullUpContainer}>
         <div className={styles.pullUpBar}></div>
       </div>
-      {!plantLocations && isDataLoading ? (
+      {!interventions && isDataLoading ? (
         <>
           <TransactionListLoader />
           <TransactionListLoader />
@@ -62,26 +60,24 @@ export default function TreeMapperList({
         </>
       ) : (
         <>
-          {plantLocations ? (
-            plantLocations.map((location, index: number) => {
-              if (location.type !== 'sample-tree-registration')
-                return (
-                  <PlantLocation
-                    key={index}
-                    location={location}
-                    locations={plantLocations}
-                    index={index}
-                    selectedLocation={selectedLocation}
-                    setSelectedLocation={setSelectedLocation}
-                  />
-                );
+          {interventions ? (
+            interventions.map((intervention, index: number) => {
+              return (
+                <TreemapperIntervention
+                  key={index}
+                  intervention={intervention}
+                  showDivider={index !== interventions?.length - 1}
+                  selectedIntervention={selectedIntervention}
+                  setSelectedIntervention={setSelectedIntervention}
+                />
+              );
             })
           ) : (
             <div className={styles.notFound}>
               <TransactionsNotFound />
             </div>
           )}
-          {plantLocations && links?.next && (
+          {interventions && links?.next && (
             <div className={styles.pagination}>
               <button
                 onClick={() => fetchTreemapperData(true)}

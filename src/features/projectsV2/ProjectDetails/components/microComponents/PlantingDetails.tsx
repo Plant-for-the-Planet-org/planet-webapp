@@ -1,5 +1,5 @@
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
 

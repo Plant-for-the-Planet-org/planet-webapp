@@ -10,7 +10,7 @@ import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
 import SiteLayers from './microComponents/SiteLayers';
 import InterventionLayers from './microComponents/InterventionLayers';
-import { zoomToPolygonPlantLocation } from '../../../utils/mapsV2/zoomToPolygonPlantLocation';
+import { zoomToPolygonIntervention } from '../../../utils/mapsV2/zoomToPolygonIntervention';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocationMarker from './microComponents/ProjectLocationMarker';
 import FireLocationsMarker from './microComponents/FireLocationsMarker';
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
-  const { singleProject, selectedSite, selectedPlantLocation, plantLocations } =
+  const { singleProject, selectedSite, selectedIntervention, interventions } =
     useProjects();
   if (singleProject === null) return null;
 
@@ -33,15 +33,15 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     useProjectsMap();
 
   const router = useRouter();
-  const { ploc: requestedPlantLocation, site: requestedSite } = router.query;
+  const { ploc: requestedIntervention, site: requestedSite } = router.query;
 
   const canShowSites = sitesGeoJson.features.length > 0;
   const displayIntervention = selectedTab === 'field' && !isSatelliteView;
 
   // Zoom to plant location
   useEffect(() => {
-    if (!router.isReady || selectedPlantLocation === null) return;
-    const { geometry } = selectedPlantLocation;
+    if (!router.isReady || selectedIntervention === null) return;
+    const { geometry } = selectedIntervention;
     const { type, coordinates } = geometry;
 
     const isPolygonLocation = type === 'Polygon';
@@ -49,7 +49,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
 
     if (isPolygonLocation) {
       const polygonCoordinates = coordinates[0];
-      zoomToPolygonPlantLocation(
+      zoomToPolygonIntervention(
         polygonCoordinates,
         mapRef,
         handleViewStateChange,
@@ -68,14 +68,14 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
         );
       }
     }
-  }, [selectedPlantLocation, router.isReady]);
+  }, [selectedIntervention, router.isReady]);
 
   // Zoom to project site
   useEffect(() => {
     if (
       !router.isReady ||
-      selectedPlantLocation !== null ||
-      Boolean(requestedPlantLocation)
+      selectedIntervention !== null ||
+      Boolean(requestedIntervention)
     )
       return;
     if (canShowSites && selectedSite !== null) {
@@ -108,11 +108,11 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     const isSatelliteView =
       singleProject.purpose === 'conservation' ||
       (singleProject.purpose === 'trees' &&
-        Array.isArray(plantLocations) &&
-        plantLocations.length === 0);
+        Array.isArray(interventions) &&
+        interventions.length === 0);
 
     setIsSatelliteView(isSatelliteView);
-  }, [plantLocations, singleProject.purpose]);
+  }, [interventions, singleProject.purpose]);
   return (
     <>
       {canShowSites ? (
