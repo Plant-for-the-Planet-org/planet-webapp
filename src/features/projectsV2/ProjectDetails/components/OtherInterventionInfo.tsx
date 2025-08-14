@@ -14,7 +14,7 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import OtherInterventionInfoHeader from './microComponents/OtherInterventionInfoHeader';
-import { createCardData } from '../../../../utils/projectV2';
+import { prepareInterventionMetadata } from '../../../../utils/projectV2';
 
 interface Props {
   hoveredIntervention?: OtherInterventions | null;
@@ -31,12 +31,15 @@ const OtherInterventionInfo = ({
 }: Props) => {
   const interventionInfo = hoveredIntervention || activeIntervention;
   if (!interventionInfo) return null;
+  const tProjectDetails = useTranslations('ProjectDetails');
+  const interventionMetadata = prepareInterventionMetadata(interventionInfo);
+
   const sampleTrees = interventionInfo.sampleInterventions || [];
   const plantedSpecies = interventionInfo.plantedSpecies || [];
   const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
+  const hasInterventionMetadata = interventionMetadata.length > 0;
 
-  const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount = hasPlantedSpecies
       ? plantedSpecies.reduce(
@@ -64,8 +67,6 @@ const OtherInterventionInfo = ({
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
-  const cleanedPublicMetadata = createCardData(interventionInfo);
-
   const content = [
     <>
       <OtherInterventionInfoHeader
@@ -85,10 +86,10 @@ const OtherInterventionInfo = ({
         />
       )}
     </>,
-    cleanedPublicMetadata.length > 0 && (
+    hasInterventionMetadata && (
       <OtherInterventionMetadata
         key="plantingDetails"
-        metadata={cleanedPublicMetadata}
+        metadata={interventionMetadata}
         plantDate={interventionInfo.interventionStartDate}
         type={interventionInfo.type}
       />
