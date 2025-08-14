@@ -72,17 +72,6 @@ const isStringValue = (entry: [string, unknown]): entry is [string, string] => {
   return typeof entry[1] === 'string';
 };
 
-/** Type guard that checks if a value is a non-array object containing a string `value` property. */
-function isObjectWithStringValue(obj: unknown): obj is { value: string } {
-  return (
-    !!obj &&
-    typeof obj === 'object' &&
-    !Array.isArray(obj) &&
-    'value' in obj &&
-    typeof (obj as { value: unknown }).value === 'string'
-  );
-}
-
 /**
  * Updates and returns a query object for a URL based on the current path and specified parameters.
  * It preserves selected query parameters, removes unwanted ones, and adds or updates the site parameter.
@@ -438,6 +427,33 @@ function tryParseJson(str: string): unknown | null {
     return null;
   }
 }
+/**
+ * Type guard that checks if a value is a non-array object
+ * with string `label` and `value` properties.
+ */
+
+function isLabelValueObject(obj: unknown): obj is MetaDataValue {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    'label' in obj &&
+    'value' in obj &&
+    typeof (obj as { value: unknown }).value === 'string' &&
+    typeof (obj as { label: unknown }).label === 'string'
+  );
+}
+
+/** Type guard that checks if a value is a non-array object containing a string `value` property. */
+function isObjectWithStringValue(obj: unknown): obj is { value: string } {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    'value' in obj &&
+    typeof (obj as { value: unknown }).value === 'string'
+  );
+}
 
 /**
  * Formats a single metadata entry into a user-facing key-value pair.
@@ -459,23 +475,17 @@ function formatMetadataEntry(metaKey: string, metaValue: unknown) {
     return { key: metaKey, value: metaValue };
   }
 
-  if (
-    !metaValue ||
-    typeof metaValue !== 'object' ||
-    !('value' in metaValue) ||
-    !('label' in metaValue)
-  ) {
-    return null;
-  }
+  if (!isLabelValueObject(metaValue)) return null;
 
-  const parsedValue =
-    typeof metaValue.value === 'string' ? tryParseJson(metaValue.value) : null;
+  let finalValue = metaValue.value;
+  const parsedValue = tryParseJson(metaValue.value);
+  if (isObjectWithStringValue(parsedValue)) {
+    finalValue = parsedValue.value;
+  }
 
   return {
     key: metaValue.label,
-    value: isObjectWithStringValue(parsedValue)
-      ? parsedValue.value
-      : metaValue.value,
+    value: finalValue,
   };
 }
 
@@ -500,6 +510,7 @@ export function prepareInterventionMetadata(
   interventionInfo: OtherInterventions | null
 ) {
   const publicMetadata = interventionInfo?.metadata?.public;
+
   if (!isValidPublicMetadata(publicMetadata)) return [];
 
   return Object.entries(publicMetadata)
