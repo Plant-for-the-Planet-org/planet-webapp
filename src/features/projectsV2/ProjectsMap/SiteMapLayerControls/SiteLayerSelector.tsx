@@ -1,24 +1,25 @@
-import type { LayerOption } from './SiteLayerOptions';
-
+import { useTranslations } from 'next-intl';
 import SiteLayerDropdown from './SiteLayerDropdown';
+import { useProjects } from '../../ProjectsContext';
+import { getProjectStartingYear } from '../../../../utils/projectV2';
 import styles from './SiteMapLayerControls.module.scss';
 
-interface SiteLayerSelectorProps {
-  setSelectedLayer: (layer: LayerOption) => void;
-  selectedLayer: LayerOption;
-}
+const SiteLayerSelector = () => {
+  const tSiteLayers = useTranslations('Maps.siteLayers');
+  const { singleProject } = useProjects();
 
-const SiteLayerSelector = ({
-  setSelectedLayer,
-  selectedLayer,
-}: SiteLayerSelectorProps) => {
+  if (!singleProject) return null;
+
+  const startingYear = getProjectStartingYear(singleProject);
+
   return (
     <div className={styles.siteLayerSelector}>
-      <SiteLayerDropdown
-        selectedLayer={selectedLayer}
-        setSelectedLayer={setSelectedLayer}
-      />
-      <p className={styles.timePeriodText}>Since project begin 2018</p>
+      <SiteLayerDropdown />
+      {startingYear !== null && (
+        <p className={styles.timePeriodText}>
+          {tSiteLayers('projectStart', { startingYear })}
+        </p>
+      )}
     </div>
   );
 };
