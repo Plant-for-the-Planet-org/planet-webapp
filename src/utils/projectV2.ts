@@ -22,14 +22,15 @@ import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextI
 
 import * as turf from '@turf/turf';
 
-interface MetaDataValue {
+type MetaDataValue = {
   value: string;
   label: string;
-}
+};
 
-interface PublicMetaData {
-  [key: string]: string | MetaDataValue;
-}
+type FormattedMetadataEntry = {
+  key: string;
+  value: string;
+};
 
 export type MobileOs = 'android' | 'ios' | undefined;
 
@@ -416,23 +417,22 @@ export function getSitesGeoJson(sites: ProjectSiteFeature[]): SitesGeoJSON {
 
 /**
  * Safely parses a JSON string into a JavaScript value without throwing errors.
- *
  * @param {string} str - The JSON string to parse.
- * @returns {unknown | null} - The parsed value if valid JSON, otherwise `null`.
+ * @returns {unknown} The parsed value if valid JSON, otherwise `null` to avoid throwing errors.
  */
-function tryParseJson(str: string): unknown | null {
+function tryParseJson(str: string): unknown {
   try {
     return JSON.parse(str);
   } catch {
     return null;
   }
 }
+
 /**
  * Type guard that checks if a value is a non-array object
  * with string `label` and `value` properties.
  */
-
-function isLabelValueObject(obj: unknown): obj is MetaDataValue {
+function isMetaDataValue(obj: unknown): obj is MetaDataValue {
   return (
     !!obj &&
     typeof obj === 'object' &&
@@ -463,19 +463,21 @@ function isObjectWithStringValue(obj: unknown): obj is { value: string } {
  * - Accepts direct string values.
  * - Accepts objects with `value` and `label` properties.
  * - If `value` is a JSON string, attempts to parse it and extract a nested string `value`.
- *
  * @param {string} metaKey - The metadata property name.
  * @param {unknown} metaValue - The metadata property value.
- * @returns {{ key: string; value: string } | null} - The formatted metadata entry, or `null` if not displayable.
+ * @returns {{ key: string; value: string } | null} The formatted metadata entry, or `null` if not displayable.
  */
-function formatMetadataEntry(metaKey: string, metaValue: unknown) {
+function formatMetadataEntry(
+  metaKey: string,
+  metaValue: unknown
+): FormattedMetadataEntry | null {
   if (nonDisplayPublicMetadataKeys.includes(metaKey)) return null;
 
   if (typeof metaValue === 'string') {
     return { key: metaKey, value: metaValue };
   }
 
-  if (!isLabelValueObject(metaValue)) return null;
+  if (!isMetaDataValue(metaValue)) return null;
 
   let finalValue = metaValue.value;
   const parsedValue = tryParseJson(metaValue.value);
@@ -490,28 +492,30 @@ function formatMetadataEntry(metaKey: string, metaValue: unknown) {
 }
 
 /**
- * Determines if the provided value is a valid `PublicMetaData` object.
- *
+ * Checks if metadata is a processable object (not null, not array, is object).
  * @param {unknown} metadata - The value to check.
- * @returns {metadata is PublicMetaData} - `true` if `metadata` is a non-array object.
+ * @returns {boolean} true if `metadata` is a non-array object.
  */
-function isValidPublicMetadata(metadata: unknown): metadata is PublicMetaData {
-  return !!metadata && typeof metadata === 'object' && !Array.isArray(metadata);
+function isProcessableMetadata(metadata: unknown): metadata is object {
+  return !(
+    !metadata ||
+    typeof metadata !== 'object' ||
+    Array.isArray(metadata)
+  );
 }
 
 /**
  * Extracts and formats the `metadata.public` section of an intervention info
- * an array of display-friendly key-value pairs.
- *
- * @param {OtherInterventions | null} interventionInfo - The intervention object containing public metadata.
+ * into an array of display-friendly key-value pairs.
+ * @param {OtherInterventions} interventionInfo - The intervention object containing public metadata.
  * @returns {{ key: string; value: string }[]} - Array of displayable metadata entries.
  */
 export function prepareInterventionMetadata(
-  interventionInfo: OtherInterventions | null
-) {
-  const publicMetadata = interventionInfo?.metadata?.public;
+  interventionInfo: OtherInterventions
+): FormattedMetadataEntry[] {
+  const publicMetadata = interventionInfo.metadata?.public;
 
-  if (!isValidPublicMetadata(publicMetadata)) return [];
+  if (!isProcessableMetadata(publicMetadata)) return [];
 
   return Object.entries(publicMetadata)
     .map(([key, value]) => formatMetadataEntry(key, value))
