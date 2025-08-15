@@ -28,17 +28,17 @@ interface Props {
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const { singleProject, selectedSite, selectedIntervention } = useProjects();
-  useFetchSiteLayers();
-  useSiteLayerAutoSelection();
-
   if (singleProject === null) return null;
 
   const { handleViewStateChange } = useProjectsMap();
+  useFetchSiteLayers();
+  useSiteLayerAutoSelection();
   const router = useRouter();
   const { ploc: requestedIntervention, site: requestedSite } = router.query;
 
   const canShowSites = sitesGeoJson.features.length > 0;
-  const displayIntervention = selectedTab === 'satellite';
+  const canShowInterventions = selectedTab === 'field';
+  const canShowSatelliteLayer = selectedTab === 'satellite';
 
   // Zoom to plant location
   useEffect(() => {
@@ -114,7 +114,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
             isSatelliteBackground={selectedTab === 'satellite'}
             geoJson={sitesGeoJson}
           />
-          {selectedTab === 'satellite' && <SatelliteLayer />}
+          {canShowSatelliteLayer && <SatelliteLayer />}
         </>
       ) : (
         <ProjectLocationMarker
@@ -123,7 +123,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
           purpose={singleProject.purpose}
         />
       )}
-      {displayIntervention && <InterventionLayers />}
+      {canShowInterventions && <InterventionLayers />}
       <FeatureFlag condition={isFirealertFiresEnabled()}>
         <FireLocationsMarker />
       </FeatureFlag>
