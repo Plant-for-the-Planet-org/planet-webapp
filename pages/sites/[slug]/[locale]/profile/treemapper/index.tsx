@@ -27,10 +27,6 @@ interface Props {
 }
 
 function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
-  // TODO - remove this
-  // if (typeof window !== 'undefined') {
-  //   router.push('/');
-  // }
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();

@@ -34,6 +34,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import getLocalizedPath from '../../../utils/getLocalizedPath';
 import {
   getAddressDetailsFromText,
   getAddressSuggestions,
@@ -118,11 +119,11 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            router.push('/profile');
+            router.push(getLocalizedPath('/profile', locale));
           }
         }
       } else {
-        router.push('/');
+        router.push(getLocalizedPath('/', locale));
       }
     }
     if (contextLoaded) {
@@ -147,7 +148,7 @@ export default function CompleteSignup(): ReactElement | null {
       handleSnackbarOpen();
 
       if (typeof window !== 'undefined') {
-        router.push('/t/[id]', `/t/${res.slug}`);
+        router.push('/t/[id]', getLocalizedPath(`/t/${res.slug}`, locale));
       }
     } catch (err) {
       setIsProcessing(false);

@@ -42,6 +42,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import getLocalizedPath from '../../../../utils/getLocalizedPath';
 import { getAddressFromCoordinates } from '../../../../utils/geocoder';
 
 type BaseFormData = {
@@ -387,7 +388,9 @@ export default function BasicDetails({
         >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);
         setProjectDetails(res);
-        router.push(`/profile/projects/${res.id}?type=media`);
+        router.push(
+          getLocalizedPath(`/profile/projects/${res.id}?type=media`, locale)
+        );
         setIsUploadingData(false);
       } catch (err) {
         setIsUploadingData(false);
