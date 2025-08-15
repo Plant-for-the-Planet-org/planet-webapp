@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import FieldDataIcon from '../../../../../public/assets/images/icons/FieldDataIcon';
 import TimeTravelIcon from '../../../../../public/assets/images/icons/TimeTravelIcon';
 import SatelliteAnalysisIcon from '../../../../../public/assets/images/icons/SatelliteAnalysisIcon';
+import themeProperties from '../../../../theme/themeProperties';
 
 export type SelectedTab = 'satellite' | 'field' | 'timeTravel';
 
@@ -20,6 +21,7 @@ const MapTabs = ({
   setSelectedTab,
   isTimeTravelEnabled,
 }: TabsProps): ReactElement | null => {
+  const { colors } = themeProperties.designSystem;
   const availableTabs: SelectedTab[] = [
     'satellite',
     'field',
@@ -46,11 +48,7 @@ const MapTabs = ({
       <SingleTab
         icon={
           <SatelliteAnalysisIcon
-            color={
-              selectedTab === 'satellite'
-                ? `${'var(--light)'}`
-                : `${'var(--dark)'}`
-            }
+            color={selectedTab === 'satellite' ? colors.white : colors.coreText}
           />
         }
         title={tMaps('satelliteAnalysis')}
@@ -61,9 +59,7 @@ const MapTabs = ({
       <SingleTab
         icon={
           <FieldDataIcon
-            color={
-              selectedTab === 'field' ? `${'var(--light)'}` : `${'var(--dark)'}`
-            }
+            color={selectedTab === 'field' ? colors.white : colors.coreText}
           />
         }
         title={tMaps('fieldData')}
@@ -76,9 +72,7 @@ const MapTabs = ({
           icon={
             <TimeTravelIcon
               color={
-                selectedTab === 'timeTravel'
-                  ? `${'var(--light)'}`
-                  : `${'var(--dark)'}`
+                selectedTab === 'timeTravel' ? colors.white : colors.coreText
               }
             />
           }

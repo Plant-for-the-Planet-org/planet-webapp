@@ -4,7 +4,7 @@
   width: fit-content;
   height: 48px;
   border-radius: 12px;
-  background: $backgroundColor;
+  background: $dsWhite;
   align-items: center;
   justify-content: center;
   padding: 0px 5px;
@@ -40,8 +40,8 @@
 
 .selected {
   padding: 0px 15px;
-  color: $backgroundColor;
-  background-color: $primaryColorNew;
+  color: $dsWhite;
+  background-color: $dsPrimaryColor;
 }
 
 .separator {
@@ -58,7 +58,7 @@
     top: 0;
     width: 0.5px;
     height: 100%;
-    background: $dark;
+    background: $dsCoreText;
     opacity: 0.3;
   }
 }

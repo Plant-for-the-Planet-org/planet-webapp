@@ -6,10 +6,9 @@ import type {
   RegisteredTreesGeometry,
 } from '../../common/types/map';
 import { handleError } from '@planet-sdk/common';
-import type { SxProps } from '@mui/material';
 
 import { MenuItem, TextField, Button } from '@mui/material';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -29,7 +28,6 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
@@ -38,23 +36,6 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.designSystem.colors.leafGreen,
-    color: themeProperties.designSystem.colors.white,
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.designSystem.colors.leafGreen,
-      color: themeProperties.designSystem.colors.white,
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -85,7 +66,7 @@ function RegisterTreesForm({
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState<
+  const [interventionCoordinates, setInterventionCoordinates] = React.useState<
     number[] | undefined
   >(undefined);
   const [geometry, setGeometry] = React.useState<
@@ -142,7 +123,7 @@ function RegisterTreesForm({
         zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        transitionEasing: easeCubic,
       };
       setViewPort(newViewport);
     }
@@ -297,9 +278,6 @@ function RegisterTreesForm({
                     minDate={new Date(new Date().setFullYear(1950))}
                     inputFormat="MMMM d, yyyy"
                     maxDate={new Date()}
-                    DialogProps={{
-                      sx: dialogSx,
-                    }}
                   />
                 )}
               />
@@ -367,7 +345,7 @@ function RegisterTreesForm({
                 onViewportChange={_onViewportChange}
                 onViewStateChange={_onStateChange}
                 onClick={(event) => {
-                  setplantLocation(event.lngLat);
+                  setInterventionCoordinates(event.lngLat);
                   setGeometry({
                     type: 'Point',
                     coordinates: event.lngLat,
@@ -378,7 +356,7 @@ function RegisterTreesForm({
                     longitude: event.lngLat[0],
                     transitionDuration: 400,
                     transitionInterpolator: new FlyToInterpolator(),
-                    transitionEasing: d3.easeCubic,
+                    transitionEasing: easeCubic,
                   });
                 }}
                 mapOptions={{
@@ -386,10 +364,10 @@ function RegisterTreesForm({
                     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
                 }}
               >
-                {plantLocation ? (
+                {interventionCoordinates ? (
                   <Marker
-                    latitude={plantLocation[1]}
-                    longitude={plantLocation[0]}
+                    latitude={interventionCoordinates[1]}
+                    longitude={interventionCoordinates[0]}
                     offsetLeft={5}
                     offsetTop={-16}
                     style={{ left: '28px' }}

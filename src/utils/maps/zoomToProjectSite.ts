@@ -6,8 +6,8 @@ import type {
 import type { SetState } from '../../features/common/types/common';
 
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
-import * as d3 from 'd3-ease';
-import * as turf from '@turf/turf';
+import { easeCubic } from 'd3-ease';
+import bbox from '@turf/bbox';
 
 export default function zoomToProjectSite(
   geoJson: SitesGeoJSON | null,
@@ -29,14 +29,14 @@ export default function zoomToProjectSite(
     const isMobile = window.innerWidth <= 767 && isPortrait;
     //console.log("zoomToProjectSite", viewport, viewport.width, window.innerWidth, viewport.height, window.innerHeight);
 
-    const bbox = turf.bbox(geoJson.features[selectedSite]);
+    const bounds = bbox(geoJson.features[selectedSite]);
 
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
     ).fitBounds(
       [
-        [bbox[0], bbox[1]],
-        [bbox[2], bbox[3]],
+        [bounds[0], bounds[1]],
+        [bounds[2], bounds[3]],
       ],
       {
         padding: {
@@ -58,7 +58,7 @@ export default function zoomToProjectSite(
       zoom: defaultZoom,
       transitionDuration: duration,
       transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: d3.easeCubic,
+      transitionEasing: easeCubic,
     };
 
     setViewPort(newViewport);

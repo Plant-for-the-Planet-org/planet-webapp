@@ -1,10 +1,10 @@
 import type {
   Measurements,
-  SamplePlantLocation,
-} from '../../../../common/types/plantLocation';
+  SampleTreeRegistration,
+} from '../../../../common/types/intervention';
 import type { SetState } from '../../../../common/types/common';
 
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
@@ -14,7 +14,7 @@ interface Props {
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
   type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const PlantInfoCard = ({
@@ -23,7 +23,7 @@ const PlantInfoCard = ({
   scientificName,
   measurements,
   type,
-  setSelectedSamplePlantLocation,
+  setSelectedSampleTree,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const sampleTreeConfig = [
@@ -80,7 +80,7 @@ const PlantInfoCard = ({
           <h2 className={styles.label}>{tProjectDetails('plot')}</h2>
           <button
             className={styles.showWholeArea}
-            onClick={() => setSelectedSamplePlantLocation(null)}
+            onClick={() => setSelectedSampleTree(null)}
           >
             {tProjectDetails('showWholeArea')}
           </button>

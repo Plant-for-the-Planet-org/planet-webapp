@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
-import { type PlantLocation as PlantLocationType } from '../../../common/types/plantLocation';
+import type { Intervention } from '../../../common/types/intervention';
 
 import React from 'react';
 import PlantingLocation from './components/PlantingLocation';
@@ -16,10 +16,10 @@ import { styled } from '@mui/material/styles';
 import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
-import theme from '../../../../theme/themeProperties';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -30,10 +30,10 @@ const Stepper = styled(MuiStepper)({
 
 const Step = styled(MuiStep)({
   '& > span > span > .Mui-active': {
-    color: theme.primaryColor,
+    color: themeProperties.designSystem.colors.primaryColor,
   },
   '& > span > span > .Mui-completed': {
-    color: theme.primaryColor,
+    color: themeProperties.designSystem.colors.primaryColor,
   },
 });
 
@@ -57,20 +57,21 @@ export default function ImportData(): ReactElement {
   }
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
-  const [plantLocation, setPlantLocation] =
-    React.useState<PlantLocationType | null>(null);
+  const [intervention, setIntervention] = React.useState<Intervention | null>(
+    null
+  );
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
-  const fetchPlantLocation = async (id: string) => {
+  const fetchIntervention = async (id: string) => {
     try {
-      const result = await getApiAuthenticated<PlantLocationType>(
+      const result = await getApiAuthenticated<Intervention>(
         `/treemapper/interventions/${id}`,
         {
           queryParams: { _scope: 'extended' },
         }
       );
-      setPlantLocation(result);
+      setIntervention(result);
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
@@ -78,7 +79,7 @@ export default function ImportData(): ReactElement {
 
   React.useEffect(() => {
     if (router && router.query.loc && !Array.isArray(router.query.loc)) {
-      fetchPlantLocation(router.query.loc);
+      fetchIntervention(router.query.loc);
     }
   }, [router]);
 
@@ -106,7 +107,7 @@ export default function ImportData(): ReactElement {
           <PlantingLocation
             handleNext={handleNext}
             userLang={userLang}
-            setPlantLocation={setPlantLocation}
+            setIntervention={setIntervention}
             geoJson={geoJson}
             setGeoJson={setGeoJson}
             activeMethod={activeMethod}
@@ -114,20 +115,20 @@ export default function ImportData(): ReactElement {
           />
         );
       case 1:
-        return plantLocation &&
-          plantLocation.type === 'multi-tree-registration' ? (
+        return intervention &&
+          intervention.type === 'multi-tree-registration' ? (
           <SampleTrees
             handleNext={handleNext}
-            plantLocation={plantLocation}
+            intervention={intervention}
             userLang={userLang}
           />
         ) : (
           <p> {tCommon('some_error')}</p>
         );
       case 2:
-        return plantLocation &&
-          plantLocation.type === 'multi-tree-registration' ? (
-          <ReviewSubmit plantLocation={plantLocation} handleBack={handleBack} />
+        return intervention &&
+          intervention.type === 'multi-tree-registration' ? (
+          <ReviewSubmit intervention={intervention} handleBack={handleBack} />
         ) : (
           <p> {tCommon('some_error')}</p>
         );
@@ -136,7 +137,7 @@ export default function ImportData(): ReactElement {
           <PlantingLocation
             handleNext={handleNext}
             userLang={userLang}
-            setPlantLocation={setPlantLocation}
+            setIntervention={setIntervention}
             geoJson={geoJson}
             setGeoJson={setGeoJson}
             activeMethod={activeMethod}

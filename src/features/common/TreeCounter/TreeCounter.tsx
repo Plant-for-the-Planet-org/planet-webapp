@@ -6,7 +6,7 @@ import treeCounterStyles from './TreeCounter.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
-import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
+import PlantedTreesBlackIcon from '../../../../public/assets/images/icons/PlantedTreesBlackIcon';
 import HomeTreeCounter from './legacy/TreeCounterData';
 import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
@@ -153,7 +153,7 @@ export default function TreeCounter(props: TreeCounterInterface) {
       ) : (
         <div className={treeCounterStyles.treeCounterData}>
           <div>
-            <PlantedTressBlackSvg
+            <PlantedTreesBlackIcon
               color={'#4F4F4F'}
               height={svgHeight}
               width={svgWidth}

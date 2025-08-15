@@ -3,19 +3,18 @@ import type { ViewState } from 'react-map-gl-v7';
 import type { Map } from 'maplibre-gl';
 import type { MapRef } from '../../features/common/types/projectv2';
 
-import * as turf from '@turf/turf';
+import bbox from '@turf/bbox';
 import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
+import { MAIN_MAP_ANIMATION_DURATIONS } from '../projectV2';
 
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
     center: [DEFAULT_VIEW_STATE.longitude, DEFAULT_VIEW_STATE.latitude],
-    zoom: 2,
-    duration: 1600,
+    zoom: DEFAULT_VIEW_STATE.zoom,
+    duration: MAIN_MAP_ANIMATION_DURATIONS.ZOOM_OUT,
   });
 
-  map.once('moveend', () => {
-    callback();
-  });
+  map.once('moveend', () => callback());
 }
 export function zoomInToProjectSite(
   mapRef: MapRef,
@@ -36,13 +35,13 @@ export function zoomInToProjectSite(
     return;
   }
   // Get the bounding box of the selected site
-  const bbox = turf.bbox(feature);
+  const bounds = bbox(feature);
 
   // Fit the map to the bounding box
   map.fitBounds(
     [
-      [bbox[0], bbox[1]],
-      [bbox[2], bbox[3]],
+      [bounds[0], bounds[1]],
+      [bounds[2], bounds[3]],
     ],
     {
       duration: duration,

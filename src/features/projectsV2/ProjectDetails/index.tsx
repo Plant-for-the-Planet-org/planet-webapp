@@ -1,9 +1,9 @@
 import type { APIError } from '@planet-sdk/common';
 import type {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../common/types/plantLocation';
+  Intervention,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
+} from '../../common/types/intervention';
 import type { ExtendedProject } from '../../common/types/projectv2';
 
 import { useContext, useEffect, useMemo } from 'react';
@@ -17,9 +17,9 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import MultiPlantLocationInfo from './components/MultiPlantLocationInfo';
-import SinglePlantLocationInfo from './components/SinglePlantLocationInfo';
-import { getPlantData } from '../../../utils/projectV2';
+import MultiTreeInfo from './components/MultiTreeInfo';
+import SingleTreeInfo from './components/SingleTreeInfo';
+import { getActiveSingleTree } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
@@ -38,14 +38,14 @@ const ProjectDetails = ({
   const {
     singleProject,
     setSingleProject,
-    setPlantLocations,
+    setInterventions,
     setIsLoading,
     setIsError,
     setSelectedMode,
-    selectedPlantLocation,
-    hoveredPlantLocation,
-    selectedSamplePlantLocation,
-    setSelectedSamplePlantLocation,
+    selectedIntervention,
+    hoveredIntervention,
+    selectedSampleTree,
+    setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
   const { setTimeTravelConfig } = useProjectsMap();
@@ -56,14 +56,19 @@ const ProjectDetails = ({
   const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
 
-  const fetchPlantLocations = async (projectId: string) => {
+  const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);
     try {
-      const result = await getApi<PlantLocation[]>(
-        `/app/plantLocations/${projectId}`,
-        { queryParams: { _scope: 'extended' } }
+      const result = await getApi<Intervention[]>(
+        `/app/interventions/${projectId}`,
+        {
+          queryParams: {
+            // Fetches sampleInterventions within each intervention
+            _scope: 'extended',
+          },
+        }
       );
-      setPlantLocations(result);
+      setInterventions(result);
     } catch (err) {
       setErrors(handleError(err as APIError | ClientError));
       setIsError(true);
@@ -92,7 +97,7 @@ const ProjectDetails = ({
         );
         const { purpose, id: projectId } = fetchedProject;
         if (projectId && purpose === 'trees') {
-          fetchPlantLocations(projectId);
+          fetchInterventions(projectId);
         }
         if (purpose === 'conservation' || purpose === 'trees') {
           setSingleProject(fetchedProject);
@@ -121,42 +126,59 @@ const ProjectDetails = ({
     }
   }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
-  const shouldShowPlantLocationInfo =
-    (hoveredPlantLocation?.type === 'multi-tree-registration' ||
-      selectedPlantLocation?.type === 'multi-tree-registration') &&
-    !isMobile;
+  const activeMultiTree = useMemo(() => {
+    if (hoveredIntervention?.type === 'multi-tree-registration') {
+      return hoveredIntervention;
+    } else if (selectedIntervention?.type === 'multi-tree-registration') {
+      return selectedIntervention;
+    }
+    return undefined;
+  }, [hoveredIntervention, selectedIntervention]);
 
   const shouldShowOtherIntervention =
-    isNonPlantationType(hoveredPlantLocation) ||
-    isNonPlantationType(selectedPlantLocation);
+    isNonPlantationType(hoveredIntervention) ||
+    isNonPlantationType(selectedIntervention);
 
-  const shouldShowSinglePlantInfo =
-    (hoveredPlantLocation?.type === 'single-tree-registration' ||
-      selectedPlantLocation?.type === 'single-tree-registration' ||
-      selectedSamplePlantLocation !== null) &&
+  const shouldShowSingleTreeInfo =
+    (hoveredIntervention?.type === 'single-tree-registration' ||
+      selectedIntervention?.type === 'single-tree-registration' ||
+      selectedSampleTree !== null) &&
     !isMobile;
 
+  const shouldShowMultiTreeInfo =
+    (hoveredIntervention?.type === 'multi-tree-registration' ||
+      selectedIntervention?.type === 'multi-tree-registration') &&
+    !isMobile &&
+    !shouldShowSingleTreeInfo &&
+    activeMultiTree !== undefined;
+
   const shouldShowProjectInfo =
-    hoveredPlantLocation === null &&
-    selectedPlantLocation === null &&
-    selectedSamplePlantLocation === null;
+    hoveredIntervention === null &&
+    selectedIntervention === null &&
+    selectedSampleTree === null;
 
-  // clean up sample plant location when plant location change
+  // clean up sample tree when intervention change
   useEffect(() => {
-    if (selectedSamplePlantLocation !== null)
-      setSelectedSamplePlantLocation(null);
-  }, [selectedPlantLocation?.hid]);
+    if (selectedSampleTree !== null) setSelectedSampleTree(null);
+  }, [selectedIntervention?.hid]);
 
-  const plantData: PlantLocationSingle | SamplePlantLocation | undefined =
-    useMemo(
-      () =>
-        getPlantData(
-          selectedPlantLocation,
-          hoveredPlantLocation,
-          selectedSamplePlantLocation
-        ),
-      [selectedPlantLocation, hoveredPlantLocation, selectedSamplePlantLocation]
-    );
+  const activeSingleTree:
+    | SingleTreeRegistration
+    | SampleTreeRegistration
+    | undefined = useMemo(
+    () =>
+      getActiveSingleTree(
+        selectedIntervention,
+        hoveredIntervention,
+        selectedSampleTree
+      ),
+    [selectedIntervention, hoveredIntervention, selectedSampleTree]
+  );
+
+  const baseInterventionInfoProps = {
+    isMobile,
+    setSelectedSampleTree,
+  };
 
   return singleProject ? (
     <>
@@ -164,50 +186,39 @@ const ProjectDetails = ({
       <div className={styles.projectDetailsContainer}>
         <ProjectSnippet
           project={singleProject}
-          showTooltipPopups={false}
+          showTooltipPopups={true}
           isMobile={isMobile}
           page="project-details"
           setPreventShallowPush={setPreventShallowPush}
         />
-        {shouldShowSinglePlantInfo && (
-          <SinglePlantLocationInfo
-            plantData={plantData}
-            isMobile={isMobile}
-            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        {shouldShowSingleTreeInfo && (
+          <SingleTreeInfo
+            activeSingleTree={activeSingleTree}
+            {...baseInterventionInfoProps}
           />
         )}
-        {shouldShowPlantLocationInfo && !shouldShowSinglePlantInfo && (
-          <MultiPlantLocationInfo
-            plantLocationInfo={
-              hoveredPlantLocation?.type === 'multi-tree-registration'
-                ? hoveredPlantLocation
-                : selectedPlantLocation?.type === 'multi-tree-registration'
-                ? selectedPlantLocation
-                : undefined
-            }
-            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-            isMobile={isMobile}
+        {shouldShowMultiTreeInfo && (
+          <MultiTreeInfo
+            activeMultiTree={activeMultiTree}
+            {...baseInterventionInfoProps}
           />
         )}
 
         {shouldShowOtherIntervention ? (
           <OtherInterventionInfo
-            selectedPlantLocation={
-              selectedPlantLocation &&
-              selectedPlantLocation?.type !== 'single-tree-registration' &&
-              selectedPlantLocation?.type !== 'multi-tree-registration'
-                ? selectedPlantLocation
+            selectedIntervention={
+              selectedIntervention?.type !== 'single-tree-registration' &&
+              selectedIntervention?.type !== 'multi-tree-registration'
+                ? selectedIntervention
                 : null
             }
-            hoveredPlantLocation={
-              hoveredPlantLocation &&
-              hoveredPlantLocation?.type !== 'single-tree-registration' &&
-              hoveredPlantLocation?.type !== 'multi-tree-registration'
-                ? hoveredPlantLocation
+            hoveredIntervention={
+              hoveredIntervention?.type !== 'single-tree-registration' &&
+              hoveredIntervention?.type !== 'multi-tree-registration'
+                ? hoveredIntervention
                 : null
             }
-            setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
-            isMobile={isMobile}
+            {...baseInterventionInfoProps}
           />
         ) : null}
 

@@ -18,7 +18,7 @@ export default function Sites(): ReactElement {
     selectedPl,
     hoveredPl,
     setSiteViewPort,
-    plantLocationsLoaded,
+    interventionsLoaded,
   } = useProjectProps();
 
   React.useEffect(() => {
@@ -38,7 +38,7 @@ export default function Sites(): ReactElement {
     <>
       {selectedMode === 'location' && (
         <>
-          {plantLocationsLoaded && satellite && <SatelliteLayer />}
+          {interventionsLoaded && satellite && <SatelliteLayer />}
           {/* <ProjectPolygon id="locationPolygon" geoJson={geoJson} /> */}
         </>
       )}

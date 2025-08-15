@@ -1,32 +1,23 @@
 @import '../../../../theme/theme';
 
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 .singleProject {
-  border: 2px solid $light;
+  border: 2px solid $dsWhite;
   border-radius: 16px;
   position: relative;
   box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
   max-width: 356px;
-  background-color: #fff;
+  background-color: $dsWhite;
   @include xsPhoneView {
     max-width: 100%;
     box-shadow: none;
     margin-left: 0px;
   }
 }
+
 .projectDetailsSnippetMobile {
   padding: 0px 9px;
 }
+
 //project image
 .projectImage {
   height: 160px;
@@ -40,6 +31,7 @@
     position: absolute;
     bottom: 12px;
     left: 13px;
+    width: 100%;
   }
 }
 
@@ -57,6 +49,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  // Ask Ganga
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 1),
@@ -86,7 +79,7 @@
 .projectEcosystem {
   font-family: $primaryFontFamily;
   font-size: $fontXXSmall;
-  color: $light;
+  color: $dsWhite;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -98,7 +91,7 @@
 .projectName {
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
-  color: $light;
+  color: $dsWhite;
   padding-right: 16px;
   display: flex;
   line-height: 26px;
@@ -114,43 +107,11 @@
   margin-top: 2px;
 }
 
-.topProjectBadge {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: $topProjectBackgroundColor;
-  border-radius: 14px;
-  padding: 2px 8px 2px 2px;
-  font-weight: 700;
-  font-size: $fontXSmall;
-
-  * {
-    color: #6d4230;
-  }
-
-  .badgeIcon {
-    background-color: $light;
-    height: 24px;
-    width: 24px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    svg {
-      height: 14px;
-      width: 10px;
-    }
-  }
-}
-
 /* Progress Bar */
 .progressBar {
   height: 4px;
   width: 100%;
-  background-color: $charcoalGray;
+  background-color: $dsCoreText;
 }
 
 .progressBarHighlight {
@@ -182,7 +143,7 @@
 .target {
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   margin-right: 4px;
 }
 
@@ -190,7 +151,7 @@
   cursor: pointer;
   position: relative;
   text-align: center;
-  color: $grayFontColorNew;
+  color: $dsSoftText;
   font-size: $fontXXSmall;
   font-weight: 400;
   line-height: 1.5em;
@@ -198,12 +159,12 @@
   padding: 9px 0;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
-  background: $primaryColorNewTransparent;
+  background: $dsPrimaryColorTransparent10;
   &.noDonation {
-    background: $mediumGrayColorTransparent;
+    background: $dsMediumGreyTransparent30;
   }
   &.tpoBackground {
-    background: $lightOrange;
+    background: $dsSoftYellow;
   }
 }
 
@@ -223,7 +184,7 @@
 .perUnitCost {
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   margin-top: 6px;
 }
 
@@ -241,34 +202,13 @@
 }
 
 .topProject {
-  background-color: $topProjectBackgroundColor;
+  background-color: $dsGoldenYellow;
   border: none;
   &:hover {
-    background-color: $topProjectTransparentColor;
+    background-color: $dsGoldenYellow;
+    opacity: 0.7;
     border: none;
   }
-}
-
-.regularProject {
-  background-color: $primaryColorNew;
-}
-
-.nonDonatableProject {
-  background-color: $nonDonatableProjectBackgroundColor;
-}
-.projectHoverIcon {
-  display: inline-flex;
-  font-size: $fontXXSmall;
-  font-weight: 700;
-  color: $nonDonatableProjectBackgroundColor;
-  align-items: center;
-  gap: 4px;
-  line-height: normal;
-}
-
-.projectInfoPopupContainer {
-  margin: 10px;
-  max-width: 250px;
 }
 
 .projectEcosystemOrTypeContainer {
@@ -303,4 +243,9 @@
   @include mdTabletView {
     width: 328px;
   }
+}
+
+.projectNameTooltip {
+  padding: 12px;
+  max-width: 368px;
 }

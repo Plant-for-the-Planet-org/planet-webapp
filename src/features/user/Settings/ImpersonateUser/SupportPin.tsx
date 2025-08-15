@@ -16,7 +16,8 @@ const SupportPin = () => {
   const handleNewPin = async () => {
     try {
       const response = await putApiAuthenticated<SupportPin>(
-        '/app/profile/supportPin'
+        '/app/profile/supportPin',
+        { payload: {} }
       );
       if (response) {
         const updateUserData = { ...user };
@@ -36,8 +37,8 @@ const SupportPin = () => {
         <div className={styles.supportPin}>{t('supportPin')} :</div>
         <div className={styles.pinValue}>{user?.supportPin}</div>
         <div>
-          <button onClick={handleNewPin}>
-            <RestartAltIcon sx={{ '&:hover': { color: '#66BB6A' } }} />
+          <button className={styles.resetPinButton} onClick={handleNewPin}>
+            <RestartAltIcon />
           </button>
         </div>
         <div className={styles.resetPin}>

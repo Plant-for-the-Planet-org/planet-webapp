@@ -7,7 +7,7 @@
 .menuButton {
   border-radius: 8px;
   width: 150px;
-  background: $light;
+  background: $dsWhite;
   height: 36px;
   display: flex;
   align-items: center;
@@ -34,12 +34,13 @@
   width: 150px;
   margin-top: 16px;
   border-radius: 8px;
-  color: $grayFontColorNew;
+  background-color: $dsWhite;
+  color: $dsSoftText;
 }
 
 .yearMenuContainer {
   border-radius: 8px 0 0 8px;
-  background-color: $lightGrayBackgroundColorNew;
+  background-color: $dsLeafGreenTransparent10;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -48,9 +49,6 @@
     opacity: 1;
     margin-top: 6px;
     cursor: pointer;
-  }
-  .selectedMenuItem {
-    color: $grayFontColorNew;
   }
 }
 
@@ -66,7 +64,7 @@
     cursor: pointer;
   }
   .selectedMenuItem {
-    color: #333; // to be replaced
+    color: $dsCoreText;
   }
 }
 

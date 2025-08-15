@@ -1,24 +1,67 @@
-import type { TreeProjectClassification } from '@planet-sdk/common';
-import type { PointLike } from 'react-map-gl-v7/maplibre';
-import type { Position } from 'geojson';
+import type {
+  ProjectSite,
+  TreeProjectClassification,
+} from '@planet-sdk/common';
+import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
+import type { Feature, MultiPolygon, Polygon, Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
   MapRef,
   MapProjectProperties,
   ExtendedProject,
   MapProject,
+  ProjectSiteFeature,
 } from '../features/common/types/projectv2';
 import type {
-  PlantLocation,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../features/common/types/plantLocation';
+  Intervention,
+  SingleTreeRegistration,
+  OtherInterventions,
+  SampleTreeRegistration,
+} from '../features/common/types/intervention';
+import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
-import * as turf from '@turf/turf';
+import centroid from '@turf/centroid';
+
+type MetaDataValue = {
+  value: string;
+  label: string;
+};
+
+type FormattedMetadataEntry = {
+  key: string;
+  value: string;
+};
 
 export type MobileOs = 'android' | 'ios' | undefined;
 
 const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
+const nonDisplayPublicMetadataKeys = ['isEntireSite'];
+
+export const MAIN_MAP_LAYERS = {
+  SATELLITE_LAYER: 'satellite-layer',
+  PLANT_POLYGON: 'plant-polygon-layer',
+  PLANT_POINT: 'point-layer',
+  SITE_POLYGON: 'site-polygon-fill-layer',
+  SITE_POLYGON_LINE: 'site-polygon-line-layer',
+  SELECTED_LINE: 'line-selected',
+  DATE_DIFF_LABEL: 'datediff-label',
+};
+
+export const PLANT_LAYERS = [
+  MAIN_MAP_LAYERS.PLANT_POLYGON,
+  MAIN_MAP_LAYERS.PLANT_POINT,
+];
+
+export const INTERACTIVE_LAYERS = [
+  MAIN_MAP_LAYERS.PLANT_POLYGON,
+  MAIN_MAP_LAYERS.PLANT_POINT,
+  MAIN_MAP_LAYERS.SITE_POLYGON,
+];
+
+export const MAIN_MAP_ANIMATION_DURATIONS = {
+  ZOOM_OUT: 1600,
+  ZOOM_IN: 4000,
+} as const;
 
 type RouteParams = {
   siteId?: string | null;
@@ -102,58 +145,113 @@ export const isValidClassification = (
 };
 
 /**
- * Retrieves the information of a plant location based on a user's interaction with the map.
+ * Returns all rendered features at the given point on the map, limited to specific layers.
  *
- * @param {PlantLocation[]} plantLocations - Array of plant location data or null.
- * @param {MutableRefObject<MapRef>} mapRef - A reference to the map instance.
- * @param {PointLike} point - The screen coordinates (PointLike) where the user interacted with the map.
+ * Important:
+ * - The order of features in the returned array reflects the visual stacking order of layers.
+ * - The topmost (last drawn) layer in the style stack will appear first in the array.
  *
- * The function works as follows:
- * - It first checks if the map instance and plant locations are available.
- * - Using `queryRenderedFeatures`, it retrieves all map features (polygon and point layers) at the given point.
- * - If more than one feature is returned (indicating overlap of Polygon), the hover effect is disabled by resetting the cursor.
- * - If exactly one feature is returned, the hover effect is enabled (cursor changes to a pointer),
- *   and the corresponding plant location information is returned.
- * - If no features are returned, the cursor is reset to the default, and no plant location is returned.
+ * Example:
+ * If the layers are added in this order:
+ *   1. "site-polygon-fill-layer" (bottom)
+ *   2. "plant-polygon-layer" (middle)
+ *   3. "point-layer" (top)
+ *
+ * Then:
+ *   - If all 3 features overlap at the click point:
+ *       features[0] => point-layer feature (topmost)
+ *       features[1] => plant-polygon-layer feature
+ *       features[2] => site-polygon-fill-layer feature (bottommost)
+ *   - If only site and plant polygons are under the point:
+ *       features[0] => plant-polygon-layer feature
+ *       features[1] => site-polygon-fill-layer feature
+ *
+ * Use this order to determine which feature the user is most likely interacting with visually.
+ *
+ * @param mapRef - Ref to the MapLibre map instance
+ * @param point - The screen coordinate (e.point) to query
+ * @returns An array of features under the point, or undefined if the map is not ready. Returns an empty array if no features are found.
  */
 
-export const getPlantLocationInfo = (
-  plantLocations: PlantLocation[] | null,
-  mapRef: MapRef,
-  point: PointLike
-) => {
-  if (!mapRef.current || plantLocations?.length === 0) {
-    return;
-  }
+export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
+  if (!mapRef.current) return;
   const map = mapRef.current.getMap();
+
   const features = map.queryRenderedFeatures(point, {
-    layers: ['plant-polygon-layer', 'point-layer'],
+    layers: INTERACTIVE_LAYERS,
   });
-  if (features.length > 1) {
+
+  if (features.length === 0) {
     map.getCanvas().style.cursor = '';
-    return;
+    return [];
   }
 
-  if (features.length === 1) {
-    map.getCanvas().style.cursor = 'pointer';
-    const activePlantLocation = plantLocations?.find(
-      (pl) => pl.id === features[0].properties.id
-    );
-    return activePlantLocation;
-  } else {
-    map.getCanvas().style.cursor = '';
-  }
+  map.getCanvas().style.cursor = 'pointer';
+  return features;
+}
+
+/**
+ * Finds the index of the site in the sites array that matches the feature under the cursor.
+ *
+ * This is used to detect which site polygon the user interacted with.
+ *
+ * @param sites - The array of site GeoJSON features (polygons or multipolygons)
+ * @param features - The array of rendered features returned by queryRenderedFeatures
+ * @returns The index of the matching site in the `sites` array, or -1 if not found
+ */
+
+export const getSiteIndex = (
+  sites: Feature<Polygon | MultiPolygon, ProjectSite>[],
+  features: MapGeoJSONFeature[]
+) => {
+  const siteFeature = features.find(
+    (f) => f.layer.id === MAIN_MAP_LAYERS.SITE_POLYGON
+  );
+  if (!siteFeature) return -1;
+
+  return sites.findIndex(
+    (site) => site.properties.id === siteFeature.properties.id
+  );
+};
+
+/**
+ * Retrieves the matching intervention based on the topmost hovered map feature.
+ *
+ * This function checks whether the topmost feature in the provided feature list
+ * corresponds to a valid intervention layer (as defined by `PLANT_LAYERS`) and,
+ * if so, finds and returns the intervention with a matching `id`.
+ *
+ * @param {Intervention[] | null} interventions - The list of intervention objects to match against.
+ * @param {MapGeoJSONFeature[]} features - An array of GeoJSON features returned from a map hover or click event.
+ * @returns {Intervention | undefined} The matched intervention if found, or `undefined` if no match exists or input is invalid.
+ */
+
+export const getInterventionInfo = (
+  interventions: Intervention[] | null,
+  features: MapGeoJSONFeature[]
+): Intervention | undefined => {
+  if (!interventions || interventions.length === 0 || features.length === 0)
+    return;
+
+  const topmostFeature = features[0]; // top layer
+  const layerId = topmostFeature.layer.id;
+  const isPlantLayer = PLANT_LAYERS.includes(layerId);
+  if (!isPlantLayer) return;
+
+  return interventions.find(
+    (intervention) => intervention.id === topmostFeature.properties.id
+  );
 };
 
 export const formatHid = (hid: string | undefined) => {
   return hid ? hid.slice(0, 3) + '-' + hid.slice(3) : null;
 };
 
-export const getPlantData = (
-  selected: PlantLocation | null,
-  hovered: PlantLocation | null,
-  selectedSample: SamplePlantLocation | null
-): PlantLocationSingle | SamplePlantLocation | undefined => {
+export const getActiveSingleTree = (
+  selected: Intervention | null,
+  hovered: Intervention | null,
+  selectedSample: SampleTreeRegistration | null
+): SingleTreeRegistration | SampleTreeRegistration | undefined => {
   if (selected?.type === 'single-tree-registration') return selected;
   if (hovered?.type === 'single-tree-registration') return hovered;
   if (selectedSample?.type === 'sample-tree-registration')
@@ -190,7 +288,7 @@ export const calculateCentroid = (features: MapProject[]) => {
     type: 'FeatureCollection',
     features,
   };
-  return turf.centroid(featureCollection);
+  return centroid(featureCollection);
 };
 
 /**
@@ -256,14 +354,12 @@ export const areMapCoordsEqual = (
 export const getLocalizedPath = (path: string, locale: string): string => {
   // Strip query parameters if present
   const pathWithoutQuery = path.split('?')[0];
-
   // Remove trailing slash if present
   const cleanPath = pathWithoutQuery.endsWith('/')
     ? pathWithoutQuery.slice(0, -1)
     : pathWithoutQuery;
-
   // Handle root path special case
-  if (cleanPath === '' || cleanPath === '/') {
+  if (cleanPath === '' || cleanPath === '/' || cleanPath === `/${locale}`) {
     return `/${locale}`;
   }
 
@@ -305,6 +401,132 @@ export function isFirealertFiresEnabled() {
   return isEnvVariableEnabled || isQueryStringEnabled;
 }
 
+/**
+ * Returns a GeoJSON FeatureCollection from a list of site features.
+ * Filters out features without valid geometry.
+ *
+ * @param sites - Array of project site features with geometry.
+ * @returns GeoJSON FeatureCollection with valid features only.
+ */
+export function getSitesGeoJson(sites: ProjectSiteFeature[]): SitesGeoJSON {
+  return {
+    type: 'FeatureCollection',
+    features: sites.filter((site) => !!site.geometry),
+  };
+}
+
+/**
+ * Safely parses a JSON string into a JavaScript value without throwing errors.
+ * @param {string} str - The JSON string to parse.
+ * @returns {unknown} The parsed value if valid JSON, otherwise `null` to avoid throwing errors.
+ */
+function tryParseJson(str: string): unknown {
+  try {
+    return JSON.parse(str);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Type guard that checks if a value is a non-array object
+ * with string `label` and `value` properties.
+ */
+function isMetaDataValue(obj: unknown): obj is MetaDataValue {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    'label' in obj &&
+    'value' in obj &&
+    typeof (obj as { value: unknown }).value === 'string' &&
+    typeof (obj as { label: unknown }).label === 'string'
+  );
+}
+
+/** Type guard that checks if a value is a non-array object containing a string `value` property. */
+function isObjectWithStringValue(obj: unknown): obj is { value: string } {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    'value' in obj &&
+    typeof (obj as { value: unknown }).value === 'string'
+  );
+}
+
+/**
+ * Formats a single metadata entry into a user-facing key-value pair.
+ *
+ * Rules:
+ * - Skips entries whose keys are in `nonDisplayPublicMetadataKeys`.
+ * - Accepts direct string values.
+ * - Accepts objects with `value` and `label` properties.
+ * - If `value` is a JSON string, attempts to parse it and extract a nested string `value`.
+ * @param {string} metaKey - The metadata property name.
+ * @param {unknown} metaValue - The metadata property value.
+ * @returns {{ key: string; value: string } | null} The formatted metadata entry, or `null` if not displayable.
+ */
+function formatMetadataEntry(
+  metaKey: string,
+  metaValue: unknown
+): FormattedMetadataEntry | null {
+  if (nonDisplayPublicMetadataKeys.includes(metaKey)) return null;
+
+  if (typeof metaValue === 'string') {
+    return { key: metaKey, value: metaValue };
+  }
+
+  if (!isMetaDataValue(metaValue)) return null;
+
+  let finalValue = metaValue.value;
+  const parsedValue = tryParseJson(metaValue.value);
+  if (isObjectWithStringValue(parsedValue)) {
+    finalValue = parsedValue.value;
+  }
+
+  return {
+    key: metaValue.label,
+    value: finalValue,
+  };
+}
+
+/**
+ * Checks if metadata is a processable object (not null, not array, is object).
+ * @param {unknown} metadata - The value to check.
+ * @returns {boolean} true if `metadata` is a non-array object.
+ */
+function isProcessableMetadata(metadata: unknown): metadata is object {
+  return !(
+    !metadata ||
+    typeof metadata !== 'object' ||
+    Array.isArray(metadata)
+  );
+}
+
+/**
+ * Extracts and formats the `metadata.public` section of an intervention info
+ * into an array of display-friendly key-value pairs.
+ * @param {OtherInterventions} interventionInfo - The intervention object containing public metadata.
+ * @returns {{ key: string; value: string }[]} - Array of displayable metadata entries.
+ */
+export function prepareInterventionMetadata(
+  interventionInfo: OtherInterventions
+): FormattedMetadataEntry[] {
+  const publicMetadata = interventionInfo.metadata?.public;
+
+  if (!isProcessableMetadata(publicMetadata)) return [];
+
+  return Object.entries(publicMetadata)
+    .map(([key, value]) => formatMetadataEntry(key, value))
+    .filter((entry): entry is { key: string; value: string } => !!entry);
+}
+
+/**
+ * Get the starting year of a project based on its metadata and purpose.
+ * @param {ExtendedProject} project The project object to extract the starting year from.
+ * @returns The starting year as a string, or null if not available.
+ */
 export function getProjectStartingYear(
   project: ExtendedProject
 ): string | null {

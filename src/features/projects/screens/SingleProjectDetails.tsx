@@ -17,9 +17,10 @@ import ProjectSnippet from '../components/ProjectSnippet';
 import SitesDropdown from '../components/maps/SitesDropdown';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
-import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
+import InterventionDetails from '../components/Intervention/InterventionDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import TopProjectReports from '../components/projectDetails/TopProjectReports';
+import themeProperties from '../../../theme/themeProperties';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -47,7 +48,7 @@ function SingleProjectDetails(): ReactElement {
     selectedPl,
     setHoveredPl,
     setSelectedPl,
-    samplePlantLocation,
+    sampleIntervention,
   } = useProjectProps();
 
   const screenWidth = window.innerWidth;
@@ -75,10 +76,10 @@ function SingleProjectDetails(): ReactElement {
   };
 
   const ProjectProps = {
-    plantLocation: hoveredPl
+    activeIntervention: hoveredPl
       ? hoveredPl
-      : samplePlantLocation
-      ? samplePlantLocation
+      : sampleIntervention
+      ? sampleIntervention
       : selectedPl,
   };
 
@@ -207,7 +208,7 @@ function SingleProjectDetails(): ReactElement {
               />
             </div>
             {hoveredPl || selectedPl ? (
-              <PlantLocationDetails {...ProjectProps} />
+              <InterventionDetails {...ProjectProps} />
             ) : (
               <div className={'singleProjectDetails'}>
                 <div
@@ -256,7 +257,9 @@ function SingleProjectDetails(): ReactElement {
                         onClick={handleModalOpen}
                         className={'modalOpen'}
                       >
-                        <ExpandIcon color="#fff" />
+                        <ExpandIcon
+                          color={themeProperties.designSystem.colors.white}
+                        />
                       </button>
                       {project?.images?.length > 0 && !openModal ? (
                         <ImageSlider

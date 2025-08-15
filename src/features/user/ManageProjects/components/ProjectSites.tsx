@@ -22,7 +22,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
-import * as turf from '@turf/turf';
+import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import {
@@ -150,13 +150,7 @@ function EditSite({
       }}
     >
       <Fade in={openModal}>
-        <form
-          style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '10px',
-          }}
-        >
+        <form className={styles.editSiteForm}>
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
@@ -504,13 +498,13 @@ export default function ProjectSites({
               return site.geometry !== null;
             })
             .map((site) => {
-              const bbox = turf.bbox(site.geometry);
+              const bounds = bbox(site.geometry);
               const { longitude, latitude, zoom } = new WebMercatorViewport(
                 viewport
               ).fitBounds(
                 [
-                  [bbox[0], bbox[1]],
-                  [bbox[2], bbox[3]],
+                  [bounds[0], bounds[1]],
+                  [bounds[2], bounds[3]],
                 ],
                 {
                   padding: {

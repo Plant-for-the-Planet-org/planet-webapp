@@ -1,5 +1,5 @@
 import TreeMapperIcon from '../../../../../../public/assets/images/icons/projectV2/TreeMapperIcon';
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 import { useTranslations } from 'next-intl';
 
 const TreeMapperBrand = () => {

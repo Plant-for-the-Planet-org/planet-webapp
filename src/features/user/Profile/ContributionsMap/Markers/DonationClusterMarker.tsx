@@ -17,7 +17,7 @@ import {
   getDonationClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestUtils';
-import style from '../Common/common.module.scss';
+import styles from '../Common/common.module.scss';
 
 export interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
@@ -100,7 +100,7 @@ const DonationClusterMarker = ({
       offset={[0, 0]}
       anchor="bottom"
     >
-      <div className={style.clusterMarkerContainer}>
+      <div className={styles.clusterMarkerContainer}>
         <ClusterIcon
           classification={maxContributingProject?.classification}
           purpose={maxContributingProject?.purpose}

@@ -19,9 +19,9 @@ import type {
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
 import type {
-  PlantLocation,
-  SamplePlantLocation,
-} from '../types/plantLocation';
+  Intervention,
+  SampleTreeRegistration,
+} from '../types/intervention';
 
 import React, {
   useState,
@@ -59,12 +59,12 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
 
-  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
+  const [interventions, setInterventions] = useState<Intervention[] | null>(
     null
   );
-  const [selectedPl, setSelectedPl] = useState<PlantLocation | null>(null);
-  const [samplePlantLocation, setSamplePlantLocation] =
-    useState<SamplePlantLocation | null>(null);
+  const [selectedPl, setSelectedPl] = useState<Intervention | null>(null);
+  const [sampleIntervention, setSampleIntervention] =
+    useState<SampleTreeRegistration | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   const infoRef = useRef<HTMLDivElement>(null);
@@ -86,7 +86,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   );
   const [filtersOpen, setFilterOpen] = useState(false);
   const [purpose, setPurpose] = useState<ProjectPurposeTypes>('trees');
-  const [plantLocationsLoaded, setPlantLocationsLoaded] = useState(false);
+  const [interventionsLoaded, setInterventionsLoaded] = useState(false);
   const { embed, showProjectList } = useContext(ParamsContext);
 
   const EMPTY_STYLE = {
@@ -128,7 +128,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [plIds, setPlIds] = useState<string[] | null>(null);
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = useState(false);
   const [hoveredPl, setHoveredPl] = useState<
-    PlantLocation | SamplePlantLocation | null
+    Intervention | SampleTreeRegistration | null
   >(null);
   const [siteViewPort, setSiteViewPort] = useState<SiteViewPort | null>(null);
 
@@ -171,19 +171,19 @@ const ProjectPropsProvider: FC = ({ children }) => {
   }, [project]);
 
   useEffect(() => {
-    if (plantLocations && plantLocations.length > 0) {
+    if (interventions && interventions.length > 0) {
       setSatellite(false);
     } else {
       setSatellite(true);
     }
-  }, [plantLocations]);
+  }, [interventions]);
 
   useEffect(() => {
     const ids: string[] = [];
-    if (plantLocations && (zoomLevel === 2 || zoomLevel === 3)) {
-      for (const key in plantLocations) {
-        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-          const element = plantLocations[key];
+    if (interventions && (zoomLevel === 2 || zoomLevel === 3)) {
+      for (const key in interventions) {
+        if (Object.prototype.hasOwnProperty.call(interventions, key)) {
+          const element = interventions[key];
           if (
             element.type === 'multi-tree-registration' &&
             element.captureStatus === 'complete'
@@ -195,7 +195,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
     } else {
       setPlIds(null);
     }
-  }, [plantLocations, zoomLevel]);
+  }, [interventions, zoomLevel]);
 
   return (
     <ProjectPropsContext.Provider
@@ -250,12 +250,12 @@ const ProjectPropsProvider: FC = ({ children }) => {
         setSelectedMode,
         rasterData,
         setRasterData,
-        plantLocations,
-        setPlantLocations,
+        interventions,
+        setInterventions,
         selectedPl,
         setSelectedPl,
-        samplePlantLocation,
-        setSamplePlantLocation,
+        sampleIntervention,
+        setSampleIntervention,
         zoomLevel,
         setZoomLevel,
         satellite,
@@ -274,8 +274,8 @@ const ProjectPropsProvider: FC = ({ children }) => {
         setFilterOpen,
         purpose,
         setPurpose,
-        plantLocationsLoaded,
-        setPlantLocationsLoaded,
+        interventionsLoaded,
+        setInterventionsLoaded,
       }}
     >
       {children}

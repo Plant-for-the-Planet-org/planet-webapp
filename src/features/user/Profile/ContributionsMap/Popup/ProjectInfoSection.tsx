@@ -6,7 +6,7 @@ import type {
 } from '../../../../common/types/myForest';
 
 import { useTranslations } from 'next-intl';
-import style from '../ContributionsMap.module.scss';
+import styles from '../ContributionsMap.module.scss';
 import DonateButton from '../../MyContributions/DonateButton';
 
 interface ProjectInfoSectionProps {
@@ -42,11 +42,11 @@ const ProjectInfoSection = ({
         });
 
   return (
-    <div className={style.projectInfoMainContainer}>
-      <p className={style.trees}>{totalContributedUnits}</p>
-      <div className={style.countryAndTpo}>
+    <div className={styles.projectInfoMainContainer}>
+      <p className={styles.trees}>{totalContributedUnits}</p>
+      <div className={styles.countryAndTpo}>
         <span>{tCountry(_country)}</span>
-        <span className={style.seperator}>•</span>
+        <span className={styles.seperator}>•</span>
         <span>
           {tProfile('myForestMap.tpoName', {
             tpo: tpoName,

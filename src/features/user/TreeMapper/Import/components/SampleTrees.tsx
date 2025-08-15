@@ -4,9 +4,9 @@ import type { Geometry } from '@turf/turf';
 import type { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 import type {
   Measurements,
-  PlantLocationMulti,
+  MultiTreeRegistration,
   SampleTree,
-} from '../../../../common/types/plantLocation';
+} from '../../../../common/types/intervention';
 
 import React, { useState } from 'react';
 import styles from '../Import.module.scss';
@@ -22,7 +22,7 @@ import { useApi } from '../../../../../hooks/useApi';
 
 interface Props {
   handleNext: Function;
-  plantLocation: PlantLocationMulti;
+  intervention: MultiTreeRegistration;
   userLang: string;
 }
 
@@ -45,7 +45,7 @@ interface SampleTreeRequestData {
 
 export default function SampleTrees({
   handleNext,
-  plantLocation,
+  intervention,
   userLang,
 }: Props): ReactElement {
   const tTreemapper = useTranslations('Treemapper');
@@ -194,8 +194,8 @@ export default function SampleTrees({
           },
           tag: sampleTree.treeTag,
           otherSpecies: sampleTree.otherSpecies,
-          parent: plantLocation?.id,
-          plantProject: plantLocation?.plantProject,
+          parent: intervention?.id,
+          plantProject: intervention?.plantProject,
         };
         await uploadSampleTree(samplePl, index);
       }
@@ -274,9 +274,9 @@ export default function SampleTrees({
           <p style={{ marginTop: '18px' }}>{tTreemapper('fileFormatCSV')}</p>
         </label>
       </div>
-      {parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}
+      {parseError && <p className={styles.errorText}>{parseError.message}</p>}
       {hasIgnoredColumns && (
-        <p style={{ color: '#e53935' }}>
+        <p className={styles.errorText}>
           {tTreemapper('ignoredColumnsWarning')}
         </p>
       )}
@@ -292,7 +292,7 @@ export default function SampleTrees({
                 control={control}
                 userLang={userLang}
                 item={item}
-                plantLocation={plantLocation}
+                intervention={intervention}
                 errors={errors}
               />
             );

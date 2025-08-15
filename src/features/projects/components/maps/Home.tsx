@@ -9,7 +9,7 @@ import type { SetState } from '../../../common/types/common';
 import { FlyToInterpolator } from 'react-map-gl';
 import React from 'react';
 import Markers from './Markers';
-import * as d3 from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 
 interface Props {
   searchedProject: MapProject[];
@@ -40,7 +40,7 @@ export default function Home({
       zoom: defaultZoom,
       transitionDuration: 2400,
       transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: d3.easeCubic,
+      transitionEasing: easeCubic,
     };
     setViewPort(newViewport);
   }, []);

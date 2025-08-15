@@ -1,7 +1,7 @@
 @import '../../../../../../../../theme/theme';
 
 .spinner {
-  border: 2px solid $primaryColor;
+  border: 2px solid $dsPrimaryColor;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;
@@ -28,7 +28,7 @@
   }
 }
 
-.plantLocationDetailsContainer {
+.interventionDetailsContainer {
   position: absolute;
   top: 15px;
   left: 20px;
@@ -36,7 +36,7 @@
   width: 300px;
   box-shadow: 4px 8px 16px 0px #0000001a;
   border-radius: 16px;
-  background-color: #fff;
+  background-color: $dsWhite;
   font-size: $fontXXSmall;
   height: 450px;
   ::-webkit-scrollbar {
@@ -91,7 +91,7 @@
         width: 100%;
 
         .leftContainer {
-          background-color: #2f80ed1a;
+          background-color: $dsSoftBlue;
           padding: 16px;
           z-index: 2;
           flex: 1;
@@ -105,7 +105,7 @@
           }
         }
         .rightContainer {
-          background-color: #f2c94c1a;
+          background-color: $dsSoftYellow;
           padding: 16px;
           z-index: 2;
           display: flex;
@@ -123,7 +123,7 @@
       }
 
       .midContainer {
-        background-color: #27ae601a;
+        background-color: $dsSoftGreen;
         z-index: 2;
         padding: 16px;
         border-radius: 16px;
@@ -137,7 +137,7 @@
             display: flex;
 
             > *:not(:last-child) {
-              border-right: 1px solid #68b03066;
+              border-right: 1px solid $dsForestGreenTransparent40;
             }
 
             .speciesName {
@@ -174,7 +174,7 @@
       }
 
       .bottomContainer {
-        background-color: #e86f561a;
+        background-color: $dsSoftRed;
         z-index: 2;
         padding: 16px;
         border-radius: 16px;
@@ -182,7 +182,7 @@
 
         .sampleTreeContainer {
           border-radius: 8px;
-          background: #f2994a1f;
+          background: $dsSunriseOrangeTransparent10;
           padding: 10px 18px;
           margin-bottom: 8px;
 
@@ -211,7 +211,7 @@
 
       .treemapper {
         font-weight: 700;
-        color: $primaryColor;
+        color: $dsPrimaryColor;
       }
     }
   }

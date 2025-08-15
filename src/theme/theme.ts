@@ -11,17 +11,11 @@ const {
   primaryDarkColorTransparent,
   defaultFontFamily,
   primaryLightColor,
-  primaryLightGreenBgColor,
   topProjectBackgroundColor,
-  topProjectTransparentColor,
   nonDonatableProjectBackgroundColor,
   primaryColorNew,
-  primaryColorNewTransparent,
-  deforestrationRangeBackgroundNew,
   horizontalLineColorNew,
   exploreDescriptionBackground,
-  lightOrange,
-  CharcoalGray,
   designSystem,
 } = theme;
 
@@ -76,27 +70,13 @@ const getGlobalStyles = async () => {
       --primary-color: ${primaryColor};
       --primary-dark-color: ${primaryDarkColor};
       --primary-dark-color-transparent: ${primaryDarkColorTransparent};
-      --primary-light-green-bg-color: ${primaryLightGreenBgColor};
       --primary-light-color: ${primaryLightColor};
       --top-project-background-color: ${topProjectBackgroundColor};
-      --top-project-transparent: ${topProjectTransparentColor};
       --non-donatable-project-background-color: ${nonDonatableProjectBackgroundColor};
       --primary-color-new: ${primaryColorNew};
-      --primary-color-new-transparent: ${primaryColorNewTransparent};
-      --deforestration-range-background-new: ${deforestrationRangeBackgroundNew};
       --explore-description-background-color-new: ${exploreDescriptionBackground};
       --horizontal-line-color: ${horizontalLineColorNew};
-      --medium-blue-color: ${theme.mediumBlueColor};
-      --medium-gray-color-transparent: ${theme.mediumGrayColorTransparent};
       --sky-blue-color: ${theme.skyBlueColor};
-      --electric-purple-color: ${theme.electricPurpleColor};
-      --lavender-purple-color: ${theme.lavenderPurpleColor};
-      --green-haze-color: ${theme.greenHazeColor};
-      --mint-green-color: ${theme.mintGreenColor};
-      --amethyst-purple-color: ${theme.amethystPurpleColor};
-      --cerulean-blue-color: ${theme.ceruleanBlueColor};
-      --light-orange: ${lightOrange};
-      --charcoal-gray: ${CharcoalGray};
       --ds-primary-color: ${designSystem.colors.primaryColor};
       --ds-primary-color-transparent-7: ${designSystem.colors
         .primaryColorTransparent7};
@@ -108,6 +88,8 @@ const getGlobalStyles = async () => {
       --ds-forest-green-transparent-40: ${designSystem.colors
         .forestGreenTransparent40};
       --ds-leaf-green: ${designSystem.colors.leafGreen};
+      --ds-leaf-green-transparent-10: ${designSystem.colors
+        .leafGreenTransparent10};
       --ds-bright-green: ${designSystem.colors.brightGreen};
       --ds-mint-gradient: ${designSystem.colors.mintGradient};
       --ds-mint-gradient-start: ${designSystem.colors.mintGradientStart};
@@ -119,24 +101,43 @@ const getGlobalStyles = async () => {
       --ds-milk-chocolate: ${designSystem.colors.milkChocolate};
       --ds-soft-milk-chocolate: ${designSystem.colors.softMilkChocolate};
       --ds-purple-sky: ${designSystem.colors.purpleSky};
+      --ds-purple-sky-transparent-10: ${designSystem.colors
+        .purpleSkyTransparent10};
+      --ds-purple-sky-transparent-20: ${designSystem.colors
+        .purpleSkyTransparent20};
       --ds-soft-sky: ${designSystem.colors.softSky};
       --ds-ocean-blue: ${designSystem.colors.oceanBlue};
       --ds-soft-blue: ${designSystem.colors.softBlue};
       --ds-deep-purple: ${designSystem.colors.deepPurple};
+      --ds-deep-purple-transparent-10: ${designSystem.colors
+        .deepPurpleTransparent10};
       --ds-soft-purple: ${designSystem.colors.softPurple};
       --ds-fire-red: ${designSystem.colors.fireRed};
+      --ds-fire-red-transparent-10: ${designSystem.colors.fireRedTransparent10};
       --ds-soft-red: ${designSystem.colors.softRed};
       --ds-white: ${designSystem.colors.white};
+      --ds-white-transparent-10: ${designSystem.colors.whiteTransparent10};
       --ds-background-base: ${designSystem.colors.backgroundBase};
       --ds-core-text: ${designSystem.colors.coreText};
       --ds-soft-text: ${designSystem.colors.softText};
       --ds-soft-text-2: ${designSystem.colors.softText2};
       --ds-hint-text: ${designSystem.colors.hintText};
       --ds-warm-green: ${designSystem.colors.warmGreen};
+      --ds-warm-green-transparent-10: ${designSystem.colors
+        .warmGreenTransparent10};
       --ds-sunrise-orange: ${designSystem.colors.sunriseOrange};
+      --ds-sunrise-orange-transparent-10: ${designSystem.colors
+        .sunriseOrangeTransparent10};
       --ds-bright-yellow: ${designSystem.colors.brightYellow};
       --ds-warm-blue: ${designSystem.colors.warmBlue};
+      --ds-warm-blue-transparent-10: ${designSystem.colors
+        .warmBlueTransparent10};
+      --ds-warm-blue-transparent-20: ${designSystem.colors
+        .warmBlueTransparent20};
       --ds-sky-blue: ${designSystem.colors.skyBlue};
+      --ds-bright-blue: ${designSystem.colors.brightBlue};
+      --ds-warm-red: ${designSystem.colors.warmRed};
+      --ds-hot-pink: ${designSystem.colors.hotPink};
       --ds-base-grey: ${designSystem.colors.baseGrey};
       --ds-dark-grey: ${designSystem.colors.darkGrey};
       --ds-medium-grey: ${designSystem.colors.mediumGrey};
@@ -164,20 +165,9 @@ const getGlobalStyles = async () => {
       --mapbox-icon: ${light.mapboxIcon};
       --background-base: ${light.backgroundBase};
       --disabled-font-color: ${light.disabledFontColor};
-      --gray-font-color-new: ${light.grayFontColorNew};
-      --light-gray-background-color-new: ${light.lightGrayBackgroundColorNew};
       --bold-font-color-new: ${light.boldFontColorNew};
-      --selected-menu-item-color-new: ${light.selectedMenuItemColorNew};
       --divider-color-new: ${light.dividerColorNew};
-      --review-font-color-new: ${light.reviewFontColorNew};
-      --about-project-background-color-new: ${light.aboutProjectBackgroundColorNew};
       --danger-color-new: ${light.dangerColorNew};
-      --abandonment-background-color-new: ${light.abandonmentBackgroundColorNew};
-      --more-info-background-color-new: ${light.moreInfoBackgroundColorNew};
-      --certification-background-color-new: ${light.certificationBackgroundColorNew};
-      --contactDetail-background-color-new: ${light.contactDetailBackgroundColorNew};
-      --certification-link-color-new: ${light.certificationLinkColorNew};
-      --secondary-divider-color-new: ${light.secondaryDividerColor};
       --border-color: ${light.borderColor};
       --top-project-color: ${topProjectBackgroundColor};
     }

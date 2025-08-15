@@ -125,7 +125,7 @@ const TargetsModal = ({
         </button>
         <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
 
-        <div className={styles.targetModalSubConatiner}>
+        <div className={styles.targetModalSubContainer}>
           <TargetFormInput
             dataType={'treesPlanted'}
             localTarget={treesPlantedTargetLocal}

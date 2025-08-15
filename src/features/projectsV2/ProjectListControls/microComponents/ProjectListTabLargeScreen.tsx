@@ -24,7 +24,7 @@ const ProjectListTabLargeScreen = ({
   tabSelected,
 }: ProjectListTabLargeScreenProps) => {
   const t = useTranslations('AllProjects');
-  const { primaryColorNew, light } = themeProperties;
+  const { colors } = themeProperties.designSystem;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabSelected(newValue === 0 ? 'topProjects' : 'allProjects');
     setIsFilterOpen(false);
@@ -35,14 +35,14 @@ const ProjectListTabLargeScreen = ({
       value={isTopProjectTab ? 0 : 1}
       onChange={handleChange}
       TabIndicatorProps={{
-        sx: { backgroundColor: `${primaryColorNew}` },
+        sx: { backgroundColor: colors.primaryColor },
       }}
     >
       <CustomMuiTab
         icon={
           <StarIcon
             width={'16px'}
-            color={`${isTopProjectTab ? primaryColorNew : light.richBlack}`}
+            color={isTopProjectTab ? colors.primaryColor : colors.coreText}
           />
         }
         label={

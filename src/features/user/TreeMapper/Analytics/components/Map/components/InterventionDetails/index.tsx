@@ -1,24 +1,24 @@
 import type {
-  PlantLocationDetailsApiResponse,
-  PlantLocation,
-  PlantLocationProperties,
+  InterventionDetailsApiResponse,
+  InterventionFeature,
+  InterventionProperties,
 } from '../../../../../../../common/types/dataExplorer';
 
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './index.module.scss';
-import PlantLocationDetailsZeroState from '../PlantLocationDetailsZeroState';
-import TreeMapperIcon from '../TreeMapperIcon';
+import InterventionDetailsZeroState from '../InterventionDetailsZeroState';
 import { getFormattedNumber } from '../../../../../../../../utils/getFormattedNumber';
+import TreeMapperIcon from '../../../../../../../../../public/assets/images/icons/projectV2/TreeMapperIcon';
 
 interface Props {
-  plantLocationDetails: PlantLocationDetailsApiResponse['res'] | null;
-  selectedLayer: PlantLocation['properties'];
+  interventionDetails: InterventionDetailsApiResponse['res'] | null;
+  selectedLayer: InterventionFeature['properties'];
   loading: boolean;
 }
 
-type PlantationUnitInfoProp = Omit<Props, 'plantLocationDetails' | 'loading'>;
+type PlantationUnitInfoProp = Omit<Props, 'interventionDetails' | 'loading'>;
 type ListOfSpeciesPlantedProp = {
-  plantLocationDetails: PlantLocationDetailsApiResponse['res'];
+  interventionDetails: InterventionDetailsApiResponse['res'];
 };
 
 const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
@@ -55,18 +55,18 @@ const PlantationUnitInfo = ({ selectedLayer }: PlantationUnitInfoProp) => {
 };
 
 const ListOfSpeciesPlanted = ({
-  plantLocationDetails,
+  interventionDetails,
 }: ListOfSpeciesPlantedProp) => {
   const t = useTranslations('TreemapperAnalytics');
   const locale = useLocale();
-  return plantLocationDetails?.plantedSpecies !== null ? (
+  return interventionDetails?.plantedSpecies !== null ? (
     <div className={styles.midContainer}>
       <div className={styles.title}>
         {t('speciesPlanted')}&nbsp;(
-        {plantLocationDetails?.plantedSpecies.length})
+        {interventionDetails?.plantedSpecies.length})
       </div>
       <div className={styles.speciesContainer}>
-        {plantLocationDetails?.plantedSpecies.map((species) => {
+        {interventionDetails?.plantedSpecies.map((species) => {
           return (
             <div
               key={species.scientificName}
@@ -77,11 +77,11 @@ const ListOfSpeciesPlanted = ({
               <div className={styles.count}>
                 {getFormattedNumber(locale, species.treeCount)}
               </div>
-              {plantLocationDetails.totalPlantedTrees > 1 && (
+              {interventionDetails.totalPlantedTrees > 1 && (
                 <div className={styles.totalPercentage}>
                   {(
                     (species.treeCount /
-                      plantLocationDetails.totalPlantedTrees) *
+                      interventionDetails.totalPlantedTrees) *
                     100
                   ).toFixed(2)}
                   %
@@ -97,36 +97,32 @@ const ListOfSpeciesPlanted = ({
   );
 };
 
-const SampleTreesInfo = ({
-  plantLocationDetails,
-}: ListOfSpeciesPlantedProp) => {
+const SampleTreesInfo = ({ interventionDetails }: ListOfSpeciesPlantedProp) => {
   const t = useTranslations('TreemapperAnalytics');
-  return plantLocationDetails?.samplePlantLocations ? (
+  return interventionDetails?.sampleInterventions ? (
     <>
       {' '}
       <div className={styles.bottomContainer}>
         <div className={styles.title}>
           {t('sampleTrees')}&nbsp;(
-          {plantLocationDetails?.totalSamplePlantLocations})
+          {interventionDetails?.totalSampleInterventions})
         </div>
-        {plantLocationDetails?.samplePlantLocations?.map(
-          (samplePlantLocation, index) => {
+        {interventionDetails?.sampleInterventions?.map(
+          (sampleIntervention, index) => {
             return (
               <div
-                key={samplePlantLocation.guid}
+                key={sampleIntervention.guid}
                 className={styles.sampleTreeContainer}
               >
                 <p className={styles.title}>
                   {index + 1}.&nbsp;
-                  <p className={styles.species}>
-                    {samplePlantLocation.species}
-                  </p>
+                  <p className={styles.species}>{sampleIntervention.species}</p>
                 </p>
 
                 <p>
-                  {t('tag')} #{samplePlantLocation.tag} •{' '}
-                  {samplePlantLocation.measurements.height}m high •{' '}
-                  {samplePlantLocation.measurements.width}cm wide
+                  {t('tag')} #{sampleIntervention.tag} •{' '}
+                  {sampleIntervention.measurements.height}m high •{' '}
+                  {sampleIntervention.measurements.width}cm wide
                 </p>
               </div>
             );
@@ -139,36 +135,36 @@ const SampleTreesInfo = ({
   );
 };
 
-const PlantLocationHeader = ({ type, hid }: PlantLocationProperties) => {
+const InterventionHeader = ({ type, hid }: InterventionProperties) => {
   const t = useTranslations('TreemapperAnalytics');
   const formattedHid = hid.substring(0, 3) + '-' + hid.substring(3);
 
   return (
     <header className={styles.header}>
-      <div>{t(`plantLocationType.${type}`)}</div>
+      <div>{t(`interventionType.${type}`)}</div>
       <div className={styles.hid}>#{formattedHid}</div>
     </header>
   );
 };
 
-const PlantLocationDetails = ({
-  plantLocationDetails,
+const InterventionDetails = ({
+  interventionDetails,
   selectedLayer,
   loading,
 }: Props) => {
-  const plantLocationType = plantLocationDetails?.properties.type;
+  const interventionType = interventionDetails?.properties.type;
 
   const hasData =
-    plantLocationDetails !== null &&
+    interventionDetails !== null &&
     Boolean(
-      (plantLocationType === 'multi-tree-registration' &&
+      (interventionType === 'multi-tree-registration' &&
         (selectedLayer.treeCount || selectedLayer.density)) ||
-        (plantLocationDetails?.plantedSpecies?.length || 0) > 0 ||
-        (plantLocationDetails?.samplePlantLocations?.length || 0) > 0
+        (interventionDetails?.plantedSpecies?.length || 0) > 0 ||
+        (interventionDetails?.sampleInterventions?.length || 0) > 0
     );
 
   return (
-    <div className={styles.plantLocationDetailsContainer}>
+    <div className={styles.interventionDetailsContainer}>
       <div className={styles.content}>
         {loading ? (
           <>
@@ -177,24 +173,24 @@ const PlantLocationDetails = ({
           </>
         ) : hasData ? (
           <div className={styles.contentTop}>
-            <PlantLocationHeader
-              type={plantLocationDetails.properties.type}
-              hid={plantLocationDetails.properties.hid}
+            <InterventionHeader
+              type={interventionDetails.properties.type}
+              hid={interventionDetails.properties.hid}
             />
-            {plantLocationType === 'multi-tree-registration' && (
+            {interventionType === 'multi-tree-registration' && (
               <PlantationUnitInfo selectedLayer={selectedLayer} />
             )}
-            <ListOfSpeciesPlanted plantLocationDetails={plantLocationDetails} />
-            {plantLocationType === 'multi-tree-registration' &&
-              plantLocationDetails.totalSamplePlantLocations !== null && (
-                <SampleTreesInfo plantLocationDetails={plantLocationDetails} />
+            <ListOfSpeciesPlanted interventionDetails={interventionDetails} />
+            {interventionType === 'multi-tree-registration' &&
+              interventionDetails.totalSampleInterventions !== null && (
+                <SampleTreesInfo interventionDetails={interventionDetails} />
               )}
           </div>
         ) : (
           <>
             <div></div>
             <div className={styles.zeroStateScreen}>
-              <PlantLocationDetailsZeroState />
+              <InterventionDetailsZeroState />
             </div>
           </>
         )}
@@ -217,4 +213,4 @@ const PlantLocationDetails = ({
   );
 };
 
-export default PlantLocationDetails;
+export default InterventionDetails;

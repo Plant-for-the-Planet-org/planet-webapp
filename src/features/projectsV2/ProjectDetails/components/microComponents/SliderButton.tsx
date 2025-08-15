@@ -16,7 +16,7 @@ const SliderButton = ({
   onClick,
   className,
 }: SliderButtonProps) => {
-  const { primaryDarkColor, light } = themeProperties;
+  const { colors } = themeProperties.designSystem;
   const tImageSlider = useTranslations('ProjectDetails');
   const Icon = direction === 'prev' ? SlidePrevButtonIcon : SlideNextButtonIcon;
   return (
@@ -30,7 +30,7 @@ const SliderButton = ({
           : tImageSlider('nextImage')
       }`}
     >
-      <Icon color={disabled ? light.dividerColorNew : primaryDarkColor} />
+      <Icon color={disabled ? colors.mediumGrey : colors.primaryColor} />
     </button>
   );
 };

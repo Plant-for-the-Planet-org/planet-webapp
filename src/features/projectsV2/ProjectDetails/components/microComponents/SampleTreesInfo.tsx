@@ -1,24 +1,21 @@
 import type { SetState } from '../../../../common/types/common';
-import type { SamplePlantLocation } from '../../../../common/types/plantLocation';
+import type { SampleTreeRegistration } from '../../../../common/types/intervention';
 
 import { useTranslations } from 'next-intl';
-import styles from '../../styles/PlantLocationInfo.module.scss';
+import styles from '../../styles/InterventionInfo.module.scss';
 
 interface Props {
-  sampleInterventions: SamplePlantLocation[];
-  setSelectedSamplePlantLocation: SetState<SamplePlantLocation | null>;
+  sampleTrees: SampleTreeRegistration[];
+  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
-const SampleTreeList = ({
-  sampleInterventions,
-  setSelectedSamplePlantLocation,
-}: Props) => {
+const SampleTreeList = ({ sampleTrees, setSelectedSampleTree }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
   return (
     <div
       className={`sample-tree-list-container ${styles.sampleTreeListContainer}`}
     >
-      {sampleInterventions.map((sampleTree, index) => {
+      {sampleTrees.map((sampleTree, index) => {
         return (
           <div
             key={sampleTree.id}
@@ -26,7 +23,7 @@ const SampleTreeList = ({
           >
             <button
               className={styles.scientificNameContainer}
-              onClick={() => setSelectedSamplePlantLocation(sampleTree)}
+              onClick={() => setSelectedSampleTree(sampleTree)}
             >
               <span>{index + 1}</span>.
               <p className={styles.scientificName}>
@@ -46,24 +43,21 @@ const SampleTreeList = ({
     </div>
   );
 };
-const SampleTrees = ({
-  sampleInterventions,
-  setSelectedSamplePlantLocation,
-}: Props) => {
+const SampleTreesInfo = ({ sampleTrees, setSelectedSampleTree }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
     <div className={`sample-trees-container ${styles.sampleTreesContainer}`}>
       <h2 className={styles.mainLabel}>
         {tProjectDetails('sampleTrees', {
-          count: sampleInterventions.length,
+          count: sampleTrees.length,
         })}
       </h2>
       <SampleTreeList
-        sampleInterventions={sampleInterventions}
-        setSelectedSamplePlantLocation={setSelectedSamplePlantLocation}
+        sampleTrees={sampleTrees}
+        setSelectedSampleTree={setSelectedSampleTree}
       />
     </div>
   );
 };
 
-export default SampleTrees;
+export default SampleTreesInfo;

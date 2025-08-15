@@ -3,7 +3,7 @@ import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { Typography, Popover } from '@mui/material';
 import styles from './MapCredit.module.scss';
-import { InfoIcon } from '../../../../../../../../../public/assets/images/ProfilePageIcons/index';
+import InfoIconTransparent from '../../../../../../../../../public/assets/images/icons/InfoIconTransparent';
 
 const MapCredit = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -23,7 +23,7 @@ const MapCredit = () => {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <InfoIcon width={24} height={24} />
+        <InfoIconTransparent width={24} height={24} />
       </Typography>
       <Popover
         id="mouse-over-popover"

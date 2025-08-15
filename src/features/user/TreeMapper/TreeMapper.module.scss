@@ -3,9 +3,9 @@
 .profilePage {
   margin-top: 255px;
   font-family: $primaryFontFamily;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   margin-bottom: 80px;
-  background-color: $backgroundBase;
+  background-color: $dsBackgroundBase;
 }
 
 .pageContainer {
@@ -27,7 +27,7 @@
   padding-top: 40px;
   bottom: 0;
   min-height: 100vh;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,11 +49,11 @@
   z-index: 10;
   height: 85%;
   height: 100%;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   margin-top: 20px;
   .singleLocation {
     :hover {
-      background-color: $backgroundColorDark;
+      background-color: $dsBaseGrey;
     }
     display: flex;
     flex-direction: column;
@@ -110,7 +110,7 @@
   z-index: 10;
   height: auto;
   overflow-y: auto;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding: 40px 20px 30px;
@@ -208,7 +208,7 @@
     align-items: center;
   }
   a {
-    color: $primaryColor;
+    color: $dsPrimaryColor;
     text-decoration: none;
     font-weight: bold;
   }
@@ -235,10 +235,10 @@
     > :first-child {
       bottom: 2px;
       > div {
-        background: rgba(0, 0, 0, 0.4) !important;
+        background-color: $dsCoreText !important;
         height: 4px !important;
         > div {
-          background: rgba(255, 255, 255, 0.8) !important;
+          background-color: $dsMediumGrey !important;
         }
       }
     }
@@ -259,7 +259,7 @@
 .projectImageSliderContentText {
   margin-bottom: 22px;
   margin-left: 12px;
-  color: #fff;
+  color: $dsWhite;
   font-size: $fontSixteen;
   font-family: $primaryFontFamily;
   line-height: 1.3;
@@ -292,7 +292,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50% 50% 50% 10%;
-  background: $primaryColor;
+  background: $dsLeafGreen;
   position: absolute;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
@@ -305,39 +305,6 @@
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
 }
-
-.markerSample {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ff6200;
-  position: absolute;
-  // -webkit-transform: rotate(-45deg);
-  // -moz-transform: rotate(-45deg);
-  // -o-transform: rotate(-45deg);
-  // -ms-transform: rotate(-45deg);
-  // transform: rotate(-45deg);
-  // left: 50%;
-  // top: 40%;
-  // margin: -20px 0 0 -20px;
-  // box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  cursor: pointer;
-}
-
-// .pullUpContainer {
-//   width: 100%;
-//   height: 25px;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: center;
-//   align-items: center;
-//   > .pullUpBar {
-//     height: 5px;
-//     width: 40px;
-//     border-radius: 50px;
-//     background-color: $primaryFontColor;
-//   }
-// }
 
 .popupContainer {
   box-shadow: none;
@@ -365,7 +332,7 @@
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #dddbda;
+  background-color: $dsMediumGrey;
   margin: 0 10px;
 }
 
@@ -389,28 +356,11 @@
   }
 }
 
-.single {
-  height: 10px;
-  width: 10px;
-  border-radius: 100px;
-  background-color: rgba(0, 122, 73, 0.5);
-  cursor: pointer;
-  position: absolute;
-  z-index: 1;
-  &.singleSelected {
-    background-color: rgba(0, 122, 73, 1);
-  }
-}
-
-.single:hover {
-  background-color: rgba(0, 122, 73, 1);
-}
-
 .layerToggle {
   width: 30px;
   height: 30px;
   box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border-radius: 100px;
   cursor: pointer;
   display: flex;
@@ -439,8 +389,25 @@
     font-weight: 700;
     width: 100%;
     margin-bottom: 10px;
-    color: $primaryFontColor;
+    color: $dsCoreText;
   }
+}
+
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: $dsBrightGreen;
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  &.singleSelected {
+    background-color: $dsPrimaryColor;
+  }
+}
+
+.single:hover {
+  background-color: $dsPrimaryColor;
 }
 
 .threeDotMenuButton {
@@ -455,7 +422,7 @@
 .menuContainer {
   position: absolute;
   padding: 10px 15px;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   border-radius: 10px;
   z-index: 11;
   box-shadow: 0px 3px 6px #00000029;
@@ -482,9 +449,9 @@
     }
     > .singleLocation.selected {
       margin-bottom: 10px;
-      background-color: #fafafa;
+      background-color: $dsBaseGrey;
       border-radius: 10px;
-      box-shadow: 1px 2px 8px -6px #707070;
+      box-shadow: 1px 2px 8px -6px $dsSoftText2;
     }
   }
 
@@ -505,7 +472,7 @@
 
   .listContainer {
     margin: 0;
-    background-color: $backgroundBase;
+    background-color: $dsBackgroundBase;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
@@ -530,7 +497,7 @@
 
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid $dsBaseGrey;
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;

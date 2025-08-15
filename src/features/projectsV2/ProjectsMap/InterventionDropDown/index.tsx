@@ -1,9 +1,10 @@
 import type { SetState } from '../../../common/types/common';
 import type { INTERVENTION_TYPE } from '../../../../utils/constants/intervention';
+import type { DropdownType } from '../../../common/types/projectv2';
+import type { InterventionTypes } from '@planet-sdk/common';
 
 import { useState, useMemo, useEffect } from 'react';
 import styles from './InterventionList.module.scss';
-
 import InterventionList from './InterventionList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { findMatchingIntervention } from '../../../../utils/constants/intervention';
@@ -11,6 +12,7 @@ import InterventionIcon from '../../../../../public/assets/images/icons/Interven
 import { useTranslations } from 'next-intl';
 import DropdownUpArrow from '../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
+
 interface InterventionOptionType {
   label: string;
   value: INTERVENTION_TYPE;
@@ -22,21 +24,21 @@ interface Props {
   selectedInterventionType: INTERVENTION_TYPE;
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   isMobile?: boolean;
-  enableInterventionFilter: () => void;
-  disableInterventionMenu: boolean;
+  activeDropdown: DropdownType;
+  setActiveDropdown: SetState<DropdownType>;
   hasProjectSites?: boolean;
-  existingIntervention: string[]
+  availableInterventionTypes: InterventionTypes[];
 }
 
 const InterventionDropdown = ({
   allInterventions,
   selectedInterventionType,
   setSelectedInterventionType,
-  enableInterventionFilter,
-  disableInterventionMenu,
+  activeDropdown,
+  setActiveDropdown,
   isMobile,
   hasProjectSites,
-  existingIntervention
+  availableInterventionTypes,
 }: Props) => {
   const tIntervention = useTranslations('ProjectDetails.intervention');
 
@@ -51,35 +53,39 @@ const InterventionDropdown = ({
   }, [allInterventions]);
 
   useEffect(() => {
-    if (!disableInterventionMenu) {
+    if (activeDropdown === 'site') {
       setIsMenuOpen(false);
     }
-  }, [disableInterventionMenu]);
-
+  }, [activeDropdown]);
 
   const toggleMenu = () => {
-    enableInterventionFilter();
-    setIsMenuOpen((prev) => !prev);
+    if (activeDropdown !== 'intervention') {
+      setActiveDropdown('intervention');
+      setIsMenuOpen(true);
+    } else {
+      setIsMenuOpen((prev) => !prev);
+    }
   };
 
   const showVisibleOption = () => {
-    const interventionToCheck = existingIntervention.length === 1
-      ? existingIntervention[0]
-      : selectedInterventionType;
-  
+    const interventionToCheck =
+      availableInterventionTypes.length === 1
+        ? availableInterventionTypes[0]
+        : selectedInterventionType;
+
     return findMatchingIntervention(interventionToCheck);
-  }
+  };
 
-  const interventionData = showVisibleOption()
-
+  const interventionData = showVisibleOption();
 
   return (
     <>
       <div
-        className={`${styles.dropdownButton} ${hasProjectSites
+        className={`${styles.dropdownButton} ${
+          hasProjectSites
             ? styles.dropdownButtonAlignmentAbove
             : styles.dropdownButtonAlignmentBelow
-          }`}
+        }`}
         onClick={toggleMenu}
       >
         <div className={styles.interventionIconAndTextContainer}>
@@ -118,7 +124,7 @@ const InterventionDropdown = ({
           setIsMenuOpen={setIsMenuOpen}
           selectedInterventionData={interventionData}
           hasProjectSites={hasProjectSites}
-          existingIntervention={existingIntervention}
+          availableInterventionTypes={availableInterventionTypes}
         />
       )}
     </>

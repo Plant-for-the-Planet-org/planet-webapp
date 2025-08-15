@@ -108,7 +108,9 @@ export const TreePlanted = () => {
   });
 
   const getDownloadIcon = () => {
-    return <DownloadSolid color="#6E8091" />;
+    return (
+      <DownloadSolid color={themeProperties.designSystem.colors.softText2} />
+    );
   };
 
   const [options, setOptions] = useState<ApexOptions>({
@@ -151,7 +153,7 @@ export const TreePlanted = () => {
     },
 
     fill: {
-      colors: [themeProperties.primaryColor],
+      colors: [themeProperties.designSystem.colors.warmGreen],
     },
 
     xaxis: {
@@ -183,8 +185,8 @@ export const TreePlanted = () => {
         fill: {
           type: 'gradient',
           gradient: {
-            colorFrom: '#D8E3F0',
-            colorTo: '#BED1E6',
+            colorFrom: `${themeProperties.designSystem.colors.mediumGrey}`,
+            colorTo: `${themeProperties.designSystem.colors.skyBlue}`,
             stops: [0, 100],
             opacityFrom: 0.4,
             opacityTo: 0.5,

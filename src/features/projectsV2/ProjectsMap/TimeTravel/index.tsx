@@ -66,8 +66,6 @@ export default function TimeTravel({
   const [isLoading, setIsLoading] = useState(true);
   const [beforeLoaded, setBeforeLoaded] = useState(false);
   const [afterLoaded, setAfterLoaded] = useState(false);
-  const [beforeDropdownOpen, setBeforeDropdownOpen] = useState(false);
-  const [afterDropdownOpen, setAfterDropdownOpen] = useState(false);
 
   const availableYears = useMemo(() => {
     if (timeTravelConfig === null || timeTravelConfig.sources === null) {
@@ -461,22 +459,18 @@ export default function TimeTravel({
 
   const handleBeforeYearChange = (year: string) => {
     setSelectedYearBefore(year);
-    setBeforeDropdownOpen(false);
   };
 
   const handleBeforeSourceChange = (source: SourceName) => {
     setSelectedSourceBefore(source);
-    setBeforeDropdownOpen(false);
   };
 
   const handleAfterYearChange = (year: string) => {
     setSelectedYearAfter(year);
-    setAfterDropdownOpen(false);
   };
 
   const handleAfterSourceChange = (source: SourceName) => {
     setSelectedSourceAfter(source);
-    setAfterDropdownOpen(false);
   };
 
   return (
@@ -486,7 +480,6 @@ export default function TimeTravel({
         defaultSource={selectedSourceBefore}
         availableYears={availableYears}
         availableSources={availableSources}
-        isOpen={beforeDropdownOpen}
         onYearChange={handleBeforeYearChange}
         onSourceChange={handleBeforeSourceChange}
         customClassName={styles.beforeDropdown}
@@ -496,7 +489,6 @@ export default function TimeTravel({
         defaultSource={selectedSourceAfter}
         availableYears={availableYears}
         availableSources={availableSources}
-        isOpen={afterDropdownOpen}
         onYearChange={handleAfterYearChange}
         onSourceChange={handleAfterSourceChange}
         customClassName={styles.afterDropdown}

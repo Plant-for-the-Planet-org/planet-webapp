@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import type { ViewState } from 'react-map-gl-v7';
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
@@ -35,7 +35,7 @@ export const DEFAULT_VIEW_STATE: ViewState = {
 const DEFAULT_MAP_STATE: MapState = {
   mapStyle: EMPTY_STYLE,
   dragPan: true,
-  scrollZoom: false,
+  scrollZoom: true,
   minZoom: 1,
   maxZoom: 20,
 };
@@ -121,7 +121,18 @@ interface ProjectsMapState {
 }
 
 const ProjectsMapContext = createContext<ProjectsMapState | null>(null);
-export const ProjectsMapProvider: FC = ({ children }) => {
+
+interface ProjectsMapProviderProps {
+  children: ReactNode;
+  isEmbedded?: boolean;
+  isQueryParamsLoaded?: boolean;
+}
+
+export const ProjectsMapProvider: FC<ProjectsMapProviderProps> = ({
+  children,
+  isEmbedded = false,
+  isQueryParamsLoaded = false,
+}) => {
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
@@ -135,6 +146,16 @@ export const ProjectsMapProvider: FC = ({ children }) => {
   const [selectedSiteLayer, setSelectedSiteLayer] =
     useState<SiteLayerOption | null>(null);
   const [isExploreMode, setIsExploreMode] = useState(false);
+
+  // Update mapState when embed status changes, but only after query params are loaded
+  useEffect(() => {
+    if (isQueryParamsLoaded) {
+      setMapState((prevState) => ({
+        ...prevState,
+        scrollZoom: !isEmbedded,
+      }));
+    }
+  }, [isEmbedded, isQueryParamsLoaded]);
 
   // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
   useEffect(() => {

@@ -1,63 +1,65 @@
 import type {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
+  Intervention,
+  MultiTreeRegistration,
+  SingleTreeRegistration,
+  SampleTreeRegistration,
+} from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
-import * as turf from '@turf/turf';
+import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
 import { useProjectsMap } from '../../ProjectsMapContext';
 import { FillColor } from '../../../../utils/constants/intervention';
+import themeProperties from '../../../../theme/themeProperties';
+import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface SampleTreeMarkerProps {
-  sample: SamplePlantLocation;
-  selectedSamplePlantLocation: SamplePlantLocation | null;
-  openPl: (
+  sampleTree: SampleTreeRegistration;
+  selectedSampleTree: SampleTreeRegistration | null;
+  toggleSampleTree: (
     e: React.MouseEvent<HTMLDivElement>,
-    pl: SamplePlantLocation
+    sampleTree: SampleTreeRegistration
   ) => void;
 }
 
+const { colors } = themeProperties.designSystem;
+
 const SampleTreeMarker = ({
-  sample,
-  selectedSamplePlantLocation,
-  openPl,
+  sampleTree,
+  selectedSampleTree,
+  toggleSampleTree,
 }: SampleTreeMarkerProps) => (
   <Marker
-    key={`${sample.id}-sample`}
-    latitude={sample.geometry.coordinates[1]}
-    longitude={sample.geometry.coordinates[0]}
+    key={`${sampleTree.id}-sample`}
+    latitude={sampleTree.geometry.coordinates[1]}
+    longitude={sampleTree.geometry.coordinates[0]}
     anchor="center"
   >
     <div
-      key={`${sample.id}-marker`}
+      key={`${sampleTree.id}-marker`}
       className={`${styles.single} ${
-        sample.hid === selectedSamplePlantLocation?.hid
-          ? styles.singleSelected
-          : ''
+        sampleTree.hid === selectedSampleTree?.hid ? styles.singleSelected : ''
       }`}
       role="button"
       tabIndex={0}
-      onClick={(e) => openPl(e, sample)}
+      onClick={(e) => toggleSampleTree(e, sampleTree)}
     />
   </Marker>
 );
 
-export default function PlantLocations(): React.ReactElement {
+export default function InterventionLayers(): React.ReactElement {
   const {
-    plantLocations,
-    hoveredPlantLocation,
-    selectedPlantLocation,
-    setSelectedPlantLocation,
-    setSelectedSamplePlantLocation,
-    selectedSamplePlantLocation,
+    interventions,
+    hoveredIntervention,
+    selectedIntervention,
+    setSelectedIntervention,
+    setSelectedSampleTree,
+    selectedSampleTree,
     selectedInterventionType,
   } = useProjects();
   const { viewState } = useProjectsMap();
@@ -65,22 +67,22 @@ export default function PlantLocations(): React.ReactElement {
   const t = useTranslations('Maps');
   const locale = useLocale();
 
-  const openPl = (
+  const toggleSampleTree = (
     e: React.MouseEvent<HTMLDivElement>,
-    pl: PlantLocationSingle | SamplePlantLocation
+    tree: SingleTreeRegistration | SampleTreeRegistration
   ) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (selectedSamplePlantLocation?.hid === pl.hid) {
-      setSelectedSamplePlantLocation(null);
+    if (selectedSampleTree?.hid === tree.hid) {
+      setSelectedSampleTree(null);
     } else {
-      switch (pl.type) {
+      switch (tree.type) {
         case 'sample-tree-registration':
-          setSelectedSamplePlantLocation(pl);
+          setSelectedSampleTree(tree);
           break;
         case 'single-tree-registration':
-          setSelectedPlantLocation(pl);
+          setSelectedIntervention(tree);
           break;
         default:
           break;
@@ -88,12 +90,14 @@ export default function PlantLocations(): React.ReactElement {
     }
   };
 
-  const getPlTreeCount = (pl: PlantLocationMulti) => {
+  const getTreeCount = (multiTree: MultiTreeRegistration) => {
     let count = 0;
-    if (pl && pl.plantedSpecies) {
-      for (const key in pl.plantedSpecies) {
-        if (Object.prototype.hasOwnProperty.call(pl.plantedSpecies, key)) {
-          const element = pl.plantedSpecies[key];
+    if (multiTree && multiTree.plantedSpecies) {
+      for (const key in multiTree.plantedSpecies) {
+        if (
+          Object.prototype.hasOwnProperty.call(multiTree.plantedSpecies, key)
+        ) {
+          const element = multiTree.plantedSpecies[key];
           count += element.treeCount;
         }
       }
@@ -102,18 +106,20 @@ export default function PlantLocations(): React.ReactElement {
       return 0;
     }
   };
-  const getPlArea = (pl: PlantLocationMulti) => {
-    if (pl && pl.type === 'multi-tree-registration') {
-      const area = turf.area(pl.geometry);
-      return area / 10000;
+  const getPlantationArea = (multiTree: MultiTreeRegistration) => {
+    if (multiTree && multiTree.type === 'multi-tree-registration') {
+      const polygonAreaSqMeters = area(multiTree.geometry);
+      return typeof polygonAreaSqMeters === 'number'
+        ? polygonAreaSqMeters / 10000
+        : 0;
     } else {
       return 0;
     }
   };
 
-  const getPolygonColor = (pl: PlantLocationMulti) => {
-    const treeCount = getPlTreeCount(pl);
-    const plantationArea = getPlArea(pl);
+  const getPolygonColor = (multiTree: MultiTreeRegistration) => {
+    const treeCount = getTreeCount(multiTree);
+    const plantationArea = getPlantationArea(multiTree);
     const density = treeCount / plantationArea;
     if (density > 2500) {
       return 0.5;
@@ -128,12 +134,14 @@ export default function PlantLocations(): React.ReactElement {
     }
   };
 
-  const getDateDiff = (pl: PlantLocation) => {
-    if (!pl.interventionStartDate) {
+  const getDateDiff = (intervention: Intervention) => {
+    if (!intervention.interventionStartDate) {
       return null;
     }
     const today = new Date();
-    const plantationDate = new Date(pl.interventionStartDate?.slice(0, 10));
+    const plantationDate = new Date(
+      intervention.interventionStartDate?.slice(0, 10)
+    );
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
@@ -165,31 +173,37 @@ export default function PlantLocations(): React.ReactElement {
       geometry,
     };
   };
-  if (!plantLocations || plantLocations.length === 0) {
+  if (!interventions || interventions.length === 0) {
     return <></>;
   }
-  const features = plantLocations
+  const features = interventions
     .filter(
-      (d) =>
+      (intervention) =>
         selectedInterventionType === 'all' ||
         (selectedInterventionType !== 'default' &&
-          d.type === selectedInterventionType) ||
+          intervention.type === selectedInterventionType) ||
         (selectedInterventionType === 'default' &&
-          (d.type === 'multi-tree-registration' ||
-            d.type === 'single-tree-registration'))
+          (intervention.type === 'multi-tree-registration' ||
+            intervention.type === 'single-tree-registration'))
     )
-    .map((el) => {
+    .map((intervention) => {
       const isSelected =
-        selectedPlantLocation && selectedPlantLocation.id === el.id;
+        selectedIntervention && selectedIntervention.id === intervention.id;
       const isHovered =
-        hoveredPlantLocation && hoveredPlantLocation.id === el.id;
-      const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
-        highlightLine: isSelected || isHovered,
-        opacity:
-          el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
-        dateDiff: getDateDiff(el),
-        type: el.type,
-      });
+        hoveredIntervention && hoveredIntervention.id === intervention.id;
+      const GeoJSON = makeInterventionGeoJson(
+        intervention.geometry,
+        intervention.id,
+        {
+          highlightLine: isSelected || isHovered,
+          opacity:
+            intervention.type === 'multi-tree-registration'
+              ? getPolygonColor(intervention)
+              : 0.5,
+          dateDiff: getDateDiff(intervention),
+          type: intervention.type,
+        }
+      );
       return GeoJSON;
     });
 
@@ -201,11 +215,11 @@ export default function PlantLocations(): React.ReactElement {
   ].includes(selectedInterventionType);
 
   const shouldRenderMarkers =
-    selectedPlantLocation &&
-    selectedPlantLocation.type !== 'single-tree-registration' &&
+    selectedIntervention &&
+    selectedIntervention.type !== 'single-tree-registration' &&
     isValidInterventionType &&
     viewState.zoom > 14 &&
-    selectedPlantLocation.sampleInterventions;
+    selectedIntervention.sampleInterventions;
 
   return (
     <>
@@ -218,7 +232,7 @@ export default function PlantLocations(): React.ReactElement {
         }}
       >
         <Layer
-          id={`plant-polygon-layer`}
+          id={MAIN_MAP_LAYERS.PLANT_POLYGON}
           type="fill"
           paint={{
             'fill-color': FillColor,
@@ -227,7 +241,7 @@ export default function PlantLocations(): React.ReactElement {
           filter={['==', ['geometry-type'], 'Polygon']}
         />
         <Layer
-          id={`point-layer`}
+          id={MAIN_MAP_LAYERS.PLANT_POINT}
           type="circle"
           paint={{
             'circle-color': FillColor,
@@ -236,7 +250,7 @@ export default function PlantLocations(): React.ReactElement {
               [
                 '==',
                 ['get', 'id'],
-                (selectedPlantLocation?.id || hoveredPlantLocation?.id) ?? 0,
+                (selectedIntervention?.id || hoveredIntervention?.id) ?? 0,
               ],
               1,
               0.5,
@@ -245,7 +259,7 @@ export default function PlantLocations(): React.ReactElement {
           filter={['==', ['geometry-type'], 'Point']}
         />
         <Layer
-          id={`line-selected`}
+          id={MAIN_MAP_LAYERS.SELECTED_LINE}
           type="line"
           paint={{
             'line-color': FillColor,
@@ -254,7 +268,7 @@ export default function PlantLocations(): React.ReactElement {
           filter={['==', ['get', 'highlightLine'], true]}
         />
         <Layer
-          id={`datediff-label`}
+          id={MAIN_MAP_LAYERS.DATE_DIFF_LABEL}
           type="symbol"
           layout={{
             'text-field': ['get', 'dateDiff'],
@@ -262,17 +276,17 @@ export default function PlantLocations(): React.ReactElement {
             'text-font': ['Ubuntu Regular'],
           }}
           paint={{
-            'text-color': '#2f3336',
+            'text-color': colors.coreText,
           }}
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {shouldRenderMarkers
-          ? selectedPlantLocation.sampleInterventions.map((sample) => (
+          ? selectedIntervention.sampleInterventions.map((sampleTree) => (
               <SampleTreeMarker
-                key={sample.id}
-                sample={sample}
-                selectedSamplePlantLocation={selectedSamplePlantLocation}
-                openPl={openPl}
+                key={sampleTree.id}
+                sampleTree={sampleTree}
+                selectedSampleTree={selectedSampleTree}
+                toggleSampleTree={toggleSampleTree}
               />
             ))
           : null}

@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
-import type { SxProps } from '@mui/material';
-import type { PlantLocationMulti } from '../../../../common/types/plantLocation';
-import type { SampleTree } from '../../../../common/types/plantLocation';
+import type { MultiTreeRegistration } from '../../../../common/types/intervention';
+import type { SampleTree } from '../../../../common/types/intervention';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
 
 import React from 'react';
@@ -14,24 +13,6 @@ import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../../../theme/themeProperties';
-
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
-
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
 
 interface SampleTreeFormData {
   sampleTrees: SampleTree[];
@@ -44,7 +25,7 @@ interface Props {
   control: Control<SampleTreeFormData>;
   userLang: string;
   item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
-  plantLocation: PlantLocationMulti;
+  intervention: MultiTreeRegistration;
   errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }
@@ -56,7 +37,7 @@ export default function SampleTreeCard({
   control,
   userLang,
   item,
-  plantLocation,
+  intervention,
   errors,
 }: Props): ReactElement {
   const sampleTrees = getValues();
@@ -115,9 +96,6 @@ export default function SampleTreeCard({
                     renderInput={(props) => <TextField {...props} />}
                     disableFuture
                     inputFormat="MMMM d, yyyy"
-                    DialogProps={{
-                      sx: dialogSx,
-                    }}
                   />
                 )}
               />
@@ -259,9 +237,9 @@ export default function SampleTreeCard({
                 value={value}
                 select
               >
-                {plantLocation?.plantedSpecies.map((species, index) => {
+                {intervention?.plantedSpecies.map((species, index) => {
                   if (!species.otherSpecies) return;
-                  if (plantLocation?.plantedSpecies.length === 1) {
+                  if (intervention?.plantedSpecies.length === 1) {
                     return (
                       <MenuItem
                         key={index}

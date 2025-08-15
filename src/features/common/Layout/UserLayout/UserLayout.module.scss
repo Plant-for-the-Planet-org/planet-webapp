@@ -21,14 +21,14 @@
       z-index: 10;
       height: 42px;
       width: 42px;
-      background-color: $backgroundColorDark;
+      background-color: $dsBaseGrey;
       border-radius: 10px;
       svg {
         path {
-          fill: $primaryFontColor;
+          fill: $dsCoreText;
         }
         rect {
-          stroke: $primaryFontColor;
+          stroke: $dsCoreText;
         }
       }
     }
@@ -60,8 +60,8 @@
 
 // Styles for Sidebar
 
-.navlink button,
-.navlinkSubMenu {
+.navLink button,
+.navLinkSubMenu {
   display: none;
   font-family: inherit;
 }
@@ -77,11 +77,11 @@
   overflow-y: scroll;
   scrollbar-width: none;
   justify-content: space-between;
-  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  box-shadow: rgba(150, 150, 150, 0.2) 0px 0px 4px;
   transition: width 0.3s ease-in-out;
   z-index: 100;
-  background-color: $backgroundColor;
-  color: $primaryFontColor;
+  background-color: $dsWhite;
+  color: $dsCoreText;
   font-family: $primaryFontFamily;
   //edit scroll bar for webkit browsers
   &::-webkit-scrollbar {
@@ -93,6 +93,15 @@
 
   &:hover {
     .supportPinContainer {
+      flex: 1;
+      margin-left: 12px;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+      cursor: auto;
       .pinValue {
         width: 33px;
         font-weight: bold;
@@ -103,50 +112,58 @@
       &:hover {
         .resetPin {
           display: block;
+          font-size: $fontXSmall;
           position: absolute;
           bottom: 30px;
-          right: -21px;
-          height: 23px;
-          width: 67px;
-          background-color: $primaryColor;
-          color: $light;
+          right: 30px;
+          padding: 4px 8px;
+          background: $dsMintGradient;
+          color: $dsPrimaryColor;
           font-family: inherit;
           text-align: center;
           border-radius: 4px;
         }
       }
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin-right: 60px;
-      cursor: auto;
     }
   }
   @include xsPhoneView {
     top: 100px;
     height: calc(100% - 100px);
     width: 300px;
-    & .navlink {
+    & .navLink {
       padding: 16px 20px;
       justify-content: space-between;
     }
-    & .navlink button {
+    & .navLink button {
       display: block;
     }
-    & .navlinkSubMenu {
+    & .navLinkSubMenu {
       display: flex;
     }
     &.menuClosed {
       width: 0px;
     }
     & {
-      .navlink .supportPinContainer {
+      .navLink .supportPinContainer {
         display: flex;
         margin-right: 102px;
         gap: 10px;
+        justify-content: flex-start;
+        align-items: center;
+
+        // Match the navLinkTitle margin for consistent alignment
+        margin-left: 12px;
+
+        .resetPin {
+          display: none;
+        }
+
+        &:hover {
+          .resetPin {
+            display: block;
+            position: static;
+          }
+        }
       }
     }
   }
@@ -158,14 +175,14 @@
     &:hover {
       width: 300px !important;
     }
-    &:hover .navlink {
+    &:hover .navLink {
       padding: 16px 20px;
       justify-content: space-between;
     }
-    &:hover .navlink button {
+    &:hover .navLink button {
       display: block;
     }
-    &:hover .navlinkSubMenu {
+    &:hover .navLinkSubMenu {
       display: flex;
     }
   }
@@ -181,27 +198,27 @@
   height: calc(100% - 120px);
   overflow-y: scroll;
   justify-content: space-between;
-  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  box-shadow: rgba(150, 150, 150, 0.2) 0px 0px 4px;
   transition: width 0.3s ease-in-out;
   z-index: 100;
-  background-color: $backgroundColor;
-  color: $primaryFontColor;
+  background-color: $dsWhite;
+  color: $dsCoreText;
   font-family: $primaryFontFamily;
-  & .navlink {
+  & .navLink {
     .supportPinContainer {
       display: none;
     }
   }
   @include xsPhoneView {
     width: 300px;
-    & .navlink {
+    & .navLink {
       padding: 16px 20px;
       justify-content: space-between;
     }
-    & .navlink button {
+    & .navLink button {
       display: block;
     }
-    & .navlinkSubMenu {
+    & .navLinkSubMenu {
       display: flex;
     }
     &.menuClosed {
@@ -217,15 +234,23 @@
     &:hover {
       width: 300px !important;
     }
-    &:hover .navlink {
+    &:hover .navLink {
       padding: 16px 20px;
       justify-content: flex-start;
     }
-    &:hover .navlink button {
+    &:hover .navLink button {
       display: block;
     }
-    &:hover .navlinkSubMenu {
+    &:hover .navLinkSubMenu {
       display: flex;
+    }
+  }
+}
+
+.resetPinButton {
+  &:hover {
+    svg path {
+      fill: $dsPrimaryColor;
     }
   }
 }
@@ -235,23 +260,39 @@
   display: flex;
   flex-direction: column;
 }
-.navlink {
+
+// Icon container for consistent sizing and alignment
+.iconContainer {
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 20px;
+    object-fit: contain;
+
+    // Ensure all paths inherit the correct color
+    path {
+      fill: $dsCoreText;
+    }
+  }
+}
+
+.navLink {
   padding: 16px 8px;
   text-align: left;
   display: flex;
+  align-items: center;
   justify-content: center;
-  color: $primaryFontColor;
-  > svg > path {
-    fill: $primaryFontColor;
-  }
+  color: $dsCoreText;
+
   &:hover {
     cursor: pointer;
-    color: $primaryColor;
-    > svg > path,
-    > svg > g > path {
-      fill: $primaryColor;
-    }
+    font-weight: 700;
   }
+
   button {
     font-size: $fontSmall;
     font-weight: 400;
@@ -261,51 +302,49 @@
   }
 }
 
-.navlinkActive {
-  // background-color: rgba(104, 176, 48, $alpha: 0.2);
+.navLinkOpen {
+  font-weight: 700;
+}
+
+.navLinkActive {
   button {
     font-weight: 600;
   }
-  > svg > path {
-    fill: $primaryColor;
+
+  .iconContainer svg path {
+    fill: $dsPrimaryColor;
   }
-  .navlinkTitle {
-    color: $primaryColor;
+
+  .navLinkTitle {
+    color: $dsPrimaryColor;
   }
 }
-.navlinkActiveSubMenu {
-  color: rgba(104, 176, 48);
+
+.navLinkActiveSubMenu {
+  color: $dsPrimaryColor;
   font-weight: 600;
 }
-.navlinkTitle {
+
+.navLinkTitle {
   flex-grow: 1;
   text-align: left;
   margin-left: 12px;
-  color: $primaryFontColor;
+  color: $dsCoreText;
   &:hover {
     cursor: pointer;
-    > svg > path,
-    > svg > g > path {
-      fill: $primaryColor;
-    }
-    color: $primaryColor;
-  }
-  span {
-    background-color: $primaryColor;
-    color: $light;
-    padding: 4px 8px;
-    margin-left: 8px;
-    border-radius: 4px;
+    font-weight: 700;
   }
 }
+
 .subMenuArrow {
   svg {
     path {
-      fill: $primaryFontColor;
+      fill: $dsCoreText;
     }
   }
 }
-.navlinkSubMenu {
+
+.navLinkSubMenu {
   padding: 16px 20px;
   text-align: left;
   justify-content: flex-start;
@@ -313,37 +352,20 @@
   padding-left: 56px;
   &:hover {
     cursor: pointer;
-    background-color: $backgroundColorDark;
+    background-color: $dsMediumGreyTransparent30;
   }
-  span {
-    background-color: $primaryColor;
-    color: $light;
-    padding: 4px 8px;
-    margin-left: 8px;
-    border-radius: 4px;
-  }
+}
+
+.itemFlag {
+  background: $dsMintGradient;
+  color: $dsPrimaryColor;
+  font-size: $fontXSmall;
+  padding: 4px 8px;
+  margin-left: 8px;
+  border-radius: 4px;
 }
 
 .widgetIFrame {
   min-height: 100vh;
   width: 100%;
 }
-
-// @include lgLaptopView {
-//   .sidebar {
-//     width: 300px;
-//   }
-//   .navlink button {
-//     display: block;
-//   }
-//   .navlink {
-//     padding: 16px 20px;
-//     justify-content: space-between;
-//   }
-//   .profilePageContainer {
-//     padding-left: 300px;
-//   }
-//   .navlinkSubMenu {
-//     display: flex;
-//   }
-// }
