@@ -65,6 +65,7 @@ $nonMobileMargin: 10px;
   &.disabled {
     cursor: auto;
     opacity: 0.7;
+    pointer-events: none;
   }
 
   .dropdownButtonIcon,
