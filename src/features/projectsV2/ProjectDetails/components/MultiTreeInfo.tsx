@@ -4,7 +4,7 @@ import type {
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import * as turf from '@turf/turf';
 import styles from '../styles/InterventionInfo.module.scss';
@@ -62,7 +62,7 @@ const MultiTreeInfo = ({
     sampleInterventionSpeciesImages.length > 0;
 
   const content = [
-    <>
+    <Fragment key="headerAndImage">
       <MultiTreeInfoHeader
         key="multiTreeInfoHeader"
         hid={activeMultiTree.hid}
@@ -79,7 +79,7 @@ const MultiTreeInfo = ({
           allowFullView={!isMobile}
         />
       )}
-    </>,
+    </Fragment>,
     <PlantingDetails
       key="plantingDetails"
       plantingDensity={plantingDensity}
