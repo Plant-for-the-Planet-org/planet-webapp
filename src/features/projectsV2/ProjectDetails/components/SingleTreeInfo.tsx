@@ -24,7 +24,8 @@ const SingleTreeInfo = ({
   if (!activeSingleTree) return null;
 
   const plantInfoProps = {
-    interventionStartDate: activeSingleTree.interventionStartDate,
+    plantDate:
+      activeSingleTree.interventionStartDate || activeSingleTree.plantDate,
     tag: activeSingleTree.tag,
     scientificName: activeSingleTree.scientificName,
     measurements: activeSingleTree.measurements,

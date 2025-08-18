@@ -83,7 +83,9 @@ const MultiTreeInfo = ({
     <PlantingDetails
       key="plantingDetails"
       plantingDensity={plantingDensity}
-      plantDate={activeMultiTree.interventionStartDate}
+      plantDate={
+        activeMultiTree.interventionStartDate || activeMultiTree.plantDate
+      }
     />,
     activeMultiTree.plantedSpecies.length > 0 && (
       <SpeciesPlanted
