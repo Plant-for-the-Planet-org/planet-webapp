@@ -11,16 +11,6 @@ module.exports = {
     options: {},
   },
 
-  typescript: {
-    reactDocgen: 'react-docgen-typescript',
-    reactDocgenTypescriptOptions: {
-      shouldExtractLiteralValuesFromEnum: true,
-      shouldExtractValuesFromUnion: true,
-      propFilter: (prop) =>
-        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
-    },
-  },
-
   webpackFinal: async (config, { configType }) => {
     config.resolve = {
       ...config.resolve,
