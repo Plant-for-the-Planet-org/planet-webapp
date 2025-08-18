@@ -92,8 +92,6 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={interventionMetadata}
-        plantDate={plantDate}
-        type={interventionInfo.type}
       />
     ),
     hasPlantedSpecies && (
