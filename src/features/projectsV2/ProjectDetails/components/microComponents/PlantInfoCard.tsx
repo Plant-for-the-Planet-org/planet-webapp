@@ -30,7 +30,7 @@ const PlantInfoCard = ({
     {
       label: tProjectDetails('plantingDate'),
       data: plantDate ? formatDate(plantDate) : null,
-      shouldRender: plantDate !== undefined,
+      shouldRender: plantDate !== undefined || plantDate !== null,
     },
     {
       label: tProjectDetails('treeTag'),
