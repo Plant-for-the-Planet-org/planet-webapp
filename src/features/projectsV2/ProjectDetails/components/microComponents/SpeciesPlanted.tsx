@@ -33,7 +33,14 @@ const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
       <div className={styles.speciesSubContainer}>
         {plantedSpecies?.map((species) => (
           <div className={styles.speciesList} key={species.id}>
-            <p className={styles.speciesName}>{species.scientificName}</p>
+            <p className={styles.speciesName}>
+              {/* TODO: Temporary fallback chain for species name.
+            Currently checks scientificName → scientificSpecies → otherSpecies.
+            Will be updated in the future to only use scientificName. */}
+              {species.scientificName ||
+                species.scientificSpecies ||
+                species.otherSpecies}
+            </p>
             <div className={styles.treeMetrics}>
               <p>{getFormattedNumber(locale, species.treeCount)}</p>
               <p>{`${getPlantedTreePercentage(species.treeCount)}%`}</p>
