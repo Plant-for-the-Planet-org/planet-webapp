@@ -2,8 +2,6 @@ import styles from '../../styles/InterventionInfo.module.scss';
 
 interface Props {
   metadata: { key: string; value: string }[];
-  type: string | undefined;
-  plantDate: string | null | undefined;
 }
 
 const OtherInterventionMetadata = ({ metadata }: Props) => {
