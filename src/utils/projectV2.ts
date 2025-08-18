@@ -22,18 +22,20 @@ import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextI
 
 import centroid from '@turf/centroid';
 
-interface MetaDataValue {
+type MetaDataValue = {
   value: string;
   label: string;
-}
+};
 
-interface PublicMetaData {
-  [key: string]: string | MetaDataValue;
-}
+type FormattedMetadataEntry = {
+  key: string;
+  value: string;
+};
 
 export type MobileOs = 'android' | 'ios' | undefined;
 
 const paramsToDelete = ['ploc', 'backNavigationUrl', 'site'];
+const nonDisplayPublicMetadataKeys = ['isEntireSite'];
 
 export const MAIN_MAP_LAYERS = {
   SATELLITE_LAYER: 'satellite-layer',
@@ -427,77 +429,109 @@ export function getSitesGeoJson(sites: ProjectSiteFeature[]): SitesGeoJSON {
   };
 }
 
-function isJsonString(str: string) {
+/**
+ * Safely parses a JSON string into a JavaScript value without throwing errors.
+ * @param {string} str - The JSON string to parse.
+ * @returns {unknown} The parsed value if valid JSON, otherwise `null` to avoid throwing errors.
+ */
+function tryParseJson(str: string): unknown {
   try {
-    const parsed = JSON.parse(str);
-    return typeof parsed === 'object' && parsed !== null;
-  } catch (e) {
-    return false;
+    return JSON.parse(str);
+  } catch {
+    return null;
   }
 }
 
-export const createCardData = (interventionInfo: OtherInterventions | null) => {
-  // Initialize an array to store the cleaned key-value pairs
-  const cleanedData: { key: string; value: string }[] = [];
+/**
+ * Type guard that checks if a value is a non-array object
+ * with string `label` and `value` properties.
+ */
+function isMetaDataValue(obj: unknown): obj is MetaDataValue {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    'label' in obj &&
+    'value' in obj &&
+    typeof (obj as { value: unknown }).value === 'string' &&
+    typeof (obj as { label: unknown }).label === 'string'
+  );
+}
 
-  // Extract metadata from the interventionInfo object, if it exists
-  const parsedData = interventionInfo?.metadata;
+/** Type guard that checks if a value is a non-array object containing a string `value` property. */
+function isObjectWithStringValue(obj: unknown): obj is { value: string } {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    'value' in obj &&
+    typeof (obj as { value: unknown }).value === 'string'
+  );
+}
 
-  // Check if `parsedData.public` exists, is an object, and is not an array
-  if (
-    parsedData?.public &&
-    typeof parsedData.public === 'object' &&
-    !Array.isArray(parsedData.public)
-  ) {
-    // Iterate over the entries of `parsedData.public` as key-value pairs
-    Object.entries(parsedData.public as PublicMetaData).forEach(
-      ([key, value]) => {
-        // Skip the entry if the key is 'isEntireSite' as it's used to show point location and no use to user
-        if (key !== 'isEntireSite') {
-          // If the value is a string, directly add it to cleanedData
-          if (typeof value === 'string') {
-            cleanedData.push({ value, key });
-          }
-          // If the value is an object with `value` and `label` properties
-          else if (
-            typeof value === 'object' &&
-            value !== null &&
-            'value' in value &&
-            'label' in value
-          ) {
-            // Check if the `value` property contains a valid JSON string
-            if (isJsonString(value.value)) {
-              try {
-                // Parse the JSON string
-                const parsedValue = JSON.parse(value.value);
-                // If the parsed value is an object with a `value` property, add it to cleanedData
-                if (
-                  parsedValue &&
-                  typeof parsedValue === 'object' &&
-                  'value' in parsedValue
-                ) {
-                  cleanedData.push({
-                    key: value.label, // Use the `label` property as the key
-                    value: parsedValue.value, // Use the parsed `value` property
-                  });
-                }
-              } catch (error) {
-                // Log an error if JSON parsing fails
-                console.error('Error parsing JSON:', error);
-              }
-            } else {
-              // If not a JSON string, add the `label` and `value` directly
-              cleanedData.push({
-                key: value.label,
-                value: value.value,
-              });
-            }
-          }
-        }
-      }
-    );
+/**
+ * Formats a single metadata entry into a user-facing key-value pair.
+ *
+ * Rules:
+ * - Skips entries whose keys are in `nonDisplayPublicMetadataKeys`.
+ * - Accepts direct string values.
+ * - Accepts objects with `value` and `label` properties.
+ * - If `value` is a JSON string, attempts to parse it and extract a nested string `value`.
+ * @param {string} metaKey - The metadata property name.
+ * @param {unknown} metaValue - The metadata property value.
+ * @returns {{ key: string; value: string } | null} The formatted metadata entry, or `null` if not displayable.
+ */
+function formatMetadataEntry(
+  metaKey: string,
+  metaValue: unknown
+): FormattedMetadataEntry | null {
+  if (nonDisplayPublicMetadataKeys.includes(metaKey)) return null;
+
+  if (typeof metaValue === 'string') {
+    return { key: metaKey, value: metaValue };
   }
 
-  // Return the array of cleaned key-value pairs
-  return cleanedData;
-};
+  if (!isMetaDataValue(metaValue)) return null;
+
+  let finalValue = metaValue.value;
+  const parsedValue = tryParseJson(metaValue.value);
+  if (isObjectWithStringValue(parsedValue)) {
+    finalValue = parsedValue.value;
+  }
+
+  return {
+    key: metaValue.label,
+    value: finalValue,
+  };
+}
+
+/**
+ * Checks if metadata is a processable object (not null, not array, is object).
+ * @param {unknown} metadata - The value to check.
+ * @returns {boolean} true if `metadata` is a non-array object.
+ */
+function isProcessableMetadata(metadata: unknown): metadata is object {
+  return !(
+    !metadata ||
+    typeof metadata !== 'object' ||
+    Array.isArray(metadata)
+  );
+}
+
+/**
+ * Extracts and formats the `metadata.public` section of an intervention info
+ * into an array of display-friendly key-value pairs.
+ * @param {OtherInterventions} interventionInfo - The intervention object containing public metadata.
+ * @returns {{ key: string; value: string }[]} - Array of displayable metadata entries.
+ */
+export function prepareInterventionMetadata(
+  interventionInfo: OtherInterventions
+): FormattedMetadataEntry[] {
+  const publicMetadata = interventionInfo.metadata?.public;
+
+  if (!isProcessableMetadata(publicMetadata)) return [];
+
+  return Object.entries(publicMetadata)
+    .map(([key, value]) => formatMetadataEntry(key, value))
+    .filter((entry): entry is { key: string; value: string } => !!entry);
+}

@@ -89,8 +89,8 @@ export interface SampleTreeRegistration extends InterventionBase {
 
 export interface Metadata {
   app: App;
-  public: unknown[];
-  private?: unknown[];
+  public: unknown;
+  private: unknown;
 }
 
 export interface App {

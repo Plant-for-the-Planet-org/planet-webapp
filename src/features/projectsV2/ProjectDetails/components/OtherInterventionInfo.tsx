@@ -4,7 +4,7 @@ import type {
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
-import { useMemo } from 'react';
+import { useMemo, Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../styles/InterventionInfo.module.scss';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
@@ -14,7 +14,7 @@ import ImageSlider from './ImageSlider';
 import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import OtherInterventionInfoHeader from './microComponents/OtherInterventionInfoHeader';
-import { createCardData } from '../../../../utils/projectV2';
+import { prepareInterventionMetadata } from '../../../../utils/projectV2';
 
 interface Props {
   hoveredIntervention?: OtherInterventions | null;
@@ -31,12 +31,15 @@ const OtherInterventionInfo = ({
 }: Props) => {
   const interventionInfo = hoveredIntervention || selectedIntervention;
   if (!interventionInfo) return null;
+  const tProjectDetails = useTranslations('ProjectDetails');
+  const interventionMetadata = prepareInterventionMetadata(interventionInfo);
+
   const sampleTrees = interventionInfo.sampleInterventions || [];
   const plantedSpecies = interventionInfo.plantedSpecies || [];
   const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
+  const hasInterventionMetadata = interventionMetadata.length > 0;
 
-  const tProjectDetails = useTranslations('ProjectDetails');
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount = hasPlantedSpecies
       ? plantedSpecies.reduce(
@@ -64,10 +67,8 @@ const OtherInterventionInfo = ({
     sampleInterventionSpeciesImages !== undefined &&
     sampleInterventionSpeciesImages?.length > 0;
 
-  const cleanedPublicMetadata = createCardData(interventionInfo);
-
   const content = [
-    <>
+    <Fragment key="interventionHeaderAndImage">
       <OtherInterventionInfoHeader
         hid={interventionInfo.hid}
         interventionType={interventionInfo.type}
@@ -84,11 +85,11 @@ const OtherInterventionInfo = ({
           allowFullView={!isMobile}
         />
       )}
-    </>,
-    cleanedPublicMetadata.length > 0 && (
+    </Fragment>,
+    hasInterventionMetadata && (
       <OtherInterventionMetadata
         key="plantingDetails"
-        metadata={cleanedPublicMetadata}
+        metadata={interventionMetadata}
         plantDate={interventionInfo.interventionStartDate}
         type={interventionInfo.type}
       />
