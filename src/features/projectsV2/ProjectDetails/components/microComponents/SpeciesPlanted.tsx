@@ -29,10 +29,10 @@ const SpeciesPlanted = ({
     [totalTreesCount]
   );
   const getSpeciesName = (species: PlantedSpecies) => {
-    // TODO: Update logic to always use only `scientificName` (remove project-specific fallback)
+    // TODO: Remove special case for Volcano Valley once data is consistent.
+    // Currently: use `scientificName`, falling back to `otherSpecies` only for this project.
     if (plantProject === 'proj_eKBbIt7Bzavu9o7xzCAqjS2t') {
-      // Volcano Valley project: fallback scientificName → otherSpecies
-      return species.otherSpecies;
+      return species.scientificName || species.otherSpecies;
     }
     return species.scientificName;
   };
