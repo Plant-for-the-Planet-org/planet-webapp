@@ -99,6 +99,7 @@ const OtherInterventionInfo = ({
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
         plantedSpecies={plantedSpecies}
+        plantProject={selectedIntervention?.plantProject}
       />
     ),
     hasSampleTrees && (
