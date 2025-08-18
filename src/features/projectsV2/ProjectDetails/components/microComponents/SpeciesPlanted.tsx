@@ -8,9 +8,14 @@ import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 interface Props {
   totalTreesCount: number;
   plantedSpecies: PlantedSpecies[];
+  plantProject: string | undefined;
 }
 
-const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
+const SpeciesPlanted = ({
+  totalTreesCount,
+  plantedSpecies,
+  plantProject,
+}: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
   const getPlantedTreePercentage = useCallback(
@@ -23,6 +28,15 @@ const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
     },
     [totalTreesCount]
   );
+  const getSpeciesName = (species: PlantedSpecies) => {
+    // TODO: Remove special case for Volcano Valley once data is consistent.
+    // Currently: use `scientificName`, falling back to `otherSpecies` only for this project.
+    if (plantProject === 'proj_eKBbIt7Bzavu9o7xzCAqjS2t') {
+      return species.scientificName || species.otherSpecies;
+    }
+    return species.scientificName;
+  };
+
   return (
     <div className={`species-container ${styles.speciesContainer}`}>
       <h2>
@@ -33,7 +47,7 @@ const SpeciesPlanted = ({ totalTreesCount, plantedSpecies }: Props) => {
       <div className={styles.speciesSubContainer}>
         {plantedSpecies?.map((species) => (
           <div className={styles.speciesList} key={species.id}>
-            <p className={styles.speciesName}>{species.scientificName}</p>
+            <p className={styles.speciesName}>{getSpeciesName(species)}</p>
             <div className={styles.treeMetrics}>
               <p>{getFormattedNumber(locale, species.treeCount)}</p>
               <p>{`${getPlantedTreePercentage(species.treeCount)}%`}</p>

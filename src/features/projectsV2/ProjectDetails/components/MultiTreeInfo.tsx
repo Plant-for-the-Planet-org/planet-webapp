@@ -92,6 +92,7 @@ const MultiTreeInfo = ({
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
         plantedSpecies={activeMultiTree.plantedSpecies}
+        plantProject={activeMultiTree.plantProject}
       />
     ),
     activeMultiTree.sampleInterventions.length > 0 && (
