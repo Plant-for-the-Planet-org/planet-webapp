@@ -135,13 +135,12 @@ export default function InterventionLayers(): React.ReactElement {
   };
 
   const getDateDiff = (intervention: Intervention) => {
-    if (!intervention.interventionStartDate) {
-      return null;
-    }
+    const plantDate =
+      intervention.interventionStartDate || intervention.plantDate;
+    if (!plantDate) return null;
+
     const today = new Date();
-    const plantationDate = new Date(
-      intervention.interventionStartDate?.slice(0, 10)
-    );
+    const plantationDate = new Date(plantDate?.slice(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
