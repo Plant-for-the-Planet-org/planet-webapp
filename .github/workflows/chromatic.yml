@@ -7,9 +7,8 @@ name: 'Chromatic'
 on:
   push:
     branches:
-      - hotfix/chromatic-build-issue
       - develop
-      - feature/satellite-analysis-ui
+      - feature/update-storybook
 # List of jobs
 jobs:
   chromatic-deployment:
