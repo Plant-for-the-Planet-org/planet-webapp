@@ -79,8 +79,11 @@ function removeLocaleFromPath(pathname: string): string {
 export function getLocalizedPath(path: string, locale: string): string {
   // Remove any existing locale from path (defensive programming)
   const pathWithoutLocale = removeLocaleFromPath(path);
+  const inputLocale = locale.trim();
+  let effectiveLocale = inputLocale
+    ? normalizeLocale(inputLocale)
+    : i18nConfig.defaultLocale;
 
-  let effectiveLocale = locale.trim() || i18nConfig.defaultLocale;
   if (!isSupportedLocale(effectiveLocale)) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(
