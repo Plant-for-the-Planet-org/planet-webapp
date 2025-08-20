@@ -152,7 +152,6 @@ const AddressManagement = () => {
             elementType="button"
             onClick={toggleAddAddressModal}
             variant="primary"
-            buttonClasses={styles.addAddressButton}
           />
         ) : (
           <p className={styles.maxAddress}>

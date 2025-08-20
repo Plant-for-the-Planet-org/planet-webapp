@@ -110,6 +110,9 @@
         display: none;
       }
       &:hover {
+        .supportPin {
+          font-weight: bold;
+        }
         .resetPin {
           display: block;
           font-size: $fontXSmall;

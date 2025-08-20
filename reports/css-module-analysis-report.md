@@ -1,19 +1,19 @@
 # CSS Module Analysis Report
 
-Generated: 8/20/2025, 3:29:02 PM
+Generated: 8/20/2025, 4:18:14 PM
 
 ## Summary Statistics
 
 - **TypeScript files processed**: 627
 - **CSS module files found**: 150
 - **Files with CSS imports**: 336
-- **Total CSS class usages**: 2529
-- **Errors found**: 40
+- **Total CSS class usages**: 2523
+- **Errors found**: 34
 - **Warnings**: 3
 
 ---
 
-## ❌ Errors Found (40)
+## ❌ Errors Found (34)
 
 These issues need to be fixed:
 
@@ -21,15 +21,7 @@ These issues need to be fixed:
 
 ### Undefined CSS Classes
 
- 1. **File:** `src/features/user/Widget/EmbedModal.tsx:92`
-
-    **Error:** Class 'mainText' does not exist in EmbedModal.module.scss
-
-    **CSS file:** `src/features/user/Widget/EmbedModal.module.scss`
-
----
-
- 2. **File:** `src/features/user/TreeMapper/components/TreeMapperList.tsx:44`
+ 1. **File:** `src/features/user/TreeMapper/components/TreeMapperList.tsx:44`
 
     **Error:** Class 'pullUpBar' does not exist in TreeMapper.module.scss
 
@@ -37,7 +29,7 @@ These issues need to be fixed:
 
 ---
 
- 3. **File:** `src/features/user/TreeMapper/components/InterventionPage.tsx:170`
+ 2. **File:** `src/features/user/TreeMapper/components/InterventionPage.tsx:170`
 
     **Error:** Class 'singlePl' does not exist in TreeMapper.module.scss
 
@@ -45,7 +37,7 @@ These issues need to be fixed:
 
 ---
 
- 4. **File:** `src/features/user/TreeMapper/components/InterventionPage.tsx:419`
+ 3. **File:** `src/features/user/TreeMapper/components/InterventionPage.tsx:419`
 
     **Error:** Class 'pullUpBar' does not exist in TreeMapper.module.scss
 
@@ -53,7 +45,7 @@ These issues need to be fixed:
 
 ---
 
- 5. **File:** `src/features/user/TreeMapper/Import/components/SampleTreeCard.tsx:65`
+ 4. **File:** `src/features/user/TreeMapper/Import/components/SampleTreeCard.tsx:65`
 
     **Error:** Class 'sampleTreeSummary' does not exist in Import.module.scss
 
@@ -61,7 +53,7 @@ These issues need to be fixed:
 
 ---
 
- 6. **File:** `src/features/user/TreeMapper/Import/components/ReviewSubmit.tsx:51`
+ 5. **File:** `src/features/user/TreeMapper/Import/components/ReviewSubmit.tsx:51`
 
     **Error:** Class 'stepDescription' does not exist in Import.module.scss
 
@@ -69,7 +61,7 @@ These issues need to be fixed:
 
 ---
 
- 7. **File:** `src/features/user/TreeMapper/Import/components/ReviewSubmit.tsx:112`
+ 6. **File:** `src/features/user/TreeMapper/Import/components/ReviewSubmit.tsx:112`
 
     **Error:** Class 'value' does not exist in Import.module.scss
 
@@ -77,7 +69,7 @@ These issues need to be fixed:
 
 ---
 
- 8. **File:** `src/features/user/TreeMapper/Import/components/ReviewSubmit.tsx:114`
+ 7. **File:** `src/features/user/TreeMapper/Import/components/ReviewSubmit.tsx:114`
 
     **Error:** Class 'link' does not exist in Import.module.scss
 
@@ -85,7 +77,7 @@ These issues need to be fixed:
 
 ---
 
- 9. **File:** `src/features/user/TreeMapper/Analytics/components/Map/components/InterventionDetails/index.tsx:192`
+ 8. **File:** `src/features/user/TreeMapper/Analytics/components/Map/components/InterventionDetails/index.tsx:192`
 
     **Error:** Class 'zeroStateScreen' does not exist in index.module.scss
 
@@ -93,7 +85,7 @@ These issues need to be fixed:
 
 ---
 
-10. **File:** `src/features/user/TreeMapper/Analytics/components/Counter/components/CounterItem/index.tsx:39`
+ 9. **File:** `src/features/user/TreeMapper/Analytics/components/Counter/components/CounterItem/index.tsx:39`
 
     **Error:** Class 'label' does not exist in index.module.scss
 
@@ -101,47 +93,7 @@ These issues need to be fixed:
 
 ---
 
-11. **File:** `src/features/user/Settings/ImpersonateUser/SupportPin.tsx:37`
-
-    **Error:** Class 'supportPin' does not exist in UserLayout.module.scss
-
-    **CSS file:** `src/features/common/Layout/UserLayout/UserLayout.module.scss`
-
----
-
-12. **File:** `src/features/user/Settings/EditProfile/AddressManagement/index.tsx:155`
-
-    **Error:** Class 'addAddressButton' does not exist in AddressManagement.module.scss
-
-    **CSS file:** `src/features/user/Settings/EditProfile/AddressManagement/AddressManagement.module.scss`
-
----
-
-13. **File:** `src/features/user/Settings/EditProfile/AddressManagement/microComponents/AddressFormButtons.tsx:20`
-
-    **Error:** Class 'cancelButton' does not exist in AddressManagement.module.scss
-
-    **CSS file:** `src/features/user/Settings/EditProfile/AddressManagement/AddressManagement.module.scss`
-
----
-
-14. **File:** `src/features/user/Settings/EditProfile/AddressManagement/microComponents/AddressFormButtons.tsx:27`
-
-    **Error:** Class 'addAddressButton' does not exist in AddressManagement.module.scss
-
-    **CSS file:** `src/features/user/Settings/EditProfile/AddressManagement/AddressManagement.module.scss`
-
----
-
-15. **File:** `src/features/user/Settings/DeleteProfile/DeleteProfileForm.tsx:89`
-
-    **Error:** Class 'deleteConsent' does not exist in DeleteProfile.module.scss
-
-    **CSS file:** `src/features/user/Settings/DeleteProfile/DeleteProfile.module.scss`
-
----
-
-16. **File:** `src/features/user/Profile/MyContributions/ProjectHeader.tsx:67`
+10. **File:** `src/features/user/Profile/MyContributions/ProjectHeader.tsx:67`
 
     **Error:** Class 'projectCategory' does not exist in MyContributions.module.scss
 
@@ -149,7 +101,7 @@ These issues need to be fixed:
 
 ---
 
-17. **File:** `src/features/user/Profile/MyContributions/DonateButton.tsx:43`
+11. **File:** `src/features/user/Profile/MyContributions/DonateButton.tsx:43`
 
     **Error:** Class 'trees' does not exist in MyContributions.module.scss
 
@@ -157,7 +109,7 @@ These issues need to be fixed:
 
 ---
 
-18. **File:** `src/features/user/Profile/MyContributions/ContributionSummary.tsx:47`
+12. **File:** `src/features/user/Profile/MyContributions/ContributionSummary.tsx:47`
 
     **Error:** Class 'contributionDate' does not exist in MyContributions.module.scss
 
@@ -165,7 +117,7 @@ These issues need to be fixed:
 
 ---
 
-19. **File:** `src/features/user/ManageProjects/ProjectsContainer.tsx:76`
+13. **File:** `src/features/user/ManageProjects/ProjectsContainer.tsx:76`
 
     **Error:** Class 'projectUnitsAchieved' does not exist in ProjectsContainer.module.scss
 
@@ -173,7 +125,7 @@ These issues need to be fixed:
 
 ---
 
-20. **File:** `src/features/user/ManageProjects/components/DetailedAnalysis.tsx:770`
+14. **File:** `src/features/user/ManageProjects/components/DetailedAnalysis.tsx:770`
 
     **Error:** Class 'multiSelectContainer' does not exist in StepForm.module.scss
 
@@ -181,7 +133,7 @@ These issues need to be fixed:
 
 ---
 
-21. **File:** `src/features/user/BulkCodes/components/RecipientHeader.tsx:16`
+15. **File:** `src/features/user/BulkCodes/components/RecipientHeader.tsx:16`
 
     **Error:** Class 'tableHeaderContent' does not exist in BulkCodes.module.scss
 
@@ -189,7 +141,7 @@ These issues need to be fixed:
 
 ---
 
-22. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
+16. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
 
     **Error:** Class 'optionIcon' does not exist in SiteMapLayerControls.module.scss
 
@@ -197,7 +149,7 @@ These issues need to be fixed:
 
 ---
 
-23. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
+17. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
 
     **Error:** Class 'popupContent' does not exist in SiteMapLayerControls.module.scss
 
@@ -205,7 +157,7 @@ These issues need to be fixed:
 
 ---
 
-24. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
+18. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
 
     **Error:** Class 'withInterventions' does not exist in SiteDropdown.module.scss
 
@@ -213,7 +165,7 @@ These issues need to be fixed:
 
 ---
 
-25. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
+19. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
 
     **Error:** Class 'popperWrapper' does not exist in FirePopup.module.scss
 
@@ -221,7 +173,7 @@ These issues need to be fixed:
 
 ---
 
-26. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
+20. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
 
     **Error:** Class 'starIconContainer' does not exist in ProjectListControls.module.scss
 
@@ -229,7 +181,7 @@ These issues need to be fixed:
 
 ---
 
-27. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
+21. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -237,7 +189,7 @@ These issues need to be fixed:
 
 ---
 
-28. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:50`
+22. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:50`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -245,7 +197,7 @@ These issues need to be fixed:
 
 ---
 
-29. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:61`
+23. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:61`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -253,7 +205,7 @@ These issues need to be fixed:
 
 ---
 
-30. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:69`
+24. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:69`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -261,7 +213,7 @@ These issues need to be fixed:
 
 ---
 
-31. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
+25. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -269,7 +221,7 @@ These issues need to be fixed:
 
 ---
 
-32. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:56`
+26. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:56`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -277,7 +229,7 @@ These issues need to be fixed:
 
 ---
 
-33. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:79`
+27. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:79`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -285,7 +237,7 @@ These issues need to be fixed:
 
 ---
 
-34. **File:** `src/features/donations/components/DirectGift.tsx:42`
+28. **File:** `src/features/donations/components/DirectGift.tsx:42`
 
     **Error:** Class 'primaryFontColor' does not exist in DirectGift.module.scss
 
@@ -293,7 +245,7 @@ These issues need to be fixed:
 
 ---
 
-35. **File:** `src/features/common/Layout/UserLayout/NavLink.tsx:130`
+29. **File:** `src/features/common/Layout/UserLayout/NavLink.tsx:130`
 
     **Error:** Class 'navLinkMenu' does not exist in UserLayout.module.scss
 
@@ -301,7 +253,7 @@ These issues need to be fixed:
 
 ---
 
-36. **File:** `src/features/common/Layout/UnderMaintenance/index.tsx:14`
+30. **File:** `src/features/common/Layout/UnderMaintenance/index.tsx:14`
 
     **Error:** Class 'note' does not exist in UnderMaintenance.module.scss
 
@@ -309,7 +261,7 @@ These issues need to be fixed:
 
 ---
 
-37. **File:** `src/features/common/Layout/RedeemPopup/index.tsx:65`
+31. **File:** `src/features/common/Layout/RedeemPopup/index.tsx:65`
 
     **Error:** Class 'primaryColor' does not exist in RedeemPopup.module.scss
 
@@ -317,7 +269,7 @@ These issues need to be fixed:
 
 ---
 
-38. **File:** `src/features/common/Layout/LandingSection/index.tsx:9`
+32. **File:** `src/features/common/Layout/LandingSection/index.tsx:9`
 
     **Error:** Class 'landingSectionNoFixedHeight' does not exist in LandingSection.module.scss
 
@@ -325,7 +277,7 @@ These issues need to be fixed:
 
 ---
 
-39. **File:** `src/features/common/Layout/Header/index.tsx:107`
+33. **File:** `src/features/common/Layout/Header/index.tsx:107`
 
     **Error:** Class 'primaryColor' does not exist in Header.module.scss
 
@@ -333,7 +285,7 @@ These issues need to be fixed:
 
 ---
 
-40. **File:** `src/features/common/Layout/CookiePolicy/index.tsx:51`
+34. **File:** `src/features/common/Layout/CookiePolicy/index.tsx:51`
 
     **Error:** Class 'primaryDarkColor' does not exist in CookiePolicy.module.scss
 
