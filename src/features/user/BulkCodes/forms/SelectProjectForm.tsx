@@ -23,10 +23,10 @@ const SelectProjectForm = (): ReactElement | null => {
   const [localProject, setLocalProject] = useState<CountryProject | null>(
     project
   );
-
   const handleFormSubmit = () => {
     if (localProject) {
       setProject(localProject);
+      if (typeof method !== 'string') return;
       push(`/profile/bulk-codes/${method}/${localProject.guid}`);
     }
   };
