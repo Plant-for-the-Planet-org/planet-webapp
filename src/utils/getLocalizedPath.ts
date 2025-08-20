@@ -31,27 +31,36 @@ function isSupportedLocale(locale: string): locale is Locale {
 }
 
 /**
- * Remove the locale segment from the beginning of a pathname.
+ * Remove the locale segment from the beginning of a pathname,
+ * while preserving query strings and hash fragments.
  *
  * Examples:
  *  - "/en/about" → "/about"
  *  - "/de" → "/"
+ *  - "/en/about?tab=true" → "/about?tab=true"
+ *  - "/fr/contact#section1" → "/contact#section1"
  *
- * @param pathname - The pathname with or without a locale prefix.
- * @returns The pathname without the locale prefix.
+ * @param pathname - The pathname that may include a locale prefix,
+ *   query string, and/or hash fragment.
+ * @returns The pathname without the locale prefix, preserving any query
+ *   string and hash fragment.
  */
+
 function removeLocaleFromPath(pathname: string): string {
   const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  const segments = normalizedPath.split('/').filter(Boolean);
+  const match = normalizedPath.match(/^([^?#]*)([?#].*)?$/);
+  const base = match?.[1] ?? normalizedPath;
+  const suffix = match?.[2] ?? '';
+  const segments = base.split('/').filter(Boolean);
 
-  if (segments.length === 0) return '/';
+  if (segments.length === 0) return `/${suffix}`;
   const hasLocaleSegment = isSupportedLocale(segments[0]);
 
   if (hasLocaleSegment) {
     const remainingSegments = segments.slice(1);
     const pathWithoutLocale =
       remainingSegments.length > 0 ? `/${remainingSegments.join('/')}` : '/';
-    return pathWithoutLocale;
+    return `${pathWithoutLocale}${suffix}`;
   }
 
   return normalizedPath;
