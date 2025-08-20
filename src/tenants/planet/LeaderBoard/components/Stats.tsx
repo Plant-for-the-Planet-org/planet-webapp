@@ -12,6 +12,7 @@ import StatsInfoModal from './StatsInfoModal';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   tenantScore: TenantScore;
@@ -72,7 +73,7 @@ export default function Stats({
         <div className={styles.statCard}>
           <h2
             className={styles.statNumber}
-            style={{ color: styles.dangerColor }}
+            style={{ color: themeProperties.designSystem.colors.fireRed }}
           >
             {localizedAbbreviatedNumber(locale, Number(10000000000), 2)}
           </h2>
