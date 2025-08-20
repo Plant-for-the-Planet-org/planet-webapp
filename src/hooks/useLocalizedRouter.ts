@@ -2,7 +2,12 @@ import { useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 
-type NavigationOptions = { shallow?: boolean };
+export type NavigationOptions = {
+  shallow?: boolean;
+  scroll?: boolean;
+  locale?: string | false;
+  unstable_skipClientCache?: boolean;
+};
 
 interface LocalizedRouter {
   push: (
@@ -37,7 +42,7 @@ function useLocalizedRouter(): LocalizedRouter {
     method: 'push' | 'replace',
     href: string,
     asPath?: string,
-    options: { shallow?: boolean } = { shallow: false },
+    options: NavigationOptions = {},
     locale?: string
   ) => {
     const effectiveLocale = locale || currentLocale;
@@ -45,14 +50,12 @@ function useLocalizedRouter(): LocalizedRouter {
     if (asPath) {
       // Case 1: Dynamic route → localize only the "as" path
       const localizedAs = getLocalizedPath(asPath, effectiveLocale);
-      return router[method](href, localizedAs, { shallow: options.shallow });
+      return router[method](href, localizedAs, { ...options });
     }
 
     // Case 2: Static route → localize the href directly
     const localizedHref = getLocalizedPath(href, effectiveLocale);
-    return router[method](localizedHref, undefined, {
-      shallow: options.shallow,
-    });
+    return router[method](localizedHref, undefined, { ...options });
   };
 
   const getPath = (path: string, locale?: string) =>
@@ -61,14 +64,14 @@ function useLocalizedRouter(): LocalizedRouter {
   const push = (
     href: string,
     asPath?: string,
-    options?: { shallow?: boolean },
+    options?: NavigationOptions,
     locale?: string
   ) => localizedNavigate('push', href, asPath, options, locale);
 
   const replace = (
     href: string,
     asPath?: string,
-    options?: { shallow?: boolean },
+    options?: NavigationOptions,
     locale?: string
   ) => localizedNavigate('replace', href, asPath, options, locale);
 
