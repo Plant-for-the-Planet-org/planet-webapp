@@ -9,8 +9,14 @@ const OUTPUT_FILE = 'reports/css-module-analysis-report.md';
 console.log('🔍 Analyzing CSS module usage across the entire project...');
 
 // Helper functions
-function getLineNumber(content, searchString) {
-  const index = content.indexOf(searchString);
+function getLineNumber(content, searchStringOrIndex) {
+  if (typeof searchStringOrIndex === 'number') {
+    // If it's an index number
+    return content.substring(0, searchStringOrIndex).split('\n').length;
+  }
+
+  // If it's a search string, find its position
+  const index = content.indexOf(searchStringOrIndex);
   if (index === -1) return 1;
   return content.substring(0, index).split('\n').length;
 }
@@ -187,7 +193,9 @@ tsFiles.forEach((tsFile) => {
       stats.filesWithCssImports++;
     }
 
-    imports.forEach(([fullImport, importName, cssPath, _extension]) => {
+    imports.forEach((importMatch) => {
+      const [_fullImport, importName, cssPath, _extension] = importMatch;
+
       // Resolve CSS file path
       const tsDir = path.dirname(tsFile);
       const fullCssPath = path.resolve(tsDir, cssPath);
@@ -199,25 +207,30 @@ tsFiles.forEach((tsFile) => {
         errors.push({
           type: 'missing-css-file',
           file: relativeTs,
-          line: getLineNumber(content, fullImport),
+          line: getLineNumber(content, importMatch.index),
           message: `CSS module file not found: ${cssPath}`,
           cssFile: relativeCss,
         });
         stats.errorCount++;
-        return;
+        return; // Skip this import and continue to next one
       }
 
       // Parse CSS file for available classes
       const cssContent = fs.readFileSync(fullCssPath, 'utf8');
       const availableClasses = extractCSSClasses(cssContent);
 
-      // Find all usages of this CSS module in the TypeScript file
-      // Exclude import statements to avoid false positives
+      // Remove import statements to avoid false positives
+      // Use a more specific regex to avoid removing similar patterns
       const importStatementRegex = new RegExp(
         `import\\s+${importName}\\s+from\\s+['"](.*\\.module\\.(css|scss|sass))['"];?`,
         'g'
       );
-      const contentWithoutImports = content.replace(importStatementRegex, '');
+      const contentWithoutImports = content.replace(
+        importStatementRegex,
+        (match) => {
+          return ' '.repeat(match.length);
+        }
+      );
 
       const usageRegex = new RegExp(
         `${importName}\\.(\\w+)|${importName}\\[['"\`]([^'"\`]+)['"\`]\\]`,
@@ -227,22 +240,59 @@ tsFiles.forEach((tsFile) => {
 
       stats.totalClassUsages += usages.length;
 
-      usages.forEach(([fullUsage, dotNotation, bracketNotation]) => {
+      // Track seen errors to prevent duplicates
+      const seenErrors = new Set();
+
+      usages.forEach((usageMatch) => {
+        const [fullUsage, dotNotation, bracketNotation] = usageMatch;
         const className = dotNotation || bracketNotation;
 
-        if (className && !availableClasses.includes(className)) {
-          errors.push({
-            type: 'undefined-class',
-            file: relativeTs,
-            line: getLineNumber(content, fullUsage),
-            message: `Class '${className}' does not exist in ${path.basename(
-              fullCssPath
-            )}`,
-            className,
-            cssFile: relativeCss,
-            importName,
-          });
-          stats.errorCount++;
+        if (className) {
+          // Check if this is a dynamic class name (template literal with interpolation)
+          const isDynamicClass =
+            fullUsage.includes('`') ||
+            fullUsage.includes('${') ||
+            className.includes('${');
+
+          if (isDynamicClass) {
+            // Flag dynamic class names as warnings
+            const line = getLineNumber(content, usageMatch.index);
+            const warningKey = `${relativeTs}|${className}|${line}`;
+
+            if (!seenErrors.has(warningKey)) {
+              seenErrors.add(warningKey);
+              warnings.push({
+                type: 'dynamic-class',
+                file: relativeTs,
+                line: line,
+                message: `Dynamic class name '${className}' cannot be statically verified`,
+                className,
+                cssFile: relativeCss,
+                importName,
+              });
+              stats.warningCount++;
+            }
+          } else if (!availableClasses.includes(className)) {
+            // Regular undefined class error
+            const line = getLineNumber(content, usageMatch.index);
+            const errorKey = `${relativeTs}|${className}|${line}`;
+
+            if (!seenErrors.has(errorKey)) {
+              seenErrors.add(errorKey);
+              errors.push({
+                type: 'undefined-class',
+                file: relativeTs,
+                line: line,
+                message: `Class '${className}' does not exist in ${path.basename(
+                  fullCssPath
+                )}`,
+                className,
+                cssFile: relativeCss,
+                importName,
+              });
+              stats.errorCount++;
+            }
+          }
         }
       });
 
@@ -332,21 +382,42 @@ These issues need to be fixed:
   if (warnings.length > 0) {
     report += `## ⚠️ Warnings (${warnings.length})
 
-These don't break functionality but may indicate unused code:
+These don't break functionality but may need attention:
 
 ---
 
 `;
 
-    warnings.slice(0, 10).forEach((warning, index) => {
-      report += `${index + 1}. **File:** \`${warning.file}\`\n\n`;
-      report += `   ${warning.message}\n\n`;
-      report += `---\n\n`;
-    });
+    // Group warnings by type
+    const warningsByType = warnings.reduce((acc, warning) => {
+      if (!acc[warning.type]) acc[warning.type] = [];
+      acc[warning.type].push(warning);
+      return acc;
+    }, {});
 
-    if (warnings.length > 10) {
-      report += `... and ${warnings.length - 10} more warnings\n\n`;
-    }
+    Object.entries(warningsByType).forEach(([type, typeWarnings]) => {
+      report += `### ${
+        type === 'dynamic-class' ? 'Dynamic CSS Classes' : 'Other Warnings'
+      }\n\n`;
+
+      typeWarnings.slice(0, 20).forEach((warning, index) => {
+        const itemNumber = (index + 1).toString().padStart(2, ' ');
+        report += `${itemNumber}. **File:** \`${warning.file}:${warning.line}\`\n\n`;
+        report += `    **Warning:** ${warning.message}\n\n`;
+
+        if (warning.cssFile) {
+          report += `    **CSS file:** \`${warning.cssFile}\`\n\n`;
+        }
+
+        report += `---\n\n`;
+      });
+
+      if (typeWarnings.length > 20) {
+        report += `... and ${
+          typeWarnings.length - 20
+        } more ${type} warnings\n\n`;
+      }
+    });
   }
 
   report += `## 🔧 How to Fix
@@ -363,7 +434,14 @@ These don't break functionality but may indicate unused code:
 2. **Update the import path**
 3. **Move CSS files** to correct location
 
-### For Warnings:
+### For Dynamic Class Warnings:
+
+1. **Verify with TypeScript plugin** - Use typescript-plugin-css-modules for type checking
+2. **Ensure all possible class names exist** in the CSS file
+3. **Consider using conditional logic** instead of template literals when possible
+4. **Test runtime behavior** to ensure classes resolve correctly
+
+### For Other Warnings:
 
 1. **Remove unused CSS classes** if they're truly not needed
 2. **Consider if classes are used elsewhere** in the project

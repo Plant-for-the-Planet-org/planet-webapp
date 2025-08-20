@@ -1,6 +1,6 @@
 # CSS Module Analysis Report
 
-Generated: 8/20/2025, 11:13:07 AM
+Generated: 8/20/2025, 12:22:48 PM
 
 ## Summary Statistics
 
@@ -8,12 +8,12 @@ Generated: 8/20/2025, 11:13:07 AM
 - **CSS module files found**: 150
 - **Files with CSS imports**: 336
 - **Total CSS class usages**: 2538
-- **Errors found**: 52
-- **Warnings**: 0
+- **Errors found**: 49
+- **Warnings**: 3
 
 ---
 
-## ❌ Errors Found (52)
+## ❌ Errors Found (49)
 
 These issues need to be fixed:
 
@@ -61,7 +61,7 @@ These issues need to be fixed:
 
 ---
 
- 6. **File:** `src/tenants/salesforce/Mangroves/components/BlueCarbon.tsx:13`
+ 6. **File:** `src/tenants/salesforce/Mangroves/components/BlueCarbon.tsx:69`
 
     **Error:** Class 'justifyContentCenter' does not exist in BlueCarbon.module.scss
 
@@ -173,7 +173,7 @@ These issues need to be fixed:
 
 ---
 
-20. **File:** `src/features/user/Settings/ImpersonateUser/SupportPin.tsx:36`
+20. **File:** `src/features/user/Settings/ImpersonateUser/SupportPin.tsx:37`
 
     **Error:** Class 'supportPin' does not exist in UserLayout.module.scss
 
@@ -253,23 +253,7 @@ These issues need to be fixed:
 
 ---
 
-30. **File:** `src/features/user/BulkCodes/components/UploadWidget.tsx:140`
-
-    **Error:** Class 'uploadWidget__statusText--${status}' does not exist in BulkCodes.module.scss
-
-    **CSS file:** `src/features/user/BulkCodes/BulkCodes.module.scss`
-
----
-
-31. **File:** `src/features/user/BulkCodes/components/UploadWidget.tsx:156`
-
-    **Error:** Class 'uploadWidget--${status}' does not exist in BulkCodes.module.scss
-
-    **CSS file:** `src/features/user/BulkCodes/BulkCodes.module.scss`
-
----
-
-32. **File:** `src/features/user/BulkCodes/components/RecipientHeader.tsx:16`
+30. **File:** `src/features/user/BulkCodes/components/RecipientHeader.tsx:16`
 
     **Error:** Class 'tableHeaderContent' does not exist in BulkCodes.module.scss
 
@@ -277,7 +261,7 @@ These issues need to be fixed:
 
 ---
 
-33. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
+31. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
 
     **Error:** Class 'optionIcon' does not exist in SiteMapLayerControls.module.scss
 
@@ -285,7 +269,7 @@ These issues need to be fixed:
 
 ---
 
-34. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
+32. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
 
     **Error:** Class 'popupContent' does not exist in SiteMapLayerControls.module.scss
 
@@ -293,7 +277,7 @@ These issues need to be fixed:
 
 ---
 
-35. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
+33. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
 
     **Error:** Class 'withInterventions' does not exist in SiteDropdown.module.scss
 
@@ -301,7 +285,7 @@ These issues need to be fixed:
 
 ---
 
-36. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
+34. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
 
     **Error:** Class 'popperWrapper' does not exist in FirePopup.module.scss
 
@@ -309,7 +293,7 @@ These issues need to be fixed:
 
 ---
 
-37. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
+35. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
 
     **Error:** Class 'starIconContainer' does not exist in ProjectListControls.module.scss
 
@@ -317,7 +301,7 @@ These issues need to be fixed:
 
 ---
 
-38. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
+36. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -325,7 +309,7 @@ These issues need to be fixed:
 
 ---
 
-39. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
+37. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:50`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -333,7 +317,7 @@ These issues need to be fixed:
 
 ---
 
-40. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
+38. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:61`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -341,7 +325,7 @@ These issues need to be fixed:
 
 ---
 
-41. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
+39. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:69`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -349,7 +333,7 @@ These issues need to be fixed:
 
 ---
 
-42. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
+40. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -357,7 +341,7 @@ These issues need to be fixed:
 
 ---
 
-43. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
+41. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:56`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -365,7 +349,7 @@ These issues need to be fixed:
 
 ---
 
-44. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
+42. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:79`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -373,7 +357,7 @@ These issues need to be fixed:
 
 ---
 
-45. **File:** `src/features/donations/components/DirectGift.tsx:42`
+43. **File:** `src/features/donations/components/DirectGift.tsx:42`
 
     **Error:** Class 'primaryFontColor' does not exist in DirectGift.module.scss
 
@@ -381,15 +365,7 @@ These issues need to be fixed:
 
 ---
 
-46. **File:** `src/features/common/WebappButton/index.tsx:34`
-
-    **Error:** Class '${variant}WebappButton' does not exist in WebappButton.module.scss
-
-    **CSS file:** `src/features/common/WebappButton/WebappButton.module.scss`
-
----
-
-47. **File:** `src/features/common/Layout/UserLayout/NavLink.tsx:130`
+44. **File:** `src/features/common/Layout/UserLayout/NavLink.tsx:130`
 
     **Error:** Class 'navLinkMenu' does not exist in UserLayout.module.scss
 
@@ -397,7 +373,7 @@ These issues need to be fixed:
 
 ---
 
-48. **File:** `src/features/common/Layout/UnderMaintenance/index.tsx:14`
+45. **File:** `src/features/common/Layout/UnderMaintenance/index.tsx:14`
 
     **Error:** Class 'note' does not exist in UnderMaintenance.module.scss
 
@@ -405,7 +381,7 @@ These issues need to be fixed:
 
 ---
 
-49. **File:** `src/features/common/Layout/RedeemPopup/index.tsx:65`
+46. **File:** `src/features/common/Layout/RedeemPopup/index.tsx:65`
 
     **Error:** Class 'primaryColor' does not exist in RedeemPopup.module.scss
 
@@ -413,7 +389,7 @@ These issues need to be fixed:
 
 ---
 
-50. **File:** `src/features/common/Layout/LandingSection/index.tsx:9`
+47. **File:** `src/features/common/Layout/LandingSection/index.tsx:9`
 
     **Error:** Class 'landingSectionNoFixedHeight' does not exist in LandingSection.module.scss
 
@@ -421,7 +397,7 @@ These issues need to be fixed:
 
 ---
 
-51. **File:** `src/features/common/Layout/Header/index.tsx:107`
+48. **File:** `src/features/common/Layout/Header/index.tsx:107`
 
     **Error:** Class 'primaryColor' does not exist in Header.module.scss
 
@@ -429,11 +405,43 @@ These issues need to be fixed:
 
 ---
 
-52. **File:** `src/features/common/Layout/CookiePolicy/index.tsx:51`
+49. **File:** `src/features/common/Layout/CookiePolicy/index.tsx:51`
 
     **Error:** Class 'primaryDarkColor' does not exist in CookiePolicy.module.scss
 
     **CSS file:** `src/features/common/Layout/CookiePolicy/CookiePolicy.module.scss`
+
+---
+
+## ⚠️ Warnings (3)
+
+These don't break functionality but may need attention:
+
+---
+
+### Dynamic CSS Classes
+
+ 1. **File:** `src/features/user/BulkCodes/components/UploadWidget.tsx:140`
+
+    **Warning:** Dynamic class name 'uploadWidget__statusText--${status}' cannot be statically verified
+
+    **CSS file:** `src/features/user/BulkCodes/BulkCodes.module.scss`
+
+---
+
+ 2. **File:** `src/features/user/BulkCodes/components/UploadWidget.tsx:156`
+
+    **Warning:** Dynamic class name 'uploadWidget--${status}' cannot be statically verified
+
+    **CSS file:** `src/features/user/BulkCodes/BulkCodes.module.scss`
+
+---
+
+ 3. **File:** `src/features/common/WebappButton/index.tsx:34`
+
+    **Warning:** Dynamic class name '${variant}WebappButton' cannot be statically verified
+
+    **CSS file:** `src/features/common/WebappButton/WebappButton.module.scss`
 
 ---
 
@@ -451,7 +459,14 @@ These issues need to be fixed:
 2. **Update the import path**
 3. **Move CSS files** to correct location
 
-### For Warnings:
+### For Dynamic Class Warnings:
+
+1. **Verify with TypeScript plugin** - Use typescript-plugin-css-modules for type checking
+2. **Ensure all possible class names exist** in the CSS file
+3. **Consider using conditional logic** instead of template literals when possible
+4. **Test runtime behavior** to ensure classes resolve correctly
+
+### For Other Warnings:
 
 1. **Remove unused CSS classes** if they're truly not needed
 2. **Consider if classes are used elsewhere** in the project
