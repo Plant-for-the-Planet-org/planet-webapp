@@ -5,27 +5,26 @@ import styles from './DeleteProfile.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
-import router from 'next/router';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
   const tCommon = useTranslations('Common');
-  const locale = useLocale();
+
   const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
   };
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { deleteApiAuthenticated } = useApi();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
+  const [isModalOpen, setIsModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
-
+  const { push } = useLocalizedRouter();
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
@@ -40,7 +39,7 @@ export default function DeleteProfileForm() {
       for (const error of serializedErrors) {
         switch (error.message) {
           case 'active_subscriptions':
-            setisModalOpen(true);
+            setIsModalOpen(true);
             break;
 
           default:
@@ -53,12 +52,12 @@ export default function DeleteProfileForm() {
     }
   };
   const handleSubscriptions = () => {
-    setisModalOpen(false);
-    router.push(getLocalizedPath('/profile/recurrency', locale));
+    setIsModalOpen(false);
+    push('/profile/recurrency');
   };
 
   const closeModal = () => {
-    setisModalOpen(false);
+    setIsModalOpen(false);
     setcanDeleteAccount(false);
   };
 

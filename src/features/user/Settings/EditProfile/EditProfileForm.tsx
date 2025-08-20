@@ -14,7 +14,7 @@ import { selectUserType } from '../../../../utils/selectUserType';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   MuiAutoComplete,
@@ -25,12 +25,11 @@ import { handleError } from '@planet-sdk/common';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import { useRouter } from 'next/router';
 import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 type ProfileFormData = {
   address: string;
@@ -68,8 +67,7 @@ export default function EditProfileForm() {
   const { user, setUser, token, contextLoaded } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('EditProfile');
-  const locale = useLocale();
-  const router = useRouter();
+  const { push } = useLocalizedRouter();
   const { putApiAuthenticated } = useApi();
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -586,7 +584,7 @@ export default function EditProfileForm() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            router.push(getLocalizedPath(`/t/${user?.slug}`, locale));
+            push(`/t/${user?.slug}`);
           }}
           className={styles.viewPublicProfileButton}
         >

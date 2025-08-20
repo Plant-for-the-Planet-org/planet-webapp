@@ -19,8 +19,7 @@ import {
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../src/utils/getLocalizedPath';
-import { useLocale } from 'next-intl';
+import useLocalizedRouter from '../../../../src/hooks/useLocalizedRouter';
 
 interface Props {
   pageProps: PageProps;
@@ -28,7 +27,7 @@ interface Props {
 
 export default function Login({ pageProps }: Props): ReactElement {
   const router = useRouter();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const { setTenantConfig } = useTenant();
 
   React.useEffect(() => {
@@ -56,10 +55,10 @@ export default function Login({ pageProps }: Props): ReactElement {
           const redirectLink = localStorage.getItem('redirectLink');
           if (redirectLink) {
             localStorage.removeItem('redirectLink');
-            router.push(getLocalizedPath(redirectLink, locale));
+            push(redirectLink);
           }
         } else {
-          router.push(getLocalizedPath('/profile', locale));
+          push('/profile');
         }
       }
     }

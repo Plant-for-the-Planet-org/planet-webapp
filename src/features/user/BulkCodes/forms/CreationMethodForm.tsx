@@ -2,20 +2,18 @@ import type { ReactElement } from 'react';
 import type { SelectorOptionProps } from '../components/SelectorOption';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import SelectorOption from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 const CreationMethodForm = (): ReactElement | null => {
-  const router = useRouter();
   const {
     bulkMethod,
     setBulkMethod,
@@ -25,9 +23,9 @@ const CreationMethodForm = (): ReactElement | null => {
   } = useBulkCode();
   const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
   const tCommon = useTranslations('Common');
-  const locale = useLocale();
   const tBulkCodes = useTranslations('BulkCodes');
   const { user } = useUserProps();
+  const { push } = useLocalizedRouter();
 
   const selectorOptions: SelectorOptionProps[] = [
     {
@@ -76,7 +74,7 @@ const CreationMethodForm = (): ReactElement | null => {
       }
     }
     setBulkMethod(method);
-    router.push(getLocalizedPath(`/profile/bulk-codes/${method}`, locale));
+    push(`/profile/bulk-codes/${method}`);
   };
 
   return (

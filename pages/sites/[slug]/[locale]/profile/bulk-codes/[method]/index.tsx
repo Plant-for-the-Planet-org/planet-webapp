@@ -15,9 +15,10 @@ import BulkCodes, {
 } from '../../../../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import useLocalizedRouter from '../../../../../../../src/hooks/useLocalizedRouter';
 import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -26,7 +27,6 @@ import { v4 } from 'uuid';
 import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../../../../src/utils/getLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -37,7 +37,7 @@ export default function BulkCodeSelectProjectPage({
 }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
 
@@ -58,7 +58,7 @@ export default function BulkCodeSelectProjectPage({
         ) {
           setBulkMethod(_bulkMethod);
         } else {
-          router.push(getLocalizedPath(`/profile/bulk-codes`, locale));
+          push('/profile/bulk-codes');
         }
       }
     }

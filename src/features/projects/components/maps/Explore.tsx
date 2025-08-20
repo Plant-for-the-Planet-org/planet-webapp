@@ -4,7 +4,7 @@ import React from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
@@ -18,13 +18,12 @@ import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import ExploreInfoModal from './ExploreInfoModal';
 import { easeCubic } from 'd3-ease';
-import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 interface LayerType {
   id: string;
@@ -60,8 +59,7 @@ export default function Explore(): ReactElement {
   } = useProjectProps();
 
   const t = useTranslations('Maps');
-  const locale = useLocale();
-  const router = useRouter();
+  const { push } = useLocalizedRouter();
 
   const { theme } = React.useContext(ThemeContext);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
@@ -171,23 +169,18 @@ export default function Explore(): ReactElement {
       };
       // setMapState(newMapState);
       setViewPort(newViewport);
-      router.push(
-        getLocalizedPath(
-          `/projects-archive${
-            embed === 'true'
-              ? `${
-                  callbackUrl != undefined
-                    ? `?embed=true&callback=${callbackUrl}`
-                    : '?embed=true'
-                }`
-              : ''
-          }`,
-          locale
-        ),
+      push(
+        `/projects-archive${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`,
         undefined,
-        {
-          shallow: true, //As Explore is only shown on the index route, we don't want to reload the page
-        }
+        { shallow: true }
       );
     }
   };

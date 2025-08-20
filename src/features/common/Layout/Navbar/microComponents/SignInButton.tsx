@@ -1,17 +1,15 @@
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../UserPropsContext';
 import WebappButton from '../../../WebappButton';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
-import getLocalizedPath from '../../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
 
 export const SignInButton = () => {
   const { user, loginWithRedirect } = useUserProps();
-  const router = useRouter();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const t = useTranslations('Common');
 
   const [isMobile, setIsMobile] = useState(
@@ -32,7 +30,7 @@ export const SignInButton = () => {
   async function gotoUserPage() {
     if (user) {
       if (typeof window !== 'undefined') {
-        router.push(getLocalizedPath(`/profile`, locale));
+        push('/profile');
       }
     } else {
       loginWithRedirect({

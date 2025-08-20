@@ -1,22 +1,19 @@
 import React from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import styles from './ImpersonateUser.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { useRouter } from 'next/router';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 const ImpersonationActivated = () => {
   const { user, isImpersonationModeOn, setIsImpersonationModeOn, loadUser } =
     useUserProps();
-  const locale = useLocale();
-
-  const router = useRouter();
+  const { push } = useLocalizedRouter();
 
   const exitImpersonation = () => {
     setIsImpersonationModeOn(false);
     localStorage.removeItem('impersonationData');
-    router.push(getLocalizedPath(`/profile/impersonate-user`, locale));
+    push(`/profile/impersonate-user`);
     loadUser();
   };
 

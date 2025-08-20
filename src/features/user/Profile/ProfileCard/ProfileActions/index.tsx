@@ -10,12 +10,12 @@ import {
 import styles from './ProfileActions.module.scss';
 import RedeemModal from '../RedeemModal';
 import SocialMediaShareButton from './SocialMediaShareButton';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import WebappButton from '../../../../common/WebappButton';
-import getLocalizedPath from '../../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
 
 const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
-  const locale = useLocale();
+  const { getPath } = useLocalizedRouter();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const t = useTranslations('Profile');
   const handleRedeemModalOpen = () => {
@@ -41,7 +41,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
         icon={<AllDonations />}
         text={t('feature.allDonations')}
         elementType={'link'}
-        href={getLocalizedPath('/profile/history', locale)}
+        href={getPath('/profile/history')}
       />
       <WebappButton
         icon={<RedeemIcon />}
@@ -68,7 +68,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
         }
         variant="primary"
         elementType={'link'}
-        href={getLocalizedPath(`/s/${userProfile?.slug}`, locale)}
+        href={getPath(`/s/${userProfile?.slug}`)}
       />
       <div className={styles.websiteShareActions}>
         {userProfile?.url !== null && (

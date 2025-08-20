@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { TextField, Button } from '@mui/material';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -10,7 +10,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { APIError } from '@planet-sdk/common';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -19,7 +19,7 @@ export type ImpersonationData = {
 
 const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
-  const locale = useLocale();
+  const { replace, push } = useLocalizedRouter();
   const t = useTranslations('Me');
   const [hasUpdatedUrl, setHasUpdatedUrl] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
@@ -63,11 +63,7 @@ const ImpersonateUserForm = (): ReactElement => {
         url.searchParams.delete('support_pin');
 
         // Use router.replace with the modified URL string
-        const localizedPath = getLocalizedPath(
-          `${url.pathname}${url.search}`,
-          locale
-        );
-        router.replace(localizedPath, undefined, { shallow: true });
+        replace(`${url.pathname}${url.search}`, undefined, { shallow: true });
         setHasUpdatedUrl(true);
       }
     }
@@ -92,7 +88,7 @@ const ImpersonateUserForm = (): ReactElement => {
           JSON.stringify(impersonationData)
         );
         setUser(res);
-        router.push(getLocalizedPath('/profile', locale));
+        push('/profile');
       } catch (err) {
         if (err instanceof APIError) {
           console.error('API error:', err.message);

@@ -16,6 +16,7 @@ import type {
 } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
+import useLocalizedRouter from '../../../../../src/hooks/useLocalizedRouter';
 import React from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
@@ -35,7 +36,6 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../../src/utils/getLocalizedPath';
 
 interface Props {
   currencyCode: string | null | undefined;
@@ -50,6 +50,7 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
   const { getApi } = useApi();
+  const { push } = useLocalizedRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
     string | undefined | null
   >(undefined);
@@ -172,7 +173,7 @@ export default function Donate({
       const newPath = `/projects-archive/${project.slug}${
         newSearch.length > 0 ? `?${newSearch}` : ''
       }`;
-      router.push(getLocalizedPath(newPath, locale));
+      push(newPath);
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 
@@ -183,9 +184,7 @@ export default function Donate({
         return router.query.site === singleSite?.properties.id;
       });
       if (siteIndex === -1) {
-        router.push(
-          getLocalizedPath(`/projects-archive/${project.slug}`, locale)
-        );
+        push(`/projects-archive/${project.slug}`);
       } else {
         setSelectedSite(siteIndex);
       }
@@ -202,9 +201,7 @@ export default function Donate({
       );
 
       if (singleIntervention === undefined) {
-        router.push(
-          getLocalizedPath(`/projects-archive/${project.slug}`, locale)
-        );
+        push(`/projects-archive/${project.slug}`);
       } else {
         setSelectedPl(singleIntervention);
       }

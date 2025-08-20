@@ -2,15 +2,13 @@ import type { ReactElement } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
-import { useLocale } from 'next-intl';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 type PopupClosedData = {
   show: false;
@@ -35,8 +33,7 @@ export default function Markers({
   isMobile,
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
-  const router = useRouter();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
@@ -51,19 +48,16 @@ export default function Markers({
       : 'notDonatable';
   };
   const goToProject = (projectSlug: string): void => {
-    router.push(
-      getLocalizedPath(
-        `/projects-archive/${projectSlug}${
-          embed === 'true'
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`,
-        locale
-      )
+    push(
+      `/projects-archive/${projectSlug}${
+        embed === 'true'
+          ? `${
+              callbackUrl != undefined
+                ? `?embed=true&callback=${callbackUrl}`
+                : '?embed=true'
+            }`
+          : ''
+      }`
     );
   };
 

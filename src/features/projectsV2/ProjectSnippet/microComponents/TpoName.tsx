@@ -1,10 +1,9 @@
 import type { QueryParamType } from '../../../common/Layout/QueryParamsContext';
 
 import { useMemo } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
 import styles from '../styles/ProjectSnippet.module.scss';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 interface TpoNameProps {
   projectTpoName: string;
@@ -26,8 +25,7 @@ const TpoName = ({
   embed,
 }: TpoNameProps) => {
   const tCommon = useTranslations('Common');
-  const router = useRouter();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const tpoNameBackgroundClass = useMemo(() => {
     if (!allowDonations) return `${styles.noDonation}`;
     if (isTopProject && isApproved) return `${styles.tpoBackground}`;
@@ -39,7 +37,7 @@ const TpoName = ({
     if (embed === 'true') {
       window.open(url, '_top');
     } else {
-      router.push(getLocalizedPath(url, locale));
+      push(url);
     }
   };
   const tpoNameContainerClasses = `${

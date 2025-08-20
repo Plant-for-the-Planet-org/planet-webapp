@@ -6,7 +6,7 @@ import type {
 import type { HeaderItem, MenuItem, MenuSection } from '@planet-sdk/common';
 
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import styles from '../Navbar.module.scss';
 import DropdownUpArrow from '../../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
@@ -18,7 +18,7 @@ import {
   stripSitesSlugLocale,
 } from '../../../../../utils/navbarUtils';
 import { useMemo } from 'react';
-import getLocalizedPath from '../../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
 
 type NavbarItemProps = {
   navbarItem: HeaderItem;
@@ -46,8 +46,8 @@ const NavbarItemGroup = ({
 
   const { primaryColor } = themeProperties.designSystem.colors;
   const tNavbarItem = useTranslations('Common');
+  const { getPath } = useLocalizedRouter();
   const router = useRouter();
-  const locale = useLocale();
 
   const isNavMenuOpen = openMenuKey === navbarItem.headerKey;
 
@@ -83,10 +83,7 @@ const NavbarItemGroup = ({
         onMouseLeave={handleMouseLeave}
       >
         {navbarItem.link ? (
-          <Link
-            href={getLocalizedPath(navbarItem.link, locale)}
-            prefetch={false}
-          >
+          <Link href={getPath(navbarItem.link)} prefetch={false}>
             <span className={activeNavbarItemStyles}>
               {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
             </span>

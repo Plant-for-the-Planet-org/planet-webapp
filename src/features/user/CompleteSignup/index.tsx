@@ -17,7 +17,6 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { useRouter } from 'next/router';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import NewToggleSwitch from '../../common/InputTypes/NewToggleSwitch';
 import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
@@ -34,7 +33,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import getLocalizedPath from '../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
 import {
   getAddressDetailsFromText,
   getAddressSuggestions,
@@ -64,7 +63,7 @@ export default function CompleteSignup(): ReactElement | null {
     watch,
     formState: { errors },
   } = useForm<FormData>({ mode: 'onBlur' });
-  const router = useRouter();
+  const { push } = useLocalizedRouter();
   const t = useTranslations('EditProfile');
   const locale = useLocale();
   const { postApi } = useApi();
@@ -83,7 +82,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
   const [submit, setSubmit] = useState(false);
-  //  snackbars (for warnings, success messages, errors)
+  //  snack bars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [addressInput, setAddressInput] = useState('');
   const latestRequestIdRef = useRef(0);
@@ -119,11 +118,11 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            router.push(getLocalizedPath('/profile', locale));
+            push('/profile');
           }
         }
       } else {
-        router.push(getLocalizedPath('/', locale));
+        push('/');
       }
     }
     if (contextLoaded) {
@@ -143,12 +142,12 @@ export default function CompleteSignup(): ReactElement | null {
         payload: bodyToSend as unknown as Record<string, unknown>,
       });
       setRequestSent(false);
-      // successful signup -> goto me page
+      // successful signup -> go to me page
       setUser(res);
       handleSnackbarOpen();
 
       if (typeof window !== 'undefined') {
-        router.push('/t/[id]', getLocalizedPath(`/t/${res.slug}`, locale));
+        push('/t/[id]', `/t/${res.slug}`);
       }
     } catch (err) {
       setIsProcessing(false);

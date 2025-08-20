@@ -13,6 +13,7 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 
 import { useRouter } from 'next/router';
+import useLocalizedRouter from '../../../../src/hooks/useLocalizedRouter';
 import React from 'react';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
 import SternHome from '../../../../src/tenants/stern/Home';
@@ -28,16 +29,15 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import getLocalizedPath from '../../../../src/utils/getLocalizedPath';
-import { useLocale } from 'next-intl';
+
 interface Props {
   pageProps: PageProps;
 }
 
 export default function Home({ pageProps }: Props) {
   const router = useRouter();
+  const { push } = useLocalizedRouter();
   const { getApi } = useApi();
-  const locale = useLocale();
 
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
     null
@@ -87,7 +87,7 @@ export default function Home({ pageProps }: Props) {
     )
   ) {
     if (typeof window !== 'undefined') {
-      router.push(getLocalizedPath('/', locale));
+      push('/');
     }
   }
 

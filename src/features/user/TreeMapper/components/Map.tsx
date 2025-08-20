@@ -31,7 +31,7 @@ import { easeCubic } from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 import { useLocale } from 'next-intl';
 
 interface Props {
@@ -59,9 +59,8 @@ export default function MyTreesMap({
   selectedIntervention,
   setSelectedIntervention,
 }: Props): ReactElement {
-  const router = useRouter();
+  const { replace } = useLocalizedRouter();
   const { isMobile } = useProjectProps();
-  const locale = useLocale();
   const { primaryColor, white } = themeProperties.designSystem.colors;
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -219,9 +218,7 @@ export default function MyTreesMap({
           if (Object.prototype.hasOwnProperty.call(interventions, key)) {
             const element = interventions[Number(key)];
             if (element.id === source) {
-              router.replace(
-                getLocalizedPath(`/profile/treemapper/?l=${source}`, locale)
-              );
+              replace(`/profile/treemapper/?l=${source}`);
               break;
             }
           }

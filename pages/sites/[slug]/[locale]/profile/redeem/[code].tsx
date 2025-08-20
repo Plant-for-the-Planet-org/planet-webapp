@@ -10,9 +10,10 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
 import { useRouter } from 'next/router';
+import useLocalizedRouter from '../../../../../../src/hooks/useLocalizedRouter';
 import { useState, useEffect, useContext } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
@@ -30,7 +31,6 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-import getLocalizedPath from '../../../../../../src/utils/getLocalizedPath';
 interface Props {
   pageProps: PageProps;
 }
@@ -41,7 +41,6 @@ type RedeemCodeApiPayload = {
 
 const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Redeem');
-  const locale = useLocale();
   const { user, contextLoaded } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
@@ -54,6 +53,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
+  const { push } = useLocalizedRouter();
 
   useEffect(() => {
     if (router.isReady) {
@@ -65,7 +65,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
     if (contextLoaded) {
       if (!user) {
         localStorage.setItem('redirectLink', router.asPath);
-        router.push(getLocalizedPath(`/login`, locale));
+        push('/login');
       }
     }
   }, [contextLoaded, user, router]);
@@ -141,13 +141,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const redeemCode = () => {
     if (inputCode) {
       setErrors(null);
-      router.push(getLocalizedPath(`/profile/redeem/${inputCode}`, locale));
+      push(`/profile/redeem/${inputCode}`);
       redeemingCode(inputCode);
     }
   };
 
   const redeemAnotherCode = () => {
-    router.push(getLocalizedPath(`/profile/redeem/${code}`, locale));
+    push(`/profile/redeem/${code}`);
     setErrors(null);
     setInputCode('');
     setIsLoading(false);
@@ -156,7 +156,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   const closeRedeem = () => {
     if (typeof window !== 'undefined') {
-      router.push(getLocalizedPath('/profile', locale));
+      push('/profile');
     }
   };
 

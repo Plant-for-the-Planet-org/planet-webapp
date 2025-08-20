@@ -10,7 +10,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useContext, useEffect, useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
 import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
@@ -19,25 +19,23 @@ import {
   transformProfileToPrimaryAddressGuid,
   transformProfileToPrimaryAddressView,
 } from './transformers';
-import { useRouter } from 'next/router';
 import { useApi } from '../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
-import getLocalizedPath from '../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const tReceipt = useTranslations('DonationReceipt');
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
   const { redirect } = useContext(ErrorHandlingContext);
-  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -92,7 +90,7 @@ const DonationReceipts = () => {
       initForVerification(clickedReceipt, user);
     }
 
-    router.push(getLocalizedPath('/profile/donation-receipt/verify', locale));
+    push('/profile/donation-receipt/verify');
   };
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;

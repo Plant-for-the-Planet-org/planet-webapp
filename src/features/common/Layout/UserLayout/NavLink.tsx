@@ -2,12 +2,10 @@ import type { User } from '@planet-sdk/common';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import { useState, useEffect } from 'react';
-import { useLocale } from 'next-intl';
-import router from 'next/router';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import IconContainer from './IconContainer';
 import styles from './UserLayout.module.scss';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 export interface SubMenuItemType {
   key: string;
@@ -74,8 +72,7 @@ function NavLink({
   closeMenu,
 }: NavLinkProps) {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const locale = useLocale();
-
+  const { push } = useLocalizedRouter();
   // Determine if this is the current menu item (based on route)
   const isCurrentMainMenu = currentMenuKey === link.key;
 
@@ -108,7 +105,7 @@ function NavLink({
       !link.subMenu || link.subMenu.length <= 0 || link.hideSubMenu;
 
     if (shouldNavigateDirectly && link.path) {
-      router.push(getLocalizedPath(link.path, locale));
+      push(link.path);
       setCurrentMenuKey(link.key);
       setCurrentSubMenuKey('');
       closeMenu();
@@ -122,7 +119,7 @@ function NavLink({
   const handleSubMenuClick = (subMenuItem: SubMenuItemType) => {
     setCurrentMenuKey(link.key);
     setCurrentSubMenuKey(subMenuItem.key);
-    router.push(getLocalizedPath(subMenuItem.path, locale));
+    push(subMenuItem.path);
     closeMenu();
   };
 

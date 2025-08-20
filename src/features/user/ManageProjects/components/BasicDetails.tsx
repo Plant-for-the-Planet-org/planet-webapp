@@ -42,7 +42,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 import { getAddressFromCoordinates } from '../../../../utils/geocoder';
 
 type BaseFormData = {
@@ -113,7 +113,7 @@ export default function BasicDetails({
     sources: {},
     layers: [],
   };
-
+  const { push } = useLocalizedRouter();
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     React.useState<boolean>(false);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
@@ -388,9 +388,7 @@ export default function BasicDetails({
         >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);
         setProjectDetails(res);
-        router.push(
-          getLocalizedPath(`/profile/projects/${res.id}?type=media`, locale)
-        );
+        push(`/profile/projects/${res.id}?type=media`);
         setIsUploadingData(false);
       } catch (err) {
         setIsUploadingData(false);

@@ -1,11 +1,10 @@
 import type { ReactElement } from 'react';
 import type { SetState } from '../../../common/types/common';
 
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../StepForm.module.scss';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 interface ProjectSelectionProps {
   setTabSelected: SetState<number>;
@@ -14,8 +13,8 @@ interface ProjectSelectionProps {
 export default function ProjectSelection({
   setTabSelected,
 }: ProjectSelectionProps): ReactElement {
-  const router = useRouter();
   const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const t = useTranslations('ManageProjects');
 
   return (
@@ -26,12 +25,7 @@ export default function ProjectSelection({
           className={styles.addProjectsButton}
           onClick={() => {
             setTabSelected(1);
-            router.push(
-              getLocalizedPath(
-                '/profile/projects/new-project/?purpose=trees',
-                locale
-              )
-            );
+            push('/profile/projects/new-project/?purpose=trees', locale);
           }}
         >
           {t('restorationProject')}
@@ -43,12 +37,7 @@ export default function ProjectSelection({
           className={styles.addProjectsButton}
           onClick={() => {
             setTabSelected(1);
-            router.push(
-              getLocalizedPath(
-                '/profile/projects/new-project/?purpose=conservation',
-                locale
-              )
-            );
+            push('/profile/projects/new-project/?purpose=conservation');
           }}
         >
           {t('conservationProject')}

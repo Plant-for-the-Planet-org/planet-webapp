@@ -3,11 +3,10 @@ import type { MultiTreeRegistration } from '../../../../common/types/interventio
 
 import React from 'react';
 import styles from '../Import.module.scss';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import getLocalizedPath from '../../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
 
 interface Props {
   intervention: MultiTreeRegistration;
@@ -18,8 +17,7 @@ export default function ReviewSubmit({
   intervention,
   handleBack,
 }: Props): ReactElement {
-  const router = useRouter();
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -39,9 +37,7 @@ export default function ReviewSubmit({
             <h2>{tTreemapper('submittedSuccess')}</h2>
             <p>{tTreemapper('submittedSuccessDescription')}</p>
             <Button
-              onClick={() =>
-                router.push(getLocalizedPath('/profile/treemapper', locale))
-              }
+              onClick={() => push('/profile/treemapper')}
               variant="contained"
               color="primary"
             >

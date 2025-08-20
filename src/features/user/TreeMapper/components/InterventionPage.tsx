@@ -13,9 +13,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/Intervention/ImageSlider'),
@@ -54,6 +53,7 @@ export function InterventionInfo({
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
+
   const [sampleTreeImages, setSampleTreeImages] = React.useState<
     SampleTreeImageProps[]
   >([]);
@@ -390,8 +390,7 @@ export default function InterventionPage({
   setSelectedIntervention,
   interventions,
 }: Props): ReactElement {
-  const router = useRouter();
-  const locale = useLocale();
+  const { replace } = useLocalizedRouter();
   const handleBackButton = () => {
     if (selectedIntervention?.type === 'sample-tree-registration') {
       for (const iKey in interventions) {
@@ -405,7 +404,7 @@ export default function InterventionPage({
         }
       }
     } else {
-      router.replace(getLocalizedPath('/profile/treemapper', locale));
+      replace('/profile/treemapper');
     }
   };
 

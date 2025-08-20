@@ -3,7 +3,6 @@ import type {
   CountryType,
   ExtendedCountryCode,
 } from '../../../common/types/country';
-import { useRouter } from 'next/router';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../../common/types/planetcash';
 
@@ -12,13 +11,13 @@ import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -34,7 +33,7 @@ const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
-  const locale = useLocale();
+  const { push } = useLocalizedRouter();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
@@ -42,7 +41,6 @@ const CreateAccountForm = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
-  const router = useRouter();
   const { postApiAuthenticated } = useApi();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -64,7 +62,7 @@ const CreateAccountForm = ({
       setAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
-        router.push(getLocalizedPath('/profile/planetcash', locale));
+        push('/profile/planetcash');
       }, 1000);
     } catch (err) {
       setIsProcessing(false);

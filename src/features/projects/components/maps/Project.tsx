@@ -19,9 +19,7 @@ import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
-import { useRouter } from 'next/router';
-import getLocalizedPath from '../../../../utils/getLocalizedPath';
-import { useLocale } from 'next-intl';
+import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
 import { zoomToPolygonIntervention } from '../../../../utils/maps/zoomToPolygonIntervention';
 
 interface Props {
@@ -41,15 +39,12 @@ export default function Project({
     geoJson,
     selectedSite,
     siteExists,
-    rasterData,
-    setRasterData,
     hoveredPl,
     isMobile,
     setSiteViewPort,
   } = useProjectProps();
+  const { push } = useLocalizedRouter();
 
-  const router = useRouter();
-  const locale = useLocale();
   const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
     Position[] | null
   >(null);
@@ -107,12 +102,7 @@ export default function Project({
       setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
     if (selectedPl)
-      router.push(
-        getLocalizedPath(
-          `/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`,
-          locale
-        )
-      );
+      push(`/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`);
   }, [selectedPl]);
 
   React.useEffect(() => {
