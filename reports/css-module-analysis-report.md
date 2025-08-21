@@ -1,19 +1,19 @@
 # CSS Module Analysis Report
 
-Generated: 8/21/2025, 12:08:15 PM
+Generated: 8/21/2025, 2:45:59 PM
 
 ## Summary Statistics
 
 - **TypeScript files processed**: 627
-- **CSS module files found**: 150
-- **Files with CSS imports**: 336
-- **Total CSS class usages**: 2522
-- **Errors found**: 33
+- **CSS module files found**: 149
+- **Files with CSS imports**: 335
+- **Total CSS class usages**: 2517
+- **Errors found**: 27
 - **Warnings**: 3
 
 ---
 
-## ❌ Errors Found (33)
+## ❌ Errors Found (27)
 
 These issues need to be fixed:
 
@@ -234,54 +234,6 @@ These issues need to be fixed:
     **Error:** Class 'primaryFontColor' does not exist in DirectGift.module.scss
 
     **CSS file:** `src/features/donations/styles/DirectGift.module.scss`
-
----
-
-28. **File:** `src/features/common/Layout/UserLayout/NavLink.tsx:130`
-
-    **Error:** Class 'navLinkMenu' does not exist in UserLayout.module.scss
-
-    **CSS file:** `src/features/common/Layout/UserLayout/UserLayout.module.scss`
-
----
-
-29. **File:** `src/features/common/Layout/UnderMaintenance/index.tsx:14`
-
-    **Error:** Class 'note' does not exist in UnderMaintenance.module.scss
-
-    **CSS file:** `src/features/common/Layout/UnderMaintenance/UnderMaintenance.module.scss`
-
----
-
-30. **File:** `src/features/common/Layout/RedeemPopup/index.tsx:65`
-
-    **Error:** Class 'primaryColor' does not exist in RedeemPopup.module.scss
-
-    **CSS file:** `src/features/common/Layout/RedeemPopup/RedeemPopup.module.scss`
-
----
-
-31. **File:** `src/features/common/Layout/LandingSection/index.tsx:9`
-
-    **Error:** Class 'landingSectionNoFixedHeight' does not exist in LandingSection.module.scss
-
-    **CSS file:** `src/features/common/Layout/LandingSection/LandingSection.module.scss`
-
----
-
-32. **File:** `src/features/common/Layout/Header/index.tsx:107`
-
-    **Error:** Class 'primaryColor' does not exist in Header.module.scss
-
-    **CSS file:** `src/features/common/Layout/Header/Header.module.scss`
-
----
-
-33. **File:** `src/features/common/Layout/CookiePolicy/index.tsx:51`
-
-    **Error:** Class 'primaryDarkColor' does not exist in CookiePolicy.module.scss
-
-    **CSS file:** `src/features/common/Layout/CookiePolicy/CookiePolicy.module.scss`
 
 ---
 
