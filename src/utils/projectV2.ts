@@ -177,8 +177,13 @@ export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
   if (!mapRef.current) return;
   const map = mapRef.current.getMap();
 
+  const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
+    map.getLayer(layerId)
+  );
+  if (availableLayers.length === 0) return [];
+
   const features = map.queryRenderedFeatures(point, {
-    layers: INTERACTIVE_LAYERS,
+    layers: availableLayers,
   });
 
   if (features.length === 0) {
