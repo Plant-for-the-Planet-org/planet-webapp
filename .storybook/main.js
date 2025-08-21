@@ -31,9 +31,7 @@ module.exports = {
 
   staticDirs: ['../public'],
 
-  docs: {
-    autodocs: true,
-  },
+  docs: {},
 
   env: (config) => ({
     ...config,
