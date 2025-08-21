@@ -1,19 +1,19 @@
 # CSS Module Analysis Report
 
-Generated: 8/21/2025, 2:45:59 PM
+Generated: 8/21/2025, 5:35:23 PM
 
 ## Summary Statistics
 
 - **TypeScript files processed**: 627
 - **CSS module files found**: 149
 - **Files with CSS imports**: 335
-- **Total CSS class usages**: 2517
-- **Errors found**: 27
+- **Total CSS class usages**: 2516
+- **Errors found**: 24
 - **Warnings**: 3
 
 ---
 
-## ❌ Errors Found (27)
+## ❌ Errors Found (24)
 
 These issues need to be fixed:
 
@@ -93,31 +93,7 @@ These issues need to be fixed:
 
 ---
 
-10. **File:** `src/features/user/Profile/MyContributions/ProjectHeader.tsx:67`
-
-    **Error:** Class 'projectCategory' does not exist in MyContributions.module.scss
-
-    **CSS file:** `src/features/user/Profile/MyContributions/MyContributions.module.scss`
-
----
-
-11. **File:** `src/features/user/Profile/MyContributions/DonateButton.tsx:43`
-
-    **Error:** Class 'trees' does not exist in MyContributions.module.scss
-
-    **CSS file:** `src/features/user/Profile/MyContributions/MyContributions.module.scss`
-
----
-
-12. **File:** `src/features/user/Profile/MyContributions/ContributionSummary.tsx:47`
-
-    **Error:** Class 'contributionDate' does not exist in MyContributions.module.scss
-
-    **CSS file:** `src/features/user/Profile/MyContributions/MyContributions.module.scss`
-
----
-
-13. **File:** `src/features/user/ManageProjects/ProjectsContainer.tsx:76`
+10. **File:** `src/features/user/ManageProjects/ProjectsContainer.tsx:76`
 
     **Error:** Class 'projectUnitsAchieved' does not exist in ProjectsContainer.module.scss
 
@@ -125,7 +101,7 @@ These issues need to be fixed:
 
 ---
 
-14. **File:** `src/features/user/ManageProjects/components/DetailedAnalysis.tsx:770`
+11. **File:** `src/features/user/ManageProjects/components/DetailedAnalysis.tsx:770`
 
     **Error:** Class 'multiSelectContainer' does not exist in StepForm.module.scss
 
@@ -133,7 +109,7 @@ These issues need to be fixed:
 
 ---
 
-15. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
+12. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
 
     **Error:** Class 'optionIcon' does not exist in SiteMapLayerControls.module.scss
 
@@ -141,7 +117,7 @@ These issues need to be fixed:
 
 ---
 
-16. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
+13. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
 
     **Error:** Class 'popupContent' does not exist in SiteMapLayerControls.module.scss
 
@@ -149,7 +125,7 @@ These issues need to be fixed:
 
 ---
 
-17. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
+14. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
 
     **Error:** Class 'withInterventions' does not exist in SiteDropdown.module.scss
 
@@ -157,7 +133,7 @@ These issues need to be fixed:
 
 ---
 
-18. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
+15. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
 
     **Error:** Class 'popperWrapper' does not exist in FirePopup.module.scss
 
@@ -165,7 +141,7 @@ These issues need to be fixed:
 
 ---
 
-19. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
+16. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
 
     **Error:** Class 'starIconContainer' does not exist in ProjectListControls.module.scss
 
@@ -173,7 +149,7 @@ These issues need to be fixed:
 
 ---
 
-20. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
+17. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -181,7 +157,7 @@ These issues need to be fixed:
 
 ---
 
-21. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:50`
+18. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:50`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -189,7 +165,7 @@ These issues need to be fixed:
 
 ---
 
-22. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:61`
+19. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:61`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -197,7 +173,7 @@ These issues need to be fixed:
 
 ---
 
-23. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:69`
+20. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:69`
 
     **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
 
@@ -205,7 +181,7 @@ These issues need to be fixed:
 
 ---
 
-24. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
+21. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -213,7 +189,7 @@ These issues need to be fixed:
 
 ---
 
-25. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:56`
+22. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:56`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -221,7 +197,7 @@ These issues need to be fixed:
 
 ---
 
-26. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:79`
+23. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:79`
 
     **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
 
@@ -229,7 +205,7 @@ These issues need to be fixed:
 
 ---
 
-27. **File:** `src/features/donations/components/DirectGift.tsx:42`
+24. **File:** `src/features/donations/components/DirectGift.tsx:42`
 
     **Error:** Class 'primaryFontColor' does not exist in DirectGift.module.scss
 
