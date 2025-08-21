@@ -1,19 +1,19 @@
 # CSS Module Analysis Report
 
-Generated: 8/21/2025, 5:35:23 PM
+Generated: 8/21/2025, 6:30:12 PM
 
 ## Summary Statistics
 
 - **TypeScript files processed**: 627
 - **CSS module files found**: 149
 - **Files with CSS imports**: 335
-- **Total CSS class usages**: 2516
-- **Errors found**: 24
+- **Total CSS class usages**: 2508
+- **Errors found**: 16
 - **Warnings**: 3
 
 ---
 
-## ❌ Errors Found (24)
+## ❌ Errors Found (16)
 
 These issues need to be fixed:
 
@@ -146,70 +146,6 @@ These issues need to be fixed:
     **Error:** Class 'starIconContainer' does not exist in ProjectListControls.module.scss
 
     **CSS file:** `src/features/projectsV2/ProjectListControls/styles/ProjectListControls.module.scss`
-
----
-
-17. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:44`
-
-    **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
-
-    **CSS file:** `src/features/projects/styles/ProjectDetails.module.scss`
-
----
-
-18. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:50`
-
-    **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
-
-    **CSS file:** `src/features/projects/styles/ProjectDetails.module.scss`
-
----
-
-19. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:61`
-
-    **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
-
-    **CSS file:** `src/features/projects/styles/ProjectDetails.module.scss`
-
----
-
-20. **File:** `src/features/projects/components/projectDetails/ProjectContactDetails.tsx:69`
-
-    **Error:** Class 'highlightBackground' does not exist in ProjectDetails.module.scss
-
-    **CSS file:** `src/features/projects/styles/ProjectDetails.module.scss`
-
----
-
-21. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:38`
-
-    **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
-
-    **CSS file:** `src/features/projects/styles/VegetationChange.module.scss`
-
----
-
-22. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:56`
-
-    **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
-
-    **CSS file:** `src/features/projects/styles/VegetationChange.module.scss`
-
----
-
-23. **File:** `src/features/projects/components/maps/ProjectTabs.tsx:79`
-
-    **Error:** Class 'primaryColor' does not exist in VegetationChange.module.scss
-
-    **CSS file:** `src/features/projects/styles/VegetationChange.module.scss`
-
----
-
-24. **File:** `src/features/donations/components/DirectGift.tsx:42`
-
-    **Error:** Class 'primaryFontColor' does not exist in DirectGift.module.scss
-
-    **CSS file:** `src/features/donations/styles/DirectGift.module.scss`
 
 ---
 

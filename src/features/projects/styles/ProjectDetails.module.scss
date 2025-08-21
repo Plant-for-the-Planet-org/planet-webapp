@@ -300,10 +300,6 @@
   cursor: pointer;
 }
 
-:export {
-  highlightBackground: $highlightBackground;
-}
-
 @include smTabletView {
   .container {
     padding-bottom: 0px;

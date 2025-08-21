@@ -39,7 +39,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
         }}
         className={styles.closeButton}
       >
-        <CancelIcon color={styles.primaryFontColor} />
+        <CancelIcon />
       </button>
     </div>
   );
