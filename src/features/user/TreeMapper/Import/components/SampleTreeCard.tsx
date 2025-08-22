@@ -62,7 +62,7 @@ export default function SampleTreeCard({
           <DeleteIcon />
         </div>
       </div>
-      <div className={styles.sampleTreeSummary}>
+      <div>
         {`${
           sampleTrees[index]?.height
             ? ` • ${t('height')} ${sampleTrees[index]?.height}`

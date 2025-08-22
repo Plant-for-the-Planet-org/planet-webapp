@@ -4,7 +4,6 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import styles from '../styles/ProjectListControls.module.scss';
-import themeProperties from '../../../../theme/themeProperties';
 
 interface ProjectListTabForMobileProps {
   projectCount: number | undefined;
@@ -25,7 +24,6 @@ const ProjectListTabForMobile = ({
   setTabSelected,
   setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
-  const { colors } = themeProperties.designSystem;
   const t = useTranslations('AllProjects');
 
   const selectTab = (tab: ProjectTabs) => {
@@ -42,18 +40,17 @@ const ProjectListTabForMobile = ({
         : styles.unselectedTabButton;
     return (
       <button className={tabButtonClass} onClick={() => selectTab(selectedTab)}>
-        {icon && <div className={styles.starIconContainer}>{icon}</div>}
+        {icon && <div className={styles.iconContainer}>{icon}</div>}
         <div className={styles.label}>{label}</div>
       </button>
     );
   };
-  const starIconColor =
-    tabSelected === 'topProjects' ? colors.white : colors.coreText;
+
   return (
     <div className={styles.tabContainer}>
       <TabItem
         selectedTab="topProjects"
-        icon={<StarIcon width={'12px'} color={starIconColor} />}
+        icon={<StarIcon width={'12px'} />}
         label={t.rich('top', {
           noOfProjects: topProjectCount,
           projectCountContainer: (chunks) => (

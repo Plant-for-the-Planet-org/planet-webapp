@@ -10,7 +10,7 @@ export default function BlueCarbon() {
             className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.calloutContainer}`}
           >
             <div
-              className={`${gridStyles.col12} ${gridStyles.colMd8} ${styles.justifyContentCenter} ${styles.helpOutCallout}`}
+              className={`${gridStyles.col12} ${gridStyles.colMd8} ${styles.helpOutCallout}`}
             >
               <div className={`${styles.calloutContentContainer}`}>
                 <div className={styles.calloutContentOverlay}></div>
@@ -66,7 +66,7 @@ export default function BlueCarbon() {
               </div>
             </div>
             <div
-              className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+              className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12}`}
             >
               <h3>Blue Carbon</h3>
 

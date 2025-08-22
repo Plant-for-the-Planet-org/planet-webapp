@@ -1,14 +1,19 @@
-import React from 'react';
+import type { ReactNode } from 'react';
+
 import styles from './LandingSection.module.scss';
 
-export default function LandingSection(props: any) {
+interface Props {
+  fixedBg?: boolean;
+  imageSrc?: string;
+  children?: ReactNode;
+}
+
+export default function LandingSection(props: Props) {
   return (
     <div
-      className={`${
-        props.noFixedHeight
-          ? styles.landingSectionNoFixedHeight
-          : styles.landingSection
-      } ${props.fixedBg ? styles.landingSectionFixedBG : styles.landingSection}
+      className={`${styles.landingSection} ${
+        props.fixedBg ? styles.landingSectionFixedBG : styles.landingSection
+      }
       `}
       style={{
         background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${

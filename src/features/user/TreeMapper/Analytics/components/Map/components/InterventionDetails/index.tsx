@@ -189,7 +189,7 @@ const InterventionDetails = ({
         ) : (
           <>
             <div></div>
-            <div className={styles.zeroStateScreen}>
+            <div>
               <InterventionDetailsZeroState />
             </div>
           </>

@@ -127,7 +127,6 @@ export default function FirePopup({ isOpen, feature }: Props) {
         ref={popperRef}
         anchorEl={anchorRef.current}
         placement="top"
-        className={styles.popperWrapper}
         disablePortal={false}
         onMouseLeave={() => setShowPopup(false)}
         onMouseEnter={() => setShowPopup(true)}

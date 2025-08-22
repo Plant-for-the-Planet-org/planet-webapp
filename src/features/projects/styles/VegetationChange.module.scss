@@ -117,10 +117,6 @@
   }
 }
 
-:export {
-  primaryColor: $primaryColor;
-}
-
 @include smTabletView {
   .VegetationChangeContainer {
     top: 100px;

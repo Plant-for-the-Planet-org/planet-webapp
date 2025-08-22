@@ -40,7 +40,7 @@ const DonateButton = (props: DonateButtonProps) => {
       ? styles.conservation
       : contributionUnitType === 'm2'
       ? styles.restoration
-      : styles.trees
+      : ''
   } ${customButtonClasses || ''}`;
 
   // Construct donate link

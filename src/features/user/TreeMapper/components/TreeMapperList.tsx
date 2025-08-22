@@ -40,9 +40,6 @@ export default function TreeMapperList({
         styles.locationList
       }`}
     >
-      <div className={styles.pullUpContainer}>
-        <div className={styles.pullUpBar}></div>
-      </div>
       {!interventions && isDataLoading ? (
         <>
           <TransactionListLoader />

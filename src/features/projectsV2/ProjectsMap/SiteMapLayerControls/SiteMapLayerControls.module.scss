@@ -117,12 +117,15 @@
   gap: 6px;
   padding: 6px;
   border-radius: 4px;
-
   &.selected {
     background-color: $dsMediumGreyTransparent30;
     font-weight: 700;
   }
-
+  .optionIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .optionLabel {
     font-size: $fontXSmall;
     color: $dsCoreText;
@@ -200,6 +203,10 @@
     right: 0;
     padding: 12px;
     cursor: pointer;
+  }
+
+  .popupContent {
+    width: 100%;
   }
 }
 

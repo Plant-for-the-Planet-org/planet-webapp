@@ -153,7 +153,7 @@ const UploadWidget = ({
           }
         },
         className: `${styles.uploadWidget} ${
-          styles[`uploadWidget--${status}`]
+          status === 'error' ? styles[`uploadWidget--${status}`] : ''
         }`,
       })}
     >

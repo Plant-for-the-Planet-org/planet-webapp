@@ -13,6 +13,7 @@ import BlackTree from '../../../../../public/assets/images/icons/project/BlackTr
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
@@ -22,6 +23,7 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
   const t = useTranslations('Donate');
   const tCountry = useTranslations('Country');
   const { embed } = React.useContext(ParamsContext);
+  const { darkGrey } = themeProperties.designSystem.colors;
   const contactAddress =
     project.tpo && project.tpo.address
       ? (project.tpo.address.address
@@ -41,13 +43,13 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
   const contactDetails = [
     {
       id: 1,
-      icon: <BlackTree color={styles.highlightBackground} />,
+      icon: <BlackTree color={darkGrey} />,
       text: t('viewProfile'),
       link: project.tpo.slug,
     },
     {
       id: 2,
-      icon: <WorldWeb color={styles.highlightBackground} />,
+      icon: <WorldWeb color={darkGrey} />,
       text: project.website
         ? project.website
             .replace('http://', '')
@@ -58,7 +60,7 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
     },
     {
       id: 3,
-      icon: <Location color={styles.highlightBackground} />,
+      icon: <Location color={darkGrey} />,
       text: contactAddress,
       link: project.coordinates
         ? `https://maps.google.com/?q=${contactAddress}`
@@ -66,7 +68,7 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
     },
     {
       id: 4,
-      icon: <Email color={styles.highlightBackground} />,
+      icon: <Email color={darkGrey} />,
       text:
         project.tpo && project.tpo.email ? project.tpo.email : t('unavailable'),
       link:

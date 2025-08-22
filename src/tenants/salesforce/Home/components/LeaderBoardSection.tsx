@@ -18,7 +18,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
     <div className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>Tree Donation Tracker</h2>
-        <div className={styles.leaderBoardTable}>
+        <>
           <div className={styles.leaderBoardTableHeader}>
             <button
               id={'leaderBoardSecRecent'}
@@ -82,7 +82,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
           ) : (
             <p>loading</p>
           )}
-        </div>
+        </>
       </div>
     </div>
   );

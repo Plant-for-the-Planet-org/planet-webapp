@@ -54,6 +54,10 @@
   .contributedUnits {
     font-weight: 700;
   }
+
+  .contributionDate {
+    font-weight: 400;
+  }
 }
 
 .tooltip {
@@ -225,8 +229,6 @@
 
 .projectHeader {
   .projectType {
-    font-size: $fontXXSmall;
-    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -236,6 +238,10 @@
     width: 12px;
     display: grid;
     align-items: center;
+  }
+  .projectCategory {
+    font-size: $fontXXSmall;
+    font-weight: 600;
   }
   .projectName {
     font-weight: 700;

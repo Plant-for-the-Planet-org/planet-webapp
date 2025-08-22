@@ -5,6 +5,7 @@ import styles from './RedeemPopup.module.scss';
 import { useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useUserProps } from '../UserPropsContext';
+import themeProperties from '../../../../theme/themeProperties';
 
 export default function RedeemPopup() {
   const t = useTranslations('Common');
@@ -62,7 +63,7 @@ export default function RedeemPopup() {
         className={styles.closeButton}
         onClick={() => setShowRedeemPopup(false)}
       >
-        <CloseIcon color={styles.primaryColor} />
+        <CloseIcon color={themeProperties.designSystem.colors.primaryColor} />
       </button>
       <div className={styles.cookieContent}>
         {t('redeemPopup')} <a onClick={sendUserToLogin}>{t('login')}</a>

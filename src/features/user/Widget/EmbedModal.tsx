@@ -87,17 +87,6 @@ export default function EmbedModal({
               {t('accountPrivacyChangeText')}
             </div>
           </div>
-          {/* <div className={styles.isPrivateAccountDiv}>
-                        <div>
-                            <div className={styles.mainText}>
-                                {t('editProfile:publicAccount')}
-                            </div>
-                        </div>
-                        <ToggleSwitch
-                            checked={!isPrivate}
-                            onChange={handleToggleChange}
-                        />
-                    </div> */}
           <div
             className={styles.formFieldLarge}
             style={{ justifyContent: 'center' }}
