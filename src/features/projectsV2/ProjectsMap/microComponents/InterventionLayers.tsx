@@ -136,8 +136,8 @@ export default function InterventionLayers(): React.ReactElement {
 
   const getDateDiff = (intervention: Intervention) => {
     const plantDate =
-      intervention.interventionStartDate || intervention.plantDate;
-    if (!plantDate) return null;
+      intervention.interventionStartDate ?? intervention.plantDate;
+    if (!plantDate) return '';
 
     const today = new Date();
     const plantationDate = new Date(plantDate.slice(0, 10));
@@ -152,7 +152,7 @@ export default function InterventionLayers(): React.ReactElement {
         days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
       });
     } else {
-      return null;
+      return '';
     }
   };
 

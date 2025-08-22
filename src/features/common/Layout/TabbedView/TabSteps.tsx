@@ -36,10 +36,13 @@ export default function TabSteps({
 }: TabStepsProps): ReactElement | null {
   const router = useRouter();
 
-  const handleTabChange = (event: SyntheticEvent) => {
-    if (event.currentTarget instanceof HTMLButtonElement) {
-      const targetLink = event.currentTarget.dataset.link as string;
-      router.push(targetLink);
+  const handleTabChange = (
+    _event: SyntheticEvent,
+    newValue: string | number
+  ) => {
+    const next = tabItems.find((t) => t.step === newValue);
+    if (next?.link) {
+      router.push(next.link);
     }
   };
 
