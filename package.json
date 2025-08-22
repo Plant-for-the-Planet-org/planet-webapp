@@ -22,7 +22,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --exit-zero-on-changes",
-    "prepare": "node ./husky-prepare.js"
+    "prepare": "node ./husky-prepare.js",
+    "analyze-css": "node scripts/css-static-analyzer.js",
+    "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'"
   },
   "validate-branch-name": {
     "pattern": "^(main|develop){1}$|^(feature|hotfix)/[a-z0-9-_]+$",
@@ -191,6 +193,7 @@
     "prisma": "^4.13.0",
     "storybook": "8.6.14",
     "typescript": "^5.9.2",
+    "typescript-plugin-css-modules": "^5.2.0",
     "validate-branch-name": "^1.3.0",
     "webpack": "^5.94.0"
   }
