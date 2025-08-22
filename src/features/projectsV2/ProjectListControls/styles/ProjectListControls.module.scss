@@ -131,6 +131,12 @@
     font-size: $fontXXSmall;
     display: flex;
   }
+  .iconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .noOfProject {
     font-weight: 400;
     font-size: $fontXXSmall;

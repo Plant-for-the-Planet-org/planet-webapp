@@ -39,12 +39,7 @@ const ProjectListTabLargeScreen = ({
       }}
     >
       <CustomMuiTab
-        icon={
-          <StarIcon
-            width={'16px'}
-            color={isTopProjectTab ? colors.primaryColor : colors.coreText}
-          />
-        }
+        icon={<StarIcon width={'16px'} />}
         label={
           <div className={styles.projectLabel}>
             {t.rich('topProjects', {

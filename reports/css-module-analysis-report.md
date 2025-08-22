@@ -1,19 +1,19 @@
 # CSS Module Analysis Report
 
-Generated: 8/21/2025, 6:30:12 PM
+Generated: 8/22/2025, 11:22:38 AM
 
 ## Summary Statistics
 
 - **TypeScript files processed**: 627
 - **CSS module files found**: 149
 - **Files with CSS imports**: 335
-- **Total CSS class usages**: 2508
-- **Errors found**: 16
+- **Total CSS class usages**: 2506
+- **Errors found**: 11
 - **Warnings**: 3
 
 ---
 
-## ❌ Errors Found (16)
+## ❌ Errors Found (11)
 
 These issues need to be fixed:
 
@@ -106,46 +106,6 @@ These issues need to be fixed:
     **Error:** Class 'multiSelectContainer' does not exist in StepForm.module.scss
 
     **CSS file:** `src/features/user/ManageProjects/StepForm.module.scss`
-
----
-
-12. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx:77`
-
-    **Error:** Class 'optionIcon' does not exist in SiteMapLayerControls.module.scss
-
-    **CSS file:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteMapLayerControls.module.scss`
-
----
-
-13. **File:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.tsx:23`
-
-    **Error:** Class 'popupContent' does not exist in SiteMapLayerControls.module.scss
-
-    **CSS file:** `src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteMapLayerControls.module.scss`
-
----
-
-14. **File:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/ProjectSiteList.tsx:46`
-
-    **Error:** Class 'withInterventions' does not exist in SiteDropdown.module.scss
-
-    **CSS file:** `src/features/projectsV2/ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss`
-
----
-
-15. **File:** `src/features/projectsV2/ProjectsMap/FirePopup/index.tsx:130`
-
-    **Error:** Class 'popperWrapper' does not exist in FirePopup.module.scss
-
-    **CSS file:** `src/features/projectsV2/ProjectsMap/FirePopup/FirePopup.module.scss`
-
----
-
-16. **File:** `src/features/projectsV2/ProjectListControls/microComponents/ProjectListTabForMobile.tsx:45`
-
-    **Error:** Class 'starIconContainer' does not exist in ProjectListControls.module.scss
-
-    **CSS file:** `src/features/projectsV2/ProjectListControls/styles/ProjectListControls.module.scss`
 
 ---
 

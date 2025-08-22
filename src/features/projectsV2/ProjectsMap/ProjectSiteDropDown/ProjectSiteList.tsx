@@ -20,7 +20,6 @@ interface ProjectSiteListProps {
   selectedSiteData: SiteData | undefined;
   setSelectedIntervention: SetState<Intervention | null>;
   setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
-  canShowInterventionDropdown: boolean;
 }
 
 const ProjectSiteList = ({
@@ -30,7 +29,6 @@ const ProjectSiteList = ({
   selectedSiteData,
   setSelectedIntervention,
   setSelectedSampleTree,
-  canShowInterventionDropdown,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
   const handleSiteSelection = (index: number) => {
@@ -41,11 +39,7 @@ const ProjectSiteList = ({
   };
 
   return (
-    <ul
-      className={`${styles.siteListOptions} ${
-        canShowInterventionDropdown ? styles.withInterventions : ''
-      }`}
-    >
+    <ul className={styles.siteListOptions}>
       {siteList.map((site, index) => {
         return (
           <li
