@@ -29,9 +29,13 @@ export function zoomInToProjectSite(
   }
 
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
-  const feature = geoJson.features[selectedSite];
-  if (!feature) {
-    console.warn(`Selected site ${selectedSite} not found in geoJson`);
+
+  const feature = geoJson.features?.[selectedSite];
+  if (!feature || !feature.geometry) {
+    console.warn(
+      'zoomInToProjectSite: invalid selectedSite or missing geometry',
+      { selectedSite }
+    );
     return;
   }
   // Get the bounding box of the selected site
