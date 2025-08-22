@@ -20,6 +20,11 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint', '@emotion', 'cypress'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
     'no-undef': 'warn',
     'no-unsafe-optional-chaining': 'warn',
