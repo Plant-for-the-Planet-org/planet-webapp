@@ -33,13 +33,14 @@ import { useLocale, useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import {
   getAddressDetailsFromText,
   getAddressSuggestions,
 } from '../../../utils/geocoder';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import { getPostalRegex } from '../../../utils/addressManagement';
+import { useRouter } from 'next/router';
 
 const MuiTextField = styled(TextField)(() => {
   return {
@@ -63,7 +64,8 @@ export default function CompleteSignup(): ReactElement | null {
     watch,
     formState: { errors },
   } = useForm<FormData>({ mode: 'onBlur' });
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const t = useTranslations('EditProfile');
   const locale = useLocale();
   const { postApi } = useApi();
@@ -118,11 +120,11 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            push('/profile');
+            router.push(localizedPath('/profile'));
           }
         }
       } else {
-        push('/');
+        router.push(localizedPath('/'));
       }
     }
     if (contextLoaded) {
@@ -147,7 +149,7 @@ export default function CompleteSignup(): ReactElement | null {
       handleSnackbarOpen();
 
       if (typeof window !== 'undefined') {
-        push('/t/[id]', `/t/${res.slug}`);
+        router.push('/t/[id]', localizedPath(`/t/${res.slug}`));
       }
     } catch (err) {
       setIsProcessing(false);

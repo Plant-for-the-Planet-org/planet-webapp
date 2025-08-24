@@ -4,7 +4,8 @@ import type { TabItem } from './TabbedViewTypes';
 import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface TabStepsProps {
   step: number | string | false;
@@ -34,11 +35,12 @@ export default function TabSteps({
   step = 0,
   tabItems = [],
 }: TabStepsProps): ReactElement | null {
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const handleTabChange = (event: SyntheticEvent) => {
     if (event.currentTarget instanceof HTMLButtonElement) {
       const targetLink = event.currentTarget.dataset.link as string;
-      push(targetLink);
+      router.push(localizedPath(targetLink));
     }
   };
 

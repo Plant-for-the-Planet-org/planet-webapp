@@ -15,7 +15,8 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -34,12 +35,14 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const t = useTranslations('PlanetCash');
   const { getApiAuthenticated } = useApi();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
-  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
+
+  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   const sortAccountsByActive = (
@@ -61,13 +64,13 @@ export default function PlanetCash({
       switch (step) {
         case PlanetCashTabs.CREATE_ACCOUNT:
           if (accounts.length) {
-            push('/profile/planetcash');
+            router.push(localizedPath('/profile/planetcash'));
           }
           break;
         case PlanetCashTabs.ACCOUNTS:
         case PlanetCashTabs.TRANSACTIONS:
           if (!accounts.length) {
-            push('/profile/planetcash/new');
+            router.push(localizedPath('/profile/planetcash/new'));
           }
           break;
         default:

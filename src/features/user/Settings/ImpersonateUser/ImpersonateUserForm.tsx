@@ -10,7 +10,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { APIError } from '@planet-sdk/common';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -19,11 +19,8 @@ export type ImpersonationData = {
 
 const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
-  const { replace, push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
-  const [hasUpdatedUrl, setHasUpdatedUrl] = useState(false);
-  const [isInvalidEmail, setIsInvalidEmail] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const { setUser, setIsImpersonationModeOn, fetchUserProfile } =
     useUserProps();
   const {
@@ -38,6 +35,10 @@ const ImpersonateUserForm = (): ReactElement => {
       supportPin: '',
     },
   });
+
+  const [hasUpdatedUrl, setHasUpdatedUrl] = useState(false);
+  const [isInvalidEmail, setIsInvalidEmail] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (router.isReady && !hasUpdatedUrl) {
@@ -63,7 +64,13 @@ const ImpersonateUserForm = (): ReactElement => {
         url.searchParams.delete('support_pin');
 
         // Use router.replace with the modified URL string
-        replace(`${url.pathname}${url.search}`, undefined, { shallow: true });
+        router.replace(
+          localizedPath(`${url.pathname}${url.search}`),
+          undefined,
+          {
+            shallow: true,
+          }
+        );
         setHasUpdatedUrl(true);
       }
     }
@@ -88,7 +95,7 @@ const ImpersonateUserForm = (): ReactElement => {
           JSON.stringify(impersonationData)
         );
         setUser(res);
-        push('/profile');
+        router.push(localizedPath('/profile'));
       } catch (err) {
         if (err instanceof APIError) {
           console.error('API error:', err.message);

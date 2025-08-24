@@ -6,7 +6,8 @@ import SignInButton from './SignInButton';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from '../Navbar.module.scss';
-import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const ProfileIconSkeleton = () => {
   return (
@@ -18,7 +19,8 @@ const ProfileIconSkeleton = () => {
 
 const UserProfileButton = () => {
   const { user } = useUserProps();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
@@ -36,7 +38,7 @@ const UserProfileButton = () => {
   return (
     <button
       className={styles.profileImageButton}
-      onClick={() => push('/profile')}
+      onClick={() => router.push(localizedPath('/profile'))}
     >
       {user.image ? (
         <img src={getImageUrl('profile', 'thumb', user.image)} alt="Profile" />

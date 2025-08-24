@@ -3,11 +3,13 @@ import type { ReactElement } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const NoPlanetCashAccount = (): ReactElement | null => {
   const t = useTranslations('PlanetCash');
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   return (
     <CenteredContainer>
@@ -15,7 +17,7 @@ const NoPlanetCashAccount = (): ReactElement | null => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => push('/profile/planetcash/new')}
+        onClick={() => router.push(localizedPath('/profile/planetcash/new'))}
       >
         {t('createPlanetCashButton')}
       </Button>

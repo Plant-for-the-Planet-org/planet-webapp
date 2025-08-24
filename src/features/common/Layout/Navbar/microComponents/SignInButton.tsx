@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
-import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export const SignInButton = () => {
   const { user, loginWithRedirect } = useUserProps();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Common');
 
   const [isMobile, setIsMobile] = useState(
@@ -30,7 +32,7 @@ export const SignInButton = () => {
   async function gotoUserPage() {
     if (user) {
       if (typeof window !== 'undefined') {
-        push('/profile');
+        router.push(localizedPath('/profile'));
       }
     } else {
       loginWithRedirect({

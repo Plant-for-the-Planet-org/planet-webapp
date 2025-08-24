@@ -6,7 +6,8 @@ import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
-import useLocalizedRouter from '../../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface Props {
   intervention: MultiTreeRegistration;
@@ -17,9 +18,11 @@ export default function ReviewSubmit({
   intervention,
   handleBack,
 }: Props): ReactElement {
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
+
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(true);
 
@@ -37,7 +40,7 @@ export default function ReviewSubmit({
             <h2>{tTreemapper('submittedSuccess')}</h2>
             <p>{tTreemapper('submittedSuccessDescription')}</p>
             <Button
-              onClick={() => push('/profile/treemapper')}
+              onClick={() => router.push(localizedPath('/profile/treemapper'))}
               variant="contained"
               color="primary"
             >

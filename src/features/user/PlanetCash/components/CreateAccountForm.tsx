@@ -17,7 +17,8 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -33,7 +34,8 @@ const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
@@ -62,7 +64,7 @@ const CreateAccountForm = ({
       setAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
-        push('/profile/planetcash');
+        router.push(localizedPath('/profile/planetcash'));
       }, 1000);
     } catch (err) {
       setIsProcessing(false);

@@ -11,11 +11,11 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const tCommon = useTranslations('Common');
   const { method } = router.query;
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
@@ -27,7 +27,9 @@ const SelectProjectForm = (): ReactElement | null => {
     if (localProject) {
       setProject(localProject);
       if (typeof method !== 'string') return;
-      push(`/profile/bulk-codes/${method}/${localProject.guid}`);
+      router.push(
+        localizedPath(`/profile/bulk-codes/${method}/${localProject.guid}`)
+      );
     }
   };
 

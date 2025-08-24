@@ -23,7 +23,8 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface LayerType {
   id: string;
@@ -59,7 +60,8 @@ export default function Explore(): ReactElement {
   } = useProjectProps();
 
   const t = useTranslations('Maps');
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const { theme } = React.useContext(ThemeContext);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
@@ -169,16 +171,18 @@ export default function Explore(): ReactElement {
       };
       // setMapState(newMapState);
       setViewPort(newViewport);
-      push(
-        `/projects-archive${
-          embed === 'true'
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`,
+      router.push(
+        localizedPath(
+          `/projects-archive${
+            embed === 'true'
+              ? `${
+                  callbackUrl != undefined
+                    ? `?embed=true&callback=${callbackUrl}`
+                    : '?embed=true'
+                }`
+              : ''
+          }`
+        ),
         undefined,
         { shallow: true }
       );

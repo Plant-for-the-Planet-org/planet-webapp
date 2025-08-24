@@ -12,7 +12,8 @@ import { Button, FormControlLabel } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 function SubmitForReview({
   submitForReview,
@@ -22,7 +23,9 @@ function SubmitForReview({
   handlePublishChange,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+
   function UnderReviewComponent() {
     return (
       <CenteredContainer>
@@ -55,7 +58,10 @@ function SubmitForReview({
             <p>{t('backToSpending')}</p>
           </Button>
 
-          <Button variant="contained" onClick={() => push('/profile/projects')}>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
             <p>{t('exit')}</p>
           </Button>
         </div>
@@ -119,7 +125,10 @@ function SubmitForReview({
             )}
           </Button>
 
-          <Button variant="contained" onClick={() => push('/profile/projects')}>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
             <p>{t('exit')}</p>
           </Button>
         </div>
@@ -144,7 +153,10 @@ function SubmitForReview({
           >
             <p>{t('backToSpending')}</p>
           </Button>
-          <Button variant="contained" onClick={() => push('/profile/projects')}>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
             <p>{t('exit')}</p>
           </Button>
         </div>
@@ -170,7 +182,10 @@ function SubmitForReview({
           >
             <p>{t('backToSpending')}</p>
           </Button>
-          <Button variant="contained" onClick={() => push('/profile/projects')}>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
             <p>{t('exit')}</p>
           </Button>
         </div>

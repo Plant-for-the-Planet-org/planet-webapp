@@ -13,7 +13,7 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 
 import { useRouter } from 'next/router';
-import useLocalizedRouter from '../../../../src/hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import React from 'react';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
 import SternHome from '../../../../src/tenants/stern/Home';
@@ -36,7 +36,7 @@ interface Props {
 
 export default function Home({ pageProps }: Props) {
   const router = useRouter();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
 
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
@@ -87,7 +87,7 @@ export default function Home({ pageProps }: Props) {
     )
   ) {
     if (typeof window !== 'undefined') {
-      push('/');
+      router.push(localizedPath('/'));
     }
   }
 

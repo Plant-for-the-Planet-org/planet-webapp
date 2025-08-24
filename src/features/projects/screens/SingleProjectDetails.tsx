@@ -20,7 +20,7 @@ import ProjectTabs from '../components/maps/ProjectTabs';
 import InterventionDetails from '../components/Intervention/InterventionDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import TopProjectReports from '../components/projectDetails/TopProjectReports';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import themeProperties from '../../../theme/themeProperties';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
@@ -50,7 +50,7 @@ function SingleProjectDetails(): ReactElement {
     setSelectedPl,
     sampleIntervention,
   } = useProjectProps();
-  const { push, getPath } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -87,23 +87,25 @@ function SingleProjectDetails(): ReactElement {
     if (project && (selectedPl || hoveredPl)) {
       setHoveredPl(null);
       setSelectedPl(null);
-      push(
-        `/projects-archive/${project.slug}/${
-          isEmbed
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`
+      router.push(
+        localizedPath(
+          `/projects-archive/${project.slug}/${
+            isEmbed
+              ? `${
+                  callbackUrl != undefined
+                    ? `?embed=true&callback=${callbackUrl}`
+                    : '?embed=true'
+                }`
+              : ''
+          }`
+        )
       );
     } else {
       if (document.referrer) {
         window.history.go(-2);
       } else {
         router.replace({
-          pathname: getPath(`/projects-archive`),
+          pathname: localizedPath(`/projects-archive`),
           query: {
             ...(isEmbed ? { embed: 'true' } : {}),
             ...(isEmbed && callbackUrl !== undefined

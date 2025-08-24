@@ -34,12 +34,14 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const {
     project,
     setProject,
@@ -161,7 +163,7 @@ const IssueCodesForm = (): ReactElement | null => {
           setIsSubmitted(true);
           setRefetchUserData(true);
           setTimeout(() => {
-            push(`/profile/history?ref=${res.uid}`);
+            router.push(localizedPath(`/profile/history?ref=${res.uid}`));
           }, 5000);
         }
       } catch (err) {

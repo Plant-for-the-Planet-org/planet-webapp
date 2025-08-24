@@ -30,7 +30,8 @@ import {
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { useTenant } from '../../common/Layout/TenantContext';
 import styles from '../styles/ProjectSnippet.module.scss';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface Props {
   project:
@@ -52,7 +53,8 @@ export default function ProjectSnippet({
   disableDonations = false,
 }: Props): ReactElement {
   const locale = useLocale();
-  const { push, getPath } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tDonate = useTranslations('Donate');
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
@@ -121,16 +123,18 @@ export default function ProjectSnippet({
         onClick={() => {
           setSelectedSite(0);
           if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
-          push(
-            `/projects-archive/${project.slug}${
-              embed === 'true'
-                ? `${
-                    callbackUrl != undefined
-                      ? `?embed=true&callback=${callbackUrl}`
-                      : '?embed=true'
-                  }`
-                : ''
-            }`
+          router.push(
+            localizedPath(
+              `/projects-archive/${project.slug}${
+                embed === 'true'
+                  ? `${
+                      callbackUrl != undefined
+                        ? `?embed=true&callback=${callbackUrl}`
+                        : '?embed=true'
+                    }`
+                  : ''
+              }`
+            )
           );
         }}
         className={`${styles.projectImage} ${
@@ -269,8 +273,8 @@ export default function ProjectSnippet({
         className={styles.projectTPOName}
         onClick={() => {
           embed === 'true'
-            ? window.open(getPath(`/t/${project.tpo.slug}`, locale), '_top')
-            : push(`/t/${project.tpo.slug}`);
+            ? window.open(localizedPath(`/t/${project.tpo.slug}`), '_top')
+            : router.push(localizedPath(`/t/${project.tpo.slug}`));
         }}
         style={{
           background: `${

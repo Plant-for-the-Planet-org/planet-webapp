@@ -2,7 +2,8 @@ import type { SetStateAction, Dispatch, FC } from 'react';
 import type { SerializedError } from '@planet-sdk/common';
 
 import React, { createContext, useState } from 'react';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 type SetState<T> = Dispatch<SetStateAction<T>>;
 
@@ -20,10 +21,11 @@ export const ErrorHandlingContext =
   });
 
 const ErrorHandlingProvider: FC = ({ children }) => {
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const [errors, setErrors] = useState<SerializedError[] | null>(null);
-  const { push } = useLocalizedRouter();
   const redirect = (url: string) => {
-    push(url);
+    router.push(localizedPath(url));
   };
 
   return (

@@ -13,13 +13,15 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const AddBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { postApiAuthenticated } = useApi();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -52,7 +54,7 @@ const AddBankAccount = (): ReactElement | null => {
       setIsProcessing(false);
       // go to accounts tab
       setTimeout(() => {
-        push('/profile/payouts');
+        router.push(localizedPath('/profile/payouts'));
       }, 3000);
     } catch (err) {
       setIsProcessing(false);

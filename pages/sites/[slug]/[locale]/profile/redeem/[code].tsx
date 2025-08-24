@@ -10,7 +10,7 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
 import { useRouter } from 'next/router';
-import useLocalizedRouter from '../../../../../../src/hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useState, useEffect, useContext } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useTranslations } from 'next-intl';
@@ -45,15 +45,15 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
   const { postApiAuthenticated } = useApi();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const router = useRouter();
-  const { push } = useLocalizedRouter();
 
   useEffect(() => {
     if (router.isReady) {
@@ -65,7 +65,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
     if (contextLoaded) {
       if (!user) {
         localStorage.setItem('redirectLink', router.asPath);
-        push('/login');
+        router.push(localizedPath('/login'));
       }
     }
   }, [contextLoaded, user, router]);
@@ -141,13 +141,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const redeemCode = () => {
     if (inputCode) {
       setErrors(null);
-      push(`/profile/redeem/${inputCode}`);
+      router.push(localizedPath(`/profile/redeem/${inputCode}`));
       redeemingCode(inputCode);
     }
   };
 
   const redeemAnotherCode = () => {
-    push(`/profile/redeem/${code}`);
+    router.push(localizedPath(`/profile/redeem/${code}`));
     setErrors(null);
     setInputCode('');
     setIsLoading(false);
@@ -156,7 +156,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   const closeRedeem = () => {
     if (typeof window !== 'undefined') {
-      push('/profile');
+      router.push(localizedPath('/profile'));
     }
   };
 

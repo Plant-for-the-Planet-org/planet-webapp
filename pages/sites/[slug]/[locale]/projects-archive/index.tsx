@@ -31,7 +31,7 @@ import {
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import useLocalizedRouter from '../../../../../src/hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   currencyCode: string;
@@ -62,7 +62,7 @@ export default function Donate({
   const locale = useLocale();
   const router = useRouter();
   const { getApi } = useApi();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
   const [showDirectGift, setShowDirectGift] = React.useState(true);
@@ -95,7 +95,7 @@ export default function Donate({
   React.useEffect(() => {
     if (typeof router.query.p === 'string') {
       const safePath = encodeURIComponent(router.query.p);
-      push(encodeURI(`/projects-archive/${safePath}`));
+      router.push(localizedPath(encodeURI(`/projects-archive/${safePath}`)));
     }
   }, [router]);
 

@@ -10,7 +10,8 @@ import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
@@ -20,11 +21,14 @@ export default function DeleteProfileForm() {
     e.preventDefault();
   };
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { deleteApiAuthenticated } = useApi();
+
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
-  const { push } = useLocalizedRouter();
+
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
@@ -53,7 +57,7 @@ export default function DeleteProfileForm() {
   };
   const handleSubscriptions = () => {
     setIsModalOpen(false);
-    push('/profile/recurrency');
+    router.push(localizedPath('/profile/recurrency'));
   };
 
   const closeModal = () => {

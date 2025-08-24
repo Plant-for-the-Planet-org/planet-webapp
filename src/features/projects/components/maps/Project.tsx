@@ -19,8 +19,9 @@ import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { zoomToPolygonIntervention } from '../../../../utils/maps/zoomToPolygonIntervention';
+import { useRouter } from 'next/router';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
@@ -43,7 +44,8 @@ export default function Project({
     isMobile,
     setSiteViewPort,
   } = useProjectProps();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
     Position[] | null
@@ -102,7 +104,11 @@ export default function Project({
       setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
     if (selectedPl)
-      push(`/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`);
+      router.push(
+        localizedPath(
+          `/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`
+        )
+      );
   }, [selectedPl]);
 
   React.useEffect(() => {

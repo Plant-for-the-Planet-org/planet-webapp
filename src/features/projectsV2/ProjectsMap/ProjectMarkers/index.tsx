@@ -4,7 +4,8 @@ import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -28,22 +29,25 @@ type OpenPopupState = {
 type PopupState = ClosedPopupState | OpenPopupState;
 
 const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
   const { embed, callbackUrl } = useContext(ParamsContext);
 
   const visitProject = (projectSlug: string): void => {
-    push(
-      `/${projectSlug}${
-        embed === 'true'
-          ? `${
-              callbackUrl != undefined
-                ? `?embed=true&callback=${callbackUrl}`
-                : '?embed=true'
-            }`
-          : ''
-      }`
+    router.push(
+      localizedPath(
+        `/${projectSlug}${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`
+      )
     );
   };
 

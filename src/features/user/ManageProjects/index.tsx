@@ -20,7 +20,7 @@ import TabbedView from '../../common/Layout/TabbedView';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -49,8 +49,9 @@ export default function ManageProjects({
   const locale = useLocale();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated, getApiAuthenticated } = useApi();
+
   const [tabSelected, setTabSelected] = React.useState<number>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [projectGUID, setProjectGUID] = React.useState<string>(
@@ -88,7 +89,7 @@ export default function ManageProjects({
         return;
     }
 
-    push(path);
+    router.push(localizedPath(path));
   };
 
   // for moving next tab

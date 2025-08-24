@@ -16,11 +16,12 @@ import {
   useState,
 } from 'react';
 import { useTenant } from './TenantContext';
-import { useLocale } from 'next-intl';
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
-import useLocalizedRouter from '../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
+import { useLocale } from 'next-intl';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -58,8 +59,9 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
-  const { push } = useLocalizedRouter();
+  const router = useRouter();
   const locale = useLocale();
+  const { localizedPath } = useLocalizedPath();
   const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -149,7 +151,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         switch (err.statusCode) {
           case 303:
             setUser(null);
-            push('/complete-signup');
+            router.push(localizedPath('/complete-signup'));
             break;
           case 401:
             setUser(null);

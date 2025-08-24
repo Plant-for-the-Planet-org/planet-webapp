@@ -16,7 +16,7 @@ import type {
 } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
-import useLocalizedRouter from '../../../../../src/hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import React from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
@@ -50,7 +50,7 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
   const { getApi } = useApi();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
     string | undefined | null
   >(undefined);
@@ -173,7 +173,7 @@ export default function Donate({
       const newPath = `/projects-archive/${project.slug}${
         newSearch.length > 0 ? `?${newSearch}` : ''
       }`;
-      push(newPath);
+      router.push(localizedPath(newPath));
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 
@@ -184,7 +184,7 @@ export default function Donate({
         return router.query.site === singleSite?.properties.id;
       });
       if (siteIndex === -1) {
-        push(`/projects-archive/${project.slug}`);
+        router.push(localizedPath(`/projects-archive/${project.slug}`));
       } else {
         setSelectedSite(siteIndex);
       }
@@ -201,7 +201,7 @@ export default function Donate({
       );
 
       if (singleIntervention === undefined) {
-        push(`/projects-archive/${project.slug}`);
+        router.push(localizedPath(`/projects-archive/${project.slug}`));
       } else {
         setSelectedPl(singleIntervention);
       }

@@ -42,7 +42,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { getAddressFromCoordinates } from '../../../../utils/geocoder';
 
 type BaseFormData = {
@@ -98,6 +98,14 @@ type ConservationProjectApiPayload = BaseProjectApiPayload & {
 
 type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
+const defaultMapCenter = [0, 0];
+const defaultZoom = 1.4;
+const EMPTY_STYLE = {
+  version: 8,
+  sources: {},
+  layers: [],
+};
+
 export default function BasicDetails({
   handleNext,
   projectDetails,
@@ -108,21 +116,17 @@ export default function BasicDetails({
 }: BasicDetailsProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
-  const EMPTY_STYLE = {
-    version: 8,
-    sources: {},
-    layers: [],
-  };
-  const { push } = useLocalizedRouter();
+  const mapRef = useRef(null);
+  const { theme } = useContext(ThemeContext);
+  const { putApiAuthenticated, postApiAuthenticated } = useApi();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+
+  const [acceptDonations, setAcceptDonations] = useState(false);
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     React.useState<boolean>(false);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  // Map setup
-  const { theme } = useContext(ThemeContext);
-  const { putApiAuthenticated, postApiAuthenticated } = useApi();
-  const defaultMapCenter = [0, 0];
-  const defaultZoom = 1.4;
-  const mapRef = useRef(null);
   const [style, setStyle] = useState(EMPTY_STYLE);
   const [viewport, setViewPort] = useState<ViewPort>({
     width: 760,
@@ -131,9 +135,7 @@ export default function BasicDetails({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  const router = useRouter();
-
-  const { setErrors } = useContext(ErrorHandlingContext);
+  const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
   useEffect(() => {
     //loads the default mapstyle
@@ -145,8 +147,6 @@ export default function BasicDetails({
     }
     loadMapStyle();
   }, []);
-
-  const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
   const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
     const latNumericValue = Number(e.target.value);
@@ -261,7 +261,7 @@ export default function BasicDetails({
     mode: 'onBlur',
     defaultValues: defaultBasicDetails,
   });
-  const [acceptDonations, setAcceptDonations] = useState(false);
+
   //if project is already had created then user can visit to  other forms using skip button
   useEffect(() => {
     if (projectDetails?.id) {
@@ -388,7 +388,7 @@ export default function BasicDetails({
         >(`/app/projects`, { payload: projectPayload });
         setProjectGUID(res.id);
         setProjectDetails(res);
-        push(`/profile/projects/${res.id}?type=media`);
+        router.push(localizedPath(`/profile/projects/${res.id}?type=media`));
         setIsUploadingData(false);
       } catch (err) {
         setIsUploadingData(false);

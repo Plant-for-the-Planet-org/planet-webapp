@@ -32,7 +32,7 @@ import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
-import useLocalizedRouter from '../../../../../../../src/hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -42,7 +42,7 @@ export default function BulkCodeIssueCodesPage({
   pageProps,
 }: Props): ReactElement {
   const router = useRouter();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
   const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
@@ -90,7 +90,7 @@ export default function BulkCodeIssueCodesPage({
             redirect('/');
           }
         } else {
-          push('/profile/bulk-codes');
+          router.push(localizedPath('/profile/bulk-codes'));
         }
       }
 
@@ -103,7 +103,7 @@ export default function BulkCodeIssueCodesPage({
           ) {
             setBulkMethod(_bulkMethod);
           } else {
-            push('/profile/bulk-codes');
+            router.push(localizedPath('/profile/bulk-codes'));
           }
         }
       }

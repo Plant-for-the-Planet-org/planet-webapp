@@ -17,12 +17,12 @@ import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
-  const { push } = useLocalizedRouter();
+  const { localizedPath } = useLocalizedPath();
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
@@ -59,7 +59,7 @@ const EditBankAccount = (): ReactElement | null => {
       setIsAccountUpdated(true);
       // go to accounts tab
       setTimeout(() => {
-        push('/profile/payouts');
+        router.push(localizedPath('/profile/payouts'));
       }, 3000);
     } catch (err) {
       setIsProcessing(false);
@@ -124,7 +124,7 @@ const EditBankAccount = (): ReactElement | null => {
             },
           ]);
         }
-        push('/profile/payouts');
+        router.push(localizedPath('/profile/payouts'));
       }
     }
   }, [accounts, router.query.id]);

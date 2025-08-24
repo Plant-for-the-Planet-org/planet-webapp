@@ -24,16 +24,16 @@ import FiberPinIcon from '@mui/icons-material/FiberPin';
 import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
-import useLocalizedRouter from '../../../../hooks/useLocalizedRouter';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const UserLayout: FC = ({ children }) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
     useUserProps();
-  const { push } = useLocalizedRouter();
   // Navigation structure with keys, paths, and submenu configurations
   // Flags can be added to show labels on the right
   const navLinks: NavLinkType[] = useMemo(
@@ -296,7 +296,7 @@ const UserLayout: FC = ({ children }) => {
       // Redirect user to desired page after login
       if (!user) {
         if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
-        push('/login');
+        router.push(localizedPath('/login'));
       }
     }
   }, [contextLoaded, user, router]);
