@@ -92,10 +92,10 @@ export default function SeaOfTrees() {
             <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
               <h3>How can you help?</h3>
               <p>
-                Just <a href="/">click here</a> to see what tree project you’d
-                like to support today. Then look for your donation on the
-                Donation Tracker below and spread the word to your family,
-                friends, colleagues, and network.
+                Just <Link href={localizedPath('/')}>click here</Link> to see
+                what tree project you’d like to support today. Then look for
+                your donation on the Donation Tracker below and spread the word
+                to your family, friends, colleagues, and network.
               </p>
             </div>
           </div>
