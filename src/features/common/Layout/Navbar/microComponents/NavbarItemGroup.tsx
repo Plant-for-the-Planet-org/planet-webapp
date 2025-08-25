@@ -18,6 +18,7 @@ import {
   stripSitesSlugLocale,
 } from '../../../../../utils/navbarUtils';
 import { useMemo } from 'react';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 
 type NavbarItemProps = {
   navbarItem: HeaderItem;
@@ -45,6 +46,7 @@ const NavbarItemGroup = ({
 
   const { primaryColor } = themeProperties.designSystem.colors;
   const tNavbarItem = useTranslations('Common');
+  const { localizedPath } = useLocalizedPath();
   const router = useRouter();
 
   const isNavMenuOpen = openMenuKey === navbarItem.headerKey;
@@ -81,7 +83,7 @@ const NavbarItemGroup = ({
         onMouseLeave={handleMouseLeave}
       >
         {navbarItem.link ? (
-          <Link href={navbarItem.link} prefetch={false}>
+          <Link href={localizedPath(navbarItem.link)} prefetch={false}>
             <span className={activeNavbarItemStyles}>
               {tNavbarItem(navbarItem.headerText as NavbarItemTitleKey)}
             </span>

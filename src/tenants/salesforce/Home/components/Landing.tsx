@@ -1,6 +1,7 @@
 import styles from './../styles/Landing.module.scss';
 import TreeCounter from '../../TreeCounter';
 import Link from 'next/link';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 interface Props {
   tenantScore: any;
@@ -9,6 +10,7 @@ export default function Landing(tenantScore: Props) {
   const tenantScoreData = tenantScore.tenantScore
     ? tenantScore.tenantScore.total
     : '';
+  const { localizedPath } = useLocalizedPath();
   return (
     <section className={styles.landingSection}>
       <div className={styles.landingContent}>
@@ -19,7 +21,7 @@ export default function Landing(tenantScore: Props) {
             Salesforce is helping to fund the conservation, restoration & growth
             of 100,000,000 trees by 2030.
           </p>
-          <Link href="/">
+          <Link href={localizedPath('/')}>
             <button>Help us get there</button>
           </Link>
           <p className={styles.footnote}>

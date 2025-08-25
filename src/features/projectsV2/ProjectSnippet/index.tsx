@@ -25,6 +25,7 @@ import {
   getProjectCategory,
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 interface Props {
   project:
@@ -157,6 +158,7 @@ export default function ProjectSnippet({
   const { embed, callbackUrl } = useContext(ParamsContext);
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
@@ -175,11 +177,7 @@ export default function ProjectSnippet({
   };
 
   const projectPath = useMemo(() => {
-    let path = `/${locale}${generateProjectLink(
-      project.slug,
-      router.asPath,
-      locale
-    )}`;
+    let path = generateProjectLink(project.slug, router.asPath);
     const params = new URLSearchParams();
 
     if (embed === 'true') {
@@ -194,7 +192,7 @@ export default function ProjectSnippet({
       path += `${path.includes('?') ? '&' : '?'}${paramsString}`;
 
     return path;
-  }, [locale, project.slug, embed, callbackUrl, router.asPath]);
+  }, [project.slug, embed, callbackUrl, router.asPath]);
 
   // The useEffect hook checks if the backNavigationUrl query parameter exists and is a string, and if so,
   // it decodes this value and stores it in session storage
@@ -215,7 +213,7 @@ export default function ProjectSnippet({
         {page === 'project-details' ? (
           <ProjectSnippetContent {...ProjectSnippetContentProps} />
         ) : (
-          <Link href={projectPath} style={{ cursor: 'pointer' }}>
+          <Link href={localizedPath(projectPath)} style={{ cursor: 'pointer' }}>
             <ProjectSnippetContent {...ProjectSnippetContentProps} />
           </Link>
         )}

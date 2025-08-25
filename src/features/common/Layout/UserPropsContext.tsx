@@ -8,7 +8,6 @@ import type { SetState } from '../types/common';
 import type { ImpersonationData } from '../../../utils/apiRequests/impersonation';
 
 import { useAuth0 } from '@auth0/auth0-react';
-import { useRouter } from 'next/router';
 import {
   createContext,
   useCallback,
@@ -17,10 +16,12 @@ import {
   useState,
 } from 'react';
 import { useTenant } from './TenantContext';
-import { useLocale } from 'next-intl';
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
+import { useLocale } from 'next-intl';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -60,6 +61,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   } = useAuth0();
   const router = useRouter();
   const locale = useLocale();
+  const { localizedPath } = useLocalizedPath();
   const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -149,7 +151,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         switch (err.statusCode) {
           case 303:
             setUser(null);
-            router.push('/complete-signup');
+            router.push(localizedPath('/complete-signup'));
             break;
           case 401:
             setUser(null);

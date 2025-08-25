@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 export default function SeaOfTrees() {
+  const { localizedPath } = useLocalizedPath();
   return (
     <div>
       <div className={`${styles.seaOfTreesContainer}`}>
@@ -47,7 +49,7 @@ export default function SeaOfTrees() {
                 forests globally. Learn more about Salesforce’s mangrove journey
                 and discover opportunities to join the movement here.
               </p>
-              <Link href="/mangroves">
+              <Link href={localizedPath('/mangroves')}>
                 <button>Learn More</button>
               </Link>
             </div>
@@ -90,10 +92,10 @@ export default function SeaOfTrees() {
             <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
               <h3>How can you help?</h3>
               <p>
-                Just <a href="/">click here</a> to see what tree project you’d
-                like to support today. Then look for your donation on the
-                Donation Tracker below and spread the word to your family,
-                friends, colleagues, and network.
+                Just <Link href={localizedPath('/')}>click here</Link> to see
+                what tree project you’d like to support today. Then look for
+                your donation on the Donation Tracker below and spread the word
+                to your family, friends, colleagues, and network.
               </p>
             </div>
           </div>

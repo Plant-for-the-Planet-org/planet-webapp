@@ -2,6 +2,7 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../common/types/planetcash';
 import type { ReactElement } from 'react';
+
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
@@ -12,9 +13,10 @@ import Transactions from './screens/Transactions';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
-import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -33,13 +35,15 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const t = useTranslations('PlanetCash');
   const { getApiAuthenticated } = useApi();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
-  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
+
+  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
-  const router = useRouter();
 
   const sortAccountsByActive = (
     accounts: PlanetCashAccount[]
@@ -60,13 +64,13 @@ export default function PlanetCash({
       switch (step) {
         case PlanetCashTabs.CREATE_ACCOUNT:
           if (accounts.length) {
-            router.push('/profile/planetcash');
+            router.push(localizedPath('/profile/planetcash'));
           }
           break;
         case PlanetCashTabs.ACCOUNTS:
         case PlanetCashTabs.TRANSACTIONS:
           if (!accounts.length) {
-            router.push('/profile/planetcash/new');
+            router.push(localizedPath('/profile/planetcash/new'));
           }
           break;
         default:

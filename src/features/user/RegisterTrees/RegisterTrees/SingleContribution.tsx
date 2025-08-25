@@ -3,7 +3,6 @@ import type { Image } from '@planet-sdk/common';
 import type { Point, Polygon } from 'geojson';
 
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import React from 'react';
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
@@ -12,6 +11,8 @@ import { useTranslations } from 'next-intl';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export interface ContributionProperties {
   contributionImages: Image[];
@@ -41,6 +42,8 @@ export default function SingleContribution({
   contributionGUID,
 }: SingleContributionProps): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+
   const UploadProps = {
     contributionGUID,
   };
@@ -77,7 +80,7 @@ export default function SingleContribution({
       </div>
       <Button
         id={'singleControCont'}
-        onClick={() => router.push('/profile')}
+        onClick={() => router.push(localizedPath('/profile'))}
         variant="contained"
         color="primary"
         style={{ maxWidth: '100px', marginTop: '24px' }}

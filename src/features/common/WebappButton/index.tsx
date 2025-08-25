@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import Link from 'next/link';
 import { prefetchManager } from '../../../utils/prefetchManager';
 import styles from './WebappButton.module.scss';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 interface CommonProps {
   icon?: ReactElement;
@@ -32,7 +33,7 @@ function WebappButton({
   ...otherProps
 }: WebappButtonProps): ReactElement {
   const buttonVariantClasses = styles[`${variant}WebappButton`];
-
+  const { localizedPath } = useLocalizedPath();
   const isExternalURL = (url: string) => {
     try {
       if (url.match(/^https?:\/\//)) {
@@ -84,7 +85,7 @@ function WebappButton({
 
     return (
       <Link
-        href={otherProps.href}
+        href={localizedPath(otherProps.href)}
         target={otherProps.target || '_self'}
         className={styles.webappButtonLink}
         onClick={(e) => e.stopPropagation()}

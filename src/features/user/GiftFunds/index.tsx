@@ -5,12 +5,14 @@ import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const GiftFunds = () => {
   const t = useTranslations('GiftFunds');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { user } = useUserProps();
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const GiftFunds = () => {
       user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
         .length === 0
     )
-      router.push('/profile');
+      router.push(localizedPath('/profile'));
   }, [user]);
 
   const [validGiftFunds, setValidGiftFunds] = useState<GiftFund[] | null>(null);

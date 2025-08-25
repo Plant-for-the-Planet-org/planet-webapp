@@ -2,11 +2,11 @@ import type { User } from '@planet-sdk/common';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import { useState, useEffect } from 'react';
-import { useLocale } from 'next-intl';
-import router from 'next/router';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import IconContainer from './IconContainer';
 import styles from './UserLayout.module.scss';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export interface SubMenuItemType {
   key: string;
@@ -72,9 +72,9 @@ function NavLink({
   user,
   closeMenu,
 }: NavLinkProps) {
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const locale = useLocale();
-
   // Determine if this is the current menu item (based on route)
   const isCurrentMainMenu = currentMenuKey === link.key;
 
@@ -104,11 +104,10 @@ function NavLink({
 
     // Check if this menu item should navigate directly (no submenu interaction)
     const shouldNavigateDirectly =
-      link.path !== undefined &&
-      (!link.subMenu || link.subMenu.length <= 0 || link.hideSubMenu);
+      !link.subMenu || link.subMenu.length <= 0 || link.hideSubMenu;
 
-    if (shouldNavigateDirectly) {
-      router.push(`/${locale}${link.path}`);
+    if (shouldNavigateDirectly && link.path) {
+      router.push(localizedPath(link.path));
       setCurrentMenuKey(link.key);
       setCurrentSubMenuKey('');
       closeMenu();
@@ -122,7 +121,7 @@ function NavLink({
   const handleSubMenuClick = (subMenuItem: SubMenuItemType) => {
     setCurrentMenuKey(link.key);
     setCurrentSubMenuKey(subMenuItem.key);
-    router.push(`/${locale}${subMenuItem.path}`);
+    router.push(localizedPath(subMenuItem.path));
     closeMenu();
   };
 

@@ -16,6 +16,7 @@ import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -37,6 +38,7 @@ export default function ManagePayouts({
   const t = useTranslations('ManagePayouts');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { token, contextLoaded, user } = useUserProps();
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
@@ -82,7 +84,7 @@ export default function ManagePayouts({
     if (user?.type === 'tpo') {
       if (contextLoaded && token) fetchAccounts();
     } else {
-      router.push('/profile');
+      router.push(localizedPath('/profile'));
     }
   }, [contextLoaded, token, user]);
 

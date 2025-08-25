@@ -14,6 +14,7 @@ import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/
 import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import {
   constructPathsForTenantSlug,
@@ -31,9 +32,9 @@ function TreeMapperAnalytics({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('TreemapperAnalytics');
-
   const { user } = useUserProps();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
 
   React.useEffect(() => {
@@ -45,7 +46,7 @@ function TreeMapperAnalytics({
   useEffect(() => {
     if (user) {
       if (!(process.env.ENABLE_ANALYTICS && user.type === 'tpo')) {
-        router.push('/profile');
+        router.push(localizedPath('/profile'));
       }
     }
   }, [user]);
