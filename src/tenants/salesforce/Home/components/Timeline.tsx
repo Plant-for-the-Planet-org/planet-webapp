@@ -2,65 +2,67 @@ import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+
+const moments = [
+  {
+    id: 1,
+    date: 'January 2020',
+    image: '/tenants/salesforce/images/jan-20.png',
+    title: '1t.org Created & 100m Tree Commitment',
+    copy: 'Salesforce partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
+    learnMore:
+      'https://www.salesforce.com/news/stories/one-trillion-trees-to-combat-climate-change-why-its-not-so-outlandish/',
+  },
+  {
+    id: 2,
+    date: 'July 2020',
+    image: '/tenants/salesforce/images/july-20.png',
+    title: 'UpLink Trillion Tree Challenge',
+    copy: 'The World Economic Forum launched the Trillion Trees Challenge on UpLink, a platform built on Salesforce technology to connect the next generation of change-makers to resources, professional expertise, and capital to create an impact.',
+    learnMore:
+      'https://uplink.weforum.org/uplink/s/uplink-issue/a002o00000vOf09AAC/trillion-trees',
+  },
+  {
+    id: 3,
+    date: 'August 2020',
+    image: '/tenants/salesforce/images/aug-20.png',
+    title: '1t.org US Chapter',
+    copy: 'The <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> U.S. Chapter launched with 26 companies, nonprofit organizations, and governments pledging to conserve, restore, and grow almost one billion trees by 2030.',
+    learnMore: 'https://us.1t.org/view-pledges/',
+  },
+  {
+    id: 4,
+    date: 'September 2020',
+    image: '/tenants/salesforce/images/sept-20.png',
+    title: ' Salesforce’s Tree Tracker',
+    copy: 'The tree tracker is an essential piece of our work to share resources and provide transparency to our stakeholders.',
+    learnMore:
+      'https://www.salesforce.com/news/stories/salesforce-partners-with-plant-for-the-planet-to-spotlight-global-reforestation-projects-and-track-progress-towards-100-million-tree-goal/',
+  },
+  {
+    id: 5,
+    date: 'March 2021',
+    image: '/tenants/salesforce/images/march-21.png',
+    title: '10M Trees Milestone',
+    copy: 'With our TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!',
+    learnMore:
+      'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/',
+  },
+  {
+    id: 6,
+    date: 'September 2021',
+    image: '/tenants/salesforce/images/sept-21.png',
+    title: 'Mangrove Working Group',
+    copy: 'Led by Friends of Ocean Action in collaboration with <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a>, this working group will build the capacity of demand-side stakeholders to tap into the growing blue carbon market. Salesforce joins to champion the effort and learn from the work.',
+    learnMore: '',
+  },
+];
 
 export default function Timeline() {
+  const { localizedPath } = useLocalizedPath();
   const [desktopCurrent, setDesktopCurrent] = useState(0);
   const [mobileCurrent, setMobileCurrent] = useState(0);
-
-  const moments = [
-    {
-      id: 1,
-      date: 'January 2020',
-      image: '/tenants/salesforce/images/jan-20.png',
-      title: '1t.org Created & 100m Tree Commitment',
-      copy: 'Salesforce partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
-      learnMore:
-        'https://www.salesforce.com/news/stories/one-trillion-trees-to-combat-climate-change-why-its-not-so-outlandish/',
-    },
-    {
-      id: 2,
-      date: 'July 2020',
-      image: '/tenants/salesforce/images/july-20.png',
-      title: 'UpLink Trillion Tree Challenge',
-      copy: 'The World Economic Forum launched the Trillion Trees Challenge on UpLink, a platform built on Salesforce technology to connect the next generation of change-makers to resources, professional expertise, and capital to create an impact.',
-      learnMore:
-        'https://uplink.weforum.org/uplink/s/uplink-issue/a002o00000vOf09AAC/trillion-trees',
-    },
-    {
-      id: 3,
-      date: 'August 2020',
-      image: '/tenants/salesforce/images/aug-20.png',
-      title: '1t.org US Chapter',
-      copy: 'The <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> U.S. Chapter launched with 26 companies, nonprofit organizations, and governments pledging to conserve, restore, and grow almost one billion trees by 2030.',
-      learnMore: 'https://us.1t.org/view-pledges/',
-    },
-    {
-      id: 4,
-      date: 'September 2020',
-      image: '/tenants/salesforce/images/sept-20.png',
-      title: ' Salesforce’s Tree Tracker',
-      copy: 'The tree tracker is an essential piece of our work to share resources and provide transparency to our stakeholders.',
-      learnMore:
-        'https://www.salesforce.com/news/stories/salesforce-partners-with-plant-for-the-planet-to-spotlight-global-reforestation-projects-and-track-progress-towards-100-million-tree-goal/',
-    },
-    {
-      id: 5,
-      date: 'March 2021',
-      image: '/tenants/salesforce/images/march-21.png',
-      title: '10M Trees Milestone',
-      copy: 'With our TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!',
-      learnMore:
-        'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/',
-    },
-    {
-      id: 6,
-      date: 'September 2021',
-      image: '/tenants/salesforce/images/sept-21.png',
-      title: 'Mangrove Working Group',
-      copy: 'Led by Friends of Ocean Action in collaboration with <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a>, this working group will build the capacity of demand-side stakeholders to tap into the growing blue carbon market. Salesforce joins to champion the effort and learn from the work.',
-      learnMore: '',
-    },
-  ];
 
   const populateSlide = (slides, slideIndex) => {
     return (
@@ -159,7 +161,9 @@ export default function Timeline() {
       <div>
         <div className={`${gridStyles.fluidContainer} ${styles.timelineRow}`}>
           <Link
-            href={`#desktop-timeline-moment-${desktopCurrent - 1}`}
+            href={localizedPath(
+              `#desktop-timeline-moment-${desktopCurrent - 1}`
+            )}
             scroll={false}
           >
             <button
@@ -176,7 +180,7 @@ export default function Timeline() {
             </button>
           </Link>
           <Link
-            href={`#mobile-timeline-moment-${mobileCurrent - 1}`}
+            href={localizedPath(`#mobile-timeline-moment-${mobileCurrent - 1}`)}
             scroll={false}
           >
             <button
@@ -225,7 +229,7 @@ export default function Timeline() {
           <div className={styles.timelineDesktopNav}>{desktopDots()}</div>
           <div className={styles.timelineMobileNav}>{mobileDots()}</div>
           <Link
-            href={`#mobile-timeline-moment-${mobileCurrent + 1}`}
+            href={localizedPath(`#mobile-timeline-moment-${mobileCurrent + 1}`)}
             scroll={false}
           >
             <button
@@ -242,7 +246,9 @@ export default function Timeline() {
             </button>
           </Link>
           <Link
-            href={`#desktop-timeline-moment-${desktopCurrent + 1}`}
+            href={localizedPath(
+              `#desktop-timeline-moment-${desktopCurrent + 1}`
+            )}
             scroll={false}
           >
             <button

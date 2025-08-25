@@ -32,6 +32,7 @@ import {
 import isAbsoluteUrl from '../../../../../utils/isAbsoluteUrl';
 import { doesLinkMatchPath } from '../../../../../utils/navbarUtils';
 import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 
 const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
   platform: <PlatformIcon />,
@@ -80,6 +81,7 @@ const NavbarMenuItem = ({
 
   const router = useRouter();
   const locale = useLocale();
+  const { localizedPath } = useLocalizedPath();
 
   const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
   const titleTranslation = tNavbarMenuItem(title as MenuItemTitle);
@@ -107,7 +109,9 @@ const NavbarMenuItem = ({
     : null;
 
   const href =
-    isExternal && isPlanetDomain(link) ? addLocaleToUrl(link, locale) : link;
+    isExternal && isPlanetDomain(link)
+      ? addLocaleToUrl(link, locale)
+      : localizedPath(link);
 
   return isExternal ? (
     <a

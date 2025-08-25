@@ -312,15 +312,11 @@ export const centerMapOnCoordinates = (
 
 export const generateProjectLink = (
   projectGuid: string,
-  routerAsPath: string, //e.g. /en/yucatan, /en
-  locale: string //e.g. en
+  routerAsPath: string //e.g. /en/yucatan, /en
 ) => {
-  const nonLocalizedPath =
-    routerAsPath === `/${locale}`
-      ? '/'
-      : routerAsPath.replace(`/${locale}`, '');
+  // just use routerAsPath as-is, let localizedPath handle locale stripping
   return `/${projectGuid}?backNavigationUrl=${encodeURIComponent(
-    nonLocalizedPath
+    routerAsPath
   )}`;
 };
 
