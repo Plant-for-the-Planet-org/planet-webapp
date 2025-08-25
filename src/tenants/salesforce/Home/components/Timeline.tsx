@@ -2,7 +2,6 @@ import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const moments = [
   {
@@ -60,7 +59,6 @@ const moments = [
 ];
 
 export default function Timeline() {
-  const { localizedPath } = useLocalizedPath();
   const [desktopCurrent, setDesktopCurrent] = useState(0);
   const [mobileCurrent, setMobileCurrent] = useState(0);
 
@@ -161,9 +159,7 @@ export default function Timeline() {
       <div>
         <div className={`${gridStyles.fluidContainer} ${styles.timelineRow}`}>
           <Link
-            href={localizedPath(
-              `#desktop-timeline-moment-${desktopCurrent - 1}`
-            )}
+            href={`#desktop-timeline-moment-${desktopCurrent - 1}`}
             scroll={false}
           >
             <button
@@ -180,7 +176,7 @@ export default function Timeline() {
             </button>
           </Link>
           <Link
-            href={localizedPath(`#mobile-timeline-moment-${mobileCurrent - 1}`)}
+            href={`#mobile-timeline-moment-${mobileCurrent - 1}`}
             scroll={false}
           >
             <button
@@ -229,7 +225,7 @@ export default function Timeline() {
           <div className={styles.timelineDesktopNav}>{desktopDots()}</div>
           <div className={styles.timelineMobileNav}>{mobileDots()}</div>
           <Link
-            href={localizedPath(`#mobile-timeline-moment-${mobileCurrent + 1}`)}
+            href={`#mobile-timeline-moment-${mobileCurrent + 1}`}
             scroll={false}
           >
             <button
@@ -246,9 +242,7 @@ export default function Timeline() {
             </button>
           </Link>
           <Link
-            href={localizedPath(
-              `#desktop-timeline-moment-${desktopCurrent + 1}`
-            )}
+            href={`#desktop-timeline-moment-${desktopCurrent + 1}`}
             scroll={false}
           >
             <button

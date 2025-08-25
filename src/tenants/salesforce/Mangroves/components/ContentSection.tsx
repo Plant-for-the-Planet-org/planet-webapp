@@ -48,7 +48,7 @@ export default function ContentSection() {
                 <MangroveMapIcon /> View Project Map
               </button>
             </Link>
-            <Link href={localizedPath('#project-grid')}>
+            <Link href={'#project-grid'}>
               <button className={styles.projectListButton}>
                 <ViewIcon /> View Project List
               </button>
