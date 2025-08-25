@@ -111,7 +111,7 @@ const NavbarMenuItem = ({
   const href =
     isExternal && isPlanetDomain(link)
       ? addLocaleToUrl(link, locale)
-      : localizedPath(link);
+      : localizedPath(link.startsWith('/') ? link : `/${link}`);
 
   return isExternal ? (
     <a
