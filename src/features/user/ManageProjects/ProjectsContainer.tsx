@@ -125,6 +125,7 @@ export default function ProjectsContainer() {
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, token } = useUserProps();
+  const { localizedPath } = useLocalizedPath();
   async function loadProjects() {
     if (user) {
       try {
@@ -158,7 +159,7 @@ export default function ProjectsContainer() {
     >
       <SingleColumnView>
         <div className={styles.headerCTAs}>
-          <Link href="/profile/projects/new-project">
+          <Link href={localizedPath('/profile/projects/new-project')}>
             <button
               // id={'addProjectBut'}
               className="primaryButton"
@@ -166,7 +167,7 @@ export default function ProjectsContainer() {
               {tManageProjects('addProject')}
             </button>
           </Link>
-          <Link href="/profile/payouts">
+          <Link href={localizedPath('/profile/payouts')}>
             <button className="primaryButton">
               {tManageProjects('managePayoutsButton')}
             </button>
