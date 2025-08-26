@@ -21,7 +21,6 @@ import type {
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
 import centroid from '@turf/centroid';
-import { removeLocaleFromPath } from './getLocalizedPath';
 
 type MetaDataValue = {
   value: string;
