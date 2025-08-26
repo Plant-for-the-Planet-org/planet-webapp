@@ -6,8 +6,9 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
-// TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
+// TODO - See if something can be made common between accounts of Manage Accounts and Planet Cash
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: 24,
@@ -48,6 +49,7 @@ const BankAccountDetails = ({
   const tCountry = useTranslations('Country');
   const tManagePayouts = useTranslations('ManagePayouts');
   const locale = useLocale();
+  const { localizedPath } = useLocalizedPath();
 
   const renderAccountTitle = () => {
     const { currency } = account;
@@ -139,7 +141,11 @@ const BankAccountDetails = ({
           <div className="detailInfo">{account.remarks || '-'}</div>
         </Grid>
         <Grid item xs={12}>
-          <Link href={`/profile/payouts/edit-bank-details/${account.id}`}>
+          <Link
+            href={localizedPath(
+              `/profile/payouts/edit-bank-details/${account.id}`
+            )}
+          >
             <Button>{tManagePayouts('editAccountButton')}</Button>
           </Link>
         </Grid>

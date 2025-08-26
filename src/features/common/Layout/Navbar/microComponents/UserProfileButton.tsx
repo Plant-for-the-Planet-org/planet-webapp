@@ -1,12 +1,13 @@
 import getImageUrl from '../../../../../utils/getImageURL';
 import { useUserProps } from '../../UserPropsContext';
-import { useRouter } from 'next/router';
 import { useAuth0 } from '@auth0/auth0-react';
 import DefaultProfileImageIcon from '../../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import SignInButton from './SignInButton';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from '../Navbar.module.scss';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const ProfileIconSkeleton = () => {
   return (
@@ -19,6 +20,7 @@ const ProfileIconSkeleton = () => {
 const UserProfileButton = () => {
   const { user } = useUserProps();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
@@ -36,7 +38,7 @@ const UserProfileButton = () => {
   return (
     <button
       className={styles.profileImageButton}
-      onClick={() => router.push(`/profile`)}
+      onClick={() => router.push(localizedPath('/profile'))}
     >
       {user.image ? (
         <img src={getImageUrl('profile', 'thumb', user.image)} alt="Profile" />

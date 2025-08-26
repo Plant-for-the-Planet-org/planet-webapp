@@ -13,8 +13,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/Intervention/ImageSlider'),
@@ -390,7 +391,7 @@ export default function InterventionPage({
   interventions,
 }: Props): ReactElement {
   const router = useRouter();
-
+  const { localizedPath } = useLocalizedPath();
   const handleBackButton = () => {
     if (selectedIntervention?.type === 'sample-tree-registration') {
       for (const iKey in interventions) {
@@ -404,7 +405,7 @@ export default function InterventionPage({
         }
       }
     } else {
-      router.replace('/profile/treemapper');
+      router.replace(localizedPath('/profile/treemapper'));
     }
   };
 

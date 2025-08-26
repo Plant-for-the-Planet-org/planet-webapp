@@ -15,6 +15,7 @@ import TransferDetails from './TransferDetails';
 import Downloads, { canHaveCertificates } from './Downloads';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../../utils/projectV2';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 interface HeaderProps {
   record: PaymentHistoryRecord;
@@ -105,6 +106,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   const tCommon = useTranslations('Common');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   return (
     <>
       {record.status && (
@@ -173,10 +175,8 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           {record.projectGuid ? (
             <a
               title={record.details.project}
-              href={generateProjectLink(
-                record.projectGuid,
-                router.asPath,
-                locale
+              href={localizedPath(
+                generateProjectLink(record.projectGuid, router.asPath)
               )}
             >
               {record.details.project.length > 42

@@ -2,7 +2,6 @@ import type { ReactElement } from 'react';
 import type { SelectorOptionProps } from '../components/SelectorOption';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import SelectorOption from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';
@@ -12,9 +11,10 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const CreationMethodForm = (): ReactElement | null => {
-  const router = useRouter();
   const {
     bulkMethod,
     setBulkMethod,
@@ -26,6 +26,8 @@ const CreationMethodForm = (): ReactElement | null => {
   const tCommon = useTranslations('Common');
   const tBulkCodes = useTranslations('BulkCodes');
   const { user } = useUserProps();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const selectorOptions: SelectorOptionProps[] = [
     {
@@ -74,7 +76,7 @@ const CreationMethodForm = (): ReactElement | null => {
       }
     }
     setBulkMethod(method);
-    router.push(`/profile/bulk-codes/${method}`);
+    router.push(localizedPath(`/profile/bulk-codes/${method}`));
   };
 
   return (

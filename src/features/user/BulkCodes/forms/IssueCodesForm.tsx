@@ -18,7 +18,6 @@ import React, {
 import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
-import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
@@ -35,11 +34,14 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const {
     project,
     setProject,
@@ -161,7 +163,7 @@ const IssueCodesForm = (): ReactElement | null => {
           setIsSubmitted(true);
           setRefetchUserData(true);
           setTimeout(() => {
-            router.push(`/profile/history?ref=${res.uid}`);
+            router.push(localizedPath(`/profile/history?ref=${res.uid}`));
           }, 5000);
         }
       } catch (err) {

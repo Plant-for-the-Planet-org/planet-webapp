@@ -14,7 +14,7 @@ import { selectUserType } from '../../../../utils/selectUserType';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   MuiAutoComplete,
@@ -25,11 +25,12 @@ import { handleError } from '@planet-sdk/common';
 import Delete from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import { useRouter } from 'next/router';
 import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 type ProfileFormData = {
   address: string;
@@ -62,14 +63,28 @@ type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
 };
 
 export default function EditProfileForm() {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } = useUserProps();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
   const t = useTranslations('EditProfile');
-  const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated } = useApi();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [updatingPic, setUpdatingPic] = React.useState(false);
+  // the form values
+  const [severity, setSeverity] = useState<AlertColor>('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('OK');
+  const [type, setAccountType] = useState(
+    user?.type ? user.type : 'individual'
+  );
+  const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
+    id: 1,
+    title: t('individual'),
+    value: 'individual',
+  });
+
   const defaultProfileDetails = useMemo(() => {
     return {
       firstname: user?.firstname ? user.firstname : '',
@@ -87,7 +102,6 @@ export default function EditProfileForm() {
       exposeCommunity: user?.exposeCommunity === true ? true : false,
     };
   }, [user]);
-
   const {
     handleSubmit,
     control,
@@ -114,20 +128,6 @@ export default function EditProfileForm() {
   React.useEffect(() => {
     reset(defaultProfileDetails);
   }, [defaultProfileDetails]);
-
-  const [updatingPic, setUpdatingPic] = React.useState(false);
-
-  // the form values
-  const [severity, setSeverity] = useState<AlertColor>('success');
-  const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const [type, setAccountType] = useState(
-    user?.type ? user.type : 'individual'
-  );
-  const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
-    id: 1,
-    title: t('individual'),
-    value: 'individual',
-  });
 
   const profileTypes: ProfileTypeOption[] = [
     {
@@ -585,7 +585,7 @@ export default function EditProfileForm() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            router.push(`/${locale}/t/${user?.slug}`);
+            router.push(localizedPath(`/t/${user?.slug}`));
           }}
           className={styles.viewPublicProfileButton}
         >
