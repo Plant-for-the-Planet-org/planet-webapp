@@ -157,8 +157,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                     >
                       <Link
                         prefetch={false}
-                        href="/t/[id]"
-                        as={localizedPath(`/t/${option.slug}`)}
+                        href={localizedPath(`/t/${option.slug}`)}
                         className={styles['autocomplete-option']}
                       >
                         <div

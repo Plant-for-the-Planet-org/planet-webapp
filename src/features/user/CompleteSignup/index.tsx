@@ -147,10 +147,6 @@ export default function CompleteSignup(): ReactElement | null {
       // successful signup -> go to me page
       setUser(res);
       handleSnackbarOpen();
-
-      if (typeof window !== 'undefined') {
-        router.push('/t/[id]', localizedPath(`/t/${res.slug}`));
-      }
     } catch (err) {
       setIsProcessing(false);
       setErrors(handleError(err as APIError));
