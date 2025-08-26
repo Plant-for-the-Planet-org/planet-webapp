@@ -72,7 +72,9 @@ function WebappButton({
           onMouseEnter={handleMouseEnter}
         >
           <button
-            className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
+            className={`${styles.webappButton} ${buttonVariantClasses} ${
+              otherProps.buttonClasses ? otherProps.buttonClasses : ''
+            }`}
           >
             {otherProps.icon !== undefined && (
               <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
@@ -94,7 +96,9 @@ function WebappButton({
         })}
       >
         <button
-          className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
+          className={`${styles.webappButton} ${buttonVariantClasses} ${
+            otherProps.buttonClasses ? otherProps.buttonClasses : ''
+          }`}
         >
           {otherProps.icon !== undefined && (
             <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
@@ -107,7 +111,9 @@ function WebappButton({
 
   return (
     <button
-      className={`${styles.webappButton} ${buttonVariantClasses} ${otherProps.buttonClasses}`}
+      className={`${styles.webappButton} ${buttonVariantClasses} ${
+        otherProps.buttonClasses ? otherProps.buttonClasses : ''
+      }`}
       onClick={(e) => {
         e.preventDefault(); //ignores href if provided without elementType='link'
         otherProps.onClick();

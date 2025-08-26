@@ -51,9 +51,7 @@ export default function ReviewSubmit({
       ) : (
         <>
           <div className={styles.stepTitle}>{tTreemapper('summary')}</div>
-          <div className={styles.stepDescription}>
-            {tTreemapper('reviewSubmitDescription')}
-          </div>
+          <div>{tTreemapper('reviewSubmitDescription')}</div>
           {intervention ? (
             <div className={styles.stepContent}>
               <div className={styles.grid}>
@@ -112,9 +110,9 @@ export default function ReviewSubmit({
                     {intervention.sampleInterventions &&
                       intervention.sampleInterventions.map((spl, index) => {
                         return (
-                          <div key={index} className={styles.value}>
+                          <div key={index}>
                             {index + 1}.{' '}
-                            <span className={styles.link}>
+                            <span>
                               {'otherSpecies' in spl && spl.otherSpecies}
                             </span>
                             <br />

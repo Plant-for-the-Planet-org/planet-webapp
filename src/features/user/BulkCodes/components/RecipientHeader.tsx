@@ -13,7 +13,7 @@ const RecipientHeader = ({ header }: Props) => {
   const { displayText, helpText } = header;
   return (
     <TableCell>
-      <h3 className={styles.tableHeaderContent}>
+      <h3>
         {displayText}
         {helpText !== undefined && helpText.length > 0 && (
           <>

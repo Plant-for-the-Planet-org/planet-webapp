@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { useTenant } from '../TenantContext';
 import { useTheme } from '../../../../theme/themeContext';
-import styles from './Header.module.scss';
 import locales from '../../../../../public/static/localeList.json';
+import themeProperties from '../../../../theme/themeProperties';
 
 export default function Header() {
   const { tenantConfig } = useTenant();
@@ -14,10 +14,16 @@ export default function Header() {
           <link rel="manifest" href={tenantConfig.config.manifest} />
         )}
         {tenantConfig.config.font.primaryFontURL && (
-          <link href={tenantConfig.config.font.primaryFontURL} rel="stylesheet" />
+          <link
+            href={tenantConfig.config.font.primaryFontURL}
+            rel="stylesheet"
+          />
         )}
         {tenantConfig.config.font.secondaryFontURL && (
-          <link href={tenantConfig.config.font.secondaryFontURL} rel="stylesheet" />
+          <link
+            href={tenantConfig.config.font.secondaryFontURL}
+            rel="stylesheet"
+          />
         )}
         <meta
           name="viewport"
@@ -37,10 +43,15 @@ export default function Header() {
         })}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="application-name" content={tenantConfig.config.meta.title} />
+        <meta
+          name="application-name"
+          content={tenantConfig.config.meta.title}
+        />
         <meta
           name="apple-mobile-web-app-title"
-          content={tenantConfig.config.meta.appTitle || tenantConfig.config.meta.title}
+          content={
+            tenantConfig.config.meta.appTitle || tenantConfig.config.meta.title
+          }
         />
         {/* <!-- New in iOS6  alt, --> */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -104,7 +115,10 @@ export default function Header() {
           href={`/tenants/${tenantConfig.config.slug}/favicons/apple-touch-icon-180x180.png`}
         />
         {themeType === 'theme-light' ? (
-          <meta name="theme-color" content={styles.primaryColor} />
+          <meta
+            name="theme-color"
+            content={themeProperties.designSystem.colors.primaryColor}
+          />
         ) : null}
       </Head>
       <noscript>

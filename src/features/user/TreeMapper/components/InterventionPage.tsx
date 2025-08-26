@@ -167,9 +167,7 @@ export function InterventionInfo({
         )}
       {selectedIntervention.type !== 'multi-tree-registration' &&
         selectedIntervention.coordinates?.length > 0 && (
-          <div
-            className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
-          >
+          <div className={`${styles.projectImageSliderContainer}`}>
             <ImageSliderSingle
               images={selectedIntervention.coordinates}
               height={233}
@@ -416,9 +414,6 @@ export default function InterventionPage({
 
   return (
     <div className={styles.locationDetails}>
-      <div className={styles.pullUpContainer}>
-        <div className={styles.pullUpBar}></div>
-      </div>
       <div className={styles.locationNav}>
         <div onClick={handleBackButton} className={styles.backButton}>
           <BackButton />

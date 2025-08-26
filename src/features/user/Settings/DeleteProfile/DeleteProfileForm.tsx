@@ -91,9 +91,7 @@ export default function DeleteProfileForm() {
             }
           }}
         ></TextField>
-        <p className={styles.deleteConsent}>
-          {tCommon('deleteAccountConsent')}
-        </p>
+        <p>{tCommon('deleteAccountConsent')}</p>
         <p>
           <strong>{tCommon('deleteCondition')}</strong>
         </p>
