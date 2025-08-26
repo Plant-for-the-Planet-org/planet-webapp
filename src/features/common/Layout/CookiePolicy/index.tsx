@@ -3,6 +3,7 @@ import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import { useUserProps } from '../UserPropsContext';
 import { useLocale, useTranslations } from 'next-intl';
+import themeProperties from '../../../../theme/themeProperties';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
@@ -48,7 +49,7 @@ export default function CookiePolicy() {
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >
-        <CloseIcon color={styles.primaryDarkColor} />
+        <CloseIcon color={themeProperties.designSystem.colors.primaryColor} />
       </button>
       <div className={styles.cookieContent}>
         {t('privacyPolicyNotice')}{' '}

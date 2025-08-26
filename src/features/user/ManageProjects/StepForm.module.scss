@@ -238,6 +238,12 @@
   margin: 0 auto;
 }
 
+.multiSelectContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .multiSelectField {
   border-radius: 10px;
   background-color: $dsBaseGrey;

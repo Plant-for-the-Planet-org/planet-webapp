@@ -8,7 +8,7 @@ on:
   push:
     branches:
       - develop
-      - feature/update-storybook
+      - hotfix/storybook-fix-pin-webpack
 # List of jobs
 jobs:
   chromatic-deployment:

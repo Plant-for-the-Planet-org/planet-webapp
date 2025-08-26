@@ -20,6 +20,7 @@ import TabbedView from '../../common/Layout/TabbedView';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -48,7 +49,9 @@ export default function ManageProjects({
   const locale = useLocale();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated, getApiAuthenticated } = useApi();
+
   const [tabSelected, setTabSelected] = React.useState<number>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [projectGUID, setProjectGUID] = React.useState<string>(
@@ -60,34 +63,33 @@ export default function ManageProjects({
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
+
+    let path = '';
+
     switch (val) {
       case 1:
-        router.push(`/profile/projects/${projectGUID}?type=basic-details`);
-
+        path = `/profile/projects/${projectGUID}?type=basic-details`;
         break;
       case 2:
-        router.push(`/profile/projects/${projectGUID}?type=media`);
-
+        path = `/profile/projects/${projectGUID}?type=media`;
         break;
       case 3:
-        router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
-
+        path = `/profile/projects/${projectGUID}?type=detail-analysis`;
         break;
       case 4:
-        router.push(`/profile/projects/${projectGUID}?type=project-sites`);
-
+        path = `/profile/projects/${projectGUID}?type=project-sites`;
         break;
       case 5:
-        router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
-
+        path = `/profile/projects/${projectGUID}?type=project-spendings`;
         break;
       case 6:
-        router.push(`/profile/projects/${projectGUID}?type=review`);
-
+        path = `/profile/projects/${projectGUID}?type=review`;
         break;
       default:
-        break;
+        return;
     }
+
+    router.push(localizedPath(path));
   };
 
   // for moving next tab

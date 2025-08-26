@@ -14,7 +14,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "types": ["cypress", "cypress-plugin-stripe-elements"],
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
   },
   "exclude": ["node_modules"],
   "include": [

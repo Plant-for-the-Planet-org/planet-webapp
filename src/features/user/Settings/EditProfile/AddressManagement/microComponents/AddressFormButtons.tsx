@@ -17,14 +17,12 @@ const AddressFormButtons = ({ text, handleSubmit, handleCancel }: Props) => {
         variant="secondary"
         elementType="button"
         onClick={handleCancel}
-        buttonClasses={styles.cancelButton}
       />
       <WebappButton
         text={text}
         variant="primary"
         elementType="button"
         onClick={handleSubmit}
-        buttonClasses={styles.addAddressButton}
       />
     </div>
   );

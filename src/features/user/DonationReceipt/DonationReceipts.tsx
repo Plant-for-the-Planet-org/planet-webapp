@@ -19,23 +19,25 @@ import {
   transformProfileToPrimaryAddressGuid,
   transformProfileToPrimaryAddressView,
 } from './transformers';
-import { useRouter } from 'next/router';
 import { useApi } from '../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
   const { redirect } = useContext(ErrorHandlingContext);
-  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -90,7 +92,7 @@ const DonationReceipts = () => {
       initForVerification(clickedReceipt, user);
     }
 
-    router.push('/profile/donation-receipt/verify');
+    router.push(localizedPath('/profile/donation-receipt/verify'));
   };
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;

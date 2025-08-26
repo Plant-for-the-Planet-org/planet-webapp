@@ -11,6 +11,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 
 import React from 'react';
 import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
@@ -31,6 +32,7 @@ export default function DirectGift({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -57,7 +59,7 @@ export default function DirectGift({
           })
         );
       }
-      router.push('/');
+      router.push(localizedPath('/'));
     } catch (err) {
       setErrors(handleError(err as APIError));
       redirect('/');

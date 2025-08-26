@@ -4,6 +4,7 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
 import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
+
 import React from 'react';
 import { FormControl, NativeSelect } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -12,6 +13,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 export default function SitesDropdown(): ReactElement {
   const {
@@ -26,7 +28,7 @@ export default function SitesDropdown(): ReactElement {
   } = useProjectProps();
   const { embed } = React.useContext(ParamsContext);
   const router = useRouter();
-
+  const { localizedPath } = useLocalizedPath();
   const handleChangeSite = (
     event: React.ChangeEvent<HTMLSelectElement>,
     project: TreeProjectExtended | ConservationProjectExtended,
@@ -35,9 +37,12 @@ export default function SitesDropdown(): ReactElement {
     setSelectedPl(null);
     setSelectedSite(event.target.value as unknown as number);
     router.push(
-      `/projects-archive/${project.slug}?site=${
-        geoJson.features[event.target.value as unknown as number].properties.id
-      }`
+      localizedPath(
+        `/projects-archive/${project.slug}?site=${
+          geoJson.features[event.target.value as unknown as number].properties
+            .id
+        }`
+      )
     );
 
     if (isMobile) setIsPolygonMenuOpen(false);

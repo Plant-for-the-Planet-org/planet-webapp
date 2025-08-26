@@ -1,34 +1,36 @@
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import styles from './../styles/ClimateAction.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import Link from 'next/link';
 
-export default function ClimateAction() {
-  const articles = [
-    {
-      id: 1,
-      category: 'trailhead',
-      title: 'Learn how trees combat climate change on Trailhead',
-      image: '/tenants/salesforce/images/climate-action-1.png',
-      link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
-    },
-    {
-      id: 2,
-      category: 'sustainability cloud',
-      title:
-        'Make working-from-home more comfortable, productive, and sustainable',
-      image: '/tenants/salesforce/images/climate-action-2.png',
-      link: 'https://www.salesforce.com/blog/2020/09/sustainability-environmentally-friendly-work-from-home.html',
-    },
-    {
-      id: 3,
-      category: '360 blog',
-      title:
-        'Calculate your corporate emissions with Salesforce Sustainability Cloud',
-      image: '/tenants/salesforce/images/climate-action-3.png',
-      link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-    },
-  ];
+const articles = [
+  {
+    id: 1,
+    category: 'trailhead',
+    title: 'Learn how trees combat climate change on Trailhead',
+    image: '/tenants/salesforce/images/climate-action-1.png',
+    link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
+  },
+  {
+    id: 2,
+    category: 'sustainability cloud',
+    title:
+      'Make working-from-home more comfortable, productive, and sustainable',
+    image: '/tenants/salesforce/images/climate-action-2.png',
+    link: 'https://www.salesforce.com/blog/2020/09/sustainability-environmentally-friendly-work-from-home.html',
+  },
+  {
+    id: 3,
+    category: '360 blog',
+    title:
+      'Calculate your corporate emissions with Salesforce Sustainability Cloud',
+    image: '/tenants/salesforce/images/climate-action-3.png',
+    link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
+  },
+];
 
+export default function ClimateAction() {
+  const { localizedPath } = useLocalizedPath();
   return (
     <section className={styles.climateActionSection}>
       <div className={gridStyles.fluidContainer}>
@@ -70,7 +72,7 @@ export default function ClimateAction() {
                 Select your favorite tree project and lend your support.
               </small>
             </p>
-            <Link href="/">
+            <Link href={localizedPath('/')}>
               <button>Donate For Trees Today</button>
             </Link>
           </div>

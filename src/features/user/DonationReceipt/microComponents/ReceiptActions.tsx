@@ -1,4 +1,4 @@
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
@@ -19,7 +19,6 @@ const ReceiptActions = ({
   isContactInfoInvalid,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
-  const locale = useLocale();
   const showDownloadButton = downloadUrl !== null && isReceiptVerified;
 
   return (
@@ -32,7 +31,7 @@ const ReceiptActions = ({
             elementType="link"
             target="_self"
             icon={<EditIcon />}
-            href={`/${locale}/profile/donation-receipt/donor-contact-management`}
+            href={`/profile/donation-receipt/donor-contact-management`}
           />
           {!isContactInfoInvalid && (
             <WebappButton
