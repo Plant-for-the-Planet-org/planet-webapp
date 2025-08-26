@@ -13,7 +13,6 @@ import type {
 import type { SetState } from '../../common/types/common';
 
 import { useContext, useEffect, useMemo } from 'react';
-import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
@@ -156,7 +155,6 @@ export default function ProjectSnippet({
   disableDonations,
 }: Props): ReactElement {
   const { embed, callbackUrl } = useContext(ParamsContext);
-  const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
