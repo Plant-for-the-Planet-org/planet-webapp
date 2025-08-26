@@ -21,6 +21,7 @@ import type {
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
 import centroid from '@turf/centroid';
+import { removeLocaleFromPath } from './getLocalizedPath';
 
 type MetaDataValue = {
   value: string;
@@ -314,9 +315,9 @@ export const generateProjectLink = (
   projectGuid: string,
   routerAsPath: string //e.g. /en/yucatan, /en
 ) => {
-  // just use routerAsPath as-is, let localizedPath handle locale stripping
+  const pathWithoutLocale = removeLocaleFromPath(routerAsPath);
   return `/${projectGuid}?backNavigationUrl=${encodeURIComponent(
-    routerAsPath
+    pathWithoutLocale
   )}`;
 };
 
@@ -383,7 +384,6 @@ export const getSanitizedLocalizedPath = (
   const normalizedPath = cleanPath.startsWith('/')
     ? cleanPath.slice(1)
     : cleanPath;
-
   // Add locale prefix
   return `/${locale}/${normalizedPath}`;
 };
