@@ -315,9 +315,9 @@ export const generateProjectLink = (
   projectGuid: string,
   routerAsPath: string //e.g. /en/yucatan, /en
 ) => {
-  const pathWithoutLocale = removeLocaleFromPath(routerAsPath);
+  // just use routerAsPath as-is, let localizedPath handle locale stripping
   return `/${projectGuid}?backNavigationUrl=${encodeURIComponent(
-    pathWithoutLocale
+    routerAsPath
   )}`;
 };
 
@@ -339,53 +339,6 @@ export const areMapCoordsEqual = (
     Math.abs(mapCenter.lng - centroidCoords[0]) < epsilon &&
     Math.abs(mapCenter.lat - centroidCoords[1]) < epsilon
   );
-};
-
-/**
- * Returns a cleaned and localized path by prepending the specified locale,
- * and sanitizing the input path to ensure consistency.
- *
- * - Strips query parameters (e.g., `?foo=bar`)
- * - Trims trailing slashes
- * - Handles root paths (e.g., '/' becomes '/en')
- * - Avoids duplicating locale if it's already present as the first segment
- *
- * @param {string} path - The relative or absolute URL path (e.g., "/about", "/en/contact?ref=home")
- * @param {string} locale - The locale to prepend (e.g., "en", "de")
- * @returns {string} The sanitized and localized path (e.g., "/en/about")
- *
- * @example
- * getSanitizedLocalizedPath('/about?ref=home', 'en'); // returns '/en/about'
- * getSanitizedLocalizedPath('/en/about', 'en');       // returns '/en/about' (unchanged)
- * getSanitizedLocalizedPath('/', 'de');               // returns '/de'
- */
-export const getSanitizedLocalizedPath = (
-  path: string,
-  locale: string
-): string => {
-  // Strip query parameters if present
-  const pathWithoutQuery = path.split('?')[0];
-  // Remove trailing slash if present
-  const cleanPath = pathWithoutQuery.endsWith('/')
-    ? pathWithoutQuery.slice(0, -1)
-    : pathWithoutQuery;
-  // Handle root path special case
-  if (cleanPath === '' || cleanPath === '/' || cleanPath === `/${locale}`) {
-    return `/${locale}`;
-  }
-
-  // If path already contains locale as a segment, return as is
-  const pathSegments = cleanPath.split('/').filter(Boolean);
-  if (pathSegments[0] === locale) {
-    return cleanPath;
-  }
-
-  // Remove leading slash if present for consistent handling
-  const normalizedPath = cleanPath.startsWith('/')
-    ? cleanPath.slice(1)
-    : cleanPath;
-  // Add locale prefix
-  return `/${locale}/${normalizedPath}`;
 };
 
 export const getDeviceType = (): MobileOs => {
