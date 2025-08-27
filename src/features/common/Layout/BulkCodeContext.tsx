@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { SetState } from '../types/common';
 import type { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants';
 import type {
@@ -55,7 +55,7 @@ interface BulkCodeContextInterface {
 
 const BulkCodeContext = createContext<BulkCodeContextInterface | null>(null);
 
-export const BulkCodeProvider: FC = ({ children }) => {
+export const BulkCodeProvider = ({ children }: { children: ReactNode }) => {
   const [bulkMethod, setBulkMethod] = useState<BulkCodeMethods | null>(null);
   const [planetCashAccount, setPlanetCashAccount] =
     useState<PlanetCashAccount | null>(null);
