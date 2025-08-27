@@ -51,12 +51,19 @@ export default function Import({
       return <AccessDeniedLoader />;
     }
 
+    const { treemapperMigrationState } = user;
+
     const isBlockedByMigration =
-      user.treemapperMigrationState === 'in-progress' ||
-      user.treemapperMigrationState === 'completed';
-    // const isBlockedByMigration = true;
+      treemapperMigrationState === 'in-progress' ||
+      treemapperMigrationState === 'completed';
+
     if (isBlockedByMigration) {
-      return <FeatureMigrated status="in-progress" featureKey="import" />;
+      return (
+        <FeatureMigrated
+          status={treemapperMigrationState}
+          featureKey="import"
+        />
+      );
     }
 
     const showPromoBanner = user.type === 'tpo' && !isBlockedByMigration;

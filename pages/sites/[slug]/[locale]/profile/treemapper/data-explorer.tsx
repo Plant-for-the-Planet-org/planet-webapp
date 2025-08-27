@@ -61,14 +61,18 @@ function TreeMapperAnalytics({
       return <AccessDeniedLoader />;
     }
 
+    const { treemapperMigrationState } = user;
+
     const isBlockedByMigration =
-      user.treemapperMigrationState === 'completed' ||
-      user.treemapperMigrationState === 'in-progress';
-    // const isBlockedByMigration = true;
+      treemapperMigrationState === 'completed' ||
+      treemapperMigrationState === 'in-progress';
 
     if (isBlockedByMigration) {
       return (
-        <FeatureMigrated status="in-progress" featureKey="data-explorer" />
+        <FeatureMigrated
+          status={treemapperMigrationState}
+          featureKey="data-explorer"
+        />
       );
     }
 
