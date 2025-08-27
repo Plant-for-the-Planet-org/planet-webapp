@@ -75,6 +75,44 @@
     "submit": "Submit",
     "plantStatus": "Plant Status",
     "status": "Status",
-    "reason": "Reason"
+    "reason": "Reason",
+    "migration": {
+      "completed": {
+        "data-explorer": {
+          "title": "Your data has been migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        },
+        "treemapper": {
+          "title": "Your data has been migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        },
+        "import": {
+          "title": "Your data has been migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        },
+        "my-species": {
+          "title": "Your data has been migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        }
+      },
+      "in-progress": {
+        "data-explorer": {
+          "title": "Your data is being migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        },
+        "treemapper": {
+          "title": "Your data is being migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        },
+        "import": {
+          "title": "Your data is being migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        },
+        "my-species": {
+          "title": "Your data is being migrated to the new Treemapper dashboard",
+          "subtitle": "Visit the new treemapper dashboard to access your data"
+        }
+      }
+    }
   }
 }

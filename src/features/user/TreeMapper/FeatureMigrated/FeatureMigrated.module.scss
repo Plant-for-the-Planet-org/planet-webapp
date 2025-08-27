@@ -1,0 +1,27 @@
+@import '../../../../theme/theme';
+
+.migrationContainer {
+  padding: 50px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.migrationContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.migrationContentTitle {
+  font-size: $fontSixteen;
+}
+
+.migrationContentSubtitle {
+  font-size: $fontSmall;
+}

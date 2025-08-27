@@ -9,7 +9,7 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
-import React from 'react';
+import React, { useMemo } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import MySpecies from '../../../../../../src/features/user/TreeMapper/MySpecies';
 import { useTranslations } from 'next-intl';
@@ -23,6 +23,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
 
 interface Props {
   pageProps: PageProps;
@@ -42,12 +43,34 @@ export default function MySpeciesPage({
     }
   }, [router.isReady]);
 
+  const pageContent = useMemo(() => {
+    if (!user) return null;
+
+    if (user.type !== 'tpo') {
+      return <AccessDeniedLoader />;
+    }
+
+    /* const isBlockedByMigration =
+      user.treemapperMigrationState === 'completed' ||
+      user.treemapperMigrationState === 'in-progress'; */
+
+    const isBlockedByMigration = true;
+
+    if (isBlockedByMigration) {
+      return (
+        <FeatureMigrated status="in-progress" featureKey="data-explorer" />
+      );
+    }
+
+    return <MySpecies />;
+  }, [user]);
+
   return tenantConfig ? (
     <UserLayout>
       <Head>
         <title>{t('mySpecies')}</title>
       </Head>
-      {user?.type === 'tpo' ? <MySpecies /> : <AccessDeniedLoader />}
+      {pageContent}
     </UserLayout>
   ) : (
     <></>

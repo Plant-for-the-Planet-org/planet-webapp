@@ -1,0 +1,43 @@
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import DashboardView from '../../../common/Layout/DashboardView';
+import SingleColumnView from '../../../common/Layout/SingleColumnView';
+import WebappButton from '../../../common/WebappButton';
+import MigrationGraphic from './MigrationGraphic';
+import styles from './FeatureMigrated.module.scss';
+import { useTranslations } from 'next-intl';
+
+type Props = {
+  status: 'in-progress' | 'completed';
+  featureKey: 'treemapper' | 'import' | 'my-species' | 'data-explorer';
+};
+
+const FeatureMigrated = ({ status, featureKey }: Props) => {
+  const tTreemapperMigration = useTranslations('Treemapper.migration');
+
+  return (
+    <DashboardView title={null} subtitle={null}>
+      <SingleColumnView>
+        <CenteredContainer>
+          <div className={styles.migrationContainer}>
+            <MigrationGraphic />
+            <div className={styles.migrationContent}>
+              <div className={styles.migrationContentTitle}>
+                {tTreemapperMigration(`${status}.${featureKey}.title`)}
+              </div>
+              <div className={styles.migrationContentSubtitle}>
+                {tTreemapperMigration(`${status}.${featureKey}.subtitle`)}
+              </div>
+            </div>
+            <WebappButton
+              elementType="link"
+              href="https://dev.treemapper.app"
+              variant="primary"
+              text="Open Dashboard"
+            />
+          </div>
+        </CenteredContainer>
+      </SingleColumnView>
+    </DashboardView>
+  );
+};
+export default FeatureMigrated;

@@ -9,7 +9,7 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
-import React from 'react';
+import React, { useMemo } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreeMapper from '../../../../../../src/features/user/TreeMapper';
 import { useTranslations } from 'next-intl';
@@ -21,6 +21,8 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
+import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
 
 interface Props {
   pageProps: PageProps;
@@ -30,6 +32,7 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { user } = useUserProps();
 
   React.useEffect(() => {
     if (router.isReady) {
@@ -37,12 +40,29 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
     }
   }, [router.isReady]);
 
+  const pageContent = useMemo(() => {
+    if (!user) return null;
+
+    /*  const isBlockedByMigration =
+      user.treemapperMigrationState === 'completed' ||
+      user.treemapperMigrationState === 'in-progress'; */
+    const isBlockedByMigration = true;
+
+    if (isBlockedByMigration) {
+      return (
+        <FeatureMigrated status="in-progress" featureKey="data-explorer" />
+      );
+    }
+
+    return <TreeMapper />;
+  }, [user]);
+
   return tenantConfig ? (
     <UserLayout>
       <Head>
         <title>{t('treemapper')}</title>
       </Head>
-      <TreeMapper />
+      {pageContent}
     </UserLayout>
   ) : (
     <></>
