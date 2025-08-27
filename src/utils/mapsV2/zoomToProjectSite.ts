@@ -34,7 +34,7 @@ export function zoomInToProjectSite(
   if (!feature || !feature.geometry) {
     console.warn(
       'zoomInToProjectSite: invalid selectedSite or missing geometry',
-      { selectedSite }
+      { selectedSite, featuresLength: geoJson.features?.length ?? 0 }
     );
     return;
   }
