@@ -46,7 +46,7 @@ function isSupportedLocale(locale: string): locale is Locale {
  *   string and hash fragment.
  */
 
-function removeLocaleFromPath(pathname: string): string {
+export function removeLocaleFromPath(pathname: string): string {
   const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
   const match = normalizedPath.match(/^([^?#]*)([?#].*)?$/);
   const base = match?.[1] ?? normalizedPath;
