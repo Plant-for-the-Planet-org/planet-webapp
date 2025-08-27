@@ -23,6 +23,7 @@ import { useTenant } from '../../../../../../src/features/common/Layout/TenantCo
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -43,10 +44,10 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const pageContent = useMemo(() => {
     if (!user) return null;
 
-    /*  const isBlockedByMigration =
+    const isBlockedByMigration =
       user.treemapperMigrationState === 'completed' ||
-      user.treemapperMigrationState === 'in-progress'; */
-    const isBlockedByMigration = true;
+      user.treemapperMigrationState === 'in-progress';
+    // const isBlockedByMigration = true;
 
     if (isBlockedByMigration) {
       return (
@@ -54,7 +55,14 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
       );
     }
 
-    return <TreeMapper />;
+    const showPromoBanner = user.type === 'tpo' && !isBlockedByMigration;
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <TreeMapper />
+      </>
+    );
   }, [user]);
 
   return tenantConfig ? (

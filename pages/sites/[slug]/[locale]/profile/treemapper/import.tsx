@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -50,15 +51,22 @@ export default function Import({
       return <AccessDeniedLoader />;
     }
 
-    /* const isBlockedByMigration =
+    const isBlockedByMigration =
       user.treemapperMigrationState === 'in-progress' ||
-      user.treemapperMigrationState === 'completed'; */
-    const isBlockedByMigration = true;
+      user.treemapperMigrationState === 'completed';
+    // const isBlockedByMigration = true;
     if (isBlockedByMigration) {
       return <FeatureMigrated status="in-progress" featureKey="import" />;
     }
 
-    return <ImportData />;
+    const showPromoBanner = user.type === 'tpo' && !isBlockedByMigration;
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <ImportData />
+      </>
+    );
   }, [user]);
 
   return tenantConfig ? (

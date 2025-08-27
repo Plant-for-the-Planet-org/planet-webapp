@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -50,11 +51,11 @@ export default function MySpeciesPage({
       return <AccessDeniedLoader />;
     }
 
-    /* const isBlockedByMigration =
+    const isBlockedByMigration =
       user.treemapperMigrationState === 'completed' ||
-      user.treemapperMigrationState === 'in-progress'; */
+      user.treemapperMigrationState === 'in-progress';
 
-    const isBlockedByMigration = true;
+    // const isBlockedByMigration = true;
 
     if (isBlockedByMigration) {
       return (
@@ -62,7 +63,14 @@ export default function MySpeciesPage({
       );
     }
 
-    return <MySpecies />;
+    const showPromoBanner = user.type === 'tpo' && !isBlockedByMigration;
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <MySpecies />
+      </>
+    );
   }, [user]);
 
   return tenantConfig ? (

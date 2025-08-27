@@ -25,6 +25,7 @@ import { useTenant } from '../../../../../../src/features/common/Layout/TenantCo
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -60,10 +61,10 @@ function TreeMapperAnalytics({
       return <AccessDeniedLoader />;
     }
 
-    /* const isBlockedByMigration =
+    const isBlockedByMigration =
       user.treemapperMigrationState === 'completed' ||
-      user.treemapperMigrationState === 'in-progress'; */
-    const isBlockedByMigration = true;
+      user.treemapperMigrationState === 'in-progress';
+    // const isBlockedByMigration = true;
 
     if (isBlockedByMigration) {
       return (
@@ -71,7 +72,14 @@ function TreeMapperAnalytics({
       );
     }
 
-    return <Analytics />;
+    const showPromoBanner = user.type === 'tpo' && !isBlockedByMigration;
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <Analytics />
+      </>
+    );
   }, [user]);
 
   return tenantConfig ? (
