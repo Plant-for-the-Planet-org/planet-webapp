@@ -15,7 +15,7 @@ const FeatureMigrated = ({ status, featureKey }: Props) => {
   const tTreemapperMigration = useTranslations('Treemapper.migration');
 
   return (
-    <DashboardView title={null} subtitle={null}>
+    <DashboardView>
       <SingleColumnView>
         <CenteredContainer>
           <div className={styles.migrationContainer}>
