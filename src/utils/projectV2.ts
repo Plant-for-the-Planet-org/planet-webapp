@@ -180,7 +180,11 @@ export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
   const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
     map.getLayer(layerId)
   );
-  if (availableLayers.length === 0) return [];
+
+  if (availableLayers.length === 0) {
+    map.getCanvas().style.cursor = '';
+    return [];
+  }
 
   const features = map.queryRenderedFeatures(point, {
     layers: availableLayers,
