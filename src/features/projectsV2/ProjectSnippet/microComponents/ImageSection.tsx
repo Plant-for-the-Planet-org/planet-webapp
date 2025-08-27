@@ -59,6 +59,7 @@ const ImageSection = (props: ImageSectionProps) => {
       ? baseRoute.split('?')[0] // For absolute URLs, just strip query params
       : localizedPath(baseRoute);
 
+    // Cleans up internal routing parameters like `locale`, `slug` etc.
     const pathWithoutQuery = path.split('?')[0];
     // Handle query parameters for the new navigation
     const queryParams = isEmbed
