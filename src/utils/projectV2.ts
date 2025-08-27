@@ -173,20 +173,33 @@ export const isValidClassification = (
  * @returns An array of features under the point, or undefined if the map is not ready. Returns an empty array if no features are found.
  */
 
-export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
+export function getFeaturesAtPoint(
+  mapRef: MapRef,
+  point: PointLike
+): MapGeoJSONFeature[] | undefined {
   if (!mapRef.current) return;
   const map = mapRef.current.getMap();
+  const canvas = map.getCanvas();
 
-  const features = map.queryRenderedFeatures(point, {
-    layers: INTERACTIVE_LAYERS,
-  });
+  const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
+    map.getLayer(layerId)
+  );
 
-  if (features.length === 0) {
-    map.getCanvas().style.cursor = '';
+  if (availableLayers.length === 0) {
+    canvas.style.cursor = '';
     return [];
   }
 
-  map.getCanvas().style.cursor = 'pointer';
+  const features = map.queryRenderedFeatures(point, {
+    layers: availableLayers,
+  });
+
+  if (features.length === 0) {
+    canvas.style.cursor = '';
+    return [];
+  }
+
+  canvas.style.cursor = 'pointer';
   return features;
 }
 
