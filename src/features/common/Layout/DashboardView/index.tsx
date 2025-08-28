@@ -6,7 +6,7 @@ import themeProperties from '../../../../theme/themeProperties';
 
 interface DashboardViewProps {
   title?: string;
-  subtitle?: string | ReactElement | null;
+  subtitle?: string | ReactElement;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
   multiColumn?: boolean;

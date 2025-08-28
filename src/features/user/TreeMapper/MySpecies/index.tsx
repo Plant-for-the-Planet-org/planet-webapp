@@ -10,7 +10,7 @@ export default function MySpecies(): ReactElement {
   const t = useTranslations('Me');
 
   return (
-    <DashboardView title={t('mySpecies')} subtitle={null} variant="compact">
+    <DashboardView title={t('mySpecies')} variant="compact">
       <CenteredContainer>
         <MySpeciesForm />
       </CenteredContainer>
