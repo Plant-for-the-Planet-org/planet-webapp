@@ -1,6 +1,5 @@
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
-import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
@@ -11,8 +10,6 @@ import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
 import { useProjectsMap } from '../ProjectsMapContext';
 import { useProjects } from '../ProjectsContext';
-import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
-import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
@@ -24,7 +21,6 @@ interface MapControlsProps {
   selectedMode: ViewMode | undefined;
   setSelectedMode: SetState<ViewMode> | undefined;
   page: 'project-list' | 'project-details';
-  mobileOS: MobileOs;
 }
 
 const MapControls = ({
@@ -33,10 +29,8 @@ const MapControls = ({
   selectedTab,
   setSelectedMode,
   page,
-  mobileOS,
 }: MapControlsProps) => {
-  const { setIsSatelliteView, isSatelliteView, updateMapOption, mapOptions } =
-    useProjectsMap();
+  const { updateMapOption, mapOptions } = useProjectsMap();
   const {
     projects,
     topProjects,
@@ -51,7 +45,6 @@ const MapControls = ({
     selectedSite,
     setSelectedSite,
     selectedIntervention,
-    selectedSampleTree,
     setSelectedIntervention,
     setSelectedSampleTree,
     selectedInterventionType,
@@ -75,11 +68,6 @@ const MapControls = ({
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 1;
-  const canShowSatelliteToggle =
-    !(
-      isMobile &&
-      (selectedIntervention !== null || selectedSampleTree !== null)
-    ) && selectedTab === 'field';
   const isProjectDetailsPage = page === 'project-details';
   const canShowInterventionDropdown =
     isProjectDetailsPage &&
@@ -140,13 +128,6 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${
-    isMobile
-      ? mobileOS === 'android'
-        ? styles.layerToggleAndroid
-        : styles.layerToggleIos
-      : styles.layerToggleDesktop
-  }`;
   const projectListControlsContainerStyles = `${
     styles.projectListControlsContainer
   } ${embed === 'true' ? styles.embedModeMobile : ''}`;
@@ -192,14 +173,6 @@ const MapControls = ({
                 <InterventionDropDown {...interventionDropDownProps} />
               )}
             </>
-          )}
-          {canShowSatelliteToggle && (
-            <button
-              className={layerToggleClass}
-              onClick={() => setIsSatelliteView(!isSatelliteView)}
-            >
-              {isSatelliteView ? <LayerIcon /> : <LayerDisabled />}
-            </button>
           )}
         </>
       )}

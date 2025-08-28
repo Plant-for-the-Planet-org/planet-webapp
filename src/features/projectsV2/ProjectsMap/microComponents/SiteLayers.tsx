@@ -1,19 +1,19 @@
+import type { ReactElement } from 'react';
 import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
-import React from 'react';
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface Props {
   geoJson: SitesGeoJSON;
-  isSatelliteView: boolean;
+  isSatelliteBackground: boolean;
 }
 
 export default function SiteLayers({
   geoJson,
-  isSatelliteView,
-}: Props): React.ReactElement {
+  isSatelliteBackground,
+}: Props): ReactElement {
   const { colors } = themeProperties.designSystem;
 
   return (
@@ -31,7 +31,9 @@ export default function SiteLayers({
         type="line"
         source="project-site"
         paint={{
-          'line-color': isSatelliteView ? colors.white : colors.primaryColor,
+          'line-color': isSatelliteBackground
+            ? colors.white
+            : colors.primaryColor,
           'line-width': 4,
         }}
         layout={{
