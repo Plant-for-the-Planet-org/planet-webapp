@@ -54,29 +54,35 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
     [localizedPath, embed, callbackUrl]
   );
 
-  const initiatePopupOpen = useCallback(
-    (project: MapProject) => {
-      if (
-        popupState.show === false ||
-        popupState.project.properties.id !== project.properties.id
-      ) {
-        timerRef.current = setTimeout(() => {
-          setPopupState({
-            show: true,
-            project,
-          });
-        }, 300);
-      }
-    },
-    [popupState]
-  );
-
-  const handleMarkerLeave = useCallback(() => {
+  const clearTimer = useCallback(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
   }, []);
+
+  const initiatePopupOpen = useCallback(
+    (project: MapProject) => {
+      clearTimer();
+      timerRef.current = setTimeout(() => {
+        setPopupState((prev) => {
+          if (
+            prev.show === false ||
+            prev.project.properties.id !== project.properties.id
+          ) {
+            return {
+              show: true,
+              project,
+            };
+          }
+          return prev;
+        });
+      }, 300);
+    },
+    [clearTimer]
+  );
+
+  const handleMarkerLeave = useCallback(clearTimer, [clearTimer]);
 
   const initiatePopupClose = () => {
     setTimeout(() => {
