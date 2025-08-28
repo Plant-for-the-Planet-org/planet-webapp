@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { NavLinkType, SubMenuItemType } from './NavLink';
 
 import { useRouter } from 'next/router';
@@ -24,14 +24,16 @@ import FiberPinIcon from '@mui/icons-material/FiberPin';
 import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
-const UserLayout: FC = ({ children }) => {
+const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+
   const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
     useUserProps();
-
   // Navigation structure with keys, paths, and submenu configurations
   // Flags can be added to show labels on the right
   const navLinks: NavLinkType[] = useMemo(
@@ -294,7 +296,7 @@ const UserLayout: FC = ({ children }) => {
       // Redirect user to desired page after login
       if (!user) {
         if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
-        router.push('/login');
+        router.push(localizedPath('/login'));
       }
     }
   }, [contextLoaded, user, router]);

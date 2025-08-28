@@ -4,10 +4,12 @@ import { useTranslations } from 'next-intl';
 import SupportAssistanceInfo from './SupportAssistanceInfo';
 import Link from 'next/link';
 import { useAuth0 } from '@auth0/auth0-react';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const VerifyReceiptFooter = () => {
   const tReceipt = useTranslations('DonationReceipt');
   const { isAuthenticated } = useAuth0();
+  const { localizedPath } = useLocalizedPath();
 
   return (
     <section className={styles.verifyReceiptFooter}>
@@ -20,7 +22,7 @@ const VerifyReceiptFooter = () => {
           </p>
         </div>
         <Link
-          href="/profile/donation-receipt"
+          href={localizedPath('/profile/donation-receipt')}
           className={styles.redirectButton}
         >
           <RedirectRightArrowIcon />

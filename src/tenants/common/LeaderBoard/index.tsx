@@ -20,7 +20,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>{tLeaderboard('forestFrontrunners')}</h2>
-        <div className={styles.leaderBoardTable}>
+        <>
           <div className={styles.leaderBoardTableHeader}>
             <button
               id={'LeaderBoardRecent'}
@@ -83,7 +83,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
           ) : (
             <p>loading</p>
           )}
-        </div>
+        </>
       </div>
       <img
         className={styles.leaderBoardBushImage}

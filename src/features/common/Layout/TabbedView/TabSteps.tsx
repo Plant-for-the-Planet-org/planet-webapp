@@ -2,9 +2,10 @@ import type { ReactElement, SyntheticEvent } from 'react';
 import type { TabItem } from './TabbedViewTypes';
 
 import React from 'react';
-import { useRouter } from 'next/router';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface TabStepsProps {
   step: number | string | false;
@@ -35,6 +36,7 @@ export default function TabSteps({
   tabItems = [],
 }: TabStepsProps): ReactElement | null {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const handleTabChange = (
     _event: SyntheticEvent,
@@ -42,7 +44,7 @@ export default function TabSteps({
   ) => {
     const next = tabItems.find((t) => t.step === newValue);
     if (next?.link) {
-      router.push(next.link);
+      router.push(localizedPath(next.link));
     }
   };
 

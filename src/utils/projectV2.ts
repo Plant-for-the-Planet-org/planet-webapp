@@ -173,20 +173,33 @@ export const isValidClassification = (
  * @returns An array of features under the point, or undefined if the map is not ready. Returns an empty array if no features are found.
  */
 
-export function getFeaturesAtPoint(mapRef: MapRef, point: PointLike) {
+export function getFeaturesAtPoint(
+  mapRef: MapRef,
+  point: PointLike
+): MapGeoJSONFeature[] | undefined {
   if (!mapRef.current) return;
   const map = mapRef.current.getMap();
+  const canvas = map.getCanvas();
 
-  const features = map.queryRenderedFeatures(point, {
-    layers: INTERACTIVE_LAYERS,
-  });
+  const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
+    map.getLayer(layerId)
+  );
 
-  if (features.length === 0) {
-    map.getCanvas().style.cursor = '';
+  if (availableLayers.length === 0) {
+    canvas.style.cursor = '';
     return [];
   }
 
-  map.getCanvas().style.cursor = 'pointer';
+  const features = map.queryRenderedFeatures(point, {
+    layers: availableLayers,
+  });
+
+  if (features.length === 0) {
+    canvas.style.cursor = '';
+    return [];
+  }
+
+  canvas.style.cursor = 'pointer';
   return features;
 }
 
@@ -312,15 +325,11 @@ export const centerMapOnCoordinates = (
 
 export const generateProjectLink = (
   projectGuid: string,
-  routerAsPath: string, //e.g. /en/yucatan, /en
-  locale: string //e.g. en
+  routerAsPath: string //e.g. /en/yucatan, /en
 ) => {
-  const nonLocalizedPath =
-    routerAsPath === `/${locale}`
-      ? '/'
-      : routerAsPath.replace(`/${locale}`, '');
+  // just use routerAsPath as-is, let localizedPath handle locale stripping
   return `/${projectGuid}?backNavigationUrl=${encodeURIComponent(
-    nonLocalizedPath
+    routerAsPath
   )}`;
 };
 
@@ -342,40 +351,6 @@ export const areMapCoordsEqual = (
     Math.abs(mapCenter.lng - centroidCoords[0]) < epsilon &&
     Math.abs(mapCenter.lat - centroidCoords[1]) < epsilon
   );
-};
-
-/**
- * Takes a relative path and returns a localized version with the correct locale prefix.
- * Query parameters are stripped from the input path.
- * @param path - The relative path to localize
- * @param locale - The current locale (e.g., 'en')
- * @returns The localized path without query parameters
- */
-export const getLocalizedPath = (path: string, locale: string): string => {
-  // Strip query parameters if present
-  const pathWithoutQuery = path.split('?')[0];
-  // Remove trailing slash if present
-  const cleanPath = pathWithoutQuery.endsWith('/')
-    ? pathWithoutQuery.slice(0, -1)
-    : pathWithoutQuery;
-  // Handle root path special case
-  if (cleanPath === '' || cleanPath === '/' || cleanPath === `/${locale}`) {
-    return `/${locale}`;
-  }
-
-  // If path already contains locale as a segment, return as is
-  const pathSegments = cleanPath.split('/').filter(Boolean);
-  if (pathSegments[0] === locale) {
-    return cleanPath;
-  }
-
-  // Remove leading slash if present for consistent handling
-  const normalizedPath = cleanPath.startsWith('/')
-    ? cleanPath.slice(1)
-    : cleanPath;
-
-  // Add locale prefix
-  return `/${locale}/${normalizedPath}`;
 };
 
 export const getDeviceType = (): MobileOs => {

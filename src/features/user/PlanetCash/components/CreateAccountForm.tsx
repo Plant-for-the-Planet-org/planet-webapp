@@ -3,7 +3,6 @@ import type {
   CountryType,
   ExtendedCountryCode,
 } from '../../../common/types/country';
-import { useRouter } from 'next/router';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../../common/types/planetcash';
 
@@ -18,6 +17,8 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -33,6 +34,8 @@ const CreateAccountForm = ({
   allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
@@ -40,7 +43,6 @@ const CreateAccountForm = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const { setErrors } = useContext(ErrorHandlingContext);
-  const router = useRouter();
   const { postApiAuthenticated } = useApi();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -62,7 +64,7 @@ const CreateAccountForm = ({
       setAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
-        router.push('/profile/planetcash');
+        router.push(localizedPath('/profile/planetcash'));
       }, 1000);
     } catch (err) {
       setIsProcessing(false);

@@ -34,7 +34,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
       <div className={styles.leaderBoard}>
         <h2>Tree Donation Tracker</h2>
         {isLeaderboardAvailable ? (
-          <div className={styles.leaderBoardTable}>
+          <>
             <div className={styles.leaderBoardTableHeader}>
               <button
                 id={'leaderBoardSecRecent'}
@@ -96,7 +96,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
                 })}
               </div>
             )}
-          </div>
+          </>
         ) : (
           <div>Leaderboard data not available.</div>
         )}

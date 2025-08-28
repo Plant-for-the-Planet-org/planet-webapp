@@ -12,6 +12,7 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 
 import React from 'react';
 import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
@@ -42,6 +43,7 @@ type RedeemCodePayload = {
 function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const { postApiAuthenticated } = useApi();
@@ -71,13 +73,13 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   }, [router, router.query.type]);
 
   const redeemAnotherCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+    router.push(localizedPath(`/profile/redeem/${code}?inputCode=${true}`));
     setRedeemedCodeData(undefined);
   };
 
   const closeRedeem = () => {
     if (typeof window !== 'undefined') {
-      router.push(`/`);
+      router.push(localizedPath('/'));
     }
   };
 

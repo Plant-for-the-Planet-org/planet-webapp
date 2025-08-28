@@ -45,7 +45,6 @@ interface Props {
   setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
-  canShowInterventionDropdown: boolean;
 }
 
 const ProjectSiteDropdown = ({
@@ -57,7 +56,6 @@ const ProjectSiteDropdown = ({
   setSelectedSampleTree,
   activeDropdown,
   setActiveDropdown,
-  canShowInterventionDropdown,
 }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -153,7 +151,6 @@ const ProjectSiteDropdown = ({
           selectedSiteData={selectedSiteData}
           setSelectedIntervention={setSelectedIntervention}
           setSelectedSampleTree={setSelectedSampleTree}
-          canShowInterventionDropdown={canShowInterventionDropdown}
         />
       )}
     </>

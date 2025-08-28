@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { SetState } from '../../types/common';
 
 import { useContext, useEffect, useState } from 'react';
@@ -12,19 +12,20 @@ import { useUserProps } from '../UserPropsContext';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
+  children: ReactNode;
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
   isMobile: boolean;
 }
 
-const MobileProjectsLayout: FC<ProjectsLayoutProps> = ({
+const MobileProjectsLayout = ({
   children,
   page,
   currencyCode,
   setCurrencyCode,
   isMobile,
-}) => {
+}: ProjectsLayoutProps) => {
   const { embed, showProjectList, showProjectDetails, isContextLoaded } =
     useContext(ParamsContext);
   const isEmbedded = embed === 'true';

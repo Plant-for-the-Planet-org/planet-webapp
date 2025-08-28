@@ -8,7 +8,6 @@ import type {
 
 import React from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
@@ -31,6 +30,8 @@ import {
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { useTenant } from '../../common/Layout/TenantContext';
 import styles from '../styles/ProjectSnippet.module.scss';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface Props {
   project:
@@ -51,8 +52,9 @@ export default function ProjectSnippet({
   utmCampaign,
   disableDonations = false,
 }: Props): ReactElement {
-  const router = useRouter();
   const locale = useLocale();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tDonate = useTranslations('Donate');
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
@@ -122,15 +124,17 @@ export default function ProjectSnippet({
           setSelectedSite(0);
           if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
-            `/${locale}/projects-archive/${project.slug}${
-              embed === 'true'
-                ? `${
-                    callbackUrl != undefined
-                      ? `?embed=true&callback=${callbackUrl}`
-                      : '?embed=true'
-                  }`
-                : ''
-            }`
+            localizedPath(
+              `/projects-archive/${project.slug}${
+                embed === 'true'
+                  ? `${
+                      callbackUrl != undefined
+                        ? `?embed=true&callback=${callbackUrl}`
+                        : '?embed=true'
+                    }`
+                  : ''
+              }`
+            )
           );
         }}
         className={`${styles.projectImage} ${
@@ -269,8 +273,8 @@ export default function ProjectSnippet({
         className={styles.projectTPOName}
         onClick={() => {
           embed === 'true'
-            ? window.open(`/t/${project.tpo.slug}`, '_top')
-            : router.push(`/t/${project.tpo.slug}`);
+            ? window.open(localizedPath(`/t/${project.tpo.slug}`), '_top')
+            : router.push(localizedPath(`/t/${project.tpo.slug}`));
         }}
         style={{
           background: `${

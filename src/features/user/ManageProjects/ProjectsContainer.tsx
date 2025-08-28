@@ -24,6 +24,7 @@ import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -39,6 +40,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const tCountry = useTranslations('Country');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const count =
     project.unitType === 'tree'
       ? project.unitsContributed?.tree
@@ -98,10 +100,16 @@ function SingleProject({ project }: { project: ProjectProperties }) {
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
-        <Link href={generateProjectLink(project.id, router.asPath, locale)}>
+        <Link
+          href={localizedPath(generateProjectLink(project.id, router.asPath))}
+        >
           <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
-        <Link href={`/profile/projects/${project.id}?type=basic-details`}>
+        <Link
+          href={localizedPath(
+            `/profile/projects/${project.id}?type=basic-details`
+          )}
+        >
           <button className={styles.primaryLink}>{tCommon('edit')}</button>
         </Link>
       </div>
@@ -117,6 +125,7 @@ export default function ProjectsContainer() {
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, token } = useUserProps();
+  const { localizedPath } = useLocalizedPath();
   async function loadProjects() {
     if (user) {
       try {
@@ -150,7 +159,7 @@ export default function ProjectsContainer() {
     >
       <SingleColumnView>
         <div className={styles.headerCTAs}>
-          <Link href="/profile/projects/new-project">
+          <Link href={localizedPath('/profile/projects/new-project')}>
             <button
               // id={'addProjectBut'}
               className="primaryButton"
@@ -158,7 +167,7 @@ export default function ProjectsContainer() {
               {tManageProjects('addProject')}
             </button>
           </Link>
-          <Link href="/profile/payouts">
+          <Link href={localizedPath('/profile/payouts')}>
             <button className="primaryButton">
               {tManageProjects('managePayoutsButton')}
             </button>
