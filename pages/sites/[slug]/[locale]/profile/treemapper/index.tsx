@@ -59,7 +59,10 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
       );
     }
 
-    const showPromoBanner = user.type === 'tpo' && !isBlockedByMigration;
+    const showPromoBanner =
+      user.type === 'tpo' &&
+      !isBlockedByMigration &&
+      process.env.NEXT_PUBLIC_SHOW_DASHBOARD_PROMO === 'true';
 
     return (
       <>
