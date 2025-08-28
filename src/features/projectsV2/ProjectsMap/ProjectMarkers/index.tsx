@@ -35,42 +35,48 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
   const { embed, callbackUrl } = useContext(ParamsContext);
 
-  const visitProject = (projectSlug: string): void => {
-    router.push(
-      localizedPath(
-        `/${projectSlug}${
-          embed === 'true'
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`
-      )
-    );
-  };
+  const visitProject = useCallback(
+    (projectSlug: string): void => {
+      const searchParams = new URLSearchParams();
 
-  const initiatePopupOpen = (project: MapProject) => {
-    if (
-      popupState.show === false ||
-      popupState.project.properties.id !== project.properties.id
-    ) {
-      timerRef.current = setTimeout(() => {
-        setPopupState({
-          show: true,
-          project: project,
-        });
-      }, 300);
-    }
-  };
+      if (embed === 'true') {
+        searchParams.set('embed', 'true');
 
-  const handleMarkerLeave = () => {
+        if (typeof callbackUrl === 'string') {
+          searchParams.set('callback', callbackUrl);
+        }
+      }
+
+      const queryString = searchParams.toString();
+      const path = `/${projectSlug}${queryString ? `?${queryString}` : ''}`;
+      router.push(localizedPath(path));
+    },
+    [localizedPath, embed, callbackUrl]
+  );
+
+  const initiatePopupOpen = useCallback(
+    (project: MapProject) => {
+      if (
+        popupState.show === false ||
+        popupState.project.properties.id !== project.properties.id
+      ) {
+        timerRef.current = setTimeout(() => {
+          setPopupState({
+            show: true,
+            project,
+          });
+        }, 300);
+      }
+    },
+    [popupState]
+  );
+
+  const handleMarkerLeave = useCallback(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-  };
+  }, []);
 
   const initiatePopupClose = () => {
     setTimeout(() => {
