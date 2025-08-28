@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import type { MapOptions } from '../../ProjectsMapContext';
 import type { SetState } from '../../../common/types/common';
 
@@ -14,12 +13,12 @@ type MapSettingsProps = {
   setIsOpen?: SetState<boolean>;
 };
 
-const MapSettings: FC<MapSettingsProps> = ({
+const MapSettings = ({
   mapOptions,
   updateMapOption,
   isMobile,
   setIsOpen,
-}) => {
+}: MapSettingsProps) => {
   const content = (
     <>
       <MapSettingsSection

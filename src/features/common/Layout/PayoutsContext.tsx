@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { BankAccount, PayoutMinAmounts } from '../types/payouts';
 
 import { createContext, useState, useContext } from 'react';
@@ -14,7 +14,7 @@ export const PayoutsContext = createContext<PayoutsContextInterface | null>(
   null
 );
 
-export const PayoutsProvider: FC = ({ children }) => {
+export const PayoutsProvider = ({ children }: { children: ReactNode }) => {
   const [accounts, setAccounts] = useState<BankAccount[] | null>(null);
   const [payoutMinAmounts, setPayoutMinAmounts] =
     useState<PayoutMinAmounts | null>(null);

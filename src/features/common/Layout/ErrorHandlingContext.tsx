@@ -1,4 +1,4 @@
-import type { SetStateAction, Dispatch, FC } from 'react';
+import type { SetStateAction, Dispatch, ReactNode } from 'react';
 import type { SerializedError } from '@planet-sdk/common';
 
 import React, { createContext, useState } from 'react';
@@ -20,7 +20,7 @@ export const ErrorHandlingContext =
     redirect: () => {},
   });
 
-const ErrorHandlingProvider: FC = ({ children }) => {
+const ErrorHandlingProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const [errors, setErrors] = useState<SerializedError[] | null>(null);

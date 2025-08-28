@@ -1,9 +1,9 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 
 import styles from './PublicProfileOuterContainer.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
-const PublicProfileOuterContainer: FC = ({ children }) => {
+const PublicProfileOuterContainer = ({ children }: { children: ReactNode }) => {
   const { isImpersonationModeOn } = useUserProps();
   return (
     <main

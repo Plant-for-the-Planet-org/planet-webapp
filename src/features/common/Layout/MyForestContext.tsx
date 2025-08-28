@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type {
   ProjectListResponse,
   MyForestProject,
@@ -57,7 +57,7 @@ interface MyForestContextInterface {
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
 
-export const MyForestProvider: FC = ({ children }) => {
+export const MyForestProvider = ({ children }: { children: ReactNode }) => {
   const { setErrors } = useContext(ErrorHandlingContext);
 
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);

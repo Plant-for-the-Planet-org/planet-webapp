@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { PlanetCashAccount } from '../types/planetcash';
 
 import { createContext, useState, useContext } from 'react';
@@ -13,7 +13,7 @@ interface PlanetCashContextInterface {
 export const PlanetCashContext =
   createContext<PlanetCashContextInterface | null>(null);
 
-export const PlanetCashProvider: FC = ({ children }) => {
+export const PlanetCashProvider = ({ children }: { children: ReactNode }) => {
   const [accounts, setAccounts] = useState<PlanetCashAccount[] | null>(null);
   const [isPlanetCashActive, setIsPlanetCashActive] = useState<boolean>(false);
 

@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { NavLinkType, SubMenuItemType } from './NavLink';
 
 import { useRouter } from 'next/router';
@@ -26,7 +26,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
-const UserLayout: FC = ({ children }) => {
+const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
