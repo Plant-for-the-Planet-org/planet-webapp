@@ -26,11 +26,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
-interface UserLayoutProps {
-  children: ReactNode;
-}
-
-const UserLayout = ({ children }: UserLayoutProps) => {
+const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();

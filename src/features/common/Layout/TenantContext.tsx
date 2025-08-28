@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { SetState } from '../types/common';
 import type { Tenant } from '@planet-sdk/common';
 
@@ -12,13 +12,14 @@ interface TenantContextInterface {
 const TenantContext = createContext<TenantContextInterface | null>(null);
 
 interface TenantProviderProps {
+  children: ReactNode;
   initialTenantConfig: Tenant;
 }
 
-export const TenantProvider: FC<TenantProviderProps> = ({
+export const TenantProvider = ({
   children,
   initialTenantConfig,
-}) => {
+}: TenantProviderProps) => {
   const [tenantConfig, setTenantConfig] = useState<Tenant>(initialTenantConfig);
 
   const value: TenantContextInterface | null = useMemo(

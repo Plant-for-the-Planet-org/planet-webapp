@@ -1,5 +1,5 @@
 import type { APIError, CurrencyCode } from '@planet-sdk/common';
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 
 import { handleError } from '@planet-sdk/common';
 import { createContext, useState, useContext, useEffect } from 'react';
@@ -16,7 +16,7 @@ interface CurrencyContextInterface {
 
 const CurrencyContext = createContext<CurrencyContextInterface | null>(null);
 
-export const CurrencyProvider: FC = ({ children }) => {
+export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   const { setErrors } = useContext(ErrorHandlingContext);
   const { getApi } = useApi();
   const [supportedCurrencies, setSupportedCurrencies] =

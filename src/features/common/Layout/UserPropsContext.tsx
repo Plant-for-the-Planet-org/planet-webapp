@@ -2,7 +2,7 @@ import type {
   User as Auth0User,
   RedirectLoginOptions,
 } from '@auth0/auth0-react';
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { User } from '@planet-sdk/common/build/types/user';
 import type { SetState } from '../types/common';
 import type { ImpersonationData } from '../../../utils/apiRequests/impersonation';
@@ -49,7 +49,7 @@ export const UserPropsContext = createContext<UserPropsContextInterface | null>(
   null
 );
 
-export const UserPropsProvider: FC = ({ children }) => {
+export const UserPropsProvider = ({ children }: { children: ReactNode }) => {
   const {
     isLoading,
     isAuthenticated,

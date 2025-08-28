@@ -1,5 +1,5 @@
 // Changes in this file can be ignored as it was just used to get the old time travel feature working
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type {
   TreeProjectExtended,
@@ -47,7 +47,7 @@ export const useProjectProps = (): ProjectPropsContextInterface => {
   return context;
 };
 
-const ProjectPropsProvider: FC = ({ children }) => {
+const ProjectPropsProvider = ({ children }: { children: ReactNode }) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null

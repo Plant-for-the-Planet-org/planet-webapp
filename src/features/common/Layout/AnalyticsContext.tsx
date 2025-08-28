@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { SetState } from '../types/common';
 
 import { useContext, createContext, useMemo, useState } from 'react';
@@ -22,7 +22,7 @@ interface AnalyticsContextInterface {
 
 const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
 
-export const AnalyticsProvider: FC = ({ children }) => {
+export const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
   const [projectList, setProjectList] = useState<Project[] | null>(null);
   const [project, setProject] = useState<Project | null>(null);
   const [fromDate, setFromDate] = useState<Date>(subYears(new Date(), 1));

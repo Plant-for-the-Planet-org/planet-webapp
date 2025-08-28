@@ -23,7 +23,7 @@ interface AddressInputProps {
   onAddressSelect?: (address: string) => void;
 }
 
-const AddressInput: React.FC<AddressInputProps> = ({
+const AddressInput = ({
   name,
   control,
   label,
@@ -33,7 +33,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
   suggestions,
   onInputChange,
   onAddressSelect,
-}) => {
+}: AddressInputProps) => {
   const validationRules = {
     ...(required && { required: validationMessages.required }),
     ...(validationPattern && {
