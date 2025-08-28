@@ -1,6 +1,13 @@
 import type { MapProject } from '../../../common/types/projectv2';
 
-import { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
@@ -31,9 +38,18 @@ type PopupState = ClosedPopupState | OpenPopupState;
 const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
   const { embed, callbackUrl } = useContext(ParamsContext);
+
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => clearTimer, [clearTimer]);
 
   const visitProject = useCallback(
     (projectSlug: string): void => {
@@ -53,13 +69,6 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
     },
     [localizedPath, embed, callbackUrl]
   );
-
-  const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
 
   const initiatePopupOpen = useCallback(
     (project: MapProject) => {
