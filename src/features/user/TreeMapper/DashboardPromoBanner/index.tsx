@@ -3,6 +3,8 @@ import AlertIcon from './AlertIcon';
 import styles from './DashboardPromoBanner.module.scss';
 
 const DashboardPromoBanner = () => {
+  const dashboardLink = process.env.NEXT_PUBLIC_DASHBOARD_URL;
+
   return (
     <div className={styles.dashboardPromoBanner}>
       <div className={styles.bannerIconContainer}>
@@ -15,14 +17,16 @@ const DashboardPromoBanner = () => {
           our new interactive dashboard.
         </p>
       </div>
+      {dashboardLink !== undefined && (
       <WebappButton
         variant="primary"
         elementType="link"
-        href="https://dev.treemapper.app/"
+          href={dashboardLink}
         target="_blank"
         text="Visit Dashboard"
         buttonClasses={styles.bannerAction}
       />
+      )}
     </div>
   );
 };

@@ -13,6 +13,7 @@ type Props = {
 
 const FeatureMigrated = ({ status, featureKey }: Props) => {
   const tTreemapperMigration = useTranslations('Treemapper.migration');
+  const dashboardLink = process.env.NEXT_PUBLIC_DASHBOARD_URL;
 
   return (
     <DashboardView>
@@ -28,12 +29,15 @@ const FeatureMigrated = ({ status, featureKey }: Props) => {
                 {tTreemapperMigration(`${status}.${featureKey}.subtitle`)}
               </div>
             </div>
-            <WebappButton
-              elementType="link"
-              href="https://dev.treemapper.app"
-              variant="primary"
-              text="Open Dashboard"
-            />
+            {dashboardLink !== undefined && (
+              <WebappButton
+                elementType="link"
+                href={dashboardLink}
+                target="_blank"
+                variant="primary"
+                text="Open Dashboard"
+              />
+            )}
           </div>
         </CenteredContainer>
       </SingleColumnView>
