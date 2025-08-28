@@ -77,6 +77,12 @@
     "status": "Status",
     "reason": "Reason",
     "migration": {
+      "promoBanner": {
+        "title": "Introducing the TreeMapper Dashboard",
+        "subtitle": "Track your planting progress, species insights, and project health in our new interactive dashboard.",
+        "buttonText": "Visit Dashboard"
+      },
+      "dashboardButton": "Open Dashboard",
       "completed": {
         "data-explorer": {
           "title": "Your data has been migrated to the new Treemapper dashboard",

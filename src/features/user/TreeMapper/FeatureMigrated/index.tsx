@@ -35,7 +35,7 @@ const FeatureMigrated = ({ status, featureKey }: Props) => {
                 href={dashboardLink}
                 target="_blank"
                 variant="primary"
-                text="Open Dashboard"
+                text={tTreemapperMigration('dashboardButton')}
               />
             )}
           </div>
