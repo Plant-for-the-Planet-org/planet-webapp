@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { SetState } from '../../types/common';
 
 import { useContext, useMemo } from 'react';
@@ -15,16 +15,17 @@ import { useUserProps } from '../UserPropsContext';
 import { ParamsContext } from '../QueryParamsContext';
 
 interface ProjectsLayoutProps {
+  children: ReactNode;
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
 }
 
-const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
+const ProjectsLayoutContent = ({
   children,
   setCurrencyCode,
   page,
-}) => {
+}: Omit<ProjectsLayoutProps, 'currencyCode'>) => {
   const { mapOptions, updateMapOption } = useProjectsMap();
   const { isImpersonationModeOn } = useUserProps();
   const { embed, showProjectDetails, showProjectList } =
@@ -78,12 +79,12 @@ const ProjectsLayoutContent: FC<Omit<ProjectsLayoutProps, 'currencyCode'>> = ({
   );
 };
 
-const ProjectsLayout: FC<ProjectsLayoutProps> = ({
+const ProjectsLayout = ({
   children,
   currencyCode,
   setCurrencyCode,
   page,
-}) => {
+}: ProjectsLayoutProps) => {
   const { embed, isContextLoaded } = useContext(ParamsContext);
   const isEmbedded = embed === 'true';
 

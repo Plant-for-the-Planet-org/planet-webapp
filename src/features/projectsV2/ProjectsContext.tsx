@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import type { ExtendedProject, MapProject } from '../common/types/projectv2';
 import type {
   APIError,
@@ -71,6 +71,7 @@ interface ProjectsState {
 const ProjectsContext = createContext<ProjectsState | null>(null);
 
 type ProjectsProviderProps = {
+  children: ReactNode;
   page?: 'project-list' | 'project-details';
   currencyCode?: string;
   setCurrencyCode?: SetState<string> | undefined;
@@ -78,14 +79,14 @@ type ProjectsProviderProps = {
   setSelectedMode?: SetState<ViewMode>;
 };
 
-export const ProjectsProvider: FC<ProjectsProviderProps> = ({
+export const ProjectsProvider = ({
   children,
   page,
   currencyCode,
   setCurrencyCode,
   selectedMode,
   setSelectedMode,
-}) => {
+}: ProjectsProviderProps) => {
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null

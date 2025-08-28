@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { User } from '@planet-sdk/common';
 import type {
   AddressView,
@@ -121,9 +122,11 @@ const DonationReceiptContext =
   createContext<DonationReceiptContextInterface | null>(null);
 
 // Provider component
-export const DonationReceiptProvider: React.FC<{
-  children: React.ReactNode;
-}> = ({ children }) => {
+export const DonationReceiptProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [state, setState] =
     useState<DonationReceiptContextState>(loadStateFromSession);
   // Persist state to sessionStorage
