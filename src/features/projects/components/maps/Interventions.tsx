@@ -76,7 +76,7 @@ export default function Interventions(): ReactElement {
   const getPlArea = (pl: MultiTreeRegistration) => {
     if (pl && pl.type === 'multi-tree-registration') {
       const calculatedArea = area(pl.geometry);
-      return calculatedArea / 10000;
+      return calculatedArea > 0 ? calculatedArea / 10000 : 0;
     } else {
       return 0;
     }
@@ -85,7 +85,7 @@ export default function Interventions(): ReactElement {
   const getPolygonColor = (pl: MultiTreeRegistration) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
-    const density = treeCount / plantationArea;
+    const density = plantationArea > 0 ? treeCount / plantationArea : 0;
     if (density > 2500) {
       return 0.5;
     } else if (density > 2000) {

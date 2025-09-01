@@ -70,7 +70,7 @@ export default function InterventionDetails({
       activeIntervention.type === 'multi-tree-registration'
     ) {
       const calculatedArea = area(activeIntervention.geometry);
-      setPlantationArea(calculatedArea / 10000);
+      setPlantationArea(calculatedArea > 0 ? calculatedArea / 10000 : 0);
     }
   }, [activeIntervention]);
 

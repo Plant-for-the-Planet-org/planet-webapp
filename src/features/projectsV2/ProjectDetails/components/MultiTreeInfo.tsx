@@ -35,7 +35,7 @@ const MultiTreeInfo = ({
       0
     );
     const calculatedArea = area(activeMultiTree.geometry);
-    const hectaresCovered = calculatedArea / 10000;
+    const hectaresCovered = calculatedArea > 0 ? calculatedArea / 10000 : 0;
     return { totalTreesCount, hectaresCovered };
   }, [
     activeMultiTree.geometry,

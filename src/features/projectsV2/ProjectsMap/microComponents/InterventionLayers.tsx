@@ -120,7 +120,7 @@ export default function InterventionLayers(): React.ReactElement {
   const getPolygonColor = (multiTree: MultiTreeRegistration) => {
     const treeCount = getTreeCount(multiTree);
     const plantationArea = getPlantationArea(multiTree);
-    const density = treeCount / plantationArea;
+    const density = plantationArea > 0 ? treeCount / plantationArea : 0;
     if (density > 2500) {
       return 0.5;
     } else if (density > 2000) {
