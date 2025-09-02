@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
@@ -33,16 +33,16 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { user } = useUserProps();
-  const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
+  const [embedModalOpen, setEmbedModalOpen] = useState(false);
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user && user.isPrivate) {
       setEmbedModalOpen(true);
     }

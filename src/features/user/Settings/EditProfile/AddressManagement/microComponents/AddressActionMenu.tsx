@@ -69,7 +69,7 @@ const AddressActionsMenu = ({
     },
   ];
 
-  const openPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const openPopover = (event: MouseEvent<HTMLButtonElement>) => {
     setPopoverAnchor(event.currentTarget);
   };
 

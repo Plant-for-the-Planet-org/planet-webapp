@@ -1,6 +1,6 @@
 import type { APIError } from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import styles from './ApiKey.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -33,11 +33,11 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 export default function ApiKey() {
   const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Me');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [apiKey, setApiKey] = React.useState('');
-  const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
 
   const handleVisibilityChange = () => {
     setIsApiKeyVisible(!isApiKeyVisible);
@@ -59,7 +59,7 @@ export default function ApiKey() {
   };
 
   const regenerateApiKey = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     setIsUploadingData(true);
@@ -77,7 +77,7 @@ export default function ApiKey() {
     setIsUploadingData(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token && contextLoaded) {
       getApiKey();
     }
@@ -108,7 +108,7 @@ export default function ApiKey() {
         </InlineFormDisplayGroup>
         <div>
           <Button
-            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+            onClick={(e: MouseEvent<HTMLButtonElement, MouseEvent>) =>
               regenerateApiKey(e)
             }
             variant="contained"

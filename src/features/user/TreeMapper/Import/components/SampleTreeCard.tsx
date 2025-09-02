@@ -3,7 +3,6 @@ import type { MultiTreeRegistration } from '../../../../common/types/interventio
 import type { SampleTree } from '../../../../common/types/intervention';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';

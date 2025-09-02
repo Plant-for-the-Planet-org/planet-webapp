@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { Map } from 'mapbox-gl';
 import type { Imagery } from '../../../common/types/ProjectPropsContextInterface';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
@@ -13,14 +13,12 @@ export default function TimeTravel(): ReactElement {
   const { mapRef, geoJson, rasterData, isMobile, siteViewPort, selectedMode } =
     useProjectProps();
 
-  const [before, setBefore] = React.useState<Map>();
-  const [after, setAfter] = React.useState<Map>();
-  const [selectedSource1, setSelectedSource1] =
-    React.useState<keyof Imagery>('esri');
-  const [selectedSource2, setSelectedSource2] =
-    React.useState<keyof Imagery>('esri');
-  const [selectedYear1, setSelectedYear1] = React.useState('2014');
-  const [selectedYear2, setSelectedYear2] = React.useState('2021');
+  const [before, setBefore] = useState<Map>();
+  const [after, setAfter] = useState<Map>();
+  const [selectedSource1, setSelectedSource1] = useState<keyof Imagery>('esri');
+  const [selectedSource2, setSelectedSource2] = useState<keyof Imagery>('esri');
+  const [selectedYear1, setSelectedYear1] = useState('2014');
+  const [selectedYear2, setSelectedYear2] = useState('2021');
 
   const EMPTY_STYLE = {
     version: 8,
@@ -28,7 +26,7 @@ export default function TimeTravel(): ReactElement {
     layers: [],
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window !== 'undefined' && mapRef.current) {
       const center = mapRef.current.getMap().getCenter();
       const zoom = mapRef.current.getMap().getZoom();
@@ -80,14 +78,14 @@ export default function TimeTravel(): ReactElement {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (before && siteViewPort) {
       before.setCenter(siteViewPort.center);
       before.setZoom(siteViewPort.zoom);
     }
   }, [selectedMode, geoJson]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function loadLayers() {
       // Planet Labs
       if (before && after) {

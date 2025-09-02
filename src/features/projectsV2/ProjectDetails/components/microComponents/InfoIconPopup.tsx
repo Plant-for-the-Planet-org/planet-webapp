@@ -1,4 +1,5 @@
-import React from 'react';
+import type { ReactNode } from 'react';
+
 import NewInfoIcon from '../../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { bindHover, bindPopover } from 'material-ui-popup-state';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
@@ -8,7 +9,7 @@ interface Props {
   height: number;
   width: number;
   color: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const InfoIconPopup = ({ height, width, color, children }: Props) => {

@@ -1,8 +1,6 @@
 import type { ReactElement } from 'react';
 import type { IconProps } from '../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function FileAttachedIcon({ color = '#2f3336' }: IconProps): ReactElement {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

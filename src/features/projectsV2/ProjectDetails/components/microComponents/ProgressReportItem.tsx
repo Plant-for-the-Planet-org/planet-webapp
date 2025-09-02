@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from '../../styles/ProjectInfo.module.scss';
 import DownloadsLabel from './DownloadsLabel';
 

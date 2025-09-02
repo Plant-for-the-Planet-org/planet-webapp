@@ -1,4 +1,3 @@
-import React from 'react';
 import themeProperties from '../../../theme/themeProperties';
 import { LinearProgress, styled } from '@mui/material';
 

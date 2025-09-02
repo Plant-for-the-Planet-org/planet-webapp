@@ -366,7 +366,7 @@ export const MapContainer = () => {
   // If the input is a HID, the plant location with the matching HID will be selected
   // If the input is a Date, the plant locations with the matching Date will be selected
   const handleSearchChange = (
-    event: React.ChangeEvent<HTMLInputElement> | React.ClipboardEvent
+    event: ChangeEvent<HTMLInputElement> | ClipboardEvent
   ) => {
     let value = '';
 

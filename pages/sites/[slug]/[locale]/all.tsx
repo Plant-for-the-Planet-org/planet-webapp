@@ -13,7 +13,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import LeaderBoard from '../../../../src/tenants/planet/LeaderBoard';
 import GetLeaderboardMeta from '../../../../src/utils/getMetaTags/GetLeaderboardMeta';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -33,22 +33,20 @@ interface Props {
 }
 
 export default function Home({ pageProps }: Props) {
-  const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
-    null
-  );
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadLeaderboard() {
       try {
         const newLeaderboard = await getApi<LeaderBoardList>(
@@ -62,11 +60,9 @@ export default function Home({ pageProps }: Props) {
     loadLeaderboard();
   }, []);
 
-  const [tenantScore, setTenantScore] = React.useState<TenantScore | null>(
-    null
-  );
+  const [tenantScore, setTenantScore] = useState<TenantScore | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadTenantScore() {
       try {
         const newTenantScore = await getApi<TenantScore>(
@@ -80,11 +76,9 @@ export default function Home({ pageProps }: Props) {
     loadTenantScore();
   }, []);
 
-  const [treesDonated, setTreesDonated] = React.useState<TreesDonated | null>(
-    null
-  );
+  const [treesDonated, setTreesDonated] = useState<TreesDonated | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadTreesDonated() {
       try {
         const newTreesDonated = await getApi<TreesDonated>(

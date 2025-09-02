@@ -1,7 +1,7 @@
 import type { SetStateAction, Dispatch, ReactNode } from 'react';
 import type { SerializedError } from '@planet-sdk/common';
 
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 

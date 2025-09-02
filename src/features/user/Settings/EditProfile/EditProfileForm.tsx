@@ -1,3 +1,4 @@
+import type { SyntheticEvent } from 'react';
 import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
 import type { User, UserType } from '@planet-sdk/common/build/types/user';
@@ -5,7 +6,7 @@ import type { User, UserType } from '@planet-sdk/common/build/types/user';
 import { TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import React, { useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
@@ -63,7 +64,7 @@ type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
 };
 
 export default function EditProfileForm() {
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } = useUserProps();
   const t = useTranslations('EditProfile');
   const router = useRouter();
@@ -71,8 +72,8 @@ export default function EditProfileForm() {
   const { putApiAuthenticated } = useApi();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [updatingPic, setUpdatingPic] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [updatingPic, setUpdatingPic] = useState(false);
   // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
@@ -116,7 +117,7 @@ export default function EditProfileForm() {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (
-    _event?: React.SyntheticEvent | Event,
+    _event?: SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === 'clickaway') {
@@ -125,7 +126,7 @@ export default function EditProfileForm() {
     setSnackbarOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     reset(defaultProfileDetails);
   }, [defaultProfileDetails]);
 
@@ -147,7 +148,7 @@ export default function EditProfileForm() {
     },
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     const selectedProfile = profileTypes.find((p) => p.value === type);
     selectedProfile &&
       setLocalProfileType({
@@ -157,7 +158,7 @@ export default function EditProfileForm() {
       });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset();
   }, [type]);
@@ -182,7 +183,7 @@ export default function EditProfileForm() {
     }
   };
 
-  const onDrop = React.useCallback(
+  const onDrop = useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
       acceptedFiles.forEach((file: Blob) => {
@@ -207,7 +208,7 @@ export default function EditProfileForm() {
   );
 
   const deleteProfilePicture = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
     const profileImagePayload = {

@@ -1,7 +1,6 @@
 // Not used currently. Left as a reference.
 import type { ReactElement } from 'react';
 
-import React from 'react';
 import styles from './Video.module.scss';
 import { useTranslations } from 'next-intl';
 import ReactPlayer from 'react-player/lazy';

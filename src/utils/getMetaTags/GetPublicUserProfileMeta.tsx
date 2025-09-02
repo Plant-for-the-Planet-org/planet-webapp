@@ -2,7 +2,7 @@ import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ReactElement } from 'react';
 
 import Head from 'next/head';
-import React from 'react';
+
 import { useTenant } from '../../features/common/Layout/TenantContext';
 
 interface Props {

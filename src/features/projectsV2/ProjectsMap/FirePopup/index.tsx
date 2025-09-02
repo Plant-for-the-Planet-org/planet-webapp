@@ -1,10 +1,12 @@
+import type { SetStateAction } from 'react';
 import type { FireFeature } from '../../../common/types/fireLocation';
 import type { PopperProps } from '@mui/material';
 import type { Modifier } from '@popperjs/core';
 
+import { useState, useRef } from 'react';
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import RightArrowIcon from '../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoIconPopup';
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
@@ -22,7 +24,7 @@ type ConfidencesType =
   | 'lowAlertConfidenceText';
 
 function popperModifiers(options: {
-  arrowRef: React.SetStateAction<HTMLElement | null>;
+  arrowRef: SetStateAction<HTMLElement | null>;
   clippingBoundary: HTMLElement | null;
 }): Partial<Modifier<any, any>>[] | undefined {
   return [
@@ -58,12 +60,12 @@ function popperModifiers(options: {
 }
 
 export default function FirePopup({ isOpen, feature }: Props) {
-  const anchorRef = React.useRef(null);
-  const popperRef = React.useRef<HTMLDivElement>(null);
-  const [arrowRef, setArrowRef] = React.useState<HTMLElement | null>(null);
-  const [showPopup, setShowPopup] = React.useState(isOpen);
+  const anchorRef = useRef(null);
+  const popperRef = useRef<HTMLDivElement>(null);
+  const [arrowRef, setArrowRef] = useState<HTMLElement | null>(null);
+  const [showPopup, setShowPopup] = useState(isOpen);
   const [popperPlacement, setPopperPlacement] =
-    React.useState<PopperProps['placement']>('top');
+    useState<PopperProps['placement']>('top');
   const tProjectDetails = useTranslations('ProjectDetails');
 
   useEffect(() => {

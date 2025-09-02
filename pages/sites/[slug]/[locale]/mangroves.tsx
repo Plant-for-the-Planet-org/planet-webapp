@@ -7,7 +7,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';

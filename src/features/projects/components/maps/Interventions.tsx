@@ -7,7 +7,6 @@ import type {
 } from '../../../common/types/intervention';
 import type { Feature, Point, Polygon } from 'geojson';
 
-import React from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';

@@ -2,7 +2,7 @@ import type { ReactElement, ChangeEvent } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { Recipient, TableHeader } from '../BulkCodesTypes';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

@@ -1,6 +1,6 @@
 import type { APIError } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState, useContext } from 'react';
 import styles from './LeaderBoard.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
@@ -35,15 +35,15 @@ type UserApiPayload = {
 };
 
 export default function LeaderBoardSection(leaderboard: Props) {
-  const [selectedTab, setSelectedTab] = React.useState('recent');
+  const [selectedTab, setSelectedTab] = useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const tLeaderboard = useTranslations('Leaderboard');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
   const { postApi } = useApi();
   const { localizedPath } = useLocalizedPath();
-  const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [users, setUsers] = React.useState<LeaderboardUser[]>([]);
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const fetchUsers = async (query: string) => {
     try {
       const res = await postApi<LeaderboardUser[], UserApiPayload>(
