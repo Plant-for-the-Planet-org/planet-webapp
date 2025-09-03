@@ -265,7 +265,8 @@ export const MapContainer = () => {
           // Calculate the area based on the feature's coordinates using Turf.js
           const polygonAreaSqMeters = area(intervention.geometry);
           const treeCount = intervention.properties.treeCount;
-          const density = treeCount / polygonAreaSqMeters;
+          const density =
+            polygonAreaSqMeters > 0 ? treeCount / polygonAreaSqMeters : 0;
 
           // Add the calculated density to the feature properties
           return {

@@ -98,7 +98,7 @@ export default function MyTreesMap({
   const getPlantationArea = (mt: MultiTreeRegistration) => {
     if (mt && mt.type === 'multi-tree-registration') {
       const polygonAreaSqMeters = area(mt.geometry);
-      return polygonAreaSqMeters / 10000;
+      return polygonAreaSqMeters > 0 ? polygonAreaSqMeters / 10000 : 0;
     } else {
       return 0;
     }
@@ -107,7 +107,7 @@ export default function MyTreesMap({
   const getPolygonColor = (mt: MultiTreeRegistration) => {
     const treeCount = getTreeCount(mt);
     const plantationArea = getPlantationArea(mt);
-    const density = treeCount / plantationArea;
+    const density = plantationArea > 0 ? treeCount / plantationArea : 0;
     if (density > 2500) {
       return 0.5;
     } else if (density > 2000) {
