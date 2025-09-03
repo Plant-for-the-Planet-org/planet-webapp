@@ -19,7 +19,7 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      color: #032d60;
+      color: $dsDeepBlue;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -34,7 +34,7 @@
       font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      color: #032d60;
+      color: $dsDeepBlue;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -48,11 +48,11 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: #032d60;
+      color: $dsDeepBlue;
       margin-bottom: 30px;
       a {
         text-decoration: underline;
-        color: #0b5cab;
+        color: $dsOceanBlue;
       }
     }
     img {
@@ -77,7 +77,7 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: #032d60;
+    color: $dsDeepBlue;
 
     &.bold {
       font-weight: 500;
@@ -104,12 +104,12 @@
     p {
       margin-bottom: 0;
       font-size: $fontMedium;
-      color: #ffffff;
+      color: $dsWhite;
     }
   }
 
   button {
-    background: #0176d3;
+    background: $dsOceanBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -117,7 +117,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $dsWhite;
     padding: 13px 24px;
     cursor: pointer;
 
@@ -128,7 +128,7 @@
     }
 
     &:hover {
-      background: #0176d3;
+      background: $dsOceanBlue;
       border: none;
     }
   }

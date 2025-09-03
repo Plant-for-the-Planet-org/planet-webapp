@@ -33,7 +33,7 @@
   align-self: center;
   text-align: center;
   width: 90vw;
-  background-color: white;
+  background-color: $dsWhite;
   z-index: 999;
   margin-top: -90px;
   padding: 50px 80px;
@@ -55,7 +55,7 @@
   font-size: $fontSmall;
   line-height: 21px;
   text-align: center;
-  color: #080707;
+  color: $dsDeepBlue;
 }
 
 .leaderBoard > h2 {
@@ -66,7 +66,7 @@
   font-weight: 500;
   line-height: 100%;
   letter-spacing: -0.004em;
-  color: #032d60;
+  color: $dsDeepBlue;
   margin-bottom: 30px;
 }
 
@@ -76,7 +76,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 16px;
-  background-color: #f5f2f2;
+  background-color: $dsBaseGrey;
   border-radius: 90px;
   height: 42px;
   margin-left: 10px;
@@ -94,8 +94,8 @@
   font-weight: normal;
   font-size: $fontSmall;
   line-height: 42px;
-  color: #032d60;
-  background-color: #f5f2f2;
+  color: $dsDeepBlue;
+  background-color: $dsBaseGrey;
   text-align: center;
   border-radius: 90px;
   width: 50%;
@@ -107,8 +107,8 @@
   font-weight: bold;
   font-size: $fontSmall;
   line-height: 42px;
-  color: white;
-  background-color: #032d60;
+  color: $dsWhite;
+  background-color: $dsDeepBlue;
   text-align: center;
   border-radius: 90px;
   width: 50%;
@@ -129,7 +129,7 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 16px 0px;
-  border-bottom: 1px solid #dddbda;
+  border-bottom: 1px solid $dsHintText;
 }
 
 .leaderBoardDonorName {
@@ -141,7 +141,7 @@
   font-weight: normal;
   font-size: $sfFontBase;
   line-height: 24px;
-  color: #181818;
+  color: $dsCoreText;
 }
 
 .leaderBoardDonorTrees {
@@ -155,14 +155,14 @@
   font-family: $primaryFontFamily;
   font-size: $sfFontBase;
   line-height: 24px;
-  color: #181818;
+  color: $dsCoreText;
 }
 
 .leaderBoardDonorTime {
   font-style: normal;
   font-weight: normal;
   font-size: $fontSixteen;
-  color: #706e6b;
+  color: $dsSoftText2;
   mix-blend-mode: normal;
   opacity: 0.9;
   flex: none;
