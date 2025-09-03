@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type { APIError } from '@planet-sdk/common';
 
 import { useEffect, useState, useContext } from 'react';
@@ -58,9 +59,7 @@ export default function ApiKey() {
     setIsUploadingData(false);
   };
 
-  const regenerateApiKey = async (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const regenerateApiKey = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsUploadingData(true);
     try {
@@ -108,9 +107,7 @@ export default function ApiKey() {
         </InlineFormDisplayGroup>
         <div>
           <Button
-            onClick={(e: MouseEvent<HTMLButtonElement, MouseEvent>) =>
-              regenerateApiKey(e)
-            }
+            onClick={(e: MouseEvent<HTMLButtonElement>) => regenerateApiKey(e)}
             variant="contained"
             color="primary"
           >

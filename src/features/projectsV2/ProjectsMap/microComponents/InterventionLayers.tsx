@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, MouseEvent } from 'react';
 import type {
   Intervention,
   MultiTreeRegistration,

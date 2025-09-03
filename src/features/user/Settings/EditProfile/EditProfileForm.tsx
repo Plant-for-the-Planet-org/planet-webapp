@@ -1,4 +1,4 @@
-import type { SyntheticEvent } from 'react';
+import type { SyntheticEvent, MouseEvent } from 'react';
 import type { AlertColor } from '@mui/lab';
 import type { APIError } from '@planet-sdk/common';
 import type { User, UserType } from '@planet-sdk/common/build/types/user';
@@ -207,9 +207,7 @@ export default function EditProfileForm() {
     [token]
   );
 
-  const deleteProfilePicture = (
-    event: MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const deleteProfilePicture = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const profileImagePayload = {
       imageFile: null,

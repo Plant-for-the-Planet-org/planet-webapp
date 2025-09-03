@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type {
   IssuedDonationApi,
   UnissuedDonationApi,

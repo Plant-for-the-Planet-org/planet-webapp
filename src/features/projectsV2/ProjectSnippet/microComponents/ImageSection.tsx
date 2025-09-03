@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type { ImageSectionProps } from '..';
 
 import { useCallback, useContext, useState } from 'react';

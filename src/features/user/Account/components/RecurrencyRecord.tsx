@@ -1,4 +1,4 @@
-import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import type { Dispatch, ReactElement, SetStateAction, MouseEvent } from 'react';
 import type {
   MultipleDestinations,
   Subscription,
@@ -266,7 +266,7 @@ export function ManageDonation({
     record?.status === 'paused' || new Date(record?.endsAt || '') > new Date();
 
   const openModal = (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement>,
     setModalOpen: Dispatch<SetStateAction<boolean>>
   ) => {
     e.preventDefault();
