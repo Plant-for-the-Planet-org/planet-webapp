@@ -60,7 +60,7 @@ function TreemapperIntervention({
   React.useEffect(() => {
     if (intervention.type === 'multi-tree-registration') {
       const calculatedArea = area(intervention.geometry);
-      setPlantationArea(calculatedArea / 10000);
+      setPlantationArea(calculatedArea > 0 ? calculatedArea / 10000 : 0);
     }
   }, [intervention]);
 
