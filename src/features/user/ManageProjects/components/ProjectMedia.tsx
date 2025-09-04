@@ -24,6 +24,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -74,6 +75,7 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
+  const { colors } = themeProperties.designSystem;
   const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -315,7 +317,11 @@ export default function ProjectMedia({
                         size="small"
                       >
                         <Star
-                          color={image.isDefault ? '#ECB641' : '#2f3336'}
+                          color={
+                            image.isDefault
+                              ? colors.goldenYellow
+                              : colors.coreText
+                          }
                           className={image.isDefault ? 'selected' : ''}
                         />
                       </IconButton>

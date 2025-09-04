@@ -28,6 +28,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 type BaseFormData = {
   employeesCount: string;
@@ -105,6 +106,7 @@ export default function DetailedAnalysis({
   const tCommon = useTranslations('Common');
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
+  const { colors } = themeProperties.designSystem;
   const [siteOwners, setSiteOwners] = React.useState<SiteOwners[]>([
     {
       id: 1,
@@ -794,7 +796,7 @@ export default function DetailedAnalysis({
                           id="check-solid"
                           d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
                           transform="translate(0 -65.098)"
-                          fill="#fff"
+                          fill={colors.white}
                         />
                       </svg>
                     </div>
@@ -842,7 +844,7 @@ export default function DetailedAnalysis({
                         id="check-solid"
                         d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
                         transform="translate(0 -65.098)"
-                        fill="#fff"
+                        fill={colors.white}
                       />
                     </svg>
                   </div>
@@ -1186,7 +1188,7 @@ export default function DetailedAnalysis({
                         id="check-solid"
                         d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
                         transform="translate(0 -65.098)"
-                        fill="#fff"
+                        fill={colors.white}
                       />
                     </svg>
                   </div>

@@ -191,9 +191,6 @@ export default function ProjectSpending({
                     <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
                     <p>in {report.year} </p>
                   </div>
-                  {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
-                                        <PencilIcon color={"#000"} />
-                                    </div> */}
                   <IconButton
                     id={'trashIconProjSpend'}
                     onClick={() => deleteProjectSpending(report.id)}

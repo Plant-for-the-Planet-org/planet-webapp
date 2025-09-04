@@ -210,9 +210,6 @@ function ProjectCertificates({
                   </p>
                   <p>{report.issueDate} </p>
                 </div>
-                {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
-                                    <PencilIcon color={"#000"} />
-                                </div> */}
                 <button
                   type="button"
                   id={'trashIconProjC'}
