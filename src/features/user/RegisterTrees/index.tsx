@@ -10,7 +10,7 @@ export default function RegisterTrees(): ReactElement | null {
   const t = useTranslations('Me');
 
   return (
-    <DashboardView title={t('registerTrees')} subtitle={null}>
+    <DashboardView title={t('registerTrees')}>
       <SingleColumnView>
         <CenteredContainer>
           <RegisterTreesWidget />
