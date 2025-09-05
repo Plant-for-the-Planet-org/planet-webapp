@@ -6,6 +6,7 @@ import LeaderBoard from './components/LeaderBoardSection';
 import ParticipationSection from './components/ParticipationSection';
 import AdditionalContent from './components/AdditionalContent';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
+import themeProperties from '../../../theme/themeProperties';
 
 interface Props {
   leaderboard: {
@@ -27,7 +28,12 @@ export default function Campaign({
       <Head>
         <title>{`Mangrove Challenge | ${tenantConfig.config.meta.title}`}</title>
       </Head>
-      <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
+      <main
+        style={{
+          backgroundColor: themeProperties.designSystem.colors.white,
+          paddingBottom: '60px',
+        }}
+      >
         <Landing tenantScore={tenantScore} isLoaded={isLoaded} />
         <ContentSection />
         <ParticipationSection />

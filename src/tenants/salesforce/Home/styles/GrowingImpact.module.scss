@@ -34,7 +34,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032d60;
+    color: $dsDeepBlue;
 
     @include xsPhoneView {
       margin-bottom: 30px;
@@ -57,13 +57,13 @@
     line-height: 30px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: #181818;
+    color: $dsCoreText;
     margin-bottom: 60px;
     small {
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: #1a1a1a;
+      color: $dsCoreText;
     }
   }
   .imageContainer {
@@ -90,7 +90,7 @@
     a,
     .references {
       text-align: center;
-      color: #ffffff;
+      color: $dsWhite;
     }
 
     .referenceItem {
@@ -141,7 +141,7 @@
     line-height: 15px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #939393;
+    color: $dsSoftText2;
     margin-bottom: 12px;
     display: block;
   }
@@ -152,7 +152,7 @@
     font-size: $sfFontMedium;
     line-height: 26px;
     letter-spacing: -0.001em;
-    color: #ffffff;
+    color: $dsWhite;
     text-align: center;
     padding-top: 20px;
     margin-bottom: 16px;
@@ -161,7 +161,7 @@
     }
   }
   h5 {
-    color: #ffffff;
+    color: $dsWhite;
     text-align: center;
     padding-top: 20px;
     margin-bottom: 16px;
@@ -181,7 +181,7 @@
     margin-bottom: 20px;
   }
   button {
-    background: #215ca0;
+    background: $dsOceanBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -189,7 +189,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $dsWhite;
     padding: 13px 24px;
     cursor: pointer;
   }

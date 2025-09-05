@@ -1,6 +1,7 @@
 import styles from './../styles/GrowingImpact.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import Timeline from './Timeline';
+import themeProperties from '../../../../theme/themeProperties';
 
 type BaseArticle = {
   id: number;
@@ -32,76 +33,75 @@ type Article = SingleLinkArticle | MultipleLinkArticle;
 function isSingleLinkArticle(article: Article): article is SingleLinkArticle {
   return 'link' in article;
 }
-
+const { deepGreen, primaryColor } = themeProperties.designSystem.colors;
+const articles: Article[] = [
+  {
+    id: 1,
+    copy: 'The Field Marketing Team donated 40,000 trees on behalf of STARs accounts for Earth Day.',
+    subCopy: 'Rally your team today!',
+    image: '/tenants/salesforce/images/growing-impact/success-1.jpg',
+    foliage: '/tenants/salesforce/images/growing-impact/foliage-1.png',
+    link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
+    bgColor: deepGreen,
+  },
+  {
+    id: 2,
+    copy: 'The Global Onboarding Team team donates a tree for every hire.',
+    subCopy: 'How do you benchmark goals?',
+    image: '/tenants/salesforce/images/growing-impact/success-2.jpg',
+    foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
+    link: 'https://www.salesforce.com/company/sustainability/',
+    bgColor: deepGreen,
+  },
+  {
+    id: 3,
+    copy: 'SEMEA Account teams kicked off the 1M trees initiative.',
+    subCopy: 'How can you involve your clients and partners?',
+    image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
+    foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
+    link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
+    bgColor: primaryColor,
+  },
+  {
+    id: 4,
+    copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated 5,000 trees!',
+    image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
+    foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
+    link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
+    bgColor: deepGreen,
+    partnerLogo: '/tenants/salesforce/images/partner-logo.png',
+  },
+  {
+    id: 5,
+    copy: 'Fitness-for-a-Cause Challenge: Over 62,500 trees were funded during the Earthforce Champion Month in April 2023 and 2024.',
+    image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
+    foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
+    links: {
+      mainText: 'Learn more about the cause',
+      items: [
+        {
+          linkText: 'Challenge 2023',
+          link: '/vto-fitness-challenge-2023',
+        },
+        {
+          linkText: 'Challenge 2024',
+          link: '/vto-fitness-challenge-2024',
+        },
+      ],
+    },
+    bgColor: primaryColor,
+  },
+  {
+    id: 6,
+    copy: '2023 Oceanforce Challenge: Over 3,000 Mangroves planted!',
+    image: '/tenants/salesforce/images/bkgd-guatemala-2.png',
+    foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
+    link: '/mangrove-challenge',
+    linkCopy: 'Click here to learn more about the cause',
+    bgColor: deepGreen,
+  },
+];
 export default function GrowingImpact() {
-  const articles: Article[] = [
-    {
-      id: 1,
-      copy: 'The Field Marketing Team donated 40,000 trees on behalf of STARs accounts for Earth Day.',
-      subCopy: 'Rally your team today!',
-      image: '/tenants/salesforce/images/growing-impact/success-1.jpg',
-      foliage: '/tenants/salesforce/images/growing-impact/foliage-1.png',
-      link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
-      bgColor: '#024D4C',
-    },
-    {
-      id: 2,
-      copy: 'The Global Onboarding Team team donates a tree for every hire.',
-      subCopy: 'How do you benchmark goals?',
-      image: '/tenants/salesforce/images/growing-impact/success-2.jpg',
-      foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
-      link: 'https://www.salesforce.com/company/sustainability/',
-      bgColor: '#396547',
-    },
-    {
-      id: 3,
-      copy: 'SEMEA Account teams kicked off the 1M trees initiative.',
-      subCopy: 'How can you involve your clients and partners?',
-      image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
-      foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
-      link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-      bgColor: '#0B827C',
-    },
-    {
-      id: 4,
-      copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated 5,000 trees!',
-      image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
-      foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
-      link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-      bgColor: '#1C3326',
-      partnerLogo: '/tenants/salesforce/images/partner-logo.png',
-    },
-    {
-      id: 5,
-      copy: 'Fitness-for-a-Cause Challenge: Over 62,500 trees were funded during the Earthforce Champion Month in April 2023 and 2024.',
-      image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
-      foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
-      links: {
-        mainText: 'Learn more about the cause',
-        items: [
-          {
-            linkText: 'Challenge 2023',
-            link: '/vto-fitness-challenge-2023',
-          },
-          {
-            linkText: 'Challenge 2024',
-            link: '/vto-fitness-challenge-2024',
-          },
-        ],
-      },
-      bgColor: '#0B827C',
-    },
-    {
-      id: 6,
-      copy: '2023 Oceanforce Challenge: Over 3,000 Mangroves planted!',
-      image: '/tenants/salesforce/images/bkgd-guatemala-2.png',
-      foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
-      link: '/mangrove-challenge',
-      linkCopy: 'Click here to learn more about the cause',
-      bgColor: '#396547',
-    },
-  ];
-
   return (
     <section className={styles.growingImpactSection}>
       <div className={gridStyles.fluidContainer}>

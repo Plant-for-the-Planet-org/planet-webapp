@@ -10,7 +10,7 @@
   padding-top: 84px;
 
   button {
-    background: #0176d3;
+    background: $dsOceanBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -18,7 +18,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $dsWhite;
     cursor: pointer;
     border: none;
 
@@ -27,7 +27,7 @@
     }
 
     &:hover {
-      background: #0176d3;
+      background: $dsOceanBlue;
       border: none;
     }
   }
@@ -42,7 +42,7 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      color: #032d60;
+      color: $dsDeepBlue;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $sfFontDisplay1;
@@ -58,7 +58,7 @@
       line-height: 28px;
       letter-spacing: -0.004em;
       text-align: center;
-      color: #032d60;
+      color: $dsDeepBlue;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -97,7 +97,7 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: #032d60;
+    color: $dsDeepBlue;
     margin-bottom: 30px;
     @include lgLaptopView {
       font-size: $sfFontMedium;

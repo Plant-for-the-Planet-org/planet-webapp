@@ -7,6 +7,7 @@ import LeaderBoard from './components/LeaderBoardSection';
 import AdditionalInfo from './components/AdditionalInfo';
 
 import { useTenant } from '../../../features/common/Layout/TenantContext';
+import themeProperties from '../../../theme/themeProperties';
 interface Props {
   leaderboard: {
     mostDonated: { created: string; donorName: string; treeCount: string }[];
@@ -27,7 +28,12 @@ export default function Campaign({
       <Head>
         <title>{`VTO Fitness Challenge | ${tenantConfig.config.meta.title}`}</title>
       </Head>
-      <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
+      <main
+        style={{
+          backgroundColor: themeProperties.designSystem.colors.white,
+          paddingBottom: '60px',
+        }}
+      >
         <Landing tenantScore={tenantScore} isLoaded={isLoaded} />
         <ContentSection />
         <ProjectGrid />
