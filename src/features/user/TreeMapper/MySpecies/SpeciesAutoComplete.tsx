@@ -2,7 +2,7 @@
 import type { ReactNode } from 'react';
 import type { Control, FieldValues, FieldPath } from 'react-hook-form';
 import type { APIError } from '@planet-sdk/common';
-import type { SpeciesSuggestionType } from '../../../common/types/intervention';
+import type { SpeciesSuggestionType } from '../Treemapper';
 
 import { useEffect, useState, useContext } from 'react';
 import { Controller } from 'react-hook-form';

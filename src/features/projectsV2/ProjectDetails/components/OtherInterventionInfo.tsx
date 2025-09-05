@@ -1,7 +1,7 @@
 import type {
   OtherInterventions,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
+} from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo, Fragment } from 'react';

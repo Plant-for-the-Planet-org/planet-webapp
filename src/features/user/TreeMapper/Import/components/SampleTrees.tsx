@@ -2,11 +2,8 @@ import type { ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
 import type { Geometry } from '@turf/turf';
 import type { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
-import type {
-  Measurements,
-  MultiTreeRegistration,
-  SampleTree,
-} from '../../../../common/types/intervention';
+import type { MultiTreeRegistration, Measurements } from '@planet-sdk/common';
+import type { SampleTree } from '../../Treemapper';
 
 import { useState, useContext, useCallback } from 'react';
 import styles from '../Import.module.scss';

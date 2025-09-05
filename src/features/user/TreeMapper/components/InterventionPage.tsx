@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
+import type { SetState } from '../../../common/types/common';
 import type {
   Intervention,
   MultiTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { SetState } from '../../../common/types/common';
+} from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';

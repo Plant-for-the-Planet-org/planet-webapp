@@ -1,7 +1,7 @@
 import type { MapEvent } from 'react-map-gl';
 import type { PopupData } from './maps/Markers';
-import type { Intervention } from '../../common/types/intervention';
 import type { ReactElement } from 'react';
+import type { Intervention } from '@planet-sdk/common';
 
 import { useEffect, useState, useContext } from 'react';
 import MapGL, { NavigationControl, Popup } from 'react-map-gl';
