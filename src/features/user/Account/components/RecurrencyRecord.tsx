@@ -1,10 +1,11 @@
-import type { Dispatch, ReactElement, SetStateAction, MouseEvent } from 'react';
+import type { ReactElement, MouseEvent } from 'react';
 import type {
   MultipleDestinations,
   Subscription,
 } from '../../../common/types/payments';
-import { useMemo } from 'react';
+import type { SetState } from '../../../common/types/common';
 
+import { useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -229,18 +230,18 @@ interface CommonProps {
   selectedRecord: number | null;
   record: Subscription;
   recurrencies: Subscription[];
-  seteditDonation: Dispatch<SetStateAction<boolean>>;
-  setpauseDonation: Dispatch<SetStateAction<boolean>>;
-  setcancelDonation: Dispatch<SetStateAction<boolean>>;
-  setreactivateDonation: Dispatch<SetStateAction<boolean>>;
+  seteditDonation: SetState<boolean>;
+  setpauseDonation: SetState<boolean>;
+  setcancelDonation: SetState<boolean>;
+  setreactivateDonation: SetState<boolean>;
 }
 
 interface ManageDonationProps {
   record: Subscription;
-  seteditDonation: Dispatch<SetStateAction<boolean>>;
-  setpauseDonation: Dispatch<SetStateAction<boolean>>;
-  setcancelDonation: Dispatch<SetStateAction<boolean>>;
-  setreactivateDonation: Dispatch<SetStateAction<boolean>>;
+  seteditDonation: SetState<boolean>;
+  setpauseDonation: SetState<boolean>;
+  setcancelDonation: SetState<boolean>;
+  setreactivateDonation: SetState<boolean>;
 }
 
 export function ManageDonation({
@@ -267,7 +268,7 @@ export function ManageDonation({
 
   const openModal = (
     e: MouseEvent<HTMLButtonElement>,
-    setModalOpen: Dispatch<SetStateAction<boolean>>
+    setModalOpen: SetState<boolean>
   ) => {
     e.preventDefault();
     setModalOpen(true);
