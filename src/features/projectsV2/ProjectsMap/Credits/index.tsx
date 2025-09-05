@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
-import React from 'react';
+
+import { useEffect, useState, useContext } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
@@ -19,19 +20,19 @@ export default function Credits({
   const tCommon = useTranslations('Common');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
-  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
-  const [selectedCountry, setSelectedCountry] = React.useState('DE');
-  const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
+  const [openLanguageModal, setLanguageModalOpen] = useState(false);
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
   };
 
-  const { embed } = React.useContext(ParamsContext);
+  const { embed } = useContext(ParamsContext);
 
   const isEmbed = embed === 'true';
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof Storage !== 'undefined') {
       //fetching currencycode from browser's localstorage
       if (localStorage.getItem('currencyCode')) {

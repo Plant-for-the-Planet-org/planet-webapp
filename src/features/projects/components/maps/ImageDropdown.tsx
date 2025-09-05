@@ -1,12 +1,12 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ChangeEvent } from 'react';
 import type {
   Imagery,
   RasterData,
 } from '../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../common/types/common';
 
+import { useContext, useState } from 'react';
 import { FormControl, NativeSelect } from '@mui/material';
-import React from 'react';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
@@ -38,28 +38,26 @@ export default function ImageDropdown({
   setSelectedSource2,
   isMobile,
 }: Props): ReactElement {
-  const { embed, showProjectDetails } = React.useContext(ParamsContext);
+  const { embed, showProjectDetails } = useContext(ParamsContext);
 
-  const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(
+  const [isSource1MenuOpen, setIsSource1MenuOpen] = useState(
     isMobile ? false : true
   );
-  const [isSource2MenuOpen, setIsSource2MenuOpen] = React.useState(
+  const [isSource2MenuOpen, setIsSource2MenuOpen] = useState(
     isMobile ? false : true
   );
 
-  const handleChangeYear1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeYear1 = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear1(event.target.value);
   };
-  const handleChangeYear2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeYear2 = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear2(event.target.value);
   };
-  const handleChangeSource1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeSource1 = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedSource1(event.target.value as keyof Imagery);
     if (isMobile) setIsSource1MenuOpen(false);
   };
-  const handleChangeSource2 = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
+  const handleChangeSource2 = (event: ChangeEvent<{ value: unknown }>) => {
     setSelectedSource2(event.target.value as keyof Imagery);
     if (isMobile) setIsSource2MenuOpen(false);
   };

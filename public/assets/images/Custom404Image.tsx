@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Custom404Image() {
   return (
     <svg

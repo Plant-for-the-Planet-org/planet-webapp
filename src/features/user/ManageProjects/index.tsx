@@ -5,7 +5,7 @@ import type {
   ExtendedProfileProjectProperties,
 } from '../../common/types/project';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import BasicDetails from './components/BasicDetails';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
@@ -47,19 +47,17 @@ export default function ManageProjects({
 }: ManageProjectsProps) {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated, getApiAuthenticated } = useApi();
 
-  const [tabSelected, setTabSelected] = React.useState<number>(0);
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [projectGUID, setProjectGUID] = React.useState<string>(
-    GUID ? GUID : ''
-  );
-  const [tablist, setTabList] = React.useState<TabItem[]>([]);
+  const [tabSelected, setTabSelected] = useState<number>(0);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const [projectGUID, setProjectGUID] = useState<string>(GUID ? GUID : '');
+  const [tablist, setTabList] = useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] =
-    React.useState<ExtendedProfileProjectProperties | null>(null);
+    useState<ExtendedProfileProjectProperties | null>(null);
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
@@ -143,7 +141,7 @@ export default function ManageProjects({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Fetch details of the project
     const fetchProjectDetails = async () => {
       try {
@@ -161,15 +159,15 @@ export default function ManageProjects({
       fetchProjectDetails();
     }
   }, [GUID, projectGUID]);
-  const [userLang, setUserLang] = React.useState('en');
-  React.useEffect(() => {
+  const [userLang, setUserLang] = useState('en');
+  useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.query.purpose) {
       setTabSelected(1);
     }
@@ -198,7 +196,7 @@ export default function ManageProjects({
     }
   }, [tabSelected, router.query.type]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.query.type && project) {
       setTabList([
         {

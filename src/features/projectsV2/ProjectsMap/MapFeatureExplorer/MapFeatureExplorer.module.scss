@@ -55,6 +55,12 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: linear-gradient(
+        0deg,
+        $dsPrimaryColorTransparent10 0%,
+        $dsPrimaryColorTransparent10 100%
+      ),
+      $dsWhite;
   }
 
   @include xsPhoneView {
@@ -101,6 +107,10 @@
   &:last-of-type {
     margin-bottom: 0;
   }
+
+  @include smTabletView {
+    background-color: $dsWhite;
+  }
 }
 
 .singleLayerOption {
@@ -108,11 +118,7 @@
   flex-direction: column;
   gap: 4px;
   padding: 6px 0;
-  border-bottom: 1px solid $horizontalLineColor;
-
-  &.legendVisible {
-    border-bottom: none;
-  }
+  border-bottom: 1px solid $dsMediumGrey;
 
   &:last-child {
     border-bottom: none;
@@ -124,9 +130,15 @@
     &.additionalInfo {
       cursor: help;
       p {
-        text-decoration: $horizontalLineColor dashed underline;
+        text-decoration: $dsMediumGrey dashed underline;
         text-underline-offset: 2px;
       }
+    }
+  }
+
+  @include xsPhoneView {
+    &.legendVisible {
+      border-bottom: none;
     }
   }
 }
@@ -142,7 +154,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background-color: $backgroundColor;
+  background-color: $dsWhite;
   padding: 10px;
   border-radius: 6px;
 
@@ -171,6 +183,11 @@
     justify-content: space-between;
     font-size: 10px;
     margin: 0 2px;
+  }
+
+  @include smTabletView {
+    padding: 10px 0 8px;
+    background-color: transparent;
   }
 }
 

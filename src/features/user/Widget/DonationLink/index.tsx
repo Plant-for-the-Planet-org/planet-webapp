@@ -3,7 +3,7 @@ import type { ProjectOption } from '../../../common/types/project';
 import type { MapProject } from '../../../common/types/projectv2';
 import type { APIError } from '@planet-sdk/common';
 
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';

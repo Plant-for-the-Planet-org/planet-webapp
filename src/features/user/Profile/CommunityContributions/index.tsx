@@ -1,7 +1,7 @@
 import type { ProfileV2Props } from '../../../common/types/profile';
 import type { LeaderboardItem } from '../../../common/types/myForest';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
 import ContributionListItem from './ContributionListItem';
@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import { useMyForest } from '../../../common/Layout/MyForestContext';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
-import React from 'react';
+
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 
 type TabOptions = 'most-recent' | 'most-trees';
@@ -51,7 +51,7 @@ const ContributionsList = ({
   return (
     <ul className={styles.leaderboardList}>
       {contributionList.map((item, index) => (
-        <React.Fragment
+        <Fragment
           key={`${tabSelected}-${item.units}-${item.unitType}-${index}`}
         >
           <ContributionListItem
@@ -61,7 +61,7 @@ const ContributionsList = ({
             purpose={item.purpose}
           />
           <div className={styles.horizontalLine}></div>
-        </React.Fragment>
+        </Fragment>
       ))}
     </ul>
   );

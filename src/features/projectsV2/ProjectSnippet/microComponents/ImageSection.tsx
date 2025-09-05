@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type { ImageSectionProps } from '..';
 
 import { useCallback, useContext, useState } from 'react';
@@ -91,7 +92,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const isTouchDevice =
     typeof window !== 'undefined' && 'ontouchstart' in window;
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: MouseEvent) => {
       if (isTouchDevice) {
         e.stopPropagation();
         e.preventDefault();

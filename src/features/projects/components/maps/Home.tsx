@@ -6,8 +6,8 @@ import type {
 } from '../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../common/types/common';
 
+import { useEffect } from 'react';
 import { FlyToInterpolator } from 'react-map-gl';
-import React from 'react';
 import Markers from './Markers';
 import { easeCubic } from 'd3-ease';
 
@@ -32,7 +32,7 @@ export default function Home({
   setViewPort,
   defaultZoom,
 }: Props): ReactElement {
-  React.useEffect(() => {
+  useEffect(() => {
     const newViewport = {
       ...viewport,
       latitude: defaultMapCenter[0],

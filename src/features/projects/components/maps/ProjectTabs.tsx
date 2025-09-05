@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
@@ -12,7 +12,7 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import themeProperties from '../../../../theme/themeProperties';
 
 export default function ProjectTabs(): ReactElement {
-  const { embed, showProjectDetails } = React.useContext(ParamsContext);
+  const { embed, showProjectDetails } = useContext(ParamsContext);
   const router = useRouter();
   const t = useTranslations('Maps');
   const { selectedMode, setSelectedMode, rasterData } = useProjectProps();

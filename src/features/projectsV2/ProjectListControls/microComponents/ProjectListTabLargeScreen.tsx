@@ -1,3 +1,4 @@
+import type { SyntheticEvent } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { ProjectTabs } from '..';
 
@@ -25,7 +26,7 @@ const ProjectListTabLargeScreen = ({
 }: ProjectListTabLargeScreenProps) => {
   const t = useTranslations('AllProjects');
   const { colors } = themeProperties.designSystem;
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabSelected(newValue === 0 ? 'topProjects' : 'allProjects');
     setIsFilterOpen(false);
   };

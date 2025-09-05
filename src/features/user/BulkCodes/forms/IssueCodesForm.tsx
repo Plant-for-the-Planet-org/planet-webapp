@@ -8,13 +8,7 @@ import type {
 import type { Recipient } from '../../../common/Layout/BulkCodeContext';
 import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
 
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
+import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';

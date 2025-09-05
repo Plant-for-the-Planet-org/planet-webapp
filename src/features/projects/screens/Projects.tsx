@@ -4,7 +4,7 @@ import type { MapProject } from '../../common/types/ProjectPropsContextInterface
 import type { APIError } from '@planet-sdk/common';
 import type { Tenant } from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useContext, useState, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
@@ -45,25 +45,25 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const { getApi } = useApi();
-  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const { embed, showProjectList } = useContext(ParamsContext);
   const { isImpersonationModeOn } = useUserProps();
   const isEmbed = embed === 'true';
-  const [scrollY, setScrollY] = React.useState(0);
-  const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
+  const [scrollY, setScrollY] = useState(0);
+  const [hideSidebar, setHideSidebar] = useState(isEmbed);
   const tDonate = useTranslations('Donate');
   const tCountry = useTranslations('Country');
   const tMaps = useTranslations('Maps');
-  const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
-  const [searchMode, setSearchMode] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState('');
-  const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
-  const [searchProjectResults, setSearchProjectResults] = React.useState<
+  const [selectedTab, setSelectedTab] = useState<'all' | 'top'>('all');
+  const [searchMode, setSearchMode] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [trottledSearchValue, setTrottledSearchValue] = useState('');
+  const [searchProjectResults, setSearchProjectResults] = useState<
     MapProject[] | undefined
   >();
-  const [shouldSortProjectList, setShouldSortProjectList] = React.useState<
+  const [shouldSortProjectList, setShouldSortProjectList] = useState<
     boolean | null
   >(null);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
 
   useDebouncedEffect(
@@ -74,7 +74,7 @@ function ProjectsList({
     [searchValue]
   );
 
-  const searchRef = React.useRef(null);
+  const searchRef = useRef(null);
 
   function getProjects(
     projects: MapProject[],
@@ -155,7 +155,7 @@ function ProjectsList({
     }
   }
 
-  const allProjects = React.useMemo(() => {
+  const allProjects = useMemo(() => {
     if (shouldSortProjectList !== null) {
       if (!shouldSortProjectList) {
         return getProjects(projects, 'all_sorted');
@@ -165,7 +165,7 @@ function ProjectsList({
     }
   }, [projects, shouldSortProjectList]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const _searchProjectResults = getSearchProjects(
       projects,
       trottledSearchValue
@@ -173,7 +173,7 @@ function ProjectsList({
     setSearchProjectResults(_searchProjectResults);
   }, [trottledSearchValue, projects]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function setListOrder() {
       try {
         const res = await getApi<Tenant>(`/app/tenants/${tenantConfig.id}`);
@@ -185,17 +185,14 @@ function ProjectsList({
     setListOrder();
   }, []);
 
-  const topProjects = React.useMemo(
-    () => getProjects(projects, 'top'),
-    [projects]
-  );
+  const topProjects = useMemo(() => getProjects(projects, 'top'), [projects]);
 
   const showTopProjectsList =
     tenantConfig.config.slug !== 'salesforce' &&
     topProjects !== undefined &&
     topProjects.length > 0;
 
-  React.useEffect(() => {
+  useEffect(() => {
     showTopProjectsList ? setSelectedTab('top') : null;
   }, []);
 

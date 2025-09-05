@@ -1,7 +1,5 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function MapIcon({ color = '#000' }: IconProps) {
   return (
     <svg

@@ -11,7 +11,7 @@ import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React, { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import App from 'next/app';
@@ -151,9 +151,9 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
-  const [isMap, setIsMap] = React.useState(false);
-  const [currencyCode, setCurrencyCode] = React.useState('');
-  const [browserCompatible, setBrowserCompatible] = React.useState(false);
+  const [isMap, setIsMap] = useState(false);
+  const [currencyCode, setCurrencyCode] = useState('');
+  const [browserCompatible, setBrowserCompatible] = useState(false);
 
   const { tenantConfig } = pageProps;
 
@@ -169,11 +169,11 @@ const PlanetWeb = ({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     storeConfig(tenantConfig);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.pathname.includes('projects-archive')) {
       setIsMap(true);
     } else {
@@ -181,13 +181,13 @@ const PlanetWeb = ({
     }
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
       TagManager.initialize(tagManagerArgs);
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
@@ -203,16 +203,16 @@ const PlanetWeb = ({
     isMobile,
   };
 
-  const [showVideo, setshowVideo] = React.useState(true);
+  const [showVideo, setshowVideo] = useState(true);
 
   // if localShowVideo is undefined
   // set localShowVideo is true and show the video
   // if localShowVideo is true show the video
   // if localShowVideo is false hide the video
 
-  const [localShowVideo, setLocalShowVideo] = React.useState(false);
+  const [localShowVideo, setLocalShowVideo] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.pathname.endsWith('projects-archive')) {
       if (typeof window !== 'undefined') {
         if (localStorage.getItem('showVideo')) {
@@ -231,7 +231,7 @@ const PlanetWeb = ({
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setshowVideo(localShowVideo);
   }, [localShowVideo]);
 

@@ -5,7 +5,6 @@ import type {
 } from '../../../../common/types/myForest';
 import type { SetState } from '../../../../common/types/common';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Popup } from 'react-map-gl-v7';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';

@@ -8,7 +8,7 @@ import type {
   SampleTree,
 } from '../../../../common/types/intervention';
 
-import React, { useState } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { useTranslations } from 'next-intl';
@@ -50,11 +50,11 @@ export default function SampleTrees({
 }: Props): ReactElement {
   const tTreemapper = useTranslations('Treemapper');
   const tBulkCodes = useTranslations('BulkCodes');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated } = useApi();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
-  const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string[]>([]);
+  const [sampleTrees, setSampleTrees] = useState<SampleTree[]>([]);
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
 
@@ -101,7 +101,7 @@ export default function SampleTrees({
     };
   };
 
-  const onDrop = React.useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: File) => {
       setParseError(null);
       setHasIgnoredColumns(false);

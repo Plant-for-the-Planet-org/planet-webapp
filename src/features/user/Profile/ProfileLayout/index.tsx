@@ -1,9 +1,10 @@
 import type { User } from '@planet-sdk/common';
 
+import { useState } from 'react';
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
@@ -17,7 +18,7 @@ import MyContributions from '../MyContributions';
 const ProfileLayout = () => {
   const router = useRouter();
   const { user, contextLoaded } = useUserProps();
-  const [profile, setProfile] = React.useState<null | User>(null);
+  const [profile, setProfile] = useState<null | User>(null);
   const {
     setUserInfo,
     isContributionsLoaded,

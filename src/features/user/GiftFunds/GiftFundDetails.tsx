@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import type { GiftFund } from '@planet-sdk/common';
 
-import React from 'react';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import { Divider, Grid, styled } from '@mui/material';

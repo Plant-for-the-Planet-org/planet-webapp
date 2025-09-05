@@ -4,9 +4,9 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common';
 
+import { useContext } from 'react';
 import Link from 'next/link';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import React from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import { useTranslations } from 'next-intl';
 import BlackTree from '../../../../../public/assets/images/icons/project/BlackTree';
@@ -22,7 +22,7 @@ interface Props {
 function ProjectContactDetails({ project }: Props): ReactElement | null {
   const t = useTranslations('Donate');
   const tCountry = useTranslations('Country');
-  const { embed } = React.useContext(ParamsContext);
+  const { embed } = useContext(ParamsContext);
   const { darkGrey } = themeProperties.designSystem.colors;
   const contactAddress =
     project.tpo && project.tpo.address

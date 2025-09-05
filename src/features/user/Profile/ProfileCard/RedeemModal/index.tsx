@@ -2,9 +2,9 @@ import type { ReactElement } from 'react';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../common/types/redeem';
 
+import { useState, useContext } from 'react';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
@@ -32,14 +32,13 @@ export default function RedeemModal({
   const t = useTranslations('Redeem');
   const { postApiAuthenticated } = useApi();
   const { user, contextLoaded, setUser, setRefetchUserData } = useUserProps();
-  const { setErrors, errors: apiErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { setErrors, errors: apiErrors } = useContext(ErrorHandlingContext);
   const { refetchContributions, refetchLeaderboard } = useMyForest();
-  const [inputCode, setInputCode] = React.useState<string | undefined>('');
-  const [redeemedCodeData, setRedeemedCodeData] = React.useState<
+  const [inputCode, setInputCode] = useState<string | undefined>('');
+  const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
     const payload = {
@@ -116,7 +115,7 @@ export default function RedeemModal({
     setInputCode('');
     setRedeemedCodeData(undefined);
   };
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <Modal

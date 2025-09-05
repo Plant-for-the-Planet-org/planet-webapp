@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { useEffect } from 'react';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import SatelliteLayer from './SatelliteLayer';
@@ -21,7 +21,7 @@ export default function Sites(): ReactElement {
     interventionsLoaded,
   } = useProjectProps();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!hoveredPl && !selectedPl) {
       zoomToProjectSite(
         geoJson,

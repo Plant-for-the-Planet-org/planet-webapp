@@ -5,7 +5,6 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
 
-import React from 'react';
 import { Marker } from 'react-map-gl';
 import styles from '../../styles/ProjectsMap.module.scss';
 

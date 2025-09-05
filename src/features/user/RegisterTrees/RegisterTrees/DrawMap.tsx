@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { ViewportProps } from '../../../common/types/map';
 
-import React from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -26,20 +26,20 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter: [number, number] = [-28.5, 36.96];
   const defaultZoom: [number] = [1.4];
-  const [viewport, setViewPort] = React.useState<ViewportProps>({
+  const [viewport, setViewPort] = useState<ViewportProps>({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
 
-  const [style, setStyle] = React.useState({
+  const [style, setStyle] = useState({
     version: 8,
     sources: {},
     layers: [],
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style: any) => {
       if (style) {
@@ -48,8 +48,8 @@ export default function MapComponent({
     });
   }, []);
   const t = useTranslations('Me');
-  const [drawing, setDrawing] = React.useState(false);
-  const drawControlRef = React.useRef<DrawControl | null>(null);
+  const [drawing, setDrawing] = useState(false);
+  const drawControlRef = useRef<DrawControl | null>(null);
 
   const onDrawCreate = () => {
     if (drawControlRef.current?.draw) {
@@ -69,7 +69,7 @@ export default function MapComponent({
       setGeometry(drawControl.draw.getAll());
     }
   };
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       userLocation &&
       userLocation.length === 2 &&

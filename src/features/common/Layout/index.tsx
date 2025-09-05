@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';

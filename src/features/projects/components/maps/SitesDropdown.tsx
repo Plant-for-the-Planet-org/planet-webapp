@@ -1,11 +1,11 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ChangeEvent } from 'react';
 import type {
   ConservationProjectExtended,
   TreeProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
 import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
-import React from 'react';
+import { useContext } from 'react';
 import { FormControl, NativeSelect } from '@mui/material';
 import { useRouter } from 'next/router';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
@@ -26,11 +26,11 @@ export default function SitesDropdown(): ReactElement {
     isPolygonMenuOpen,
     setIsPolygonMenuOpen,
   } = useProjectProps();
-  const { embed } = React.useContext(ParamsContext);
+  const { embed } = useContext(ParamsContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const handleChangeSite = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: ChangeEvent<HTMLSelectElement>,
     project: TreeProjectExtended | ConservationProjectExtended,
     geoJson: SitesGeoJSON
   ) => {

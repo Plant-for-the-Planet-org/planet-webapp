@@ -3,12 +3,12 @@ import type {
   TenantScore,
 } from '../../../features/common/types/leaderboard';
 
+import { useEffect, useRef } from 'react';
 import styles from './Home.module.scss';
 import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
-import React from 'react';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
 import { useTranslations } from 'next-intl';
 
@@ -21,8 +21,8 @@ export default function Home({ leaderboard, tenantScore }: Props) {
   const { tenantConfig } = useTenant();
   const t = useTranslations('Tenants');
 
-  const descriptionRef = React.useRef<HTMLParagraphElement>(null);
-  React.useEffect(() => {
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
     if (descriptionRef.current !== null) {
       descriptionRef.current.innerHTML = t(
         `${tenantConfig.config.slug}.description`

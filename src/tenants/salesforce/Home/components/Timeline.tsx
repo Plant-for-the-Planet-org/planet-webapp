@@ -1,6 +1,6 @@
 import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 const moments = [

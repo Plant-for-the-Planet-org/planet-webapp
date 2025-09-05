@@ -9,7 +9,7 @@ import type { APIError, UserPublicProfile } from '@planet-sdk/common';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import React from 'react';
+import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -35,9 +35,9 @@ export default function DirectGift({
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
@@ -66,7 +66,7 @@ export default function DirectGift({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady && router.query.id) {
       loadPublicUserData();
     }

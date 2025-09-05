@@ -15,9 +15,9 @@ import type {
   ProjectExtended,
 } from '@planet-sdk/common';
 
+import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
-import React from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
@@ -51,10 +51,10 @@ export default function Donate({
   const router = useRouter();
   const { getApi } = useApi();
   const { localizedPath } = useLocalizedPath();
-  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
+  const [internalCurrencyCode, setInternalCurrencyCode] = useState<
     string | undefined | null
   >(undefined);
-  const [internalLanguage, setInternalLanguage] = React.useState('');
+  const [internalLanguage, setInternalLanguage] = useState('');
   const locale = useLocale();
   const {
     geoJson,
@@ -71,19 +71,19 @@ export default function Donate({
 
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setZoomLevel(2);
   }, []);
 
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadProject() {
       if (
         !internalCurrencyCode ||
@@ -131,7 +131,7 @@ export default function Donate({
     }
   }, [router.query.p, currencyCode, locale]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadPl(
       project: ConservationProjectExtended | TreeProjectExtended
     ) {
@@ -153,7 +153,7 @@ export default function Donate({
     }
   }, [project]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       geoJson?.features[0].properties.id &&
       !router.query.site &&
@@ -177,7 +177,7 @@ export default function Donate({
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //for selecting one of the site of project if user use link  to directly visit to site from home page
     if (project && geoJson && router.query.site) {
       const siteIndex: number = geoJson?.features.findIndex((singleSite) => {
@@ -191,7 +191,7 @@ export default function Donate({
     }
   }, [setSelectedSite, geoJson, project]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //for selecting one of the intervention . if user use link  to directly visit to intervention from home page
     if (geoJson && router.query.ploc && interventions && project) {
       const singleIntervention: Intervention | undefined = interventions?.find(

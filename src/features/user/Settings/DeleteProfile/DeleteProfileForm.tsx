@@ -1,6 +1,7 @@
+import type { ChangeEvent } from 'react';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState, useContext } from 'react';
 import styles from './DeleteProfile.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -17,17 +18,17 @@ export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
   const tCommon = useTranslations('Common');
 
-  const handleChange = (e: React.ChangeEvent<{}>) => {
+  const handleChange = (e: ChangeEvent<{}>) => {
     e.preventDefault();
   };
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { deleteApiAuthenticated } = useApi();
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [isModalOpen, setIsModalOpen] = React.useState(false); //true when subscriptions are present
-  const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); //true when subscriptions are present
+  const [canDeleteAccount, setcanDeleteAccount] = useState(false);
 
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);

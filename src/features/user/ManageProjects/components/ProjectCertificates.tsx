@@ -5,7 +5,7 @@ import type {
   ProjectCertificatesProps,
 } from '../../../common/types/project';
 
-import React from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -37,7 +37,7 @@ function ProjectCertificates({
   userLang,
 }: ProjectCertificatesProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated, getApiAuthenticated, deleteApiAuthenticated } =
     useApi();
   const {
@@ -49,13 +49,13 @@ function ProjectCertificates({
   } = useForm({ mode: 'all' });
 
   const certifierName = watch('certifierName');
-  const [uploadedFiles, setUploadedFiles] = React.useState<Certificate[]>([]);
-  const [showForm, setShowForm] = React.useState<boolean>(true);
-  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
+  const [uploadedFiles, setUploadedFiles] = useState<Certificate[]>([]);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
-  const [isCertified, setIsCertified] = React.useState<boolean>(true);
-  const [showToggle, setShowToggle] = React.useState<boolean>(true);
+  const [isCertified, setIsCertified] = useState<boolean>(true);
+  const [showToggle, setShowToggle] = useState<boolean>(true);
 
   const onSubmit = async (pdf: string) => {
     const { issueDate, certifierName } = getValues();
@@ -91,7 +91,7 @@ function ProjectCertificates({
     }
   };
 
-  const onDrop = React.useCallback(
+  const onDrop = useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: File) => {
         const reader = new FileReader();
@@ -107,7 +107,7 @@ function ProjectCertificates({
     [uploadedFiles]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Fetch certificates of the project
 
     const fetchCertificates = async () => {
@@ -161,7 +161,7 @@ function ProjectCertificates({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uploadedFiles && uploadedFiles.length == 0) {
       setShowToggle(true);
       setShowForm(true);

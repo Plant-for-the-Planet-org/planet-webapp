@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { MultiTreeRegistration } from '../../../../common/types/intervention';
 
-import React from 'react';
+import { useState } from 'react';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
@@ -23,8 +23,8 @@ export default function ReviewSubmit({
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [submitted, setSubmitted] = React.useState(true);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [submitted, setSubmitted] = useState(true);
 
   const handleSubmit = () => {
     setIsUploadingData(true);

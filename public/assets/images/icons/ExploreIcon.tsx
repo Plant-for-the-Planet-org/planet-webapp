@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { IconProps } from '../../../../src/features/common/types/common';
 
 function ExploreIcon({ color = '#2f3336' }: IconProps) {

@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import type { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 
-import React from 'react';
 import { styled } from '@mui/material';
 
 export interface SelectorOptionProps {

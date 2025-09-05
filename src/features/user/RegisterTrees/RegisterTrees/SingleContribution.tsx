@@ -3,7 +3,7 @@ import type { Image } from '@planet-sdk/common';
 import type { Point, Polygon } from 'geojson';
 
 import dynamic from 'next/dynamic';
-import React from 'react';
+
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';

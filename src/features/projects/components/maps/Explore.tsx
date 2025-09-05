@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
+import type { ChangeEvent } from 'react';
 
-import React from 'react';
+import { useEffect, useContext } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
@@ -63,8 +64,8 @@ export default function Explore(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
 
-  const { theme } = React.useContext(ThemeContext);
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { theme } = useContext(ThemeContext);
+  const { embed, callbackUrl } = useContext(ParamsContext);
   const { isImpersonationModeOn } = useUserProps();
 
   const handleModalClose = () => {
@@ -80,7 +81,7 @@ export default function Explore(): ReactElement {
     setExplorePotential(event.target.checked);
   }; */
   const handleExploreDeforestationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     setExploreDeforestation(event.target.checked);
   };
@@ -140,7 +141,7 @@ export default function Explore(): ReactElement {
   };
 
   const handleExploreProjectsChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     setExploreProjects(event.target.checked);
     setShowProjects(event.target.checked);
@@ -189,7 +190,7 @@ export default function Explore(): ReactElement {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
@@ -205,7 +206,7 @@ export default function Explore(): ReactElement {
     });
   });
 
-  // React.useEffect(() => {
+  // useEffect(() => {
   //   if (exploreExpanded) {
   //     setMapState({ ...mapState, dragPan: false });
   //   } else {

@@ -37,7 +37,7 @@ const SingleLayerOption = ({
   const isLegendVisible = isOptionSelected && isLegendAvailable;
 
   const handleMouseEnter = useCallback(
-    (e: React.MouseEvent<HTMLParagraphElement>) => {
+    (e: MouseEvent<HTMLParagraphElement>) => {
       setAnchor(e.currentTarget);
     },
     []

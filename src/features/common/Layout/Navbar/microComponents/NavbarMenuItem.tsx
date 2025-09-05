@@ -1,5 +1,5 @@
 import type { MenuItemDescription, MenuItemTitle } from '../tenant';
-import type { JSX } from 'react';
+import type { ReactElement } from 'react';
 import type { MenuItem } from '@planet-sdk/common';
 
 import { useMemo } from 'react';
@@ -34,7 +34,7 @@ import { doesLinkMatchPath } from '../../../../../utils/navbarUtils';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 
-const navbarMenuIcons: Record<MenuItemTitle, JSX.Element> = {
+const navbarMenuIcons: Record<MenuItemTitle, ReactElement> = {
   platform: <PlatformIcon />,
   redeemCode: <RedeemCodeIcon />,
   support: <SupportIcon />,

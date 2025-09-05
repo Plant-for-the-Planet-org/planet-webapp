@@ -3,7 +3,7 @@ import type {
   FeatureCollection,
 } from '../../../../../../../common/types/dataExplorer';
 import type { ReactElement, CSSProperties } from 'react';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
 

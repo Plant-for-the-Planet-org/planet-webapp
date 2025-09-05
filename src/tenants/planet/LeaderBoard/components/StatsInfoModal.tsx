@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { forwardRef } from 'react';
 import styles from './Stats.module.scss';
 import { useTranslations } from 'next-intl';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
@@ -81,6 +81,4 @@ function ExploreInfoModal({
   );
 }
 
-export default React.forwardRef((props: Props) => (
-  <ExploreInfoModal {...props} />
-));
+export default forwardRef((props: Props) => <ExploreInfoModal {...props} />);

@@ -1,6 +1,5 @@
 import type { IconProps } from '../../../../src/features/common/types/common';
 
-import React from 'react';
 import themeProperties from '../../../../src/theme/themeProperties';
 
 const defaultColor = themeProperties.designSystem.colors.coreText;

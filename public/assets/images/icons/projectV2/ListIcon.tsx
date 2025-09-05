@@ -1,4 +1,3 @@
-import * as React from 'react';
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
 const ListIcon = ({ color, height }: IconProps) => (

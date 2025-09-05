@@ -1,7 +1,7 @@
-import type { ReactElement } from 'react';
+import type { ChangeEvent, ReactElement } from 'react';
 import type { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
 
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../../styles/Filters.module.scss';
 import { useTranslations } from 'next-intl';
 import { FormControlLabel, FormGroup } from '@mui/material';
@@ -17,7 +17,7 @@ export default function Filters(): ReactElement {
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
 
-  const [type, setType] = React.useState<Record<string, boolean>>({
+  const [type, setType] = useState<Record<string, boolean>>({
     'natural-regeneration': true,
     'managed-regeneration': true,
     'large-scale-planting': true,
@@ -27,9 +27,9 @@ export default function Filters(): ReactElement {
     mangroves: true,
   });
 
-  const [filters, setFilters] = React.useState<string[] | null>(null);
+  const [filters, setFilters] = useState<string[] | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function filterProjects() {
       const filteredProjects = projects
         ? projects.filter((project) => {
@@ -55,7 +55,7 @@ export default function Filters(): ReactElement {
     }
   }, [projects, type]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function getFilters() {
       const filters =
         projects !== null
@@ -81,7 +81,7 @@ export default function Filters(): ReactElement {
     }
   }, [projects]);
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setType({ ...type, [event.target.name]: event.target.checked });
   };
 

@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import bbox from '@turf/bbox';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -22,7 +22,7 @@ interface Props {
 export default function StaticMap({ geoJson }: Props): ReactElement {
   const defaultMapCenter: [number, number] = [-28.5, 36.96];
   const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = useState({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
@@ -34,14 +34,14 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
     center: defaultMapCenter,
     zoom: defaultZoom,
   };
-  const [isPoint, setIsPoint] = React.useState(false);
-  const [style, setStyle] = React.useState({
+  const [isPoint, setIsPoint] = useState(false);
+  const [style, setStyle] = useState({
     version: 8,
     sources: {},
     layers: [],
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
       if (style) {
@@ -50,7 +50,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (geoJson) {
       if (geoJson.type === 'Point') {
         setIsPoint(true);
@@ -60,7 +60,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
     }
   }, [geoJson]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isPoint) {
       setViewPort({
         ...viewport,

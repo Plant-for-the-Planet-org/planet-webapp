@@ -1,4 +1,3 @@
-import React from 'react';
 import DownloadIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 import styles from '../../styles/ProjectInfo.module.scss';
 import themeProperties from '../../../../../theme/themeProperties';

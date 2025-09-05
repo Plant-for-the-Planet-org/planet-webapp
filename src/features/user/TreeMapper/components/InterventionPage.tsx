@@ -6,7 +6,7 @@ import type {
 } from '../../../common/types/intervention';
 import type { SetState } from '../../../common/types/common';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
@@ -54,7 +54,7 @@ export function InterventionInfo({
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
-  const [sampleTreeImages, setSampleTreeImages] = React.useState<
+  const [sampleTreeImages, setSampleTreeImages] = useState<
     SampleTreeImageProps[]
   >([]);
 
@@ -119,7 +119,7 @@ export function InterventionInfo({
       </div>
     ));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedIntervention?.type === 'multi-tree-registration') {
       if (
         selectedIntervention &&

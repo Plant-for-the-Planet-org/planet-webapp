@@ -1,5 +1,3 @@
-import React from 'react';
-
 function StopTalkingStartPlanting() {
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255.12 255.12">
     <g id="Ebene_1" data-name="Ebene 1">

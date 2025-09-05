@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type { SetState } from '../../../../../common/types/common';
 import type { AddressAction } from '../../../../../common/types/profile';
 import type { Address } from '@planet-sdk/common';
@@ -69,7 +70,7 @@ const AddressActionsMenu = ({
     },
   ];
 
-  const openPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const openPopover = (event: MouseEvent<HTMLButtonElement>) => {
     setPopoverAnchor(event.currentTarget);
   };
 

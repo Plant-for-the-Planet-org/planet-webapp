@@ -10,7 +10,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import React, { useEffect } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -40,19 +40,19 @@ function ManageSingleProject({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Common');
-  const [projectGUID, setProjectGUID] = React.useState<string | null>(null);
-  const [ready, setReady] = React.useState<boolean>(false);
+  const [projectGUID, setProjectGUID] = useState<string | null>(null);
+  const [ready, setReady] = useState<boolean>(false);
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
-  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
-  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
+  const [accessDenied, setAccessDenied] = useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const [project, setProject] =
-    React.useState<ExtendedProfileProjectProperties | null>(null);
+    useState<ExtendedProfileProjectProperties | null>(null);
   const { user, contextLoaded, token } = useUserProps();
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

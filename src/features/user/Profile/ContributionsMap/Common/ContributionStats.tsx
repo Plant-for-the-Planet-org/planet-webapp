@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import type { ReactElement } from 'react';
 
 import {
   ProjectStatIcon,
@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 interface StatItemProps {
-  icon: JSX.Element;
+  icon: ReactElement;
   label: string;
 }
 

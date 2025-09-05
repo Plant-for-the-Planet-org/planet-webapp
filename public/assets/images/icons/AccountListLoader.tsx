@@ -2,8 +2,6 @@ import type { ReactElement } from 'react';
 
 import themeProperties from '../../../../src/theme/themeProperties';
 
-import React from 'react';
-
 function AccountListLoader(): ReactElement {
   return (
     <svg

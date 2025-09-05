@@ -1,5 +1,4 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
-import React from 'react';
 
 const SiteIcon = ({ width, color }: IconProps) => {
   return (

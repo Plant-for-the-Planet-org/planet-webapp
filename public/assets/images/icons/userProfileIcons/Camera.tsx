@@ -1,4 +1,3 @@
-import React from 'react';
 import themeProperties from '../../../../../src/theme/themeProperties';
 
 function Camera() {

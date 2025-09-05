@@ -1,7 +1,7 @@
 import type { Project } from '../../../common/Layout/AnalyticsContext';
 import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
@@ -17,7 +17,7 @@ const Analytics = () => {
   const { projectList, setProjectList, setProject } = useAnalytics();
   const [isLoaded, setIsLoaded] = useState(false);
   const { getApiAuthenticated } = useApi();
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {
     try {

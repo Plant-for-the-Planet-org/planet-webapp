@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { NavLinkType, SubMenuItemType } from './NavLink';
 
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';

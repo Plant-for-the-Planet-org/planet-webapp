@@ -11,7 +11,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SalesforceCampaign from '../../../../src/tenants/salesforce/VTOCampaign2023';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { defaultTenant } from '../../../../tenant.config';

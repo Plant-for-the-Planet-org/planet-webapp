@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import bbox from '@turf/bbox';
 import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
@@ -33,7 +33,7 @@ export default function MapComponent({
   const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
   const t = useTranslations('ManageProjects');
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = useState({
     height: '400px',
     width: '100%',
     center: defaultMapCenter,
@@ -45,12 +45,12 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: defaultZoom,
   };
-  const [style, setStyle] = React.useState({
+  const [style, setStyle] = useState({
     version: 8,
     sources: {},
     layers: [],
   });
-  const [satellite, setSatellite] = React.useState(false);
+  const [satellite, setSatellite] = useState(false);
 
   const RASTER_SOURCE_OPTIONS = {
     type: 'raster',
@@ -60,7 +60,7 @@ export default function MapComponent({
     tileSize: 128,
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style: any) => {
       if (style) {
@@ -70,8 +70,8 @@ export default function MapComponent({
   }, []);
 
   const reader = new FileReader();
-  const mapParentRef = React.useRef(null);
-  const drawControlRef = React.useRef(null);
+  const mapParentRef = useRef(null);
+  const drawControlRef = useRef(null);
 
   const onDrawCreate = () => {
     if (drawControlRef.current) {
@@ -85,7 +85,7 @@ export default function MapComponent({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (geoJson) {
       const bounds = bbox(geoJson);
       const { longitude, latitude, zoom } = new WebMercatorViewport(

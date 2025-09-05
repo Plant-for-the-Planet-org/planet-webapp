@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import type { FeatureCollection } from 'geojson';
 
-import React from 'react';
 import { Layer, Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 

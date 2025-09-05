@@ -1,4 +1,3 @@
-import React from 'react';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ParticipationSection.module.scss';
 

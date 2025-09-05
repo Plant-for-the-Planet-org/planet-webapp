@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CarouselSlider from '../../../../common/CarouselSlider';
 import { useTranslations } from 'next-intl';
 import styles from '../InfoAndCta.module.scss';

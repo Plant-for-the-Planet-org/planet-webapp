@@ -1,7 +1,7 @@
 import type { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../hooks/useApi';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
@@ -16,7 +16,7 @@ export default function ProjectGrid() {
   const { getApi } = useApi();
   const locale = useLocale();
   const { tenantConfig } = useTenant();
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
   useEffect(() => {

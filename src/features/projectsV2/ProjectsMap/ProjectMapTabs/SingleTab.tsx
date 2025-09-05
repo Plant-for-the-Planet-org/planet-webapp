@@ -1,8 +1,9 @@
-import React from 'react';
+import type { ReactNode } from 'react';
+
 import styles from './ProjectMapTabs.module.scss';
 
 interface SingleTabProps {
-  icon: React.JSX.Element;
+  icon: ReactNode;
   title: string;
   isSelected: boolean;
   onClickHandler: () => void;

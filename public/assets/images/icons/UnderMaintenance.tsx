@@ -1,7 +1,5 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
-
 export default function UnderMaintenanceImage(): ReactElement {
   return (
     <svg

@@ -1,8 +1,8 @@
 import type { APIError, UserPublicProfile } from '@planet-sdk/common';
 import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
+import { useEffect, useState, useContext } from 'react';
 import dynamic from 'next/dynamic';
-import React from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
@@ -27,8 +27,8 @@ export default function ProjectsContainer({ profile }: Props) {
   const { getApi } = useApi();
   const t = useTranslations('Donate');
   const locale = useLocale();
-  const [projects, setProjects] = React.useState<MapProject[]>();
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const [projects, setProjects] = useState<MapProject[]>();
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   async function loadProjects() {
     try {
@@ -41,7 +41,7 @@ export default function ProjectsContainer({ profile }: Props) {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadProjects();
   }, [locale]);
 

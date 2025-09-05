@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
-import React from 'react';
+import { useState, useContext, useRef } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
@@ -36,9 +36,9 @@ export default function Markers({
   let timer: NodeJS.Timeout;
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const [open, setOpen] = React.useState(false);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const [open, setOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { embed, callbackUrl } = useContext(ParamsContext);
   const handleClose = () => {
     setOpen(false);
   };

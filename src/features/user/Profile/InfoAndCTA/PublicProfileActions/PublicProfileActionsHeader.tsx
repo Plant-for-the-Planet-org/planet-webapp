@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from '../InfoAndCta.module.scss';
 import WebappButton from '../../../../common/WebappButton';
 import { useTranslations } from 'next-intl';

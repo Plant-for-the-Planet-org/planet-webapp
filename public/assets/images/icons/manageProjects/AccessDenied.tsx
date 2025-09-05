@@ -1,7 +1,5 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function AccessDenied({
   width = '1145.572px',
   height = '819.907px',

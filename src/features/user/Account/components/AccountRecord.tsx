@@ -4,7 +4,7 @@ import type {
   RecipientBank,
 } from '../../../common/types/payments';
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';

@@ -23,13 +23,7 @@ import type {
   SampleTreeRegistration,
 } from '../types/intervention';
 
-import React, {
-  useState,
-  createContext,
-  useRef,
-  useContext,
-  useEffect,
-} from 'react';
+import { useState, createContext, useRef, useContext, useEffect } from 'react';
 import { getTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { ParamsContext } from './QueryParamsContext';
 

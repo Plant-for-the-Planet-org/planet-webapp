@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import type { ReactNode } from 'react';
+
+import { useMemo } from 'react';
 import styles from '../../styles/ProjectInfo.module.scss';
 import RightArrowIcon from '../../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 
 interface Props {
   contactInfo: {
-    icon: React.JSX.Element;
+    icon: ReactNode;
     title: string | null;
     link: string | null;
     shouldOpenNewTab: boolean;

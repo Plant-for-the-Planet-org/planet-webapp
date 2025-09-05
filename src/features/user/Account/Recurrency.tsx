@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { Subscription } from '../../common/types/payments';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from './AccountHistory.module.scss';
@@ -22,17 +22,15 @@ export default function Recurrency({
   recurrencies,
   fetchRecurrentDonations,
 }: Props): ReactElement {
-  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [editModalOpen, seteditModalOpen] = React.useState(false);
-  const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
-  const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
-  const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
-  const [currentRecord, setCurrentRecord] = React.useState<Subscription | null>(
-    null
-  );
+  const [selectedRecord, setSelectedRecord] = useState<number | null>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editModalOpen, seteditModalOpen] = useState(false);
+  const [pauseModalOpen, setpauseModalOpen] = useState(false);
+  const [cancelModalOpen, setcancelModalOpen] = useState(false);
+  const [reactivateModalOpen, setreactivateModalOpen] = useState(false);
+  const [currentRecord, setCurrentRecord] = useState<Subscription | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       recurrencies &&
       selectedRecord !== null &&

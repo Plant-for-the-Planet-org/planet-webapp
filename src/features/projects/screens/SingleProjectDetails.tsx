@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react';
 
+import { useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
@@ -60,10 +61,10 @@ function SingleProjectDetails(): ReactElement {
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [openModal, setModalOpen] = React.useState(false);
+  const [openModal, setModalOpen] = useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
   };

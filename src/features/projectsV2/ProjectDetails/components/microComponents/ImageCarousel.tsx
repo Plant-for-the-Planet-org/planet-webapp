@@ -1,6 +1,6 @@
 import type { SetState } from '../../../../common/types/common';
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { SingleCarouselImage } from './SingleCarouselImage';

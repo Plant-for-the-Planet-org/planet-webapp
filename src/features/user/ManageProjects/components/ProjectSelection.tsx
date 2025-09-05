@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import type { SetState } from '../../../common/types/common';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../StepForm.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';

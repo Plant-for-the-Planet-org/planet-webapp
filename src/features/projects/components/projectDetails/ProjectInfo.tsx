@@ -4,7 +4,7 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
 
-import React from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getPDFFile } from '../../../../utils/getImageURL';
@@ -68,8 +68,8 @@ function ProjectInfo({ project }: Props): ReactElement {
       value: 'other',
     },
   ];
-  const [ownerTypes, setOwnerTypes] = React.useState<string[]>([]);
-  React.useEffect(() => {
+  const [ownerTypes, setOwnerTypes] = useState<string[]>([]);
+  useEffect(() => {
     if (
       project.purpose === 'trees' &&
       project.metadata.siteOwnerType &&
@@ -91,7 +91,7 @@ function ProjectInfo({ project }: Props): ReactElement {
     }
   }, [locale]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       project.purpose === 'conservation' &&
       project.metadata.landOwnershipType &&
@@ -228,7 +228,7 @@ function ProjectInfo({ project }: Props): ReactElement {
               {project.metadata.activitySeasons.map(
                 (season, index, activitySeasons) => {
                   return (
-                    <React.Fragment key={seasons[season - 1].title}>
+                    <Fragment key={seasons[season - 1].title}>
                       {seasons[season - 1].title}
                       {index === activitySeasons.length - 2 ? (
                         <> {tManageProjects('and')} </>
@@ -237,7 +237,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                       ) : (
                         ', '
                       )}
-                    </React.Fragment>
+                    </Fragment>
                   );
                 }
               )}
@@ -256,7 +256,7 @@ function ProjectInfo({ project }: Props): ReactElement {
               {project.metadata.plantingSeasons.map(
                 (season, index, plantingSeasons) => {
                   return (
-                    <React.Fragment key={seasons[season - 1].title}>
+                    <Fragment key={seasons[season - 1].title}>
                       {seasons[season - 1].title}
                       {index === plantingSeasons.length - 2 ? (
                         <> {tManageProjects('and')} </>
@@ -265,7 +265,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                       ) : (
                         ', '
                       )}
-                    </React.Fragment>
+                    </Fragment>
                   );
                 }
               )}
@@ -310,7 +310,7 @@ function ProjectInfo({ project }: Props): ReactElement {
               <div className={styles.infoText}>
                 {ownerTypes.map((ownerType, index) => {
                   return (
-                    <React.Fragment key={ownerType}>
+                    <Fragment key={ownerType}>
                       {ownerType}
                       {index === ownerTypes.length - 2 ? (
                         <> {tManageProjects('and')} </>
@@ -319,7 +319,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                       ) : (
                         ', '
                       )}
-                    </React.Fragment>
+                    </Fragment>
                   );
                 })}
               </div>
@@ -356,7 +356,7 @@ function ProjectInfo({ project }: Props): ReactElement {
               <div className={styles.infoText}>
                 {ownerTypes.map((ownerType, index) => {
                   return (
-                    <React.Fragment key={ownerType}>
+                    <Fragment key={ownerType}>
                       {ownerType}
                       {index === ownerTypes.length - 2 ? (
                         <> {tManageProjects('and')} </>
@@ -365,7 +365,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                       ) : (
                         ', '
                       )}
-                    </React.Fragment>
+                    </Fragment>
                   );
                 })}
               </div>

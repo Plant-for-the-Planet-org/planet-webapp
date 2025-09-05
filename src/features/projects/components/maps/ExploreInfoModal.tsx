@@ -2,7 +2,7 @@ import type { ReactElement, RefObject } from 'react';
 import type { ExploreOption } from '../../../common/types/ProjectPropsContextInterface';
 import type { SetState } from '../../../common/types/common';
 
-import React from 'react';
+import { forwardRef } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { useTranslations } from 'next-intl';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
@@ -115,6 +115,4 @@ function ExploreInfoModal({
   );
 }
 
-export default React.forwardRef((props: Props) => (
-  <ExploreInfoModal {...props} />
-));
+export default forwardRef((props: Props) => <ExploreInfoModal {...props} />);

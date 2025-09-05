@@ -1,7 +1,5 @@
 import type { IconProps } from '../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function TreeIcon({ color = '#68B030', width, height }: IconProps) {
   return (
     <svg

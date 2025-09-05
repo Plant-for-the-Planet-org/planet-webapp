@@ -1,6 +1,6 @@
 import type { Project } from '../../../../../common/Layout/AnalyticsContext';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';

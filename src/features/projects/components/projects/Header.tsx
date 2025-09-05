@@ -2,7 +2,6 @@ import type { ReactElement } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
-import React from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { useTranslations } from 'next-intl';
 

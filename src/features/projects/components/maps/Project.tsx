@@ -12,7 +12,7 @@ import type {
 import type { SetState } from '../../../common/types/common';
 import type { Position } from 'geojson';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
@@ -47,7 +47,7 @@ export default function Project({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
 
-  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
+  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = useState<
     Position[] | null
   >(null);
 
@@ -94,7 +94,7 @@ export default function Project({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       interventions &&
       selectedPl &&
@@ -111,7 +111,7 @@ export default function Project({
       );
   }, [selectedPl]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedPl) {
       if (selectedPl.geometry.type === 'Polygon') {
         const locationCoordinates = selectedPl.geometry.coordinates[0];

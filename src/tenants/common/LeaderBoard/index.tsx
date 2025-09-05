@@ -1,6 +1,6 @@
 import type { LeaderBoardList } from '../../../features/common/types/leaderboard';
 
-import React from 'react';
+import { useState } from 'react';
 import styles from './LeaderBoard.module.scss';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function LeaderBoardSection(leaderboard: Props) {
-  const [selectedTab, setSelectedTab] = React.useState('recent');
+  const [selectedTab, setSelectedTab] = useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const tLeaderboard = useTranslations('Leaderboard');
   const tCommon = useTranslations('Common');

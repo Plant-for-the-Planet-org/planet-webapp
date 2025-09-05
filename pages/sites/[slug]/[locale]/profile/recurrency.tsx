@@ -10,7 +10,7 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -42,13 +42,13 @@ function RecurrentDonations({
   const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
 
-  const [progress, setProgress] = React.useState(0);
-  const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] = React.useState<Subscription[]>();
+  const [progress, setProgress] = useState(0);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [recurrencies, setrecurrencies] = useState<Subscription[]>();
 
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
@@ -90,7 +90,7 @@ function RecurrentDonations({
     setTimeout(() => setProgress(0), 1000);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && token) fetchRecurrentDonations();
   }, [contextLoaded, token]);
 

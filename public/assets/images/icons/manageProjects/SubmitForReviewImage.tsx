@@ -1,5 +1,3 @@
-import React from 'react';
-
 function SubmitForReviewImage() {
   return (
     <svg

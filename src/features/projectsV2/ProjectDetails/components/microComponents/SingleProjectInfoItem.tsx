@@ -1,9 +1,10 @@
-import React from 'react';
+import type { ReactElement } from 'react';
+
 import styles from '../../styles/ProjectInfo.module.scss';
 
 interface Props {
-  title: React.ReactElement | string;
-  children: React.ReactElement;
+  title: ReactElement | string;
+  children: ReactElement;
 }
 
 const SingleProjectInfoItem = ({ title, children }: Props) => {

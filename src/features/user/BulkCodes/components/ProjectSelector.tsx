@@ -3,7 +3,7 @@ import type { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import type { PaymentOptions } from '../BulkCodesTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
-import React from 'react';
+import { useContext } from 'react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
@@ -25,7 +25,7 @@ const ProjectSelector = ({
   active = true,
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { user, token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
 

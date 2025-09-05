@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { Filters, PaymentHistory } from '../../common/types/payments';
 
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
@@ -29,10 +29,8 @@ export default function History({
   fetchPaymentHistory,
 }: Props): ReactElement {
   const t = useTranslations('Me');
-  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(
-    null
-  );
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { isMobile } = useProjectProps();
   const router = useRouter();
 

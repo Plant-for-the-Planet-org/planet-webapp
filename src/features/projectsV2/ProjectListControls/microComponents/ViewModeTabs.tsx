@@ -1,7 +1,7 @@
+import type { ReactNode } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
@@ -17,7 +17,7 @@ interface ViewModeTabsProps {
 
 interface TabItemProps {
   selectedTab: ViewMode;
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string | undefined;
 }
 const getIconColor = (mode: ViewMode, selectMode: ViewMode) => {

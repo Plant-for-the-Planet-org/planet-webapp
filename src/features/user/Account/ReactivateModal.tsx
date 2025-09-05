@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import React from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
@@ -24,14 +24,14 @@ export const ReactivateModal = ({
   record,
   fetchRecurrentDonations,
 }: ReactivateModalProps) => {
-  const [disabled, setDisabled] = React.useState(false);
+  const [disabled, setDisabled] = useState(false);
   const { putApiAuthenticated } = useApi();
-  const { theme } = React.useContext(ThemeContext);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { theme } = useContext(ThemeContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const t = useTranslations('Me');
   const payload = {};
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDisabled(false);
   }, [reactivateModalOpen]);
 

@@ -1,6 +1,5 @@
 import type { RefObject } from 'react';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';

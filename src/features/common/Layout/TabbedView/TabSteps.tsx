@@ -1,7 +1,6 @@
 import type { ReactElement, SyntheticEvent } from 'react';
 import type { TabItem } from './TabbedViewTypes';
 
-import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';

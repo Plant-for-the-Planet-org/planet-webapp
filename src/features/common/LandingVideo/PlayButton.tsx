@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import PlayIcon from '../../../../public/assets/images/icons/PlayIcon';
 import styles from './styles.module.scss';

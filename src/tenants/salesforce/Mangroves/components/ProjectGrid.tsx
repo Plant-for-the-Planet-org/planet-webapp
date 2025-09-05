@@ -1,7 +1,7 @@
 import type { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
@@ -28,7 +28,7 @@ const MANGROVE_PROJECTS = [
 ];
 
 export default function ProjectGrid() {
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const { getApi } = useApi();

@@ -5,7 +5,6 @@ import type {
   TreesDonated,
 } from '../../../features/common/types/leaderboard';
 
-import React from 'react';
 import Footer from '../../../features/common/Layout/Footer';
 import Score from './components/Score';
 import Stats from './components/Stats';

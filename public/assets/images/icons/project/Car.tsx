@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Car() {
   return (
     <svg

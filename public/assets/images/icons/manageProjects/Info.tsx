@@ -1,9 +1,9 @@
-import React from 'react';
+import { useContext } from 'react';
 import { ThemeContext } from '../../../../../src/theme/themeContext';
 import themeProperties from '../../../../../src/theme/themeProperties';
 
 function InfoIcon() {
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <svg

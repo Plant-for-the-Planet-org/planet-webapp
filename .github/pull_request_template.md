@@ -1,6 +1,7 @@
 Fixes #
 
 Check this list and then dismiss it:
+
 - **Localization**
   - Have you added translation resources?
   - Have you localized numbers, dates and other stuff?
@@ -13,11 +14,11 @@ Check this list and then dismiss it:
   - Have you defined interfaces for new components?
   - Have you added a source file not using TypeScript?
   - Have you checked if your newly introduced modules or functions are not already existing?
-  - Is your `React.useEffect` using the right dependencies?
+  - Is your `useEffect` using the right dependencies?
   - Check your code if it matches the existing code formatting.
 
-Changes in this pull request:
--
+## Changes in this pull request:
+
 -
 -
 

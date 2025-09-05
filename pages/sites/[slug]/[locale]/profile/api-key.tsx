@@ -8,8 +8,8 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 
+import { useEffect } from 'react';
 import Head from 'next/head';
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import ApiKey from '../../../../../src/features/user/Settings/ApiKey';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -31,7 +31,7 @@ function EditProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

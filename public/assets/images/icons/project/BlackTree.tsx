@@ -1,4 +1,3 @@
-import React from 'react';
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
 function BlackTree({ color = '#4d5153' }: IconProps) {

@@ -8,8 +8,8 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import React from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
@@ -33,19 +33,19 @@ export default function AddProjectType({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('ManageProjects');
-  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
-  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
+  const [accessDenied, setAccessDenied] = useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadUserData() {
       const usertype = user?.type;
       if (usertype === 'tpo') {

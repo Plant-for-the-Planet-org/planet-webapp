@@ -1,8 +1,9 @@
-import type { JSX } from 'react';
+import type { ReactElement } from 'react';
+
 import styles from '../AddressManagement.module.scss';
 
 interface Props {
-  children: JSX.Element;
+  children: ReactElement;
   label: string;
 }
 const AddressFormLayout = ({ children, label }: Props) => {
