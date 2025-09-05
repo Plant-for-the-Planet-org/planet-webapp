@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { APIError, Image } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState, useContext, useCallback } from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -25,10 +25,10 @@ type UploadImageApiPayload = {
 export default function UploadImages({
   contributionGUID,
 }: Props): ReactElement {
-  const [uploadedImages, setUploadedImages] = React.useState<Image[]>([]);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
+  const [isUploadingData, setIsUploadingData] = useState(false);
   const t = useTranslations('Me');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { deleteApiAuthenticated, postApiAuthenticated } = useApi();
 
   const uploadPhotos = async (image: string) => {
@@ -55,7 +55,7 @@ export default function UploadImages({
     }
   };
 
-  const onDrop = React.useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);

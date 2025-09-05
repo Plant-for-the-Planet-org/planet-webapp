@@ -3,8 +3,6 @@ import type { IconProps } from '../../../../src/features/common/types/common';
 
 import themeProperties from '../../../../src/theme/themeProperties';
 
-import React from 'react';
-
 export default function EditIcon({
   color = themeProperties.designSystem.colors.coreText,
   width = '16px',

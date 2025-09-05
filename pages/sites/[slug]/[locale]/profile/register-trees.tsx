@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import React from 'react';
+import { useEffect } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -33,7 +33,7 @@ export default function Register({
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

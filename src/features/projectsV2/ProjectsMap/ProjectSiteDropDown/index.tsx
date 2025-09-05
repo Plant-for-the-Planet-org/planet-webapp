@@ -64,11 +64,15 @@ const ProjectSiteDropdown = ({
   const { query } = router;
   const siteList = useMemo(() => {
     if (!projectSites) return [];
-    return projectSites.map((site, index: number) => ({
-      siteName: site.properties.name,
-      siteArea: area(site) / 10000,
-      id: index,
-    }));
+    return projectSites.map((site, index: number) => {
+      const calculatedSiteAreaInM2 = area(site);
+      return {
+        siteName: site.properties.name,
+        siteArea:
+          calculatedSiteAreaInM2 > 0 ? calculatedSiteAreaInM2 / 10000 : 0,
+        id: index,
+      };
+    });
   }, [projectSites]);
 
   const getId = useCallback(

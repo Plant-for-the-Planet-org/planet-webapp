@@ -1,8 +1,9 @@
-import React from 'react';
+import type { ReactNode } from 'react';
+
 import styles from '../../styles/ProjectInfo.module.scss';
 
 interface Props {
-  children: React.JSX.Element;
+  children: ReactNode;
 }
 
 const DownloadsLabel = ({ children }: Props) => {

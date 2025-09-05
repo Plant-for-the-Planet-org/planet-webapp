@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes, {
   BulkCodeSteps,
@@ -41,7 +41,7 @@ export default function BulkCodeSelectProjectPage({
   const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }

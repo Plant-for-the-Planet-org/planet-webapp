@@ -7,7 +7,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import React from 'react';
+import { useEffect } from 'react';
 import CompleteSignup from '../../../../src/features/user/CompleteSignup';
 import Head from 'next/head';
 import {
@@ -27,7 +27,7 @@ export default function UserProfile({ pageProps }: Props) {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }

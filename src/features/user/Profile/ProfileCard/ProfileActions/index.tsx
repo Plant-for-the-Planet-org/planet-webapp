@@ -1,6 +1,6 @@
 import type { ProfileV2Props } from '../../../../common/types/profile';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   AllDonations,
   RedeemIcon,

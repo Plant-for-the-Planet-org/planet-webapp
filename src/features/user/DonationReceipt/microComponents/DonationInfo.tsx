@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type {
   IssuedDonationApi,
   UnissuedDonationApi,
@@ -31,12 +32,9 @@ const DonationInfo = ({
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
     null
   );
-  const openPopover = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      setPopoverAnchor(event.currentTarget);
-    },
-    []
-  );
+  const openPopover = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    setPopoverAnchor(event.currentTarget);
+  }, []);
   const closePopover = useCallback(() => {
     setPopoverAnchor(null);
   }, []);

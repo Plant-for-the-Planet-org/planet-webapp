@@ -9,7 +9,7 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics';
 import { useTranslations } from 'next-intl';
@@ -40,7 +40,7 @@ function TreeMapperAnalytics({
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

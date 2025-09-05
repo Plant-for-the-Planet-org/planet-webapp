@@ -5,7 +5,7 @@ import type {
 } from '../../../common/types/intervention';
 import type { SliderImage } from './ImageSlider';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../styles/Intervention.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -39,13 +39,11 @@ export default function InterventionDetails({
     useProjectProps();
   const t = useTranslations('Maps');
   const locale = useLocale();
-  const [treeCount, setTreeCount] = React.useState(1);
-  const [plantationArea, setPlantationArea] = React.useState(0);
-  const [sampleTreeImages, setSampleTreeImages] = React.useState<SliderImage[]>(
-    []
-  );
+  const [treeCount, setTreeCount] = useState(1);
+  const [plantationArea, setPlantationArea] = useState(0);
+  const [sampleTreeImages, setSampleTreeImages] = useState<SliderImage[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let count = 0;
     if (
       activeIntervention &&
@@ -70,11 +68,11 @@ export default function InterventionDetails({
       activeIntervention.type === 'multi-tree-registration'
     ) {
       const calculatedArea = area(activeIntervention.geometry);
-      setPlantationArea(calculatedArea / 10000);
+      setPlantationArea(calculatedArea > 0 ? calculatedArea / 10000 : 0);
     }
   }, [activeIntervention]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       activeIntervention &&
       activeIntervention.type === 'multi-tree-registration' &&

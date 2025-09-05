@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import styles from './../styles/LeaderBoardSection.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function LeaderBoardSection(leaderboard: Props) {
-  const [selectedTab, setSelectedTab] = React.useState('recent');
+  const [selectedTab, setSelectedTab] = useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const tLeaderboard = useTranslations('Leaderboard');
   const tCommon = useTranslations('Common');

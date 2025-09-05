@@ -9,7 +9,7 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
-import React from 'react';
+import { useEffect } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useTranslations } from 'next-intl';
 import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
@@ -33,7 +33,7 @@ function DeleteProfilePage({
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

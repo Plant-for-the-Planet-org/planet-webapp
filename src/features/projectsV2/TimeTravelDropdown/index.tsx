@@ -1,6 +1,6 @@
 import type { SourceName } from '../../../utils/mapsV2/timeTravel';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
 import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';

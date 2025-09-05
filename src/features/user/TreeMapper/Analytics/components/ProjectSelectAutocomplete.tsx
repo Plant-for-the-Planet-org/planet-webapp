@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { Project } from '../../../../common/Layout/AnalyticsContext';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
 

@@ -8,8 +8,8 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
+import { useEffect, useMemo } from 'react';
 import Head from 'next/head';
-import React, { useMemo } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import MySpecies from '../../../../../../src/features/user/TreeMapper/MySpecies';
 import { useTranslations } from 'next-intl';
@@ -38,7 +38,7 @@ export default function MySpeciesPage({
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

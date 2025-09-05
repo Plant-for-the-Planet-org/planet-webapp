@@ -1,6 +1,6 @@
 import type { MapOptions } from '../../ProjectsMapContext';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';

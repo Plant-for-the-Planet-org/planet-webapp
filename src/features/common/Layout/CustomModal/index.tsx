@@ -1,5 +1,5 @@
 import Modal from '@mui/material/Modal';
-import React from 'react';
+
 import { useTranslations } from 'next-intl';
 import styles from './CustomModal.module.scss';
 

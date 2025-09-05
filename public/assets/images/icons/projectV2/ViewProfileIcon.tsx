@@ -1,4 +1,3 @@
-import React from 'react';
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
 export const ViewProfileIcon = ({ width, color }: IconProps) => {

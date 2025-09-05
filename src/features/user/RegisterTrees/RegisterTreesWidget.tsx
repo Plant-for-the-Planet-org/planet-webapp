@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react';
 import type { ContributionProperties } from './RegisterTrees/SingleContribution';
 import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 import type { ViewportProps } from '../../common/types/map';
@@ -5,12 +6,12 @@ import type {
   RegisterTreesFormProps,
   RegisteredTreesGeometry,
 } from '../../common/types/map';
-import { handleError } from '@planet-sdk/common';
 
+import { useEffect, useState, useContext } from 'react';
+import { handleError } from '@planet-sdk/common';
 import { MenuItem, TextField, Button } from '@mui/material';
 import { easeCubic } from 'd3-ease';
 import dynamic from 'next/dynamic';
-import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import MapGL, {
   FlyToInterpolator,
@@ -57,36 +58,36 @@ function RegisterTreesForm({
     sources: {},
     layers: [],
   };
-  const [mapState, setMapState] = React.useState({
+  const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
   });
-  const [isMultiple, setIsMultiple] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState<null | string>(null);
+  const [isMultiple, setIsMultiple] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [interventionCoordinates, setInterventionCoordinates] = React.useState<
+  const [interventionCoordinates, setInterventionCoordinates] = useState<
     number[] | undefined
   >(undefined);
-  const [geometry, setGeometry] = React.useState<
-    RegisteredTreesGeometry | undefined
-  >(undefined);
-  const [viewport, setViewPort] = React.useState<ViewportProps>({
+  const [geometry, setGeometry] = useState<RegisteredTreesGeometry | undefined>(
+    undefined
+  );
+  const [viewport, setViewPort] = useState<ViewportProps>({
     height: '100%',
     width: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  const [userLang, setUserLang] = React.useState('en');
-  const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
-  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [isStyleReady, setIsStyleReady] = React.useState(false);
+  const [userLang, setUserLang] = useState('en');
+  const [userLocation, setUserLocation] = useState<number[] | null>(null);
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  const [isStyleReady, setIsStyleReady] = useState(false);
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
       if (style) {
@@ -96,7 +97,7 @@ function RegisterTreesForm({
     });
   }, [isStyleReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
@@ -114,7 +115,7 @@ function RegisterTreesForm({
     getUserLocation();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userLocation) {
       const newViewport = {
         ...viewport,
@@ -129,7 +130,7 @@ function RegisterTreesForm({
     }
   }, [userLocation]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
@@ -147,7 +148,7 @@ function RegisterTreesForm({
   });
 
   const onTreeCountChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
@@ -210,7 +211,7 @@ function RegisterTreesForm({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && user?.type === 'tpo') {
       loadProjects();
     }
@@ -417,10 +418,10 @@ type FormData = {
 };
 
 export default function RegisterTreesWidget() {
-  const [contributionGUID, setContributionGUID] = React.useState('');
+  const [contributionGUID, setContributionGUID] = useState('');
   const [contributionDetails, setContributionDetails] =
-    React.useState<ContributionProperties | null>(null);
-  const [registered, setRegistered] = React.useState(false);
+    useState<ContributionProperties | null>(null);
+  const [registered, setRegistered] = useState(false);
 
   const ContributionProps = {
     contribution: contributionDetails !== null ? contributionDetails : null,

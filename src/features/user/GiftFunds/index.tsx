@@ -1,6 +1,6 @@
 import type { GiftFund } from '@planet-sdk/common/build/types/user';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
 import { useTranslations } from 'next-intl';
@@ -26,7 +26,7 @@ const GiftFunds = () => {
 
   const [validGiftFunds, setValidGiftFunds] = useState<GiftFund[] | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //Not displaying details for gift fund where open units = 0
     const nonZeroOpenUnitsGiftFunds = user?.planetCash?.giftFunds.filter(
       (gift) => gift.openUnits !== 0

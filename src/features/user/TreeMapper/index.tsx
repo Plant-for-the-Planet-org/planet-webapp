@@ -7,7 +7,7 @@ import type {
 import type { Links } from '../../common/types/payments';
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
@@ -29,14 +29,14 @@ function TreeMapper(): ReactElement {
   const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Treemapper');
   const { getApiAuthenticated } = useApi();
-  const [progress, setProgress] = React.useState(0);
-  const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [interventions, setInterventions] = React.useState<Intervention[]>([]);
-  const [selectedIntervention, setSelectedIntervention] = React.useState<
+  const [progress, setProgress] = useState(0);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [interventions, setInterventions] = useState<Intervention[]>([]);
+  const [selectedIntervention, setSelectedIntervention] = useState<
     Intervention | SampleTreeRegistration | null
   >(null);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const [links, setLinks] = React.useState<Links>();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const [links, setLinks] = useState<Links>();
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
@@ -125,11 +125,11 @@ function TreeMapper(): ReactElement {
     setTimeout(() => setProgress(0), 1000);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && token) fetchTreemapperData();
   }, [contextLoaded, token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.query.l) {
       if (interventions) {
         for (const key in interventions) {

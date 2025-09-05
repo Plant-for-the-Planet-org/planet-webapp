@@ -7,7 +7,7 @@ import type {
 } from '../../../common/types/project';
 import type { ReactElement, FocusEvent } from 'react';
 
-import React, { useCallback, useEffect, useContext, useState } from 'react';
+import { useCallback, useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -74,7 +74,7 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
-  const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');

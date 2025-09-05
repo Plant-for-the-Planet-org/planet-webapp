@@ -1,6 +1,5 @@
 import type { ProfileV2Props } from '../../../common/types/profile';
 
-import React from 'react';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './ProfileCard.module.scss';

@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import MySpeciesForm from './MySpeciesForm';
