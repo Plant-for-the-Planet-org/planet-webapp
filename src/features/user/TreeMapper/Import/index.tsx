@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
-import type { APIError } from '@planet-sdk/common';
-import type { Intervention } from '../../../common/types/intervention';
+import type { APIError, Intervention } from '@planet-sdk/common';
 
 import { useEffect, useState, useContext } from 'react';
 import PlantingLocation from './components/PlantingLocation';

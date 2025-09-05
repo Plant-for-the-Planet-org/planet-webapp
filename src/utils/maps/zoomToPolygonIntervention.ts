@@ -1,6 +1,9 @@
-import type { APIError, SerializedError } from '@planet-sdk/common';
+import type {
+  APIError,
+  Intervention,
+  SerializedError,
+} from '@planet-sdk/common';
 import type { SetState } from '../../features/common/types/common';
-import type { Intervention } from '../../features/common/types/intervention';
 import type { Position } from 'geojson';
 import type { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 

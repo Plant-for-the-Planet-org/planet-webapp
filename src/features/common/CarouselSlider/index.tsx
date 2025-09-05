@@ -1,5 +1,6 @@
-import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { InnerSlider, Settings } from 'react-slick';
+import type { SetState } from '../types/common';
 
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -53,7 +54,7 @@ interface CarouselSliderProps {
   carouselData: ReactElement[];
   settings: Settings;
   currentSlide: number;
-  setCurrentSlide: Dispatch<SetStateAction<number>>;
+  setCurrentSlide: SetState<number>;
   totalSlides: number;
 }
 

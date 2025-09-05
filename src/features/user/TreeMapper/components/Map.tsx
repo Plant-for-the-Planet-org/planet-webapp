@@ -1,15 +1,15 @@
 import type { ReactElement } from 'react';
-import type {
-  Intervention,
-  MultiTreeRegistration,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
 import type { RequiredMapStyle } from '../../../common/types/map';
 import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 import type { MapEvent } from 'react-map-gl';
 import type { SetState } from '../../../common/types/common';
 import type { Feature, Point, Polygon } from 'geojson';
 import type { AllGeoJSON } from '@turf/turf';
+import type {
+  Intervention,
+  MultiTreeRegistration,
+  SampleTreeRegistration,
+} from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
 import styles from '../TreeMapper.module.scss';

@@ -1,7 +1,7 @@
 import type {
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../../common/types/intervention';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';

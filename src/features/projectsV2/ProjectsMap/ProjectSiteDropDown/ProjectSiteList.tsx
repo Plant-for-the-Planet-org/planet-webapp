@@ -1,8 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';

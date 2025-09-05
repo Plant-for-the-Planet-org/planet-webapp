@@ -3,14 +3,12 @@ import type { ExtendedProject, MapProject } from '../common/types/projectv2';
 import type {
   APIError,
   CountryCode,
+  Intervention,
+  SampleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
 import type { SetState } from '../common/types/common';
 import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../common/types/intervention';
 import type { INTERVENTION_TYPE } from '../../utils/constants/intervention';
 
 import {

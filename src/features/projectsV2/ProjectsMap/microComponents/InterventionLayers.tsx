@@ -2,9 +2,9 @@ import type { ReactElement, MouseEvent } from 'react';
 import type {
   Intervention,
   MultiTreeRegistration,
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 import type { Feature, Point, Polygon } from 'geojson';
 
 import { useLocale, useTranslations } from 'next-intl';

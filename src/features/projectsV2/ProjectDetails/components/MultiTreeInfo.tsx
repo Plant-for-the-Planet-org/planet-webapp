@@ -1,8 +1,8 @@
+import type { SetState } from '../../../common/types/common';
 import type {
   MultiTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { SetState } from '../../../common/types/common';
+} from '@planet-sdk/common';
 
 import { Fragment, useMemo } from 'react';
 import { useTranslations } from 'next-intl';

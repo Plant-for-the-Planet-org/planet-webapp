@@ -1,4 +1,4 @@
-import type { PlantedSpecies } from '../../../../common/types/intervention';
+import type { PlantedSpecies } from '@planet-sdk/common';
 
 import { useCallback } from 'react';
 import styles from '../../styles/InterventionInfo.module.scss';

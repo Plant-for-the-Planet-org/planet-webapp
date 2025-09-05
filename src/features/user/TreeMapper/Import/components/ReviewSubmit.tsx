@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { MultiTreeRegistration } from '../../../../common/types/intervention';
+import type { MultiTreeRegistration } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import styles from '../Import.module.scss';

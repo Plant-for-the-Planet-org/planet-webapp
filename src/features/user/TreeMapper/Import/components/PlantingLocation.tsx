@@ -6,13 +6,14 @@ import type {
   Geometry,
   GeometryObject,
 } from 'geojson';
-import type {
-  Species,
-  Intervention,
-} from '../../../../common/types/intervention';
+import type { Species } from '../../Treemapper';
 import type { InterventionFormData, SpeciesFormData } from '../../Treemapper';
 import type { SetState } from '../../../../common/types/common';
-import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
+import type {
+  APIError,
+  Intervention,
+  ProfileProjectFeature,
+} from '@planet-sdk/common';
 
 import { useEffect, useState, useContext, useCallback } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';

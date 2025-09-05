@@ -1,5 +1,6 @@
 import type { User } from '@planet-sdk/common';
-import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import type { ReactNode } from 'react';
+import type { SetState } from '../../types/common';
 
 import { useState, useEffect } from 'react';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
@@ -49,10 +50,10 @@ export interface NavLinkType {
 
 interface NavLinkProps {
   link: NavLinkType;
-  setCurrentMenuKey: Dispatch<SetStateAction<string>>;
+  setCurrentMenuKey: SetState<string>;
   currentMenuKey: string;
   currentSubMenuKey: string;
-  setCurrentSubMenuKey: Dispatch<SetStateAction<string>>;
+  setCurrentSubMenuKey: SetState<string>;
   user: User;
   closeMenu: () => void;
 }

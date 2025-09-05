@@ -1,8 +1,5 @@
-import type {
-  Measurements,
-  SampleTreeRegistration,
-} from '../../../../common/types/intervention';
 import type { SetState } from '../../../../common/types/common';
+import type { Measurements, SampleTreeRegistration } from '@planet-sdk/common';
 
 import styles from '../../styles/InterventionInfo.module.scss';
 import { useTranslations } from 'next-intl';

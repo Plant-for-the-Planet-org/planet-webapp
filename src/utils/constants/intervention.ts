@@ -1,6 +1,6 @@
 import type { DataDrivenPropertyValueSpecification } from 'maplibre-gl';
-import type { Intervention } from '../../features/common/types/intervention';
-import type { InterventionTypes } from '@planet-sdk/common';
+import type { Intervention, InterventionTypes } from '@planet-sdk/common';
+
 import themeProperties from '../../theme/themeProperties';
 
 const { colors } = themeProperties.designSystem;

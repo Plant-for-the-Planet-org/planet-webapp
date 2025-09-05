@@ -18,10 +18,7 @@ import type {
   SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../types/intervention';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useState, createContext, useRef, useContext, useEffect } from 'react';
 import { getTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';

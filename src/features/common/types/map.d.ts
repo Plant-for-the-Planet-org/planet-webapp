@@ -1,9 +1,10 @@
 import type Supercluster from 'supercluster';
 import type { User } from '@planet-sdk/common';
-import type { Dispatch, SetStateAction, MutableRefObject } from 'react';
+import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
+import type { SetState } from './common';
 
 export interface ClusterMarker {
   geometry: {
@@ -137,9 +138,9 @@ export interface RegisteredTreesGeometry {
 }
 
 export interface RegisterTreesFormProps {
-  setContributionGUID: Dispatch<SetStateAction<string>>;
-  setContributionDetails: Dispatch<SetStateAction<ContributionProps | null>>;
-  setRegistered: Dispatch<SetStateAction<boolean>>;
+  setContributionGUID: SetState<string>;
+  setContributionDetails: SetState<ContributionProps | null>;
+  setRegistered: SetState<boolean>;
 }
 
 // Map styling

@@ -16,7 +16,7 @@ import type { SetState } from './common';
 import type { RefObject } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
 import type { FlyToInterpolator } from 'react-map-gl';
-import type { Intervention, SampleTreeRegistration } from './intervention';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 export type ExploreOption =
   | 'Deforestation'
